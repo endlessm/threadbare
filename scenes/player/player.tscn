@@ -1,7 +1,10 @@
-[gd_scene load_steps=53 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=56 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Texture2D" uid="uid://dm0dwcbjsb743" path="res://assets/tiny-swords/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="1_3vyb7"]
-[ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/player/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://bpu6jo4kvehlg" path="res://scenes/player/player_interaction.gd" id="3_dqkch"]
+[ext_resource type="Script" uid="uid://kqgiavjw07fx" path="res://scenes/interact_ray.gd" id="3_qhqgy"]
+[ext_resource type="Script" uid="uid://qro4uo83ba8f" path="res://scenes/player/player_sprite.gd" id="3_qlg0r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g2els"]
 atlas = ExtResource("1_3vyb7")
@@ -403,14 +406,27 @@ height = 42.0
 collision_mask = 19
 script = ExtResource("1_g2els")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-unique_name_in_owner = true
+[node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -30)
 sprite_frames = SubResource("SpriteFrames_6e8lb")
 animation = &"walk"
 autoplay = "idle"
 frame_progress = 0.672386
+script = ExtResource("3_qlg0r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_3vyb7")
+
+[node name="PlayerInteraction" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_dqkch")
+
+[node name="InteractRay" type="RayCast2D" parent="PlayerInteraction"]
+unique_name_in_owner = true
+position = Vector2(0, -24)
+target_position = Vector2(80, 0)
+collision_mask = 32
+collide_with_areas = true
+collide_with_bodies = false
+script = ExtResource("3_qhqgy")

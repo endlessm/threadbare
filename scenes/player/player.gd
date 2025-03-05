@@ -5,9 +5,13 @@ extends CharacterBody2D
 @export_range(10, 100000, 10) var STOPPING_STEP: float = 1500.0
 @export_range(10, 100000, 10) var MOVING_STEP: float = 4000.0
 
-@onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
+@onready var player_interaction: PlayerInteraction = %PlayerInteraction
 
 func _process(delta: float) -> void:
+	if player_interaction.is_interacting:
+		velocity = Vector2.ZERO
+		return
+
 	var axis:Vector2 = Vector2(
 		Input.get_axis(&"ui_left", &"ui_right"),
 		Input.get_axis(&"ui_up", &"ui_down"),
@@ -26,12 +30,5 @@ func _process(delta: float) -> void:
 		step = MOVING_STEP
 
 	velocity = velocity.move_toward(axis * speed, step * delta)
-
-	if velocity.is_zero_approx():
-		animated_sprite_2d.play(&"idle")
-	else:
-		if not is_zero_approx(velocity.x):
-			animated_sprite_2d.flip_h = velocity.x < 0
-		animated_sprite_2d.play(&"walk")
 
 	move_and_slide()
