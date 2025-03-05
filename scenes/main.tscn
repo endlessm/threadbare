@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=4 uid="uid://7hoy2p14t6kc"]
+[gd_scene load_steps=5 format=4 uid="uid://7hoy2p14t6kc"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/player.tscn" id="3_sugp2"]
+[ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/npcs/talker/talker.tscn" id="4_jyhfs"]
+[ext_resource type="SpriteFrames" uid="uid://clx8sssi4tw8q" path="res://scenes/npcs/sprite_frames/sprite_frame_02.tres" id="5_tbgi4"]
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
@@ -36,10 +38,13 @@ tile_set = ExtResource("1_0wfyh")
 tile_map_data = PackedByteArray("AAAKAAUAAwAAAAAAAAALAAUAAwABAAAAAAAMAAUAAwABAAAAAAANAAUAAwABAAAAAAAOAAUAAwACAAAAAAAIAAgAAwAAAAEAAAAIAAkAAwAAAAIAAAAIAAoAAwAAAAMAAAA=")
 tile_set = ExtResource("1_0wfyh")
 
-[node name="Player" parent="." instance=ExtResource("3_sugp2")]
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="OnTheGround" instance=ExtResource("3_sugp2")]
 position = Vector2(254, 259)
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
 zoom = Vector2(2, 2)
 limit_left = 0
 limit_top = 0
@@ -47,3 +52,11 @@ limit_right = 2048
 limit_bottom = 2048
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="Talker" parent="OnTheGround" instance=ExtResource("4_jyhfs")]
+position = Vector2(622, 479)
+
+[node name="Talker2" parent="OnTheGround" instance=ExtResource("4_jyhfs")]
+position = Vector2(459, 830)
+look_at_side = 1
+sprite_frames = ExtResource("5_tbgi4")
