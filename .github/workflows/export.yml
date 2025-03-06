@@ -1,0 +1,70 @@
+name: "Build and Export Game"
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - '*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSION: 4.4
+
+jobs:
+  build:
+    name: Build for web
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Godot Engine downloads
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            build/godot
+            build/._sc_
+            build/editor_data/export_templates/${{ env.GODOT_VERSION }}.stable
+          key: godot-${{ env.GODOT_VERSION }}
+
+      - name: Download Godot Engine from GitHub release
+        id: download
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p build && cd build
+
+          # Download Godot Engine itself
+          wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip && \
+          unzip Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip && \
+          mv Godot_v${GODOT_VERSION}-stable_linux.x86_64 godot
+
+          # Download export templates
+          mkdir -p editor_data/export_templates
+          wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz && \
+          unzip Godot_v${GODOT_VERSION}-stable_export_templates.tpz && \
+          mv templates editor_data/export_templates/${GODOT_VERSION}.stable
+
+          # Tell Godot Engine to run in "self-contained" mode so it looks for
+          # templates here instead of in ~/.local/share/godot/
+          touch ._sc_
+
+      - name: Web Build
+        run: |
+          mkdir -v -p build/web && cd build
+
+          # Note that the export path can be confusing; it's relative to the
+          # Godot project path, NOT necessarily the current directory or Godot
+          # binary location
+          ./godot --headless --verbose --path ../ --export-release "Web" ./build/web/index.html
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web
+          path: build/web
