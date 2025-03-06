@@ -27,7 +27,7 @@ func _process(_delta: float) -> void:
 	if not interact_area:
 		interact_label.visible = false
 		return
-	if Input.is_action_just_released(&"ui_accept"):
+	if Input.is_action_just_pressed(&"ui_accept"):
 		interact_area.interaction_ended.connect(_on_interaction_ended)
 		interact_area.start_interaction()
 		interact_ray.enabled = false
