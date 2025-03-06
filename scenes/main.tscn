@@ -1,19 +1,14 @@
-[gd_scene load_steps=8 format=4 uid="uid://7hoy2p14t6kc"]
+[gd_scene load_steps=6 format=4 uid="uid://7hoy2p14t6kc"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_0wfyh"]
+[ext_resource type="Script" uid="uid://ce35i1qjwjk5c" path="res://scenes/main.gd" id="1_tefeu"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/player/player.tscn" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/npcs/talker/talker.tscn" id="4_jyhfs"]
 [ext_resource type="SpriteFrames" uid="uid://clx8sssi4tw8q" path="res://scenes/npcs/sprite_frames/sprite_frame_02.tres" id="5_tbgi4"]
-[ext_resource type="Texture2D" uid="uid://bdhfcs6igu6di" path="res://assets/tiny-swords/Deco/14.png" id="5_tefeu"]
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tbgi4"]
-friction = 0.0
-bounce = 0.64
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_o6xl0"]
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
+script = ExtResource("1_tefeu")
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -70,19 +65,11 @@ sprite_frames = ExtResource("5_tbgi4")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
-position = Vector2(1747, 731)
-collision_layer = 8
-collision_mask = 68
-physics_material_override = SubResource("PhysicsMaterial_tbgi4")
-gravity_scale = 0.0
-can_sleep = false
-linear_velocity = Vector2(-200, 0)
-angular_velocity = -17.4533
-angular_damp_mode = 1
+[node name="Timer" type="Timer" parent="."]
+unique_name_in_owner = true
+process_callback = 0
+autostart = true
 
-[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
-texture = ExtResource("5_tefeu")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
-shape = SubResource("RectangleShape2D_o6xl0")
+[node name="BulletMarker" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(2098, 744)
