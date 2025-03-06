@@ -1,0 +1,28 @@
+name: "Publish to GitHub Pages"
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "Build and Export Game"
+    types:
+      - completed
+
+# Cancel any ongoing previous run if the job is re-triggered
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish all branches to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: endlessm/amalgamate-pages@v1
+        with:
+          workflow_name: "Build and Export Game"
+          artifact_name: web
