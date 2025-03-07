@@ -4,8 +4,7 @@ extends Node2D
 @export var player: Player
 
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
-@onready var player_shield: StaticBody2D = %PlayerShield
-@onready var player_shield_collision: CollisionShape2D = %PlayerShieldCollision
+@onready var player_shield: AnimatableBody2D = %PlayerShield
 @onready var hit_box: Area2D = %HitBox
 
 var is_fighting: bool = false
@@ -27,8 +26,6 @@ func _process(_delta: float) -> void:
 
 	if Input.is_action_just_pressed(&"ui_accept"):
 		is_fighting = true
-		player_shield_collision.disabled = false
 	elif Input.is_action_just_released(&"ui_accept"):
 		await player_sprite.animation_looped
-		player_shield_collision.disabled = true
 		is_fighting = false
