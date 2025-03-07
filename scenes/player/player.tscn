@@ -547,12 +547,12 @@ height = 42.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0owmy"]
 size = Vector2(32, 47)
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0owmy"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5gtgg"]
 friction = 0.0
-bounce = 1.0
+bounce = 1000.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qek5x"]
-size = Vector2(158, 19.0001)
+size = Vector2(324.001, 76.5)
 
 [sub_resource type="Animation" id="Animation_qek5x"]
 length = 0.001
@@ -598,14 +598,50 @@ step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("%PlayerShieldCollision:position")
+tracks/0/path = NodePath("PlayerShield/PlayerShieldCollision:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6),
+"times": PackedFloat32Array(0, 0.4, 0.6),
 "transitions": PackedFloat32Array(0.5, 0.5, 0.5),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, 76.5001)]
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0.00058038, 169)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerShield/PlayerShieldCollision:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerShield/PlayerShieldCollision:shape:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(116, 76.5), Vector2(116, 76.5), Vector2(324.001, 76.5)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PlayerShield:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_h17s1"]
@@ -613,7 +649,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("%PlayerShieldCollision:position")
+tracks/0/path = NodePath("PlayerShield/PlayerShieldCollision:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -621,6 +657,42 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0, 76.5001)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerShield/PlayerShieldCollision:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerShield/PlayerShieldCollision:shape:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(324.001, 76.5)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PlayerShield:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_h17s1"]
@@ -639,10 +711,8 @@ metadata/_edit_vertical_guides_ = [87.0]
 unique_name_in_owner = true
 position = Vector2(0, -30)
 sprite_frames = SubResource("SpriteFrames_6e8lb")
-animation = &"action side A"
+animation = &"action down A"
 autoplay = "idle"
-frame = 2
-frame_progress = 0.461717
 script = ExtResource("3_qlg0r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -685,13 +755,13 @@ position = Vector2(0, -28.5)
 shape = SubResource("RectangleShape2D_0owmy")
 debug_color = Color(0.947566, 0.230409, 1.92523e-07, 0.42)
 
-[node name="PlayerShield" type="StaticBody2D" parent="PlayerFighting"]
+[node name="PlayerShield" type="AnimatableBody2D" parent="PlayerFighting"]
 unique_name_in_owner = true
-position = Vector2(0, -28)
 rotation = -1.57079
 collision_layer = 64
 collision_mask = 8
-physics_material_override = SubResource("PhysicsMaterial_0owmy")
+collision_priority = 10.0
+physics_material_override = SubResource("PhysicsMaterial_5gtgg")
 
 [node name="PlayerShieldCollision" type="CollisionShape2D" parent="PlayerFighting/PlayerShield"]
 unique_name_in_owner = true

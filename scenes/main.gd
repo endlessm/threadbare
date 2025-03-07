@@ -10,5 +10,4 @@ func _ready() -> void:
 func _on_timeout() -> void:
 	var bullet = BULLET.instantiate()
 	bullet.position = bullet_marker.position
-	bullet.linear_velocity = bullet.linear_velocity.rotated(randf_range(-PI/8, PI/8))
 	add_child(bullet)
