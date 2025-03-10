@@ -9,6 +9,7 @@ extends CharacterBody2D
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: PlayerFighting = %PlayerFighting
+var last_nonzero_axis: Vector2
 var axis: Vector2
 
 func _process(delta: float) -> void:
@@ -20,6 +21,8 @@ func _process(delta: float) -> void:
 		Input.get_axis(&"ui_left", &"ui_right"),
 		Input.get_axis(&"ui_up", &"ui_down"),
 	)
+	if not axis.is_zero_approx():
+		last_nonzero_axis = axis
 
 	var speed: float
 	if player_fighting.is_fighting:
