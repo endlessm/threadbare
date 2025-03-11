@@ -1,6 +1,8 @@
 class_name PlayerFighting
 extends Node2D
 
+const FX = preload("res://scenes/fx.tscn")
+
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var player_shield: AnimatableBody2D = %PlayerShield
 @onready var hit_box: Area2D = %HitBox
@@ -16,6 +18,9 @@ func _ready() -> void:
 		player = owner
 
 func _on_player_got_hit(body: Node2D):
+	var fx = FX.instantiate()
+	Engine.get_main_loop().current_scene.add_child(fx)
+	fx.global_position = body.global_position
 	body.queue_free()
 	got_hit.emit()
 
