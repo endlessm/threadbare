@@ -6,8 +6,8 @@ func _ready() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	var impulse = global_position - body.global_position
+	var hit_vector = global_position - body.global_position
 	linear_velocity = Vector2.ZERO
-	apply_impulse(impulse)
+	apply_impulse(hit_vector)
 	if body.owner is Enemy:
-		body.owner.got_hit()
+		body.owner.got_hit(global_position, hit_vector)
