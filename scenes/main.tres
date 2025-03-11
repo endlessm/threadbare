@@ -1,0 +1,81 @@
+[gd_resource type="VisualShader" load_steps=6 format=3 uid="uid://b3vpf0f1apddp"]
+
+[ext_resource type="Script" uid="uid://t33g3nso84e4" path="res://addons/shaderV/rgba/generate_shapes/generateCircle.gd" id="3_jwjum"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_jwjum"]
+source = 1
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_5xdy8"]
+input_name = "screen_uv"
+
+[sub_resource type="VisualShaderNodeMultiplyAdd" id="VisualShaderNodeMultiplyAdd_5xdy8"]
+output_port_for_preview = 0
+default_input_values = [0, Vector2(0, 0), 1, Vector2(0, -0.2), 2, Vector2(0, 0)]
+op_type = 1
+
+[sub_resource type="VisualShaderNodeCustom" id="VisualShaderNodeCustom_vyny3"]
+output_port_for_preview = 1
+default_input_values = [1, Vector3(0.5, 0.5, 0), 2, Vector3(1, 1, 0), 3, -0.5, 4, 0.5, 5, 0.1, 6, Vector3(1, 1, 1), 7, 1.0]
+initialized = true
+script = ExtResource("3_jwjum")
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform sampler2D screen_tex_frg_4 : hint_screen_texture;
+
+
+// CircleShape
+#include \"res://addons/shaderV/rgba/generate_shapes/generateCircle.gdshaderinc\"
+
+void fragment() {
+	vec3 n_out8p0;
+	float n_out8p1;
+// CircleShape:8
+	vec3 n_in8p1 = vec3(0.50000, 0.50000, 0.00000);
+	vec3 n_in8p2 = vec3(1.00000, 1.00000, 0.00000);
+	float n_in8p3 = -0.50000;
+	float n_in8p4 = 0.50000;
+	float n_in8p5 = 0.10000;
+	vec3 n_in8p6 = vec3(1.00000, 1.00000, 1.00000);
+	float n_in8p7 = 1.00000;
+	{
+		n_out8p0 = n_in8p6;
+		n_out8p1 = _generateCircleFunc(UV.xy, n_in8p1.xy, n_in8p2.xy, n_in8p3, n_in8p4, n_in8p5).a * n_in8p7;
+	}
+
+
+// Input:5
+	vec2 n_out5p0 = SCREEN_UV;
+
+
+// MultiplyAdd:6
+	vec2 n_in6p1 = vec2(0.00000, -0.20000);
+	vec2 n_out6p0 = (vec2(n_out8p1) * n_in6p1) + n_out5p0;
+
+
+	vec4 n_out4p0;
+// Texture2D:4
+	n_out4p0 = texture(screen_tex_frg_4, n_out6p0);
+
+
+// Output:0
+	COLOR.rgb = vec3(n_out4p0.xyz);
+
+
+}
+"
+graph_offset = Vector2(484.759, 118.88)
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(1300, 160)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_jwjum")
+nodes/fragment/4/position = Vector2(980, 160)
+nodes/fragment/5/node = SubResource("VisualShaderNodeInput_5xdy8")
+nodes/fragment/5/position = Vector2(220, 20)
+nodes/fragment/6/node = SubResource("VisualShaderNodeMultiplyAdd_5xdy8")
+nodes/fragment/6/position = Vector2(680, 160)
+nodes/fragment/8/node = SubResource("VisualShaderNodeCustom_vyny3")
+nodes/fragment/8/position = Vector2(-60, 280)
+nodes/fragment/connections = PackedInt32Array(4, 0, 0, 0, 6, 0, 4, 0, 5, 0, 6, 2, 8, 1, 6, 0)
