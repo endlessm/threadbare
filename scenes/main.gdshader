@@ -1,52 +1,50 @@
 shader_type canvas_item;
+render_mode blend_mix;
 
-uniform sampler2D screen_texture: hint_screen_texture;
-uniform sampler2D deform_texture: hint_default_black; //repeat_disable, filter_nearest;
-
-uniform vec2 center;
-uniform float force : hint_range(0,1, 0.01);
-uniform float size : hint_range(0,1,0.01);
-uniform float thick : hint_range(0,1,0.01);
-uniform float range : hint_range(0,1.0,0.01);
+uniform sampler2D screen_tex_frg_4 : hint_screen_texture;
 uniform bool debug = false;
 
-vec2 _sphericalUV(vec2 _spherical_uv, vec2 _spherical_position_vect, vec2 _spherical_radius_vect, vec2 _spherical_spin_vect, vec2 _spherical_local_position_vect){
-	vec2 _temp_p = (_spherical_uv - _spherical_position_vect) * 2.0;
-	float _temp_rad = length((_temp_p - _spherical_local_position_vect) * _spherical_radius_vect) + 0.0001;
-	float _temp_f = (1.0 - sqrt(1.0 - _temp_rad)) / _temp_rad;
-	return mod(vec2((_temp_p.x * 0.5 * _temp_f + _spherical_spin_vect.x) + 0.5,
-					(_temp_p.y * 0.5 * _temp_f + _spherical_spin_vect.y) + 0.5), vec2(1.0));
-}
+// CircleShape
+#include "res://addons/shaderV/rgba/generate_shapes/generateCircle.gdshaderinc"
 
 void fragment() {
-	vec2 scaledUV = UV;
-	float mask = (1.0 - smoothstep(size,size+0.1, length(scaledUV - center)))
-	 * smoothstep(size-thick-0.01, size-thick+0.4, length(scaledUV-center));
-	vec2 disp = normalize(scaledUV - center) * force * mask;// * clamp(range-size,0.0,100.0);
-	if(disp == vec2(0.0,0.0)){
-		COLOR = texture(screen_texture, SCREEN_UV);
+	vec3 n_out8p0;
+	float n_out8p1;
+// CircleShape:8
+	vec3 n_in8p1 = vec3(0.50000, 0.50000, 0.00000);
+	vec3 n_in8p2 = vec3(1.00000, 1.00000, 0.00000);
+	float n_in8p3 = -0.50000;
+	float n_in8p4 = 0.50000;
+	float n_in8p5 = 0.10000;
+	vec3 n_in8p6 = vec3(1.00000, 1.00000, 1.00000);
+	float n_in8p7 = 1.00000;
+	{
+		n_out8p0 = n_in8p6;
+		n_out8p1 = _generateCircleFunc(UV.xy, n_in8p1.xy, n_in8p2.xy, n_in8p3, n_in8p4, n_in8p5).a * n_in8p7;
 	}
-	else
-		if (debug) {
-			COLOR = vec4(disp * 100., vec2(0.0, 1.0));
-		} else {
-			COLOR = texture(screen_texture, SCREEN_UV-disp);
-		}
 
 
-    // float aspect_ratio = SCREEN_PIXEL_SIZE.y/SCREEN_PIXEL_SIZE.x;
-	// vec4 deform_color = texture(deform_texture, UV);
-	// vec4 color = texture(screen_texture, SCREEN_UV);
-	//vec4 color = texture(screen_texture, SCREEN_UV) + deform_color;
-	// vec4 color = vec4(SCREEN_UV.r, SCREEN_UV.g, 0.0, 1.0);
-	// vec4 color = texture(screen_texture, SCREEN_UV + deform_color.rg);
-	// vec4 color = texture(deform_texture, UV);
-	// vec4 color = texture(screen_texture, SCREEN_UV + foo.rg);
-	// COLOR = vec4(UV.r, color.r, color.b, 1);
-	// COLOR = color;
+// Input:5
+	vec2 n_out5p0 = SCREEN_UV;
+
+
+// MultiplyAdd:6
+	vec2 n_in6p1 = vec2(0.00000, -0.20000);
+	vec2 n_out6p0 = (vec2(n_out8p1) * n_in6p1) + n_out5p0;
+
+
+	vec4 n_out4p0;
+// Texture2D:4
+	n_out4p0 = texture(screen_tex_frg_4, n_out6p0);
+
+
+// Output:0
+	COLOR.rgb = vec3(n_out4p0.xyz);
+	
+	if (debug) {
+		COLOR.rbg /= COLOR.a;
+		// COLOR.rgb /= (1.0-COLOR.a);
+	}
+
+
 }
-
-//void light() {
-//	// Called for every pixel for every light affecting the CanvasItem.
-//	// Uncomment to replace the default light processing function with this one.
-//}
