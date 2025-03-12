@@ -1,0 +1,84 @@
+[gd_scene load_steps=9 format=3 uid="uid://b8sok264erfoc"]
+
+[ext_resource type="Script" uid="uid://bjl6cydoln71k" path="res://scenes/music_puzzle/musical_rock.gd" id="1_kw7av"]
+[ext_resource type="Texture2D" uid="uid://ctwx8gghts62p" path="res://assets/tiny-swords/Deco/06.png" id="2_jhunn"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/interact_area.gd" id="3_55nmp"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kw7av"]
+height = 42.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kw7av"]
+size = Vector2(45, 45)
+
+[sub_resource type="Animation" id="Animation_jhunn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_kw7av"]
+resource_name = "wobble"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.4),
+"transitions": PackedFloat32Array(0.5, -2, -2, 0.5),
+"update": 0,
+"values": [0.0, 0.139626, -0.139626, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_55nmp"]
+_data = {
+&"RESET": SubResource("Animation_jhunn"),
+&"wobble": SubResource("Animation_kw7av")
+}
+
+[node name="MusicalRock" type="StaticBody2D"]
+script = ExtResource("1_kw7av")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture = ExtResource("2_jhunn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3, 7)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_kw7av")
+
+[node name="InteractArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_55nmp")
+action = "Kick"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(3, -11)
+shape = SubResource("RectangleShape2D_kw7av")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_55nmp")
+}
+
+[connection signal="interaction_started" from="InteractArea" to="." method="_on_interaction_started"]

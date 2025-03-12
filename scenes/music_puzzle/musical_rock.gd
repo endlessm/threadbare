@@ -1,0 +1,43 @@
+class_name MusicalRock
+extends StaticBody2D
+
+signal note_played
+
+const NOTES = "ABCDEFG"
+
+## Note
+@export_enum("A", "B", "C", "D", "E", "F", "G") var note: String = "C":
+	set(_new_value):
+		note = _new_value
+		_modulate_rock()
+
+@export var audio_stream: AudioStream
+
+@onready var sprite_2d: Sprite2D = %Sprite2D
+@onready var interact_area: InteractArea = %InteractArea
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = %AudioStreamPlayer2D
+@onready var animation_player: AnimationPlayer = %AnimationPlayer
+
+
+func _ready() -> void:
+	_modulate_rock()
+	audio_stream_player_2d.stream = audio_stream
+
+
+func _modulate_rock():
+	if sprite_2d:
+		var i: int = NOTES.find(note)
+		sprite_2d.modulate = Color.from_hsv(i * 100.0 / NOTES.length(), 0.67, 0.89)
+
+
+func _on_interaction_started() -> void:
+	await play()
+	interact_area.interaction_ended.emit()
+
+
+func play() -> void:
+	note_played.emit()
+	animation_player.play(&"wobble")
+	audio_stream_player_2d.play()
+	await audio_stream_player_2d.finished
+	animation_player.play(&"RESET")

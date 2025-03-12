@@ -1,9 +1,19 @@
-[gd_scene load_steps=5 format=4 uid="uid://7hoy2p14t6kc"]
+[gd_scene load_steps=15 format=4 uid="uid://7hoy2p14t6kc"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/player/player.tscn" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/npcs/talker/talker.tscn" id="4_jyhfs"]
+[ext_resource type="Resource" uid="uid://dx0uf6n0o7hv2" path="res://scenes/music_puzzle/musician.dialogue" id="5_85g3d"]
+[ext_resource type="Script" uid="uid://cfdpmffk2m4dd" path="res://scenes/music_puzzle/bard.gd" id="5_choun"]
 [ext_resource type="SpriteFrames" uid="uid://clx8sssi4tw8q" path="res://scenes/npcs/sprite_frames/sprite_frame_02.tres" id="5_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://dv30a1p74xgs1" path="res://scenes/music_puzzle/musical_rock_xylophone.tscn" id="5_tefeu"]
+[ext_resource type="PackedScene" uid="uid://0ho4pvu8mn22" path="res://scenes/music_puzzle/bonfire.tscn" id="6_o6xl0"]
+[ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/music_puzzle/music_puzzle.gd" id="8_tipki"]
+[ext_resource type="Texture2D" uid="uid://b6pfo5hc7quec" path="res://scenes/music_puzzle/clues/1.png" id="10_trceg"]
+[ext_resource type="Texture2D" uid="uid://3ieahlwwqb0t" path="res://scenes/music_puzzle/clues/2.png" id="11_a8y0u"]
+[ext_resource type="Texture2D" uid="uid://dgqq26xsu3hrf" path="res://scenes/music_puzzle/clues/3.png" id="12_jkv2x"]
+[ext_resource type="Texture2D" uid="uid://dybrvl42chyoi" path="res://scenes/music_puzzle/clues/4.png" id="13_jbj1t"]
+[ext_resource type="PackedScene" uid="uid://ckbqsrxnccwd0" path="res://scenes/music_puzzle/sheep.tscn" id="14_a8y0u"]
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
@@ -61,4 +71,55 @@ position = Vector2(459, 830)
 look_at_side = 1
 sprite_frames = ExtResource("5_tbgi4")
 
+[node name="Bard" parent="OnTheGround" node_paths=PackedStringArray("xylophone") instance=ExtResource("4_jyhfs")]
+position = Vector2(1344, 536)
+script = ExtResource("5_choun")
+xylophone = NodePath("../MusicPuzzle/MusicalRockXylophone")
+dialogue = ExtResource("5_85g3d")
+look_at_side = 1
+sprite_frames = ExtResource("5_tbgi4")
+
+[node name="MusicPuzzle" type="Node2D" parent="OnTheGround" node_paths=PackedStringArray("xylophone", "fires")]
+y_sort_enabled = true
+position = Vector2(1216, 284)
+script = ExtResource("8_tipki")
+xylophone = NodePath("MusicalRockXylophone")
+melodies = Array[String](["CDEG", "DEFA", "AFED", "GEDC"])
+fires = [NodePath("Fire"), NodePath("Fire2"), NodePath("Fire3"), NodePath("Fire4")]
+
+[node name="MusicalRockXylophone" parent="OnTheGround/MusicPuzzle" instance=ExtResource("5_tefeu")]
+position = Vector2(-136, 156)
+
+[node name="Fire" parent="OnTheGround/MusicPuzzle" instance=ExtResource("6_o6xl0")]
+
+[node name="Clue1" type="Sprite2D" parent="OnTheGround/MusicPuzzle"]
+position = Vector2(0, -76)
+texture = ExtResource("10_trceg")
+
+[node name="Fire2" parent="OnTheGround/MusicPuzzle" instance=ExtResource("6_o6xl0")]
+position = Vector2(96, 0)
+
+[node name="Clue2" type="Sprite2D" parent="OnTheGround/MusicPuzzle"]
+position = Vector2(96, -84)
+texture = ExtResource("11_a8y0u")
+
+[node name="Fire3" parent="OnTheGround/MusicPuzzle" instance=ExtResource("6_o6xl0")]
+position = Vector2(192, 0)
+
+[node name="Clue3" type="Sprite2D" parent="OnTheGround/MusicPuzzle"]
+position = Vector2(192, -76)
+texture = ExtResource("12_jkv2x")
+
+[node name="Fire4" parent="OnTheGround/MusicPuzzle" instance=ExtResource("6_o6xl0")]
+position = Vector2(288, 0)
+
+[node name="Clue4" type="Sprite2D" parent="OnTheGround/MusicPuzzle"]
+position = Vector2(288, -84)
+texture = ExtResource("13_jbj1t")
+
+[node name="Sheep" parent="OnTheGround/MusicPuzzle" instance=ExtResource("14_a8y0u")]
+position = Vector2(304, 228)
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[connection signal="solved" from="OnTheGround/MusicPuzzle" to="OnTheGround/MusicPuzzle/Sheep" method="_on_music_puzzle_solved"]
