@@ -3,7 +3,7 @@ extends Node2D
 
 @onready var interact_ray: RayCast2D = %InteractRay
 @onready var interact_marker: Marker2D = $InteractMarker
-@onready var interact_label: Control = %InteractLabel
+@onready var interact_label: InteractLabel = %InteractLabel
 
 var is_interacting: bool:
 	get = _get_is_interacting
@@ -34,6 +34,7 @@ func _process(_delta: float) -> void:
 		interact_label.visible = false
 	else:
 		interact_label.visible = true
+		interact_label.label_text = interact_area.action
 
 
 func _on_interaction_ended() -> void:
