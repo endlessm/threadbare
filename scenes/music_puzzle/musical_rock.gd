@@ -6,13 +6,17 @@ extends StaticBody2D
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = %AudioStreamPlayer2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 
-## Note in a major scale. 1 = root note, 8 = octave above.
-@export_range(1, 8) var note: int = 1:
+const NOTES = "ABCDEFG"
+
+## Note
+@export_enum("A", "B", "C", "D", "E", "F", "G") var note: String = "C":
 	set(_new_value):
 		note = _new_value
 		_modulate_rock()
 
 @export var audio_stream: AudioStream
+
+signal note_played
 
 func _ready() -> void:
 	_modulate_rock()
@@ -21,10 +25,12 @@ func _ready() -> void:
 
 func _modulate_rock():
 	if sprite_2d:
-		sprite_2d.modulate = Color.from_hsv((note - 1) * 100.0 / 7, 0.67, 0.89)
+		var i: int = NOTES.find(note)
+		sprite_2d.modulate = Color.from_hsv(i * 100.0 / NOTES.length(), 0.67, 0.89)
 
 
 func _on_interaction_started() -> void:
+	note_played.emit()
 	animation_player.play(&"wobble")
 	audio_stream_player_2d.play()
 	await audio_stream_player_2d.finished

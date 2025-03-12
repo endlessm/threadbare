@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgq51025p4hac"]
+
+[sub_resource type="GDScript" id="GDScript_llvte"]
+script/source = "class_name TuneMatcher
+extends Node
+
+@export var tune: Array[int] = []
+var _next := 0
+
+enum Result {
+	FAILED = 1,
+	MATCHING = 2,
+	COMPLETE = 3,
+}
+
+
+func push(note: int) -> Result:
+	if _next >= tune.size() or tune[_next] != note:
+		reset()
+		return Result.FAILED
+
+	_next += 1
+	if _next == tune.size():
+		return Result.COMPLETE
+	else:
+		return Result.MATCHING
+
+
+func reset() -> void:
+	_next = 0
+"
+
+[node name="TuneMatcher" type="Node"]
+script = SubResource("GDScript_llvte")
