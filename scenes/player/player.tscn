@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=74 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Texture2D" uid="uid://dm0dwcbjsb743" path="res://assets/tiny-swords/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/player/player.gd" id="1_g2els"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://hlt7gb7tne3c" path="res://scenes/player/hurt_animation.gd" id="8_qek5x"]
 [ext_resource type="Script" uid="uid://cngaxjayxjth1" path="res://scenes/player/fight_animation.gd" id="9_5gtgg"]
 [ext_resource type="Script" uid="uid://daf4r7ghibkvi" path="res://scenes/player/spawn_buttons.gd" id="10_h17s1"]
+[ext_resource type="Script" uid="uid://bu8qerf30equ7" path="res://scenes/player/fight_camera.gd" id="11_je7p5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ujl30"]
 atlas = ExtResource("1_3vyb7")
@@ -671,6 +672,20 @@ tracks/2/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SpawnButtons")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"spawn"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_je7p5"]
 resource_name = "push left"
@@ -711,6 +726,20 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SpawnButtons")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"spawn"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_5gtgg"]
@@ -753,6 +782,20 @@ tracks/2/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SpawnButtons")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"spawn"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_gx1jg"]
 resource_name = "push up"
@@ -793,6 +836,20 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SpawnButtons")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"spawn"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_h17s1"]
@@ -887,11 +944,21 @@ unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_h17s1")
 }
+speed_scale = 2.0
 script = ExtResource("9_5gtgg")
 
-[node name="SpawnButtons" type="Timer" parent="PlayerFighting"]
-wait_time = 0.4
-autostart = true
+[node name="SpawnButtons" type="Node2D" parent="PlayerFighting"]
 script = ExtResource("10_h17s1")
 
-[connection signal="timeout" from="PlayerFighting/SpawnButtons" to="PlayerFighting/SpawnButtons" method="_on_timeout"]
+[node name="FightCamera" type="Node2D" parent="PlayerFighting"]
+script = ExtResource("11_je7p5")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+unique_name_in_owner = true
+zoom = Vector2(2, 2)
+limit_left = 0
+limit_top = 0
+limit_right = 2048
+limit_bottom = 2048
+position_smoothing_enabled = true
+editor_draw_limits = true

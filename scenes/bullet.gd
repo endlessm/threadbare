@@ -4,6 +4,8 @@ extends RigidBody2D
 
 func _ready() -> void:
 	apply_impulse(initial_impulse)
+	await get_tree().create_timer(2.0).timeout
+	queue_free()
 
 func _on_body_entered(body: Node2D) -> void:
 	var hit_vector = global_position - body.global_position
