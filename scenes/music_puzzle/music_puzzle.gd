@@ -8,6 +8,8 @@ extends Node2D
 ## A fire corresponding to each melody, ignited when the correct melody is played (in order).
 @export var fires: Array[Bonfire]
 
+signal solved
+
 var _current_melody := 0
 var _position := 0
 
@@ -54,5 +56,6 @@ func _on_note_played(note: String) -> void:
 
 	if _current_melody == melodies.size():
 		_debug("All melodies played")
+		solved.emit()
 	else:
 		_debug("Next melody: %s", [melodies[_current_melody]])
