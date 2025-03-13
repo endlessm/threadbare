@@ -1,3 +1,4 @@
+class_name InteractLabel
 extends PanelContainer
 
 @export var label_text: String:
