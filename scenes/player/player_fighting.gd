@@ -4,7 +4,6 @@ extends Node2D
 const FX = preload("res://scenes/fx.tscn")
 
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
-@onready var player_shield: AnimatableBody2D = %PlayerShield
 @onready var hit_box: Area2D = %HitBox
 @onready var fight_animation: AnimationPlayer = %FightAnimation
 

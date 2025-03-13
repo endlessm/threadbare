@@ -1,9 +1,9 @@
 extends RigidBody2D
 
-func _ready() -> void:
-	var impulse = Vector2(0, -100).rotated(randf_range(-PI/16, PI/16))
-	apply_impulse(impulse)
+@export var initial_impulse: Vector2
 
+func _ready() -> void:
+	apply_impulse(initial_impulse)
 
 func _on_body_entered(body: Node2D) -> void:
 	var hit_vector = global_position - body.global_position
