@@ -9,8 +9,8 @@ extends CharacterBody2D
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: PlayerFighting = %PlayerFighting
-var last_nonzero_axis: Vector2
-var axis: Vector2
+var last_nonzero_axis: Vector2 = Vector2.RIGHT
+var axis: Vector2 = Vector2.RIGHT
 
 func _process(delta: float) -> void:
 	if player_interaction.is_interacting:
