@@ -1,6 +1,8 @@
 class_name MusicalRockXylophone
 extends Node2D
 
+var _notes: Dictionary[String, MusicalRock]
+
 signal note_played(note: String)
 
 func _ready() -> void:
@@ -9,4 +11,8 @@ func _ready() -> void:
 		if not rock:
 			continue
 
+		_notes[rock.note] = rock
 		rock.note_played.connect(func (): note_played.emit(rock.note))
+
+func play_note(note: String) -> void:
+	await _notes[note].play()

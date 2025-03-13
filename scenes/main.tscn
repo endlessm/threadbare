@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=4 uid="uid://7hoy2p14t6kc"]
+[gd_scene load_steps=10 format=4 uid="uid://7hoy2p14t6kc"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/player/player.tscn" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/npcs/talker/talker.tscn" id="4_jyhfs"]
 [ext_resource type="Resource" uid="uid://dx0uf6n0o7hv2" path="res://scenes/music_puzzle/musician.dialogue" id="5_85g3d"]
+[ext_resource type="Script" uid="uid://cfdpmffk2m4dd" path="res://scenes/music_puzzle/bard.gd" id="5_choun"]
 [ext_resource type="SpriteFrames" uid="uid://clx8sssi4tw8q" path="res://scenes/npcs/sprite_frames/sprite_frame_02.tres" id="5_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dv30a1p74xgs1" path="res://scenes/music_puzzle/musical_rock_xylophone.tscn" id="5_tefeu"]
 [ext_resource type="PackedScene" uid="uid://0ho4pvu8mn22" path="res://scenes/music_puzzle/bonfire.tscn" id="6_o6xl0"]
@@ -65,31 +66,33 @@ position = Vector2(459, 830)
 look_at_side = 1
 sprite_frames = ExtResource("5_tbgi4")
 
-[node name="Bard" parent="OnTheGround" instance=ExtResource("4_jyhfs")]
-position = Vector2(1360, 652)
+[node name="Bard" parent="OnTheGround" node_paths=PackedStringArray("xylophone") instance=ExtResource("4_jyhfs")]
+position = Vector2(1352, 616)
+script = ExtResource("5_choun")
+xylophone = NodePath("../MusicPuzzle/MusicalRockXylophone")
 dialogue = ExtResource("5_85g3d")
 look_at_side = 1
 sprite_frames = ExtResource("5_tbgi4")
 
-[node name="MusicalRockXylophone" parent="OnTheGround" instance=ExtResource("5_tefeu")]
-position = Vector2(1136, 448)
-
-[node name="MusicPuzzle" type="Node" parent="OnTheGround" node_paths=PackedStringArray("xylophone", "fires")]
+[node name="MusicPuzzle" type="Node2D" parent="OnTheGround" node_paths=PackedStringArray("xylophone", "fires")]
+position = Vector2(1216, 336)
 script = ExtResource("8_tipki")
-xylophone = NodePath("../MusicalRockXylophone")
+xylophone = NodePath("MusicalRockXylophone")
 melodies = Array[String](["CDEG", "DEFA", "AFED", "GEDC"])
 fires = [NodePath("Fire"), NodePath("Fire2"), NodePath("Fire3"), NodePath("Fire4")]
 
+[node name="MusicalRockXylophone" parent="OnTheGround/MusicPuzzle" instance=ExtResource("5_tefeu")]
+position = Vector2(-9, 152)
+
 [node name="Fire" parent="OnTheGround/MusicPuzzle" instance=ExtResource("6_o6xl0")]
-position = Vector2(1253, 781)
 
 [node name="Fire2" parent="OnTheGround/MusicPuzzle" instance=ExtResource("6_o6xl0")]
-position = Vector2(1344, 781)
+position = Vector2(96, 0)
 
 [node name="Fire3" parent="OnTheGround/MusicPuzzle" instance=ExtResource("6_o6xl0")]
-position = Vector2(1445, 781)
+position = Vector2(192, 0)
 
 [node name="Fire4" parent="OnTheGround/MusicPuzzle" instance=ExtResource("6_o6xl0")]
-position = Vector2(1538, 781)
+position = Vector2(288, 0)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]

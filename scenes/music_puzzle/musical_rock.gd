@@ -30,9 +30,13 @@ func _modulate_rock():
 
 
 func _on_interaction_started() -> void:
+	await play()
+	interact_area.interaction_ended.emit.call_deferred()
+
+
+func play() -> void:
 	note_played.emit()
 	animation_player.play(&"wobble")
 	audio_stream_player_2d.play()
 	await audio_stream_player_2d.finished
 	animation_player.play(&"RESET")
-	interact_area.interaction_ended.emit.call_deferred()
