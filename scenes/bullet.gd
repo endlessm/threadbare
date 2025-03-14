@@ -2,11 +2,14 @@ extends RigidBody2D
 
 @export var initial_impulse: Vector2
 @onready var sprite_2d: Sprite2D = %Sprite2D
+@onready var animation_player: AnimationPlayer = %AnimationPlayer
 
 func _ready() -> void:
 	sprite_2d.frame = randi() % 4
 	apply_impulse(initial_impulse)
 	await get_tree().create_timer(2.0).timeout
+	animation_player.play(&"fadeout")
+	await animation_player.animation_finished
 	queue_free()
 
 func _on_body_entered(body: Node2D) -> void:
