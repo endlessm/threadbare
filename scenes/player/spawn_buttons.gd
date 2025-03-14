@@ -24,6 +24,6 @@ func spawn() -> void:
 		spawn_direction = player.last_nonzero_axis
 	spawn_direction = spawn_direction.lerp(player.last_nonzero_axis, 0.5)
 	var player_bullet = PLAYER_BULLET.instantiate()
-	player_bullet.global_position = owner.global_position
+	player_bullet.global_position = global_position
 	player_bullet.initial_impulse = spawn_direction * 1000
 	owner.get_parent().add_child(player_bullet)
