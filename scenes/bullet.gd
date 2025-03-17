@@ -1,16 +1,14 @@
 extends RigidBody2D
 
-@onready var sprite_2d: Sprite2D = %Sprite2D
+@onready var visible_things: Node2D = %VisibleThings
+
 
 func _ready() -> void:
-	var impulse = Vector2(0, -100).rotated(randf_range(-PI/16, PI/16))
-	sprite_2d.rotate(impulse.angle())
-
+	var impulse = Vector2(0, -60).rotated(randf_range(-PI/16, PI/16))
 	apply_impulse(impulse)
 
 func _process(delta: float) -> void:
-	sprite_2d.rotation = linear_velocity.angle()
-	# sprite_2d.rotate()
+	visible_things.rotation = linear_velocity.angle()
 	
 
 func _on_body_entered(body: Node2D) -> void:
