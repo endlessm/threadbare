@@ -8,13 +8,16 @@ extends Node2D
 var is_interacting: bool:
 	get = _get_is_interacting
 
+
 func _get_is_interacting() -> bool:
 	return not interact_ray.enabled
+
 
 func _ready() -> void:
 	var current_scene: Node = Engine.get_main_loop().current_scene
 	var screen_overlay: CanvasLayer = current_scene.get_node("ScreenOverlay")
 	interact_label.reparent(screen_overlay)
+
 
 func _process(_delta: float) -> void:
 	if is_interacting:
@@ -22,7 +25,9 @@ func _process(_delta: float) -> void:
 	var interact_area: InteractArea = interact_ray.interact_area
 
 	var label_offset: Vector2 = Vector2(interact_label.size.x / 2, interact_label.size.y)
-	interact_label.position = interact_marker.get_global_transform_with_canvas().origin - label_offset
+	interact_label.position = (
+		interact_marker.get_global_transform_with_canvas().origin - label_offset
+	)
 
 	if not interact_area:
 		interact_label.visible = false

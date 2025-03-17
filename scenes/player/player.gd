@@ -7,12 +7,13 @@ extends CharacterBody2D
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 
+
 func _process(delta: float) -> void:
 	if player_interaction.is_interacting:
 		velocity = Vector2.ZERO
 		return
 
-	var axis:Vector2 = Vector2(
+	var axis: Vector2 = Vector2(
 		Input.get_axis(&"ui_left", &"ui_right"),
 		Input.get_axis(&"ui_up", &"ui_down"),
 	)

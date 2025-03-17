@@ -7,7 +7,9 @@ enum LOOK_AT_SIDE {
 	RIGHT = 1,
 }
 
-const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("res://scenes/npcs/sprite_frames/sprite_frame_01.tres")
+const DEFAULT_SPRITE_FRAME: SpriteFrames = preload(
+	"res://scenes/npcs/sprite_frames/sprite_frame_01.tres"
+)
 
 @export var look_at_side: LOOK_AT_SIDE = LOOK_AT_SIDE.LEFT:
 	set = _set_look_at_side
@@ -17,11 +19,13 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("res://scenes/npcs/sprite_fra
 
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 
+
 func _set_look_at_side(new_look_at_side: LOOK_AT_SIDE) -> void:
 	look_at_side = new_look_at_side
 	if not is_node_ready():
 		return
 	animated_sprite_2d.flip_h = look_at_side == LOOK_AT_SIDE.LEFT
+
 
 func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 	sprite_frames = new_sprite_frames
@@ -32,6 +36,7 @@ func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 	animated_sprite_2d.sprite_frames = new_sprite_frames
 	if not Engine.is_editor_hint():
 		animated_sprite_2d.play(animated_sprite_2d.autoplay)
+
 
 func _ready() -> void:
 	_set_look_at_side(look_at_side)

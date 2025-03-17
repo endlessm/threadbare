@@ -10,5 +10,6 @@ signal interaction_ended
 func start_interaction() -> void:
 	interaction_started.emit()
 
+
 func end_interaction() -> void:
 	interaction_ended.emit()

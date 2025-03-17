@@ -6,11 +6,13 @@ var _target_position_right: Vector2
 var _target_position_left: Vector2
 var interact_area: InteractArea
 
+
 func _ready() -> void:
 	_target_position_right = target_position
 	_target_position_left = target_position.reflect(Vector2.UP)
 	if not character and owner is CharacterBody2D:
 		character = owner
+
 
 func _process(_delta: float) -> void:
 	if not character:
