@@ -2,9 +2,9 @@ extends RayCast2D
 
 @export var character: CharacterBody2D
 
+var interact_area: InteractArea
 var _target_position_right: Vector2
 var _target_position_left: Vector2
-var interact_area: InteractArea
 
 
 func _ready() -> void:
