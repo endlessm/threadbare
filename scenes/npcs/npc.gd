@@ -2,7 +2,7 @@
 class_name NPC
 extends CharacterBody2D
 
-enum LOOK_AT_SIDE {
+enum LookAtSide {
 	LEFT = -1,
 	RIGHT = 1,
 }
@@ -11,7 +11,7 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload(
 	"res://scenes/npcs/sprite_frames/sprite_frame_01.tres"
 )
 
-@export var look_at_side: LOOK_AT_SIDE = LOOK_AT_SIDE.LEFT:
+@export var look_at_side: LookAtSide = LookAtSide.LEFT:
 	set = _set_look_at_side
 
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
@@ -20,11 +20,11 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload(
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 
 
-func _set_look_at_side(new_look_at_side: LOOK_AT_SIDE) -> void:
+func _set_look_at_side(new_look_at_side: LookAtSide) -> void:
 	look_at_side = new_look_at_side
 	if not is_node_ready():
 		return
-	animated_sprite_2d.flip_h = look_at_side == LOOK_AT_SIDE.LEFT
+	animated_sprite_2d.flip_h = look_at_side == LookAtSide.LEFT
 
 
 func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
