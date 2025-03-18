@@ -1,9 +1,9 @@
 extends CharacterBody2D
 
-@export_range(10, 100000, 10) var WALK_SPEED: float = 300.0
-@export_range(10, 100000, 10) var RUN_SPEED: float = 500.0
-@export_range(10, 100000, 10) var STOPPING_STEP: float = 1500.0
-@export_range(10, 100000, 10) var MOVING_STEP: float = 4000.0
+@export_range(10, 100000, 10) var walk_speed: float = 300.0
+@export_range(10, 100000, 10) var run_speed: float = 500.0
+@export_range(10, 100000, 10) var stopping_step: float = 1500.0
+@export_range(10, 100000, 10) var moving_step: float = 4000.0
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 
@@ -20,15 +20,15 @@ func _process(delta: float) -> void:
 
 	var speed: float
 	if Input.is_action_pressed(&"running"):
-		speed = RUN_SPEED
+		speed = run_speed
 	else:
-		speed = WALK_SPEED
+		speed = walk_speed
 
 	var step: float
 	if axis.is_zero_approx():
-		step = STOPPING_STEP
+		step = stopping_step
 	else:
-		step = MOVING_STEP
+		step = moving_step
 
 	velocity = velocity.move_toward(axis * speed, step * delta)
 
