@@ -19,7 +19,8 @@ var _position := 0
 
 
 func _ready() -> void:
-	xylophone.note_played.connect(_on_note_played)
+	if not Engine.is_editor_hint():
+		xylophone.note_played.connect(_on_note_played)
 
 
 func _debug(fmt: String, args: Array = []) -> void:
