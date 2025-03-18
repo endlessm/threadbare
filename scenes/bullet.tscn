@@ -8,24 +8,6 @@
 friction = 0.0
 bounce = 1000.0
 
-[sub_resource type="Animation" id="Animation_y25gk"]
-resource_name = "ink"
-length = 0.3
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("VisibleThings/Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 4, 4]
-}
-
 [sub_resource type="Animation" id="Animation_l5glv"]
 length = 0.001
 tracks/0/type = "value"
@@ -39,6 +21,24 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_y25gk"]
+resource_name = "ink"
+length = 0.5
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VisibleThings/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_eoqba"]
@@ -59,7 +59,9 @@ particles_anim_loop = false
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y25gk"]
 particle_flag_disable_z = true
 emission_shape = 1
-emission_sphere_radius = 20.0
+emission_sphere_radius = 15.0
+angle_min = 1.07288e-05
+angle_max = 360.0
 gravity = Vector3(0, 98, 0)
 anim_speed_min = 1.0
 anim_speed_max = 1.0
@@ -86,18 +88,20 @@ shape = SubResource("RectangleShape2D_o6xl0")
 
 [node name="VisibleThings" type="Node2D" parent="."]
 unique_name_in_owner = true
+position = Vector2(-3, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="VisibleThings"]
 unique_name_in_owner = true
+modulate = Color(1, 1, 0, 1)
 position = Vector2(-32, 0)
 texture = ExtResource("2_y25gk")
-vframes = 4
+vframes = 6
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="VisibleThings"]
+modulate = Color(1, 1, 0, 1)
 material = SubResource("CanvasItemMaterial_eoqba")
-position = Vector2(-71, 1)
+position = Vector2(-40, 2)
 scale = Vector2(2, 2)
-amount = 4
 texture = ExtResource("3_l5glv")
 process_material = SubResource("ParticleProcessMaterial_y25gk")
 
