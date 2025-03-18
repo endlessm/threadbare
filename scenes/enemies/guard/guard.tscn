@@ -1,0 +1,185 @@
+[gd_scene load_steps=22 format=3 uid="uid://d37mebu7atru7"]
+
+[ext_resource type="Script" uid="uid://dmf866kgfnp3c" path="res://scenes/enemies/guard/guard.gd" id="1_g173s"]
+[ext_resource type="Texture2D" uid="uid://3ee7plbgf8tg" path="res://assets/tiny-swords/Factions/Goblins/Troops/Torch/Blue/Torch_Blue.png" id="2_pnkgp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g173s"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(384, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pnkgp"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(576, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iqgov"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(768, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vnsq3"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m6h06"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x2hsm"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_frfu0"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d2jm8"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_46hcm"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jgsr2"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(1152, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elbu8"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(0, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0hcfu"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(192, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0hsr3"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(384, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bibtp"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(576, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ut4jx"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(768, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5251y"]
+atlas = ExtResource("2_pnkgp")
+region = Rect2(960, 192, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_spmxi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g173s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pnkgp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iqgov")
+}],
+"loop": true,
+"name": &"alerted",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vnsq3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m6h06")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x2hsm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_frfu0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d2jm8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_46hcm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jgsr2")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elbu8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0hcfu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0hsr3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bibtp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ut4jx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5251y")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g173s"]
+height = 42.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_g173s"]
+font_size = 30
+font_color = Color(0.9, 1, 0, 1)
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Guard" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 16
+motion_mode = 1
+script = ExtResource("1_g173s")
+start_looking_at_side = 1
+
+[node name="DetectionShape" type="Area2D" parent="."]
+position = Vector2(0, -19)
+collision_layer = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionShape"]
+polygon = PackedVector2Array(1, -5, 106, -61, 148, -48, 148, 24, 100, 40)
+
+[node name="DetectionShapeHint" type="Polygon2D" parent="DetectionShape"]
+color = Color(1, 0.47, 0.47, 0.54902)
+polygon = PackedVector2Array(1, -5, 106, -61, 148, -48, 148, 24, 100, 40)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_spmxi")
+animation = &"idle"
+autoplay = "walk"
+frame_progress = 0.983003
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_g173s")
+
+[node name="ExclamationMark" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+offset_left = -21.0
+offset_top = -95.0
+offset_right = 19.0
+offset_bottom = -53.0
+pivot_offset = Vector2(18, 22)
+text = "!"
+label_settings = SubResource("LabelSettings_g173s")
+horizontal_alignment = 1
+vertical_alignment = 1
