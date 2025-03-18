@@ -12,6 +12,9 @@ extends CharacterBody2D
 var last_nonzero_axis: Vector2
 var axis: Vector2
 
+func _ready() -> void:
+	Globals.player = self
+
 func _process(delta: float) -> void:
 	if player_interaction.is_interacting:
 		velocity = Vector2.ZERO

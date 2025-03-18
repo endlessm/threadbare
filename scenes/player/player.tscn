@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=73 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Texture2D" uid="uid://dm0dwcbjsb743" path="res://assets/tiny-swords/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/player/player.gd" id="1_g2els"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://vsvher2556ig" path="res://scenes/interact_label.tscn" id="6_75vfm"]
 [ext_resource type="Script" uid="uid://hlt7gb7tne3c" path="res://scenes/player/hurt_animation.gd" id="8_qek5x"]
 [ext_resource type="Script" uid="uid://cngaxjayxjth1" path="res://scenes/player/fight_animation.gd" id="9_5gtgg"]
+[ext_resource type="PackedScene" uid="uid://deqi3gd0anesg" path="res://scenes/health_bar.tscn" id="10_h17s1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ujl30"]
 atlas = ExtResource("1_3vyb7")
@@ -582,7 +583,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(0.5, 0.5),
 "update": 0,
-"values": [Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+"values": [Color(1, 1, 1, 0.112), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qek5x"]
@@ -1187,3 +1188,20 @@ libraries = {
 &"": SubResource("AnimationLibrary_h17s1")
 }
 script = ExtResource("9_5gtgg")
+
+[node name="HealthBar" parent="PlayerFighting" instance=ExtResource("10_h17s1")]
+unique_name_in_owner = true
+offset_left = -36.0
+offset_top = -114.0
+offset_right = 40.0
+offset_bottom = -110.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+unique_name_in_owner = true
+zoom = Vector2(2, 2)
+limit_left = 0
+limit_top = 0
+limit_right = 2048
+limit_bottom = 2048
+position_smoothing_enabled = true
+editor_draw_limits = true
