@@ -29,8 +29,12 @@ func got_hit(bullet_global_position: Vector2, hit_vector: Vector2, bullet_ink_co
 
 func fill():
 	animation_player.play(&"fill")
-	ink_amount += 0.25
+	ink_amount += 0.334
+	animated_sprite_2d.frame += 1
 	if ink_amount >= 1.:
+		var enemies: Array = get_tree().get_nodes_in_group(&"enemies")
+		var enemy = enemies.pick_random() as Enemy
+		enemy.die(ink_color_name)
 		queue_free()
 
 		

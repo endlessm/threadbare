@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 const BOOM = preload("res://scenes/boom.tscn")
 const BULLET = preload("res://scenes/bullet.tscn")
+@export var odd_shoot: bool = false
 @onready var timer: Timer = %Timer
 @onready var bullet_marker: Marker2D = %BulletMarker
 @onready var hit_box: Area2D = %HitBox
@@ -15,6 +16,9 @@ var health = 1.
 func _ready() -> void:
 	timer.timeout.connect(_on_timeout)
 	hit_box.body_entered.connect(_on_got_hit)
+	if odd_shoot:
+		await get_tree().create_timer(1.).timeout
+	timer.start()	
 
 func _on_timeout() -> void:
 	if not Globals.player or Globals.player.is_queued_for_deletion():
@@ -22,6 +26,8 @@ func _on_timeout() -> void:
 	animated_sprite_2d.play(&"attack anticipation")
 	await animated_sprite_2d.animation_looped
 	animated_sprite_2d.play(&"attack")
+	if not Globals.player or Globals.player.is_queued_for_deletion():
+		return
 	var player = Globals.player as Player
 	var bullet = BULLET.instantiate()
 	bullet.direction = player.global_position - bullet_marker.global_position
@@ -34,12 +40,17 @@ func _on_timeout() -> void:
 func _on_got_hit(body: Node2D) -> void:
 	body.queue_free()
 	animation_player.play(&"got hit")
-	health -= 0.5
+	health -= 0.05
 	health_bar.value = clamp(health, 0., 1.)
 	if health <= 0.:
-		var boom = BOOM.instantiate()
+		var ink_color_name: int = 0
 		if body is Bullet:
-			boom.ink_color_name = body.ink_color_name
-		Engine.get_main_loop().current_scene.add_child(boom)
-		boom.global_position = body.global_position
-		queue_free()
+			ink_color_name = body.ink_color_name
+		die(ink_color_name)
+
+func die(ink_color_name: int = 0) -> void:
+	var boom = BOOM.instantiate()
+	boom.ink_color_name = ink_color_name
+	Engine.get_main_loop().current_scene.add_child(boom)
+	boom.global_position = global_position
+	queue_free()
