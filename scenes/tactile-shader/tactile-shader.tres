@@ -1,0 +1,137 @@
+[gd_resource type="VisualShader" load_steps=11 format=3 uid="uid://cryts5o82p5bm"]
+
+[ext_resource type="Script" uid="uid://bl553pap4ghmi" path="res://scenes/tactile-shader/generateCircle.gd" id="1_8fkpg"]
+
+[sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_8fkpg"]
+op_type = 0
+
+[sub_resource type="VisualShaderNodeBooleanParameter" id="VisualShaderNodeBooleanParameter_8fkpg"]
+parameter_name = "enabled"
+default_value_enabled = true
+default_value = true
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_8fkpg"]
+default_input_values = [0, false, 1, Vector2(1, 1), 2, Vector2(0, 0)]
+op_type = 3
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_4axyu"]
+output_port_for_preview = 0
+source = 1
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_twt2y"]
+input_name = "screen_uv"
+
+[sub_resource type="VisualShaderNodeMultiplyAdd" id="VisualShaderNodeMultiplyAdd_egs8l"]
+output_port_for_preview = 0
+default_input_values = [0, Vector2(0, 0), 1, Vector2(0, -0.2), 2, Vector2(0, 0)]
+op_type = 1
+
+[sub_resource type="VisualShaderNodeCustom" id="VisualShaderNodeCustom_1byq5"]
+output_port_for_preview = 1
+default_input_values = [1, Vector3(0.5, 0.5, 0), 2, Vector3(1, 1, 0), 3, -0.5, 4, 0.5, 5, 0.2, 6, Vector3(1, 1, 1), 7, 1.0]
+initialized = true
+script = ExtResource("1_8fkpg")
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_4axyu"]
+parameter_name = "zoom"
+default_value_enabled = true
+default_value = 2.0
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_twt2y"]
+default_input_values = [0, -0.05, 1, 0.0]
+operator = 2
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform bool enabled = true;
+uniform float zoom = 2.0;
+uniform sampler2D screen_tex_frg_2 : hint_screen_texture;
+
+
+// CircleShape
+#include \"res://scenes/tactile-shader/generateCircle.gdshaderinc\"
+
+void fragment() {
+// BooleanParameter:11
+	bool n_out11p0 = enabled;
+
+
+	vec3 n_out5p0;
+	float n_out5p1;
+// CircleShape:5
+	vec3 n_in5p1 = vec3(0.50000, 0.50000, 0.00000);
+	vec3 n_in5p2 = vec3(1.00000, 1.00000, 0.00000);
+	float n_in5p3 = -0.50000;
+	float n_in5p4 = 0.50000;
+	float n_in5p5 = 0.20000;
+	vec3 n_in5p6 = vec3(1.00000, 1.00000, 1.00000);
+	float n_in5p7 = 1.00000;
+	{
+		n_out5p0 = n_in5p6;
+		n_out5p1 = _generateCircleFunc(UV.xy, n_in5p1.xy, n_in5p2.xy, n_in5p3, n_in5p4, n_in5p5).a * n_in5p7;
+	}
+
+
+// FloatParameter:8
+	float n_out8p0 = zoom;
+
+
+// FloatOp:9
+	float n_in9p0 = -0.05000;
+	float n_out9p0 = n_in9p0 * n_out8p0;
+
+
+// VectorCompose:10
+	float n_in10p0 = 0.00000;
+	vec2 n_out10p0 = vec2(n_in10p0, n_out9p0);
+
+
+// Input:3
+	vec2 n_out3p0 = SCREEN_UV;
+
+
+// MultiplyAdd:4
+	vec2 n_out4p0 = (vec2(n_out5p1) * n_out10p0) + n_out3p0;
+
+
+	vec2 n_out12p0;
+// Switch:12
+	n_out12p0 = mix(n_out3p0, n_out4p0, float(n_out11p0));
+
+
+	vec4 n_out2p0;
+// Texture2D:2
+	n_out2p0 = texture(screen_tex_frg_2, n_out12p0);
+
+
+// Output:0
+	COLOR.rgb = vec3(n_out2p0.xyz);
+
+
+}
+"
+graph_offset = Vector2(-660.553, -10.692)
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(1140, 140)
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_4axyu")
+nodes/fragment/2/position = Vector2(460, 200)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_twt2y")
+nodes/fragment/3/position = Vector2(-640, 720)
+nodes/fragment/4/node = SubResource("VisualShaderNodeMultiplyAdd_egs8l")
+nodes/fragment/4/position = Vector2(-180, 220)
+nodes/fragment/5/node = SubResource("VisualShaderNodeCustom_1byq5")
+nodes/fragment/5/position = Vector2(-1500, 100)
+nodes/fragment/8/node = SubResource("VisualShaderNodeFloatParameter_4axyu")
+nodes/fragment/8/position = Vector2(-1380, 720)
+nodes/fragment/9/node = SubResource("VisualShaderNodeFloatOp_twt2y")
+nodes/fragment/9/position = Vector2(-961.802, 392.352)
+nodes/fragment/10/node = SubResource("VisualShaderNodeVectorCompose_8fkpg")
+nodes/fragment/10/position = Vector2(-678.65, 439.733)
+nodes/fragment/11/node = SubResource("VisualShaderNodeBooleanParameter_8fkpg")
+nodes/fragment/11/position = Vector2(-240, 820)
+nodes/fragment/12/node = SubResource("VisualShaderNodeSwitch_8fkpg")
+nodes/fragment/12/position = Vector2(160, 540)
+nodes/fragment/connections = PackedInt32Array(3, 0, 4, 2, 5, 1, 4, 0, 8, 0, 9, 1, 9, 0, 10, 1, 10, 0, 4, 1, 11, 0, 12, 0, 2, 0, 0, 0, 4, 0, 12, 1, 12, 0, 2, 0, 3, 0, 12, 2)
