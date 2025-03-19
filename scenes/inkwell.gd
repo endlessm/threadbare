@@ -36,5 +36,6 @@ func fill():
 		var enemy = enemies.pick_random() as Enemy
 		enemy.die(ink_color_name)
 		queue_free()
+		interact_label.queue_free()
 
 		
