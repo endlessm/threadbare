@@ -11,7 +11,7 @@ extends Node2D
 
 const TILESET: TileSet = preload("res://scenes/tileset.tres")
 const TEXTURE_A: Texture2D = preload("res://assets/tiny-swords/Terrain/Ground/Tilemap_Flat.png")
-const TEXTURE_B: Texture2D = preload("res://assets/tileset-textures/Tilemap_Flat-03.png")
+const TEXTURE_B: Texture2D = preload("res://assets/tileset-textures/Tilemap_Flat-04.png")
 
 var lights_enabled: bool
 var deform_floor_enabled: bool
@@ -64,4 +64,4 @@ func update_lights_effect() -> void:
  
 func update_tileset_texture() -> void:
 	var tileset_source: TileSetAtlasSource = TILESET.get_source(1)
-	tileset_source.texture = TEXTURE_B if frayed_enabled else TEXTURE_A
+	tileset_source.texture.diffuse_texture = TEXTURE_B if frayed_enabled else TEXTURE_A
