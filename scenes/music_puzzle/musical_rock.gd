@@ -3,7 +3,7 @@ extends StaticBody2D
 
 signal note_played
 
-const NOTES = "ABCDEFG"
+const NOTES: String = "ABCDEFG"
 
 ## Note
 @export_enum("A", "B", "C", "D", "E", "F", "G") var note: String = "C":
@@ -24,7 +24,7 @@ func _ready() -> void:
 	audio_stream_player_2d.stream = audio_stream
 
 
-func _modulate_rock():
+func _modulate_rock() -> void:
 	if sprite_2d:
 		var i: int = NOTES.find(note)
 		sprite_2d.modulate = Color.from_hsv(i * 100.0 / NOTES.length(), 0.67, 0.89)
