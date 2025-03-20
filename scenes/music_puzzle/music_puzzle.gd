@@ -14,8 +14,8 @@ signal solved
 ## If enabled, show messages in the console describing the player's progress (or not) in the puzzle
 @export var debug: bool = false
 
-var _current_melody := 0
-var _position := 0
+var _current_melody: int = 0
+var _position: int = 0
 
 
 func _ready() -> void:
@@ -32,7 +32,7 @@ func _on_note_played(note: String) -> void:
 	if _current_melody >= melodies.size():
 		return
 
-	var melody := melodies[_current_melody]
+	var melody: String = melodies[_current_melody]
 	_debug(
 		"Current melody %s position %d expecting %s, received %s",
 		[melody, _position, melody[_position], note],
@@ -68,7 +68,10 @@ func _on_note_played(note: String) -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	if melodies.size() != fires.size():
-		var fmt = "There should be one fire for each melody, but there are %d melodies and %d fires"
-		return [fmt % [melodies.size(), fires.size()]]
+		var fmt: String = """
+			There should be one fire for each melody, \
+			but currently there are %d melodies and %d fires.
+		"""
+		return [fmt.strip_edges() % [melodies.size(), fires.size()]]
 
 	return []
