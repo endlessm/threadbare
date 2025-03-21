@@ -1,7 +1,13 @@
-[gd_scene load_steps=22 format=3 uid="uid://d37mebu7atru7"]
+[gd_scene load_steps=29 format=3 uid="uid://d37mebu7atru7"]
 
 [ext_resource type="Script" uid="uid://dmf866kgfnp3c" path="res://scenes/enemies/guard/guard.gd" id="1_g173s"]
+[ext_resource type="Texture2D" uid="uid://brgmgoygigb07" path="res://scenes/enemies/guard/field_of_view.png" id="2_nv25s"]
 [ext_resource type="Texture2D" uid="uid://3ee7plbgf8tg" path="res://assets/tiny-swords/Factions/Goblins/Troops/Torch/Blue/Torch_Blue.png" id="2_pnkgp"]
+[ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/enemies/guard/exclamation_mark/exclamation_mark.png" id="3_pnkgp"]
+[ext_resource type="Script" uid="uid://b2uimmsd5h6yv" path="res://addons/shaker/shaker.gd" id="4_iqgov"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g173s"]
+radius = 35.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g173s"]
 atlas = ExtResource("2_pnkgp")
@@ -133,32 +139,64 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g173s"]
-height = 42.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_nv25s"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_g173s"]
-font_size = 30
-font_color = Color(0.9, 1, 0, 1)
-outline_size = 10
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nv25s"]
+light_mode = 1
+
+[sub_resource type="Curve" id="Curve_iqgov"]
+_data = [Vector2(0.561856, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0hjcv"]
+light_mode = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_nv25s"]
+outline_size = 3
 outline_color = Color(0, 0, 0, 1)
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 1)
 
 [node name="Guard" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 16
 motion_mode = 1
+wall_min_slide_angle = 0.0
 script = ExtResource("1_g173s")
 start_looking_at_side = 1
 
-[node name="DetectionShape" type="Area2D" parent="."]
-position = Vector2(0, -19)
+[node name="InstantDetectionArea" type="Area2D" parent="."]
 collision_layer = 0
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionShape"]
-polygon = PackedVector2Array(1, -5, 106, -61, 148, -48, 148, 24, 100, 40)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InstantDetectionArea"]
+shape = SubResource("CircleShape2D_g173s")
 
-[node name="DetectionShapeHint" type="Polygon2D" parent="DetectionShape"]
-color = Color(1, 0.47, 0.47, 0.54902)
-polygon = PackedVector2Array(1, -5, 106, -61, 148, -48, 148, 24, 100, 40)
+[node name="DetectionShape" type="Area2D" parent="."]
+position = Vector2(0, -19)
+scale = Vector2(0.75, 0.75)
+collision_layer = 0
+
+[node name="PointLight2D" type="PointLight2D" parent="DetectionShape"]
+position = Vector2(18, -11)
+scale = Vector2(0.340496, 0.340496)
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+texture = ExtResource("2_nv25s")
+offset = Vector2(434.66, 46.9903)
+
+[node name="SightRaycast" type="RayCast2D" parent="DetectionShape"]
+unique_name_in_owner = true
+position = Vector2(0, 19)
+collision_mask = 8
+hit_from_inside = true
+collide_with_areas = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionShape"]
+unique_name_in_owner = true
+position = Vector2(18, -11)
+scale = Vector2(0.340496, 0.340496)
+polygon = PackedVector2Array(770.46, -255.51, -41.6399, 23.4903, -42.3399, 23.4903, -42.3399, 36.8903, 739.16, 349.49, 763.86, 349.49, 899.16, 277.49, 901.56, 277.49, 908.56, 269.49, 910.66, 269.49, 910.66, -135.41, 911.66, -136.11, 911.66, -148.21, 787.66, -255.41)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -16)
@@ -168,18 +206,42 @@ autoplay = "walk"
 frame_progress = 0.983003
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-rotation = -1.5708
-shape = SubResource("CapsuleShape2D_g173s")
+shape = SubResource("CircleShape2D_nv25s")
 
-[node name="ExclamationMark" type="Label" parent="."]
+[node name="PlayerAwareness" type="TextureProgressBar" parent="."]
 unique_name_in_owner = true
-visible = false
-offset_left = -21.0
-offset_top = -95.0
-offset_right = 19.0
-offset_bottom = -53.0
-pivot_offset = Vector2(18, 22)
-text = "!"
-label_settings = SubResource("LabelSettings_g173s")
-horizontal_alignment = 1
-vertical_alignment = 1
+z_index = 1
+material = SubResource("CanvasItemMaterial_nv25s")
+offset_left = -62.0
+offset_top = -172.0
+offset_right = 62.0
+offset_bottom = -48.0
+pivot_offset = Vector2(62, 102)
+step = 0.01
+value = 50.0
+fill_mode = 3
+nine_patch_stretch = true
+texture_under = ExtResource("3_pnkgp")
+texture_progress = ExtResource("3_pnkgp")
+tint_under = Color(1, 1, 1, 0.392157)
+tint_progress = Color(1, 1, 0, 1)
+
+[node name="NoticedSomethingShakeVFX" type="Node" parent="." node_paths=PackedStringArray("target_node")]
+unique_name_in_owner = true
+script = ExtResource("4_iqgov")
+target_node = NodePath("../AnimatedSprite2D")
+target_property = &"offset"
+min_value = -5.0
+max_value = 5.0
+fall_off = SubResource("Curve_iqgov")
+metadata/_custom_type_script = "uid://b2uimmsd5h6yv"
+
+[node name="DebugInfo" type="Label" parent="."]
+unique_name_in_owner = true
+z_index = 100
+material = SubResource("CanvasItemMaterial_0hjcv")
+offset_left = -36.0
+offset_top = 20.0
+offset_right = 4.0
+offset_bottom = 43.0
+label_settings = SubResource("LabelSettings_nv25s")
