@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://db6vhi7s2f37c"]
+[gd_scene load_steps=23 format=4 uid="uid://db6vhi7s2f37c"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_lxskx"]
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/stealth_level/game_logic.gd" id="1_x2hsm"]
@@ -8,6 +8,9 @@
 [ext_resource type="Resource" uid="uid://c1yk3v73nq17b" path="res://scenes/stealth_level/stealth_level_elder_intro.dialogue" id="4_3ijdn"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/enemies/guard/guard.tscn" id="5_65dav"]
 [ext_resource type="Script" uid="uid://dcxadiejx57og" path="res://scenes/stealth_level/stealth_quest.gd" id="5_vnsq3"]
+[ext_resource type="Script" uid="uid://3d7xgrvnahrb" path="res://scenes/stealth_level/hiding_spot.gd" id="9_frfu0"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/interact_area.gd" id="10_d2jm8"]
+[ext_resource type="Texture2D" uid="uid://baelulw1inl6s" path="res://assets/tiny-swords/Deco/09.png" id="11_46hcm"]
 
 [sub_resource type="Curve" id="Curve_m6h06"]
 _data = [Vector2(0.246575, 0.865169), 0.0, 0.0, 0, 0, Vector2(0.452055, 0.0561798), 0.0, 0.0, 0, 0]
@@ -52,6 +55,15 @@ _data = {
 }
 point_count = 2
 
+[sub_resource type="Curve2D" id="Curve2D_jgsr2"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1141, 303, 0, 0, 0, 0, 1142, 629, 0, 0, 0, 0, 748, 620, 0, 0, 0, 0, 739, 292, 0, 0, 0, 0, 1141, 303)
+}
+point_count = 5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d2jm8"]
+size = Vector2(148, 76)
+
 [sub_resource type="LabelSettings" id="LabelSettings_m6h06"]
 font_size = 45
 outline_size = 5
@@ -64,6 +76,7 @@ y_sort_enabled = true
 
 [node name="GameLogic" type="Node" parent="."]
 script = ExtResource("1_x2hsm")
+zoom = 1.5
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.481789, 0.48179, 0.481789, 1)
@@ -100,10 +113,11 @@ tile_set = ExtResource("1_lxskx")
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("2_ufc7o")]
-position = Vector2(347, 291)
+position = Vector2(345, 243)
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
 process_mode = 3
+zoom = Vector2(1.5, 1.5)
 limit_left = 0
 limit_top = 0
 position_smoothing_enabled = true
@@ -148,38 +162,27 @@ curve = SubResource("Curve2D_vnsq3")
 
 [node name="Guard" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_65dav")]
 position = Vector2(705, 263)
-velocity = Vector2(-199.892, 6.56503)
-start_looking_at_side = -1
 patrol_path = NodePath("../Path2D")
 wait_time = 0.3
 move_speed = 200.0
-detection_area_scale = 1.0
-player_instantly_loses_on_sight = false
 
 [node name="Path2D2" type="Path2D" parent="StealthQuest/EnemyGuards"]
 curve = SubResource("Curve2D_m6h06")
 
 [node name="Guard2" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_65dav")]
 position = Vector2(653, 656)
-velocity = Vector2(-3.08866, 199.976)
 patrol_path = NodePath("../Path2D2")
 wait_time = 0.3
 move_speed = 200.0
-detection_area_scale = 1.0
-player_instantly_loses_on_sight = false
 
 [node name="Path2D3" type="Path2D" parent="StealthQuest/EnemyGuards"]
 curve = SubResource("Curve2D_x2hsm")
 
 [node name="Guard3" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_65dav")]
 position = Vector2(1207, 772)
-velocity = Vector2(-3.08866, 199.976)
-start_looking_at_side = -1
 patrol_path = NodePath("../Path2D3")
 wait_time = 0.3
 move_speed = 200.0
-detection_area_scale = 1.0
-player_instantly_loses_on_sight = false
 
 [node name="Path2D4" type="Path2D" parent="StealthQuest/EnemyGuards"]
 position = Vector2(-220, 811)
@@ -187,13 +190,9 @@ curve = SubResource("Curve2D_frfu0")
 
 [node name="Guard4" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_65dav")]
 position = Vector2(604, 1557)
-velocity = Vector2(-200, 0.00290024)
-start_looking_at_side = -1
 patrol_path = NodePath("../Path2D4")
 wait_time = 0.3
 move_speed = 200.0
-detection_area_scale = 1.0
-player_instantly_loses_on_sight = false
 
 [node name="Path2D5" type="Path2D" parent="StealthQuest/EnemyGuards"]
 position = Vector2(-220, 811)
@@ -201,13 +200,9 @@ curve = SubResource("Curve2D_d2jm8")
 
 [node name="Guard5" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_65dav")]
 position = Vector2(1245, 1555)
-velocity = Vector2(199.996, -1.27102)
-start_looking_at_side = -1
 patrol_path = NodePath("../Path2D5")
 wait_time = 0.3
 move_speed = 200.0
-detection_area_scale = 1.0
-player_instantly_loses_on_sight = false
 
 [node name="Path2D6" type="Path2D" parent="StealthQuest/EnemyGuards"]
 position = Vector2(-220, 811)
@@ -215,13 +210,61 @@ curve = SubResource("Curve2D_46hcm")
 
 [node name="Guard6" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_65dav")]
 position = Vector2(921, 1114)
-velocity = Vector2(-0.526387, -199.999)
-start_looking_at_side = -1
 patrol_path = NodePath("../Path2D6")
 wait_time = 0.3
 move_speed = 200.0
-detection_area_scale = 1.0
-player_instantly_loses_on_sight = false
+
+[node name="Path2D7" type="Path2D" parent="StealthQuest/EnemyGuards"]
+position = Vector2(1499, 1055)
+curve = SubResource("Curve2D_jgsr2")
+
+[node name="Guard7" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_65dav")]
+position = Vector2(2640, 1358)
+patrol_path = NodePath("../Path2D7")
+wait_time = 0.3
+move_speed = 200.0
+
+[node name="MovableProp" type="Node2D" parent="StealthQuest"]
+position = Vector2(163, -825)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="StealthQuest/MovableProp"]
+position = Vector2(2259, 1629)
+tile_map_data = PackedByteArray("AAABAAAABAACAAMAAAABAP//BAACAAEAAAABAP7/BAACAAQAAAAAAAAABAABAAMAAAAAAP//BAABAAEAAAAAAP7/BAABAAQAAAD//wAABAAAAAUAAAD/////BAAAAAIAAAD///7/BAAAAAQAAAA=")
+tile_set = ExtResource("1_lxskx")
+
+[node name="BeginPosition" type="Marker2D" parent="StealthQuest/MovableProp"]
+
+[node name="EndPosition" type="Marker2D" parent="StealthQuest/MovableProp"]
+
+[node name="Lever" type="Node2D" parent="StealthQuest/MovableProp"]
+
+[node name="Area2D" type="Area2D" parent="StealthQuest/MovableProp/Lever"]
+
+[node name="HidingSpot" type="Node2D" parent="StealthQuest"]
+position = Vector2(2626, 1796)
+script = ExtResource("9_frfu0")
+
+[node name="HidingArea" type="Area2D" parent="StealthQuest/HidingSpot"]
+collision_layer = 32
+script = ExtResource("10_d2jm8")
+action = "Hide"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StealthQuest/HidingSpot/HidingArea"]
+position = Vector2(4, -13)
+shape = SubResource("RectangleShape2D_d2jm8")
+
+[node name="Sprite2D" type="Sprite2D" parent="StealthQuest/HidingSpot"]
+visible = false
+z_index = -1
+position = Vector2(-29, -12)
+scale = Vector2(2.375, 2.375)
+texture = ExtResource("11_46hcm")
+
+[node name="Sprite2D2" type="Sprite2D" parent="StealthQuest/HidingSpot"]
+position = Vector2(19.0001, -11)
+rotation = -0.0175428
+scale = Vector2(2.05602, 1.93965)
+texture = ExtResource("11_46hcm")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
@@ -241,6 +284,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0)
 
 [node name="Label" type="Label" parent="."]
+visible = false
 offset_left = 2268.0
 offset_top = 1652.0
 offset_right = 2706.0
