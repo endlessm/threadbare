@@ -13,26 +13,32 @@ extends Node2D
 		text = a_text
 		update_label_text()
 
+
 func _ready() -> void:
 	update_appearance()
 	update_label_text()
-	
+
 	if Engine.is_editor_hint():
 		return
-		
+
 	update_label_visiblity()
 
-func update_appearance()  -> void:
+
+func update_appearance() -> void:
 	$Appearance.flip_h = direction != "LEFT"
+
 
 func _on_area_2d_body_entered(_body: Node2D) -> void:
 	update_label_visiblity()
 
+
 func _on_area_2d_body_exited(_body: Node2D) -> void:
 	update_label_visiblity()
 
-func update_label_visiblity()  -> void:
+
+func update_label_visiblity() -> void:
 	$LabelContainer.visible = !$Area2D.get_overlapping_bodies().is_empty()
-	
-func update_label_text()  -> void:
+
+
+func update_label_text() -> void:
 	%Label.text = text
