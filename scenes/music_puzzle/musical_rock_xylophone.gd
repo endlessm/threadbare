@@ -7,13 +7,13 @@ var _notes: Dictionary[String, MusicalRock]
 
 
 func _ready() -> void:
-	for node in get_children():
-		var rock := node as MusicalRock
+	for node: Node in get_children():
+		var rock: MusicalRock = node as MusicalRock
 		if not rock:
 			continue
 
 		_notes[rock.note] = rock
-		rock.note_played.connect(func(): note_played.emit(rock.note))
+		rock.note_played.connect(func() -> void: note_played.emit(rock.note))
 
 
 func play_note(note: String) -> void:
