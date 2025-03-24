@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://7hoy2p14t6kc"]
+[gd_scene load_steps=17 format=4 uid="uid://7hoy2p14t6kc"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/player/player.tscn" id="3_sugp2"]
@@ -14,6 +14,10 @@
 [ext_resource type="Texture2D" uid="uid://dgqq26xsu3hrf" path="res://scenes/music_puzzle/clues/3.png" id="12_jkv2x"]
 [ext_resource type="Texture2D" uid="uid://dybrvl42chyoi" path="res://scenes/music_puzzle/clues/4.png" id="13_jbj1t"]
 [ext_resource type="PackedScene" uid="uid://ckbqsrxnccwd0" path="res://scenes/music_puzzle/sheep.tscn" id="14_a8y0u"]
+[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/world_map/teleporter.gd" id="15_jkv2x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jbj1t"]
+size = Vector2(52, 127)
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
@@ -118,7 +122,19 @@ position = Vector2(288, -84)
 texture = ExtResource("13_jbj1t")
 
 [node name="Sheep" parent="OnTheGround/MusicPuzzle" instance=ExtResource("14_a8y0u")]
-position = Vector2(304, 228)
+position = Vector2(672, 252)
+
+[node name="Teleporter" type="Area2D" parent="."]
+position = Vector2(2117, 1023)
+collision_layer = 4
+script = ExtResource("15_jkv2x")
+scene_to_go_to = "uid://db6vhi7s2f37c"
+spawn_point_path = NodePath("")
+metadata/_custom_type_script = "uid://hqdquinbimce"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter"]
+position = Vector2(-229, -487)
+shape = SubResource("RectangleShape2D_jbj1t")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
