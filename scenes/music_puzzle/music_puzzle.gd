@@ -1,4 +1,5 @@
 @tool
+class_name MusicPuzzle
 extends Node2D
 
 signal solved
@@ -75,3 +76,11 @@ func _get_configuration_warnings() -> PackedStringArray:
 		return [fmt.strip_edges() % [melodies.size(), fires.size()]]
 
 	return []
+
+
+func get_progress() -> int:
+	return _current_melody
+
+
+func is_solved() -> bool:
+	return _current_melody == melodies.size()
