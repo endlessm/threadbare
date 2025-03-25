@@ -19,7 +19,7 @@ func _ready() -> void:
 
 
 func _on_interaction_started() -> void:
-	DialogueManager.show_dialogue_balloon(dialogue)
+	DialogueManager.show_dialogue_balloon(dialogue, "", [self])
 
 
 func _on_dialogue_ended(_dialogue_resource: DialogueResource) -> void:
