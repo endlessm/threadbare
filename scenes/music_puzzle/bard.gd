@@ -5,6 +5,8 @@ extends Talker
 
 @export var puzzle: MusicPuzzle
 
+var first_conversation: bool = true
+
 
 func play(note: String) -> void:
 	await puzzle.xylophone.play_note(note)
