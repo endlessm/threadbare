@@ -7,4 +7,4 @@ extends Talker
 
 
 func play(note: String) -> void:
-	await xylophone.play_note(note)
+	await puzzle.xylophone.play_note(note)
