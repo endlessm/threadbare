@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=4 uid="uid://cnse1w070wmr7"]
+[gd_scene load_steps=7 format=4 uid="uid://cnse1w070wmr7"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_1vl85"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/props/sign.tscn" id="2_lertq"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/player/player.tscn" id="3_jbn3a"]
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/world_map/teleporter.gd" id="4_jbn3a"]
+[ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/world_map/spawn_point.gd" id="5_nfxoe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nfxoe"]
 size = Vector2(58, 115)
@@ -29,7 +30,7 @@ position = Vector2(172, 904)
 text = "Frays End
 Where Everything Begins"
 
-[node name="Player" parent="." groups=["player"] instance=ExtResource("3_jbn3a")]
+[node name="Player" parent="." instance=ExtResource("3_jbn3a")]
 position = Vector2(390, 1049)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -43,8 +44,10 @@ editor_draw_limits = true
 
 [node name="Teleporter" type="Area2D" parent="."]
 position = Vector2(-91, 1025)
+collision_layer = 4
 script = ExtResource("4_jbn3a")
 scene_to_go_to = "uid://cufkthb25mpxy"
+spawn_point_path = NodePath("RightEntranceSpawnPoint")
 metadata/_custom_type_script = "uid://hqdquinbimce"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter"]
@@ -52,3 +55,9 @@ position = Vector2(-1, -2.5)
 shape = SubResource("RectangleShape2D_nfxoe")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="LeftEntranceSpawnPoint" type="Marker2D" parent="." groups=["spawn_point"]]
+position = Vector2(32, 1025)
+gizmo_extents = 30.0
+script = ExtResource("5_nfxoe")
+metadata/_custom_type_script = "uid://0enyu5v4ra34"
