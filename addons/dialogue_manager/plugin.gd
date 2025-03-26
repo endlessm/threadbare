@@ -6,22 +6,15 @@ const MainView = preload("./views/main_view.tscn")
 
 
 var import_plugin: DMImportPlugin
-var export_plugin: DMExportPlugin
 var inspector_plugin: DMInspectorPlugin
 var translation_parser_plugin: DMTranslationParserPlugin
 var main_view
 var dialogue_cache: DMCache
 
 
-func _enable_plugin() -> void:
+func _enter_tree() -> void:
 	add_autoload_singleton("DialogueManager", get_plugin_path() + "/dialogue_manager.gd")
 
-
-func _disable_plugin() -> void:
-	remove_autoload_singleton("DialogueManager")
-
-
-func _enter_tree() -> void:
 	if Engine.is_editor_hint():
 		Engine.set_meta("DialogueManagerPlugin", self)
 
@@ -32,9 +25,6 @@ func _enter_tree() -> void:
 
 		import_plugin = DMImportPlugin.new()
 		add_import_plugin(import_plugin)
-
-		export_plugin = DMExportPlugin.new()
-		add_export_plugin(export_plugin)
 
 		inspector_plugin = DMInspectorPlugin.new()
 		add_inspector_plugin(inspector_plugin)
@@ -111,11 +101,10 @@ func _enter_tree() -> void:
 
 
 func _exit_tree() -> void:
+	remove_autoload_singleton("DialogueManager")
+
 	remove_import_plugin(import_plugin)
 	import_plugin = null
-
-	remove_export_plugin(export_plugin)
-	export_plugin = null
 
 	remove_inspector_plugin(inspector_plugin)
 	inspector_plugin = null
