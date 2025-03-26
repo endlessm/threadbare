@@ -1,3 +1,4 @@
+class_name Player
 extends CharacterBody2D
 
 @export_range(10, 100000, 10) var walk_speed: float = 300.0
