@@ -22,7 +22,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if is_interacting:
 		return
-	var interact_area: InteractArea = interact_ray.interact_area
+	var interact_area: InteractArea = interact_ray.interact_area()
 
 	var label_offset: Vector2 = Vector2(interact_label.size.x / 2, interact_label.size.y)
 	interact_label.position = (
