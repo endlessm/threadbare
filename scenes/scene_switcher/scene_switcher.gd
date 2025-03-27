@@ -58,6 +58,16 @@ func _set_hash(resource_path: String) -> void:
 		_window.location.replace(url.href)
 
 
+func change_to_file_with_transition(scene_path: String, spawn_point: NodePath = ^""):
+	# We should probably pause the game during transitions. But pause is
+	# not trivial, so I suggest first tackling it in another issue, then we can
+	# add it here.
+
+	await Transitions.leave_scene(Transition.Effect.RIGHT_TO_LEFT_WIPE)
+	change_to_file(scene_path, spawn_point)
+	await Transitions.introduce_scene(Transition.Effect.LEFT_TO_RIGHT_WIPE)
+
+
 func change_to_file(scene_path: String, spawn_point: NodePath = ^"") -> void:
 	var scene: PackedScene = load(scene_path)
 	if scene:

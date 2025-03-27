@@ -29,7 +29,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	self.body_entered.connect(_on_body_entered)
+	self.body_entered.connect(_on_body_entered, CONNECT_ONE_SHOT)
 
 
 func _on_body_entered(_body: PhysicsBody2D) -> void:
@@ -37,7 +37,7 @@ func _on_body_entered(_body: PhysicsBody2D) -> void:
 		# We are using call_deferred here because removing nodes with
 		# collisions during a callback caused by a collision might cause
 		# undesired behavior.
-		SceneSwitcher.change_to_file.call_deferred(scene_to_go_to, spawn_point_path)
+		SceneSwitcher.change_to_file_with_transition.call_deferred(scene_to_go_to, spawn_point_path)
 
 
 func _update_available_spawn_points() -> void:

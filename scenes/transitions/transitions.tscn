@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://b7wrvr38fukri"]
+
+[ext_resource type="Script" uid="uid://byb3vg4ylor0d" path="res://scenes/transitions/transitions.gd" id="1_ij4f6"]
+[ext_resource type="Shader" uid="uid://32bpeadb2eyq" path="res://scenes/transitions/transition_layer.gdshader" id="2_rdj0f"]
+[ext_resource type="Texture2D" uid="uid://cpvc4xmg7at7r" path="res://scenes/transitions/Fade.png" id="3_ij4f6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8r8i7"]
+shader = ExtResource("2_rdj0f")
+shader_parameter/cutoff = 1.0
+shader_parameter/smooth_size = 0.8
+shader_parameter/mask = ExtResource("3_ij4f6")
+
+[node name="Transitions" type="CanvasLayer"]
+process_mode = 3
+layer = 10
+script = ExtResource("1_ij4f6")
+
+[node name="TransitionMask" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_8r8i7")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
