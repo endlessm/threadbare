@@ -5,7 +5,7 @@ var is_interacting: bool:
 	get = _get_is_interacting
 
 @onready var interact_ray: RayCast2D = %InteractRay
-@onready var interact_marker: Marker2D = $InteractMarker
+@onready var interact_marker: Marker2D = %InteractMarker
 @onready var interact_label: InteractLabel = %InteractLabel
 
 
