@@ -11,7 +11,7 @@ func _process(_delta: float) -> void:
 
 
 func switch_to_intro() -> void:
-	get_tree().change_scene_to_packed(preload("res://scenes/intro/intro.tscn"))
+	SceneSwitcher.change_to_packed(preload("res://scenes/intro/intro.tscn"))
 
 
 func _on_logo_stitcher_finished() -> void:
