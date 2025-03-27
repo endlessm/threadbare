@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=58 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Texture2D" uid="uid://dm0dwcbjsb743" path="res://assets/tiny-swords/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/player/player.gd" id="1_g2els"]
@@ -403,6 +403,11 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
 height = 42.0
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_75vfm"]
+closed = false
+cull_mode = 1
+polygon = PackedVector2Array(7, 7, 24, -20, 14, -49, -3, -74, -17, -61, -17, -42, -31, -42, -27, -8, 6, 7)
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_mask = 19
 script = ExtResource("1_g2els")
@@ -439,3 +444,7 @@ position = Vector2(0, -90)
 [node name="InteractLabel" parent="PlayerInteraction/InteractMarker" instance=ExtResource("6_75vfm")]
 unique_name_in_owner = true
 label_text = "Talk"
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_75vfm")
+sdf_collision = false
