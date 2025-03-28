@@ -12,6 +12,9 @@ const STORY_QUEST_STARTER_DIALOGUE: DialogueResource = preload(
 ## Dialogue line describing the quest; used by the default story_quest_starter dialogue
 @export var quest_description: String
 
+## Whether to enter [member quest_scene] when the current dialogue ends
+var _enter_quest_on_dialogue_ended: bool = false
+
 
 func _init() -> void:
 	# GDScript does not allow subclasses to override the default value of properties on the parent
@@ -31,8 +34,12 @@ func _get_configuration_warnings() -> PackedStringArray:
 ## At the end of the current interaction, enter [member quest_scene]. This is intended to be called
 ## from dialogue.
 func enter_quest() -> void:
-	interact_area.interaction_ended.connect(_do_enter_quest)
+	_enter_quest_on_dialogue_ended = true
 
 
-func _do_enter_quest() -> void:
-	SceneSwitcher.change_to_packed(quest_scene)
+func _on_dialogue_ended(dialogue_resource: DialogueResource) -> void:
+	await super(dialogue_resource)
+
+	if _enter_quest_on_dialogue_ended:
+		SceneSwitcher.change_to_packed(quest_scene)
+		_enter_quest_on_dialogue_ended = false
