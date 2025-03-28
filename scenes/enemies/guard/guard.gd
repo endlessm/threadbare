@@ -383,8 +383,17 @@ func _notification(what: int) -> void:
 ## Function used for a tool button that either selects the current patrol_path
 ## in the editor, or creates a new one
 func edit_patrol_path() -> void:
+	if not Engine.is_editor_hint():
+		return
+
+	# Cannot directly reference [class EditorInterface] in code that isn't
+	# part of a script that runs only in the editor (like plugins).
+	# This function should only be called in the editor, but having a direct
+	# reference to the [class EditorInterface] causes errors on runtime builds.
+	var editor_interface = Engine.get_singleton("EditorInterface")
+
 	if patrol_path:
-		EditorInterface.edit_node.call_deferred(patrol_path)
+		editor_interface.edit_node.call_deferred(patrol_path)
 	else:
 		var new_patrol_path: Path2D = Path2D.new()
 		patrol_path = new_patrol_path
@@ -393,4 +402,4 @@ func edit_patrol_path() -> void:
 		patrol_path.global_position = global_position
 		patrol_path.curve = Curve2D.new()
 		patrol_path.name = "%s-PatrolPath" % name
-		EditorInterface.edit_node.call_deferred(patrol_path)
+		editor_interface.edit_node.call_deferred(patrol_path)
