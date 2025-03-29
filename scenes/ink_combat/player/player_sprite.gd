@@ -1,6 +1,6 @@
 extends AnimatedSprite2D
 
-@onready var player: Player = owner
+@onready var player: FightingPlayer = owner
 
 
 func _process(_delta: float) -> void:

@@ -1,4 +1,4 @@
-class_name Player
+class_name FightingPlayer
 extends CharacterBody2D
 
 @export_range(10, 100000, 10) var walk_speed: float = 300.0
