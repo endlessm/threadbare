@@ -1,10 +1,12 @@
-class_name Player
+class_name FightingPlayer
 extends CharacterBody2D
 
 @export_range(10, 100000, 10) var walk_speed: float = 300.0
 @export_range(10, 100000, 10) var run_speed: float = 500.0
 @export_range(10, 100000, 10) var stopping_step: float = 1500.0
 @export_range(10, 100000, 10) var moving_step: float = 4000.0
+
+var last_nonzero_axis: Vector2
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 
@@ -15,6 +17,8 @@ func _process(delta: float) -> void:
 		return
 
 	var axis: Vector2 = Input.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
+	if not axis.is_zero_approx():
+		last_nonzero_axis = axis
 
 	var speed: float
 	if Input.is_action_pressed(&"running"):

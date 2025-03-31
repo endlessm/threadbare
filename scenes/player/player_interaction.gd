@@ -5,7 +5,7 @@ var is_interacting: bool:
 	get = _get_is_interacting
 
 @onready var interact_ray: RayCast2D = %InteractRay
-@onready var interact_marker: Marker2D = $InteractMarker
+@onready var interact_marker: Marker2D = %InteractMarker
 @onready var interact_label: InteractLabel = %InteractLabel
 
 
@@ -14,8 +14,11 @@ func _get_is_interacting() -> bool:
 
 
 func _ready() -> void:
-	var current_scene: Node = Engine.get_main_loop().current_scene
-	var screen_overlay: CanvasLayer = current_scene.get_node("ScreenOverlay")
+	var current_scene: Node = get_tree().current_scene
+	var screen_overlay: CanvasLayer = current_scene.get_node_or_null("ScreenOverlay")
+	if not screen_overlay:
+		push_error("ScreenOverlay not found in current scene.")
+		return
 	interact_label.reparent(screen_overlay)
 
 

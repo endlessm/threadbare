@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=63 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Texture2D" uid="uid://dm0dwcbjsb743" path="res://assets/tiny-swords/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/player/player.gd" id="1_g2els"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://kqgiavjw07fx" path="res://scenes/interact/interact_ray.gd" id="3_qhqgy"]
 [ext_resource type="Script" uid="uid://qro4uo83ba8f" path="res://scenes/player/player_sprite.gd" id="3_qlg0r"]
 [ext_resource type="PackedScene" uid="uid://vsvher2556ig" path="res://scenes/interact/interact_label.tscn" id="6_75vfm"]
+[ext_resource type="Script" uid="uid://e78f8iq448e1" path="res://scenes/player/animation_player.gd" id="7_0owmy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g2els"]
 atlas = ExtResource("1_3vyb7")
@@ -408,6 +409,100 @@ closed = false
 cull_mode = 1
 polygon = PackedVector2Array(7, 7, 24, -20, 14, -49, -3, -74, -17, -61, -17, -42, -31, -42, -27, -8, 6, 7)
 
+[sub_resource type="Animation" id="Animation_0owmy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_75vfm"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_qek5x"]
+resource_name = "walk"
+length = 0.7
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qek5x"]
+_data = {
+&"RESET": SubResource("Animation_0owmy"),
+&"idle": SubResource("Animation_75vfm"),
+&"walk": SubResource("Animation_qek5x")
+}
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_mask = 19
 script = ExtResource("1_g2els")
@@ -415,9 +510,8 @@ script = ExtResource("1_g2els")
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -30)
 sprite_frames = SubResource("SpriteFrames_6e8lb")
-animation = &"walk"
+animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.672386
 script = ExtResource("3_qlg0r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -439,12 +533,21 @@ collide_with_bodies = false
 script = ExtResource("3_qhqgy")
 
 [node name="InteractMarker" type="Marker2D" parent="PlayerInteraction"]
+unique_name_in_owner = true
 position = Vector2(0, -90)
 
 [node name="InteractLabel" parent="PlayerInteraction/InteractMarker" instance=ExtResource("6_75vfm")]
 unique_name_in_owner = true
+visible = false
 label_text = "Talk"
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource("OccluderPolygon2D_75vfm")
 sdf_collision = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_qek5x")
+}
+script = ExtResource("7_0owmy")
