@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=4 uid="uid://c764br4tplkb2"]
+[gd_scene load_steps=6 format=4 uid="uid://c764br4tplkb2"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_wrx86"]
-[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/player/player.tscn" id="2_lxb38"]
+[ext_resource type="PackedScene" uid="uid://d1esqx2skyf1p" path="res://scenes/ink_combat/player/player.tscn" id="2_g2twj"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/npcs/talker/talker.tscn" id="3_1qiyj"]
-[ext_resource type="PackedScene" uid="uid://clgisducnnh0a" path="res://scenes/ink_combat/splash/splash.tscn" id="4_kbpe5"]
+[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/ink_combat/ink_drinker/ink_drinker.tscn" id="5_h0i4r"]
+[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/ink_combat/inkwell/inkwell.tscn" id="6_v7ikp"]
 
 [node name="InkCombat" type="Node2D"]
 
@@ -36,8 +37,8 @@ tile_set = ExtResource("1_wrx86")
 [node name="OnTheGround" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Player" parent="OnTheGround" instance=ExtResource("2_lxb38")]
-position = Vector2(254, 259)
+[node name="Player" parent="OnTheGround" instance=ExtResource("2_g2twj")]
+position = Vector2(1472, 937)
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
 zoom = Vector2(2, 2)
@@ -51,7 +52,35 @@ editor_draw_limits = true
 [node name="Talker" parent="OnTheGround" instance=ExtResource("3_1qiyj")]
 position = Vector2(622, 479)
 
-[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+[node name="InkDrinker" parent="OnTheGround" instance=ExtResource("5_h0i4r")]
+position = Vector2(1552, 1205)
 
-[node name="Splash" parent="." instance=ExtResource("4_kbpe5")]
-position = Vector2(429, 271)
+[node name="InkDrinker2" parent="OnTheGround" instance=ExtResource("5_h0i4r")]
+position = Vector2(1377, 1205)
+odd_shoot = true
+
+[node name="Inkwell" parent="OnTheGround" instance=ExtResource("6_v7ikp")]
+position = Vector2(1660, 764)
+
+[node name="Inkwell2" parent="OnTheGround" instance=ExtResource("6_v7ikp")]
+position = Vector2(1756, 853)
+ink_color_name = 3
+
+[node name="Inkwell3" parent="OnTheGround" instance=ExtResource("6_v7ikp")]
+position = Vector2(1783, 952)
+ink_color_name = 1
+
+[node name="Inkwell4" parent="OnTheGround" instance=ExtResource("6_v7ikp")]
+position = Vector2(1703, 1029)
+ink_color_name = 2
+
+[node name="Inkwell5" parent="OnTheGround" instance=ExtResource("6_v7ikp")]
+position = Vector2(1322, 736)
+ink_color_name = 3
+
+[node name="Inkwell6" parent="OnTheGround" instance=ExtResource("6_v7ikp")]
+position = Vector2(1238, 821)
+ink_color_name = 1
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
