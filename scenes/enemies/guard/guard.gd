@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 @tool
 class_name Guard extends CharacterBody2D
 ## Enemy type that patrols along a path and raises an alert if the player is detected.

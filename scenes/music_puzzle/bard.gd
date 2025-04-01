@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 ## A talker who can also play a musical instrument
 @tool
 class_name Bard
