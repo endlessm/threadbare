@@ -16,10 +16,10 @@ func _process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		return
 
-	var axis: Vector2 = Input.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
+	var axis: Vector2 = %PlayerController.axis
 
 	var speed: float
-	if Input.is_action_pressed(&"running"):
+	if %PlayerController.running:
 		speed = run_speed
 	else:
 		speed = walk_speed
@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 	move_and_slide()
 
 
-func teleport_to(tele_position: Vector2, smooth_camera: bool = false):
+func teleport_to(tele_position: Vector2, smooth_camera: bool = false) -> void:
 	var camera: Camera2D = get_viewport().get_camera_2d()
 
 	if is_instance_valid(camera):
