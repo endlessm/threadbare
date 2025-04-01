@@ -48,10 +48,10 @@ func _restore_from_hash() -> void:
 func _set_hash(resource_path: String) -> void:
 	if _window:
 		var rx_match: RegExMatch = _scene_rx.search(resource_path)
-		var hash: String = rx_match.get_string("scene") if rx_match else resource_path
+		var url_hash: String = rx_match.get_string("scene") if rx_match else resource_path
 
 		var url: JavaScriptObject = JavaScriptBridge.create_object("URL", _window.location.href)
-		url.hash = "#" + hash
+		url.hash = "#" + url_hash
 		# Replace the current URL rather than simply updating window.location to
 		# avoid creating misleading history entries that don't work if you press
 		# the browser's back button.
