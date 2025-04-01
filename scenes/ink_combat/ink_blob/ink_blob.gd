@@ -21,7 +21,8 @@ const INK_COLORS: Dictionary = {
 
 const SPEED: float = 30.0
 
-@export var direction: Vector2 = Vector2(0, -60)
+@export var direction: Vector2 = Vector2(0, -1):
+	set = _set_direction
 @export var can_hit_enemy: bool = false:
 	set = _set_can_hit_enemy
 @export var ink_color_name: InkColorNames = InkColorNames.CYAN
@@ -29,6 +30,13 @@ const SPEED: float = 30.0
 @onready var visible_things: Node2D = %VisibleThings
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var gpu_particles_2d: GPUParticles2D = %GPUParticles2D
+
+
+func _set_direction(new_direction: Vector2) -> void:
+	if not new_direction.is_normalized():
+		direction = new_direction.normalized()
+	else:
+		direction = new_direction
 
 
 func _set_can_hit_enemy(new_can_hit_enemy: bool) -> void:
@@ -42,7 +50,7 @@ func _set_can_hit_enemy(new_can_hit_enemy: bool) -> void:
 func _ready() -> void:
 	var color: Color = INK_COLORS[ink_color_name]
 	visible_things.modulate = color
-	var impulse: Vector2 = direction.normalized() * SPEED
+	var impulse: Vector2 = direction * SPEED
 	apply_impulse(impulse)
 
 

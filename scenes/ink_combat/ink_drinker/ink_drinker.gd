@@ -32,11 +32,9 @@ func _on_timeout() -> void:
 	await animated_sprite_2d.animation_looped
 	animated_sprite_2d.play(&"attack")
 	var ink_blob: InkBlob = INK_BLOB.instantiate()
-	ink_blob.direction = player.global_position - ink_blob_marker.global_position
+	ink_blob.direction = ink_blob_marker.global_position.direction_to(player.global_position)
 	ink_blob.ink_color_name = randi_range(0, 3) as InkBlob.InkColorNames
-	ink_blob.global_position = (
-		ink_blob_marker.global_position + ink_blob.direction.normalized() * 20.
-	)
+	ink_blob.global_position = (ink_blob_marker.global_position + ink_blob.direction * 20.)
 	get_tree().current_scene.add_child(ink_blob)
 	await animated_sprite_2d.animation_looped
 	animated_sprite_2d.play(&"idle")
