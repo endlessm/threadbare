@@ -8,7 +8,7 @@ var interacting: bool = false
 
 func _process(_delta: float) -> void:
 	reset()
-	
+
 	if Pause.is_paused(Pause.System.PLAYER_INPUT):
 		return
 
