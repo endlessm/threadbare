@@ -19,8 +19,7 @@ const INK_COLORS: Dictionary = {
 	InkColorNames.BLACK: Color(0.2, 0.2, 0.2),
 }
 
-const SPEED: float = 30.0
-
+@export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s") var speed: float = 30.0
 @export var direction: Vector2 = Vector2(0, -1):
 	set = _set_direction
 @export var can_hit_enemy: bool = false:
@@ -51,7 +50,7 @@ func _set_can_hit_enemy(new_can_hit_enemy: bool) -> void:
 func _ready() -> void:
 	var color: Color = INK_COLORS[ink_color_name]
 	visible_things.modulate = color
-	var impulse: Vector2 = direction * SPEED
+	var impulse: Vector2 = direction * speed
 	apply_impulse(impulse)
 
 
@@ -59,7 +58,7 @@ func _process(_delta: float) -> void:
 	visible_things.rotation = linear_velocity.angle()
 	if node_to_follow:
 		var direction: Vector2 = global_position.direction_to(node_to_follow.global_position)
-		var force: Vector2 = direction * SPEED
+		var force: Vector2 = direction * speed
 		constant_force = force
 
 
