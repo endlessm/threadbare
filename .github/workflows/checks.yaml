@@ -20,3 +20,16 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: tox-dev/action-pre-commit-uv@v1
+
+  reuse:
+    name: Licensing information
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        cache-dependency-glob: ".github/workflows/checks.yaml"
+    - name: Check REUSE compliance
+      run: |
+        uv run --with reuse reuse lint | tee $GITHUB_STEP_SUMMARY
