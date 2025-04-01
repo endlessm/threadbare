@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 extends Node2D
 @onready var enemy_guards: Node2D = $EnemyGuards
 @onready var transition_fade: ColorRect = %TransitionFade

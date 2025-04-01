@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025 The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 extends Node
 
 ## Prefix to strip from scene path when setting URL hash

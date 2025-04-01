@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025 The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 class_name Transition
 extends CanvasLayer
 

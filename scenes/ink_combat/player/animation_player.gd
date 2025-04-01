@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025 The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 extends AnimationPlayer
 
 const FIGHT_ANIMATIONS: Array[StringName] = [&"blow_right", &"blow_left", &"blow_up", &"blow_down"]

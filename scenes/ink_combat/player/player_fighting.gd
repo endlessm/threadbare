@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025 The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 extends Node2D
 
 const SPLASH: PackedScene = preload("res://scenes/ink_combat/splash/splash.tscn")
