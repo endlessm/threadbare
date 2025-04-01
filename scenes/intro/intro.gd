@@ -17,4 +17,4 @@ func start_fade() -> void:
 
 func _on_dialogue_ended(_dialogue: DialogueResource) -> void:
 	DialogueManager.dialogue_ended.disconnect(_on_dialogue_ended)
-	SceneSwitcher.change_to_packed(preload("res://scenes/main.tscn"))
+	SceneSwitcher.change_to_packed(preload("res://scenes/world_map/frays_end.tscn"))
