@@ -26,6 +26,7 @@ const SPEED: float = 30.0
 @export var can_hit_enemy: bool = false:
 	set = _set_can_hit_enemy
 @export var ink_color_name: InkColorNames = InkColorNames.CYAN
+@export var node_to_follow: Node2D = null
 
 @onready var visible_things: Node2D = %VisibleThings
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
@@ -56,6 +57,10 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	visible_things.rotation = linear_velocity.angle()
+	if node_to_follow:
+		var direction: Vector2 = global_position.direction_to(node_to_follow.global_position)
+		var force: Vector2 = direction * SPEED
+		constant_force = force
 
 
 func add_splash() -> void:
