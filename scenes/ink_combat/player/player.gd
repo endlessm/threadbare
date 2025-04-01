@@ -37,7 +37,7 @@ func _process(delta: float) -> void:
 	move_and_slide()
 
 
-func teleport_to(position: Vector2, smooth_camera: bool = false):
+func teleport_to(tele_position: Vector2, smooth_camera: bool = false):
 	# This is something that may need to be reworked since it's pretty fragile
 	# The camera eventually may not be called Camera2D, or not be a direct child
 	# of the player
@@ -50,8 +50,8 @@ func teleport_to(position: Vector2, smooth_camera: bool = false):
 	if is_instance_valid(camera):
 		var smoothing_was_enabled: bool = camera.position_smoothing_enabled
 		camera.position_smoothing_enabled = smooth_camera
-		global_position = position
+		global_position = tele_position
 		await get_tree().process_frame
 		camera.position_smoothing_enabled = smoothing_was_enabled
 	else:
-		global_position = position
+		global_position = tele_position
