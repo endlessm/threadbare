@@ -5,6 +5,8 @@ const INK_BLOB: PackedScene = preload("res://scenes/ink_combat/ink_blob/ink_blob
 const BIG_SPLASH: PackedScene = preload("res://scenes/ink_combat/big_splash/big_splash.tscn")
 
 @export var odd_shoot: bool = false
+@export var ink_follows_player: bool = false
+@export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s") var ink_speed: float = 30.0
 
 var health: float = 1.
 @onready var timer: Timer = %Timer
@@ -32,11 +34,12 @@ func _on_timeout() -> void:
 	await animated_sprite_2d.animation_looped
 	animated_sprite_2d.play(&"attack")
 	var ink_blob: InkBlob = INK_BLOB.instantiate()
-	ink_blob.direction = player.global_position - ink_blob_marker.global_position
+	ink_blob.direction = ink_blob_marker.global_position.direction_to(player.global_position)
 	ink_blob.ink_color_name = randi_range(0, 3) as InkBlob.InkColorNames
-	ink_blob.global_position = (
-		ink_blob_marker.global_position + ink_blob.direction.normalized() * 20.
-	)
+	ink_blob.global_position = (ink_blob_marker.global_position + ink_blob.direction * 20.)
+	if ink_follows_player:
+		ink_blob.node_to_follow = player
+	ink_blob.speed = ink_speed
 	get_tree().current_scene.add_child(ink_blob)
 	await animated_sprite_2d.animation_looped
 	animated_sprite_2d.play(&"idle")
