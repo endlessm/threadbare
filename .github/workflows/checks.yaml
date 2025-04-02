@@ -31,5 +31,7 @@ jobs:
       with:
         cache-dependency-glob: ".github/workflows/checks.yaml"
     - name: Check REUSE compliance
+      shell: bash
       run: |
+        set -o pipefail
         uv run --with reuse reuse lint | tee $GITHUB_STEP_SUMMARY
