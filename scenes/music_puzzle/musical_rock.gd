@@ -32,7 +32,7 @@ func _modulate_rock() -> void:
 		sprite_2d.modulate = Color.from_hsv(i * 100.0 / NOTES.length(), 0.67, 0.89)
 
 
-func _on_interaction_started() -> void:
+func _on_interaction_started(_from_right: bool) -> void:
 	await play()
 	interact_area.interaction_ended.emit()
 
