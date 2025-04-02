@@ -1,0 +1,73 @@
+[gd_scene load_steps=12 format=3 uid="uid://drkv055xkrpuu"]
+
+[ext_resource type="Texture2D" uid="uid://di6dljsgpbrwv" path="res://assets/tiny-swords/Resources/Sheep/HappySheep_Bouncing.png" id="1_ekn7v"]
+[ext_resource type="Script" uid="uid://kt56icftfb7u" path="res://scenes/ink_combat/reward.gd" id="2_j5vcb"]
+[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/world_map/teleporter.gd" id="3_wceqc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jkv2x"]
+atlas = ExtResource("1_ekn7v")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbj1t"]
+atlas = ExtResource("1_ekn7v")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_muem4"]
+atlas = ExtResource("1_ekn7v")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dp3eg"]
+atlas = ExtResource("1_ekn7v")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ld40"]
+atlas = ExtResource("1_ekn7v")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gqmmt"]
+atlas = ExtResource("1_ekn7v")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yc10j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jkv2x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jbj1t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_muem4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dp3eg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ld40")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gqmmt")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n4ac8"]
+size = Vector2(130, 116)
+
+[node name="Reward" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_yc10j")
+script = ExtResource("2_j5vcb")
+
+[node name="Teleporter" type="Area2D" parent="."]
+collision_layer = 4
+script = ExtResource("3_wceqc")
+scene_to_go_to = "uid://db6vhi7s2f37c"
+spawn_point_path = NodePath("")
+metadata/_custom_type_script = "uid://hqdquinbimce"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter"]
+unique_name_in_owner = true
+shape = SubResource("RectangleShape2D_n4ac8")

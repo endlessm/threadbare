@@ -3,6 +3,8 @@
 class_name Inkwell
 extends StaticBody2D
 
+signal completed
+
 const INK_NEEDED: int = 3
 
 @export var ink_color_name: InkBlob.InkColorNames = InkBlob.InkColorNames.CYAN
@@ -38,3 +40,4 @@ func fill() -> void:
 		ink_drinker.explode(ink_color_name)
 		queue_free()
 		interact_label.queue_free()
+		completed.emit()

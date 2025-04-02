@@ -1,12 +1,16 @@
-[gd_scene load_steps=6 format=4 uid="uid://c764br4tplkb2"]
+[gd_scene load_steps=8 format=4 uid="uid://c764br4tplkb2"]
 
+[ext_resource type="Script" uid="uid://c38tkgfys3d63" path="res://scenes/ink_combat/ink_combat.gd" id="1_v7ikp"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_wrx86"]
 [ext_resource type="PackedScene" uid="uid://d1esqx2skyf1p" path="res://scenes/ink_combat/player/player.tscn" id="2_g2twj"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/npcs/talker/talker.tscn" id="3_1qiyj"]
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/ink_combat/ink_drinker/ink_drinker.tscn" id="5_h0i4r"]
+[ext_resource type="PackedScene" uid="uid://drkv055xkrpuu" path="res://scenes/ink_combat/reward.tscn" id="6_28gg6"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/ink_combat/inkwell/inkwell.tscn" id="6_v7ikp"]
 
 [node name="InkCombat" type="Node2D"]
+script = ExtResource("1_v7ikp")
+inkwells_to_win = 2
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -35,6 +39,7 @@ tile_map_data = PackedByteArray("AAAKAAUAAwAAAAAAAAALAAUAAwABAAAAAAAMAAUAAwABAAA
 tile_set = ExtResource("1_wrx86")
 
 [node name="OnTheGround" type="Node2D" parent="."]
+unique_name_in_owner = true
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("2_g2twj")]
@@ -82,5 +87,11 @@ ink_color_name = 3
 position = Vector2(1238, 821)
 ink_color_name = 1
 
+[node name="Reward" parent="OnTheGround" instance=ExtResource("6_28gg6")]
+unique_name_in_owner = true
+position = Vector2(1464, 1220)
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
+
+[connection signal="finished" from="." to="OnTheGround/Reward" method="_on_ink_combat_finished"]
