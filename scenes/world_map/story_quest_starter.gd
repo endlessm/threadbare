@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2025 The Threadbare Authors
+# SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
 class_name StoryQuestStarter
