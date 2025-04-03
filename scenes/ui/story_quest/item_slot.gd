@@ -1,13 +1,14 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-extends TextureRect
+class_name ItemSlot extends TextureRect
 
 ## UI slot for [InventoryItem]s.
 
 var filled_with_item: InventoryItem = null:
 	set(new_item):
 		filled_with_item = new_item
-		texture = filled_with_item.texture()
+		if filled_with_item:
+			texture = filled_with_item.texture()
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
@@ -35,3 +36,12 @@ func fill(inventory_item: InventoryItem) -> void:
 	pivot_offset = size / 2.0
 	animation_player.play(&"item_collected")
 	await animation_player.animation_finished
+
+
+func is_filled_with_same_item_type_as(inventory_item: InventoryItem) -> bool:
+	return is_filled() and filled_with_item.same_type_as(inventory_item)
+
+
+func free_slot() -> void:
+	filled_with_item = null
+	modulate = Color(Color.BLACK, 0.7)
