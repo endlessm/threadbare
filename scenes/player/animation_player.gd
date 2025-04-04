@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends AnimationPlayer
 
+const BLOW_ANTICIPATION_TIME: float = 0.3
 var cancellable: bool = false
 
 @onready var player: Player = owner
@@ -24,12 +25,18 @@ func _process_walk_idle(_delta: float) -> void:
 
 
 func _process_fighting(_delta: float) -> void:
-	if current_animation == &"blow" and current_animation_position > 0.3:
+	if current_animation == &"blow" and current_animation_position > BLOW_ANTICIPATION_TIME:
 		cancellable = true
 
 	if not player_fighting.is_fighting:
-		if cancellable and current_animation == &"blow" and current_animation_position <= 0.3:
+		if (
+			cancellable
+			and current_animation == &"blow"
+			and current_animation_position <= BLOW_ANTICIPATION_TIME
+		):
 			stop()
 		return
 
-	play(&"blow")
+	if current_animation != &"blow":
+		play(&"blow")
+		seek(BLOW_ANTICIPATION_TIME, false, false)
