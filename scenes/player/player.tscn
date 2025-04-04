@@ -1,4 +1,4 @@
-[gd_scene load_steps=91 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=93 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Texture2D" uid="uid://dm0dwcbjsb743" path="res://assets/tiny-swords/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/player/player.gd" id="1_g2els"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://kni2yl26matc" path="res://scenes/player/player_fighting.gd" id="7_5gtgg"]
 [ext_resource type="PackedScene" uid="uid://deqi3gd0anesg" path="res://scenes/health_bar/health_bar.tscn" id="8_h17s1"]
 [ext_resource type="Script" uid="uid://jpf848nkaa7h" path="res://scenes/player/player_controller.gd" id="8_qek5x"]
+[ext_resource type="Texture2D" uid="uid://dda0lxfswrncy" path="res://scenes/player/blow.png" id="9_je7p5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g2els"]
 atlas = ExtResource("1_3vyb7")
@@ -558,6 +559,9 @@ bounce = 1000.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_h17s1"]
 radius = 20.0
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_je7p5"]
+blend_mode = 1
+
 [sub_resource type="Animation" id="Animation_wvgcx"]
 length = 0.001
 tracks/0/type = "value"
@@ -662,6 +666,42 @@ tracks/4/keys = {
 "update": 0,
 "values": [Vector2(0, -24)]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("PlayerFighting/AirStream/Sprite2D:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("PlayerFighting/AirStream/Sprite2D:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.12577, 0.12577)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("PlayerFighting/AirStream/Sprite2D:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_u5klv"]
 resource_name = "blow"
@@ -727,6 +767,42 @@ tracks/4/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0, -24)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("PlayerFighting/AirStream/Sprite2D:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("PlayerFighting/AirStream/Sprite2D:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.12577, 0.12577), Vector2(1, 1)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("PlayerFighting/AirStream/Sprite2D:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0.3, 0.5, 0.6),
+"transitions": PackedFloat32Array(2, 0.5, 0.5),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.456), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_75vfm"]
@@ -868,6 +944,12 @@ physics_material_override = SubResource("PhysicsMaterial_fm80t")
 unique_name_in_owner = true
 shape = SubResource("CircleShape2D_h17s1")
 disabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerFighting/AirStream"]
+visible = false
+material = SubResource("CanvasItemMaterial_je7p5")
+scale = Vector2(0.12577, 0.12577)
+texture = ExtResource("9_je7p5")
 
 [node name="GotHitAnimation" type="AnimationPlayer" parent="PlayerFighting"]
 unique_name_in_owner = true
