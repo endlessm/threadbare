@@ -30,9 +30,7 @@ func _process(_delta: float) -> void:
 	var interact_area: InteractArea = interact_ray.get_interact_area()
 
 	var label_offset: Vector2 = Vector2(interact_label.size.x / 2, interact_label.size.y)
-	interact_label.position = (
-		interact_marker.get_global_transform_with_canvas().origin - label_offset
-	)
+	interact_label.position = interact_marker.global_position - label_offset
 
 	if not interact_area:
 		interact_label.visible = false
