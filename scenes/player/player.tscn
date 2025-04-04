@@ -1,4 +1,4 @@
-[gd_scene load_steps=93 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=94 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Texture2D" uid="uid://dm0dwcbjsb743" path="res://assets/tiny-swords/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/player/player.gd" id="1_g2els"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://deqi3gd0anesg" path="res://scenes/health_bar/health_bar.tscn" id="8_h17s1"]
 [ext_resource type="Script" uid="uid://jpf848nkaa7h" path="res://scenes/player/player_controller.gd" id="8_qek5x"]
 [ext_resource type="Texture2D" uid="uid://dda0lxfswrncy" path="res://scenes/player/blow.png" id="9_je7p5"]
+[ext_resource type="AudioStream" uid="uid://crfylo055wa8e" path="res://scenes/player/blow.wav" id="10_fm80t"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g2els"]
 atlas = ExtResource("1_3vyb7")
@@ -804,6 +805,21 @@ tracks/7/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.456), Color(1, 1, 1, 0)]
 }
+tracks/8/type = "audio"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("PlayerFighting/AirStream/AudioStreamPlayer2D")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("10_fm80t")
+}],
+"times": PackedFloat32Array(0.3)
+}
+tracks/8/use_blend = true
 
 [sub_resource type="Animation" id="Animation_75vfm"]
 resource_name = "idle"
@@ -957,6 +973,8 @@ visible = false
 material = SubResource("CanvasItemMaterial_je7p5")
 scale = Vector2(0.12577, 0.12577)
 texture = ExtResource("9_je7p5")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PlayerFighting/AirStream"]
 
 [node name="GotHitAnimation" type="AnimationPlayer" parent="PlayerFighting"]
 unique_name_in_owner = true
