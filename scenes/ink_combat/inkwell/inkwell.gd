@@ -28,5 +28,8 @@ func fill() -> void:
 	ink_amount += 1
 	animated_sprite_2d.frame += 1
 	if ink_amount >= INK_NEEDED:
+		await animation_player.animation_finished
+		animation_player.play(&"completed")
+		await animation_player.animation_finished
 		queue_free()
 		completed.emit()
