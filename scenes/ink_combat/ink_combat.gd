@@ -6,7 +6,7 @@ signal finished
 
 @export var inkwells_to_win: int = 1
 
-var inkwells_completed = 0
+var inkwells_completed: int = 0
 
 @onready var on_the_ground: Node2D = %OnTheGround
 
@@ -19,7 +19,10 @@ func _ready() -> void:
 		node.completed.connect(_on_inkwell_completed)
 
 
-func _on_inkwell_completed():
+func _on_inkwell_completed() -> void:
 	inkwells_completed += 1
-	if inkwells_completed >= inkwells_to_win:
-		finished.emit()
+	if inkwells_completed < inkwells_to_win:
+		return
+	finished.emit()
+	# get_tree().call_group(&"ink_drinkers", &"remove")
+	get_tree().call_group("ink_drinkers", "remove")

@@ -4,7 +4,6 @@ class_name InkDrinker
 extends CharacterBody2D
 
 const INK_BLOB: PackedScene = preload("res://scenes/ink_combat/ink_blob/ink_blob.tscn")
-const BIG_SPLASH: PackedScene = preload("res://scenes/ink_combat/big_splash/big_splash.tscn")
 
 @export var odd_shoot: bool = false
 @export var ink_follows_player: bool = false
@@ -52,9 +51,8 @@ func _on_got_hit(body: Node2D) -> void:
 	animation_player.play(&"got hit")
 
 
-func explode(ink_color_name: InkBlob.InkColorNames = InkBlob.InkColorNames.CYAN) -> void:
-	var big_splash: BigSplash = BIG_SPLASH.instantiate()
-	big_splash.ink_color_name = ink_color_name
-	get_tree().current_scene.add_child(big_splash)
-	big_splash.global_position = global_position
+func remove() -> void:
+	timer.stop()
+	animation_player.play(&"remove")
+	await animation_player.animation_finished
 	queue_free()
