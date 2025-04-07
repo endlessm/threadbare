@@ -35,6 +35,7 @@ const INK_COLORS: Dictionary = {
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var gpu_particles_2d: GPUParticles2D = %GPUParticles2D
 @onready var duration_timer: Timer = %DurationTimer
+@onready var hit_sound: AudioStreamPlayer2D = %HitSound
 
 
 func _set_direction(new_direction: Vector2) -> void:
@@ -59,6 +60,7 @@ func _ready() -> void:
 	duration_timer.start()
 	var impulse: Vector2 = direction * speed
 	apply_impulse(impulse)
+	hit_sound.play()
 
 
 func _process(_delta: float) -> void:
@@ -93,6 +95,7 @@ func _on_body_entered(body: Node2D) -> void:
 			queue_free()
 	elif body.owner is Player:
 		can_hit_enemy = true
+		hit_sound.play()
 
 
 func _on_duration_timer_timeout() -> void:
