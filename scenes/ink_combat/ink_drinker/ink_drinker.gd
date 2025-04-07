@@ -4,20 +4,17 @@ class_name InkDrinker
 extends CharacterBody2D
 
 const INK_BLOB: PackedScene = preload("res://scenes/ink_combat/ink_blob/ink_blob.tscn")
-const BIG_SPLASH: PackedScene = preload("res://scenes/ink_combat/big_splash/big_splash.tscn")
 
 @export var odd_shoot: bool = false
 @export var ink_follows_player: bool = false
 @export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s") var ink_speed: float = 30.0
 
-var health: float = 1.
 @onready var timer: Timer = %Timer
 
 @onready var ink_blob_marker: Marker2D = %InkBlobMarker
 @onready var hit_box: Area2D = %HitBox
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
-@onready var health_bar: ProgressBar = %HealthBar
 
 
 func _ready() -> void:
@@ -52,18 +49,10 @@ func _on_got_hit(body: Node2D) -> void:
 		return
 	body.queue_free()
 	animation_player.play(&"got hit")
-	health -= 0.05
-	health_bar.value = clamp(health, 0., 1.)
-	if health <= 0.:
-		var ink_color_name: int = 0
-		if body is InkBlob:
-			ink_color_name = body.ink_color_name
-		explode(ink_color_name)
 
 
-func explode(ink_color_name: InkBlob.InkColorNames = InkBlob.InkColorNames.CYAN) -> void:
-	var big_splash: BigSplash = BIG_SPLASH.instantiate()
-	big_splash.ink_color_name = ink_color_name
-	get_tree().current_scene.add_child(big_splash)
-	big_splash.global_position = global_position
+func remove() -> void:
+	timer.stop()
+	animation_player.play(&"remove")
+	await animation_player.animation_finished
 	queue_free()

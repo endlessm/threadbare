@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dfj3625owet5p" path="res://scenes/ink_combat/ink_drinker/ink_drinker.gd" id="1_ffq0m"]
 [ext_resource type="SpriteFrames" uid="uid://3ujiuhj7wpm2" path="res://scenes/ink_combat/ink_drinker/ink_drinker_frames.tres" id="2_h0glm"]
-[ext_resource type="PackedScene" uid="uid://deqi3gd0anesg" path="res://scenes/health_bar/health_bar.tscn" id="3_xcanh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
 height = 42.0
@@ -41,10 +40,26 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 0.112), Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_lx56l"]
+resource_name = "remove"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 0.5),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fbb2g"]
 _data = {
 &"RESET": SubResource("Animation_xcanh"),
-&"got hit": SubResource("Animation_ffq0m")
+&"got hit": SubResource("Animation_ffq0m"),
+&"remove": SubResource("Animation_lx56l")
 }
 
 [node name="InkDrinker" type="CharacterBody2D" groups=["ink_drinkers"]]
@@ -87,10 +102,3 @@ unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_fbb2g")
 }
-
-[node name="HealthBar" parent="." instance=ExtResource("3_xcanh")]
-unique_name_in_owner = true
-offset_left = -38.0
-offset_top = -86.0
-offset_right = 38.0
-offset_bottom = -82.0

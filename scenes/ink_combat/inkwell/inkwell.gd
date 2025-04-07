@@ -28,8 +28,8 @@ func fill() -> void:
 	ink_amount += 1
 	animated_sprite_2d.frame += 1
 	if ink_amount >= INK_NEEDED:
-		var ink_drinkers: Array[Node] = get_tree().get_nodes_in_group(&"ink_drinkers")
-		var ink_drinker: InkDrinker = ink_drinkers.pick_random() as InkDrinker
-		ink_drinker.explode(ink_color_name)
+		await animation_player.animation_finished
+		animation_player.play(&"completed")
+		await animation_player.animation_finished
 		queue_free()
 		completed.emit()

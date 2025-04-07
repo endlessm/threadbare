@@ -11,6 +11,7 @@ enum InkColorNames {
 }
 
 const SPLASH: PackedScene = preload("res://scenes/ink_combat/splash/splash.tscn")
+const BIG_SPLASH: PackedScene = preload("res://scenes/ink_combat/big_splash/big_splash.tscn")
 const PLAYER_HITBOX_LAYER: int = 6
 const ENEMY_HITBOX_LAYER: int = 7
 
@@ -27,11 +28,14 @@ const INK_COLORS: Dictionary = {
 @export var can_hit_enemy: bool = false:
 	set = _set_can_hit_enemy
 @export var ink_color_name: InkColorNames = InkColorNames.CYAN
+@export_range(0., 10., 0.1, "or_greater", "suffix:s") var duration: float = 5.0
 @export var node_to_follow: Node2D = null
 
 @onready var visible_things: Node2D = %VisibleThings
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var gpu_particles_2d: GPUParticles2D = %GPUParticles2D
+@onready var duration_timer: Timer = %DurationTimer
+@onready var hit_sound: AudioStreamPlayer2D = %HitSound
 
 
 func _set_direction(new_direction: Vector2) -> void:
@@ -52,8 +56,11 @@ func _set_can_hit_enemy(new_can_hit_enemy: bool) -> void:
 func _ready() -> void:
 	var color: Color = INK_COLORS[ink_color_name]
 	visible_things.modulate = color
+	duration_timer.wait_time = duration
+	duration_timer.start()
 	var impulse: Vector2 = direction * speed
 	apply_impulse(impulse)
+	hit_sound.play()
 
 
 func _process(_delta: float) -> void:
@@ -80,6 +87,7 @@ func _on_body_entered(body: Node2D) -> void:
 	linear_velocity = Vector2.ZERO
 	apply_impulse(hit_vector)
 	add_splash()
+	duration_timer.start()
 	if body.owner is Inkwell:
 		var inkwell: Inkwell = body.owner as Inkwell
 		if inkwell.ink_color_name == ink_color_name:
@@ -87,3 +95,12 @@ func _on_body_entered(body: Node2D) -> void:
 			queue_free()
 	elif body.owner is Player:
 		can_hit_enemy = true
+		hit_sound.play()
+
+
+func _on_duration_timer_timeout() -> void:
+	var big_splash: BigSplash = BIG_SPLASH.instantiate()
+	big_splash.ink_color_name = ink_color_name
+	get_tree().current_scene.add_child(big_splash)
+	big_splash.global_position = global_position
+	queue_free()
