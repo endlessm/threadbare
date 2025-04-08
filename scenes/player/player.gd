@@ -32,11 +32,18 @@ func _set_mode(new_mode: Mode) -> void:
 		return
 	match mode:
 		Mode.COZY:
-			player_interaction.process_mode = ProcessMode.PROCESS_MODE_INHERIT
-			player_fighting.process_mode = ProcessMode.PROCESS_MODE_DISABLED
+			_toggle_player_behavior(player_interaction, true)
+			_toggle_player_behavior(player_fighting, false)
 		Mode.FIGHTING:
-			player_interaction.process_mode = ProcessMode.PROCESS_MODE_DISABLED
-			player_fighting.process_mode = ProcessMode.PROCESS_MODE_INHERIT
+			_toggle_player_behavior(player_interaction, false)
+			_toggle_player_behavior(player_fighting, true)
+
+
+func _toggle_player_behavior(behavior_node: Node2D, is_active: bool):
+	behavior_node.visible = is_active
+	behavior_node.process_mode = (
+		ProcessMode.PROCESS_MODE_INHERIT if is_active else ProcessMode.PROCESS_MODE_DISABLED
+	)
 
 
 func _ready() -> void:
