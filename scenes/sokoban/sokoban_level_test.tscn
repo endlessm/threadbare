@@ -1,0 +1,91 @@
+[gd_scene load_steps=18 format=3 uid="uid://cpv57hirgmyml"]
+
+[ext_resource type="Script" uid="uid://kx0dy58r7pt0" path="res://scenes/sokoban/rule_engine.gd" id="1_1oqcr"]
+[ext_resource type="Script" uid="uid://dppvw2f8yh4vu" path="res://scenes/sokoban/board_2d.gd" id="1_b0esu"]
+[ext_resource type="Script" uid="uid://w1wfv7xac14u" path="res://scenes/sokoban/directional_input.gd" id="2_b0esu"]
+[ext_resource type="PackedScene" uid="uid://bw2bk7hvohx53" path="res://scenes/sokoban/sokoban_player.tscn" id="2_d153s"]
+[ext_resource type="Script" uid="uid://dbccwvwg28uvs" path="res://scenes/sokoban/piece_group.gd" id="3_8hjev"]
+[ext_resource type="PackedScene" uid="uid://gujm23k2rxjq" path="res://scenes/sokoban/sokoban_wall.tscn" id="3_s6jl3"]
+[ext_resource type="Script" uid="uid://b42fpsa6w8gka" path="res://scenes/sokoban/sokoban_fragment.gd" id="4_thcny"]
+[ext_resource type="Script" uid="uid://dfvfvuuxx5gkf" path="res://scenes/sokoban/sokoban_rule.gd" id="6_gofmd"]
+[ext_resource type="PackedScene" uid="uid://bkt7dh5e77c4n" path="res://scenes/sokoban/sokoban_crate.tscn" id="7_73spk"]
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_s6jl3"]
+
+[sub_resource type="TileSet" id="TileSet_1oqcr"]
+sources/0 = SubResource("TileSetScenesCollectionSource_s6jl3")
+
+[sub_resource type="Resource" id="Resource_73spk"]
+script = ExtResource("3_8hjev")
+groups = Array[StringName]([&"player"])
+metadata/_custom_type_script = "uid://dbccwvwg28uvs"
+
+[sub_resource type="Resource" id="Resource_ef8tg"]
+script = ExtResource("4_thcny")
+move_context = 4
+group = &"player"
+metadata/_custom_type_script = "uid://b42fpsa6w8gka"
+
+[sub_resource type="Resource" id="Resource_thcny"]
+script = ExtResource("4_thcny")
+move_context = 0
+group = &"crate"
+metadata/_custom_type_script = "uid://b42fpsa6w8gka"
+
+[sub_resource type="Resource" id="Resource_u3xr1"]
+script = ExtResource("4_thcny")
+move_context = 4
+group = &"player"
+metadata/_custom_type_script = "uid://b42fpsa6w8gka"
+
+[sub_resource type="Resource" id="Resource_gofmd"]
+script = ExtResource("4_thcny")
+move_context = 4
+group = &"crate"
+metadata/_custom_type_script = "uid://b42fpsa6w8gka"
+
+[sub_resource type="Resource" id="Resource_lye3u"]
+script = ExtResource("6_gofmd")
+direction = 1
+contexts = Array[int]([])
+match_pattern = Array[ExtResource("4_thcny")]([SubResource("Resource_ef8tg"), SubResource("Resource_thcny")])
+replace_pattern = Array[ExtResource("4_thcny")]([SubResource("Resource_u3xr1"), SubResource("Resource_gofmd")])
+metadata/_custom_type_script = "uid://dfvfvuuxx5gkf"
+
+[node name="SokobanLevelTest" type="Node2D"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_set = SubResource("TileSet_1oqcr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Board2D" type="Node2D" parent="."]
+script = ExtResource("1_b0esu")
+metadata/_custom_type_script = "uid://dppvw2f8yh4vu"
+
+[node name="RuleEngine" type="Node" parent="Board2D" node_paths=PackedStringArray("directional_input", "board")]
+script = ExtResource("1_1oqcr")
+directional_input = NodePath("DirectionalInput")
+board = NodePath("..")
+player_groups = SubResource("Resource_73spk")
+rules = Array[ExtResource("6_gofmd")]([SubResource("Resource_lye3u")])
+
+[node name="DirectionalInput" type="Node" parent="Board2D/RuleEngine"]
+script = ExtResource("2_b0esu")
+metadata/_custom_type_script = "uid://w1wfv7xac14u"
+
+[node name="SokobanPlayer" parent="Board2D" instance=ExtResource("2_d153s")]
+
+[node name="SokobanWall" parent="Board2D" instance=ExtResource("3_s6jl3")]
+position = Vector2(-100, 0)
+
+[node name="SokobanWall2" parent="Board2D" instance=ExtResource("3_s6jl3")]
+position = Vector2(-100, -100)
+
+[node name="SokobanWall3" parent="Board2D" instance=ExtResource("3_s6jl3")]
+position = Vector2(0, -100)
+
+[node name="SokobanCrate" parent="Board2D" instance=ExtResource("7_73spk")]
+position = Vector2(200, 0)
+
+[node name="Camera2D" type="Camera2D" parent="."]
