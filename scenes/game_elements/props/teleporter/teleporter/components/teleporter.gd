@@ -12,12 +12,20 @@ const SPAWN_POINT_GROUP_NAME: String = "spawn_point"
 		_update_available_spawn_points()
 		notify_property_list_changed()
 
+@export var use_transition: bool = true:
+	set(new_val):
+		use_transition = new_val
+		notify_property_list_changed()
+
 var spawn_point_path: NodePath:
 	set(new_val):
 		if new_val == ^"NONE":
 			spawn_point_path = ^""
 		else:
 			spawn_point_path = new_val
+
+var enter_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
+var exit_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE
 
 var _available_spawn_points: Array[NodePath] = []
 
@@ -41,12 +49,29 @@ func _on_body_entered(_body: PhysicsBody2D) -> void:
 		# We are using call_deferred here because removing nodes with
 		# collisions during a callback caused by a collision might cause
 		# undesired behavior.
-		SceneSwitcher.change_to_file_with_transition.call_deferred(scene_to_go_to, spawn_point_path)
+		if use_transition:
+			SceneSwitcher.change_to_file_with_transition.call_deferred(
+				scene_to_go_to, spawn_point_path, enter_transition, exit_transition
+			)
+		else:
+			SceneSwitcher.change_to_file(scene_to_go_to, spawn_point_path)
 	else:
 		var spawn_point: SpawnPoint = get_node_or_null(spawn_point_path)
+
 		if is_instance_valid(spawn_point):
-			spawn_point.move_player_to_self_position(true)
-			self.body_entered.connect(_on_body_entered, CONNECT_ONE_SHOT)
+			if use_transition:
+				Transitions.pause_and_do_transition(
+					self._teleport_to_spawn_point.bind(spawn_point),
+					enter_transition,
+					exit_transition
+				)
+			else:
+				self._teleport_to_spawn_point(spawn_point)
+
+
+func _teleport_to_spawn_point(spawn_point: SpawnPoint) -> void:
+	spawn_point.move_player_to_self_position(true)
+	self.body_entered.connect(_on_body_entered, CONNECT_ONE_SHOT)
 
 
 func _get_scene_to_go_to_path() -> String:
@@ -94,5 +119,13 @@ func _get_property_list() -> Array[Dictionary]:
 			"usage": PROPERTY_USAGE_DEFAULT
 		}
 	)
+
+	if use_transition:
+		property_list.push_back(
+			PropertyUtils.enum_property("exit_transition", &"Transition.Effect", Transition.Effect)
+		)
+		property_list.push_back(
+			PropertyUtils.enum_property("enter_transition", &"Transition.Effect", Transition.Effect)
+		)
 
 	return property_list
