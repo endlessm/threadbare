@@ -8,10 +8,10 @@ class_name Checkpoint extends Area2D
 @onready var spawn_point: SpawnPoint = %SpawnPoint
 
 
-func _ready():
-	body_entered.connect(func(_body): self.activate())
+func _ready() -> void:
+	body_entered.connect(func(_body: Node2D) -> void: self.activate())
 
 
 ## Makes this the active checkpoint.
-func activate():
+func activate() -> void:
 	GameState.current_spawn_point = owner.get_path_to(spawn_point)

@@ -39,7 +39,7 @@ func _set_mode(new_mode: Mode) -> void:
 			_toggle_player_behavior(player_fighting, true)
 
 
-func _toggle_player_behavior(behavior_node: Node2D, is_active: bool):
+func _toggle_player_behavior(behavior_node: Node2D, is_active: bool) -> void:
 	behavior_node.visible = is_active
 	behavior_node.process_mode = (
 		ProcessMode.PROCESS_MODE_INHERIT if is_active else ProcessMode.PROCESS_MODE_DISABLED
