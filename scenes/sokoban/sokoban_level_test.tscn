@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cpv57hirgmyml"]
+[gd_scene load_steps=16 format=3 uid="uid://cpv57hirgmyml"]
 
 [ext_resource type="Script" uid="uid://kx0dy58r7pt0" path="res://scenes/sokoban/rules/rule_engine.gd" id="1_1oqcr"]
 [ext_resource type="Script" uid="uid://dppvw2f8yh4vu" path="res://scenes/sokoban/board/board_2d.gd" id="1_b0esu"]
@@ -9,11 +9,6 @@
 [ext_resource type="Script" uid="uid://b42fpsa6w8gka" path="res://scenes/sokoban/rules/sokoban_fragment.gd" id="4_thcny"]
 [ext_resource type="Script" uid="uid://dfvfvuuxx5gkf" path="res://scenes/sokoban/rules/sokoban_rule.gd" id="6_gofmd"]
 [ext_resource type="PackedScene" uid="uid://bkt7dh5e77c4n" path="res://scenes/sokoban/pieces/sokoban_crate.tscn" id="7_73spk"]
-
-[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_s6jl3"]
-
-[sub_resource type="TileSet" id="TileSet_1oqcr"]
-sources/0 = SubResource("TileSetScenesCollectionSource_s6jl3")
 
 [sub_resource type="Resource" id="Resource_73spk"]
 script = ExtResource("3_8hjev")
@@ -54,25 +49,22 @@ metadata/_custom_type_script = "uid://dfvfvuuxx5gkf"
 
 [node name="SokobanLevelTest" type="Node2D"]
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
-tile_set = SubResource("TileSet_1oqcr")
+[node name="RuleEngine" type="Node" parent="." node_paths=PackedStringArray("directional_input", "board")]
+script = ExtResource("1_1oqcr")
+directional_input = NodePath("DirectionalInput")
+board = NodePath("../Board2D")
+player_groups = SubResource("Resource_73spk")
+rules = Array[ExtResource("6_gofmd")]([SubResource("Resource_lye3u")])
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="DirectionalInput" type="Node" parent="RuleEngine"]
+script = ExtResource("2_b0esu")
+metadata/_custom_type_script = "uid://w1wfv7xac14u"
+
+[node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Board2D" type="Node2D" parent="."]
 script = ExtResource("1_b0esu")
 metadata/_custom_type_script = "uid://dppvw2f8yh4vu"
-
-[node name="RuleEngine" type="Node" parent="Board2D" node_paths=PackedStringArray("directional_input", "board")]
-script = ExtResource("1_1oqcr")
-directional_input = NodePath("DirectionalInput")
-board = NodePath("..")
-player_groups = SubResource("Resource_73spk")
-rules = Array[ExtResource("6_gofmd")]([SubResource("Resource_lye3u")])
-
-[node name="DirectionalInput" type="Node" parent="Board2D/RuleEngine"]
-script = ExtResource("2_b0esu")
-metadata/_custom_type_script = "uid://w1wfv7xac14u"
 
 [node name="SokobanPlayer" parent="Board2D" instance=ExtResource("2_d153s")]
 
@@ -87,5 +79,3 @@ position = Vector2(0, -100)
 
 [node name="SokobanCrate" parent="Board2D" instance=ExtResource("7_73spk")]
 position = Vector2(200, 0)
-
-[node name="Camera2D" type="Camera2D" parent="."]
