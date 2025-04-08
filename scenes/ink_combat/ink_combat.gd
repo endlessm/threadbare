@@ -2,13 +2,13 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node2D
 
-signal finished
-
 @export var inkwells_to_win: int = 1
 
 var inkwells_completed: int = 0
 
 @onready var on_the_ground: Node2D = %OnTheGround
+@onready var collectible_item: CollectibleItem = %CollectibleItem
+@onready var player: Player = %Player
 
 
 func _ready() -> void:
@@ -23,6 +23,7 @@ func _on_inkwell_completed() -> void:
 	inkwells_completed += 1
 	if inkwells_completed < inkwells_to_win:
 		return
-	finished.emit()
 	# get_tree().call_group(&"ink_drinkers", &"remove")
 	get_tree().call_group("ink_drinkers", "remove")
+	player.mode = Player.Mode.COZY
+	collectible_item.reveal()
