@@ -47,27 +47,27 @@ func _on_body_entered(_body: PhysicsBody2D) -> void:
 		if is_instance_valid(spawn_point):
 			spawn_point.move_player_to_self_position(true)
 			self.body_entered.connect(_on_body_entered, CONNECT_ONE_SHOT)
-		
 
-func _scene_to_go_to_path():
+
+func _get_scene_to_go_to_path() -> String:
 	if scene_to_go_to.begins_with("uid"):
 		return ResourceUID.get_id_path(ResourceUID.text_to_id(scene_to_go_to))
-	else:
-		return scene_to_go_to
+
+	return scene_to_go_to
+
 
 func _update_available_spawn_points() -> void:
 	if not Engine.is_editor_hint() or not is_inside_tree():
 		return
-		
-	var scene_to_go_to_path: String = _scene_to_go_to_path()
-	
-	if scene_to_go_to == "" or scene_to_go_to_path == get_tree().edited_scene_root.scene_file_path:
+
+	var scene_to_go_to_path: String = _get_scene_to_go_to_path()
+
+	if not scene_to_go_to or scene_to_go_to_path == get_tree().edited_scene_root.scene_file_path:
 		var spawn_points := get_tree().get_nodes_in_group("spawn_point")
-		_available_spawn_points.assign(spawn_points.map(
-				func(spawn_point: Node): return get_path_to(spawn_point)
-			)
+		_available_spawn_points.assign(
+			spawn_points.map(func(spawn_point: Node) -> String: return get_path_to(spawn_point))
 		)
-		
+
 	elif ResourceLoader.exists(scene_to_go_to, "PackedScene"):
 		var packed_scene: PackedScene = load(scene_to_go_to)
 		var paths: Array[NodePath] = []
@@ -81,6 +81,7 @@ func _update_available_spawn_points() -> void:
 
 		_available_spawn_points = paths
 
+
 func _get_property_list() -> Array[Dictionary]:
 	var property_list: Array[Dictionary] = []
 
@@ -93,5 +94,5 @@ func _get_property_list() -> Array[Dictionary]:
 			"usage": PROPERTY_USAGE_DEFAULT
 		}
 	)
-	
+
 	return property_list
