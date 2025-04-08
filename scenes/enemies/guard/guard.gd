@@ -399,7 +399,7 @@ func edit_patrol_path() -> void:
 	# part of a script that runs only in the editor (like plugins).
 	# This function should only be called in the editor, but having a direct
 	# reference to the [class EditorInterface] causes errors on runtime builds.
-	var editor_interface = Engine.get_singleton("EditorInterface")
+	var editor_interface: Object = Engine.get_singleton("EditorInterface")
 
 	if patrol_path:
 		editor_interface.edit_node.call_deferred(patrol_path)

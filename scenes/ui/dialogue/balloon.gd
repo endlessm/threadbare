@@ -79,7 +79,7 @@ func _notification(what: int) -> void:
 		and is_instance_valid(dialogue_label)
 	):
 		_locale = TranslationServer.get_locale()
-		var visible_ratio = dialogue_label.visible_ratio
+		var visible_ratio := dialogue_label.visible_ratio
 		self.dialogue_line = await resource.get_next_dialogue_line(dialogue_line.id)
 		if visible_ratio < 1:
 			dialogue_label.skip_typing()
@@ -126,7 +126,7 @@ func apply_dialogue_line() -> void:
 		balloon.focus_mode = Control.FOCUS_NONE
 		responses_menu.show()
 	elif dialogue_line.time != "":
-		var time = (
+		var time := (
 			dialogue_line.text.length() * 0.02
 			if dialogue_line.time == "auto"
 			else dialogue_line.time.to_float()

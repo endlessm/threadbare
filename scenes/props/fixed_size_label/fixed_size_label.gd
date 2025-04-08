@@ -48,7 +48,7 @@ func _ready() -> void:
 	label_container.reparent.call_deferred(screen_overlay)
 
 
-func on_visibility_changed():
+func on_visibility_changed() -> void:
 	label_container.visible = is_visible_in_tree()
 
 
