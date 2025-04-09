@@ -28,7 +28,7 @@ func _on_timeout() -> void:
 	if not is_instance_valid(player):
 		return
 	animated_sprite_2d.play(&"attack anticipation")
-	await animated_sprite_2d.animation_looped
+	await animated_sprite_2d.animation_finished
 	animated_sprite_2d.play(&"attack")
 	var ink_blob: InkBlob = INK_BLOB.instantiate()
 	ink_blob.direction = ink_blob_marker.global_position.direction_to(player.global_position)
@@ -38,7 +38,7 @@ func _on_timeout() -> void:
 		ink_blob.node_to_follow = player
 	ink_blob.speed = ink_speed
 	get_tree().current_scene.add_child(ink_blob)
-	await animated_sprite_2d.animation_looped
+	await animated_sprite_2d.animation_finished
 	animated_sprite_2d.play(&"idle")
 
 
