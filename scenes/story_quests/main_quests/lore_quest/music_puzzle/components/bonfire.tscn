@@ -1,0 +1,81 @@
+[gd_scene load_steps=12 format=3 uid="uid://0ho4pvu8mn22"]
+
+[ext_resource type="Script" uid="uid://skx71j7ekdpc" path="res://scenes/story_quests/main_quests/lore_quest/music_puzzle/components/bonfire.gd" id="1_chc78"]
+[ext_resource type="Texture2D" uid="uid://bjakp6o3lhvcr" path="res://assets/tiny-swords/Effects/Fire/Fire.png" id="1_db1lc"]
+[ext_resource type="Texture2D" uid="uid://ddxakjtgamrjj" path="res://assets/tiny-swords/Resources/Resources/W_Idle.png" id="2_vbefk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1u12m"]
+atlas = ExtResource("1_db1lc")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7vc6p"]
+atlas = ExtResource("1_db1lc")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_te87b"]
+atlas = ExtResource("1_db1lc")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n2cce"]
+atlas = ExtResource("1_db1lc")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wygyr"]
+atlas = ExtResource("1_db1lc")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ehqd8"]
+atlas = ExtResource("1_db1lc")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e4kms"]
+atlas = ExtResource("1_db1lc")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c0tnm"]
+animations = [{
+"frames": [{
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_1u12m")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_7vc6p")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_te87b")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_n2cce")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_wygyr")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_ehqd8")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_e4kms")
+}],
+"loop": true,
+"name": &"burning",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Bonfire" type="StaticBody2D"]
+script = ExtResource("1_chc78")
+
+[node name="Wood" type="Sprite2D" parent="."]
+texture = ExtResource("2_vbefk")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-26, 21, 18, 5, 26, 14, 24, 25, -19, 39, -27, 33)
+
+[node name="Fire" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-1, -5)
+sprite_frames = SubResource("SpriteFrames_c0tnm")
