@@ -59,6 +59,7 @@ var _is_attacking: bool
 
 
 func _ready() -> void:
+	_initial_position = position
 	if Engine.is_editor_hint():
 		return
 	if autostart:
@@ -66,11 +67,16 @@ func _ready() -> void:
 
 
 func _draw() -> void:
-	if walking_time == 0 or walking_range == 0:
-		return
-	if Engine.is_editor_hint():
-		draw_circle(Vector2.ZERO, walking_range, Color(0.0, 1.0, 1.0, 0.3))
-		draw_circle(Vector2.ZERO, walking_range * WALK_TARGET_SKIP_RANGE, Color(0.0, 0.0, 0.0, 0.3))
+	if Engine.is_editor_hint() or get_tree().is_debugging_collisions_hint():
+		draw_circle(_initial_position - position, walking_range, Color(0.0, 1.0, 1.0, 0.3))
+		draw_circle(
+			_initial_position - position,
+			walking_range * WALK_TARGET_SKIP_RANGE,
+			Color(0.0, 0.0, 0.0, 0.3)
+		)
+		if get_tree().is_debugging_collisions_hint():
+			## Only when playing with collision shapes visible, draw a dot for the target position:
+			draw_circle(_target_position - position, 10., Color(1.0, 0.0, 0.0, 0.7))
 
 
 func _get_state() -> State:
@@ -114,6 +120,9 @@ func _process(_delta: float) -> void:
 		State.WALKING:
 			velocity = _get_velocity()
 			move_and_slide()
+			if get_tree().is_debugging_collisions_hint():
+				# Update the debug shapes when the position changes:
+				queue_redraw()
 			if not velocity.is_zero_approx():
 				animated_sprite_2d.play(&"walk")
 
