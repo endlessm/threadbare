@@ -12,6 +12,13 @@ enum State {
 
 const INK_BLOB: PackedScene = preload("res://scenes/ink_combat/ink_blob/ink_blob.tscn")
 
+## When targetting the next walking position, skip this slice of the circle.
+const WALK_TARGET_SKIP_ANGLE: float = PI / 4.
+
+## When targetting the next walking position, skip an inner circle. The radius of the inner
+## circle is this proportion of the [member walking_range].
+const WALK_TARGET_SKIP_RANGE: float = 0.25
+
 @export var autostart: bool = false
 @export var odd_shoot: bool = false
 @export var ink_follows_player: bool = false
@@ -63,6 +70,7 @@ func _draw() -> void:
 		return
 	if Engine.is_editor_hint():
 		draw_circle(Vector2.ZERO, walking_range, Color(0.0, 1.0, 1.0, 0.3))
+		draw_circle(Vector2.ZERO, walking_range * WALK_TARGET_SKIP_RANGE, Color(0.0, 0.0, 0.0, 0.3))
 
 
 func _get_state() -> State:
@@ -111,8 +119,16 @@ func _process(_delta: float) -> void:
 
 
 func _set_target_position() -> void:
+	var current_angle = _initial_position.angle_to_point(position)
+	var start_angle = current_angle + WALK_TARGET_SKIP_ANGLE / 2.
+	var end_angle = 2 * PI - current_angle - WALK_TARGET_SKIP_ANGLE / 2.
 	_target_position = (
-		_initial_position + Vector2.LEFT.rotated(randf_range(0, 2 * PI)) * walking_range * randf()
+		_initial_position
+		+ (
+			Vector2.LEFT.rotated(randf_range(start_angle, end_angle))
+			* walking_range
+			* randf_range(WALK_TARGET_SKIP_RANGE, 1.0)
+		)
 	)
 
 
