@@ -60,12 +60,15 @@ func _set_hash(resource_path: String) -> void:
 		_window.location.replace(url.href)
 
 
-func change_to_file_with_transition(scene_path: String, spawn_point: NodePath = ^"") -> void:
-	Pause.pause_system(Pause.System.PLAYER_INPUT, self)
-	await Transitions.leave_scene(Transition.Effect.RIGHT_TO_LEFT_WIPE)
-	change_to_file(scene_path, spawn_point)
-	await Transitions.introduce_scene(Transition.Effect.LEFT_TO_RIGHT_WIPE)
-	Pause.unpause_system(Pause.System.PLAYER_INPUT, self)
+func change_to_file_with_transition(
+	scene_path: String,
+	spawn_point: NodePath = ^"",
+	enter_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE,
+	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
+) -> void:
+	Transitions.pause_and_do_transition(
+		change_to_file.bind(scene_path, spawn_point), enter_transition, exit_transition
+	)
 
 
 func change_to_file(scene_path: String, spawn_point: NodePath = ^"") -> void:

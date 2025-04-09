@@ -71,3 +71,16 @@ func introduce_scene(
 	visible = true
 	await _do_tween(1.0, _transition_effect, duration, easing, transition_type)
 	visible = false
+
+
+func pause_and_do_transition(
+	in_between: Callable,
+	out_transition: Transition.Effect = Transition.Effect.FADE,
+	in_transition: Transition.Effect = Transition.Effect.FADE,
+	system: Pause.System = Pause.System.PLAYER_INPUT
+) -> void:
+	Pause.pause_system(system, self)
+	await leave_scene(out_transition)
+	await in_between.call()
+	await introduce_scene(in_transition)
+	Pause.unpause_system(system, self)
