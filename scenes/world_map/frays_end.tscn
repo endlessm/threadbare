@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://cufkthb25mpxy"]
+[gd_scene load_steps=16 format=4 uid="uid://cufkthb25mpxy"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_4evgk"]
 [ext_resource type="PackedScene" uid="uid://do8ya53bglr13" path="res://scenes/buildings/castle.tscn" id="2_vb7pi"]
@@ -11,8 +11,9 @@
 [ext_resource type="PackedScene" uid="uid://cw8b1besnjc6u" path="res://scenes/buildings/tower.tscn" id="8_mr2ek"]
 [ext_resource type="Texture2D" uid="uid://7afi18x3x1dm" path="res://assets/tiny-swords/Deco/18.png" id="9_780ok"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/npcs/talker/talker.tscn" id="11_mr2ek"]
-[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/world_map/teleporter.gd" id="12_r4ivj"]
+[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/teleporter/teleporter.gd" id="12_r4ivj"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/world_map/spawn_point.gd" id="13_r4ivj"]
+[ext_resource type="PackedScene" uid="uid://cxf210qioqkk3" path="res://scenes/teleporter/visible_teleporter.tscn" id="14_uojly"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r4ivj"]
 size = Vector2(52, 127)
@@ -58,6 +59,11 @@ y_sort_enabled = true
 position = Vector2(1661, 918)
 text = "Frays End
 Where everything begins"
+
+[node name="Sign3" parent="Props" instance=ExtResource("4_nkg4r")]
+position = Vector2(632, 287)
+text = "Fast travel to
+Entrance"
 
 [node name="Sign2" parent="Props" instance=ExtResource("4_nkg4r")]
 position = Vector2(1885, 918)
@@ -197,7 +203,7 @@ position = Vector2(2117, 1023)
 collision_layer = 4
 script = ExtResource("12_r4ivj")
 scene_to_go_to = "uid://cnse1w070wmr7"
-spawn_point_path = NodePath("LeftEntranceSpawnPoint")
+spawn_point_path = NodePath("")
 metadata/_custom_type_script = "uid://hqdquinbimce"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter"]
@@ -211,3 +217,8 @@ position = Vector2(2011, 1026)
 gizmo_extents = 30.0
 script = ExtResource("13_r4ivj")
 metadata/_custom_type_script = "uid://0enyu5v4ra34"
+
+[node name="VisibleTeleporter" parent="." instance=ExtResource("14_uojly")]
+position = Vector2(537, 287)
+collision_layer = 4
+spawn_point_path = NodePath("../RightEntranceSpawnPoint")

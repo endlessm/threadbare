@@ -17,8 +17,8 @@ func _ready() -> void:
 		move_player_to_self_position()
 
 
-func move_player_to_self_position() -> void:
+func move_player_to_self_position(smooth_camera: bool = false) -> void:
 	var player: Node2D = get_tree().get_first_node_in_group("player")
 
 	if is_instance_valid(player):
-		player.teleport_to(self.global_position)
+		player.teleport_to(self.global_position, smooth_camera)
