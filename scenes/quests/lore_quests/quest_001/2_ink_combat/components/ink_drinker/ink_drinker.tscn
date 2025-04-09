@@ -1,0 +1,105 @@
+[gd_scene load_steps=9 format=3 uid="uid://b82nsrh332syj"]
+
+[ext_resource type="Script" uid="uid://dfj3625owet5p" path="res://scenes/story_quests/main_quests/lore_quest/ink_combat/components/ink_drinker/components/ink_drinker.gd" id="1_ffq0m"]
+[ext_resource type="SpriteFrames" uid="uid://3ujiuhj7wpm2" path="res://scenes/story_quests/main_quests/lore_quest/ink_combat/components/ink_drinker/components/ink_drinker_frames.tres" id="2_h0glm"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
+height = 42.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ffq0m"]
+size = Vector2(78, 75)
+
+[sub_resource type="Animation" id="Animation_xcanh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ffq0m"]
+resource_name = "got hit"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.112), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_lx56l"]
+resource_name = "remove"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 0.5),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fbb2g"]
+_data = {
+&"RESET": SubResource("Animation_xcanh"),
+&"got hit": SubResource("Animation_ffq0m"),
+&"remove": SubResource("Animation_lx56l")
+}
+
+[node name="InkDrinker" type="CharacterBody2D" groups=["ink_drinkers"]]
+collision_layer = 2
+collision_mask = 17
+script = ExtResource("1_ffq0m")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -30)
+sprite_frames = ExtResource("2_h0glm")
+animation = &"walk"
+autoplay = "idle"
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_3vyb7")
+
+[node name="Timer" type="Timer" parent="."]
+unique_name_in_owner = true
+process_callback = 0
+wait_time = 5.0
+
+[node name="InkBlobMarker" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -31)
+
+[node name="HitBox" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 128
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, -31.5)
+shape = SubResource("RectangleShape2D_ffq0m")
+debug_color = Color(0.990065, 0, 0.28292, 0.42)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_fbb2g")
+}

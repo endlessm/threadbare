@@ -1,0 +1,66 @@
+[gd_scene load_steps=6 format=3 uid="uid://covsdqqsd6rsy"]
+
+[ext_resource type="Script" uid="uid://o54tdc374nxc" path="res://scenes/game_elements/props/sign/components/sign.gd" id="1_cb2ey"]
+[ext_resource type="Texture2D" uid="uid://cq5l1xle30ch7" path="res://assets/tiny-swords/Deco/17.png" id="2_85li6"]
+[ext_resource type="FontFile" uid="uid://d05uo8wmexkd8" path="res://assets/fonts/m6x11plus.ttf" id="3_85li6"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cb2ey"]
+radius = 12.0
+height = 50.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_85li6"]
+radius = 80.0
+
+[node name="Sign" type="Node2D"]
+script = ExtResource("1_cb2ey")
+
+[node name="Appearance" type="Sprite2D" parent="."]
+texture = ExtResource("2_85li6")
+offset = Vector2(0, -30)
+
+[node name="Collider" type="StaticBody2D" parent="."]
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collider"]
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_cb2ey")
+
+[node name="LabelContainer" type="MarginContainer" parent="."]
+z_index = 1
+offset_left = -96.0
+offset_top = -176.0
+offset_right = 104.0
+offset_bottom = -76.0
+pivot_offset = Vector2(100, 50)
+
+[node name="PanelContainer" type="PanelContainer" parent="LabelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="MarginContainer" type="MarginContainer" parent="LabelContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="LabelContainer/PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("3_85li6")
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_85li6")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

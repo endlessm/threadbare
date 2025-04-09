@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://bytkm0r5fe5xb"]
+
+[ext_resource type="Script" uid="uid://dedhjloxblho6" path="res://scenes/game_elements/characters/npcs/story_quest_starter/components/story_quest_starter.gd" id="1_vtqap"]
+[ext_resource type="SpriteFrames" uid="uid://dtbdj0kkcm6uo" path="res://scenes/game_elements/characters/shared_components/sprite_frames/sprite_frame_01.tres" id="2_upu7j"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="3_fe63y"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
+height = 42.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3eksq"]
+size = Vector2(52, 50)
+
+[node name="StoryQuestStarter" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_vtqap")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -30)
+sprite_frames = ExtResource("2_upu7j")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.491668
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_3vyb7")
+
+[node name="InteractArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_fe63y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(0, -29)
+shape = SubResource("RectangleShape2D_3eksq")
+debug_color = Color(0.591123, 0.547358, 0, 0.42)
