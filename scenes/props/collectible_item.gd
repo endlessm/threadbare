@@ -13,6 +13,9 @@ class_name CollectibleItem extends Node2D
 	set(new_value):
 		revealed = new_value
 		_update_based_on_revealed()
+## If provided, this dialogue will be displayed after the player collects this item.
+@export var collected_dialogue: DialogueResource
+## If provided, switch to this scene after collecting and possibly displaying a dialogue.
 @export_file("*.tscn") var scene_to_go_to: String
 ## [InventoryItem] provided by this collectible when interacted with.
 @export var item: InventoryItem:
@@ -61,6 +64,10 @@ func _on_interacted(_from_right: bool) -> void:
 	GameState.add_collected_item(item)
 
 	interact_area.end_interaction()
+
+	if collected_dialogue:
+		DialogueManager.show_dialogue_balloon(collected_dialogue, "", [self])
+		await DialogueManager.dialogue_ended
 
 	queue_free()
 

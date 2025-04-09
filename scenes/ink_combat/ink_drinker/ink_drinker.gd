@@ -5,6 +5,7 @@ extends CharacterBody2D
 
 const INK_BLOB: PackedScene = preload("res://scenes/ink_combat/ink_blob/ink_blob.tscn")
 
+@export var autostart: bool = false
 @export var odd_shoot: bool = false
 @export var ink_follows_player: bool = false
 @export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s") var ink_speed: float = 30.0
@@ -18,11 +19,8 @@ const INK_BLOB: PackedScene = preload("res://scenes/ink_combat/ink_blob/ink_blob
 
 
 func _ready() -> void:
-	timer.timeout.connect(_on_timeout)
-	hit_box.body_entered.connect(_on_got_hit)
-	if odd_shoot:
-		await get_tree().create_timer(timer.wait_time / 2).timeout
-	timer.start()
+	if autostart:
+		start()
 
 
 func _on_timeout() -> void:
@@ -49,6 +47,14 @@ func _on_got_hit(body: Node2D) -> void:
 		return
 	body.queue_free()
 	animation_player.play(&"got hit")
+
+
+func start() -> void:
+	timer.timeout.connect(_on_timeout)
+	hit_box.body_entered.connect(_on_got_hit)
+	if odd_shoot:
+		await get_tree().create_timer(timer.wait_time / 2).timeout
+	timer.start()
 
 
 func remove() -> void:

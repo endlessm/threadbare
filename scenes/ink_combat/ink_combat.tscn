@@ -1,8 +1,10 @@
-[gd_scene load_steps=11 format=4 uid="uid://c764br4tplkb2"]
+[gd_scene load_steps=13 format=4 uid="uid://c764br4tplkb2"]
 
 [ext_resource type="Script" uid="uid://c38tkgfys3d63" path="res://scenes/ink_combat/ink_combat.gd" id="1_v7ikp"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_wrx86"]
+[ext_resource type="Resource" uid="uid://cmhcuoms2kh1a" path="res://scenes/ink_combat/intro.dialogue" id="2_o41k0"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/npcs/talker/talker.tscn" id="3_1qiyj"]
+[ext_resource type="Resource" uid="uid://3r4tb23ljowg" path="res://scenes/ink_combat/win.dialogue" id="3_dq7lm"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/player/player.tscn" id="3_v7ikp"]
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/ink_combat/ink_drinker/ink_drinker.tscn" id="5_h0i4r"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/ink_combat/inkwell/inkwell.tscn" id="6_v7ikp"]
@@ -19,6 +21,7 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 [node name="InkCombat" type="Node2D"]
 script = ExtResource("1_v7ikp")
 inkwells_to_win = 2
+intro_dialogue = ExtResource("2_o41k0")
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -51,8 +54,8 @@ unique_name_in_owner = true
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("3_v7ikp")]
-position = Vector2(1472, 937)
 unique_name_in_owner = true
+position = Vector2(1472, 937)
 mode = 1
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
@@ -101,6 +104,7 @@ ink_color_name = 1
 unique_name_in_owner = true
 position = Vector2(1463, 1172)
 revealed = false
+collected_dialogue = ExtResource("3_dq7lm")
 scene_to_go_to = "uid://db6vhi7s2f37c"
 item = SubResource("Resource_na0be")
 
