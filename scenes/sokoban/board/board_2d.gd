@@ -47,25 +47,7 @@ func is_empty(grid_position: Vector2i, groups: PieceGroups = null, layer: int = 
 
 
 func get_piece_at(grid_position: Vector2i, groups: PieceGroups = null, layer: int = -1) -> Piece2D:
-	_update_cells()
-
-	# No cell here yet
-	if not _cells_by_position.has(grid_position):
-		return null
-	var cell := _cells_by_position[grid_position]
-	# Nothing in this cell
-	if cell.is_empty():
-		return null
-	# No group filter, return first piece in cell
-	if not PieceGroups.is_valid(groups):
-		return cell.pieces[0]
-
-	# Return first piece that matches group
-	for piece in _cells_by_position[grid_position].pieces:
-		if piece.is_in_groups(groups) and piece.is_in_layer(layer):
-			return piece
-
-	return null
+	return get_pieces_at(grid_position, groups, layer)[0]
 
 
 func get_pieces_at(
