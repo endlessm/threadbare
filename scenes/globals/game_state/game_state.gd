@@ -3,9 +3,13 @@
 @tool
 extends Node
 
-## Emited when a new item is collected, even if it wasn't added to the
+## Emitted when a new item is collected, even if it wasn't added to the
 ## inventory due to it being already there.
 signal item_collected(item: InventoryItem)
+
+## Emitted when a item is consumed, causing it to be removed from the
+## [member inventory].
+signal item_consumed(item: InventoryItem)
 
 ## Global inventory, used to track the items the player obtains and that
 ## can be added to the loom.
@@ -28,6 +32,19 @@ func add_collected_item(item: InventoryItem) -> void:
 	inventory.add_item(item)
 	story_quest_inventory.add_item(item)
 	item_collected.emit(item)
+
+
+## Removes the [InventoryItem] from the [member inventory] and the
+## [member story_quest_inventory] if it is there.
+func remove_consumed_item(item: InventoryItem) -> void:
+	inventory.remove_item(item)
+	story_quest_inventory.remove_item(item)
+	item_consumed.emit(item)
+
+
+## Returns all the items collected so far in the [member inventory].
+func items_collected() -> Array[InventoryItem]:
+	return inventory.get_items()
 
 
 ## Returns the items in the [member story_quest_inventory].[br]
