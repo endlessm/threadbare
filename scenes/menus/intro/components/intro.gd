@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Control
 
+const NEXT_SCENE: PackedScene = preload("res://scenes/world_map/frays_end.tscn")
+
 ## Dialogue introducing the world
 @export
 var introduction: DialogueResource = preload("res://scenes/menus/intro/components/intro.dialogue")
@@ -20,4 +22,4 @@ func start_fade() -> void:
 
 func _on_dialogue_ended(_dialogue: DialogueResource) -> void:
 	DialogueManager.dialogue_ended.disconnect(_on_dialogue_ended)
-	SceneSwitcher.change_to_packed(preload("res://scenes/world_map/frays_end.tscn"))
+	SceneSwitcher.change_to_packed(NEXT_SCENE)
