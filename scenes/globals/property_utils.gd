@@ -7,7 +7,7 @@ extends Object
 static func get_enum_hint_string(an_enum: Dictionary) -> String:
 	var result := []
 	for name in an_enum.keys():
-		var readable_name: String = name.capitalize().replace("_", " ")
+		var readable_name: String = name.capitalize()
 		result.append("%s:%d" % [readable_name, an_enum[name]])
 	return ",".join(result)
 
