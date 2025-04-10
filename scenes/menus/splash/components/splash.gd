@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node2D
 
+const NEXT_SCENE: PackedScene = preload("res://scenes/menus/intro/intro.tscn")
+
 
 func _ready() -> void:
 	$LogoStitcher.finished.connect(_on_logo_stitcher_finished)
@@ -13,7 +15,7 @@ func _process(_delta: float) -> void:
 
 
 func switch_to_intro() -> void:
-	SceneSwitcher.change_to_packed(preload("res://scenes/menus/intro/intro.tscn"))
+	SceneSwitcher.change_to_packed(NEXT_SCENE)
 
 
 func _on_logo_stitcher_finished() -> void:
