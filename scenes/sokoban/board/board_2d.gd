@@ -185,9 +185,12 @@ func _piece_filter(piece: Piece2D, groups: PieceGroups, layer: int, include_inac
 	# We don't want inactive pieces and piece is inactive
 	if not include_inactive and not piece.active:
 		return false
-	var filtered_by_group: bool = not groups.is_empty()
 	# Piece doesn't match the group filter
-	if filtered_by_group and not (piece.is_in_groups(groups) and piece.is_in_layer(layer)):
+	if groups and not groups.is_empty():
+		if not piece.is_in_groups(groups):
+			return false
+	# Piece doesn't match layer
+	if not piece.is_in_layer(layer):
 		return false
 	# Piece satisfies filter
 	return true
