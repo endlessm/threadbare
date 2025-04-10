@@ -9,6 +9,9 @@ extends Node
 @export var player_groups: PieceGroups
 @export var rules: Array[SokobanRule]
 
+@export_group("Debugging")
+@export var show_output: bool = false
+
 
 func _ready() -> void:
 	directional_input.input = _directional_input
@@ -26,7 +29,8 @@ func _take_turn(direction_2d: Vector2i) -> void:
 	for player in board.get_pieces(player_groups):
 		move_attempts.append(_make_move_attempt(player, direction_2d))
 
-	print(move_attempts)
+	if show_output:
+		print(move_attempts)
 
 	# run rules here
 	for rule in rules:
@@ -92,7 +96,6 @@ func _attempt_rule_on_piece(
 			return
 
 	# rule matches! apply the rule now
-	print("rule matches!")
 	for i in rule.match_pattern.size():
 		var fragment := rule.replace_pattern[i]
 
