@@ -20,6 +20,10 @@ const TEXTURES: Dictionary[ItemType, Texture2D] = {
 @export var type: ItemType
 
 
+func same_type_as(other_item: InventoryItem):
+	return type == other_item.type
+
+
 func texture() -> Texture2D:
 	return texture_for_type(type)
 
@@ -32,3 +36,7 @@ static func with_type(a_type: ItemType) -> InventoryItem:
 	var item := new()
 	item.type = a_type
 	return item
+
+
+static func item_types() -> Array:
+	return ItemType.values()

@@ -18,11 +18,15 @@ func _ready() -> void:
 		items_container.get_child(i).start_as_filled(items_collected[i])
 	# Then, when each new item is collected, it is added to the progress UI
 	GameState.item_collected.connect(self._on_item_collected)
+	GameState.item_consumed.connect(self._on_item_consumed)
 
 
 func _on_item_collected(item: InventoryItem) -> void:
-	for i: int in _amount_of_items_collected():
-		items_container.get_child(i).fill(item)
+	for child in items_container.get_children():
+		var item_slot = child as ItemSlot
+		if not item_slot.is_filled():
+			item_slot.fill(item)
+			return
 
 
 func _items_collected_so_far() -> Array[InventoryItem]:
@@ -31,3 +35,11 @@ func _items_collected_so_far() -> Array[InventoryItem]:
 
 func _amount_of_items_collected() -> int:
 	return GameState.amount_of_items_within_current_quest()
+
+
+func _on_item_consumed(item: InventoryItem) -> void:
+	for child in items_container.get_children():
+		var item_slot = child as ItemSlot
+		if item_slot.is_filled_with_same_item_type_as(item):
+			item_slot.free_slot()
+			return

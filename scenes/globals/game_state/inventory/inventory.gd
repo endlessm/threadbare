@@ -23,5 +23,9 @@ func add_item(item: InventoryItem) -> void:
 		_items.push_back(item)
 
 
+func remove_item(item: InventoryItem) -> void:
+	_items.erase(item)
+
+
 func amount_of_items() -> int:
 	return _items.size()
