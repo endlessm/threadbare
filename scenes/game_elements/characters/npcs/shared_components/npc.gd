@@ -5,6 +5,7 @@ class_name NPC
 extends CharacterBody2D
 
 enum LookAtSide {
+	FRONT = 0,
 	LEFT = -1,
 	RIGHT = 1,
 }
