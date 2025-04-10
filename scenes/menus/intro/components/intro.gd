@@ -22,4 +22,6 @@ func start_fade() -> void:
 
 func _on_dialogue_ended(_dialogue: DialogueResource) -> void:
 	DialogueManager.dialogue_ended.disconnect(_on_dialogue_ended)
-	SceneSwitcher.change_to_packed(NEXT_SCENE)
+	SceneSwitcher.change_to_packed_with_transition(
+		NEXT_SCENE, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+	)
