@@ -26,7 +26,8 @@ func _ready() -> void:
 
 func _on_interaction_started(from_right: bool) -> void:
 	_previous_look_at_side = look_at_side
-	look_at_side = NPC.LookAtSide.RIGHT if from_right else NPC.LookAtSide.LEFT
+	if look_at_side != NPC.LookAtSide.FRONT:
+		look_at_side = NPC.LookAtSide.RIGHT if from_right else NPC.LookAtSide.LEFT
 	DialogueManager.show_dialogue_balloon(dialogue, "", [self])
 
 

@@ -1,16 +1,14 @@
-[gd_scene load_steps=13 format=4 uid="uid://cnse1w070wmr7"]
+[gd_scene load_steps=11 format=4 uid="uid://cnse1w070wmr7"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_1vl85"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="2_lertq"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="3_fb8io"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_jbn3a"]
-[ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="4_byadx"]
 [ext_resource type="PackedScene" uid="uid://do8ya53bglr13" path="res://scenes/game_elements/props/buildings/castle/castle.tscn" id="4_grp1x"]
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter/components/teleporter.gd" id="4_jbn3a"]
-[ext_resource type="Script" uid="uid://dedhjloxblho6" path="res://scenes/game_elements/characters/npcs/story_quest_starter/components/story_quest_starter.gd" id="5_j80dy"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="5_nfxoe"]
-[ext_resource type="PackedScene" uid="uid://7hoy2p14t6kc" path="res://scenes/story_quests/main_quests/lore_quest/music_puzzle/main.tscn" id="6_58j83"]
-[ext_resource type="Resource" uid="uid://ykdgo73x62wa" path="res://scenes/game_elements/characters/npcs/story_quest_starter/components/story_quest_starter.dialogue" id="7_fb8io"]
+[ext_resource type="PackedScene" uid="uid://7hoy2p14t6kc" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/main.tscn" id="6_58j83"]
+[ext_resource type="PackedScene" uid="uid://bytkm0r5fe5xb" path="res://scenes/game_elements/characters/npcs/story_quest_starter/story_quest_starter.tscn" id="6_j80dy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nfxoe"]
 size = Vector2(58, 115)
@@ -291,13 +289,11 @@ editor_draw_limits = true
 [node name="NPCs" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Talker" parent="NPCs" instance=ExtResource("4_byadx")]
+[node name="StoryQuestStarter" parent="NPCs" instance=ExtResource("6_j80dy")]
 position = Vector2(952, 289)
-script = ExtResource("5_j80dy")
 quest_scene = ExtResource("6_58j83")
 quest_description = "This quest will need speed, reflexes, and ingenuity."
-npc_name = "Mnemosyne"
-dialogue = ExtResource("7_fb8io")
+npc_name = "Elder"
 
 [node name="Teleporter" type="Area2D" parent="."]
 position = Vector2(-91, 1025)
