@@ -2,6 +2,11 @@
 # SPDX-License-Identifier: MPL-2.0
 class_name SokobanRule
 extends Resource
+## A match & replace pattern used in a Sokoban puzzle.
+##
+## Sokoban Rules are a series of RuleFragments that match a
+## contiguous line of Piece2Ds. There can also be some
+## contexts for how and when to perform the rule.
 
 enum CONTEXT {
 	NONE,

@@ -2,6 +2,11 @@
 # SPDX-License-Identifier: MPL-2.0
 class_name RuleFragment
 extends Resource
+## A group identifier and a movement context
+##
+## RuleFragments are used to compare against a piece in a SokobanRule.
+## They hold a single group identifier and a context for what direction
+## (if any) it is moving.
 
 enum MOVE {
 	ANY,
