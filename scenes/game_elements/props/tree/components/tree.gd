@@ -7,7 +7,3 @@ extends Node2D
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_SCENE_INSTANTIATED:
 		scale = Vector2(randf_range(0.8, 1.2), randf_range(0.8, 1.2))
-
-
-func _ready() -> void:
-	$AnimatedSprite2D.play("default")
