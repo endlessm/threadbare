@@ -1,0 +1,333 @@
+[gd_scene load_steps=16 format=3 uid="uid://712saqgof3kf"]
+
+[ext_resource type="Script" uid="uid://dj5shb75ckk2a" path="res://scenes/game_elements/props/eternal_loom/eternal_loom.gd" id="1_0f752"]
+[ext_resource type="Texture2D" uid="uid://bnfq0mr48gai7" path="res://assets/tiny-swords/Factions/Knights/Buildings/House/House_Blue.png" id="2_6rmv1"]
+[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="3_kyhkd"]
+[ext_resource type="Texture2D" uid="uid://brspc1u02oawt" path="res://assets/collectibles/memory.png" id="4_ytadt"]
+[ext_resource type="Texture2D" uid="uid://wyiamtqmp4gk" path="res://assets/collectibles/imagination.png" id="5_x4prg"]
+[ext_resource type="Texture2D" uid="uid://c4fefrg0tfkpl" path="res://assets/collectibles/spirit.png" id="6_j8bpo"]
+
+[sub_resource type="Animation" id="Animation_uhynt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_uojly"]
+resource_name = "idle"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 1, 1), Color(0, 1, 1, 1), Color(1, 1, 0, 1), Color(0, 1, 0, 1), Color(1, 0, 0, 1), Color(1, 0, 1, 1), Color(1, 0.564706, 0, 1), Color(0.290196, 1, 0.286275, 1), Color(1, 0.207843, 0.52549, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ojp30"]
+_data = {
+&"RESET": SubResource("Animation_uhynt"),
+&"idle": SubResource("Animation_uojly")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uojly"]
+size = Vector2(269, 296)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uhynt"]
+size = Vector2(271, 322)
+
+[sub_resource type="Animation" id="Animation_x4prg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Memory:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Memory/Memory:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3, 3)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Imagination:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Imagination/Imagination:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3, 3)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Spirit:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Spirit/Spirit:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3, 3)]
+}
+
+[sub_resource type="Animation" id="Animation_ytadt"]
+resource_name = "loom_offering"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Memory:progress_ratio")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5, 2.03333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Memory:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Memory/Memory:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.266667, 4.3, 4.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(3, 3), Vector2(5, 5), Vector2(5, 5), Vector2(0.01, 25)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Imagination:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.1, 4.7),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Imagination:progress_ratio")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1.1, 3.03333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 0.89]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Imagination/Imagination:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.58, 1.12, 4.5, 4.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(3, 3), Vector2(5, 5), Vector2(5, 5), Vector2(0.01, 25)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Spirit:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1.36667, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Spirit:progress_ratio")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(1.36667, 1.73333, 3.53333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 0.78]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("LoomOfferingAnimation/Path2D/PathFollow-Spirit/Spirit:scale")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(1.36667, 1.93333, 4.76667, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(3, 3), Vector2(5, 5), Vector2(5, 5), Vector2(0.01, 25)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x4prg"]
+_data = {
+&"RESET": SubResource("Animation_x4prg"),
+&"loom_offering": SubResource("Animation_ytadt")
+}
+
+[sub_resource type="Curve2D" id="Curve2D_ytadt"]
+_data = {
+"points": PackedVector2Array(29.2308, 192.923, -29.2308, -192.923, -191, -11, 0, 0, 0, 0, -4, -152, -87.6923, -25.3333, 87.6923, 25.3333, 125, -131, 120.261, -2.43336, -120.261, 2.43336, 131, -6, 0, 0, 0, 0, -100, -2)
+}
+point_count = 5
+
+[node name="EternalLoom" type="Node2D"]
+script = ExtResource("1_0f752")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(3.07202, 2.92798)
+texture = ExtResource("2_6rmv1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ojp30")
+}
+autoplay = "idle"
+speed_scale = 0.3
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-1.5, 50)
+shape = SubResource("RectangleShape2D_uojly")
+
+[node name="InteractArea" parent="." instance=ExtResource("3_kyhkd")]
+unique_name_in_owner = true
+position = Vector2(0, 55)
+action = "Use Eternal Loom"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(-0.5, 4)
+shape = SubResource("RectangleShape2D_uhynt")
+
+[node name="LoomOfferingAnimation" type="Node2D" parent="."]
+z_index = 1
+position = Vector2(0, 135)
+
+[node name="LoomOfferingAnimationPlayer" type="AnimationPlayer" parent="LoomOfferingAnimation"]
+unique_name_in_owner = true
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_x4prg")
+}
+
+[node name="Path2D" type="Path2D" parent="LoomOfferingAnimation"]
+curve = SubResource("Curve2D_ytadt")
+
+[node name="PathFollow-Memory" type="PathFollow2D" parent="LoomOfferingAnimation/Path2D"]
+visible = false
+position = Vector2(-191, -11)
+rotation = 3.13387
+rotates = false
+
+[node name="Memory" type="Sprite2D" parent="LoomOfferingAnimation/Path2D/PathFollow-Memory"]
+texture_filter = 1
+rotation = 3.14159
+scale = Vector2(3, 3)
+texture = ExtResource("4_ytadt")
+
+[node name="PathFollow-Imagination" type="PathFollow2D" parent="LoomOfferingAnimation/Path2D"]
+visible = false
+position = Vector2(-191, -11)
+rotation = 3.13687
+rotates = false
+
+[node name="Imagination" type="Sprite2D" parent="LoomOfferingAnimation/Path2D/PathFollow-Imagination"]
+texture_filter = 1
+rotation = 3.14159
+scale = Vector2(3, 3)
+texture = ExtResource("5_x4prg")
+
+[node name="PathFollow-Spirit" type="PathFollow2D" parent="LoomOfferingAnimation/Path2D"]
+visible = false
+position = Vector2(-191, -11)
+rotation = 3.13029
+rotates = false
+
+[node name="Spirit" type="Sprite2D" parent="LoomOfferingAnimation/Path2D/PathFollow-Spirit"]
+texture_filter = 1
+rotation = 3.14159
+scale = Vector2(3, 3)
+texture = ExtResource("6_j8bpo")
