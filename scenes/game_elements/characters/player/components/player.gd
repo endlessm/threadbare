@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+@tool
 class_name Player
 extends CharacterBody2D
 
@@ -12,6 +13,10 @@ enum Mode {
 	FIGHTING,
 }
 
+const DEFAULT_SPRITE_FRAME: SpriteFrames = preload(
+	"res://scenes/game_elements/characters/shared_components/sprite_frames/story_weaver.tres"
+)
+
 ## Controls how the player can interact with the world around them.
 @export var mode: Mode = Mode.COZY:
 	set = _set_mode
@@ -20,10 +25,19 @@ enum Mode {
 @export_range(10, 100000, 10) var stopping_step: float = 1500.0
 @export_range(10, 100000, 10) var moving_step: float = 4000.0
 
+## The SpriteFrames must have the following animation names with the following number of frames:
+## - idle: 10 frames
+## - walk: 6 frames
+## - attack_01: 4 frames
+## - attack_02: 4 frames
+@export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
+	set = _set_sprite_frames
+
 var last_nonzero_axis: Vector2
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: Node2D = %PlayerFighting
+@onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 
 
 func _set_mode(new_mode: Mode) -> void:
@@ -39,6 +53,15 @@ func _set_mode(new_mode: Mode) -> void:
 			_toggle_player_behavior(player_fighting, true)
 
 
+func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
+	sprite_frames = new_sprite_frames
+	if not is_node_ready():
+		return
+	if new_sprite_frames == null:
+		new_sprite_frames = DEFAULT_SPRITE_FRAME
+	player_sprite.sprite_frames = new_sprite_frames
+
+
 func _toggle_player_behavior(behavior_node: Node2D, is_active: bool) -> void:
 	behavior_node.visible = is_active
 	behavior_node.process_mode = (
@@ -48,9 +71,13 @@ func _toggle_player_behavior(behavior_node: Node2D, is_active: bool) -> void:
 
 func _ready() -> void:
 	_set_mode(mode)
+	_set_sprite_frames(sprite_frames)
 
 
 func _process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+
 	if player_interaction.is_interacting:
 		velocity = Vector2.ZERO
 		return
