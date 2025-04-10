@@ -42,5 +42,7 @@ func _on_dialogue_ended(dialogue_resource: DialogueResource) -> void:
 
 	if _enter_quest_on_dialogue_ended:
 		GameState.start_quest()
-		SceneSwitcher.change_to_packed(quest_scene)
+		SceneSwitcher.change_to_packed_with_transition(
+			quest_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		)
 		_enter_quest_on_dialogue_ended = false

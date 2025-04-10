@@ -66,8 +66,20 @@ func change_to_file_with_transition(
 	enter_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE,
 	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
 ) -> void:
+	var scene: PackedScene = load(scene_path)
 	Transitions.pause_and_do_transition(
-		change_to_file.bind(scene_path, spawn_point), enter_transition, exit_transition
+		change_to_packed.bind(scene, spawn_point), enter_transition, exit_transition
+	)
+
+
+func change_to_packed_with_transition(
+	scene: PackedScene,
+	spawn_point: NodePath = ^"",
+	enter_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE,
+	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
+) -> void:
+	Transitions.pause_and_do_transition(
+		change_to_packed.bind(scene, spawn_point), enter_transition, exit_transition
 	)
 
 
