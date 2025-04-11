@@ -20,11 +20,11 @@ func _process(_delta: float) -> void:
 		return
 	var interact_area: InteractArea = interact_ray.get_interact_area()
 
-	if not interact_area:
+	if %PlayerController.inputs_paused() or not interact_area:
 		interact_label.visible = false
 		return
 
-	if %PlayerController.is_action_just_released(&"ui_accept"):
+	if %PlayerController.is_action_just_pressed(&"ui_accept"):
 		interact_ray.enabled = false
 		interact_label.visible = false
 		interact_area.interaction_ended.connect(_on_interaction_ended, CONNECT_ONE_SHOT)
