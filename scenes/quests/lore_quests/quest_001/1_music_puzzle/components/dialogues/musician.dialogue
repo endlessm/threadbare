@@ -9,17 +9,20 @@ if not first_conversation:
 
 set first_conversation = false
 
-Musician: Hello there, Storyweaver.
+Musician: Ah! Another wanderer. It's been awhile since anyone came looking for answers instead of treasure.
+Musician: You've got that look about you - like you're missing something, but you don't know what.
+Musician: Welcome to the Song Sanctuary. Or what's left of it.
+StoryWeaver: What happened here?
+Musician: Stories stopped being told. Songs stopped being sung.
+Musician: And when a song's forgotten... the world forgets itself right along with it.
 if puzzle.get_progress() >= 1:
 	Musician: Oh! Have you been playing with the stones over there?
-	Player: I kicked them and something strange happened...
-else:
-	Musician: Have you seen those stones all over this island?
-	- What about them? They're just inert lumps of rock.
-		Musician: Oh, I wouldn't be so sure about that!
-	- There's something unusual about them… it's like they have a certain energy.
-	Musician: They're tuned to a major scale!
-Musician: Legend has it that playing the right melody will open a door.
+	StoryWeaver: I kicked them and something strange happened...
+Musician: These stones? They're part of a magical song.
+Musician: My mother used to sing it to me when I was small. Said it helped people remember - names, places, even feelings, and it opened the portal to the Ink Well, where songwriters could get ink to write new songs.
+Musician: Sadly, the ink has all been siphoned away by those InkDrinkers, and no new songs have been written in a long, long time.
+Musician: Now, I can only recall the first few notes of the magical melody. The rest... slips away.
+StoryWeaver: Can you show me what you remember?
 => demonstrate_melody
 
 ~ hello_again
@@ -30,12 +33,18 @@ Musician: Hello again, Storyweaver. Would you like me to remind you what I said?
 	=> END
 
 ~ demonstrate_melody
-Musician: My mother taught me the first line of the melody. I think I can remember it. Let's see...
+Musician: I'll try. Let's see...
 Musician: do,[do play("C")] re,[do play("D")] mi,[do play("E")] so,[do play("G")] ...
-Musician: But she never knew the rest of the melody, only that it was somehow related to the first line.
-Musician: There are some strange markings near the rocks. I've never been able to understand them though. Can you help us to find the rest of the melody?
+Musician: And then it fades.
+if first_conversation:
+	StoryWeaver: What if I tried to complete it?
+	Musician: Hmm. Might be dangerous. Might be beautiful. Maybe both.
+Musician: Try listening to the stones. And reading the ancient symbols.
+Musician: I wish you luck.
 => END
 
 ~ well_done
-Musician: Well done, Storyweaver!
+Musician: You did it! The melody... it's not just music.
+Musician: It opens the portal to the Ink Well. Let's go there together and find more ink to help the songwriters.
+Musician: But beware, the InkDrinkers dwell there.
 => END
