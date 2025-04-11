@@ -175,7 +175,7 @@ class MoveAttempt:
 				continue
 
 			# if matching new positions, check if the other attempt can move recursively
-			if new_grid_position == other.new_grid_position:
+			if new_grid_position == other.old_grid_position:
 				return other.can_move(board, other_attempts, checked_attempts)
 
 		return true
