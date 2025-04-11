@@ -23,7 +23,7 @@ func _ready() -> void:
 
 func _on_item_collected(item: InventoryItem) -> void:
 	for child in items_container.get_children():
-		var item_slot = child as ItemSlot
+		var item_slot := child as ItemSlot
 		if not item_slot.is_filled():
 			item_slot.fill(item)
 			return
@@ -39,7 +39,7 @@ func _amount_of_items_collected() -> int:
 
 func _on_item_consumed(item: InventoryItem) -> void:
 	for child in items_container.get_children():
-		var item_slot = child as ItemSlot
+		var item_slot := child as ItemSlot
 		if item_slot.is_filled_with_same_item_type_as(item):
 			item_slot.free_slot()
 			return
