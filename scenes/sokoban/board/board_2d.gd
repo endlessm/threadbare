@@ -160,7 +160,7 @@ func _update_cells() -> void:
 
 func _update_piece_cell(piece: Piece2D) -> void:
 	# Update which cell the piece sits in
-	var previous_cell := _cells_by_piece[piece] if _cells_by_piece.has(piece) else null
+	var previous_cell := _cells_by_piece.get(piece) as Cell2D
 	var new_cell := _get_or_create_cell(piece.grid_position) if piece.active else null
 	# Piece didn't change cells
 	if previous_cell == new_cell:
