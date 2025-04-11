@@ -14,8 +14,17 @@ var _pause_requests: Dictionary[System, Array] = {
 	System.GAME: [],
 }
 
+var _paused: bool = false
+
+
+func _unhandled_input(event: InputEvent):
+	if event.is_action_released(&"ui_cancel"):
+		_paused = not _paused
+		get_tree().paused = _paused
+
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	pause_changed.connect(_on_pause_changed)
 
 
