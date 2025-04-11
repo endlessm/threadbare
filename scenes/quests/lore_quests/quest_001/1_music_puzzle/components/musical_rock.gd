@@ -33,7 +33,7 @@ func _modulate_rock() -> void:
 
 
 func _on_interaction_started(_from_right: bool) -> void:
-	await play()
+	play()
 	interact_area.interaction_ended.emit()
 
 
