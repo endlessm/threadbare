@@ -4,15 +4,15 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_bu300"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="3_l43eo"]
 [ext_resource type="SpriteFrames" uid="uid://clx8sssi4tw8q" path="res://scenes/game_elements/characters/shared_components/sprite_frames/sprite_frame_02.tres" id="4_kno4i"]
-[ext_resource type="Script" uid="uid://cfdpmffk2m4dd" path="res://scenes/story_quests/main_quests/lore_quest/music_puzzle/components/bard.gd" id="5_wef24"]
-[ext_resource type="Resource" uid="uid://dx0uf6n0o7hv2" path="res://scenes/story_quests/main_quests/lore_quest/music_puzzle/components/dialogues/musician.dialogue" id="6_1qly2"]
-[ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/story_quests/main_quests/lore_quest/music_puzzle/components/music_puzzle.gd" id="7_ofvvy"]
-[ext_resource type="PackedScene" uid="uid://dv30a1p74xgs1" path="res://scenes/story_quests/main_quests/lore_quest/music_puzzle/components/musical_rock_xylophone.tscn" id="8_fkkq3"]
-[ext_resource type="PackedScene" uid="uid://0ho4pvu8mn22" path="res://scenes/story_quests/main_quests/lore_quest/music_puzzle/components/bonfire.tscn" id="9_h2yts"]
-[ext_resource type="Texture2D" uid="uid://b6pfo5hc7quec" path="res://scenes/story_quests/main_quests/lore_quest/music_puzzle/components/clues/1.png" id="10_p8cbh"]
-[ext_resource type="Texture2D" uid="uid://3ieahlwwqb0t" path="res://scenes/story_quests/main_quests/lore_quest/music_puzzle/components/clues/2.png" id="11_sd87j"]
-[ext_resource type="Texture2D" uid="uid://dgqq26xsu3hrf" path="res://scenes/story_quests/main_quests/lore_quest/music_puzzle/components/clues/3.png" id="12_chp87"]
-[ext_resource type="Texture2D" uid="uid://dybrvl42chyoi" path="res://scenes/story_quests/main_quests/lore_quest/music_puzzle/components/clues/4.png" id="13_4bdmb"]
+[ext_resource type="Script" uid="uid://cfdpmffk2m4dd" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bard.gd" id="5_wef24"]
+[ext_resource type="Resource" uid="uid://dx0uf6n0o7hv2" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/dialogues/musician.dialogue" id="6_1qly2"]
+[ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/music_puzzle.gd" id="7_ofvvy"]
+[ext_resource type="PackedScene" uid="uid://dv30a1p74xgs1" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/musical_rock_xylophone.tscn" id="8_fkkq3"]
+[ext_resource type="PackedScene" uid="uid://0ho4pvu8mn22" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire.tscn" id="9_h2yts"]
+[ext_resource type="Texture2D" uid="uid://b6pfo5hc7quec" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/clues/1.png" id="10_p8cbh"]
+[ext_resource type="Texture2D" uid="uid://3ieahlwwqb0t" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/clues/2.png" id="11_sd87j"]
+[ext_resource type="Texture2D" uid="uid://dgqq26xsu3hrf" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/clues/3.png" id="12_chp87"]
+[ext_resource type="Texture2D" uid="uid://dybrvl42chyoi" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/clues/4.png" id="13_4bdmb"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="14_43har"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="15_iw4cn"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="16_uk2ey"]
@@ -82,10 +82,10 @@ sprite_frames = ExtResource("4_kno4i")
 [node name="Bard" parent="OnTheGround" node_paths=PackedStringArray("puzzle") instance=ExtResource("3_l43eo")]
 position = Vector2(1344, 536)
 script = ExtResource("5_wef24")
+puzzle = NodePath("../MusicPuzzle")
 dialogue = ExtResource("6_1qly2")
 look_at_side = 1
 sprite_frames = ExtResource("4_kno4i")
-puzzle = NodePath("../MusicPuzzle")
 
 [node name="MusicPuzzle" type="Node2D" parent="OnTheGround" node_paths=PackedStringArray("xylophone", "fires")]
 y_sort_enabled = true
