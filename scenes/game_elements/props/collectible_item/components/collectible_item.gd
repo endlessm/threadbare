@@ -89,7 +89,7 @@ func _on_interacted(_from_right: bool) -> void:
 	interact_area.end_interaction()
 
 	if collected_dialogue:
-		DialogueManager.show_dialogue_balloon(collected_dialogue, "", [self])
+		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self])
 		await DialogueManager.dialogue_ended
 
 	queue_free()
