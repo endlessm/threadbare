@@ -31,23 +31,19 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed(action_up):
 		_input_immediately(Vector2i.UP)
 		# Repeat if action is held
-		if Input.is_action_pressed(action_up):
-			_repeat_direction_v = Vector2i.UP
+		_repeat_direction_v = Vector2i.UP
 	elif Input.is_action_just_pressed(action_down):
 		_input_immediately(Vector2i.DOWN)
 		# Repeat if action is held
-		if Input.is_action_pressed(action_down):
-			_repeat_direction_v = Vector2i.DOWN
+		_repeat_direction_v = Vector2i.DOWN
 	elif Input.is_action_just_pressed(action_left):
 		_input_immediately(Vector2i.LEFT)
 		# Repeat if action is held
-		if Input.is_action_pressed(action_left):
-			_repeat_direction_h = Vector2i.LEFT
+		_repeat_direction_h = Vector2i.LEFT
 	elif Input.is_action_just_pressed(action_right):
 		_input_immediately(Vector2i.RIGHT)
 		# Repeat if action is held
-		if Input.is_action_pressed(action_right):
-			_repeat_direction_h = Vector2i.RIGHT
+		_repeat_direction_h = Vector2i.RIGHT
 
 	# Clear repeat directions upon input release
 	if Input.is_action_just_released(action_up) and _repeat_direction_v == Vector2i.UP:
