@@ -13,8 +13,6 @@ class_name CollectibleItem extends Node2D
 	set(new_value):
 		revealed = new_value
 		_update_based_on_revealed()
-## If provided, this dialogue will be displayed after the player collects this item.
-@export var collected_dialogue: DialogueResource
 ## If provided, switch to this scene after collecting and possibly displaying a dialogue.
 @export_file("*.tscn") var scene_to_go_to: String
 ## [InventoryItem] provided by this collectible when interacted with.
@@ -22,10 +20,35 @@ class_name CollectibleItem extends Node2D
 	set(new_value):
 		item = new_value
 		update_configuration_warnings()
+@export_category("Dialogue")
+## If provided, this dialogue will be displayed after the player collects this item.
+@export var collected_dialogue: DialogueResource:
+	set(new_value):
+		collected_dialogue = new_value
+		notify_property_list_changed()
+## The dialogue title from where [member collected_dialogue] will start.
+var dialogue_title: StringName = ""
 
 @onready var interact_area: InteractArea = $InteractArea
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
+
+
+func _get_property_list() -> Array[Dictionary]:
+	var properties: Array[Dictionary] = []
+
+	if collected_dialogue:
+		properties.push_back(
+			{
+				"name": "dialogue_title",
+				"usage": PROPERTY_USAGE_DEFAULT,
+				"type": TYPE_STRING,
+				"hing": PROPERTY_HINT_PLACEHOLDER_TEXT,
+				"hint_string": ""
+			}
+		)
+
+	return properties
 
 
 func _get_configuration_warnings() -> PackedStringArray:
