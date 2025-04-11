@@ -1,0 +1,70 @@
+[gd_scene load_steps=12 format=3 uid="uid://bw2bk7hvohx53"]
+
+[ext_resource type="Script" uid="uid://cgwu1infdhqxt" path="res://scenes/sokoban/board/piece_2d.gd" id="1_g32nx"]
+[ext_resource type="Texture2D" uid="uid://dm0dwcbjsb743" path="res://assets/tiny-swords/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="2_0llj8"]
+[ext_resource type="Script" uid="uid://dbccwvwg28uvs" path="res://scenes/sokoban/board/piece_group.gd" id="2_qrxh2"]
+
+[sub_resource type="Resource" id="Resource_q5u2i"]
+script = ExtResource("2_qrxh2")
+groups = Array[StringName]([&"player"])
+metadata/_custom_type_script = "uid://dbccwvwg28uvs"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qrxh2"]
+atlas = ExtResource("2_0llj8")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q5u2i"]
+atlas = ExtResource("2_0llj8")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1lqyq"]
+atlas = ExtResource("2_0llj8")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dnds8"]
+atlas = ExtResource("2_0llj8")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hcwgm"]
+atlas = ExtResource("2_0llj8")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_08in0"]
+atlas = ExtResource("2_0llj8")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_siuvm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qrxh2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q5u2i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1lqyq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dnds8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hcwgm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_08in0")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 12.0
+}]
+
+[node name="SokobanPlayer" type="Node2D"]
+script = ExtResource("1_g32nx")
+groups = SubResource("Resource_q5u2i")
+metadata/_custom_type_script = "uid://cgwu1infdhqxt"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_siuvm")
+animation = &"idle"
+frame_progress = 0.0391837
