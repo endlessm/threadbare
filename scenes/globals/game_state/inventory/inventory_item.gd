@@ -20,7 +20,7 @@ const TEXTURES: Dictionary[ItemType, Texture2D] = {
 @export var type: ItemType
 
 
-func same_type_as(other_item: InventoryItem):
+func same_type_as(other_item: InventoryItem) -> bool:
 	return type == other_item.type
 
 
