@@ -69,6 +69,8 @@ func _ready() -> void:
 
 
 func _draw() -> void:
+	if walking_time == 0 or walking_range == 0:
+		return
 	if Engine.is_editor_hint() or get_tree().is_debugging_collisions_hint():
 		draw_circle(_initial_position - position, walking_range, Color(0.0, 1.0, 1.0, 0.3))
 		draw_circle(
