@@ -12,7 +12,7 @@ signal initialized(is_on: bool)
 		is_on = new_val
 		update_appearance()
 
-#Toggles can be connected via targets (simple) or via signal (usign the toggled signal)
+# Toggles can be connected via targets (simple) or via signal (using the toggled signal)
 @export var targets: Array[Toggleable]
 
 
@@ -29,7 +29,7 @@ func _ready() -> void:
 func _connect_targets() -> void:
 	for target: Toggleable in targets:
 		initialized.connect(target.initialize_with_value)
-		toggled.connect(target.initialize_with_value)
+		toggled.connect(target.set_toggled)
 
 
 func initialize_toggle_state() -> void:
@@ -42,9 +42,10 @@ func update_appearance() -> void:
 
 func _on_interact_area_interaction_started(_from_right: bool) -> void:
 	toggle()
+	await get_tree().process_frame
+	%InteractArea.end_interaction()
 
 
-func toggle(new_val: bool = not is_on, emit: bool = true) -> void:
+func toggle(new_val: bool = not is_on) -> void:
 	is_on = new_val
-	if emit:
-		toggled.emit(is_on)
+	toggled.emit(is_on)
