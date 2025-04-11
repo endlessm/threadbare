@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: MPL-2.0
 class_name PieceGroups
 extends Resource
+## A simple wrapper for a list of string identifiers for pieces.
+##
+## PieceGroups is used to identify pieces and is used in filters for Board2D,
+## and in SokobanRules
 
 @export var groups: Array[StringName]
 
