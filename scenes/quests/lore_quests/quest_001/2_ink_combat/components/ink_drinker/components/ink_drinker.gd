@@ -49,6 +49,10 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 ## The moving speed of the ink drinker when walking.
 @export_range(20, 300, 5, "or_greater", "or_less", "suffix:m/s") var walking_speed: float = 50.0
 
+## The color of each ink blob thrown will be a random choice from this array.
+## So if a color appears more than once, this will increase the chance that it is thrown.
+var allowed_colors: Array = InkBlob.InkColorNames.values()
+
 var _initial_position: Vector2
 var _target_position: Vector2
 var _is_attacking: bool
@@ -155,7 +159,7 @@ func _on_timeout() -> void:
 	animated_sprite_2d.play(&"attack")
 	var ink_blob: InkBlob = INK_BLOB.instantiate()
 	ink_blob.direction = ink_blob_marker.global_position.direction_to(player.global_position)
-	ink_blob.ink_color_name = randi_range(0, 3) as InkBlob.InkColorNames
+	ink_blob.ink_color_name = allowed_colors.pick_random()
 	ink_blob.global_position = (ink_blob_marker.global_position + ink_blob.direction * 20.)
 	if ink_follows_player:
 		ink_blob.node_to_follow = player

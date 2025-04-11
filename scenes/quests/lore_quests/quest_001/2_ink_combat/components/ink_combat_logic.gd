@@ -17,10 +17,23 @@ func start() -> void:
 	get_tree().call_group("ink_drinkers", "start")
 	for inkwell: Inkwell in get_tree().get_nodes_in_group("inkwells"):
 		inkwell.completed.connect(_on_inkwell_completed)
+	_update_allowed_colors()
+
+
+func _update_allowed_colors() -> void:
+	var allowed_colors: Array = []
+	for inkwell: Inkwell in get_tree().get_nodes_in_group("inkwells"):
+		if inkwell.is_queued_for_deletion():
+			continue
+		if inkwell.ink_color_name not in allowed_colors:
+			allowed_colors.append(inkwell.ink_color_name)
+	for ink_drinker: InkDrinker in get_tree().get_nodes_in_group("ink_drinkers"):
+		ink_drinker.allowed_colors = allowed_colors
 
 
 func _on_inkwell_completed() -> void:
 	inkwells_completed += 1
+	_update_allowed_colors()
 	if inkwells_completed < inkwells_to_win:
 		return
 	get_tree().call_group("ink_drinkers", "remove")
