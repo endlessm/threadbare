@@ -3,9 +3,7 @@
 @tool
 extends Node2D
 
-enum Direction { LEFT = 1, RIGHT = 2 }
-
-@export var direction: Direction = Direction.LEFT:
+@export var direction: Enums.LookAtSide = Enums.LookAtSide.LEFT:
 	set(a_direction):
 		direction = a_direction
 		if !is_inside_tree():
@@ -29,7 +27,7 @@ func _ready() -> void:
 
 
 func update_appearance() -> void:
-	$Appearance.flip_h = direction != Direction.LEFT
+	$Appearance.flip_h = direction == Enums.LookAtSide.RIGHT
 
 
 func _on_area_2d_body_entered(_body: Node2D) -> void:

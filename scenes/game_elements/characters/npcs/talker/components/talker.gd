@@ -11,7 +11,7 @@ const DEFAULT_DIALOGUE: DialogueResource = preload(
 @export var npc_name: String
 @export var dialogue: DialogueResource = DEFAULT_DIALOGUE
 
-var _previous_look_at_side: NPC.LookAtSide = NPC.LookAtSide.LEFT
+var _previous_look_at_side: Enums.LookAtSide = Enums.LookAtSide.LEFT
 
 @onready var interact_area: InteractArea = %InteractArea
 
@@ -26,8 +26,8 @@ func _ready() -> void:
 
 func _on_interaction_started(from_right: bool) -> void:
 	_previous_look_at_side = look_at_side
-	if look_at_side != NPC.LookAtSide.FRONT:
-		look_at_side = NPC.LookAtSide.RIGHT if from_right else NPC.LookAtSide.LEFT
+	if look_at_side != Enums.LookAtSide.UNSPECIFIED:
+		look_at_side = Enums.LookAtSide.RIGHT if from_right else Enums.LookAtSide.LEFT
 	DialogueManager.show_dialogue_balloon(dialogue, "", [self])
 
 
