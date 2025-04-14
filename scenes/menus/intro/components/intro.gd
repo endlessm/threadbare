@@ -12,6 +12,10 @@ var introduction: DialogueResource = preload("res://scenes/menus/intro/component
 
 
 func _ready() -> void:
+	# Wait a moment before starting the dialogue. In particular, this allows
+	# time for any fade-in transition from the previous scene to finish.
+	await get_tree().create_timer(1.0).timeout
+
 	DialogueManager.dialogue_ended.connect(_on_dialogue_ended)
 	DialogueManager.show_dialogue_balloon(introduction, "", [self])
 
