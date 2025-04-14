@@ -86,12 +86,11 @@ func _on_interacted(_from_right: bool) -> void:
 
 	GameState.add_collected_item(item)
 
-	interact_area.end_interaction()
-
 	if collected_dialogue:
 		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self])
 		await DialogueManager.dialogue_ended
 
+	interact_area.end_interaction()
 	queue_free()
 
 	if scene_to_go_to:
