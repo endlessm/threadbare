@@ -4,9 +4,13 @@ extends Node2D
 
 const NEXT_SCENE: PackedScene = preload("res://scenes/menus/intro/intro.tscn")
 
+@onready var logo_stitcher: LogoStitcher = %LogoStitcher
+@onready var scene_switch_timer: Timer = %SceneSwitchTimer
+
 
 func _ready() -> void:
-	$LogoStitcher.finished.connect(_on_logo_stitcher_finished)
+	logo_stitcher.finished.connect(scene_switch_timer.start)
+	scene_switch_timer.timeout.connect(switch_to_intro)
 
 
 func _process(_delta: float) -> void:
@@ -15,9 +19,7 @@ func _process(_delta: float) -> void:
 
 
 func switch_to_intro() -> void:
-	SceneSwitcher.change_to_packed(NEXT_SCENE)
-
-
-func _on_logo_stitcher_finished() -> void:
-	await get_tree().create_timer(5.0).timeout
-	switch_to_intro()
+	scene_switch_timer.timeout.disconnect(switch_to_intro)
+	SceneSwitcher.change_to_packed_with_transition(
+		NEXT_SCENE, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+	)
