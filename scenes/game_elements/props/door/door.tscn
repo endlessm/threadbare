@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://lgu7aeqa7o3r"]
+
+[ext_resource type="Script" uid="uid://hop028ljbst7" path="res://scenes/game_elements/props/door/components/door.gd" id="1_t3aaa"]
+[ext_resource type="Texture2D" uid="uid://boeaxk35yjpwl" path="res://scenes/game_elements/props/door/components/door_closed.png" id="2_6x58x"]
+[ext_resource type="Texture2D" uid="uid://efo1k6ymgpuv" path="res://scenes/game_elements/props/door/components/door_opened.png" id="3_wl1pt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t3aaa"]
+size = Vector2(57.5, 25)
+
+[node name="Door" type="Node2D"]
+script = ExtResource("1_t3aaa")
+
+[node name="DoorClosed" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+texture = ExtResource("2_6x58x")
+
+[node name="DoorOpened" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -32)
+texture = ExtResource("3_wl1pt")
+
+[node name="ColliderWhenClosed" type="StaticBody2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 16
+
+[node name="ShapeWhenClosed" type="CollisionShape2D" parent="ColliderWhenClosed"]
+position = Vector2(0.25, -12.5)
+shape = SubResource("RectangleShape2D_t3aaa")

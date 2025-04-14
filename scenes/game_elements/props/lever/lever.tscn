@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://dt6ivbb8cfxnk"]
+
+[ext_resource type="Script" uid="uid://dpy43oruh42hm" path="res://scenes/game_elements/props/lever/components/lever.gd" id="1_ri4rx"]
+[ext_resource type="Texture2D" uid="uid://uy2acspf6apo" path="res://scenes/game_elements/props/lever/components/Lever.png" id="1_ywgx1"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="3_v1ps0"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ri4rx"]
+radius = 48.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ri4rx"]
+size = Vector2(20.0001, 48)
+
+[node name="Lever" type="Node2D"]
+script = ExtResource("1_ri4rx")
+
+[node name="LeverSprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -8)
+texture = ExtResource("1_ywgx1")
+hframes = 2
+
+[node name="InteractArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_v1ps0")
+action = "Toggle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+shape = SubResource("CircleShape2D_ri4rx")
+debug_color = Color(0.591123, 0.547358, 0, 0.42)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(1, -98)
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-1, 98)
+rotation = -1.5708
+shape = SubResource("RectangleShape2D_ri4rx")
+
+[connection signal="interaction_started" from="InteractArea" to="." method="_on_interact_area_interaction_started"]
