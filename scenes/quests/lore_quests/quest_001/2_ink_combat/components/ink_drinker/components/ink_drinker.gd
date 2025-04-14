@@ -130,9 +130,9 @@ func _process(_delta: float) -> void:
 
 
 func _set_target_position() -> void:
-	var current_angle = _initial_position.angle_to_point(position)
-	var start_angle = current_angle + WALK_TARGET_SKIP_ANGLE / 2.
-	var end_angle = 2 * PI - current_angle - WALK_TARGET_SKIP_ANGLE / 2.
+	var current_angle := _initial_position.angle_to_point(position)
+	var start_angle := current_angle + WALK_TARGET_SKIP_ANGLE / 2.
+	var end_angle := 2 * PI - current_angle - WALK_TARGET_SKIP_ANGLE / 2.
 	_target_position = (
 		_initial_position
 		+ (
