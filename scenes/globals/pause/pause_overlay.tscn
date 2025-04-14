@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=3 uid="uid://bo2gd4sehdugm"]
+
+[ext_resource type="Script" uid="uid://y88qplkioj1q" path="res://scenes/globals/pause/pause_overlay.gd" id="1_lf64b"]
+[ext_resource type="Theme" uid="uid://coxcra1002kil" path="res://scenes/ui_elements/shared_components/theme.tres" id="1_s73yc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s73yc"]
+bg_color = Color(0, 0, 0, 0.326)
+
+[node name="PauseOverlay" type="CanvasLayer"]
+process_mode = 3
+layer = 2
+visible = false
+script = ExtResource("1_lf64b")
+
+[node name="Panel" type="Panel" parent="."]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_s73yc")
+
+[node name="LabelContainer" type="CenterContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PauseLabel" type="Label" parent="Panel/LabelContainer"]
+layout_mode = 2
+theme = ExtResource("1_s73yc")
+theme_override_font_sizes/font_size = 108
+text = "PAUSED"
