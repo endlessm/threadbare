@@ -13,12 +13,6 @@ enum InkColorNames {
 	BLACK = 3,
 }
 
-const SPLASH: PackedScene = preload(
-	"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/splash/splash.tscn"
-)
-const BIG_SPLASH: PackedScene = preload(
-	"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/big_splash/big_splash.tscn"
-)
 const PLAYER_HITBOX_LAYER: int = 6
 const ENEMY_HITBOX_LAYER: int = 7
 
@@ -37,6 +31,16 @@ const INK_COLORS: Dictionary = {
 @export var ink_color_name: InkColorNames = InkColorNames.CYAN
 @export_range(0., 10., 0.1, "or_greater", "suffix:s") var duration: float = 5.0
 @export var node_to_follow: Node2D = null
+
+## A small visual effect used when the projectile collides with things.
+@export var small_fx_scene: PackedScene = preload(
+	"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/splash/splash.tscn"
+)
+
+## A big visual effect used when the projectile explodes.
+@export var big_fx_scene: PackedScene = preload(
+	"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/big_splash/big_splash.tscn"
+)
 
 @onready var visible_things: Node2D = %VisibleThings
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
@@ -80,11 +84,11 @@ func _process(_delta: float) -> void:
 		constant_force = force
 
 
-func add_splash() -> void:
-	var splash: Node2D = SPLASH.instantiate()
-	splash.ink_color_name = ink_color_name
-	get_tree().current_scene.add_child(splash)
-	splash.global_position = global_position
+func add_small_fx() -> void:
+	var small_fx: Node2D = small_fx_scene.instantiate()
+	small_fx.ink_color_name = ink_color_name
+	get_tree().current_scene.add_child(small_fx)
+	small_fx.global_position = global_position
 
 
 func _on_body_entered(body: Node2D) -> void:
@@ -93,7 +97,7 @@ func _on_body_entered(body: Node2D) -> void:
 	var hit_vector: Vector2 = global_position - body.global_position
 	linear_velocity = Vector2.ZERO
 	apply_impulse(hit_vector)
-	add_splash()
+	add_small_fx()
 	duration_timer.start()
 	if body.owner is Inkwell:
 		var inkwell: Inkwell = body.owner as Inkwell
@@ -106,8 +110,8 @@ func _on_body_entered(body: Node2D) -> void:
 
 
 func _on_duration_timer_timeout() -> void:
-	var big_splash: BigSplash = BIG_SPLASH.instantiate()
-	big_splash.ink_color_name = ink_color_name
-	get_tree().current_scene.add_child(big_splash)
-	big_splash.global_position = global_position
+	var big_fx: Node2D = big_fx_scene.instantiate()
+	big_fx.ink_color_name = ink_color_name
+	get_tree().current_scene.add_child(big_fx)
+	big_fx.global_position = global_position
 	queue_free()

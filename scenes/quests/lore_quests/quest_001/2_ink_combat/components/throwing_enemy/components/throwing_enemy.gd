@@ -31,6 +31,12 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 ## The period of time between throwing ink.
 @export_range(0.1, 10., 0.1, "or_greater", "suffix:s") var ink_period: float = 5.0
 
+## A small visual effect used when the projectile collides with things.
+@export var projectile_small_fx_scene: PackedScene
+
+## A big visual effect used when the projectile explodes.
+@export var projectile_big_fx_scene: PackedScene
+
 ## If this is not zero, the ink drinker walks this amount of time between being idle and
 ## throwing ink. If it is bigger than [member ink_period], the ink drinker walks all the
 ## time.
@@ -164,6 +170,10 @@ func _on_timeout() -> void:
 	projectile.global_position = (projectile_marker.global_position + projectile.direction * 20.)
 	if ink_follows_player:
 		projectile.node_to_follow = player
+	if projectile_small_fx_scene:
+		projectile.small_fx_scene = projectile_small_fx_scene
+	if projectile_big_fx_scene:
+		projectile.big_fx_scene = projectile_big_fx_scene
 	projectile.speed = ink_speed
 	projectile.duration = ink_duration
 	get_tree().current_scene.add_child(projectile)

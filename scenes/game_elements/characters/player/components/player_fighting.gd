@@ -23,6 +23,6 @@ func _on_body_entered(body: Node2D) -> void:
 	body = body as Projectile
 	if not body:
 		return
-	body.add_splash()
+	body.add_small_fx()
 	body.queue_free()
 	got_hit_animation.play(&"got_hit")
