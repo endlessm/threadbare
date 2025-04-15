@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=4 uid="uid://cd2p2udmkif80"]
+[gd_scene load_steps=9 format=4 uid="uid://cd2p2udmkif80"]
 
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_gyhjf"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_offe2"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/shared_components/sprite_frames/story_weaver.tres" id="3_3dlh8"]
-[ext_resource type="Script" uid="uid://dkxmyuddniso7" path="res://scenes/quests/lore_quests/quest_001/4_closing_transition/components/closing_transition_cinematic.gd" id="5_3dlh8"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_3dlh8"]
+[ext_resource type="Resource" uid="uid://dund4v8fmxkoc" path="res://scenes/quests/lore_quests/quest_001/4_closing_transition/components/story_quest_closing_transition.dialogue" id="5_offe2"]
 
 [sub_resource type="Animation" id="Animation_gyhjf"]
 length = 0.001
@@ -137,8 +138,11 @@ sprite_frames = ExtResource("3_3dlh8")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="ClosingTransitionCinematic" type="Node2D" parent="."]
-script = ExtResource("5_3dlh8")
+[node name="ClosingTransitionCinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
+script = ExtResource("4_3dlh8")
+dialogue = ExtResource("5_offe2")
+animation_player = NodePath("AnimationPlayer")
+next_scene = "uid://cufkthb25mpxy"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="ClosingTransitionCinematic"]
 libraries = {
