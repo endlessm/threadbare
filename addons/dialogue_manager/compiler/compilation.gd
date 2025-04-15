@@ -168,12 +168,13 @@ func import_content(path: String, prefix: String, imported_line_map: Dictionary,
 		for i in range(0, content.size()):
 			var line = content[i]
 			if line.strip_edges().begins_with("~ "):
+				var indent: String = "\t".repeat(get_indent(line))
 				var title = line.strip_edges().substr(2)
 				if "/" in line:
 					var bits = title.split("/")
-					content[i] = "~ %s/%s" % [_imported_titles[bits[0]], bits[1]]
+					content[i] = "%s~ %s/%s" % [indent, _imported_titles[bits[0]], bits[1]]
 				else:
-					content[i] = "~ %s/%s" % [str(path.hash()), title]
+					content[i] = "%s~ %s/%s" % [indent, str(path.hash()), title]
 
 			elif "=>< " in line:
 				var jump: String = line.substr(line.find("=>< ") + "=>< ".length()).strip_edges()
@@ -227,12 +228,12 @@ func build_line_tree(raw_lines: PackedStringArray) -> DMTreeLine:
 		tree_line.text = raw_line.strip_edges()
 
 		# Handle any "using" directives.
-		if raw_line.begins_with("using "):
+		if tree_line.type == DMConstants.TYPE_USING:
 			var using_match: RegExMatch = regex.USING_REGEX.search(raw_line)
 			if "state" in using_match.names:
 				var using_state: String = using_match.strings[using_match.names.state].strip_edges()
 				if not using_state in autoload_names:
-					add_error(i, 0, DMConstants.ERR_UNKNOWN_USING)
+					add_error(tree_line.line_number, 0, DMConstants.ERR_UNKNOWN_USING)
 				elif not using_state in using_states:
 					using_states.append(using_state)
 				continue
@@ -915,6 +916,9 @@ func get_line_type(raw_line: String) -> String:
 
 	if text.begins_with("import "):
 		return DMConstants.TYPE_IMPORT
+
+	if text.begins_with("using "):
+		return DMConstants.TYPE_USING
 
 	if text.begins_with("#"):
 		return DMConstants.TYPE_COMMENT
