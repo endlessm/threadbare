@@ -1,7 +1,8 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name InkDrinker
+## Enemy that throws projectiles to the player.
+class_name ThrowingEnemy
 extends CharacterBody2D
 
 enum State {
