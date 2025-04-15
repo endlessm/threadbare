@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dow5vc7yb5k2c"]
+[gd_scene load_steps=10 format=3 uid="uid://dow5vc7yb5k2c"]
 
-[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/menus/intro/components/intro.gd" id="1_qeukb"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="1_qeukb"]
 [ext_resource type="Shader" uid="uid://c5volxtfxq3ru" path="res://scenes/menus/intro/components/intro.gdshader" id="2_teox7"]
 [ext_resource type="Texture2D" uid="uid://jbwu8bfdvjte" path="res://assets/midjourney/embroidered-world-map.webp" id="3_teox7"]
+[ext_resource type="Resource" uid="uid://bq1eaih8esqsi" path="res://scenes/menus/intro/components/intro.dialogue" id="4_rpon1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8twl8"]
 shader = ExtResource("2_teox7")
@@ -13,7 +14,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("TextureRect:material:shader_parameter/saturation")
+tracks/0/path = NodePath("CanvasLayer/Control/TextureRect:material:shader_parameter/saturation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -23,13 +24,16 @@ tracks/0/keys = {
 "values": [0.75]
 }
 
+[sub_resource type="Animation" id="Animation_rpon1"]
+resource_name = "delay_start"
+
 [sub_resource type="Animation" id="Animation_teox7"]
 resource_name = "introduction"
 length = 5.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("TextureRect:material:shader_parameter/saturation")
+tracks/0/path = NodePath("CanvasLayer/Control/TextureRect:material:shader_parameter/saturation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -42,19 +46,23 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ir5dn"]
 _data = {
 &"RESET": SubResource("Animation_8twl8"),
+&"delay_start": SubResource("Animation_rpon1"),
 &"introduction": SubResource("Animation_teox7")
 }
 
-[node name="Intro" type="Control"]
+[node name="Intro" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_qeukb")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
 material = SubResource("ShaderMaterial_8twl8")
 layout_mode = 1
 anchors_preset = 15
@@ -70,3 +78,10 @@ stretch_mode = 6
 libraries = {
 &"": SubResource("AnimationLibrary_ir5dn")
 }
+
+[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
+script = ExtResource("1_qeukb")
+dialogue = ExtResource("4_rpon1")
+animation_player = NodePath("../AnimationPlayer")
+next_scene = "uid://cufkthb25mpxy"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"

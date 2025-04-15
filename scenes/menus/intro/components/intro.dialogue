@@ -1,8 +1,12 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 ~ start
+# Wait a moment before starting the dialogue proper. In particular, this allows
+# time for any fade-in transition from the previous scene to finish.
+do animation_player.play(&"delay_start")
+do animation_player.animation_finished
 [speed=0.5]You know that feeling you get when you sit with your blanket wrapped around you? Cozy, right? Does everything feel safe?
 [speed=0.5]That blanket is like a hug from a loved one. It shelters you. What color is it? What is it made from?
-do start_fade()
+do animation_player.play(&"introduction")
 [speed=0.5]What if I told you that somewhere, not too far nor too near, there’s a world made of fabric that once upon a time used to feel like that, like a hug from a loved one... But now...
 => END
