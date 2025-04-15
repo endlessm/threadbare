@@ -12,7 +12,7 @@ enum State {
 }
 
 const INK_BLOB: PackedScene = preload(
-	"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/ink_blob/ink_blob.tscn"
+	"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/projectile/projectile.tscn"
 )
 
 ## When targetting the next walking position, skip this slice of the circle.
@@ -52,14 +52,14 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 
 ## The color of each ink blob thrown will be a random choice from this array.
 ## So if a color appears more than once, this will increase the chance that it is thrown.
-var allowed_colors: Array = InkBlob.InkColorNames.values()
+var allowed_colors: Array = Projectile.InkColorNames.values()
 
 var _initial_position: Vector2
 var _target_position: Vector2
 var _is_attacking: bool
 
 @onready var timer: Timer = %Timer
-@onready var ink_blob_marker: Marker2D = %InkBlobMarker
+@onready var projectile_marker: Marker2D = %ProjectileMarker
 @onready var hit_box: Area2D = %HitBox
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
@@ -158,15 +158,15 @@ func _on_timeout() -> void:
 	animated_sprite_2d.play(&"attack anticipation")
 	await animated_sprite_2d.animation_finished
 	animated_sprite_2d.play(&"attack")
-	var ink_blob: InkBlob = INK_BLOB.instantiate()
-	ink_blob.direction = ink_blob_marker.global_position.direction_to(player.global_position)
-	ink_blob.ink_color_name = allowed_colors.pick_random()
-	ink_blob.global_position = (ink_blob_marker.global_position + ink_blob.direction * 20.)
+	var projectile: Projectile = INK_BLOB.instantiate()
+	projectile.direction = projectile_marker.global_position.direction_to(player.global_position)
+	projectile.ink_color_name = allowed_colors.pick_random()
+	projectile.global_position = (projectile_marker.global_position + projectile.direction * 20.)
 	if ink_follows_player:
-		ink_blob.node_to_follow = player
-	ink_blob.speed = ink_speed
-	ink_blob.duration = ink_duration
-	get_tree().current_scene.add_child(ink_blob)
+		projectile.node_to_follow = player
+	projectile.speed = ink_speed
+	projectile.duration = ink_duration
+	get_tree().current_scene.add_child(projectile)
 	_set_target_position()
 	await animated_sprite_2d.animation_finished
 	animated_sprite_2d.play(&"idle")
@@ -174,7 +174,7 @@ func _on_timeout() -> void:
 
 
 func _on_got_hit(body: Node2D) -> void:
-	if body is InkBlob and not body.can_hit_enemy:
+	if body is Projectile and not body.can_hit_enemy:
 		return
 	body.queue_free()
 	animation_player.play(&"got hit")

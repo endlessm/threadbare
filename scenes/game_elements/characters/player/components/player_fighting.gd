@@ -24,7 +24,7 @@ func _process(_delta: float) -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	body = body as InkBlob
+	body = body as Projectile
 	if not body:
 		return
 	body.queue_free()

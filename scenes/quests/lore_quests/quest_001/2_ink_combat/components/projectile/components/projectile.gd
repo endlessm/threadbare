@@ -1,8 +1,11 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name InkBlob
+## A RigidBody2D that can be thrown between enemies and player. It has a label too, and it can
+## be used to fill barrels with the matching label.
+class_name Projectile
 extends RigidBody2D
 
+# TODO: Replace colors with labels:
 enum InkColorNames {
 	CYAN = 0,
 	MAGENTA = 1,
