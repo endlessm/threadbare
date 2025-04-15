@@ -86,7 +86,8 @@ func _process(_delta: float) -> void:
 
 func add_small_fx() -> void:
 	var small_fx: Node2D = small_fx_scene.instantiate()
-	small_fx.ink_color_name = ink_color_name
+	var color: Color = INK_COLORS[ink_color_name]
+	small_fx.modulate = color
 	get_tree().current_scene.add_child(small_fx)
 	small_fx.global_position = global_position
 
@@ -111,7 +112,8 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _on_duration_timer_timeout() -> void:
 	var big_fx: Node2D = big_fx_scene.instantiate()
-	big_fx.ink_color_name = ink_color_name
+	var color: Color = INK_COLORS[ink_color_name]
+	big_fx.modulate = color
 	get_tree().current_scene.add_child(big_fx)
 	big_fx.global_position = global_position
 	queue_free()
