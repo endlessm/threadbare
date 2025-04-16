@@ -8,8 +8,13 @@ signal completed
 
 const INK_NEEDED: int = 3
 
-@export var ink_color_name: Projectile.InkColorNames = Projectile.InkColorNames.CYAN:
-	set = _set_ink_color_name
+## Projectiles with this label fill the barrel.
+@export var label: String = "???":
+	set = _set_label
+
+## Optional color to tint the barrel.
+@export var color: Color:
+	set = _set_color
 
 var ink_amount: int = 0
 
@@ -18,17 +23,29 @@ var ink_amount: int = 0
 @onready var color_label: Control = %ColorLabel
 
 
-func _set_ink_color_name(new_ink_color_name: Projectile.InkColorNames) -> void:
-	ink_color_name = new_ink_color_name
+func _set_label(new_label: String) -> void:
+	label = new_label
 	if not is_node_ready():
 		return
-	var color: Color = Projectile.INK_COLORS[ink_color_name]
-	animated_sprite_2d.modulate = color
-	color_label.label_text = Projectile.InkColorNames.keys()[ink_color_name]
+	if label:
+		color_label.label_text = label
+	else:
+		color_label.label_text = "???"
+
+
+func _set_color(new_color: Color) -> void:
+	color = new_color
+	if not is_node_ready():
+		return
+	if color:
+		animated_sprite_2d.modulate = color
+	else:
+		animated_sprite_2d.modulate = Color.WHITE
 
 
 func _ready() -> void:
-	_set_ink_color_name(ink_color_name)
+	_set_label(label)
+	_set_color(color)
 
 
 func fill() -> void:

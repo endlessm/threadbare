@@ -56,9 +56,13 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 ## The moving speed of the ink drinker when walking.
 @export_range(20, 300, 5, "or_greater", "or_less", "suffix:m/s") var walking_speed: float = 50.0
 
-## The color of each ink blob thrown will be a random choice from this array.
-## So if a color appears more than once, this will increase the chance that it is thrown.
-var allowed_colors: Array = Projectile.InkColorNames.values()
+## The label of each projectile thrown will be a random choice from this array.
+## So if a label appears more than once, this will increase the chance that it is thrown.
+var allowed_labels: Array[String] = ["???"]
+
+## Optional mapping of color per label. This is used to tint projectiles to make a
+## color-matching game.
+var color_per_label: Dictionary[String, Color]
 
 var _initial_position: Vector2
 var _target_position: Vector2
@@ -166,7 +170,9 @@ func _on_timeout() -> void:
 	animated_sprite_2d.play(&"attack")
 	var projectile: Projectile = INK_BLOB.instantiate()
 	projectile.direction = projectile_marker.global_position.direction_to(player.global_position)
-	projectile.ink_color_name = allowed_colors.pick_random()
+	projectile.label = allowed_labels.pick_random()
+	if projectile.label in color_per_label:
+		projectile.color = color_per_label[projectile.label]
 	projectile.global_position = (projectile_marker.global_position + projectile.direction * 20.)
 	if ink_follows_player:
 		projectile.node_to_follow = player
