@@ -1,9 +1,9 @@
 [gd_scene load_steps=12 format=3 uid="uid://j8mqjkg0rvai"]
 
-[ext_resource type="Script" uid="uid://bofv3bcwj3rx2" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/ink_blob/components/ink_blob.gd" id="1_y25gk"]
-[ext_resource type="Texture2D" uid="uid://sgprgh3jbreo" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/ink_blob/components/ink_blob.png" id="2_y25gk"]
-[ext_resource type="Texture2D" uid="uid://crddup3m6hwbm" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/ink_blob/components/ink_particle.png" id="3_l5glv"]
-[ext_resource type="AudioStream" uid="uid://7jlv4wqpihl7" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/ink_blob/components/blob_hit.wav" id="4_1qtux"]
+[ext_resource type="Script" uid="uid://bofv3bcwj3rx2" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/projectile/components/projectile.gd" id="1_kxdg3"]
+[ext_resource type="Texture2D" uid="uid://sgprgh3jbreo" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/projectile/components/ink_blob.png" id="2_t6bt1"]
+[ext_resource type="Texture2D" uid="uid://crddup3m6hwbm" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/projectile/components/ink_particle.png" id="3_elbh8"]
+[ext_resource type="AudioStream" uid="uid://7jlv4wqpihl7" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/projectile/components/blob_hit.wav" id="4_q6q4o"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tbgi4"]
 friction = 0.0
@@ -26,7 +26,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_y25gk"]
 resource_name = "ink"
-length = 0.5
+length = 0.6
 loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
@@ -67,7 +67,7 @@ gravity = Vector3(0, 98, 0)
 anim_speed_min = 1.0
 anim_speed_max = 1.0
 
-[node name="InkBlob" type="RigidBody2D"]
+[node name="Projectile" type="RigidBody2D"]
 collision_layer = 256
 collision_mask = 576
 mass = 0.3
@@ -76,8 +76,7 @@ gravity_scale = 0.0
 lock_rotation = true
 contact_monitor = true
 max_contacts_reported = 1
-script = ExtResource("1_y25gk")
-ink_color_name = 3
+script = ExtResource("1_kxdg3")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
@@ -95,7 +94,7 @@ position = Vector2(-3, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="VisibleThings"]
 position = Vector2(-32, 0)
-texture = ExtResource("2_y25gk")
+texture = ExtResource("2_t6bt1")
 vframes = 6
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="VisibleThings"]
@@ -105,7 +104,7 @@ position = Vector2(-40, 2)
 scale = Vector2(2, 2)
 amount = 16
 amount_ratio = 0.1
-texture = ExtResource("3_l5glv")
+texture = ExtResource("3_elbh8")
 process_material = SubResource("ParticleProcessMaterial_y25gk")
 
 [node name="DurationTimer" type="Timer" parent="."]
@@ -113,7 +112,7 @@ unique_name_in_owner = true
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="."]
 unique_name_in_owner = true
-stream = ExtResource("4_1qtux")
+stream = ExtResource("4_q6q4o")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="DurationTimer" to="." method="_on_duration_timer_timeout"]

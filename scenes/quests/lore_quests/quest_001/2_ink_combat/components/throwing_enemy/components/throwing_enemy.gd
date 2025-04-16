@@ -1,7 +1,8 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name InkDrinker
+## Enemy that throws projectiles to the player.
+class_name ThrowingEnemy
 extends CharacterBody2D
 
 enum State {
@@ -10,8 +11,8 @@ enum State {
 	ATTACKING,
 }
 
-const INK_BLOB: PackedScene = preload(
-	"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/ink_blob/ink_blob.tscn"
+const PROJECTILE_SCENE: PackedScene = preload(
+	"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/projectile/projectile.tscn"
 )
 
 ## When targetting the next walking position, skip this slice of the circle.
@@ -21,24 +22,46 @@ const WALK_TARGET_SKIP_ANGLE: float = PI / 4.
 ## circle is this proportion of the [member walking_range].
 const WALK_TARGET_SKIP_RANGE: float = 0.25
 
-@export var autostart: bool = false
+## The period of time between throwing projectiles.
+@export_range(0.1, 10., 0.1, "or_greater", "suffix:s") var throwing_period: float = 5.0
+
+## Use this to have 2 enemies throwing projectiles alternatively and at the same pace
+## (same [member throwing_period]).
 @export var odd_shoot: bool = false
-@export var ink_follows_player: bool = false
-@export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s") var ink_speed: float = 30.0
-@export_range(0., 10., 0.1, "or_greater", "suffix:s") var ink_duration: float = 5.0
 
-## The period of time between throwing ink.
-@export_range(0.1, 10., 0.1, "or_greater", "suffix:s") var ink_period: float = 5.0
+## Whether the enemy starts attacking or walking automatically. If false, make sure
+## to call [method start].
+@export var autostart: bool = false
 
-## If this is not zero, the ink drinker walks this amount of time between being idle and
-## throwing ink. If it is bigger than [member ink_period], the ink drinker walks all the
+@export_group("Projectile", "projectile")
+
+## The speed of the projectile initial impulse and the projectile bouncing impulse.
+@export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s")
+var projectile_speed: float = 30.0
+
+## The life span of the projectile.
+@export_range(0., 10., 0.1, "or_greater", "suffix:s") var projectile_duration: float = 5.0
+
+## If true, the projectile will constantly adjust itself to target the player.
+@export var projectile_follows_player: bool = false
+
+## A small visual effect used when the projectile collides with things.
+@export var projectile_small_fx_scene: PackedScene
+
+## A big visual effect used when the projectile explodes.
+@export var projectile_big_fx_scene: PackedScene
+
+@export_group("Walking", "walking")
+
+## If this is not zero, the enemy walks this amount of time between being idle and
+## throwing. If it is bigger than [member throwing_period], the enemy walks all the
 ## time.
 @export_range(0., 10., 0.1, "or_greater", "suffix:s") var walking_time: float = 0.0:
 	set(value):
 		walking_time = value
 		queue_redraw()
 
-## The range that the ink drinker is allowed to walk. This is the radius of a circle that
+## The range that the enemy is allowed to walk. This is the radius of a circle that
 ## has the initial position as center. The range is visible in the editor when
 ## [member walking_time] is not zero.
 @export_range(0., 500., 1., "or_greater", "suffix:m") var walking_range: float = 300.0:
@@ -46,19 +69,23 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 		walking_range = value
 		queue_redraw()
 
-## The moving speed of the ink drinker when walking.
+## The moving speed of the enemy when walking.
 @export_range(20, 300, 5, "or_greater", "or_less", "suffix:m/s") var walking_speed: float = 50.0
 
-## The color of each ink blob thrown will be a random choice from this array.
-## So if a color appears more than once, this will increase the chance that it is thrown.
-var allowed_colors: Array = InkBlob.InkColorNames.values()
+## The label of each projectile thrown will be a random choice from this array.
+## So if a label appears more than once, this will increase the chance that it is thrown.
+var allowed_labels: Array[String] = ["???"]
+
+## Optional mapping of color per label. This is used to tint projectiles to make a
+## color-matching game.
+var color_per_label: Dictionary[String, Color]
 
 var _initial_position: Vector2
 var _target_position: Vector2
 var _is_attacking: bool
 
 @onready var timer: Timer = %Timer
-@onready var ink_blob_marker: Marker2D = %InkBlobMarker
+@onready var projectile_marker: Marker2D = %ProjectileMarker
 @onready var hit_box: Area2D = %HitBox
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
@@ -157,15 +184,21 @@ func _on_timeout() -> void:
 	animated_sprite_2d.play(&"attack anticipation")
 	await animated_sprite_2d.animation_finished
 	animated_sprite_2d.play(&"attack")
-	var ink_blob: InkBlob = INK_BLOB.instantiate()
-	ink_blob.direction = ink_blob_marker.global_position.direction_to(player.global_position)
-	ink_blob.ink_color_name = allowed_colors.pick_random()
-	ink_blob.global_position = (ink_blob_marker.global_position + ink_blob.direction * 20.)
-	if ink_follows_player:
-		ink_blob.node_to_follow = player
-	ink_blob.speed = ink_speed
-	ink_blob.duration = ink_duration
-	get_tree().current_scene.add_child(ink_blob)
+	var projectile: Projectile = PROJECTILE_SCENE.instantiate()
+	projectile.direction = projectile_marker.global_position.direction_to(player.global_position)
+	projectile.label = allowed_labels.pick_random()
+	if projectile.label in color_per_label:
+		projectile.color = color_per_label[projectile.label]
+	projectile.global_position = (projectile_marker.global_position + projectile.direction * 20.)
+	if projectile_follows_player:
+		projectile.node_to_follow = player
+	if projectile_small_fx_scene:
+		projectile.small_fx_scene = projectile_small_fx_scene
+	if projectile_big_fx_scene:
+		projectile.big_fx_scene = projectile_big_fx_scene
+	projectile.speed = projectile_speed
+	projectile.duration = projectile_duration
+	get_tree().current_scene.add_child(projectile)
 	_set_target_position()
 	await animated_sprite_2d.animation_finished
 	animated_sprite_2d.play(&"idle")
@@ -173,23 +206,26 @@ func _on_timeout() -> void:
 
 
 func _on_got_hit(body: Node2D) -> void:
-	if body is InkBlob and not body.can_hit_enemy:
+	if body is Projectile and not body.can_hit_enemy:
 		return
 	body.queue_free()
 	animation_player.play(&"got hit")
 
 
+## Start attacking and/or walking. The enemy will be idle until this is called.
+## See [member autostart].
 func start() -> void:
-	timer.wait_time = ink_period
+	timer.wait_time = throwing_period
 	timer.timeout.connect(_on_timeout)
 	hit_box.body_entered.connect(_on_got_hit)
 	if odd_shoot:
-		await get_tree().create_timer(ink_period / 2).timeout
+		await get_tree().create_timer(throwing_period / 2).timeout
 	timer.start()
 	_initial_position = position
 	_set_target_position()
 
 
+## Play a remove animation and then remove the enemy from the scene.
 func remove() -> void:
 	timer.stop()
 	animation_player.play(&"remove")

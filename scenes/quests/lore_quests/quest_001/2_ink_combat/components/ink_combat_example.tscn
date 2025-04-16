@@ -1,12 +1,12 @@
 [gd_scene load_steps=12 format=4 uid="uid://512qlyin7f7m"]
 
 [ext_resource type="Script" uid="uid://dx4aqh50o2kro" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/ink_combat_example.gd" id="1_3llvl"]
-[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/ink_combat_logic.gd" id="3_gntf4"]
+[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/fill_game_logic.gd" id="3_gntf4"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="4_mjjlm"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_tuo2o"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="6_1ln4g"]
-[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/ink_drinker/ink_drinker.tscn" id="7_6c46p"]
-[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/inkwell/inkwell.tscn" id="8_4e73s"]
+[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/throwing_enemy/throwing_enemy.tscn" id="7_6c46p"]
+[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/filling_barrel/filling_barrel.tscn" id="8_4e73s"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="9_w8l41"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="10_c444q"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="12_isa3a"]
@@ -20,10 +20,10 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 [node name="InkCombatExample" type="Node2D"]
 script = ExtResource("1_3llvl")
 
-[node name="InkCombatLogic" type="Node" parent="."]
+[node name="FillGameLogic" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_gntf4")
-inkwells_to_win = 2
+barrels_to_win = 2
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -70,39 +70,46 @@ editor_draw_limits = true
 [node name="Talker" parent="OnTheGround" instance=ExtResource("6_1ln4g")]
 position = Vector2(622, 479)
 
-[node name="InkDrinker" parent="OnTheGround" instance=ExtResource("7_6c46p")]
+[node name="ThrowingEnemy" parent="OnTheGround" instance=ExtResource("7_6c46p")]
 position = Vector2(1552, 1205)
 walking_time = 4.0
 
-[node name="InkDrinker2" parent="OnTheGround" instance=ExtResource("7_6c46p")]
+[node name="ThrowingEnemy2" parent="OnTheGround" instance=ExtResource("7_6c46p")]
 position = Vector2(1377, 1205)
 odd_shoot = true
-ink_follows_player = true
-ink_speed = 10.0
-ink_duration = 15.0
+projectile_speed = 10.0
+projectile_duration = 15.0
+projectile_follows_player = true
 
-[node name="Inkwell" parent="OnTheGround" instance=ExtResource("8_4e73s")]
+[node name="FillingBarrel" parent="OnTheGround" instance=ExtResource("8_4e73s")]
 position = Vector2(1660, 764)
+label = "Cyan"
+color = Color(0, 1, 1, 1)
 
-[node name="Inkwell2" parent="OnTheGround" instance=ExtResource("8_4e73s")]
+[node name="FillingBarrel2" parent="OnTheGround" instance=ExtResource("8_4e73s")]
 position = Vector2(1756, 853)
-ink_color_name = 3
+label = "Black"
+color = Color(0.2, 0.2, 0.2, 1)
 
-[node name="Inkwell3" parent="OnTheGround" instance=ExtResource("8_4e73s")]
+[node name="FillingBarrel3" parent="OnTheGround" instance=ExtResource("8_4e73s")]
 position = Vector2(1783, 952)
-ink_color_name = 1
+label = "Magenta"
+color = Color(1, 0, 1, 1)
 
-[node name="Inkwell4" parent="OnTheGround" instance=ExtResource("8_4e73s")]
+[node name="FillingBarrel4" parent="OnTheGround" instance=ExtResource("8_4e73s")]
 position = Vector2(1703, 1029)
-ink_color_name = 2
+label = "Yellow"
+color = Color(1, 1, 0, 1)
 
-[node name="Inkwell5" parent="OnTheGround" instance=ExtResource("8_4e73s")]
+[node name="FillingBarrel5" parent="OnTheGround" instance=ExtResource("8_4e73s")]
 position = Vector2(1322, 736)
-ink_color_name = 3
+label = "Black"
+color = Color(0.2, 0.2, 0.2, 1)
 
-[node name="Inkwell6" parent="OnTheGround" instance=ExtResource("8_4e73s")]
+[node name="FillingBarrel6" parent="OnTheGround" instance=ExtResource("8_4e73s")]
 position = Vector2(1238, 821)
-ink_color_name = 1
+label = "Magenta"
+color = Color(1, 0, 1, 1)
 
 [node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("9_w8l41")]
 unique_name_in_owner = true

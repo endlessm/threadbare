@@ -4,7 +4,7 @@ extends Node2D
 
 @export var intro_dialogue: DialogueResource
 
-@onready var ink_combat_logic: InkCombatLogic = %InkCombatLogic
+@onready var fill_game_logic: FillGameLogic = %FillGameLogic
 @onready var collectible_item: CollectibleItem = %CollectibleItem
 
 
@@ -13,8 +13,8 @@ func _ready() -> void:
 	await DialogueManager.dialogue_ended
 	# Add a short delay so the player doesn"t attack when closing the dialogue:
 	await get_tree().create_timer(0.5).timeout
-	ink_combat_logic.goal_reached.connect(_on_goal_reached)
-	ink_combat_logic.start()
+	fill_game_logic.goal_reached.connect(_on_goal_reached)
+	fill_game_logic.start()
 
 
 func _on_goal_reached() -> void:
