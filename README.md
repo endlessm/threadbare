@@ -1,5 +1,7 @@
 # Threadbare
 
+[Play it here!](https://endlessm.github.io/threadbare/)
+
 ## License
 
 Threadbare's original source code in Threadbare itself is covered by [Mozilla
