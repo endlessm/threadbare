@@ -16,8 +16,7 @@ void vertex() {
 }
 
 void fragment() {
-	vec2 noise_position = world_pos;
-	float noise_value = texture(phase_noise, noise_position / phase_period).x;
+	float noise_value = texture(phase_noise, fract(world_pos)).x;
 	float wind_phase = noise_value * 100.0;
 	float wind_speed = noise_value * max_wind_speed;
 	float max_offset = sin(TIME * wind_speed + wind_phase) * max_wind_intensity;
