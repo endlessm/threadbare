@@ -5,9 +5,9 @@ extends Node
 
 signal goal_reached
 
-@export var inkwells_to_win: int = 1
+@export var barrels_to_win: int = 1
 
-var inkwells_completed: int = 0
+var barrels_completed: int = 0
 
 
 func start() -> void:
@@ -15,31 +15,31 @@ func start() -> void:
 	if player:
 		player.mode = Player.Mode.FIGHTING
 	get_tree().call_group("throwing_enemy", "start")
-	for inkwell: Inkwell in get_tree().get_nodes_in_group("inkwells"):
-		inkwell.completed.connect(_on_inkwell_completed)
+	for filling_barrel: FillingBarrel in get_tree().get_nodes_in_group("filling_barrels"):
+		filling_barrel.completed.connect(_on_barrel_completed)
 	_update_allowed_colors()
 
 
 func _update_allowed_colors() -> void:
 	var allowed_labels: Array[String] = []
 	var color_per_label: Dictionary[String, Color]
-	for inkwell: Inkwell in get_tree().get_nodes_in_group("inkwells"):
-		if inkwell.is_queued_for_deletion():
+	for filling_barrel: FillingBarrel in get_tree().get_nodes_in_group("filling_barrels"):
+		if filling_barrel.is_queued_for_deletion():
 			continue
-		if inkwell.label not in allowed_labels:
-			allowed_labels.append(inkwell.label)
-			if not inkwell.color:
+		if filling_barrel.label not in allowed_labels:
+			allowed_labels.append(filling_barrel.label)
+			if not filling_barrel.color:
 				continue
-			color_per_label[inkwell.label] = inkwell.color
+			color_per_label[filling_barrel.label] = filling_barrel.color
 	for enemy: ThrowingEnemy in get_tree().get_nodes_in_group("throwing_enemy"):
 		enemy.allowed_labels = allowed_labels
 		enemy.color_per_label = color_per_label
 
 
-func _on_inkwell_completed() -> void:
-	inkwells_completed += 1
+func _on_barrel_completed() -> void:
+	barrels_completed += 1
 	_update_allowed_colors()
-	if inkwells_completed < inkwells_to_win:
+	if barrels_completed < barrels_to_win:
 		return
 	get_tree().call_group("throwing_enemy", "remove")
 	var player: Player = get_tree().get_first_node_in_group("player")

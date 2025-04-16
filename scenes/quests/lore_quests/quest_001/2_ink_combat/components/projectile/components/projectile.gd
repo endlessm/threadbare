@@ -89,17 +89,17 @@ func add_small_fx() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.owner is Inkwell and not can_hit_enemy:
+	if body.owner is FillingBarrel and not can_hit_enemy:
 		return
 	var hit_vector: Vector2 = global_position - body.global_position
 	linear_velocity = Vector2.ZERO
 	apply_impulse(hit_vector)
 	add_small_fx()
 	duration_timer.start()
-	if body.owner is Inkwell:
-		var inkwell: Inkwell = body.owner as Inkwell
-		if inkwell.label == label:
-			inkwell.fill()
+	if body.owner is FillingBarrel:
+		var filling_barrel: FillingBarrel = body.owner as FillingBarrel
+		if filling_barrel.label == label:
+			filling_barrel.fill()
 			queue_free()
 	elif body.owner is Player:
 		can_hit_enemy = true
