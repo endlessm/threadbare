@@ -6,7 +6,7 @@ extends StaticBody2D
 
 signal completed
 
-const INK_NEEDED: int = 3
+const NEEDED: int = 3
 
 ## Projectiles with this label fill the barrel.
 @export var label: String = "???":
@@ -16,7 +16,7 @@ const INK_NEEDED: int = 3
 @export var color: Color:
 	set = _set_color
 
-var ink_amount: int = 0
+var _amount: int = 0
 
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
@@ -48,11 +48,13 @@ func _ready() -> void:
 	_set_color(color)
 
 
+## Increment the amount by one and play the fill animation. If completed, also play the completed
+## animation and remove this barrel from the current scene.
 func fill() -> void:
 	animation_player.play(&"fill")
-	ink_amount += 1
+	_amount += 1
 	animated_sprite_2d.frame += 1
-	if ink_amount >= INK_NEEDED:
+	if _amount >= NEEDED:
 		await animation_player.animation_finished
 		animation_player.play(&"completed")
 		await animation_player.animation_finished

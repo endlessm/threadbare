@@ -15,14 +15,27 @@ const ENEMY_HITBOX_LAYER: int = 7
 @export var color: Color:
 	set = _set_color
 
-@export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s") var speed: float = 30.0
-@export var direction: Vector2 = Vector2(0, -1):
-	set = _set_direction
+## Whether this projectile hits the player or the enemies.
 @export var can_hit_enemy: bool = false:
 	set = _set_can_hit_enemy
 
+@export_group("Movement")
+
+## The speed of the initial impulse and the bouncing impulse.
+@export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s") var speed: float = 30.0
+
+## The initial direction.
+@export var direction: Vector2 = Vector2(0, -1):
+	set = _set_direction
+
+## The life span of the projectile.
 @export_range(0., 10., 0.1, "or_greater", "suffix:s") var duration: float = 5.0
+
+## If set, the projectile will constantly adjust itself to target this node. It will still start
+## moving in the initial [member direction].
 @export var node_to_follow: Node2D = null
+
+@export_group("FXs")
 
 ## A small visual effect used when the projectile collides with things.
 @export var small_fx_scene: PackedScene = preload(
@@ -80,6 +93,7 @@ func _process(_delta: float) -> void:
 		constant_force = force
 
 
+## Add a small effect scene to the current scene in the current position.
 func add_small_fx() -> void:
 	var small_fx: Node2D = small_fx_scene.instantiate()
 	if color:
