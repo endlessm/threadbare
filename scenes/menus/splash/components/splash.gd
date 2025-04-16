@@ -14,7 +14,10 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"ui_accept") or event.is_action_pressed(&"ui_cancel"):
+	if (
+		not Pause.is_paused(Pause.System.PLAYER_INPUT)
+		and (event.is_action_pressed(&"ui_accept") or event.is_action_pressed(&"ui_cancel"))
+	):
 		get_viewport().set_input_as_handled()
 		switch_to_intro()
 
