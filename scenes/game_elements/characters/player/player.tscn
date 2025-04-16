@@ -1,10 +1,10 @@
-[gd_scene load_steps=26 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=27 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/game_elements/characters/player/components/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/shared_components/sprite_frames/story_weaver.tres" id="2_3in67"]
 [ext_resource type="Script" uid="uid://bpu6jo4kvehlg" path="res://scenes/game_elements/characters/player/components/player_interaction.gd" id="3_dqkch"]
-[ext_resource type="Script" uid="uid://kqgiavjw07fx" path="res://scenes/game_elements/characters/player/components/interact_ray.gd" id="3_qhqgy"]
 [ext_resource type="Script" uid="uid://qro4uo83ba8f" path="res://scenes/game_elements/characters/player/components/player_sprite.gd" id="3_qlg0r"]
+[ext_resource type="Script" uid="uid://necvar42rnih" path="res://scenes/game_elements/characters/player/components/interact_zone.gd" id="6_3in67"]
 [ext_resource type="PackedScene" uid="uid://yfpfno276rol" path="res://scenes/game_elements/props/fixed_size_label/fixed_size_label.tscn" id="6_h17s1"]
 [ext_resource type="Script" uid="uid://e78f8iq448e1" path="res://scenes/game_elements/characters/player/components/animation_player.gd" id="7_0owmy"]
 [ext_resource type="Script" uid="uid://kni2yl26matc" path="res://scenes/game_elements/characters/player/components/player_fighting.gd" id="7_5gtgg"]
@@ -14,6 +14,9 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
 height = 42.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_blfj0"]
+size = Vector2(110, 80)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_je7p5"]
 size = Vector2(32, 47)
@@ -373,15 +376,16 @@ shape = SubResource("CapsuleShape2D_3vyb7")
 unique_name_in_owner = true
 script = ExtResource("3_dqkch")
 
-[node name="InteractRay" type="RayCast2D" parent="PlayerInteraction"]
+[node name="InteractZone" type="Area2D" parent="PlayerInteraction" node_paths=PackedStringArray("character")]
 unique_name_in_owner = true
-position = Vector2(0, -24)
-target_position = Vector2(80, 0)
+collision_layer = 0
 collision_mask = 32
-hit_from_inside = true
-collide_with_areas = true
-collide_with_bodies = false
-script = ExtResource("3_qhqgy")
+script = ExtResource("6_3in67")
+character = NodePath("../..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerInteraction/InteractZone"]
+position = Vector2(47, -30)
+shape = SubResource("RectangleShape2D_blfj0")
 
 [node name="InteractMarker" type="Marker2D" parent="PlayerInteraction"]
 unique_name_in_owner = true
