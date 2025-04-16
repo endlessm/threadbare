@@ -44,6 +44,9 @@ var _locale: String = TranslationServer.get_locale()
 ## The base balloon anchor
 @onready var balloon: Control = %Balloon
 
+## The panel holding the label showing the name of the currently-speaking character
+@onready var character_panel: PanelContainer = %CharacterPanel
+
 ## The label showing the name of the currently speaking character
 @onready var character_label: RichTextLabel = %CharacterLabel
 
@@ -103,8 +106,8 @@ func apply_dialogue_line() -> void:
 	balloon.focus_mode = Control.FOCUS_ALL
 	balloon.grab_focus()
 
-	character_label.visible = not dialogue_line.character.is_empty()
-	character_label.text = tr(dialogue_line.character, "dialogue")
+	character_panel.visible = not dialogue_line.character.is_empty()
+	character_label.text = "[center]%s[/center]" % tr(dialogue_line.character, "dialogue")
 
 	dialogue_label.hide()
 	dialogue_label.dialogue_line = dialogue_line
