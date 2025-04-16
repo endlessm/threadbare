@@ -2,13 +2,13 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node2D
 
-@onready var ink_combat_logic: InkCombatLogic = %InkCombatLogic
+@onready var fill_game_logic: FillGameLogic = %FillGameLogic
 @onready var collectible_item: CollectibleItem = %CollectibleItem
 
 
 func _ready() -> void:
-	ink_combat_logic.goal_reached.connect(_on_goal_reached)
-	ink_combat_logic.start()
+	fill_game_logic.goal_reached.connect(_on_goal_reached)
+	fill_game_logic.start()
 
 
 func _on_goal_reached() -> void:

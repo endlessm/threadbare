@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name InkCombatLogic
+class_name FillGameLogic
 extends Node
 
 signal goal_reached
