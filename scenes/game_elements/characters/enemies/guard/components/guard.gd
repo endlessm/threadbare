@@ -409,6 +409,9 @@ func edit_patrol_path() -> void:
 		get_parent().add_child(patrol_path)
 		patrol_path.owner = owner
 		patrol_path.global_position = global_position
-		patrol_path.curve = Curve2D.new()
+		var patrol_path_curve: Curve2D = Curve2D.new()
+		patrol_path.curve = patrol_path_curve
 		patrol_path.name = "%s-PatrolPath" % name
+		patrol_path_curve.add_point(Vector2.ZERO)
+		patrol_path_curve.add_point(Vector2.RIGHT * 150.0)
 		editor_interface.edit_node.call_deferred(patrol_path)
