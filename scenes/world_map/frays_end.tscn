@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://cufkthb25mpxy"]
+[gd_scene load_steps=16 format=4 uid="uid://cufkthb25mpxy"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_4evgk"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_tp7qs"]
@@ -13,13 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://7hoy2p14t6kc" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/main.tscn" id="11_0a1i7"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="11_mr2ek"]
 [ext_resource type="Resource" uid="uid://ykdgo73x62wa" path="res://scenes/game_elements/characters/npcs/story_quest_starter/components/story_quest_starter.dialogue" id="12_0a1i7"]
-[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter/components/teleporter.gd" id="12_r4ivj"]
-[ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="13_r4ivj"]
 [ext_resource type="PackedScene" uid="uid://bp20cjimwi8l0" path="res://scenes/game_elements/props/buildings/house/house_2.tscn" id="15_uhynt"]
 [ext_resource type="PackedScene" uid="uid://712saqgof3kf" path="res://scenes/game_elements/props/eternal_loom/eternal_loom.tscn" id="16_ojp30"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_r4ivj"]
-size = Vector2(52, 127)
 
 [node name="FraysEnd" type="Node2D"]
 y_sort_enabled = true
@@ -122,27 +117,7 @@ position = Vector2(1133, 769)
 npc_name = "Story Quest Elder"
 sprite_frames = ExtResource("4_7v00g")
 
-[node name="Teleporter" type="Area2D" parent="."]
-position = Vector2(2117, 1023)
-collision_layer = 4
-script = ExtResource("12_r4ivj")
-scene_to_go_to = "uid://cnse1w070wmr7"
-spawn_point_path = NodePath("LeftEntranceSpawnPoint")
-exit_transition = 1
-enter_transition = 2
-metadata/_custom_type_script = "uid://hqdquinbimce"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter"]
-position = Vector2(16, -2.5)
-shape = SubResource("RectangleShape2D_r4ivj")
-
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
-
-[node name="RightEntranceSpawnPoint" type="Marker2D" parent="." groups=["spawn_point"]]
-position = Vector2(2011, 1026)
-gizmo_extents = 30.0
-script = ExtResource("13_r4ivj")
-metadata/_custom_type_script = "uid://0enyu5v4ra34"
 
 [node name="EternalLoom" parent="." instance=ExtResource("16_ojp30")]
 position = Vector2(976, 552)
