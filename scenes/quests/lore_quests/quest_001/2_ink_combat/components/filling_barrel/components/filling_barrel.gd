@@ -7,6 +7,12 @@ extends StaticBody2D
 signal completed
 
 const NEEDED: int = 3
+const DEFAULT_TEXTURE: Texture2D = preload(
+	(
+		"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/"
+		+ "filling_barrel/components/inkwell-fill.png"
+	)
+)
 
 ## Projectiles with this label fill the barrel.
 @export var label: String = "???":
@@ -15,6 +21,11 @@ const NEEDED: int = 3
 ## Optional color to tint the barrel.
 @export var color: Color:
 	set = _set_color
+
+## Optional custom texture for the barrel. An inkwell texture is used by default.
+## The texture must have 4 vertical frames, from empty to filled.
+@export var texture: Texture2D:
+	set = _set_texture
 
 var _amount: int = 0
 
@@ -43,9 +54,20 @@ func _set_color(new_color: Color) -> void:
 		sprite_2d.modulate = Color.WHITE
 
 
+func _set_texture(new_texture: Texture2D) -> void:
+	texture = new_texture
+	if not is_node_ready():
+		return
+	if texture:
+		sprite_2d.texture = texture
+	else:
+		sprite_2d.texture = DEFAULT_TEXTURE
+
+
 func _ready() -> void:
 	_set_label(label)
 	_set_color(color)
+	_set_texture(texture)
 
 
 ## Increment the amount by one and play the fill animation. If completed, also play the completed
