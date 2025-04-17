@@ -18,7 +18,7 @@ const NEEDED: int = 3
 
 var _amount: int = 0
 
-@onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
+@onready var sprite_2d: Sprite2D = %Sprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var color_label: Control = %ColorLabel
 
@@ -38,9 +38,9 @@ func _set_color(new_color: Color) -> void:
 	if not is_node_ready():
 		return
 	if color:
-		animated_sprite_2d.modulate = color
+		sprite_2d.modulate = color
 	else:
-		animated_sprite_2d.modulate = Color.WHITE
+		sprite_2d.modulate = Color.WHITE
 
 
 func _ready() -> void:
@@ -53,7 +53,7 @@ func _ready() -> void:
 func fill() -> void:
 	animation_player.play(&"fill")
 	_amount += 1
-	animated_sprite_2d.frame += 1
+	sprite_2d.frame += 1
 	if _amount >= NEEDED:
 		await animation_player.animation_finished
 		animation_player.play(&"completed")
