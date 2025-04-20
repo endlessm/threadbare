@@ -13,7 +13,12 @@ extends CanvasLayer
 var resource: DialogueResource
 
 ## Temporary game states
-var temporary_game_states: Array = []
+var temporary_game_states: Array = []:
+	set(new_value):
+		temporary_game_states = new_value
+		for state in new_value:
+			if state is Player:
+				_player_name = (state as Player).player_name
 
 ## See if we are waiting for the player
 var is_waiting_for_input: bool = false
@@ -40,6 +45,7 @@ var dialogue_line: DialogueLine:
 var mutation_cooldown: Timer = Timer.new()
 
 var _locale: String = TranslationServer.get_locale()
+var _player_name: String = ""
 
 ## The base balloon anchor
 @onready var balloon: Control = %Balloon
@@ -107,6 +113,9 @@ func apply_dialogue_line() -> void:
 	balloon.grab_focus()
 
 	character_panel.visible = not dialogue_line.character.is_empty()
+	character_panel.theme_type_variation = (
+		"BlueRibbon" if _player_name == dialogue_line.character else "YellowRibbon"
+	)
 	character_label.text = "[center]%s[/center]" % tr(dialogue_line.character, "dialogue")
 
 	dialogue_label.hide()
