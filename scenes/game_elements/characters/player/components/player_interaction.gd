@@ -10,6 +10,8 @@ var is_interacting: bool:
 @onready var interact_marker: Marker2D = %InteractMarker
 @onready var interact_label: FixedSizeLabel = %InteractLabel
 
+@onready var player: Player = self.owner as Player
+
 
 func _get_is_interacting() -> bool:
 	return not interact_zone.monitoring
@@ -28,7 +30,7 @@ func _process(_delta: float) -> void:
 		interact_zone.monitoring = false
 		interact_label.visible = false
 		interact_area.interaction_ended.connect(_on_interaction_ended, CONNECT_ONE_SHOT)
-		interact_area.start_interaction(interact_zone.is_looking_from_right)
+		interact_area.start_interaction(player, interact_zone.is_looking_from_right)
 	else:
 		interact_label.visible = true
 		interact_label.label_text = interact_area.action

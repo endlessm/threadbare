@@ -15,7 +15,7 @@ func _ready():
 	interact_area.interaction_started.connect(self._on_interacted)
 
 
-func _on_interacted(_from_right: bool) -> void:
+func _on_interacted(player: Player, _from_right: bool) -> void:
 	var balloon := DialogueManager.show_dialogue_balloon(ETERNAL_LOOM_INTERACTION, "", [self])
 	await DialogueManager.dialogue_ended
 

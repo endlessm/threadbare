@@ -40,7 +40,7 @@ func update_appearance() -> void:
 	%LeverSprite.frame = 1 if is_on else 0
 
 
-func _on_interact_area_interaction_started(_from_right: bool) -> void:
+func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -> void:
 	toggle()
 	await get_tree().process_frame
 	%InteractArea.end_interaction()

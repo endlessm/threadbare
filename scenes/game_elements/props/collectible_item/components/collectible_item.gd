@@ -79,7 +79,7 @@ func reveal() -> void:
 ## When interacted with, the collectible will display a brief animation
 ## and when that finishes, a new [InventoryItem] will be added to the
 ## [Inventory] and the interaction will have ended.
-func _on_interacted(_from_right: bool) -> void:
+func _on_interacted(player: Player, _from_right: bool) -> void:
 	z_index += 1
 	animation_player.play("collected")
 	await animation_player.animation_finished
