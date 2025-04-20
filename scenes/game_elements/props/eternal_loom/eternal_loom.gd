@@ -16,7 +16,7 @@ func _ready():
 
 
 func _on_interacted(player: Player, _from_right: bool) -> void:
-	var balloon := DialogueManager.show_dialogue_balloon(ETERNAL_LOOM_INTERACTION, "", [self])
+	DialogueManager.show_dialogue_balloon(ETERNAL_LOOM_INTERACTION, "", [self, player])
 	await DialogueManager.dialogue_ended
 
 	# This little wait is needed to avoid triggering another dialogue:

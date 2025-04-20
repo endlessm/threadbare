@@ -87,7 +87,7 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	GameState.add_collected_item(item)
 
 	if collected_dialogue:
-		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self])
+		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])
 		await DialogueManager.dialogue_ended
 
 	interact_area.end_interaction()
