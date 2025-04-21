@@ -17,6 +17,10 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload(
 	"res://scenes/game_elements/characters/shared_components/sprite_frames/story_weaver.tres"
 )
 
+## The character's name. This is used to highlight when the player's character
+## is speaking during dialogue.
+@export var player_name: String = "StoryWeaver"
+
 ## Controls how the player can interact with the world around them.
 @export var mode: Mode = Mode.COZY:
 	set = _set_mode

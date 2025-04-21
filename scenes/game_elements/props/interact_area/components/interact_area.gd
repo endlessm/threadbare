@@ -3,7 +3,7 @@
 class_name InteractArea
 extends Area2D
 
-signal interaction_started(from_right: bool)
+signal interaction_started(player: Player, from_right: bool)
 signal interaction_ended
 
 const INTERACTABLE_LAYER = 6
@@ -15,8 +15,8 @@ const INTERACTABLE_LAYER = 6
 @export var action: String = "Talk"
 
 
-func start_interaction(from_right: bool) -> void:
-	interaction_started.emit(from_right)
+func start_interaction(player: Player, from_right: bool) -> void:
+	interaction_started.emit(player, from_right)
 
 
 func end_interaction() -> void:

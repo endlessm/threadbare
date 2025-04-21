@@ -24,11 +24,11 @@ func _ready() -> void:
 	DialogueManager.dialogue_ended.connect(_on_dialogue_ended)
 
 
-func _on_interaction_started(from_right: bool) -> void:
+func _on_interaction_started(player: Player, from_right: bool) -> void:
 	_previous_look_at_side = look_at_side
 	if look_at_side != Enums.LookAtSide.UNSPECIFIED:
 		look_at_side = Enums.LookAtSide.RIGHT if from_right else Enums.LookAtSide.LEFT
-	DialogueManager.show_dialogue_balloon(dialogue, "", [self])
+	DialogueManager.show_dialogue_balloon(dialogue, "", [self, player])
 
 
 func _on_dialogue_ended(_dialogue_resource: DialogueResource) -> void:
