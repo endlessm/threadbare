@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-extends Node2D
+extends Decoration
 
 
 func _notification(what: int) -> void:
