@@ -9,6 +9,14 @@ extends Toggleable
 		update_opened_state()
 
 
+func open() -> void:
+	set_toggled(true)
+
+
+func close() -> void:
+	set_toggled(false)
+
+
 func set_toggled(value: bool) -> void:
 	opened = value
 
