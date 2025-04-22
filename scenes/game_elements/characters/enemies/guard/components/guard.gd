@@ -26,7 +26,12 @@ const LOOK_AT_TURN_SPEED: float = 10.0
 @warning_ignore("unused_private_class_variable")
 @export_tool_button("Add/Edit Patrol Path") var _edit_patrol_path: Callable = edit_patrol_path
 ## The path the guard follows while patrolling.
-@export var patrol_path: Path2D
+@export var patrol_path: Path2D:
+	set(new_value):
+		patrol_path = new_value
+		if Engine.is_editor_hint():
+			queue_redraw()
+
 ## The wait time at each patrol point.
 @export_range(0, 5, 0.1, "or_greater", "suffix:s") var wait_time: float = 1.0
 ## The speed at which the guard moves.
