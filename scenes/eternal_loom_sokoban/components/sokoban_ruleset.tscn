@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=3 uid="uid://b01bv815d4yfr"]
+
+[ext_resource type="Script" uid="uid://kx0dy58r7pt0" path="res://scenes/eternal_loom_sokoban/components/system/rules/rule_engine.gd" id="1_o10xy"]
+[ext_resource type="Script" uid="uid://w1wfv7xac14u" path="res://scenes/eternal_loom_sokoban/components/system/input/directional_input.gd" id="2_ljyvb"]
+[ext_resource type="Script" uid="uid://davuwhxg7pnmk" path="res://scenes/eternal_loom_sokoban/components/rules/rule_push.gd" id="3_7eewn"]
+[ext_resource type="Script" uid="uid://6pqne81m5n80" path="res://scenes/eternal_loom_sokoban/components/goals/goal_all_on.gd" id="4_whrcu"]
+
+[node name="SokobanRuleset" type="Node" node_paths=PackedStringArray("directional_input")]
+script = ExtResource("1_o10xy")
+directional_input = NodePath("DirectionalInput")
+player_tag = &"controllable"
+tags_legend = Array[StringName]([&"controllable", &"pushable"])
+show_output = true
+
+[node name="DirectionalInput" type="Node" parent="."]
+script = ExtResource("2_ljyvb")
+metadata/_custom_type_script = "uid://w1wfv7xac14u"
+
+[node name="RulePushUp" type="Node" parent="."]
+script = ExtResource("3_7eewn")
+pusher = &"controllable"
+pushee = &"pushable"
+
+[node name="RulePushRight" type="Node" parent="RulePushUp"]
+script = ExtResource("3_7eewn")
+pusher = &"controllable"
+pushee = &"pushable"
+direction = 1
+
+[node name="RulePushDown" type="Node" parent="RulePushUp"]
+script = ExtResource("3_7eewn")
+pusher = &"controllable"
+pushee = &"pushable"
+direction = 2
+
+[node name="RulePushLeft" type="Node" parent="RulePushUp"]
+script = ExtResource("3_7eewn")
+pusher = &"controllable"
+pushee = &"pushable"
+direction = 3
+
+[node name="GoalTarget" type="Node" parent="."]
+script = ExtResource("4_whrcu")
+key = &"clump"
+target = &"target"
+metadata/_custom_type_script = "uid://6pqne81m5n80"
