@@ -67,7 +67,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if item:
-		sprite_2d.texture = item.texture()
+		sprite_2d.texture = item.get_world_texture()
 
 
 ## Make the collectible appear
