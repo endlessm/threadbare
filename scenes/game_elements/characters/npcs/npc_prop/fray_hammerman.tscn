@@ -1,0 +1,72 @@
+[gd_scene load_steps=11 format=3 uid="uid://n8dhed3nvf50"]
+
+[ext_resource type="Script" uid="uid://dv11604x2etuq" path="res://scenes/game_elements/characters/npcs/shared_components/npc.gd" id="1_31gn5"]
+[ext_resource type="Texture2D" uid="uid://cjqa2miqxorv7" path="res://assets/tiny-swords/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue.png" id="2_j6o64"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aw3xl"]
+atlas = ExtResource("2_j6o64")
+region = Rect2(0, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cn1tq"]
+atlas = ExtResource("2_j6o64")
+region = Rect2(192, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m81hy"]
+atlas = ExtResource("2_j6o64")
+region = Rect2(384, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x13l6"]
+atlas = ExtResource("2_j6o64")
+region = Rect2(576, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6lbfv"]
+atlas = ExtResource("2_j6o64")
+region = Rect2(768, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u2832"]
+atlas = ExtResource("2_j6o64")
+region = Rect2(960, 384, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0a1i7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aw3xl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cn1tq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m81hy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x13l6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6lbfv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u2832")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
+height = 42.0
+
+[node name="NpcProp" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_31gn5")
+sprite_frames = SubResource("SpriteFrames_0a1i7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -30)
+sprite_frames = SubResource("SpriteFrames_0a1i7")
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_3vyb7")
