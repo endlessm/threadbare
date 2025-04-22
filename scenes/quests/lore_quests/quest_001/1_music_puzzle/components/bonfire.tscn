@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://0ho4pvu8mn22"]
+[gd_scene load_steps=14 format=3 uid="uid://0ho4pvu8mn22"]
 
 [ext_resource type="Script" uid="uid://skx71j7ekdpc" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire.gd" id="1_chc78"]
 [ext_resource type="Texture2D" uid="uid://bjakp6o3lhvcr" path="res://assets/tiny-swords/Effects/Fire/Fire.png" id="1_db1lc"]
 [ext_resource type="Texture2D" uid="uid://ddxakjtgamrjj" path="res://assets/tiny-swords/Resources/Resources/W_Idle.png" id="2_vbefk"]
+[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="4_ad2aa"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1u12m"]
 atlas = ExtResource("1_db1lc")
@@ -66,6 +67,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_514xx"]
+size = Vector2(81, 37)
+
 [node name="Bonfire" type="StaticBody2D"]
 script = ExtResource("1_chc78")
 
@@ -79,3 +83,15 @@ polygon = PackedVector2Array(-26, 21, 18, 5, 26, 14, 24, 25, -19, 39, -27, 33)
 unique_name_in_owner = true
 position = Vector2(-1, -5)
 sprite_frames = SubResource("SpriteFrames_c0tnm")
+
+[node name="InteractArea" parent="." instance=ExtResource("4_ad2aa")]
+unique_name_in_owner = true
+position = Vector2(-2, 1)
+disabled = true
+action = "Listen"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(2, 17.5)
+shape = SubResource("RectangleShape2D_514xx")
+
+[connection signal="interaction_started" from="InteractArea" to="." method="_on_interact_area_interaction_started"]

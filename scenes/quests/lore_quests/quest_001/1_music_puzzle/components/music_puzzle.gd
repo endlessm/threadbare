@@ -90,7 +90,16 @@ func is_solved() -> bool:
 	return _current_melody == melodies.size()
 
 
-func play_demo_note(note: String):
+func play_demo_note(note: String) -> void:
 	_is_demo = true
 	await xylophone.play_note(note)
 	_is_demo = false
+
+
+func play_demo_melody_of_fire(fire: Bonfire) -> void:
+	await play_demo_melody(fires.find(fire))
+
+
+func play_demo_melody(melody: int) -> void:
+	for note in melodies[melody]:
+		await play_demo_note(note)
