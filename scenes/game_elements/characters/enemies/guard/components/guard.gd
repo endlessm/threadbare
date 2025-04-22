@@ -24,9 +24,14 @@ const LOOK_AT_TURN_SPEED: float = 10.0
 
 @export_category("Patrol")
 @warning_ignore("unused_private_class_variable")
-@export_tool_button("Edit Patrol Path") var _edit_patrol_path: Callable = edit_patrol_path
+@export_tool_button("Add/Edit Patrol Path") var _edit_patrol_path: Callable = edit_patrol_path
 ## The path the guard follows while patrolling.
-@export var patrol_path: Path2D
+@export var patrol_path: Path2D:
+	set(new_value):
+		patrol_path = new_value
+		if Engine.is_editor_hint():
+			queue_redraw()
+
 ## The wait time at each patrol point.
 @export_range(0, 5, 0.1, "or_greater", "suffix:s") var wait_time: float = 1.0
 ## The speed at which the guard moves.
@@ -85,7 +90,11 @@ var state: State = State.PATROLLING:
 
 
 func _ready() -> void:
-	if not Engine.is_editor_hint():
+	if Engine.is_editor_hint():
+		var selection_changed = _editor_interface().get_selection().selection_changed
+		if not selection_changed.is_connected(self.queue_redraw):
+			selection_changed.connect(self.queue_redraw)
+	else:
 		# Player awareness is configured and started empty.
 		if player_awareness:
 			player_awareness.max_value = time_to_detect_player
@@ -389,17 +398,21 @@ func _notification(what: int) -> void:
 			_reset()
 
 
+func _editor_interface() -> Node:
+	# Cannot directly reference [class EditorInterface] in code that isn't
+	# part of a script that runs only in the editor (like plugins).
+	# This function should only be called in the editor, but having a direct
+	# reference to the [class EditorInterface] causes errors on runtime builds.
+	return Engine.get_singleton("EditorInterface")
+
+
 ## Function used for a tool button that either selects the current patrol_path
 ## in the editor, or creates a new one
 func edit_patrol_path() -> void:
 	if not Engine.is_editor_hint():
 		return
 
-	# Cannot directly reference [class EditorInterface] in code that isn't
-	# part of a script that runs only in the editor (like plugins).
-	# This function should only be called in the editor, but having a direct
-	# reference to the [class EditorInterface] causes errors on runtime builds.
-	var editor_interface: Object = Engine.get_singleton("EditorInterface")
+	var editor_interface = _editor_interface()
 
 	if patrol_path:
 		editor_interface.edit_node.call_deferred(patrol_path)
@@ -409,6 +422,38 @@ func edit_patrol_path() -> void:
 		get_parent().add_child(patrol_path)
 		patrol_path.owner = owner
 		patrol_path.global_position = global_position
-		patrol_path.curve = Curve2D.new()
+		var patrol_path_curve: Curve2D = Curve2D.new()
+		patrol_path.curve = patrol_path_curve
 		patrol_path.name = "%s-PatrolPath" % name
+		patrol_path_curve.add_point(Vector2.ZERO)
+		patrol_path_curve.add_point(Vector2.RIGHT * 150.0)
 		editor_interface.edit_node.call_deferred(patrol_path)
+
+
+func _draw() -> void:
+	## Only draw the patrol path debug line if we are in the editor
+	## and the guard node is selected.
+	if Engine.is_editor_hint() and self in _editor_interface().get_selection().get_selected_nodes():
+		var debug_color: Color = Color.RED
+		var line_width: float = 5.0
+		var point_size: float = 15.
+
+		if patrol_path and patrol_path.curve:
+			var curve: Curve2D = patrol_path.curve
+			## Draw the patrol path segments
+			if curve.point_count > 1:
+				for point_idx in curve.point_count - 1:
+					draw_line(
+						to_local(patrol_path.to_global(curve.get_point_position(point_idx))),
+						to_local(patrol_path.to_global(curve.get_point_position(point_idx + 1))),
+						debug_color,
+						line_width,
+						true
+					)
+			## Draw a point in each place the guard stops while patrolling
+			for point_idx in curve.point_count:
+				draw_circle(
+					to_local(patrol_path.to_global(curve.get_point_position(point_idx))),
+					point_size,
+					debug_color
+				)
