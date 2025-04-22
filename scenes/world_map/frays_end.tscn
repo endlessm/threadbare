@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://cufkthb25mpxy"]
+[gd_scene load_steps=19 format=4 uid="uid://cufkthb25mpxy"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_4evgk"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_tp7qs"]
@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="11_mr2ek"]
 [ext_resource type="Resource" uid="uid://ykdgo73x62wa" path="res://scenes/game_elements/characters/npcs/story_quest_starter/components/story_quest_starter.dialogue" id="12_0a1i7"]
 [ext_resource type="Texture2D" uid="uid://wxp04k82t4n8" path="res://scenes/game_elements/props/tree/components/Tree_Wool_Green_01.png" id="12_780ok"]
+[ext_resource type="Resource" uid="uid://c1baepfbbcd4s" path="res://scenes/game_elements/characters/npcs/story_quest_starter/components/lore_quest_starter.dialogue" id="12_yntpr"]
+[ext_resource type="PackedScene" uid="uid://c1gdct760l86h" path="res://scenes/quests/story_quests/stella_and_the_missing_star/0_intro/intro.tscn" id="14_xa7wa"]
 [ext_resource type="PackedScene" uid="uid://bp20cjimwi8l0" path="res://scenes/game_elements/props/buildings/house/house_2.tscn" id="15_uhynt"]
 [ext_resource type="PackedScene" uid="uid://712saqgof3kf" path="res://scenes/game_elements/props/eternal_loom/eternal_loom.tscn" id="16_ojp30"]
 
@@ -101,20 +103,24 @@ position = Vector2(484, 1074)
 [node name="NPCs" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Elder1" parent="NPCs" instance=ExtResource("11_mr2ek")]
+[node name="LoreQuestElder" parent="NPCs" instance=ExtResource("11_mr2ek")]
 modulate = Color(1, 0.784314, 0.784314, 1)
-position = Vector2(807, 770)
+position = Vector2(805, 770)
 script = ExtResource("10_5yai1")
 quest_scene = ExtResource("11_0a1i7")
 quest_description = "This quest will need speed, reflexes, and ingenuity."
 npc_name = "Lore Quest Elder"
-dialogue = ExtResource("12_0a1i7")
+dialogue = ExtResource("12_yntpr")
 sprite_frames = ExtResource("4_7v00g")
 
-[node name="Elder2" parent="NPCs" instance=ExtResource("11_mr2ek")]
+[node name="StoryQuestElder" parent="NPCs" instance=ExtResource("11_mr2ek")]
 modulate = Color(0.784314, 0.784314, 1, 1)
 position = Vector2(1133, 769)
+script = ExtResource("10_5yai1")
+quest_scene = ExtResource("14_xa7wa")
+quest_description = ""
 npc_name = "Story Quest Elder"
+dialogue = ExtResource("12_0a1i7")
 sprite_frames = ExtResource("4_7v00g")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]

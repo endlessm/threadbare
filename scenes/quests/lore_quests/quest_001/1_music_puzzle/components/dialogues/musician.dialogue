@@ -9,24 +9,19 @@ if not first_conversation:
 
 set first_conversation = false
 
-Musician: Ah! Another wanderer. It's been awhile since anyone came looking for answers instead of treasure.
-Musician: You've got that look about you - like you're missing something, but you don't know what.
-Musician: Welcome to the Song Sanctuary. Or what's left of it.
+Musician: Ah! Another wanderer. Welcome to the Song Sanctuary. Or what's left of it.
 StoryWeaver: What happened here?
-Musician: Stories stopped being told. Songs stopped being sung.
-Musician: And when a song's forgotten... the world forgets itself right along with it.
+Musician: Songs stopped being sung. And when a song's forgotten... the world forgets itself right along with it.
 if puzzle.get_progress() >= 1:
 	Musician: Oh! Have you been playing with the stones over there?
 	StoryWeaver: I kicked them and something strange happened...
-Musician: These stones? They're part of a magical song.
-Musician: My mother used to sing it to me when I was small. Said it helped people remember - names, places, even feelings, and it opened the portal to the Ink Well, where songwriters could get ink to write new songs.
-Musician: Sadly, the ink has all been siphoned away by those InkDrinkers, and no new songs have been written in a long, long time.
-Musician: Now, I can only recall the first few notes of the magical melody. The rest... slips away.
-StoryWeaver: Can you show me what you remember?
+Musician: These stones? They're part of a magical song that used to open the portal to the Ink Well, where songwriters found ink to write their songs. But...
+Musician: Um... Anyway, now I can only recall the first few notes of the magical melody. The rest slips away.
+StoryWeaver: Can you show me what you remember? Maybe I can help.
 => demonstrate_melody
 
 ~ hello_again
-Musician: Hello again, StoryWeaver. Would you like me to remind you what I said?
+Musician: Hello again, StoryWeaver. Would you like me to play the magical melody again?
 - Yes => demonstrate_melody
 - No
 	Musician: OK then, good luck.
@@ -38,13 +33,11 @@ Musician: do,[do play("C")] re,[do play("D")] mi,[do play("E")] sol,[do play("G"
 Musician: And then it fades.
 if first_conversation:
 	StoryWeaver: What if I tried to complete it?
-	Musician: Hmm. Might be dangerous. Might be beautiful. Maybe both.
-Musician: Try listening to the stones. And reading the ancient symbols.
+	Musician: Yes, please!
 Musician: I wish you luck.
 => END
 
 ~ well_done
-Musician: You did it! The melody... it's not just music.
-Musician: It opens the portal to the Ink Well. Let's go there together and find more ink to help the songwriters.
-Musician: But beware, the InkDrinkers dwell there.
+Musician: You did it! The melody... it's not just music. It opens the portal to the Ink Well. Let's go find more ink so songs and stories can be written again.
+Musician: But we must be careful, the InkDrinkers dwell there!
 => END
