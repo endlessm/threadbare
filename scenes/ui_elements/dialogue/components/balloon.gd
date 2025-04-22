@@ -62,6 +62,13 @@ var _player_name: String = ""
 ## The label showing the currently spoken dialogue
 @onready var dialogue_label: DialogueLabel = %DialogueLabel
 
+## The “Next” button container, visible when the current line is complete and there are
+## no response choices.
+@onready var next_button_container: MarginContainer = %NextButtonContainer
+
+## The “Next” button, to connect signals.
+@onready var next_button: Button = %NextButton
+
 ## The menu of responses
 @onready var responses_menu: DialogueResponsesMenu = %ResponsesMenu
 
@@ -75,6 +82,7 @@ func _ready() -> void:
 		responses_menu.next_action = next_action
 
 	mutation_cooldown.timeout.connect(_on_mutation_cooldown_timeout)
+	next_button.pressed.connect(func(): next(dialogue_line.next_id))
 	add_child(mutation_cooldown)
 
 
@@ -129,6 +137,8 @@ func apply_dialogue_line() -> void:
 	responses_menu.hide()
 	responses_menu.responses = dialogue_line.responses
 
+	next_button_container.hide()
+
 	# Show our balloon
 	balloon.show()
 	will_hide_balloon = false
@@ -154,6 +164,7 @@ func apply_dialogue_line() -> void:
 		is_waiting_for_input = true
 		balloon.focus_mode = Control.FOCUS_ALL
 		balloon.grab_focus()
+		next_button_container.show()
 
 
 ## Go to the next line
