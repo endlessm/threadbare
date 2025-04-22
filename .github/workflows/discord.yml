@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+name: Discord Notification
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Discord notification
+      if: github.event.pull_request.merged == true
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_MERGE }}
+        # DISCORD_USERNAME: # Omitted in favor of Discord default ("GitHub")
+        # DISCORD_AVATAR: # Omitted in favor of Discord default (GitHub logo)
+      uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9 # 0.3.2
