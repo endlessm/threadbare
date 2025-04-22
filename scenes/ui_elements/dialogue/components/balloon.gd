@@ -3,6 +3,9 @@
 extends CanvasLayer
 ## A basic dialogue balloon for use with Dialogue Manager.
 
+const PLAYER_RIBBON_TYPE_VARIATION := &"PlayerRibbon"
+const NPC_RIBBON_TYPE_VARIATION := &"NPCRibbon"
+
 ## The action to use for advancing the dialogue
 @export var next_action: StringName = &"ui_accept"
 
@@ -114,7 +117,9 @@ func apply_dialogue_line() -> void:
 
 	character_panel.visible = not dialogue_line.character.is_empty()
 	character_panel.theme_type_variation = (
-		"BlueRibbon" if _player_name == dialogue_line.character else "YellowRibbon"
+		PLAYER_RIBBON_TYPE_VARIATION
+		if _player_name == dialogue_line.character
+		else NPC_RIBBON_TYPE_VARIATION
 	)
 	character_label.text = tr(dialogue_line.character, "dialogue")
 
