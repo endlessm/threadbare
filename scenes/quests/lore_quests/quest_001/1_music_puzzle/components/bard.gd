@@ -11,4 +11,4 @@ var first_conversation: bool = true
 
 
 func play(note: String) -> void:
-	await puzzle.xylophone.play_note(note)
+	await puzzle.play_demo_note(note)
