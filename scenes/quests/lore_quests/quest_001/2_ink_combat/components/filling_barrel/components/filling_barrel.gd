@@ -15,8 +15,7 @@ const DEFAULT_TEXTURE: Texture2D = preload(
 )
 
 ## Projectiles with this label fill the barrel.
-@export var label: String = "???":
-	set = _set_label
+@export var label: String = "???"
 
 ## Optional color to tint the barrel.
 @export var color: Color:
@@ -31,17 +30,6 @@ var _amount: int = 0
 
 @onready var sprite_2d: Sprite2D = %Sprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
-@onready var color_label: Control = %ColorLabel
-
-
-func _set_label(new_label: String) -> void:
-	label = new_label
-	if not is_node_ready():
-		return
-	if label:
-		color_label.label_text = label
-	else:
-		color_label.label_text = "???"
 
 
 func _set_color(new_color: Color) -> void:
@@ -65,7 +53,6 @@ func _set_texture(new_texture: Texture2D) -> void:
 
 
 func _ready() -> void:
-	_set_label(label)
 	_set_color(color)
 	_set_texture(texture)
 
