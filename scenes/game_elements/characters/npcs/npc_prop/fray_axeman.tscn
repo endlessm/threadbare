@@ -1,0 +1,73 @@
+[gd_scene load_steps=11 format=3 uid="uid://cpaplgh708bc3"]
+
+[ext_resource type="Script" uid="uid://dv11604x2etuq" path="res://scenes/game_elements/characters/npcs/shared_components/npc.gd" id="1_h3xvp"]
+[ext_resource type="Texture2D" uid="uid://caiam8drw20rr" path="res://assets/tiny-swords/Factions/Knights/Troops/Pawn/Purple/Pawn_Purple.png" id="2_h3xvp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vq8ji"]
+atlas = ExtResource("2_h3xvp")
+region = Rect2(0, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_afu58"]
+atlas = ExtResource("2_h3xvp")
+region = Rect2(192, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jnt7c"]
+atlas = ExtResource("2_h3xvp")
+region = Rect2(384, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wlo7j"]
+atlas = ExtResource("2_h3xvp")
+region = Rect2(576, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xkdo8"]
+atlas = ExtResource("2_h3xvp")
+region = Rect2(768, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wr3cw"]
+atlas = ExtResource("2_h3xvp")
+region = Rect2(960, 576, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0a1i7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vq8ji")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_afu58")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jnt7c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wlo7j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xkdo8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wr3cw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
+height = 42.0
+
+[node name="fray_axeman" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_h3xvp")
+sprite_frames = SubResource("SpriteFrames_0a1i7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -30)
+sprite_frames = SubResource("SpriteFrames_0a1i7")
+frame_progress = 0.978666
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_3vyb7")
