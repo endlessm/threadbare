@@ -17,6 +17,8 @@ signal solved
 ## If enabled, show messages in the console describing the player's progress (or not) in the puzzle
 @export var debug: bool = false
 
+var hint_timer: Timer = Timer.new()
+var _last_hint_rock: MusicalRock = null
 var _current_melody: int = 0
 var _position: int = 0
 
@@ -26,6 +28,10 @@ var _is_demo: bool = false
 func _ready() -> void:
 	if not Engine.is_editor_hint():
 		xylophone.note_played.connect(_on_note_played)
+	hint_timer.one_shot = true
+	hint_timer.wait_time = 6
+	hint_timer.timeout.connect(_on_hint_timer_timeout)
+	add_child(hint_timer)
 
 
 func _debug(fmt: String, args: Array = []) -> void:
@@ -43,18 +49,15 @@ func _on_note_played(note: String) -> void:
 		[melody, _position, melody[_position], note],
 	)
 	if melody[_position] != note:
-		if _position == 0:
-			_debug("Didn't match")
-			return
-
-		_debug("Matching again at start of melody...")
-		_position = 0
-
-	if melody[_position] != note:
 		_debug("Didn't match")
+		_position = 0
+		_debug("Matching again at start of melody...")
+		xylophone.stop_all_hints()
+		hint_timer.start()
 		return
 
 	_position += 1
+	hint_timer.start()
 	if _position != melody.length():
 		_debug("Played %s, awaiting %s", [melody.left(_position), melody.right(-_position)])
 		return
@@ -63,6 +66,8 @@ func _on_note_played(note: String) -> void:
 	fires[_current_melody].ignite()
 	_current_melody += 1
 	_position = 0
+
+	_clear_last_hint_rock()
 
 	if _current_melody == melodies.size():
 		_debug("All melodies played")
@@ -103,3 +108,39 @@ func play_demo_melody_of_fire(fire: BonfireSign) -> void:
 func play_demo_melody(melody: int) -> void:
 	for note in melodies[melody]:
 		await play_demo_note(note)
+
+
+func _on_hint_timer_timeout() -> void:
+	if _current_melody >= melodies.size():
+		return
+
+	var melody: String = melodies[_current_melody]
+	var expected_note := melody[_position]
+
+	if xylophone._notes.has(expected_note):
+		var rock = xylophone._notes[expected_note]
+		if rock != _last_hint_rock:
+			_clear_last_hint_rock()
+			_last_hint_rock = rock
+
+		if is_instance_valid(_last_hint_rock):
+			_last_hint_rock.wobble_silently()
+
+	hint_timer.start()
+
+
+func _clear_last_hint_rock() -> void:
+	if _last_hint_rock and is_instance_valid(_last_hint_rock):
+		_last_hint_rock.stop_hint()
+		_last_hint_rock = null
+
+
+func stop_hints() -> void:
+	hint_timer.stop()
+	_clear_last_hint_rock()
+
+
+func reset_hint_timer() -> void:
+	hint_timer.stop()
+	if _current_melody < melodies.size():
+		hint_timer.start()
