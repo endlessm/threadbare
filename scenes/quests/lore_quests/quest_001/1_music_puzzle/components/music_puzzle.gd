@@ -20,6 +20,8 @@ signal solved
 var _current_melody: int = 0
 var _position: int = 0
 
+var _is_demo: bool = false
+
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():
@@ -32,7 +34,7 @@ func _debug(fmt: String, args: Array = []) -> void:
 
 
 func _on_note_played(note: String) -> void:
-	if _current_melody >= melodies.size():
+	if _is_demo or _current_melody >= melodies.size():
 		return
 
 	var melody: String = melodies[_current_melody]
@@ -86,3 +88,9 @@ func get_progress() -> int:
 
 func is_solved() -> bool:
 	return _current_melody == melodies.size()
+
+
+func play_demo_note(note: String):
+	_is_demo = true
+	await xylophone.play_note(note)
+	_is_demo = false
