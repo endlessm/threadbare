@@ -31,7 +31,6 @@ func on_offering_succeeded():
 	await loom_offering_animation_player.animation_finished
 
 	_consume_items_offering(items_collected)
-	SceneSwitcher.change_to_file_with_transition(ETERNAL_LOOM_SOKOBAN_PATH)
 
 
 func _item_types_required() -> Array:
