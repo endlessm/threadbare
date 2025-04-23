@@ -12,10 +12,6 @@ signal finished
 ## The path tracing the centre-line of the logo
 @export var path: Path2D
 
-## Line to visualise the combination of [member path], [member max_width] and
-## [member width_curve] during development. Should be unset or hidden in game.
-@export var line: Line2D
-
 ## The peak width of the logo swirl in pixels
 @export_range(50, 150, 1.0, "suffix:px") var max_width: float = 105
 
@@ -47,6 +43,10 @@ signal finished
 var _progress: float = 0
 var _stitch_points: PackedVector2Array
 
+## Line to visualise the combination of [member path], [member max_width] and
+## [member width_curve] during development. Not shown in game.
+var _line: Line2D
+
 
 func _ready() -> void:
 	if not Engine.is_editor_hint() and audio:
@@ -63,11 +63,28 @@ func _restart() -> void:
 		audio.play()
 
 
+func _update_debug_line() -> void:
+	if not path:
+		if _line:
+			_line.queue_free()
+			_line = null
+
+		return
+
+	if not _line:
+		_line = Line2D.new()
+		_line.default_color = Color(0.28, 1, 0.844, 0.254902)
+		add_child(_line)
+
+	_line.points = path.curve.get_baked_points()
+	_line.width_curve = width_curve
+	_line.width = max_width
+	_line.width_curve = width_curve
+
+
 func _update() -> void:
-	# Debug line
-	if line and path:
-		line.points = path.curve.get_baked_points()
-		line.width_curve = width_curve
+	if Engine.is_editor_hint():
+		_update_debug_line()
 
 	_stitch_points.clear()
 	var length: float = path.curve.get_baked_length()
