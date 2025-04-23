@@ -9,9 +9,6 @@ const STORY_QUEST_STARTER_DIALOGUE: DialogueResource = preload("./story_quest_st
 ## The first scene of a quest that this NPC offers to the player when they interact with them.
 @export var quest_scene: PackedScene
 
-## Dialogue line describing the quest; used by the default story_quest_starter dialogue
-@export var quest_description: String
-
 ## Whether to enter [member quest_scene] when the current dialogue ends
 var _enter_quest_on_dialogue_ended: bool = false
 
