@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+class_name EternalLoom
 extends Node2D
 
 const ETERNAL_LOOM_INTERACTION: DialogueResource = preload(

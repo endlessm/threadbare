@@ -11,7 +11,7 @@ const DEFAULT_DIALOGUE: DialogueResource = preload(
 @export var npc_name: String
 @export var dialogue: DialogueResource = DEFAULT_DIALOGUE
 
-var _previous_look_at_side: Enums.LookAtSide = Enums.LookAtSide.LEFT
+var _previous_look_at_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
 
 @onready var interact_area: InteractArea = %InteractArea
 
