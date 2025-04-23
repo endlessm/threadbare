@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=26 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/game_elements/characters/player/components/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/shared_components/sprite_frames/story_weaver.tres" id="2_3in67"]
@@ -20,10 +20,6 @@ size = Vector2(110, 80)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_je7p5"]
 size = Vector2(32, 47)
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_fm80t"]
-friction = 0.0
-bounce = 1000.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h17s1"]
 radius = 20.0
@@ -357,7 +353,7 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
-collision_mask = 19
+collision_mask = 531
 script = ExtResource("1_g2els")
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
@@ -419,12 +415,11 @@ position = Vector2(0, -28.5)
 shape = SubResource("RectangleShape2D_je7p5")
 debug_color = Color(0.94902, 0.231373, 0, 0.419608)
 
-[node name="AirStream" type="AnimatableBody2D" parent="PlayerFighting"]
+[node name="AirStream" type="Area2D" parent="PlayerFighting"]
 unique_name_in_owner = true
 position = Vector2(0, -24)
-collision_layer = 1024
-collision_mask = 768
-physics_material_override = SubResource("PhysicsMaterial_fm80t")
+collision_layer = 0
+collision_mask = 256
 
 [node name="AirStreamCollision" type="CollisionShape2D" parent="PlayerFighting/AirStream"]
 unique_name_in_owner = true
