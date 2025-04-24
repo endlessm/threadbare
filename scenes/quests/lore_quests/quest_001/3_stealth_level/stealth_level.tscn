@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=4 uid="uid://db6vhi7s2f37c"]
+[gd_scene load_steps=70 format=4 uid="uid://db6vhi7s2f37c"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/quests/lore_quests/quest_001/3_stealth_level/components/game_logic.gd" id="1_f6lvl"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="2_1b8xw"]
@@ -6,11 +6,15 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_1b8xw"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="3_idy4y"]
 [ext_resource type="Script" uid="uid://dcxadiejx57og" path="res://scenes/quests/lore_quests/quest_001/3_stealth_level/components/stealth_quest.gd" id="7_ghwae"]
+[ext_resource type="Texture2D" uid="uid://cdl2vrxgehaop" path="res://assets/inputs/keyboard-and-mouse/Dark/Shift_Key_Dark.png" id="7_r8dog"]
+[ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="8_54evt"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="8_lbv6i"]
+[ext_resource type="Theme" uid="uid://coxcra1002kil" path="res://scenes/ui_elements/shared_components/theme.tres" id="9_54evt"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="10_0q07n"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="10_idy4y"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="11_75rvf"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="11_idy4y"]
+[ext_resource type="PackedScene" uid="uid://hafqgtdg2nvp" path="res://scenes/game_elements/props/hint/hint.tscn" id="12_0csld"]
 [ext_resource type="Texture2D" uid="uid://b8yol2abeo6ej" path="res://scenes/game_elements/props/decoration/bush/components/Bush2.png" id="12_r8dog"]
 [ext_resource type="Texture2D" uid="uid://ck738xogv1kp5" path="res://assets/tiny-swords/Deco/11.png" id="13_f6dpy"]
 [ext_resource type="Texture2D" uid="uid://ctwx8gghts62p" path="res://assets/tiny-swords/Deco/06.png" id="14_v7vlq"]
@@ -251,6 +255,9 @@ script = ExtResource("3_idy4y")
 name = ""
 type = 0
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pfu1m"]
+size = Vector2(559, 381)
 
 [node name="Level" type="Node2D"]
 y_sort_enabled = true
@@ -1044,6 +1051,40 @@ metadata/_edit_lock_ = true
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
+[node name="RunInputHint" type="Control" parent="ScreenOverlay"]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+scale = Vector2(2, 2)
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="InteractInput" type="TextureRect" parent="ScreenOverlay/RunInputHint"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 81.5
+offset_top = -124.5
+offset_right = 181.5
+offset_bottom = -24.5
+grow_vertical = 0
+texture = ExtResource("7_r8dog")
+script = ExtResource("8_54evt")
+action_name = &"running"
+
+[node name="Label" type="Label" parent="ScreenOverlay/RunInputHint/InteractInput"]
+layout_mode = 0
+offset_left = -47.0
+offset_top = 30.5
+offset_right = 181.0
+offset_bottom = 66.5
+theme = ExtResource("9_54evt")
+theme_type_variation = &"HintLabel"
+text = "Hold          to run"
+
 [node name="HUD" parent="." instance=ExtResource("10_idy4y")]
 
 [node name="CollectibleItem" parent="." instance=ExtResource("2_1b8xw")]
@@ -1054,3 +1095,11 @@ item = SubResource("Resource_idy4y")
 [node name="Door" parent="." instance=ExtResource("25_ulxtw")]
 position = Vector2(7391, 701)
 scale = Vector2(1.1, 1.1)
+
+[node name="RunInputHint" parent="." node_paths=PackedStringArray("hint_node") instance=ExtResource("12_0csld")]
+position = Vector2(487, 191)
+hint_node = NodePath("../ScreenOverlay/RunInputHint")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RunInputHint"]
+position = Vector2(-203.5, 10.5)
+shape = SubResource("RectangleShape2D_pfu1m")
