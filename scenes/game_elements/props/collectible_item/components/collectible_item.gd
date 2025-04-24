@@ -59,6 +59,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 func _ready() -> void:
 	_update_based_on_revealed()
+	sprite_2d.modulate = Color.WHITE if revealed else Color.TRANSPARENT
 	if Engine.is_editor_hint():
 		return
 
