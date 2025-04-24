@@ -34,6 +34,7 @@ func _process(_delta: float) -> void:
 	else:
 		interact_label.visible = true
 		interact_label.label_text = interact_area.action
+		interact_marker.global_position = interact_area.get_global_interact_label_position()
 
 
 func _on_interaction_ended() -> void:
