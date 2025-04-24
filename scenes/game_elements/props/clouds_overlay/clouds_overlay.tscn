@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://ci42ypvn5v8jr"]
+
+[ext_resource type="Shader" uid="uid://chgaevc31p1mn" path="res://scenes/game_elements/props/clouds_overlay/components/clouds_shadows.gdshader" id="1_l5uri"]
+[ext_resource type="Script" uid="uid://bw0lg5yx4pxs2" path="res://scenes/game_elements/props/clouds_overlay/components/clouds_overlay.gd" id="2_gw00f"]
+
+[sub_resource type="Gradient" id="Gradient_l5uri"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.74, 0.8, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.075, 0, 0, 0, 0.15, 0, 0, 0, 0.15)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_shbkg"]
+fractal_lacunarity = 0.2
+fractal_gain = 0.0
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xa65i"]
+resource_local_to_scene = true
+width = 1920
+height = 1080
+seamless = true
+color_ramp = SubResource("Gradient_l5uri")
+noise = SubResource("FastNoiseLite_shbkg")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_shbkg"]
+resource_local_to_scene = true
+shader = ExtResource("1_l5uri")
+shader_parameter/cloud_texture = SubResource("NoiseTexture2D_xa65i")
+shader_parameter/offset = Vector2(773.009, 386.505)
+shader_parameter/scale = 0.2
+
+[node name="CloudsOverlay" type="ColorRect"]
+z_index = 10
+z_as_relative = false
+texture_filter = 1
+material = SubResource("ShaderMaterial_shbkg")
+offset_right = 1920.0
+offset_bottom = 1080.0
+script = ExtResource("2_gw00f")
