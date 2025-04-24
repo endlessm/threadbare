@@ -22,6 +22,8 @@ func _ready() -> void:
 		return
 	interact_area.interaction_started.connect(_on_interaction_started)
 	DialogueManager.dialogue_ended.connect(_on_dialogue_ended)
+	if npc_name:
+		interact_area.action = "Talk to %s" % npc_name
 
 
 func _on_interaction_started(player: Player, from_right: bool) -> void:
