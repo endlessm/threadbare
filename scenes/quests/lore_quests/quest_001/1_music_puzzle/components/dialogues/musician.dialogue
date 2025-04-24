@@ -26,6 +26,17 @@ Musician: Hello again, StoryWeaver. Would you like me to play the magical melody
 - No
 	Musician: OK then, good luck.
 	=> END
+- Do you remember anything else?
+	if puzzle.get_progress() == 0:
+		=> hint_melody_0
+	if puzzle.get_progress() == 1:
+		=> hint_melody_1
+	if puzzle.get_progress() == 2:
+		=> hint_melody_2
+	if puzzle.get_progress() == 3:
+		=> hint_melody_3
+	Musician: Good luck out there.
+	=> END
 
 ~ demonstrate_melody
 Musician: I'll try. Let's see...
@@ -36,6 +47,62 @@ if first_conversation:
 	Musician: Yes, please!
 Musician: I wish you luck.
 => END
+
+~ hint_melody_0
+if get_limited_hint_level() == 0:
+	Musician: I can almost hear it again... those first few notes she always played.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 1:
+	Musician: The melody began gently... just like the one I showed you.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 2:
+	Musician: Try playing the same notes I just demonstrated. Maybe it will spark something.
+	do advance_hint_level()
+	=> END
+
+~ hint_melody_1
+if get_limited_hint_level() == 0:
+	Musician: My grandmother once said melodies often rise... like stepping up a staircase.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 1:
+	Musician: It’s like the melody lifts itself, each note a little higher than before.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 2:
+	Musician: Try shifting every note upward... one step at a time.
+	do advance_hint_level()
+	=> END
+
+~ hint_melody_2
+if get_limited_hint_level() == 0:
+	Musician: I recall the melody felt... reversed, like moving through memory backward.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 1:
+	Musician: The same notes return, but in the opposite direction.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 2:
+	Musician: Play the last melody in reverse. It may sound familiar, but different.
+	do advance_hint_level()
+	=> END
+
+~ hint_melody_3
+if get_limited_hint_level() == 0:
+	Musician: There was a descent... like the melody stepped gently downward.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 1:
+	Musician: I remember hearing the notes lower, still recognizable, but softer.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 2:
+	Musician: Try taking each note of the last line... and moving it one step down.
+	do advance_hint_level()
+	=> END
 
 ~ well_done
 Musician: You did it! The melody... it's not just music. It opens the portal to the Ink Well. Let's go find more ink so songs and stories can be written again.
