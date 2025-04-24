@@ -9,9 +9,6 @@ const HINT_FADE_SPEED = 5.0
 	set(new_value):
 		hint_node = new_value
 		update_configuration_warnings()
-@export_category("Condition")
-@export var condition_node: Node
-@export var condition_method: StringName
 
 
 func _get_configuration_warnings() -> PackedStringArray:
