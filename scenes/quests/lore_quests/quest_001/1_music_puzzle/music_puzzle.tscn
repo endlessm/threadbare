@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://7hoy2p14t6kc"]
+[gd_scene load_steps=14 format=4 uid="uid://7hoy2p14t6kc"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_evicy"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_0ayb4"]
@@ -8,11 +8,7 @@
 [ext_resource type="Resource" uid="uid://dx0uf6n0o7hv2" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/dialogues/musician.dialogue" id="6_l4i5r"]
 [ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/music_puzzle.gd" id="7_nonj7"]
 [ext_resource type="PackedScene" uid="uid://dv30a1p74xgs1" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/musical_rock_xylophone.tscn" id="8_u8pjn"]
-[ext_resource type="PackedScene" uid="uid://0ho4pvu8mn22" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire.tscn" id="9_mgtd3"]
-[ext_resource type="Texture2D" uid="uid://b6pfo5hc7quec" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/clues/1.png" id="10_l61o5"]
-[ext_resource type="Texture2D" uid="uid://3ieahlwwqb0t" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/clues/2.png" id="11_00t5e"]
-[ext_resource type="Texture2D" uid="uid://dgqq26xsu3hrf" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/clues/3.png" id="12_1l0ey"]
-[ext_resource type="Texture2D" uid="uid://dybrvl42chyoi" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/clues/4.png" id="13_ia2d2"]
+[ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign.tscn" id="9_evicy"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="14_src2c"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="15_rxyid"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="16_ytxvq"]
@@ -93,37 +89,29 @@ position = Vector2(1216, 284)
 script = ExtResource("7_nonj7")
 xylophone = NodePath("MusicalRockXylophone")
 melodies = Array[String](["CDEG", "DEFA", "AFED", "GEDC"])
-fires = [NodePath("Fire"), NodePath("Fire2"), NodePath("Fire3"), NodePath("Fire4")]
+fires = [NodePath("BonfireSign"), NodePath("BonfireSign2"), NodePath("BonfireSign3"), NodePath("BonfireSign4")]
 
 [node name="MusicalRockXylophone" parent="OnTheGround/MusicPuzzle" instance=ExtResource("8_u8pjn")]
 position = Vector2(-136, 156)
 
-[node name="Fire" parent="OnTheGround/MusicPuzzle" instance=ExtResource("9_mgtd3")]
+[node name="BonfireSign" parent="OnTheGround/MusicPuzzle" instance=ExtResource("9_evicy")]
+position = Vector2(0, 52)
+scale = Vector2(1.2, 1.2)
 
-[node name="Clue1" type="Sprite2D" parent="OnTheGround/MusicPuzzle"]
-position = Vector2(0, -76)
-texture = ExtResource("10_l61o5")
+[node name="BonfireSign2" parent="OnTheGround/MusicPuzzle" instance=ExtResource("9_evicy")]
+position = Vector2(96, 52)
+scale = Vector2(1.2, 1.2)
+sign = 3
 
-[node name="Fire2" parent="OnTheGround/MusicPuzzle" instance=ExtResource("9_mgtd3")]
-position = Vector2(96, 0)
+[node name="BonfireSign3" parent="OnTheGround/MusicPuzzle" instance=ExtResource("9_evicy")]
+position = Vector2(192, 52)
+scale = Vector2(1.2, 1.2)
+sign = 2
 
-[node name="Clue2" type="Sprite2D" parent="OnTheGround/MusicPuzzle"]
-position = Vector2(96, -84)
-texture = ExtResource("11_00t5e")
-
-[node name="Fire3" parent="OnTheGround/MusicPuzzle" instance=ExtResource("9_mgtd3")]
-position = Vector2(192, 0)
-
-[node name="Clue3" type="Sprite2D" parent="OnTheGround/MusicPuzzle"]
-position = Vector2(192, -76)
-texture = ExtResource("12_1l0ey")
-
-[node name="Fire4" parent="OnTheGround/MusicPuzzle" instance=ExtResource("9_mgtd3")]
-position = Vector2(288, 0)
-
-[node name="Clue4" type="Sprite2D" parent="OnTheGround/MusicPuzzle"]
-position = Vector2(288, -84)
-texture = ExtResource("13_ia2d2")
+[node name="BonfireSign4" parent="OnTheGround/MusicPuzzle" instance=ExtResource("9_evicy")]
+position = Vector2(288, 52)
+scale = Vector2(1.2, 1.2)
+sign = 1
 
 [node name="CollectibleItem" parent="OnTheGround/MusicPuzzle" instance=ExtResource("14_src2c")]
 position = Vector2(254, 220)
