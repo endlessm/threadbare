@@ -34,6 +34,15 @@ func add_collected_item(item: InventoryItem) -> void:
 	item_collected.emit(item)
 
 
+func add_memory_to_inventory() -> void:
+	var item = InventoryItem.new()
+	item.name = "memory"
+	item.type = InventoryItem.ItemType.MEMORY
+	inventory.add_item(item)
+	story_quest_inventory.add_item(item)
+	item_collected.emit(item)
+
+
 ## Removes the [InventoryItem] from the [member inventory] and the
 ## [member story_quest_inventory] if it is there.
 func remove_consumed_item(item: InventoryItem) -> void:
