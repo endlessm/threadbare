@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node2D
 
-const NEXT_SCENE: PackedScene = preload("res://scenes/menus/intro/intro.tscn")
+const NEXT_SCENE: PackedScene = preload("uid://stdqc6ttomff")
 
 @onready var logo_stitcher: LogoStitcher = %LogoStitcher
 @onready var scene_switch_timer: Timer = %SceneSwitchTimer
