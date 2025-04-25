@@ -23,6 +23,7 @@ extends Node2D
 
 
 func _ready() -> void:
+	Pause.pause_system(Pause.System.PLAYER_INPUT, self)
 	DialogueManager.show_dialogue_balloon(dialogue, "", [self])
 	await DialogueManager.dialogue_ended
 
@@ -36,3 +37,5 @@ func _ready() -> void:
 				Transition.Effect.FADE,
 			)
 		)
+
+	Pause.unpause_system(Pause.System.PLAYER_INPUT, self)
