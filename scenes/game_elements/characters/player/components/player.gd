@@ -37,8 +37,6 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload(
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
 
-var last_nonzero_axis: Vector2
-
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: Node2D = %PlayerFighting
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
@@ -87,9 +85,6 @@ func _process(delta: float) -> void:
 		return
 
 	var axis: Vector2 = %PlayerController.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
-
-	if not axis.is_zero_approx():
-		last_nonzero_axis = axis
 
 	var speed: float
 	if %PlayerController.is_action_pressed(&"running"):
