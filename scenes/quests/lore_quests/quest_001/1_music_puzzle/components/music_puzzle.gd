@@ -28,10 +28,22 @@ var _is_demo: bool = false
 func _ready() -> void:
 	if not Engine.is_editor_hint():
 		xylophone.note_played.connect(_on_note_played)
+
 	hint_timer.one_shot = true
 	hint_timer.wait_time = 6
 	hint_timer.timeout.connect(_on_hint_timer_timeout)
 	add_child(hint_timer)
+
+	_update_current_melody()
+
+func _update_current_melody():
+	for i in range(_current_melody, fires.size()):
+		# We find the next fire that is not ignited, and that's the _current_melody
+		if fires[i].is_ignited:
+			_current_melody = i + 1
+			_position = 0
+		else:
+			break
 
 
 func _debug(fmt: String, args: Array = []) -> void:
@@ -64,8 +76,7 @@ func _on_note_played(note: String) -> void:
 
 	_debug("Finished melody")
 	fires[_current_melody].ignite()
-	_current_melody += 1
-	_position = 0
+	_update_current_melody()
 
 	_clear_last_hint_rock()
 

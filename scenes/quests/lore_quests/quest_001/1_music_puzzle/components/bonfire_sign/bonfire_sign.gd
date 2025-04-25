@@ -14,7 +14,10 @@ enum Sign { FORWARD, BACK, BACK_UP, FORWARD_UP }
 		sign = new_sign
 		update_sign_sprite()
 
-var _is_ignited: bool = false
+@export var is_ignited: bool = false:
+	set(new_val):
+		is_ignited = new_val
+		update_ignited_state()
 
 @onready var fire: AnimatedSprite2D = %Fire
 @onready var interact_area: InteractArea = %InteractArea
@@ -24,14 +27,20 @@ var _is_ignited: bool = false
 
 
 func _ready() -> void:
+	update_ignited_state()
+
+
+func update_ignited_state():
+	if is_instance_valid(fire):
+		fire.play(&"burning" if is_ignited else &"default")
+	if is_instance_valid(interact_area):
+		interact_area.disabled = not is_ignited
+
 	update_sign_sprite()
 
 
 func ignite() -> void:
-	_is_ignited = true
-	fire.play(&"burning")
-	interact_area.disabled = false
-	update_sign_sprite()
+	is_ignited = true
 
 
 func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -> void:
@@ -40,9 +49,9 @@ func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -
 
 
 func update_sign_sprite() -> void:
-	if !is_inside_tree():
+	if !is_instance_valid(sign_sprite):
 		return
-	var suffix: String = "on" if _is_ignited else "off"
+	var suffix: String = "on" if is_ignited else "off"
 	var sign_string: String = Sign.find_key(sign)
 
 	sign_sprite.animation = "%s_%s" % [sign_string.to_snake_case(), suffix]
