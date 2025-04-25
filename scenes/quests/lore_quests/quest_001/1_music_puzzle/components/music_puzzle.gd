@@ -12,7 +12,7 @@ signal solved
 @export var melodies: Array[String]
 
 ## A fire corresponding to each melody, ignited when the correct melody is played (in order).
-@export var fires: Array[Bonfire]
+@export var fires: Array[BonfireSign]
 
 ## If enabled, show messages in the console describing the player's progress (or not) in the puzzle
 @export var debug: bool = false
@@ -96,7 +96,7 @@ func play_demo_note(note: String) -> void:
 	_is_demo = false
 
 
-func play_demo_melody_of_fire(fire: Bonfire) -> void:
+func play_demo_melody_of_fire(fire: BonfireSign) -> void:
 	await play_demo_melody(fires.find(fire))
 
 
