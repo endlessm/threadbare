@@ -35,7 +35,4 @@ func _on_interaction_started(player: Player, from_right: bool) -> void:
 
 func _on_dialogue_ended(_dialogue_resource: DialogueResource) -> void:
 	look_at_side = _previous_look_at_side
-	# This little wait is needed to avoid triggering another dialogue:
-	# TODO: improve this in https://github.com/endlessm/threadbare/issues/103
-	await get_tree().create_timer(0.3).timeout
 	interact_area.interaction_ended.emit()
