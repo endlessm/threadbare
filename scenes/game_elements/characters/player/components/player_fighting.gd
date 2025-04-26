@@ -14,7 +14,7 @@ func _ready() -> void:
 	air_stream.body_entered.connect(_on_air_stream_body_entered)
 
 
-func _process(_delta: float) -> void:
+func _unhandled_input(_event: InputEvent) -> void:
 	if %PlayerController.is_action_just_pressed(&"ui_accept"):
 		is_fighting = true
 	elif %PlayerController.is_action_just_released(&"ui_accept"):

@@ -37,6 +37,8 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload(
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
 
+var input_vector: Vector2
+
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: Node2D = %PlayerFighting
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
@@ -76,14 +78,7 @@ func _ready() -> void:
 	_set_sprite_frames(sprite_frames)
 
 
-func _process(delta: float) -> void:
-	if Engine.is_editor_hint():
-		return
-
-	if player_interaction.is_interacting:
-		velocity = Vector2.ZERO
-		return
-
+func _unhandled_input(_event: InputEvent) -> void:
 	var axis: Vector2 = %PlayerController.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
 
 	var speed: float
@@ -92,13 +87,24 @@ func _process(delta: float) -> void:
 	else:
 		speed = walk_speed
 
+	input_vector = axis * speed
+
+
+func _process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+
+	if player_interaction.is_interacting:
+		velocity = Vector2.ZERO
+		return
+
 	var step: float
-	if axis.is_zero_approx():
+	if input_vector.is_zero_approx():
 		step = stopping_step
 	else:
 		step = moving_step
 
-	velocity = velocity.move_toward(axis * speed, step * delta)
+	velocity = velocity.move_toward(input_vector, step * delta)
 
 	move_and_slide()
 
