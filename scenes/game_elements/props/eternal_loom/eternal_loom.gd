@@ -20,9 +20,6 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	DialogueManager.show_dialogue_balloon(ETERNAL_LOOM_INTERACTION, "", [self, player])
 	await DialogueManager.dialogue_ended
 
-	# This little wait is needed to avoid triggering another dialogue:
-	# TODO: improve this in https://github.com/endlessm/threadbare/issues/103
-	await get_tree().create_timer(0.3).timeout
 	interact_area.end_interaction()
 
 

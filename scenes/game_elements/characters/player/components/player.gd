@@ -37,7 +37,7 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload(
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
 
-var last_nonzero_axis: Vector2
+var input_vector: Vector2
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: Node2D = %PlayerFighting
@@ -78,6 +78,18 @@ func _ready() -> void:
 	_set_sprite_frames(sprite_frames)
 
 
+func _unhandled_input(_event: InputEvent) -> void:
+	var axis: Vector2 = %PlayerController.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
+
+	var speed: float
+	if %PlayerController.is_action_pressed(&"running"):
+		speed = run_speed
+	else:
+		speed = walk_speed
+
+	input_vector = axis * speed
+
+
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
@@ -86,24 +98,13 @@ func _process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		return
 
-	var axis: Vector2 = %PlayerController.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
-
-	if not axis.is_zero_approx():
-		last_nonzero_axis = axis
-
-	var speed: float
-	if %PlayerController.is_action_pressed(&"running"):
-		speed = run_speed
-	else:
-		speed = walk_speed
-
 	var step: float
-	if axis.is_zero_approx():
+	if input_vector.is_zero_approx():
 		step = stopping_step
 	else:
 		step = moving_step
 
-	velocity = velocity.move_toward(axis * speed, step * delta)
+	velocity = velocity.move_toward(input_vector, step * delta)
 
 	move_and_slide()
 
