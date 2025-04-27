@@ -121,6 +121,8 @@ func _on_body_entered(body: Node2D) -> void:
 
 
 func got_hit(player: Player) -> void:
+	add_small_fx()
+	duration_timer.start()
 	var hit_speed := 100.0
 	var hit_vector: Vector2 = player.global_position.direction_to(global_position) * hit_speed
 	can_hit_enemy = true
