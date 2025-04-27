@@ -123,10 +123,21 @@ func hit_by(attack: Node2D) -> void:
 	apply_impulse(hit_vector)
 
 
-func _on_duration_timer_timeout() -> void:
+func explode() -> void:
 	var big_fx: Node2D = big_fx_scene.instantiate()
 	if color:
 		big_fx.modulate = color
 	get_tree().current_scene.add_child(big_fx)
 	big_fx.global_position = global_position
 	queue_free()
+
+
+func _on_duration_timer_timeout() -> void:
+	explode()
+
+
+## Remove the ball from the scene after the goal is reached.
+## Wait a short random time and then explode.
+func remove() -> void:
+	await get_tree().create_timer(randf_range(0., 3.)).timeout
+	explode()
