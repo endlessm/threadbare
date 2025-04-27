@@ -109,8 +109,6 @@ func add_small_fx() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.owner is FillingBarrel and not can_hit_enemy:
-		return
 	add_small_fx()
 	duration_timer.start()
 	if body.owner is FillingBarrel:
@@ -125,7 +123,6 @@ func got_hit(player: Player) -> void:
 	duration_timer.start()
 	var hit_speed := 100.0
 	var hit_vector: Vector2 = player.global_position.direction_to(global_position) * hit_speed
-	can_hit_enemy = true
 	hit_sound.play()
 	animation_player.speed_scale = 2
 	gpu_particles_2d.amount_ratio = 1.
