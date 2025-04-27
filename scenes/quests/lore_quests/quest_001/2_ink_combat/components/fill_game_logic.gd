@@ -20,6 +20,11 @@ func start() -> void:
 	_update_allowed_colors()
 
 
+func _ready() -> void:
+	var filling_barrels: Array = get_tree().get_nodes_in_group("filling_barrels")
+	barrels_to_win = clampi(barrels_to_win, 0, filling_barrels.size())
+
+
 func _update_allowed_colors() -> void:
 	var allowed_labels: Array[String] = []
 	var color_per_label: Dictionary[String, Color]
