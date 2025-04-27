@@ -184,6 +184,9 @@ func _on_timeout() -> void:
 	animated_sprite_2d.play(&"attack anticipation")
 	await animated_sprite_2d.animation_finished
 	animated_sprite_2d.play(&"attack")
+	if not allowed_labels:
+		_is_attacking = false
+		return
 	var projectile: Projectile = PROJECTILE_SCENE.instantiate()
 	projectile.direction = projectile_marker.global_position.direction_to(player.global_position)
 	projectile.label = allowed_labels.pick_random()
