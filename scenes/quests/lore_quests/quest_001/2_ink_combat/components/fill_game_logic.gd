@@ -42,6 +42,7 @@ func _on_barrel_completed() -> void:
 	if barrels_completed < barrels_to_win:
 		return
 	get_tree().call_group("throwing_enemy", "remove")
+	get_tree().call_group("projectiles", "remove")
 	var player: Player = get_tree().get_first_node_in_group("player")
 	if player:
 		player.mode = Player.Mode.COZY
