@@ -30,5 +30,5 @@ func _on_body_entered(body: Node2D) -> void:
 	got_hit_animation.play(&"got_hit")
 
 
-func _on_air_stream_body_entered(body: Node2D) -> void:
-	body.hit_by(self)
+func _on_air_stream_body_entered(body: Projectile) -> void:
+	body.got_hit(owner)

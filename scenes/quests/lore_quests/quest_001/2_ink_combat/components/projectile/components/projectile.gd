@@ -120,9 +120,9 @@ func _on_body_entered(body: Node2D) -> void:
 			queue_free()
 
 
-func hit_by(attack: Node2D) -> void:
+func got_hit(player: Player) -> void:
 	var hit_speed := 100.0
-	var hit_vector: Vector2 = attack.global_position.direction_to(global_position) * hit_speed
+	var hit_vector: Vector2 = player.global_position.direction_to(global_position) * hit_speed
 	can_hit_enemy = true
 	hit_sound.play()
 	animation_player.speed_scale = 2
