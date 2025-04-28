@@ -20,7 +20,19 @@ enum State {
 	RETURNING,
 }
 
+const DEFAULT_SPRITE_FRAMES = preload(
+	"res://scenes/game_elements/characters/enemies/guard/components/guard_sprite_frames.tres"
+)
+
 const LOOK_AT_TURN_SPEED: float = 10.0
+
+@export_category("Appearance")
+@export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAMES:
+	set(new_value):
+		sprite_frames = new_value
+		if animated_sprite_2d:
+			animated_sprite_2d.sprite_frames = sprite_frames
+		update_configuration_warnings()
 
 @export_category("Patrol")
 @warning_ignore("unused_private_class_variable")
@@ -87,6 +99,22 @@ var state: State = State.PATROLLING:
 @onready var debug_info: Label = %DebugInfo
 ## Handles the velocity and movement of the guard.
 @onready var guard_movement: GuardMovement = %GuardMovement
+@onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
+
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings = []
+
+	if not sprite_frames:
+		warnings.push_back("sprite_frames must be set.")
+
+	for required_animation in ["alerted", "idle", "walk"]:
+		if sprite_frames and not sprite_frames.has_animation(required_animation):
+			warnings.push_back(
+				"sprite_frames is missing the following animation: %s" % required_animation
+			)
+
+	return warnings
 
 
 func _ready() -> void:
@@ -99,6 +127,9 @@ func _ready() -> void:
 		if player_awareness:
 			player_awareness.max_value = time_to_detect_player
 			player_awareness.value = 0.0
+
+	if animated_sprite_2d:
+		animated_sprite_2d.sprite_frames = sprite_frames
 
 	if detection_area:
 		detection_area.scale = Vector2.ONE * detection_area_scale
