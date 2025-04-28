@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=4 uid="uid://ydbh5jddjnaf"]
+
+[ext_resource type="Material" uid="uid://jpl3v3f7elq6" path="res://scenes/eternal_loom_sokoban/components/floor/tiled_mat.tres" id="2_1s00a"]
+[ext_resource type="PackedScene" uid="uid://btpeaqx2nur3q" path="res://scenes/eternal_loom_sokoban/components/eternal_loom_ruleset.tscn" id="4_3v6fr"]
+[ext_resource type="Script" uid="uid://dppvw2f8yh4vu" path="res://scenes/eternal_loom_sokoban/components/system/board/board_2d.gd" id="5_m5u3b"]
+[ext_resource type="TileSet" uid="uid://dand23uvn70pg" path="res://scenes/eternal_loom_sokoban/components/eternal_loom_tileset.tres" id="6_1qsr1"]
+
+[node name="SokobanLevel3c" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2000.0
+offset_top = -1000.0
+offset_right = 2000.0
+offset_bottom = 1000.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0740935, 0.0496062, 0.0467346, 1)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(32, -32)
+zoom = Vector2(1.5, 1.5)
+
+[node name="Board2D" type="Node2D" parent="."]
+script = ExtResource("5_m5u3b")
+metadata/_custom_type_script = "uid://dppvw2f8yh4vu"
+
+[node name="Floor" type="TileMapLayer" parent="Board2D"]
+texture_filter = 1
+material = ExtResource("2_1s00a")
+tile_map_data = PackedByteArray("AAD+//7/AgACAAAAAAD///7/AgAAAAAAAAABAP7/AgABAAAAAAABAP//AgACAAAAAAACAP//AgABAAAAAAABAAAAAgACAAAAAAD/////AgACAAAAAAAAAP//AgABAAAAAAD//wAAAgACAAAAAAD+////AgACAAAAAAD+/wAAAgACAAAAAAD///3/AgAAAAAAAAAAAP3/AgABAAAAAAABAP3/AgAAAAAAAAAAAPz/AgAAAAAAAAABAPz/AgAAAAAAAAACAPz/AgABAAAAAAD//wIAAgAAAAAAAAAAAAIAAgABAAAAAAABAAIAAgAAAAAAAAD//wEAAgAAAAAAAAAAAAEAAgABAAAAAAABAAEAAgAAAAAAAAACAAIAAgABAAAAAAACAAEAAgABAAAAAAACAP3/AgABAAAAAAABAAMAAgACAAAAAAAAAAAAAgABAAAAAAAAAP7/AgACAAAAAAACAP7/AgAAAAAAAAACAAAAAgAAAAAAAAABAPv/AgACAAAAAAA=")
+tile_set = ExtResource("6_1qsr1")
+
+[node name="BackgroundThread" type="TileMapLayer" parent="Board2D"]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAABAP7/BAAAAAAAAAABAP3/BAAAAAAAAAABAPz/BAAAAAAAAAABAAIABAAAAAAAAAABAAEABAAAAAAAAAABAAAABAAAAAAAAAA=")
+tile_set = ExtResource("6_1qsr1")
+
+[node name="TargetThread" type="TileMapLayer" parent="Board2D"]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAAAP//AAAAAAAADgABAP//AAAAAAAADwACAP//AAAAAAAADQA=")
+tile_set = ExtResource("6_1qsr1")
+
+[node name="Foreground" type="TileMapLayer" parent="Board2D"]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAD9//3/AAAAAAAABwD9//7/AAAAAAAABwD9////AAAAAAAAAQD9/wAAAAAAAAAABwD9/wEAAAAAAAAAAQD+//z/AAAAAAAABwD+//3/AAAAAAAAAQD+/wEAAAAAAAAABwD+/wIAAAAAAAAABwD///v/AAAAAAAABwD//wMAAAAAAAAAAQAAAPv/AAAAAAAAAQAAAP7/BgAAAAAAAwAAAAAABgAAAAAABAAAAAMAAAAAAAAABwABAPv/BgAAAAAABQABAP3/AAAAAAAABgABAP7/AAAAAAAACgABAAMABgAAAAAABgACAP7/BgAAAAAAAQACAAAABgAAAAAAAgACAAMAAAAAAAAAAQADAPz/AAAAAAAAAQADAP3/AAAAAAAABwADAP7/AAAAAAAABwADAP//AAAAAAAABwADAAAAAAAAAAAABwADAAEAAAAAAAAAAQADAAIAAAAAAAAABwACAPv/AAAAAAAABwD///z/AAAAAAAABwADAPv/AAAAAAAABwADAAMAAAAAAAAABwD+/wMAAAAAAAAABwABAAEAAAAAAAAACwABAAAAAAAAAAAACQAAAAQAAAAAAAAABwABAAQAAAAAAAAABwACAAQAAAAAAAAABwAAAPr/AAAAAAAABwABAPr/AAAAAAAABwACAPr/AAAAAAAABwA=")
+tile_set = ExtResource("6_1qsr1")
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="RuleEngine" parent="." node_paths=PackedStringArray("board") instance=ExtResource("4_3v6fr")]
+board = NodePath("../Board2D")
+scene_to_go_to = "uid://cufkthb25mpxy"
