@@ -11,6 +11,10 @@ signal item_collected(item: InventoryItem)
 ## [member inventory].
 signal item_consumed(item: InventoryItem)
 
+## Emitted whenever the items in the inventory change, either by collecting
+## or consuming an item.
+signal collected_items_changed(updated_items: Array[InventoryItem])
+
 ## Global inventory, used to track the items the player obtains and that
 ## can be added to the loom.
 @export var inventory: Inventory = Inventory.new()
@@ -32,6 +36,7 @@ func add_collected_item(item: InventoryItem) -> void:
 	inventory.add_item(item)
 	story_quest_inventory.add_item(item)
 	item_collected.emit(item)
+	collected_items_changed.emit(items_collected())
 
 
 ## Removes the [InventoryItem] from the [member inventory] and the
@@ -40,6 +45,7 @@ func remove_consumed_item(item: InventoryItem) -> void:
 	inventory.remove_item(item)
 	story_quest_inventory.remove_item(item)
 	item_consumed.emit(item)
+	collected_items_changed.emit(items_collected())
 
 
 ## Returns all the items collected so far in the [member inventory].

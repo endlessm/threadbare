@@ -1,6 +1,7 @@
-[gd_scene load_steps=44 format=4 uid="uid://cufkthb25mpxy"]
+[gd_scene load_steps=46 format=4 uid="uid://cufkthb25mpxy"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_4evgk"]
+[ext_resource type="Script" uid="uid://8div00rgvsds" path="res://scenes/world_map/components/frays_end.gd" id="1_ovkdi"]
 [ext_resource type="SpriteFrames" uid="uid://cntyc07xhpu0k" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_blue.tres" id="3_rti58"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_tp7qs"]
 [ext_resource type="SpriteFrames" uid="uid://bpfnbr7ig4s5g" path="res://scenes/game_elements/characters/shared_components/sprite_frames/elder.tres" id="4_7v00g"]
@@ -31,6 +32,7 @@
 [ext_resource type="Texture2D" uid="uid://p8kty3uxifxu" path="res://assets/inputs/keyboard-and-mouse/Dark/Space_Key_Dark.png" id="24_h30yx"]
 [ext_resource type="PackedScene" uid="uid://ci42ypvn5v8jr" path="res://scenes/game_elements/props/clouds_overlay/clouds_overlay.tscn" id="26_dvgp7"]
 [ext_resource type="PackedScene" uid="uid://hafqgtdg2nvp" path="res://scenes/game_elements/props/hint/hint.tscn" id="26_w8iew"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="27_aj6tp"]
 [ext_resource type="Texture2D" uid="uid://cc5wontx8obvi" path="res://assets/inputs/keyboard-and-mouse/Dark/Arrow_Right_Key_Dark.png" id="27_w8iew"]
 [ext_resource type="Texture2D" uid="uid://ckwsauhbhlod6" path="res://assets/inputs/keyboard-and-mouse/Dark/Arrow_Down_Key_Dark.png" id="28_h30yx"]
 [ext_resource type="Texture2D" uid="uid://bytssd0mbo28u" path="res://assets/inputs/keyboard-and-mouse/Dark/Arrow_Up_Key_Dark.png" id="29_djq26"]
@@ -71,6 +73,7 @@ size = Vector2(161, 95)
 
 [node name="FraysEnd" type="Node2D"]
 y_sort_enabled = true
+script = ExtResource("1_ovkdi")
 metadata/_edit_lock_ = true
 
 [node name="TileMapLayers" type="Node2D" parent="."]
@@ -288,7 +291,11 @@ texture = ExtResource("24_h30yx")
 script = ExtResource("21_i7vhm")
 action_name = &"ui_accept"
 
+[node name="HUD" parent="." instance=ExtResource("27_aj6tp")]
+unique_name_in_owner = true
+
 [node name="EternalLoom" parent="." instance=ExtResource("16_ojp30")]
+unique_name_in_owner = true
 position = Vector2(993, 485)
 
 [node name="ForestLimit" type="StaticBody2D" parent="."]
