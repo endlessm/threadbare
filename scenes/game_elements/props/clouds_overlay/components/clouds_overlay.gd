@@ -44,3 +44,9 @@ func update_noise_color_ramp() -> void:
 
 	var noise_texture: NoiseTexture2D = material.get_shader_parameter("cloud_texture")
 	noise_texture.color_ramp = new_color_ramp
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_EDITOR_PRE_SAVE:
+			material.set_shader_parameter("offset", 0.0)
