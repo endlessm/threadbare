@@ -5,6 +5,7 @@
 class_name Projectile
 extends RigidBody2D
 
+const WALLS_HITBOX_LAYER: int = 5
 const PLAYER_HITBOX_LAYER: int = 6
 const ENEMY_HITBOX_LAYER: int = 7
 
@@ -47,6 +48,10 @@ const ENEMY_HITBOX_LAYER: int = 7
 	"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/big_splash/big_splash.tscn"
 )
 
+## If a projectile spawns in an elevated terrain, we turn off collisions with walls.
+## We turn those collisions on again when the projectile has left the elevated terrain.
+var elevated_terrain_layer: TileMapLayer
+
 @onready var visible_things: Node2D = %VisibleThings
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var gpu_particles_2d: GPUParticles2D = %GPUParticles2D
@@ -81,6 +86,16 @@ func _ready() -> void:
 	var impulse: Vector2 = direction * speed
 	apply_impulse(impulse)
 	hit_sound.play()
+	## TODO: find a better way to fetch all the tilemap layers that doesn't
+	## involve going through ALL the nodes in the current scene.
+	## Maybe groups?, it needs extra setup when creating the level, but may be
+	## worth it.
+	var tile_map_layers = get_tree().current_scene.find_children("", "TileMapLayer", true, false)
+	for tile_map_layer: TileMapLayer in tile_map_layers:
+		var tile_data = _get_tile_data(tile_map_layer, position)
+		if tile_data and tile_data.get_custom_data("elevation") > 0:
+			elevated_terrain_layer = tile_map_layer
+			set_collision_mask_value(WALLS_HITBOX_LAYER, false)
 
 
 func _process(_delta: float) -> void:
@@ -91,6 +106,21 @@ func _process(_delta: float) -> void:
 		)
 		var force: Vector2 = direction_to_target * speed
 		constant_force = force
+
+	if elevated_terrain_layer:
+		if (
+			not _get_tile_data(elevated_terrain_layer, position)
+			and not %DetectElevatedTerrain.overlaps_body(elevated_terrain_layer)
+		):
+			elevated_terrain_layer = null
+			set_collision_mask_value(WALLS_HITBOX_LAYER, true)
+
+
+func _get_tile_data(layer: TileMapLayer, local_projectile_position: Vector2 = position) -> TileData:
+	var global_projectile_position = to_global(local_projectile_position)
+	var local_map_position = layer.local_to_map(layer.to_local(global_position))
+	var tile_data: TileData = layer.get_cell_tile_data(local_map_position)
+	return tile_data
 
 
 ## Add a small effect scene to the current scene in the current position.
