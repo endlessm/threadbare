@@ -136,7 +136,7 @@ func _take_turn(direction_2d: Vector2i) -> bool:
 func _check_goal() -> void:
 	var result := true
 	for goal in goals:
-		result = result and goal.is_completed(board, self)
+		result = result and goal.is_all_completed(board, self)
 
 	if result:
 		goals_reached.emit()

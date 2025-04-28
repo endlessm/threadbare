@@ -9,15 +9,21 @@ extends Node
 ## to see if there is a match. If so,
 ## it will return true to the RuleEngine.
 
-# Virtual function, when called should return if goal is matched or failed
-@warning_ignore("unused_parameter")
 
-
-func is_completed(board: Board2D, rule_engine: RuleEngine) -> bool:
-	var result := true
+## Returns true if this goal, and all child goals (if any) are matched; false otherwise.
+func is_all_completed(board: Board2D, rule_engine: RuleEngine) -> bool:
+	if not _is_self_completed(board, rule_engine):
+		return false
 
 	for child in get_children():
 		if child is Goal:
-			result = child.is_completed(board, rule_engine) and result
+			if not child.is_all_completed(board, rule_engine):
+				return false
 
-	return result
+	return true
+
+
+## Returns true if this goal is matched; false otherwise.
+## Subclasses should override this method.
+func _is_self_completed(_board: Board2D, _rule_engine: RuleEngine) -> bool:
+	return true
