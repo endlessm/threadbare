@@ -18,6 +18,11 @@ func _ready() -> void:
 			hint_levels[i] = 0
 
 
+func _on_dialogue_ended(_dialogue_resource: DialogueResource) -> void:
+	super._on_dialogue_ended(_dialogue_resource)
+	puzzle.reset_hint_timer()
+
+
 func play(note: String) -> void:
 	await puzzle.play_demo_note(note)
 

@@ -20,3 +20,8 @@ func _ready() -> void:
 
 func play_note(note: String) -> void:
 	await _notes[note].play()
+
+
+func stop_all_hints() -> void:
+	for rock in _notes.values():
+		rock.stop_hint()

@@ -43,3 +43,14 @@ func play() -> void:
 	audio_stream_player_2d.play()
 	await audio_stream_player_2d.finished
 	animation_player.play(&"RESET")
+
+
+func wobble_silently() -> void:
+	animation_player.play("wobble")
+	await get_tree().create_timer(1.0).timeout
+	stop_hint()
+
+
+func stop_hint() -> void:
+	if animation_player.is_playing() and animation_player.current_animation == "wobble":
+		animation_player.play("RESET")
