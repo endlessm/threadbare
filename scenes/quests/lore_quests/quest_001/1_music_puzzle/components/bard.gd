@@ -8,19 +8,6 @@ extends Talker
 @export var puzzle: MusicPuzzle
 
 var first_conversation: bool = true
-var hint_levels: Dictionary = {}
-
-
-func _ready() -> void:
-	super._ready()
-	for i in range(puzzle.melodies.size()):
-		if not hint_levels.has(i):
-			hint_levels[i] = 0
-
-
-func _on_dialogue_ended(_dialogue_resource: DialogueResource) -> void:
-	super._on_dialogue_ended(_dialogue_resource)
-	puzzle.reset_hint_timer()
 
 
 func play(note: String) -> void:
@@ -29,11 +16,11 @@ func play(note: String) -> void:
 
 func advance_hint_level() -> void:
 	var progress := puzzle.get_progress()
-	hint_levels[progress] = hint_levels.get(progress, 0) + 1
+	puzzle.hint_levels[progress] = puzzle.hint_levels.get(progress, 0) + 1
 
 
 func get_limited_hint_level() -> int:
 	var progress = puzzle.get_progress()
-	var hint_level = hint_levels.get(progress, 0)
+	var hint_level = puzzle.hint_levels.get(progress, 0)
 	var max_hint_level = 2
 	return hint_level % (max_hint_level + 1)
