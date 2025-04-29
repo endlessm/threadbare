@@ -26,15 +26,7 @@ const DEFAULT_SPRITE_FRAMES = preload(
 
 const LOOK_AT_TURN_SPEED: float = 10.0
 
-@export_category("Appearance")
-@export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAMES:
-	set(new_value):
-		sprite_frames = new_value
-		if animated_sprite_2d:
-			animated_sprite_2d.sprite_frames = sprite_frames
-		update_configuration_warnings()
-
-@export_category("Patrol")
+@export_group("Patrol")
 @warning_ignore("unused_private_class_variable")
 @export_tool_button("Add/Edit Patrol Path") var _edit_patrol_path: Callable = edit_patrol_path
 ## The path the guard follows while patrolling.
@@ -49,7 +41,7 @@ const LOOK_AT_TURN_SPEED: float = 10.0
 ## The speed at which the guard moves.
 @export_range(20, 300, 5, "or_greater", "or_less", "suffix:m/s") var move_speed: float = 100.0
 
-@export_category("Player Detection")
+@export_group("Player Detection")
 ## Whether the player is instantly detected upon being seen.
 @export var player_instantly_detected_on_sight: bool = false
 ## Time required to detect the player.
@@ -61,7 +53,7 @@ const LOOK_AT_TURN_SPEED: float = 10.0
 		if detection_area:
 			detection_area.scale = Vector2.ONE * detection_area_scale
 
-@export_category("Debug")
+@export_group("Debug")
 ## Enables movement in the editor for debugging.
 @export var move_while_in_editor: bool = false
 ## Toggles visibility of debug info.
@@ -105,14 +97,19 @@ var state: State = State.PATROLLING:
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings = []
 
-	if not sprite_frames:
-		warnings.push_back("sprite_frames must be set.")
+	if animated_sprite_2d:
+		var sprite_frames = animated_sprite_2d.sprite_frames
+		if not sprite_frames:
+			warnings.push_back("AnimatedSprite2D__sprite_frames must be set.")
 
-	for required_animation in ["alerted", "idle", "walk"]:
-		if sprite_frames and not sprite_frames.has_animation(required_animation):
-			warnings.push_back(
-				"sprite_frames is missing the following animation: %s" % required_animation
-			)
+		for required_animation in ["alerted", "idle", "walk"]:
+			if sprite_frames and not sprite_frames.has_animation(required_animation):
+				warnings.push_back(
+					(
+						"AnimatedSprite2D__sprite_frames is missing the following animation: %s"
+						% required_animation
+					)
+				)
 
 	return warnings
 
@@ -127,9 +124,6 @@ func _ready() -> void:
 		if player_awareness:
 			player_awareness.max_value = time_to_detect_player
 			player_awareness.value = 0.0
-
-	if animated_sprite_2d:
-		animated_sprite_2d.sprite_frames = sprite_frames
 
 	if detection_area:
 		detection_area.scale = Vector2.ONE * detection_area_scale
@@ -488,3 +482,20 @@ func _draw() -> void:
 					point_size,
 					debug_color
 				)
+
+
+func _get_property_list() -> Array[Dictionary]:
+	var properties: Array[Dictionary] = []
+	properties.append(PropertyUtils.group("Appearance"))
+	properties.append_array(
+		PropertyUtils.expose_children_property(self, &"sprite_frames", &"AnimatedSprite2D")
+	)
+	return properties
+
+
+func _get(property_name: StringName) -> Variant:
+	return PropertyUtils.get_child_property(self, property_name)
+
+
+func _set(property_name: StringName, value: Variant) -> bool:
+	return PropertyUtils.set_child_property(self, property_name, value)
