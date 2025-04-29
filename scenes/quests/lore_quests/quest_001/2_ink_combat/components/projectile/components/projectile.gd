@@ -47,11 +47,22 @@ const ENEMY_HITBOX_LAYER: int = 7
 	"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/big_splash/big_splash.tscn"
 )
 
+## If a projectile spawns inside a tilemap layer with an elevated terrain,
+## we turn off collisions with it. This property holds references to those layers.
+## We turn those collisions on again when the projectile has left the elevated terrain
+## of the layer.
+var layer_collision_exceptions: Array = []
+
 @onready var visible_things: Node2D = %VisibleThings
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var gpu_particles_2d: GPUParticles2D = %GPUParticles2D
 @onready var duration_timer: Timer = %DurationTimer
 @onready var hit_sound: AudioStreamPlayer2D = %HitSound
+## Collision with walls is handled through [member raycast] to support
+## handling collisions differently depending on the elevation level in which
+## the projectile spawned.
+@onready var wall_raycast: RayCast2D = %WallRaycast
+@onready var collision_shape_2d: CollisionShape2D = %CollisionShape2D
 
 
 func _set_color(new_color: Color) -> void:
@@ -82,6 +93,15 @@ func _ready() -> void:
 	apply_impulse(impulse)
 	hit_sound.play()
 
+	layer_collision_exceptions = _tilemaps_in_level().filter(
+		func(tile_map_layer: TileMapLayer) -> bool:
+			var tiles_data: Array = _get_current_tiles_data(tile_map_layer)
+			return tiles_data.any(
+				func(tile_data: TileData) -> bool:
+					return tile_data and tile_data.get_custom_data("elevation") > 0
+			)
+	)
+
 
 func _process(_delta: float) -> void:
 	visible_things.rotation = linear_velocity.angle()
@@ -91,6 +111,18 @@ func _process(_delta: float) -> void:
 		)
 		var force: Vector2 = direction_to_target * speed
 		constant_force = force
+
+	_update_wall_raycast()
+
+	if (
+		wall_raycast.is_colliding()
+		and not wall_raycast.get_collider() in layer_collision_exceptions
+	):
+		bounce(wall_raycast.get_collision_normal())
+		_on_body_entered(wall_raycast.get_collider())
+	for layer: TileMapLayer in layer_collision_exceptions:
+		if _escaped_layer(layer):
+			layer_collision_exceptions.erase(layer)
 
 
 ## Add a small effect scene to the current scene in the current position.
@@ -115,12 +147,16 @@ func _on_body_entered(body: Node2D) -> void:
 
 
 func hit_by(attack: Node2D) -> void:
-	var hit_speed := 100.0
-	var hit_vector: Vector2 = attack.global_position.direction_to(global_position) * hit_speed
 	can_hit_enemy = true
 	hit_sound.play()
+	bounce(attack.global_position.direction_to(global_position))
+
+
+func bounce(bounce_direction: Vector2) -> void:
+	var bounce_speed := 100.0
+	var bounce_vector: Vector2 = bounce_direction.normalized() * bounce_speed
 	linear_velocity = Vector2.ZERO
-	apply_impulse(hit_vector)
+	apply_impulse(bounce_vector)
 
 
 func explode() -> void:
@@ -141,3 +177,47 @@ func _on_duration_timer_timeout() -> void:
 func remove() -> void:
 	await get_tree().create_timer(randf_range(0., 3.)).timeout
 	explode()
+
+
+func _tilemaps_in_level() -> Array:
+	## This way of getting the tile map layers can get slow if the scene tree has
+	## a lot of nodes because it goes over all of them. If we hit a performance issue,
+	## this could be calculated just once when a scene is loaded and then fetched
+	## from there.
+	return get_tree().current_scene.find_children("", "TileMapLayer", true, false)
+
+
+func _update_wall_raycast() -> void:
+	var raycast_length: float = collision_shape_2d.shape.get_rect().size.x
+	wall_raycast.target_position = linear_velocity.normalized() * raycast_length
+	wall_raycast.force_raycast_update()
+
+
+func _escaped_layer(layer: TileMapLayer) -> bool:
+	return _get_current_tiles_data(layer).is_empty()
+
+
+## Returns the tile data of the tiles of [param layer] that are on the vertices
+## of the projectile's bounding box.
+func _get_current_tiles_data(layer: TileMapLayer) -> Array:
+	var collision_bounding_box := collision_shape_2d.shape.get_rect()
+	var top_left_point := collision_bounding_box.position
+	var top_right_point := (
+		collision_bounding_box.position + Vector2(collision_bounding_box.size.x, 0)
+	)
+	var bottom_left_point := (
+		collision_bounding_box.position + Vector2(0, collision_bounding_box.size.y)
+	)
+	var bottom_right_point := collision_bounding_box.end
+	var tiles_data := []
+
+	for local_point_position: Vector2 in [
+		top_left_point, top_right_point, bottom_left_point, bottom_right_point
+	]:
+		var global_point_position := collision_shape_2d.to_global(local_point_position)
+		var local_map_position := layer.local_to_map(layer.to_local(global_point_position))
+		var tile_data := layer.get_cell_tile_data(local_map_position)
+		if tile_data:
+			tiles_data.push_back(tile_data)
+
+	return tiles_data

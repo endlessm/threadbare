@@ -69,7 +69,7 @@ anim_speed_max = 1.0
 
 [node name="Projectile" type="RigidBody2D" groups=["projectiles"]]
 collision_layer = 256
-collision_mask = 80
+collision_mask = 64
 mass = 0.3
 physics_material_override = SubResource("PhysicsMaterial_tbgi4")
 gravity_scale = 0.0
@@ -87,6 +87,7 @@ libraries = {
 autoplay = "ink"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
 shape = SubResource("RectangleShape2D_o6xl0")
 
 [node name="VisibleThings" type="Node2D" parent="."]
@@ -114,6 +115,11 @@ unique_name_in_owner = true
 [node name="HitSound" type="AudioStreamPlayer2D" parent="."]
 unique_name_in_owner = true
 stream = ExtResource("4_q6q4o")
+
+[node name="WallRaycast" type="RayCast2D" parent="."]
+unique_name_in_owner = true
+target_position = Vector2(20, 0)
+collision_mask = 16
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="DurationTimer" to="." method="_on_duration_timer_timeout"]
