@@ -54,7 +54,7 @@ func _do_tween(
 func leave_scene(
 	_transition_effect: Effect = Effect.FADE,
 	duration: float = 1.0,
-	easing: Tween.EaseType = Tween.EaseType.EASE_IN,
+	easing: Tween.EaseType = Tween.EaseType.EASE_OUT,
 	transition_type: Tween.TransitionType = Tween.TransitionType.TRANS_QUAD
 ) -> void:
 	visible = true
