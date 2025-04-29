@@ -51,6 +51,7 @@ func _on_dialogue_ended(dialogue_resource: DialogueResource) -> void:
 	await super(dialogue_resource)
 
 	if _enter_quest_on_dialogue_ended:
+		%InteractArea.disabled = true
 		GameState.start_quest()
 		SceneSwitcher.change_to_packed_with_transition(
 			quest_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE

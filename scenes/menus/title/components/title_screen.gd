@@ -9,16 +9,13 @@ extends Control
 
 
 func _ready() -> void:
-	while Pause.is_paused(Pause.System.PLAYER_INPUT):
-		await Pause.pause_changed
+	if Transitions.is_running():
+		await Transitions.finished
 
 	start_button.grab_focus()
 
 
 func _on_start_button_pressed() -> void:
-	# Prevent repeated input
-	button_box.queue_free()
-
 	(
 		SceneSwitcher
 		. change_to_packed_with_transition(
