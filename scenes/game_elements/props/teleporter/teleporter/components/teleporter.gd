@@ -60,7 +60,7 @@ func _on_body_entered(_body: PhysicsBody2D) -> void:
 
 		if is_instance_valid(spawn_point):
 			if use_transition:
-				Transitions.pause_and_do_transition(
+				Transitions.do_transition(
 					self._teleport_to_spawn_point.bind(spawn_point),
 					enter_transition,
 					exit_transition

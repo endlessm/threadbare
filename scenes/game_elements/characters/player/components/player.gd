@@ -79,10 +79,10 @@ func _ready() -> void:
 
 
 func _unhandled_input(_event: InputEvent) -> void:
-	var axis: Vector2 = %PlayerController.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
+	var axis: Vector2 = Input.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
 
 	var speed: float
-	if %PlayerController.is_action_pressed(&"running"):
+	if Input.is_action_pressed(&"running"):
 		speed = run_speed
 	else:
 		speed = walk_speed

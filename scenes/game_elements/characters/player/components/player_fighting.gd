@@ -15,9 +15,9 @@ func _ready() -> void:
 
 
 func _unhandled_input(_event: InputEvent) -> void:
-	if %PlayerController.is_action_just_pressed(&"ui_accept"):
+	if Input.is_action_just_pressed(&"ui_accept"):
 		is_fighting = true
-	elif %PlayerController.is_action_just_released(&"ui_accept"):
+	elif Input.is_action_just_released(&"ui_accept"):
 		is_fighting = false
 
 

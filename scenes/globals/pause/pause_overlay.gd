@@ -10,9 +10,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func toggle_pause() -> void:
-	if Pause.is_paused(Pause.System.GAME):
-		visible = false
-		Pause.unpause_system(Pause.System.GAME, self)
-	else:
-		visible = true
-		Pause.pause_system(Pause.System.GAME, self)
+	var new_state := not get_tree().paused
+	visible = new_state
+	get_tree().paused = new_state

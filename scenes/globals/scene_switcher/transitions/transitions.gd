@@ -3,6 +3,11 @@
 class_name Transition
 extends CanvasLayer
 
+## Emitted when a transition to a new scene starts
+signal started
+## Emitted when a transition to a new scene finishes
+signal finished
+
 enum Effect { FADE, LEFT_TO_RIGHT_WIPE, RIGHT_TO_LEFT_WIPE, RADIAL }
 
 const FADE_TEXTURE: Texture = preload("res://scenes/globals/scene_switcher/transitions/Fade.png")
@@ -19,6 +24,11 @@ const RIGHT_TO_LEFT_WIPE_TEXTURE: Texture = preload(
 var _current_tween: Tween
 
 @onready var transition_mask: ColorRect = $TransitionMask
+
+
+func _input(_event: InputEvent) -> void:
+	if visible:
+		get_viewport().set_input_as_handled()
 
 
 func _do_tween(
@@ -51,36 +61,39 @@ func _do_tween(
 	await _current_tween.finished
 
 
-func leave_scene(
+func _leave_scene(
 	_transition_effect: Effect = Effect.FADE,
 	duration: float = 1.0,
 	easing: Tween.EaseType = Tween.EaseType.EASE_OUT,
 	transition_type: Tween.TransitionType = Tween.TransitionType.TRANS_QUAD
 ) -> void:
-	visible = true
 	await _do_tween(0.0, _transition_effect, duration, easing, transition_type)
-	visible = false
 
 
-func introduce_scene(
+func _introduce_scene(
 	_transition_effect: Effect = Effect.FADE,
 	duration: float = 1.0,
 	easing: Tween.EaseType = Tween.EaseType.EASE_IN,
 	transition_type: Tween.TransitionType = Tween.TransitionType.TRANS_QUAD
 ) -> void:
-	visible = true
 	await _do_tween(1.0, _transition_effect, duration, easing, transition_type)
-	visible = false
 
 
-func pause_and_do_transition(
+func do_transition(
 	in_between: Callable,
 	out_transition: Transition.Effect = Transition.Effect.FADE,
 	in_transition: Transition.Effect = Transition.Effect.FADE,
-	system: Pause.System = Pause.System.PLAYER_INPUT
 ) -> void:
-	Pause.pause_system(system, self)
-	await leave_scene(out_transition)
+	visible = true
+	started.emit()
+	await _leave_scene(out_transition)
 	await in_between.call()
-	await introduce_scene(in_transition)
-	Pause.unpause_system(system, self)
+	await _introduce_scene(in_transition)
+	visible = false
+	finished.emit()
+
+
+## Returns true if a transition is currently running. Monitor [signal started]
+## and [signal finished] for changes.
+func is_running() -> bool:
+	return visible

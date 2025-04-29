@@ -13,10 +13,11 @@ func _ready() -> void:
 	scene_switch_timer.timeout.connect(switch_to_intro)
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if (
-		not Pause.is_paused(Pause.System.PLAYER_INPUT)
-		and (event.is_action_pressed(&"dialogue_next") or event.is_action_pressed(&"dialogue_skip"))
+		event.is_action_pressed(&"dialogue_next")
+		or event.is_action_pressed(&"dialogue_skip")
+		or event.is_action_pressed(&"pause")
 	):
 		get_viewport().set_input_as_handled()
 		switch_to_intro()

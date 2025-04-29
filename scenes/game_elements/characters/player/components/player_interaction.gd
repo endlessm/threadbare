@@ -22,7 +22,7 @@ func _process(_delta: float) -> void:
 		return
 
 	var interact_area: InteractArea = interact_zone.get_interact_area()
-	if %PlayerController.inputs_paused() or not interact_area:
+	if not interact_area:
 		interact_label.visible = false
 	else:
 		interact_label.visible = true
@@ -35,7 +35,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 		return
 
 	var interact_area: InteractArea = interact_zone.get_interact_area()
-	if interact_area and %PlayerController.is_action_just_pressed(&"ui_accept"):
+	if interact_area and Input.is_action_just_pressed(&"ui_accept"):
 		get_viewport().set_input_as_handled()
 		interact_zone.monitoring = false
 		interact_label.visible = false
