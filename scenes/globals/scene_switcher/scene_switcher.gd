@@ -66,9 +66,15 @@ func change_to_file_with_transition(
 	enter_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE,
 	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
 ) -> void:
-	var scene: PackedScene = load(scene_path)
+	var err := ResourceLoader.load_threaded_request(scene_path)
+	if err != OK:
+		push_error("Failed to start loading %s: %s" % [scene_path, error_string(err)])
+		return
+
 	Transitions.pause_and_do_transition(
-		change_to_packed.bind(scene, spawn_point), enter_transition, exit_transition
+		func(): change_to_packed(ResourceLoader.load_threaded_get(scene_path), spawn_point),
+		enter_transition,
+		exit_transition
 	)
 
 
