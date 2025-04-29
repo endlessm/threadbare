@@ -40,7 +40,7 @@ static func expose_children_property(
 		var property_dict: Dictionary = get_property_dict(child, property)
 		if not property_dict.is_empty():
 			property_dict = property_dict.duplicate()
-			property_dict["name"] = "%s__%s" % [child.name.to_snake_case(), property]
+			property_dict["name"] = "%s__%s" % [child.name, property]
 			properties.push_back(property_dict)
 
 	return properties
@@ -52,7 +52,7 @@ static func _resolve_child_property(parent: Node, child_property_name: String) -
 	if parts.size() < 2:
 		return {}
 
-	var child_name: String = parts[0].to_pascal_case()
+	var child_name: String = parts[0]
 	var child_property: String = parts[1]
 
 	var child: Node = parent.get_node_or_null(child_name)
