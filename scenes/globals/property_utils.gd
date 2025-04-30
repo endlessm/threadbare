@@ -12,6 +12,12 @@ static func get_enum_hint_string(an_enum: Dictionary) -> String:
 	return ",".join(result)
 
 
+static func group(group_name: String, prefix: String = "") -> Dictionary:
+	return {
+		"name": group_name, "usage": PROPERTY_USAGE_GROUP, "type": TYPE_NIL, "hint_text": prefix
+	}
+
+
 static func enum_property(name: String, clazz: StringName, an_enum: Dictionary) -> Dictionary:
 	return {
 		"name": name,
