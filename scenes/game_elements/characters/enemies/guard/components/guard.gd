@@ -100,6 +100,8 @@ var state: State = State.PATROLLING:
 ## Handles the velocity and movement of the guard.
 @onready var guard_movement: GuardMovement = %GuardMovement
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var alert_sound: AudioStreamPlayer = %AlertSound
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -177,6 +179,8 @@ func _process_state() -> void:
 			guard_movement.stop_moving()
 			if not _player_in_sight():
 				_change_state(State.INVESTIGATING)
+			if not alert_sound.playing:
+				alert_sound.play()
 		State.RETURNING:
 			if not breadcrumbs.is_empty():
 				var target_position: Vector2 = breadcrumbs.back()
@@ -223,6 +227,7 @@ func _detect_player(player_in_sight: Node2D) -> void:
 ## being detected
 func _update_player_awareness(player_in_sight: Node2D, delta: float) -> void:
 	if State.ALERTED == state:
+		alert_sound.play()
 		player_awareness.ratio = 1.0
 		player_awareness.tint_progress = Color.RED
 	else:
@@ -234,13 +239,14 @@ func _update_player_awareness(player_in_sight: Node2D, delta: float) -> void:
 
 
 func _update_animation() -> void:
-	if state == State.ALERTED and sprite.animation == &"alerted":
+	if state == State.ALERTED and animation_player.current_animation == "hit":
 		return
 
 	if velocity.is_zero_approx():
+		animation_player.stop()
 		sprite.play(&"idle")
 	else:
-		sprite.play(&"walk")
+		animation_player.play("walk")
 
 
 func _update_debug_info() -> void:
@@ -260,9 +266,10 @@ func _update_debug_info() -> void:
 func _on_enter_state(new_state: State) -> void:
 	match new_state:
 		State.ALERTED:
+			alert_sound.play()
 			player_detected.emit(_player_in_sight())
 			await get_tree().create_timer(0.4).timeout
-			sprite.play(&"alerted")
+			animation_player.play("hit")
 		State.INVESTIGATING:
 			guard_movement.start_moving_now()
 			breadcrumbs.push_back(global_position)
