@@ -95,6 +95,12 @@ func _ready() -> void:
 	_initial_position = position
 	if Engine.is_editor_hint():
 		return
+	var player: Player = get_tree().get_first_node_in_group("player")
+	if is_instance_valid(player):
+		var direction: Vector2 = projectile_marker.global_position.direction_to(
+			player.global_position
+		)
+		scale.x = 1 if direction.x < 0 else -1
 	if autostart:
 		start()
 
@@ -189,6 +195,7 @@ func _on_timeout() -> void:
 		return
 	var projectile: Projectile = PROJECTILE_SCENE.instantiate()
 	projectile.direction = projectile_marker.global_position.direction_to(player.global_position)
+	scale.x = 1 if projectile.direction.x < 0 else -1
 	projectile.label = allowed_labels.pick_random()
 	if projectile.label in color_per_label:
 		projectile.color = color_per_label[projectile.label]
