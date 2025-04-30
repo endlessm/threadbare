@@ -72,6 +72,8 @@ var _player_name: String = ""
 ## The menu of responses
 @onready var responses_menu: DialogueResponsesMenu = %ResponsesMenu
 
+@onready var talk_sound_player: AudioStreamPlayer = $TalkSoundPlayer
+
 
 func _ready() -> void:
 	balloon.hide()
@@ -113,6 +115,7 @@ func start(
 	is_waiting_for_input = false
 	resource = dialogue_resource
 	self.dialogue_line = await resource.get_next_dialogue_line(title, temporary_game_states)
+	talk_sound_player.play()
 
 
 ## Apply any changes to the balloon given a new [DialogueLine].
@@ -146,7 +149,9 @@ func apply_dialogue_line() -> void:
 	dialogue_label.show()
 	if not dialogue_line.text.is_empty():
 		dialogue_label.type_out()
+		talk_sound_player.stream_paused = false
 		await dialogue_label.finished_typing
+		talk_sound_player.stream_paused = true
 
 	# Wait for input
 	if dialogue_line.responses.size() > 0:
