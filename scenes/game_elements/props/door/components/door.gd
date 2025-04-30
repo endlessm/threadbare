@@ -7,9 +7,14 @@ extends Toggleable
 	set(new_val):
 		opened = new_val
 		update_opened_state()
+@onready var ring_sound: AudioStreamPlayer = $RingSound
+@onready var door_sound: AudioStreamPlayer2D = $DoorSound
 
 
 func open() -> void:
+	ring_sound.play()
+	door_sound.play()
+	await door_sound.finished
 	set_toggled(true)
 
 

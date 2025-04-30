@@ -155,7 +155,7 @@ func _process(_delta: float) -> void:
 			return
 		State.IDLE:
 			if animated_sprite_2d.animation not in [&"attack anticipation", &"attack"]:
-				animated_sprite_2d.play(&"idle")
+				animation_player.play("idle")
 			return
 		State.WALKING:
 			velocity = _get_velocity()
@@ -186,8 +186,8 @@ func _on_timeout() -> void:
 	if not is_instance_valid(player):
 		return
 	_is_attacking = true
-	animated_sprite_2d.play(&"attack anticipation")
-	await animated_sprite_2d.animation_finished
+	animation_player.play("prepare")
+	await animation_player.animation_finished
 	animated_sprite_2d.play(&"attack")
 	if not allowed_labels:
 		_is_attacking = false
