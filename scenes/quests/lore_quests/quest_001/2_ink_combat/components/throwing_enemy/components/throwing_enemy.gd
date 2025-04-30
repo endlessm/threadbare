@@ -5,11 +5,7 @@
 class_name ThrowingEnemy
 extends CharacterBody2D
 
-enum State {
-	IDLE,
-	WALKING,
-	ATTACKING,
-}
+enum State { IDLE, WALKING, ATTACKING, DEFEATED }
 
 const PROJECTILE_SCENE: PackedScene = preload(
 	"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/projectile/projectile.tscn"
@@ -83,6 +79,7 @@ var color_per_label: Dictionary[String, Color]
 var _initial_position: Vector2
 var _target_position: Vector2
 var _is_attacking: bool
+var _is_defeated: bool
 
 @onready var timer: Timer = %Timer
 @onready var projectile_marker: Marker2D = %ProjectileMarker
@@ -121,6 +118,8 @@ func _draw() -> void:
 
 
 func _get_state() -> State:
+	if _is_defeated:
+		return State.DEFEATED
 	if _is_attacking:
 		return State.ATTACKING
 	if is_zero_approx(walking_time) or is_zero_approx(walking_range):
@@ -152,7 +151,7 @@ func _process(_delta: float) -> void:
 		return
 	var state: State = _get_state()
 	match state:
-		State.ATTACKING:
+		State.ATTACKING, State.DEFEATED:
 			return
 		State.IDLE:
 			if animated_sprite_2d.animation not in [&"attack anticipation", &"attack"]:
@@ -238,6 +237,7 @@ func start() -> void:
 ## Play a remove animation and then remove the enemy from the scene.
 func remove() -> void:
 	timer.stop()
-	animation_player.play(&"remove")
-	await animation_player.animation_finished
+	_is_defeated = true
+	animated_sprite_2d.play(&"defeated")
+	await animated_sprite_2d.animation_finished
 	queue_free()

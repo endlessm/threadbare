@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b82nsrh332syj"]
+[gd_scene load_steps=8 format=3 uid="uid://b82nsrh332syj"]
 
 [ext_resource type="Script" uid="uid://dfj3625owet5p" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/throwing_enemy/components/throwing_enemy.gd" id="1_ffq0m"]
 [ext_resource type="SpriteFrames" uid="uid://3ujiuhj7wpm2" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/throwing_enemy/components/ink_drinker_frames.tres" id="2_h0glm"]
@@ -40,26 +40,10 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 0.112), Color(1, 1, 1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_lx56l"]
-resource_name = "remove"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 0.5),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fbb2g"]
 _data = {
 &"RESET": SubResource("Animation_xcanh"),
-&"got hit": SubResource("Animation_ffq0m"),
-&"remove": SubResource("Animation_lx56l")
+&"got hit": SubResource("Animation_ffq0m")
 }
 
 [node name="ThrowingEnemy" type="CharacterBody2D" groups=["throwing_enemy"]]
@@ -71,8 +55,10 @@ script = ExtResource("1_ffq0m")
 unique_name_in_owner = true
 position = Vector2(0, -30)
 sprite_frames = ExtResource("2_h0glm")
-animation = &"walk"
+animation = &"defeated"
 autoplay = "idle"
+frame = 8
+frame_progress = 1.0
 flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
