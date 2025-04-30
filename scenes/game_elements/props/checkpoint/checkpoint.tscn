@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://dua6mynlw2ptw"]
+[gd_scene load_steps=5 format=3 uid="uid://dua6mynlw2ptw"]
 
 [ext_resource type="Script" uid="uid://bk5ri1yoakaqp" path="res://scenes/game_elements/props/checkpoint/components/checkpoint.gd" id="1_kkoqv"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="2_s5d1s"]
+[ext_resource type="Texture2D" uid="uid://7afi18x3x1dm" path="res://assets/third_party/tiny-swords/Deco/18.png" id="3_wd3ro"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wd3ro"]
+radius = 11.4018
 
 [node name="Checkpoint" type="Area2D"]
 collision_layer = 0
@@ -10,3 +14,19 @@ script = ExtResource("1_kkoqv")
 [node name="SpawnPoint" type="Marker2D" parent="." groups=["spawn_point"]]
 unique_name_in_owner = true
 script = ExtResource("2_s5d1s")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -64)
+texture = ExtResource("3_wd3ro")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape2D" parent="StaticBody2D"]
+unique_name_in_owner = true
+position = Vector2(1, -4)
+shape = SubResource("CircleShape2D_wd3ro")
+disabled = true
+debug_color = Color(0.744429, 0.463578, 0, 0.42)
