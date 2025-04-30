@@ -24,10 +24,14 @@ enum Sign { FORWARD, BACK, BACK_UP, FORWARD_UP }
 @onready var sign_sprite: AnimatedSprite2D = %SignSprite
 
 @onready var puzzle: MusicPuzzle = get_node(puzzle_path)
+@onready var fire_sound: AudioStreamPlayer2D = $FireSignSound
+@onready var fire_start: AudioStreamPlayer2D = $FireStart
 
 
 func _ready() -> void:
 	update_ignited_state()
+	if is_ignited:
+		fire_sound.play()
 
 
 func update_ignited_state():
@@ -40,7 +44,9 @@ func update_ignited_state():
 
 
 func ignite() -> void:
+	fire_start.play()
 	is_ignited = true
+	fire_sound.play()
 
 
 func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -> void:
