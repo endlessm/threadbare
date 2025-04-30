@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dv11604x2etuq" path="res://scenes/game_elements/characters/npcs/shared_components/npc.gd" id="1_31gn5"]
 [ext_resource type="Texture2D" uid="uid://cjqa2miqxorv7" path="res://assets/third_party/tiny-swords/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue.png" id="2_j6o64"]
-[ext_resource type="AudioStream" uid="uid://dejuubsm7b4n8" path="res://assets/sound/HammerSound.ogg" id="3_eshep"]
+[ext_resource type="AudioStream" uid="uid://dejuubsm7b4n8" path="res://assets/sound/npcs/HammerSound.ogg" id="3_eshep"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_aw3xl"]
 atlas = ExtResource("2_j6o64")
@@ -57,6 +57,21 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
 height = 42.0
 
+[sub_resource type="Animation" id="Animation_da13u"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="Animation" id="Animation_rtue6"]
 resource_name = "default"
 length = 0.60001
@@ -85,21 +100,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
-}
-
-[sub_resource type="Animation" id="Animation_da13u"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_003jk"]
@@ -132,6 +132,7 @@ autoplay = "default"
 
 [node name="HammerAudio" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_eshep")
-volume_db = 2.0
+volume_db = -2.0
 max_distance = 1000.0
+attenuation = 5.0
 bus = &"SFX"
