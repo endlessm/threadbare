@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://fuhl3l6gxq5k"]
+[gd_scene load_steps=10 format=3 uid="uid://fuhl3l6gxq5k"]
 
 [ext_resource type="Script" uid="uid://be7lr8ty24cix" path="res://scenes/game_elements/props/collectible_item/components/collectible_item.gd" id="1_7ff3m"]
 [ext_resource type="Texture2D" uid="uid://6bf8rum68wq3" path="res://assets/first_party/collectibles/world_imagination.png" id="3_p8e5a"]
+[ext_resource type="AudioStream" uid="uid://38xwdjm46478" path="res://scenes/game_elements/props/collectible_item/components/sounds/CollectibleAppear.ogg" id="4_oh62b"]
 [ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="6_j0enh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ghwae"]
@@ -222,6 +223,21 @@ tracks/4/keys = {
 "update": 0,
 "values": [0.0, -0.122173, 0.122173, -0.0523599, 0.0]
 }
+tracks/5/type = "audio"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CollectibleSound")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("4_oh62b")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/5/use_blend = true
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_8dm1m"]
 _data = {
@@ -251,3 +267,6 @@ visible = false
 modulate = Color(1, 1, 1, 0)
 texture_filter = 1
 texture = ExtResource("3_p8e5a")
+
+[node name="CollectibleSound" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
