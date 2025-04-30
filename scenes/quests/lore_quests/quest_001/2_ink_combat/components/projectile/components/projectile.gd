@@ -15,7 +15,11 @@ const ENEMY_HITBOX_LAYER: int = 7
 @export var color: Color:
 	set = _set_color
 
-## Whether this projectile hits the player or the enemies.
+## Whether this projectile hits the player.
+@export var can_hit_player: bool = true:
+	set = _set_can_hit_player
+
+## Whether this projectile hits the enemies.
 @export var can_hit_enemy: bool = false:
 	set = _set_can_hit_enemy
 
@@ -66,12 +70,14 @@ func _set_direction(new_direction: Vector2) -> void:
 		direction = new_direction
 
 
+func _set_can_hit_player(new_can_hit_player: bool) -> void:
+	can_hit_player = new_can_hit_player
+	set_collision_mask_value(PLAYER_HITBOX_LAYER, can_hit_player)
+
+
 func _set_can_hit_enemy(new_can_hit_enemy: bool) -> void:
 	can_hit_enemy = new_can_hit_enemy
-	set_collision_mask_value(PLAYER_HITBOX_LAYER, not can_hit_enemy)
 	set_collision_mask_value(ENEMY_HITBOX_LAYER, can_hit_enemy)
-	animation_player.speed_scale = 2 if can_hit_enemy else 1
-	gpu_particles_2d.amount_ratio = 1. if can_hit_enemy else .1
 
 
 func _ready() -> void:
@@ -103,8 +109,6 @@ func add_small_fx() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.owner is FillingBarrel and not can_hit_enemy:
-		return
 	add_small_fx()
 	duration_timer.start()
 	if body.owner is FillingBarrel:
@@ -114,11 +118,14 @@ func _on_body_entered(body: Node2D) -> void:
 			queue_free()
 
 
-func hit_by(attack: Node2D) -> void:
+func got_hit(player: Player) -> void:
+	add_small_fx()
+	duration_timer.start()
 	var hit_speed := 100.0
-	var hit_vector: Vector2 = attack.global_position.direction_to(global_position) * hit_speed
-	can_hit_enemy = true
+	var hit_vector: Vector2 = player.global_position.direction_to(global_position) * hit_speed
 	hit_sound.play()
+	animation_player.speed_scale = 2
+	gpu_particles_2d.amount_ratio = 1.
 	linear_velocity = Vector2.ZERO
 	apply_impulse(hit_vector)
 
