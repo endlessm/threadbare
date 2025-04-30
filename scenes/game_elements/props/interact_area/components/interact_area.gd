@@ -7,7 +7,7 @@ extends Area2D
 signal interaction_started(player: Player, from_right: bool)
 signal interaction_ended
 
-const EXAMPLE_INTERACTION_FONT = preload("res://assets/fonts/m6x11plus.ttf")
+const EXAMPLE_INTERACTION_FONT = preload("res://assets/third_party/fonts/m6x11plus.ttf")
 const INTERACTABLE_LAYER = 6
 
 ## Vector2 that approximates the position in which the interact label would

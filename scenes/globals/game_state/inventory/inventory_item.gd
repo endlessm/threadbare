@@ -11,15 +11,15 @@ enum ItemType {
 }
 
 const TEXTURES: Dictionary[ItemType, Texture2D] = {
-	ItemType.MEMORY: preload("res://assets/collectibles/memory.png"),
-	ItemType.IMAGINATION: preload("res://assets/collectibles/imagination.png"),
-	ItemType.SPIRIT: preload("res://assets/collectibles/spirit.png")
+	ItemType.MEMORY: preload("res://assets/first_party/collectibles/memory.png"),
+	ItemType.IMAGINATION: preload("res://assets/first_party/collectibles/imagination.png"),
+	ItemType.SPIRIT: preload("res://assets/first_party/collectibles/spirit.png")
 }
 
 const WORLD_TEXTURES: Dictionary[ItemType, Texture2D] = {
-	ItemType.MEMORY: preload("res://assets/collectibles/world_memory.png"),
-	ItemType.IMAGINATION: preload("res://assets/collectibles/world_imagination.png"),
-	ItemType.SPIRIT: preload("res://assets/collectibles/world_spirit.png")
+	ItemType.MEMORY: preload("res://assets/first_party/collectibles/world_memory.png"),
+	ItemType.IMAGINATION: preload("res://assets/first_party/collectibles/world_imagination.png"),
+	ItemType.SPIRIT: preload("res://assets/first_party/collectibles/world_spirit.png")
 }
 
 @export var name: String
