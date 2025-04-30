@@ -16,14 +16,15 @@ Musician: Songs stopped being sung. And when a song's forgotten... the world for
 if puzzle.get_progress() >= 1:
 	Musician: Oh! Have you been playing with the stones over there?
 	StoryWeaver: I kicked them and something strange happened...
+~ about_stones
 Musician: These stones? They're part of a magical song that used to open the portal to the Ink Well, where songwriters found ink to write their songs. But...
-Musician: Um... Anyway, now I can only recall the first few notes of the magical melody. The rest slips away.
-StoryWeaver: Can you show me what you remember? Maybe I can help.
-=> demonstrate_melody
+Musician: Um... I can't recall the first few notes of The Magical Melody. Neither the rest of it...
+Musician: But they say music can live in the most unexpected places. Maybe if you explore around you may be able to find the melody.
+=> END
 
 ~ hello_again
-Musician: Hello again, StoryWeaver. Would you like me to play the magical melody again?
-- Yes => demonstrate_melody
+Musician: Hello again, StoryWeaver. Would you like to hear about the stones again?
+- Yes => about_stones
 - No
 	Musician: OK then, good luck.
 	=> END
@@ -39,69 +40,59 @@ Musician: Hello again, StoryWeaver. Would you like me to play the magical melody
 	Musician: Good luck out there.
 	=> END
 
-~ demonstrate_melody
-Musician: I'll try. Let's see...
-Musician: do,[do play("C")] re,[do play("D")] mi,[do play("E")] sol,[do play("G")] ...
-Musician: And then it fades.
-if first_conversation:
-	StoryWeaver: What if I tried to complete it?
-	Musician: Yes, please!
-Musician: I wish you luck.
-=> END
-
 ~ hint_melody_0
 if get_limited_hint_level() == 0:
-	Musician: I can almost hear it again... those first few notes she always played.
+	Musician: I can't recall the song... But someone nearby may remember it. Try exploring around.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 1:
-	Musician: The melody began gently... just like the one I showed you.
+	Musician: When you play the right notes, you'll know.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 2:
-	Musician: Try playing the same notes I just demonstrated. Maybe it will spark something.
+	Musician: I believe I heard the Songstress across the river hum a familiar tune. You should go talk to her.
 	do advance_hint_level()
 	=> END
 
 ~ hint_melody_1
 if get_limited_hint_level() == 0:
-	Musician: My grandmother once said melodies often rise... like stepping up a staircase.
+	Musician: The signs hold the key. They alter the melody in different ways.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 1:
-	Musician: It’s like the melody lifts itself, each note a little higher than before.
+	Musician: Someone around may know more about the signs. You may even find them somewhere else.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 2:
-	Musician: Try shifting every note upward... one step at a time.
+	Musician: There's the Luthier in the mountain region past the river. I know he studied the signs for a while.
 	do advance_hint_level()
 	=> END
 
 ~ hint_melody_2
 if get_limited_hint_level() == 0:
-	Musician: I recall the melody felt... reversed, like moving through memory backward.
+	Musician: This other sign is similar, and yet... it feels the opposite.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 1:
-	Musician: The same notes return, but in the opposite direction.
+	Musician: The forest hides secrets that may help you figure this out.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 2:
-	Musician: Play the last melody in reverse. It may sound familiar, but different.
+	Musician: There's a glade nearby. The Minstrel lives there. He can help you.
 	do advance_hint_level()
 	=> END
 
 ~ hint_melody_3
 if get_limited_hint_level() == 0:
-	Musician: There was a descent... like the melody stepped gently downward.
+	Musician: I don't recall anything more... But you are so close! I know you can do this.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 1:
-	Musician: I remember hearing the notes lower, still recognizable, but softer.
+	Musician: If you reached this far, you know what comes next.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 2:
-	Musician: Try taking each note of the last line... and moving it one step down.
+	Musician: The Minstrel in the glade nearby may help you, if you haven't seen him yet.
 	do advance_hint_level()
 	=> END
 

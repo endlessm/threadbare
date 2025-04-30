@@ -1,0 +1,62 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+~ start
+if puzzle.is_solved():
+	=> remember_what_you_learned
+
+if not first_conversation:
+	=> hello_again
+
+set first_conversation = false
+
+Minstrel: Greetings Wanderer. Are you seeking truth in this fogotten land?
+Minstrel: Songs have truth. They also have memory. They are remnants of the past.
+Minstrel: Sometimes songs take us back to their beginning, tracing their notes back.
+Minstrel: Care to give it a try? It'll make sense once you play it.
+=> END!
+
+~ hello_again
+Minstrel: Did the song come to you?
+- Yes
+	Minstrel: Wonderful. Care to give it a try?
+	=> END!
+- No
+	Minstrel: The past sometimes slips away... Let me give you a hand.
+	=> play_hint
+
+~ play_hint
+if puzzle.get_progress() == 1:
+	=> hint_melody_1
+if puzzle.get_progress() == 2:
+	=> hint_melody_2
+
+~ hint_melody_1
+if get_limited_hint_level() == 0:
+	Minstrel: I recall the melody felt... reversed, like moving through memory backward.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 1:
+	Minstrel: The same notes return, but in the opposite direction.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 2:
+	Minstrel: Play the last melody in reverse. It may sound familiar, but different.
+	do advance_hint_level()
+	=> END
+
+~ hint_melody_2
+if get_limited_hint_level() == 0:
+	Minstrel: You know how to go back. Now you need to raise up.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 1:
+	Minstrel: The melody goes in the opposite direction. And each note gets lifted in turn.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 2:
+	Minstrel: Try thinking about the melody in reverse, and then shift every note upwards. You may see a different past.
+	do advance_hint_level()
+	=> END
+
+~ remember_what_you_learned
+Minstrel: The past now lives with you. It will help you in the present and the future.

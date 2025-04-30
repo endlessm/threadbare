@@ -17,7 +17,13 @@ signal solved
 ## If enabled, show messages in the console describing the player's progress (or not) in the puzzle
 @export var debug: bool = false
 
+@export var wobble_hint_time: float = 10.0
+@export var wobble_hint_min_level: int = 2
+
 var hint_timer: Timer = Timer.new()
+
+var hint_levels: Dictionary = {}
+
 var _last_hint_rock: MusicalRock = null
 var _current_melody: int = 0
 var _position: int = 0
@@ -28,10 +34,27 @@ var _is_demo: bool = false
 func _ready() -> void:
 	if not Engine.is_editor_hint():
 		xylophone.note_played.connect(_on_note_played)
+
 	hint_timer.one_shot = true
-	hint_timer.wait_time = 6
+	hint_timer.wait_time = wobble_hint_time
 	hint_timer.timeout.connect(_on_hint_timer_timeout)
 	add_child(hint_timer)
+
+	_update_current_melody()
+
+	for i in range(melodies.size()):
+		if not hint_levels.has(i):
+			hint_levels[i] = 0
+
+
+func _update_current_melody():
+	for i in range(_current_melody, fires.size()):
+		# We find the next fire that is not ignited, and that's the _current_melody
+		if fires[i].is_ignited:
+			_current_melody = i + 1
+			_position = 0
+		else:
+			break
 
 
 func _debug(fmt: String, args: Array = []) -> void:
@@ -53,7 +76,8 @@ func _on_note_played(note: String) -> void:
 		_position = 0
 		_debug("Matching again at start of melody...")
 		xylophone.stop_all_hints()
-		hint_timer.start()
+		if hint_levels.get(get_progress(), 0) >= wobble_hint_min_level:
+			hint_timer.start()
 		return
 
 	_position += 1
@@ -64,8 +88,7 @@ func _on_note_played(note: String) -> void:
 
 	_debug("Finished melody")
 	fires[_current_melody].ignite()
-	_current_melody += 1
-	_position = 0
+	_update_current_melody()
 
 	_clear_last_hint_rock()
 

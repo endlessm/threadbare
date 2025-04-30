@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+~ start
+if puzzle.is_solved():
+	=> remember_what_you_learned
+
+if not first_conversation:
+	=> hello_again
+
+set first_conversation = false
+
+Luthier: Hello Wanderer. Have you payed attention to the signs in the stones?
+Luthier: They're part of an ancient language. Lost in time...
+Luthier: Maybe you can find their meaning? Try with this one. You'll know when you found it.
+=> END
+
+~ hello_again
+Luthier: Have you found the meaning of the sign?
+- Yes
+	Luthier: That's great! Try and play the tune.
+	=> END
+- No
+	Luthier: Hmm. Maybe I can help you...
+	=> play_hint
+
+~ play_hint
+if get_limited_hint_level() == 0:
+	Luthier: My master once said melodies often rise... like stepping up a staircase.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 1:
+	Luthier: It's like the melody lifts itself, each note a little higher than before.
+	do advance_hint_level()
+	=> END
+if get_limited_hint_level() == 2:
+	Luthier: Try shifting every note upward... one step at a time.
+	do advance_hint_level()
+	=> END
+
+~ remember_what_you_learned
+Luthier: You've uncovered the meaning of the sign!
+Luthier: Please, Wanderer, remember it so the music can live on!
