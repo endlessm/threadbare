@@ -13,8 +13,16 @@ const STORY_QUEST_STARTER_DIALOGUE: DialogueResource = preload("./story_quest_st
 ## the items you need to operate it.
 @export var eternal_loom: EternalLoom
 
+var book_sound = preload("res://assets/sound/BookPage.ogg")
 ## Whether to enter [member quest_scene] when the current dialogue ends
 var _enter_quest_on_dialogue_ended: bool = false
+
+@onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
+
+
+func _ready() -> void:
+	super._ready()
+	animated_sprite.connect("frame_changed", _on_frame_changed)
 
 
 func _init() -> void:
@@ -57,3 +65,13 @@ func _on_dialogue_ended(dialogue_resource: DialogueResource) -> void:
 			quest_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 		)
 		_enter_quest_on_dialogue_ended = false
+
+
+func _on_frame_changed() -> void:
+	if animated_sprite.frame == 2:
+		var sound_player = AudioStreamPlayer2D.new()
+		sound_player.stream = book_sound
+		sound_player.max_distance = 500
+		sound_player.pitch_scale = 2
+		add_child(sound_player)
+		sound_player.play()
