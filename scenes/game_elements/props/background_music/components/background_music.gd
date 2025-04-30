@@ -11,7 +11,7 @@ extends Node
 		stream = new_value
 		update_configuration_warnings()
 
-@onready var audio_stream_player: AudioStreamPlayer = %AudioStreamPlayer
+@onready var audio_stream_player: AudioStreamPlayer = MusicPlayer.background_music_player
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -25,10 +25,19 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	_play()
+	if stream:
+		_fade_in()
+		_play()
+	else:
+		_stop()
+
+	Transitions.started.connect(self._fade_out)
 
 
 func _play() -> void:
+	if audio_stream_player.stream == stream and audio_stream_player.playing:
+		return
+
 	if stream:
 		audio_stream_player.stream = stream
 		audio_stream_player.play()
@@ -43,3 +52,20 @@ func _pause_resume() -> void:
 		audio_stream_player.stream_paused = true
 	else:
 		audio_stream_player.stream_paused = false
+
+
+func _fade_in() -> void:
+	create_tween().tween_property(audio_stream_player, "volume_db", linear_to_db(1.0), 1.0)
+
+
+func _fade_out() -> void:
+	# If we use linear_to_db(0.0) as final value, the audio stream player
+	# is muted instantly because it goes from 0.0db to -infdb.
+	create_tween().tween_property(audio_stream_player, "volume_db", linear_to_db(0.00001), 1.0)
+
+
+func _exit_tree() -> void:
+	## Without this, if you click the Play button and then close the scene
+	## in the editor, the music will keep playing.
+	if Engine.is_editor_hint():
+		_stop()
