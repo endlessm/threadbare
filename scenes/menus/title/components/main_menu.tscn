@@ -1,0 +1,71 @@
+[gd_scene load_steps=4 format=3 uid="uid://wgmdsj1sbmja"]
+
+[ext_resource type="Texture2D" uid="uid://kalfq1qem3ak" path="res://assets/logo/threadbare-logo.png" id="1_hgbs1"]
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/dialogue/components/theme.tres" id="1_vmxej"]
+[ext_resource type="Script" uid="uid://bkl8j1as8ylag" path="res://scenes/menus/title/components/main_menu.gd" id="1_xuf5f"]
+
+[node name="MainMenu" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_vmxej")
+script = ExtResource("1_xuf5f")
+
+[node name="LogoContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 128
+
+[node name="Logo" type="TextureRect" parent="LogoContainer"]
+custom_minimum_size = Vector2(1200, 0)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("1_hgbs1")
+expand_mode = 5
+stretch_mode = 4
+
+[node name="ButtonBoxMargins" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/margin_left = 128
+theme_override_constants/margin_right = 128
+
+[node name="ButtonBox" type="VBoxContainer" parent="ButtonBoxMargins"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="StartButton" type="Button" parent="ButtonBoxMargins/ButtonBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BigFlatButton"
+text = "Start"
+flat = true
+
+[node name="OptionsButton" type="Button" parent="ButtonBoxMargins/ButtonBox"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"BigFlatButton"
+text = "Options"
+flat = true
+
+[node name="CreditsButton" type="Button" parent="ButtonBoxMargins/ButtonBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BigFlatButton"
+text = "Credits"
+flat = true
+
+[node name="QuitButton" type="Button" parent="ButtonBoxMargins/ButtonBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BigFlatButton"
+text = "Exit Game"
+flat = true
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="ButtonBoxMargins/ButtonBox/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="ButtonBoxMargins/ButtonBox/CreditsButton" to="." method="_on_credits_button_pressed"]
+[connection signal="pressed" from="ButtonBoxMargins/ButtonBox/QuitButton" to="." method="_on_quit_button_pressed"]

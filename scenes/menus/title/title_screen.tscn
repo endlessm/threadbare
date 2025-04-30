@@ -1,12 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://stdqc6ttomff"]
+[gd_scene load_steps=10 format=3 uid="uid://stdqc6ttomff"]
 
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/dialogue/components/theme.tres" id="1_kj1pq"]
 [ext_resource type="Script" uid="uid://c6nc0jka32ow2" path="res://scenes/menus/title/components/title_screen.gd" id="2_0vy2n"]
 [ext_resource type="PackedScene" uid="uid://dow5vc7yb5k2c" path="res://scenes/menus/intro/intro.tscn" id="3_0vy2n"]
 [ext_resource type="Texture2D" uid="uid://bvlx57seuur65" path="res://assets/intro/background.png" id="3_2ijyo"]
-[ext_resource type="Texture2D" uid="uid://kalfq1qem3ak" path="res://assets/logo/threadbare-logo.png" id="4_3gkcv"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="4_c6kyi"]
+[ext_resource type="PackedScene" uid="uid://wgmdsj1sbmja" path="res://scenes/menus/title/components/main_menu.tscn" id="5_0vy2n"]
 [ext_resource type="AudioStream" uid="uid://davnfkvtb3edk" path="res://assets/music/Threadbare_Main_Quiet.ogg" id="5_5uobg"]
+[ext_resource type="PackedScene" uid="uid://6s70kur03rjk" path="res://scenes/menus/title/components/credits.tscn" id="6_2ijyo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2ijyo"]
 
 [node name="TitleScreen" type="Control"]
 layout_mode = 3
@@ -33,68 +36,28 @@ texture = ExtResource("3_2ijyo")
 expand_mode = 3
 stretch_mode = 6
 
-[node name="LogoContainer" type="MarginContainer" parent="."]
+[node name="Pages" type="TabContainer" parent="."]
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -442.415
-offset_right = 1344.0
-offset_bottom = 442.415
-grow_vertical = 2
-theme_override_constants/margin_left = 128
-
-[node name="Logo" type="TextureRect" parent="LogoContainer"]
-custom_minimum_size = Vector2(1200, 0)
-layout_mode = 2
-texture = ExtResource("4_3gkcv")
-expand_mode = 5
-stretch_mode = 4
-
-[node name="ButtonBoxMargins" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -584.0
-grow_horizontal = 0
+grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 128
-theme_override_constants/margin_right = 128
+theme_override_styles/panel = SubResource("StyleBoxEmpty_2ijyo")
+current_tab = 0
+tabs_visible = false
 
-[node name="ButtonBox" type="VBoxContainer" parent="ButtonBoxMargins"]
+[node name="MainMenu" parent="Pages" instance=ExtResource("5_0vy2n")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
+metadata/_tab_index = 0
 
-[node name="StartButton" type="Button" parent="ButtonBoxMargins/ButtonBox"]
+[node name="Credits" parent="Pages" instance=ExtResource("6_2ijyo")]
 unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"BigFlatButton"
-text = "Start"
-flat = true
-
-[node name="OptionsButton" type="Button" parent="ButtonBoxMargins/ButtonBox"]
 visible = false
 layout_mode = 2
-theme_type_variation = &"BigFlatButton"
-text = "Options"
-flat = true
+metadata/_tab_index = 1
 
-[node name="CreditsButton" type="Button" parent="ButtonBoxMargins/ButtonBox"]
-visible = false
-layout_mode = 2
-theme_type_variation = &"BigFlatButton"
-text = "Credits"
-flat = true
-
-[node name="QuitButton" type="Button" parent="ButtonBoxMargins/ButtonBox"]
-layout_mode = 2
-theme_type_variation = &"BigFlatButton"
-text = "Exit Game"
-flat = true
-
-[connection signal="pressed" from="ButtonBoxMargins/ButtonBox/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="ButtonBoxMargins/ButtonBox/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="credits_pressed" from="Pages/MainMenu" to="." method="_on_main_menu_credits_pressed"]
+[connection signal="start_pressed" from="Pages/MainMenu" to="." method="_on_start_pressed"]
+[connection signal="back" from="Pages/Credits" to="." method="_on_credits_back"]
