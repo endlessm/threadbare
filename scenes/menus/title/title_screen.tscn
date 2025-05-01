@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://stdqc6ttomff"]
+[gd_scene load_steps=11 format=3 uid="uid://stdqc6ttomff"]
 
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/dialogue/components/theme.tres" id="1_kj1pq"]
 [ext_resource type="Script" uid="uid://c6nc0jka32ow2" path="res://scenes/menus/title/components/title_screen.gd" id="2_0vy2n"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://wgmdsj1sbmja" path="res://scenes/menus/title/components/main_menu.tscn" id="5_0vy2n"]
 [ext_resource type="AudioStream" uid="uid://davnfkvtb3edk" path="res://assets/first_party/music/Threadbare_Main_Quiet.ogg" id="5_5uobg"]
 [ext_resource type="PackedScene" uid="uid://6s70kur03rjk" path="res://scenes/menus/title/components/credits.tscn" id="6_2ijyo"]
+[ext_resource type="PackedScene" uid="uid://dkeb0yjgcfi86" path="res://scenes/menus/options/options.tscn" id="8_5uobg"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2ijyo"]
 
@@ -52,12 +53,19 @@ unique_name_in_owner = true
 layout_mode = 2
 metadata/_tab_index = 0
 
+[node name="Options" parent="Pages" instance=ExtResource("8_5uobg")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
 [node name="Credits" parent="Pages" instance=ExtResource("6_2ijyo")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-metadata/_tab_index = 1
+metadata/_tab_index = 2
 
 [connection signal="credits_pressed" from="Pages/MainMenu" to="." method="_on_main_menu_credits_pressed"]
+[connection signal="options_pressed" from="Pages/MainMenu" to="." method="_on_main_menu_options_pressed"]
 [connection signal="start_pressed" from="Pages/MainMenu" to="." method="_on_start_pressed"]
+[connection signal="back" from="Pages/Options" to="." method="_on_options_back"]
 [connection signal="back" from="Pages/Credits" to="." method="_on_credits_back"]

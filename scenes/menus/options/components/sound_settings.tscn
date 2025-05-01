@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3 uid="uid://de6s2quemrmkf"]
+
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/dialogue/components/theme.tres" id="1_g0mqx"]
+[ext_resource type="PackedScene" uid="uid://dvlpr4m0dt5rw" path="res://scenes/menus/options/components/volume_slider.tscn" id="3_ntmw0"]
+
+[node name="SoundSettings" type="VBoxContainer"]
+offset_left = 96.0
+offset_top = 64.0
+offset_right = 544.0
+offset_bottom = 254.0
+theme = ExtResource("1_g0mqx")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"PlayerRibbon"
+
+[node name="Label" type="Label" parent="PanelContainer"]
+layout_mode = 2
+text = "Sound Settings"
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 2
+
+[node name="MusicLabel" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Music"
+horizontal_alignment = 2
+
+[node name="MusicSlider" parent="GridContainer" instance=ExtResource("3_ntmw0")]
+unique_name_in_owner = true
+layout_mode = 2
+bus_name = "Music"
+
+[node name="SFXLabel" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Sound Effects"
+horizontal_alignment = 2
+
+[node name="SFXSlider" parent="GridContainer" instance=ExtResource("3_ntmw0")]
+layout_mode = 2
+bus_name = "SFX"
