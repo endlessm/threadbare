@@ -29,9 +29,9 @@ enum Sign { FORWARD, BACK, BACK_UP, FORWARD_UP }
 
 
 func _ready() -> void:
-	update_ignited_state()
 	if is_ignited:
 		fire_sound.play()
+	update_ignited_state()
 
 
 func update_ignited_state():
