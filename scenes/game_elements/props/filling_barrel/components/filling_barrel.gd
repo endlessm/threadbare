@@ -8,10 +8,7 @@ signal completed
 
 const NEEDED: int = 3
 const DEFAULT_TEXTURE: Texture2D = preload(
-	(
-		"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/"
-		+ "filling_barrel/components/inkwell-fill.png"
-	)
+	"res://scenes/game_elements/props/filling_barrel/components/inkwell-fill.png"
 )
 
 ## Projectiles with this label fill the barrel.
