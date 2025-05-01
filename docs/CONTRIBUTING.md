@@ -88,8 +88,7 @@ These articles and presentations give more background on how and why to craft a
 good commit message:
 
 - [How to Write a Git Commit Message](https://cbea.ms/git-commit/) by cbeams
-- [Telling Stories Through Your Commits]
-  (https://blog.mocoso.co.uk/posts/talks/telling-stories-through-your-commits)
+- [Telling Stories Through Your Commits](https://blog.mocoso.co.uk/posts/talks/telling-stories-through-your-commits)
   by Joel Chippindale
 - [Git (and how we Commit)](https://groengaard.dev/blog/git-and-how-we-commit)
   Christian Grøngaard
