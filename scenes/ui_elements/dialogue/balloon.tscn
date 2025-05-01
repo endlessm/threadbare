@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dhydhpp43urah"]
+[gd_scene load_steps=6 format=3 uid="uid://dhydhpp43urah"]
 
 [ext_resource type="Script" uid="uid://n1guv6m28qbw" path="res://scenes/ui_elements/dialogue/components/balloon.gd" id="1_36de5"]
 [ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="2_a8ve6"]
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/dialogue/components/theme.tres" id="2_pfnde"]
 [ext_resource type="Script" uid="uid://bb52rsfwhkxbn" path="res://addons/dialogue_manager/dialogue_responses_menu.gd" id="3_72ixx"]
+[ext_resource type="AudioStream" uid="uid://cs1bx2odpj6vm" path="res://scenes/ui_elements/dialogue/components/sounds/pencil.ogg" id="5_dbsi0"]
 
 [node name="DialogueBalloon" type="CanvasLayer"]
 layer = 100
@@ -77,6 +78,12 @@ response_template = NodePath("ResponseExample")
 layout_mode = 2
 theme_type_variation = &"FlatButton"
 text = "Response example"
+
+[node name="TalkSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_dbsi0")
+volume_db = 2.0
+bus = &"SFX"
+parameters/looping = true
 
 [connection signal="gui_input" from="Balloon" to="." method="_on_balloon_gui_input"]
 [connection signal="response_selected" from="Balloon/PanelContainer/VBoxContainer/ResponsesMenu" to="." method="_on_responses_menu_response_selected"]
