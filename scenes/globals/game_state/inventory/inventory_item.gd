@@ -50,3 +50,7 @@ static func with_type(a_type: ItemType) -> InventoryItem:
 
 static func item_types() -> Array:
 	return ItemType.values()
+
+
+func type_name() -> String:
+	return ItemType.find_key(type).to_pascal_case()
