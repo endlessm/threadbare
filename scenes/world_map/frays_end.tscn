@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=4 uid="uid://cufkthb25mpxy"]
+[gd_scene load_steps=45 format=4 uid="uid://cufkthb25mpxy"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_4evgk"]
 [ext_resource type="Script" uid="uid://8div00rgvsds" path="res://scenes/world_map/components/frays_end.gd" id="1_4gse6"]
@@ -32,43 +32,16 @@
 [ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="21_i7vhm"]
 [ext_resource type="SpriteFrames" uid="uid://cpm5o35ede3qs" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_purple.tres" id="22_e453w"]
 [ext_resource type="Texture2D" uid="uid://p8kty3uxifxu" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Space_Key_Dark.png" id="24_h30yx"]
-[ext_resource type="PackedScene" uid="uid://ci42ypvn5v8jr" path="res://scenes/game_elements/props/clouds_overlay/clouds_overlay.tscn" id="26_dvgp7"]
 [ext_resource type="PackedScene" uid="uid://hafqgtdg2nvp" path="res://scenes/game_elements/props/hint/hint.tscn" id="26_w8iew"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="27_aj6tp"]
 [ext_resource type="Texture2D" uid="uid://cc5wontx8obvi" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Arrow_Right_Key_Dark.png" id="27_w8iew"]
 [ext_resource type="Texture2D" uid="uid://ckwsauhbhlod6" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Arrow_Down_Key_Dark.png" id="28_h30yx"]
 [ext_resource type="Texture2D" uid="uid://bytssd0mbo28u" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Arrow_Up_Key_Dark.png" id="29_djq26"]
 [ext_resource type="Resource" uid="uid://byhqan5a7vkgg" path="res://scenes/world_map/components/tutorial_npc.dialogue" id="32_djq26"]
-[ext_resource type="Shader" uid="uid://chgaevc31p1mn" path="res://scenes/game_elements/props/clouds_overlay/components/clouds_shadows.gdshader" id="34_opcsp"]
 [ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="37_thm8h"]
 [ext_resource type="Texture2D" uid="uid://b4gjylrs0g2xx" path="res://scenes/game_elements/props/decoration/crochenthemum/ND_Crochenthemum_01.png" id="40_06x6x"]
 [ext_resource type="Texture2D" uid="uid://c8q2r1dsn1m7w" path="res://scenes/game_elements/props/decoration/crochenthemum/ND_Crochenthemum_02.png" id="41_xt3dw"]
 [ext_resource type="Texture2D" uid="uid://72tsg0sif7sq" path="res://scenes/game_elements/props/decoration/mushroom/ND_Mushroom_Blue_01.png" id="42_lftgk"]
-
-[sub_resource type="Gradient" id="Gradient_l5uri"]
-interpolation_mode = 1
-offsets = PackedFloat32Array(0, 0.74, 0.8, 1)
-colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.075, 0, 0, 0, 0.15, 0, 0, 0, 0.15)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_shbkg"]
-fractal_lacunarity = 0.2
-fractal_gain = 0.0
-domain_warp_enabled = true
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_thm8h"]
-resource_local_to_scene = true
-width = 1920
-height = 1080
-seamless = true
-color_ramp = SubResource("Gradient_l5uri")
-noise = SubResource("FastNoiseLite_shbkg")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_aj6tp"]
-resource_local_to_scene = true
-shader = ExtResource("34_opcsp")
-shader_parameter/cloud_texture = SubResource("NoiseTexture2D_thm8h")
-shader_parameter/offset = Vector2(0, 0)
-shader_parameter/scale = 0.2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h30yx"]
 size = Vector2(2070, 585)
@@ -904,9 +877,6 @@ scale = Vector2(1.05, 1.05)
 [node name="fray_idle" parent="." instance=ExtResource("20_xa7wa")]
 position = Vector2(1617, 625)
 sprite_frames = ExtResource("22_e453w")
-
-[node name="CloudsOverlay" parent="." instance=ExtResource("26_dvgp7")]
-material = SubResource("ShaderMaterial_aj6tp")
 
 [node name="Tutorial" type="Node2D" parent="."]
 y_sort_enabled = true
