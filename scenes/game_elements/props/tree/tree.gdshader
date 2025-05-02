@@ -3,7 +3,7 @@
 shader_type canvas_item;
 
 uniform sampler2D wind_affect_curve;
-uniform float phase_period : hint_range(1.0, 10000.0, 10.0) = 1000.0;
+uniform float phase_period : hint_range(1.0, 20000.0, 10.0) = 8000.0;
 uniform sampler2D phase_noise;
 uniform float max_wind_speed : hint_range(0.0, 50.0, 0.1) = 5.0;
 uniform float max_wind_intensity : hint_range(0.0, 10.0, 0.1) = 2.0;
@@ -16,7 +16,7 @@ void vertex() {
 }
 
 void fragment() {
-	float noise_value = texture(phase_noise, fract(world_pos)).x;
+	float noise_value = texture(phase_noise, fract(world_pos / phase_period)).x;
 	float wind_phase = noise_value * 100.0;
 	float wind_speed = noise_value * max_wind_speed;
 	float max_offset = sin(TIME * wind_speed + wind_phase) * max_wind_intensity;
