@@ -71,10 +71,13 @@ func _on_note_played(note: String) -> void:
 		"Current melody %s position %d expecting %s, received %s",
 		[melody, _position, melody[_position], note],
 	)
-	if melody[_position] != note:
+	if _position != 0 and melody[_position] != note:
 		_debug("Didn't match")
 		_position = 0
 		_debug("Matching again at start of melody...")
+
+	if melody[_position] != note:
+		_debug("Didn't match")
 		xylophone.stop_all_hints()
 		if hint_levels.get(get_progress(), 0) >= wobble_hint_min_level:
 			hint_timer.start()
