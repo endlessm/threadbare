@@ -3,6 +3,7 @@
 extends HBoxContainer
 
 signal start_pressed
+signal options_pressed
 signal credits_pressed
 
 @onready var button_box: VBoxContainer = %ButtonBox
@@ -25,6 +26,10 @@ func _ready() -> void:
 
 func _on_start_button_pressed() -> void:
 	start_pressed.emit()
+
+
+func _on_options_button_pressed() -> void:
+	options_pressed.emit()
 
 
 func _on_credits_button_pressed() -> void:
