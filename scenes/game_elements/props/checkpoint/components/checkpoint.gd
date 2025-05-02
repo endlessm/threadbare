@@ -4,9 +4,9 @@ class_name Checkpoint
 extends Area2D
 ## A place where the player respawns if the current scene is reloaded.
 
-const DIALOGUE: DialogueResource = preload(
-	"res://scenes/game_elements/props/checkpoint/components/checkpoint.dialogue"
-)
+## Dialogue to trigger when the player interacts with the checkpoint. If empty, the player will not
+## be able to interact with the checkpoint.
+@export var dialogue: DialogueResource = preload("uid://bug2aqd47jgyu")
 
 ## The point where the player will spawn.
 @onready var spawn_point: SpawnPoint = %SpawnPoint
@@ -31,10 +31,11 @@ func activate() -> void:
 	GameState.current_spawn_point = owner.get_path_to(spawn_point)
 	sprite.visible = true
 	collision_shape.set_deferred(&"disabled", false)
-	interact_area.disabled = false
+	interact_area.disabled = dialogue == null
 
 
 func _on_interaction_started(player: Player, _from_right: bool) -> void:
-	DialogueManager.show_dialogue_balloon(DIALOGUE, "", [self, player])
+	DialogueManager.show_dialogue_balloon(dialogue, "", [self, player])
 	await DialogueManager.dialogue_ended
+
 	interact_area.interaction_ended.emit()
