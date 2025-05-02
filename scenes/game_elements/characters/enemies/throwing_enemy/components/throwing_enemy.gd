@@ -186,7 +186,7 @@ func _on_timeout() -> void:
 	if not is_instance_valid(player):
 		return
 	_is_attacking = true
-	animation_player.play("prepare")
+	animation_player.play("attack anticipation")
 	await animation_player.animation_finished
 	animated_sprite_2d.play(&"attack")
 	if not allowed_labels:

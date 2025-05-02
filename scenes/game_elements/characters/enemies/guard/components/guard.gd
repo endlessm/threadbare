@@ -23,7 +23,6 @@ enum State {
 const DEFAULT_SPRITE_FRAMES = preload(
 	"res://scenes/game_elements/characters/enemies/guard/components/guard_sprite_frames.tres"
 )
-
 const LOOK_AT_TURN_SPEED: float = 10.0
 
 @export_category("Appearance")
@@ -102,6 +101,7 @@ var state: State = State.PATROLLING:
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var alert_sound: AudioStreamPlayer = %AlertSound
+@onready var fire_loop: AudioStreamPlayer2D = %FireLoopSound
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -227,7 +227,6 @@ func _detect_player(player_in_sight: Node2D) -> void:
 ## being detected
 func _update_player_awareness(player_in_sight: Node2D, delta: float) -> void:
 	if State.ALERTED == state:
-		alert_sound.play()
 		player_awareness.ratio = 1.0
 		player_awareness.tint_progress = Color.RED
 	else:
@@ -266,13 +265,17 @@ func _update_debug_info() -> void:
 func _on_enter_state(new_state: State) -> void:
 	match new_state:
 		State.ALERTED:
-			alert_sound.play()
+			if not alert_sound.playing:
+				alert_sound.play()
 			player_detected.emit(_player_in_sight())
 			await get_tree().create_timer(0.4).timeout
 			animation_player.play("hit")
 		State.INVESTIGATING:
 			guard_movement.start_moving_now()
 			breadcrumbs.push_back(global_position)
+		State.DETECTING:
+			if not alert_sound.playing:
+				alert_sound.play()
 
 
 ## What happens when the guard reached the point it was walking towards

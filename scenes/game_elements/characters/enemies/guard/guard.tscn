@@ -6,10 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="3_pnkgp"]
 [ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="4_lptvm"]
 [ext_resource type="SpriteFrames" uid="uid://c4kqsgl2pcofo" path="res://scenes/game_elements/characters/enemies/guard/components/guard_sprite_frames.tres" id="5_ls1y7"]
-[ext_resource type="AudioStream" uid="uid://dgpeb1dtmfqud" path="res://assets/sound/AlertSound.ogg" id="7_wckbf"]
-[ext_resource type="AudioStream" uid="uid://4ec6e2alns71" path="res://assets/sound/GrassFoot.ogg" id="8_klpct"]
-[ext_resource type="AudioStream" uid="uid://c6g6581pbgoa" path="res://assets/sound/Torch.ogg" id="9_8vt0k"]
-[ext_resource type="AudioStream" uid="uid://bwif2oo6ymiu2" path="res://assets/sound/TorchHit.ogg" id="10_mswbt"]
+[ext_resource type="AudioStream" uid="uid://dgpeb1dtmfqud" path="res://assets/third_party/sounds/AlertSound.ogg" id="7_wckbf"]
+[ext_resource type="AudioStream" uid="uid://c6g6581pbgoa" path="res://assets/third_party/sounds/Torch.ogg" id="8_8vt0k"]
+[ext_resource type="AudioStream" uid="uid://4ec6e2alns71" path="res://assets/third_party/sounds/GrassFoot.ogg" id="8_klpct"]
+[ext_resource type="AudioStream" uid="uid://bwif2oo6ymiu2" path="res://assets/third_party/sounds/TorchHit.ogg" id="10_mswbt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g173s"]
 radius = 35.0
@@ -85,21 +85,42 @@ tracks/1/keys = {
 "update": 1,
 "values": [0, 1, 2]
 }
-tracks/2/type = "audio"
+tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("FireSound")
+tracks/2/path = NodePath("FireSound:stream")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"clips": [{
-"end_offset": 0.261463,
-"start_offset": 0.141839,
-"stream": ExtResource("10_mswbt")
-}],
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_mswbt")]
 }
-tracks/2/use_blend = true
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("FireSound:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("FireSound:parameters/looping")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
 
 [sub_resource type="Animation" id="Animation_8vt0k"]
 resource_name = "walk"
@@ -149,21 +170,6 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0.2, 0.5)
 }
 tracks/2/use_blend = true
-tracks/3/type = "audio"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("FireSound")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"clips": [{
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": ExtResource("9_8vt0k")
-}],
-"times": PackedFloat32Array(0)
-}
-tracks/3/use_blend = true
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_innil"]
 _data = {
@@ -274,11 +280,24 @@ bus = &"SFX"
 volume_db = -2.0
 max_distance = 350.0
 bus = &"SFX"
+playback_type = 1
 
 [node name="FireSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_mswbt")
 volume_db = -2.0
-max_distance = 500.0
+max_distance = 400.0
 bus = &"SFX"
+playback_type = 1
+
+[node name="FireLoopSound" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("8_8vt0k")
+volume_db = -5.0
+autoplay = true
+max_distance = 350.0
+bus = &"SFX"
+playback_type = 1
+parameters/looping = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

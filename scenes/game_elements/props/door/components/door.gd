@@ -12,9 +12,8 @@ extends Toggleable
 
 
 func open() -> void:
-	ring_sound.play()
 	door_sound.play()
-	await door_sound.finished
+	ring_sound.play()
 	set_toggled(true)
 
 

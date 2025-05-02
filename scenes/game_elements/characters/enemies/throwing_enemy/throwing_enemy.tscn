@@ -1,9 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://b82nsrh332syj"]
+[gd_scene load_steps=13 format=3 uid="uid://b82nsrh332syj"]
 
 [ext_resource type="Script" uid="uid://dfj3625owet5p" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/throwing_enemy.gd" id="1_ffq0m"]
 [ext_resource type="SpriteFrames" uid="uid://3ujiuhj7wpm2" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames.tres" id="2_h0glm"]
-[ext_resource type="AudioStream" uid="uid://qf2d38rabx8o" path="res://assets/sound/Wings.ogg" id="3_s20gv"]
-[ext_resource type="AudioStream" uid="uid://fcmjf1srys7n" path="res://assets/sound/Spit.ogg" id="4_uvwc5"]
+[ext_resource type="AudioStream" uid="uid://qf2d38rabx8o" path="res://assets/third_party/sounds/Wings.ogg" id="3_s20gv"]
+[ext_resource type="AudioStream" uid="uid://fcmjf1srys7n" path="res://assets/third_party/sounds/Spit.ogg" id="4_uvwc5"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
 height = 42.0
@@ -50,6 +50,50 @@ tracks/2/keys = {
 "values": [0]
 }
 
+[sub_resource type="Animation" id="Animation_u0rnr"]
+resource_name = "attack anticipation"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"attack anticipation"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/2/type = "audio"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SpitSound")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"clips": [{
+"end_offset": 0.114227,
+"start_offset": 0.651952,
+"stream": ExtResource("4_uvwc5")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/2/use_blend = true
+
 [sub_resource type="Animation" id="Animation_ffq0m"]
 resource_name = "got hit"
 length = 0.3
@@ -69,7 +113,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_uvwc5"]
 resource_name = "idle"
 length = 0.70001
-loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -107,50 +150,7 @@ tracks/2/keys = {
 "start_offset": 0.0623751,
 "stream": ExtResource("3_s20gv")
 }],
-"times": PackedFloat32Array(0.0376249)
-}
-tracks/2/use_blend = true
-
-[sub_resource type="Animation" id="Animation_u0rnr"]
-resource_name = "prepare"
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"attack anticipation"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3]
-}
-tracks/2/type = "audio"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("SpitSound")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"clips": [{
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": ExtResource("4_uvwc5")
-}],
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(0.3)
 }
 tracks/2/use_blend = true
 
@@ -172,9 +172,9 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fbb2g"]
 _data = {
 &"RESET": SubResource("Animation_xcanh"),
+&"attack anticipation": SubResource("Animation_u0rnr"),
 &"got hit": SubResource("Animation_ffq0m"),
 &"idle": SubResource("Animation_uvwc5"),
-&"prepare": SubResource("Animation_u0rnr"),
 &"remove": SubResource("Animation_lx56l")
 }
 
@@ -187,10 +187,8 @@ script = ExtResource("1_ffq0m")
 unique_name_in_owner = true
 position = Vector2(0, -30)
 sprite_frames = ExtResource("2_h0glm")
-animation = &"defeated"
+animation = &"walk"
 autoplay = "idle"
-frame = 8
-frame_progress = 1.0
 flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

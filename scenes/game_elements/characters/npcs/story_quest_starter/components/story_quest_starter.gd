@@ -13,7 +13,7 @@ const STORY_QUEST_STARTER_DIALOGUE: DialogueResource = preload("./story_quest_st
 ## the items you need to operate it.
 @export var eternal_loom: EternalLoom
 
-var book_sound = preload("res://assets/sound/BookPage.ogg")
+var book_sound = preload("res://assets/third_party/sounds/BookPage.ogg")
 ## Whether to enter [member quest_scene] when the current dialogue ends
 var _enter_quest_on_dialogue_ended: bool = false
 

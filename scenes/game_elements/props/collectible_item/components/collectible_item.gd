@@ -28,9 +28,7 @@ class_name CollectibleItem extends Node2D
 		notify_property_list_changed()
 ## The dialogue title from where [member collected_dialogue] will start.
 var dialogue_title: StringName = ""
-var collect_sound = preload(
-	"res://scenes/game_elements/props/collectible_item/components/sounds/MemoryCollectable.ogg"
-)
+var collect_sound = preload("res://assets/third_party/sounds/MemoryCollectable.ogg")
 @onready var interact_area: InteractArea = $InteractArea
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
@@ -89,7 +87,6 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	collectible_sound.stream = collect_sound
 	collectible_sound.play()
 	await animation_player.animation_finished
-	await collectible_sound.finished
 	GameState.add_collected_item(item)
 
 	if collected_dialogue:
@@ -97,6 +94,7 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 		await DialogueManager.dialogue_ended
 
 	interact_area.end_interaction()
+	await get_tree().create_timer(1).timeout
 	queue_free()
 
 	if scene_to_go_to:

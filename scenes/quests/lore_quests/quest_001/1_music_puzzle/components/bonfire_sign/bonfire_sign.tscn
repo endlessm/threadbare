@@ -12,8 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://bqxlsmjk7ywmg" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/sign_forward_off.png" id="7_pf82u"]
 [ext_resource type="Texture2D" uid="uid://bafatj2y18u8b" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/sign_forward_up_off.png" id="9_ypj2g"]
 [ext_resource type="Texture2D" uid="uid://c6bnplacvrqku" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/sign_forward_up_on.png" id="10_lgc81"]
-[ext_resource type="AudioStream" uid="uid://cf07opsavdmjt" path="res://assets/sound/FireStart.ogg" id="13_6s45h"]
-[ext_resource type="AudioStream" uid="uid://c6g6581pbgoa" path="res://assets/sound/Torch.ogg" id="13_rd7vt"]
+[ext_resource type="AudioStream" uid="uid://cf07opsavdmjt" path="res://assets/third_party/sounds/FireStart.ogg" id="13_6s45h"]
+[ext_resource type="AudioStream" uid="uid://c6g6581pbgoa" path="res://assets/third_party/sounds/Torch.ogg" id="13_rd7vt"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mtebg"]
 animations = [{
@@ -188,16 +188,19 @@ position = Vector2(2, 0)
 shape = SubResource("CircleShape2D_gye5d")
 
 [node name="FireSignSound" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
 stream = ExtResource("13_rd7vt")
 volume_db = -3.0
 max_distance = 300.0
 bus = &"SFX"
+playback_type = 1
 parameters/looping = true
 
 [node name="FireStart" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
 stream = ExtResource("13_6s45h")
 volume_db = -1.0
-max_distance = 300.0
+max_distance = 500.0
 bus = &"SFX"
 
 [connection signal="interaction_started" from="InteractArea" to="." method="_on_interact_area_interaction_started"]
