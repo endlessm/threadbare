@@ -1,16 +1,7 @@
-[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://bmwe2wu7hxepf"]
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bmwe2wu7hxepf"]
 
 [ext_resource type="Shader" uid="uid://djspf45cxnom2" path="res://scenes/game_elements/props/tree/tree.gdshader" id="1_un8pg"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_f0x1c"]
-frequency = 0.008
-fractal_lacunarity = 1.0
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_f0x1c"]
-width = 1024
-height = 1024
-seamless = true
-noise = SubResource("FastNoiseLite_f0x1c")
+[ext_resource type="Texture2D" uid="uid://cobda84xw48kk" path="res://scenes/game_elements/props/tree/components/wind_noise.png" id="2_0ty4a"]
 
 [sub_resource type="Curve" id="Curve_f0x1c"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.391579, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -23,6 +14,6 @@ curve = SubResource("Curve_f0x1c")
 shader = ExtResource("1_un8pg")
 shader_parameter/wind_affect_curve = SubResource("CurveTexture_ym1v0")
 shader_parameter/phase_period = 1001.0
-shader_parameter/phase_noise = SubResource("NoiseTexture2D_f0x1c")
+shader_parameter/phase_noise = ExtResource("2_0ty4a")
 shader_parameter/max_wind_speed = 5.0
 shader_parameter/max_wind_intensity = 2.0
