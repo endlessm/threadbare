@@ -14,7 +14,9 @@ func start() -> void:
 	var player: Player = get_tree().get_first_node_in_group("player")
 	if player:
 		player.mode = Player.Mode.FIGHTING
-	get_tree().call_group("throwing_enemy", "start")
+	for throwing_enemy: ThrowingEnemy in get_tree().get_nodes_in_group("throwing_enemy"):
+		if not throwing_enemy.autostart:
+			throwing_enemy.start()
 	for filling_barrel: FillingBarrel in get_tree().get_nodes_in_group("filling_barrels"):
 		filling_barrel.completed.connect(_on_barrel_completed)
 	_update_allowed_colors()
