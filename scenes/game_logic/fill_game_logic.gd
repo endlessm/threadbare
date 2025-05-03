@@ -6,6 +6,7 @@ extends Node
 signal goal_reached
 
 @export var barrels_to_win: int = 1
+@export var intro_dialogue: DialogueResource
 
 var barrels_completed: int = 0
 
@@ -25,6 +26,10 @@ func start() -> void:
 func _ready() -> void:
 	var filling_barrels: Array = get_tree().get_nodes_in_group("filling_barrels")
 	barrels_to_win = clampi(barrels_to_win, 0, filling_barrels.size())
+	if intro_dialogue:
+		DialogueManager.show_dialogue_balloon(intro_dialogue, "", [self])
+		await DialogueManager.dialogue_ended
+	start()
 
 
 func _update_allowed_colors() -> void:
