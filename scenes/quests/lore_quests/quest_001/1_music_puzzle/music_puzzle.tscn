@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=4 uid="uid://7hoy2p14t6kc"]
+[gd_scene load_steps=21 format=4 uid="uid://7hoy2p14t6kc"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_evicy"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_0ayb4"]
@@ -19,39 +19,12 @@
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="15_rxyid"]
 [ext_resource type="Texture2D" uid="uid://wxp04k82t4n8" path="res://scenes/game_elements/props/tree/components/Tree_Wool_Green_01.png" id="15_x6qq7"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="16_ytxvq"]
-[ext_resource type="PackedScene" uid="uid://ci42ypvn5v8jr" path="res://scenes/game_elements/props/clouds_overlay/clouds_overlay.tscn" id="20_l4i5r"]
-[ext_resource type="Shader" uid="uid://chgaevc31p1mn" path="res://scenes/game_elements/props/clouds_overlay/components/clouds_shadows.gdshader" id="21_nonj7"]
 
 [sub_resource type="Resource" id="Resource_dp3eg"]
 script = ExtResource("15_rxyid")
 name = ""
 type = 0
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
-
-[sub_resource type="Gradient" id="Gradient_l4i5r"]
-interpolation_mode = 1
-offsets = PackedFloat32Array(0, 0.61, 0.7, 1)
-colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.1, 0, 0, 0, 0.2, 0, 0, 0, 0.2)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_shbkg"]
-fractal_lacunarity = 0.2
-fractal_gain = 0.0
-domain_warp_enabled = true
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mgtd3"]
-resource_local_to_scene = true
-width = 1920
-height = 1080
-seamless = true
-color_ramp = SubResource("Gradient_l4i5r")
-noise = SubResource("FastNoiseLite_shbkg")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_l61o5"]
-resource_local_to_scene = true
-shader = ExtResource("21_nonj7")
-shader_parameter/cloud_texture = SubResource("NoiseTexture2D_mgtd3")
-shader_parameter/offset = Vector2(0, 0)
-shader_parameter/scale = 0.2
 
 [node name="MusicPuzzle" type="Node2D"]
 texture_filter = 1
@@ -930,12 +903,5 @@ polygon = PackedVector2Array(1112, 2072, 1056, 1968, 1064, 1936, 1064, 1808, 105
 
 [node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="ForestCollider"]
 polygon = PackedVector2Array(1960, 832, 1824, 744, 1736, 680, 1720, 584, 1792, 520, 2056, 504, 2056, 592, 2056, 832)
-
-[node name="CloudsOverlay" parent="." instance=ExtResource("20_l4i5r")]
-material = SubResource("ShaderMaterial_l61o5")
-wind_direction = Vector2(0.2, 0.5)
-wind_speed = 15.0
-cloud_density = 0.3
-cloud_opacity = 0.2
 
 [connection signal="solved" from="OnTheGround/MusicPuzzle" to="OnTheGround/MusicPuzzle/CollectibleItem" method="reveal"]
