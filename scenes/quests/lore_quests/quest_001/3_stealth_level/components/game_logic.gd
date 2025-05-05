@@ -8,7 +8,12 @@ extends Node
 @export_range(0.5, 3.0, 0.1, "or_greater", "or_less") var zoom: float = 1.0:
 	set = set_zoom
 
-@onready var camera_2d: Camera2D = %Camera2D
+
+func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+	set_player_instantly_loses_on_sight(player_instantly_loses_on_sight)
+	set_zoom(zoom)
 
 
 func set_player_instantly_loses_on_sight(new_value: bool) -> void:
@@ -21,5 +26,9 @@ func set_player_instantly_loses_on_sight(new_value: bool) -> void:
 
 func set_zoom(new_value: float) -> void:
 	zoom = new_value
-	if camera_2d:
-		camera_2d.zoom = Vector2.ONE * zoom
+	if Engine.is_editor_hint():
+		return
+	if not is_node_ready():
+		return
+	var camera: Camera2D = get_viewport().get_camera_2d()
+	camera.zoom = Vector2.ONE * zoom
