@@ -1,13 +1,64 @@
-[gd_scene load_steps=5 format=3 uid="uid://7873qa54birk"]
+[gd_scene load_steps=12 format=3 uid="uid://7873qa54birk"]
 
 [ext_resource type="Script" uid="uid://b0b2y72gvp50f" path="res://scenes/game_elements/props/tree/components/tree.gd" id="1_7ot8u"]
 [ext_resource type="Material" uid="uid://bmwe2wu7hxepf" path="res://scenes/game_elements/props/tree/components/wind_affected_material.tres" id="2_f0x1c"]
-[ext_resource type="SpriteFrames" uid="uid://d36eq8tqdaxdy" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_green.tres" id="3_f0x1c"]
+[ext_resource type="Texture2D" uid="uid://dc4nuj702f442" path="res://scenes/game_elements/props/tree/components/Tree_Patches_Green.png" id="3_f0x1c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w45yf"]
+atlas = ExtResource("3_f0x1c")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ydkyq"]
+atlas = ExtResource("3_f0x1c")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8nqw3"]
+atlas = ExtResource("3_f0x1c")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b5kbs"]
+atlas = ExtResource("3_f0x1c")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xduql"]
+atlas = ExtResource("3_f0x1c")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n7buj"]
+atlas = ExtResource("3_f0x1c")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ym1v0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w45yf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ydkyq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8nqw3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b5kbs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xduql")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n7buj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d888c"]
 radius = 16.0312
 
 [node name="Tree" type="Node2D"]
+scale = Vector2(1.18401, 1.13086)
 script = ExtResource("1_7ot8u")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -15,8 +66,9 @@ unique_name_in_owner = true
 texture_filter = 1
 material = ExtResource("2_f0x1c")
 position = Vector2(0, -79.7941)
-sprite_frames = ExtResource("3_f0x1c")
+sprite_frames = SubResource("SpriteFrames_ym1v0")
 autoplay = "default"
+frame_progress = 0.630648
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 16
