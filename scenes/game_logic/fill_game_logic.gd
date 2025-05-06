@@ -6,6 +6,7 @@ extends Node
 signal goal_reached
 
 @export var barrels_to_win: int = 1
+@export var intro_dialogue: DialogueResource
 
 var barrels_completed: int = 0
 
@@ -14,7 +15,9 @@ func start() -> void:
 	var player: Player = get_tree().get_first_node_in_group("player")
 	if player:
 		player.mode = Player.Mode.FIGHTING
-	get_tree().call_group("throwing_enemy", "start")
+	for throwing_enemy: ThrowingEnemy in get_tree().get_nodes_in_group("throwing_enemy"):
+		if not throwing_enemy.autostart:
+			throwing_enemy.start()
 	for filling_barrel: FillingBarrel in get_tree().get_nodes_in_group("filling_barrels"):
 		filling_barrel.completed.connect(_on_barrel_completed)
 	_update_allowed_colors()
@@ -23,6 +26,10 @@ func start() -> void:
 func _ready() -> void:
 	var filling_barrels: Array = get_tree().get_nodes_in_group("filling_barrels")
 	barrels_to_win = clampi(barrels_to_win, 0, filling_barrels.size())
+	if intro_dialogue:
+		DialogueManager.show_dialogue_balloon(intro_dialogue, "", [self])
+		await DialogueManager.dialogue_ended
+	start()
 
 
 func _update_allowed_colors() -> void:

@@ -1,6 +1,5 @@
-[gd_scene load_steps=14 format=4 uid="uid://cgemeabsewy1f"]
+[gd_scene load_steps=13 format=4 uid="uid://cgemeabsewy1f"]
 
-[ext_resource type="Script" uid="uid://c38tkgfys3d63" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/ink_combat.gd" id="1_4r6cg"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="2_wqron"]
 [ext_resource type="AudioStream" uid="uid://dgwihwibc8ah6" path="res://assets/first_party/music/Threadbare_Combat.ogg" id="3_0kd4s"]
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="3_wqron"]
@@ -17,15 +16,14 @@
 size = Vector2(101, 49)
 
 [node name="InkCombat" type="Node2D"]
-script = ExtResource("1_4r6cg")
 
 [node name="BackgroundMusic" parent="." instance=ExtResource("2_wqron")]
 stream = ExtResource("3_0kd4s")
 
 [node name="FillGameLogic" type="Node" parent="."]
-unique_name_in_owner = true
 script = ExtResource("3_wqron")
 barrels_to_win = 2
+metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -96,9 +94,11 @@ position = Vector2(414, 501)
 
 [node name="ThrowingEnemy" parent="OnTheGround" instance=ExtResource("6_e81yh")]
 position = Vector2(59, 264)
+autostart = true
 
 [node name="ThrowingEnemy2" parent="OnTheGround" instance=ExtResource("6_e81yh")]
 position = Vector2(62, 410)
+autostart = true
 
 [node name="FillingBarrel" parent="OnTheGround" instance=ExtResource("7_btlpg")]
 position = Vector2(839, 248)
@@ -127,4 +127,4 @@ limit_bottom = 2048
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[connection signal="goal_reached" from="." to="OnTheGround/LevelExit/Door Exit" method="open"]
+[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/LevelExit/Door Exit" method="open"]
