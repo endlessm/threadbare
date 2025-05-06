@@ -1,0 +1,88 @@
+[gd_scene load_steps=14 format=4 uid="uid://x3wm2ce0ax8i"]
+
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_0gc84"]
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_v7mls"]
+[ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/music_puzzle.gd" id="2_1jr3w"]
+[ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/components/player_template.tres" id="2_eeb0f"]
+[ext_resource type="PackedScene" uid="uid://dv30a1p74xgs1" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/musical_rock_xylophone.tscn" id="3_elefb"]
+[ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign.tscn" id="4_td70e"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="4_w5wgh"]
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="6_el8ux"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="6_u8qfb"]
+[ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="7_dj471"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="8_agcod"]
+[ext_resource type="Resource" uid="uid://bb1g8ftnxjhvh" path="res://scenes/quests/story_quests/template/3_music_puzzle/music_puzzle.dialogue" id="9_dj471"]
+
+[sub_resource type="Resource" id="Resource_u8qfb"]
+script = ExtResource("6_u8qfb")
+name = ""
+type = 2
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[node name="MusicPuzzleTemplate" type="Node2D"]
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+
+[node name="Grass" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAANAAcAAQABAAEAAAANAAYAAQABAAEAAAANAAUAAQABAAEAAAANAAQAAQABAAEAAAANAAMAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAAMAAcAAQABAAEAAAAMAAYAAQABAAEAAAAMAAUAAQABAAEAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAEAAAALAAcAAQABAAEAAAALAAYAAQABAAEAAAALAAUAAQABAAEAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAEAAAAKAAcAAQABAAEAAAAKAAYAAQABAAEAAAAKAAUAAQABAAEAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAJAAcAAQABAAEAAAAJAAYAAQABAAEAAAAJAAUAAQABAAEAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAIAAcAAQABAAEAAAAIAAYAAQABAAEAAAAIAAUAAQABAAEAAAAIAAQAAQABAAEAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAHAAcAAQABAAEAAAAHAAYAAQABAAEAAAAHAAUAAQABAAEAAAAHAAQAAQABAAEAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAGAAcAAQABAAEAAAAGAAYAAQABAAEAAAAGAAUAAQABAAEAAAAGAAQAAQABAAEAAAAGAAMAAQABAAEAAAAGAAIAAQABAAEAAAAFAAcAAQABAAEAAAAFAAYAAQABAAEAAAAFAAUAAQABAAEAAAAFAAQAAQABAAEAAAAFAAMAAQABAAEAAAAFAAIAAQABAAEAAAAFAAEAAQABAAEAAAAEAAcAAQABAAEAAAAEAAYAAQABAAEAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAIAAQABAAEAAAAEAAEAAQABAAEAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAIAAQABAAEAAAADAAEAAQABAAEAAAACAAMAAQABAAEAAAACAAIAAQABAAEAAAACAAEAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAABAAEAAQABAAEAAAACAAQAAQABAAEAAAABAAQAAQABAAEAAAAAAAQAAQABAAEAAAAGAAAAAQABAAEAAAAHAAAAAQABAAEAAAAFAAAAAQABAAEAAAAIAAAAAQABAAEAAAAJAAAAAQABAAEAAAALAAAAAQABAAEAAAAMAAAAAQABAAEAAAAKAAAAAQABAAEAAAANAAAAAQABAAEAAAAEAAAAAQABAAEAAAADAAAAAQABAAEAAAACAAAAAQABAAEAAAABAAAAAQABAAEAAAAAAAAAAQABAAEAAAAAAAEAAQABAAEAAAAAAAIAAQABAAEAAAAAAAMAAQABAAEAAAAAAAgAAQABAAEAAAABAAgAAQABAAEAAAACAAgAAQABAAEAAAADAAgAAQABAAEAAAAEAAgAAQABAAEAAAAFAAgAAQABAAEAAAAGAAgAAQABAAEAAAAHAAgAAQABAAEAAAAIAAgAAQABAAEAAAAJAAgAAQABAAEAAAAKAAgAAQABAAEAAAAMAAgAAQABAAEAAAALAAgAAQABAAEAAAANAAgAAQABAAEAAAAOAAgAAQABAAEAAAAOAAcAAQABAAEAAAAOAAYAAQABAAEAAAAOAAUAAQABAAEAAAAOAAQAAQABAAEAAAAOAAMAAQABAAEAAAAOAAIAAQABAAEAAAAOAAEAAQABAAEAAAAOAAAAAQABAAEAAAAAAAUAAQABAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAEAAAADAAYAAQABAAEAAAACAAYAAQABAAEAAAABAAYAAQABAAEAAAAAAAYAAQABAAEAAAAAAAcAAQABAAEAAAABAAcAAQABAAEAAAACAAcAAQABAAEAAAADAAcAAQABAAEAAAAGAAEAAQABAAEAAAAHAAEAAQABAAEAAAAIAAEAAQABAAEAAAAJAAEAAQABAAEAAAAKAAEAAQABAAEAAAAPAAkAAQACAAIAAAAPAAgAAQACAAEAAAAPAAcAAQACAAEAAAAPAAYAAQACAAEAAAAPAAUAAQACAAEAAAAPAAQAAQACAAEAAAAPAAMAAQACAAEAAAAPAAIAAQACAAEAAAAPAAEAAQACAAEAAAAPAAAAAQACAAEAAAAPAP//AQACAAAAAAAOAAkAAQABAAIAAAAOAP//AQABAAAAAAANAAkAAQABAAIAAAANAP//AQABAAAAAAAMAAkAAQABAAIAAAAMAP//AQABAAAAAAALAAkAAQABAAIAAAALAP//AQABAAAAAAAKAAkAAQABAAIAAAAKAP//AQABAAAAAAAJAAkAAQABAAIAAAAJAP//AQABAAAAAAAIAAkAAQABAAIAAAAIAP//AQABAAAAAAAHAAkAAQABAAIAAAAHAP//AQABAAAAAAAGAAkAAQABAAIAAAAGAP//AQABAAAAAAAFAAkAAQABAAIAAAAFAP//AQABAAAAAAAEAAkAAQABAAIAAAAEAP//AQABAAAAAAADAAkAAQABAAIAAAADAP//AQABAAAAAAACAAkAAQABAAIAAAACAP//AQABAAAAAAABAAkAAQABAAIAAAABAP//AQABAAAAAAAAAAkAAQABAAIAAAAAAP//AQABAAAAAAD//wkAAQAAAAIAAAD//wgAAQAAAAEAAAD//wcAAQAAAAEAAAD//wYAAQAAAAEAAAD//wUAAQAAAAEAAAD//wQAAQAAAAEAAAD//wMAAQAAAAEAAAD//wIAAQAAAAEAAAD//wEAAQAAAAEAAAD//wAAAQAAAAEAAAD/////AQAAAAAAAAA=")
+tile_set = ExtResource("1_v7mls")
+
+[node name="Sand" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAD//wcAAQAFAAMAAAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAHAAIAAAADAAYAAQAIAAEAAAADAAUAAQAFAAAAAAAEAAUAAQAGAAMAAAAFAAUAAQAGAAMAAAAGAAUAAQAGAAMAAAAHAAUAAQAGAAMAAAAIAAUAAQAGAAMAAAAJAAUAAQAGAAMAAAAKAAUAAQAGAAMAAAALAAUAAQAHAAIAAAALAAQAAQAFAAAAAAAMAAQAAQAGAAMAAAANAAQAAQAGAAMAAAAOAAQAAQAGAAMAAAAPAAQAAQAHAAMAAAA=")
+tile_set = ExtResource("1_v7mls")
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="OnTheGround" instance=ExtResource("1_0gc84")]
+position = Vector2(383, 371)
+sprite_frames = ExtResource("2_eeb0f")
+
+[node name="MusicPuzzle" type="Node2D" parent="OnTheGround" node_paths=PackedStringArray("xylophone", "fires")]
+position = Vector2(-1, 0)
+script = ExtResource("2_1jr3w")
+xylophone = NodePath("MusicalRockXylophone")
+melodies = Array[String](["CDEFGA", "AGFEDC"])
+fires = [NodePath("BonfireSign"), NodePath("BonfireSign2")]
+metadata/_custom_type_script = "uid://c68oh8dtr21ti"
+
+[node name="MusicalRockXylophone" parent="OnTheGround/MusicPuzzle" instance=ExtResource("3_elefb")]
+position = Vector2(356, 453)
+
+[node name="BonfireSign" parent="OnTheGround/MusicPuzzle" instance=ExtResource("4_td70e")]
+position = Vector2(506, 210)
+is_ignited = false
+
+[node name="BonfireSign2" parent="OnTheGround/MusicPuzzle" instance=ExtResource("4_td70e")]
+position = Vector2(593, 200)
+sign = 1
+is_ignited = false
+
+[node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("6_el8ux")]
+position = Vector2(861, 282)
+revealed = false
+scene_to_go_to = "uid://cqjdjcwwfg0xi"
+item = SubResource("Resource_u8qfb")
+collected_dialogue = ExtResource("9_dj471")
+dialogue_title = &"well_done"
+
+[node name="Sign" parent="OnTheGround" instance=ExtResource("7_dj471")]
+position = Vector2(184, 434)
+direction = 1
+text = "First melody: play all notes from left to right."
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="." instance=ExtResource("4_w5wgh")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+
+[node name="Cinematic" type="Node2D" parent="."]
+script = ExtResource("8_agcod")
+dialogue = ExtResource("9_dj471")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[connection signal="solved" from="OnTheGround/MusicPuzzle" to="OnTheGround/CollectibleItem" method="reveal"]
