@@ -42,6 +42,7 @@ func play() -> void:
 	animated_sprite.play(&"struck")
 	audio_stream_player_2d.play()
 	await audio_stream_player_2d.finished
+	await animated_sprite.animation_looped
 	animated_sprite.play(&"default")
 
 
@@ -53,4 +54,5 @@ func wobble_silently() -> void:
 
 func stop_hint() -> void:
 	if animated_sprite.is_playing() and animated_sprite.animation == "struck":
+		await animated_sprite.animation_looped
 		animated_sprite.play("default")
