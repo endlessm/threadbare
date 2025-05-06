@@ -5,21 +5,32 @@ class_name Elder
 extends Talker
 
 ## The first scene of a quest that this NPC offers to the player when they interact with them.
-@export var quest_scene: PackedScene
+@export var quest_scene: PackedScene:
+	set(new_value):
+		quest_scene = new_value
+		update_configuration_warnings()
 
 ## A reference to the loom, so that this Elder can determine whether you have
 ## the items you need to operate it.
-@export var eternal_loom: EternalLoom
+@export var eternal_loom: EternalLoom:
+	set(new_value):
+		eternal_loom = new_value
+		update_configuration_warnings()
 
 ## Whether to enter [member quest_scene] when the current dialogue ends
 var _enter_quest_on_dialogue_ended: bool = false
 
 
 func _get_configuration_warnings() -> PackedStringArray:
-	if quest_scene:
-		return []
+	var warnings: Array[String] = []
 
-	return ["Quest Scene property should be set"]
+	if not quest_scene:
+		warnings.append("Quest Scene property should be set")
+
+	if not eternal_loom:
+		warnings.append("Eternal Loom property must be set")
+
+	return warnings
 
 
 # Override this talker method so we can vary the dialogue title based on
