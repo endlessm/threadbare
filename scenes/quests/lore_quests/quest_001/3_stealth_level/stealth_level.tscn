@@ -1,13 +1,12 @@
-[gd_scene load_steps=72 format=4 uid="uid://db6vhi7s2f37c"]
+[gd_scene load_steps=71 format=4 uid="uid://db6vhi7s2f37c"]
 
-[ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/quests/lore_quests/quest_001/3_stealth_level/components/game_logic.gd" id="1_f6lvl"]
+[ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_f6lvl"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_t8tj0"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="2_1b8xw"]
 [ext_resource type="AudioStream" uid="uid://qnqpd21qyfnc" path="res://assets/first_party/music/Threadbare_Stealth.ogg" id="2_p2u32"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_ww60d"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_1b8xw"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="3_idy4y"]
-[ext_resource type="Script" uid="uid://dcxadiejx57og" path="res://scenes/quests/lore_quests/quest_001/3_stealth_level/components/stealth_quest.gd" id="7_ghwae"]
 [ext_resource type="Texture2D" uid="uid://cdl2vrxgehaop" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Shift_Key_Dark.png" id="7_r8dog"]
 [ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="8_54evt"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="8_lbv6i"]
@@ -264,14 +263,16 @@ size = Vector2(559, 381)
 [node name="Level" type="Node2D"]
 y_sort_enabled = true
 
+[node name="StealthGameLogic" type="Node" parent="."]
+script = ExtResource("1_f6lvl")
+zoom = 1.7
+metadata/_custom_type_script = "uid://dnp0tjloec2d7"
+
 [node name="BackgroundMusic" parent="." instance=ExtResource("1_t8tj0")]
 stream = ExtResource("2_p2u32")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.481789, 0.48179, 0.481789, 1)
-
-[node name="GameLogic" type="Node" parent="."]
-script = ExtResource("1_f6lvl")
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -835,89 +836,84 @@ limit_top = 0
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="StealthQuest" type="Node2D" parent="."]
-y_sort_enabled = true
-script = ExtResource("7_ghwae")
-
-[node name="EnemyGuards" type="Node2D" parent="StealthQuest"]
-unique_name_in_owner = true
+[node name="EnemyGuards" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Guard-GoingBackAndForth" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
+[node name="Guard-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(928, 95)
 patrol_path = NodePath("../Guard-PatrolPath")
 move_speed = 200.0
 
-[node name="Guard-PatrolPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard-PatrolPath" type="Path2D" parent="EnemyGuards"]
 top_level = true
 position = Vector2(948, 126)
 curve = SubResource("Curve2D_vnsq3")
 
-[node name="Guard2-GoingInCircles" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
+[node name="Guard2-GoingInCircles" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(1567, 101.949)
 patrol_path = NodePath("../Guard2-PatrolPath")
 wait_time = 0.8
 move_speed = 250.0
 
-[node name="Guard2-PatrolPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard2-PatrolPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(60.6545, 1.9796)
 scale = Vector2(0.963753, 0.989796)
 curve = SubResource("Curve2D_m6h06")
 
-[node name="Guard3-GoingBackAndForth" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
+[node name="Guard3-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(3165, 611)
 patrol_path = NodePath("../Guard3-PatrolPath")
 wait_time = 0.3
 move_speed = 200.0
 
-[node name="Guard3-PatrolPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard3-PatrolPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(1732, -168)
 curve = SubResource("Curve2D_x2hsm")
 
-[node name="Guard4-GoingBackAndForth" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
+[node name="Guard4-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(2338, 792)
 patrol_path = NodePath("../Guard4-PatrolPath")
 wait_time = 0.3
 move_speed = 200.0
 
-[node name="Guard4-PatrolPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard4-PatrolPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(-236, 962)
 curve = SubResource("Curve2D_frfu0")
 
-[node name="Guard5-AlternatingDirection" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
+[node name="Guard5-AlternatingDirection" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(2875, 1203)
 patrol_path = NodePath("../Guard5-PatrolPath")
 wait_time = 5.0
 move_speed = 300.0
 
-[node name="Guard5-PatrolPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard5-PatrolPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(547.507, 721.574)
 scale = Vector2(0.766234, 1.19149)
 curve = SubResource("Curve2D_d2jm8")
 
-[node name="Guard6-RunningInCircles" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
+[node name="Guard6-RunningInCircles" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(3550, 1307)
 patrol_path = NodePath("../Guard6-PatrolPath")
 wait_time = 0.3
 move_speed = 1000.0
 detection_area_scale = 0.1
 
-[node name="Guard6-PatrolPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard6-PatrolPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(-220, 811)
 curve = SubResource("Curve2D_46hcm")
 
-[node name="Guard7-GoingBackAndForth" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
+[node name="Guard7-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(4607, 990)
 patrol_path = NodePath("../Guard7-PatrolPath")
 player_instantly_detected_on_sight = true
 time_to_detect_player = 0.5
 detection_area_scale = 0.7
 
-[node name="Guard7-PatrolPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard7-PatrolPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(1499, 1055)
 curve = SubResource("Curve2D_jgsr2")
 
-[node name="Guard8-GoingBackAndForth" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
+[node name="Guard8-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(4703, 1348)
 patrol_path = NodePath("../Guard8-PatrolPath")
 wait_time = 1.5
@@ -925,11 +921,11 @@ player_instantly_detected_on_sight = true
 time_to_detect_player = 0.5
 detection_area_scale = 0.7
 
-[node name="Guard8-PatrolPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard8-PatrolPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(1499, 1055)
 curve = SubResource("Curve2D_f6lvl")
 
-[node name="Guard9-GoingBackAndForth" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
+[node name="Guard9-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(6353, 1189)
 patrol_path = NodePath("../Guard9-PatrolPath")
 wait_time = 1.5
@@ -937,56 +933,56 @@ move_speed = 400.0
 time_to_detect_player = 0.5
 detection_area_scale = 1.2
 
-[node name="Guard9-PatrolPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard9-PatrolPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(5873.62, 943.447)
 curve = SubResource("Curve2D_ww60d")
 
-[node name="Guard10-RunningInCircles" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
+[node name="Guard10-RunningInCircles" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(5728.01, 670)
 patrol_path = NodePath("../Guard10-PatrolPath")
 wait_time = 0.0
 move_speed = 600.0
 detection_area_scale = 0.1
 
-[node name="Guard10-PatrolPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard10-PatrolPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(3135.49, 904)
 scale = Vector2(1.03535, 1)
 curve = SubResource("Curve2D_1b8xw")
 
-[node name="Guard11-RunningBackAndForth" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
+[node name="Guard11-RunningBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(6053.16, 1244.44)
 patrol_path = NodePath("../Guard11-PatrolPath")
 wait_time = 0.5
 move_speed = 500.0
 detection_area_scale = 0.1
 
-[node name="Guard11-PatrolPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard11-PatrolPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(5653.16, 624.436)
 curve = SubResource("Curve2D_idy4y")
 
-[node name="Guard12-RunningBackAndForth" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
+[node name="Guard12-RunningBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(6179.21, 670.264)
 patrol_path = NodePath("../Guard12-PatrolPath")
 wait_time = 0.5
 move_speed = 450.0
 detection_area_scale = 0.1
 
-[node name="Guard12-PatrolPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard12-PatrolPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(6145, 620)
 scale = Vector2(0.0617667, 1)
 curve = SubResource("Curve2D_xtu6t")
 
-[node name="TowerPatchworkRuined2" type="Sprite2D" parent="StealthQuest/EnemyGuards"]
+[node name="TowerPatchworkRuined2" type="Sprite2D" parent="EnemyGuards"]
 position = Vector2(4546, 857)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("21_foy1n")
 
-[node name="TowerPatchworkRuined3" type="Sprite2D" parent="StealthQuest/EnemyGuards"]
+[node name="TowerPatchworkRuined3" type="Sprite2D" parent="EnemyGuards"]
 position = Vector2(2146, 54)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("21_foy1n")
 
-[node name="TowerPatchworkRuined1" type="Sprite2D" parent="StealthQuest/EnemyGuards"]
+[node name="TowerPatchworkRuined1" type="Sprite2D" parent="EnemyGuards"]
 position = Vector2(6114, 900)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("22_djpoe")
@@ -1042,18 +1038,6 @@ position = Vector2(5516, 1184)
 position = Vector2(-52, -33)
 shape = SubResource("RectangleShape2D_n0bwe")
 debug_color = Color(0, 0, 0, 0.42)
-
-[node name="Transition" type="CanvasLayer" parent="."]
-
-[node name="TransitionFade" type="ColorRect" parent="Transition"]
-unique_name_in_owner = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0)
-metadata/_edit_lock_ = true
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 

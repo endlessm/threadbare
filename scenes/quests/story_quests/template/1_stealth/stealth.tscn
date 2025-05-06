@@ -1,10 +1,9 @@
-[gd_scene load_steps=18 format=4 uid="uid://coi4lvxir542y"]
+[gd_scene load_steps=17 format=4 uid="uid://coi4lvxir542y"]
 
-[ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/quests/lore_quests/quest_001/3_stealth_level/components/game_logic.gd" id="1_eujsg"]
+[ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_eujsg"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_cpt23"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_bvm3m"]
 [ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/components/player_template.tres" id="4_t0sci"]
-[ext_resource type="Script" uid="uid://dcxadiejx57og" path="res://scenes/quests/lore_quests/quest_001/3_stealth_level/components/stealth_quest.gd" id="5_d8qq6"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="6_fg25g"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="7_b3fba"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="8_gxd2f"]
@@ -38,11 +37,13 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 [node name="StealthTemplateLevel" type="Node2D"]
 y_sort_enabled = true
 
+[node name="StealthGameLogic" type="Node" parent="."]
+script = ExtResource("1_eujsg")
+zoom = 1.7
+metadata/_custom_type_script = "uid://dnp0tjloec2d7"
+
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.481789, 0.48179, 0.481789, 1)
-
-[node name="GameLogic" type="Node" parent="."]
-script = ExtResource("1_eujsg")
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -62,7 +63,6 @@ position = Vector2(131, 463)
 sprite_frames = ExtResource("4_t0sci")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-unique_name_in_owner = true
 process_mode = 3
 zoom = Vector2(1.7, 1.7)
 limit_left = 0
@@ -70,33 +70,28 @@ limit_top = 0
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="StealthQuest" type="Node2D" parent="."]
-y_sort_enabled = true
-script = ExtResource("5_d8qq6")
-
-[node name="EnemyGuards" type="Node2D" parent="StealthQuest"]
-unique_name_in_owner = true
+[node name="EnemyGuards" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Guard1-GoingBackAndForth" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
+[node name="Guard1-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
 position = Vector2(526, 470)
 patrol_path = NodePath("../Guard1-PatrolPath")
 move_speed = 200.0
 
-[node name="Guard1-PatrolPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard1-PatrolPath" type="Path2D" parent="EnemyGuards"]
 top_level = true
 position = Vector2(1022, 371.818)
 scale = Vector2(0.107143, 0.352768)
 curve = SubResource("Curve2D_vnsq3")
 
-[node name="Guard2-RunningInCircles" parent="StealthQuest/EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
+[node name="Guard2-RunningInCircles" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
 position = Vector2(2435, 382)
 patrol_path = NodePath("../Guard2-RunningPath")
 wait_time = 0.3
 move_speed = 1000.0
 detection_area_scale = 0.1
 
-[node name="Guard2-RunningPath" type="Path2D" parent="StealthQuest/EnemyGuards"]
+[node name="Guard2-RunningPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(1947, 473)
 curve = SubResource("Curve2D_hejm3")
 
@@ -110,18 +105,6 @@ position = Vector2(1704, 451)
 position = Vector2(1, -2)
 shape = SubResource("RectangleShape2D_idy4y")
 debug_color = Color(0, 0, 0, 0.42)
-
-[node name="Transition" type="CanvasLayer" parent="."]
-
-[node name="TransitionFade" type="ColorRect" parent="Transition"]
-unique_name_in_owner = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0)
-metadata/_edit_lock_ = true
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
