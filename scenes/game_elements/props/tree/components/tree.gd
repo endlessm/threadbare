@@ -30,7 +30,10 @@ func _ready() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_SCENE_INSTANTIATED:
-		var y_scale := randf_range(0.8, 1.2)
-		var x_scale := y_scale * randf_range(0.9, 1.1)
-		scale = Vector2(x_scale, y_scale)
+	match what:
+		NOTIFICATION_SCENE_INSTANTIATED:
+			var y_scale := randf_range(0.8, 1.2)
+			var x_scale := y_scale * randf_range(0.9, 1.1)
+			scale = Vector2(x_scale, y_scale)
+		NOTIFICATION_EDITOR_PRE_SAVE:
+			animated_sprite_2d.frame_progress = 0
