@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://bytkm0r5fe5xb"]
 
-[ext_resource type="Script" uid="uid://dedhjloxblho6" path="res://scenes/game_elements/characters/npcs/story_quest_starter/components/story_quest_starter.gd" id="1_vtqap"]
-[ext_resource type="Resource" uid="uid://ykdgo73x62wa" path="res://scenes/game_elements/characters/npcs/story_quest_starter/components/story_quest_starter.dialogue" id="2_67ed4"]
-[ext_resource type="SpriteFrames" uid="uid://bpfnbr7ig4s5g" path="res://scenes/game_elements/characters/shared_components/sprite_frames/elder.tres" id="3_2afjs"]
-[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="3_fe63y"]
+[ext_resource type="Script" uid="uid://dedhjloxblho6" path="res://scenes/game_elements/characters/npcs/elder/components/elder.gd" id="1_jlpjw"]
+[ext_resource type="Resource" uid="uid://ykdgo73x62wa" path="res://scenes/game_elements/characters/npcs/elder/components/story_quest_starter.dialogue" id="2_kqtes"]
+[ext_resource type="SpriteFrames" uid="uid://bpfnbr7ig4s5g" path="res://scenes/game_elements/characters/shared_components/sprite_frames/elder.tres" id="3_ak236"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="4_81yrg"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
 radius = 12.0
@@ -12,17 +12,17 @@ height = 74.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3eksq"]
 size = Vector2(67, 72)
 
-[node name="StoryQuestStarter" type="CharacterBody2D"]
+[node name="Elder" type="CharacterBody2D"]
 collision_layer = 2
-script = ExtResource("1_vtqap")
-dialogue = ExtResource("2_67ed4")
+script = ExtResource("1_jlpjw")
+dialogue = ExtResource("2_kqtes")
 look_at_side = 0
-sprite_frames = ExtResource("3_2afjs")
+sprite_frames = ExtResource("3_ak236")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(0, -40)
-sprite_frames = ExtResource("3_2afjs")
+sprite_frames = ExtResource("3_ak236")
 animation = &"idle"
 autoplay = "idle"
 
@@ -35,7 +35,7 @@ shape = SubResource("CapsuleShape2D_3vyb7")
 unique_name_in_owner = true
 collision_layer = 32
 collision_mask = 0
-script = ExtResource("3_fe63y")
+script = ExtResource("4_81yrg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
 position = Vector2(7.5, -40)
