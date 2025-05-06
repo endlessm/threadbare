@@ -3,6 +3,15 @@
 @tool
 extends Decoration
 
+@onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
+
+
+func _ready() -> void:
+	var frames_length: int = animated_sprite_2d.sprite_frames.get_frame_count(
+		animated_sprite_2d.animation
+	)
+	animated_sprite_2d.frame = randi_range(0, frames_length)
+
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_SCENE_INSTANTIATED:
