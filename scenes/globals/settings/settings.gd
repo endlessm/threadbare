@@ -6,6 +6,9 @@ const SETTINGS_PATH := "user://settings.cfg"
 
 const VOLUME_SECTION := "Volume"
 const MIN_VOLUME := -30.0
+const DEFAULT_VOLUMES: Dictionary[String, float] = {
+	"Music": -15.0,
+}
 
 var _settings := ConfigFile.new()
 
@@ -21,7 +24,9 @@ func _ready() -> void:
 func _restore_volumes() -> void:
 	for bus_idx in AudioServer.bus_count:
 		var bus := AudioServer.get_bus_name(bus_idx)
-		var volume_db: float = _settings.get_value(VOLUME_SECTION, bus, 0.0)
+		var volume_db: float = _settings.get_value(
+			VOLUME_SECTION, bus, DEFAULT_VOLUMES.get(bus, 0.0)
+		)
 		print("Restored", [bus_idx, bus, volume_db])
 		_set_volume(bus_idx, volume_db)
 
