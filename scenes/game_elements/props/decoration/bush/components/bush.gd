@@ -3,7 +3,7 @@
 @tool
 extends Node2D
 
-const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://d36eq8tqdaxdy")
+const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://dm5jcge3jb7p1")
 
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
@@ -31,9 +31,5 @@ func _ready() -> void:
 
 func _notification(what: int) -> void:
 	match what:
-		NOTIFICATION_SCENE_INSTANTIATED:
-			var y_scale := randf_range(0.8, 1.2)
-			var x_scale := y_scale * randf_range(0.9, 1.1)
-			scale = Vector2(x_scale, y_scale)
 		NOTIFICATION_EDITOR_PRE_SAVE:
 			animated_sprite_2d.frame_progress = 0
