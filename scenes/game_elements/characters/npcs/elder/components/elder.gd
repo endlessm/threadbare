@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name StoryQuestStarter
+class_name Elder
 extends Talker
 
 const STORY_QUEST_STARTER_DIALOGUE: DialogueResource = preload("./story_quest_starter.dialogue")
