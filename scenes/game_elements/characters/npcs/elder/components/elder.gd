@@ -4,8 +4,6 @@
 class_name Elder
 extends Talker
 
-const STORY_QUEST_STARTER_DIALOGUE: DialogueResource = preload("./story_quest_starter.dialogue")
-
 ## The first scene of a quest that this NPC offers to the player when they interact with them.
 @export var quest_scene: PackedScene
 
@@ -15,14 +13,6 @@ const STORY_QUEST_STARTER_DIALOGUE: DialogueResource = preload("./story_quest_st
 
 ## Whether to enter [member quest_scene] when the current dialogue ends
 var _enter_quest_on_dialogue_ended: bool = false
-
-
-func _init() -> void:
-	# GDScript does not allow subclasses to override the default value of properties on the parent
-	# class. Fake this here – the default talker dialogue is certainly not wanted by instances of
-	# this class.
-	if dialogue == Talker.DEFAULT_DIALOGUE:
-		dialogue = STORY_QUEST_STARTER_DIALOGUE
 
 
 func _get_configuration_warnings() -> PackedStringArray:
