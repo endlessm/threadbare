@@ -20,9 +20,7 @@ enum State {
 	RETURNING,
 }
 
-const DEFAULT_SPRITE_FRAMES = preload(
-	"res://scenes/game_elements/characters/enemies/guard/components/guard_sprite_frames.tres"
-)
+const DEFAULT_SPRITE_FRAMES = preload("uid://c4kqsgl2pcofo")
 
 const LOOK_AT_TURN_SPEED: float = 10.0
 

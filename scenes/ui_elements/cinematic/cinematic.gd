@@ -6,9 +6,7 @@ class_name Cinematic
 extends Node2D
 
 ## Dialogue for cinematic scene
-@export var dialogue: DialogueResource = preload(
-	"res://scenes/ui_elements/cinematic/cinematic_placeholder.dialogue"
-)
+@export var dialogue: DialogueResource = preload("uid://b7ad8nar1hmfs")
 
 ## Animation player, to be used from [member dialogue] (if needed)
 @export var animation_player: AnimationPlayer

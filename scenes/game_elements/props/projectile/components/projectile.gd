@@ -42,14 +42,10 @@ const ENEMY_HITBOX_LAYER: int = 7
 @export_group("FXs")
 
 ## A small visual effect used when the projectile collides with things.
-@export var small_fx_scene: PackedScene = preload(
-	"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/splash/splash.tscn"
-)
+@export var small_fx_scene: PackedScene = preload("uid://clgisducnnh0a")
 
 ## A big visual effect used when the projectile explodes.
-@export var big_fx_scene: PackedScene = preload(
-	"res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/big_splash/big_splash.tscn"
-)
+@export var big_fx_scene: PackedScene = preload("uid://b4qu6wml5gd7a")
 
 @onready var visible_things: Node2D = %VisibleThings
 @onready var animation_player: AnimationPlayer = %AnimationPlayer

@@ -4,9 +4,7 @@
 class_name Talker
 extends NPC
 
-const DEFAULT_DIALOGUE: DialogueResource = preload(
-	"res://scenes/game_elements/characters/npcs/talker/components/default.dialogue"
-)
+const DEFAULT_DIALOGUE: DialogueResource = preload("uid://cc3paugq4mma4")
 
 @export var npc_name: String
 @export var dialogue: DialogueResource = DEFAULT_DIALOGUE

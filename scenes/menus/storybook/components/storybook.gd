@@ -7,7 +7,7 @@ extends Control
 signal play(quest: Quest)
 
 ## Template quest, which is expected to be blank and so is treated specially.
-const STORY_QUEST_TEMPLATE := preload("res://scenes/quests/story_quests/template/quest.tres")
+const STORY_QUEST_TEMPLATE := preload("uid://ddxn14xw66ud8")
 
 const QUEST_RESOURCE_NAME := "quest.tres"
 

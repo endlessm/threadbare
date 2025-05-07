@@ -4,9 +4,7 @@
 class_name NPC
 extends CharacterBody2D
 
-const DEFAULT_SPRITE_FRAME: SpriteFrames = preload(
-	"res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_purple.tres"
-)
+const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://cpm5o35ede3qs")
 
 @export var look_at_side: Enums.LookAtSide = Enums.LookAtSide.LEFT:
 	set = _set_look_at_side

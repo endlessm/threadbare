@@ -7,9 +7,7 @@ extends StaticBody2D
 signal completed
 
 const NEEDED: int = 3
-const DEFAULT_TEXTURE: Texture2D = preload(
-	"res://scenes/game_elements/props/filling_barrel/components/inkwell-fill.png"
-)
+const DEFAULT_TEXTURE: Texture2D = preload("uid://b2nmajpf8dlh")
 
 ## Projectiles with this label fill the barrel.
 @export var label: String = "???"

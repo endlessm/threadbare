@@ -10,16 +10,10 @@ signal finished
 
 enum Effect { FADE, LEFT_TO_RIGHT_WIPE, RIGHT_TO_LEFT_WIPE, RADIAL }
 
-const FADE_TEXTURE: Texture = preload("res://scenes/globals/scene_switcher/transitions/Fade.png")
-const LEFT_TO_RIGHT_WIPE_TEXTURE: Texture = preload(
-	"res://scenes/globals/scene_switcher/transitions/LeftToRightWipe.png"
-)
-const RADIAL_TEXTURE: Texture = preload(
-	"res://scenes/globals/scene_switcher/transitions/Radial.png"
-)
-const RIGHT_TO_LEFT_WIPE_TEXTURE: Texture = preload(
-	"res://scenes/globals/scene_switcher/transitions/RightToLeftWipe.png"
-)
+const FADE_TEXTURE: Texture = preload("uid://cpvc4xmg7at7r")
+const LEFT_TO_RIGHT_WIPE_TEXTURE: Texture = preload("uid://wxf47acry7qc")
+const RADIAL_TEXTURE: Texture = preload("uid://dcwmaoqgu5t84")
+const RIGHT_TO_LEFT_WIPE_TEXTURE: Texture = preload("uid://b4lvabnu81em4")
 
 var _current_tween: Tween
 
