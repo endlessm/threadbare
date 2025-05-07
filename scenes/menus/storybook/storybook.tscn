@@ -1,0 +1,83 @@
+[gd_scene load_steps=3 format=3 uid="uid://bhm7fdjvppt8b"]
+
+[ext_resource type="Script" uid="uid://5bt5um5g1g3p" path="res://scenes/menus/storybook/components/storybook.gd" id="1_gw8hn"]
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/dialogue/components/theme.tres" id="1_rdgd0"]
+
+[node name="Storybook" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_rdgd0")
+script = ExtResource("1_gw8hn")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="LeftPage" type="MarginContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="QuestList" type="VBoxContainer" parent="PanelContainer/HBoxContainer/LeftPage"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RightPage" type="MarginContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/RightPage"]
+layout_mode = 2
+
+[node name="TitleBox" type="PanelContainer" parent="PanelContainer/HBoxContainer/RightPage/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"PlayerRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/HBoxContainer/RightPage/VBoxContainer/TitleBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Title of the Quest"
+
+[node name="Description" type="Label" parent="PanelContainer/HBoxContainer/RightPage/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam pulvinar, erat non consectetur cursus, erat erat lobortis massa, quis mattis purus dolor ac lorem. In hac habitasse platea dictumst. Suspendisse vulputate felis purus, ac scelerisque mauris tristique sit amet. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+autowrap_mode = 2
+
+[node name="Authors" type="Label" parent="PanelContainer/HBoxContainer/RightPage/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 1
+text = "by Jane Bloggs, Erika Mustermann and Jóna Jónsdóttir"
+autowrap_mode = 2
+
+[node name="Spacer" type="Control" parent="PanelContainer/HBoxContainer/RightPage/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayButton" type="Button" parent="PanelContainer/HBoxContainer/RightPage/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_top = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+theme_type_variation = &"FlatButton"
+text = "Play"
+
+[connection signal="pressed" from="PanelContainer/HBoxContainer/RightPage/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
