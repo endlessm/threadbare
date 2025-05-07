@@ -33,6 +33,7 @@ var dialogue_title: StringName = ""
 @onready var interact_area: InteractArea = $InteractArea
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var appear_sound: AudioStreamPlayer = %AppearSound
 
 
 func _get_property_list() -> Array[Dictionary]:
@@ -78,6 +79,7 @@ func _process(_delta: float) -> void:
 ## Make the collectible appear
 func reveal() -> void:
 	revealed = true
+	appear_sound.play()
 	animation_player.play("reveal")
 
 
