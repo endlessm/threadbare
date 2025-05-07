@@ -6,8 +6,19 @@ extends StaticBody2D
 
 signal completed
 
-const NEEDED: int = 3
-const DEFAULT_TEXTURE: Texture2D = preload("uid://b2nmajpf8dlh")
+const DEFAULT_SPRITE_FRAMES: SpriteFrames = preload("uid://dlsq0ke41s1yh")
+const FILLING_NAME_ANIMATION: StringName = &"filling"
+
+## Determines how the FillingBarrel looks.[br]
+## It is required that the [member sprite_frames] have an animation called filling.[br]
+## The barrel default sprite will be the first frame of that animation, and it
+## advances frames as it is being filled.
+@export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAMES:
+	set = _set_sprite_frames
+
+## The amount of times the barrel needs to be filled.[br]
+## When the barrel is filled that many times, it emits [signal completed].
+@export var needed_amount: int = 3
 
 ## Projectiles with this label fill the barrel.
 @export var label: String = "???"
@@ -16,14 +27,9 @@ const DEFAULT_TEXTURE: Texture2D = preload("uid://b2nmajpf8dlh")
 @export var color: Color:
 	set = _set_color
 
-## Optional custom texture for the barrel. An inkwell texture is used by default.
-## The texture must have 4 vertical frames, from empty to filled.
-@export var texture: Texture2D:
-	set = _set_texture
-
 var _amount: int = 0
 
-@onready var sprite_2d: Sprite2D = %Sprite2D
+@onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var collision_shape_2d: CollisionShape2D = %CollisionShape2D
 @onready var hit_box: StaticBody2D = %HitBox
@@ -34,35 +40,36 @@ func _set_color(new_color: Color) -> void:
 	if not is_node_ready():
 		return
 	if color:
-		sprite_2d.modulate = color
+		animated_sprite_2d.modulate = color
 	else:
-		sprite_2d.modulate = Color.WHITE
+		animated_sprite_2d.modulate = Color.WHITE
 
 
-func _set_texture(new_texture: Texture2D) -> void:
-	texture = new_texture
+func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
+	sprite_frames = new_sprite_frames if new_sprite_frames else DEFAULT_SPRITE_FRAMES
 	if not is_node_ready():
 		return
-	if texture:
-		sprite_2d.texture = texture
-	else:
-		sprite_2d.texture = DEFAULT_TEXTURE
+	if animated_sprite_2d:
+		animated_sprite_2d.sprite_frames = sprite_frames
+	update_configuration_warnings()
 
 
 func _ready() -> void:
 	_set_color(color)
-	_set_texture(texture)
+	_set_sprite_frames(sprite_frames)
+	animated_sprite_2d.animation = FILLING_NAME_ANIMATION
+	animated_sprite_2d.frame = 0
 
 
 ## Increment the amount by one and play the fill animation. If completed, also play the completed
 ## animation and remove this barrel from the current scene.
 func fill() -> void:
-	if _amount >= NEEDED:
+	if _amount >= needed_amount:
 		return
 	animation_player.play(&"fill")
 	_amount += 1
-	sprite_2d.frame += 1
-	if _amount >= NEEDED:
+	animated_sprite_2d.frame = floor(float(_amount) / needed_amount * _total_frames())
+	if _amount >= needed_amount:
 		_disable_collisions.call_deferred()
 		await animation_player.animation_finished
 		animation_player.play(&"completed")
@@ -74,3 +81,17 @@ func fill() -> void:
 func _disable_collisions() -> void:
 	hit_box.process_mode = Node.PROCESS_MODE_DISABLED
 	collision_shape_2d.disabled = true
+
+
+func _total_frames() -> int:
+	return animated_sprite_2d.sprite_frames.get_frame_count(FILLING_NAME_ANIMATION)
+
+
+func _get_configuration_warnings() -> PackedStringArray:
+	if not sprite_frames.has_animation(FILLING_NAME_ANIMATION):
+		return ["sprite_frames is missing the following animation: %s" % FILLING_NAME_ANIMATION]
+
+	if sprite_frames.get_frame_count(FILLING_NAME_ANIMATION) < 2:
+		return ["sprite_frames %s animation must have at least 2 frames" % FILLING_NAME_ANIMATION]
+
+	return []
