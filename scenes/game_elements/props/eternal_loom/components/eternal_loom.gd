@@ -3,9 +3,7 @@
 class_name EternalLoom
 extends Node2D
 
-const ETERNAL_LOOM_INTERACTION: DialogueResource = preload(
-	"res://scenes/game_elements/props/eternal_loom/eternal_loom_interaction.dialogue"
-)
+const ETERNAL_LOOM_INTERACTION: DialogueResource = preload("uid://yafw7bf362gh")
 const ETERNAL_LOOM_SOKOBAN_PATH = "res://scenes/eternal_loom_sokoban/eternal_loom_sokoban.tscn"
 
 @onready var interact_area: InteractArea = %InteractArea
