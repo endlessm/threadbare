@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://y8ha8abfyap2"]
 
 [ext_resource type="Script" uid="uid://be17wk85qlu28" path="res://scenes/game_elements/props/filling_barrel/components/filling_barrel.gd" id="1_md0e3"]
-[ext_resource type="Texture2D" uid="uid://b2nmajpf8dlh" path="res://scenes/game_elements/props/filling_barrel/components/inkwell-fill.png" id="2_vr013"]
+[ext_resource type="SpriteFrames" uid="uid://dlsq0ke41s1yh" path="res://scenes/game_elements/props/filling_barrel/components/filling_barrel_sprite_frames.tres" id="3_o1oxn"]
 [ext_resource type="AudioStream" uid="uid://6tgopt072bfq" path="res://scenes/game_elements/props/filling_barrel/components/fill.wav" id="4_6inx0"]
 [ext_resource type="AudioStream" uid="uid://s7ne07cx0j72" path="res://scenes/game_elements/props/filling_barrel/components/complete.wav" id="5_3gtj0"]
 
@@ -16,7 +16,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/path = NodePath("AnimatedSprite2D:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -40,7 +40,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:position")
+tracks/2/path = NodePath("AnimatedSprite2D:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -56,7 +56,7 @@ length = 3.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/path = NodePath("AnimatedSprite2D:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -95,7 +95,7 @@ tracks/2/use_blend = true
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:position")
+tracks/3/path = NodePath("AnimatedSprite2D:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -126,7 +126,7 @@ tracks/0/use_blend = true
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/path = NodePath("AnimatedSprite2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -138,7 +138,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:scale")
+tracks/2/path = NodePath("AnimatedSprite2D:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -160,11 +160,11 @@ collision_layer = 16
 collision_mask = 0
 script = ExtResource("1_md0e3")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(0, -21)
-texture = ExtResource("2_vr013")
-vframes = 4
+sprite_frames = ExtResource("3_o1oxn")
+animation = &"filling"
 
 [node name="HitBox" type="StaticBody2D" parent="."]
 unique_name_in_owner = true
