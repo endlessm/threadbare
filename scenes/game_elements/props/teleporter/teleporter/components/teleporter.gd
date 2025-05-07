@@ -6,9 +6,9 @@ extends Area2D
 
 const SPAWN_POINT_GROUP_NAME: String = "spawn_point"
 
-@export_file("*.tscn") var scene_to_go_to: String:
+@export_file("*.tscn") var next_scene: String:
 	set(new_value):
-		scene_to_go_to = new_value
+		next_scene = new_value
 		_update_available_spawn_points()
 		notify_property_list_changed()
 
@@ -45,16 +45,16 @@ func _ready() -> void:
 
 
 func _on_body_entered(_body: PhysicsBody2D) -> void:
-	if scene_to_go_to and scene_to_go_to != get_tree().current_scene.scene_file_path:
+	if next_scene and next_scene != get_tree().current_scene.scene_file_path:
 		# We are using call_deferred here because removing nodes with
 		# collisions during a callback caused by a collision might cause
 		# undesired behavior.
 		if use_transition:
 			SceneSwitcher.change_to_file_with_transition.call_deferred(
-				scene_to_go_to, spawn_point_path, enter_transition, exit_transition
+				next_scene, spawn_point_path, enter_transition, exit_transition
 			)
 		else:
-			SceneSwitcher.change_to_file(scene_to_go_to, spawn_point_path)
+			SceneSwitcher.change_to_file(next_scene, spawn_point_path)
 	else:
 		var spawn_point: SpawnPoint = get_node_or_null(spawn_point_path)
 
@@ -74,27 +74,27 @@ func _teleport_to_spawn_point(spawn_point: SpawnPoint) -> void:
 	self.body_entered.connect(_on_body_entered, CONNECT_ONE_SHOT)
 
 
-func _get_scene_to_go_to_path() -> String:
-	if scene_to_go_to.begins_with("uid"):
-		return ResourceUID.get_id_path(ResourceUID.text_to_id(scene_to_go_to))
+func _get_next_scene_path() -> String:
+	if next_scene.begins_with("uid"):
+		return ResourceUID.get_id_path(ResourceUID.text_to_id(next_scene))
 
-	return scene_to_go_to
+	return next_scene
 
 
 func _update_available_spawn_points() -> void:
 	if not Engine.is_editor_hint() or not is_inside_tree():
 		return
 
-	var scene_to_go_to_path: String = _get_scene_to_go_to_path()
+	var next_scene_path: String = _get_next_scene_path()
 
-	if not scene_to_go_to or scene_to_go_to_path == get_tree().edited_scene_root.scene_file_path:
+	if not next_scene or next_scene_path == get_tree().edited_scene_root.scene_file_path:
 		var spawn_points := get_tree().get_nodes_in_group("spawn_point")
 		_available_spawn_points.assign(
 			spawn_points.map(func(spawn_point: Node) -> String: return get_path_to(spawn_point))
 		)
 
-	elif ResourceLoader.exists(scene_to_go_to, "PackedScene"):
-		var packed_scene: PackedScene = load(scene_to_go_to)
+	elif ResourceLoader.exists(next_scene, "PackedScene"):
+		var packed_scene: PackedScene = load(next_scene)
 		var paths: Array[NodePath] = []
 		var scene_state: SceneState = packed_scene.get_state()
 
