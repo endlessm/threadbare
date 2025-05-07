@@ -7,9 +7,7 @@ extends CharacterBody2D
 
 enum State { IDLE, WALKING, ATTACKING, DEFEATED }
 
-const PROJECTILE_SCENE: PackedScene = preload(
-	"res://scenes/game_elements/props/projectile/projectile.tscn"
-)
+const PROJECTILE_SCENE: PackedScene = preload("uid://j8mqjkg0rvai")
 
 ## When targetting the next walking position, skip this slice of the circle.
 const WALK_TARGET_SKIP_ANGLE: float = PI / 4.

@@ -2,9 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends PanelContainer
 
-const ITEM_SLOT: PackedScene = preload(
-	"res://scenes/ui_elements/story_quest_progress/components/item_slot/item_slot.tscn"
-)
+const ITEM_SLOT: PackedScene = preload("uid://1mjm4atk2j6e")
 
 @export var amount_of_items_to_collect: int = 3
 @onready var items_container: HBoxContainer = %ItemsContainer
