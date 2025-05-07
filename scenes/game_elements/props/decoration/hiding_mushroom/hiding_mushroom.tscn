@@ -1,0 +1,144 @@
+[gd_scene load_steps=21 format=3 uid="uid://bbsc3wssndtfe"]
+
+[ext_resource type="Script" uid="uid://dnb4ys8yvi1pj" path="res://scenes/game_elements/props/decoration/hiding_mushroom/hiding_mushroom.gd" id="1_v208a"]
+[ext_resource type="Texture2D" uid="uid://5s56lmeleerc" path="res://scenes/game_elements/props/decoration/hiding_mushroom/components/Mushroom_Hiding.png" id="2_u5x8h"]
+[ext_resource type="Texture2D" uid="uid://caajyl18koevp" path="res://scenes/game_elements/props/decoration/hiding_mushroom/components/Mushroom_Idle.png" id="3_gyonr"]
+[ext_resource type="Texture2D" uid="uid://b3jrnsvk46nji" path="res://scenes/game_elements/props/decoration/hiding_mushroom/components/Mushroom_Revealing.png" id="4_nlg6p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kbtpn"]
+atlas = ExtResource("2_u5x8h")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6hiy8"]
+atlas = ExtResource("2_u5x8h")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6vbx2"]
+atlas = ExtResource("2_u5x8h")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hd5g6"]
+atlas = ExtResource("2_u5x8h")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k40uk"]
+atlas = ExtResource("2_u5x8h")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j6127"]
+atlas = ExtResource("2_u5x8h")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k3w52"]
+atlas = ExtResource("2_u5x8h")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0gdfd"]
+atlas = ExtResource("3_gyonr")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eh7c5"]
+atlas = ExtResource("4_nlg6p")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ju8nj"]
+atlas = ExtResource("4_nlg6p")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1hr5e"]
+atlas = ExtResource("4_nlg6p")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nd3fy"]
+atlas = ExtResource("4_nlg6p")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n8reg"]
+atlas = ExtResource("4_nlg6p")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_auaif"]
+atlas = ExtResource("4_nlg6p")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vnqon"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kbtpn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6hiy8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6vbx2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hd5g6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k40uk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j6127")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k3w52")
+}],
+"loop": false,
+"name": &"hide",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0gdfd")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eh7c5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ju8nj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1hr5e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nd3fy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n8reg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_auaif")
+}],
+"loop": false,
+"name": &"reveal",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v208a"]
+radius = 128.0
+
+[node name="HidingMushroom" type="Node2D"]
+script = ExtResource("1_v208a")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+sprite_frames = SubResource("SpriteFrames_vnqon")
+animation = &"idle"
+frame_progress = 0.582064
+
+[node name="PlayerDetector" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
+shape = SubResource("CircleShape2D_v208a")
+
+[connection signal="body_entered" from="PlayerDetector" to="." method="_on_player_detector_body_entered"]
+[connection signal="body_exited" from="PlayerDetector" to="." method="_on_player_detector_body_exited"]
