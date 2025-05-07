@@ -1,15 +1,45 @@
-[gd_scene load_steps=25 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=32 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/game_elements/characters/player/components/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/shared_components/sprite_frames/story_weaver.tres" id="2_3in67"]
 [ext_resource type="Script" uid="uid://bpu6jo4kvehlg" path="res://scenes/game_elements/characters/player/components/player_interaction.gd" id="3_dqkch"]
 [ext_resource type="Script" uid="uid://qro4uo83ba8f" path="res://scenes/game_elements/characters/player/components/player_sprite.gd" id="3_qlg0r"]
-[ext_resource type="Script" uid="uid://necvar42rnih" path="res://scenes/game_elements/characters/player/components/interact_zone.gd" id="6_3in67"]
+[ext_resource type="Script" path="res://scenes/game_elements/characters/player/components/interact_zone.gd" id="6_3in67"]
 [ext_resource type="PackedScene" uid="uid://yfpfno276rol" path="res://scenes/game_elements/props/fixed_size_label/fixed_size_label.tscn" id="6_h17s1"]
 [ext_resource type="Script" uid="uid://e78f8iq448e1" path="res://scenes/game_elements/characters/player/components/animation_player.gd" id="7_0owmy"]
 [ext_resource type="Script" uid="uid://kni2yl26matc" path="res://scenes/game_elements/characters/player/components/player_fighting.gd" id="7_5gtgg"]
 [ext_resource type="Texture2D" uid="uid://dda0lxfswrncy" path="res://scenes/game_elements/characters/player/components/blow.png" id="9_je7p5"]
 [ext_resource type="AudioStream" uid="uid://crfylo055wa8e" path="res://scenes/game_elements/characters/player/components/blow.wav" id="10_fm80t"]
+[ext_resource type="Texture2D" uid="uid://djtuv57altc6f" path="res://scenes/game_elements/characters/player/components/dust_particles.png" id="11_blfj0"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3in67"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_blfj0"]
+offsets = PackedFloat32Array(0, 0.729508, 1)
+colors = PackedColorArray(1, 1, 1, 0.901961, 1, 1, 1, 0.705882, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3in67"]
+gradient = SubResource("Gradient_blfj0")
+
+[sub_resource type="Curve" id="Curve_blfj0"]
+_limits = [0.0, 2.4, 0.0, 1.0]
+_data = [Vector2(0, 1.39796), 0.0, 0.850771, 0, 0, Vector2(1, 2.4), 1.78475, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_3in67"]
+curve = SubResource("Curve_blfj0")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_j0tly"]
+particle_flag_disable_z = true
+gravity = Vector3(0, -100, 0)
+scale_curve = SubResource("CurveTexture_3in67")
+color_ramp = SubResource("GradientTexture1D_3in67")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
 height = 42.0
@@ -354,6 +384,14 @@ _data = {
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_mask = 531
 script = ExtResource("1_g2els")
+
+[node name="StepParticles" type="GPUParticles2D" parent="."]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_3in67")
+amount = 3
+texture = ExtResource("11_blfj0")
+lifetime = 0.8
+process_material = SubResource("ParticleProcessMaterial_j0tly")
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
