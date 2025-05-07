@@ -25,7 +25,7 @@ const RULE_REPEAT_LIMIT := 99
 @export var tags_legend: Array[StringName] = ["controllable"]
 
 ## When all goals are met, the RuleEngine will attempt to load this scene next.
-@export_file("*.tscn") var scene_to_go_to: String
+@export_file("*.tscn") var next_scene: String
 
 var rules: Array[Rule]
 var goals: Array[Goal]
@@ -141,8 +141,8 @@ func _check_goal() -> void:
 	if result:
 		goals_reached.emit()
 
-		if scene_to_go_to:
-			SceneSwitcher.change_to_file_with_transition(scene_to_go_to)
+		if next_scene:
+			SceneSwitcher.change_to_file_with_transition(next_scene)
 
 
 func piece_can_move(piece: Piece2D, checked_pieces: Array[Piece2D]) -> bool:
