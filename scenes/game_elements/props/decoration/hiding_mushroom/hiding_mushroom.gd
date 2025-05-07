@@ -5,9 +5,11 @@ extends Node2D
 
 @export var is_hidden: bool = false:
 	set(val):
+		var was_hidden: bool = is_hidden
 		is_hidden = val
-		_update_hidden_state()
-		notify_property_list_changed()
+		if is_hidden != was_hidden:
+			_update_hidden_state()
+			notify_property_list_changed()
 
 @export var stay_hidden_or_revealed: bool = false
 
@@ -65,7 +67,7 @@ func _ready() -> void:
 
 
 func _on_player_detector_body_entered(body: Node2D) -> void:
-	if body.is_in_group(&"player") and is_hidden:
+	if body.is_in_group(&"player"):
 		_reveal_or_hide(true)
 
 
