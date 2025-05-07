@@ -40,6 +40,7 @@ var input_vector: Vector2
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: Node2D = %PlayerFighting
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
+@onready var step_particles: GPUParticles2D = %StepParticles
 
 
 func _set_mode(new_mode: Mode) -> void:
@@ -98,8 +99,10 @@ func _process(delta: float) -> void:
 
 	var step: float
 	if input_vector.is_zero_approx():
+		step_particles.emitting = false
 		step = stopping_step
 	else:
+		step_particles.emitting = true
 		step = moving_step
 
 	velocity = velocity.move_toward(input_vector, step * delta)
