@@ -27,6 +27,7 @@ func _ready() -> void:
 		animated_sprite_2d.animation
 	)
 	animated_sprite_2d.frame = randi_range(0, frames_length)
+	animated_sprite_2d.speed_scale = randf_range(0.5, 1.0)
 
 
 func _notification(what: int) -> void:
