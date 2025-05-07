@@ -27,6 +27,8 @@ var _amount: int = 0
 
 @onready var sprite_2d: Sprite2D = %Sprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
+@onready var collision_shape_2d: CollisionShape2D = %CollisionShape2D
+@onready var hit_box: StaticBody2D = %HitBox
 
 
 func _set_color(new_color: Color) -> void:
@@ -57,12 +59,20 @@ func _ready() -> void:
 ## Increment the amount by one and play the fill animation. If completed, also play the completed
 ## animation and remove this barrel from the current scene.
 func fill() -> void:
+	if _amount >= NEEDED:
+		return
 	animation_player.play(&"fill")
 	_amount += 1
 	sprite_2d.frame += 1
 	if _amount >= NEEDED:
+		_disable_collisions.call_deferred()
 		await animation_player.animation_finished
 		animation_player.play(&"completed")
 		await animation_player.animation_finished
 		queue_free()
 		completed.emit()
+
+
+func _disable_collisions() -> void:
+	hit_box.process_mode = Node.PROCESS_MODE_DISABLED
+	collision_shape_2d.disabled = true
