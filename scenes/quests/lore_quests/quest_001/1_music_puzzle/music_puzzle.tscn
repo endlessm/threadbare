@@ -1,22 +1,18 @@
-[gd_scene load_steps=23 format=4 uid="uid://7hoy2p14t6kc"]
+[gd_scene load_steps=19 format=4 uid="uid://7hoy2p14t6kc"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_evicy"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_0ayb4"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="3_2pgn6"]
 [ext_resource type="SpriteFrames" uid="uid://clx8sssi4tw8q" path="res://scenes/game_elements/characters/shared_components/sprite_frames/musician.tres" id="4_8nm0x"]
 [ext_resource type="Script" uid="uid://cfdpmffk2m4dd" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bard.gd" id="5_wasqo"]
-[ext_resource type="Resource" uid="uid://dx0uf6n0o7hv2" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/dialogues/musician.dialogue" id="6_l4i5r"]
 [ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/music_puzzle.gd" id="7_nonj7"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="7_u8pjn"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="8_evicy"]
 [ext_resource type="PackedScene" uid="uid://dv30a1p74xgs1" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/xylophone/musical_rock_xylophone.tscn" id="8_u8pjn"]
 [ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign.tscn" id="9_evicy"]
 [ext_resource type="Script" uid="uid://d3nqiysmw6afc" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/trees.gd" id="13_0jy21"]
-[ext_resource type="Resource" uid="uid://dd2bmyd2m745n" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/dialogues/melody_musician.dialogue" id="13_2pgn6"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="13_inhg4"]
-[ext_resource type="Resource" uid="uid://bu1d4utqqrarv" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/dialogues/river_musician.dialogue" id="14_2pgn6"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="14_src2c"]
-[ext_resource type="Resource" uid="uid://dkjhedknaxio8" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/dialogues/forest_musician.dialogue" id="15_8nm0x"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="15_rxyid"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="16_ytxvq"]
 [ext_resource type="SpriteFrames" uid="uid://djwymcffy83" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_red.tres" id="19_8nm0x"]
@@ -1239,7 +1235,6 @@ editor_draw_limits = true
 position = Vector2(832, 1356)
 script = ExtResource("5_wasqo")
 puzzle = NodePath("../MusicPuzzle")
-dialogue = ExtResource("6_l4i5r")
 look_at_side = 1
 sprite_frames = ExtResource("4_8nm0x")
 
@@ -1288,8 +1283,6 @@ position = Vector2(-234, 294)
 revealed = false
 scene_to_go_to = "uid://c764br4tplkb2"
 item = SubResource("Resource_dp3eg")
-collected_dialogue = ExtResource("6_l4i5r")
-dialogue_title = &"well_done"
 
 [node name="PuzzleHintMelody" type="Node2D" parent="OnTheGround" node_paths=PackedStringArray("xylophone", "fires")]
 y_sort_enabled = true
@@ -1304,7 +1297,6 @@ wobble_hint_min_level = 1
 position = Vector2(-2568, -167)
 script = ExtResource("5_wasqo")
 puzzle = NodePath("..")
-dialogue = ExtResource("13_2pgn6")
 
 [node name="Sign2" parent="OnTheGround/PuzzleHintMelody" instance=ExtResource("8_evicy")]
 position = Vector2(-2790, -232)
@@ -1332,7 +1324,6 @@ wobble_hint_min_level = 1
 position = Vector2(-144, 196)
 script = ExtResource("5_wasqo")
 puzzle = NodePath("..")
-dialogue = ExtResource("14_2pgn6")
 look_at_side = 1
 
 [node name="Sign3" parent="OnTheGround/PuzzleHintForwardUp" instance=ExtResource("8_evicy")]
@@ -1366,7 +1357,6 @@ wobble_hint_min_level = 1
 position = Vector2(104, 72)
 script = ExtResource("5_wasqo")
 puzzle = NodePath("..")
-dialogue = ExtResource("15_8nm0x")
 look_at_side = 1
 
 [node name="ForestXylophone" parent="OnTheGround/PuzzleHintBackwards" instance=ExtResource("8_u8pjn")]
