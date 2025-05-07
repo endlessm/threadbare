@@ -1,13 +1,21 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-~ start
+~ welcome
 The Eternal Loom welcomes you, StoryWeaver. Threads you collect help to repair the fabric of our world.
-if is_item_offering_possible():
-	The Memory, Imagination, and Spirit threads are ready to be incorporated into the loom!
-	do on_offering_succeeded()
-	Elders: We thank you, StoryWeaver! The fabric of the world slowly heals!
-	Elders: Go forth: our world still needs your help.
-	=> END
-else:
-	It seems you are lacking the threads of Memory, Imagination, and Spirit... try coming back later.
-	=> END
+=> END
+
+~ no_threads
+=>< welcome
+It seems you are lacking the threads of Memory, Imagination, and Spirit... try coming back later.
+=> END
+
+~ have_threads
+=>< welcome
+The Memory, Imagination, and Spirit threads are ready to be incorporated into the loom!
+do on_offering_succeeded()
+=> END
+
+~ threads_incorporated
+Elders: We thank you, StoryWeaver! The fabric of the world slowly heals!
+Elders: Go forth: our world still needs your help.
+=> END
