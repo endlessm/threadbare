@@ -13,6 +13,12 @@ enum Mode {
 	FIGHTING,
 }
 
+const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
+	&"idle": 10,
+	&"walk": 6,
+	&"attack_01": 4,
+	&"attack_02": 4,
+}
 const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://dtoylirwywk0j")
 
 ## The character's name. This is used to highlight when the player's character
@@ -27,11 +33,8 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://dtoylirwywk0j")
 @export_range(10, 100000, 10) var stopping_step: float = 1500.0
 @export_range(10, 100000, 10) var moving_step: float = 4000.0
 
-## The SpriteFrames must have the following animation names with the following number of frames:
-## - idle: 10 frames
-## - walk: 6 frames
-## - attack_01: 4 frames
-## - attack_02: 4 frames
+## The SpriteFrames must have specific animations with a certain amount of frames.
+## See [member REQUIRED_ANIMATION_FRAMES].
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
 
@@ -62,6 +65,7 @@ func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 	if new_sprite_frames == null:
 		new_sprite_frames = DEFAULT_SPRITE_FRAME
 	player_sprite.sprite_frames = new_sprite_frames
+	update_configuration_warnings()
 
 
 func _toggle_player_behavior(behavior_node: Node2D, is_active: bool) -> void:
@@ -69,6 +73,25 @@ func _toggle_player_behavior(behavior_node: Node2D, is_active: bool) -> void:
 	behavior_node.process_mode = (
 		ProcessMode.PROCESS_MODE_INHERIT if is_active else ProcessMode.PROCESS_MODE_DISABLED
 	)
+
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings = []
+	for animation in REQUIRED_ANIMATION_FRAMES:
+		if not sprite_frames.has_animation(animation):
+			warnings.append("sprite_frames is missing the following animation: %s" % animation)
+		elif sprite_frames.get_frame_count(animation) != REQUIRED_ANIMATION_FRAMES[animation]:
+			warnings.append(
+				(
+					"sprite_frames animation %s has %d frames, but should have %d"
+					% [
+						animation,
+						sprite_frames.get_frame_count(animation),
+						REQUIRED_ANIMATION_FRAMES[animation]
+					]
+				)
+			)
+	return warnings
 
 
 func _ready() -> void:
