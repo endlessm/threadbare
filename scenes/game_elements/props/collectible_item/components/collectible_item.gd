@@ -14,7 +14,7 @@ class_name CollectibleItem extends Node2D
 		revealed = new_value
 		_update_based_on_revealed()
 ## If provided, switch to this scene after collecting and possibly displaying a dialogue.
-@export_file("*.tscn") var scene_to_go_to: String
+@export_file("*.tscn") var next_scene: String
 ## [InventoryItem] provided by this collectible when interacted with.
 @export var item: InventoryItem:
 	set(new_value):
@@ -100,8 +100,8 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	interact_area.end_interaction()
 	queue_free()
 
-	if scene_to_go_to:
-		SceneSwitcher.change_to_file_with_transition(scene_to_go_to)
+	if next_scene:
+		SceneSwitcher.change_to_file_with_transition(next_scene)
 
 
 func _update_based_on_revealed() -> void:
