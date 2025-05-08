@@ -78,6 +78,7 @@ var _initial_position: Vector2
 var _target_position: Vector2
 var _is_attacking: bool
 var _is_defeated: bool
+var _has_started: bool = false
 
 @onready var timer: Timer = %Timer
 @onready var projectile_marker: Marker2D = %ProjectileMarker
@@ -222,6 +223,11 @@ func _on_got_hit(body: Node2D) -> void:
 ## Start attacking and/or walking. The enemy will be idle until this is called.
 ## See [member autostart].
 func start() -> void:
+	if _has_started:
+		return
+	_has_started = true
+	if not is_node_ready():
+		await ready
 	timer.wait_time = throwing_period
 	timer.timeout.connect(_on_timeout)
 	hit_box.body_entered.connect(_on_got_hit)
