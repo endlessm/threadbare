@@ -23,6 +23,10 @@ signal collected_items_changed(updated_items: Array[InventoryItem])
 ## Quest's items. Used to track the progress withing a story quest.
 var story_quest_inventory: Inventory = Inventory.new()
 
+## Set when the loom transports the player to a trio of Sokoban puzzles, so that
+## when the player returns to Fray's End the loom can trigger a brief cutscene.
+var incorporating_threads: bool = false
+
 
 ## Resets the [member story_quest_inventory]. This needs to be called when
 ## a new story quest starts.
