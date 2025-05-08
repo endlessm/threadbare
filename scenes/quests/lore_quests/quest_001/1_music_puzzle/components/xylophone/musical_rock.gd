@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+@tool
 class_name MusicalRock
 extends StaticBody2D
 
@@ -8,27 +9,30 @@ signal note_played
 const NOTES: String = "ABCDEFG"
 
 ## Note
-@export_enum("A", "B", "C", "D", "E", "F", "G") var note: String = "C":
-	set(_new_value):
-		note = _new_value
-		_modulate_rock()
+@export_enum("A", "B", "C", "D", "E", "F", "G") var note: String = "C"
 
 @export var audio_stream: AudioStream
 
-@onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
+@onready var animated_sprite: AnimatedSprite2D = %Sprite
 @onready var interact_area: InteractArea = %InteractArea
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = %AudioStreamPlayer2D
 
 
+func _set(property: StringName, value: Variant) -> bool:
+	return PropertyUtils.set_child_property(self, property, value)
+
+
+func _get(property: StringName) -> Variant:
+	return PropertyUtils.get_child_property(self, property)
+
+
+func _get_property_list() -> Array[Dictionary]:
+	return PropertyUtils.expose_children_property(self, "modulate", "AnimatedSprite2D")
+
+
 func _ready() -> void:
-	_modulate_rock()
-	audio_stream_player_2d.stream = audio_stream
-
-
-func _modulate_rock() -> void:
-	if animated_sprite:
-		var i: int = NOTES.find(note)
-		animated_sprite.modulate = Color.from_hsv(i * 100.0 / NOTES.length(), 0.67, 0.89)
+	if not Engine.is_editor_hint():
+		audio_stream_player_2d.stream = audio_stream
 
 
 func _on_interaction_started(_player: Player, _from_right: bool) -> void:
