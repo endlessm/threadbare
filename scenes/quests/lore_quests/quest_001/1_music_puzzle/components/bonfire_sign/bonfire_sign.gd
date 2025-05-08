@@ -34,7 +34,7 @@ func update_ignited_state():
 	if is_instance_valid(fire):
 		fire.play(&"burning" if is_ignited else &"default")
 	if is_instance_valid(interact_area):
-		interact_area.disabled = not is_ignited
+		interact_area.disabled = false
 
 	update_sign_sprite()
 

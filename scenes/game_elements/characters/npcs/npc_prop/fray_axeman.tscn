@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://cpaplgh708bc3"]
+[gd_scene load_steps=15 format=3 uid="uid://cpaplgh708bc3"]
 
 [ext_resource type="Script" uid="uid://dv11604x2etuq" path="res://scenes/game_elements/characters/npcs/shared_components/npc.gd" id="1_h3xvp"]
 [ext_resource type="Texture2D" uid="uid://caiam8drw20rr" path="res://assets/third_party/tiny-swords/Factions/Knights/Troops/Pawn/Purple/Pawn_Purple.png" id="2_h3xvp"]
+[ext_resource type="AudioStream" uid="uid://cdy5ru11al0rn" path="res://assets/sound/npcs/AxeWood.ogg" id="3_86yye"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vq8ji"]
 atlas = ExtResource("2_h3xvp")
@@ -56,6 +57,69 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
 height = 42.0
 
+[sub_resource type="Animation" id="Animation_oswos"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AxeAudio:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_fodlx"]
+resource_name = "default"
+length = 0.60001
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AxeAudio:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.240566),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uf1p5"]
+_data = {
+&"RESET": SubResource("Animation_oswos"),
+&"default": SubResource("Animation_fodlx")
+}
+
 [node name="fray_axeman" type="CharacterBody2D"]
 collision_layer = 2
 script = ExtResource("1_h3xvp")
@@ -71,3 +135,16 @@ flip_h = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_3vyb7")
+
+[node name="AxeAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_86yye")
+volume_db = -2.0
+max_distance = 1000.0
+attenuation = 5.0
+bus = &"SFX"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_uf1p5")
+}
+autoplay = "default"

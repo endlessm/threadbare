@@ -9,10 +9,11 @@ const BLOW_ANTICIPATION_TIME: float = 0.3
 
 
 func _process(_delta: float) -> void:
-	if not player_fighting.is_fighting and current_animation != &"blow":
-		_process_walk_idle(_delta)
-	else:
-		_process_fighting(_delta)
+	match player.mode:
+		Player.Mode.COZY:
+			_process_walk_idle(_delta)
+		Player.Mode.FIGHTING:
+			_process_fighting(_delta)
 
 
 func _process_walk_idle(_delta: float) -> void:
@@ -22,10 +23,14 @@ func _process_walk_idle(_delta: float) -> void:
 		play(&"walk")
 
 
-func _process_fighting(_delta: float) -> void:
+func _process_fighting(delta: float) -> void:
 	if not player_fighting.is_fighting:
-		if current_animation == &"blow" and current_animation_position <= BLOW_ANTICIPATION_TIME:
-			stop()
+		# If the current animation is blow and it has passed the anticipation
+		# phase, it plays until the end.
+		if not (
+			current_animation == &"blow" and current_animation_position > BLOW_ANTICIPATION_TIME
+		):
+			_process_walk_idle(delta)
 		return
 
 	if current_animation != &"blow":
