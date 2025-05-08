@@ -19,7 +19,7 @@ var resource: DialogueResource
 var temporary_game_states: Array = []:
 	set(new_value):
 		temporary_game_states = new_value
-		for state in new_value:
+		for state: Variant in new_value:
 			if state is Player:
 				_player_name = (state as Player).player_name
 
