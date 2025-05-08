@@ -40,6 +40,15 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
 
+@export_group("Sounds")
+
+## Sound that plays while this enemy is not attacking
+@export var idle_sound_stream: AudioStream = preload("uid://qf2d38rabx8o"):
+	set = _set_idle_sound_stream
+## Sound that plays when this enemy starts its attack.
+@export var attack_sound_stream: AudioStream = preload("uid://fcmjf1srys7n"):
+	set = _set_attack_sound_stream
+
 @export_group("Projectile", "projectile")
 
 ## The speed of the projectile initial impulse and the projectile bouncing impulse.
@@ -98,6 +107,8 @@ var _has_started: bool = false
 @onready var hit_box: Area2D = %HitBox
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
+@onready var _idle_sound: AudioStreamPlayer2D = %IdleSound
+@onready var _attack_sound: AudioStreamPlayer2D = %AttackSound
 
 
 func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
@@ -186,7 +197,7 @@ func _process(_delta: float) -> void:
 			return
 		State.IDLE:
 			if animated_sprite_2d.animation not in [&"attack anticipation", &"attack"]:
-				animated_sprite_2d.play(&"idle")
+				animation_player.play("idle")
 			return
 		State.WALKING:
 			velocity = _get_velocity()
@@ -217,9 +228,14 @@ func _on_timeout() -> void:
 	if not is_instance_valid(player):
 		return
 	_is_attacking = true
-	animated_sprite_2d.play(&"attack anticipation")
-	await animated_sprite_2d.animation_finished
-	animated_sprite_2d.play(&"attack")
+	animation_player.play(&"attack")
+	animation_player.queue(&"idle")
+
+
+func shoot_projectile() -> void:
+	var player: Player = get_tree().get_first_node_in_group("player")
+	if not is_instance_valid(player):
+		return
 	if not allowed_labels:
 		_is_attacking = false
 		return
@@ -240,13 +256,11 @@ func _on_timeout() -> void:
 	projectile.duration = projectile_duration
 	get_tree().current_scene.add_child(projectile)
 	_set_target_position()
-	await animated_sprite_2d.animation_finished
-	animated_sprite_2d.play(&"idle")
 	_is_attacking = false
 
 
 func _on_got_hit(body: Node2D) -> void:
-	if body is Projectile and not body.can_hit_enemy:
+	if body is Projectile and not body.can_hit_enemy and not _is_defeated:
 		return
 	body.queue_free()
 	animation_player.play(&"got hit")
@@ -274,6 +288,20 @@ func start() -> void:
 func remove() -> void:
 	timer.stop()
 	_is_defeated = true
-	animated_sprite_2d.play(&"defeated")
-	await animated_sprite_2d.animation_finished
+	animation_player.play(&"defeated")
+	await animation_player.animation_finished
 	queue_free()
+
+
+func _set_idle_sound_stream(new_value: AudioStream) -> void:
+	idle_sound_stream = new_value
+	if not is_node_ready():
+		await ready
+	_idle_sound.stream = new_value
+
+
+func _set_attack_sound_stream(new_value: AudioStream) -> void:
+	attack_sound_stream = new_value
+	if not is_node_ready():
+		await ready
+	_attack_sound.stream = new_value

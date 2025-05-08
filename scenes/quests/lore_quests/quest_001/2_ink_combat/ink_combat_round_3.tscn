@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://bo6qfusag3fae"]
+[gd_scene load_steps=18 format=4 uid="uid://bo6qfusag3fae"]
 
 [ext_resource type="Resource" uid="uid://cmhcuoms2kh1a" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/dialogues/ink_well.dialogue" id="2_fgs83"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="2_je2ou"]
@@ -15,6 +15,28 @@
 [ext_resource type="SpriteFrames" uid="uid://dxbt7cgoq3dg5" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_blue.tres" id="9_te0v3"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="10_i5hhc"]
 
+[sub_resource type="Animation" id="Animation_k5uk8"]
+resource_name = "goal_completed"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("%CollectibleItem")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"reveal"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_te0v3"]
+_data = {
+&"goal_completed": SubResource("Animation_k5uk8")
+}
+
 [sub_resource type="Resource" id="Resource_na0be"]
 script = ExtResource("9_rww0x")
 name = ""
@@ -30,6 +52,11 @@ stream = ExtResource("3_je2ou")
 script = ExtResource("3_4iw8v")
 barrels_to_win = 3
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
+
+[node name="LevelCompletedAnimation" type="AnimationPlayer" parent="FillGameLogic"]
+libraries = {
+&"": SubResource("AnimationLibrary_te0v3")
+}
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -146,4 +173,4 @@ limit_bottom = 2048
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
+[connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]
