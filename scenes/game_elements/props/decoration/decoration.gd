@@ -14,4 +14,9 @@ func _get(property: StringName) -> Variant:
 
 
 func _get_property_list() -> Array[Dictionary]:
-	return PropertyUtils.expose_children_property(self, "texture", "Sprite2D")
+	return (
+		PropertyUtils.expose_children_property(self, "texture", "Sprite2D")
+		+ PropertyUtils.expose_children_property(self, "flip_h", "Sprite2D")
+		+ PropertyUtils.expose_children_property(self, "flip_v", "Sprite2D")
+		+ PropertyUtils.expose_children_property(self, "offset", "Sprite2D")
+	)
