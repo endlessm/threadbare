@@ -58,26 +58,26 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("FootSound:stream")
+tracks/2/path = NodePath("Sounds/TorchHitSound:playing")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("8_klpct")]
+"values": [false]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("TorchHitSound:stream")
+tracks/3/path = NodePath("Sounds/FootSound:playing")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("10_mswbt")]
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_innil"]
@@ -109,25 +109,22 @@ tracks/1/keys = {
 "update": 0,
 "values": [0, 2]
 }
-tracks/2/type = "audio"
+tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("TorchHitSound")
+tracks/2/path = NodePath("Sounds/TorchHitSound:playing")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"clips": [{
-"end_offset": 0.3,
-"start_offset": 0.1,
-"stream": ExtResource("10_mswbt")
-}],
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(0, 0.40001),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
-tracks/2/use_blend = true
 
 [sub_resource type="Animation" id="Animation_8vt0k"]
 resource_name = "walk"
-length = 0.6
+length = 0.8
 loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
@@ -137,7 +134,7 @@ tracks/0/path = NodePath("AnimatedSprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6),
+"times": PackedFloat32Array(0, 0.8),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0, 5]
@@ -154,25 +151,18 @@ tracks/1/keys = {
 "update": 1,
 "values": [&"walk"]
 }
-tracks/2/type = "audio"
+tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("FootSound")
+tracks/2/path = NodePath("Sounds/FootSound:playing")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"clips": [{
-"end_offset": 0.222842,
-"start_offset": 0.0,
-"stream": ExtResource("8_klpct")
-}, {
-"end_offset": 0.222842,
-"start_offset": 0.0,
-"stream": ExtResource("8_klpct")
-}],
-"times": PackedFloat32Array(0.2, 0.5)
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false]
 }
-tracks/2/use_blend = true
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_innil"]
 _data = {
@@ -273,19 +263,28 @@ target point: (0.0, 0.0)
 "
 label_settings = SubResource("LabelSettings_nv25s")
 
-[node name="AlertSound" type="AudioStreamPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_innil")
+}
+
+[node name="Sounds" type="Node2D" parent="."]
+
+[node name="AlertSound" type="AudioStreamPlayer" parent="Sounds"]
 unique_name_in_owner = true
 stream = ExtResource("7_wckbf")
 volume_db = -5.0
 bus = &"SFX"
 
-[node name="FootSound" type="AudioStreamPlayer2D" parent="."]
+[node name="FootSound" type="AudioStreamPlayer2D" parent="Sounds"]
+unique_name_in_owner = true
 stream = ExtResource("8_klpct")
 volume_db = -2.0
 max_distance = 350.0
 bus = &"SFX"
 
-[node name="FireSound" type="AudioStreamPlayer2D" parent="."]
+[node name="FireSound" type="AudioStreamPlayer2D" parent="Sounds"]
+unique_name_in_owner = true
 stream = ExtResource("9_8vt0k")
 volume_db = -2.0
 autoplay = true
@@ -293,13 +292,9 @@ max_distance = 500.0
 attenuation = 2.0
 bus = &"SFX"
 
-[node name="TorchHitSound" type="AudioStreamPlayer2D" parent="."]
+[node name="TorchHitSound" type="AudioStreamPlayer2D" parent="Sounds"]
+unique_name_in_owner = true
 stream = ExtResource("10_mswbt")
 volume_db = -2.0
 max_distance = 500.0
 bus = &"SFX"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_innil")
-}

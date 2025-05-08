@@ -32,6 +32,20 @@ const LOOK_AT_TURN_SPEED: float = 10.0
 			animated_sprite_2d.sprite_frames = sprite_frames
 		update_configuration_warnings()
 
+@export_category("Sounds")
+## Sound played when a guard's [enum State] enters DETECTING or ALERTED.
+@export var alerted_sound_stream: AudioStream = preload("uid://dgpeb1dtmfqud"):
+	set = _set_alerted_sound_stream
+## Sound played when a guard's moving from one point to the next.
+@export var footsteps_sound_stream: AudioStream = preload("uid://4ec6e2alns71"):
+	set = _set_footsteps_sound_stream
+## Sound played continuously.
+@export var idle_sound_stream: AudioStream = preload("uid://c7om8kdork2rx"):
+	set = _set_idle_sound_stream
+## Sound played in bursts after the guard entered [enum State] ALERTED.
+@export var alert_others_sound_stream: AudioStream = preload("uid://bwif2oo6ymiu2"):
+	set = _set_alert_other_sound_stream
+
 @export_category("Patrol")
 @warning_ignore("unused_private_class_variable")
 @export_tool_button("Add/Edit Patrol Path") var _edit_patrol_path: Callable = edit_patrol_path
@@ -99,7 +113,10 @@ var state: State = State.PATROLLING:
 @onready var guard_movement: GuardMovement = %GuardMovement
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var alert_sound: AudioStreamPlayer = %AlertSound
+@onready var _alert_sound: AudioStreamPlayer = %AlertSound
+@onready var _foot_sound: AudioStreamPlayer2D = %FootSound
+@onready var _fire_sound: AudioStreamPlayer2D = %FireSound
+@onready var _torch_hit_sound: AudioStreamPlayer2D = %TorchHitSound
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -261,11 +278,11 @@ func _update_debug_info() -> void:
 func _on_enter_state(new_state: State) -> void:
 	match new_state:
 		State.DETECTING:
-			if not alert_sound.playing:
-				alert_sound.play()
+			if not _alert_sound.playing:
+				_alert_sound.play()
 		State.ALERTED:
-			if not alert_sound.playing:
-				alert_sound.play()
+			if not _alert_sound.playing:
+				_alert_sound.play()
 			player_detected.emit(_player_in_sight())
 			await get_tree().create_timer(0.4).timeout
 			animation_player.play(&"alerted")
@@ -494,3 +511,31 @@ func _draw() -> void:
 					point_size,
 					debug_color
 				)
+
+
+func _set_alerted_sound_stream(new_value: AudioStream) -> void:
+	alerted_sound_stream = new_value
+	if not is_node_ready():
+		await ready
+	_alert_sound.stream = new_value
+
+
+func _set_footsteps_sound_stream(new_value: AudioStream) -> void:
+	footsteps_sound_stream = new_value
+	if not is_node_ready():
+		await ready
+	_foot_sound.stream = new_value
+
+
+func _set_idle_sound_stream(new_value: AudioStream) -> void:
+	idle_sound_stream = new_value
+	if not is_node_ready():
+		await ready
+	_fire_sound.stream = new_value
+
+
+func _set_alert_other_sound_stream(new_value: AudioStream) -> void:
+	alert_others_sound_stream = new_value
+	if not is_node_ready():
+		await ready
+	_torch_hit_sound.stream = new_value
