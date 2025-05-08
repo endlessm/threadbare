@@ -8,10 +8,7 @@ signal note_played
 const NOTES: String = "ABCDEFG"
 
 ## Note
-@export_enum("A", "B", "C", "D", "E", "F", "G") var note: String = "C":
-	set(_new_value):
-		note = _new_value
-		_modulate_rock()
+@export_enum("A", "B", "C", "D", "E", "F", "G") var note: String = "C"
 
 @export var audio_stream: AudioStream
 
@@ -21,14 +18,7 @@ const NOTES: String = "ABCDEFG"
 
 
 func _ready() -> void:
-	_modulate_rock()
 	audio_stream_player_2d.stream = audio_stream
-
-
-func _modulate_rock() -> void:
-	if animated_sprite:
-		var i: int = NOTES.find(note)
-		animated_sprite.modulate = Color.from_hsv(i * 100.0 / NOTES.length(), 0.67, 0.89)
 
 
 func _on_interaction_started(_player: Player, _from_right: bool) -> void:
