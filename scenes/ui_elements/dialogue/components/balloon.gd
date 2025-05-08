@@ -19,7 +19,7 @@ var resource: DialogueResource
 var temporary_game_states: Array = []:
 	set(new_value):
 		temporary_game_states = new_value
-		for state in new_value:
+		for state: Variant in new_value:
 			if state is Player:
 				_player_name = (state as Player).player_name
 
@@ -84,7 +84,7 @@ func _ready() -> void:
 		responses_menu.next_action = next_action
 
 	mutation_cooldown.timeout.connect(_on_mutation_cooldown_timeout)
-	next_button.pressed.connect(func(): next(dialogue_line.next_id))
+	next_button.pressed.connect(func() -> void: next(dialogue_line.next_id))
 	add_child(mutation_cooldown)
 
 
