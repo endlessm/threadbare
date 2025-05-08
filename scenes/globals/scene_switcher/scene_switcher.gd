@@ -72,7 +72,7 @@ func change_to_file_with_transition(
 		return
 
 	Transitions.do_transition(
-		func(): change_to_packed(ResourceLoader.load_threaded_get(scene_path), spawn_point),
+		func() -> void: change_to_packed(ResourceLoader.load_threaded_get(scene_path), spawn_point),
 		enter_transition,
 		exit_transition
 	)
