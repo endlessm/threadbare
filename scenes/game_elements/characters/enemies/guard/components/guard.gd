@@ -98,6 +98,8 @@ var state: State = State.PATROLLING:
 ## Handles the velocity and movement of the guard.
 @onready var guard_movement: GuardMovement = %GuardMovement
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var alert_sound: AudioStreamPlayer = %AlertSound
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -232,13 +234,14 @@ func _update_player_awareness(player_in_sight: Node2D, delta: float) -> void:
 
 
 func _update_animation() -> void:
-	if state == State.ALERTED and sprite.animation == &"alerted":
+	if state == State.ALERTED and animation_player.current_animation == &"alerted":
 		return
 
 	if velocity.is_zero_approx():
+		animation_player.stop()
 		sprite.play(&"idle")
 	else:
-		sprite.play(&"walk")
+		animation_player.play(&"walk")
 
 
 func _update_debug_info() -> void:
@@ -257,10 +260,15 @@ func _update_debug_info() -> void:
 ## What happens when a certain state is
 func _on_enter_state(new_state: State) -> void:
 	match new_state:
+		State.DETECTING:
+			if not alert_sound.playing:
+				alert_sound.play()
 		State.ALERTED:
+			if not alert_sound.playing:
+				alert_sound.play()
 			player_detected.emit(_player_in_sight())
 			await get_tree().create_timer(0.4).timeout
-			sprite.play(&"alerted")
+			animation_player.play(&"alerted")
 		State.INVESTIGATING:
 			guard_movement.start_moving_now()
 			breadcrumbs.push_back(global_position)
