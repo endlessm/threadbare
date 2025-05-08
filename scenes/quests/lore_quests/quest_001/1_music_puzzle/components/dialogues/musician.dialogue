@@ -12,23 +12,23 @@ set first_conversation = false
 
 Musician: Ah! Another wanderer. Welcome to the Song Sanctuary. Or what's left of it.
 StoryWeaver: What happened here?
-Musician: Songs stopped being sung. And when a song's forgotten... the world forgets itself right along with it.
+Musician: Songs stopped being sung. And when a song is forgotten... the world forgets itself.
 if puzzle.get_progress() >= 1:
 	Musician: Oh! Have you been playing with the stones over there?
 	StoryWeaver: I kicked them and something strange happened...
-~ about_stones
-Musician: These stones? They're part of a magical song that used to open the portal to the Ink Well, where songwriters found ink to write their songs. But...
-Musician: Um... I can't recall the first few notes of The Magical Melody. Neither the rest of it...
-Musician: But they say music can live in the most unexpected places. Maybe if you explore around you may be able to find the melody.
+	Musician: They can be used to create music...
+else:
+	Musician: See those stones over there? They can be used to create music...
+Musician: The songs can make wonderful things happen... make items or creatures appear, or even open portals to other regions of Threadbare.
+Musician: Those altars? They hold the memory of each song in the ashes of their fires.
+Musician: Now, if I remember correctly, there's a song that used to open the portal to the Ink Well, where songwriters found the ink to write all the songs of the world.
+Musician: Let's see if I can remember how it works...
+Musician: Try kicking the first, and second stones, then check the first altar above. If you see flames, we're on to the right melody.
 => END
 
 ~ hello_again
-Musician: Hello again, StoryWeaver. Would you like to hear about the stones again?
-- Yes => about_stones
-- No
-	Musician: OK then, good luck.
-	=> END
-- Do you remember anything else?
+Musician: Hello again, StoryWeaver. Would you like a hint?
+- Yes
 	if puzzle.get_progress() == 0:
 		=> hint_melody_0
 	if puzzle.get_progress() == 1:
@@ -37,70 +37,75 @@ Musician: Hello again, StoryWeaver. Would you like to hear about the stones agai
 		=> hint_melody_2
 	if puzzle.get_progress() == 3:
 		=> hint_melody_3
-	Musician: Good luck out there.
+	=> END
+- No
+	Musician: OK then, good luck.
 	=> END
 
 ~ hint_melody_0
 if get_limited_hint_level() == 0:
-	Musician: I can't recall the song... But someone nearby may remember it. Try exploring around.
+	Musician: Hmmm... Try kicking the first, second, and third stones in that order.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 1:
-	Musician: When you play the right notes, you'll know.
+	Musician: Even I'm forgetting in this torn world, let's see...
+	Musician: OK, I remember kicking the first, second, third, and fifth stones.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 2:
-	Musician: I believe I heard the Songstress across the river hum a familiar tune. You should go talk to her.
+	Musician: How wonderful! We lit the first altar! Can you work out the second part of the melody?
 	do advance_hint_level()
 	=> END
 
 ~ hint_melody_1
 if get_limited_hint_level() == 0:
-	Musician: The signs hold the key. They alter the melody in different ways.
+	Musician: Look at the symbol on the second altar to see if you can work out what the next part of the melody might be.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 1:
-	Musician: Someone around may know more about the signs. You may even find them somewhere else.
+	Musician: The symbol seems to suggest that you need to move up one note, and repeat the first melody.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 2:
-	Musician: There's the Luthier in the mountain region past the river. I know he studied the signs for a while.
+	Musician: I think that altar symbol means start with the second note... then third, fourth, and sixth.
 	do advance_hint_level()
 	=> END
 
 ~ hint_melody_2
 if get_limited_hint_level() == 0:
-	Musician: This other sign is similar, and yet... it feels the opposite.
+	Musician: For the third part of the melody, the altar symbol suggests the next melody is played backwards.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 1:
-	Musician: The forest hides secrets that may help you figure this out.
+	Musician: Try playing the previous melody but in reverse.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 2:
-	Musician: There's a glade nearby. The Minstrel lives there. He can help you.
+	Musician: OK, I think it is sixth, fourth, third, and second for this one.
 	do advance_hint_level()
 	=> END
 
 ~ hint_melody_3
 if get_limited_hint_level() == 0:
-	Musician: I don't recall anything more... But you are so close! I know you can do this.
+	Musician: Last one... you can do this! Look at the symbol and play the final melody.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 1:
-	Musician: If you reached this far, you know what comes next.
+	Musician: Think about what you have already played... the answer is there.
 	do advance_hint_level()
 	=> END
 if get_limited_hint_level() == 2:
-	Musician: The Minstrel in the glade nearby may help you, if you haven't seen him yet.
+	Musician: Play the very first melody, but in reverse. Fifth, third, second, and first should do it.
 	do advance_hint_level()
 	=> END
 
-~ well_done
-Musician: The melody... it's not just music. It opens the portal to the Ink Well. Let's go find more ink so songs and stories can be written again.
-Musician: But we must be careful, the InkDrinkers dwell there!
+~ item_hint
+Musician: You did it!... That's the magical melody... how wonderful. It's been so long since I heard it.
+Musician: You have opened the portal to the Ink Well. Let's go there to collect ink so songs and stories can be written again.
+Musician: But we must be careful, InkDrinkers dwell there!
+Musician: The melody awakened the memory of song. Collect the Memory threads before you go!
 => END
 
-~ item_hint
-Musician: (PLACEHOLDER) You did it! The melody worked. I left a special item near the stones, grab it before you go!
+~ well_done
+StoryWeaver: Ink Well, here we come!
 => END
