@@ -6,8 +6,6 @@ extends Node2D
 
 signal solved
 
-@export var xylophone: MusicalRockXylophone
-
 ## Melodies expressed with the letters ABCDEFG.
 @export var melodies: Array[String]
 
@@ -24,6 +22,8 @@ var hint_timer: Timer = Timer.new()
 
 var hint_levels: Dictionary = {}
 
+var _rocks: Array[MusicalRock]
+
 var _last_hint_rock: MusicalRock = null
 var _current_melody: int = 0
 var _position: int = 0
@@ -32,8 +32,10 @@ var _is_demo: bool = false
 
 
 func _ready() -> void:
-	if not Engine.is_editor_hint():
-		xylophone.note_played.connect(_on_note_played)
+	if Engine.is_editor_hint():
+		return
+
+	_find_rocks()
 
 	hint_timer.one_shot = true
 	hint_timer.wait_time = wobble_hint_time
@@ -45,6 +47,16 @@ func _ready() -> void:
 	for i in range(melodies.size()):
 		if not hint_levels.has(i):
 			hint_levels[i] = 0
+
+
+func _find_rocks() -> void:
+	_rocks.clear()
+
+	for object: Node in get_tree().get_nodes_in_group(&"sequence_object"):
+		if self.is_ancestor_of(object) and object is MusicalRock:
+			var rock := object as MusicalRock
+			_rocks.append(rock)
+			rock.note_played.connect(_on_note_played.bind(rock.note))
 
 
 func _update_current_melody():
@@ -78,7 +90,8 @@ func _on_note_played(note: String) -> void:
 
 	if melody[_position] != note:
 		_debug("Didn't match")
-		xylophone.stop_all_hints()
+		for rock: MusicalRock in _rocks:
+			rock.stop_hint()
 		if hint_levels.get(get_progress(), 0) >= wobble_hint_min_level:
 			hint_timer.start()
 		return
@@ -121,9 +134,19 @@ func is_solved() -> bool:
 	return _current_melody == melodies.size()
 
 
+func _get_rock_for_note(note: String) -> MusicalRock:
+	for rock in _rocks:
+		if rock.note == note:
+			return rock
+
+	return null
+
+
 func play_demo_note(note: String) -> void:
 	_is_demo = true
-	await xylophone.play_note(note)
+	var rock := _get_rock_for_note(note)
+	if rock:
+		await rock.play()
 	_is_demo = false
 
 
@@ -143,8 +166,8 @@ func _on_hint_timer_timeout() -> void:
 	var melody: String = melodies[_current_melody]
 	var expected_note := melody[_position]
 
-	if xylophone._notes.has(expected_note):
-		var rock = xylophone._notes[expected_note]
+	var rock := _get_rock_for_note(expected_note)
+	if rock:
 		if rock != _last_hint_rock:
 			_clear_last_hint_rock()
 			_last_hint_rock = rock

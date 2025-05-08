@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=4 uid="uid://7hoy2p14t6kc"]
+[gd_scene load_steps=33 format=4 uid="uid://7hoy2p14t6kc"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_evicy"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_0ayb4"]
@@ -12,7 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://cy66l5b3uox84" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage2.png" id="6_src2c"]
 [ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/music_puzzle.gd" id="7_nonj7"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="8_evicy"]
-[ext_resource type="PackedScene" uid="uid://dv30a1p74xgs1" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/xylophone/musical_rock_xylophone.tscn" id="8_u8pjn"]
 [ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign.tscn" id="9_evicy"]
 [ext_resource type="Texture2D" uid="uid://ck738xogv1kp5" path="res://assets/third_party/tiny-swords/Deco/11.png" id="9_nonj7"]
 [ext_resource type="Script" uid="uid://d3nqiysmw6afc" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/trees.gd" id="13_0jy21"]
@@ -24,7 +23,14 @@
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="17_wasqo"]
 [ext_resource type="SpriteFrames" uid="uid://bgckvdkxuxrgh" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_red_large.tres" id="18_l4i5r"]
 [ext_resource type="Texture2D" uid="uid://ol20om7xc1o7" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage1.png" id="20_wasqo"]
+[ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/xylophone/musical_rock.tscn" id="22_0awvw"]
+[ext_resource type="AudioStream" uid="uid://cg57q82pb243w" path="res://assets/third_party/xylophone-sampler-pack/xylophone-c3.ogg" id="23_306df"]
 [ext_resource type="SpriteFrames" uid="uid://b6doys1c3yelx" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_red_small.tres" id="23_u8pjn"]
+[ext_resource type="AudioStream" uid="uid://b83x8h0ob5mpq" path="res://assets/third_party/xylophone-sampler-pack/xylophone-d3.ogg" id="24_l8fgn"]
+[ext_resource type="AudioStream" uid="uid://cmtiwg2cylmts" path="res://assets/third_party/xylophone-sampler-pack/xylophone-e3.ogg" id="25_crvxf"]
+[ext_resource type="AudioStream" uid="uid://8k1hyi4gjae4" path="res://assets/third_party/xylophone-sampler-pack/xylophone-f3.ogg" id="26_qswm5"]
+[ext_resource type="AudioStream" uid="uid://6oahn2ucxxjv" path="res://assets/third_party/xylophone-sampler-pack/xylophone-g3.ogg" id="27_pnt3a"]
+[ext_resource type="AudioStream" uid="uid://bdboi4ndapqec" path="res://assets/third_party/xylophone-sampler-pack/xylophone-a3.ogg" id="28_0wfv2"]
 
 [sub_resource type="Resource" id="Resource_dp3eg"]
 script = ExtResource("15_rxyid")
@@ -1380,11 +1386,10 @@ dialogue = ExtResource("6_l4i5r")
 look_at_side = 1
 sprite_frames = ExtResource("4_8nm0x")
 
-[node name="MusicPuzzle" type="Node2D" parent="OnTheGround" node_paths=PackedStringArray("xylophone", "fires")]
+[node name="MusicPuzzle" type="Node2D" parent="OnTheGround" node_paths=PackedStringArray("fires")]
 y_sort_enabled = true
 position = Vector2(1410, 950)
 script = ExtResource("7_nonj7")
-xylophone = NodePath("MusicalRockXylophone")
 melodies = Array[String](["CDEG", "DEFA", "AFED", "GEDC"])
 fires = [NodePath("BonfireSign"), NodePath("BonfireSign2"), NodePath("BonfireSign3"), NodePath("BonfireSign4")]
 
@@ -1394,8 +1399,37 @@ direction = 1
 text = "The Magical Melody
 "
 
-[node name="MusicalRockXylophone" parent="OnTheGround/MusicPuzzle" instance=ExtResource("8_u8pjn")]
+[node name="Rocks" type="Node2D" parent="OnTheGround/MusicPuzzle"]
+y_sort_enabled = true
 position = Vector2(-1069, -65)
+
+[node name="C" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("22_0awvw")]
+audio_stream = ExtResource("23_306df")
+
+[node name="D" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("22_0awvw")]
+position = Vector2(80, -8)
+note = "D"
+audio_stream = ExtResource("24_l8fgn")
+
+[node name="E" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("22_0awvw")]
+position = Vector2(160, -16)
+note = "E"
+audio_stream = ExtResource("25_crvxf")
+
+[node name="F" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("22_0awvw")]
+position = Vector2(240, -24)
+note = "F"
+audio_stream = ExtResource("26_qswm5")
+
+[node name="G" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("22_0awvw")]
+position = Vector2(320, -32)
+note = "G"
+audio_stream = ExtResource("27_pnt3a")
+
+[node name="A" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("22_0awvw")]
+position = Vector2(400, -40)
+note = "A"
+audio_stream = ExtResource("28_0wfv2")
 
 [node name="BonfireSign" parent="OnTheGround/MusicPuzzle" instance=ExtResource("9_evicy")]
 position = Vector2(-1057, -196)
