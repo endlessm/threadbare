@@ -76,7 +76,7 @@ func _toggle_player_behavior(behavior_node: Node2D, is_active: bool) -> void:
 
 
 func _get_configuration_warnings() -> PackedStringArray:
-	var warnings = []
+	var warnings: PackedStringArray
 	for animation in REQUIRED_ANIMATION_FRAMES:
 		if not sprite_frames.has_animation(animation):
 			warnings.append("sprite_frames is missing the following animation: %s" % animation)
