@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://cgemeabsewy1f"]
+[gd_scene load_steps=17 format=4 uid="uid://cgemeabsewy1f"]
 
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="2_wqron"]
 [ext_resource type="AudioStream" uid="uid://dgwihwibc8ah6" path="res://assets/first_party/music/Threadbare_Combat.ogg" id="3_0kd4s"]
@@ -14,6 +14,28 @@
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter/components/teleporter.gd" id="11_0kd4s"]
 [ext_resource type="SpriteFrames" uid="uid://dnq8cw1cio2we" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_green.tres" id="11_bk6nl"]
 
+[sub_resource type="Animation" id="Animation_nlryc"]
+resource_name = "goal_completed"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../OnTheGround/LevelExit/Door Exit")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"open"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hlahk"]
+_data = {
+&"goal_completed": SubResource("Animation_nlryc")
+}
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e81yh"]
 size = Vector2(101, 49)
 
@@ -26,6 +48,11 @@ stream = ExtResource("3_0kd4s")
 script = ExtResource("3_wqron")
 barrels_to_win = 2
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
+
+[node name="LevelCompletedAnimation" type="AnimationPlayer" parent="FillGameLogic"]
+libraries = {
+&"": SubResource("AnimationLibrary_hlahk")
+}
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -76,6 +103,7 @@ position = Vector2(416, 0)
 [node name="Door Exit" parent="OnTheGround/LevelExit" instance=ExtResource("10_wqron")]
 position = Vector2(0, 82)
 scale = Vector2(1.1, 1.1)
+play_victory_fanfare_on_open = true
 
 [node name="Teleporter" type="Area2D" parent="OnTheGround/LevelExit"]
 position = Vector2(0, -25)
@@ -117,6 +145,7 @@ color = Color(1, 0.972549, 0, 1)
 [node name="Door Enter" parent="OnTheGround" instance=ExtResource("10_wqron")]
 position = Vector2(417, 592)
 scale = Vector2(1.1, 1.1)
+play_victory_fanfare_on_open = false
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
@@ -131,4 +160,4 @@ limit_bottom = 2048
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/LevelExit/Door Exit" method="open"]
+[connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]

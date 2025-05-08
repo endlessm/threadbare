@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://c764br4tplkb2"]
+[gd_scene load_steps=17 format=4 uid="uid://c764br4tplkb2"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_wrx86"]
 [ext_resource type="Resource" uid="uid://cmhcuoms2kh1a" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/dialogues/ink_well.dialogue" id="2_o41k0"]
@@ -14,6 +14,28 @@
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="9_na0be"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="13_hlahk"]
 
+[sub_resource type="Animation" id="Animation_nlryc"]
+resource_name = "goal_completed"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../OnTheGround/LevelExit/Door Exit")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"open"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hlahk"]
+_data = {
+&"goal_completed": SubResource("Animation_nlryc")
+}
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lmnu5"]
 size = Vector2(101, 49)
 
@@ -27,6 +49,11 @@ stream = ExtResource("4_hlahk")
 script = ExtResource("3_0b2ty")
 intro_dialogue = ExtResource("2_o41k0")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
+
+[node name="LevelCompletedAnimation" type="AnimationPlayer" parent="FillGameLogic"]
+libraries = {
+&"": SubResource("AnimationLibrary_hlahk")
+}
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -93,6 +120,7 @@ position = Vector2(416, 0)
 [node name="Door Exit" parent="OnTheGround/LevelExit" instance=ExtResource("5_bxnsu")]
 position = Vector2(0, 72)
 scale = Vector2(1.1, 1.1)
+play_victory_fanfare_on_open = true
 
 [node name="Teleporter" type="Area2D" parent="OnTheGround/LevelExit"]
 position = Vector2(0, -25)
@@ -169,4 +197,4 @@ limit_bottom = 2048
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/LevelExit/Door Exit" method="open"]
+[connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]
