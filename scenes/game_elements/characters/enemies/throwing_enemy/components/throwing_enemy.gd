@@ -9,6 +9,12 @@ enum State { IDLE, WALKING, ATTACKING, DEFEATED }
 
 const PROJECTILE_SCENE: PackedScene = preload("uid://j8mqjkg0rvai")
 
+const REQUIRED_ANIMATIONS: Array[StringName] = [
+	&"idle", &"walk", &"attack", &"attack anticipation", &"defeated"
+]
+
+const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://b3r84ksew5djp")
+
 ## When targetting the next walking position, skip this slice of the circle.
 const WALK_TARGET_SKIP_ANGLE: float = PI / 4.
 
@@ -26,6 +32,13 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 ## Whether the enemy starts attacking or walking automatically. If false, make sure
 ## to call [method start].
 @export var autostart: bool = false
+
+@export_group("Visuals")
+
+## The SpriteFrames must have specific animations.
+## See [member REQUIRED_ANIMATIONS].
+@export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
+	set = _set_sprite_frames
 
 @export_group("Projectile", "projectile")
 
@@ -87,8 +100,27 @@ var _has_started: bool = false
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 
 
+func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
+	sprite_frames = new_sprite_frames
+	if not is_node_ready():
+		return
+	if new_sprite_frames == null:
+		new_sprite_frames = DEFAULT_SPRITE_FRAME
+	animated_sprite_2d.sprite_frames = new_sprite_frames
+	update_configuration_warnings()
+
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: Array = []
+	for animation in REQUIRED_ANIMATIONS:
+		if not sprite_frames.has_animation(animation):
+			warnings.append("sprite_frames is missing the following animation: %s" % animation)
+	return warnings
+
+
 func _ready() -> void:
 	_initial_position = position
+	_set_sprite_frames(sprite_frames)
 	if Engine.is_editor_hint():
 		return
 	var player: Player = get_tree().get_first_node_in_group("player")
