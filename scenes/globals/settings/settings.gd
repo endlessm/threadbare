@@ -32,13 +32,13 @@ func _restore_volumes() -> void:
 
 
 func get_volume(bus: String) -> float:
-	var bus_idx = AudioServer.get_bus_index(bus)
+	var bus_idx := AudioServer.get_bus_index(bus)
 
 	return AudioServer.get_bus_volume_db(bus_idx)
 
 
 func set_volume(bus: String, volume_db: float) -> void:
-	var bus_idx = AudioServer.get_bus_index(bus)
+	var bus_idx := AudioServer.get_bus_index(bus)
 	_set_volume(bus_idx, volume_db)
 
 	_settings.set_value(VOLUME_SECTION, bus, volume_db)
