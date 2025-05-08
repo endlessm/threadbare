@@ -84,7 +84,7 @@ func _ready() -> void:
 		responses_menu.next_action = next_action
 
 	mutation_cooldown.timeout.connect(_on_mutation_cooldown_timeout)
-	next_button.pressed.connect(func(): next(dialogue_line.next_id))
+	next_button.pressed.connect(func() -> void: next(dialogue_line.next_id))
 	add_child(mutation_cooldown)
 
 
