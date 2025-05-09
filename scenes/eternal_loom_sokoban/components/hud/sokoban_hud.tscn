@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://b4d5rf6hn0x4"]
+
+[ext_resource type="Texture2D" uid="uid://ckahbktfqvfe1" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Z_Key_Dark.png" id="1_78eme"]
+[ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="2_805gl"]
+[ext_resource type="Theme" uid="uid://coxcra1002kil" path="res://scenes/ui_elements/shared_components/theme.tres" id="3_uhi48"]
+[ext_resource type="Texture2D" uid="uid://b0eifhu8hivil" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/R_Key_Dark.png" id="4_y4lkk"]
+
+[node name="SokobanHUD" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="InteractInput" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+mouse_default_cursor_shape = 2
+texture = ExtResource("1_78eme")
+script = ExtResource("2_805gl")
+action_name = &"undo"
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("3_uhi48")
+theme_type_variation = &"HintLabel"
+text = "Undo"
+vertical_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="InteractInput" type="TextureRect" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = ExtResource("4_y4lkk")
+script = ExtResource("2_805gl")
+action_name = &"reset"
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("3_uhi48")
+theme_type_variation = &"HintLabel"
+text = "Reset"

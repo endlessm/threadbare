@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=4 uid="uid://11cdlcqge3fu"]
+[gd_scene load_steps=8 format=4 uid="uid://11cdlcqge3fu"]
 
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="1_v1bb6"]
 [ext_resource type="Resource" uid="uid://b1eriy1gdfdkd" path="res://scenes/eternal_loom_sokoban/sokoban.dialogue" id="2_2i86o"]
 [ext_resource type="Material" uid="uid://jpl3v3f7elq6" path="res://scenes/eternal_loom_sokoban/components/floor/tiled_mat.tres" id="4_2i86o"]
 [ext_resource type="Script" uid="uid://dppvw2f8yh4vu" path="res://scenes/eternal_loom_sokoban/components/system/board/board_2d.gd" id="5_644u0"]
 [ext_resource type="TileSet" uid="uid://dand23uvn70pg" path="res://scenes/eternal_loom_sokoban/components/eternal_loom_tileset.tres" id="6_fr34n"]
+[ext_resource type="PackedScene" uid="uid://b4d5rf6hn0x4" path="res://scenes/eternal_loom_sokoban/components/hud/sokoban_hud.tscn" id="6_q20fq"]
 [ext_resource type="PackedScene" uid="uid://btpeaqx2nur3q" path="res://scenes/eternal_loom_sokoban/components/eternal_loom_ruleset.tscn" id="6_skgk4"]
 
 [node name="SokobanLevel2a" type="Node2D"]
@@ -58,6 +59,8 @@ tile_map_data = PackedByteArray("AAABAP3/AAAAAAAAAQABAP//AAAAAAAABgABAAEAAAAAAAA
 tile_set = ExtResource("6_fr34n")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="SokobanHUD" parent="ScreenOverlay" instance=ExtResource("6_q20fq")]
 
 [node name="RuleEngine" parent="." node_paths=PackedStringArray("board") instance=ExtResource("6_skgk4")]
 board = NodePath("../Board2D")
