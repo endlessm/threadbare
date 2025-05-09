@@ -109,12 +109,16 @@ func _unhandled_input(_event: InputEvent) -> void:
 	var axis: Vector2 = Input.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
 
 	var speed: float
-	if Input.is_action_pressed(&"running"):
+	if is_running():
 		speed = run_speed
 	else:
 		speed = walk_speed
 
 	input_vector = axis * speed
+
+
+func is_running() -> bool:
+	return Input.is_action_pressed(&"running")
 
 
 func _process(delta: float) -> void:
