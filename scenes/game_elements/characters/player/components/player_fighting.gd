@@ -7,6 +7,9 @@ var is_fighting: bool = false
 @onready var hit_box: Area2D = %HitBox
 @onready var got_hit_animation: AnimationPlayer = %GotHitAnimation
 @onready var air_stream: Area2D = %AirStream
+@onready var player_sprite: AnimatedSprite2D = %PlayerSprite
+
+@onready var player: Player = self.owner as Player
 
 
 func _ready() -> void:
@@ -32,3 +35,10 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _on_air_stream_body_entered(body: Projectile) -> void:
 	body.got_hit(owner)
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_DISABLED:
+			got_hit_animation.play(&"RESET")
+			got_hit_animation.advance(0)
