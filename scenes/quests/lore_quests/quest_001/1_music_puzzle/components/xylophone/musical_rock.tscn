@@ -1,46 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://b8sok264erfoc"]
+[gd_scene load_steps=6 format=3 uid="uid://b8sok264erfoc"]
 
 [ext_resource type="Script" uid="uid://bjl6cydoln71k" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/xylophone/musical_rock.gd" id="1_kw7av"]
-[ext_resource type="Texture2D" uid="uid://bhqanyxhpxpm" path="res://assets/first_party/rocks/Rock_Idle.png" id="2_cf0td"]
+[ext_resource type="SpriteFrames" uid="uid://7ul4p7v1ve0p" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/xylophone/musical_rock_sprite_frames.tres" id="2_cltuv"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="3_55nmp"]
-[ext_resource type="Texture2D" uid="uid://bempo48hxjacy" path="res://assets/first_party/rocks/Rock_Struck.png" id="3_nr0u7"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_36xex"]
-atlas = ExtResource("3_nr0u7")
-region = Rect2(0, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_e3bul"]
-atlas = ExtResource("3_nr0u7")
-region = Rect2(128, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_q2vgs"]
-atlas = ExtResource("3_nr0u7")
-region = Rect2(256, 0, 128, 128)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_htvu1"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_cf0td")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_36xex")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_e3bul")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_q2vgs")
-}],
-"loop": true,
-"name": &"struck",
-"speed": 10.0
-}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kw7av"]
 height = 32.0
@@ -54,7 +16,7 @@ script = ExtResource("1_kw7av")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 scale = Vector2(0.7, 0.7)
-sprite_frames = SubResource("SpriteFrames_htvu1")
+sprite_frames = ExtResource("2_cltuv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(3, 7)
