@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://712saqgof3kf"]
+[gd_scene load_steps=29 format=3 uid="uid://712saqgof3kf"]
 
 [ext_resource type="Script" uid="uid://dj5shb75ckk2a" path="res://scenes/game_elements/props/eternal_loom/components/eternal_loom.gd" id="1_0f752"]
 [ext_resource type="Texture2D" uid="uid://cj62bpasgf643" path="res://scenes/game_elements/props/eternal_loom/components/eternal_loom_blue.png" id="2_dj2yp"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://brspc1u02oawt" path="res://assets/first_party/collectibles/memory.png" id="4_ytadt"]
 [ext_resource type="Texture2D" uid="uid://wyiamtqmp4gk" path="res://assets/first_party/collectibles/imagination.png" id="5_x4prg"]
 [ext_resource type="Texture2D" uid="uid://c4fefrg0tfkpl" path="res://assets/first_party/collectibles/spirit.png" id="6_j8bpo"]
+[ext_resource type="AudioStream" uid="uid://bg8u4en3hlo6w" path="res://assets/third_party/sounds/eternal_loom/EternalLoomShort.ogg" id="7_12bvc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dj2yp"]
 atlas = ExtResource("2_dj2yp")
@@ -301,6 +302,30 @@ tracks/12/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("LoomOfferingAnimation/LoomOfferingSound:playing")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("LoomOfferingAnimation/LoomOfferingSound:volume_db")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
 [sub_resource type="Animation" id="Animation_ytadt"]
 resource_name = "loom_offering"
@@ -461,6 +486,30 @@ tracks/12/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0, 0.972549, 0, 1), Color(0, 0.972549, 0, 1), Color(1, 1, 0, 1), Color(1, 1, 0, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
 }
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("LoomOfferingAnimation/LoomOfferingSound:playing")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("LoomOfferingAnimation/LoomOfferingSound:volume_db")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0, 4.33333, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, -60.0]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x4prg"]
 _data = {
@@ -532,3 +581,7 @@ visible = false
 texture_filter = 1
 position = Vector2(-48, 33)
 texture = ExtResource("6_j8bpo")
+
+[node name="LoomOfferingSound" type="AudioStreamPlayer2D" parent="LoomOfferingAnimation"]
+stream = ExtResource("7_12bvc")
+bus = &"SFX"
