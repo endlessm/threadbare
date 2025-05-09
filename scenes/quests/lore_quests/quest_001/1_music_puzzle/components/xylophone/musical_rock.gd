@@ -3,12 +3,8 @@
 class_name MusicalRock
 extends StaticBody2D
 
+## Emitted when the rock is struck by the player.
 signal note_played
-
-const NOTES: String = "ABCDEFG"
-
-## Note
-@export_enum("A", "B", "C", "D", "E", "F", "G") var note: String = "C"
 
 @export var audio_stream: AudioStream
 
@@ -22,12 +18,13 @@ func _ready() -> void:
 
 
 func _on_interaction_started(_player: Player, _from_right: bool) -> void:
+	note_played.emit()
 	play()
 	interact_area.interaction_ended.emit()
 
 
+## Act as if the rock was struck by the player. Does not emit [member note_played].
 func play() -> void:
-	note_played.emit()
 	animated_sprite.play(&"struck")
 	audio_stream_player_2d.play()
 	await audio_stream_player_2d.finished

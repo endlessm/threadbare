@@ -6,8 +6,7 @@ extends StaticBody2D
 
 enum Sign { FORWARD, BACK, BACK_UP, FORWARD_UP }
 
-# This is a NodePath instead of just a node reference to be able to initialize it to ..
-@export_node_path("MusicPuzzle") var puzzle_path: NodePath = ^".."
+@export var puzzle: MusicPuzzle
 
 @export var sign: Sign = Sign.FORWARD:
 	set(new_sign):
@@ -31,18 +30,16 @@ enum Sign { FORWARD, BACK, BACK_UP, FORWARD_UP }
 @onready var interact_area: InteractArea = %InteractArea
 @onready var sign_sprite: AnimatedSprite2D = %SignSprite
 
-@onready var puzzle: MusicPuzzle = get_node(puzzle_path)
-
 
 func _ready() -> void:
 	update_ignited_state()
 
 
-func update_ignited_state():
+func update_ignited_state() -> void:
 	if is_instance_valid(fire):
 		fire.play(&"burning" if is_ignited else &"default")
 	if is_instance_valid(interact_area):
-		interact_area.disabled = not (is_ignited or can_interact_when_unlit)
+		interact_area.disabled = not (puzzle and (is_ignited or can_interact_when_unlit))
 
 	update_sign_sprite()
 

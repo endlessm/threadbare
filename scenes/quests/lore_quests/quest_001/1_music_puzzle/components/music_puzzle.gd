@@ -1,16 +1,12 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-@tool
 class_name MusicPuzzle
 extends Node2D
 
 signal solved
 
-## Melodies expressed with the letters ABCDEFG.
-@export var melodies: Array[String]
-
-## A fire corresponding to each melody, ignited when the correct melody is played (in order).
-@export var fires: Array[BonfireSign]
+## The order in which the player must interact with rocks to solve each step of the puzzle
+@export var steps: Array[SequencePuzzleStep]
 
 ## If enabled, show messages in the console describing the player's progress (or not) in the puzzle
 @export var debug: bool = false
@@ -25,16 +21,11 @@ var hint_levels: Dictionary = {}
 var _rocks: Array[MusicalRock]
 
 var _last_hint_rock: MusicalRock = null
-var _current_melody: int = 0
+var _current_step: int = 0
 var _position: int = 0
-
-var _is_demo: bool = false
 
 
 func _ready() -> void:
-	if Engine.is_editor_hint():
-		return
-
 	_find_rocks()
 
 	hint_timer.one_shot = true
@@ -42,9 +33,9 @@ func _ready() -> void:
 	hint_timer.timeout.connect(_on_hint_timer_timeout)
 	add_child(hint_timer)
 
-	_update_current_melody()
+	_update_current_step()
 
-	for i in range(melodies.size()):
+	for i in range(steps.size()):
 		if not hint_levels.has(i):
 			hint_levels[i] = 0
 
@@ -56,14 +47,14 @@ func _find_rocks() -> void:
 		if self.is_ancestor_of(object) and object is MusicalRock:
 			var rock := object as MusicalRock
 			_rocks.append(rock)
-			rock.note_played.connect(_on_note_played.bind(rock.note))
+			rock.note_played.connect(_on_note_played.bind(rock))
 
 
-func _update_current_melody():
-	for i in range(_current_melody, fires.size()):
-		# We find the next fire that is not ignited, and that's the _current_melody
-		if fires[i].is_ignited:
-			_current_melody = i + 1
+func _update_current_step() -> void:
+	for i in range(_current_step, steps.size()):
+		# We find the next fire that is not ignited, and that's the _current_step
+		if steps[i].hint_sign.is_ignited:
+			_current_step = i + 1
 			_position = 0
 		else:
 			break
@@ -74,64 +65,54 @@ func _debug(fmt: String, args: Array = []) -> void:
 		print((fmt % args) if args else fmt)
 
 
-func _on_note_played(note: String) -> void:
-	if _is_demo or _current_melody >= melodies.size():
+func _on_note_played(rock: MusicalRock) -> void:
+	if _current_step >= steps.size():
 		return
 
-	var melody: String = melodies[_current_melody]
+	var step := steps[_current_step]
+	var sequence := step.sequence
 	_debug(
-		"Current melody %s position %d expecting %s, received %s",
-		[melody, _position, melody[_position], note],
+		"Current sequence %s position %d expecting %s, received %s",
+		[sequence, _position, sequence[_position], rock],
 	)
-	if _position != 0 and melody[_position] != note:
+	if _position != 0 and sequence[_position] != rock:
 		_debug("Didn't match")
 		_position = 0
-		_debug("Matching again at start of melody...")
+		_debug("Matching again at start of sequence...")
 
-	if melody[_position] != note:
+	if sequence[_position] != rock:
 		_debug("Didn't match")
-		for rock: MusicalRock in _rocks:
-			rock.stop_hint()
+		for r: MusicalRock in _rocks:
+			r.stop_hint()
 		if hint_levels.get(get_progress(), 0) >= wobble_hint_min_level:
 			hint_timer.start()
 		return
 
 	_position += 1
 	hint_timer.start()
-	if _position != melody.length():
-		_debug("Played %s, awaiting %s", [melody.left(_position), melody.right(-_position)])
+	if _position != sequence.size():
+		_debug("Played %s, awaiting %s", [sequence.slice(0, _position), sequence.slice(_position)])
 		return
 
-	_debug("Finished melody")
-	fires[_current_melody].ignite()
-	_update_current_melody()
+	_debug("Finished sequnce")
+	step.hint_sign.ignite()
+	_update_current_step()
 
 	_clear_last_hint_rock()
 
-	if _current_melody == melodies.size():
-		_debug("All melodies played")
+	if _current_step == steps.size():
+		_debug("All sequences played")
 		solved.emit()
 	else:
-		_debug("Next melody: %s", [melodies[_current_melody]])
-
-
-func _get_configuration_warnings() -> PackedStringArray:
-	if melodies.size() != fires.size():
-		var fmt: String = """
-			There should be one fire for each melody, \
-			but currently there are %d melodies and %d fires.
-		"""
-		return [fmt.strip_edges() % [melodies.size(), fires.size()]]
-
-	return []
+		_debug("Next sequence: %s", [steps[_current_step]])
 
 
 func get_progress() -> int:
-	return _current_melody
+	return _current_step
 
 
 func is_solved() -> bool:
-	return _current_melody == melodies.size()
+	return _current_step == steps.size()
 
 
 func _get_rock_for_note(note: String) -> MusicalRock:
@@ -143,30 +124,25 @@ func _get_rock_for_note(note: String) -> MusicalRock:
 
 
 func play_demo_note(note: String) -> void:
-	_is_demo = true
 	var rock := _get_rock_for_note(note)
 	if rock:
 		await rock.play()
-	_is_demo = false
 
 
-func play_demo_melody_of_fire(fire: BonfireSign) -> void:
-	await play_demo_melody(fires.find(fire))
-
-
-func play_demo_melody(melody: int) -> void:
-	for note in melodies[melody]:
-		await play_demo_note(note)
+func play_demo_melody_of_fire(hint_sign: BonfireSign) -> void:
+	for step in steps:
+		if step.hint_sign == hint_sign:
+			for rock in step.sequence:
+				await rock.play()
+			return
 
 
 func _on_hint_timer_timeout() -> void:
-	if _current_melody >= melodies.size():
+	if _current_step >= steps.size():
 		return
 
-	var melody: String = melodies[_current_melody]
-	var expected_note := melody[_position]
-
-	var rock := _get_rock_for_note(expected_note)
+	var sequence := steps[_current_step].sequence
+	var rock := sequence[_position]
 	if rock:
 		if rock != _last_hint_rock:
 			_clear_last_hint_rock()
@@ -191,5 +167,5 @@ func stop_hints() -> void:
 
 func reset_hint_timer() -> void:
 	hint_timer.stop()
-	if _current_melody < melodies.size():
+	if _current_step < steps.size():
 		hint_timer.start()
