@@ -10,10 +10,6 @@ extends Talker
 var first_conversation: bool = true
 
 
-func play(note: String) -> void:
-	await puzzle.play_demo_note(note)
-
-
 func advance_hint_level() -> void:
 	var progress := puzzle.get_progress()
 	puzzle.hint_levels[progress] = puzzle.hint_levels.get(progress, 0) + 1
