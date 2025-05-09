@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://7hoy2p14t6kc"]
+[gd_scene load_steps=38 format=4 uid="uid://7hoy2p14t6kc"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_evicy"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_0ayb4"]
@@ -25,9 +25,12 @@
 [ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/sequence_puzzle_step.gd" id="20_thpfs"]
 [ext_resource type="Texture2D" uid="uid://ol20om7xc1o7" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage1.png" id="20_wasqo"]
 [ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/xylophone/musical_rock.tscn" id="22_0awvw"]
+[ext_resource type="Script" uid="uid://cwib5mjkfc07q" path="res://scenes/game_elements/props/player_follower/player_follower.gd" id="22_nonj7"]
 [ext_resource type="AudioStream" uid="uid://cg57q82pb243w" path="res://assets/third_party/xylophone-sampler-pack/xylophone-c3.ogg" id="23_306df"]
+[ext_resource type="AudioStream" uid="uid://vgr28w2aalr1" path="res://assets/first_party/sounds/ambient/ForestAmbient.ogg" id="23_mgtd3"]
 [ext_resource type="SpriteFrames" uid="uid://b6doys1c3yelx" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_red_small.tres" id="23_u8pjn"]
 [ext_resource type="AudioStream" uid="uid://b83x8h0ob5mpq" path="res://assets/third_party/xylophone-sampler-pack/xylophone-d3.ogg" id="24_l8fgn"]
+[ext_resource type="AudioStream" uid="uid://csra3q84pni14" path="res://assets/third_party/sounds/ambient/459405__pfannkuchn__small-river-1-fast-semi-close.wav" id="24_mgtd3"]
 [ext_resource type="AudioStream" uid="uid://cmtiwg2cylmts" path="res://assets/third_party/xylophone-sampler-pack/xylophone-e3.ogg" id="25_crvxf"]
 [ext_resource type="AudioStream" uid="uid://8k1hyi4gjae4" path="res://assets/third_party/xylophone-sampler-pack/xylophone-f3.ogg" id="26_qswm5"]
 [ext_resource type="AudioStream" uid="uid://6oahn2ucxxjv" path="res://assets/third_party/xylophone-sampler-pack/xylophone-g3.ogg" id="27_pnt3a"]
@@ -38,6 +41,18 @@ script = ExtResource("15_rxyid")
 name = ""
 type = 0
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="Curve2D" id="Curve2D_306df"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 64, 2088, 15, 121, -15, -121, 56, 1640, 3, 148, -3, -148, -64, 1088, -99.22, 89.54, 99.22, -89.54, 8, 592, -164.56, 1.21, 164.56, -1.21, 544, 408, -84.7, -82.28, 84.7, 82.28, 1152, 552, 44.77, -128.26, -44.77, 128.26, 1168, 1528, 35.09, -88.33, -35.09, 88.33, 968, 1704, 0, 0, 0, 0, 960, 2080)
+}
+point_count = 9
+
+[sub_resource type="Curve2D" id="Curve2D_l8fgn"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -408, 1104, -178.928, -15.944, 178.928, 15.944, 280, 1056, -246.247, 7.08624, 246.247, -7.08624, 1144, 1160, -441.119, -17.7156, 441.119, 17.7156, 2776, 1048)
+}
+point_count = 4
 
 [node name="MusicPuzzle" type="Node2D"]
 texture_filter = 1
@@ -1507,5 +1522,39 @@ polygon = PackedVector2Array(728, 2042, 726, 1901, 521, 1907, 217, 1904, 231, 18
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="ForestCollider"]
 position = Vector2(129, 5)
 polygon = PackedVector2Array(856, 1866, 857, 1793, 857, 1690, 810, 1652, 897, 1553, 976, 1539, 1025, 1482, 1051, 1298, 1017, 1197, 1040, 1087, 1076, 1020, 1060, 928, 1060, 770, 1064, 677, 1007, 550, 749, 470, 654, 487, 567, 434, 533, -385, 2040, -381, 2048, 2048, 2056, 2176, 448, 2172, 448, 2037, 768, 2036, 877, 1949)
+
+[node name="ForestSoundPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_306df")
+
+[node name="PlayerFollower" type="PathFollow2D" parent="ForestSoundPath"]
+position = Vector2(64, 2088)
+rotation = -1.58865
+script = ExtResource("22_nonj7")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="ForestSoundPath/PlayerFollower"]
+stream = ExtResource("23_mgtd3")
+volume_db = 3.0
+autoplay = true
+max_distance = 1000.0
+attenuation = 1.41421
+panning_strength = 0.0
+bus = &"SFX"
+
+[node name="RiverSoundPath" type="Path2D" parent="."]
+position = Vector2(-616, 344)
+curve = SubResource("Curve2D_l8fgn")
+
+[node name="PlayerFollower" type="PathFollow2D" parent="RiverSoundPath"]
+position = Vector2(-408, 1104)
+rotation = -0.0696546
+script = ExtResource("22_nonj7")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="RiverSoundPath/PlayerFollower"]
+stream = ExtResource("24_mgtd3")
+autoplay = true
+max_distance = 1000.0
+attenuation = 1.41421
+panning_strength = 0.0
+bus = &"SFX"
 
 [connection signal="solved" from="OnTheGround/MusicPuzzle" to="OnTheGround/MusicPuzzle/CollectibleItem" method="reveal"]
