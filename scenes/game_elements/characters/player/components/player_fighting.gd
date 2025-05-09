@@ -31,6 +31,7 @@ func _on_body_entered(body: Node2D) -> void:
 	body.add_small_fx()
 	body.queue_free()
 	got_hit_animation.play(&"got_hit")
+	CameraShake.shake()
 
 
 func _on_air_stream_body_entered(body: Projectile) -> void:
