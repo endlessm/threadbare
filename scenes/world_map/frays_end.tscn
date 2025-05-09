@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=4 uid="uid://cufkthb25mpxy"]
+[gd_scene load_steps=45 format=4 uid="uid://cufkthb25mpxy"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_4evgk"]
 [ext_resource type="Script" uid="uid://8div00rgvsds" path="res://scenes/world_map/components/frays_end.gd" id="1_4gse6"]
@@ -6,18 +6,15 @@
 [ext_resource type="AudioStream" uid="uid://bbamdm6wtjjcn" path="res://assets/first_party/music/Threadbare_Bed.ogg" id="2_epsnn"]
 [ext_resource type="SpriteFrames" uid="uid://cntyc07xhpu0k" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_blue.tres" id="3_rti58"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_tp7qs"]
-[ext_resource type="SpriteFrames" uid="uid://bpfnbr7ig4s5g" path="res://scenes/game_elements/characters/shared_components/sprite_frames/elder.tres" id="4_7v00g"]
 [ext_resource type="PackedScene" uid="uid://lfvn4u30s4yf" path="res://scenes/game_elements/props/buildings/house/house_1.tscn" id="5_5jg1p"]
 [ext_resource type="Texture2D" uid="uid://dsh7g1nlaitvv" path="res://scenes/game_elements/props/buildings/house/components/House_Patch_Blue_02.png" id="5_uhynt"]
 [ext_resource type="Texture2D" uid="uid://d2kjk3oiu5o6o" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Blue_02.png" id="5_uojly"]
 [ext_resource type="Texture2D" uid="uid://c8xgl7dcju5h7" path="res://scenes/game_elements/props/buildings/house/components/House_Patch_Blue_03.png" id="6_ojp30"]
 [ext_resource type="Texture2D" uid="uid://cvm2x4fhekowd" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Blue_03.png" id="6_uhynt"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="7_7v00g"]
-[ext_resource type="Script" uid="uid://dedhjloxblho6" path="res://scenes/game_elements/characters/npcs/elder/components/elder.gd" id="10_5yai1"]
 [ext_resource type="PackedScene" uid="uid://7hoy2p14t6kc" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/music_puzzle.tscn" id="11_0a1i7"]
 [ext_resource type="PackedScene" uid="uid://bbsc3wssndtfe" path="res://scenes/game_elements/props/decoration/hiding_mushroom/hiding_mushroom.tscn" id="11_jqkod"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="11_mr2ek"]
-[ext_resource type="Resource" uid="uid://ykdgo73x62wa" path="res://scenes/game_elements/characters/npcs/elder/components/story_quest_starter.dialogue" id="12_0a1i7"]
 [ext_resource type="PackedScene" uid="uid://ccp4ayow34e7g" path="res://scenes/game_elements/props/decoration/books/books.tscn" id="12_06x6x"]
 [ext_resource type="Resource" uid="uid://c1baepfbbcd4s" path="res://scenes/game_elements/characters/npcs/elder/components/lore_quest_starter.dialogue" id="12_yntpr"]
 [ext_resource type="Texture2D" uid="uid://cyvi71ryavsld" path="res://scenes/game_elements/props/decoration/books/components/Books_2.png" id="13_xt3dw"]
@@ -31,6 +28,7 @@
 [ext_resource type="PackedScene" uid="uid://n8dhed3nvf50" path="res://scenes/game_elements/characters/npcs/npc_prop/fray_hammerman.tscn" id="19_yntpr"]
 [ext_resource type="PackedScene" uid="uid://buuh0p3bjdpkv" path="res://scenes/game_elements/props/hint/input_key/input_key.tscn" id="20_i7vhm"]
 [ext_resource type="PackedScene" uid="uid://6tkhqe1nvwop" path="res://scenes/game_elements/characters/npcs/npc_prop/fray_idle.tscn" id="20_xa7wa"]
+[ext_resource type="PackedScene" uid="uid://bytkm0r5fe5xb" path="res://scenes/game_elements/characters/npcs/elder/elder.tscn" id="20_xt3dw"]
 [ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="21_i7vhm"]
 [ext_resource type="SpriteFrames" uid="uid://cpm5o35ede3qs" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_purple.tres" id="22_e453w"]
 [ext_resource type="Texture2D" uid="uid://p8kty3uxifxu" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Space_Key_Dark.png" id="24_h30yx"]
@@ -267,24 +265,19 @@ y_sort_enabled = true
 position = Vector2(1617, 625)
 sprite_frames = ExtResource("22_e453w")
 
-[node name="LoreQuestElder" parent="NPCs" node_paths=PackedStringArray("eternal_loom") instance=ExtResource("11_mr2ek")]
+[node name="LoreQuestElder" parent="NPCs" node_paths=PackedStringArray("eternal_loom") instance=ExtResource("20_xt3dw")]
+
 position = Vector2(690, 600)
-script = ExtResource("10_5yai1")
 quest_scene = ExtResource("11_0a1i7")
 eternal_loom = NodePath("../../EternalLoom")
 npc_name = "LoreQuest Elder"
 dialogue = ExtResource("12_yntpr")
-look_at_side = 0
-sprite_frames = ExtResource("4_7v00g")
 
-[node name="StoryQuestElder" parent="NPCs" node_paths=PackedStringArray("eternal_loom") instance=ExtResource("11_mr2ek")]
+[node name="StoryQuestElder" parent="NPCs" node_paths=PackedStringArray("eternal_loom") instance=ExtResource("20_xt3dw")]
 position = Vector2(1350, 606)
-script = ExtResource("10_5yai1")
 quest_scene = ExtResource("14_xa7wa")
 eternal_loom = NodePath("../../EternalLoom")
 npc_name = "StoryQuest Elder"
-dialogue = ExtResource("12_0a1i7")
-look_at_side = 0
 sprite_frames = ExtResource("15_iwt5r")
 
 [node name="fray_axeman" parent="NPCs" instance=ExtResource("17_0a1i7")]
