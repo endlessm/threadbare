@@ -28,8 +28,6 @@ var _last_hint_rock: MusicalRock = null
 var _current_melody: int = 0
 var _position: int = 0
 
-var _is_demo: bool = false
-
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -75,7 +73,7 @@ func _debug(fmt: String, args: Array = []) -> void:
 
 
 func _on_note_played(note: String) -> void:
-	if _is_demo or _current_melody >= melodies.size():
+	if _current_melody >= melodies.size():
 		return
 
 	var melody: String = melodies[_current_melody]
@@ -143,11 +141,9 @@ func _get_rock_for_note(note: String) -> MusicalRock:
 
 
 func play_demo_note(note: String) -> void:
-	_is_demo = true
 	var rock := _get_rock_for_note(note)
 	if rock:
 		await rock.play()
-	_is_demo = false
 
 
 func play_demo_melody_of_fire(fire: BonfireSign) -> void:
