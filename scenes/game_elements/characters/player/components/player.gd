@@ -38,11 +38,17 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://dtoylirwywk0j")
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
 
+@export_group("Sounds")
+## Sound that plays for each step during the walk animation
+@export var walk_sound_stream: AudioStream = preload("uid://cx6jv2cflrmqu"):
+	set = _set_walk_sound_stream
+
 var input_vector: Vector2
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: Node2D = %PlayerFighting
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
+@onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
 
 func _set_mode(new_mode: Mode) -> void:
@@ -103,12 +109,16 @@ func _unhandled_input(_event: InputEvent) -> void:
 	var axis: Vector2 = Input.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
 
 	var speed: float
-	if Input.is_action_pressed(&"running"):
+	if is_running():
 		speed = run_speed
 	else:
 		speed = walk_speed
 
 	input_vector = axis * speed
+
+
+func is_running() -> bool:
+	return Input.is_action_pressed(&"running")
 
 
 func _process(delta: float) -> void:
@@ -146,3 +156,10 @@ func teleport_to(
 		camera.position_smoothing_enabled = smoothing_was_enabled
 	else:
 		global_position = tele_position
+
+
+func _set_walk_sound_stream(new_value: AudioStream) -> void:
+	walk_sound_stream = new_value
+	if not is_node_ready():
+		await ready
+	_walk_sound.stream = walk_sound_stream

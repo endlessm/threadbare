@@ -6,6 +6,7 @@ const BLOW_ANTICIPATION_TIME: float = 0.3
 
 @onready var player: Player = owner
 @onready var player_fighting: Node2D = %PlayerFighting
+@onready var original_speed_scale: float = speed_scale
 
 
 func _process(_delta: float) -> void:
@@ -14,6 +15,9 @@ func _process(_delta: float) -> void:
 			_process_walk_idle(_delta)
 		Player.Mode.FIGHTING:
 			_process_fighting(_delta)
+
+	var double_speed: bool = current_animation == &"walk" and player.is_running()
+	speed_scale = original_speed_scale * (2.0 if double_speed else 1.0)
 
 
 func _process_walk_idle(_delta: float) -> void:
