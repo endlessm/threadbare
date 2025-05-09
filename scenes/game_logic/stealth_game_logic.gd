@@ -17,7 +17,8 @@ func _ready() -> void:
 
 
 func _on_player_detected(player: Node2D) -> void:
-	player.process_mode = ProcessMode.PROCESS_MODE_DISABLED
+	player.player_caught()
+
 	await get_tree().create_timer(2.0).timeout
 	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
 

@@ -396,17 +396,19 @@ func _is_sight_to_point_blocked(point_position: Vector2) -> bool:
 ## Otherwise, it returns null.
 func _player_in_sight() -> Node2D:
 	if instant_detection_area.has_overlapping_bodies():
-		return instant_detection_area.get_overlapping_bodies().front()
+		for body in instant_detection_area.get_overlapping_bodies():
+			if body is Player and not body.caught:
+				return body
 
 	if not detection_area.has_overlapping_bodies():
 		return null
 
-	var player: Node2D = detection_area.get_overlapping_bodies().front()
+	for body in detection_area.get_overlapping_bodies():
+		if body is Player and not body.caught:
+			if not _is_sight_to_point_blocked(body.global_position):
+				return body
 
-	if _is_sight_to_point_blocked(player.global_position):
-		return null
-
-	return player
+	return null
 
 
 ## Patrol point index to global position

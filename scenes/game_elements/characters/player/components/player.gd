@@ -11,6 +11,7 @@ enum Mode {
 	COZY,
 	## Player is engaged in combat. Player can use combat actions.
 	FIGHTING,
+	CAUGHT
 }
 
 const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
@@ -44,6 +45,7 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://dtoylirwywk0j")
 	set = _set_walk_sound_stream
 
 var input_vector: Vector2
+var caught: bool = false
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: Node2D = %PlayerFighting
@@ -129,6 +131,11 @@ func _process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		return
 
+	if mode == Player.Mode.CAUGHT:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
+
 	var step: float
 	if input_vector.is_zero_approx():
 		step = stopping_step
@@ -163,3 +170,7 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	if not is_node_ready():
 		await ready
 	_walk_sound.stream = walk_sound_stream
+
+
+func player_caught():
+	_set_mode(Player.Mode.CAUGHT)
