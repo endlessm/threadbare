@@ -6,11 +6,6 @@ extends StaticBody2D
 ## Emitted when the rock is struck by the player.
 signal note_played
 
-const NOTES: String = "ABCDEFG"
-
-## Note
-@export_enum("A", "B", "C", "D", "E", "F", "G") var note: String = "C"
-
 @export var audio_stream: AudioStream
 
 @onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
