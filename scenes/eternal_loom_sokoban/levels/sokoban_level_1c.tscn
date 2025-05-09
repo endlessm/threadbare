@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=4 uid="uid://cpv57hirgmyml"]
+[gd_scene load_steps=6 format=4 uid="uid://cpv57hirgmyml"]
 
 [ext_resource type="Material" uid="uid://jpl3v3f7elq6" path="res://scenes/eternal_loom_sokoban/components/floor/tiled_mat.tres" id="2_x585a"]
+[ext_resource type="PackedScene" uid="uid://b4d5rf6hn0x4" path="res://scenes/eternal_loom_sokoban/components/hud/sokoban_hud.tscn" id="4_0yr66"]
 [ext_resource type="PackedScene" uid="uid://btpeaqx2nur3q" path="res://scenes/eternal_loom_sokoban/components/eternal_loom_ruleset.tscn" id="4_m55nv"]
 [ext_resource type="Script" uid="uid://dppvw2f8yh4vu" path="res://scenes/eternal_loom_sokoban/components/system/board/board_2d.gd" id="5_16ydi"]
 [ext_resource type="TileSet" uid="uid://dand23uvn70pg" path="res://scenes/eternal_loom_sokoban/components/eternal_loom_tileset.tres" id="6_bgod2"]
@@ -50,6 +51,8 @@ tile_map_data = PackedByteArray("AAAAAP3/AAAAAAAABwAAAP//AAAAAAAABwABAP3/AAAAAAA
 tile_set = ExtResource("6_bgod2")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="SokobanHUD" parent="ScreenOverlay" instance=ExtResource("4_0yr66")]
 
 [node name="RuleEngine" parent="." node_paths=PackedStringArray("board") instance=ExtResource("4_m55nv")]
 board = NodePath("../Board2D")
