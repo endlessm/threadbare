@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://be4o3ythda4cu"]
+[gd_scene load_steps=26 format=3 uid="uid://be4o3ythda4cu"]
 
 [ext_resource type="Script" uid="uid://dsowa7f2l478a" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign.gd" id="1_4621y"]
 [ext_resource type="Texture2D" uid="uid://cjpr8ft5kpu7x" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign.png" id="2_1po6h"]
@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://bqxlsmjk7ywmg" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/sign_forward_off.png" id="7_pf82u"]
 [ext_resource type="Texture2D" uid="uid://bafatj2y18u8b" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/sign_forward_up_off.png" id="9_ypj2g"]
 [ext_resource type="Texture2D" uid="uid://c6bnplacvrqku" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/sign_forward_up_on.png" id="10_lgc81"]
+[ext_resource type="AudioStream" uid="uid://c7om8kdork2rx" path="res://assets/third_party/sounds/characters/enemies/guard/Torch.ogg" id="13_6s45h"]
+[ext_resource type="AudioStream" uid="uid://ctty20c12j0f5" path="res://assets/third_party/sounds/bonfire_sign/FireStart.ogg" id="13_rd7vt"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mtebg"]
 animations = [{
@@ -182,5 +184,22 @@ action = "Listen"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
 position = Vector2(2, 0)
 shape = SubResource("CircleShape2D_gye5d")
+
+[node name="Sounds" type="Node2D" parent="."]
+
+[node name="FireStartSound" type="AudioStreamPlayer2D" parent="Sounds"]
+unique_name_in_owner = true
+position = Vector2(0, -50)
+stream = ExtResource("13_rd7vt")
+volume_db = -3.0
+bus = &"SFX"
+
+[node name="FireContinuousSound" type="AudioStreamPlayer2D" parent="Sounds"]
+unique_name_in_owner = true
+position = Vector2(0, -50)
+stream = ExtResource("13_6s45h")
+volume_db = -1.0
+max_distance = 500.0
+bus = &"SFX"
 
 [connection signal="interaction_started" from="InteractArea" to="." method="_on_interact_area_interaction_started"]
