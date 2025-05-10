@@ -17,8 +17,20 @@ extends Talker
 		eternal_loom = new_value
 		update_configuration_warnings()
 
+## Sound that plays for each step during the walk animation.
+## It plays once each time the idle animation gets to the second frame.
+@export var idle_sound_stream: AudioStream = preload("uid://dxbxx6x5h7d8p"):
+	set = _set_idle_sound_stream
+
 ## Whether to enter [member quest_scene] when the current dialogue ends
 var _enter_quest_on_dialogue_ended: bool = false
+
+@onready var _book_sound: AudioStreamPlayer2D = %BookSound
+
+
+func _ready() -> void:
+	super._ready()
+	animated_sprite_2d.connect("frame_changed", _on_frame_changed)
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -58,3 +70,15 @@ func _on_dialogue_ended(dialogue_resource: DialogueResource) -> void:
 			quest_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 		)
 		_enter_quest_on_dialogue_ended = false
+
+
+func _on_frame_changed() -> void:
+	if animated_sprite_2d.frame == 2:
+		_book_sound.play()
+
+
+func _set_idle_sound_stream(new_value: AudioStream) -> void:
+	idle_sound_stream = new_value
+	if not is_node_ready():
+		await ready
+	_book_sound.stream = idle_sound_stream
