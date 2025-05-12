@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bytkm0r5fe5xb"]
+[gd_scene load_steps=8 format=3 uid="uid://bytkm0r5fe5xb"]
 
 [ext_resource type="Script" uid="uid://dedhjloxblho6" path="res://scenes/game_elements/characters/npcs/elder/components/elder.gd" id="1_jlpjw"]
 [ext_resource type="Resource" uid="uid://ykdgo73x62wa" path="res://scenes/game_elements/characters/npcs/elder/components/story_quest_starter.dialogue" id="2_kqtes"]
 [ext_resource type="SpriteFrames" uid="uid://bpfnbr7ig4s5g" path="res://scenes/game_elements/characters/shared_components/sprite_frames/elder.tres" id="3_ak236"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="4_81yrg"]
+[ext_resource type="AudioStream" uid="uid://dxbxx6x5h7d8p" path="res://assets/third_party/sounds/characters/npcs/elder/BookPage.ogg" id="5_kqtes"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
 radius = 12.0
@@ -25,6 +26,7 @@ position = Vector2(0, -40)
 sprite_frames = ExtResource("3_ak236")
 animation = &"idle"
 autoplay = "idle"
+frame_progress = 0.757037
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(8, 0)
@@ -41,3 +43,14 @@ script = ExtResource("4_81yrg")
 position = Vector2(7.5, -40)
 shape = SubResource("RectangleShape2D_3eksq")
 debug_color = Color(0.591123, 0.547358, 0, 0.42)
+
+[node name="Sounds" type="Node2D" parent="."]
+
+[node name="BookSound" type="AudioStreamPlayer2D" parent="Sounds"]
+unique_name_in_owner = true
+stream = ExtResource("5_kqtes")
+volume_db = -6.0
+pitch_scale = 2.0
+max_distance = 1500.0
+attenuation = 3.0
+bus = &"SFX"
