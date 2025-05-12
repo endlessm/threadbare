@@ -30,16 +30,23 @@ enum Sign { FORWARD, BACK, BACK_UP, FORWARD_UP }
 @onready var interact_area: InteractArea = %InteractArea
 @onready var sign_sprite: AnimatedSprite2D = %SignSprite
 
+@onready var fire_start_sound: AudioStreamPlayer2D = %FireStartSound
+@onready var fire_continuous_sound: AudioStreamPlayer2D = %FireContinuousSound
+
 
 func _ready() -> void:
 	update_ignited_state()
 
 
 func update_ignited_state() -> void:
-	if is_instance_valid(fire):
-		fire.play(&"burning" if is_ignited else &"default")
-	if is_instance_valid(interact_area):
-		interact_area.disabled = not (puzzle and (is_ignited or can_interact_when_unlit))
+	var was_node_ready: bool = is_node_ready()
+	if not was_node_ready:
+		await ready
+	fire.play(&"burning" if is_ignited else &"default")
+	interact_area.disabled = not (puzzle and (is_ignited or can_interact_when_unlit))
+	## We don't want to play the fire start sound if the bonfire started on.
+	fire_start_sound.playing = is_ignited and was_node_ready
+	fire_continuous_sound.playing = is_ignited
 
 	update_sign_sprite()
 
