@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://cd2p2udmkif80"]
+[gd_scene load_steps=16 format=4 uid="uid://cd2p2udmkif80"]
 
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_dwxhj"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_gyhjf"]
@@ -91,10 +91,51 @@ tracks/2/keys = {
 "values": [Vector2(175, 63), Vector2(450, 63)]
 }
 
+[sub_resource type="Animation" id="Animation_jx4g6"]
+resource_name = "walk_off_scene"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../OnTheGround/StoryWeaver-NonPlayable!:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(946, 345), Vector2(1550, 345)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../OnTheGround/StoryWeaver-NonPlayable!:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Camera2D:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(450, 63), Vector2(725, 63)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gyhjf"]
 _data = {
 &"RESET": SubResource("Animation_gyhjf"),
-&"walk_into_scene": SubResource("Animation_d7588")
+&"walk_into_scene": SubResource("Animation_d7588"),
+&"walk_off_scene": SubResource("Animation_jx4g6")
 }
 
 [node name="ClosingTransition" type="Node2D"]
