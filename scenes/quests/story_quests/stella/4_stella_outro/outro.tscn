@@ -1,11 +1,65 @@
-[gd_scene load_steps=7 format=4 uid="uid://cm8hs14hk34yr"]
+[gd_scene load_steps=14 format=4 uid="uid://cm8hs14hk34yr"]
 
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_vkopu"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_ooe77"]
-[ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/components/player_template.tres" id="3_0t7t3"]
-[ext_resource type="Texture2D" uid="uid://cegcknq41wg68" path="res://scenes/quests/story_quests/template/0_intro/orion.png" id="3_bj6m3"]
+[ext_resource type="Texture2D" uid="uid://cegcknq41wg68" path="res://scenes/quests/story_quests/stella/0_stella_intro/orion.png" id="3_bj6m3"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_qnu8g"]
+[ext_resource type="Texture2D" uid="uid://c0itxt8w3yml0" path="res://scenes/quests/story_quests/template/components/player_template_attack_01.png" id="4_tg78p"]
 [ext_resource type="Resource" uid="uid://qceybl5dvpcp" path="res://scenes/quests/story_quests/template/4_outro/outro.dialogue" id="5_1q1xj"]
+[ext_resource type="Texture2D" uid="uid://dnde524tt20t6" path="res://scenes/quests/story_quests/stella/stella_components/stella_idle.png" id="5_u1dr1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yg72c"]
+atlas = ExtResource("4_tg78p")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ydd7j"]
+atlas = ExtResource("4_tg78p")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f8lfs"]
+atlas = ExtResource("4_tg78p")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_scyt1"]
+atlas = ExtResource("4_tg78p")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6uyh"]
+atlas = ExtResource("5_u1dr1")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g5lh8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yg72c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ydd7j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f8lfs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_scyt1")
+}],
+"loop": true,
+"name": &"attack_01",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i6uyh")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]
 
 [node name="Outro" type="Node2D"]
 texture_filter = 1
@@ -47,8 +101,8 @@ y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
 position = Vector2(400, 349)
-sprite_frames = ExtResource("3_0t7t3")
-animation = &"idle"
+sprite_frames = SubResource("SpriteFrames_g5lh8")
+animation = &"walk"
 autoplay = "idle"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
