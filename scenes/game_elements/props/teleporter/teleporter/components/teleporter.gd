@@ -17,15 +17,18 @@ const SPAWN_POINT_GROUP_NAME: String = "spawn_point"
 		use_transition = new_val
 		notify_property_list_changed()
 
+## Transition to use when the player enters this teleport.
+@export var enter_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
+
+## Transition to use when the player leaves this teleport.
+@export var exit_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE
+
 var spawn_point_path: NodePath:
 	set(new_val):
 		if new_val == ^"NONE":
 			spawn_point_path = ^""
 		else:
 			spawn_point_path = new_val
-
-var enter_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
-var exit_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE
 
 var _available_spawn_points: Array[NodePath] = []
 
@@ -120,12 +123,14 @@ func _get_property_list() -> Array[Dictionary]:
 		}
 	)
 
-	if use_transition:
-		property_list.push_back(
-			PropertyUtils.enum_property("exit_transition", &"Transition.Effect", Transition.Effect)
-		)
-		property_list.push_back(
-			PropertyUtils.enum_property("enter_transition", &"Transition.Effect", Transition.Effect)
-		)
-
 	return property_list
+
+
+func _validate_property(property: Dictionary) -> void:
+	match property.name:
+		"enter_transition":
+			if not use_transition:
+				property.usage |= PROPERTY_USAGE_READ_ONLY
+		"exit_transition":
+			if not use_transition:
+				property.usage |= PROPERTY_USAGE_READ_ONLY
