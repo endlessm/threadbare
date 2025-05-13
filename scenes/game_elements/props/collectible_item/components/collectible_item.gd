@@ -28,7 +28,7 @@ class_name CollectibleItem extends Node2D
 		collected_dialogue = new_value
 		notify_property_list_changed()
 ## The dialogue title from where [member collected_dialogue] will start.
-var dialogue_title: StringName = ""
+@export var dialogue_title: StringName = ""
 
 @onready var interact_area: InteractArea = $InteractArea
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -36,21 +36,11 @@ var dialogue_title: StringName = ""
 @onready var appear_sound: AudioStreamPlayer = %AppearSound
 
 
-func _get_property_list() -> Array[Dictionary]:
-	var properties: Array[Dictionary] = []
-
-	if collected_dialogue:
-		properties.push_back(
-			{
-				"name": "dialogue_title",
-				"usage": PROPERTY_USAGE_DEFAULT,
-				"type": TYPE_STRING,
-				"hing": PROPERTY_HINT_PLACEHOLDER_TEXT,
-				"hint_string": ""
-			}
-		)
-
-	return properties
+func _validate_property(property: Dictionary) -> void:
+	match property.name:
+		"dialogue_title":
+			if not collected_dialogue:
+				property.usage |= PROPERTY_USAGE_READ_ONLY
 
 
 func _get_configuration_warnings() -> PackedStringArray:
