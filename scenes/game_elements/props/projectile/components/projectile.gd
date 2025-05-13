@@ -47,9 +47,15 @@ const ENEMY_HITBOX_LAYER: int = 7
 ## A big visual effect used when the projectile explodes.
 @export var big_fx_scene: PackedScene = preload("uid://b4qu6wml5gd7a")
 
+## A scene with a trail particles visual effect. It should contain a [class GPUParticles2D] as
+## root node. When the projectile gets hit, the [member GPUParticles2D.amount_ratio] is set to 1.
+@export var trail_fx_scene: PackedScene = preload("uid://bgce3qns72g3m")
+
+var _trail_particles: GPUParticles2D
+
 @onready var visible_things: Node2D = %VisibleThings
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
-@onready var gpu_particles_2d: GPUParticles2D = %GPUParticles2D
+@onready var trail_fx_marker: Marker2D = %TrailFXMarker
 @onready var duration_timer: Timer = %DurationTimer
 @onready var hit_sound: AudioStreamPlayer2D = %HitSound
 
@@ -77,6 +83,10 @@ func _set_can_hit_enemy(new_can_hit_enemy: bool) -> void:
 
 
 func _ready() -> void:
+	if trail_fx_scene:
+		_trail_particles = trail_fx_scene.instantiate()
+		trail_fx_marker.add_child(_trail_particles)
+
 	_set_color(color)
 	duration_timer.wait_time = duration
 	duration_timer.start()
@@ -123,7 +133,8 @@ func got_hit(player: Player) -> void:
 	var hit_vector: Vector2 = player.global_position.direction_to(global_position) * hit_speed
 	hit_sound.play()
 	animation_player.speed_scale = 2
-	gpu_particles_2d.amount_ratio = 1.
+	if _trail_particles:
+		_trail_particles.amount_ratio = 1.
 	linear_velocity = Vector2.ZERO
 	apply_impulse(hit_vector)
 

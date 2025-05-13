@@ -67,6 +67,10 @@ var projectile_speed: float = 30.0
 ## A big visual effect used when the projectile explodes.
 @export var projectile_big_fx_scene: PackedScene = preload("uid://b4qu6wml5gd7a")
 
+## A scene with a trail particles visual effect. It should contain a [class GPUParticles2D] as
+## root node. When the projectile gets hit, the [member GPUParticles2D.amount_ratio] is set to 1.
+@export var projectile_trail_fx_scene: PackedScene = preload("uid://bgce3qns72g3m")
+
 @export_group("Walking", "walking")
 
 ## If this is not zero, the enemy walks this amount of time between being idle and
@@ -250,6 +254,7 @@ func shoot_projectile() -> void:
 		projectile.node_to_follow = player
 	projectile.small_fx_scene = projectile_small_fx_scene
 	projectile.big_fx_scene = projectile_big_fx_scene
+	projectile.trail_fx_scene = projectile_trail_fx_scene
 	projectile.speed = projectile_speed
 	projectile.duration = projectile_duration
 	get_tree().current_scene.add_child(projectile)

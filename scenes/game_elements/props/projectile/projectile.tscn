@@ -1,8 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://j8mqjkg0rvai"]
+[gd_scene load_steps=9 format=3 uid="uid://j8mqjkg0rvai"]
 
 [ext_resource type="Script" uid="uid://bofv3bcwj3rx2" path="res://scenes/game_elements/props/projectile/components/projectile.gd" id="1_kxdg3"]
 [ext_resource type="Texture2D" uid="uid://sgprgh3jbreo" path="res://scenes/game_elements/props/projectile/components/ink_blob.png" id="2_t6bt1"]
-[ext_resource type="Texture2D" uid="uid://crddup3m6hwbm" path="res://scenes/game_elements/props/projectile/components/ink_particle.png" id="3_elbh8"]
 [ext_resource type="AudioStream" uid="uid://7jlv4wqpihl7" path="res://scenes/game_elements/props/projectile/components/blob_hit.wav" id="4_q6q4o"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tbgi4"]
@@ -51,22 +50,6 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o6xl0"]
 size = Vector2(44, 44)
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_eoqba"]
-particles_animation = true
-particles_anim_h_frames = 1
-particles_anim_v_frames = 5
-particles_anim_loop = false
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y25gk"]
-particle_flag_disable_z = true
-emission_shape = 1
-emission_sphere_radius = 15.0
-angle_min = 1.07288e-05
-angle_max = 360.0
-gravity = Vector3(0, 98, 0)
-anim_speed_min = 1.0
-anim_speed_max = 1.0
-
 [node name="Projectile" type="RigidBody2D" groups=["projectiles"]]
 collision_layer = 256
 collision_mask = 80
@@ -98,15 +81,9 @@ position = Vector2(-32, 0)
 texture = ExtResource("2_t6bt1")
 vframes = 6
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="VisibleThings"]
+[node name="TrailFXMarker" type="Marker2D" parent="VisibleThings"]
 unique_name_in_owner = true
-material = SubResource("CanvasItemMaterial_eoqba")
-position = Vector2(-40, 2)
-scale = Vector2(2, 2)
-amount = 16
-amount_ratio = 0.1
-texture = ExtResource("3_elbh8")
-process_material = SubResource("ParticleProcessMaterial_y25gk")
+position = Vector2(-40, 0)
 
 [node name="DurationTimer" type="Timer" parent="."]
 unique_name_in_owner = true

@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://bgce3qns72g3m"]
+
+[ext_resource type="Texture2D" uid="uid://crddup3m6hwbm" path="res://scenes/game_elements/props/projectile/components/ink_particle.png" id="1_lsmma"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_eoqba"]
+particles_animation = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 5
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y25gk"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 15.0
+angle_min = 1.07288e-05
+angle_max = 360.0
+gravity = Vector3(0, 98, 0)
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[node name="LiquidTrail" type="GPUParticles2D"]
+material = SubResource("CanvasItemMaterial_eoqba")
+amount = 16
+amount_ratio = 0.1
+texture = ExtResource("1_lsmma")
+process_material = SubResource("ParticleProcessMaterial_y25gk")
