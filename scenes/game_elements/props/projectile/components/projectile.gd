@@ -54,7 +54,7 @@ const ENEMY_HITBOX_LAYER: int = 7
 var _trail_particles: GPUParticles2D
 
 @onready var visible_things: Node2D = %VisibleThings
-@onready var animation_player: AnimationPlayer = %AnimationPlayer
+@onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var trail_fx_marker: Marker2D = %TrailFXMarker
 @onready var duration_timer: Timer = %DurationTimer
 @onready var hit_sound: AudioStreamPlayer2D = %HitSound
@@ -132,7 +132,7 @@ func got_hit(player: Player) -> void:
 	var hit_speed := 100.0
 	var hit_vector: Vector2 = player.global_position.direction_to(global_position) * hit_speed
 	hit_sound.play()
-	animation_player.speed_scale = 2
+	animated_sprite_2d.speed_scale = 2
 	if _trail_particles:
 		_trail_particles.amount_ratio = 1.
 	linear_velocity = Vector2.ZERO
