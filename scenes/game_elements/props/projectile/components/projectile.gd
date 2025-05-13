@@ -97,6 +97,8 @@ func _process(_delta: float) -> void:
 
 ## Add a small effect scene to the current scene in the current position.
 func add_small_fx() -> void:
+	if not small_fx_scene:
+		return
 	var small_fx: Node2D = small_fx_scene.instantiate()
 	if color:
 		small_fx.modulate = color
@@ -127,11 +129,12 @@ func got_hit(player: Player) -> void:
 
 
 func explode() -> void:
-	var big_fx: Node2D = big_fx_scene.instantiate()
-	if color:
-		big_fx.modulate = color
-	get_tree().current_scene.add_child(big_fx)
-	big_fx.global_position = global_position
+	if big_fx_scene:
+		var big_fx: Node2D = big_fx_scene.instantiate()
+		if color:
+			big_fx.modulate = color
+		get_tree().current_scene.add_child(big_fx)
+		big_fx.global_position = global_position
 	queue_free()
 
 

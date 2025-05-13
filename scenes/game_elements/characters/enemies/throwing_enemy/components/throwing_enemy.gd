@@ -62,10 +62,10 @@ var projectile_speed: float = 30.0
 @export var projectile_follows_player: bool = false
 
 ## A small visual effect used when the projectile collides with things.
-@export var projectile_small_fx_scene: PackedScene
+@export var projectile_small_fx_scene: PackedScene = preload("uid://clgisducnnh0a")
 
 ## A big visual effect used when the projectile explodes.
-@export var projectile_big_fx_scene: PackedScene
+@export var projectile_big_fx_scene: PackedScene = preload("uid://b4qu6wml5gd7a")
 
 @export_group("Walking", "walking")
 
@@ -248,10 +248,8 @@ func shoot_projectile() -> void:
 	projectile.global_position = (projectile_marker.global_position + projectile.direction * 20.)
 	if projectile_follows_player:
 		projectile.node_to_follow = player
-	if projectile_small_fx_scene:
-		projectile.small_fx_scene = projectile_small_fx_scene
-	if projectile_big_fx_scene:
-		projectile.big_fx_scene = projectile_big_fx_scene
+	projectile.small_fx_scene = projectile_small_fx_scene
+	projectile.big_fx_scene = projectile_big_fx_scene
 	projectile.speed = projectile_speed
 	projectile.duration = projectile_duration
 	get_tree().current_scene.add_child(projectile)
