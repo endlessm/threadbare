@@ -4,9 +4,12 @@
 class_name BonfireSign
 extends StaticBody2D
 
-enum Sign { FORWARD, BACK, BACK_UP, FORWARD_UP }
+## Emitted when the player has interacted with the sign, expecting a demonstration of the sequence.
+## The handler should call [method BonfireSign.demonstration_finished] when the demonstration is
+## complete.
+signal demonstrate_sequence
 
-@export var puzzle: MusicPuzzle
+enum Sign { FORWARD, BACK, BACK_UP, FORWARD_UP }
 
 @export var sign: Sign = Sign.FORWARD:
 	set(new_sign):
@@ -43,7 +46,9 @@ func update_ignited_state() -> void:
 	if not was_node_ready:
 		await ready
 	fire.play(&"burning" if is_ignited else &"default")
-	interact_area.disabled = not (puzzle and (is_ignited or interactive_hint))
+	interact_area.disabled = not (
+		demonstrate_sequence.has_connections() and (is_ignited or interactive_hint)
+	)
 	## We don't want to play the fire start sound if the bonfire started on.
 	fire_start_sound.playing = is_ignited and was_node_ready
 	fire_continuous_sound.playing = is_ignited
@@ -56,7 +61,15 @@ func ignite() -> void:
 
 
 func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -> void:
-	await puzzle.play_demo_melody_of_fire(self)
+	if demonstrate_sequence.has_connections():
+		demonstrate_sequence.emit()
+	else:
+		demonstration_finished()
+
+
+## Should be called by the handler of [signal demonstrate_sequence] when the demonstration is
+## complete.
+func demonstration_finished() -> void:
 	interact_area.end_interaction()
 
 
