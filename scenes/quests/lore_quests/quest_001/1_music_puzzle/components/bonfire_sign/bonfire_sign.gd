@@ -18,12 +18,12 @@ enum Sign { FORWARD, BACK, BACK_UP, FORWARD_UP }
 		is_ignited = new_val
 		update_ignited_state()
 
-## If true, the player can interact with the sign to hear its melody, even when the fire is not
-## ignited. If false, the player must play the melody correctly before they are able to interact
-## with the fire to get a reminder of the melody they played.
-@export var can_interact_when_unlit: bool = true:
+## If true, the sign is interactive even when [member is_ignited] is [code]false[/code], allowing
+## the player to see a demo of the corresponding sequence before solving it. Otherwise, the sign is
+## only interactive once ignited.
+var interactive_hint: bool = false:
 	set(new_value):
-		can_interact_when_unlit = new_value
+		interactive_hint = new_value
 		update_ignited_state()
 
 @onready var fire: AnimatedSprite2D = %Fire
@@ -43,7 +43,7 @@ func update_ignited_state() -> void:
 	if not was_node_ready:
 		await ready
 	fire.play(&"burning" if is_ignited else &"default")
-	interact_area.disabled = not (puzzle and (is_ignited or can_interact_when_unlit))
+	interact_area.disabled = not (puzzle and (is_ignited or interactive_hint))
 	## We don't want to play the fire start sound if the bonfire started on.
 	fire_start_sound.playing = is_ignited and was_node_ready
 	fire_continuous_sound.playing = is_ignited
