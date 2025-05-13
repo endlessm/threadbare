@@ -2,10 +2,10 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node
 
-@onready var shaker = %Shaker
+@onready var shaker: Shaker = %Shaker
 
 
-func shake():
-	var camera = get_viewport().get_camera_2d()
+func shake() -> void:
+	var camera: Camera2D = get_viewport().get_camera_2d()
 	shaker.target = camera
 	shaker.shake()
