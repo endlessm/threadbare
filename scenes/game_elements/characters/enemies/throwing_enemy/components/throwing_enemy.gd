@@ -61,6 +61,9 @@ var projectile_speed: float = 30.0
 ## If true, the projectile will constantly adjust itself to target the player.
 @export var projectile_follows_player: bool = false
 
+## The projectile SpriteFrames. It should have a looping animation in autoplay.
+@export var projectile_sprite_frames: SpriteFrames = preload("uid://bhamin2pby7tq")
+
 ## A small visual effect used when the projectile collides with things.
 @export var projectile_small_fx_scene: PackedScene = preload("uid://clgisducnnh0a")
 
@@ -252,6 +255,7 @@ func shoot_projectile() -> void:
 	projectile.global_position = (projectile_marker.global_position + projectile.direction * 20.)
 	if projectile_follows_player:
 		projectile.node_to_follow = player
+	projectile.sprite_frames = projectile_sprite_frames
 	projectile.small_fx_scene = projectile_small_fx_scene
 	projectile.big_fx_scene = projectile_big_fx_scene
 	projectile.trail_fx_scene = projectile_trail_fx_scene

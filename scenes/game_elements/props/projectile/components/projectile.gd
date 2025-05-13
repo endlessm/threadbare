@@ -15,6 +15,10 @@ const ENEMY_HITBOX_LAYER: int = 7
 @export var color: Color:
 	set = _set_color
 
+## The projectile SpriteFrames. It should have a looping animation in autoplay.
+@export var sprite_frames: SpriteFrames = preload("uid://bhamin2pby7tq"):
+	set = _set_sprite_frames
+
 ## Whether this projectile hits the player.
 @export var can_hit_player: bool = true:
 	set = _set_can_hit_player
@@ -65,6 +69,13 @@ func _set_color(new_color: Color) -> void:
 	modulate = color if color else Color.WHITE
 
 
+func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
+	sprite_frames = new_sprite_frames
+	if not is_node_ready():
+		return
+	animated_sprite_2d.sprite_frames = sprite_frames
+
+
 func _set_direction(new_direction: Vector2) -> void:
 	if not new_direction.is_normalized():
 		direction = new_direction.normalized()
@@ -88,6 +99,7 @@ func _ready() -> void:
 		trail_fx_marker.add_child(_trail_particles)
 
 	_set_color(color)
+	_set_sprite_frames(sprite_frames)
 	duration_timer.wait_time = duration
 	duration_timer.start()
 	var impulse: Vector2 = direction * speed
