@@ -8,6 +8,12 @@ signal solved
 ## The order in which the player must interact with rocks to solve each step of the puzzle
 @export var steps: Array[SequencePuzzleStep]
 
+## If enabled, the [BonfireSign] for the current step of the puzzle will be interactive, allowing
+## the player to interact with the sign to see a demo of the corresponding sequence. If false, the
+## signs are only interactive once the player has solved the corresponding step, which makes the
+## puzzle harder!
+@export var interactive_hints: bool = true
+
 ## If enabled, show messages in the console describing the player's progress (or not) in the puzzle
 @export var debug: bool = false
 
@@ -58,6 +64,9 @@ func _update_current_step() -> void:
 			_position = 0
 		else:
 			break
+
+	if interactive_hints and _current_step < steps.size():
+		steps[_current_step].hint_sign.interactive_hint = true
 
 
 func _debug(fmt: String, args: Array = []) -> void:
