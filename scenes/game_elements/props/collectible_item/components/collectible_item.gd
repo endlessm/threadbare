@@ -13,8 +13,10 @@ class_name CollectibleItem extends Node2D
 	set(new_value):
 		revealed = new_value
 		_update_based_on_revealed()
+
 ## If provided, switch to this scene after collecting and possibly displaying a dialogue.
 @export_file("*.tscn") var next_scene: String
+
 ## [InventoryItem] provided by this collectible when interacted with.
 @export var item: InventoryItem:
 	set(new_value):
@@ -22,11 +24,13 @@ class_name CollectibleItem extends Node2D
 		_update_interact_action()
 		update_configuration_warnings()
 @export_category("Dialogue")
+
 ## If provided, this dialogue will be displayed after the player collects this item.
 @export var collected_dialogue: DialogueResource:
 	set(new_value):
 		collected_dialogue = new_value
 		notify_property_list_changed()
+
 ## The dialogue title from where [member collected_dialogue] will start.
 @export var dialogue_title: StringName = ""
 
