@@ -15,6 +15,10 @@ const ENEMY_HITBOX_LAYER: int = 7
 @export var color: Color:
 	set = _set_color
 
+## The projectile SpriteFrames. It should have a looping animation in autoplay.
+@export var sprite_frames: SpriteFrames = preload("uid://bhamin2pby7tq"):
+	set = _set_sprite_frames
+
 ## Whether this projectile hits the player.
 @export var can_hit_player: bool = true:
 	set = _set_can_hit_player
@@ -47,9 +51,15 @@ const ENEMY_HITBOX_LAYER: int = 7
 ## A big visual effect used when the projectile explodes.
 @export var big_fx_scene: PackedScene = preload("uid://b4qu6wml5gd7a")
 
+## A scene with a trail particles visual effect. It should contain a [class GPUParticles2D] as
+## root node. When the projectile gets hit, the [member GPUParticles2D.amount_ratio] is set to 1.
+@export var trail_fx_scene: PackedScene = preload("uid://bgce3qns72g3m")
+
+var _trail_particles: GPUParticles2D
+
 @onready var visible_things: Node2D = %VisibleThings
-@onready var animation_player: AnimationPlayer = %AnimationPlayer
-@onready var gpu_particles_2d: GPUParticles2D = %GPUParticles2D
+@onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
+@onready var trail_fx_marker: Marker2D = %TrailFXMarker
 @onready var duration_timer: Timer = %DurationTimer
 @onready var hit_sound: AudioStreamPlayer2D = %HitSound
 
@@ -57,6 +67,13 @@ const ENEMY_HITBOX_LAYER: int = 7
 func _set_color(new_color: Color) -> void:
 	color = new_color
 	modulate = color if color else Color.WHITE
+
+
+func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
+	sprite_frames = new_sprite_frames
+	if not is_node_ready():
+		return
+	animated_sprite_2d.sprite_frames = sprite_frames
 
 
 func _set_direction(new_direction: Vector2) -> void:
@@ -77,7 +94,12 @@ func _set_can_hit_enemy(new_can_hit_enemy: bool) -> void:
 
 
 func _ready() -> void:
+	if trail_fx_scene:
+		_trail_particles = trail_fx_scene.instantiate()
+		trail_fx_marker.add_child(_trail_particles)
+
 	_set_color(color)
+	_set_sprite_frames(sprite_frames)
 	duration_timer.wait_time = duration
 	duration_timer.start()
 	var impulse: Vector2 = direction * speed
@@ -97,6 +119,8 @@ func _process(_delta: float) -> void:
 
 ## Add a small effect scene to the current scene in the current position.
 func add_small_fx() -> void:
+	if not small_fx_scene:
+		return
 	var small_fx: Node2D = small_fx_scene.instantiate()
 	if color:
 		small_fx.modulate = color
@@ -120,18 +144,20 @@ func got_hit(player: Player) -> void:
 	var hit_speed := 100.0
 	var hit_vector: Vector2 = player.global_position.direction_to(global_position) * hit_speed
 	hit_sound.play()
-	animation_player.speed_scale = 2
-	gpu_particles_2d.amount_ratio = 1.
+	animated_sprite_2d.speed_scale = 2
+	if _trail_particles:
+		_trail_particles.amount_ratio = 1.
 	linear_velocity = Vector2.ZERO
 	apply_impulse(hit_vector)
 
 
 func explode() -> void:
-	var big_fx: Node2D = big_fx_scene.instantiate()
-	if color:
-		big_fx.modulate = color
-	get_tree().current_scene.add_child(big_fx)
-	big_fx.global_position = global_position
+	if big_fx_scene:
+		var big_fx: Node2D = big_fx_scene.instantiate()
+		if color:
+			big_fx.modulate = color
+		get_tree().current_scene.add_child(big_fx)
+		big_fx.global_position = global_position
 	queue_free()
 
 
