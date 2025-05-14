@@ -127,20 +127,6 @@ func is_solved() -> bool:
 	return _current_step == steps.size()
 
 
-func _get_rock_for_note(note: String) -> MusicalRock:
-	for rock in _rocks:
-		if rock.note == note:
-			return rock
-
-	return null
-
-
-func play_demo_note(note: String) -> void:
-	var rock := _get_rock_for_note(note)
-	if rock:
-		await rock.play()
-
-
 func _on_demonstrate_sequence(step: SequencePuzzleStep) -> void:
 	for rock in step.sequence:
 		await rock.play()
