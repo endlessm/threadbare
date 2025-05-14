@@ -3,10 +3,12 @@
 @tool
 extends Node2D
 
-@export var is_hidden: bool = false:
+@export var is_hidden: bool = true:
 	set(val):
 		var was_hidden: bool = is_hidden
 		is_hidden = val
+		if not is_node_ready():
+			return
 		if is_hidden != was_hidden:
 			_update_hidden_state()
 			notify_property_list_changed()
@@ -35,9 +37,6 @@ func _reveal() -> void:
 
 
 func _update_hidden_state() -> void:
-	if !animated_sprite_2d:
-		return
-
 	if is_hidden:
 		_hide()
 	else:
