@@ -7,7 +7,7 @@ extends StaticBody2D
 ## Emitted when the rock is struck by the player.
 signal note_played
 
-const DEFAULT_SPRITE_FRAMES: SpriteFrames = preload("uid://7ul4p7v1ve0p")
+const DEFAULT_SPRITE_FRAMES: SpriteFrames = preload("uid://b41l3fs3yj2fc")
 
 ## The animations which must be defined for [member sprite_frames]. The [code]default[/code]
 ## animation is used when the object is idle; [code]struck[/code] is used when the player interacts

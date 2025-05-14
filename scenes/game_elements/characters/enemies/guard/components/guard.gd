@@ -20,7 +20,7 @@ enum State {
 	RETURNING,
 }
 
-const DEFAULT_SPRITE_FRAMES = preload("uid://c4kqsgl2pcofo")
+const DEFAULT_SPRITE_FRAMES = preload("uid://ovu5wqo15s5g")
 
 const LOOK_AT_TURN_SPEED: float = 10.0
 
