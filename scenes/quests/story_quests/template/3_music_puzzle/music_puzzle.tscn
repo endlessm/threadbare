@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://x3wm2ce0ax8i"]
+[gd_scene load_steps=23 format=4 uid="uid://x3wm2ce0ax8i"]
 
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_0gc84"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_v7mls"]
@@ -20,6 +20,7 @@
 [ext_resource type="AudioStream" uid="uid://6oahn2ucxxjv" path="res://assets/third_party/xylophone-sampler-pack/xylophone-g3.ogg" id="10_wywhp"]
 [ext_resource type="AudioStream" uid="uid://bdboi4ndapqec" path="res://assets/third_party/xylophone-sampler-pack/xylophone-a3.ogg" id="11_s88gu"]
 [ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/sequence_puzzle_step.gd" id="13_111wc"]
+[ext_resource type="SpriteFrames" uid="uid://bhcgkxhy4cqf4" path="res://scenes/quests/story_quests/template/3_music_puzzle/sign_2.tres" id="13_h3jv3"]
 
 [sub_resource type="Resource" id="Resource_u8qfb"]
 script = ExtResource("6_u8qfb")
@@ -57,36 +58,36 @@ metadata/_custom_type_script = "uid://c68oh8dtr21ti"
 y_sort_enabled = true
 position = Vector2(356, 453)
 
-[node name="C" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("5_udrph")]
-modulate = Color(0.2937, 0.634442, 0.89, 1)
+[node name="Blue" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("5_udrph")]
+modulate = Color(0, 0.4, 0.6, 1)
 sprite_frames = ExtResource("6_h3jv3")
 audio_stream = ExtResource("6_111wc")
 
-[node name="D" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("5_udrph")]
+[node name="Pink" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("5_udrph")]
 modulate = Color(0.89, 0.2937, 0.804817, 1)
 position = Vector2(80, -8)
 sprite_frames = ExtResource("6_h3jv3")
 audio_stream = ExtResource("7_h3jv3")
 
-[node name="E" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("5_udrph")]
+[node name="Yellow" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("5_udrph")]
 modulate = Color(0.89, 0.804817, 0.2937, 1)
 position = Vector2(160, -16)
 sprite_frames = ExtResource("6_h3jv3")
 audio_stream = ExtResource("8_l74h8")
 
-[node name="F" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("5_udrph")]
-modulate = Color(0.2937, 0.89, 0.634451, 1)
+[node name="Green" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("5_udrph")]
+modulate = Color(0.188235, 0.717647, 0, 1)
 position = Vector2(240, -24)
 sprite_frames = ExtResource("6_h3jv3")
 audio_stream = ExtResource("9_bmpi1")
 
-[node name="G" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("5_udrph")]
+[node name="Purple" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("5_udrph")]
 modulate = Color(0.464066, 0.2937, 0.89, 1)
 position = Vector2(320, -32)
 sprite_frames = ExtResource("6_h3jv3")
 audio_stream = ExtResource("10_wywhp")
 
-[node name="A" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("5_udrph")]
+[node name="Red" parent="OnTheGround/MusicPuzzle/Rocks" instance=ExtResource("5_udrph")]
 modulate = Color(0.89, 0.2937, 0.2937, 1)
 position = Vector2(400, -40)
 sprite_frames = ExtResource("6_h3jv3")
@@ -100,19 +101,19 @@ position = Vector2(506, 210)
 
 [node name="BonfireSign2" parent="OnTheGround/MusicPuzzle/Signs" instance=ExtResource("4_td70e")]
 position = Vector2(593, 200)
-sign = 1
+sprite_frames = ExtResource("13_h3jv3")
 
 [node name="Steps" type="Node2D" parent="OnTheGround/MusicPuzzle"]
 
 [node name="SequencePuzzleStep1" type="Node2D" parent="OnTheGround/MusicPuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
 script = ExtResource("13_111wc")
-sequence = [NodePath("../../Rocks/C"), NodePath("../../Rocks/D"), NodePath("../../Rocks/E"), NodePath("../../Rocks/F"), NodePath("../../Rocks/G"), NodePath("../../Rocks/A")]
+sequence = [NodePath("../../Rocks/Yellow"), NodePath("../../Rocks/Green"), NodePath("../../Rocks/Blue")]
 hint_sign = NodePath("../../Signs/BonfireSign1")
 metadata/_custom_type_script = "uid://ccc78coj2b1li"
 
 [node name="SequencePuzzleStep2" type="Node2D" parent="OnTheGround/MusicPuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
 script = ExtResource("13_111wc")
-sequence = [NodePath("../../Rocks/A"), NodePath("../../Rocks/G"), NodePath("../../Rocks/F"), NodePath("../../Rocks/E"), NodePath("../../Rocks/D"), NodePath("../../Rocks/C")]
+sequence = [NodePath("../../Rocks/Blue"), NodePath("../../Rocks/Green"), NodePath("../../Rocks/Yellow"), NodePath("../../Rocks/Green")]
 hint_sign = NodePath("../../Signs/BonfireSign2")
 metadata/_custom_type_script = "uid://ccc78coj2b1li"
 

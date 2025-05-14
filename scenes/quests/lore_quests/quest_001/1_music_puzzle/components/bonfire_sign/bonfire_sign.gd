@@ -9,12 +9,17 @@ extends StaticBody2D
 ## complete.
 signal demonstrate_sequence
 
-enum Sign { FORWARD, BACK, BACK_UP, FORWARD_UP }
+const DEFAULT_SPRITE_FRAMES: SpriteFrames = preload("uid://b5pj1pt7r6hdg")
 
-@export var sign: Sign = Sign.FORWARD:
-	set(new_sign):
-		sign = new_sign
-		update_sign_sprite()
+## The animations which must be defined for [member sprite_frames]. The [code]idle[/code]
+## animation is used when [member is_ignited] is false;
+## [code]solved[/code] is used when [member is_ignited] is true.
+const REQUIRED_ANIMATIONS: Array[StringName] = [&"idle", &"solved"]
+
+## Animations for this object. The SpriteFrames must have specific animations.
+## See [constant BonfireSign.REQUIRED_ANIMATIONS].
+@export var sprite_frames: SpriteFrames:
+	set = _set_sprite_frames
 
 @export var is_ignited: bool = false:
 	set(new_val):
@@ -29,15 +34,15 @@ var interactive_hint: bool = false:
 		interactive_hint = new_value
 		update_ignited_state()
 
-@onready var fire: AnimatedSprite2D = %Fire
+@onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
 @onready var interact_area: InteractArea = %InteractArea
-@onready var sign_sprite: AnimatedSprite2D = %SignSprite
 
 @onready var fire_start_sound: AudioStreamPlayer2D = %FireStartSound
 @onready var fire_continuous_sound: AudioStreamPlayer2D = %FireContinuousSound
 
 
 func _ready() -> void:
+	_set_sprite_frames(sprite_frames)
 	update_ignited_state()
 
 
@@ -45,15 +50,13 @@ func update_ignited_state() -> void:
 	var was_node_ready: bool = is_node_ready()
 	if not was_node_ready:
 		await ready
-	fire.play(&"burning" if is_ignited else &"default")
+	animated_sprite.play(&"solved" if is_ignited else &"idle")
 	interact_area.disabled = not (
 		demonstrate_sequence.has_connections() and (is_ignited or interactive_hint)
 	)
 	## We don't want to play the fire start sound if the bonfire started on.
 	fire_start_sound.playing = is_ignited and was_node_ready
 	fire_continuous_sound.playing = is_ignited
-
-	update_sign_sprite()
 
 
 func ignite() -> void:
@@ -73,10 +76,21 @@ func demonstration_finished() -> void:
 	interact_area.end_interaction()
 
 
-func update_sign_sprite() -> void:
-	if !is_instance_valid(sign_sprite):
+func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
+	if not new_sprite_frames:
+		new_sprite_frames = DEFAULT_SPRITE_FRAMES
+	sprite_frames = new_sprite_frames
+	if not is_node_ready():
 		return
-	var suffix: String = "on" if is_ignited else "off"
-	var sign_string: String = Sign.find_key(sign)
+	animated_sprite.sprite_frames = new_sprite_frames
+	update_configuration_warnings()
 
-	sign_sprite.animation = "%s_%s" % [sign_string.to_snake_case(), suffix]
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray
+
+	for animation in REQUIRED_ANIMATIONS:
+		if not sprite_frames.has_animation(animation):
+			warnings.append("sprite_frames is missing the following animation: %s" % animation)
+
+	return warnings
