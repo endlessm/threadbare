@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=4 uid="uid://db6vhi7s2f37c"]
+[gd_scene load_steps=73 format=4 uid="uid://db6vhi7s2f37c"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_f6lvl"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_t8tj0"]
@@ -27,8 +27,10 @@
 [ext_resource type="Texture2D" uid="uid://bmhrkna5uimd4" path="res://assets/third_party/tiny-swords/Deco/08.png" id="20_djpoe"]
 [ext_resource type="Texture2D" uid="uid://ddxakjtgamrjj" path="res://assets/third_party/tiny-swords/Resources/Resources/W_Idle.png" id="21_7kcq2"]
 [ext_resource type="Texture2D" uid="uid://fas6gxj6up3p" path="res://assets/first_party/towers/Tower_Patchwork_Ruined2.png" id="21_foy1n"]
+[ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/shared_components/sprite_frames/storyweaver_blue.tres" id="21_p2u32"]
 [ext_resource type="Texture2D" uid="uid://dl6o7vcf2fyc" path="res://assets/first_party/towers/Tower_Patchwork_Ruined1.png" id="22_djpoe"]
 [ext_resource type="Texture2D" uid="uid://bh2iffvp0g1yv" path="res://assets/third_party/tiny-swords/Terrain/Water/Rocks/Rocks_01.png" id="22_wtfsj"]
+[ext_resource type="SpriteFrames" uid="uid://c4kqsgl2pcofo" path="res://scenes/game_elements/characters/enemies/guard/components/guard_sprite_frames.tres" id="23_5q0mi"]
 [ext_resource type="Texture2D" uid="uid://c6sxykigjd1ls" path="res://assets/third_party/tiny-swords/Terrain/Water/Rocks/Rocks_02.png" id="23_ulxtw"]
 [ext_resource type="Texture2D" uid="uid://drfnq08l2wbgy" path="res://assets/third_party/tiny-swords/Deco/03.png" id="24_wtfsj"]
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="25_ulxtw"]
@@ -824,6 +826,8 @@ texture = ExtResource("18_u5bfq")
 
 [node name="Player" parent="." instance=ExtResource("3_1b8xw")]
 position = Vector2(159, 105)
+player_name = "StoryWeaver"
+sprite_frames = ExtResource("21_p2u32")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 unique_name_in_owner = true
@@ -839,6 +843,7 @@ y_sort_enabled = true
 
 [node name="Guard-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(928, 95)
+sprite_frames = ExtResource("23_5q0mi")
 patrol_path = NodePath("../Guard-PatrolPath")
 move_speed = 200.0
 
@@ -849,6 +854,7 @@ curve = SubResource("Curve2D_vnsq3")
 
 [node name="Guard2-GoingInCircles" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(1567, 101.949)
+sprite_frames = ExtResource("23_5q0mi")
 patrol_path = NodePath("../Guard2-PatrolPath")
 wait_time = 0.8
 move_speed = 250.0
@@ -860,6 +866,7 @@ curve = SubResource("Curve2D_m6h06")
 
 [node name="Guard3-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(3165, 611)
+sprite_frames = ExtResource("23_5q0mi")
 patrol_path = NodePath("../Guard3-PatrolPath")
 wait_time = 0.3
 move_speed = 200.0
@@ -870,6 +877,7 @@ curve = SubResource("Curve2D_x2hsm")
 
 [node name="Guard4-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(2338, 792)
+sprite_frames = ExtResource("23_5q0mi")
 patrol_path = NodePath("../Guard4-PatrolPath")
 wait_time = 0.3
 move_speed = 200.0
@@ -880,6 +888,7 @@ curve = SubResource("Curve2D_frfu0")
 
 [node name="Guard5-AlternatingDirection" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(2875, 1203)
+sprite_frames = ExtResource("23_5q0mi")
 patrol_path = NodePath("../Guard5-PatrolPath")
 wait_time = 5.0
 move_speed = 300.0
@@ -891,6 +900,7 @@ curve = SubResource("Curve2D_d2jm8")
 
 [node name="Guard6-RunningInCircles" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(3550, 1307)
+sprite_frames = ExtResource("23_5q0mi")
 patrol_path = NodePath("../Guard6-PatrolPath")
 wait_time = 0.3
 move_speed = 1000.0
@@ -902,6 +912,7 @@ curve = SubResource("Curve2D_46hcm")
 
 [node name="Guard7-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(4607, 990)
+sprite_frames = ExtResource("23_5q0mi")
 patrol_path = NodePath("../Guard7-PatrolPath")
 player_instantly_detected_on_sight = true
 time_to_detect_player = 0.5
@@ -913,6 +924,7 @@ curve = SubResource("Curve2D_jgsr2")
 
 [node name="Guard8-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(4703, 1348)
+sprite_frames = ExtResource("23_5q0mi")
 patrol_path = NodePath("../Guard8-PatrolPath")
 wait_time = 1.5
 player_instantly_detected_on_sight = true
@@ -925,6 +937,7 @@ curve = SubResource("Curve2D_f6lvl")
 
 [node name="Guard9-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(6353, 1189)
+sprite_frames = ExtResource("23_5q0mi")
 patrol_path = NodePath("../Guard9-PatrolPath")
 wait_time = 1.5
 move_speed = 400.0
@@ -937,6 +950,7 @@ curve = SubResource("Curve2D_ww60d")
 
 [node name="Guard10-RunningInCircles" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(5728.01, 670)
+sprite_frames = ExtResource("23_5q0mi")
 patrol_path = NodePath("../Guard10-PatrolPath")
 wait_time = 0.0
 move_speed = 600.0
@@ -949,6 +963,7 @@ curve = SubResource("Curve2D_1b8xw")
 
 [node name="Guard11-RunningBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(6053.16, 1244.44)
+sprite_frames = ExtResource("23_5q0mi")
 patrol_path = NodePath("../Guard11-PatrolPath")
 wait_time = 0.5
 move_speed = 500.0
@@ -960,6 +975,7 @@ curve = SubResource("Curve2D_idy4y")
 
 [node name="Guard12-RunningBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("8_lbv6i")]
 position = Vector2(6179.21, 670.264)
+sprite_frames = ExtResource("23_5q0mi")
 patrol_path = NodePath("../Guard12-PatrolPath")
 wait_time = 0.5
 move_speed = 450.0

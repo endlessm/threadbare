@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://cgemeabsewy1f"]
+[gd_scene load_steps=19 format=4 uid="uid://cgemeabsewy1f"]
 
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="2_wqron"]
 [ext_resource type="AudioStream" uid="uid://dgwihwibc8ah6" path="res://assets/first_party/music/Threadbare_Combat.ogg" id="3_0kd4s"]
@@ -8,11 +8,13 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_bk6nl"]
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="6_e81yh"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="7_btlpg"]
+[ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/shared_components/sprite_frames/storyweaver_blue.tres" id="9_bk6nl"]
 [ext_resource type="SpriteFrames" uid="uid://bs0idpewu2plj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_yellow.tres" id="10_0kd4s"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="10_muw2v"]
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="10_wqron"]
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter/components/teleporter.gd" id="11_0kd4s"]
 [ext_resource type="SpriteFrames" uid="uid://dnq8cw1cio2we" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_green.tres" id="11_bk6nl"]
+[ext_resource type="SpriteFrames" uid="uid://bhamin2pby7tq" path="res://scenes/game_elements/props/projectile/components/inkblob_spriteframes.tres" id="12_e81yh"]
 
 [sub_resource type="Animation" id="Animation_nlryc"]
 resource_name = "goal_completed"
@@ -110,9 +112,9 @@ position = Vector2(0, -25)
 collision_layer = 4
 script = ExtResource("11_0kd4s")
 next_scene = "uid://bo6qfusag3fae"
-spawn_point_path = NodePath("")
-exit_transition = 3
 enter_transition = 3
+exit_transition = 3
+spawn_point_path = NodePath("")
 metadata/_custom_type_script = "uid://hqdquinbimce"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/LevelExit/Teleporter"]
@@ -121,16 +123,20 @@ shape = SubResource("RectangleShape2D_e81yh")
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("5_bk6nl")]
 position = Vector2(414, 501)
+player_name = "StoryWeaver"
+sprite_frames = ExtResource("9_bk6nl")
 
 [node name="ThrowingEnemy" parent="OnTheGround" instance=ExtResource("6_e81yh")]
 position = Vector2(59, 264)
 autostart = true
 sprite_frames = ExtResource("10_0kd4s")
+projectile_sprite_frames = ExtResource("12_e81yh")
 
 [node name="ThrowingEnemy2" parent="OnTheGround" instance=ExtResource("6_e81yh")]
 position = Vector2(62, 410)
 autostart = true
 sprite_frames = ExtResource("11_bk6nl")
+projectile_sprite_frames = ExtResource("12_e81yh")
 
 [node name="FillingBarrel" parent="OnTheGround" instance=ExtResource("7_btlpg")]
 position = Vector2(839, 248)
@@ -145,7 +151,6 @@ color = Color(1, 0.972549, 0, 1)
 [node name="Door Enter" parent="OnTheGround" instance=ExtResource("10_wqron")]
 position = Vector2(417, 592)
 scale = Vector2(1.1, 1.1)
-play_victory_fanfare_on_open = false
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 

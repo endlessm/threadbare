@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://c764br4tplkb2"]
+[gd_scene load_steps=20 format=4 uid="uid://c764br4tplkb2"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_wrx86"]
 [ext_resource type="Resource" uid="uid://cmhcuoms2kh1a" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/dialogues/ink_well.dialogue" id="2_o41k0"]
@@ -12,6 +12,9 @@
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="5_nlryc"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="6_v7ikp"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="9_na0be"]
+[ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/shared_components/sprite_frames/storyweaver_blue.tres" id="10_hlahk"]
+[ext_resource type="SpriteFrames" uid="uid://b3r84ksew5djp" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_purple.tres" id="12_h7w4n"]
+[ext_resource type="SpriteFrames" uid="uid://bhamin2pby7tq" path="res://scenes/game_elements/props/projectile/components/inkblob_spriteframes.tres" id="13_gn6oy"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="13_hlahk"]
 
 [sub_resource type="Animation" id="Animation_nlryc"]
@@ -127,9 +130,9 @@ position = Vector2(0, -25)
 collision_layer = 4
 script = ExtResource("5_lmnu5")
 next_scene = "uid://cgemeabsewy1f"
-spawn_point_path = NodePath("")
-exit_transition = 3
 enter_transition = 3
+exit_transition = 3
+spawn_point_path = NodePath("")
 metadata/_custom_type_script = "uid://hqdquinbimce"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/LevelExit/Teleporter"]
@@ -138,6 +141,8 @@ shape = SubResource("RectangleShape2D_lmnu5")
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("3_v7ikp")]
 position = Vector2(28, 487)
+player_name = "StoryWeaver"
+sprite_frames = ExtResource("10_hlahk")
 
 [node name="Door Enter" parent="OnTheGround" instance=ExtResource("5_bxnsu")]
 position = Vector2(32, 574)
@@ -145,6 +150,8 @@ scale = Vector2(1.1, 1.1)
 
 [node name="ThrowingEnemy" parent="OnTheGround" instance=ExtResource("5_h0i4r")]
 position = Vector2(857, 300)
+sprite_frames = ExtResource("12_h7w4n")
+projectile_sprite_frames = ExtResource("13_gn6oy")
 
 [node name="FillingBarrel" parent="OnTheGround" instance=ExtResource("6_v7ikp")]
 position = Vector2(528, 164)
