@@ -14,6 +14,8 @@ const DEFAULT_SPRITE_FRAMES: SpriteFrames = preload("uid://b5pj1pt7r6hdg")
 ## The animations which must be defined for [member sprite_frames]. The [code]idle[/code]
 ## animation is used when [member is_ignited] is false;
 ## [code]solved[/code] is used when [member is_ignited] is true.
+## Optionally, a [code]hint[/code] animation can be defined, which will be played when the player
+## interacts with the sign to see a demonstration of the sequence.
 const REQUIRED_ANIMATIONS: Array[StringName] = [&"idle", &"solved"]
 
 ## Animations for this object. The SpriteFrames must have specific animations.
@@ -64,6 +66,9 @@ func ignite() -> void:
 
 
 func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -> void:
+	if sprite_frames.has_animation(&"hint"):
+		animated_sprite.play(&"hint")
+
 	if demonstrate_sequence.has_connections():
 		demonstrate_sequence.emit()
 	else:
@@ -73,6 +78,12 @@ func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -
 ## Should be called by the handler of [signal demonstrate_sequence] when the demonstration is
 ## complete.
 func demonstration_finished() -> void:
+	if animated_sprite.animation == &"hint":
+		if animated_sprite.is_playing():
+			await animated_sprite.animation_finished
+
+		animated_sprite.play(&"solved" if is_ignited else &"idle")
+
 	interact_area.end_interaction()
 
 
