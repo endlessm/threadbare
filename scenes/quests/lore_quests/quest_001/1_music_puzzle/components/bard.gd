@@ -5,7 +5,7 @@
 class_name Bard
 extends Talker
 
-@export var puzzle: MusicPuzzle
+@export var puzzle: SequencePuzzle
 
 var first_conversation: bool = true
 
