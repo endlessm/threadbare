@@ -7,12 +7,17 @@ repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v5.0.0
   hooks:
-  - id: trailing-whitespace
-    exclude: \.svg$
+  - id: check-added-large-files
+    args:
+      - --enforce-all
+  - id: check-case-conflict
+  - id: check-illegal-windows-names
+  - id: check-yaml
   - id: end-of-file-fixer
     exclude: \.svg$
-  - id: check-yaml
-  - id: check-added-large-files
+  - id: trailing-whitespace
+    exclude: \.svg$
+
 - repo: https://github.com/Scony/godot-gdscript-toolkit
   rev: 4.3.3
   hooks:

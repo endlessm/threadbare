@@ -8,6 +8,12 @@ signal solved
 ## The order in which the player must interact with rocks to solve each step of the puzzle
 @export var steps: Array[SequencePuzzleStep]
 
+## If enabled, the [BonfireSign] for the current step of the puzzle will be interactive, allowing
+## the player to interact with the sign to see a demo of the corresponding sequence. If false, the
+## signs are only interactive once the player has solved the corresponding step, which makes the
+## puzzle harder!
+@export var interactive_hints: bool = true
+
 ## If enabled, show messages in the console describing the player's progress (or not) in the puzzle
 @export var debug: bool = false
 
@@ -32,6 +38,9 @@ func _ready() -> void:
 	hint_timer.wait_time = wobble_hint_time
 	hint_timer.timeout.connect(_on_hint_timer_timeout)
 	add_child(hint_timer)
+
+	for step: SequencePuzzleStep in steps:
+		step.hint_sign.demonstrate_sequence.connect(_on_demonstrate_sequence.bind(step))
 
 	_update_current_step()
 
@@ -58,6 +67,9 @@ func _update_current_step() -> void:
 			_position = 0
 		else:
 			break
+
+	if interactive_hints and _current_step < steps.size():
+		steps[_current_step].hint_sign.interactive_hint = true
 
 
 func _debug(fmt: String, args: Array = []) -> void:
@@ -115,26 +127,10 @@ func is_solved() -> bool:
 	return _current_step == steps.size()
 
 
-func _get_rock_for_note(note: String) -> MusicalRock:
-	for rock in _rocks:
-		if rock.note == note:
-			return rock
-
-	return null
-
-
-func play_demo_note(note: String) -> void:
-	var rock := _get_rock_for_note(note)
-	if rock:
+func _on_demonstrate_sequence(step: SequencePuzzleStep) -> void:
+	for rock in step.sequence:
 		await rock.play()
-
-
-func play_demo_melody_of_fire(hint_sign: BonfireSign) -> void:
-	for step in steps:
-		if step.hint_sign == hint_sign:
-			for rock in step.sequence:
-				await rock.play()
-			return
+	step.hint_sign.demonstration_finished()
 
 
 func _on_hint_timer_timeout() -> void:

@@ -1,71 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://j8mqjkg0rvai"]
+[gd_scene load_steps=6 format=3 uid="uid://j8mqjkg0rvai"]
 
 [ext_resource type="Script" uid="uid://bofv3bcwj3rx2" path="res://scenes/game_elements/props/projectile/components/projectile.gd" id="1_kxdg3"]
-[ext_resource type="Texture2D" uid="uid://sgprgh3jbreo" path="res://scenes/game_elements/props/projectile/components/ink_blob.png" id="2_t6bt1"]
-[ext_resource type="Texture2D" uid="uid://crddup3m6hwbm" path="res://scenes/game_elements/props/projectile/components/ink_particle.png" id="3_elbh8"]
+[ext_resource type="SpriteFrames" uid="uid://bhamin2pby7tq" path="res://scenes/game_elements/props/projectile/components/inkblob_spriteframes.tres" id="2_8sng6"]
 [ext_resource type="AudioStream" uid="uid://7jlv4wqpihl7" path="res://scenes/game_elements/props/projectile/components/blob_hit.wav" id="4_q6q4o"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tbgi4"]
 friction = 0.0
 bounce = 1.0
 
-[sub_resource type="Animation" id="Animation_l5glv"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("VisibleThings/Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
-[sub_resource type="Animation" id="Animation_y25gk"]
-resource_name = "ink"
-length = 0.6
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("VisibleThings/Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_eoqba"]
-_data = {
-&"RESET": SubResource("Animation_l5glv"),
-&"ink": SubResource("Animation_y25gk")
-}
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o6xl0"]
 size = Vector2(44, 44)
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_eoqba"]
-particles_animation = true
-particles_anim_h_frames = 1
-particles_anim_v_frames = 5
-particles_anim_loop = false
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y25gk"]
-particle_flag_disable_z = true
-emission_shape = 1
-emission_sphere_radius = 15.0
-angle_min = 1.07288e-05
-angle_max = 360.0
-gravity = Vector3(0, 98, 0)
-anim_speed_min = 1.0
-anim_speed_max = 1.0
 
 [node name="Projectile" type="RigidBody2D" groups=["projectiles"]]
 collision_layer = 256
@@ -79,13 +23,6 @@ contact_monitor = true
 max_contacts_reported = 1
 script = ExtResource("1_kxdg3")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-unique_name_in_owner = true
-libraries = {
-&"": SubResource("AnimationLibrary_eoqba")
-}
-autoplay = "ink"
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_o6xl0")
 
@@ -93,20 +30,14 @@ shape = SubResource("RectangleShape2D_o6xl0")
 unique_name_in_owner = true
 position = Vector2(-3, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="VisibleThings"]
-position = Vector2(-32, 0)
-texture = ExtResource("2_t6bt1")
-vframes = 6
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="VisibleThings"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VisibleThings"]
 unique_name_in_owner = true
-material = SubResource("CanvasItemMaterial_eoqba")
-position = Vector2(-40, 2)
-scale = Vector2(2, 2)
-amount = 16
-amount_ratio = 0.1
-texture = ExtResource("3_elbh8")
-process_material = SubResource("ParticleProcessMaterial_y25gk")
+sprite_frames = ExtResource("2_8sng6")
+autoplay = "default"
+
+[node name="TrailFXMarker" type="Marker2D" parent="VisibleThings"]
+unique_name_in_owner = true
+position = Vector2(-40, 0)
 
 [node name="DurationTimer" type="Timer" parent="."]
 unique_name_in_owner = true

@@ -1,7 +1,8 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name Shaker extends Node2D
+class_name Shaker
+extends Node2D
 
 ## Node that applies a shake to a target by applying a shift in its position
 ## and rotation over time.
@@ -21,7 +22,8 @@ signal finished
 ## Higher frequencies means that the node's position will be offset faster.
 @export_range(1.0, 30.0, 1.0, "or_greater", "or_less") var frequency: float = 10.0
 ## Test out the shake parameters in the editor
-@export_tool_button("Test") var _test = shake
+@warning_ignore("unused_private_class_variable")
+@export_tool_button("Test") var _test: Callable = shake
 
 ## Noise used to generate random values between -1 and 1
 var noise: FastNoiseLite = FastNoiseLite.new()
@@ -40,8 +42,12 @@ var current_intensity: float = 0.0
 ## Reference to the tween that will decrease the [member current_intensity]
 var shake_tween: Tween
 
+## The device ID for the last controller we saw input from, or -1 if we have never seen input from a
+## controller or if the last input was on a keyboard.
+var _last_controller_id: int = -1
 
-func _ready():
+
+func _ready() -> void:
 	noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	noise.frequency = 1.0
 
@@ -57,9 +63,11 @@ func _ready():
 ## Emits the [signal started] signal as soon as it's called. [br]
 ## If the shake is called multiple times, it will only emit the [signal
 ## finished] signal when the last effect is completed.
-func shake(intensity: float = shake_intensity, time: float = duration):
+func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 	noise.seed = randi()
 	started.emit()
+	if _last_controller_id >= 0:
+		Input.start_joy_vibration(_last_controller_id, 0.5, 0.5, time)
 	var shaking_already_in_progress: bool = shake_tween and shake_tween.is_valid()
 	if shaking_already_in_progress:
 		shake_tween.kill()
@@ -78,17 +86,26 @@ func shake(intensity: float = shake_intensity, time: float = duration):
 	finished.emit()
 
 
-func _process(delta):
+func _input(event: InputEvent) -> void:
+	if event is InputEventJoypadButton or event is InputEventJoypadMotion:
+		_last_controller_id = event.device
+	elif event is InputEventKey:
+		_last_controller_id = -1
+
+
+func _process(delta: float) -> void:
 	if current_intensity > 0.0:
 		time_passed += delta * frequency
-		var offset_x = noise.get_noise_1d(time_passed) * current_intensity
-		var offset_y = noise.get_noise_1d(time_passed + 100) * current_intensity
-		var rotation_offset = noise.get_noise_1d(time_passed + 200) * current_intensity * 0.01
+		var offset_x: float = noise.get_noise_1d(time_passed) * current_intensity
+		var offset_y: float = noise.get_noise_1d(time_passed + 100) * current_intensity
+		var rotation_offset: float = (
+			noise.get_noise_1d(time_passed + 200) * current_intensity * 0.01
+		)
 
-		var new_position = Vector2(original_position.x + offset_x, original_position.y + offset_y)
-		var new_rotation = original_rotation + rotation_offset
+		var new_position := Vector2(original_position.x + offset_x, original_position.y + offset_y)
+		var new_rotation := original_rotation + rotation_offset
 		if target is Camera2D:
 			target.offset = new_position
 		else:
 			target.position = new_position
-		target.rotation = original_rotation + rotation_offset
+		target.rotation = new_rotation
