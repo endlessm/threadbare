@@ -62,8 +62,8 @@ func _find_rocks() -> void:
 
 func _update_current_step() -> void:
 	for i in range(_current_step, steps.size()):
-		# We find the next fire that is not ignited, and that's the _current_step
-		if steps[i].hint_sign.is_ignited:
+		# We find the next fire that is not solved, and that's the _current_step
+		if steps[i].hint_sign.is_solved:
 			_current_step = i + 1
 			_position = 0
 		else:
@@ -108,7 +108,7 @@ func _on_note_played(rock: MusicalRock) -> void:
 		return
 
 	_debug("Finished sequnce")
-	step.hint_sign.ignite()
+	step.hint_sign.set_solved()
 	_update_current_step()
 
 	_clear_last_hint_rock()
