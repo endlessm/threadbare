@@ -14,14 +14,25 @@ const DEFAULT_SPRITE_FRAMES: SpriteFrames = preload("uid://b5pj1pt7r6hdg")
 ## The animations which must be defined for [member sprite_frames]. The [code]idle[/code]
 ## animation is used when [member is_solved] is false;
 ## [code]solved[/code] is used when [member is_solved] is true.
-## Optionally, a [code]hint[/code] animation can be defined, which will be played when the player
-## interacts with the sign to see a demonstration of the sequence.
+##
+## A [code]hint[/code] animation can be defined, which will be played when the player
+## interacts with the sign. This is optional if [member interact_demonstrates] is [code]true[/code]
+## (the default) and required otherwise.
 const REQUIRED_ANIMATIONS: Array[StringName] = [&"idle", &"solved"]
 
 ## Animations for this object. The SpriteFrames must have specific animations.
 ## See [constant SequencePuzzleHintSign.REQUIRED_ANIMATIONS].
 @export var sprite_frames: SpriteFrames:
 	set = _set_sprite_frames
+
+## If enabled, the sequence will be demonstrated when the player interacts with the sign, in
+## addition to playing the [code]hint[/code] animation (if present).
+##
+## If disabled, only the [code]hint[/code] animation will be played. This makes the puzzle harder!
+@export var interact_demonstrates: bool = true:
+	set(new_value):
+		interact_demonstrates = new_value
+		update_configuration_warnings()
 
 ## Whether the corresponding puzzle step has been solved.
 ##
@@ -88,7 +99,7 @@ func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -
 	if sprite_frames.has_animation(&"hint"):
 		animated_sprite.play(&"hint")
 
-	if demonstrate_sequence.has_connections():
+	if interact_demonstrates and demonstrate_sequence.has_connections():
 		demonstrate_sequence.emit()
 	else:
 		demonstration_finished()
@@ -136,8 +147,12 @@ func _set_solved_ambient_sound(new_sound: AudioStream) -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
+	var all_animations: Array[StringName] = REQUIRED_ANIMATIONS.duplicate()
 
-	for animation in REQUIRED_ANIMATIONS:
+	if not interact_demonstrates:
+		all_animations.append(&"hint")
+
+	for animation in all_animations:
 		if not sprite_frames.has_animation(animation):
 			warnings.append("sprite_frames is missing the following animation: %s" % animation)
 
