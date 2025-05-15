@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=4 uid="uid://7hoy2p14t6kc"]
+[gd_scene load_steps=45 format=4 uid="uid://7hoy2p14t6kc"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_evicy"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_0ayb4"]
@@ -34,6 +34,12 @@
 [ext_resource type="AudioStream" uid="uid://8k1hyi4gjae4" path="res://assets/third_party/xylophone-sampler-pack/xylophone-f3.ogg" id="26_qswm5"]
 [ext_resource type="AudioStream" uid="uid://6oahn2ucxxjv" path="res://assets/third_party/xylophone-sampler-pack/xylophone-g3.ogg" id="27_pnt3a"]
 [ext_resource type="AudioStream" uid="uid://bdboi4ndapqec" path="res://assets/third_party/xylophone-sampler-pack/xylophone-a3.ogg" id="28_0wfv2"]
+[ext_resource type="SpriteFrames" uid="uid://pabpxy4b51t2" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign_forward.tres" id="29_crvxf"]
+[ext_resource type="SpriteFrames" uid="uid://ddpiw5p3lcyud" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign_forward_up.tres" id="30_0wfv2"]
+[ext_resource type="AudioStream" uid="uid://ctty20c12j0f5" path="res://assets/third_party/sounds/bonfire_sign/FireStart.ogg" id="30_55bav"]
+[ext_resource type="SpriteFrames" uid="uid://d22724e7hsofa" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign_backward_up.tres" id="31_55bav"]
+[ext_resource type="AudioStream" uid="uid://c7om8kdork2rx" path="res://assets/third_party/sounds/characters/enemies/guard/Torch.ogg" id="31_ink4c"]
+[ext_resource type="SpriteFrames" uid="uid://cefk7kf0bpm3q" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign_backward.tres" id="32_0wfv2"]
 [ext_resource type="AudioStream" uid="uid://xuqj6b5qqs3w" path="res://assets/third_party/sounds/ambient/459405__pfannkuchn__small-river-1-fast-semi-close.ogg" id="35_l8fgn"]
 
 [sub_resource type="Resource" id="Resource_dp3eg"]
@@ -1450,28 +1456,33 @@ audio_stream = ExtResource("28_0wfv2")
 [node name="Bonfires" type="Node2D" parent="OnTheGround/MusicPuzzle"]
 y_sort_enabled = true
 
-[node name="BonfireSign1" parent="OnTheGround/MusicPuzzle/Bonfires" node_paths=PackedStringArray("puzzle") instance=ExtResource("9_evicy")]
+[node name="BonfireSign1" parent="OnTheGround/MusicPuzzle/Bonfires" instance=ExtResource("9_evicy")]
 position = Vector2(-1057, -196)
 scale = Vector2(1.2, 1.2)
-puzzle = NodePath("../..")
+sprite_frames = ExtResource("29_crvxf")
+solved_sound_effect = ExtResource("30_55bav")
+solved_ambient_sound = ExtResource("31_ink4c")
 
-[node name="BonfireSign2" parent="OnTheGround/MusicPuzzle/Bonfires" node_paths=PackedStringArray("puzzle") instance=ExtResource("9_evicy")]
+[node name="BonfireSign2" parent="OnTheGround/MusicPuzzle/Bonfires" instance=ExtResource("9_evicy")]
 position = Vector2(-931, -221)
 scale = Vector2(1.2, 1.2)
-puzzle = NodePath("../..")
-sign = 3
+sprite_frames = ExtResource("30_0wfv2")
+solved_sound_effect = ExtResource("30_55bav")
+solved_ambient_sound = ExtResource("31_ink4c")
 
-[node name="BonfireSign3" parent="OnTheGround/MusicPuzzle/Bonfires" node_paths=PackedStringArray("puzzle") instance=ExtResource("9_evicy")]
+[node name="BonfireSign3" parent="OnTheGround/MusicPuzzle/Bonfires" instance=ExtResource("9_evicy")]
 position = Vector2(-803, -223)
 scale = Vector2(1.2, 1.2)
-puzzle = NodePath("../..")
-sign = 2
+sprite_frames = ExtResource("31_55bav")
+solved_sound_effect = ExtResource("30_55bav")
+solved_ambient_sound = ExtResource("31_ink4c")
 
-[node name="BonfireSign4" parent="OnTheGround/MusicPuzzle/Bonfires" node_paths=PackedStringArray("puzzle") instance=ExtResource("9_evicy")]
+[node name="BonfireSign4" parent="OnTheGround/MusicPuzzle/Bonfires" instance=ExtResource("9_evicy")]
 position = Vector2(-672, -196)
 scale = Vector2(1.2, 1.2)
-puzzle = NodePath("../..")
-sign = 1
+sprite_frames = ExtResource("32_0wfv2")
+solved_sound_effect = ExtResource("30_55bav")
+solved_ambient_sound = ExtResource("31_ink4c")
 
 [node name="Steps" type="Node2D" parent="OnTheGround/MusicPuzzle"]
 

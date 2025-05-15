@@ -39,6 +39,9 @@ func _ready() -> void:
 	hint_timer.timeout.connect(_on_hint_timer_timeout)
 	add_child(hint_timer)
 
+	for step: SequencePuzzleStep in steps:
+		step.hint_sign.demonstrate_sequence.connect(_on_demonstrate_sequence.bind(step))
+
 	_update_current_step()
 
 	for i in range(steps.size()):
@@ -124,26 +127,10 @@ func is_solved() -> bool:
 	return _current_step == steps.size()
 
 
-func _get_rock_for_note(note: String) -> MusicalRock:
-	for rock in _rocks:
-		if rock.note == note:
-			return rock
-
-	return null
-
-
-func play_demo_note(note: String) -> void:
-	var rock := _get_rock_for_note(note)
-	if rock:
+func _on_demonstrate_sequence(step: SequencePuzzleStep) -> void:
+	for rock in step.sequence:
 		await rock.play()
-
-
-func play_demo_melody_of_fire(hint_sign: BonfireSign) -> void:
-	for step in steps:
-		if step.hint_sign == hint_sign:
-			for rock in step.sequence:
-				await rock.play()
-			return
+	step.hint_sign.demonstration_finished()
 
 
 func _on_hint_timer_timeout() -> void:
