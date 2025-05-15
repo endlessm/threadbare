@@ -11,7 +11,7 @@ extends Node2D
 		update_configuration_warnings()
 
 ## An optional sign, showing a hint for this step and whether it has been solved.
-@export var hint_sign: BonfireSign:
+@export var hint_sign: SequencePuzzleHintSign:
 	set(new_value):
 		hint_sign = new_value
 		update_configuration_warnings()

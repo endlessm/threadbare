@@ -1,12 +1,12 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name BonfireSign
+class_name SequencePuzzleHintSign
 extends StaticBody2D
 
 ## Emitted when the player has interacted with the sign, expecting a demonstration of the sequence.
-## The handler should call [method BonfireSign.demonstration_finished] when the demonstration is
-## complete.
+## The handler should call
+## [method SequencePuzzleHintSign.demonstration_finished] when the demonstration is complete.
 signal demonstrate_sequence
 
 const DEFAULT_SPRITE_FRAMES: SpriteFrames = preload("uid://b5pj1pt7r6hdg")
@@ -19,7 +19,7 @@ const DEFAULT_SPRITE_FRAMES: SpriteFrames = preload("uid://b5pj1pt7r6hdg")
 const REQUIRED_ANIMATIONS: Array[StringName] = [&"idle", &"solved"]
 
 ## Animations for this object. The SpriteFrames must have specific animations.
-## See [constant BonfireSign.REQUIRED_ANIMATIONS].
+## See [constant SequencePuzzleHintSign.REQUIRED_ANIMATIONS].
 @export var sprite_frames: SpriteFrames:
 	set = _set_sprite_frames
 
