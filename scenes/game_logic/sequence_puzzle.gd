@@ -1,17 +1,18 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name MusicPuzzle
+class_name SequencePuzzle
 extends Node2D
 
 signal solved
 
-## The order in which the player must interact with rocks to solve each step of the puzzle
+## The order in which the player must interact with objects to solve each step of the puzzle
 @export var steps: Array[SequencePuzzleStep]
 
-## If enabled, the [BonfireSign] for the current step of the puzzle will be interactive, allowing
-## the player to interact with the sign to see a demo of the corresponding sequence. If false, the
-## signs are only interactive once the player has solved the corresponding step, which makes the
-## puzzle harder!
+## If enabled, the [SequencePuzzleHintSign] for the current step of the puzzle
+## will be interactive, allowing the player to interact with the sign to see a
+## demo of the corresponding sequence. If false, the signs are only interactive
+## once the player has solved the corresponding step, which makes the puzzle
+## harder!
 @export var interactive_hints: bool = true
 
 ## If enabled, show messages in the console describing the player's progress (or not) in the puzzle
@@ -24,15 +25,15 @@ var hint_timer: Timer = Timer.new()
 
 var hint_levels: Dictionary = {}
 
-var _rocks: Array[MusicalRock]
+var _objects: Array[SequencePuzzleObject]
 
-var _last_hint_rock: MusicalRock = null
+var _last_hint_object: SequencePuzzleObject = null
 var _current_step: int = 0
 var _position: int = 0
 
 
 func _ready() -> void:
-	_find_rocks()
+	_find_objects()
 
 	hint_timer.one_shot = true
 	hint_timer.wait_time = wobble_hint_time
@@ -49,20 +50,20 @@ func _ready() -> void:
 			hint_levels[i] = 0
 
 
-func _find_rocks() -> void:
-	_rocks.clear()
+func _find_objects() -> void:
+	_objects.clear()
 
-	for object: Node in get_tree().get_nodes_in_group(&"sequence_object"):
-		if self.is_ancestor_of(object) and object is MusicalRock:
-			var rock := object as MusicalRock
-			_rocks.append(rock)
-			rock.note_played.connect(_on_note_played.bind(rock))
+	for o: Node in get_tree().get_nodes_in_group(&"sequence_object"):
+		if self.is_ancestor_of(o) and o is SequencePuzzleObject:
+			var object := o as SequencePuzzleObject
+			_objects.append(object)
+			object.kicked.connect(_on_kicked.bind(object))
 
 
 func _update_current_step() -> void:
 	for i in range(_current_step, steps.size()):
-		# We find the next fire that is not ignited, and that's the _current_step
-		if steps[i].hint_sign.is_ignited:
+		# We find the next fire that is not solved, and that's the _current_step
+		if steps[i].hint_sign.is_solved:
 			_current_step = i + 1
 			_position = 0
 		else:
@@ -77,7 +78,7 @@ func _debug(fmt: String, args: Array = []) -> void:
 		print((fmt % args) if args else fmt)
 
 
-func _on_note_played(rock: MusicalRock) -> void:
+func _on_kicked(object: SequencePuzzleObject) -> void:
 	if _current_step >= steps.size():
 		return
 
@@ -85,16 +86,16 @@ func _on_note_played(rock: MusicalRock) -> void:
 	var sequence := step.sequence
 	_debug(
 		"Current sequence %s position %d expecting %s, received %s",
-		[sequence, _position, sequence[_position], rock],
+		[sequence, _position, sequence[_position], object],
 	)
-	if _position != 0 and sequence[_position] != rock:
+	if _position != 0 and sequence[_position] != object:
 		_debug("Didn't match")
 		_position = 0
 		_debug("Matching again at start of sequence...")
 
-	if sequence[_position] != rock:
+	if sequence[_position] != object:
 		_debug("Didn't match")
-		for r: MusicalRock in _rocks:
+		for r: SequencePuzzleObject in _objects:
 			r.stop_hint()
 		if hint_levels.get(get_progress(), 0) >= wobble_hint_min_level:
 			hint_timer.start()
@@ -107,10 +108,10 @@ func _on_note_played(rock: MusicalRock) -> void:
 		return
 
 	_debug("Finished sequnce")
-	step.hint_sign.ignite()
+	step.hint_sign.set_solved()
 	_update_current_step()
 
-	_clear_last_hint_rock()
+	_clear_last_hint_object()
 
 	if _current_step == steps.size():
 		_debug("All sequences played")
@@ -128,8 +129,8 @@ func is_solved() -> bool:
 
 
 func _on_demonstrate_sequence(step: SequencePuzzleStep) -> void:
-	for rock in step.sequence:
-		await rock.play()
+	for object in step.sequence:
+		await object.play()
 	step.hint_sign.demonstration_finished()
 
 
@@ -138,27 +139,27 @@ func _on_hint_timer_timeout() -> void:
 		return
 
 	var sequence := steps[_current_step].sequence
-	var rock := sequence[_position]
-	if rock:
-		if rock != _last_hint_rock:
-			_clear_last_hint_rock()
-			_last_hint_rock = rock
+	var object := sequence[_position]
+	if object:
+		if object != _last_hint_object:
+			_clear_last_hint_object()
+			_last_hint_object = object
 
-		if is_instance_valid(_last_hint_rock):
-			_last_hint_rock.wobble_silently()
+		if is_instance_valid(_last_hint_object):
+			_last_hint_object.wobble_silently()
 
 	hint_timer.start()
 
 
-func _clear_last_hint_rock() -> void:
-	if _last_hint_rock and is_instance_valid(_last_hint_rock):
-		_last_hint_rock.stop_hint()
-		_last_hint_rock = null
+func _clear_last_hint_object() -> void:
+	if _last_hint_object and is_instance_valid(_last_hint_object):
+		_last_hint_object.stop_hint()
+		_last_hint_object = null
 
 
 func stop_hints() -> void:
 	hint_timer.stop()
-	_clear_last_hint_rock()
+	_clear_last_hint_object()
 
 
 func reset_hint_timer() -> void:

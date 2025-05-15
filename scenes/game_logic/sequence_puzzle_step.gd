@@ -5,13 +5,13 @@ class_name SequencePuzzleStep
 extends Node2D
 
 ## The sequence of objects the player must interact with to solve this step of the puzzle.
-@export var sequence: Array[MusicalRock]:
+@export var sequence: Array[SequencePuzzleObject]:
 	set(new_value):
 		sequence = new_value
 		update_configuration_warnings()
 
 ## An optional sign, showing a hint for this step and whether it has been solved.
-@export var hint_sign: BonfireSign:
+@export var hint_sign: SequencePuzzleHintSign:
 	set(new_value):
 		hint_sign = new_value
 		update_configuration_warnings()

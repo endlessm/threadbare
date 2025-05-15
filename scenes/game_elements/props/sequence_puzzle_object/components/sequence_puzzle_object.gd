@@ -1,11 +1,11 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name MusicalRock
+class_name SequencePuzzleObject
 extends StaticBody2D
 
-## Emitted when the rock is struck by the player.
-signal note_played
+## Emitted when the object is kicked by the player.
+signal kicked
 
 const DEFAULT_SPRITE_FRAMES: SpriteFrames = preload("uid://b41l3fs3yj2fc")
 
@@ -15,7 +15,7 @@ const DEFAULT_SPRITE_FRAMES: SpriteFrames = preload("uid://b41l3fs3yj2fc")
 const REQUIRED_ANIMATIONS: Array[StringName] = [&"default", &"struck"]
 
 ## Animations for this object. The SpriteFrames must have specific animations.
-## See [constant MusicalRock.REQUIRED_ANIMATIONS].
+## See [constant SequencePuzzleObject.REQUIRED_ANIMATIONS].
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAMES:
 	set = _set_sprite_frames
 
@@ -58,12 +58,12 @@ func _ready() -> void:
 
 
 func _on_interaction_started(_player: Player, _from_right: bool) -> void:
-	note_played.emit()
+	kicked.emit()
 	play()
 	interact_area.interaction_ended.emit()
 
 
-## Act as if the rock was struck by the player. Does not emit [member note_played].
+## Act as if the object was kicked by the player, but dees not emit [member kicked].
 func play(silent: bool = false) -> void:
 	animated_sprite.play(&"struck")
 	if not silent:

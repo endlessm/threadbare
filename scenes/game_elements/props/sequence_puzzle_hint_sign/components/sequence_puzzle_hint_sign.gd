@@ -1,32 +1,37 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name BonfireSign
+class_name SequencePuzzleHintSign
 extends StaticBody2D
 
 ## Emitted when the player has interacted with the sign, expecting a demonstration of the sequence.
-## The handler should call [method BonfireSign.demonstration_finished] when the demonstration is
-## complete.
+## The handler should call
+## [method SequencePuzzleHintSign.demonstration_finished] when the demonstration is complete.
 signal demonstrate_sequence
 
 const DEFAULT_SPRITE_FRAMES: SpriteFrames = preload("uid://b5pj1pt7r6hdg")
 
 ## The animations which must be defined for [member sprite_frames]. The [code]idle[/code]
-## animation is used when [member is_ignited] is false;
-## [code]solved[/code] is used when [member is_ignited] is true.
+## animation is used when [member is_solved] is false;
+## [code]solved[/code] is used when [member is_solved] is true.
 ## Optionally, a [code]hint[/code] animation can be defined, which will be played when the player
 ## interacts with the sign to see a demonstration of the sequence.
 const REQUIRED_ANIMATIONS: Array[StringName] = [&"idle", &"solved"]
 
 ## Animations for this object. The SpriteFrames must have specific animations.
-## See [constant BonfireSign.REQUIRED_ANIMATIONS].
+## See [constant SequencePuzzleHintSign.REQUIRED_ANIMATIONS].
 @export var sprite_frames: SpriteFrames:
 	set = _set_sprite_frames
 
-@export var is_ignited: bool = false:
+## Whether the corresponding puzzle step has been solved.
+##
+## This is normally set to [code]true[/code] by the puzzle logic during
+## gameplay, but can also be set to [code]true[/code] in the scene if you want
+## to have a puzzle where one or more steps starts off already solved.
+@export var is_solved: bool = false:
 	set(new_val):
-		is_ignited = new_val
-		update_ignited_state()
+		is_solved = new_val
+		update_solved_state()
 
 @export_group("Sounds")
 
@@ -38,43 +43,45 @@ const REQUIRED_ANIMATIONS: Array[StringName] = [&"idle", &"solved"]
 ## This should typically loop.
 @export var solved_ambient_sound: AudioStream
 
-## If true, the sign is interactive even when [member is_ignited] is [code]false[/code], allowing
+## If true, the sign is interactive even when [member is_solved] is [code]false[/code], allowing
 ## the player to see a demo of the corresponding sequence before solving it. Otherwise, the sign is
-## only interactive once ignited.
+## only interactive once solved.
 var interactive_hint: bool = false:
 	set(new_value):
 		interactive_hint = new_value
-		update_ignited_state()
+		update_solved_state()
 
 @onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
 @onready var interact_area: InteractArea = %InteractArea
 
-@onready var fire_start_sound: AudioStreamPlayer2D = %FireStartSound
-@onready var fire_continuous_sound: AudioStreamPlayer2D = %FireContinuousSound
+@onready var solved_player: AudioStreamPlayer2D = %SolvedPlayer
+@onready var solved_ambient_player: AudioStreamPlayer2D = %SolvedAmbientPlayer
 
 
 func _ready() -> void:
 	_set_sprite_frames(sprite_frames)
 	_set_solved_sound_effect(solved_sound_effect)
 	_set_solved_ambient_sound(solved_ambient_sound)
-	update_ignited_state()
+	update_solved_state()
 
 
-func update_ignited_state() -> void:
+func update_solved_state() -> void:
 	var was_node_ready: bool = is_node_ready()
 	if not was_node_ready:
 		await ready
-	animated_sprite.play(&"solved" if is_ignited else &"idle")
+	animated_sprite.play(&"solved" if is_solved else &"idle")
 	interact_area.disabled = not (
-		demonstrate_sequence.has_connections() and (is_ignited or interactive_hint)
+		demonstrate_sequence.has_connections() and (is_solved or interactive_hint)
 	)
 	## We don't want to play the fire start sound if the bonfire started on.
-	fire_start_sound.playing = is_ignited and was_node_ready
-	fire_continuous_sound.playing = is_ignited
+	solved_player.playing = is_solved and was_node_ready
+	solved_ambient_player.playing = is_solved
 
 
-func ignite() -> void:
-	is_ignited = true
+## Mark this sign as solved, indicating that the corresponding step of the
+## puzzle has been completed.
+func set_solved() -> void:
+	is_solved = true
 
 
 func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -> void:
@@ -94,7 +101,7 @@ func demonstration_finished() -> void:
 		if animated_sprite.is_playing():
 			await animated_sprite.animation_finished
 
-		animated_sprite.play(&"solved" if is_ignited else &"idle")
+		animated_sprite.play(&"solved" if is_solved else &"idle")
 
 	interact_area.end_interaction()
 
@@ -114,7 +121,7 @@ func _set_solved_sound_effect(new_sound: AudioStream) -> void:
 		return
 
 	solved_sound_effect = new_sound
-	fire_start_sound.stream = new_sound
+	solved_player.stream = new_sound
 	update_configuration_warnings()
 
 
@@ -123,7 +130,7 @@ func _set_solved_ambient_sound(new_sound: AudioStream) -> void:
 		return
 
 	solved_ambient_sound = new_sound
-	fire_continuous_sound.stream = new_sound
+	solved_ambient_player.stream = new_sound
 	update_configuration_warnings()
 
 
