@@ -5,7 +5,7 @@ class_name SequencePuzzleStep
 extends Node2D
 
 ## The sequence of objects the player must interact with to solve this step of the puzzle.
-@export var sequence: Array[MusicalRock]:
+@export var sequence: Array[SequencePuzzleObject]:
 	set(new_value):
 		sequence = new_value
 		update_configuration_warnings()
