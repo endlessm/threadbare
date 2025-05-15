@@ -24,11 +24,11 @@ func advance_hint_level() -> void:
 	puzzle.hint_levels[progress] = puzzle.hint_levels.get(progress, 0) + 1
 
 
-func get_limited_hint_level() -> int:
-	var progress = puzzle.get_progress()
-	var hint_level = puzzle.hint_levels.get(progress, 0)
-	var max_hint_level = 2
-	return hint_level % (max_hint_level + 1)
+## Call this method from dialogue to check the number of hints that have been given to the player
+## for the current step of the [member puzzle].
+func get_hint_level() -> int:
+	var progress: int = puzzle.get_progress()
+	return puzzle.hint_levels.get(progress, 0)
 
 
 func _get_configuration_warnings() -> PackedStringArray:

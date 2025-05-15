@@ -43,58 +43,59 @@ Musician: Hello again, StoryWeaver. Would you like a hint?
 	=> END
 
 ~ hint_melody_0
-if get_limited_hint_level() == 0:
+if get_hint_level() == 0:
 	Musician: Hmmm... Try kicking the first, second, and third stones in that order.
 	do advance_hint_level()
 	=> END
-if get_limited_hint_level() == 1:
+elif get_hint_level() == 1:
 	Musician: Even I'm forgetting in this torn world, let's see...
 	Musician: OK, I remember kicking the first, second, third, and fifth stones.
 	do advance_hint_level()
 	=> END
-if get_limited_hint_level() == 2:
-	Musician: How wonderful! We lit the first altar! Can you work out the second part of the melody?
+else:
+	Musician: I remember kicking the first, second, third, and fifth stones.
 	do advance_hint_level()
 	=> END
 
 ~ hint_melody_1
-if get_limited_hint_level() == 0:
+if get_hint_level() == 0:
+	Musician: How wonderful! We lit the first altar!
 	Musician: Look at the symbol on the second altar to see if you can work out what the next part of the melody might be.
 	do advance_hint_level()
 	=> END
-if get_limited_hint_level() == 1:
+elif get_hint_level() == 1:
 	Musician: The symbol seems to suggest that you need to move up one note, and repeat the first melody.
 	do advance_hint_level()
 	=> END
-if get_limited_hint_level() == 2:
+else:
 	Musician: I think that altar symbol means start with the second note... then third, fourth, and sixth.
 	do advance_hint_level()
 	=> END
 
 ~ hint_melody_2
-if get_limited_hint_level() == 0:
+if get_hint_level() == 0:
 	Musician: For the third part of the melody, the altar symbol suggests the next melody is played backwards.
 	do advance_hint_level()
 	=> END
-if get_limited_hint_level() == 1:
+elif get_hint_level() == 1:
 	Musician: Try playing the previous melody but in reverse.
 	do advance_hint_level()
 	=> END
-if get_limited_hint_level() == 2:
+else:
 	Musician: OK, I think it is sixth, fourth, third, and second for this one.
 	do advance_hint_level()
 	=> END
 
 ~ hint_melody_3
-if get_limited_hint_level() == 0:
+if get_hint_level() == 0:
 	Musician: Last one... you can do this! Look at the symbol and play the final melody.
 	do advance_hint_level()
 	=> END
-if get_limited_hint_level() == 1:
+elif get_hint_level() == 1:
 	Musician: Think about what you have already played... the answer is there.
 	do advance_hint_level()
 	=> END
-if get_limited_hint_level() == 2:
+else:
 	Musician: Play the very first melody, but in reverse. Fifth, third, second, and first should do it.
 	do advance_hint_level()
 	=> END
