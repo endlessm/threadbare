@@ -5,7 +5,7 @@
 ## License
 
 Threadbare's original source code in Threadbare itself is covered by [Mozilla
-Public License Version 2.0](./LICENSES/MPL-2.0.txt).
+Public License Version 2.0](./COPYING).
 
 Threadbare's original assets are covered by [Creative Commons
 Attribution-ShareAlike 4.0 International](./LICENSES/CC-BY-SA-4.0.txt).
