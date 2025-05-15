@@ -1,10 +1,8 @@
-[gd_scene load_steps=19 format=4 uid="uid://coi4lvxir542y"]
+[gd_scene load_steps=17 format=4 uid="uid://coi4lvxir542y"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_eujsg"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_cpt23"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_bvm3m"]
-[ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/components/player_template.tres" id="4_t0sci"]
-[ext_resource type="SpriteFrames" uid="uid://ovu5wqo15s5g" path="res://scenes/quests/story_quests/template/components/guard_enemy_template.tres" id="6_cpt23"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="6_fg25g"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="7_b3fba"]
 [ext_resource type="Resource" uid="uid://cppk2qynt485b" path="res://scenes/quests/story_quests/template/1_stealth/checkpoint.dialogue" id="7_eujsg"]
@@ -61,8 +59,6 @@ tile_set = ExtResource("2_cpt23")
 
 [node name="Player" parent="." instance=ExtResource("3_bvm3m")]
 position = Vector2(131, 463)
-player_name = "Player Name"
-sprite_frames = ExtResource("4_t0sci")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 process_mode = 3
@@ -77,7 +73,6 @@ y_sort_enabled = true
 
 [node name="Guard1-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
 position = Vector2(526, 470)
-sprite_frames = ExtResource("6_cpt23")
 patrol_path = NodePath("../Guard1-PatrolPath")
 move_speed = 200.0
 
@@ -89,7 +84,6 @@ curve = SubResource("Curve2D_vnsq3")
 
 [node name="Guard2-RunningInCircles" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
 position = Vector2(2435, 382)
-sprite_frames = ExtResource("6_cpt23")
 patrol_path = NodePath("../Guard2-RunningPath")
 wait_time = 0.3
 move_speed = 1000.0

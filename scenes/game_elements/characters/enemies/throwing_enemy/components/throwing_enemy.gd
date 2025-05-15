@@ -13,7 +13,7 @@ const REQUIRED_ANIMATIONS: Array[StringName] = [
 	&"idle", &"walk", &"attack", &"attack anticipation", &"defeated"
 ]
 
-const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://b3r84ksew5djp")
+const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://deosvk5k4su5f")
 
 ## When targetting the next walking position, skip this slice of the circle.
 const WALK_TARGET_SKIP_ANGLE: float = PI / 4.
