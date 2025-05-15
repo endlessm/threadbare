@@ -1,13 +1,11 @@
-[gd_scene load_steps=47 format=4 uid="uid://7hoy2p14t6kc"]
+[gd_scene load_steps=46 format=4 uid="uid://7hoy2p14t6kc"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_evicy"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_0ayb4"]
 [ext_resource type="Texture2D" uid="uid://be3845r07rhkm" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage3.png" id="2_00t5e"]
 [ext_resource type="Texture2D" uid="uid://0xceungm1p8a" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage2.png" id="3_1l0ey"]
-[ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="3_2pgn6"]
 [ext_resource type="SpriteFrames" uid="uid://clx8sssi4tw8q" path="res://scenes/game_elements/characters/shared_components/sprite_frames/musician.tres" id="4_8nm0x"]
 [ext_resource type="Texture2D" uid="uid://cfkb8gpxylplg" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage3.png" id="5_ia2d2"]
-[ext_resource type="Script" uid="uid://cfdpmffk2m4dd" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bard.gd" id="5_wasqo"]
 [ext_resource type="Resource" uid="uid://dx0uf6n0o7hv2" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/dialogues/musician.dialogue" id="6_l4i5r"]
 [ext_resource type="Texture2D" uid="uid://cy66l5b3uox84" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage2.png" id="6_src2c"]
 [ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="7_nonj7"]
@@ -23,6 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="16_ytxvq"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="17_wasqo"]
 [ext_resource type="SpriteFrames" uid="uid://bgckvdkxuxrgh" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_red_large.tres" id="18_l4i5r"]
+[ext_resource type="PackedScene" uid="uid://b3lldk3lo2mwl" path="res://scenes/game_elements/characters/npcs/sequence_puzzle_assistant/sequence_puzzle_assistant.tscn" id="20_jdge0"]
 [ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="20_thpfs"]
 [ext_resource type="Texture2D" uid="uid://ol20om7xc1o7" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage1.png" id="20_wasqo"]
 [ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/game_elements/props/sequence_puzzle_object/sequence_puzzle_object.tscn" id="22_0awvw"]
@@ -1403,13 +1402,12 @@ limit_bottom = 2048
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="Bard" parent="OnTheGround" node_paths=PackedStringArray("puzzle") instance=ExtResource("3_2pgn6")]
+[node name="SequencePuzzleAssistant" parent="OnTheGround" node_paths=PackedStringArray("puzzle") instance=ExtResource("20_jdge0")]
 position = Vector2(888, 865)
 scale = Vector2(1.00892, 0.871497)
-script = ExtResource("5_wasqo")
 puzzle = NodePath("../SequencePuzzle")
 dialogue = ExtResource("6_l4i5r")
-look_at_side = 1
+look_at_side = 0
 sprite_frames = ExtResource("4_8nm0x")
 
 [node name="SequencePuzzle" type="Node2D" parent="OnTheGround" node_paths=PackedStringArray("steps")]
