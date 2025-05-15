@@ -28,6 +28,16 @@ const REQUIRED_ANIMATIONS: Array[StringName] = [&"idle", &"solved"]
 		is_ignited = new_val
 		update_ignited_state()
 
+@export_group("Sounds")
+
+## An optional sound effect, played at the moment the corresponding puzzle step is solved.
+## This should typically not loop.
+@export var solved_sound_effect: AudioStream
+
+## An optional sound effect, played continuously when the corresponding puzzle step has been solved.
+## This should typically loop.
+@export var solved_ambient_sound: AudioStream
+
 ## If true, the sign is interactive even when [member is_ignited] is [code]false[/code], allowing
 ## the player to see a demo of the corresponding sequence before solving it. Otherwise, the sign is
 ## only interactive once ignited.
@@ -45,6 +55,8 @@ var interactive_hint: bool = false:
 
 func _ready() -> void:
 	_set_sprite_frames(sprite_frames)
+	_set_solved_sound_effect(solved_sound_effect)
+	_set_solved_ambient_sound(solved_ambient_sound)
 	update_ignited_state()
 
 
@@ -94,6 +106,24 @@ func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 	if not is_node_ready():
 		return
 	animated_sprite.sprite_frames = new_sprite_frames
+	update_configuration_warnings()
+
+
+func _set_solved_sound_effect(new_sound: AudioStream) -> void:
+	if not is_node_ready():
+		return
+
+	solved_sound_effect = new_sound
+	fire_start_sound.stream = new_sound
+	update_configuration_warnings()
+
+
+func _set_solved_ambient_sound(new_sound: AudioStream) -> void:
+	if not is_node_ready():
+		return
+
+	solved_ambient_sound = new_sound
+	fire_continuous_sound.stream = new_sound
 	update_configuration_warnings()
 
 
