@@ -29,76 +29,62 @@ Musician: Try kicking the first, and second stones, then check the first altar a
 ~ hello_again
 Musician: Hello again, StoryWeaver. Would you like a hint?
 - Yes
-	if puzzle.get_progress() == 0:
-		=> hint_melody_0
-	if puzzle.get_progress() == 1:
-		=> hint_melody_1
-	if puzzle.get_progress() == 2:
-		=> hint_melody_2
-	if puzzle.get_progress() == 3:
-		=> hint_melody_3
+	match puzzle.get_progress()
+		when 0
+			=>< hint_melody_0
+		when 1
+			=>< hint_melody_1
+		when 2
+			=>< hint_melody_2
+		when 3
+			=>< hint_melody_3
+	do advance_hint_level()
 	=> END
 - No
 	Musician: OK then, good luck.
 	=> END
 
 ~ hint_melody_0
-if get_hint_level() == 0:
-	Musician: Hmmm... Try kicking the first, second, and third stones in that order.
-	do advance_hint_level()
-	=> END
-elif get_hint_level() == 1:
-	Musician: Even I'm forgetting in this torn world, let's see...
-	Musician: OK, I remember kicking the first, second, third, and fifth stones.
-	do advance_hint_level()
-	=> END
-else:
-	Musician: I remember kicking the first, second, third, and fifth stones.
-	do advance_hint_level()
-	=> END
+match get_hint_level()
+	when 0
+		Musician: Hmmm... Try kicking the first, second, and third stones in that order.
+	when 1
+		Musician: Even I'm forgetting in this torn world, let's see...
+		Musician: OK, I remember kicking the first, second, third, and fifth stones.
+	else
+		Musician: I remember kicking the first, second, third, and fifth stones.
+=> END
 
 ~ hint_melody_1
-if get_hint_level() == 0:
-	Musician: How wonderful! We lit the first altar!
-	Musician: Look at the symbol on the second altar to see if you can work out what the next part of the melody might be.
-	do advance_hint_level()
-	=> END
-elif get_hint_level() == 1:
-	Musician: The symbol seems to suggest that you need to move up one note, and repeat the first melody.
-	do advance_hint_level()
-	=> END
-else:
-	Musician: I think that altar symbol means start with the second note... then third, fourth, and sixth.
-	do advance_hint_level()
-	=> END
+match get_hint_level()
+	when 0
+		Musician: How wonderful! We lit the first altar!
+		Musician: Look at the symbol on the second altar to see if you can work out what the next part of the melody might be.
+	when 1
+		Musician: The symbol seems to suggest that you need to move up one note, and repeat the first melody.
+	else
+		Musician: I think that altar symbol means start with the second note... then third, fourth, and sixth.
+=> END
 
 ~ hint_melody_2
-if get_hint_level() == 0:
-	Musician: For the third part of the melody, the altar symbol suggests the next melody is played backwards.
-	do advance_hint_level()
-	=> END
-elif get_hint_level() == 1:
-	Musician: Try playing the previous melody but in reverse.
-	do advance_hint_level()
-	=> END
-else:
-	Musician: OK, I think it is sixth, fourth, third, and second for this one.
-	do advance_hint_level()
-	=> END
+match get_hint_level()
+	when 0
+		Musician: For the third part of the melody, the altar symbol suggests the next melody is played backwards.
+	when 1
+		Musician: Try playing the previous melody but in reverse.
+	else
+		Musician: OK, I think it is sixth, fourth, third, and second for this one.
+=> END
 
 ~ hint_melody_3
-if get_hint_level() == 0:
-	Musician: Last one... you can do this! Look at the symbol and play the final melody.
-	do advance_hint_level()
-	=> END
-elif get_hint_level() == 1:
-	Musician: Think about what you have already played... the answer is there.
-	do advance_hint_level()
-	=> END
-else:
-	Musician: Play the very first melody, but in reverse. Fifth, third, second, and first should do it.
-	do advance_hint_level()
-	=> END
+match get_hint_level()
+	when 0
+		Musician: Last one... you can do this! Look at the symbol and play the final melody.
+	when 1
+		Musician: Think about what you have already played... the answer is there.
+	else
+		Musician: Play the very first melody, but in reverse. Fifth, third, second, and first should do it.
+=> END
 
 ~ item_hint
 Musician: You did it!... That's the magical melody... how wonderful. It's been so long since I heard it.
