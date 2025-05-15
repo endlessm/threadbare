@@ -49,8 +49,8 @@ var interactive_hint: bool = false:
 @onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
 @onready var interact_area: InteractArea = %InteractArea
 
-@onready var fire_start_sound: AudioStreamPlayer2D = %FireStartSound
-@onready var fire_continuous_sound: AudioStreamPlayer2D = %FireContinuousSound
+@onready var solved_player: AudioStreamPlayer2D = %SolvedPlayer
+@onready var solved_ambient_player: AudioStreamPlayer2D = %SolvedAmbientPlayer
 
 
 func _ready() -> void:
@@ -69,8 +69,8 @@ func update_ignited_state() -> void:
 		demonstrate_sequence.has_connections() and (is_ignited or interactive_hint)
 	)
 	## We don't want to play the fire start sound if the bonfire started on.
-	fire_start_sound.playing = is_ignited and was_node_ready
-	fire_continuous_sound.playing = is_ignited
+	solved_player.playing = is_ignited and was_node_ready
+	solved_ambient_player.playing = is_ignited
 
 
 func ignite() -> void:
@@ -114,7 +114,7 @@ func _set_solved_sound_effect(new_sound: AudioStream) -> void:
 		return
 
 	solved_sound_effect = new_sound
-	fire_start_sound.stream = new_sound
+	solved_player.stream = new_sound
 	update_configuration_warnings()
 
 
@@ -123,7 +123,7 @@ func _set_solved_ambient_sound(new_sound: AudioStream) -> void:
 		return
 
 	solved_ambient_sound = new_sound
-	fire_continuous_sound.stream = new_sound
+	solved_ambient_player.stream = new_sound
 	update_configuration_warnings()
 
 
