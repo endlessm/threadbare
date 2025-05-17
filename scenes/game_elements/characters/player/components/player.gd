@@ -4,6 +4,8 @@
 class_name Player
 extends CharacterBody2D
 
+signal mode_changed(mode: Mode)
+
 ## Controls how the player can interact with the world around them.
 enum Mode {
 	## Player can explore the world, interact with items and NPCs, but is not
@@ -11,6 +13,8 @@ enum Mode {
 	COZY,
 	## Player is engaged in combat. Player can use combat actions.
 	FIGHTING,
+	## Player can't be controlled anymore.
+	DEFEATED,
 }
 
 const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
@@ -18,6 +22,7 @@ const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
 	&"walk": 6,
 	&"attack_01": 4,
 	&"attack_02": 4,
+	&"defeated": 11,
 }
 const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 
@@ -52,6 +57,7 @@ var input_vector: Vector2
 
 
 func _set_mode(new_mode: Mode) -> void:
+	var previous_mode: Mode = mode
 	mode = new_mode
 	if not is_node_ready():
 		return
@@ -62,6 +68,11 @@ func _set_mode(new_mode: Mode) -> void:
 		Mode.FIGHTING:
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_fighting, true)
+		Mode.DEFEATED:
+			_toggle_player_behavior(player_interaction, false)
+			_toggle_player_behavior(player_fighting, false)
+	if mode != previous_mode:
+		mode_changed.emit(mode)
 
 
 func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
@@ -125,7 +136,7 @@ func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 
-	if player_interaction.is_interacting:
+	if player_interaction.is_interacting or mode == Mode.DEFEATED:
 		velocity = Vector2.ZERO
 		return
 

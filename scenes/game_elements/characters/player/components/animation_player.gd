@@ -9,6 +9,10 @@ const BLOW_ANTICIPATION_TIME: float = 0.3
 @onready var original_speed_scale: float = speed_scale
 
 
+func _ready() -> void:
+	player.mode_changed.connect(_on_player_mode_changed)
+
+
 func _process(_delta: float) -> void:
 	match player.mode:
 		Player.Mode.COZY:
@@ -42,3 +46,9 @@ func _process_fighting(delta: float) -> void:
 		# directly to the action.
 		play(&"blow")
 		seek(BLOW_ANTICIPATION_TIME, false, false)
+
+
+func _on_player_mode_changed(mode: Player.Mode) -> void:
+	match player.mode:
+		Player.Mode.DEFEATED:
+			play(&"defeated")

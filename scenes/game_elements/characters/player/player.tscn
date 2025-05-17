@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=27 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/game_elements/characters/player/components/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/template_player_components/template_player.tres" id="2_blfj0"]
@@ -285,6 +285,35 @@ tracks/8/keys = {
 }
 tracks/8/use_blend = true
 
+[sub_resource type="Animation" id="Animation_blfj0"]
+resource_name = "defeated"
+length = 1.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [&"defeated"]
+}
+
 [sub_resource type="Animation" id="Animation_75vfm"]
 resource_name = "idle"
 loop_mode = 1
@@ -360,6 +389,7 @@ tracks/2/keys = {
 _data = {
 &"RESET": SubResource("Animation_0owmy"),
 &"blow": SubResource("Animation_u5klv"),
+&"defeated": SubResource("Animation_blfj0"),
 &"idle": SubResource("Animation_75vfm"),
 &"walk": SubResource("Animation_qek5x")
 }
