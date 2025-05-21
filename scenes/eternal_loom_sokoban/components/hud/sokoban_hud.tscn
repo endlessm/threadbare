@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://b4d5rf6hn0x4"]
+[gd_scene load_steps=6 format=3 uid="uid://b4d5rf6hn0x4"]
 
 [ext_resource type="Texture2D" uid="uid://ckahbktfqvfe1" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Z_Key_Dark.png" id="1_78eme"]
 [ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="2_805gl"]
 [ext_resource type="Theme" uid="uid://coxcra1002kil" path="res://scenes/ui_elements/shared_components/theme.tres" id="3_uhi48"]
 [ext_resource type="Texture2D" uid="uid://b0eifhu8hivil" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/R_Key_Dark.png" id="4_y4lkk"]
+[ext_resource type="Texture2D" uid="uid://b8l57gpiydys3" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/X_Key_Dark.png" id="5_805gl"]
 
 [node name="SokobanHUD" type="MarginContainer"]
 anchors_preset = 15
@@ -57,3 +58,20 @@ layout_mode = 2
 theme = ExtResource("3_uhi48")
 theme_type_variation = &"HintLabel"
 text = "Reset"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="InteractInput" type="TextureRect" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = ExtResource("5_805gl")
+script = ExtResource("2_805gl")
+action_name = &"sokoban_skip"
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("3_uhi48")
+theme_type_variation = &"HintLabel"
+text = "Skip"

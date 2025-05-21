@@ -51,6 +51,8 @@ func _input(event: InputEvent) -> void:
 		_undo()
 	if event.is_action_pressed(&"sokoban_reset"):
 		_reset()
+	if event.is_action_pressed(&"sokoban_skip"):
+		_skip()
 
 
 func _undo() -> void:
@@ -62,6 +64,12 @@ func _undo() -> void:
 func _reset() -> void:
 	undo_steps = []
 	first_state.apply()
+
+
+func _skip() -> void:
+	if not next_scene:
+		return
+	SceneSwitcher.change_to_file_with_transition(next_scene)
 
 
 func _setup_first_state() -> void:
