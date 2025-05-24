@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=4 uid="uid://cufkthb25mpxy"]
+[gd_scene load_steps=49 format=4 uid="uid://cufkthb25mpxy"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_4evgk"]
 [ext_resource type="Script" uid="uid://8div00rgvsds" path="res://scenes/world_map/components/frays_end.gd" id="1_4gse6"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://c8xgl7dcju5h7" path="res://scenes/game_elements/props/buildings/house/components/House_Patch_Blue_03.png" id="6_ojp30"]
 [ext_resource type="Texture2D" uid="uid://cvm2x4fhekowd" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Blue_03.png" id="6_uhynt"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="7_7v00g"]
+[ext_resource type="Script" uid="uid://ci8t8ab05icwe" path="res://scenes/game_elements/props/decoration/flower/components/flower.gd" id="9_lftgk"]
 [ext_resource type="PackedScene" uid="uid://bbsc3wssndtfe" path="res://scenes/game_elements/props/decoration/hiding_mushroom/hiding_mushroom.tscn" id="11_jqkod"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="11_mr2ek"]
 [ext_resource type="PackedScene" uid="uid://ccp4ayow34e7g" path="res://scenes/game_elements/props/decoration/books/books.tscn" id="12_06x6x"]
@@ -39,9 +40,12 @@
 [ext_resource type="Texture2D" uid="uid://bytssd0mbo28u" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Arrow_Up_Key_Dark.png" id="29_djq26"]
 [ext_resource type="Resource" uid="uid://byhqan5a7vkgg" path="res://scenes/world_map/components/tutorial_npc.dialogue" id="32_djq26"]
 [ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="37_thm8h"]
+[ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="38_cjmkx"]
 [ext_resource type="Texture2D" uid="uid://b4gjylrs0g2xx" path="res://scenes/game_elements/props/decoration/crochenthemum/ND_Crochenthemum_01.png" id="40_06x6x"]
 [ext_resource type="Texture2D" uid="uid://c8q2r1dsn1m7w" path="res://scenes/game_elements/props/decoration/crochenthemum/ND_Crochenthemum_02.png" id="41_xt3dw"]
 [ext_resource type="Texture2D" uid="uid://72tsg0sif7sq" path="res://scenes/game_elements/props/decoration/mushroom/ND_Mushroom_Blue_01.png" id="42_lftgk"]
+[ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="45_cjmkx"]
+[ext_resource type="Texture2D" uid="uid://dt4lx6310tcoy" path="res://scenes/game_elements/props/decoration/flower/assets/lcjt-flower.png" id="50_duxxr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h30yx"]
 size = Vector2(2070, 585)
@@ -134,37 +138,163 @@ editor_draw_limits = true
 [node name="Props" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="NdCrochenthemum01" type="Sprite2D" parent="Props"]
-position = Vector2(1455, 1819)
-texture = ExtResource("40_06x6x")
+[node name="Flowerbed" type="Area2D" parent="Props"]
+y_sort_enabled = true
+position = Vector2(1358.05, 1693.82)
 
-[node name="NdCrochenthemum02" type="Sprite2D" parent="Props"]
-position = Vector2(1500, 1776)
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Props/Flowerbed"]
+polygon = PackedVector2Array(80.9502, -52.8169, 81.9502, 73.1831, 145.95, 74.1831, 146.95, 134.183, 476.95, 136.183, 480.95, 204.183, -42.0498, 199.183, -42.0498, -55.8169)
+disabled = true
+
+[node name="AreaFiller" type="Node" parent="Props/Flowerbed"]
+script = ExtResource("38_cjmkx")
+scenes = Array[PackedScene]([ExtResource("45_cjmkx")])
+minimum_separation = 48.0
+metadata/_custom_type_script = "uid://bdhjixygupit1"
+
+[node name="Flower" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(75.8334, -52.9417)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
 texture = ExtResource("41_xt3dw")
 
-[node name="NdCrochenthemum03" type="Sprite2D" parent="Props"]
-position = Vector2(1499, 1831)
-texture = ExtResource("40_06x6x")
+[node name="Flower2" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(29.8334, -1.97679)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("50_duxxr")
 
-[node name="NdCrochenthemum04" type="Sprite2D" parent="Props"]
-position = Vector2(1497, 1828)
-texture = ExtResource("40_06x6x")
-
-[node name="NdMushroomBlue01" type="Sprite2D" parent="Props"]
-position = Vector2(1556, 1824)
+[node name="Flower3" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(17.9564, -50.4744)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
 texture = ExtResource("42_lftgk")
 
-[node name="NdMushroomBlue02" type="Sprite2D" parent="Props"]
-position = Vector2(1431, 1826)
-texture = ExtResource("42_lftgk")
+[node name="Flower4" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(-41.7879, -12.0544)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("41_xt3dw")
 
-[node name="NdMushroomBlue03" type="Sprite2D" parent="Props"]
-position = Vector2(1527, 1813)
-texture = ExtResource("42_lftgk")
-
-[node name="NdCrochenthemum06" type="Sprite2D" parent="Props"]
-position = Vector2(1453, 1744)
+[node name="Flower5" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(72.0558, 26.4805)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
 texture = ExtResource("40_06x6x")
+
+[node name="Flower6" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(59.2909, 78.8603)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("50_duxxr")
+
+[node name="Flower7" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(8.04436, 70.5946)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("42_lftgk")
+
+[node name="Flower8" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(112.907, 74.8647)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("41_xt3dw")
+
+[node name="Flower9" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(90.6977, 117.554)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("40_06x6x")
+
+[node name="Flower10" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(-12.8736, 114.387)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("40_06x6x")
+
+[node name="Flower11" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(35.5787, 123.326)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("50_duxxr")
+
+[node name="Flower12" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(143.708, 168.097)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("42_lftgk")
+
+[node name="Flower13" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(235.479, 141.348)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("41_xt3dw")
+
+[node name="Flower14" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(-10.0914, 24.7416)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("40_06x6x")
+
+[node name="Flower15" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(-33.8596, 178.931)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("50_duxxr")
+
+[node name="Flower16" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(-40.0569, 70.5141)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("42_lftgk")
+
+[node name="Flower17" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(24.2843, 180.388)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("41_xt3dw")
+
+[node name="Flower18" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(91.0124, 198.676)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("40_06x6x")
+
+[node name="Flower19" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(219.404, 187.194)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("50_duxxr")
+
+[node name="Flower20" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(321.494, 164.33)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("50_duxxr")
+
+[node name="Flower21" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(366.122, 186.325)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("42_lftgk")
+
+[node name="Flower22" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(272.11, 174.596)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("41_xt3dw")
+
+[node name="Flower23" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(430.825, 202.641)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("40_06x6x")
+
+[node name="Flower24" type="Node2D" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(426.321, 150.876)
+script = ExtResource("9_lftgk")
+textures = Array[Texture2D]([ExtResource("40_06x6x"), ExtResource("41_xt3dw"), ExtResource("42_lftgk"), ExtResource("50_duxxr")])
+texture = ExtResource("50_duxxr")
 
 [node name="HidingMushroom" parent="Props" instance=ExtResource("11_jqkod")]
 position = Vector2(906, 1516)
