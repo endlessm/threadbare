@@ -12,6 +12,7 @@ extends Node
 ## and then checks if all the goals have been reached.
 
 signal goals_reached
+signal skip_enabled
 
 const RULE_REPEAT_LIMIT := 99
 
@@ -27,11 +28,20 @@ const RULE_REPEAT_LIMIT := 99
 ## When all goals are met, the RuleEngine will attempt to load this scene next.
 @export_file("*.tscn") var next_scene: String
 
+## Offer skipping to the next scene after this amount of seconds.
+@export var seconds_to_offer_skip: int = 120
+
+## Offer skipping to the next scene after this amount of resets.
+@export var resets_to_offer_skip: int = 10
+
 var rules: Array[Rule]
 var goals: Array[Goal]
 
 var first_state: BoardState
 var undo_steps: Array[BoardState]
+
+var _can_skip: bool = false
+var _reset_times: int = 0
 
 
 func _ready() -> void:
@@ -44,13 +54,32 @@ func _ready() -> void:
 			goals.append(child)
 
 	_setup_first_state()
+	_setup_skip_timer()
+
+
+func _setup_skip_timer() -> void:
+	var timer: SceneTreeTimer = get_tree().create_timer(seconds_to_offer_skip)
+	timer.timeout.connect(_on_skip_timer_timeout)
+
+
+func _on_skip_timer_timeout() -> void:
+	_enable_skip()
+
+
+func _enable_skip() -> void:
+	if _can_skip:
+		return
+	_can_skip = true
+	skip_enabled.emit()
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("undo"):
+	if event.is_action_pressed(&"sokoban_undo"):
 		_undo()
-	if event.is_action_pressed("reset"):
+	if event.is_action_pressed(&"sokoban_reset"):
 		_reset()
+	if _can_skip and event.is_action_pressed(&"sokoban_skip"):
+		_skip()
 
 
 func _undo() -> void:
@@ -62,6 +91,15 @@ func _undo() -> void:
 func _reset() -> void:
 	undo_steps = []
 	first_state.apply()
+	_reset_times += 1
+	if _reset_times >= resets_to_offer_skip:
+		_enable_skip()
+
+
+func _skip() -> void:
+	if not next_scene:
+		return
+	SceneSwitcher.change_to_file_with_transition(next_scene)
 
 
 func _setup_first_state() -> void:
