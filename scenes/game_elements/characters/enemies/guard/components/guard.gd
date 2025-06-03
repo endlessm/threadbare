@@ -244,12 +244,11 @@ func _update_player_awareness(player_in_sight: Node2D, delta: float) -> void:
 
 
 func _update_animation() -> void:
-	if state == State.ALERTED and animation_player.current_animation == &"alerted":
+	if state == State.ALERTED:
 		return
 
 	if velocity.is_zero_approx():
-		animation_player.stop()
-		animated_sprite_2d.play(&"idle")
+		animation_player.play(&"idle")
 	else:
 		animation_player.play(&"walk")
 
@@ -277,7 +276,6 @@ func _on_enter_state(new_state: State) -> void:
 			if not _alert_sound.playing:
 				_alert_sound.play()
 			player_detected.emit(_player_in_sight())
-			await get_tree().create_timer(0.4).timeout
 			animation_player.play(&"alerted")
 		State.INVESTIGATING:
 			guard_movement.start_moving_now()
