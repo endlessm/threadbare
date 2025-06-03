@@ -93,7 +93,6 @@ var breadcrumbs: Array[Vector2] = []
 var state: State = State.PATROLLING:
 	set = _change_state
 
-@onready var sprite: AnimatedSprite2D = %AnimatedSprite2D
 ## Area that represents the sight of the guard. If a player is in this area
 ## and there are no walls in between detected by [member sight_ray_cast], it
 ## means the player is in sight.
@@ -214,8 +213,8 @@ func _update_direction(delta: float) -> void:
 		detection_area.rotation, target_angle, delta * LOOK_AT_TURN_SPEED
 	)
 
-	if sprite and not is_zero_approx(velocity.x):
-		sprite.flip_h = velocity.x < 0
+	if not is_zero_approx(velocity.x):
+		animated_sprite_2d.flip_h = velocity.x < 0
 
 
 ## Tries to detect the player in sight and changes state accordingly if player
@@ -256,7 +255,7 @@ func _update_animation() -> void:
 
 	if velocity.is_zero_approx():
 		animation_player.stop()
-		sprite.play(&"idle")
+		animated_sprite_2d.play(&"idle")
 	else:
 		animation_player.play(&"walk")
 
