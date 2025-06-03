@@ -1,4 +1,4 @@
-# Threadbare hola mundo nuevo cambio
+# Threadbare
 
 [Play it here!](https://endlessm.github.io/threadbare/)
 
