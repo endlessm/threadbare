@@ -26,12 +26,7 @@ const LOOK_AT_TURN_SPEED: float = 10.0
 
 @export_category("Appearance")
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAMES:
-	set(new_value):
-		sprite_frames = new_value
-		if animated_sprite_2d:
-			animated_sprite_2d.sprite_frames = sprite_frames
-		update_configuration_warnings()
-
+	set = _set_sprite_frames
 @export_category("Sounds")
 ## Sound played when a guard's [enum State] enters DETECTING or ALERTED.
 @export var alerted_sound_stream: AudioStream:
@@ -144,8 +139,7 @@ func _ready() -> void:
 			player_awareness.max_value = time_to_detect_player
 			player_awareness.value = 0.0
 
-	if animated_sprite_2d:
-		animated_sprite_2d.sprite_frames = sprite_frames
+	_set_sprite_frames(sprite_frames)
 
 	if detection_area:
 		detection_area.scale = Vector2.ONE * detection_area_scale
@@ -510,6 +504,14 @@ func _draw() -> void:
 					point_size,
 					debug_color
 				)
+
+
+func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
+	sprite_frames = new_sprite_frames
+	if not is_node_ready():
+		return
+	animated_sprite_2d.sprite_frames = sprite_frames
+	update_configuration_warnings()
 
 
 func _set_alerted_sound_stream(new_value: AudioStream) -> void:
