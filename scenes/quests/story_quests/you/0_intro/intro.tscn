@@ -1,0 +1,296 @@
+[gd_scene load_steps=16 format=4 uid="uid://c1gdct760l86h"]
+
+[ext_resource type="Script" uid="uid://jllabtpjc46i" path="res://scenes/game_elements/props/decoration/bush/components/bush.gd" id="1_q8bdj"]
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_21rja"]
+[ext_resource type="SpriteFrames" uid="uid://dm5jcge3jb7p1" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_large.tres" id="3_vo1m8"]
+[ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/you/player_components/template_player.tres" id="4_vrnek"]
+[ext_resource type="Texture2D" uid="uid://do0h7rb4ag20y" path="res://scenes/game_elements/props/decoration/lights/degradado luz.png" id="5_sp773"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="6_3o05m"]
+[ext_resource type="Resource" uid="uid://cqjngitoc5yx7" path="res://scenes/quests/story_quests/you/0_intro/intro_components/intro.dialogue" id="7_qxltb"]
+[ext_resource type="AudioStream" uid="uid://dm8rgv2ps4bx8" path="res://scenes/quests/story_quests/you/0_intro/intro_components/ambient_2.mp3" id="8_uovre"]
+[ext_resource type="AudioStream" uid="uid://bij6u3jrqs4hu" path="res://scenes/quests/story_quests/you/0_intro/intro_components/ambient_1.mp3" id="9_msi41"]
+[ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="10_ukkbi"]
+[ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="11_ko2l6"]
+
+[sub_resource type="Animation" id="Animation_ld06i"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(400, 349)]
+}
+
+[sub_resource type="Animation" id="Animation_7swpb"]
+resource_name = "walk_off"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(550, 300), Vector2(1010, 300)]
+}
+
+[sub_resource type="Animation" id="Animation_blo5s"]
+resource_name = "walk_on"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-50, 300), Vector2(550, 300)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qdpvj"]
+_data = {
+&"RESET": SubResource("Animation_ld06i"),
+&"walk_off": SubResource("Animation_7swpb"),
+&"walk_on": SubResource("Animation_blo5s")
+}
+
+[node name="Intro" type="Node2D"]
+texture_filter = 1
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+script = ExtResource("1_q8bdj")
+
+[node name="Ground" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAAAAUAAQAAAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAEAAAAFAAUAAQABAAEAAAAGAAUAAQABAAEAAAAHAAUAAQABAAEAAAAIAAUAAQABAAEAAAAJAAUAAQABAAEAAAAKAAUAAQABAAEAAAALAAUAAQABAAEAAAAMAAUAAQABAAEAAAANAAUAAQABAAEAAAAOAAUAAQACAAEAAAAAAAYAAQAAAAEAAAAAAAcAAQAAAAEAAAAAAAgAAQAAAAEAAAABAAYAAQABAAEAAAABAAcAAQABAAEAAAABAAgAAQABAAEAAAACAAYAAQABAAEAAAACAAcAAQABAAEAAAACAAgAAQABAAEAAAADAAYAAQABAAEAAAADAAcAAQABAAEAAAADAAgAAQABAAEAAAAEAAYAAQABAAEAAAAEAAcAAQABAAEAAAAEAAgAAQABAAEAAAAFAAYAAQABAAEAAAAFAAcAAQABAAEAAAAFAAgAAQABAAEAAAAGAAYAAQABAAEAAAAGAAcAAQABAAEAAAAGAAgAAQABAAEAAAAHAAYAAQABAAEAAAAHAAcAAQABAAEAAAAHAAgAAQABAAEAAAAIAAYAAQABAAEAAAAIAAcAAQABAAEAAAAIAAgAAQABAAEAAAAJAAYAAQABAAEAAAAJAAcAAQABAAEAAAAJAAgAAQABAAEAAAAKAAYAAQABAAEAAAAKAAcAAQABAAEAAAAKAAgAAQABAAEAAAALAAYAAQABAAEAAAALAAcAAQABAAEAAAALAAgAAQABAAEAAAAMAAYAAQABAAEAAAAMAAcAAQABAAEAAAAMAAgAAQABAAEAAAANAAYAAQABAAEAAAANAAcAAQABAAEAAAANAAgAAQABAAEAAAAOAAYAAQACAAEAAAAOAAcAAQACAAEAAAAOAAgAAQACAAEAAAAAAAAAAQAAAAAAAAAAAAEAAQAAAAEAAAABAAEAAQABAAEAAAACAAEAAQABAAEAAAACAAIAAQABAAEAAAADAAIAAQABAAEAAAAEAAIAAQABAAEAAAAFAAIAAQABAAEAAAAFAAMAAQABAAEAAAAGAAMAAQABAAEAAAAHAAQAAQABAAEAAAAIAAQAAQABAAEAAAAOAAQAAQACAAEAAAAOAAMAAQACAAEAAAAOAAIAAQACAAEAAAAOAAEAAQACAAEAAAAOAAAAAQACAAAAAAANAAQAAQABAAEAAAANAAMAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAANAAAAAQABAAAAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAEAAAAMAAAAAQABAAAAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAEAAAALAAAAAQABAAAAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAKAAEAAQABAAEAAAAKAAAAAQABAAAAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAJAAEAAQABAAEAAAAJAAAAAQABAAAAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAIAAEAAQABAAEAAAAIAAAAAQABAAAAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAEAAAAHAAAAAQABAAAAAAAGAAQAAQABAAEAAAAGAAIAAQABAAEAAAAGAAEAAQABAAEAAAAGAAAAAQABAAAAAAAFAAQAAQABAAEAAAAFAAEAAQABAAEAAAAFAAAAAQABAAAAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAEAAQABAAEAAAAEAAAAAQABAAAAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAEAAQABAAEAAAADAAAAAQABAAAAAAACAAQAAQABAAEAAAACAAMAAQABAAEAAAACAAAAAQABAAAAAAABAAQAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAABAAAAAQABAAAAAAAAAAQAAQAAAAEAAAAAAAMAAQAAAAEAAAAAAAIAAQAAAAEAAAA=")
+tile_set = ExtResource("2_21rja")
+metadata/_edit_lock_ = true
+
+[node name="Sand" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAAAAQAAQAGAAAAAAABAAQAAQAGAAAAAAACAAQAAQAGAAAAAAADAAQAAQAGAAAAAAAEAAQAAQAGAAAAAAAFAAQAAQAGAAAAAAAGAAQAAQAGAAAAAAAHAAQAAQAGAAAAAAAIAAQAAQAGAAAAAAAJAAQAAQAGAAAAAAAKAAQAAQAGAAAAAAALAAQAAQAGAAAAAAAMAAQAAQAGAAAAAAANAAQAAQAGAAAAAAAOAAQAAQAGAAAAAAAAAAUAAQAGAAIAAAABAAUAAQAGAAIAAAACAAUAAQAGAAIAAAADAAUAAQAGAAIAAAAEAAUAAQAGAAIAAAAFAAUAAQAGAAIAAAAGAAUAAQAGAAIAAAAHAAUAAQAGAAIAAAAIAAUAAQAGAAIAAAANAAUAAQAGAAIAAAAOAAUAAQAGAAIAAAAMAAUAAQAGAAIAAAALAAUAAQAGAAIAAAAKAAUAAQAGAAIAAAAJAAUAAQAGAAIAAAA=")
+tile_set = ExtResource("2_21rja")
+
+[node name="IntroImage" type="AnimatedSprite2D" parent="TileMapLayers"]
+position = Vector2(773, 225)
+scale = Vector2(0.257339, 0.257339)
+sprite_frames = ExtResource("3_vo1m8")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(153, 366)
+zoom = Vector2(2, 2)
+limit_left = 0
+limit_top = 0
+limit_right = 960
+limit_bottom = 540
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(400, 349)
+sprite_frames = ExtResource("4_vrnek")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="PointLight2D" type="PointLight2D" parent="OnTheGround/Character"]
+position = Vector2(-1.90735e-06, -11)
+scale = Vector2(0.904, 0.904)
+texture = ExtResource("5_sp773")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_qdpvj")
+}
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
+script = ExtResource("6_3o05m")
+dialogue = ExtResource("7_qxltb")
+animation_player = NodePath("../OnTheGround/AnimationPlayer")
+next_scene = "uid://coi4lvxir542y"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0, 0, 0.133333, 0.701961)
+
+[node name="Ambient_2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_uovre")
+volume_db = 15.0
+autoplay = true
+bus = &"SFX"
+
+[node name="Ambient_1" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_msi41")
+autoplay = true
+bus = &"SFX"
+
+[node name="Trees" type="Node2D" parent="."]
+
+[node name="Tree2" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(167, 451)
+scale = Vector2(1.16204, 1.06222)
+
+[node name="Tree" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(68, 546)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree3" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(323, 459)
+scale = Vector2(1.16204, 1.06222)
+
+[node name="Tree4" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(233, 553)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree5" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(476, 459)
+scale = Vector2(1.16204, 1.06222)
+
+[node name="Tree6" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(382, 549)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree7" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(632, 467)
+scale = Vector2(1.16204, 1.06222)
+
+[node name="Tree8" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(929, 490)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree9" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(693, 561)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree10" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(830, 564)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree11" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(780, 482)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree12" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(693, 561)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree13" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(544, 564)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree14" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(163, 135)
+scale = Vector2(1.16204, 1.06222)
+
+[node name="Tree15" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(64, 230)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree16" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(319, 143)
+scale = Vector2(1.16204, 1.06222)
+
+[node name="Tree17" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(229, 237)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree18" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(472, 143)
+scale = Vector2(1.16204, 1.06222)
+
+[node name="Tree19" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(378, 233)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree20" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(628, 151)
+scale = Vector2(1.16204, 1.06222)
+
+[node name="Tree21" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(925, 174)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree22" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(689, 245)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree23" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(826, 248)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree24" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(776, 166)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree25" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(689, 245)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Tree26" parent="Trees" instance=ExtResource("10_ukkbi")]
+position = Vector2(544, 253)
+scale = Vector2(1.07798, 1.03064)
+
+[node name="Rocks" type="Node2D" parent="."]
+
+[node name="Rock" parent="Rocks" instance=ExtResource("11_ko2l6")]
+position = Vector2(125, 403)
+
+[node name="Rock2" parent="Rocks" instance=ExtResource("11_ko2l6")]
+position = Vector2(310, 408)
+
+[node name="Rock3" parent="Rocks" instance=ExtResource("11_ko2l6")]
+position = Vector2(444, 416)
+
+[node name="Rock6" parent="Rocks" instance=ExtResource("11_ko2l6")]
+position = Vector2(561, 376)
