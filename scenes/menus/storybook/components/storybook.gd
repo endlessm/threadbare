@@ -44,7 +44,9 @@ func _enumerate_quests() -> Array[Quest]:
 			else:
 				quests.append(quest)
 
-	if has_template:
+	# Add the template quest only when running the project in the editor. It doesn't
+	# make much sense to play the template standalone in exported builds.
+	if has_template and OS.has_feature("editor"):
 		quests.append(TEMPLATE_QUEST_METADATA)
 
 	return quests
