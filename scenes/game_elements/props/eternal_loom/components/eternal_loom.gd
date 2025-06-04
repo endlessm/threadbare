@@ -28,7 +28,7 @@ func _ready() -> void:
 			ETERNAL_LOOM_INTERACTION, "threads_incorporated", [self]
 		)
 		await DialogueManager.dialogue_ended
-		GameState.incorporating_threads = false
+		GameState.set_incorporating_threads(false)
 
 
 func _on_interacted(player: Player, _from_right: bool) -> void:
@@ -44,48 +44,15 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 		# Hide interact label during scene transition
 		interact_area.disabled = true
 
-		GameState.incorporating_threads = true
+		GameState.set_incorporating_threads(true)
 		SceneSwitcher.change_to_file_with_transition(SOKOBANS.pick_random())
 
 
 func on_offering_succeeded() -> void:
-	var items_collected: Array[InventoryItem] = GameState.items_collected()
 	loom_offering_animation_player.play(&"loom_offering")
 	await loom_offering_animation_player.animation_finished
-
-	_consume_items_offering(items_collected)
-
-
-func _item_types_required() -> Array:
-	return [
-		InventoryItem.ItemType.MEMORY,
-		InventoryItem.ItemType.IMAGINATION,
-		InventoryItem.ItemType.SPIRIT
-	]
+	GameState.clear_inventory()
 
 
 func is_item_offering_possible() -> bool:
-	var items_collected: Array[InventoryItem] = GameState.items_collected()
-	return _item_types_required().all(_is_there_item_of_type.bind(items_collected))
-
-
-func _consume_items_offering(items_collected: Array[InventoryItem]) -> void:
-	for item_type: InventoryItem.ItemType in _item_types_required():
-		var item: InventoryItem = _find_first_item_of_type(items_collected, item_type)
-		GameState.remove_consumed_item(item)
-
-
-func _is_there_item_of_type(
-	expected_type: InventoryItem.ItemType,
-	items_collected: Array[InventoryItem],
-) -> bool:
-	return _find_first_item_of_type(items_collected, expected_type) != null
-
-
-func _find_first_item_of_type(
-	items_collected: Array[InventoryItem], expected_type: InventoryItem.ItemType
-) -> InventoryItem:
-	for item: InventoryItem in items_collected:
-		if item.type == expected_type:
-			return item
-	return null
+	return GameState.items_collected().size() >= InventoryItem.ItemType.size()
