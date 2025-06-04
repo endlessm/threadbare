@@ -8,7 +8,7 @@ var filled_with_item: InventoryItem = null:
 	set(new_item):
 		filled_with_item = new_item
 		if filled_with_item:
-			texture = filled_with_item.texture()
+			texture = filled_with_item.get_hud_texture()
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
@@ -32,14 +32,14 @@ func fill(inventory_item: InventoryItem) -> void:
 		return
 
 	filled_with_item = inventory_item
-	texture = inventory_item.texture()
+	texture = inventory_item.get_hud_texture()
 	pivot_offset = size / 2.0
 	animation_player.play(&"item_collected")
 	await animation_player.animation_finished
 
 
 func is_filled_with_same_item_type_as(inventory_item: InventoryItem) -> bool:
-	return is_filled() and filled_with_item.same_type_as(inventory_item)
+	return is_filled() and filled_with_item.type == inventory_item.type
 
 
 func free_slot() -> void:

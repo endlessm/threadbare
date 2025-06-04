@@ -16,7 +16,7 @@ var _settings := ConfigFile.new()
 func _ready() -> void:
 	var err := _settings.load(SETTINGS_PATH)
 	if err != OK and err != ERR_FILE_NOT_FOUND:
-		print("Failed to load %s: %s" % [SETTINGS_PATH, err])
+		push_error("Failed to load %s: %s" % [SETTINGS_PATH, err])
 
 	_restore_volumes()
 
@@ -27,7 +27,6 @@ func _restore_volumes() -> void:
 		var volume_db: float = _settings.get_value(
 			VOLUME_SECTION, bus, DEFAULT_VOLUMES.get(bus, 0.0)
 		)
-		print("Restored", [bus_idx, bus, volume_db])
 		_set_volume(bus_idx, volume_db)
 
 
@@ -54,4 +53,4 @@ func _set_volume(bus_idx: int, volume_db: float) -> void:
 func _save() -> void:
 	var err := _settings.save(SETTINGS_PATH)
 	if err != OK:
-		print("Failed to save settings to %s: %s" % [SETTINGS_PATH, err])
+		push_error("Failed to save settings to %s: %s" % [SETTINGS_PATH, err])
