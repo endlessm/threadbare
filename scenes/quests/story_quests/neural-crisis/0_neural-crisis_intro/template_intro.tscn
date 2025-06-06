@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=4 uid="uid://twny10ttsw5f"]
+[gd_scene load_steps=17 format=4 uid="uid://twny10ttsw5f"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_042sr"]
 [ext_resource type="Texture2D" uid="uid://07k43id4c81h" path="res://scenes/quests/story_quests/template/0_template_intro/template_intro_components/template_Replace image.png" id="2_0m4nt"]
 [ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/template_player_components/template_player.tres" id="3_dxsbm"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_ukqod"]
+[ext_resource type="Texture2D" uid="uid://di18kdb7yg0ng" path="res://Sprites/New Piskel/New Piskel/New Piskel.png" id="4_xkiqq"]
 [ext_resource type="Resource" uid="uid://ba25x2i4n6uod" path="res://scenes/quests/story_quests/neural-crisis/0_neural-crisis_intro/template_intro_components/template_intro.dialogue" id="5_r5u3n"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_5v5lg"]
 
@@ -97,6 +98,42 @@ _data = {
 &"walk_on": SubResource("Animation_blo5s")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_n037h"]
+atlas = ExtResource("4_xkiqq")
+region = Rect2(0, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c85kf"]
+atlas = ExtResource("4_xkiqq")
+region = Rect2(0, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_isbcq"]
+atlas = ExtResource("4_xkiqq")
+region = Rect2(0, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pji1x"]
+atlas = ExtResource("4_xkiqq")
+region = Rect2(0, 3072, 1024, 1024)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e54re"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n037h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c85kf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_isbcq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pji1x")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
 [node name="Intro" type="Node2D"]
 texture_filter = 1
 
@@ -131,15 +168,25 @@ y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
 position = Vector2(400, 349)
+scale = Vector2(0.0683594, 0.0683594)
 sprite_frames = ExtResource("3_dxsbm")
 animation = &"idle"
 autoplay = "idle"
+frame_progress = 0.326016
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
 root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_qdpvj")
 }
+
+[node name="Sigma9" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(473, 398)
+scale = Vector2(0.0385742, 0.0385742)
+sprite_frames = SubResource("SpriteFrames_e54re")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.0130804
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
