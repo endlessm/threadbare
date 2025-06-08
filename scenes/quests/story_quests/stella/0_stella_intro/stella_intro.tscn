@@ -1,0 +1,159 @@
+[gd_scene load_steps=10 format=4 uid="uid://d1fkvy1cmjcao"]
+
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_k0kvg"]
+[ext_resource type="Texture2D" uid="uid://dtm6xbnvtibk5" path="res://scenes/quests/story_quests/stella/0_stella_intro/stella_intro_components/stella_orion.png" id="2_vak0f"]
+[ext_resource type="SpriteFrames" uid="uid://dn0ivusgamrg3" path="res://scenes/quests/story_quests/stella/stella_player_components/stella_player.tres" id="3_vak0f"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_pjos7"]
+[ext_resource type="Resource" uid="uid://3a6pnjrsk1y5" path="res://scenes/quests/story_quests/stella/0_stella_intro/stella_intro_components/stella_intro.dialogue" id="5_vak0f"]
+
+[sub_resource type="Animation" id="Animation_ld06i"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(400, 349)]
+}
+
+[sub_resource type="Animation" id="Animation_7swpb"]
+resource_name = "walk_off"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(495, 478), Vector2(1010, 478)]
+}
+
+[sub_resource type="Animation" id="Animation_blo5s"]
+resource_name = "walk_on"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-50, 478), Vector2(495, 478)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qdpvj"]
+_data = {
+&"RESET": SubResource("Animation_ld06i"),
+&"walk_off": SubResource("Animation_7swpb"),
+&"walk_on": SubResource("Animation_blo5s")
+}
+
+[node name="Intro" type="Node2D"]
+texture_filter = 1
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+modulate = Color(0.533333, 0.533333, 0.533333, 1)
+
+[node name="Grass_Level1" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAAAAUAAQAAAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAEAAAAFAAUAAQABAAEAAAAGAAUAAQABAAEAAAAHAAUAAQABAAEAAAAIAAUAAQABAAEAAAAJAAUAAQABAAEAAAAKAAUAAQABAAEAAAALAAUAAQABAAEAAAAMAAUAAQABAAEAAAANAAUAAQABAAEAAAAOAAUAAQACAAEAAAAAAAYAAQAAAAEAAAAAAAcAAQAAAAEAAAAAAAgAAQAAAAEAAAABAAYAAQABAAEAAAABAAcAAQABAAEAAAABAAgAAQABAAEAAAACAAYAAQABAAEAAAACAAcAAQABAAEAAAACAAgAAQABAAEAAAADAAYAAQABAAEAAAADAAcAAQABAAEAAAADAAgAAQABAAEAAAAEAAYAAQABAAEAAAAEAAcAAQABAAEAAAAEAAgAAQABAAEAAAAFAAYAAQABAAEAAAAFAAcAAQABAAEAAAAFAAgAAQABAAEAAAAGAAYAAQABAAEAAAAGAAcAAQABAAEAAAAGAAgAAQABAAEAAAAHAAYAAQABAAEAAAAHAAcAAQABAAEAAAAHAAgAAQABAAEAAAAIAAYAAQABAAEAAAAIAAcAAQABAAEAAAAIAAgAAQABAAEAAAAJAAYAAQABAAEAAAAJAAcAAQABAAEAAAAJAAgAAQABAAEAAAAKAAYAAQABAAEAAAAKAAcAAQABAAEAAAAKAAgAAQABAAEAAAALAAYAAQABAAEAAAALAAcAAQABAAEAAAALAAgAAQABAAEAAAAMAAYAAQABAAEAAAAMAAcAAQABAAEAAAAMAAgAAQABAAEAAAANAAYAAQABAAEAAAANAAcAAQABAAEAAAANAAgAAQABAAEAAAAOAAYAAQACAAEAAAAOAAcAAQACAAEAAAAOAAgAAQACAAEAAAAAAAAAAQAAAAAAAAAAAAEAAQAAAAEAAAABAAEAAQABAAEAAAACAAEAAQABAAEAAAACAAIAAQABAAEAAAADAAIAAQABAAEAAAAEAAIAAQABAAEAAAAFAAIAAQABAAEAAAAFAAMAAQABAAEAAAAGAAMAAQABAAEAAAAHAAQAAQABAAEAAAAIAAQAAQABAAEAAAAOAAQAAQACAAEAAAAOAAMAAQACAAEAAAAOAAIAAQACAAEAAAAOAAEAAQACAAEAAAAOAAAAAQACAAAAAAANAAQAAQABAAEAAAANAAMAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAANAAAAAQABAAAAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAEAAAAMAAAAAQABAAAAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAEAAAALAAAAAQABAAAAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAKAAEAAQABAAEAAAAKAAAAAQABAAAAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAJAAEAAQABAAEAAAAJAAAAAQABAAAAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAIAAEAAQABAAEAAAAIAAAAAQABAAAAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAEAAAAHAAAAAQABAAAAAAAGAAQAAQABAAEAAAAGAAIAAQABAAEAAAAGAAEAAQABAAEAAAAGAAAAAQABAAAAAAAFAAQAAQABAAEAAAAFAAEAAQABAAEAAAAFAAAAAQABAAAAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAEAAQABAAEAAAAEAAAAAQABAAAAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAEAAQABAAEAAAADAAAAAQABAAAAAAACAAQAAQABAAEAAAACAAMAAQABAAEAAAACAAAAAQABAAAAAAABAAQAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAABAAAAAQABAAAAAAAAAAQAAQAAAAEAAAAAAAMAAQAAAAEAAAAAAAIAAQAAAAEAAAA=")
+tile_set = ExtResource("1_k0kvg")
+metadata/_edit_lock_ = true
+
+[node name="Stone_Level1" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAAAAAABAAAAAAAAAABAAAABAABAAQAAAACAAAABAABAAAAAAADAAAABAACAAEAAAAEAAAABAABAAQAAAAFAAAABAAAAAEAAAAGAAAABAAAAAIAAAAHAAAABAACAAQAAAAAAAEABAABAAIAAAAAAAIABAADAAEAAAAAAAMABAACAAEAAAAAAAQABAADAAIAAAAAAAUABAACAAMAAAABAAEABAABAAMAAAACAAEABAAAAAIAAAADAAEABAACAAIAAAAEAAEABAABAAUAAAAFAAEABAABAAMAAAAGAAEABAABAAUAAAAHAAEABAACAAMAAAACAAIABAAAAAMAAAADAAIABAACAAMAAAA=")
+tile_set = ExtResource("1_k0kvg")
+
+[node name="IntroImage" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(773, 225)
+scale = Vector2(0.257339, 0.257339)
+texture = ExtResource("2_vak0f")
+
+[node name="Paths_Level1" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAA=")
+tile_set = ExtResource("1_k0kvg")
+
+[node name="Frame_Level1" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAKAAEABgAAAAAAAAAKAAIABgADAAEAAAAKAAMABgADAAEAAAAKAAQABgADAAEAAAANAAEABgACAAAAAAANAAIABgADAAEAAAANAAMABgADAAEAAAANAAQABgADAAEAAAAKAAUABgAAAAIAAAALAAEABgABAAMAAAALAAUABgABAAMAAAAMAAEABgABAAMAAAAMAAUABgABAAMAAAANAAUABgACAAIAAAA=")
+tile_set = ExtResource("1_k0kvg")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(153, 366)
+zoom = Vector2(2, 2)
+limit_left = 0
+limit_top = 0
+limit_right = 960
+limit_bottom = 540
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(400, 349)
+sprite_frames = ExtResource("3_vak0f")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_qdpvj")
+}
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
+script = ExtResource("4_pjos7")
+dialogue = ExtResource("5_vak0f")
+animation_player = NodePath("../OnTheGround/AnimationPlayer")
+next_scene = "uid://hb6ekertaof8"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
