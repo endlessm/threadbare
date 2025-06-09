@@ -38,6 +38,18 @@ func _restore_from_hash() -> void:
 		# otherwise, this is an absolute uid:// or res:// path
 
 		if ResourceLoader.exists(path, "PackedScene"):
+			if GameState.can_restore() and GameState.get_scene_to_restore() == path:
+				# Continue if the path matches the saved scene. This would happen
+				# if the player reloads the page while playing.
+				GameState.restore()
+			else:
+				# Otherwise, treat it as the player is debugging a scene from the web.
+				# In that case, do not persist progress and clear the game state.
+				# This is the same behavior as if the scene is ran from the editor
+				# for testing or debugging.
+				GameState.persist_progress = false
+				GameState.clear()
+
 			# In theory, we might like to avoid switching scene if the specified
 			# scene is the default scene. In practice, that will not happen, and
 			# if it does, it's harmless enough.
@@ -105,4 +117,4 @@ func change_to_file(scene_path: String, spawn_point: NodePath = ^"") -> void:
 func change_to_packed(scene: PackedScene, spawn_point: NodePath = ^"") -> void:
 	if get_tree().change_scene_to_packed(scene) == OK:
 		_set_hash(scene.resource_path)
-		GameState.current_spawn_point = spawn_point
+		GameState.set_scene(scene.resource_path, spawn_point)

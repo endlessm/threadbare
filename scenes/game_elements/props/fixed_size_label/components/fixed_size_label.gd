@@ -58,3 +58,10 @@ func _exit_tree() -> void:
 
 	if label_container:
 		label_container.queue_free()
+
+
+func _on_label_resized() -> void:
+	if not is_node_ready():
+		return
+	# TODO: Workaround for https://github.com/godotengine/godot/issues/100626
+	label_container.reset_size()
