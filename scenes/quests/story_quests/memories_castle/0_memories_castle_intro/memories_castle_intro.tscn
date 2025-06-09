@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://dv2x47ho7g8y2"]
+[gd_scene load_steps=12 format=4 uid="uid://dv2x47ho7g8y2"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_6mfr6"]
 [ext_resource type="Texture2D" uid="uid://07k43id4c81h" path="res://scenes/quests/story_quests/template/0_template_intro/template_intro_components/template_Replace image.png" id="2_o0mn3"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_387l5"]
 [ext_resource type="Resource" uid="uid://cqjngitoc5yx7" path="res://scenes/quests/story_quests/template/0_template_intro/template_intro_components/template_intro.dialogue" id="5_p5usi"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_0xqi3"]
+[ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="7_lkict"]
 
 [sub_resource type="Animation" id="Animation_ld06i"]
 length = 0.001
@@ -107,13 +108,19 @@ tile_map_data = PackedByteArray("AAAAAAUAAQAAAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAE
 tile_set = ExtResource("1_6mfr6")
 metadata/_edit_lock_ = true
 
+[node name="Ground_morning" type="TileMapLayer" parent="TileMapLayers"]
+modulate = Color(1, 1, 0.639216, 1)
+tile_map_data = PackedByteArray("AAAJAAcAAQABAAEAAAAKAAcAAQABAAEAAAALAAcAAQABAAEAAAAMAAcAAQABAAEAAAANAAcAAQABAAEAAAAOAAcAAQABAAEAAAANAAgAAQABAAEAAAAOAAgAAQABAAEAAAALAAgAAQABAAEAAAAMAAgAAQABAAEAAAALAAYAAQABAAEAAAAMAAYAAQABAAEAAAANAAYAAQABAAEAAAAOAAYAAQABAAEAAAAOAAMAAQABAAEAAAANAAMAAQABAAEAAAANAAQAAQABAAEAAAAMAAQAAQABAAEAAAAMAAUAAQABAAEAAAALAAUAAQABAAEAAAANAAUAAQABAAEAAAAOAAQAAQABAAEAAAAOAAIAAQABAAEAAAAOAAEAAQABAAEAAAAOAAAAAQABAAEAAAAOAAUAAQABAAEAAAANAAEAAQABAAEAAAAMAAEAAQABAAEAAAANAAAAAQABAAEAAAALAAIAAQABAAEAAAAMAAIAAQABAAEAAAAJAAEAAQABAAEAAAAHAAAAAQABAAEAAAAJAAUAAQABAAEAAAAJAAYAAQABAAEAAAAKAAYAAQABAAEAAAAKAAUAAQABAAEAAAAKAAQAAQABAAEAAAAHAAgAAQABAAEAAAAIAAgAAQABAAEAAAAJAAgAAQABAAEAAAAKAAgAAQABAAEAAAAIAAcAAQABAAEAAAAFAAUAAQABAAEAAAA=")
+tile_set = ExtResource("1_6mfr6")
+
 [node name="IntroImage" type="Sprite2D" parent="TileMapLayers"]
+visible = false
 position = Vector2(770, 227)
 scale = Vector2(0.802083, 0.802083)
 texture = ExtResource("2_o0mn3")
 
 [node name="Sand" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAKAAEABgAAAAAAAAAKAAIABgADAAEAAAAKAAMABgADAAEAAAAKAAQABgADAAEAAAANAAEABgACAAAAAAANAAIABgADAAEAAAANAAMABgADAAEAAAANAAQABgADAAEAAAAKAAUABgAAAAIAAAALAAEABgABAAMAAAALAAUABgABAAMAAAAMAAEABgABAAMAAAAMAAUABgABAAMAAAANAAUABgACAAIAAAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAA=")
+tile_map_data = PackedByteArray("AAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAA=")
 tile_set = ExtResource("1_6mfr6")
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -126,7 +133,96 @@ limit_bottom = 540
 position_smoothing_enabled = true
 editor_draw_limits = true
 
+[node name="Tree_behind" parent="." instance=ExtResource("7_lkict")]
+position = Vector2(75, 431)
+scale = Vector2(0.911601, 0.904393)
+
+[node name="Tree1" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(172.224, -155.906)
+scale = Vector2(1.0471, 1.16311)
+
+[node name="Tree2" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(480.473, -42.0171)
+scale = Vector2(1.26099, 1.18702)
+
+[node name="Tree3" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(397.103, 6.63431)
+scale = Vector2(1.05964, 1.17016)
+
+[node name="Tree4" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(732.776, -152.589)
+scale = Vector2(1.02104, 0.967162)
+
+[node name="Tree5" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(645.019, -91.7743)
+scale = Vector2(1.07857, 1.03693)
+
+[node name="Tree6" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(714.128, -68.5543)
+scale = Vector2(1.2079, 1.15383)
+
+[node name="Tree7" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(628.564, -1.10569)
+scale = Vector2(1.07545, 1.03887)
+
+[node name="Tree8" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(834.795, -214.509)
+scale = Vector2(0.966067, 0.92145)
+
+[node name="Tree9" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(696.576, 4.42284)
+scale = Vector2(1.05197, 1.04732)
+
+[node name="Tree10" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(827.116, 2.21143)
+scale = Vector2(0.930514, 0.882695)
+
+[node name="Tree11" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(379.552, -323.974)
+scale = Vector2(0.952242, 0.954575)
+
+[node name="Tree12" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(20.8424, -344.983)
+scale = Vector2(1.03222, 1.02313)
+
+[node name="Tree13" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(854.54, -110.571)
+scale = Vector2(1.20957, 1.13175)
+
+[node name="Tree14" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(269.855, -35.3829)
+scale = Vector2(0.954364, 0.913003)
+
+[node name="Tree15" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(771.171, 3.31716)
+scale = Vector2(0.95286, 0.890683)
+
+[node name="Tree16" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(969.722, -295.226)
+scale = Vector2(1.06074, 0.99845)
+
+[node name="Tree17" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(940.104, -247.68)
+scale = Vector2(1.06219, 1.14335)
+
+[node name="Tree18" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(953.268, -174.703)
+scale = Vector2(1.03554, 1.03428)
+
+[node name="Tree19" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(957.656, -92.88)
+scale = Vector2(1.01443, 1.0241)
+
+[node name="Tree20" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(953.268, 7.74)
+scale = Vector2(0.971125, 0.994113)
+
+[node name="Tree21" parent="Tree_behind" instance=ExtResource("7_lkict")]
+position = Vector2(890.74, 4.42286)
+scale = Vector2(0.988071, 0.920976)
+
 [node name="OnTheGround" type="Node2D" parent="."]
+visible = false
 y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
@@ -140,6 +236,14 @@ root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_qdpvj")
 }
+
+[node name="Tree_forward" parent="." instance=ExtResource("7_lkict")]
+position = Vector2(874, 586)
+scale = Vector2(0.911601, 0.904393)
+
+[node name="Tree1" parent="Tree_forward" instance=ExtResource("7_lkict")]
+position = Vector2(88.8546, -25.4314)
+scale = Vector2(0.759012, 0.831444)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
