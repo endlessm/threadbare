@@ -1,0 +1,117 @@
+[gd_scene load_steps=9 format=4 uid="uid://b006bterv1xbo"]
+
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_erqos"]
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_kkqnx"]
+[ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/template_player_components/template_player.tres" id="3_pave7"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_ds6kc"]
+[ext_resource type="Resource" uid="uid://0qp75v584bc1" path="res://scenes/quests/story_quests/spacerage/4_spacerage_outro/template_outro_components/rage_space_outro.dialogue" id="5_erqos"]
+
+[sub_resource type="Animation" id="Animation_ppql7"]
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.93227),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"idle", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.93333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(76, 345), Vector2(932, 329)]
+}
+
+[sub_resource type="Animation" id="Animation_qsarf"]
+resource_name = "caminar"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.95705),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(76, 345), Vector2(917, 351)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.96667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ppql7"]
+_data = {
+&"RESET": SubResource("Animation_ppql7"),
+&"caminar": SubResource("Animation_qsarf")
+}
+
+[node name="Outro" type="Node2D"]
+texture_filter = 1
+
+[node name="HUD" parent="." instance=ExtResource("1_erqos")]
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+position = Vector2(-2, -31)
+
+[node name="Ground" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAAAAUAAQAGAAMAAAABAAUAAQAGAAMAAAACAAUAAQAGAAMAAAADAAUAAQAGAAMAAAAEAAUAAQAGAAMAAAAFAAUAAQAGAAMAAAAGAAUAAQAGAAMAAAAHAAUAAQAGAAMAAAAIAAUAAQAGAAMAAAAJAAUAAQAGAAMAAAAKAAUAAQAGAAMAAAALAAUAAQAGAAMAAAAMAAUAAQAGAAMAAAANAAUAAQAGAAMAAAAOAAUAAQAGAAMAAAAAAAYABQAAAAEAAAAAAAcABQAAAAEAAAABAAYABQABAAEAAAABAAcABQABAAEAAAACAAYABQABAAEAAAACAAcABQABAAEAAAADAAYABQABAAEAAAADAAcABQABAAEAAAAEAAYABQABAAEAAAAEAAcABQABAAEAAAAFAAYABQABAAEAAAAFAAcABQABAAEAAAAGAAYABQABAAEAAAAGAAcABQABAAEAAAAHAAYABQABAAEAAAAHAAcABQABAAEAAAAIAAYABQABAAEAAAAIAAcABQABAAEAAAAJAAYABQABAAEAAAAJAAcABQABAAEAAAAKAAYABQABAAEAAAAKAAcABQABAAEAAAALAAYABQABAAEAAAALAAcABQABAAEAAAAMAAYABQABAAEAAAAMAAcABQABAAEAAAANAAYABQABAAEAAAANAAcABQABAAEAAAAOAAYABQACAAEAAAAOAAcABQACAAEAAAAAAAEABQAAAAAAAAABAAEABQABAAAAAAACAAEABQABAAAAAAADAAEABQABAAAAAAADAAIABQABAAEAAAAEAAIABQABAAEAAAAFAAIABQABAAEAAAAFAAMABQABAAEAAAABAAIABQABAAEAAAAAAAIABQAAAAEAAAAAAAMABQAAAAEAAAAAAAQABQAAAAEAAAABAAMABQABAAEAAAABAAQABQABAAEAAAACAAQABQABAAEAAAACAAMABQABAAEAAAACAAIABQABAAEAAAADAAQABQABAAEAAAADAAMABQABAAEAAAAEAAMABQABAAEAAAAEAAQABQABAAEAAAAFAAQABQABAAEAAAAGAAQABQABAAEAAAAHAAQABQABAAEAAAAIAAQABQABAAEAAAAJAAQABQABAAEAAAAKAAQABQABAAEAAAALAAQABQABAAEAAAAMAAQABQABAAEAAAANAAQABQABAAEAAAAOAAQABQACAAEAAAAOAAMABQACAAEAAAAOAAIABQACAAEAAAAOAAEABQACAAAAAAAEAAEABQABAAAAAAAFAAEABQABAAAAAAAGAAEABQABAAAAAAAHAAEABQABAAAAAAAIAAEABQABAAAAAAAJAAEABQABAAAAAAAKAAEABQABAAAAAAALAAEABQABAAAAAAAMAAEABQABAAAAAAANAAEABQABAAAAAAANAAIABQABAAEAAAANAAMABQABAAEAAAAMAAMABQABAAEAAAALAAMABQABAAEAAAAKAAMABQABAAEAAAAJAAMABQABAAEAAAAIAAMABQABAAEAAAAHAAMABQABAAEAAAAGAAMABQABAAEAAAAGAAIABQABAAEAAAAHAAIABQABAAEAAAAIAAIABQABAAEAAAAJAAIABQABAAEAAAAKAAIABQABAAEAAAALAAIABQABAAEAAAAMAAIABQABAAEAAAAAAAgABQAAAAIAAAABAAgABQABAAIAAAACAAgABQABAAIAAAADAAgABQABAAIAAAAEAAgABQABAAIAAAAFAAgABQABAAIAAAAGAAgABQABAAIAAAAHAAgABQABAAIAAAAIAAgABQABAAIAAAAJAAgABQABAAIAAAAKAAgABQABAAIAAAALAAgABQABAAIAAAAMAAgABQABAAIAAAANAAgABQABAAIAAAAOAAgABQACAAIAAAA=")
+tile_set = ExtResource("2_kkqnx")
+metadata/_edit_lock_ = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(153, 366)
+zoom = Vector2(2.2, 2.2)
+limit_left = 0
+limit_top = 0
+limit_right = 960
+limit_bottom = 540
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+position = Vector2(-4, -34)
+
+[node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(76, 345)
+sprite_frames = ExtResource("3_pave7")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_ppql7")
+}
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
+position = Vector2(-2, -32)
+script = ExtResource("4_ds6kc")
+dialogue = ExtResource("5_erqos")
+animation_player = NodePath("../OnTheGround/AnimationPlayer")
+next_scene = "uid://cufkthb25mpxy"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
