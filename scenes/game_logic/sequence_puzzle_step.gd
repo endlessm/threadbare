@@ -29,3 +29,5 @@ func _get_configuration_warnings() -> PackedStringArray:
 		warnings.append("Hint Sign not set")
 
 	return warnings
+	
+	
