@@ -1,9 +1,11 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name SequencePuzzle
-extends Node2D
+class_name SequencePuzzle ##nombre global del scrip
+extends Node2D ##se hereda node2d
 
-signal solved
+signal solved ##declara la señal al completar el pussle pero no lo envia(esto se usara despues)
+
+signal step_solved(step_index: int) ##señal cuando se complete un step
 
 ## The order in which the player must interact with objects to solve each step of the puzzle
 @export var steps: Array[SequencePuzzleStep]
@@ -18,8 +20,8 @@ signal solved
 ## If enabled, show messages in the console describing the player's progress (or not) in the puzzle
 @export var debug: bool = false
 
-@export var wobble_hint_time: float = 10.0
-@export var wobble_hint_min_level: int = 2
+@export var wobble_hint_time: float = 10.0 ##ayuda despues de 10s
+@export var wobble_hint_min_level: int = 2 ##ayuda con 2 o mas errores
 
 var hint_timer: Timer = Timer.new()
 
@@ -33,14 +35,14 @@ var _position: int = 0
 
 
 func _ready() -> void:
-	_find_objects()
+	_find_objects() ## llama a la fun busca todos los botones
 
 	hint_timer.one_shot = true
 	hint_timer.wait_time = wobble_hint_time
 	hint_timer.timeout.connect(_on_hint_timer_timeout)
 	add_child(hint_timer)
 
-	for step: SequencePuzzleStep in steps:
+	for step: SequencePuzzleStep in steps: ##para cada step de tipo SequencePuzzleStep que esta en la lista steps haz lo siguiente
 		step.hint_sign.demonstrate_sequence.connect(_on_demonstrate_sequence.bind(step))
 
 	_update_current_step()
@@ -109,6 +111,9 @@ func _on_kicked(object: SequencePuzzleObject) -> void:
 
 	_debug("Finished sequnce")
 	step.hint_sign.set_solved()
+	
+	step_solved.emit(_current_step) ##señal cuando se complete un step
+	
 	_update_current_step()
 
 	_clear_last_hint_object()
@@ -166,3 +171,4 @@ func reset_hint_timer() -> void:
 	hint_timer.stop()
 	if _current_step < steps.size():
 		hint_timer.start()
+  
