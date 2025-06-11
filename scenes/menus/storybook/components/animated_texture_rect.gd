@@ -12,7 +12,9 @@ extends TextureRect
 
 ## A sprite frame library containing the animation. If unset, no texture is shown.
 @export var sprite_frames: SpriteFrames = preload(
-	"res://scenes/quests/story_quests/template/template_player_components/template_player.tres"
+	#"res://scenes/quests/story_quests/template/template_player_components/template_player.tres"
+	"res://scenes/quests/story_quests/you/player_components/template_player.tres"
+	
 ):
 	set(new_value):
 		sprite_frames = new_value
