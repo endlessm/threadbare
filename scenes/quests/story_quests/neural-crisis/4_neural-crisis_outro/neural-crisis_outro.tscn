@@ -1,11 +1,19 @@
-[gd_scene load_steps=12 format=4 uid="uid://v0m5l618xl83"]
+[gd_scene load_steps=22 format=4 uid="uid://v0m5l618xl83"]
 
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_ueyv5"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_3qdo7"]
 [ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/template_player_components/template_player.tres" id="3_msqfw"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_74eu1"]
 [ext_resource type="Resource" uid="uid://sbdbrunxjxyo" path="res://scenes/quests/story_quests/neural-crisis/4_neural-crisis_outro/neural-crisis_outro_components/neural-crisis_outro.dialogue" id="5_c7r81"]
-[ext_resource type="Texture2D" uid="uid://di18kdb7yg0ng" path="res://Sprites/New Piskel/New Piskel/New Piskel.png" id="6_q0cqs"]
+[ext_resource type="Texture2D" uid="uid://dsnh2nmwhj17m" path="res://Sprites/Samurai_v1/PeleaSamuerai/SAMURAI ESPADAS0.png" id="5_nqu0d"]
+[ext_resource type="Texture2D" uid="uid://c5iakg40bbnxd" path="res://Sprites/Samurai_v1/PeleaSamuerai/SAMURAI ESPADAS1.png" id="6_i1r4b"]
+[ext_resource type="Texture2D" uid="uid://di18kdb7yg0ng" path="res://Sprites/sigma_9_v1/New Piskel.png" id="6_q0cqs"]
+[ext_resource type="Texture2D" uid="uid://b1kcj708fyw5v" path="res://Sprites/SamuraiRage_v1/Samurai y Guerrero sin nombre0.png" id="7_63dgw"]
+[ext_resource type="Texture2D" uid="uid://buxavphoq0spp" path="res://Sprites/SamuraiRage_v1/Samurai y Guerrero sin nombre1.png" id="8_31wn0"]
+[ext_resource type="Texture2D" uid="uid://wg3h433gck42" path="res://Sprites/SamuraiRage_v1/Samurai y Guerrero sin nombre2.png" id="9_nue1y"]
+[ext_resource type="Texture2D" uid="uid://dq3grmvsedjqu" path="res://Sprites/SamuraiRage_v1/Samurai y Guerrero sin nombre3.png" id="10_j7ryi"]
+[ext_resource type="Texture2D" uid="uid://c0lvfis1tult1" path="res://Sprites/SamuraiRage_v1/Samurai y Guerrero sin nombre4.png" id="11_gn5pw"]
+[ext_resource type="Texture2D" uid="uid://digdy42hokhwo" path="res://Sprites/Día y noche/Layer 1_sprite_2.png" id="14_863s7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n037h"]
 atlas = ExtResource("6_q0cqs")
@@ -43,6 +51,48 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_s8hlh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_nqu0d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_i1r4b")
+}],
+"loop": true,
+"name": &"ataque",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_63dgw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_31wn0")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4nggq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_nue1y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_j7ryi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_gn5pw")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
 [node name="Outro" type="Node2D"]
 texture_filter = 1
 
@@ -55,9 +105,19 @@ tile_map_data = PackedByteArray("AAAAAAUAAQAGAAMAAAABAAUAAQAGAAMAAAACAAUAAQAGAAM
 tile_set = ExtResource("2_3qdo7")
 metadata/_edit_lock_ = true
 
+[node name="IntroImage" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(493, 267)
+scale = Vector2(0.197708, 0.211039)
+texture = ExtResource("14_863s7")
+
+[node name="Sand" type="TileMapLayer" parent="TileMapLayers"]
+position = Vector2(-163, 34)
+tile_map_data = PackedByteArray("AAANAAEABgACAAAAAAANAAIABgADAAEAAAANAAMABgADAAEAAAANAAQABgADAAEAAAALAAEABgABAAMAAAALAAUABgABAAMAAAAMAAEABgABAAMAAAAMAAUABgABAAMAAAANAAUABgACAAIAAAAKAAEABgABAAMAAAAJAAEABgABAAMAAAAIAAEABgABAAMAAAAHAAEABgAAAAAAAAAHAAIABgADAAEAAAAHAAMABgADAAEAAAAHAAQABgADAAEAAAAHAAUABgAAAAIAAAAIAAUABgABAAMAAAAJAAUABgABAAMAAAAKAAUABgABAAMAAAA=")
+tile_set = ExtResource("2_3qdo7")
+
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(153, 366)
-zoom = Vector2(2, 2)
+position = Vector2(501, 289)
+zoom = Vector2(1.4, 1.4)
 limit_left = 0
 limit_top = 0
 limit_right = 960
@@ -69,7 +129,7 @@ editor_draw_limits = true
 y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
-position = Vector2(386, 370)
+position = Vector2(815, 198)
 scale = Vector2(0.0605468, 0.0825638)
 sprite_frames = ExtResource("3_msqfw")
 animation = &"idle"
@@ -77,9 +137,23 @@ autoplay = "idle"
 frame_progress = 0.852706
 
 [node name="Sigma9" type="AnimatedSprite2D" parent="OnTheGround"]
-position = Vector2(439, 321)
+position = Vector2(821, 301)
 scale = Vector2(0.0385742, 0.0385742)
 sprite_frames = SubResource("SpriteFrames_5m7aj")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="Samurai" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(445, 393)
+scale = Vector2(0.0575001, 0.0560913)
+sprite_frames = SubResource("SpriteFrames_s8hlh")
+animation = &"ataque"
+autoplay = "ataque"
+
+[node name="Guerrero_sin_nombre" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(540, 392)
+scale = Vector2(0.0560156, 0.0560156)
+sprite_frames = SubResource("SpriteFrames_4nggq")
 animation = &"idle"
 autoplay = "idle"
 
