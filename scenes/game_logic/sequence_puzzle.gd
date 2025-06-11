@@ -5,7 +5,13 @@ extends Node2D ##se hereda node2d
 
 signal solved ##declara la señal al completar el pussle pero no lo envia(esto se usara despues)
 
+
 signal step_solved(step_index: int) ##señal cuando se complete un step
+
+@onready var roca1 := $roca1
+@onready var roca2 := $roca2
+@onready var roca3 := $roca3
+@onready var roca4 := $roca4
 
 ## The order in which the player must interact with objects to solve each step of the puzzle
 @export var steps: Array[SequencePuzzleStep]
@@ -45,6 +51,7 @@ func _ready() -> void:
 	for step: SequencePuzzleStep in steps: ##para cada step de tipo SequencePuzzleStep que esta en la lista steps haz lo siguiente
 		step.hint_sign.demonstrate_sequence.connect(_on_demonstrate_sequence.bind(step))
 
+	step_solved.connect(_on_step_solved)  # Conexión de la señal
 	_update_current_step()
 
 	for i in range(steps.size()):
@@ -171,4 +178,18 @@ func reset_hint_timer() -> void:
 	hint_timer.stop()
 	if _current_step < steps.size():
 		hint_timer.start()
-  
+		
+func _on_step_solved(step_index: int) -> void:
+	match step_index:
+		0:
+			if is_instance_valid(roca1):
+				roca1.queue_free()
+		1:
+			if is_instance_valid(roca2):
+				roca2.queue_free()
+		2:
+			if is_instance_valid(roca3):
+				roca3.queue_free()
+		3:
+			if is_instance_valid(roca4):
+				roca4.queue_free()
