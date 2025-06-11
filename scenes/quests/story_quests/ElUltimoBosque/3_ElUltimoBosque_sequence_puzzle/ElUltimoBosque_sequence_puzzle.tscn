@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://euwow6oc8gcn"]
+[gd_scene load_steps=40 format=4 uid="uid://euwow6oc8gcn"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_cfqmc"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_swcam"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/game_elements/props/sequence_puzzle_hint_sign/sequence_puzzle_hint_sign.tscn" id="11_ig5k6"]
 [ext_resource type="SpriteFrames" uid="uid://bhcgkxhy4cqf4" path="res://scenes/quests/story_quests/template/3_template_sequence_puzzle/template_sign_2.tres" id="12_gvu8y"]
 [ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="13_mi3la"]
+[ext_resource type="Texture2D" uid="uid://bhqanyxhpxpm" path="res://assets/first_party/rocks/Rock_Idle.png" id="14_dwbnx"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="14_tcvxo"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="15_kph77"]
 [ext_resource type="Resource" uid="uid://bb1g8ftnxjhvh" path="res://scenes/quests/story_quests/template/3_template_sequence_puzzle/template_sequence_puzzle.dialogue" id="16_ptwq2"]
@@ -27,7 +28,10 @@
 [ext_resource type="Texture2D" uid="uid://baelulw1inl6s" path="res://assets/third_party/tiny-swords/Deco/09.png" id="25_ia6af"]
 [ext_resource type="Texture2D" uid="uid://bmhrkna5uimd4" path="res://assets/third_party/tiny-swords/Deco/08.png" id="26_3m5cn"]
 [ext_resource type="Texture2D" uid="uid://bfqjvai7ajhw3" path="res://assets/third_party/tiny-swords/Deco/01.png" id="27_dwbnx"]
-[ext_resource type="Script" uid="uid://d1lj2xyidlm20" path="res://scenes/quests/story_quests/ElUltimoBosque/3_ElUltimoBosque_sequence_puzzle/puertas.gd" id="28_3m5cn"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fmak2"]
+radius = 29.0
+height = 58.0
 
 [sub_resource type="Resource" id="Resource_u8qfb"]
 script = ExtResource("15_kph77")
@@ -244,38 +248,6 @@ sources/5 = SubResource("TileSetAtlasSource_jh5wg")
 sources/6 = SubResource("TileSetAtlasSource_1488y")
 sources/7 = SubResource("TileSetAtlasSource_sbqjd")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bj8xh"]
-texture = ExtResource("22_8jayu")
-texture_region_size = Vector2i(64, 64)
-0:0/0 = 0
-1:0/0 = 0
-2:0/0 = 0
-3:0/0 = 0
-0:1/0 = 0
-1:1/0 = 0
-2:1/0 = 0
-3:1/0 = 0
-0:2/0 = 0
-1:2/0 = 0
-2:2/0 = 0
-3:2/0 = 0
-0:3/0 = 0
-1:3/0 = 0
-2:3/0 = 0
-3:3/0 = 0
-0:4/0 = 0
-1:4/0 = 0
-2:4/0 = 0
-3:4/0 = 0
-0:5/0 = 0
-1:5/0 = 0
-2:5/0 = 0
-3:5/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_rwtt7"]
-tile_size = Vector2i(64, 64)
-sources/0 = SubResource("TileSetAtlasSource_bj8xh")
-
 [node name="SequencePuzzleTemplate" type="Node2D"]
 
 [node name="TileMapLayers" type="Node2D" parent="."]
@@ -298,7 +270,7 @@ position = Vector2(55, 494)
 y_sort_enabled = true
 position = Vector2(-1, 0)
 script = ExtResource("3_802lm")
-steps = [NodePath("Steps/SequencePuzzleStep1"), NodePath("Steps/SequencePuzzleStep2")]
+steps = [NodePath("Steps/SequencePuzzleStep1"), NodePath("Steps/SequencePuzzleStep2"), NodePath("Steps/SequencePuzzleStep3"), NodePath("Steps/SequencePuzzleStep4")]
 metadata/_custom_type_script = "uid://c68oh8dtr21ti"
 
 [node name="Objects" type="Node2D" parent="OnTheGround/SequencePuzzle"]
@@ -339,10 +311,18 @@ audio_stream = ExtResource("10_xwvic")
 y_sort_enabled = true
 
 [node name="HintSign1" parent="OnTheGround/SequencePuzzle/Signs" instance=ExtResource("11_ig5k6")]
-position = Vector2(157, 422)
+position = Vector2(173, 399)
 
 [node name="HintSign2" parent="OnTheGround/SequencePuzzle/Signs" instance=ExtResource("11_ig5k6")]
-position = Vector2(597, 751)
+position = Vector2(716, 445)
+sprite_frames = ExtResource("12_gvu8y")
+
+[node name="HintSign3" parent="OnTheGround/SequencePuzzle/Signs" instance=ExtResource("11_ig5k6")]
+position = Vector2(719, 252)
+sprite_frames = ExtResource("12_gvu8y")
+
+[node name="HintSign4" parent="OnTheGround/SequencePuzzle/Signs" instance=ExtResource("11_ig5k6")]
+position = Vector2(907, 121)
 sprite_frames = ExtResource("12_gvu8y")
 
 [node name="Steps" type="Node2D" parent="OnTheGround/SequencePuzzle"]
@@ -353,20 +333,77 @@ sequence = [NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), N
 hint_sign = NodePath("../../Signs/HintSign1")
 
 [node name="SequencePuzzleStep2" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
+position = Vector2(0, -52)
 script = ExtResource("13_mi3la")
 sequence = [NodePath("../../Objects/Blue"), NodePath("../../Objects/Green"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green")]
 hint_sign = NodePath("../../Signs/HintSign2")
 
+[node name="SequencePuzzleStep3" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
+position = Vector2(0, -52)
+script = ExtResource("13_mi3la")
+sequence = [NodePath("../../Objects/Blue"), NodePath("../../Objects/Pink"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green")]
+hint_sign = NodePath("../../Signs/HintSign3")
+
+[node name="SequencePuzzleStep4" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
+position = Vector2(0, -52)
+script = ExtResource("13_mi3la")
+sequence = [NodePath("../../Objects/Pink"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), NodePath("../../Objects/Purple")]
+hint_sign = NodePath("../../Signs/HintSign4")
+
+[node name="roca1" type="StaticBody2D" parent="OnTheGround/SequencePuzzle"]
+position = Vector2(372, 416)
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/roca1"]
+position = Vector2(29, -60)
+texture = ExtResource("14_dwbnx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SequencePuzzle/roca1"]
+position = Vector2(25, -60)
+shape = SubResource("CapsuleShape2D_fmak2")
+
+[node name="roca2" type="StaticBody2D" parent="OnTheGround/SequencePuzzle"]
+position = Vector2(565, 417)
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/roca2"]
+position = Vector2(29, -60)
+texture = ExtResource("14_dwbnx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SequencePuzzle/roca2"]
+position = Vector2(25, -60)
+shape = SubResource("CapsuleShape2D_fmak2")
+
+[node name="roca3" type="StaticBody2D" parent="OnTheGround/SequencePuzzle"]
+position = Vector2(753, 228)
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/roca3"]
+position = Vector2(29, -60)
+texture = ExtResource("14_dwbnx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SequencePuzzle/roca3"]
+position = Vector2(25, -60)
+shape = SubResource("CapsuleShape2D_fmak2")
+
+[node name="roca4" type="StaticBody2D" parent="OnTheGround/SequencePuzzle"]
+position = Vector2(819, 352)
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/roca4"]
+position = Vector2(29, -60)
+texture = ExtResource("14_dwbnx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SequencePuzzle/roca4"]
+position = Vector2(25, -60)
+shape = SubResource("CapsuleShape2D_fmak2")
+
 [node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("14_tcvxo")]
-position = Vector2(865, 833)
+position = Vector2(898, 505)
 revealed = false
-next_scene = "uid://cqjdjcwwfg0xi"
+next_scene = "uid://coi4lvxir542y"
 item = SubResource("Resource_u8qfb")
 collected_dialogue = ExtResource("16_ptwq2")
 dialogue_title = &"well_done"
 
 [node name="Sign" parent="OnTheGround" instance=ExtResource("17_5m326")]
-position = Vector2(312, 506)
+position = Vector2(321, 510)
 direction = 1
 text = "First melody: yellow, green, blue."
 
@@ -389,13 +426,7 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Paredes" type="TileMapLayer" parent="Node"]
 position = Vector2(-19, 8)
-tile_map_data = PackedByteArray("AAADAAgABAABAAQAAAADAAkABAABAAUAAAAEAAgABAABAAQAAAAEAAkABAABAAUAAAACAAgABAABAAQAAAACAAkABAABAAUAAAD//wgABAAAAAQAAAD//wkABAAAAAUAAAAAAAgABAABAAQAAAAAAAkABAABAAUAAAABAAgABAABAAQAAAABAAkABAABAAUAAAAFAAgABAABAAQAAAAFAAkABAABAAUAAAAGAAgABAABAAEAAAAGAAkABAACAAMAAAAGAAcABAADAAEAAAAGAAQABAADAAEAAAAGAAMABAADAAEAAAAGAAIABAADAAEAAAAGAAEABAADAAEAAAAGAAAABAADAAEAAAAGAAYABAADAAEAAAD//wYABAADAAMAAAD//wUABAACAAIAAAD//wQABAACAAIAAAD//wMABAACAAIAAAD//wIABAACAAIAAAD//wEABAACAAIAAAD//wAABAACAAIAAAD/////BAABAAEAAAAAAAAABAABAAMAAAABAAAABAABAAMAAAACAAAABAABAAMAAAADAAAABAABAAMAAAAEAAAABAABAAMAAAAFAAAABAABAAMAAAAAAP//BAABAAIAAAABAP//BAABAAIAAAACAP//BAABAAIAAAADAP//BAABAAIAAAAEAP//BAABAAIAAAAFAP//BAABAAIAAAAGAP//BAACAAEAAAAAAAUABQAAAAAAAAAFAAYABwAAAAAAAAAEAAcABQAAAAAAAAADAAQABQAAAAAAAAAHAAkABAABAAUAAAAIAAkABAABAAUAAAAJAAkABAABAAUAAAAKAAkABAABAAUAAAALAAkABAABAAUAAAAMAAkABAABAAUAAAANAAkABAABAAUAAAAPAAkABAABAAUAAAAQAAkABAABAAUAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAABAAQAAAAPAAgABAABAAQAAAAIAAYABAADAAMAAAAIAAUABAADAAEAAAAKAAYABAADAAMAAAAKAAUABAADAAEAAAAKAAQABAAAAAEAAAAKAAMABAADAAEAAAAKAAIABAADAAEAAAAJAAIABAABAAUAAAAIAAIABAAAAAUAAAAIAAEABAAAAAQAAAAMAAEABAAAAAMAAAAMAAQABAACAAIAAAALAAQABAABAAQAAAAHAAQABAABAAQAAAAIAAQABAACAAQAAAALAAUABAABAAMAAAAJAAEABAABAAQAAAAKAAEABAACAAAAAAAHAP//BAABAAUAAAAIAP//BAABAAUAAAAJAP//BAABAAUAAAAKAP//BAABAAUAAAALAP//BAABAAUAAAAMAP//BAAAAAEAAAAGAP7/BAABAAQAAAAHAP7/BAABAAQAAAAIAP7/BAABAAQAAAAJAP7/BAABAAQAAAAKAP7/BAABAAQAAAALAP7/BAABAAQAAAAMAP7/BAABAAQAAAAMAAAABAAAAAIAAAANAAEABAACAAMAAAANAP//BAACAAEAAAAOAP//BAABAAMAAAAPAAAABAADAAEAAAAPAAEABAADAAEAAAAPAAIABAADAAEAAAAPAAMABAADAAEAAAANAP7/BAABAAIAAAAOAP7/BAABAAIAAAAPAP7/BAADAAEAAAAPAP//BAADAAEAAAANAAAABAACAAIAAAAOAAMABAAAAAQAAAAOAAQABAAAAAMAAAAPAAQABAADAAEAAAAPAAUABAADAAEAAAAPAAYABAADAAEAAAAPAAcABAADAAEAAAAMAAUABAADAAEAAAAMAAYABAADAAEAAAAMAAcABAADAAEAAAAMAAMABAADAAAAAAA=")
+tile_map_data = PackedByteArray("AAADAAgABAABAAQAAAADAAkABAABAAUAAAAEAAgABAABAAQAAAAEAAkABAABAAUAAAACAAgABAABAAQAAAACAAkABAABAAUAAAD//wgABAAAAAQAAAD//wkABAAAAAUAAAAAAAgABAABAAQAAAAAAAkABAABAAUAAAABAAgABAABAAQAAAABAAkABAABAAUAAAAFAAgABAABAAQAAAAFAAkABAABAAUAAAAGAAgABAABAAEAAAAGAAkABAACAAMAAAAGAAcABAADAAEAAAAGAAQABAAAAAIAAAAGAAMABAADAAEAAAAGAAIABAADAAEAAAAGAAEABAADAAEAAAAGAAAABAADAAEAAAAGAAYABAADAAEAAAD//wYABAADAAMAAAD//wUABAACAAIAAAD//wQABAACAAIAAAD//wMABAACAAIAAAD//wIABAACAAIAAAD//wEABAACAAIAAAD//wAABAACAAIAAAD/////BAABAAEAAAAAAAAABAABAAMAAAABAAAABAABAAMAAAACAAAABAABAAMAAAADAAAABAABAAMAAAAEAAAABAABAAMAAAAFAAAABAABAAMAAAAAAP//BAABAAIAAAABAP//BAABAAIAAAACAP//BAABAAIAAAADAP//BAABAAIAAAAEAP//BAABAAIAAAAFAP//BAABAAIAAAAGAP//BAACAAEAAAAAAAUABQAAAAAAAAAFAAYABwAAAAAAAAAEAAcABQAAAAAAAAADAAQABQAAAAAAAAAHAAkABAABAAUAAAAIAAkABAABAAUAAAAJAAkABAABAAUAAAAKAAkABAABAAUAAAALAAkABAABAAUAAAAMAAkABAABAAUAAAANAAkABAABAAUAAAAPAAkABAABAAUAAAAQAAkABAABAAUAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAABAAQAAAAPAAgABAABAAQAAAAIAAYABAADAAMAAAAIAAUABAADAAEAAAAKAAYABAADAAMAAAAKAAUABAADAAEAAAAKAAQABAAAAAEAAAAKAAMABAADAAEAAAAKAAIABAADAAEAAAAJAAIABAABAAUAAAAIAAIABAAAAAUAAAAIAAEABAAAAAQAAAAMAAEABAAAAAMAAAAMAAQABAACAAIAAAALAAQABAABAAQAAAAHAAQABAABAAQAAAAIAAQABAACAAQAAAALAAUABAABAAMAAAAJAAEABAABAAQAAAAKAAEABAACAAAAAAAHAP//BAABAAUAAAAIAP//BAABAAUAAAAJAP//BAABAAUAAAAKAP//BAABAAUAAAALAP//BAABAAUAAAAMAP//BAAAAAEAAAAGAP7/BAABAAQAAAAHAP7/BAABAAQAAAAIAP7/BAABAAQAAAAJAP7/BAABAAQAAAAKAP7/BAABAAQAAAALAP7/BAABAAQAAAAMAP7/BAABAAQAAAAMAAAABAAAAAIAAAANAAEABAACAAMAAAANAP//BAACAAEAAAAOAP//BAABAAMAAAAPAAAABAADAAEAAAAPAAEABAADAAEAAAAPAAIABAADAAEAAAAPAAMABAADAAEAAAANAP7/BAABAAIAAAAOAP7/BAABAAIAAAAPAP7/BAADAAEAAAAPAP//BAADAAEAAAANAAAABAACAAIAAAAOAAMABAAAAAQAAAAOAAQABAAAAAMAAAAPAAQABAADAAEAAAAPAAUABAADAAEAAAAPAAYABAADAAEAAAAPAAcABAADAAEAAAAMAAUABAADAAEAAAAMAAYABAADAAEAAAAMAAcABAADAAEAAAAMAAMABAADAAAAAAAOAAkAAAADAAAAAAANAAwABAAAAAIAAAAOAAwABAAAAAIAAAA=")
 tile_set = SubResource("TileSet_jh5wg")
-
-[node name="Puertas" type="TileMapLayer" parent="Node"]
-position = Vector2(-18, 4)
-tile_map_data = PackedByteArray("AAAGAAUAAAADAAEAAAAJAAUAAAADAAEAAAANAAQAAAADAAEAAAAMAAIAAAADAAEAAAA=")
-tile_set = SubResource("TileSet_rwtt7")
-script = ExtResource("28_3m5cn")
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]
