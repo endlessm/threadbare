@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://c03qcw5nkornc"]
+
+[ext_resource type="Script" uid="uid://b5nd5rcb2l7h1" path="res://scenes/quests/story_quests/FragmentOfNexus/0_FragmentOfNexus_intro/FragmentOfNexus_intro_components/narrador_components/narrador_intro.gd" id="1_yqhif"]
+[ext_resource type="FontFile" uid="uid://41qao1yxwjt8" path="res://scenes/quests/story_quests/FragmentOfNexus/0_FragmentOfNexus_intro/FragmentOfNexus_intro_components/narrador_components/Geo-Regular.ttf" id="2_vx2ve"]
+[ext_resource type="AudioStream" uid="uid://cpytppdv3vdro" path="res://scenes/quests/story_quests/FragmentOfNexus/0_FragmentOfNexus_intro/FragmentOfNexus_intro_components/narrador_components/the_deep_below.mp3" id="3_vx2ve"]
+
+[node name="NarradorIntro" type="CanvasLayer"]
+follow_viewport_enabled = true
+script = ExtResource("1_yqhif")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Fondo" type="ColorRect" parent="Control"]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0.0588235, 1)
+
+[node name="NarradorTexto" type="RichTextLabel" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 300.0
+offset_top = 160.0
+offset_right = 1580.0
+offset_bottom = 880.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("2_vx2ve")
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 162
+language = "es_PE"
+
+[node name="MusicaFondo" type="AudioStreamPlayer2D" parent="Control"]
+stream = ExtResource("3_vx2ve")
+autoplay = true
+bus = &"Music"
+parameters/looping = false
