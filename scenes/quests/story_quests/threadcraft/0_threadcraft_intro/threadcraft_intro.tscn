@@ -1,13 +1,18 @@
-[gd_scene load_steps=13 format=4 uid="uid://ddhat17xubdrl"]
+[gd_scene load_steps=18 format=4 uid="uid://ddhat17xubdrl"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_03cgq"]
 [ext_resource type="PackedScene" uid="uid://do8ya53bglr13" path="res://scenes/game_elements/props/buildings/castle/castle.tscn" id="2_gvinc"]
 [ext_resource type="SpriteFrames" uid="uid://wboldjsaf6gr" path="res://scenes/quests/story_quests/threadcraft/threadcraft_player_components/threadcraft_player.tres" id="3_03cgq"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_4jk8v"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="4_60w88"]
-[ext_resource type="Resource" uid="uid://cqjngitoc5yx7" path="res://scenes/quests/story_quests/template/0_template_intro/template_intro_components/template_intro.dialogue" id="5_60w88"]
+[ext_resource type="SpriteFrames" uid="uid://brspwu70qbdaf" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_blue.tres" id="5_7goud"]
 [ext_resource type="SpriteFrames" uid="uid://cuokvpf58hkee" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_purple.tres" id="5_sfdob"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_sfdob"]
+[ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="7_dk7av"]
+[ext_resource type="SpriteFrames" uid="uid://djwymcffy83" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_red.tres" id="8_dskne"]
+[ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="9_dk7av"]
+[ext_resource type="Resource" uid="uid://bmodlganrxuj6" path="res://scenes/quests/story_quests/threadcraft/0_threadcraft_intro/threadcraft_intro_components/threadcraft_intro.dialogue" id="11_dk7av"]
+[ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="12_8eomj"]
 
 [sub_resource type="Animation" id="Animation_ld06i"]
 length = 0.001
@@ -120,7 +125,7 @@ tile_set = ExtResource("1_03cgq")
 
 [node name="Castle" parent="TileMapLayers" instance=ExtResource("2_gvinc")]
 y_sort_enabled = true
-position = Vector2(850, 285)
+position = Vector2(837, 272)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(153, 366)
@@ -149,30 +154,60 @@ libraries = {
 }
 
 [node name="Tree" parent="OnTheGround" instance=ExtResource("4_60w88")]
-position = Vector2(810, 129)
+position = Vector2(791, 117)
 scale = Vector2(1.16228, 1.10302)
+sprite_frames = ExtResource("5_7goud")
 
 [node name="Tree2" parent="OnTheGround" instance=ExtResource("4_60w88")]
-position = Vector2(850, 476)
+position = Vector2(160, 128)
 scale = Vector2(1.16228, 1.10302)
 sprite_frames = ExtResource("5_sfdob")
 
 [node name="Tree3" parent="OnTheGround" instance=ExtResource("4_60w88")]
-position = Vector2(590, 156)
+position = Vector2(587, 121)
 scale = Vector2(1.16228, 1.10302)
+sprite_frames = ExtResource("7_dk7av")
 
 [node name="Tree4" parent="OnTheGround" instance=ExtResource("4_60w88")]
-position = Vector2(548, 405)
+position = Vector2(374, 128)
 scale = Vector2(1.16228, 1.10302)
+
+[node name="Tree5" parent="OnTheGround" instance=ExtResource("4_60w88")]
+position = Vector2(820, 483)
+scale = Vector2(1.16228, 1.10302)
+sprite_frames = ExtResource("8_dskne")
+
+[node name="Sign" parent="OnTheGround" instance=ExtResource("9_dk7av")]
+y_sort_enabled = true
+position = Vector2(469, 166)
+direction = 1
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
 script = ExtResource("4_4jk8v")
-dialogue = ExtResource("5_60w88")
+dialogue = ExtResource("11_dk7av")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
 next_scene = "uid://coi4lvxir542y"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." instance=ExtResource("6_sfdob")]
 position = Vector2(677, 411)
+
+[node name="Rock2" parent="." instance=ExtResource("6_sfdob")]
+position = Vector2(357, 407)
+
+[node name="Rock3" parent="." instance=ExtResource("6_sfdob")]
+position = Vector2(594, 410)
+
+[node name="Rock4" parent="." instance=ExtResource("6_sfdob")]
+position = Vector2(284, 406)
+
+[node name="Bush" parent="." instance=ExtResource("12_8eomj")]
+position = Vector2(39, 321)
+
+[node name="Bush3" parent="." instance=ExtResource("12_8eomj")]
+position = Vector2(476, 420)
+
+[node name="Bush2" parent="." instance=ExtResource("12_8eomj")]
+position = Vector2(37, 155)
