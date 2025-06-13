@@ -18,6 +18,10 @@ var is_interacting: bool:
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		set_physics_process(false)
+		return
+
 	print("%s: I can interact" % character.name)
 
 
