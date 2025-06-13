@@ -1,0 +1,119 @@
+[gd_scene load_steps=15 format=3 uid="uid://55dghu36gtg3"]
+
+[ext_resource type="Script" uid="uid://mwgpxjf6tdx4" path="res://scenes/game_logic/character.gd" id="1_l1uqw"]
+[ext_resource type="SpriteFrames" uid="uid://07di3updrwh0" path="res://scenes/game_elements/characters/shared_components/sprite_frames/storyweaver_purple.tres" id="2_cfyuh"]
+[ext_resource type="Script" uid="uid://c5tdskdj4osp6" path="res://scenes/game_logic/can_walk_as_player.gd" id="3_cdm7f"]
+[ext_resource type="Texture2D" uid="uid://dxaq5piwxqnht" path="res://scenes/game_elements/characters/player/components/dust.png" id="4_06tgk"]
+[ext_resource type="Script" uid="uid://cwty71cf7ixs2" path="res://scenes/game_logic/can_interact.gd" id="4_i56gl"]
+[ext_resource type="PackedScene" uid="uid://yfpfno276rol" path="res://scenes/game_elements/props/fixed_size_label/fixed_size_label.tscn" id="5_i56gl"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
+height = 42.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_blfj0"]
+size = Vector2(110, 80)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_g6ijk"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 5
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_06tgk"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1e-05, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.71104, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_j0tly"]
+curve = SubResource("Curve_06tgk")
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_nrnyj"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i56gl"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 25.0
+spread = 0.0
+initial_velocity_min = -40.0
+initial_velocity_max = -10.0
+directional_velocity_min = 1.0
+directional_velocity_max = 1.0
+directional_velocity_curve = SubResource("CurveXYZTexture_nrnyj")
+gravity = Vector3(0, 0, 0)
+scale_max = 1.5
+alpha_curve = SubResource("CurveTexture_j0tly")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[sub_resource type="GDScript" id="GDScript_g6ijk"]
+script/source = "extends GPUParticles2D
+
+func on_running_changed(is_running: bool) -> void:
+	emitting = is_running
+"
+
+[node name="PlayerNew" type="CharacterBody2D"]
+collision_mask = 531
+script = ExtResource("1_l1uqw")
+character_name = "StoryWeaver"
+metadata/_custom_type_script = "uid://mwgpxjf6tdx4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_3vyb7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -17)
+sprite_frames = ExtResource("2_cfyuh")
+animation = &"attack_01"
+
+[node name="CanWalkAsPlayer" type="Node" parent="."]
+script = ExtResource("3_cdm7f")
+metadata/_custom_type_script = "uid://c5tdskdj4osp6"
+
+[node name="CanInteract" type="Node2D" parent="." node_paths=PackedStringArray("interact_zone", "interact_marker", "interact_label")]
+script = ExtResource("4_i56gl")
+interact_zone = NodePath("Area2D")
+interact_marker = NodePath("InteractMarker")
+interact_label = NodePath("InteractMarker/InteractLabel")
+metadata/_custom_type_script = "uid://cwty71cf7ixs2"
+
+[node name="Area2D" type="Area2D" parent="CanInteract"]
+collision_layer = 0
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanInteract/Area2D"]
+position = Vector2(47, -30)
+shape = SubResource("RectangleShape2D_blfj0")
+
+[node name="InteractMarker" type="Marker2D" parent="CanInteract"]
+position = Vector2(-1, -116)
+
+[node name="InteractLabel" parent="CanInteract/InteractMarker" instance=ExtResource("5_i56gl")]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 11.0
+offset_right = 1.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+modulate = Color(1, 1, 1, 0.498039)
+material = SubResource("CanvasItemMaterial_g6ijk")
+position = Vector2(0, -6)
+emitting = false
+amount = 6
+texture = ExtResource("4_06tgk")
+lifetime = 0.5
+randomness = 0.6
+fixed_fps = 10
+process_material = SubResource("ParticleProcessMaterial_i56gl")
+script = SubResource("GDScript_g6ijk")
+
+[connection signal="running_changed" from="CanWalkAsPlayer" to="GPUParticles2D" method="on_running_changed"]
