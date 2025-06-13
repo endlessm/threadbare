@@ -15,6 +15,10 @@ extends Node2D
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		set_physics_process(false)
+		return
+
 	print("%s: I can talk" % character.name)
 	_set_interact_area(interact_area)
 
