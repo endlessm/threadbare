@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=4 uid="uid://ddhat17xubdrl"]
+[gd_scene load_steps=26 format=4 uid="uid://ddhat17xubdrl"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_03cgq"]
 [ext_resource type="PackedScene" uid="uid://do8ya53bglr13" path="res://scenes/game_elements/props/buildings/castle/castle.tscn" id="2_gvinc"]
 [ext_resource type="SpriteFrames" uid="uid://wboldjsaf6gr" path="res://scenes/quests/story_quests/threadcraft/threadcraft_player_components/threadcraft_player.tres" id="3_03cgq"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_4jk8v"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="4_60w88"]
+[ext_resource type="Texture2D" uid="uid://uyg2tkue37pg" path="res://assets/third_party/tiny-swords/Factions/Goblins/Troops/Barrel/Blue/Barrel_Blue.png" id="4_dskne"]
 [ext_resource type="SpriteFrames" uid="uid://brspwu70qbdaf" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_blue.tres" id="5_7goud"]
 [ext_resource type="SpriteFrames" uid="uid://cuokvpf58hkee" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_purple.tres" id="5_sfdob"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_sfdob"]
@@ -13,6 +14,56 @@
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="9_dk7av"]
 [ext_resource type="Resource" uid="uid://bmodlganrxuj6" path="res://scenes/quests/story_quests/threadcraft/0_threadcraft_intro/threadcraft_intro_components/threadcraft_intro.dialogue" id="11_dk7av"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="12_8eomj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8eomj"]
+atlas = ExtResource("4_dskne")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_st3v0"]
+atlas = ExtResource("4_dskne")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_if72d"]
+atlas = ExtResource("4_dskne")
+region = Rect2(256, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_svsoc"]
+atlas = ExtResource("4_dskne")
+region = Rect2(384, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o3g3h"]
+atlas = ExtResource("4_dskne")
+region = Rect2(512, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y6drd"]
+atlas = ExtResource("4_dskne")
+region = Rect2(640, 128, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_if1e5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8eomj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_st3v0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_if72d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_svsoc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o3g3h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y6drd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
 
 [sub_resource type="Animation" id="Animation_ld06i"]
 length = 0.001
@@ -146,6 +197,14 @@ position = Vector2(400, 349)
 sprite_frames = ExtResource("3_03cgq")
 animation = &"idle"
 autoplay = "idle"
+
+[node name="hombre misterioso" type="AnimatedSprite2D" parent="OnTheGround"]
+y_sort_enabled = true
+position = Vector2(674, 326)
+sprite_frames = SubResource("SpriteFrames_if1e5")
+autoplay = "default"
+frame_progress = 0.856663
+flip_h = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
 root_node = NodePath("../..")
