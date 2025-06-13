@@ -34,10 +34,7 @@ func _physics_process(_delta: float) -> void:
 		interact_marker.global_position = interact_area.get_global_interact_label_position()
 
 	if not is_zero_approx(character.velocity.x):
-		if character.velocity.x < 0:
-			scale.x = -1
-		else:
-			scale.x = 1
+		scale.x = signf(character.velocity.x)
 
 
 func _unhandled_input(_event: InputEvent) -> void:
