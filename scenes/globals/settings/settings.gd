@@ -10,6 +10,9 @@ const DEFAULT_VOLUMES: Dictionary[String, float] = {
 	"Music": -15.0,
 }
 
+const VIDEO_SECTION := "Video"
+const VIDEO_WINDOW_MODE_KEY := "Window Mode"
+
 var _settings := ConfigFile.new()
 
 
@@ -19,6 +22,7 @@ func _ready() -> void:
 		push_error("Failed to load %s: %s" % [SETTINGS_PATH, err])
 
 	_restore_volumes()
+	_restore_video_settings()
 
 
 func _restore_volumes() -> void:
@@ -28,6 +32,21 @@ func _restore_volumes() -> void:
 			VOLUME_SECTION, bus, DEFAULT_VOLUMES.get(bus, 0.0)
 		)
 		_set_volume(bus_idx, volume_db)
+
+
+func _restore_video_settings() -> void:
+	var default_window_mode: int = ProjectSettings.get_setting("display/window/size/mode")
+	var window_mode: int = (
+		_settings
+		. get_value(
+			VIDEO_SECTION,
+			VIDEO_WINDOW_MODE_KEY,
+			default_window_mode,
+		)
+	)
+	if window_mode == DisplayServer.window_get_mode():
+		return
+	DisplayServer.window_set_mode(window_mode)
 
 
 func get_volume(bus: String) -> float:
@@ -41,6 +60,23 @@ func set_volume(bus: String, volume_db: float) -> void:
 	_set_volume(bus_idx, volume_db)
 
 	_settings.set_value(VOLUME_SECTION, bus, volume_db)
+	_save()
+
+
+func is_fullscreen() -> bool:
+	return DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
+
+
+func toggle_fullscreen(toggled_on: bool) -> void:
+	var default_window_mode: int = ProjectSettings.get_setting("display/window/size/mode")
+	set_window_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if toggled_on else default_window_mode)
+
+
+func set_window_mode(window_mode: int) -> void:
+	if window_mode == DisplayServer.window_get_mode():
+		return
+	DisplayServer.window_set_mode(window_mode)
+	_settings.set_value(VIDEO_SECTION, VIDEO_WINDOW_MODE_KEY, window_mode)
 	_save()
 
 
