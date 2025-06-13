@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=4 uid="uid://csils82h5vm3d"]
+[gd_scene load_steps=38 format=4 uid="uid://csils82h5vm3d"]
 
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_f45u6"]
 [ext_resource type="Resource" uid="uid://3vrn5jdxov37" path="res://scenes/quests/story_quests/template/2_template_combat/template_combat_components/template_combat.dialogue" id="2_egnqk"]
@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://dcq6v7mx3h1fl" path="res://assets/first_party/tiles/Dirt_Tiles.png" id="9_d4ogx"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="9_ml8ui"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="10_ntgxy"]
+[ext_resource type="PackedScene" uid="uid://bwqrh7clivubq" path="res://scenes/game_elements/props/decoration/sharpener/pencil_sharpener.tscn" id="22_gbl6x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2bah4"]
 texture = ExtResource("3_gbl6x")
@@ -207,7 +208,7 @@ texture_region_size = Vector2i(64, 64)
 3:2/0 = 0
 3:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-21.1113, 32, -22.3532, -32, -0.310459, -32, -0.620922, 32)
 3:3/0 = 0
-3:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-21.7322, -32, -21.4218, 2.17323, -18.0067, 14.9021, -8.38243, 14.2812, -0.620922, 13.0393, -0.310459, -32)
+3:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-21.7322, -32, -21.4218, 2.17323, -18.0067, 14.9021, -8.38243, 14.2812, -0.620922, 13.0393, -0.310459, -32, -24.5264, -32)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7yave"]
 texture = ExtResource("9_d4ogx")
@@ -365,5 +366,8 @@ dialogue_title = &"well_done"
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource("10_ntgxy")]
+
+[node name="Pencil Sharpener" parent="." instance=ExtResource("22_gbl6x")]
+position = Vector2(1450, 606)
 
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
