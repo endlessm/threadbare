@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://euwow6oc8gcn"]
+[gd_scene load_steps=42 format=4 uid="uid://euwow6oc8gcn"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_cfqmc"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_swcam"]
@@ -14,6 +14,7 @@
 [ext_resource type="SpriteFrames" uid="uid://bhcgkxhy4cqf4" path="res://scenes/quests/story_quests/template/3_template_sequence_puzzle/template_sign_2.tres" id="12_gvu8y"]
 [ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="13_mi3la"]
 [ext_resource type="Texture2D" uid="uid://bhqanyxhpxpm" path="res://assets/first_party/rocks/Rock_Idle.png" id="14_dwbnx"]
+[ext_resource type="Script" uid="uid://b7j5vf4n3qfxc" path="res://scenes/quests/story_quests/ElUltimoBosque/3_ElUltimoBosque_sequence_puzzle/RocasPuzzle.gd" id="14_fmak2"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="14_tcvxo"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="15_kph77"]
 [ext_resource type="Resource" uid="uid://bb1g8ftnxjhvh" path="res://scenes/quests/story_quests/template/3_template_sequence_puzzle/template_sequence_puzzle.dialogue" id="16_ptwq2"]
@@ -351,47 +352,50 @@ script = ExtResource("13_mi3la")
 sequence = [NodePath("../../Objects/Pink"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), NodePath("../../Objects/Purple")]
 hint_sign = NodePath("../../Signs/HintSign4")
 
-[node name="roca1" type="StaticBody2D" parent="OnTheGround/SequencePuzzle"]
+[node name="RocasPuzzle" type="Node2D" parent="OnTheGround/SequencePuzzle"]
+script = ExtResource("14_fmak2")
+
+[node name="roca1" type="StaticBody2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle"]
 position = Vector2(371, 476)
 
-[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/roca1"]
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca1"]
 position = Vector2(29, -60)
 texture = ExtResource("14_dwbnx")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SequencePuzzle/roca1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca1"]
 position = Vector2(25, -60)
 shape = SubResource("CapsuleShape2D_fmak2")
 
-[node name="roca2" type="StaticBody2D" parent="OnTheGround/SequencePuzzle"]
+[node name="roca2" type="StaticBody2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle"]
 position = Vector2(565, 417)
 
-[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/roca2"]
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca2"]
 position = Vector2(29, -60)
 texture = ExtResource("14_dwbnx")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SequencePuzzle/roca2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca2"]
 position = Vector2(25, -60)
 shape = SubResource("CapsuleShape2D_fmak2")
 
-[node name="roca3" type="StaticBody2D" parent="OnTheGround/SequencePuzzle"]
+[node name="roca3" type="StaticBody2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle"]
 position = Vector2(753, 228)
 
-[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/roca3"]
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca3"]
 position = Vector2(29, -60)
 texture = ExtResource("14_dwbnx")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SequencePuzzle/roca3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca3"]
 position = Vector2(25, -60)
 shape = SubResource("CapsuleShape2D_fmak2")
 
-[node name="roca4" type="StaticBody2D" parent="OnTheGround/SequencePuzzle"]
+[node name="roca4" type="StaticBody2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle"]
 position = Vector2(819, 352)
 
-[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/roca4"]
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca4"]
 position = Vector2(29, -60)
 texture = ExtResource("14_dwbnx")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SequencePuzzle/roca4"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca4"]
 position = Vector2(25, -60)
 shape = SubResource("CapsuleShape2D_fmak2")
 
