@@ -3,15 +3,15 @@ extends CanvasLayer
 @onready var narrador_texto := $Control/NarradorTexto
 
 var lineas: Array[String] = [
-	"Hace muchos años, en el sistema de Andromeda...",
-	"Un vínculo entre una ex-spartan y máquina estaba por restaurarse.",
-	"Nexus... Un planeta quebrado por el tiempo.",
-	"Un experimento perdido entre ruinas forerunner.",
-	"Y una sombra que persiste tras el colapso...",
-	"De las cenizas de una misión fallida,\n una figura despierta entre metal, arena y ecos.",
-	"Su nombre olvidado. Su propósito, fragmentado.",
-	"Pero algo dentro de ella aún resiste...",
-	"Unidad Sierra-7... iniciando reconexión."
+	"[b]Hace muchos años, en el sistema de Andromeda...[/b]",
+	"[b]Un vínculo entre una ex-spartan y máquina estaba por restaurarse.[/b]",
+	"[b]Nexus... Un planeta quebrado por el tiempo.[/b]",
+	"[b]Un experimento perdido entre ruinas forerunner.[/b]",
+	"[b]Y una sombra que persiste tras el colapso...[/b]",
+	"[b]De las cenizas de una misión fallida,\n una figura despierta entre metal, arena y ecos.[/b]",
+	"[b]Su nombre olvidado. Su propósito, fragmentado.[/b]",
+	"[b]Pero algo dentro de ella aún resiste...[/b]",
+	"[b]Unidad Sierra-7... iniciando reconexión.[/b]"
 ]
 
 var linea_actual := 0

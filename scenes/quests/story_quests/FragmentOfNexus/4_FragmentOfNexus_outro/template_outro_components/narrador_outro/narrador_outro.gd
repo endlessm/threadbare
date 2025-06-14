@@ -3,15 +3,15 @@ extends CanvasLayer
 @onready var narrador_texto := $Control/NarradorTexto
 
 var lineas: Array[String] = [
-	"La tormenta ha cesado, pero las cicatrices del tiempo siguen presentes.",
-	 "Unidad Sierra-7 observa el horizonte… no hay órdenes, solo propósito.",
-	 "Nexus ya no es un campo de pruebas. Es una advertencia… y un renacer.",
-	 "La conexión se ha restaurado, pero no sin un costo.",
-	 "Entre ruinas y memorias, una nueva voluntad se alza desde el núcleo olvidado.",
-	 "Aquello que fue fragmentado, ahora se reconstruye... no como antes, sino mejor.",
-	 "Las estrellas observan en silencio, testigos de un ciclo que se repite.",
-	 "Y mientras la figura se aleja entre polvo y ecos, un nuevo protocolo se activa.",
-	 "La historia continúa... pero esta vez, con conciencia."
+	"[b]La tormenta ha cesado, pero las cicatrices del tiempo siguen presentes.[/b]",
+	 "[b]Unidad Sierra-7 observa el horizonte… no hay órdenes, solo propósito.[/b]",
+	 "[b]Nexus ya no es un campo de pruebas. Es una advertencia… y un renacer.[/b]",
+	 "[b]La conexión se ha restaurado, pero no sin un costo.[/b]",
+	 "[b]Entre ruinas y memorias, una nueva voluntad se alza desde el núcleo olvidado.[/b]",
+	 "[b]Aquello que fue fragmentado, ahora se reconstruye... no como antes, sino mejor.[/b]",
+	 "[b]Las estrellas observan en silencio, testigos de un ciclo que se repite.[/b]",
+	 "[b]Y mientras la figura se aleja entre polvo y ecos, un nuevo protocolo se activa.[/b]",
+	 "[b]La historia continúa... pero esta vez, con conciencia.[/b]"
 ]
 
 var linea_actual := 0
