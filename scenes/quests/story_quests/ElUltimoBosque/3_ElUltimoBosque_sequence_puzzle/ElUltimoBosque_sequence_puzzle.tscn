@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://euwow6oc8gcn"]
+[gd_scene load_steps=44 format=4 uid="uid://euwow6oc8gcn"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_cfqmc"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_swcam"]
@@ -32,7 +32,34 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fmak2"]
 radius = 29.0
-height = 58.0
+height = 132.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jh5wg"]
+atlas = ExtResource("23_foot2")
+region = Rect2(204, 64, 51, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dwbnx"]
+atlas = ExtResource("23_foot2")
+region = Rect2(192, 64, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sbqjd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jh5wg")
+}],
+"loop": true,
+"name": &"abierto",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dwbnx")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="Resource" id="Resource_u8qfb"]
 script = ExtResource("15_kph77")
@@ -265,7 +292,7 @@ tile_set = ExtResource("1_cfqmc")
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("2_swcam")]
-position = Vector2(55, 494)
+position = Vector2(273, 361)
 
 [node name="SequencePuzzle" type="Node2D" parent="OnTheGround" node_paths=PackedStringArray("steps")]
 y_sort_enabled = true
@@ -280,7 +307,7 @@ position = Vector2(360, 1004)
 
 [node name="Blue" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_sch8c")]
 modulate = Color(0, 0.4, 0.6, 1)
-position = Vector2(-140, -883)
+position = Vector2(-136, -892)
 audio_stream = ExtResource("5_5w5g7")
 
 [node name="Pink" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_sch8c")]
@@ -355,9 +382,11 @@ hint_sign = NodePath("../../Signs/HintSign4")
 script = ExtResource("14_fmak2")
 
 [node name="roca1" type="StaticBody2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle"]
+z_index = 1
 position = Vector2(371, 476)
 
 [node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca1"]
+visible = false
 position = Vector2(29, -60)
 texture = ExtResource("14_dwbnx")
 
@@ -365,10 +394,16 @@ texture = ExtResource("14_dwbnx")
 position = Vector2(25, -60)
 shape = SubResource("CapsuleShape2D_fmak2")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca1"]
+position = Vector2(27, -54)
+scale = Vector2(1, 1.10156)
+sprite_frames = SubResource("SpriteFrames_sbqjd")
+
 [node name="roca2" type="StaticBody2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle"]
 position = Vector2(565, 417)
 
 [node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca2"]
+visible = false
 position = Vector2(29, -60)
 texture = ExtResource("14_dwbnx")
 
@@ -376,10 +411,15 @@ texture = ExtResource("14_dwbnx")
 position = Vector2(25, -60)
 shape = SubResource("CapsuleShape2D_fmak2")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca2"]
+position = Vector2(29, -59)
+sprite_frames = SubResource("SpriteFrames_sbqjd")
+
 [node name="roca3" type="StaticBody2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle"]
 position = Vector2(753, 228)
 
 [node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca3"]
+visible = false
 position = Vector2(29, -60)
 texture = ExtResource("14_dwbnx")
 
@@ -387,16 +427,25 @@ texture = ExtResource("14_dwbnx")
 position = Vector2(25, -60)
 shape = SubResource("CapsuleShape2D_fmak2")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca3"]
+position = Vector2(33, -55)
+sprite_frames = SubResource("SpriteFrames_sbqjd")
+
 [node name="roca4" type="StaticBody2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle"]
 position = Vector2(819, 352)
 
 [node name="Sprite2D" type="Sprite2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca4"]
+visible = false
 position = Vector2(29, -60)
 texture = ExtResource("14_dwbnx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca4"]
 position = Vector2(25, -60)
 shape = SubResource("CapsuleShape2D_fmak2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/SequencePuzzle/RocasPuzzle/roca4"]
+position = Vector2(27, -61)
+sprite_frames = SubResource("SpriteFrames_sbqjd")
 
 [node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("14_tcvxo")]
 position = Vector2(898, 505)
@@ -407,7 +456,7 @@ collected_dialogue = ExtResource("16_ptwq2")
 dialogue_title = &"well_done"
 
 [node name="Sign" parent="OnTheGround" instance=ExtResource("17_5m326")]
-position = Vector2(321, 510)
+position = Vector2(176, 495)
 direction = 1
 text = "First melody: yellow, green, blue."
 
@@ -417,7 +466,6 @@ text = "First melody: yellow, green, blue."
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
-zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 
 [node name="Cinematic" type="Node2D" parent="."]
@@ -430,7 +478,7 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Paredes" type="TileMapLayer" parent="Node"]
 position = Vector2(-19, 8)
-tile_map_data = PackedByteArray("AAADAAgABAABAAQAAAADAAkABAABAAUAAAAEAAgABAABAAQAAAAEAAkABAABAAUAAAACAAgABAABAAQAAAACAAkABAABAAUAAAD//wgABAAAAAQAAAD//wkABAAAAAUAAAAAAAgABAABAAQAAAAAAAkABAABAAUAAAABAAgABAABAAQAAAABAAkABAABAAUAAAAFAAgABAABAAQAAAAFAAkABAABAAUAAAAGAAgABAABAAEAAAAGAAkABAACAAMAAAAGAAcABAADAAEAAAAGAAMABAADAAEAAAAGAAIABAADAAEAAAAGAAEABAADAAEAAAAGAAAABAADAAEAAAD//wYABAADAAMAAAD//wUABAACAAIAAAD//wQABAACAAIAAAD//wMABAACAAIAAAD//wIABAACAAIAAAD//wEABAACAAIAAAD//wAABAACAAIAAAD/////BAABAAEAAAAAAAAABAABAAMAAAABAAAABAABAAMAAAACAAAABAABAAMAAAADAAAABAABAAMAAAAEAAAABAABAAMAAAAFAAAABAABAAMAAAAAAP//BAABAAIAAAABAP//BAABAAIAAAACAP//BAABAAIAAAADAP//BAABAAIAAAAEAP//BAABAAIAAAAFAP//BAABAAIAAAAGAP//BAACAAEAAAAAAAUABQAAAAAAAAAFAAYABwAAAAAAAAAEAAcABQAAAAAAAAADAAQABQAAAAAAAAAHAAkABAABAAUAAAAIAAkABAABAAUAAAAJAAkABAABAAUAAAAKAAkABAABAAUAAAALAAkABAABAAUAAAAMAAkABAABAAUAAAANAAkABAABAAUAAAAPAAkABAABAAUAAAAQAAkABAABAAUAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAABAAQAAAAPAAgABAABAAQAAAAIAAYABAADAAMAAAAIAAUABAADAAEAAAAKAAYABAADAAMAAAAKAAUABAADAAEAAAAKAAQABAAAAAEAAAAKAAMABAADAAEAAAAKAAIABAADAAEAAAAJAAIABAABAAUAAAAIAAIABAAAAAUAAAAIAAEABAAAAAQAAAAMAAEABAAAAAMAAAAMAAQABAACAAIAAAALAAQABAABAAQAAAAIAAQABAACAAQAAAALAAUABAABAAMAAAAJAAEABAABAAQAAAAKAAEABAACAAAAAAAHAP//BAABAAUAAAAIAP//BAABAAUAAAAJAP//BAABAAUAAAAKAP//BAABAAUAAAALAP//BAABAAUAAAAMAP//BAAAAAEAAAAGAP7/BAABAAQAAAAHAP7/BAABAAQAAAAIAP7/BAABAAQAAAAJAP7/BAABAAQAAAAKAP7/BAABAAQAAAALAP7/BAABAAQAAAAMAP7/BAABAAQAAAAMAAAABAAAAAIAAAANAAEABAACAAMAAAANAP//BAACAAEAAAAOAP//BAABAAMAAAAPAAAABAADAAEAAAAPAAEABAADAAEAAAAPAAIABAADAAEAAAAPAAMABAADAAEAAAANAP7/BAABAAIAAAAOAP7/BAABAAIAAAAPAP7/BAADAAEAAAAPAP//BAADAAEAAAANAAAABAACAAIAAAAOAAMABAAAAAQAAAAOAAQABAAAAAMAAAAPAAQABAADAAEAAAAPAAUABAADAAEAAAAPAAYABAADAAEAAAAPAAcABAADAAEAAAAMAAUABAADAAEAAAAMAAYABAADAAEAAAAMAAcABAADAAEAAAAMAAMABAADAAAAAAAOAAkAAAADAAAAAAANAAwABAAAAAIAAAAOAAwABAAAAAIAAAAGAAQABAAAAAEAAAAHAAQABAABAAQAAAAHAAUABAABAAMAAAAGAAUABAAAAAMAAAA=")
+tile_map_data = PackedByteArray("AAADAAgABAABAAQAAAADAAkABAABAAUAAAAEAAgABAABAAQAAAAEAAkABAABAAUAAAACAAgABAABAAQAAAACAAkABAABAAUAAAD//wgABAAAAAQAAAD//wkABAAAAAUAAAAAAAgABAABAAQAAAAAAAkABAABAAUAAAABAAgABAABAAQAAAABAAkABAABAAUAAAAFAAgABAABAAQAAAAFAAkABAABAAUAAAAGAAgABAABAAEAAAAGAAkABAACAAMAAAAGAAcABAADAAEAAAAGAAMABAADAAEAAAAGAAIABAADAAEAAAAGAAEABAADAAEAAAAGAAAABAADAAEAAAD//wYABAADAAMAAAD//wUABAACAAIAAAD//wQABAACAAIAAAD//wMABAACAAIAAAD//wIABAACAAIAAAD//wEABAACAAIAAAD//wAABAACAAIAAAD/////BAABAAEAAAAAAAAABAABAAMAAAABAAAABAABAAMAAAACAAAABAABAAMAAAADAAAABAABAAMAAAAEAAAABAABAAMAAAAFAAAABAABAAMAAAAAAP//BAABAAIAAAABAP//BAABAAIAAAACAP//BAABAAIAAAADAP//BAABAAIAAAAEAP//BAABAAIAAAAFAP//BAABAAIAAAAGAP//BAACAAEAAAAAAAUABQAAAAAAAAAFAAYABwAAAAAAAAAEAAcABQAAAAAAAAADAAQABQAAAAAAAAAHAAkABAABAAUAAAAIAAkABAABAAUAAAAJAAkABAABAAUAAAAKAAkABAABAAUAAAALAAkABAABAAUAAAAMAAkABAABAAUAAAANAAkABAABAAUAAAAPAAkABAABAAUAAAAQAAkABAABAAUAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAABAAQAAAAPAAgABAABAAQAAAAIAAYABAADAAMAAAAIAAUABAADAAEAAAAKAAYABAADAAMAAAAKAAUABAADAAEAAAAKAAQABAAAAAEAAAAKAAMABAADAAEAAAAKAAIABAADAAEAAAAJAAIABAABAAUAAAAIAAIABAAAAAUAAAAIAAEABAAAAAQAAAAMAAEABAAAAAMAAAAMAAQABAACAAIAAAALAAQABAABAAQAAAAIAAQABAACAAQAAAALAAUABAABAAMAAAAJAAEABAABAAQAAAAKAAEABAACAAAAAAAHAP//BAABAAUAAAAIAP//BAABAAUAAAAJAP//BAABAAUAAAAKAP//BAABAAUAAAALAP//BAABAAUAAAAMAP//BAAAAAEAAAAGAP7/BAABAAQAAAAHAP7/BAABAAQAAAAIAP7/BAABAAQAAAAJAP7/BAABAAQAAAAKAP7/BAABAAQAAAALAP7/BAABAAQAAAAMAP7/BAABAAQAAAAMAAAABAAAAAIAAAANAAEABAACAAMAAAANAP//BAACAAEAAAAOAP//BAABAAMAAAAPAAAABAADAAEAAAAPAAEABAADAAEAAAAPAAIABAADAAEAAAAPAAMABAADAAEAAAANAP7/BAABAAIAAAAOAP7/BAABAAIAAAAPAP7/BAADAAEAAAAPAP//BAADAAEAAAANAAAABAACAAIAAAAOAAMABAAAAAQAAAAOAAQABAAAAAMAAAAPAAQABAADAAEAAAAPAAUABAADAAEAAAAPAAYABAADAAEAAAAPAAcABAADAAEAAAAMAAUABAADAAEAAAAMAAYABAADAAEAAAAMAAcABAADAAEAAAAMAAMABAADAAAAAAAOAAkAAAADAAAAAAANAAwABAAAAAIAAAAOAAwABAAAAAIAAAAGAAQABAAAAAEAAAAHAAQABAABAAQAAAAHAAUABAABAAMAAAAGAAUABAADAAEAAAA=")
 tile_set = SubResource("TileSet_jh5wg")
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]

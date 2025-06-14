@@ -8,7 +8,7 @@ extends SequencePuzzle
 func _ready() -> void:
 	super._ready()
 	
-	var puzzle_node := get_parent() # o usa get_parent().get_parent() si es necesario subir más
+	var puzzle_node := get_parent()
 
 	if puzzle_node.has_signal("step_solved"):
 		puzzle_node.step_solved.connect(_on_step_solved)
@@ -18,18 +18,24 @@ func _on_step_solved(step_index: int) -> void:
 
 	match step_index:
 		0:
-			if is_instance_valid(roca1):
-				print("Eliminando roca1")
-				roca1.queue_free()
+			_cambiar_roca(roca1, "roca1")
 		1:
-			if is_instance_valid(roca2):
-				print("Eliminando roca2")
-				roca2.queue_free()
+			_cambiar_roca(roca2, "roca2")
 		2:
-			if is_instance_valid(roca3):
-				print("Eliminando roca3")
-				roca3.queue_free()
+			_cambiar_roca(roca3, "roca3")
 		3:
-			if is_instance_valid(roca4):
-				print("Eliminando roca4")
-				roca4.queue_free()
+			_cambiar_roca(roca4, "roca4")
+
+
+func _cambiar_roca(roca: Node, nombre: String) -> void:
+	if is_instance_valid(roca):
+		var anim_sprite = roca.get_node("AnimatedSprite2D")
+		var colision = roca.get_node_or_null("CollisionShape2D")
+
+		if anim_sprite:
+			anim_sprite.play("abierto")
+			print("Cambiando animación de", nombre)
+
+		if colision:
+			colision.disabled = true
+			print("Desactivando colisión de", nombre)
