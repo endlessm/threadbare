@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://ddhat17xubdrl"]
+[gd_scene load_steps=25 format=4 uid="uid://ddhat17xubdrl"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_03cgq"]
 [ext_resource type="SpriteFrames" uid="uid://wboldjsaf6gr" path="res://scenes/quests/story_quests/threadcraft/threadcraft_player_components/threadcraft_player.tres" id="3_03cgq"]
@@ -89,7 +89,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(495, 222), Vector2(1010, 222)]
+"values": [Vector2(717, 222), Vector2(1010, 222)]
 }
 
 [sub_resource type="Animation" id="Animation_blo5s"]
@@ -117,14 +117,100 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-20, 222), Vector2(499, 222)]
+"values": [Vector2(-20, 222), Vector2(217, 222)]
+}
+
+[sub_resource type="Animation" id="Animation_dskne"]
+resource_name = "walk_on2"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(217, 222), Vector2(451, 222)]
+}
+
+[sub_resource type="Animation" id="Animation_8eomj"]
+resource_name = "walk_on_2"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(217, 222), Vector2(452, 222)]
+}
+
+[sub_resource type="Animation" id="Animation_st3v0"]
+resource_name = "walk_on_3"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(452, 222), Vector2(717, 222)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qdpvj"]
 _data = {
 &"RESET": SubResource("Animation_ld06i"),
 &"walk_off": SubResource("Animation_7swpb"),
-&"walk_on": SubResource("Animation_blo5s")
+&"walk_on": SubResource("Animation_blo5s"),
+&"walk_on2": SubResource("Animation_dskne"),
+&"walk_on_2": SubResource("Animation_8eomj"),
+&"walk_on_3": SubResource("Animation_st3v0")
 }
 
 [node name="Intro" type="Node2D"]
@@ -165,14 +251,14 @@ position = Vector2(400, 349)
 sprite_frames = ExtResource("3_03cgq")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.675959
+frame_progress = 0.731255
 
 [node name="hombre misterioso" type="AnimatedSprite2D" parent="OnTheGround"]
 y_sort_enabled = true
 position = Vector2(853, 261)
 sprite_frames = SubResource("SpriteFrames_if1e5")
 autoplay = "default"
-frame_progress = 0.974463
+frame_progress = 0.65686
 flip_h = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
@@ -207,7 +293,7 @@ sprite_frames = ExtResource("8_dskne")
 
 [node name="Sign" parent="OnTheGround" instance=ExtResource("9_dk7av")]
 y_sort_enabled = true
-position = Vector2(469, 166)
+position = Vector2(448, 168)
 direction = 1
 
 [node name="Tower" parent="OnTheGround" instance=ExtResource("10_dskne")]
