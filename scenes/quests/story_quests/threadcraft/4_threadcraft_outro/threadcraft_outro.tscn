@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=4 uid="uid://rrvqmw4kt1rv"]
+[gd_scene load_steps=27 format=4 uid="uid://rrvqmw4kt1rv"]
 
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_0uo8i"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_ybl77"]
@@ -6,7 +6,249 @@
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_wofn3"]
 [ext_resource type="Resource" uid="uid://b0v3jkl85r4la" path="res://scenes/quests/story_quests/threadcraft/4_threadcraft_outro/theadcraft_outro_components/threadcraft_outro.dialogue" id="5_0uo8i"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="6_15jea"]
+[ext_resource type="Texture2D" uid="uid://dgc6pt5uuejc8" path="res://scenes/quests/story_quests/threadcraft/assets/old_misterious_man2.png" id="6_ybl77"]
+[ext_resource type="Texture2D" uid="uid://cg4aor5awnq2w" path="res://scenes/quests/story_quests/threadcraft/assets/old_misterious_man_reveal.png" id="7_0rty1"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="7_7lot0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0rty1"]
+atlas = ExtResource("6_ybl77")
+region = Rect2(189, 0, 189, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wofn3"]
+atlas = ExtResource("6_ybl77")
+region = Rect2(378, 0, 189, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5d8t8"]
+atlas = ExtResource("6_ybl77")
+region = Rect2(567, 0, 189, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_15jea"]
+atlas = ExtResource("6_ybl77")
+region = Rect2(756, 0, 189, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7lot0"]
+atlas = ExtResource("7_0rty1")
+region = Rect2(0, 0, 135, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6hdjl"]
+atlas = ExtResource("7_0rty1")
+region = Rect2(135, 0, 135, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0gsjc"]
+atlas = ExtResource("7_0rty1")
+region = Rect2(270, 0, 135, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fyagw"]
+atlas = ExtResource("7_0rty1")
+region = Rect2(405, 0, 135, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wcacf"]
+atlas = ExtResource("7_0rty1")
+region = Rect2(540, 0, 135, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qxsfj"]
+atlas = ExtResource("7_0rty1")
+region = Rect2(675, 0, 135, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_44b64"]
+atlas = ExtResource("7_0rty1")
+region = Rect2(810, 0, 135, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7lot0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0rty1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wofn3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5d8t8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_15jea")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0rty1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wofn3")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7lot0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6hdjl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0gsjc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fyagw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wcacf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qxsfj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_44b64")
+}],
+"loop": false,
+"name": &"reveal",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fyagw")
+}],
+"loop": false,
+"name": &"revealed",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_ybl77"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(400, 349)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/OldMan:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(992, 320)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("OnTheGround/OldMan:animation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [&"default"]
+}
+
+[sub_resource type="Animation" id="Animation_ia6a2"]
+resource_name = "revelation_man"
+length = 3.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/OldMan:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"reveal", &"revealed"]
+}
+
+[sub_resource type="Animation" id="Animation_6hdjl"]
+resource_name = "walk_misterious_man"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/OldMan:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"default", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/OldMan:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(992, 330), Vector2(225, 330)]
+}
+
+[sub_resource type="Animation" id="Animation_0uo8i"]
+resource_name = "walk_on"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-30, 349), Vector2(150, 349)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0rty1"]
+_data = {
+&"RESET": SubResource("Animation_ybl77"),
+&"revelation_man": SubResource("Animation_ia6a2"),
+&"walk_misterious_man": SubResource("Animation_6hdjl"),
+&"walk_on": SubResource("Animation_0uo8i")
+}
 
 [node name="Outro" type="Node2D"]
 texture_filter = 1
@@ -33,127 +275,141 @@ editor_draw_limits = true
 [node name="OnTheGround" type="Node2D" parent="."]
 y_sort_enabled = true
 
+[node name="Bush & Trees" type="Node2D" parent="OnTheGround"]
+
+[node name="Bush2" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(110, 295)
+
+[node name="Bush4" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(111, 435)
+
+[node name="Bush5" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(178, 295)
+
+[node name="Bush6" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(246, 295)
+
+[node name="Bush7" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(179, 435)
+
+[node name="Bush8" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(247, 435)
+
+[node name="Bush9" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(316, 294)
+
+[node name="Bush10" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(384, 294)
+
+[node name="Bush11" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(317, 434)
+
+[node name="Bush12" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(385, 434)
+
+[node name="Bush13" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(452, 294)
+
+[node name="Bush14" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(520, 294)
+
+[node name="Bush15" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(453, 434)
+
+[node name="Bush16" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(521, 434)
+
+[node name="Bush17" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(586, 294)
+
+[node name="Bush18" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(654, 294)
+
+[node name="Bush19" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(587, 434)
+
+[node name="Bush20" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(655, 434)
+
+[node name="Bush21" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(722, 294)
+
+[node name="Bush22" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(790, 294)
+
+[node name="Bush23" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(723, 434)
+
+[node name="Bush24" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(791, 434)
+
+[node name="Bush25" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(860, 293)
+
+[node name="Bush26" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(928, 293)
+
+[node name="Bush27" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(861, 433)
+
+[node name="Bush28" parent="OnTheGround/Bush & Trees" instance=ExtResource("6_15jea")]
+position = Vector2(929, 433)
+
+[node name="Tree" parent="OnTheGround/Bush & Trees" instance=ExtResource("7_7lot0")]
+position = Vector2(111, 229)
+scale = Vector2(1.06363, 0.977326)
+
+[node name="Tree2" parent="OnTheGround/Bush & Trees" instance=ExtResource("7_7lot0")]
+position = Vector2(337, 227)
+scale = Vector2(1.06363, 0.977326)
+
+[node name="Tree3" parent="OnTheGround/Bush & Trees" instance=ExtResource("7_7lot0")]
+position = Vector2(214, 124)
+scale = Vector2(1.06363, 0.977326)
+
+[node name="Tree5" parent="OnTheGround/Bush & Trees" instance=ExtResource("7_7lot0")]
+position = Vector2(587, 228)
+scale = Vector2(1.06363, 0.977326)
+
+[node name="Tree12" parent="OnTheGround/Bush & Trees" instance=ExtResource("7_7lot0")]
+position = Vector2(835, 237)
+scale = Vector2(1.06363, 0.977326)
+
+[node name="Tree6" parent="OnTheGround/Bush & Trees" instance=ExtResource("7_7lot0")]
+position = Vector2(713, 122)
+scale = Vector2(1.06363, 0.977326)
+
+[node name="Tree4" parent="OnTheGround/Bush & Trees" instance=ExtResource("7_7lot0")]
+position = Vector2(454, 124)
+scale = Vector2(1.06363, 0.977326)
+
+[node name="Tree8" parent="OnTheGround/Bush & Trees" instance=ExtResource("7_7lot0")]
+position = Vector2(929, 126)
+scale = Vector2(1.06363, 0.977326)
+
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
 position = Vector2(400, 349)
 sprite_frames = ExtResource("3_0rty1")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.41281
+
+[node name="OldMan" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(992, 320)
+sprite_frames = SubResource("SpriteFrames_7lot0")
+autoplay = "default"
+flip_h = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_0rty1")
+}
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
-[node name="Cinematic" type="Node2D" parent="."]
+[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
 script = ExtResource("4_wofn3")
 dialogue = ExtResource("5_0uo8i")
+animation_player = NodePath("../OnTheGround/AnimationPlayer")
 next_scene = "uid://cufkthb25mpxy"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
-
-[node name="Bush2" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(110, 295)
-
-[node name="Bush4" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(111, 435)
-
-[node name="Bush5" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(178, 295)
-
-[node name="Bush6" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(246, 295)
-
-[node name="Bush7" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(179, 435)
-
-[node name="Bush8" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(247, 435)
-
-[node name="Bush9" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(316, 294)
-
-[node name="Bush10" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(384, 294)
-
-[node name="Bush11" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(317, 434)
-
-[node name="Bush12" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(385, 434)
-
-[node name="Bush13" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(452, 294)
-
-[node name="Bush14" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(520, 294)
-
-[node name="Bush15" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(453, 434)
-
-[node name="Bush16" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(521, 434)
-
-[node name="Bush17" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(586, 294)
-
-[node name="Bush18" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(654, 294)
-
-[node name="Bush19" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(587, 434)
-
-[node name="Bush20" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(655, 434)
-
-[node name="Bush21" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(722, 294)
-
-[node name="Bush22" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(790, 294)
-
-[node name="Bush23" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(723, 434)
-
-[node name="Bush24" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(791, 434)
-
-[node name="Bush25" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(860, 293)
-
-[node name="Bush26" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(928, 293)
-
-[node name="Bush27" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(861, 433)
-
-[node name="Bush28" parent="." instance=ExtResource("6_15jea")]
-position = Vector2(929, 433)
-
-[node name="Tree" parent="." instance=ExtResource("7_7lot0")]
-position = Vector2(111, 229)
-scale = Vector2(1.06363, 0.977326)
-
-[node name="Tree2" parent="." instance=ExtResource("7_7lot0")]
-position = Vector2(337, 227)
-scale = Vector2(1.06363, 0.977326)
-
-[node name="Tree3" parent="." instance=ExtResource("7_7lot0")]
-position = Vector2(214, 124)
-scale = Vector2(1.06363, 0.977326)
-
-[node name="Tree5" parent="." instance=ExtResource("7_7lot0")]
-position = Vector2(587, 228)
-scale = Vector2(1.06363, 0.977326)
-
-[node name="Tree12" parent="." instance=ExtResource("7_7lot0")]
-position = Vector2(835, 237)
-scale = Vector2(1.06363, 0.977326)
-
-[node name="Tree6" parent="." instance=ExtResource("7_7lot0")]
-position = Vector2(713, 122)
-scale = Vector2(1.06363, 0.977326)
-
-[node name="Tree4" parent="." instance=ExtResource("7_7lot0")]
-position = Vector2(454, 124)
-scale = Vector2(1.06363, 0.977326)
-
-[node name="Tree8" parent="." instance=ExtResource("7_7lot0")]
-position = Vector2(929, 126)
-scale = Vector2(1.06363, 0.977326)
