@@ -1,14 +1,14 @@
-[gd_scene load_steps=18 format=4 uid="uid://tbgc0cbjme3l"]
+[gd_scene load_steps=19 format=4 uid="uid://tbgc0cbjme3l"]
 
-[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_erqos"]
-[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_kkqnx"]
-[ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/template_player_components/template_player.tres" id="3_pave7"]
-[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_ds6kc"]
-[ext_resource type="Texture2D" uid="uid://dcq6v7mx3h1fl" path="res://assets/first_party/tiles/Dirt_Tiles.png" id="4_esj22"]
-[ext_resource type="Resource" uid="uid://0qp75v584bc1" path="res://scenes/quests/story_quests/spacerage/4_spacerage_outro/template_outro_components/rage_space_outro.dialogue" id="5_erqos"]
-[ext_resource type="Texture2D" uid="uid://c7oht7wudd8wa" path="res://assets/first_party/tiles/Cliff_Tiles.png" id="5_jowud"]
-[ext_resource type="Texture2D" uid="uid://cledckq31klvq" path="res://assets/first_party/tiles/Cliff_Mines_Tiles.png" id="6_hlytf"]
-[ext_resource type="Texture2D" uid="uid://lg5dl13njsg3" path="res://assets/first_party/tiles/Grass_And_Sand_Tiles.png" id="7_mwprl"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_5u366"]
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_lq504"]
+[ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/template_player_components/template_player.tres" id="3_qesv7"]
+[ext_resource type="Texture2D" uid="uid://dcq6v7mx3h1fl" path="res://assets/first_party/tiles/Dirt_Tiles.png" id="4_i0hob"]
+[ext_resource type="Texture2D" uid="uid://c7oht7wudd8wa" path="res://assets/first_party/tiles/Cliff_Tiles.png" id="5_ci66d"]
+[ext_resource type="Texture2D" uid="uid://cledckq31klvq" path="res://assets/first_party/tiles/Cliff_Mines_Tiles.png" id="6_u6dsq"]
+[ext_resource type="Texture2D" uid="uid://lg5dl13njsg3" path="res://assets/first_party/tiles/Grass_And_Sand_Tiles.png" id="7_vwkws"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="8_gmikl"]
+[ext_resource type="Resource" uid="uid://0qp75v584bc1" path="res://scenes/quests/story_quests/spacerage/4_spacerage_outro/template_outro_components/rage_space_outro.dialogue" id="9_8jaqs"]
 
 [sub_resource type="Animation" id="Animation_ppql7"]
 length = 2.0
@@ -34,7 +34,31 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 1.93333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(76, 345), Vector2(932, 329)]
+"values": [Vector2(-37, 345), Vector2(932, 329)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Camera2D:zoom")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2.2, 2.2)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("OnTheGround/Camera2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(180, 323)]
 }
 
 [sub_resource type="Animation" id="Animation_qsarf"]
@@ -47,10 +71,10 @@ tracks/0/path = NodePath("OnTheGround/Character:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.95705),
+"times": PackedFloat32Array(0, 1.95),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(76, 345), Vector2(917, 351)]
+"values": [Vector2(-45, 345), Vector2(353, 351)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -64,15 +88,56 @@ tracks/1/keys = {
 "update": 1,
 "values": [&"walk", &"idle"]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Camera2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.96),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(180, 323), Vector2(180, 323)]
+}
+
+[sub_resource type="Animation" id="Animation_ymsqt"]
+resource_name = "zoom_in"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Camera2D:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.96667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(2.2, 2.2), Vector2(3, 3)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Camera2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2.97),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(180, 323), Vector2(213, 254)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ppql7"]
 _data = {
 &"RESET": SubResource("Animation_ppql7"),
-&"caminar": SubResource("Animation_qsarf")
+&"caminar": SubResource("Animation_qsarf"),
+&"zoom_in": SubResource("Animation_ymsqt")
 }
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_csytq"]
-texture = ExtResource("4_esj22")
+texture = ExtResource("4_i0hob")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -379,7 +444,7 @@ texture = ExtResource("4_esj22")
 15:15/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i7jhk"]
-texture = ExtResource("5_jowud")
+texture = ExtResource("5_ci66d")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -830,7 +895,7 @@ texture = ExtResource("5_jowud")
 15:31/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ygdae"]
-texture = ExtResource("6_hlytf")
+texture = ExtResource("6_u6dsq")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -1217,7 +1282,7 @@ texture = ExtResource("6_hlytf")
 15:23/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jgbna"]
-texture = ExtResource("7_mwprl")
+texture = ExtResource("7_vwkws")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -1845,18 +1910,22 @@ sources/3 = SubResource("TileSetAtlasSource_jgbna")
 [node name="Outro" type="Node2D"]
 texture_filter = 1
 
-[node name="HUD" parent="." instance=ExtResource("1_erqos")]
+[node name="HUD" parent="." instance=ExtResource("1_5u366")]
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 position = Vector2(-2, -31)
 
 [node name="Ground" type="TileMapLayer" parent="TileMapLayers"]
 tile_map_data = PackedByteArray("AAAAAAUAAQAGAAMAAAABAAUAAQAGAAMAAAACAAUAAQAGAAMAAAADAAUAAQAGAAMAAAAEAAUAAQAGAAMAAAAFAAUAAQAGAAMAAAAGAAUAAQAGAAMAAAAHAAUAAQAGAAMAAAAIAAUAAQAGAAMAAAAJAAUAAQAGAAMAAAAKAAUAAQAGAAMAAAALAAUAAQAGAAMAAAAMAAUAAQAGAAMAAAANAAUAAQAGAAMAAAAOAAUAAQAGAAMAAAAAAAYABQAAAAEAAAAAAAcABQAAAAEAAAABAAYABQABAAEAAAABAAcABQABAAEAAAACAAYABQABAAEAAAACAAcABQABAAEAAAADAAYABQABAAEAAAADAAcABQABAAEAAAAEAAYABQABAAEAAAAEAAcABQABAAEAAAAFAAYABQABAAEAAAAFAAcABQABAAEAAAAGAAYABQABAAEAAAAGAAcABQABAAEAAAAHAAYABQABAAEAAAAHAAcABQABAAEAAAAIAAYABQABAAEAAAAIAAcABQABAAEAAAAJAAYABQABAAEAAAAJAAcABQABAAEAAAAKAAYABQABAAEAAAAKAAcABQABAAEAAAALAAYABQABAAEAAAALAAcABQABAAEAAAAMAAYABQABAAEAAAAMAAcABQABAAEAAAANAAYABQABAAEAAAANAAcABQABAAEAAAAOAAYABQACAAEAAAAOAAcABQACAAEAAAAAAAEABQAAAAAAAAABAAEABQABAAAAAAACAAEABQABAAAAAAADAAEABQABAAAAAAADAAIABQABAAEAAAAEAAIABQABAAEAAAAFAAIABQABAAEAAAAFAAMABQABAAEAAAABAAIABQABAAEAAAAAAAIABQAAAAEAAAAAAAMABQAAAAEAAAAAAAQABQAAAAEAAAABAAMABQABAAEAAAABAAQABQABAAEAAAACAAQABQABAAEAAAACAAMABQABAAEAAAACAAIABQABAAEAAAADAAQABQABAAEAAAADAAMABQABAAEAAAAEAAMABQABAAEAAAAEAAQABQABAAEAAAAFAAQABQABAAEAAAAGAAQABQABAAEAAAAHAAQABQABAAEAAAAIAAQABQABAAEAAAAJAAQABQABAAEAAAAKAAQABQABAAEAAAALAAQABQABAAEAAAAMAAQABQABAAEAAAANAAQABQABAAEAAAAOAAQABQACAAEAAAAOAAMABQACAAEAAAAOAAIABQACAAEAAAAOAAEABQACAAAAAAAEAAEABQABAAAAAAAFAAEABQABAAAAAAAGAAEABQABAAAAAAAHAAEABQABAAAAAAAIAAEABQABAAAAAAAJAAEABQABAAAAAAAKAAEABQABAAAAAAALAAEABQABAAAAAAAMAAEABQABAAAAAAANAAEABQABAAAAAAANAAIABQABAAEAAAANAAMABQABAAEAAAAMAAMABQABAAEAAAALAAMABQABAAEAAAAKAAMABQABAAEAAAAJAAMABQABAAEAAAAIAAMABQABAAEAAAAHAAMABQABAAEAAAAGAAMABQABAAEAAAAGAAIABQABAAEAAAAHAAIABQABAAEAAAAIAAIABQABAAEAAAAJAAIABQABAAEAAAAKAAIABQABAAEAAAALAAIABQABAAEAAAAMAAIABQABAAEAAAAAAAgABQAAAAIAAAABAAgABQABAAIAAAACAAgABQABAAIAAAADAAgABQABAAIAAAAEAAgABQABAAIAAAAFAAgABQABAAIAAAAGAAgABQABAAIAAAAHAAgABQABAAIAAAAIAAgABQABAAIAAAAJAAgABQABAAIAAAAKAAgABQABAAIAAAALAAgABQABAAIAAAAMAAgABQABAAIAAAANAAgABQABAAIAAAAOAAgABQACAAIAAAA=")
-tile_set = ExtResource("2_kkqnx")
+tile_set = ExtResource("2_lq504")
 metadata/_edit_lock_ = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(153, 366)
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+position = Vector2(-4, -34)
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround"]
+position = Vector2(180, 323)
 zoom = Vector2(2.2, 2.2)
 limit_left = 0
 limit_top = 0
@@ -1865,13 +1934,9 @@ limit_bottom = 540
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="OnTheGround" type="Node2D" parent="."]
-y_sort_enabled = true
-position = Vector2(-4, -34)
-
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
-position = Vector2(76, 345)
-sprite_frames = ExtResource("3_pave7")
+position = Vector2(-37, 345)
+sprite_frames = ExtResource("3_qesv7")
 animation = &"idle"
 autoplay = "idle"
 
@@ -1889,8 +1954,8 @@ tile_set = SubResource("TileSet_3wyqy")
 
 [node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
 position = Vector2(-2, -32)
-script = ExtResource("4_ds6kc")
-dialogue = ExtResource("5_erqos")
+script = ExtResource("8_gmikl")
+dialogue = ExtResource("9_8jaqs")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
 next_scene = "uid://cufkthb25mpxy"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
