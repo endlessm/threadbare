@@ -41,6 +41,15 @@ func _ready() -> void:
 	character.animated_sprite_2d.play(&"walk")
 
 
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_ENABLED:
+			character.animated_sprite_2d.play(&"walk")
+			_update_target_position()
+		NOTIFICATION_DISABLED:
+			pass
+
+
 func _set_node_to_follow(new_node_to_follow: Node2D) -> void:
 	node_to_follow = new_node_to_follow
 	_update_target_position()
@@ -62,11 +71,3 @@ func _physics_process(_delta: float) -> void:
 
 	if character.global_position.is_equal_approx(_target_position):
 		target_reached.emit()
-
-
-func _notification(what: int) -> void:
-	match what:
-		NOTIFICATION_ENABLED:
-			_update_target_position()
-		NOTIFICATION_DISABLED:
-			pass
