@@ -12,27 +12,24 @@ var filled_with_item: InventoryItem = null:
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
-
 ## Shows the collected [InventoryItem] in this item slot without animation.
 func start_as_filled(inventory_item: InventoryItem) -> void:
 	if is_filled():
 		return
 
 	filled_with_item = inventory_item
+	texture = filled_with_item.texture()
 	modulate = Color.WHITE
-
 
 func is_filled() -> bool:
 	return filled_with_item != null
 
-
-## Shows the collected [InventoryItem] in this item slot with a quick animation.
 func fill(inventory_item: InventoryItem) -> void:
 	if is_filled():
 		return
 
 	filled_with_item = inventory_item
-	texture = preload("res://.godot/imported/Adan_personaje1.png-fd806689568ade8573381b32fcfefbc5.ctex")
+	texture = filled_with_item.texture()
 	pivot_offset = size / 2.0
 	animation_player.play(&"item_collected")
 	await animation_player.animation_finished
@@ -40,7 +37,7 @@ func fill(inventory_item: InventoryItem) -> void:
 func is_filled_with_same_item_type_as(inventory_item: InventoryItem) -> bool:
 	return is_filled() and filled_with_item.same_type_as(inventory_item)
 
-
 func free_slot() -> void:
 	filled_with_item = null
 	modulate = Color(Color.BLACK, 0.7)
+	texture = null

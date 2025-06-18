@@ -24,23 +24,29 @@ const WORLD_TEXTURES: Dictionary[ItemType, Texture2D] = {
 
 @export var name: String
 @export var type: ItemType
+@export var source_game: int = 0 
 
 
 func same_type_as(other_item: InventoryItem) -> bool:
 	return type == other_item.type
 
 
-func texture() -> Texture2D:
-	return texture_for_type(type)
-
-
 func get_world_texture() -> Texture2D:
-	return WORLD_TEXTURES[type]
-
+	match source_game:
+		1:
+			return preload("res://.godot/imported/Adan_personaje1.png-fd806689568ade8573381b32fcfefbc5.ctex")
+		2:
+			return preload("res://.godot/imported/Killian_personaje2.png-c205b6eceb037da5173f4d54b9b7ea84.ctex")
+		3:
+			return preload("res://.godot/imported/Mia_personaje3.png-9ff9e7ffe00c2f22a66a9fa6c03484ae.ctex")
+		_:
+			return WORLD_TEXTURES.get(type, null)
 
 static func texture_for_type(a_type: ItemType) -> Texture2D:
 	return TEXTURES[a_type]
-
+	
+func texture() -> Texture2D:
+	return get_world_texture()
 
 static func with_type(a_type: ItemType) -> InventoryItem:
 	var item := new()
