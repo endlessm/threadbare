@@ -49,19 +49,17 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if not item:
 		return ["item property must be set"]
 	return []
-
-
+	
 func _set_item(new_value: InventoryItem) -> void:
 	item = new_value
 
 	if sprite_2d:
-		sprite_2d.texture = item.get_world_texture() if item else null
+		sprite_2d.texture = preload("res://.godot/imported/Adan_personaje1.png-fd806689568ade8573381b32fcfefbc5.ctex")
 
 	if interact_area:
 		interact_area.action = "Collect " + item.type_name() if item else "Collect"
 
 	update_configuration_warnings()
-
 
 func _ready() -> void:
 	_set_item(item)

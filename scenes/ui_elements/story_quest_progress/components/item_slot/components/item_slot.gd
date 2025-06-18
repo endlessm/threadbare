@@ -32,11 +32,10 @@ func fill(inventory_item: InventoryItem) -> void:
 		return
 
 	filled_with_item = inventory_item
-	texture = inventory_item.texture()
+	texture = preload("res://.godot/imported/Adan_personaje1.png-fd806689568ade8573381b32fcfefbc5.ctex")
 	pivot_offset = size / 2.0
 	animation_player.play(&"item_collected")
 	await animation_player.animation_finished
-
 
 func is_filled_with_same_item_type_as(inventory_item: InventoryItem) -> bool:
 	return is_filled() and filled_with_item.same_type_as(inventory_item)
