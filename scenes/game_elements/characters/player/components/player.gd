@@ -3,7 +3,6 @@
 @tool
 class_name Player
 extends CharacterBody2D
-
 signal mode_changed(mode: Mode)
 
 ## Controls how the player can interact with the world around them.
@@ -48,12 +47,10 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 	set = _set_walk_sound_stream
 
 var input_vector: Vector2
-
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: Node2D = %PlayerFighting
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
-
 
 func _set_mode(new_mode: Mode) -> void:
 	var previous_mode: Mode = mode
@@ -109,11 +106,11 @@ func _get_configuration_warnings() -> PackedStringArray:
 			)
 	return warnings
 
-
 func _ready() -> void:
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
-
+	
+	
 
 func _unhandled_input(_event: InputEvent) -> void:
 	var axis: Vector2 = Input.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")

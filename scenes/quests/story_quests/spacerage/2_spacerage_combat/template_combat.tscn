@@ -1,13 +1,16 @@
-[gd_scene load_steps=12 format=4 uid="uid://cjf4l1o2ce8w2"]
+[gd_scene load_steps=15 format=4 uid="uid://cjf4l1o2ce8w2"]
 
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_igatr"]
 [ext_resource type="Resource" uid="uid://3vrn5jdxov37" path="res://scenes/quests/story_quests/template/2_template_combat/template_combat_components/template_combat.dialogue" id="2_jbbub"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="3_sd2qw"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_2fdp3"]
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="5_m6pvk"]
+[ext_resource type="Texture2D" uid="uid://xpc7va0rbwbw" path="res://scenes/game_elements/characters/player/components/vida vacia.png" id="6_dqkk1"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="6_rqwc0"]
+[ext_resource type="Texture2D" uid="uid://bsh0e1wybn52n" path="res://scenes/game_elements/characters/player/components/vida llena.png" id="7_imdsg"]
 [ext_resource type="SpriteFrames" uid="uid://c50725q5ey5j5" path="res://scenes/quests/story_quests/template/2_template_combat/template_combat_components/template_target_spriteframes.tres" id="7_j6i8d"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="8_b1whb"]
+[ext_resource type="Script" uid="uid://dvf4oqah5j86y" path="res://scenes/quests/story_quests/spacerage/2_spacerage_combat/node_2d.gd" id="8_tv0dq"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="9_ftjbd"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="10_yunkm"]
 
@@ -41,8 +44,36 @@ y_sort_enabled = true
 [node name="Player" parent="OnTheGround" instance=ExtResource("4_2fdp3")]
 position = Vector2(348, 335)
 
+[node name="Node2D" type="Node2D" parent="OnTheGround/Player"]
+script = ExtResource("8_tv0dq")
+
+[node name="vida" type="TextureProgressBar" parent="OnTheGround/Player"]
+offset_left = -57.0
+offset_top = -111.0
+offset_right = -23.0
+offset_bottom = -87.0
+scale = Vector2(3.675, 3.675)
+max_value = 20.0
+value = 20.0
+texture_under = ExtResource("6_dqkk1")
+texture_over = ExtResource("6_dqkk1")
+texture_progress = ExtResource("7_imdsg")
+tint_progress = Color(1, 0, 0, 1)
+
 [node name="ThrowingNPC" parent="OnTheGround" instance=ExtResource("5_m6pvk")]
 position = Vector2(857, 300)
+
+[node name="ProgressBar" type="ProgressBar" parent="OnTheGround/ThrowingNPC"]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0.58, 0.0754, 0.058, 1)
+offset_left = -48.0
+offset_top = -105.0
+offset_right = 41.0
+offset_bottom = -78.0
+theme_override_colors/font_color = Color(0.866667, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0.739715, 0, 1)
+max_value = 10.0
+value = 10.0
 
 [node name="Target" parent="OnTheGround" instance=ExtResource("6_rqwc0")]
 position = Vector2(510, 164)
@@ -103,3 +134,7 @@ position_smoothing_enabled = true
 editor_draw_limits = true
 
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
+[connection signal="animation_changed" from="OnTheGround/Player/PlayerFighting/GotHitAnimation" to="OnTheGround/Player/Node2D" method="_on_got_hit_animation_animation_changed"]
+[connection signal="current_animation_changed" from="OnTheGround/Player/PlayerFighting/GotHitAnimation" to="OnTheGround/Player/Node2D" method="_on_got_hit_animation_current_animation_changed"]
+
+[editable path="OnTheGround/Player"]
