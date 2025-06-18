@@ -14,7 +14,22 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+func _on_main_menu_continue_pressed() -> void:
+	var saved_scene: Dictionary = GameState.restore()
+	(
+		SceneSwitcher
+		. change_to_file_with_transition(
+			saved_scene["scene_path"],
+			saved_scene["spawn_point"],
+			Transition.Effect.FADE,
+			Transition.Effect.FADE,
+		)
+	)
+
+
 func _on_start_pressed() -> void:
+	if GameState.can_restore():
+		GameState.clear()
 	(
 		SceneSwitcher
 		. change_to_packed_with_transition(
