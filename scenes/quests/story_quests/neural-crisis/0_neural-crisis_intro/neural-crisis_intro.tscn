@@ -1,9 +1,8 @@
-[gd_scene load_steps=29 format=4 uid="uid://dt1pkdy7gmfuy"]
+[gd_scene load_steps=30 format=4 uid="uid://dt1pkdy7gmfuy"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_xfhr3"]
 [ext_resource type="Texture2D" uid="uid://c5f5nrrd6nbk8" path="res://Sprites/Día y noche/Layer 1_sprite_1.png" id="2_rayjy"]
 [ext_resource type="Texture2D" uid="uid://pw2n7acgo320" path="res://Sprites/edificios/Layer 1_sprite_3.png" id="3_2news"]
-[ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/template_player_components/template_player.tres" id="3_jgqmk"]
 [ext_resource type="Texture2D" uid="uid://kqtoahlv2ix1" path="res://Sprites/sigma_9_v1/New Piskel (1).png" id="4_d0asx"]
 [ext_resource type="Texture2D" uid="uid://co2b6cc5ny80g" path="res://Sprites/edificios/Layer 1_sprite_4.png" id="4_nq3sv"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="5_2i4dk"]
@@ -14,6 +13,7 @@
 [ext_resource type="Resource" uid="uid://ba25x2i4n6uod" path="res://scenes/quests/story_quests/neural-crisis/0_neural-crisis_intro/neural-crisis_intro_components/neural-crisis_intro.dialogue" id="6_xrhgk"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="7_arp7g"]
 [ext_resource type="Texture2D" uid="uid://c548kkapowcxd" path="res://Sprites/sigma_9_v1/New Piskel (4).png" id="7_djolm"]
+[ext_resource type="SpriteFrames" uid="uid://d4ec3w2k3b3up" path="res://scenes/quests/story_quests/neural-crisis/0_neural-crisis_intro/neural-crisis_intro_components/neural-crisis_player.tres" id="7_nq3sv"]
 [ext_resource type="Texture2D" uid="uid://dsnh2nmwhj17m" path="res://Sprites/Samurai_v1/PeleaSamuerai/SAMURAI ESPADAS0.png" id="8_djolm"]
 [ext_resource type="Texture2D" uid="uid://b1kcj708fyw5v" path="res://Sprites/SamuraiRage_v1/Samurai y Guerrero sin nombre0.png" id="8_xrhgk"]
 [ext_resource type="Texture2D" uid="uid://buxavphoq0spp" path="res://Sprites/SamuraiRage_v1/Samurai y Guerrero sin nombre1.png" id="9_arp7g"]
@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://wg3h433gck42" path="res://Sprites/SamuraiRage_v1/Samurai y Guerrero sin nombre2.png" id="12_rayjy"]
 [ext_resource type="Texture2D" uid="uid://dq3grmvsedjqu" path="res://Sprites/SamuraiRage_v1/Samurai y Guerrero sin nombre3.png" id="13_yotpt"]
 [ext_resource type="Texture2D" uid="uid://c0lvfis1tult1" path="res://Sprites/SamuraiRage_v1/Samurai y Guerrero sin nombre4.png" id="14_5mcty"]
+[ext_resource type="AudioStream" uid="uid://86ahj6y42u12" path="res://Sprites/sonidos/sounds-of-the-city-central-park-lojaecuador-soundscape-223070 (1).mp3" id="22_whesc"]
 
 [sub_resource type="Animation" id="Animation_ld06i"]
 length = 0.001
@@ -234,7 +235,7 @@ y_sort_enabled = true
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
 position = Vector2(400, 349)
 scale = Vector2(0.110089, 0.108154)
-sprite_frames = ExtResource("3_jgqmk")
+sprite_frames = ExtResource("7_nq3sv")
 animation = &"idle"
 autoplay = "idle"
 
@@ -278,3 +279,8 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." instance=ExtResource("7_arp7g")]
 position = Vector2(55.995, 555)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("22_whesc")
+volume_db = 2.506
+autoplay = true
