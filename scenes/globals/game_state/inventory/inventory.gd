@@ -19,11 +19,8 @@ func has_item(item: InventoryItem) -> bool:
 
 
 func add_item(item: InventoryItem) -> void:
-	for i in _items.size():
-		if _items[i].type == item.type:
-			_items[i] = item  
-			return
-	_items.push_back(item)
+	if not _items.has(item):
+		_items.append(item)
 
 
 func remove_item(item: InventoryItem) -> void:

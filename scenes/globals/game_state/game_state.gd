@@ -17,8 +17,9 @@ signal collected_items_changed(updated_items: Array[InventoryItem])
 
 ## Global inventory, used to track the items the player obtains and that
 ## can be added to the loom.
-@export var inventory: Inventory = Inventory.new()
-@export var current_spawn_point: NodePath
+var inventory: Inventory = Inventory.new()
+var current_spawn_point: NodePath
+
 
 ## Quest's items. Used to track the progress withing a story quest.
 var story_quest_inventory: Inventory = Inventory.new()
