@@ -1,0 +1,58 @@
+[gd_scene load_steps=9 format=3 uid="uid://dtp8ikfxri7po"]
+
+[ext_resource type="Script" uid="uid://36bn1xonxpwg" path="res://KILLAWAR_codigo/chaska.gd" id="1_3ffex"]
+[ext_resource type="Texture2D" uid="uid://yc3cn4tf7m01" path="res://KILLAWAR_recursos/sprites/knight.png" id="2_3ffex"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c3gw6"]
+atlas = ExtResource("2_3ffex")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nueno"]
+atlas = ExtResource("2_3ffex")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ba084"]
+atlas = ExtResource("2_3ffex")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bek2a"]
+atlas = ExtResource("2_3ffex")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ba084"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c3gw6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nueno")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ba084")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bek2a")
+}],
+"loop": true,
+"name": &"reposo",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jdjwc"]
+size = Vector2(12, 20)
+
+[node name="Chaska" type="CharacterBody2D"]
+z_index = 5
+collision_layer = 2
+script = ExtResource("1_3ffex")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, -12)
+sprite_frames = SubResource("SpriteFrames_ba084")
+animation = &"reposo"
+autoplay = "reposo"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -9.76563)
+shape = SubResource("RectangleShape2D_jdjwc")
