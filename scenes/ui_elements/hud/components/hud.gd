@@ -2,6 +2,9 @@ extends CanvasLayer
 @onready var story_quest_progress: PanelContainer = %StoryQuestProgress
 @onready var items_container: HBoxContainer = $StoryQuestProgress/ItemsContainer
 
+func change_story_quest_progress_visibility(visibility: bool) -> void:
+	story_quest_progress.visible = visibility
+
 func _load_collected_items() -> void:
 	var inventory_items := GameState.items_collected()
 	var slots := items_container.get_children()  # ← Aquí corregido
