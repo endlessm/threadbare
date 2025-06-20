@@ -7,7 +7,8 @@ extends Node2D
 var lines = [
 
 	"¿Qué sucedió?",
-	"¿Dónde estoy?"
+	"¿Dónde estoy?",
+	" "
 ]
 
 var current_line = 0
@@ -22,7 +23,6 @@ func _ready():
 	await get_tree().create_timer(2.5).timeout
 	show_next_line()
 	# A los 10 segundos, empieza el temporizador de la alarma (o ya autostart)
-	alarm_timer.start()
 
 func show_next_line():
 	if current_line < lines.size():
