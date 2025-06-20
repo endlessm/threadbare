@@ -1,8 +1,6 @@
 # Threadbare
 
-THREADBARE es un proyecto desarrollado en Godot Engine. Este documento describe la estructura del proyecto y el propósito de cada carpeta y archivo principal, para facilitar la comprensión y la realización de cambios sin afectar su funcionamiento.
 
-[Play it here!](https://endlessm.github.io/threadbare/)
 
 ## License
 
@@ -17,6 +15,7 @@ licenses. Using the [REUSE](https://reuse.software/) specification, all files in
 the repository are labelled with their license in a machine-readable way,
 through a combination of comments in the files themselves, supplementary
 `.license` files, and [REUSE.toml](./REUSE.toml).
+
 <!--
 SPDX-FileCopyrightText: The Threadbare Authors
 SPDX-License-Identifier: MPL-2.0
