@@ -1,0 +1,110 @@
+[gd_scene load_steps=13 format=3 uid="uid://bansavitjy40o"]
+
+[ext_resource type="Texture2D" uid="uid://bjjhfb7dsvah" path="res://backup-1750314549.png" id="1_elppq"]
+[ext_resource type="Script" path="res://Escenas/player_01___arqueologo.gd" id="1_qa6kp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bbmaa"]
+atlas = ExtResource("1_elppq")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tmvfa"]
+atlas = ExtResource("1_elppq")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nb3it"]
+atlas = ExtResource("1_elppq")
+region = Rect2(0, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o4aaw"]
+atlas = ExtResource("1_elppq")
+region = Rect2(128, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvh8a"]
+atlas = ExtResource("1_elppq")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tixj7"]
+atlas = ExtResource("1_elppq")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ww08s"]
+atlas = ExtResource("1_elppq")
+region = Rect2(256, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_seb2n"]
+atlas = ExtResource("1_elppq")
+region = Rect2(128, 256, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l6v6u"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bbmaa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tmvfa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bbmaa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tmvfa")
+}],
+"loop": true,
+"name": &"runx",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nb3it")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o4aaw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvh8a")
+}],
+"loop": true,
+"name": &"runydown",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tixj7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ww08s")
+}],
+"loop": true,
+"name": &"runytop",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_seb2n")
+}],
+"loop": true,
+"name": &"static",
+"speed": 2.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1x6qj"]
+size = Vector2(49, 82)
+
+[node name="Arqueologo" type="CharacterBody2D"]
+script = ExtResource("1_qa6kp")
+move_speed = 200.0
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(11, -1)
+scale = Vector2(-1, 1)
+sprite_frames = SubResource("SpriteFrames_l6v6u")
+animation = &"static"
+frame_progress = 0.874652
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(10, 16.935)
+shape = SubResource("RectangleShape2D_1x6qj")
+disabled = true
