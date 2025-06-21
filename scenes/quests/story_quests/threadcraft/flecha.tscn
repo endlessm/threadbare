@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://dx35eo3gd38em"]
+
+[ext_resource type="Script" uid="uid://bp4wgsx1kwv7o" path="res://scenes/quests/story_quests/threadcraft/1_threadcraft_find/flecha.gd" id="1_v4toi"]
+[ext_resource type="Texture2D" uid="uid://c8owfumsiul1" path="res://scenes/quests/story_quests/threadcraft/assets/flecha.png" id="2_xejdo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xejdo"]
+size = Vector2(15, 129)
+
+[node name="flecha" type="Node2D"]
+script = ExtResource("1_v4toi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -5)
+rotation = -1.56381
+scale = Vector2(0.157146, 0.192223)
+texture = ExtResource("2_xejdo")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0.5, -7.5)
+shape = SubResource("RectangleShape2D_xejdo")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
