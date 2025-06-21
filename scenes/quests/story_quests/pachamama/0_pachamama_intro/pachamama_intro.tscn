@@ -1,12 +1,13 @@
-[gd_scene load_steps=20 format=4 uid="uid://dwqlxsu8mn1xb"]
+[gd_scene load_steps=13 format=4 uid="uid://dwqlxsu8mn1xb"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_n5ber"]
 [ext_resource type="Texture2D" uid="uid://07k43id4c81h" path="res://scenes/quests/story_quests/template/0_template_intro/template_intro_components/template_Replace image.png" id="2_j3uru"]
 [ext_resource type="Texture2D" uid="uid://cs3cr25xuw7dd" path="res://scenes/quests/story_quests/pachamama/0_pachamama_intro/pachamama_intro_components/intro.jpg" id="3_n6fk0"]
 [ext_resource type="SpriteFrames" uid="uid://t34p1kiw610y" path="res://scenes/quests/story_quests/pachamama/pachamama_player_components/pachamama_player.tres" id="3_yit7d"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_1sxcw"]
+[ext_resource type="SpriteFrames" uid="uid://bhgql0ra7k30g" path="res://scenes/quests/story_quests/pachamama/pachamama_player_components/condor_player.tres" id="5_53v2m"]
 [ext_resource type="Resource" uid="uid://cmxaf66qmpivr" path="res://scenes/quests/story_quests/pachamama/0_pachamama_intro/pachamama_intro_components/pachamama_intro.dialogue" id="5_n6fk0"]
-[ext_resource type="Texture2D" uid="uid://onkhxw3sg8tc" path="res://scenes/quests/story_quests/pachamama/pachamama_player_components/puma_player_idle.png" id="7_n6fk0"]
+[ext_resource type="SpriteFrames" uid="uid://dw57gnixghml5" path="res://scenes/quests/story_quests/pachamama/pachamama_player_components/puma_player.tres" id="6_53v2m"]
 
 [sub_resource type="Animation" id="Animation_ld06i"]
 length = 0.001
@@ -34,10 +35,34 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector2(400, 349)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Character2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(174, 340)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("OnTheGround/Character3:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_7swpb"]
 resource_name = "walk_off"
-length = 2.0
+length = 3.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -60,7 +85,31 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(495, 478), Vector2(1010, 478)]
+"values": [Vector2(800, 420), Vector2(1010, 420)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Character2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(200, 410), Vector2(1010, 410)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("OnTheGround/Character3:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 2.53333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(478, 355), Vector2(1010, 355)]
 }
 
 [sub_resource type="Animation" id="Animation_blo5s"]
@@ -88,7 +137,31 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-50, 478), Vector2(495, 478)]
+"values": [Vector2(-50, 420), Vector2(800, 420)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Character2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-100, 410), Vector2(200, 410)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("OnTheGround/Character3:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-10, 355), Vector2(478, 355)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qdpvj"]
@@ -96,76 +169,6 @@ _data = {
 &"RESET": SubResource("Animation_ld06i"),
 &"walk_off": SubResource("Animation_7swpb"),
 &"walk_on": SubResource("Animation_blo5s")
-}
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_53v2m"]
-atlas = ExtResource("7_n6fk0")
-region = Rect2(0, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ne3x1"]
-atlas = ExtResource("7_n6fk0")
-region = Rect2(192, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xooge"]
-atlas = ExtResource("7_n6fk0")
-region = Rect2(384, 0, 192, 192)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_0pgxe"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_53v2m")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ne3x1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xooge")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 5.0
-}]
-
-[sub_resource type="Animation" id="Animation_f8xnw"]
-resource_name = "walk_on"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Character:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, 340), Vector2(200, 340)]
-}
-
-[sub_resource type="Animation" id="Animation_kuifx"]
-resource_name = "walk_off"
-
-[sub_resource type="Animation" id="Animation_b0x1i"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Character:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(174, 340)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_j0s7h"]
-_data = {
-&"RESET": SubResource("Animation_b0x1i"),
-&"walk_off": SubResource("Animation_kuifx"),
-&"walk_on": SubResource("Animation_f8xnw")
 }
 
 [node name="Intro" type="Node2D"]
@@ -214,6 +217,15 @@ sprite_frames = ExtResource("3_yit7d")
 animation = &"idle"
 autoplay = "idle"
 
+[node name="Character2" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(174, 340)
+sprite_frames = ExtResource("5_53v2m")
+animation = &"idle"
+
+[node name="Character3" type="AnimatedSprite2D" parent="OnTheGround"]
+sprite_frames = ExtResource("6_53v2m")
+animation = &"idle"
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
 root_node = NodePath("../..")
 libraries = {
@@ -228,22 +240,3 @@ dialogue = ExtResource("5_n6fk0")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
 next_scene = "uid://dya186q36seg5"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
-
-[node name="Cinematic2" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
-script = ExtResource("4_1sxcw")
-dialogue = ExtResource("5_n6fk0")
-animation_player = NodePath("../OnTheGround2/AnimationPlayer")
-next_scene = "uid://dya186q36seg5"
-metadata/_custom_type_script = "uid://x1mxt6bmei2o"
-
-[node name="OnTheGround2" type="Node2D" parent="."]
-
-[node name="Character" type="AnimatedSprite2D" parent="OnTheGround2"]
-position = Vector2(174, 340)
-sprite_frames = SubResource("SpriteFrames_0pgxe")
-animation = &"idle"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround2"]
-libraries = {
-&"": SubResource("AnimationLibrary_j0s7h")
-}
