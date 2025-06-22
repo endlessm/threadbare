@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=35 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/game_elements/characters/player/components/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/template_player_components/template_player.tres" id="2_blfj0"]
@@ -200,6 +200,20 @@ tracks/7/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_j0tly"]
+resource_name = "attack"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"values": []
 }
 
 [sub_resource type="Animation" id="Animation_u5klv"]
@@ -422,6 +436,7 @@ tracks/2/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qek5x"]
 _data = {
 &"RESET": SubResource("Animation_0owmy"),
+&"attack_01": SubResource("Animation_j0tly"),
 &"blow": SubResource("Animation_u5klv"),
 &"defeated": SubResource("Animation_blfj0"),
 &"idle": SubResource("Animation_75vfm"),
@@ -431,6 +446,7 @@ _data = {
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_mask = 531
 script = ExtResource("1_g2els")
+mode = 1
 
 [node name="PlayerDustParticles" type="GPUParticles2D" parent="."]
 unique_name_in_owner = true
@@ -459,6 +475,8 @@ shape = SubResource("CapsuleShape2D_3vyb7")
 
 [node name="PlayerInteraction" type="Node2D" parent="."]
 unique_name_in_owner = true
+process_mode = 4
+visible = false
 script = ExtResource("3_dqkch")
 
 [node name="InteractZone" type="Area2D" parent="PlayerInteraction" node_paths=PackedStringArray("character")]
@@ -490,14 +508,13 @@ grow_vertical = 2
 
 [node name="PlayerFighting" type="Node2D" parent="."]
 unique_name_in_owner = true
-process_mode = 4
-visible = false
 script = ExtResource("7_5gtgg")
 
 [node name="HitBox" type="Area2D" parent="PlayerFighting"]
 unique_name_in_owner = true
-collision_layer = 64
-collision_mask = 256
+collision_layer = 66
+collision_mask = 257
+monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerFighting/HitBox"]
 position = Vector2(0, -28.5)
