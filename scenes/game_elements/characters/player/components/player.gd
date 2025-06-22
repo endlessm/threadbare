@@ -190,8 +190,8 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 
 func activar_hitbox():
 	hitbox.monitoring = true
-	print("HitBox ACTIVADO")
+	
 
 func desactivar_hitbox():
 	hitbox.monitoring = false
-	print("HitBox DESACTIVADO")
+	

@@ -9,5 +9,4 @@ func _process(delta):
 
 func _on_Flecha_area_entered(area: Area2D) -> void:
 	if area.name == "HitBox" and area.monitoring:
-		print("¡Flecha golpeada!")
 		queue_free()
