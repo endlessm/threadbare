@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=4 uid="uid://b3oop4r0tuxt7"]
+[gd_scene load_steps=78 format=4 uid="uid://b3oop4r0tuxt7"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_s72hk"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_fqek3"]
@@ -8579,6 +8579,29 @@ texture = ExtResource("3_shiwe")
 tile_size = Vector2i(1, 1)
 sources/0 = SubResource("TileSetAtlasSource_83spq")
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ycp5s"]
+polygon = PackedVector2Array(-20.1534, -4.20592, -9.46333, -12.9683, 12.793, -13.3188, 23.1326, -1.75246, 22.6069, 12.4425, -20.3286, 13.494)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kam0c"]
+texture = ExtResource("16_83spq")
+texture_region_size = Vector2i(32, 32)
+0:0/size_in_atlas = Vector2i(2, 2)
+0:0/0 = 0
+0:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_ycp5s")
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -5.25741, 23.8336, -5.2574, 25.7613, 11.5663, -16, 14.195)
+0:0/0/physics_layer_1/polygon_0/points = PackedVector2Array(20.5039, 10.8653, 19.8029, -5.78314, -11.3911, -5.43265, -12.2673, 11.7415)
+
+[sub_resource type="TileSet" id="TileSet_1sesw"]
+tile_size = Vector2i(32, 32)
+occlusion_layer_0/light_mask = 1
+physics_layer_0/collision_layer = 16
+physics_layer_0/collision_mask = 0
+physics_layer_1/collision_layer = 8
+physics_layer_1/collision_mask = 0
+physics_layer_2/collision_layer = 512
+physics_layer_2/collision_mask = 0
+sources/0 = SubResource("TileSetAtlasSource_kam0c")
+
 [sub_resource type="Curve2D" id="Curve2D_ycp5s"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 150, 0)
@@ -8706,46 +8729,16 @@ position = Vector2(1525, 1699)
 scale = Vector2(0.53913, 0.551402)
 texture = ExtResource("13_m5og0")
 
-[node name="arbusto2" type="Sprite2D" parent="TileMapLayers"]
-position = Vector2(1294, 1148)
-scale = Vector2(1.5664, 1.35157)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto3" type="Sprite2D" parent="TileMapLayers"]
-position = Vector2(1355, 1151)
-scale = Vector2(1.92188, 1.77344)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto4" type="Sprite2D" parent="TileMapLayers"]
-position = Vector2(2125, 207.5)
-scale = Vector2(1.15625, 1.29688)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto5" type="Sprite2D" parent="TileMapLayers"]
-position = Vector2(2130, 237)
-scale = Vector2(1.44531, 1.53907)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto6" type="Sprite2D" parent="TileMapLayers"]
-position = Vector2(2127, 273)
-scale = Vector2(1.29688, 1.46875)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto7" type="Sprite2D" parent="TileMapLayers"]
-position = Vector2(2286.5, 811)
-scale = Vector2(1.71875, 1.6875)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto8" type="Sprite2D" parent="TileMapLayers"]
-position = Vector2(1678, 1871)
-scale = Vector2(1.50782, 1.64844)
-texture = ExtResource("16_83spq")
-
 [node name="pisoc" type="TileMapLayer" parent="TileMapLayers"]
 modulate = Color(0.466667, 0.54902, 0.384314, 1)
 tile_set = SubResource("TileSet_0goas")
 occlusion_enabled = false
 collision_enabled = false
+
+[node name="arbusto" type="TileMapLayer" parent="TileMapLayers"]
+scale = Vector2(1.5, 1.5)
+tile_map_data = PackedByteArray("AAAZAAEAAAAAAAAAAAAYAAEAAAAAAAAAAAAwABAAAAAAAAAAAAAvABAAAAAAAAAAAAAuABAAAAAAAAAAAAAnABcAAAAAAAAAAFAnABgAAAAAAAAAAFAnABkAAAAAAAAAAFAbABgAAAAAAAAAAAAcABgAAAAAAAAAAAAdABgAAAAAAAAAAAAjACcAAAAAAAAAAGAjACgAAAAAAAAAAGAjACkAAAAAAAAAAGArAC4AAAAAAAAAAAAsAC4AAAAAAAAAAAAtAC4AAAAAAAAAAAArAAUAAAAAAAAAAFA=")
+tile_set = SubResource("TileSet_1sesw")
 
 [node name="Player" parent="." instance=ExtResource("3_dakfm")]
 position = Vector2(131, 463)
@@ -8884,76 +8877,6 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 position = Vector2(1583, 337)
 scale = Vector2(0.0804018, 0.111979)
 texture = ExtResource("24_83spq")
-
-[node name="arbusto1" type="Sprite2D" parent="."]
-position = Vector2(1440, 1149)
-scale = Vector2(1.80469, 1.60938)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto9" type="Sprite2D" parent="."]
-position = Vector2(1114, 65)
-scale = Vector2(1.35938, 1.3125)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto10" type="Sprite2D" parent="."]
-position = Vector2(1174, 70.7501)
-scale = Vector2(1.44922, 1.46094)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto11" type="Sprite2D" parent="."]
-position = Vector2(1222, 70)
-scale = Vector2(1.45312, 1.35938)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto12" type="Sprite2D" parent="."]
-position = Vector2(2215.5, 807)
-scale = Vector2(1.39063, 1.4375)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto13" type="Sprite2D" parent="."]
-position = Vector2(1909.5, 1179.5)
-scale = Vector2(1.32813, 1.42188)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto14" type="Sprite2D" parent="."]
-position = Vector2(2342.5, 807)
-scale = Vector2(1.5, 1.48438)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto15" type="Sprite2D" parent="."]
-position = Vector2(1680, 1914)
-scale = Vector2(1.29688, 1.34375)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto16" type="Sprite2D" parent="."]
-position = Vector2(1903, 1103)
-scale = Vector2(1.25, 1.28125)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto17" type="Sprite2D" parent="."]
-position = Vector2(1905.5, 1141.25)
-scale = Vector2(1.42188, 1.47656)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto18" type="Sprite2D" parent="."]
-position = Vector2(1684, 1828)
-scale = Vector2(1.32813, 1.48438)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto19" type="Sprite2D" parent="."]
-position = Vector2(2236, 2212)
-scale = Vector2(1.375, 1.34375)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto20" type="Sprite2D" parent="."]
-position = Vector2(2158, 2215)
-scale = Vector2(1.85156, 1.74609)
-texture = ExtResource("16_83spq")
-
-[node name="arbusto21" type="Sprite2D" parent="."]
-position = Vector2(2089, 2213.25)
-scale = Vector2(1.625, 1.50781)
-texture = ExtResource("16_83spq")
 
 [node name="Arbustos" type="Node" parent="."]
 
