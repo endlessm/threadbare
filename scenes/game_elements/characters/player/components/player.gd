@@ -18,7 +18,7 @@ enum Mode {
 }
 
 const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
-	&"idle": 10,
+	&"idle": 10,	
 	&"walk": 6,
 	&"attack_01": 4,
 	&"defeated": 11,
@@ -53,6 +53,7 @@ var input_vector: Vector2
 @onready var player_fighting: Node2D = %PlayerFighting
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
+@onready var hitbox: Area2D = %HitBox
 
 
 func _set_mode(new_mode: Mode) -> void:
@@ -125,6 +126,13 @@ func _unhandled_input(_event: InputEvent) -> void:
 		speed = walk_speed
 
 	input_vector = axis * speed
+	
+	if _event.is_action_pressed("ui_accept") and mode == Mode.FIGHTING:
+		player_sprite.play("attack_01")
+		activar_hitbox()
+		await get_tree().create_timer(0.3).timeout
+		desactivar_hitbox()
+
 
 
 ## Returns [code]true[/code] if the player is running. When using an analogue joystick, this can be
@@ -178,3 +186,12 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	if not is_node_ready():
 		await ready
 	_walk_sound.stream = walk_sound_stream
+
+
+func activar_hitbox():
+	hitbox.monitoring = true
+	print("HitBox ACTIVADO")
+
+func desactivar_hitbox():
+	hitbox.monitoring = false
+	print("HitBox DESACTIVADO")

@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: The Threadbare Authors
+	# SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 ## Shows a dialogue, then transitions to another scene.
 ## Intended for use in non-interactive cutscenes, such as the intro and outro to a quest
