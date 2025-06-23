@@ -87,6 +87,33 @@ jobs:
           name: pck
           path: build/${{ env.PCK_NAME }}.pck
 
+  flatpak:
+    name: Build Flatpak
+    needs: build
+    if: ${{
+      !github.event.repository.fork &&
+      (github.ref == 'refs/heads/main' || github.event_name == 'release')
+      }}
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-24.08
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: pck
+          path: build
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: threadbare.flatpak
+          manifest-path: org.endlessos.threadbare.yml
+          cache-key: "flatpak-builder-${{ github.sha }}"
+
   release:
     name: Attach to release
     needs: build
