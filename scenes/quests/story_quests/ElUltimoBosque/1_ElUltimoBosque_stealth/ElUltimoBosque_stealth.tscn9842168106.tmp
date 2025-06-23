@@ -1,4 +1,4 @@
-[gd_scene load_steps=90 format=4 uid="uid://b3oop4r0tuxt7"]
+[gd_scene load_steps=91 format=4 uid="uid://b3oop4r0tuxt7"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_s72hk"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_fqek3"]
@@ -27,6 +27,7 @@
 [ext_resource type="Texture2D" uid="uid://n6fjuqkgfd5x" path="res://scenes/Pixel Art Top Down - Basic v1.2.0/Texture/Extra/TX Plant.png" id="15_m5og0"]
 [ext_resource type="Texture2D" uid="uid://baelulw1inl6s" path="res://scenes/quests/story_quests/ElUltimoBosque/09.png" id="16_83spq"]
 [ext_resource type="Resource" uid="uid://ksocwbq5dowx" path="res://scenes/quests/story_quests/ElUltimoBosque/1_ElUltimoBosque_stealth/ElUltimoBosque_stealth_components/ElUltimoBosque_checkpoint.dialogue" id="23_ycp5s"]
+[ext_resource type="Texture2D" uid="uid://bj7kdljnxl6jp" path="res://scenes/quests/story_quests/ElUltimoBosque/1_ElUltimoBosque_stealth/ElUltimoBosque_stealth_components/zapatos.png" id="24_83spq"]
 [ext_resource type="Resource" uid="uid://bkqpg50ubhsai" path="res://scenes/quests/story_quests/ElUltimoBosque/1_ElUltimoBosque_stealth/ElUltimoBosque_stealth_components/ElUltimoBosque_stealth.dialogue" id="29_0goas"]
 [ext_resource type="AudioStream" uid="uid://eraygn6ow5lc" path="res://scenes/quests/story_quests/ElUltimoBosque/1_ElUltimoBosque_stealth/ElUltimoBosque_stealth_components/beilstone1.WAV" id="31_0goas"]
 [ext_resource type="Resource" uid="uid://bjjmkxw6w321a" path="res://scenes/quests/story_quests/ElUltimoBosque/1_ElUltimoBosque_stealth/zapatos.tres" id="33_6qp4n"]
@@ -8655,6 +8656,13 @@ point_count = 8
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_idy4y"]
 size = Vector2(168.25, 138)
 
+[sub_resource type="Resource" id="Resource_idy4y"]
+script = ExtResource("9_ubn6c")
+name = ""
+type = 0
+source_game = 2
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
 [sub_resource type="Animation" id="Animation_q0iri"]
 resource_name = "RESET"
 tracks/0/type = "value"
@@ -8910,13 +8918,6 @@ _data = {
 &"item_collected": SubResource("Animation_d3xlj")
 }
 
-[sub_resource type="Resource" id="Resource_idy4y"]
-script = ExtResource("9_ubn6c")
-name = ""
-type = 0
-source_game = 2
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
-
 [node name="StealthTemplateLevel" type="Node2D"]
 y_sort_enabled = true
 
@@ -9111,53 +9112,6 @@ debug_color = Color(0, 0, 0, 0.42)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
-[node name="HUDObjetos" type="CanvasLayer" parent="."]
-layer = 0
-script = ExtResource("33_vbnan")
-
-[node name="ObjetosPanel" type="PanelContainer" parent="HUDObjetos"]
-clip_contents = true
-offset_left = 1042.0
-offset_top = 61.0
-offset_right = 1378.0
-offset_bottom = 145.0
-
-[node name="ItemsContainer_Objetos" type="HBoxContainer" parent="HUDObjetos/ObjetosPanel"]
-layout_mode = 2
-
-[node name="ItemSlot4" type="TextureRect" parent="HUDObjetos/ObjetosPanel/ItemsContainer_Objetos"]
-modulate = Color(0, 0, 0, 0.690196)
-layout_mode = 2
-script = ExtResource("33_nrtqh")
-metadata/_custom_type_script = "uid://c0tsmn060ymdh"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="HUDObjetos/ObjetosPanel/ItemsContainer_Objetos/ItemSlot4"]
-libraries = {
-&"": SubResource("AnimationLibrary_xyvwl")
-}
-
-[node name="ItemSlot5" type="TextureRect" parent="HUDObjetos/ObjetosPanel/ItemsContainer_Objetos"]
-modulate = Color(0, 0, 0, 0.690196)
-layout_mode = 2
-script = ExtResource("33_nrtqh")
-metadata/_custom_type_script = "uid://c0tsmn060ymdh"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="HUDObjetos/ObjetosPanel/ItemsContainer_Objetos/ItemSlot5"]
-libraries = {
-&"": SubResource("AnimationLibrary_yur2r")
-}
-
-[node name="ItemSlot6" type="TextureRect" parent="HUDObjetos/ObjetosPanel/ItemsContainer_Objetos"]
-modulate = Color(0, 0, 0, 0.690196)
-layout_mode = 2
-script = ExtResource("33_nrtqh")
-metadata/_custom_type_script = "uid://c0tsmn060ymdh"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="HUDObjetos/ObjetosPanel/ItemsContainer_Objetos/ItemSlot6"]
-libraries = {
-&"": SubResource("AnimationLibrary_04lv3")
-}
-
 [node name="HUD" parent="." instance=ExtResource("7_vpqhm")]
 
 [node name="CollectibleItem" parent="." instance=ExtResource("8_m76s4")]
@@ -9188,3 +9142,47 @@ item = ExtResource("34_q0iri")
 [node name="CollectibleItem4" parent="." instance=ExtResource("8_m76s4")]
 position = Vector2(2338, 1340)
 item = ExtResource("35_xyvwl")
+
+[node name="HUDObjetos" type="CanvasLayer" parent="."]
+script = ExtResource("33_vbnan")
+
+[node name="ObjetosPanel" type="PanelContainer" parent="HUDObjetos"]
+offset_right = 455.0
+offset_bottom = 192.0
+
+[node name="ItemsContainer_Objetos" type="HBoxContainer" parent="HUDObjetos/ObjetosPanel"]
+layout_mode = 2
+
+[node name="ItemSlot4" type="TextureRect" parent="HUDObjetos/ObjetosPanel/ItemsContainer_Objetos"]
+modulate = Color(0, 0, 0, 0.690196)
+layout_mode = 2
+texture = ExtResource("24_83spq")
+script = ExtResource("33_nrtqh")
+metadata/_custom_type_script = "uid://c0tsmn060ymdh"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HUDObjetos/ObjetosPanel/ItemsContainer_Objetos/ItemSlot4"]
+libraries = {
+&"": SubResource("AnimationLibrary_xyvwl")
+}
+
+[node name="ItemSlot5" type="TextureRect" parent="HUDObjetos/ObjetosPanel/ItemsContainer_Objetos"]
+modulate = Color(0, 0, 0, 0.690196)
+layout_mode = 2
+script = ExtResource("33_nrtqh")
+metadata/_custom_type_script = "uid://c0tsmn060ymdh"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HUDObjetos/ObjetosPanel/ItemsContainer_Objetos/ItemSlot5"]
+libraries = {
+&"": SubResource("AnimationLibrary_yur2r")
+}
+
+[node name="ItemSlot6" type="TextureRect" parent="HUDObjetos/ObjetosPanel/ItemsContainer_Objetos"]
+modulate = Color(0, 0, 0, 0.690196)
+layout_mode = 2
+script = ExtResource("33_nrtqh")
+metadata/_custom_type_script = "uid://c0tsmn060ymdh"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HUDObjetos/ObjetosPanel/ItemsContainer_Objetos/ItemSlot6"]
+libraries = {
+&"": SubResource("AnimationLibrary_04lv3")
+}

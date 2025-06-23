@@ -8655,6 +8655,13 @@ point_count = 8
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_idy4y"]
 size = Vector2(168.25, 138)
 
+[sub_resource type="Resource" id="Resource_idy4y"]
+script = ExtResource("9_ubn6c")
+name = ""
+type = 0
+source_game = 2
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
 [sub_resource type="Animation" id="Animation_q0iri"]
 resource_name = "RESET"
 tracks/0/type = "value"
@@ -8910,13 +8917,6 @@ _data = {
 &"item_collected": SubResource("Animation_d3xlj")
 }
 
-[sub_resource type="Resource" id="Resource_idy4y"]
-script = ExtResource("9_ubn6c")
-name = ""
-type = 0
-source_game = 2
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
-
 [node name="StealthTemplateLevel" type="Node2D"]
 y_sort_enabled = true
 
@@ -9111,16 +9111,43 @@ debug_color = Color(0, 0, 0, 0.42)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
+[node name="HUD" parent="." instance=ExtResource("7_vpqhm")]
+
+[node name="CollectibleItem" parent="." instance=ExtResource("8_m76s4")]
+position = Vector2(2553, 2320)
+next_scene = "uid://drpg1pub4rsdk"
+item = SubResource("Resource_idy4y")
+collected_dialogue = ExtResource("10_jf0du")
+
+[node name="Cinematic" type="Node2D" parent="."]
+script = ExtResource("11_kgr11")
+dialogue = ExtResource("29_0goas")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="Arbustos" type="Node" parent="."]
+
+[node name="Beilstone1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("31_0goas")
+volume_db = -31.105
+
+[node name="CollectibleItem2" parent="." instance=ExtResource("8_m76s4")]
+position = Vector2(1584.18, 332)
+item = ExtResource("33_6qp4n")
+
+[node name="CollectibleItem3" parent="." instance=ExtResource("8_m76s4")]
+position = Vector2(1514.27, 1691.17)
+item = ExtResource("34_q0iri")
+
+[node name="CollectibleItem4" parent="." instance=ExtResource("8_m76s4")]
+position = Vector2(2338, 1340)
+item = ExtResource("35_xyvwl")
+
 [node name="HUDObjetos" type="CanvasLayer" parent="."]
-layer = 0
 script = ExtResource("33_vbnan")
 
 [node name="ObjetosPanel" type="PanelContainer" parent="HUDObjetos"]
-clip_contents = true
-offset_left = 1042.0
-offset_top = 61.0
-offset_right = 1378.0
-offset_bottom = 145.0
+offset_right = 455.0
+offset_bottom = 192.0
 
 [node name="ItemsContainer_Objetos" type="HBoxContainer" parent="HUDObjetos/ObjetosPanel"]
 layout_mode = 2
@@ -9157,34 +9184,3 @@ metadata/_custom_type_script = "uid://c0tsmn060ymdh"
 libraries = {
 &"": SubResource("AnimationLibrary_04lv3")
 }
-
-[node name="HUD" parent="." instance=ExtResource("7_vpqhm")]
-
-[node name="CollectibleItem" parent="." instance=ExtResource("8_m76s4")]
-position = Vector2(2553, 2320)
-next_scene = "uid://drpg1pub4rsdk"
-item = SubResource("Resource_idy4y")
-collected_dialogue = ExtResource("10_jf0du")
-
-[node name="Cinematic" type="Node2D" parent="."]
-script = ExtResource("11_kgr11")
-dialogue = ExtResource("29_0goas")
-metadata/_custom_type_script = "uid://x1mxt6bmei2o"
-
-[node name="Arbustos" type="Node" parent="."]
-
-[node name="Beilstone1" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("31_0goas")
-volume_db = -31.105
-
-[node name="CollectibleItem2" parent="." instance=ExtResource("8_m76s4")]
-position = Vector2(1584.18, 332)
-item = ExtResource("33_6qp4n")
-
-[node name="CollectibleItem3" parent="." instance=ExtResource("8_m76s4")]
-position = Vector2(1514.27, 1691.17)
-item = ExtResource("34_q0iri")
-
-[node name="CollectibleItem4" parent="." instance=ExtResource("8_m76s4")]
-position = Vector2(2338, 1340)
-item = ExtResource("35_xyvwl")

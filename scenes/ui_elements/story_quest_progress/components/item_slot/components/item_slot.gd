@@ -40,4 +40,5 @@ func is_filled_with_same_item_type_as(inventory_item: InventoryItem) -> bool:
 func free_slot() -> void:
 	filled_with_item = null
 	modulate = Color(Color.BLACK, 0.7)
-	texture = null
+	# NO borres la textura si quieres mantener el ícono vacío
+	# texture = null  ← ya no hace falta

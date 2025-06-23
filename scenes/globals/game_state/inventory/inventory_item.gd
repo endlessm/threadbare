@@ -8,19 +8,23 @@ enum ItemType {
 	MEMORY,
 	IMAGINATION,
 	SPIRIT,
+	GLOVE,
+	SHOES,
+	BELT
 }
+
 
 const TEXTURES: Dictionary[ItemType, Texture2D] = {
 	ItemType.MEMORY: preload("uid://brspc1u02oawt"),
 	ItemType.IMAGINATION: preload("uid://wyiamtqmp4gk"),
-	ItemType.SPIRIT: preload("uid://c4fefrg0tfkpl")
+	ItemType.SPIRIT: preload("uid://c4fefrg0tfkpl"),
+	ItemType.GLOVE: preload("res://.godot/imported/guante.png-9db043cc0a1bb45b4d1b43c51dd47ded.ctex"),
+	ItemType.SHOES: preload("res://.godot/imported/zapatos.png-d25fc332ec84ca8515630a8a545ab4de.ctex"),
+	ItemType.BELT: preload("res://.godot/imported/cinturon.png-574b23f111a52a8eadc005d1496105c1.ctex")
 }
 
-const WORLD_TEXTURES: Dictionary[ItemType, Texture2D] = {
-	ItemType.MEMORY: preload("uid://5wscjc8yqqts"),
-	ItemType.IMAGINATION: preload("uid://6bf8rum68wq3"),
-	ItemType.SPIRIT: preload("uid://cepg1o3ihp055")
-}
+const WORLD_TEXTURES: Dictionary[ItemType, Texture2D] = TEXTURES
+
 
 @export var name: String
 @export var type: ItemType
@@ -32,6 +36,9 @@ func same_type_as(other_item: InventoryItem) -> bool:
 
 
 func get_world_texture() -> Texture2D:
+	if type in [ItemType.GLOVE, ItemType.SHOES, ItemType.BELT]:
+		return WORLD_TEXTURES.get(type, null)
+
 	match source_game:
 		1:
 			return preload("res://.godot/imported/Adan_personaje1.png-fd806689568ade8573381b32fcfefbc5.ctex")
