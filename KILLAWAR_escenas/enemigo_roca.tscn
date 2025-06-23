@@ -1,0 +1,74 @@
+[gd_scene load_steps=15 format=3 uid="uid://c0qkhnrd5mnsf"]
+
+[ext_resource type="Texture2D" uid="uid://bjtwrkcj0c1ne" path="res://KILLAWAR_recursos/sprites/piedra rodante1.png" id="1_12cej"]
+[ext_resource type="Script" uid="uid://bi1vpf35y5jlv" path="res://KILLAWAR_codigo/enemigo_roca.gd" id="1_adakj"]
+[ext_resource type="Texture2D" uid="uid://48fa65urwhi1" path="res://KILLAWAR_recursos/sprites/piedra rodante2.png" id="2_adakj"]
+[ext_resource type="Texture2D" uid="uid://w5t6sxf76u6p" path="res://KILLAWAR_recursos/sprites/piedra rodante3.png" id="3_sekvd"]
+[ext_resource type="Texture2D" uid="uid://dbwyhvw0oaq8h" path="res://KILLAWAR_recursos/sprites/piedra rodante4.png" id="4_7yo3o"]
+[ext_resource type="Texture2D" uid="uid://ehr60weeejvu" path="res://KILLAWAR_recursos/sprites/piedra rodante5.png" id="5_k4ckj"]
+[ext_resource type="PackedScene" uid="uid://crniss7w6hhvk" path="res://KILLAWAR_escenas/zona_de_muerte.tscn" id="6_pdssy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hrvsq"]
+atlas = ExtResource("1_12cej")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_28lqq"]
+atlas = ExtResource("2_adakj")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f3r30"]
+atlas = ExtResource("3_sekvd")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a7yi0"]
+atlas = ExtResource("4_7yo3o")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tssqd"]
+atlas = ExtResource("5_k4ckj")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qq6ug"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrvsq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_28lqq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f3r30")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a7yi0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tssqd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dgyyh"]
+radius = 6.0
+
+[node name="EnemigoRoca" type="Node2D"]
+script = ExtResource("1_adakj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_qq6ug")
+autoplay = "default"
+frame_progress = 0.213666
+
+[node name="zona_de_muerte" parent="." instance=ExtResource("6_pdssy")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="zona_de_muerte"]
+shape = SubResource("CircleShape2D_dgyyh")
+
+[node name="RayCastderecha" type="RayCast2D" parent="."]
+target_position = Vector2(7, 0)
+
+[node name="RayCastizquierda" type="RayCast2D" parent="."]
+target_position = Vector2(-6, 0)
