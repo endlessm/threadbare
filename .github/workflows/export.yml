@@ -90,10 +90,10 @@ jobs:
   flatpak:
     name: Build Flatpak
     needs: build
-    if: ${{
-      !github.event.repository.fork &&
-      (github.ref == 'refs/heads/main' || github.event_name == 'release')
-      }}
+    # if: ${{
+    #   !github.event.repository.fork &&
+    #   (github.ref == 'refs/heads/main' || github.event_name == 'release')
+    #   }}
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-24.08
@@ -116,8 +116,10 @@ jobs:
 
   release:
     name: Attach to release
-    needs: build
-    if: ${{ github.event_name == 'release' }}
+    needs:
+      - build
+      - flatpak
+    # if: ${{ github.event_name == 'release' }}
     runs-on: ubuntu-latest
     steps:
       - name: Download PCK
@@ -125,9 +127,27 @@ jobs:
         with:
           name: pck
 
-      - name: Attach PCK
+      - name: Download web build
+        uses: actions/download-artifact@v4
+        with:
+          name: web
+          path: web
+
+      - name: Re-zip web build
+        run: |
+          cd web
+          zip ../${{ env.PCK_NAME }}-${{ github.ref_name }}-web.zip *
+
+      - name: Download Flatpak
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.PCK_NAME }}-x86_64.flatpak
+
+      - name: Attach artifacts to release
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
+          find
           mv '${{ env.PCK_NAME }}.pck' '${{ env.PCK_NAME }}-${{ github.ref_name }}.pck'
-          gh release upload '${{ github.ref_name }}' '${{ env.PCK_NAME }}-${{ github.ref_name }}.pck' --repo '${{ github.repository }}'
+          mv '${{ env.PCK_NAME }}-x86_64.flatpak' '${{ env.PCK_NAME }}-${{ github.ref_name }}-x86_64.flatpak'
+          echo gh release upload '${{ github.ref_name }}' ${{ env.PCK_NAME }}-${{ github.ref_name }}-*.{pck,zip,flatpak} --repo '${{ github.repository }}'
