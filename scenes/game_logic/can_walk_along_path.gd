@@ -13,6 +13,9 @@
 class_name CanWalkAlongPath
 extends Node2D
 
+## Emitted when[member character] reaches the ending of the path.
+signal ending_reached
+
 ## Emitted when [member character] got stuck while walking the path.
 signal got_stuck
 
@@ -33,6 +36,9 @@ signal wait_standing_finished
 
 ## The wait time at each standing point. Set it to zero for no standing.
 @export_range(0, 5, 0.1, "or_greater", "suffix:s") var standing_time: float = 1.0
+
+## If set, the character will turn around when reaching the path ending or when stuck.
+@export var turn_around: bool = true
 
 ## Enable it to also wait when the character gets stuck.
 @export var wait_when_stuck: bool = false
@@ -77,23 +83,6 @@ func _ready() -> void:
 	_standing_timer.one_shot = true
 	add_child(_standing_timer)
 
-	for idx in range(walking_path.curve.point_count):
-		var point_position := walking_path.curve.get_point_position(idx)
-		var p_in := walking_path.curve.get_point_in(idx)
-		var p_out := walking_path.curve.get_point_out(idx)
-		# Ignore if at this point, the in and out controls make the path continuous and not pointy:
-		# TODO: Compare length_squared() < path_pointy_tolerance
-		if idx == 0 and not _is_path_closed():
-			_standing_offsets.append(walking_path.curve.get_closest_offset(point_position))
-		elif idx == walking_path.curve.point_count - 1 and not _is_path_closed():
-			# This especial case is because get_closest_offset() returns zero for the last point
-			# if the path is closed:
-			_standing_offsets.append(walking_path.curve.get_baked_length())
-		elif (p_in or p_out) and abs(p_in.cross(p_out)) <= path_continuous_tolerance:
-			continue
-		else:
-			_standing_offsets.append(walking_path.curve.get_closest_offset(point_position))
-
 	if not character.is_node_ready():
 		await character.ready
 	character.animated_sprite_2d.play(&"walk")
@@ -113,6 +102,25 @@ func _draw() -> void:
 	draw_circle(to_local(character.position), 15., Color(1.0, 0.0, 0.0, 0.4))
 
 
+func _setup_standing_offsets() -> void:
+	for idx in range(walking_path.curve.point_count):
+		var point_position := walking_path.curve.get_point_position(idx)
+		var p_in := walking_path.curve.get_point_in(idx)
+		var p_out := walking_path.curve.get_point_out(idx)
+		# Ignore if at this point, the in and out controls make the path continuous and not pointy:
+		# TODO: Compare length_squared() < path_pointy_tolerance
+		if idx == 0 and not _is_path_closed():
+			_standing_offsets.append(walking_path.curve.get_closest_offset(point_position))
+		elif idx == walking_path.curve.point_count - 1 and not _is_path_closed():
+			# This especial case is because get_closest_offset() returns zero for the last point
+			# if the path is closed:
+			_standing_offsets.append(walking_path.curve.get_baked_length())
+		elif (p_in or p_out) and abs(p_in.cross(p_out)) <= path_continuous_tolerance:
+			continue
+		else:
+			_standing_offsets.append(walking_path.curve.get_closest_offset(point_position))
+
+
 func _set_walking_path(new_walking_path: Path2D) -> void:
 	walking_path = new_walking_path
 	update_configuration_warnings()
@@ -122,6 +130,7 @@ func _set_walking_path(new_walking_path: Path2D) -> void:
 		# Set initial position and put character in path:
 		_initial_position = walking_path.position + walking_path.curve.get_point_position(0)
 		character.position = _initial_position
+		_setup_standing_offsets()
 
 
 func _set_direction(new_direction: int) -> void:
@@ -185,7 +194,9 @@ func _physics_process(delta: float) -> void:
 	if not _is_path_closed():
 		# Turn around in endings:
 		if new_offset > walking_path.curve.get_baked_length() or new_offset < 0.0:
-			_direction *= -1
+			ending_reached.emit()
+			if turn_around:
+				_direction *= -1
 
 	var target_position := (
 		_initial_position
@@ -206,8 +217,9 @@ func _physics_process(delta: float) -> void:
 			< collision.get_remainder().length_squared() / stuck_tolerance
 		)
 	):
-		_direction *= -1
 		got_stuck.emit()
+		if turn_around:
+			_direction *= -1
 		if wait_when_stuck:
 			_start_wait_standing()
 

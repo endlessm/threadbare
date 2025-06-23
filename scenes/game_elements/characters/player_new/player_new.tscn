@@ -52,10 +52,11 @@ func on_running_changed(is_running: bool) -> void:
 	emitting = is_running
 "
 
-[node name="PlayerNew" type="CharacterBody2D"]
+[node name="PlayerNew" type="CharacterBody2D" node_paths=PackedStringArray("animated_sprite_2d")]
 collision_mask = 531
 script = ExtResource("1_l1uqw")
 character_name = "StoryWeaver"
+animated_sprite_2d = NodePath("AnimatedSprite2D")
 metadata/_custom_type_script = "uid://mwgpxjf6tdx4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -63,10 +64,9 @@ rotation = -1.5708
 shape = SubResource("CapsuleShape2D_3vyb7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-unique_name_in_owner = true
 position = Vector2(0, -17)
 sprite_frames = ExtResource("2_cfyuh")
-animation = &"attack_01"
+animation = &"idle"
 
 [node name="CanWalkAsPlayer" type="Node" parent="."]
 script = ExtResource("3_cdm7f")

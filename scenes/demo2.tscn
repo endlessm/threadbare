@@ -1,20 +1,17 @@
-[gd_scene load_steps=6 format=4 uid="uid://c86pvvsoq7prq"]
+[gd_scene load_steps=9 format=4 uid="uid://bhmpahfitji78"]
 
-[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_l20p6"]
-[ext_resource type="PackedScene" uid="uid://dp5wc4xuxruon" path="res://scenes/game_elements/characters/enemies/guard_new/guard_new.tscn" id="2_vephn"]
-[ext_resource type="PackedScene" uid="uid://55dghu36gtg3" path="res://scenes/game_elements/characters/player_new/player_new.tscn" id="3_b0nem"]
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_nbj86"]
+[ext_resource type="Script" uid="uid://mwgpxjf6tdx4" path="res://scenes/game_logic/character.gd" id="2_nbj86"]
+[ext_resource type="SpriteFrames" uid="uid://b3r84ksew5djp" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_purple.tres" id="3_erwmy"]
+[ext_resource type="SpriteFrames" uid="uid://chqrsy2uornaf" path="res://scenes/game_elements/characters/enemies/guard/components/storyvoretorch_frames_red.tres" id="3_nbj86"]
+[ext_resource type="Script" uid="uid://cf66tvbhbaxd0" path="res://scenes/game_logic/can_follow_target.gd" id="4_5w10e"]
+[ext_resource type="Script" uid="uid://c5tdskdj4osp6" path="res://scenes/game_logic/can_walk_as_player.gd" id="4_erwmy"]
 
-[sub_resource type="Curve2D" id="Curve2D_m0rpm"]
-_data = {
-"points": PackedVector2Array(-75.892, -0.289664, 0, 0, 0, 0, -75.892, -0.289664, 75.892, 0.289664, 108, 20, -42.3355, -1.69342, 42.3355, 1.69342, 253, 72, -112.387, -8.07198, 112.387, 8.07198, 410, 46)
-}
-point_count = 4
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_erwmy"]
+radius = 13.0
+height = 64.0
 
-[sub_resource type="Curve2D" id="Curve2D_c6xj6"]
-_data = {
-"points": PackedVector2Array(-75.892, -0.289664, 0, 0, -81, -44, -52.8752, 42.0837, 52.8752, -42.0837, -71, -297, 0, 0, 0, 0, 160, -315, -7.42833, -74.1877, 7.42833, 74.1877, 158, -73, 0, 0, 0, 0, -81, -44)
-}
-point_count = 5
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7q101"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -28,38 +25,59 @@ zoom = Vector2(2, 2)
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="TileMapLayers"]
 tile_map_data = PackedByteArray("AAAIAAYAAQABAAEAAAAJAAYAAQABAAEAAAAKAAYAAQABAAEAAAAKAAcAAQABAAEAAAAJAAcAAQABAAEAAAAIAAcAAQABAAEAAAAHAAYAAQABAAEAAAAGAAYAAQABAAEAAAAGAAcAAQABAAEAAAAHAAcAAQABAAEAAAALAAcAAQABAAEAAAALAAgAAQABAAIAAAAKAAgAAQABAAIAAAAJAAgAAQABAAIAAAAIAAgAAQABAAIAAAAHAAgAAQABAAIAAAAGAAgAAQABAAIAAAAMAAgAAQABAAIAAAANAAgAAQABAAIAAAAOAAgAAQABAAIAAAAOAAcAAQABAAEAAAANAAcAAQABAAEAAAAMAAcAAQABAAEAAAALAAYAAQABAAEAAAAMAAYAAQABAAEAAAANAAYAAQABAAEAAAAOAAYAAQABAAEAAAAPAAYAAQACAAEAAAAPAAcAAQACAAEAAAAPAAgAAQACAAIAAAAFAAgAAQABAAIAAAAEAAgAAQABAAIAAAAEAAYAAQABAAEAAAADAAYAAQABAAEAAAAFAAYAAQABAAEAAAACAAYAAQABAAEAAAABAAYAAQABAAEAAAAAAAYAAQABAAEAAAAAAAcAAQABAAEAAAD//wcAAQAAAAEAAAD//wYAAQAAAAEAAAD//wgAAQAAAAIAAAAAAAgAAQABAAIAAAABAAgAAQABAAIAAAACAAgAAQABAAIAAAADAAgAAQABAAIAAAACAAcAAQABAAEAAAABAAcAAQABAAEAAAADAAcAAQABAAEAAAAEAAcAAQABAAEAAAAFAAcAAQABAAEAAAAHAAUAAQABAAEAAAAHAAQAAQABAAEAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAEAAAD//wMAAQAAAAEAAAD//wQAAQAAAAEAAAD//wUAAQAAAAEAAAAAAAUAAQABAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAEAAAAFAAUAAQABAAEAAAAGAAUAAQABAAEAAAAGAAQAAQABAAEAAAAFAAQAAQABAAEAAAAEAAQAAQABAAEAAAACAAQAAQABAAEAAAADAAQAAQABAAEAAAABAAQAAQABAAEAAAAAAAQAAQABAAEAAAAAAAMAAQABAAEAAAABAAMAAQABAAEAAAACAAMAAQABAAEAAAADAAMAAQABAAEAAAAEAAMAAQABAAEAAAAFAAMAAQABAAEAAAAGAAMAAQABAAEAAAALAAEAAQABAAEAAAALAAIAAQABAAEAAAALAAMAAQABAAEAAAALAAQAAQABAAEAAAALAAUAAQABAAEAAAAMAAUAAQABAAEAAAANAAUAAQABAAEAAAAOAAUAAQABAAEAAAAPAAUAAQACAAEAAAAPAAQAAQACAAEAAAAPAAMAAQACAAEAAAAPAAIAAQACAAEAAAAPAAEAAQACAAEAAAAOAAEAAQABAAEAAAAOAAIAAQABAAEAAAAOAAMAAQABAAEAAAANAAMAAQABAAEAAAANAAQAAQABAAEAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAAMAAEAAQABAAEAAAAOAAQAAQABAAEAAAAIAAMAAQABAAEAAAAIAAQAAQABAAEAAAAIAAUAAQABAAEAAAAJAAUAAQABAAEAAAAKAAUAAQABAAEAAAAKAAQAAQABAAEAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAJAAIAAQABAAEAAAAIAAIAAQABAAEAAAAIAAEAAQABAAEAAAAJAAEAAQABAAEAAAAKAAEAAQABAAEAAAD//wEAAQAAAAEAAAAAAAEAAQABAAEAAAABAAEAAQABAAEAAAACAAEAAQABAAEAAAADAAEAAQABAAEAAAAEAAEAAQABAAEAAAAFAAEAAQABAAEAAAAGAAEAAQABAAEAAAAGAAIAAQABAAEAAAAFAAIAAQABAAEAAAAEAAIAAQABAAEAAAADAAIAAQABAAEAAAACAAIAAQABAAEAAAABAAIAAQABAAEAAAAAAAIAAQABAAEAAAD//wIAAQAAAAEAAAD/////AQAAAAAAAAD//wAAAQAAAAEAAAAAAAAAAQABAAEAAAABAAAAAQABAAEAAAACAAAAAQABAAEAAAADAAAAAQABAAEAAAAEAAAAAQABAAEAAAAFAAAAAQABAAEAAAAGAAAAAQABAAEAAAAHAAAAAQABAAEAAAAIAAAAAQABAAEAAAAJAAAAAQABAAEAAAAKAAAAAQABAAEAAAALAAAAAQABAAEAAAAMAAAAAQABAAEAAAANAAAAAQABAAEAAAAOAAAAAQABAAEAAAAPAAAAAQACAAEAAAAPAP//AQACAAAAAAAOAP//AQABAAAAAAANAP//AQABAAAAAAAMAP//AQABAAAAAAALAP//AQABAAAAAAAKAP//AQABAAAAAAAJAP//AQABAAAAAAAIAP//AQABAAAAAAAHAP//AQABAAAAAAAGAP//AQABAAAAAAAFAP//AQABAAAAAAAEAP//AQABAAAAAAADAP//AQABAAAAAAACAP//AQABAAAAAAABAP//AQABAAAAAAAAAP//AQABAAAAAAA=")
-tile_set = ExtResource("1_l20p6")
+tile_set = ExtResource("1_nbj86")
 
 [node name="TileMapLayer5" type="TileMapLayer" parent="TileMapLayers"]
 tile_map_data = PackedByteArray("AAACAAUAAQAGAAAAAAABAAUAAQAGAAAAAAAAAAUAAQAGAAMAAAD//wUAAQAFAAMAAAACAAYAAQAGAAEAAAABAAYAAQAFAAEAAAANAAcAAQAHAAIAAAAMAAcAAQAGAAIAAAALAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAFAAcAAQAGAAIAAAAEAAcAAQAGAAIAAAADAAcAAQAGAAIAAAANAAYAAQAHAAEAAAANAAUAAQAGAAEAAAANAAQAAQAGAAAAAAAMAAYAAQAFAAEAAAAMAAUAAQAFAAEAAAAMAAQAAQAFAAAAAAAPAAUAAQAHAAIAAAAPAAQAAQAHAAAAAAAOAAUAAQAGAAIAAAAOAAQAAQAGAAAAAAACAAcAAQAGAAIAAAABAAcAAQAFAAIAAAAFAAYAAQAHAAEAAAAFAAUAAQAHAAAAAAAEAAUAAQAGAAAAAAADAAUAAQAGAAAAAAAEAAYAAQAGAAEAAAADAAYAAQAGAAEAAAA=")
-tile_set = ExtResource("1_l20p6")
+tile_set = ExtResource("1_nbj86")
 
 [node name="TileMapLayer6" type="TileMapLayer" parent="TileMapLayers"]
 tile_map_data = PackedByteArray("AAAIAAUABAAAAAMAAAAKAAUABAACAAMAAAAJAAUABAABAAMAAAAIAAQABAAAAAIAAAAKAAQABAACAAIAAAAJAAQABAABAAIAAAAIAAMABAAAAAAAAAAKAAMABAACAAAAAAAJAAMABAABAAAAAAABAAEABAAAAAAAAAABAAIABAAAAAIAAAABAAMABAAAAAMAAAACAAEABAACAAAAAAACAAIABAACAAIAAAACAAMABAACAAMAAAA=")
-tile_set = ExtResource("1_l20p6")
+tile_set = ExtResource("1_nbj86")
 
 [node name="World" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Player" parent="World" instance=ExtResource("3_b0nem")]
-position = Vector2(864, 464)
+[node name="Character" type="CharacterBody2D" parent="World" node_paths=PackedStringArray("animated_sprite_2d")]
+position = Vector2(287, 173)
+collision_mask = 529
+script = ExtResource("2_nbj86")
+animated_sprite_2d = NodePath("AnimatedSprite2D")
+metadata/_custom_type_script = "uid://mwgpxjf6tdx4"
 
-[node name="Guard" parent="World" node_paths=PackedStringArray("walking_path", "node_to_follow") instance=ExtResource("2_vephn")]
-position = Vector2(242, 238)
-walking_path = NodePath("../Path2D")
-node_to_follow = NodePath("../Player")
-look_at_side = 1
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="World/Character"]
+position = Vector2(0, -24)
+sprite_frames = ExtResource("3_nbj86")
+animation = &"alerted"
 
-[node name="Path2D" type="Path2D" parent="World"]
-position = Vector2(242, 238)
-curve = SubResource("Curve2D_m0rpm")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Character"]
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_erwmy")
 
-[node name="Guard2" parent="World" node_paths=PackedStringArray("walking_path", "node_to_follow") instance=ExtResource("2_vephn")]
-position = Vector2(26, 299)
-walking_path = NodePath("../Path2D2")
-node_to_follow = NodePath("../Player")
-look_at_side = 1
+[node name="CanFollowTarget" type="Node2D" parent="World/Character" node_paths=PackedStringArray("node_to_follow")]
+script = ExtResource("4_5w10e")
+walk_speed = 100.0
+update_target_time = 3.0
+target_reached_tolerance = null
+node_to_follow = NodePath("../../Character2")
+metadata/_custom_type_script = "uid://cf66tvbhbaxd0"
 
-[node name="Path2D2" type="Path2D" parent="World"]
-position = Vector2(107, 343)
-curve = SubResource("Curve2D_c6xj6")
+[node name="Character2" type="CharacterBody2D" parent="World" node_paths=PackedStringArray("animated_sprite_2d")]
+position = Vector2(365, 325)
+collision_mask = 529
+script = ExtResource("2_nbj86")
+animated_sprite_2d = NodePath("AnimatedSprite2D")
+metadata/_custom_type_script = "uid://mwgpxjf6tdx4"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="World/Character2"]
+position = Vector2(0, -37)
+sprite_frames = ExtResource("3_erwmy")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Character2"]
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_7q101")
+
+[node name="CanWalkAsPlayer" type="Node" parent="World/Character2"]
+script = ExtResource("4_erwmy")
+metadata/_custom_type_script = "uid://c5tdskdj4osp6"

@@ -1,145 +1,23 @@
-[gd_scene load_steps=12 format=3 uid="uid://dp5wc4xuxruon"]
+[gd_scene load_steps=8 format=3 uid="uid://dp5wc4xuxruon"]
 
-[ext_resource type="Script" uid="uid://mwgpxjf6tdx4" path="res://scenes/game_logic/character.gd" id="1_qws0c"]
+[ext_resource type="Script" uid="uid://c1fydd8vlq6mx" path="res://scenes/game_elements/characters/enemies/guard_new/components/guard_new.gd" id="1_40xag"]
 [ext_resource type="SpriteFrames" uid="uid://xolbc1j4a62f" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_blue.tres" id="1_x211u"]
 [ext_resource type="Script" uid="uid://csqb1r1pasyi6" path="res://scenes/game_logic/can_walk_along_path.gd" id="3_a8qh0"]
-[ext_resource type="Script" uid="uid://b6cesrvjlada7" path="res://scenes/game_logic/can_talk.gd" id="3_e14if"]
 [ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="3_l4ps3"]
-[ext_resource type="PackedScene" uid="uid://dbam7hbkdj2vw" path="res://scenes/game_elements/props/interact_area_new/interact_area_new.tscn" id="4_40xag"]
 [ext_resource type="Script" uid="uid://cf66tvbhbaxd0" path="res://scenes/game_logic/can_follow_target.gd" id="6_xja8d"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pvecv"]
 height = 58.0
 
-[sub_resource type="GDScript" id="GDScript_xja8d"]
-script/source = "extends Node
-
-const GIVE_UP_TIME: float = 5.0
-const TURN_SPEED: float = 10.0
-
-enum State {
-	## Going along the path.
-	PATROLLING,
-	## Player is in sight, it takes some time until the player is detected.
-	DETECTING,
-	## Player was detected.
-	ALERTED,
-	## Player was in sight, going to the last point where the player was seen.
-	INVESTIGATING,
-	### Lost track of player, walking back to the patrol path.
-	#RETURNING,
-}
-
-@export_category(\"Target Detection\")
-## Time required to detect the target.
-@export_range(0.1, 5, 0.1, \"or_greater\", \"suffix:s\") var detecting_time: float = 1.0
-
-var state: State = State.PATROLLING:
-	set = _change_state
-
-@onready var character: Character = owner
-@onready var can_walk_along_path: CanWalkAlongPath = %CanWalkAlongPath
-@onready var can_follow_target: CanFollowTarget = %CanFollowTarget
-
-## Area that represents the sight of the guard. If a player is in this area
-## and there are no walls in between detected by [member sight_ray_cast], it
-## means the player is in sight.
-@onready var detection_area: Area2D = %DetectionArea
-
-## Progress bar that indicates how aware the guard is of the player, if it
-## is completely filled, [signal player_detected] is triggered.
-@onready var player_awareness: TextureProgressBar = %PlayerAwareness
-
-var _detecting_timer: Timer = Timer.new()
-var _investigating_giveup_timer: Timer = Timer.new()
-
-func _ready() -> void:
-	_detecting_timer.wait_time = detecting_time
-	_detecting_timer.timeout.connect(_on_detected)
-	_detecting_timer.one_shot = true
-	add_child(_detecting_timer)
-	_investigating_giveup_timer.wait_time = GIVE_UP_TIME
-	_investigating_giveup_timer.timeout.connect(_give_up_investigation)
-	_investigating_giveup_timer.one_shot = true
-	add_child(_investigating_giveup_timer)
-	player_awareness.modulate.a = 1.0
-	player_awareness.value = 0.0
-
-
-func _physics_process(delta: float) -> void:
-	var target_angle: float = owner.velocity.angle()
-	detection_area.rotation = rotate_toward(
-		detection_area.rotation, target_angle, delta * TURN_SPEED
-	)
-	match state:
-		State.DETECTING:
-			player_awareness.ratio = (_detecting_timer.wait_time - _detecting_timer.time_left) / _detecting_timer.wait_time
-			player_awareness.modulate.a = clamp(player_awareness.ratio, 0.5, 1.0)
-		State.PATROLLING, State.INVESTIGATING: #, State.RETURNING:
-			player_awareness.ratio = move_toward(
-				player_awareness.ratio, 0.0, delta
-			)
-			player_awareness.modulate.a = clamp(player_awareness.ratio, 0.5, 1.0)
-			player_awareness.visible = player_awareness.value > 0.0
-
-
-func _change_state(new_state: State) -> void:
-	if state == new_state:
-		return
-	var previous_state: State = state
-	state = new_state
-
-	match previous_state:
-		State.DETECTING:
-			_detecting_timer.stop()
-		State.INVESTIGATING:
-			_investigating_giveup_timer.stop()
-
-	match new_state:
-		State.PATROLLING:
-			can_walk_along_path.process_mode = Node.PROCESS_MODE_INHERIT
-			can_follow_target.process_mode = Node.PROCESS_MODE_DISABLED
-		State.DETECTING:
-			can_walk_along_path.process_mode = Node.PROCESS_MODE_DISABLED
-			can_follow_target.process_mode = Node.PROCESS_MODE_DISABLED
-			_detecting_timer.start()
-			character.animated_sprite_2d.animation = &\"idle\"
-			player_awareness.visible = true
-		State.ALERTED:
-			character.animated_sprite_2d.animation = &\"alerted\"
-			player_awareness.ratio = 1.0
-			player_awareness.tint_progress = Color.RED
-		State.INVESTIGATING:
-			can_walk_along_path.process_mode = Node.PROCESS_MODE_DISABLED
-			can_follow_target.process_mode = Node.PROCESS_MODE_INHERIT
-			_investigating_giveup_timer.start()
-
-
-func _on_detection_area_body_entered(_body: Node2D) -> void:
-	if state == State.PATROLLING:
-		state = State.DETECTING
-
-func _on_detection_area_body_exited(_body: Node2D) -> void:
-	if state == State.DETECTING:
-		state = State.INVESTIGATING
-
-func _on_detected() -> void:
-	state = State.ALERTED
-
-func _give_up_investigation() -> void:
-	state = State.PATROLLING
-"
-
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_y3plx"]
 light_mode = 1
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_40xag"]
-size = Vector2(82, 72)
-
-[node name="GuardNew" type="CharacterBody2D"]
+[node name="GuardNew" type="CharacterBody2D" node_paths=PackedStringArray("animated_sprite_2d")]
 collision_layer = 0
 collision_mask = 528
-script = ExtResource("1_qws0c")
+script = ExtResource("1_40xag")
+character_name = "StoryVore"
+animated_sprite_2d = NodePath("AnimatedSprite2D")
 metadata/_custom_type_script = "uid://mwgpxjf6tdx4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -147,15 +25,11 @@ rotation = -1.5708
 shape = SubResource("CapsuleShape2D_pvecv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-unique_name_in_owner = true
 position = Vector2(0, -29)
 sprite_frames = ExtResource("1_x211u")
 animation = &"alerted"
 frame = 2
 frame_progress = 0.881611
-
-[node name="GuardLogic" type="Node" parent="."]
-script = SubResource("GDScript_xja8d")
 
 [node name="DetectionArea" type="Area2D" parent="."]
 unique_name_in_owner = true
@@ -183,20 +57,6 @@ texture_progress = ExtResource("3_l4ps3")
 tint_under = Color(1, 1, 1, 0.392157)
 tint_progress = Color(1, 1, 0, 1)
 
-[node name="CanTalk" type="Node2D" parent="." node_paths=PackedStringArray("interact_area")]
-process_mode = 4
-visible = false
-script = ExtResource("3_e14if")
-interact_area = NodePath("InteractAreaNew")
-metadata/_custom_type_script = "uid://b6cesrvjlada7"
-
-[node name="InteractAreaNew" parent="CanTalk" instance=ExtResource("4_40xag")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanTalk/InteractAreaNew"]
-position = Vector2(0, -41)
-shape = SubResource("RectangleShape2D_40xag")
-debug_color = Color(0.658514, 0.515454, 0, 0.42)
-
 [node name="CanWalkAlongPath" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_a8qh0")
@@ -207,7 +67,8 @@ unique_name_in_owner = true
 process_mode = 4
 script = ExtResource("6_xja8d")
 walk_speed = 200.0
+target_reached_tolerance = null
 metadata/_custom_type_script = "uid://cf66tvbhbaxd0"
 
-[connection signal="body_entered" from="DetectionArea" to="GuardLogic" method="_on_detection_area_body_entered"]
-[connection signal="body_exited" from="DetectionArea" to="GuardLogic" method="_on_detection_area_body_exited"]
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
