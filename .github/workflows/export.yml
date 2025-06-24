@@ -3,8 +3,14 @@
 name: "Build and Export Game"
 on:
   workflow_dispatch:
+    inputs:
+      build_flatpak:
+        description: 'Also build a Flatpak bundle'
+        type: boolean
   pull_request:
   release:
+    types:
+      - published
   push:
     branches:
       - '*'
@@ -43,13 +49,13 @@ jobs:
           mkdir -p build && cd build
 
           # Download Godot Engine itself
-          wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip && \
+          wget --progress=dot:giga https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip && \
           unzip Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip && \
           mv Godot_v${GODOT_VERSION}-stable_linux.x86_64 godot
 
           # Download export templates
           mkdir -p editor_data/export_templates
-          wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz && \
+          wget --progress=dot:giga https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz && \
           unzip Godot_v${GODOT_VERSION}-stable_export_templates.tpz && \
           mv templates editor_data/export_templates/${GODOT_VERSION}.stable
 
@@ -85,9 +91,33 @@ jobs:
           name: pck
           path: build/${{ env.PCK_NAME }}.pck
 
+  flatpak:
+    name: Build Flatpak
+    needs: build
+    if: ${{ inputs.build_flatpak || github.event_name == 'release' }}
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-24.08
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: pck
+          path: build
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: threadbare.flatpak
+          manifest-path: org.endlessos.threadbare.yml
+          cache-key: "flatpak-builder-${{ github.sha }}"
+
   release:
     name: Attach to release
-    needs: build
+    needs: [build, flatpak]
     if: ${{ github.event_name == 'release' }}
     runs-on: ubuntu-latest
     steps:
@@ -102,3 +132,31 @@ jobs:
         run: |
           mv '${{ env.PCK_NAME }}.pck' '${{ env.PCK_NAME }}-${{ github.ref_name }}.pck'
           gh release upload '${{ github.ref_name }}' '${{ env.PCK_NAME }}-${{ github.ref_name }}.pck' --repo '${{ github.repository }}'
+
+      - name: Download Flatpak bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: threadbare-x86_64.flatpak
+
+      - name: Attach Flatpak bundle to release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          mv threadbare.flatpak 'threadbare-${{ github.ref_name }}-x86_64.flatpak'
+          gh release upload '${{ github.ref_name }}' 'threadbare-${{ github.ref_name }}-x86_64.flatpak' --repo '${{ github.repository }}'
+
+      - name: Download web bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: web
+          path: web
+
+      - name: Attach web bundle to release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          pushd web
+          zip -r "../threadbare-${{ github.ref_name }}-web.zip" .
+          popd
+
+          gh release upload '${{ github.ref_name }}' 'threadbare-${{ github.ref_name }}-web.zip' --repo '${{ github.repository }}'

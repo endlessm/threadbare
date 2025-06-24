@@ -22,6 +22,10 @@ func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint() and get_tree().edited_scene_root == self:
+		# Don't randomise scale when editing tree scene itself
+		scale = Vector2.ONE
+
 	_set_sprite_frames(sprite_frames)
 	var frames_length: int = animated_sprite_2d.sprite_frames.get_frame_count(
 		animated_sprite_2d.animation
