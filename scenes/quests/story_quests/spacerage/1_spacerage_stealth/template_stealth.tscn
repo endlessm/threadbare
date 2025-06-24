@@ -1,10 +1,13 @@
-[gd_scene load_steps=17 format=4 uid="uid://c4f04v3xqle4m"]
+[gd_scene load_steps=21 format=4 uid="uid://c4f04v3xqle4m"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_y2mm1"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_yq0bi"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_a2wcs"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="4_8r43n"]
+[ext_resource type="Script" uid="uid://dvf4oqah5j86y" path="res://scenes/quests/story_quests/spacerage/2_spacerage_combat/node_2d.gd" id="4_fumwv"]
+[ext_resource type="Script" uid="uid://cqm1uhcbkf7x6" path="res://scenes/quests/story_quests/spacerage/2_spacerage_combat/disparo.gd" id="5_ymbjf"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="5_yox27"]
+[ext_resource type="Texture2D" uid="uid://bhqanyxhpxpm" path="res://assets/first_party/rocks/Rock_Idle.png" id="6_0836e"]
 [ext_resource type="Resource" uid="uid://cppk2qynt485b" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_checkpoint.dialogue" id="6_layyp"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="7_jq1h1"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="8_1awrp"]
@@ -12,6 +15,9 @@
 [ext_resource type="Resource" uid="uid://dpv4wurvaamhb" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_collected.dialogue" id="10_pf5wq"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="11_w1y5g"]
 [ext_resource type="Resource" uid="uid://cggywn8t6s4le" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_stealth.dialogue" id="12_xwbnw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cssri"]
+radius = 30.051
 
 [sub_resource type="Curve2D" id="Curve2D_vnsq3"]
 _data = {
@@ -68,6 +74,29 @@ limit_top = 0
 position_smoothing_enabled = true
 editor_draw_limits = true
 
+[node name="julian" type="Node2D" parent="Player"]
+visibility_layer = 17
+position = Vector2(26, -9)
+script = ExtResource("4_fumwv")
+
+[node name="disparo" type="CharacterBody2D" parent="Player/julian"]
+position = Vector2(2, -3)
+collision_layer = 145
+collision_mask = 145
+script = ExtResource("5_ymbjf")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player/julian/disparo"]
+position = Vector2(8, 1)
+scale = Vector2(0.367188, 0.421875)
+texture = ExtResource("6_0836e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/julian/disparo"]
+light_mask = 17
+visibility_layer = 17
+position = Vector2(8, -1)
+scale = Vector2(0.367188, 0.421875)
+shape = SubResource("CircleShape2D_cssri")
+
 [node name="EnemyGuards" type="Node2D" parent="."]
 y_sort_enabled = true
 
@@ -75,6 +104,19 @@ y_sort_enabled = true
 position = Vector2(526, 470)
 patrol_path = NodePath("../Guard1-PatrolPath")
 move_speed = 200.0
+
+[node name="ProgressBar" type="ProgressBar" parent="EnemyGuards/Guard1-GoingBackAndForth"]
+modulate = Color(0.605125, 0, 0.0264415, 1)
+offset_left = -68.0
+offset_top = -88.0
+offset_right = 83.0
+offset_bottom = -61.0
+theme_override_colors/font_color = Color(0, 0.909804, 0, 1)
+theme_override_colors/font_outline_color = Color(0.976471, 0, 0, 1)
+max_value = 10.0
+value = 10.0
+fill_mode = 1
+show_percentage = false
 
 [node name="Guard1-PatrolPath" type="Path2D" parent="EnemyGuards"]
 top_level = true

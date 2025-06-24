@@ -8,16 +8,16 @@
 [ext_resource type="Texture2D" uid="uid://xpc7va0rbwbw" path="res://scenes/game_elements/characters/player/components/vida vacia.png" id="6_dqkk1"]
 [ext_resource type="Script" uid="uid://cqm1uhcbkf7x6" path="res://scenes/quests/story_quests/spacerage/2_spacerage_combat/disparo.gd" id="6_imdsg"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="6_rqwc0"]
-[ext_resource type="Texture2D" uid="uid://b3m3gaajt2r82" path="res://scenes/quests/story_quests/spacerage/pruebas/bala.png" id="7_dqkk1"]
 [ext_resource type="Texture2D" uid="uid://bsh0e1wybn52n" path="res://scenes/game_elements/characters/player/components/vida llena.png" id="7_imdsg"]
 [ext_resource type="SpriteFrames" uid="uid://c50725q5ey5j5" path="res://scenes/quests/story_quests/template/2_template_combat/template_combat_components/template_target_spriteframes.tres" id="7_j6i8d"]
+[ext_resource type="Texture2D" uid="uid://bhqanyxhpxpm" path="res://assets/first_party/rocks/Rock_Idle.png" id="7_tv0dq"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="8_b1whb"]
-[ext_resource type="Script" path="res://scenes/quests/story_quests/spacerage/2_spacerage_combat/node_2d.gd" id="8_tv0dq"]
+[ext_resource type="Script" uid="uid://dvf4oqah5j86y" path="res://scenes/quests/story_quests/spacerage/2_spacerage_combat/node_2d.gd" id="8_tv0dq"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="9_ftjbd"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="10_yunkm"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_dqkk1"]
-radius = 16.5114
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jy7bq"]
+size = Vector2(27.75, 23.5)
 
 [sub_resource type="Resource" id="Resource_a51xm"]
 script = ExtResource("9_ftjbd")
@@ -49,42 +49,20 @@ y_sort_enabled = true
 [node name="Player" parent="OnTheGround" instance=ExtResource("4_2fdp3")]
 position = Vector2(348, 335)
 
-[node name="InteractLabel" parent="OnTheGround/Player/PlayerInteraction/InteractMarker" index="0"]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = -2.0
-offset_top = -10.0
-offset_right = -2.0
-offset_bottom = -10.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="AudioStreamPlayer2D" parent="OnTheGround/Player/PlayerFighting/AirStream" index="2"]
-visible = false
-
 [node name="julian" type="Node2D" parent="OnTheGround/Player"]
-visibility_layer = 17
-position = Vector2(26, -9)
 script = ExtResource("8_tv0dq")
 
 [node name="disparo" type="CharacterBody2D" parent="OnTheGround/Player/julian"]
-position = Vector2(2, -3)
-collision_layer = 145
-collision_mask = 145
 script = ExtResource("6_imdsg")
 
 [node name="Sprite2D" type="Sprite2D" parent="OnTheGround/Player/julian/disparo"]
-position = Vector2(8.99999, 11)
-scale = Vector2(1.80859, 2.08594)
-texture = ExtResource("7_dqkk1")
+position = Vector2(33, -6)
+scale = Vector2(0.367188, 0.421875)
+texture = ExtResource("7_tv0dq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Player/julian/disparo"]
-light_mask = 17
-visibility_layer = 17
-position = Vector2(7, -1)
-scale = Vector2(0.367188, 0.421875)
-shape = SubResource("CircleShape2D_dqkk1")
+position = Vector2(36.875, -7)
+shape = SubResource("RectangleShape2D_jy7bq")
 
 [node name="vida" type="TextureProgressBar" parent="OnTheGround/Player"]
 offset_left = -57.0
@@ -111,9 +89,12 @@ offset_right = 41.0
 offset_bottom = -78.0
 theme_override_colors/font_color = Color(0.866667, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0.739715, 0, 1)
+min_value = 10.0
 max_value = 10.0
 value = 10.0
 show_percentage = false
+indeterminate = true
+editor_preview_indeterminate = false
 
 [node name="Target" parent="OnTheGround" instance=ExtResource("6_rqwc0")]
 position = Vector2(510, 164)
