@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://by4t4oy1osh23"]
+
+[ext_resource type="Script" uid="uid://b1olpe6vya76x" path="res://character_body_2d.gd" id="1_14apm"]
+[ext_resource type="SpriteFrames" uid="uid://ovu5wqo15s5g" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_guard_enemy.tres" id="1_o0qij"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qoayp"]
+size = Vector2(40, 82.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t0u37"]
+size = Vector2(35, 59)
+
+[node name="peon" type="CharacterBody2D"]
+script = ExtResource("1_14apm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("1_o0qij")
+animation = &"idle"
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-8, -5.75)
+shape = SubResource("RectangleShape2D_qoayp")
+
+[node name="detector_de_daño" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detector_de_daño"]
+position = Vector2(-3.5, -5.5)
+shape = SubResource("RectangleShape2D_t0u37")
+
+[node name="puntero_peon" type="Marker2D" parent="."]
+position = Vector2(-17, -22)
+
+[node name="tiempo_bala_peon" type="Timer" parent="."]
+wait_time = 1.5
+autostart = true
+
+[node name="vida_1" type="ProgressBar" parent="."]
+modulate = Color(1, 0.05, 0.05, 1)
+offset_left = -60.0
+offset_top = -79.0
+offset_right = 63.0
+offset_bottom = -52.0
+max_value = 10.0
+value = 10.0
