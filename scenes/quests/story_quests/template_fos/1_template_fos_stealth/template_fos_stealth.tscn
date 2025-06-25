@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=4 uid="uid://bcsda22hc5atk"]
+[gd_scene load_steps=51 format=4 uid="uid://bcsda22hc5atk"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_cldsa"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_2jij3"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="4_fvab4"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="5_pjkaq"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="7_ff5qa"]
+[ext_resource type="AudioStream" uid="uid://cbhrc4iaau6ol" path="res://scenes/quests/story_quests/template_fos/1_template_fos_stealth/template_fos_components/template_fos_monster_alerted_sound.mp3" id="7_rpeq4"]
+[ext_resource type="AudioStream" uid="uid://cp05e447liydt" path="res://scenes/quests/story_quests/template_fos/1_template_fos_stealth/template_fos_components/guard_enemy_footsteps_sound.mp3" id="8_8x76f"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="8_dha4s"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="9_po8c5"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="11_7308q"]
@@ -13,6 +15,7 @@
 [ext_resource type="SpriteFrames" uid="uid://wbab76rny0mh" path="res://scenes/quests/story_quests/template_fos/1_template_fos_stealth/template_fos_components/template_fos_guard_enemy.tres" id="19_4puvc"]
 [ext_resource type="Resource" uid="uid://c7lcje183hhbh" path="res://scenes/quests/story_quests/template_fos/1_template_fos_stealth/template_fos_components/template_fos_checkpoint.dialogue" id="21_dh7yh"]
 [ext_resource type="SpriteFrames" uid="uid://yjyl183u4qe1" path="res://scenes/game_elements/props/checkpoint/components/knitwitch_frames_fos.tres" id="21_xv422"]
+[ext_resource type="PackedScene" uid="uid://do27uc3giaeag" path="res://scenes/quests/story_quests/template_fos/background_music_fos/background_music.tscn" id="22_8x76f"]
 [ext_resource type="Resource" uid="uid://q35a6tyycuj1" path="res://scenes/quests/story_quests/template_fos/1_template_fos_stealth/template_fos_components/template_fos_collected.dialogue" id="26_dh7yh"]
 [ext_resource type="Texture2D" uid="uid://8ujtwgp8fb1v" path="res://scenes/quests/story_quests/stella/1_stella_stealth/stella_stealth_components/stella_stealth_fire.png" id="26_f67jn"]
 [ext_resource type="Resource" uid="uid://jm56334o6k57" path="res://scenes/quests/story_quests/template_fos/1_template_fos_stealth/template_fos_components/template_fos_stealth.dialogue" id="29_dh7yh"]
@@ -249,6 +252,9 @@ position = Vector2(8, -221)
 position = Vector2(-2488.72, 435.004)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard1-PatrolPath")
 wait_time = 0.2
 time_to_detect_player = 0.5
@@ -264,6 +270,9 @@ curve = SubResource("Curve2D_vnsq3")
 position = Vector2(2981, 698.029)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard2-PatrolPath")
 wait_time = 0.3
 detection_area_scale = 0.1
@@ -277,6 +286,9 @@ curve = SubResource("Curve2D_hejm3")
 position = Vector2(2487, 1965)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard3-PatrolPath")
 time_to_detect_player = 0.5
 detection_area_scale = 0.6
@@ -289,6 +301,9 @@ curve = SubResource("Curve2D_wgqmn")
 position = Vector2(2604, 2552)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard4-PatrolPath")
 wait_time = 0.8
 time_to_detect_player = 0.5
@@ -302,6 +317,9 @@ curve = SubResource("Curve2D_rlkm0")
 position = Vector2(1293, 921)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard5-PatrolPath")
 wait_time = 0.8
 player_instantly_detected_on_sight = true
@@ -317,6 +335,9 @@ curve = SubResource("Curve2D_0ownb")
 position = Vector2(-71, 2919)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard7-PatrolPath")
 wait_time = 0.4
 player_instantly_detected_on_sight = true
@@ -332,6 +353,9 @@ curve = SubResource("Curve2D_cpmmr")
 position = Vector2(1601, 2132)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard9-PatrolPath")
 wait_time = 0.2
 player_instantly_detected_on_sight = true
@@ -346,6 +370,9 @@ curve = SubResource("Curve2D_l3kdm")
 position = Vector2(640, 1744)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard10-PatrolPath")
 wait_time = 0.2
 player_instantly_detected_on_sight = true
@@ -360,6 +387,9 @@ curve = SubResource("Curve2D_iqom2")
 position = Vector2(-479, 1270)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard11-PatrolPath")
 wait_time = 0.4
 player_instantly_detected_on_sight = true
@@ -375,6 +405,9 @@ curve = SubResource("Curve2D_7nlig")
 position = Vector2(539, 2257)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard12-PatrolPath")
 wait_time = 0.2
 player_instantly_detected_on_sight = true
@@ -389,6 +422,9 @@ curve = SubResource("Curve2D_24u5l")
 position = Vector2(620.002, 618.999)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard13-PatrolPath")
 wait_time = 0.1
 player_instantly_detected_on_sight = true
@@ -404,6 +440,9 @@ curve = SubResource("Curve2D_vuq3a")
 position = Vector2(-2541, 1549.3)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard14-PatrolPath")
 wait_time = 0.8
 player_instantly_detected_on_sight = true
@@ -419,6 +458,9 @@ curve = SubResource("Curve2D_xxbe2")
 position = Vector2(477.516, 1366.69)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard15-PatrolPath")
 wait_time = 0.0
 player_instantly_detected_on_sight = true
@@ -434,6 +476,9 @@ curve = SubResource("Curve2D_fu23b")
 position = Vector2(-2259, 2564)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard17-PatrolPath")
 wait_time = 0.0
 player_instantly_detected_on_sight = true
@@ -449,6 +494,9 @@ curve = SubResource("Curve2D_q85ym")
 position = Vector2(-1858, 1837)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard19-PatrolPath")
 wait_time = 0.0
 player_instantly_detected_on_sight = true
@@ -464,6 +512,9 @@ curve = SubResource("Curve2D_446rl")
 position = Vector2(-966, 1804)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard20-PatrolPath")
 wait_time = 0.0
 player_instantly_detected_on_sight = true
@@ -479,6 +530,9 @@ curve = SubResource("Curve2D_fcgc7")
 position = Vector2(-1975, 748.001)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("19_4puvc")
+alerted_sound_stream = ExtResource("7_rpeq4")
+footsteps_sound_stream = ExtResource("8_8x76f")
+alert_others_sound_stream = ExtResource("7_rpeq4")
 patrol_path = NodePath("../Guard21-PatrolPath")
 wait_time = 0.0
 player_instantly_detected_on_sight = true
@@ -1528,3 +1582,5 @@ scale = Vector2(0.914153, 0.955757)
 [node name="Tree758" parent="." instance=ExtResource("32_5tueh")]
 position = Vector2(-2718, 53)
 scale = Vector2(0.914153, 0.955757)
+
+[node name="BackgroundMusic" parent="." instance=ExtResource("22_8x76f")]
