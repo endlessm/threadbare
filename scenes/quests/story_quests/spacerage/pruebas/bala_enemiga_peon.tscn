@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://bs43juaapnjap"]
+
+[ext_resource type="Texture2D" uid="uid://bhqanyxhpxpm" path="res://assets/first_party/rocks/Rock_Idle.png" id="1_6veg1"]
+[ext_resource type="Script" uid="uid://dny1qlfwrcdoe" path="res://bala_enemiga_peon.gd" id="1_008v7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6emsp"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h4ekh"]
+radius = 11.0
+
+[node name="bala_enemiga_peon" type="CharacterBody2D"]
+script = ExtResource("1_008v7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1, -1)
+scale = Vector2(0.539063, 0.5)
+texture = ExtResource("1_6veg1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, -1)
+shape = SubResource("CircleShape2D_6emsp")
+
+[node name="detector_de_daño" type="Area2D" parent="."]
+position = Vector2(6, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detector_de_daño"]
+visibility_layer = 2
+position = Vector2(-33, -2)
+shape = SubResource("CircleShape2D_h4ekh")

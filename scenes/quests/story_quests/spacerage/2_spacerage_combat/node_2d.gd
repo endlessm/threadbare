@@ -1,16 +1,15 @@
 extends Node2D
-var vida_max=20
+
+@export var vida_max = 20
 var vida = 20
-@export var speed = 400
 
-func _on_got_hit_animation_animation_changed(old_name: StringName, new_name: StringName) -> void:
-	pass 
-func _on_got_hit_animation_animation_started(animation_name: String) -> void:
-	if animation_name == "got_hit":
-		print("me golpearon")
+func recibir_daño(cantidad):
+	vida -= cantidad
+	vida = clamp(vida, 0, vida_max)
+	print("Jugador recibió ", cantidad, " de daño. Vida: ", vida)
+	$vida_del_prota.value = vida
+	$vida_del_prota.max_value = vida_max
 
-func _on_hit_box_body_entered(body: Node2D) -> void:
-		vida -= 2
-		vida = clamp(vida, 0, vida_max)
-		$"../vida".value = vida 
-		$"../vida".max_value= vida_max 
+	if vida <= 0:
+		print("muerto :c")
+		get_parent().queue_free() 
