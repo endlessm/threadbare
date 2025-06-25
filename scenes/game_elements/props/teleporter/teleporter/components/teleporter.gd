@@ -6,12 +6,27 @@ extends Area2D
 
 const SPAWN_POINT_GROUP_NAME: String = "spawn_point"
 
+## Scene to switch to when the player enters this teleport. If empty, the player
+## will teleport within the current scene, to the position specified by [member
+## spawn_point_path].
 @export_file("*.tscn") var next_scene: String:
 	set(new_value):
 		next_scene = new_value
 		_update_available_spawn_points()
 		notify_property_list_changed()
 
+## Which SpawnPoint in [member next_scene] the player character should start at;
+## or blank/NONE to start at the default position in the scene.
+@export var spawn_point_path: NodePath:
+	set(new_val):
+		if new_val == ^"NONE":
+			spawn_point_path = ^""
+		else:
+			spawn_point_path = new_val
+
+@export_group("Transition")
+
+## Whether to use a visual transition effect when the player enters the teleporter.
 @export var use_transition: bool = true:
 	set(new_val):
 		use_transition = new_val
@@ -22,13 +37,6 @@ const SPAWN_POINT_GROUP_NAME: String = "spawn_point"
 
 ## Transition to use when the player leaves this teleport.
 @export var exit_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE
-
-var spawn_point_path: NodePath:
-	set(new_val):
-		if new_val == ^"NONE":
-			spawn_point_path = ^""
-		else:
-			spawn_point_path = new_val
 
 var _available_spawn_points: Array[NodePath] = []
 
@@ -102,32 +110,25 @@ func _update_available_spawn_points() -> void:
 		var scene_state: SceneState = packed_scene.get_state()
 
 		for i: int in scene_state.get_node_count():
-			if SPAWN_POINT_GROUP_NAME in scene_state.get_node_groups(i):
-				var node_path_as_string: String = String(scene_state.get_node_path(i))
+			var path := scene_state.get_node_path(i)
+			var node_groups := scene_state.get_node_groups(i)
+			var instance := scene_state.get_node_instance(i)
+			if instance:
+				node_groups.append_array(instance.get_state().get_node_groups(0))
+			if SPAWN_POINT_GROUP_NAME in node_groups:
+				var node_path_as_string := String(path)
 
 				paths.push_back(NodePath(node_path_as_string.replace("./", "")))
 
 		_available_spawn_points = paths
 
 
-func _get_property_list() -> Array[Dictionary]:
-	var property_list: Array[Dictionary] = []
-
-	property_list.push_back(
-		{
-			"name": "spawn_point_path",
-			"type": TYPE_STRING,
-			"hint": PROPERTY_HINT_ENUM,
-			"hint_string": ",".join(["NONE"] + _available_spawn_points),
-			"usage": PROPERTY_USAGE_DEFAULT
-		}
-	)
-
-	return property_list
-
-
 func _validate_property(property: Dictionary) -> void:
 	match property.name:
+		"spawn_point_path":
+			property.type = TYPE_STRING
+			property.hint = PROPERTY_HINT_ENUM
+			property.hint_string = ",".join(["NONE"] + _available_spawn_points)
 		"enter_transition":
 			if not use_transition:
 				property.usage |= PROPERTY_USAGE_READ_ONLY
