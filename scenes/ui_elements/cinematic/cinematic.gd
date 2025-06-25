@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 ## Shows a dialogue, then transitions to another scene.
 ## Intended for use in non-interactive cutscenes, such as the intro and outro to a quest
-class_name Cinematic
+class_name cinematic
 extends Node2D
 
 ## Dialogue for cinematic scene
@@ -21,9 +21,10 @@ extends Node2D
 
 
 func _ready() -> void:
+	
 	DialogueManager.show_dialogue_balloon(dialogue, "", [self])
 	await DialogueManager.dialogue_ended
-
+	
 	if next_scene:
 		(
 			SceneSwitcher
