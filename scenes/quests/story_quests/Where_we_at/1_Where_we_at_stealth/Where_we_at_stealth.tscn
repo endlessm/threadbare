@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://de3uvwo3m4qb6"]
+[gd_scene load_steps=23 format=4 uid="uid://de3uvwo3m4qb6"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_xugtn"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_5fdw2"]
@@ -12,6 +12,18 @@
 [ext_resource type="Resource" uid="uid://dpv4wurvaamhb" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_collected.dialogue" id="10_fpo1w"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="11_rnkxa"]
 [ext_resource type="Resource" uid="uid://cggywn8t6s4le" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_stealth.dialogue" id="12_p8c23"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1das8"]
+size = Vector2(124, 841)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wa7cb"]
+size = Vector2(244.5, 892)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e8ayu"]
+size = Vector2(246, 877)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0ercn"]
+size = Vector2(1019.5, 252)
 
 [sub_resource type="Curve2D" id="Curve2D_vnsq3"]
 _data = {
@@ -33,7 +45,7 @@ point_count = 2
 
 [sub_resource type="Curve2D" id="Curve2D_wa7cb"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -41.1619, 949.085, 0, 0, 0, 0, 915.352, 953.496)
+"points": PackedVector2Array(0, 0, 0, 0, 894.603, 846.642, 0, 0, 0, 0, -62.9514, 846.642)
 }
 point_count = 2
 
@@ -78,6 +90,24 @@ tile_map_data = PackedByteArray("AAAFAAcAAAAAAAAAAAAEAAkAAAAAAAAAAAAEAAcAAAAAAAA
 tile_set = ExtResource("2_5fdw2")
 collision_enabled = false
 
+[node name="Area2D" type="Area2D" parent="TileMapLayers/Agua"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TileMapLayers/Agua/Area2D"]
+position = Vector2(384, 411.5)
+shape = SubResource("RectangleShape2D_1das8")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="TileMapLayers/Agua/Area2D"]
+position = Vector2(962.75, 446)
+shape = SubResource("RectangleShape2D_wa7cb")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="TileMapLayers/Agua/Area2D"]
+position = Vector2(1537, 448.5)
+shape = SubResource("RectangleShape2D_e8ayu")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="TileMapLayers/Agua/Area2D"]
+position = Vector2(2494.25, 385)
+shape = SubResource("RectangleShape2D_0ercn")
+
 [node name="Player" parent="." instance=ExtResource("3_ihrd7")]
 position = Vector2(131, 463)
 
@@ -121,7 +151,7 @@ move_speed = 1000.0
 detection_area_scale = 0.1
 
 [node name="Guard2-RunningInCircles3" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("4_7aojy")]
-position = Vector2(2050, 465.422)
+position = Vector2(2952, 452)
 patrol_path = NodePath("../Guard2-RunningInCircles3-PatrolPath")
 wait_time = 0.0
 move_speed = 1000.0
@@ -168,3 +198,6 @@ collected_dialogue = ExtResource("10_fpo1w")
 script = ExtResource("11_rnkxa")
 dialogue = ExtResource("12_p8c23")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[connection signal="body_entered" from="TileMapLayers/Agua/Area2D" to="Player" method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="TileMapLayers/Agua/Area2D" to="Player" method="_on_area_2d_body_exited"]
