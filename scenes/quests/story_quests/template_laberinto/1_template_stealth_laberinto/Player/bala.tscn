@@ -1,0 +1,93 @@
+[gd_scene load_steps=13 format=3 uid="uid://w73k44wrhxmg"]
+
+[ext_resource type="Script" uid="uid://c7rcylk71lh65" path="res://scenes/quests/story_quests/template_laberinto/1_template_stealth_laberinto/Player/script/bala.gd" id="1_bpl8n"]
+[ext_resource type="Texture2D" uid="uid://cejbluyt5imkj" path="res://scenes/quests/story_quests/template_laberinto/sprite_laberinto/bala_revolver.png" id="2_bpl8n"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_86x2f"]
+radius = 144.222
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bpl8n"]
+atlas = ExtResource("2_bpl8n")
+region = Rect2(88, 0, 22, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_86x2f"]
+atlas = ExtResource("2_bpl8n")
+region = Rect2(154, 0, 22, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jyxcs"]
+atlas = ExtResource("2_bpl8n")
+region = Rect2(220, 0, 22, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m2qy5"]
+atlas = ExtResource("2_bpl8n")
+region = Rect2(286, 0, 22, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ojnvk"]
+atlas = ExtResource("2_bpl8n")
+region = Rect2(352, 0, 22, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g72o6"]
+atlas = ExtResource("2_bpl8n")
+region = Rect2(408, 0, 34, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t6sg8"]
+atlas = ExtResource("2_bpl8n")
+region = Rect2(476, 0, 34, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_up1a8"]
+atlas = ExtResource("2_bpl8n")
+region = Rect2(544, 0, 34, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q3t6t"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bpl8n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_86x2f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jyxcs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m2qy5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ojnvk")
+}],
+"loop": true,
+"name": &"bala_recorrido",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g72o6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t6sg8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_up1a8")
+}],
+"loop": true,
+"name": &"impacto_bala",
+"speed": 8.0
+}]
+
+[node name="Area2D" type="Area2D"]
+collision_layer = 17
+script = ExtResource("1_bpl8n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.05, 0.05)
+shape = SubResource("CircleShape2D_86x2f")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 7
+texture_filter = 1
+position = Vector2(17, 4)
+scale = Vector2(4.05852, 3)
+sprite_frames = SubResource("SpriteFrames_q3t6t")
+animation = &"impacto_bala"
+frame_progress = 0.0621275

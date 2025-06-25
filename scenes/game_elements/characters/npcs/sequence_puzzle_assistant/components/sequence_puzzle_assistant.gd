@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+
 ## An NPC who can assist the player with a sequence puzzle.
 @tool
 class_name SequencePuzzleAssistant
@@ -16,25 +17,26 @@ extends Talker
 ## different dialogue for the player's first interaction with this NPC, if desired.
 var first_conversation: bool = true
 
+## Señal para indicar que el jugador terminó de hablar con el NPC.
+signal interaction_ended
 
-## Call this method from dialogue to record that the player has been offered one more hint for the
-## current step of the [member puzzle].
+## Lógica del puzzle
 func advance_hint_level() -> void:
 	var progress := puzzle.get_progress()
 	puzzle.hint_levels[progress] = puzzle.hint_levels.get(progress, 0) + 1
 
-
-## Call this method from dialogue to check the number of hints that have been given to the player
-## for the current step of the [member puzzle].
 func get_hint_level() -> int:
 	var progress: int = puzzle.get_progress()
 	return puzzle.hint_levels.get(progress, 0)
 
-
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
-
 	if not puzzle:
 		warnings.append("No puzzle assigned")
-
 	return warnings
+
+## Sobreescribimos para emitir la señal cuando el diálogo termine
+func _on_dialogue_ended(_dialogue_resource: DialogueResource) -> void:
+	super._on_dialogue_ended(_dialogue_resource)
+	print("🟡 [NPC] Señal de fin de interacción recibida. Emite 'interaction_ended'")
+	interaction_ended.emit()
