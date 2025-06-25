@@ -1,0 +1,52 @@
+[gd_scene load_steps=9 format=3 uid="uid://d1vvhb2tshjij"]
+
+[ext_resource type="Script" uid="uid://b2cd5icnlllw3" path="res://scenes/quests/story_quests/ElUltimoBosque/2_ElUltimoBosque_combat/arribaAbajo.gd" id="1_eb0sy"]
+[ext_resource type="Texture2D" uid="uid://bnp3uddfm8c6o" path="res://scenes/quests/story_quests/ElUltimoBosque/2_ElUltimoBosque_combat/aves2.png" id="2_o1pdv"]
+[ext_resource type="Script" uid="uid://wgrlgjuti6db" path="res://scenes/quests/story_quests/ElUltimoBosque/2_ElUltimoBosque_combat/aveMovimiento.gd" id="3_o1pdv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vu7cx"]
+atlas = ExtResource("2_o1pdv")
+region = Rect2(0, 0, 222, 375)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u7uyv"]
+atlas = ExtResource("2_o1pdv")
+region = Rect2(222, 0, 222, 375)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a722x"]
+atlas = ExtResource("2_o1pdv")
+region = Rect2(444, 0, 222, 375)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y2vmp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vu7cx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u7uyv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a722x")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hm2au"]
+radius = 14.0
+height = 60.0
+
+[node name="ave" type="CharacterBody2D"]
+platform_floor_layers = 1
+script = ExtResource("1_eb0sy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.581081, 0.572)
+sprite_frames = SubResource("SpriteFrames_y2vmp")
+frame_progress = 0.206319
+script = ExtResource("3_o1pdv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(7, 9)
+shape = SubResource("CapsuleShape2D_hm2au")
