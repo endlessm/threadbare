@@ -1,6 +1,9 @@
 class_name Cinematica
 extends Node2D
+<<<<<<< HEAD
+=======
 
+>>>>>>> 7f7ae43fcc7a62e7185b588b2efd8419edc68e33
 @export var dialogue: DialogueResource = preload("uid://b7ad8nar1hmfs")  # Diálogo introductorio
 @export_file("*.tscn") var next_scene: String
 @export var spawn_point_path: String
@@ -9,6 +12,12 @@ extends Node2D
 var jugador_ha_hablado := false
 
 func _ready() -> void:
+<<<<<<< HEAD
+	var npc = get_node_or_null(npc_node_path)
+
+	if npc:
+		if npc.has_signal("interaction_ended"):
+=======
 	print("📌 npc_node_path:", npc_node_path)
 	var npc = get_node_or_null(npc_node_path)
 
@@ -16,6 +25,7 @@ func _ready() -> void:
 		print("✅ NPC encontrado:", npc.name)
 		if npc.has_signal("interaction_ended"):
 			print("✅ NPC tiene señal 'interaction_ended'")
+>>>>>>> 7f7ae43fcc7a62e7185b588b2efd8419edc68e33
 			npc.connect("interaction_ended", Callable(self, "_on_npc_interaction_ended"))
 		else:
 			print("❌ El nodo NPC no tiene la señal 'interaction_ended'")

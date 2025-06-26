@@ -14,7 +14,11 @@ var vida_actual := vida_maxima
 @onready var vida_bar: ProgressBar = safe_get_node("../barra vida/ProgressBar")
 @onready var balas_vista = safe_get_node("../BalasVista")
 
+<<<<<<< HEAD
+@export var WALK_SPEED = 300.0
+=======
 const WALK_SPEED = 300.0
+>>>>>>> 7f7ae43fcc7a62e7185b588b2efd8419edc68e33
 const RUN_SPEED = 500.0
 var current_speed = WALK_SPEED
 var last_direction = Vector2.DOWN
