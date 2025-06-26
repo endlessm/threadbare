@@ -1,0 +1,75 @@
+[gd_scene load_steps=8 format=3 uid="uid://xxhybr0oqi8g"]
+
+[ext_resource type="Script" uid="uid://bp4tndbe5ab0n" path="res://scenes/quests/story_quests/template_laberinto/Objetos/Script/puerta.gd" id="1_8qkes"]
+[ext_resource type="Texture2D" uid="uid://dyvspuiabp5wu" path="res://scenes/quests/story_quests/template_laberinto/1_template_stealth_laberinto/assets/Props.png" id="1_lmmg0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gk5y8"]
+size = Vector2(36, 52)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lmmg0"]
+atlas = ExtResource("1_lmmg0")
+region = Rect2(0, 166, 91, 51)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8qkes"]
+atlas = ExtResource("1_lmmg0")
+region = Rect2(0, 102, 91, 51)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xuqyh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lmmg0")
+}],
+"loop": true,
+"name": &"Abierto",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8qkes")
+}],
+"loop": true,
+"name": &"Cerrado",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5u2l2"]
+radius = 34.0147
+
+[node name="Puerta" type="StaticBody2D"]
+script = ExtResource("1_8qkes")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_gk5y8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-2, -1)
+scale = Vector2(1.00797, 1)
+sprite_frames = SubResource("SpriteFrames_xuqyh")
+animation = &"Cerrado"
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("CircleShape2D_5u2l2")
+debug_color = Color(0.387537, 0.974723, 0.327388, 0.42)
+
+[node name="ui_container" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -22.0
+offset_top = -24.0
+offset_right = 40.0
+offset_bottom = 24.0
+
+[node name="InteractLabel" type="Label" parent="ui_container"]
+z_index = 3
+layout_mode = 0
+offset_left = -26.0
+offset_top = 29.0
+offset_right = 108.0
+offset_bottom = 74.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 20
+text = "Necesarios"
