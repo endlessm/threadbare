@@ -6,6 +6,8 @@ extends Node
 
 @export_range(0.5, 3.0, 0.1, "or_greater", "or_less") var zoom: float = 1.0:
 	set = _set_zoom
+	
+@onready var player: Player = get_tree().get_first_node_in_group("player")
 
 
 func _ready() -> void:
@@ -14,6 +16,9 @@ func _ready() -> void:
 	_set_zoom(zoom)
 	for guard: Guard in get_tree().get_nodes_in_group(&"guard_enemy"):
 		guard.player_detected.connect(self._on_player_detected)
+	
+	if player:
+		player._set_mode(Player.Mode.FIGHTING)
 
 
 func _on_player_detected(player: Node2D) -> void:
