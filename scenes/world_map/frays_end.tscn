@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=4 uid="uid://cufkthb25mpxy"]
+[gd_scene load_steps=44 format=4 uid="uid://cufkthb25mpxy"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_4evgk"]
 [ext_resource type="Script" uid="uid://8div00rgvsds" path="res://scenes/world_map/components/frays_end.gd" id="1_4gse6"]
@@ -39,9 +39,8 @@
 [ext_resource type="Texture2D" uid="uid://bytssd0mbo28u" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Arrow_Up_Key_Dark.png" id="29_djq26"]
 [ext_resource type="Resource" uid="uid://byhqan5a7vkgg" path="res://scenes/world_map/components/tutorial_npc.dialogue" id="32_djq26"]
 [ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="37_thm8h"]
-[ext_resource type="Texture2D" uid="uid://b4gjylrs0g2xx" path="res://scenes/game_elements/props/decoration/crochenthemum/ND_Crochenthemum_01.png" id="40_06x6x"]
-[ext_resource type="Texture2D" uid="uid://c8q2r1dsn1m7w" path="res://scenes/game_elements/props/decoration/crochenthemum/ND_Crochenthemum_02.png" id="41_xt3dw"]
-[ext_resource type="Texture2D" uid="uid://72tsg0sif7sq" path="res://scenes/game_elements/props/decoration/mushroom/ND_Mushroom_Blue_01.png" id="42_lftgk"]
+[ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="38_cjmkx"]
+[ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="45_cjmkx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h30yx"]
 size = Vector2(2070, 585)
@@ -134,37 +133,69 @@ editor_draw_limits = true
 [node name="Props" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="NdCrochenthemum01" type="Sprite2D" parent="Props"]
-position = Vector2(1455, 1819)
-texture = ExtResource("40_06x6x")
+[node name="Flowerbed" type="Area2D" parent="Props"]
+y_sort_enabled = true
+position = Vector2(1358.05, 1693.82)
 
-[node name="NdCrochenthemum02" type="Sprite2D" parent="Props"]
-position = Vector2(1500, 1776)
-texture = ExtResource("41_xt3dw")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Props/Flowerbed"]
+polygon = PackedVector2Array(80.9502, -52.8169, 81.9502, 73.1831, 145.95, 74.1831, 146.95, 134.183, 476.95, 136.183, 480.95, 204.183, -87.05, 210.18, -91.05, -178.82, 10.95, -176.82, 11.649, -54.5072)
+disabled = true
 
-[node name="NdCrochenthemum03" type="Sprite2D" parent="Props"]
-position = Vector2(1499, 1831)
-texture = ExtResource("40_06x6x")
+[node name="AreaFiller" type="Node" parent="Props/Flowerbed"]
+script = ExtResource("38_cjmkx")
+scenes = Array[PackedScene]([ExtResource("45_cjmkx")])
+metadata/_custom_type_script = "uid://bdhjixygupit1"
 
-[node name="NdCrochenthemum04" type="Sprite2D" parent="Props"]
-position = Vector2(1497, 1828)
-texture = ExtResource("40_06x6x")
+[node name="Flower" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(145.987, 76.4082)
 
-[node name="NdMushroomBlue01" type="Sprite2D" parent="Props"]
-position = Vector2(1556, 1824)
-texture = ExtResource("42_lftgk")
+[node name="Flower2" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(162.489, 161.379)
 
-[node name="NdMushroomBlue02" type="Sprite2D" parent="Props"]
-position = Vector2(1431, 1826)
-texture = ExtResource("42_lftgk")
+[node name="Flower3" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(57.5313, 127.062)
 
-[node name="NdMushroomBlue03" type="Sprite2D" parent="Props"]
-position = Vector2(1527, 1813)
-texture = ExtResource("42_lftgk")
+[node name="Flower4" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(82.1759, 198.141)
 
-[node name="NdCrochenthemum06" type="Sprite2D" parent="Props"]
-position = Vector2(1453, 1744)
-texture = ExtResource("40_06x6x")
+[node name="Flower5" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(80.8003, -8.4669)
+
+[node name="Flower6" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(74.8754, 58.9827)
+
+[node name="Flower7" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(-4.8579, -36.5672)
+
+[node name="Flower8" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(-32.8836, 174.97)
+
+[node name="Flower9" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(-15.228, 43.4394)
+
+[node name="Flower10" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(2.49678, -154.987)
+
+[node name="Flower11" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(-88.8473, -124.21)
+
+[node name="Flower12" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(-69.4298, -27.7301)
+
+[node name="Flower13" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(-58.1484, 99.4569)
+
+[node name="Flower14" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(242.783, 153.786)
+
+[node name="Flower15" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(360.015, 195.757)
+
+[node name="Flower16" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(290.57, 206.026)
+
+[node name="Flower17" parent="Props/Flowerbed" instance=ExtResource("45_cjmkx")]
+position = Vector2(465.862, 159.547)
 
 [node name="HidingMushroom" parent="Props" instance=ExtResource("11_jqkod")]
 position = Vector2(906, 1516)
