@@ -15,6 +15,7 @@ var vida_actual := vida_maxima
 @onready var balas_vista = safe_get_node("../BalasVista")
 
 const WALK_SPEED = 300.0
+
 const RUN_SPEED = 500.0
 var current_speed = WALK_SPEED
 var last_direction = Vector2.DOWN
