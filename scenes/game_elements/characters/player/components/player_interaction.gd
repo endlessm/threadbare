@@ -9,6 +9,7 @@ var is_interacting: bool:
 @onready var interact_marker: Marker2D = %InteractMarker
 @onready var interact_label: FixedSizeLabel = %InteractLabel
 @onready var player: Player = self.owner as Player
+@onready var luz := get_parent().get_node_or_null("PointLight2D")
 # Guardamos zoom original solo si se desea usar en el futuro
 @onready var arma_node := get_parent().get_node_or_null("arma")
 @onready var camara: Camera2D = get_parent().get_node_or_null("Camera2D")
@@ -17,7 +18,9 @@ func _ready():
 	if camara_main and camara:
 		camara_main.make_current()
 		camara.enabled = false
+		luz.visible = false
 	if arma_node:
+		
 		arma_node.visible = false
 	else:
 		print("❌ No se encontró el nodo 'arma' dentro del jugador.")
