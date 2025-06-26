@@ -1,0 +1,77 @@
+[gd_scene load_steps=11 format=3 uid="uid://coaq8rltsiek0"]
+
+[ext_resource type="Script" uid="uid://b12712ekv135v" path="res://mariposa/Mariposa.gd" id="1_lpg6p"]
+[ext_resource type="Texture2D" uid="uid://yqabo27r038y" path="res://assets/light.png" id="1_qaxrl"]
+[ext_resource type="Texture2D" uid="uid://d1cncxhgg3uex" path="res://assets/Mariposa.png" id="2_lpg6p"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5eftc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k8mva"]
+atlas = ExtResource("2_lpg6p")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gs1bw"]
+atlas = ExtResource("2_lpg6p")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s18ge"]
+atlas = ExtResource("2_lpg6p")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hvrsa"]
+atlas = ExtResource("2_lpg6p")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tkmfk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k8mva")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gs1bw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s18ge")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hvrsa")
+}],
+"loop": true,
+"name": &"Move",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lpg6p"]
+radius = 15.75
+
+[node name="Mariposa" type="CharacterBody2D"]
+scale = Vector2(1.5, 1.5)
+script = ExtResource("1_lpg6p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_5eftc")
+
+[node name="navigation_agent" type="NavigationAgent2D" parent="."]
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(6.64204e-06, 0.571205, 0.818462, 1)
+energy = 3.0
+texture = ExtResource("1_qaxrl")
+texture_scale = 0.1
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_tkmfk")
+animation = &"Idle"
+
+[node name="detection_area" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detection_area"]
+shape = SubResource("CircleShape2D_lpg6p")
+debug_color = Color(0.11655, 1.35368e-08, 0.0392695, 0.42)

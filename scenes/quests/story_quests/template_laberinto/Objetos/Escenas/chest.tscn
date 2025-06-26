@@ -1,0 +1,98 @@
+[gd_scene load_steps=10 format=3 uid="uid://deeqvmwcmsj33"]
+
+[ext_resource type="Script" uid="uid://gxedwo2wnaa4" path="res://scenes/quests/story_quests/template_laberinto/Objetos/Script/chest.gd" id="1_ajtcq"]
+[ext_resource type="Texture2D" uid="uid://dyvspuiabp5wu" path="res://scenes/quests/story_quests/template_laberinto/1_template_stealth_laberinto/assets/Props.png" id="2_laot6"]
+[ext_resource type="Texture2D" uid="uid://yqabo27r038y" path="res://scenes/quests/story_quests/template_laberinto/1_template_stealth_laberinto/assets/light.png" id="3_laot6"]
+[ext_resource type="AudioStream" uid="uid://b3oy0btfod3aw" path="res://scenes/quests/story_quests/template_laberinto/Biblioteca - sonidos/Wooden Treasure Chest Opening Free Sound Effect (320 KBps).ogg" id="4_tfnej"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajtcq"]
+atlas = ExtResource("2_laot6")
+region = Rect2(96, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_laot6"]
+atlas = ExtResource("2_laot6")
+region = Rect2(96, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gtsv1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ajtcq")
+}],
+"loop": true,
+"name": &"Abierto",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_laot6")
+}],
+"loop": true,
+"name": &"Cerrado",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gk5y8"]
+size = Vector2(32.875, 23.25)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5u2l2"]
+radius = 27.0185
+
+[node name="Chest" type="StaticBody2D"]
+script = ExtResource("1_ajtcq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0.836001, -18)
+scale = Vector2(1, 0.677)
+sprite_frames = SubResource("SpriteFrames_gtsv1")
+animation = &"Cerrado"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5625, -8.625)
+shape = SubResource("RectangleShape2D_gk5y8")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(0, -10)
+shape = SubResource("CircleShape2D_5u2l2")
+debug_color = Color(0.387537, 0.974723, 0.327388, 0.42)
+
+[node name="ui_container" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 10.0
+offset_top = -58.0
+offset_right = 58.0
+offset_bottom = -30.0
+
+[node name="ProgressBar" type="ProgressBar" parent="ui_container"]
+texture_filter = 1
+layout_mode = 0
+offset_left = -53.0
+offset_top = 20.0
+offset_right = 99.0
+offset_bottom = 47.0
+scale = Vector2(0.6, 0.6)
+
+[node name="InteractLabel" type="Label" parent="ui_container"]
+texture_filter = 1
+layout_mode = 0
+offset_left = -38.0
+offset_top = 2.0
+offset_right = 68.0
+offset_bottom = 174.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 15
+text = "chest"
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(0, 1)
+color = Color(0.862097, 0.858727, 1.15514e-06, 1)
+energy = 2.0
+shadow_enabled = true
+texture = ExtResource("3_laot6")
+
+[node name="AudioOpen" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_tfnej")
