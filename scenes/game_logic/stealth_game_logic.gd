@@ -19,6 +19,8 @@ func _ready() -> void:
 	
 	if player:
 		player._set_mode(Player.Mode.FIGHTING)
+		
+	get_tree().call_group("throwing_enemy", "start")
 
 
 func _on_player_detected(player: Node2D) -> void:

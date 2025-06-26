@@ -1,9 +1,12 @@
 class_name CustomPlayer extends Player
 
 @export var duration_animation_sword: float = .3
+@export var start_live: float = 100
 
 @onready var sword_area: Area2D = $SwordArea2D
+
 var can_attack: bool = true
+var health: float = start_live
 
 func _ready() -> void:
 	super._ready()
@@ -31,9 +34,21 @@ func stop_swing_sword():
 	sword_area.monitoring = false
 
 func _on_sword_area_body_entered(body: Node) -> void:
-	if not body.is_in_group("guard_enemy"):
-		return
+	if body.is_in_group("guard_enemy"):
+		var enemy := body as CustomGuard
+		if enemy:
+			enemy.recive_damage(25)
 	
-	var enemy := body as CustomGuard
-	if enemy:
-		enemy.recive_damage(25)
+	if body is CustomArrow:
+		var arrow := body as CustomArrow
+		if arrow:
+			arrow.got_hit(owner)
+	
+	if body is CustomThrowingEnemy:
+		var archer := body as CustomThrowingEnemy
+		archer.remove()
+
+func recive_damage(lost_live = 0) -> void:
+	health -= lost_live
+	if health <= 0:
+		print("Player debe morir")

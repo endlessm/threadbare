@@ -1,15 +1,17 @@
-[gd_scene load_steps=20 format=4 uid="uid://bu8e5ganibn37"]
+[gd_scene load_steps=22 format=4 uid="uid://bu8e5ganibn37"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_w4n6d"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_043td"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_248yb"]
-[ext_resource type="Script" uid="uid://qndberw5vedc" path="res://scenes/quests/story_quests/memories_castle/scripts/custom_players/custom_player.gd" id="4_f1qik"]
+[ext_resource type="Script" uid="uid://qndberw5vedc" path="res://scenes/quests/story_quests/memories_castle/scripts/custom_player/custom_player.gd" id="4_f1qik"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="4_o217b"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="5_d0ely"]
 [ext_resource type="Resource" uid="uid://cppk2qynt485b" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_checkpoint.dialogue" id="6_b35bt"]
-[ext_resource type="Script" uid="uid://bwev4pm5b8jc0" path="res://scenes/quests/story_quests/memories_castle/scripts/custom_enemies/custom_guard.gd" id="6_e8a6b"]
+[ext_resource type="Script" uid="uid://bwev4pm5b8jc0" path="res://scenes/quests/story_quests/memories_castle/scripts/custom_enemies/guards/custom_guard.gd" id="6_e8a6b"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="7_85ouc"]
+[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="7_fh2fd"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="8_eanln"]
+[ext_resource type="Script" uid="uid://dctaumhjqwlu1" path="res://scenes/quests/story_quests/memories_castle/scripts/custom_enemies/archers/custom_throwing_enemy.gd" id="8_puf1s"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="9_5w78q"]
 [ext_resource type="Resource" uid="uid://dpv4wurvaamhb" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_collected.dialogue" id="10_4f2r0"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="11_y0g08"]
@@ -67,6 +69,7 @@ tile_set = ExtResource("2_043td")
 position = Vector2(131, 463)
 script = ExtResource("4_f1qik")
 duration_animation_sword = 0.3
+start_live = 100.0
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 process_mode = 3
@@ -120,6 +123,13 @@ detection_area_scale = 0.1
 [node name="Guard2-RunningPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(1947, 473)
 curve = SubResource("Curve2D_hejm3")
+
+[node name="ThrowingEnemy" parent="EnemyGuards" instance=ExtResource("7_fh2fd")]
+position = Vector2(394, 470)
+collision_layer = 130
+collision_mask = 145
+script = ExtResource("8_puf1s")
+projectile_speed = 70.0
 
 [node name="Checkpoints" type="Node2D" parent="."]
 y_sort_enabled = true
