@@ -49,16 +49,19 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if not item:
 		return ["item property must be set"]
 	return []
-	
+
+
 func _set_item(new_value: InventoryItem) -> void:
 	item = new_value
 
-	if sprite_2d and item:
-		sprite_2d.texture = item.get_world_texture()
+	if sprite_2d:
+		sprite_2d.texture = item.get_world_texture() if item else null
+
 	if interact_area:
 		interact_area.action = "Collect " + item.type_name() if item else "Collect"
 
 	update_configuration_warnings()
+
 
 func _ready() -> void:
 	_set_item(item)
@@ -86,8 +89,7 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	animation_player.play("collected")
 	await animation_player.animation_finished
 
-	var fresh_item := load(item.resource_path).duplicate()
-	GameState.add_collected_item(fresh_item)
+	GameState.add_collected_item(item)
 
 	if collected_dialogue:
 		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])

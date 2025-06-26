@@ -19,8 +19,8 @@ func has_item(item: InventoryItem) -> bool:
 
 
 func add_item(item: InventoryItem) -> void:
-	if not _items.has(item):
-		_items.append(item)
+	if not item in _items:
+		_items.push_back(item)
 
 
 func remove_item(item: InventoryItem) -> void:
