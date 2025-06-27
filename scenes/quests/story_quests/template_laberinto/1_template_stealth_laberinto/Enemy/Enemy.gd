@@ -26,6 +26,8 @@ var run_timer := 0.0
 var is_running := false
 
 func _ready() -> void:
+	if player:
+		player.connect("jugador_derrotado", Callable(self, "_on_jugador_muerto"))
 	current_speed = WALK_SPEED
 	navigation_agent.path_desired_distance = 4.0
 	navigation_agent.target_desired_distance = 10.0
@@ -199,15 +201,35 @@ func handle_animations(movement_vector: Vector2) -> void:
 func intentar_atacar() -> void:
 	if not puede_atacar or not player:
 		return
+
 	if global_position.distance_to(player.global_position) <= rango_ataque:
 		puede_atacar = false
 		puede_moverse = false
 		animacion_bloqueada = true
 		animated_sprite_2d.play("golpeado")
+
 		if player.has_method("recibir_daño"):
 			player.recibir_daño(dano)
-		await get_tree().create_timer(0.5).timeout
+
+		# Esperar 0.5s
+		if not await await_tiempo_seguro(0.5):
+			return
 		animacion_bloqueada = false
 		puede_moverse = true
-		await get_tree().create_timer(tiempo_entre_ataques - 0.5).timeout
+
+		# Esperar el resto del cooldown
+		if not await await_tiempo_seguro(tiempo_entre_ataques - 0.5):
+			return
 		puede_atacar = true
+
+# Función auxiliar reutilizable y segura
+func await_tiempo_seguro(segundos: float) -> bool:
+	if not get_tree() or not is_inside_tree():
+		return false
+	var timer := get_tree().create_timer(segundos)
+	if not timer:
+		return false
+	await timer.timeout
+	return is_inside_tree()
+func _on_jugador_muerto():
+	queue_free() # o set_process(false), o lo que necesites

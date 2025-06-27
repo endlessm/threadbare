@@ -47,6 +47,12 @@ func configurar_inputs():
 		key_e.physical_keycode = KEY_E
 		InputMap.add_action("Interact")
 		InputMap.action_add_event("Interact", key_e)
+		
+	if not InputMap.has_action("run"):
+		var shift_event := InputEventKey.new()
+		shift_event.physical_keycode = KEY_SHIFT  # O KEY_SHIFT_L / KEY_SHIFT_R si quieres especificar
+		InputMap.add_action("run")
+		InputMap.action_add_event("run", shift_event)
 	if not InputMap.has_action("recargar"):
 		var key_r := InputEventKey.new()
 		key_r.physical_keycode = KEY_R
@@ -96,7 +102,7 @@ func _physics_process(delta: float) -> void:
 		disparar()
 	if Input.is_action_just_pressed("recargar"):
 		recargar()
-	if Input.is_action_pressed("ui_accept") && can_run && current_stamina > 0:
+	if Input.is_action_pressed("run") && can_run && current_stamina > 0:
 		current_speed = RUN_SPEED
 		is_running = true
 	else:
@@ -236,8 +242,12 @@ func actualizar_color_vida():
 			color = Color(0.8, 0.8, 0.2)
 		barra.bg_color = color
 
+signal jugador_derrotado
 func morir():
+	emit_signal("jugador_derrotado")
 	visible = false
+	GameStateLaberinto.reset()
+	get_tree().reload_current_scene()
 	print("¡Jugador derrotado!")
 
 func get_cofres_abiertos() -> Array:
