@@ -1,0 +1,108 @@
+[gd_scene load_steps=16 format=3 uid="uid://dtp8ikfxri7po"]
+
+[ext_resource type="Script" uid="uid://36bn1xonxpwg" path="res://KILLAWAR_codigo/chaska.gd" id="1_3ffex"]
+[ext_resource type="Texture2D" uid="uid://yc3cn4tf7m01" path="res://KILLAWAR_recursos/sprites/knight.png" id="2_3ffex"]
+[ext_resource type="Texture2D" uid="uid://chvnpeo4hbhsc" path="res://KILLAWAR_recursos/sprites/pixil-frame-0.png" id="3_c3gw6"]
+[ext_resource type="Texture2D" uid="uid://dil21gy1mgikx" path="res://KILLAWAR_recursos/sprites/chaskco_correr.png" id="4_nueno"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_55qw7"]
+atlas = ExtResource("4_nueno")
+region = Rect2(0, 19, 15, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ysve1"]
+atlas = ExtResource("4_nueno")
+region = Rect2(15, 2, 15, 17)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tngxs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_55qw7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ysve1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 3.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c3gw6"]
+atlas = ExtResource("2_3ffex")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nueno"]
+atlas = ExtResource("2_3ffex")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ba084"]
+atlas = ExtResource("2_3ffex")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bek2a"]
+atlas = ExtResource("2_3ffex")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ba084"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c3gw6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nueno")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ba084")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bek2a")
+}],
+"loop": true,
+"name": &"reposo",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jdjwc"]
+atlas = ExtResource("3_c3gw6")
+region = Rect2(0, 0, 16, 17)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_55qw7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jdjwc")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jdjwc"]
+size = Vector2(13, 17)
+
+[node name="Chaska" type="CharacterBody2D"]
+z_index = 5
+collision_layer = 2
+script = ExtResource("1_3ffex")
+
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="."]
+position = Vector2(2, -9)
+sprite_frames = SubResource("SpriteFrames_tngxs")
+autoplay = "default"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(1, -12)
+sprite_frames = SubResource("SpriteFrames_ba084")
+animation = &"reposo"
+autoplay = "reposo"
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(3, -9)
+sprite_frames = SubResource("SpriteFrames_55qw7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, -9)
+shape = SubResource("RectangleShape2D_jdjwc")
