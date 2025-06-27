@@ -1,8 +1,9 @@
-[gd_scene load_steps=21 format=4 uid="uid://b00m5ux4i8gug"]
+[gd_scene load_steps=22 format=4 uid="uid://b00m5ux4i8gug"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_lmcy8"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_skv3o"]
 [ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="3_is08e"]
+[ext_resource type="SpriteFrames" uid="uid://bcrujtl2qe5w5" path="res://scenes/quests/story_quests/errepege/errepege_player_components/errepege_player.tres" id="3_xo0vh"]
 [ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/game_elements/props/sequence_puzzle_object/sequence_puzzle_object.tscn" id="4_xbt7x"]
 [ext_resource type="AudioStream" uid="uid://cg57q82pb243w" path="res://assets/third_party/xylophone-sampler-pack/xylophone-c3.ogg" id="5_muh4d"]
 [ext_resource type="AudioStream" uid="uid://b83x8h0ob5mpq" path="res://assets/third_party/xylophone-sampler-pack/xylophone-d3.ogg" id="6_y2ijf"]
@@ -31,6 +32,7 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 [node name="TileMapLayers" type="Node2D" parent="."]
 
 [node name="Grass" type="TileMapLayer" parent="TileMapLayers"]
+position = Vector2(0, -1)
 tile_map_data = PackedByteArray("AAANAAcAAQABAAEAAAANAAYAAQABAAEAAAANAAUAAQABAAEAAAANAAQAAQABAAEAAAANAAMAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAAMAAcAAQABAAEAAAAMAAYAAQABAAEAAAAMAAUAAQABAAEAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAEAAAALAAcAAQABAAEAAAALAAYAAQABAAEAAAALAAUAAQABAAEAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAEAAAAKAAcAAQABAAEAAAAKAAYAAQABAAEAAAAKAAUAAQABAAEAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAJAAcAAQABAAEAAAAJAAYAAQABAAEAAAAJAAUAAQABAAEAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAIAAcAAQABAAEAAAAIAAYAAQABAAEAAAAIAAUAAQABAAEAAAAIAAQAAQABAAEAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAHAAcAAQABAAEAAAAHAAYAAQABAAEAAAAHAAUAAQABAAEAAAAHAAQAAQABAAEAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAGAAcAAQABAAEAAAAGAAYAAQABAAEAAAAGAAUAAQABAAEAAAAGAAQAAQABAAEAAAAGAAMAAQABAAEAAAAGAAIAAQABAAEAAAAFAAcAAQABAAEAAAAFAAYAAQABAAEAAAAFAAUAAQABAAEAAAAFAAQAAQABAAEAAAAFAAMAAQABAAEAAAAFAAIAAQABAAEAAAAFAAEAAQABAAEAAAAEAAcAAQABAAEAAAAEAAYAAQABAAEAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAIAAQABAAEAAAAEAAEAAQABAAEAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAIAAQABAAEAAAADAAEAAQABAAEAAAACAAMAAQABAAEAAAACAAIAAQABAAEAAAACAAEAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAABAAEAAQABAAEAAAACAAQAAQABAAEAAAABAAQAAQABAAEAAAAAAAQAAQABAAEAAAAGAAAAAQABAAEAAAAHAAAAAQABAAEAAAAFAAAAAQABAAEAAAAIAAAAAQABAAEAAAAJAAAAAQABAAEAAAALAAAAAQABAAEAAAAMAAAAAQABAAEAAAAKAAAAAQABAAEAAAANAAAAAQABAAEAAAAEAAAAAQABAAEAAAADAAAAAQABAAEAAAACAAAAAQABAAEAAAABAAAAAQABAAEAAAAAAAAAAQABAAEAAAAAAAEAAQABAAEAAAAAAAIAAQABAAEAAAAAAAMAAQABAAEAAAAAAAgAAQABAAEAAAABAAgAAQABAAEAAAACAAgAAQABAAEAAAADAAgAAQABAAEAAAAEAAgAAQABAAEAAAAFAAgAAQABAAEAAAAGAAgAAQABAAEAAAAHAAgAAQABAAEAAAAIAAgAAQABAAEAAAAJAAgAAQABAAEAAAAKAAgAAQABAAEAAAAMAAgAAQABAAEAAAALAAgAAQABAAEAAAANAAgAAQABAAEAAAAOAAgAAQABAAEAAAAOAAcAAQABAAEAAAAOAAYAAQABAAEAAAAOAAUAAQABAAEAAAAOAAQAAQABAAEAAAAOAAMAAQABAAEAAAAOAAIAAQABAAEAAAAOAAEAAQABAAEAAAAOAAAAAQABAAEAAAAAAAUAAQABAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAEAAAADAAYAAQABAAEAAAACAAYAAQABAAEAAAABAAYAAQABAAEAAAAAAAYAAQABAAEAAAAAAAcAAQABAAEAAAABAAcAAQABAAEAAAACAAcAAQABAAEAAAADAAcAAQABAAEAAAAGAAEAAQABAAEAAAAHAAEAAQABAAEAAAAIAAEAAQABAAEAAAAJAAEAAQABAAEAAAAKAAEAAQABAAEAAAAPAAkAAQACAAIAAAAPAAgAAQACAAEAAAAPAAcAAQACAAEAAAAPAAYAAQACAAEAAAAPAAUAAQACAAEAAAAPAAQAAQACAAEAAAAPAAMAAQACAAEAAAAPAAIAAQACAAEAAAAPAAEAAQACAAEAAAAPAAAAAQACAAEAAAAPAP//AQACAAAAAAAOAAkAAQABAAIAAAAOAP//AQABAAAAAAANAAkAAQABAAIAAAANAP//AQABAAAAAAAMAAkAAQABAAIAAAAMAP//AQABAAAAAAALAAkAAQABAAIAAAALAP//AQABAAAAAAAKAAkAAQABAAIAAAAKAP//AQABAAAAAAAJAAkAAQABAAIAAAAJAP//AQABAAAAAAAIAAkAAQABAAIAAAAIAP//AQABAAAAAAAHAAkAAQABAAIAAAAHAP//AQABAAAAAAAGAAkAAQABAAIAAAAGAP//AQABAAAAAAAFAAkAAQABAAIAAAAFAP//AQABAAAAAAAEAAkAAQABAAIAAAAEAP//AQABAAAAAAADAAkAAQABAAIAAAADAP//AQABAAAAAAACAAkAAQABAAIAAAACAP//AQABAAAAAAABAAkAAQABAAIAAAABAP//AQABAAAAAAAAAAkAAQABAAIAAAAAAP//AQABAAAAAAD//wkAAQAAAAIAAAD//wgAAQAAAAEAAAD//wcAAQAAAAEAAAD//wYAAQAAAAEAAAD//wUAAQAAAAEAAAD//wQAAQAAAAEAAAD//wMAAQAAAAEAAAD//wIAAQAAAAEAAAD//wEAAQAAAAEAAAD//wAAAQAAAAEAAAD/////AQAAAAAAAAA=")
 tile_set = ExtResource("1_lmcy8")
 
@@ -43,12 +45,13 @@ y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("2_skv3o")]
 position = Vector2(383, 371)
+sprite_frames = ExtResource("3_xo0vh")
 
 [node name="SequencePuzzle" type="Node2D" parent="OnTheGround" node_paths=PackedStringArray("steps")]
 y_sort_enabled = true
 position = Vector2(-1, 0)
 script = ExtResource("3_is08e")
-steps = [NodePath("Steps/SequencePuzzleStep1"), NodePath("Steps/SequencePuzzleStep2")]
+steps = [NodePath("Steps/SequencePuzzleStep1"), NodePath("Steps/SequencePuzzleStep2"), NodePath("Steps/SequencePuzzleStep3")]
 metadata/_custom_type_script = "uid://c68oh8dtr21ti"
 
 [node name="Objects" type="Node2D" parent="OnTheGround/SequencePuzzle"]
@@ -94,17 +97,26 @@ position = Vector2(506, 210)
 position = Vector2(593, 200)
 sprite_frames = ExtResource("12_bw1dm")
 
+[node name="HintSign3" parent="OnTheGround/SequencePuzzle/Signs" instance=ExtResource("11_23u7t")]
+position = Vector2(680, 197)
+sprite_frames = ExtResource("12_bw1dm")
+
 [node name="Steps" type="Node2D" parent="OnTheGround/SequencePuzzle"]
 
 [node name="SequencePuzzleStep1" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
 script = ExtResource("13_eusg3")
-sequence = [NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), NodePath("../../Objects/Blue")]
+sequence = [NodePath("../../Objects/Yellow"), NodePath("../../Objects/Blue"), NodePath("../../Objects/Yellow")]
 hint_sign = NodePath("../../Signs/HintSign1")
 
 [node name="SequencePuzzleStep2" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
 script = ExtResource("13_eusg3")
 sequence = [NodePath("../../Objects/Blue"), NodePath("../../Objects/Green"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green")]
 hint_sign = NodePath("../../Signs/HintSign2")
+
+[node name="SequencePuzzleStep3" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("13_eusg3")
+sequence = [NodePath("../../Objects/Pink"), NodePath("../../Objects/Blue"), NodePath("../../Objects/Purple"), NodePath("../../Objects/Green")]
+hint_sign = NodePath("../../Signs/HintSign3")
 
 [node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("14_rgxpi")]
 position = Vector2(861, 282)
