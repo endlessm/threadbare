@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=4 uid="uid://c524ecq3su2nb"]
+[gd_scene load_steps=39 format=4 uid="uid://c524ecq3su2nb"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_eujsg"]
 [ext_resource type="Texture2D" uid="uid://cr73ypncogqfa" path="res://Sprites/Untitled (1).png" id="2_0edkp"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="9_v0n5i"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="10_tbnoi"]
 [ext_resource type="Resource" uid="uid://dpv4wurvaamhb" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_collected.dialogue" id="11_f7iof"]
+[ext_resource type="SpriteFrames" uid="uid://cvckqgj4yftbt" path="res://scenes/quests/story_quests/neural-crisis/0_neural-crisis_intro/neural-crisis_intro_components/neural-crisis_dron.tres" id="11_lo7v5"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="12_bs0vj"]
 [ext_resource type="Resource" uid="uid://cggywn8t6s4le" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_stealth.dialogue" id="13_y0fxw"]
 [ext_resource type="AudioStream" uid="uid://cibtgkbykfptw" path="res://scenes/quests/story_quests/neural-crisis/1_neural-crisis_stealth/neural-crisis_stealth_components/minijuego1.mp3" id="16_5dbtc"]
@@ -8054,6 +8055,12 @@ _data = {
 }
 point_count = 4
 
+[sub_resource type="Curve2D" id="Curve2D_5pksg"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -922, -3)
+}
+point_count = 2
+
 [sub_resource type="Resource" id="Resource_idy4y"]
 script = ExtResource("10_tbnoi")
 name = ""
@@ -8065,7 +8072,7 @@ y_sort_enabled = true
 
 [node name="StealthGameLogic" type="Node" parent="."]
 script = ExtResource("1_eujsg")
-zoom = 1.1
+zoom = 0.5
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 position = Vector2(-8, 5)
@@ -8080,7 +8087,7 @@ tile_map_data = PackedByteArray("AAABAAAAAwAHAAIAADABAAEAAwAHAAEAADABAAIAAwAHAAA
 tile_set = SubResource("TileSet_jaa6l")
 
 [node name="Player" parent="." instance=ExtResource("3_bvm3m")]
-position = Vector2(1461, 1672)
+position = Vector2(216, 97.0001)
 scale = Vector2(0.21, 0.21)
 sprite_frames = ExtResource("6_cpfs4")
 
@@ -8097,7 +8104,6 @@ shape = SubResource("RectangleShape2D_cpfs4")
 
 [node name="CollisionShape2D" parent="Player/PlayerInteraction/InteractZone" index="0"]
 position = Vector2(23.8095, 257.143)
-scale = Vector2(1, 1)
 
 [node name="InteractMarker" parent="Player/PlayerInteraction" index="1"]
 position = Vector2(-42.8571, -114.286)
@@ -8201,8 +8207,8 @@ curve = SubResource("Curve2D_hejm3")
 
 [node name="Guard3" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
 position = Vector2(195, 757)
-scale = Vector2(0.1, 0.1)
-sprite_frames = ExtResource("8_tp4pg")
+scale = Vector2(0.045, 0.045)
+sprite_frames = ExtResource("11_lo7v5")
 alerted_sound_stream = ExtResource("9_nnjf3")
 alert_others_sound_stream = ExtResource("9_nnjf3")
 patrol_path = NodePath("../Guard3-PatrolPath")
@@ -8218,8 +8224,9 @@ position = Vector2(-125, -219.375)
 scale = Vector2(1.41693, 2.48621)
 
 [node name="AnimatedSprite2D" parent="EnemyGuards/Guard3" index="4"]
-sprite_frames = ExtResource("8_tp4pg")
+sprite_frames = ExtResource("11_lo7v5")
 animation = &"walk"
+autoplay = ""
 
 [node name="CollisionShape2D" parent="EnemyGuards/Guard3" index="5"]
 scale = Vector2(7.4788, 8.21135)
@@ -8468,7 +8475,7 @@ sprite_frames = ExtResource("8_tp4pg")
 alerted_sound_stream = ExtResource("9_nnjf3")
 alert_others_sound_stream = ExtResource("9_nnjf3")
 patrol_path = NodePath("../Guard9-PatrolPath")
-wait_time = 0.5
+wait_time = 2.0
 move_speed = 500.0
 detection_area_scale = 1.6
 
@@ -8480,8 +8487,8 @@ position = Vector2(-6.25038, 18.1241)
 scale = Vector2(3.65644, -2.57974)
 
 [node name="CollisionPolygon2D" parent="EnemyGuards/Guard9/DetectionArea" index="1"]
-position = Vector2(-943.75, -975.625)
-scale = Vector2(11.6732, 8.10108)
+position = Vector2(-943.832, -975.625)
+scale = Vector2(11.6669, 8.10108)
 one_way_collision_margin = 0.0
 
 [node name="AnimatedSprite2D" parent="EnemyGuards/Guard9" index="4"]
@@ -8508,6 +8515,54 @@ stream = ExtResource("9_nnjf3")
 [node name="Guard9-PatrolPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(870, 842)
 curve = SubResource("Curve2D_eti0j")
+
+[node name="Guard10" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
+position = Vector2(1820, 269)
+scale = Vector2(0.1, 0.1)
+sprite_frames = ExtResource("8_tp4pg")
+alerted_sound_stream = ExtResource("9_nnjf3")
+alert_others_sound_stream = ExtResource("9_nnjf3")
+patrol_path = NodePath("../Guard10-PatrolPath")
+wait_time = 0.5
+move_speed = 500.0
+detection_area_scale = 1.6
+
+[node name="DetectionArea" parent="EnemyGuards/Guard10" index="3"]
+scale = Vector2(1.6, 1.6)
+
+[node name="Light" parent="EnemyGuards/Guard10/DetectionArea" index="0"]
+position = Vector2(-6.25038, 18.1241)
+scale = Vector2(3.65644, -2.57974)
+
+[node name="CollisionPolygon2D" parent="EnemyGuards/Guard10/DetectionArea" index="1"]
+position = Vector2(-943.75, -975.625)
+scale = Vector2(11.6732, 8.10108)
+one_way_collision_margin = 0.0
+
+[node name="AnimatedSprite2D" parent="EnemyGuards/Guard10" index="4"]
+sprite_frames = ExtResource("8_tp4pg")
+animation = &"walk"
+
+[node name="CollisionShape2D" parent="EnemyGuards/Guard10" index="5"]
+scale = Vector2(7.4788, 8.21135)
+
+[node name="PlayerAwareness" parent="EnemyGuards/Guard10" index="6"]
+visible = true
+offset_left = -60.0005
+offset_top = -730.0
+offset_right = 63.9995
+offset_bottom = -606.0
+scale = Vector2(1.98901, 2.31076)
+
+[node name="AlertSound" parent="EnemyGuards/Guard10/Sounds" index="0"]
+stream = ExtResource("9_nnjf3")
+
+[node name="TorchHitSound" parent="EnemyGuards/Guard10/Sounds" index="3"]
+stream = ExtResource("9_nnjf3")
+
+[node name="Guard10-PatrolPath" type="Path2D" parent="EnemyGuards"]
+position = Vector2(1820, 269)
+curve = SubResource("Curve2D_5pksg")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
@@ -8681,3 +8736,4 @@ texture = ExtResource("18_3ykxo")
 [editable path="EnemyGuards/Guard7"]
 [editable path="EnemyGuards/Guard8"]
 [editable path="EnemyGuards/Guard9"]
+[editable path="EnemyGuards/Guard10"]
