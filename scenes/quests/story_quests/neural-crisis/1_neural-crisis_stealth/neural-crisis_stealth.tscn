@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=4 uid="uid://c524ecq3su2nb"]
+[gd_scene load_steps=37 format=4 uid="uid://c524ecq3su2nb"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_eujsg"]
 [ext_resource type="Texture2D" uid="uid://cr73ypncogqfa" path="res://Sprites/Untitled (1).png" id="2_0edkp"]
@@ -7998,7 +7998,7 @@ sources/3 = SubResource("TileSetAtlasSource_og21s")
 sources/4 = SubResource("TileSetAtlasSource_3ykxo")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cpfs4"]
-size = Vector2(26.1014, 33.1081)
+size = Vector2(18.1009, 21.6818)
 
 [sub_resource type="Curve2D" id="Curve2D_vnsq3"]
 _data = {
@@ -8011,6 +8011,48 @@ _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 488, -91, 0, 0, 0, 0, 480, 106, 0, 0, 0, 0, 356, 208, 0, 0, 0, 0, 239, 131, 0, 0, 0, 0, 166, 26, 0, 0, 0, 0, 169, -97, 0, 0, 0, 0, 353, -98, 0, 0, 0, 0, 488, -91)
 }
 point_count = 8
+
+[sub_resource type="Curve2D" id="Curve2D_3ykxo"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 226, -69, 0, 0, 0, 0, 184, -327, 0, 0, 0, 0, -23, -354, 0, 0, 0, 0, 102, 102, 0, 0, 0, 0, 0, 1)
+}
+point_count = 6
+
+[sub_resource type="Curve2D" id="Curve2D_lo7v5"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 313, -194, 0, 0, 0, 0, 148, -460, 0, 0, 0, 0, -1, 4)
+}
+point_count = 5
+
+[sub_resource type="Curve2D" id="Curve2D_75eyt"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -433)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_fs2eh"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 413)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_fq5sq"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -449)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_srgwb"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -44, -2, 0, 0, 0, 0, 59, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_eti0j"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 87.9999, 0.999939, 0, 0, 0, 0, 169, 34.9999, 0, 0, 0, 0, 2.99994, 44.9999)
+}
+point_count = 4
 
 [sub_resource type="Resource" id="Resource_idy4y"]
 script = ExtResource("10_tbnoi")
@@ -8038,8 +8080,8 @@ tile_map_data = PackedByteArray("AAABAAAAAwAHAAIAADABAAEAAwAHAAEAADABAAIAAwAHAAA
 tile_set = SubResource("TileSet_jaa6l")
 
 [node name="Player" parent="." instance=ExtResource("3_bvm3m")]
-position = Vector2(247, 346)
-scale = Vector2(0.14, 0.14)
+position = Vector2(1461, 1672)
+scale = Vector2(0.21, 0.21)
 sprite_frames = ExtResource("6_cpfs4")
 
 [node name="PlayerSprite" parent="Player" index="1"]
@@ -8048,13 +8090,14 @@ scale = Vector2(0.446429, 0.446429)
 sprite_frames = ExtResource("6_cpfs4")
 
 [node name="CollisionShape2D" parent="Player" index="2"]
-position = Vector2(-16.7294, 133.307)
+position = Vector2(0, 104.762)
 rotation = 1.57079
 scale = Vector2(22.6245, -8.34581)
 shape = SubResource("RectangleShape2D_cpfs4")
 
 [node name="CollisionShape2D" parent="Player/PlayerInteraction/InteractZone" index="0"]
-position = Vector2(-41.7859, 375)
+position = Vector2(23.8095, 257.143)
+scale = Vector2(1, 1)
 
 [node name="InteractMarker" parent="Player/PlayerInteraction" index="1"]
 position = Vector2(-42.8571, -114.286)
@@ -8156,12 +8199,322 @@ stream = ExtResource("9_nnjf3")
 position = Vector2(2126, 924)
 curve = SubResource("Curve2D_hejm3")
 
+[node name="Guard3" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
+position = Vector2(195, 757)
+scale = Vector2(0.1, 0.1)
+sprite_frames = ExtResource("8_tp4pg")
+alerted_sound_stream = ExtResource("9_nnjf3")
+alert_others_sound_stream = ExtResource("9_nnjf3")
+patrol_path = NodePath("../Guard3-PatrolPath")
+wait_time = 0.3
+move_speed = 1000.0
+detection_area_scale = 1.6
+
+[node name="DetectionArea" parent="EnemyGuards/Guard3" index="3"]
+scale = Vector2(1.6, 1.6)
+
+[node name="CollisionPolygon2D" parent="EnemyGuards/Guard3/DetectionArea" index="1"]
+position = Vector2(-125, -219.375)
+scale = Vector2(1.41693, 2.48621)
+
+[node name="AnimatedSprite2D" parent="EnemyGuards/Guard3" index="4"]
+sprite_frames = ExtResource("8_tp4pg")
+animation = &"walk"
+
+[node name="CollisionShape2D" parent="EnemyGuards/Guard3" index="5"]
+scale = Vector2(7.4788, 8.21135)
+
+[node name="PlayerAwareness" parent="EnemyGuards/Guard3" index="6"]
+visible = true
+offset_left = -60.0005
+offset_top = -730.0
+offset_right = 63.9995
+offset_bottom = -606.0
+scale = Vector2(1.98901, 2.31076)
+
+[node name="AlertSound" parent="EnemyGuards/Guard3/Sounds" index="0"]
+stream = ExtResource("9_nnjf3")
+
+[node name="TorchHitSound" parent="EnemyGuards/Guard3/Sounds" index="3"]
+stream = ExtResource("9_nnjf3")
+
+[node name="Guard3-PatrolPath" type="Path2D" parent="EnemyGuards"]
+position = Vector2(195, 757)
+curve = SubResource("Curve2D_3ykxo")
+
+[node name="Guard4" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
+position = Vector2(201, 1684)
+scale = Vector2(0.1, 0.1)
+sprite_frames = ExtResource("8_tp4pg")
+alerted_sound_stream = ExtResource("9_nnjf3")
+alert_others_sound_stream = ExtResource("9_nnjf3")
+patrol_path = NodePath("../Guard4-PatrolPath")
+wait_time = 0.3
+move_speed = 1000.0
+detection_area_scale = 1.6
+
+[node name="DetectionArea" parent="EnemyGuards/Guard4" index="3"]
+scale = Vector2(1.6, 1.6)
+
+[node name="CollisionPolygon2D" parent="EnemyGuards/Guard4/DetectionArea" index="1"]
+position = Vector2(-125, -219.375)
+scale = Vector2(1.41693, 2.48621)
+
+[node name="AnimatedSprite2D" parent="EnemyGuards/Guard4" index="4"]
+sprite_frames = ExtResource("8_tp4pg")
+animation = &"walk"
+
+[node name="CollisionShape2D" parent="EnemyGuards/Guard4" index="5"]
+scale = Vector2(7.4788, 8.21135)
+
+[node name="PlayerAwareness" parent="EnemyGuards/Guard4" index="6"]
+visible = true
+offset_left = -60.0005
+offset_top = -730.0
+offset_right = 63.9995
+offset_bottom = -606.0
+scale = Vector2(1.98901, 2.31076)
+
+[node name="AlertSound" parent="EnemyGuards/Guard4/Sounds" index="0"]
+stream = ExtResource("9_nnjf3")
+
+[node name="TorchHitSound" parent="EnemyGuards/Guard4/Sounds" index="3"]
+stream = ExtResource("9_nnjf3")
+
+[node name="Guard4-PatrolPath" type="Path2D" parent="EnemyGuards"]
+position = Vector2(201, 1684)
+curve = SubResource("Curve2D_lo7v5")
+
+[node name="Guard5" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
+position = Vector2(621, 1763)
+scale = Vector2(0.1, 0.1)
+sprite_frames = ExtResource("8_tp4pg")
+alerted_sound_stream = ExtResource("9_nnjf3")
+alert_others_sound_stream = ExtResource("9_nnjf3")
+patrol_path = NodePath("../Guard5-PatrolPath")
+wait_time = 0.1
+detection_area_scale = 1.6
+
+[node name="DetectionArea" parent="EnemyGuards/Guard5" index="3"]
+scale = Vector2(1.6, 1.6)
+
+[node name="CollisionPolygon2D" parent="EnemyGuards/Guard5/DetectionArea" index="1"]
+position = Vector2(-125, -219.375)
+scale = Vector2(1.41693, 2.48621)
+
+[node name="AnimatedSprite2D" parent="EnemyGuards/Guard5" index="4"]
+sprite_frames = ExtResource("8_tp4pg")
+animation = &"walk"
+
+[node name="CollisionShape2D" parent="EnemyGuards/Guard5" index="5"]
+scale = Vector2(7.4788, 8.21135)
+
+[node name="PlayerAwareness" parent="EnemyGuards/Guard5" index="6"]
+visible = true
+offset_left = -60.0005
+offset_top = -730.0
+offset_right = 63.9995
+offset_bottom = -606.0
+scale = Vector2(1.98901, 2.31076)
+
+[node name="AlertSound" parent="EnemyGuards/Guard5/Sounds" index="0"]
+stream = ExtResource("9_nnjf3")
+
+[node name="TorchHitSound" parent="EnemyGuards/Guard5/Sounds" index="3"]
+stream = ExtResource("9_nnjf3")
+
+[node name="Guard5-PatrolPath" type="Path2D" parent="EnemyGuards"]
+position = Vector2(621, 1763)
+curve = SubResource("Curve2D_75eyt")
+
+[node name="Guard6" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
+position = Vector2(881, 1384)
+scale = Vector2(0.1, 0.1)
+sprite_frames = ExtResource("8_tp4pg")
+alerted_sound_stream = ExtResource("9_nnjf3")
+alert_others_sound_stream = ExtResource("9_nnjf3")
+patrol_path = NodePath("../Guard6-PatrolPath")
+wait_time = 0.3
+move_speed = 300.0
+detection_area_scale = 1.6
+
+[node name="DetectionArea" parent="EnemyGuards/Guard6" index="3"]
+scale = Vector2(1.6, 1.6)
+
+[node name="CollisionPolygon2D" parent="EnemyGuards/Guard6/DetectionArea" index="1"]
+position = Vector2(-125, -219.375)
+scale = Vector2(1.41693, 2.48621)
+
+[node name="AnimatedSprite2D" parent="EnemyGuards/Guard6" index="4"]
+sprite_frames = ExtResource("8_tp4pg")
+animation = &"walk"
+
+[node name="CollisionShape2D" parent="EnemyGuards/Guard6" index="5"]
+scale = Vector2(7.4788, 8.21135)
+
+[node name="PlayerAwareness" parent="EnemyGuards/Guard6" index="6"]
+visible = true
+offset_left = -60.0005
+offset_top = -730.0
+offset_right = 63.9995
+offset_bottom = -606.0
+scale = Vector2(1.98901, 2.31076)
+
+[node name="AlertSound" parent="EnemyGuards/Guard6/Sounds" index="0"]
+stream = ExtResource("9_nnjf3")
+
+[node name="TorchHitSound" parent="EnemyGuards/Guard6/Sounds" index="3"]
+stream = ExtResource("9_nnjf3")
+
+[node name="Guard6-PatrolPath" type="Path2D" parent="EnemyGuards"]
+position = Vector2(881, 1384)
+curve = SubResource("Curve2D_fs2eh")
+
+[node name="Guard7" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
+position = Vector2(1122, 1760)
+scale = Vector2(0.1, 0.1)
+sprite_frames = ExtResource("8_tp4pg")
+alerted_sound_stream = ExtResource("9_nnjf3")
+alert_others_sound_stream = ExtResource("9_nnjf3")
+patrol_path = NodePath("../Guard7-PatrolPath")
+wait_time = 0.2
+move_speed = 500.0
+detection_area_scale = 1.6
+
+[node name="DetectionArea" parent="EnemyGuards/Guard7" index="3"]
+scale = Vector2(1.6, 1.6)
+
+[node name="CollisionPolygon2D" parent="EnemyGuards/Guard7/DetectionArea" index="1"]
+position = Vector2(-125, -219.375)
+scale = Vector2(1.41693, 2.48621)
+
+[node name="AnimatedSprite2D" parent="EnemyGuards/Guard7" index="4"]
+sprite_frames = ExtResource("8_tp4pg")
+animation = &"walk"
+
+[node name="CollisionShape2D" parent="EnemyGuards/Guard7" index="5"]
+scale = Vector2(7.4788, 8.21135)
+
+[node name="PlayerAwareness" parent="EnemyGuards/Guard7" index="6"]
+visible = true
+offset_left = -60.0005
+offset_top = -730.0
+offset_right = 63.9995
+offset_bottom = -606.0
+scale = Vector2(1.98901, 2.31076)
+
+[node name="AlertSound" parent="EnemyGuards/Guard7/Sounds" index="0"]
+stream = ExtResource("9_nnjf3")
+
+[node name="TorchHitSound" parent="EnemyGuards/Guard7/Sounds" index="3"]
+stream = ExtResource("9_nnjf3")
+
+[node name="Guard7-PatrolPath" type="Path2D" parent="EnemyGuards"]
+position = Vector2(1122, 1760)
+curve = SubResource("Curve2D_fq5sq")
+
+[node name="Guard8" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
+position = Vector2(1414, 1149)
+scale = Vector2(0.1, 0.1)
+sprite_frames = ExtResource("8_tp4pg")
+alerted_sound_stream = ExtResource("9_nnjf3")
+alert_others_sound_stream = ExtResource("9_nnjf3")
+patrol_path = NodePath("../Guard8-PatrolPath")
+wait_time = 0.2
+move_speed = 500.0
+detection_area_scale = 1.6
+
+[node name="DetectionArea" parent="EnemyGuards/Guard8" index="3"]
+scale = Vector2(1.6, 1.6)
+
+[node name="Light" parent="EnemyGuards/Guard8/DetectionArea" index="0"]
+position = Vector2(-6.25038, 18.1241)
+scale = Vector2(1.70724, 1.67088)
+
+[node name="CollisionPolygon2D" parent="EnemyGuards/Guard8/DetectionArea" index="1"]
+position = Vector2(-318.75, -644.376)
+scale = Vector2(5.12962, 5.4639)
+one_way_collision_margin = 0.0
+
+[node name="AnimatedSprite2D" parent="EnemyGuards/Guard8" index="4"]
+sprite_frames = ExtResource("8_tp4pg")
+animation = &"walk"
+
+[node name="CollisionShape2D" parent="EnemyGuards/Guard8" index="5"]
+scale = Vector2(7.4788, 8.21135)
+
+[node name="PlayerAwareness" parent="EnemyGuards/Guard8" index="6"]
+visible = true
+offset_left = -60.0005
+offset_top = -730.0
+offset_right = 63.9995
+offset_bottom = -606.0
+scale = Vector2(1.98901, 2.31076)
+
+[node name="AlertSound" parent="EnemyGuards/Guard8/Sounds" index="0"]
+stream = ExtResource("9_nnjf3")
+
+[node name="TorchHitSound" parent="EnemyGuards/Guard8/Sounds" index="3"]
+stream = ExtResource("9_nnjf3")
+
+[node name="Guard8-PatrolPath" type="Path2D" parent="EnemyGuards"]
+position = Vector2(1458, 1151)
+curve = SubResource("Curve2D_srgwb")
+
+[node name="Guard9" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("6_fg25g")]
+position = Vector2(870, 842)
+scale = Vector2(0.1, 0.1)
+sprite_frames = ExtResource("8_tp4pg")
+alerted_sound_stream = ExtResource("9_nnjf3")
+alert_others_sound_stream = ExtResource("9_nnjf3")
+patrol_path = NodePath("../Guard9-PatrolPath")
+wait_time = 0.5
+move_speed = 500.0
+detection_area_scale = 1.6
+
+[node name="DetectionArea" parent="EnemyGuards/Guard9" index="3"]
+scale = Vector2(1.6, 1.6)
+
+[node name="Light" parent="EnemyGuards/Guard9/DetectionArea" index="0"]
+position = Vector2(-6.25038, 18.1241)
+scale = Vector2(3.65644, -2.57974)
+
+[node name="CollisionPolygon2D" parent="EnemyGuards/Guard9/DetectionArea" index="1"]
+position = Vector2(-943.75, -975.625)
+scale = Vector2(11.6732, 8.10108)
+one_way_collision_margin = 0.0
+
+[node name="AnimatedSprite2D" parent="EnemyGuards/Guard9" index="4"]
+sprite_frames = ExtResource("8_tp4pg")
+animation = &"walk"
+
+[node name="CollisionShape2D" parent="EnemyGuards/Guard9" index="5"]
+scale = Vector2(7.4788, 8.21135)
+
+[node name="PlayerAwareness" parent="EnemyGuards/Guard9" index="6"]
+visible = true
+offset_left = -60.0005
+offset_top = -730.0
+offset_right = 63.9995
+offset_bottom = -606.0
+scale = Vector2(1.98901, 2.31076)
+
+[node name="AlertSound" parent="EnemyGuards/Guard9/Sounds" index="0"]
+stream = ExtResource("9_nnjf3")
+
+[node name="TorchHitSound" parent="EnemyGuards/Guard9/Sounds" index="3"]
+stream = ExtResource("9_nnjf3")
+
+[node name="Guard9-PatrolPath" type="Path2D" parent="EnemyGuards"]
+position = Vector2(870, 842)
+curve = SubResource("Curve2D_eti0j")
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource("8_gxd2f")]
 
 [node name="CollectibleItem" parent="." instance=ExtResource("9_v0n5i")]
-position = Vector2(2335, 955)
+position = Vector2(2362, 934)
 next_scene = "uid://thwcu5akkqp5"
 item = SubResource("Resource_idy4y")
 collected_dialogue = ExtResource("11_f7iof")
@@ -8321,3 +8674,10 @@ texture = ExtResource("18_3ykxo")
 [editable path="Player"]
 [editable path="EnemyGuards/Guard1-GoingBackAndForth"]
 [editable path="EnemyGuards/Guard2-RunningInCircles"]
+[editable path="EnemyGuards/Guard3"]
+[editable path="EnemyGuards/Guard4"]
+[editable path="EnemyGuards/Guard5"]
+[editable path="EnemyGuards/Guard6"]
+[editable path="EnemyGuards/Guard7"]
+[editable path="EnemyGuards/Guard8"]
+[editable path="EnemyGuards/Guard9"]
