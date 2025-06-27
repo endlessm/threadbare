@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://ijx5sg631jiu"]
+[gd_scene load_steps=19 format=4 uid="uid://ijx5sg631jiu"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_p5rqr"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="3_w305a"]
@@ -15,13 +15,12 @@
 [ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="28_o128v"]
 [ext_resource type="Texture2D" uid="uid://ckwsauhbhlod6" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Arrow_Down_Key_Dark.png" id="29_nujdn"]
 [ext_resource type="Texture2D" uid="uid://bytssd0mbo28u" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Arrow_Up_Key_Dark.png" id="30_hgkl6"]
-[ext_resource type="Texture2D" uid="uid://p8kty3uxifxu" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Space_Key_Dark.png" id="31_gxqy7"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="32_odbi7"]
 [ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="33_oi47n"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="34_ppvk0"]
-[ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/shared_components/sprite_frames/storyweaver_blue.tres" id="35_aj0hd"]
 
 [node name="Intro" type="Node2D"]
+y_sort_enabled = true
 texture_filter = 1
 
 [node name="TileMapLayers" type="Node2D" parent="."]
@@ -52,9 +51,7 @@ tile_map_data = PackedByteArray("AAAIABYAAgABAAIAAAAIABUAAgABAAAAAAAJABYAAgABAAI
 tile_set = ExtResource("1_p5rqr")
 
 [node name="Player" parent="." instance=ExtResource("34_ppvk0")]
-position = Vector2(520, 1176)
-player_name = "StoryWeaver"
-sprite_frames = ExtResource("35_aj0hd")
+position = Vector2(504, 1148)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(2, 2)
@@ -62,8 +59,6 @@ limit_left = 32
 limit_top = 32
 limit_right = 2272
 limit_bottom = 1504
-position_smoothing_enabled = true
-editor_draw_limits = true
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
@@ -111,27 +106,6 @@ texture = ExtResource("30_hgkl6")
 script = ExtResource("28_o128v")
 action_name = &"ui_up"
 
-[node name="InteractionInputHint" type="Control" parent="ScreenOverlay"]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 255.0
-offset_top = 869.0
-offset_right = 255.0
-offset_bottom = 869.0
-scale = Vector2(2, 2)
-size_flags_horizontal = 8
-size_flags_vertical = 8
-
-[node name="InteractInput" type="TextureRect" parent="ScreenOverlay/InteractionInputHint"]
-layout_mode = 0
-offset_left = 137.0
-offset_top = -10.5
-offset_right = 237.0
-offset_bottom = 89.5
-texture = ExtResource("31_gxqy7")
-script = ExtResource("28_o128v")
-action_name = &"ui_accept"
-
 [node name="HUD" parent="." instance=ExtResource("32_odbi7")]
 unique_name_in_owner = true
 
@@ -162,6 +136,7 @@ dialogue = ExtResource("4_qjy8s")
 position = Vector2(520, 1176)
 
 [node name="Buildings" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="House_1" parent="Buildings" instance=ExtResource("11_4gmpn")]
 position = Vector2(664, 800)
@@ -182,6 +157,7 @@ position = Vector2(584, 640)
 position = Vector2(904, 1072)
 
 [node name="Trees" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="Tree" parent="Trees" instance=ExtResource("15_78vnf")]
 position = Vector2(48, 48)
@@ -876,6 +852,7 @@ position = Vector2(1984, 1056)
 scale = Vector2(0.968402, 0.88489)
 
 [node name="Bushs" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="Bush" parent="Bushs" instance=ExtResource("16_gnmtp")]
 position = Vector2(720, 816)
@@ -977,6 +954,7 @@ position = Vector2(1504, 1288)
 position = Vector2(1544, 1144)
 
 [node name="Rocks" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="Rock" parent="Rocks" instance=ExtResource("6_gs4jj")]
 position = Vector2(608, 1056)
@@ -1018,6 +996,7 @@ position = Vector2(1728, 776)
 position = Vector2(416, 1368)
 
 [node name="Fire" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="VisibleTeleporter" parent="Fire" instance=ExtResource("18_gnmtp")]
 position = Vector2(1032, 784)
@@ -1041,6 +1020,7 @@ position = Vector2(992, 528)
 position = Vector2(1576, 888)
 
 [node name="Mushrooms" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="HidingMushroom" parent="Mushrooms" instance=ExtResource("8_kfw15")]
 position = Vector2(1048, 864)
