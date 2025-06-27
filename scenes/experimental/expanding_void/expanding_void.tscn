@@ -58,12 +58,16 @@ tile_set = ExtResource("1_qtk3e")
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("2_1jnxl")]
-position = Vector2(2619, 1253)
+position = Vector2(2639, 1271)
 player_name = "StoryWeaver"
 sprite_frames = ExtResource("3_63syd")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
 zoom = Vector2(2, 2)
+limit_left = -128
+limit_top = -128
+limit_right = 3199
+limit_bottom = 1472
 
 [node name="DestroyableNodes" type="Node2D" parent="OnTheGround"]
 y_sort_enabled = true
@@ -279,12 +283,13 @@ scale = Vector2(0.953703, 0.920703)
 [node name="FloorEater" type="Node2D" parent="." node_paths=PackedStringArray("layers_to_destroy", "void_layer", "starting_point", "player")]
 script = ExtResource("12_1wnhw")
 layers_to_destroy = [NodePath("../TileMapLayers/Water"), NodePath("../TileMapLayers/Grass"), NodePath("../TileMapLayers/Cliffs"), NodePath("../TileMapLayers/Grass2"), NodePath("../TileMapLayers/Cliffs2"), NodePath("../TileMapLayers/Foam"), NodePath("../TileMapLayers/Foam2")]
+directions_to_destroy = Array[int]([8, 12])
 void_layer = NodePath("../TileMapLayers/Void")
 starting_point = NodePath("../Marker2D")
 player = NodePath("../OnTheGround/Player")
 
 [node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(3104, 1376)
+position = Vector2(3242, 1504)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
