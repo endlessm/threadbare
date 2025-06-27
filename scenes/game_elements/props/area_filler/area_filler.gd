@@ -30,7 +30,7 @@ extends Node
 
 ## Minimum separation between placed scenes. The maximum separation is twice
 ## this value.
-@export_range(16.0, 128.0, 1.0) var minimum_separation: float = 64.0
+@export_range(16.0, 256.0, 1.0, "suffix:px", "or_more") var minimum_separation: float = 64.0
 
 @export_tool_button("Refill") var fill_button: Callable = fill
 
