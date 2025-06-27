@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=3 uid="uid://dp5wc4xuxruon"]
+
+[ext_resource type="Script" uid="uid://c1fydd8vlq6mx" path="res://scenes/game_elements/characters/enemies/guard_new/components/guard_new.gd" id="1_40xag"]
+[ext_resource type="SpriteFrames" uid="uid://xolbc1j4a62f" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_blue.tres" id="1_x211u"]
+[ext_resource type="Script" uid="uid://csqb1r1pasyi6" path="res://scenes/game_logic/can_walk_along_path.gd" id="3_a8qh0"]
+[ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="3_l4ps3"]
+[ext_resource type="Script" uid="uid://cf66tvbhbaxd0" path="res://scenes/game_logic/can_follow_target.gd" id="6_xja8d"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pvecv"]
+height = 58.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_y3plx"]
+light_mode = 1
+
+[node name="GuardNew" type="CharacterBody2D" node_paths=PackedStringArray("animated_sprite_2d")]
+collision_layer = 0
+collision_mask = 528
+script = ExtResource("1_40xag")
+character_name = "StoryVore"
+animated_sprite_2d = NodePath("AnimatedSprite2D")
+metadata/_custom_type_script = "uid://mwgpxjf6tdx4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_pvecv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -29)
+sprite_frames = ExtResource("1_x211u")
+animation = &"alerted"
+frame = 2
+frame_progress = 0.881611
+
+[node name="DetectionArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -41)
+collision_layer = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea"]
+position = Vector2(-22, -136)
+polygon = PackedVector2Array(216, 78, 191, 79, 81, 121, 71, 131, 71, 138, 81, 147, 189, 198, 212, 201, 245, 175, 246, 103)
+
+[node name="PlayerAwareness" type="TextureProgressBar" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+z_index = 1
+material = SubResource("CanvasItemMaterial_y3plx")
+offset_left = -62.0
+offset_top = -172.0
+offset_right = 62.0
+offset_bottom = -48.0
+pivot_offset = Vector2(62, 102)
+fill_mode = 3
+nine_patch_stretch = true
+texture_under = ExtResource("3_l4ps3")
+texture_progress = ExtResource("3_l4ps3")
+tint_under = Color(1, 1, 1, 0.392157)
+tint_progress = Color(1, 1, 0, 1)
+
+[node name="CanWalkAlongPath" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_a8qh0")
+metadata/_custom_type_script = "uid://csqb1r1pasyi6"
+
+[node name="CanFollowTarget" type="Node2D" parent="."]
+unique_name_in_owner = true
+process_mode = 4
+script = ExtResource("6_xja8d")
+walk_speed = 200.0
+target_reached_tolerance = null
+metadata/_custom_type_script = "uid://cf66tvbhbaxd0"
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
