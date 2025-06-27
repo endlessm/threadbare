@@ -1,0 +1,56 @@
+[gd_scene load_steps=9 format=3 uid="uid://1lvh4xnmreyj"]
+
+[ext_resource type="Texture2D" uid="uid://hdb1kultfao0" path="res://Assets/Sprites/Player/giro de orbe.png" id="1_kokvv"]
+[ext_resource type="Script" uid="uid://jrl4x1k0dg18" path="res://Scenes/Player/bala.gd" id="1_o4mif"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o4mif"]
+atlas = ExtResource("1_kokvv")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oyhrq"]
+atlas = ExtResource("1_kokvv")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ldi31"]
+atlas = ExtResource("1_kokvv")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_stfhm"]
+atlas = ExtResource("1_kokvv")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3hqbw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o4mif")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oyhrq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ldi31")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_stfhm")
+}],
+"loop": true,
+"name": &"Orbe",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g1n4i"]
+
+[node name="StaticBody2D" type="StaticBody2D"]
+script = ExtResource("1_o4mif")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_3hqbw")
+animation = &"Orbe"
+autoplay = "Orbe"
+frame_progress = 0.236441
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+scale = Vector2(0.8, 0.8)
+shape = SubResource("CircleShape2D_g1n4i")
