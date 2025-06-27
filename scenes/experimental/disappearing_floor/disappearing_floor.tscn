@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://cxeynsrjbysso"]
+[gd_scene load_steps=11 format=4 uid="uid://cxeynsrjbysso"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_74ep7"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_q6do6"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="6_lcx5a"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="7_6vm70"]
 [ext_resource type="Script" uid="uid://oe7qlm2sbwyp" path="res://scenes/experimental/disappearing_floor/floor_eater.gd" id="8_6vm70"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="9_dnqx4"]
 
 [sub_resource type="Resource" id="Resource_5om5c"]
 script = ExtResource("7_6vm70")
@@ -51,7 +52,7 @@ targets = [NodePath("../Door1")]
 
 [node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("6_lcx5a")]
 position = Vector2(3558, 1785)
-next_scene = "uid://cufkthb25mpxy"
+next_scene = "uid://bm4ewr8p48x0i"
 item = SubResource("Resource_5om5c")
 
 [node name="FloorEaterStartPoint" type="Marker2D" parent="OnTheGround"]
@@ -66,5 +67,7 @@ player = NodePath("../OnTheGround/Player")
 speed = 0.2
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="." instance=ExtResource("9_dnqx4")]
 
 [connection signal="toggled" from="OnTheGround/Lever1" to="FloorEater" method="start"]
