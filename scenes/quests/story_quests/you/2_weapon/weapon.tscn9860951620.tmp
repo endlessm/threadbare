@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://dyaqkgw4w7w6u" path="res://scenes/quests/story_quests/you/0_intro/intro_components/Campfire.tscn" id="10_6ey0n"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="10_rcv3t"]
 [ext_resource type="Script" uid="uid://dfs2mfxhy4hmg" path="res://scenes/quests/story_quests/you/2_weapon/canvas_modulate.gd" id="12_vkvme"]
-[ext_resource type="AudioStream" uid="uid://ceuhy1nlopb8p" path="res://scenes/quests/story_quests/you/2_weapon/Sound/thunder.mp3" id="13_2u4mc"]
+[ext_resource type="AudioStream" uid="uid://j23v37r3e0td" path="res://scenes/quests/story_quests/you/2_weapon/Sound/thunder.mp3" id="13_2u4mc"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="14_ttfgd"]
 
 [node name="Combat" type="Node2D"]
@@ -19,7 +19,6 @@ y_sort_enabled = true
 
 [node name="FillGameLogic" type="Node" parent="."]
 script = ExtResource("5_4win1")
-barrels_to_win = null
 intro_dialogue = ExtResource("2_3qn31")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
@@ -387,17 +386,17 @@ color = Color(0.19921, 0.428185, 1, 0.701961)
 energy = 2.68
 texture = ExtResource("6_uwkgt")
 
-[node name="ThrowingNPC1" parent="OnTheGround" instance=ExtResource("6_kcrun")]
+[node name="ThrowingNPC" parent="OnTheGround" instance=ExtResource("6_kcrun")]
 position = Vector2(1713, 217)
 
-[node name="PointLight2D" type="PointLight2D" parent="OnTheGround/ThrowingNPC1"]
+[node name="PointLight2D" type="PointLight2D" parent="OnTheGround/ThrowingNPC"]
 position = Vector2(-1.90735e-06, -11)
 scale = Vector2(0.5, 0.5)
 color = Color(0.810504, 0.280123, 0.230883, 0.701961)
 energy = 2.98
 texture = ExtResource("6_uwkgt")
 
-[node name="Target" parent="OnTheGround/ThrowingNPC1" instance=ExtResource("6_7ke0q")]
+[node name="Target" parent="OnTheGround/ThrowingNPC" instance=ExtResource("6_7ke0q")]
 position = Vector2(18, -7)
 sprite_frames = ExtResource("7_71dv2")
 label = ""
@@ -484,4 +483,3 @@ script = ExtResource("12_vkvme")
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="CanvasModulate"]
 position = Vector2(-756, 83)
 stream = ExtResource("13_2u4mc")
-autoplay = true
