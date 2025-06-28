@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=4 uid="uid://df32ccn26jmvh"]
+[gd_scene load_steps=8 format=4 uid="uid://df32ccn26jmvh"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_8ek30"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_vdhiw"]
 [ext_resource type="PackedScene" uid="uid://wq6u7rc1ckn2" path="res://scenes/quests/story_quests/spacerage/pruebas/arma_1.tscn" id="3_isidm"]
-[ext_resource type="PackedScene" path="res://scenes/quests/story_quests/spacerage/pruebas/julian.tscn" id="3_mufg6"]
+[ext_resource type="PackedScene" uid="uid://bcf2fpj00digk" path="res://scenes/quests/story_quests/spacerage/pruebas/julian.tscn" id="3_mufg6"]
+[ext_resource type="Texture2D" uid="uid://xpc7va0rbwbw" path="res://scenes/game_elements/characters/player/components/vida vacia.png" id="5_isidm"]
+[ext_resource type="Texture2D" uid="uid://bsh0e1wybn52n" path="res://scenes/game_elements/characters/player/components/vida llena.png" id="6_8ek30"]
 [ext_resource type="PackedScene" uid="uid://by4t4oy1osh23" path="res://scenes/quests/story_quests/spacerage/pruebas/peon.tscn" id="8_8ek30"]
 
 [node name="Node2D" type="Node2D"]
@@ -26,7 +28,7 @@ tile_set = ExtResource("1_8ek30")
 [node name="Player" parent="." instance=ExtResource("2_vdhiw")]
 light_mask = 7
 visibility_layer = 7
-position = Vector2(133, 469)
+position = Vector2(137, 493)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 process_mode = 3
@@ -37,10 +39,21 @@ position_smoothing_enabled = true
 editor_draw_limits = true
 
 [node name="julian" parent="Player" instance=ExtResource("3_mufg6")]
-position = Vector2(-133, -470)
+position = Vector2(-134, -468)
 
 [node name="arma_1" parent="Player" instance=ExtResource("3_isidm")]
 position = Vector2(19, -8)
+
+[node name="vida_barra" type="TextureProgressBar" parent="Player"]
+offset_left = -39.0
+offset_top = -88.0
+offset_right = 33.0
+offset_bottom = -64.0
+scale = Vector2(2.785, 2.785)
+max_value = 20.0
+value = 20.0
+texture_under = ExtResource("5_isidm")
+texture_progress = ExtResource("6_8ek30")
 
 [node name="peon" parent="." instance=ExtResource("8_8ek30")]
 position = Vector2(894, 450)

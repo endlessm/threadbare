@@ -9,10 +9,14 @@ var direccion = Vector2.ZERO
 @onready var detector_col = $detector_de_daño/CollisionShape2D
 
 func _ready():
+
 	colision.disabled = true
 	detector_col.disabled = true
 
-	detector.connect("body_entered", Callable(self, "_on_body_entered"))
+
+	if detector:
+		detector.connect("body_entered", Callable(self, "_on_body_entered"))
+
 
 	await get_tree().create_timer(0.1).timeout
 	colision.disabled = false
@@ -27,6 +31,8 @@ func _physics_process(delta):
 		queue_free()
 
 func _on_body_entered(body):
+	print("Bala tocó a: ", body.name)
+	print("¿Tiene recibir_daño?: ", body.has_method("recibir_daño"))
 	if body.has_method("recibir_daño"):
 		body.recibir_daño(daño)
 		queue_free()
