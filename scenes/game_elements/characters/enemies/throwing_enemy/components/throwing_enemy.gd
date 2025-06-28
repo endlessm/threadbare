@@ -54,7 +54,7 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 
 ## The speed of the projectile initial impulse and the projectile bouncing impulse.
 @export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s")
-var projectile_speed: float = 30.0
+var projectile_speed: float = 80.0
 
 ## The life span of the projectile.
 @export_range(0., 10., 0.1, "or_greater", "suffix:s") var projectile_duration: float = 5.0

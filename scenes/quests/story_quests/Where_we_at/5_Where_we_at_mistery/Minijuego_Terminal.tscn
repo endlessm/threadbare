@@ -1,0 +1,117 @@
+[gd_scene load_steps=5 format=3 uid="uid://5q2edg7ul0r0"]
+
+[ext_resource type="Script" uid="uid://biv0thqxbtquv" path="res://scenes/quests/story_quests/Where_we_at/5_Where_we_at_mistery/minijuego_terminal.gd" id="1_8k7fs"]
+[ext_resource type="Texture2D" uid="uid://b48qkq734dpn8" path="res://assets/minijuego_terminal/terminal_background.png" id="1_m6tjk"]
+[ext_resource type="Texture2D" uid="uid://cjjc384ef0h7o" path="res://assets/minijuego_terminal/icon_folder.png" id="3_xxggw"]
+[ext_resource type="Texture2D" uid="uid://iu8bckk3w0j8" path="res://assets/minijuego_terminal/icon_file.png" id="4_gg1rw"]
+
+[node name="MinijuegoTerminal" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 4.0
+offset_right = -7.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8k7fs")
+
+[node name="PanelFondo" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 338.0
+offset_top = 37.0
+offset_right = 850.0
+offset_bottom = 421.0
+texture = ExtResource("1_m6tjk")
+
+[node name="CarpetaBtn1" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 374.0
+offset_top = 79.0
+offset_right = 438.0
+offset_bottom = 143.0
+texture_normal = ExtResource("3_xxggw")
+
+[node name="CarpetaBtn2" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 491.0
+offset_top = 80.0
+offset_right = 555.0
+offset_bottom = 144.0
+texture_normal = ExtResource("4_gg1rw")
+
+[node name="MostrarTexto" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 182.0
+offset_top = 137.0
+offset_right = 222.0
+offset_bottom = 177.0
+
+[node name="EntradaComando" type="LineEdit" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 208.0
+offset_top = 126.0
+offset_right = 276.563
+offset_bottom = 157.0
+
+[node name="PuzzleContainer" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 182.0
+offset_top = 340.0
+offset_right = 336.0
+offset_bottom = 477.0
+
+[node name="InstruccionLabel" type="Label" parent="PuzzleContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Bloque_sudo" type="TextureRect" parent="PuzzleContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Bloque_access" type="TextureRect" parent="PuzzleContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Bloque_root" type="TextureRect" parent="PuzzleContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Slot1" type="TextureButton" parent="PuzzleContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Slot2" type="TextureButton" parent="PuzzleContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Slot3" type="TextureButton" parent="PuzzleContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BotonVerificar" type="Button" parent="PuzzleContainer"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="ResultadoLabel" type="Label" parent="PuzzleContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[connection signal="pressed" from="CarpetaBtn1" to="." method="_on_texture_button_pressed"]
+[connection signal="pressed" from="CarpetaBtn2" to="." method="_on_texture_button_2_pressed"]
+[connection signal="text_submitted" from="EntradaComando" to="." method="_on_entrada_comando_text_submitted"]
+[connection signal="pressed" from="PuzzleContainer/BotonVerificar" to="." method="_on_boton_verificar_pressed"]
