@@ -5,6 +5,15 @@ class_name Player
 extends CharacterBody2D
 signal mode_changed(mode: Mode)
 
+@export var vida_max := 20
+var vida: int
+
+
+
+
+@onready var barra_vida = $vida_barra
+
+
 ## Controls how the player can interact with the world around them.
 enum Mode {
 	## Player can explore the world, interact with items and NPCs, but is not
@@ -109,7 +118,9 @@ func _get_configuration_warnings() -> PackedStringArray:
 func _ready() -> void:
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
-	
+	vida = vida_max
+	barra_vida.max_value = vida_max
+	barra_vida.value = vida
 	
 
 func _unhandled_input(_event: InputEvent) -> void:
@@ -175,3 +186,17 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	if not is_node_ready():
 		await ready
 	_walk_sound.stream = walk_sound_stream
+	
+func recibir_daño(cantidad):
+	vida -= cantidad
+	vida = clamp(vida, 0, vida_max)
+	barra_vida.value = vida
+	print("Jugador recibió ", cantidad, " de daño. Le queda ", vida)
+
+	if vida <= 0:
+		print("Jugador murió")
+		queue_free()  
+
+	
+	
+	
