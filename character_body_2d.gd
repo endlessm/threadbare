@@ -7,7 +7,7 @@ extends CharacterBody2D
 @export var vida_max = 10
 @export var vida = 10
 @export var bala_escena = preload("res://scenes/quests/story_quests/spacerage/pruebas/bala_enemiga_peon.tscn")
-@export var canIshoot = 1
+@export var canIshoot = 0
 
 func _ready():
 	tiempo_peon_bala.timeout.connect(_disparar)

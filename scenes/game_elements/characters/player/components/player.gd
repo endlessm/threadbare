@@ -9,9 +9,7 @@ signal mode_changed(mode: Mode)
 var vida: int
 
 
-
-
-@onready var barra_vida = $vida_barra
+@onready var barra_vida = $julian/vida_barra
 
 
 ## Controls how the player can interact with the world around them.
