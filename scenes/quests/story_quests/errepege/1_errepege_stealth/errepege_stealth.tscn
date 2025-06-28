@@ -1,9 +1,10 @@
-[gd_scene load_steps=18 format=4 uid="uid://dg7ou152hcr5y"]
+[gd_scene load_steps=19 format=4 uid="uid://dg7ou152hcr5y"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_0q3j5"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_sw6ys"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_c4pe5"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="4_e1f5i"]
+[ext_resource type="SpriteFrames" uid="uid://bcrujtl2qe5w5" path="res://scenes/quests/story_quests/errepege/errepege_player_components/errepege_player.tres" id="4_f3yxj"]
 [ext_resource type="SpriteFrames" uid="uid://bh6kbbfqwyygh" path="res://scenes/quests/story_quests/errepege/1_errepege_stealth/errepege_stealth_components/errepege_guard_enemy.tres" id="5_40kab"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="5_ix7du"]
 [ext_resource type="Resource" uid="uid://cppk2qynt485b" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_checkpoint.dialogue" id="6_vqv3j"]
@@ -16,7 +17,7 @@
 
 [sub_resource type="Curve2D" id="Curve2D_vnsq3"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -4629.33, 278.319, 0, 0, 0, 0, -550.666, 275.484)
+"points": PackedVector2Array(0, 0, 0, 0, -4629.33, 278.319, 0, 0, 0, 0, -1110.67, 281.154)
 }
 point_count = 2
 
@@ -61,6 +62,7 @@ tile_set = ExtResource("2_sw6ys")
 [node name="Player" parent="." instance=ExtResource("3_c4pe5")]
 position = Vector2(131, 463)
 scale = Vector2(2, 2)
+sprite_frames = ExtResource("4_f3yxj")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 process_mode = 3
@@ -76,7 +78,6 @@ y_sort_enabled = true
 
 [node name="Guard1-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("4_e1f5i")]
 position = Vector2(526, 470)
-scale = Vector2(2, 2)
 sprite_frames = ExtResource("5_40kab")
 patrol_path = NodePath("../Guard1-PatrolPath")
 move_speed = 200.0
@@ -89,7 +90,7 @@ curve = SubResource("Curve2D_vnsq3")
 
 [node name="Guard2-RunningInCircles" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("4_e1f5i")]
 position = Vector2(2435, 382)
-scale = Vector2(2, 2)
+scale = Vector2(1.5, 1.5)
 sprite_frames = ExtResource("5_40kab")
 patrol_path = NodePath("../Guard2-RunningPath")
 wait_time = 0.3
@@ -125,4 +126,5 @@ collected_dialogue = ExtResource("10_06jbt")
 [node name="Cinematic" type="Node2D" parent="."]
 script = ExtResource("11_jxoif")
 dialogue = ExtResource("12_t8c6v")
+next_scene = "uid://d0v6d4reibob0"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
