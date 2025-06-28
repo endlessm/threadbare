@@ -1,0 +1,55 @@
+[gd_scene load_steps=11 format=3 uid="uid://cg1hiqgbwsapn"]
+
+[ext_resource type="Texture2D" uid="uid://5uv7knvfmvwf" path="res://KILLAWAR_recursos/sprites/puas de madera1.png" id="2_ngtlg"]
+[ext_resource type="Texture2D" uid="uid://l1kkwhl47qjx" path="res://KILLAWAR_recursos/sprites/puas de madera2.png" id="3_442bc"]
+[ext_resource type="Texture2D" uid="uid://cmlkmvb60yoqo" path="res://KILLAWAR_recursos/sprites/puas de madera3.png" id="4_wphpb"]
+[ext_resource type="Texture2D" uid="uid://b7uaix0u42h6" path="res://KILLAWAR_recursos/sprites/puas de madera4.png" id="5_jira4"]
+[ext_resource type="Texture2D" uid="uid://ca6cei7p4nc2k" path="res://KILLAWAR_recursos/sprites/puas de madera5.png" id="6_ixjmt"]
+[ext_resource type="Texture2D" uid="uid://dy0d65xl7dnyh" path="res://KILLAWAR_recursos/sprites/puas de madera6.png" id="7_k5878"]
+[ext_resource type="PackedScene" uid="uid://crniss7w6hhvk" path="res://KILLAWAR_escenas/zona_de_muerte.tscn" id="8_bewap"]
+[ext_resource type="Texture2D" uid="uid://b4ay0qwd0lpuv" path="res://KILLAWAR_recursos/sprites/puas de madera7.png" id="8_p6y83"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ngtlg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ngtlg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_442bc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_wphpb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_jira4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ixjmt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_k5878")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_p6y83")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_442bc"]
+size = Vector2(16, 8.5)
+
+[node name="enemigo_puas" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ngtlg")
+autoplay = "default"
+frame_progress = 0.735412
+
+[node name="zona_de_muerte" parent="." instance=ExtResource("8_bewap")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="zona_de_muerte"]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_442bc")

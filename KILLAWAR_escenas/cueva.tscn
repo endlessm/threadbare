@@ -1,0 +1,55 @@
+[gd_scene load_steps=10 format=3 uid="uid://cnnkow0koxipe"]
+
+[ext_resource type="Script" uid="uid://c1m7hdsoop3x0" path="res://KILLAWAR_codigo/cueva.gd" id="1_2ujqy"]
+[ext_resource type="Texture2D" uid="uid://dhqbdwqcjg20" path="res://KILLAWAR_recursos/sprites/ENTRADA CUEVA1.png" id="2_5a8tp"]
+[ext_resource type="Texture2D" uid="uid://q635fau88fph" path="res://KILLAWAR_recursos/sprites/ENTRADA CUEVA2.png" id="3_bac4q"]
+[ext_resource type="Texture2D" uid="uid://cpswmymyhlbcg" path="res://KILLAWAR_recursos/sprites/ENTRADA CUEVA3.png" id="4_gshy0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nv1e4"]
+atlas = ExtResource("2_5a8tp")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ugx75"]
+atlas = ExtResource("3_bac4q")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l88dx"]
+atlas = ExtResource("4_gshy0")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w2xby"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nv1e4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ugx75")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l88dx")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rrjbt"]
+radius = 18.0
+
+[node name="Cueva" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_2ujqy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-4.76837e-07, -20)
+scale = Vector2(3.27954, 3.3457)
+sprite_frames = SubResource("SpriteFrames_w2xby")
+autoplay = "default"
+frame_progress = 0.61287
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -11)
+shape = SubResource("CircleShape2D_rrjbt")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
