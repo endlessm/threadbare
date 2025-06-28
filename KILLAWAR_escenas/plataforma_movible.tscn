@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b40mr0df0axju"]
+
+[ext_resource type="Script" uid="uid://d5m4pujfk7wb" path="res://KILLAWAR_codigo/plataforma_movible.gd" id="1_7rvt6"]
+[ext_resource type="Texture2D" uid="uid://cp7728g3vfic4" path="res://KILLAWAR_recursos/sprites/platforms.png" id="1_txvwo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7rvt6"]
+size = Vector2(30, 9)
+
+[node name="Plataforma_Movible" type="AnimatableBody2D"]
+script = ExtResource("1_7rvt6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -1)
+texture = ExtResource("1_txvwo")
+region_enabled = true
+region_rect = Rect2(16, 0, 32, 9)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_7rvt6")
+one_way_collision = true

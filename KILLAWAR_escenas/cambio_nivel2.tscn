@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnk87abqaunb4"]
+
+[ext_resource type="Texture2D" uid="uid://y4h1e2g3tdgv" path="res://KILLAWAR_recursos/sprite/puertita.png" id="1_50frb"]
+[ext_resource type="Script" uid="uid://cvjje2njavfyx" path="res://KILLAWAR_codigo/CambioScena.gd" id="2_sv273"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vakti"]
+size = Vector2(6, 11)
+
+[node name="CambioNivel" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(4.76837e-07, 0)
+scale = Vector2(0.0146484, 0.0191243)
+texture = ExtResource("1_50frb")
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_sv273")
+next_escene_path = "res://KILLAWAR_escenas/nivel_2.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_vakti")
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
