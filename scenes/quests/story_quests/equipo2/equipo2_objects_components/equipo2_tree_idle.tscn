@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0c6ti0aqpt5o"]
+
+[ext_resource type="Script" uid="uid://b0b2y72gvp50f" path="res://scenes/game_elements/props/tree/components/tree.gd" id="1_j802i"]
+[ext_resource type="SpriteFrames" uid="uid://djwymcffy83" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_red.tres" id="2_0yf07"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d888c"]
+radius = 16.0312
+
+[node name="Tree" type="Node2D"]
+scale = Vector2(1.11531, 1.14147)
+script = ExtResource("1_j802i")
+sprite_frames = ExtResource("2_0yf07")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(0, -79.7941)
+sprite_frames = ExtResource("2_0yf07")
+autoplay = "default"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("CircleShape2D_d888c")
