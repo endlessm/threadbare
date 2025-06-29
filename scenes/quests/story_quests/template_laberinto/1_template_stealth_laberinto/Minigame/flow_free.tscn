@@ -1,0 +1,84 @@
+[gd_scene load_steps=6 format=3 uid="uid://dhlqy0monrkh1"]
+
+[ext_resource type="Script" uid="uid://degyemfwkqiml" path="res://scenes/quests/story_quests/template_laberinto/1_template_stealth_laberinto/Minigame/flow_free.gd" id="1_63i0t"]
+[ext_resource type="Texture2D" uid="uid://bdoe4fwf28oma" path="res://scenes/quests/story_quests/template_laberinto/1_template_stealth_laberinto/assets/Blue_Nebula_03-512x512.png" id="2_koed6"]
+[ext_resource type="Shader" uid="uid://cpbks3frkmpyi" path="res://scenes/quests/story_quests/template_laberinto/1_template_stealth_laberinto/Mundo/Scroll.gdshader" id="2_ywn6c"]
+[ext_resource type="AudioStream" uid="uid://d1l7qmtxpxuur" path="res://scenes/quests/story_quests/template_laberinto/1_template_stealth_laberinto/assets/ADTurnUp - palace [no drums] (slowed  reverb).ogg" id="3_8cb28"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qac8o"]
+shader = ExtResource("2_ywn6c")
+shader_parameter/speed = 0.02
+
+[node name="FlowFree" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -48.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+offset_left = 308.0
+offset_top = 243.0
+offset_right = 1460.0
+offset_bottom = 271.0
+theme_override_font_sizes/font_size = 20
+text = "Conecta los colores"
+horizontal_alignment = 1
+
+[node name="GameBoard" type="Control" parent="."]
+z_index = 1
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -432.0
+offset_top = 151.0
+offset_right = 149.0
+offset_bottom = 451.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_63i0t")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+offset_top = 570.0
+offset_right = 1152.0
+offset_bottom = 601.0
+alignment = 1
+
+[node name="NewPuzzle" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Nuevo Puzzle"
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_8cb28")
+autoplay = true
+
+[node name="Control" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 5.0
+offset_right = 45.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="BlueNebula03-512x512" type="TextureRect" parent="Control"]
+z_index = -3
+material = SubResource("ShaderMaterial_qac8o")
+layout_mode = 0
+offset_left = -18.0
+offset_top = 21.0
+offset_right = 833.0
+offset_bottom = 914.0
+scale = Vector2(2.25195, 1.26367)
+mouse_filter = 2
+texture = ExtResource("2_koed6")
+stretch_mode = 1
+
+[connection signal="pressed" from="HBoxContainer/NewPuzzle" to="GameBoard" method="_on_new_puzzle_pressed"]

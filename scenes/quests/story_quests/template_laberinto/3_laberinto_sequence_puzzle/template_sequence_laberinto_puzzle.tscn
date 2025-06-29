@@ -1,0 +1,93 @@
+[gd_scene load_steps=12 format=3 uid="uid://b71qb4sq1dg87"]
+
+[ext_resource type="Texture2D" uid="uid://brv7dnqggaffg" path="res://scenes/quests/story_quests/template_laberinto/sprite_laberinto/g3.png" id="3_1xc5j"]
+[ext_resource type="Texture2D" uid="uid://df5fgp7qvw248" path="res://scenes/quests/story_quests/template_laberinto/sprite_laberinto/ganzua.png" id="4_ioiaj"]
+[ext_resource type="Script" uid="uid://bcdks5vmt3yy3" path="res://scenes/quests/story_quests/template_laberinto/3_laberinto_sequence_puzzle/cinematica.gd" id="5_b67jx"]
+[ext_resource type="Script" uid="uid://dalkeu5s747vy" path="res://scenes/quests/story_quests/template_laberinto/3_laberinto_sequence_puzzle/sprite_2d_2.gd" id="5_mso8d"]
+[ext_resource type="AudioStream" uid="uid://cf7c6yvgp0uic" path="res://scenes/quests/story_quests/template_laberinto/Biblioteca - sonidos/Biblioteca - sonidos/clock-ticking-sound-effect-240503.ogg" id="6_n1g68"]
+[ext_resource type="AudioStream" uid="uid://ck7ckknt122jp" path="res://scenes/quests/story_quests/template_laberinto/Biblioteca - sonidos/Biblioteca - sonidos/sword-hit-7160.ogg" id="7_1xc5j"]
+[ext_resource type="Resource" uid="uid://kvbp5kcv32d1" path="res://scenes/ui_elements/cinematic/perder_primera_vez.dialogue" id="8_n1g68"]
+[ext_resource type="Resource" uid="uid://cphpij2mcytag" path="res://scenes/ui_elements/cinematic/perder.dialogue" id="9_1xc5j"]
+[ext_resource type="Resource" uid="uid://bow6uavno62s4" path="res://scenes/ui_elements/cinematic/ganar.dialogue" id="10_0fkfl"]
+[ext_resource type="Script" uid="uid://dms2yvnlqhume" path="res://scenes/quests/story_quests/template_laberinto/3_laberinto_sequence_puzzle/puzzle.gd" id="11_jesfk"]
+[ext_resource type="PackedScene" uid="uid://dgskqx4yo8g1k" path="res://scenes/quests/story_quests/template_laberinto/3_laberinto_sequence_puzzle/pestillo_area.tscn" id="12_l35ml"]
+
+[node name="SequencePuzzleTemplate" type="Node2D"]
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Puzzle" type="Node2D" parent="OnTheGround"]
+z_index = 1
+script = ExtResource("11_jesfk")
+
+[node name="objetos" type="Node2D" parent="OnTheGround/Puzzle"]
+
+[node name="Area2D1" parent="OnTheGround/Puzzle/objetos" groups=["pestillos"] instance=ExtResource("12_l35ml")]
+position = Vector2(423, 401)
+
+[node name="Area2D2" parent="OnTheGround/Puzzle/objetos" groups=["pestillos"] instance=ExtResource("12_l35ml")]
+position = Vector2(512, 403)
+
+[node name="Area2D3" parent="OnTheGround/Puzzle/objetos" groups=["pestillos"] instance=ExtResource("12_l35ml")]
+position = Vector2(602, 403)
+
+[node name="Area2D4" parent="OnTheGround/Puzzle/objetos" groups=["pestillos"] instance=ExtResource("12_l35ml")]
+position = Vector2(686, 402)
+
+[node name="Area2D5" parent="OnTheGround/Puzzle/objetos" groups=["pestillos"] instance=ExtResource("12_l35ml")]
+position = Vector2(766, 402)
+
+[node name="Area2D6" parent="OnTheGround/Puzzle/objetos" groups=["pestillos"] instance=ExtResource("12_l35ml")]
+position = Vector2(848, 402)
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/Puzzle"]
+z_index = -1
+texture_filter = 1
+position = Vector2(482.75, 282)
+scale = Vector2(0.941895, 0.550781)
+texture = ExtResource("3_1xc5j")
+
+[node name="Cronometro" type="Timer" parent="OnTheGround/Puzzle"]
+wait_time = 2.884
+
+[node name="Sprite2D2" type="Sprite2D" parent="OnTheGround/Puzzle"]
+position = Vector2(229, 252)
+scale = Vector2(0.687505, 1.12154)
+texture = ExtResource("4_ioiaj")
+centered = false
+offset = Vector2(-280, 0)
+script = ExtResource("5_mso8d")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="OnTheGround/Puzzle"]
+stream = ExtResource("6_n1g68")
+parameters/looping = true
+
+[node name="AudioStreamPlayer2D2" type="AudioStreamPlayer2D" parent="OnTheGround/Puzzle"]
+stream = ExtResource("7_1xc5j")
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="CronometroLabel" type="Label" parent="ScreenOverlay"]
+offset_left = 125.0
+offset_top = 158.0
+offset_right = 278.0
+offset_bottom = 218.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 34
+text = "ghghg"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(6, 7)
+anchor_mode = 0
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+
+[node name="cinematica" type="Node2D" parent="." groups=["cinematica"]]
+position = Vector2(3, 6)
+script = ExtResource("5_b67jx")
+tiempo_dialogue = ExtResource("8_n1g68")
+perder_dialogue = ExtResource("9_1xc5j")
+ganar_dialogue = ExtResource("10_0fkfl")
+next_scene = "uid://bl3lutxcqiq34"

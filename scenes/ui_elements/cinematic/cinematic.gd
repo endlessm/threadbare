@@ -21,9 +21,12 @@ extends Node2D
 
 
 func _ready() -> void:
+	## if(jugador habla con el npc_acciona){
 	DialogueManager.show_dialogue_balloon(dialogue, "", [self])
 	await DialogueManager.dialogue_ended
+  #}
 
+## no lo cambies
 	if next_scene:
 		(
 			SceneSwitcher

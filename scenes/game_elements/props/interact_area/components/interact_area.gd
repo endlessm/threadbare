@@ -25,10 +25,12 @@ var interact_label_position: Vector2:
 
 
 func start_interaction(player: Player, from_right: bool) -> void:
+	print("🔵 [InteractArea] Interacción iniciada con el jugador.")
 	interaction_started.emit(player, from_right)
 
 
 func end_interaction() -> void:
+	print("🟢 [InteractArea] Interacción finalizada. Emitiendo señal.")
 	interaction_ended.emit()
 
 
