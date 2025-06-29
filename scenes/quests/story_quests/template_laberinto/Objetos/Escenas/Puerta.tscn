@@ -1,25 +1,21 @@
-[gd_scene load_steps=8 format=3 uid="uid://xxhybr0oqi8g"]
+[gd_scene load_steps=8 format=3 uid="uid://cm2ldwt2752ue"]
 
-[ext_resource type="Script" uid="uid://bp4tndbe5ab0n" path="res://scenes/quests/story_quests/template_laberinto/Objetos/Script/puerta.gd" id="1_8qkes"]
-[ext_resource type="Texture2D" uid="uid://dyvspuiabp5wu" path="res://scenes/quests/story_quests/template_laberinto/1_template_stealth_laberinto/assets/Props.png" id="1_lmmg0"]
+[ext_resource type="Script" uid="uid://d10ss5kqsvmcm" path="res://scenes/quests/story_quests/template_laberinto/Objetos/Escenas/puerta_ganzua.gd" id="1_pwpfo"]
+[ext_resource type="Texture2D" uid="uid://dyvspuiabp5wu" path="res://scenes/quests/story_quests/template_laberinto/1_template_stealth_laberinto/assets/Props.png" id="2_nbsq4"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_gk5y8"]
-size = Vector2(37.836, 51.4063)
+[sub_resource type="AtlasTexture" id="AtlasTexture_pwpfo"]
+atlas = ExtResource("2_nbsq4")
+region = Rect2(24, 164, 46, 56)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_nbsq4"]
+atlas = ExtResource("2_nbsq4")
+region = Rect2(24, 103, 48, 51)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_lmmg0"]
-atlas = ExtResource("1_lmmg0")
-region = Rect2(0, 166, 91, 51)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8qkes"]
-atlas = ExtResource("1_lmmg0")
-region = Rect2(0, 102, 91, 51)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_xuqyh"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_eayi8"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_lmmg0")
+"texture": SubResource("AtlasTexture_pwpfo")
 }],
 "loop": true,
 "name": &"Abierto",
@@ -27,62 +23,68 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_8qkes")
+"texture": SubResource("AtlasTexture_nbsq4")
 }],
 "loop": true,
 "name": &"Cerrado",
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_5u2l2"]
-radius = 34.0147
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_74bh4"]
 
-[node name="Puerta" type="StaticBody2D"]
-script = ExtResource("1_8qkes")
+size = Vector2(60.75, 82.25)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.0819988, 1.29688)
+[sub_resource type="CircleShape2D" id="CircleShape2D_tu42m"]
+radius = 52.0
 
-shape = SubResource("RectangleShape2D_gk5y8")
+
+[node name="puerta_ganzua" type="StaticBody2D"]
+script = ExtResource("1_pwpfo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-<<<<<<< HEAD
-position = Vector2(-2, -2.75)
-scale = Vector2(0.961, 1.10784)
-=======
-position = Vector2(-2, -2.38419e-07)
-scale = Vector2(0.961, 1)
 
->>>>>>> 2fcda667f513d2fc9c78dcdcb6416b2312286d01
-sprite_frames = SubResource("SpriteFrames_xuqyh")
+position = Vector2(9.53674e-07, 1)
+scale = Vector2(1.35246, 1.65686)
+
+sprite_frames = SubResource("SpriteFrames_eayi8")
 animation = &"Cerrado"
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0.625, 1.875)
+
+shape = SubResource("RectangleShape2D_74bh4")
+
 [node name="InteractionArea" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
-visible = false
-shape = SubResource("CircleShape2D_5u2l2")
-debug_color = Color(0.387537, 0.974723, 0.327388, 0.42)
+position = Vector2(1, 1)
+shape = SubResource("CircleShape2D_tu42m")
+debug_color = Color(0.66016, 0.425019, 0.756519, 0.42)
 
 [node name="ui_container" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 
-offset_left = -26.0
-offset_top = -26.0
-offset_right = 34.0
-offset_bottom = 23.0
+
+offset_left = -22.0
+offset_top = -1.0
+offset_right = 18.0
+offset_bottom = 39.0
 
 
 [node name="InteractLabel" type="Label" parent="ui_container"]
 z_index = 3
 layout_mode = 0
-offset_left = -34.0
-offset_top = 25.0
-offset_right = 136.0
-offset_bottom = 70.0
+
+
+offset_left = -43.0
+offset_top = 13.0
+offset_right = 127.0
+offset_bottom = 58.0
 scale = Vector2(0.5, 0.5)
 theme_override_font_sizes/font_size = 20
 
-text = "Necesarios"
+text = "presiona E" 
