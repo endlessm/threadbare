@@ -12,7 +12,7 @@ extends CanvasLayer
 
 var balas: int = 5
 var recargando: bool = false
-var tiempo_recarga: float = 6.0  # Segundos para recargar 1 bala
+var tiempo_recarga: float = 3.0  # Segundos para recargar 1 bala
 
 func _ready():
 	for img in imagenes_balas:

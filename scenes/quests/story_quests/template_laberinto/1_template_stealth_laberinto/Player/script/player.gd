@@ -95,7 +95,7 @@ func setup_stamina_bar() -> void:
 func _physics_process(delta: float) -> void:
 	if camara and keys_label:
 		var screen_position = camara.get_screen_center_position() + (global_position - camara.global_position)
-		keys_label.position = screen_position + Vector2(-900, -380)  # Ajusta Y según necesites
+		keys_label.position = screen_position + Vector2(-720, -280)  # Ajusta Y según necesites
 	handle_stamina(delta)
 	actualizar_pistola()
 	if Input.is_action_just_pressed("disparar"):
