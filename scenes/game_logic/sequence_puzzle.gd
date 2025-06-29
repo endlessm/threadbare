@@ -30,7 +30,12 @@ var _objects: Array[SequencePuzzleObject]
 var _last_hint_object: SequencePuzzleObject = null
 var _current_step: int = 0
 var _position: int = 0
+@onready var music_level_player: AudioStreamPlayer = get_node("../../MusicManager/MusicLevel")
+@onready var music_mystery_player: AudioStreamPlayer = get_node("../../MusicManager/MusicMystery")
+@onready var music_dark_player: AudioStreamPlayer = get_node("../../MusicManager/MusicDark")
 
+
+var error_count: int = 0
 
 func _ready() -> void:
 	_find_objects()
@@ -48,6 +53,13 @@ func _ready() -> void:
 	for i in range(steps.size()):
 		if not hint_levels.has(i):
 			hint_levels[i] = 0
+	reproducir_musica_normal()
+	if not music_level_player:
+		print("❌ MusicLevel no encontrado")
+	if not music_mystery_player:
+		print("❌ MusicMystery no encontrado")
+	if not music_dark_player:
+		print("❌ MusicDark no encontrado")
 
 
 func _find_objects() -> void:
@@ -94,12 +106,19 @@ func _on_kicked(object: SequencePuzzleObject) -> void:
 		_debug("Matching again at start of sequence...")
 
 	if sequence[_position] != object:
-		_debug("Didn't match")
-		for r: SequencePuzzleObject in _objects:
-			r.stop_hint()
-		if hint_levels.get(get_progress(), 0) >= wobble_hint_min_level:
-			hint_timer.start()
-		return
+		error_count += 1
+
+	if error_count == 1:
+		reproducir_musica_misteriosa()
+	elif error_count >= 3:
+		reproducir_musica_oscura()
+
+	_debug("Didn't match")
+	for r: SequencePuzzleObject in _objects:
+		r.stop_hint()
+	if hint_levels.get(get_progress(), 0) >= wobble_hint_min_level:
+		hint_timer.start()
+	return
 
 	_position += 1
 	hint_timer.start()
@@ -166,3 +185,18 @@ func reset_hint_timer() -> void:
 	hint_timer.stop()
 	if _current_step < steps.size():
 		hint_timer.start()
+
+func reproducir_musica_normal():
+	music_mystery_player.stop()
+	music_dark_player.stop()
+	music_level_player.play()
+
+func reproducir_musica_misteriosa():
+	music_level_player.stop()
+	music_dark_player.stop()
+	music_mystery_player.play()
+
+func reproducir_musica_oscura():
+	music_level_player.stop()
+	music_mystery_player.stop()
+	music_dark_player.play()
