@@ -2,19 +2,19 @@ extends Puerta
 class_name Puerta_ganzua
 
 var escena_ya_completada: bool = false
+@export var puerta_id: String = ""
 
 func _ready():
 	next_scene_path = "res://scenes/quests/story_quests/template_laberinto/3_laberinto_sequence_puzzle/template_sequence_laberinto_puzzle.tscn"
-	super()  # Llama al _ready() de Puerta
+	super()
 
-	# Detectar si esta puerta ya fue forzada previamente (es decir, ya volviste del minijuego)
-	if GameStateLaberinto.puerta_ganzua_forzada:
+	if GameStateLaberinto.puertas_ganzua_forzadas.get(puerta_id, false):
 		escena_ya_completada = true
-		print("🟢 La puerta ganzúa ya fue forzada. Desactivando interacción.")
+		print("🟢 La puerta %s ya fue forzada. Desactivando interacción." % puerta_id)
 		animated_sprite_2d.play("Abierto")
 		$CollisionShape2D.disabled = true
 		ui_container.visible = false
-		set_process(false)  # Opcional: desactiva procesamiento si ya no hace falta
+		set_process(false)
 
 func check_door_status():
 	is_unlocked = true
@@ -37,12 +37,7 @@ func interact():
 			GameStateLaberinto.player_position = current_player.global_position
 			GameStateLaberinto.llaves = current_player.keys_collected
 			GameStateLaberinto.abiertos = current_player.get_cofres_abiertos()
-			GameStateLaberinto.puerta_ganzua_forzada = true  # Marcar que ya fue usada
+			GameStateLaberinto.puertas_ganzua_forzadas[puerta_id] = true
 
-			print("✅ Estado guardado antes de cambiar de escena:")
-			print("- Posición:", GameStateLaberinto.player_position)
-			print("- Llaves:", GameStateLaberinto.llaves)
-			print("- Cofres abiertos:", GameStateLaberinto.abiertos)
-			print("- Puerta ganzúa forzada: true")
 
 		change_scene()

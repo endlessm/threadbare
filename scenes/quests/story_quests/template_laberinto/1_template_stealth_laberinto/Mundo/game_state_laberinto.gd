@@ -10,14 +10,13 @@ var llaves: int = 0
 var abiertos: Array = []
 
 # Marca si una puerta fue forzada con ganzúa
-var puerta_ganzua_forzada: bool = false
-
+var puertas_ganzua_forzadas := {} 
 # Puedes agregar más variables globales según tu juego
 
 # Función para reiniciar el juego
 func reset():
 	llaves = 0
-	puerta_ganzua_forzada = false
+	puertas_ganzua_forzadas.clear()
 	player_position = Vector2.ZERO
 	abiertos.clear()  # Limpia la lista de cofres o puertas abiertas
 
