@@ -1,6 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://cm2ldwt2752ue"]
+[gd_scene load_steps=8 format=3 uid="uid://by56eruyiexbk"]
 
-[ext_resource type="Script" uid="uid://d10ss5kqsvmcm" path="res://scenes/quests/story_quests/template_laberinto/Objetos/Escenas/puerta_ganzua.gd" id="1_pwpfo"]
+[ext_resource type="Script" uid="uid://bp4tndbe5ab0n" path="res://scenes/quests/story_quests/template_laberinto/Objetos/Script/puerta.gd" id="1_k0cji"]
 [ext_resource type="Texture2D" uid="uid://dyvspuiabp5wu" path="res://scenes/quests/story_quests/template_laberinto/1_template_stealth_laberinto/assets/Props.png" id="2_nbsq4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pwpfo"]
@@ -31,33 +31,26 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_74bh4"]
-
 size = Vector2(60.75, 82.25)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tu42m"]
 radius = 52.0
 
-
-[node name="puerta_ganzua" type="StaticBody2D"]
-script = ExtResource("1_pwpfo")
+[node name="puerta" type="StaticBody2D"]
+script = ExtResource("1_k0cji")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-
 position = Vector2(9.53674e-07, 1)
 scale = Vector2(1.35246, 1.65686)
-
 sprite_frames = SubResource("SpriteFrames_eayi8")
 animation = &"Cerrado"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0.625, 1.875)
-
 shape = SubResource("RectangleShape2D_74bh4")
 
 [node name="InteractionArea" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
 position = Vector2(1, 1)
@@ -67,24 +60,18 @@ debug_color = Color(0.66016, 0.425019, 0.756519, 0.42)
 [node name="ui_container" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-
-
 offset_left = -22.0
 offset_top = -1.0
 offset_right = 18.0
 offset_bottom = 39.0
 
-
 [node name="InteractLabel" type="Label" parent="ui_container"]
 z_index = 3
 layout_mode = 0
-
-
 offset_left = -43.0
 offset_top = 13.0
 offset_right = 127.0
 offset_bottom = 58.0
 scale = Vector2(0.5, 0.5)
 theme_override_font_sizes/font_size = 20
-
-text = "presiona E" 
+text = "presiona E"

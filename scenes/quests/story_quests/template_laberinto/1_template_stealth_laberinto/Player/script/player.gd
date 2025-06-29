@@ -159,6 +159,7 @@ func recargar():
 
 func disparar():
 	if balas_vista and balas_vista.procesar_disparo():
+		$arma/arma_sonido.play()
 		animated_arma.play("disparo_revolver")
 		var bala = escena_bala.instantiate()
 		bala.global_position = $arma/Marker2D.global_position

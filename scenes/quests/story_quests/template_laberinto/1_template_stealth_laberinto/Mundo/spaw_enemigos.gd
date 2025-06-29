@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var enemigo_escena: PackedScene
-@export var tiempo_entre_oleadas: float = 30.0
+@export var tiempo_entre_oleadas: float = 20.0  # Más rápido que antes (antes 30.0)
 @export var radio_min: float = 150.0
 @export var radio_max: float = 300.0
 @export var max_enemigos: int = 14
@@ -32,14 +32,14 @@ func spawn_enemigos():
 		print("🚫 Límite de enemigos alcanzado (%d/%d)" % [enemigos_actuales, max_enemigos])
 		return
 
-	# Aumentar la probabilidad de aparición conforme hay menos enemigos
+	# Aumentar la probabilidad de aparición de más enemigos
 	var probabilidad_extra = clamp((1.0 - float(enemigos_actuales) / max_enemigos), 0.0, 1.0)
-	var cantidad = randi_range(2, 3)
+	var cantidad = randi_range(3, 6)  # Aumentado el mínimo y máximo
 
-	if randf() < 0.05 + probabilidad_extra * 0.5:
+	if randf() < 0.20 + probabilidad_extra * 0.6:  # Probabilidad más alta
 		cantidad = 5
 
-	# Ajustar para que no se exceda el máximo permitido
+	# Ajustar para no exceder el máximo permitido
 	cantidad = min(cantidad, max_enemigos - enemigos_actuales)
 
 	print("🌑 Generando %d enemigos" % cantidad)
@@ -51,5 +51,5 @@ func spawn_enemigos():
 		var offset = Vector2.RIGHT.rotated(angulo) * distancia
 		enemigo.global_position = jugador.global_position + offset
 		get_tree().current_scene.call_deferred("add_child", enemigo)
-		enemigo.add_to_group("enemigos")  # Asegúrate que cada enemigo pertenezca al grupo 'enemigos'
+		enemigo.add_to_group("enemigos")
 		print("👾 Enemigo generado en:", enemigo.global_position)
