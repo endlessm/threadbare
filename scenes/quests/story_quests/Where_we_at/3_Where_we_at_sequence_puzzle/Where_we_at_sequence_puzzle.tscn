@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://bq804ameg45o5"]
+[gd_scene load_steps=24 format=4 uid="uid://bq804ameg45o5"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_b3l7y"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_eg5ua"]
@@ -19,6 +19,9 @@
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="17_xj0i8"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="18_16hdi"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="19_wvi4a"]
+[ext_resource type="AudioStream" uid="uid://bo4ek34upvb0u" path="res://assets/minijuego_terminal/Sprout Lands - Sprites - Basic pack/music/music_level.ogg" id="20_cb18y"]
+[ext_resource type="AudioStream" uid="uid://bns6mic6tyodj" path="res://assets/minijuego_terminal/Sprout Lands - Sprites - Basic pack/music/music_mystery.ogg" id="21_ni8ta"]
+[ext_resource type="AudioStream" uid="uid://d3pk8ap0iat6r" path="res://assets/minijuego_terminal/Sprout Lands - Sprites - Basic pack/music/music_dark.ogg" id="22_88c7b"]
 
 [sub_resource type="Resource" id="Resource_u8qfb"]
 script = ExtResource("15_vedqm")
@@ -55,32 +58,33 @@ metadata/_custom_type_script = "uid://c68oh8dtr21ti"
 y_sort_enabled = true
 position = Vector2(356, 453)
 
-[node name="Blue" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_t0vr3")]
+[node name="Azul" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_t0vr3")]
 modulate = Color(0, 0.4, 0.6, 1)
 audio_stream = ExtResource("5_22bxw")
+strike_duration = 0.916667
 
-[node name="Pink" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_t0vr3")]
+[node name="Rosado" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_t0vr3")]
 modulate = Color(0.89, 0.2937, 0.804817, 1)
 position = Vector2(80, -8)
 audio_stream = ExtResource("6_6qxqh")
 
-[node name="Yellow" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_t0vr3")]
-modulate = Color(0.89, 0.804817, 0.2937, 1)
+[node name="Marron" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_t0vr3")]
+modulate = Color(0.387603, 0.272242, 0.056029, 1)
 position = Vector2(160, -16)
 audio_stream = ExtResource("7_sn0rg")
 
-[node name="Green" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_t0vr3")]
+[node name="Verde" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_t0vr3")]
 modulate = Color(0.188235, 0.717647, 0, 1)
 position = Vector2(240, -24)
 audio_stream = ExtResource("8_dmh8e")
 
-[node name="Purple" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_t0vr3")]
-modulate = Color(0.464066, 0.2937, 0.89, 1)
+[node name="Gris" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_t0vr3")]
+modulate = Color(0.501961, 0.501961, 0.501961, 1)
 position = Vector2(320, -32)
 audio_stream = ExtResource("9_uwtk4")
 
-[node name="Red" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_t0vr3")]
-modulate = Color(0.89, 0.2937, 0.2937, 1)
+[node name="Celeste" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("4_t0vr3")]
+modulate = Color(0, 1, 1, 1)
 position = Vector2(400, -40)
 audio_stream = ExtResource("10_3js2i")
 
@@ -89,6 +93,24 @@ y_sort_enabled = true
 
 [node name="HintSign1" parent="OnTheGround/SequencePuzzle/Signs" instance=ExtResource("11_1w0ep")]
 position = Vector2(506, 210)
+interact_demonstrates = false
+
+[node name="HintLabel" type="Label" parent="OnTheGround/SequencePuzzle/Signs/HintSign1"]
+visible = false
+offset_left = -253.0
+offset_top = -146.0
+offset_right = 273.0
+offset_bottom = -93.0
+text = "Nació entre raíces, cruzó el bosque, trepó la montaña y tocó el cielo.
+Pero su otra cabeza lo arrastró de vuelta a las profundidades."
+
+[node name="HelenaThoughtLabel" type="Label" parent="OnTheGround/SequencePuzzle/Signs/HintSign1"]
+visible = false
+offset_left = -221.0
+offset_top = -190.0
+offset_right = 260.0
+offset_bottom = -156.0
+text = "\"¿Esa escritura tendrá que ver con los colores de los botones?\""
 
 [node name="HintSign2" parent="OnTheGround/SequencePuzzle/Signs" instance=ExtResource("11_1w0ep")]
 position = Vector2(593, 200)
@@ -98,18 +120,18 @@ sprite_frames = ExtResource("12_2xnib")
 
 [node name="SequencePuzzleStep1" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
 script = ExtResource("13_jtgsk")
-sequence = [NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), NodePath("../../Objects/Blue")]
+sequence = [NodePath("../../Objects/Marron"), NodePath("../../Objects/Verde"), NodePath("../../Objects/Gris"), NodePath("../../Objects/Celeste"), NodePath("../../Objects/Azul")]
 hint_sign = NodePath("../../Signs/HintSign1")
 
 [node name="SequencePuzzleStep2" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
 script = ExtResource("13_jtgsk")
-sequence = [NodePath("../../Objects/Blue"), NodePath("../../Objects/Green"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green")]
+sequence = [NodePath("../../Objects/Azul"), NodePath("../../Objects/Verde"), NodePath("../../Objects/Marron"), NodePath("../../Objects/Verde")]
 hint_sign = NodePath("../../Signs/HintSign2")
 
 [node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("14_a03pa")]
 position = Vector2(861, 282)
 revealed = false
-next_scene = "uid://cqjdjcwwfg0xi"
+next_scene = "uid://bq804ameg45o5"
 item = SubResource("Resource_u8qfb")
 collected_dialogue = ExtResource("16_mu1np")
 dialogue_title = &"well_done"
@@ -132,5 +154,16 @@ position_smoothing_enabled = true
 script = ExtResource("19_wvi4a")
 dialogue = ExtResource("16_mu1np")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="MusicManager" type="Node2D" parent="."]
+
+[node name="MusicLevel" type="AudioStreamPlayer" parent="MusicManager"]
+stream = ExtResource("20_cb18y")
+
+[node name="MusicMystery" type="AudioStreamPlayer" parent="MusicManager"]
+stream = ExtResource("21_ni8ta")
+
+[node name="MusicDark" type="AudioStreamPlayer" parent="MusicManager"]
+stream = ExtResource("22_88c7b")
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]
