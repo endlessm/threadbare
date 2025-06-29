@@ -74,4 +74,3 @@ func _on_interaction_ended() -> void:
 		luz.visible = true
 		camara.make_current()
 		camara.enabled = true
-
