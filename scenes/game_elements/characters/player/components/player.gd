@@ -3,7 +3,7 @@
 @tool
 class_name Player
 extends CharacterBody2D
-
+var en_agua := false
 signal mode_changed(mode: Mode)
 
 ## Controls how the player can interact with the world around them.
@@ -144,6 +144,14 @@ func _process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		return
 
+	# ✅ Ajustar velocidades si el jugador está en agua
+	if en_agua:
+		walk_speed = 150.0
+		run_speed = 250.0
+	else:
+		walk_speed = 300.0
+		run_speed = 500.0
+
 	var step: float
 	if input_vector.is_zero_approx():
 		step = stopping_step
@@ -178,3 +186,12 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	if not is_node_ready():
 		await ready
 	_walk_sound.stream = walk_sound_stream
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body == self:
+		en_agua = true
+
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	if body == self:
+		en_agua = false
