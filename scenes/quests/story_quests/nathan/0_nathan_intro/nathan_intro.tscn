@@ -3,8 +3,8 @@
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_bflcq"]
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_g5n41"]
 [ext_resource type="TileSet" uid="uid://bosc3pie0fr3l" path="res://scenes/quests/story_quests/nathan/nathan.tres" id="2_wbos6"]
-[ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/template_player_components/template_player.tres" id="3_8uvpf"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_531qw"]
+[ext_resource type="SpriteFrames" uid="uid://bag2kp3uw7qm5" path="res://scenes/quests/story_quests/nathan/nathan_player_components/nathan_player.tres" id="4_g5n41"]
 [ext_resource type="Script" uid="uid://ii8h5trixbfh" path="res://scenes/ui_elements/cinematic/cinematic_intro.gd" id="6_g5n41"]
 [ext_resource type="Resource" uid="uid://dhjp8qdiqvn1a" path="res://scenes/quests/story_quests/nathan/0_nathan_intro/nathan_intro_components/nathan_intro.dialogue" id="7_38ib2"]
 
@@ -100,7 +100,8 @@ _data = {
 
 [sub_resource type="Animation" id="Animation_g5n41"]
 resource_name = "CinematicPan"
-length = 14.0
+length = 20.0
+capture_included = true
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -108,10 +109,10 @@ tracks/0/path = NodePath("CinematicCamera:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2, 6, 14),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(438, 283), Vector2(438, 283), Vector2(1377, 283), Vector2(1377, -2202)]
+"times": PackedFloat32Array(0, 4, 8, 19.8, 19.9, 20),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 2,
+"values": [Vector2(438, 283), Vector2(438, 283), Vector2(1377, 283), Vector2(1377, -2202), Vector2(1377, -2202), Vector2(438, 283)]
 }
 
 [sub_resource type="Animation" id="Animation_38ib2"]
@@ -388,7 +389,7 @@ y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround" groups=["player"]]
 position = Vector2(400, 349)
-sprite_frames = ExtResource("3_8uvpf")
+sprite_frames = ExtResource("4_g5n41")
 animation = &"idle"
 autoplay = "idle"
 
@@ -401,11 +402,12 @@ libraries = {
 [node name="Player" parent="." instance=ExtResource("4_531qw")]
 visible = false
 position = Vector2(862, 505)
+sprite_frames = ExtResource("4_g5n41")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 process_mode = 3
 visible = false
-position = Vector2(231, -150)
+position = Vector2(6, -23)
 zoom = Vector2(2, 2)
 limit_left = 0
 limit_top = -2500
