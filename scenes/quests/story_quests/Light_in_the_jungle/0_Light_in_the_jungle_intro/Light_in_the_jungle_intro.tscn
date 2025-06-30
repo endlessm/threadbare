@@ -1,7 +1,8 @@
-[gd_scene load_steps=27 format=4 uid="uid://ijx5sg631jiu"]
+[gd_scene load_steps=28 format=4 uid="uid://ijx5sg631jiu"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_a2wtj"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_p5rqr"]
+[ext_resource type="Script" uid="uid://c80u8smqwgyn1" path="res://scenes/quests/story_quests/Light_in_the_jungle/0_Light_in_the_jungle_intro/Light_in_the_jungle_intro_components/canvas_modulate.gd" id="2_str1g"]
 [ext_resource type="SpriteFrames" uid="uid://scdhb6kmfntd" path="res://scenes/quests/story_quests/Light_in_the_jungle/Light_in_the_jungle_player_components/Light_in_the_jungle_player.tres" id="3_skm37"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="3_w305a"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_gs4jj"]
@@ -40,8 +41,15 @@ texture_filter = 1
 script = ExtResource("1_a2wtj")
 zoom = 2.0
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.273414, 0.580754, 0.910933, 1)
+[node name="Color" type="Node2D" parent="."]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="Color"]
+color = Color(0.27451, 0.580392, 0.909804, 1)
+script = ExtResource("2_str1g")
+end_color = Color(1, 0.379827, 0.382546, 1)
+delay_after_dialogue = 0.0
+transition_duration = 2.0
+target_dialogue = ExtResource("25_a2wtj")
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
