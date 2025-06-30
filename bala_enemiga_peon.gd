@@ -15,7 +15,7 @@ func _ready():
 
 
 	if detector:
-		detector.connect("body_entered", Callable(self, "_on_body_entered"))
+		detector.connect("area_entered", Callable(self, "_on_area_entered"))
 
 
 	await get_tree().create_timer(0.1).timeout
@@ -30,7 +30,7 @@ func _physics_process(delta):
 	if is_on_wall():
 		queue_free()
 
-func _on_body_entered(body):
+func _on_area_entered(body):
 	print("Bala tocó a: ", body.name)
 	print("¿Tiene recibir_daño?: ", body.has_method("recibir_daño"))
 	if body.has_method("recibir_daño"):

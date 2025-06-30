@@ -16,12 +16,11 @@ func _ready():
 func _disparar():
 	
 	var jugador = get_tree().current_scene.get_node_or_null("Player")
-	if jugador.global_position >= Vector2(2256.683, 368.451):
-		canIshoot = 1
-		
 	if jugador == null:
 		print("Jugador no encontrado")
 		return
+	if jugador.global_position >= Vector2(2256.683, 368.451):
+		canIshoot = 1
 
 	if canIshoot == 1:
 		var bala = bala_escena.instantiate()

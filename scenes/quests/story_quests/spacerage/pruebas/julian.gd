@@ -15,4 +15,6 @@ func recibir_daño(cantidad):
 	if vida <= 0:
 		print("Jugador murió")
 		emit_signal("jugador_muerto")
-		get_parent().queue_free()  
+		#get_parent().queue_free()  
+		SceneSwitcher.reload_with_transition()
+		
