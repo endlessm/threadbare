@@ -4,9 +4,10 @@
 class_name StealthGameLogic
 extends Node
 
+@export var current_spawn_point: NodePath
+@export var return_scene: String = ""
 @export_range(0.5, 3.0, 0.1, "or_greater", "or_less") var zoom: float = 1.0:
 	set = _set_zoom
-
 
 func _ready() -> void:
 	if Engine.is_editor_hint():

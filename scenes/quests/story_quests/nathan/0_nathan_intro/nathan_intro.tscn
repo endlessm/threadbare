@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://beym2plegr8kn"]
+[gd_scene load_steps=21 format=4 uid="uid://beym2plegr8kn"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_bflcq"]
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_g5n41"]
@@ -7,6 +7,8 @@
 [ext_resource type="SpriteFrames" uid="uid://bag2kp3uw7qm5" path="res://scenes/quests/story_quests/nathan/nathan_player_components/nathan_player.tres" id="4_g5n41"]
 [ext_resource type="Script" uid="uid://ii8h5trixbfh" path="res://scenes/ui_elements/cinematic/cinematic_intro.gd" id="6_g5n41"]
 [ext_resource type="Resource" uid="uid://dhjp8qdiqvn1a" path="res://scenes/quests/story_quests/nathan/0_nathan_intro/nathan_intro_components/nathan_intro.dialogue" id="7_38ib2"]
+[ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="8_38ib2"]
+[ext_resource type="Script" uid="uid://bnmc423r4v4w" path="res://scenes/game_elements/props/checkpoint/components/checkpointnathan.gd" id="9_38ib2"]
 
 [sub_resource type="Animation" id="Animation_ld06i"]
 length = 0.001
@@ -173,11 +175,16 @@ _data = {
 &"fade_in_out": SubResource("Animation_4mdap")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gw646"]
+size = Vector2(168.25, 122)
+
 [node name="Intro" type="Node2D"]
 texture_filter = 1
 
-[node name="StealthGameLogic" type="Node" parent="."]
+[node name="StealthGameLogic" type="Node" parent="." groups=["stealth_logic"]]
 script = ExtResource("1_g5n41")
+current_spawn_point = null
+return_scene = null
 zoom = 1.7
 
 [node name="TileMapLayers" type="Node2D" parent="."]
@@ -444,6 +451,18 @@ root_node = NodePath("../../Fade")
 libraries = {
 &"": SubResource("AnimationLibrary_sdc7p")
 }
+
+[node name="Checkpoints" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Checkpoint" parent="Checkpoints" instance=ExtResource("8_38ib2")]
+position = Vector2(1378, -37)
+script = ExtResource("9_38ib2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint"]
+position = Vector2(-32, -16)
+shape = SubResource("RectangleShape2D_gw646")
+debug_color = Color(0, 0, 0, 0.42)
 
 [node name="Fade" type="ColorRect" parent="."]
 visible = false
