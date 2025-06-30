@@ -16,9 +16,7 @@ func start() -> void:
 	if player:
 		player.mode = Player.Mode.FIGHTING
 	get_tree().call_group("throwing_enemy", "start")
-	for filling_barrel: FillingBarrel in get_tree().get_nodes_in_group("filling_barrels"):
-		filling_barrel.completed.connect(_on_barrel_completed)
-	_update_allowed_colors()
+	
 
 
 func _ready() -> void:
@@ -34,14 +32,7 @@ func _ready() -> void:
 func _update_allowed_colors() -> void:
 	var allowed_labels: Array[String] = []
 	var color_per_label: Dictionary[String, Color]
-	for filling_barrel: FillingBarrel in get_tree().get_nodes_in_group("filling_barrels"):
-		if filling_barrel.is_queued_for_deletion():
-			continue
-		if filling_barrel.label not in allowed_labels:
-			allowed_labels.append(filling_barrel.label)
-			if not filling_barrel.color:
-				continue
-			color_per_label[filling_barrel.label] = filling_barrel.color
+	
 	for enemy: ThrowingEnemy in get_tree().get_nodes_in_group("throwing_enemy"):
 		enemy.allowed_labels = allowed_labels
 		enemy.color_per_label = color_per_label

@@ -1,15 +1,14 @@
-[gd_scene load_steps=14 format=4 uid="uid://thwcu5akkqp5"]
+[gd_scene load_steps=13 format=4 uid="uid://thwcu5akkqp5"]
 
 [ext_resource type="Resource" uid="uid://3vrn5jdxov37" path="res://scenes/quests/story_quests/you/2_weapon/weapon_components/template_combat.dialogue" id="2_3qn31"]
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="5_4win1"]
-[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="6_7ke0q"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="6_34ay3"]
-[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="6_kcrun"]
 [ext_resource type="Texture2D" uid="uid://b3lrxhmj6rj7e" path="res://scenes/quests/story_quests/you/0_intro/intro_components/degradado luz.png" id="6_uwkgt"]
-[ext_resource type="SpriteFrames" uid="uid://c50725q5ey5j5" path="res://scenes/quests/story_quests/you/2_weapon/weapon_components/template_target_spriteframes.tres" id="7_71dv2"]
+[ext_resource type="PackedScene" uid="uid://dskeyd7eea5xv" path="res://scenes/quests/story_quests/you/2_weapon/Enemigo_Weapon/Enemigo_weapon.tscn" id="7_6ey0n"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="9_71dv2"]
 [ext_resource type="PackedScene" uid="uid://dyaqkgw4w7w6u" path="res://scenes/quests/story_quests/you/0_intro/intro_components/Campfire.tscn" id="10_6ey0n"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="10_rcv3t"]
+[ext_resource type="PackedScene" uid="uid://dn14ptjn0obq1" path="res://scenes/quests/story_quests/you/2_weapon/Jefe_Weapon/Jefe_weapon.tscn" id="12_2u4mc"]
 [ext_resource type="Script" uid="uid://dfs2mfxhy4hmg" path="res://scenes/quests/story_quests/you/2_weapon/canvas_modulate.gd" id="12_vkvme"]
 [ext_resource type="AudioStream" uid="uid://ceuhy1nlopb8p" path="res://scenes/quests/story_quests/you/2_weapon/Sound/thunder.mp3" id="13_2u4mc"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="14_ttfgd"]
@@ -19,7 +18,6 @@ y_sort_enabled = true
 
 [node name="FillGameLogic" type="Node" parent="."]
 script = ExtResource("5_4win1")
-barrels_to_win = null
 intro_dialogue = ExtResource("2_3qn31")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
@@ -387,68 +385,44 @@ color = Color(0.19921, 0.428185, 1, 0.701961)
 energy = 2.68
 texture = ExtResource("6_uwkgt")
 
-[node name="ThrowingNPC1" parent="OnTheGround" instance=ExtResource("6_kcrun")]
-position = Vector2(1713, 217)
+[node name="ThrowingEnemy" parent="OnTheGround" instance=ExtResource("7_6ey0n")]
+position = Vector2(1717, 223)
 
-[node name="PointLight2D" type="PointLight2D" parent="OnTheGround/ThrowingNPC1"]
+[node name="PointLight2D" type="PointLight2D" parent="OnTheGround/ThrowingEnemy"]
 position = Vector2(-1.90735e-06, -11)
 scale = Vector2(0.5, 0.5)
-color = Color(0.810504, 0.280123, 0.230883, 0.701961)
-energy = 2.98
+color = Color(0.908588, 0, 0.149401, 0.701961)
+energy = 2.68
 texture = ExtResource("6_uwkgt")
 
-[node name="Target" parent="OnTheGround/ThrowingNPC1" instance=ExtResource("6_7ke0q")]
-position = Vector2(18, -7)
-sprite_frames = ExtResource("7_71dv2")
-label = ""
-color = Color(1, 1, 1, 1)
+[node name="ThrowingEnemy3" parent="OnTheGround" instance=ExtResource("7_6ey0n")]
+position = Vector2(1512, 986)
 
-[node name="ThrowingNPC2" parent="OnTheGround" instance=ExtResource("6_kcrun")]
-position = Vector2(1704, 599)
-
-[node name="Target2" parent="OnTheGround/ThrowingNPC2" instance=ExtResource("6_7ke0q")]
-position = Vector2(18, -15)
-sprite_frames = ExtResource("7_71dv2")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="PointLight2D" type="PointLight2D" parent="OnTheGround/ThrowingNPC2"]
+[node name="PointLight2D" type="PointLight2D" parent="OnTheGround/ThrowingEnemy3"]
 position = Vector2(-1.90735e-06, -11)
 scale = Vector2(0.5, 0.5)
-color = Color(0.810504, 0.280123, 0.230883, 0.701961)
-energy = 2.98
+color = Color(0.908588, 0, 0.149401, 0.701961)
+energy = 2.68
 texture = ExtResource("6_uwkgt")
 
-[node name="ThrowingNPC3" parent="OnTheGround" instance=ExtResource("6_kcrun")]
-position = Vector2(1698, 984)
+[node name="ThrowingEnemy4" parent="OnTheGround" instance=ExtResource("7_6ey0n")]
+position = Vector2(1695, 594)
 
-[node name="Target3" parent="OnTheGround/ThrowingNPC3" instance=ExtResource("6_7ke0q")]
-position = Vector2(18, -15)
-sprite_frames = ExtResource("7_71dv2")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="PointLight2D" type="PointLight2D" parent="OnTheGround/ThrowingNPC3"]
+[node name="PointLight2D" type="PointLight2D" parent="OnTheGround/ThrowingEnemy4"]
 position = Vector2(-1.90735e-06, -11)
 scale = Vector2(0.5, 0.5)
-color = Color(0.810504, 0.280123, 0.230883, 0.701961)
-energy = 2.98
+color = Color(0.908588, 0, 0.149401, 0.701961)
+energy = 2.68
 texture = ExtResource("6_uwkgt")
 
-[node name="ThrowingNPC4" parent="OnTheGround" instance=ExtResource("6_kcrun")]
-position = Vector2(1073, 1372)
+[node name="ThrowingEnemy5" parent="OnTheGround" instance=ExtResource("7_6ey0n")]
+position = Vector2(1156, 1369)
 
-[node name="Target4" parent="OnTheGround/ThrowingNPC4" instance=ExtResource("6_7ke0q")]
-position = Vector2(18, -15)
-sprite_frames = ExtResource("7_71dv2")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="PointLight2D" type="PointLight2D" parent="OnTheGround/ThrowingNPC4"]
+[node name="PointLight2D" type="PointLight2D" parent="OnTheGround/ThrowingEnemy5"]
 position = Vector2(-1.90735e-06, -11)
 scale = Vector2(0.5, 0.5)
-color = Color(0.810504, 0.280123, 0.230883, 0.701961)
-energy = 2.98
+color = Color(0.908588, 0, 0.149401, 0.701961)
+energy = 2.68
 texture = ExtResource("6_uwkgt")
 
 [node name="Luz" type="Node2D" parent="."]
@@ -485,3 +459,16 @@ script = ExtResource("12_vkvme")
 position = Vector2(-756, 83)
 stream = ExtResource("13_2u4mc")
 autoplay = true
+
+[node name="Jefe" type="Node" parent="."]
+
+[node name="ThrowingEnemy" parent="Jefe" instance=ExtResource("12_2u4mc")]
+position = Vector2(456, 1751)
+
+[node name="PointLight2D" type="PointLight2D" parent="Jefe"]
+position = Vector2(456, 1708)
+scale = Vector2(1.254, 1.014)
+color = Color(1, 0, 0, 1)
+energy = 4.81
+texture = ExtResource("6_uwkgt")
+texture_scale = 1.48
