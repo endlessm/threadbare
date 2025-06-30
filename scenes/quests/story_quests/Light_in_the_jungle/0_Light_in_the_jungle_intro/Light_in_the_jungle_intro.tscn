@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://ijx5sg631jiu"]
+[gd_scene load_steps=31 format=4 uid="uid://ijx5sg631jiu"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_a2wtj"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_p5rqr"]
@@ -17,7 +17,9 @@
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="19_oitx1"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="20_skm37"]
 [ext_resource type="Resource" uid="uid://dpv4wurvaamhb" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_collected.dialogue" id="21_mvyck"]
+[ext_resource type="Texture2D" uid="uid://m8lfpolrsqgx" path="res://scenes/quests/story_quests/Light_in_the_jungle/assets/component/field_of_view.png" id="22_jw4oh"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="23_et7ri"]
+[ext_resource type="Script" uid="uid://ba8cjp16qc8ay" path="res://scenes/quests/story_quests/Light_in_the_jungle/0_Light_in_the_jungle_intro/Light_in_the_jungle_intro_components/light.gd" id="23_fcl8n"]
 [ext_resource type="Resource" uid="uid://bnr3p42my71nm" path="res://scenes/quests/story_quests/Light_in_the_jungle/0_Light_in_the_jungle_intro/Light_in_the_jungle_intro_components/Light_in_the_jungle_intro.dialogue" id="25_a2wtj"]
 [ext_resource type="PackedScene" uid="uid://buuh0p3bjdpkv" path="res://scenes/game_elements/props/hint/input_key/input_key.tscn" id="26_kuoml"]
 [ext_resource type="Texture2D" uid="uid://cc5wontx8obvi" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Arrow_Right_Key_Dark.png" id="27_kwr88"]
@@ -999,9 +1001,6 @@ position = Vector2(1056, 984)
 [node name="Rock3" parent="Rocks" instance=ExtResource("6_gs4jj")]
 position = Vector2(1184, 776)
 
-[node name="Rock4" parent="Rocks" instance=ExtResource("6_gs4jj")]
-position = Vector2(832, 576)
-
 [node name="Rock5" parent="Rocks" instance=ExtResource("6_gs4jj")]
 position = Vector2(456, 528)
 
@@ -1035,22 +1034,144 @@ y_sort_enabled = true
 [node name="VisibleTeleporter" parent="Fire" instance=ExtResource("18_gnmtp")]
 position = Vector2(1032, 784)
 
+[node name="Light" type="PointLight2D" parent="Fire/VisibleTeleporter"]
+position = Vector2(-171, -60.9999)
+scale = Vector2(0.390898, 0.448381)
+color = Color(1, 0.794927, 0.430618, 1)
+energy = 1.5
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("22_jw4oh")
+offset = Vector2(377.88, 10.7686)
+script = ExtResource("23_fcl8n")
+debug_view = null
+enable_firelight_animation = null
+firelight_preset = "bonfire"
+base_energy = 1.0
+energy_variation = null
+base_texture_scale = null
+scale_variation = null
+flicker_speed = null
+use_circular_texture = false
+
 [node name="VisibleTeleporter2" parent="Fire" instance=ExtResource("18_gnmtp")]
 position = Vector2(616, 800)
 
+[node name="Light" type="PointLight2D" parent="Fire/VisibleTeleporter2"]
+position = Vector2(-113, -57.9999)
+scale = Vector2(0.390898, 0.448381)
+color = Color(1, 0.794927, 0.430618, 1)
+energy = 1.35651
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("22_jw4oh")
+offset = Vector2(377.88, 10.7686)
+texture_scale = 0.928254
+script = ExtResource("23_fcl8n")
+firelight_preset = "bonfire"
+base_energy = 1.5
+energy_variation = 0.5
+scale_variation = 0.25
+flicker_speed = 1.5
+use_circular_texture = false
+
 [node name="VisibleTeleporter6" parent="Fire" instance=ExtResource("18_gnmtp")]
-position = Vector2(664, 488)
+position = Vector2(659, 488)
+
+[node name="Light" type="PointLight2D" parent="Fire/VisibleTeleporter6"]
+position = Vector2(-234, 98)
+scale = Vector2(0.390898, 0.448381)
+color = Color(1, 0.794927, 0.430618, 1)
+energy = 1.48628
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("22_jw4oh")
+offset = Vector2(377.88, 10.7686)
+texture_scale = 0.993142
+script = ExtResource("23_fcl8n")
+firelight_preset = "bonfire"
+base_energy = 1.5
+energy_variation = 0.5
+scale_variation = 0.25
+flicker_speed = 1.5
+use_circular_texture = false
 
 [node name="VisibleTeleporter3" parent="Fire" instance=ExtResource("18_gnmtp")]
 position = Vector2(560, 648)
 
+[node name="Light" type="PointLight2D" parent="Fire/VisibleTeleporter3"]
+position = Vector2(-94, -214)
+scale = Vector2(0.390898, 0.448381)
+color = Color(1, 0.794927, 0.430618, 1)
+energy = 1.40682
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("22_jw4oh")
+offset = Vector2(377.88, 10.7686)
+texture_scale = 0.953412
+script = ExtResource("23_fcl8n")
+firelight_preset = "bonfire"
+base_energy = 1.5
+energy_variation = 0.5
+scale_variation = 0.25
+flicker_speed = 1.5
+use_circular_texture = false
+
 [node name="VisibleTeleporter4" parent="Fire" instance=ExtResource("18_gnmtp")]
 position = Vector2(904, 1088)
+
+[node name="Light" type="PointLight2D" parent="Fire/VisibleTeleporter4"]
+position = Vector2(-157, -62.9999)
+scale = Vector2(0.390898, 0.448381)
+color = Color(1, 0.794927, 0.430618, 1)
+energy = 1.34705
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("22_jw4oh")
+offset = Vector2(377.88, 10.7686)
+texture_scale = 0.923527
+script = ExtResource("23_fcl8n")
+firelight_preset = "bonfire"
+base_energy = 1.5
+energy_variation = 0.5
+scale_variation = 0.25
+flicker_speed = 1.5
+use_circular_texture = false
 
 [node name="VisibleTeleporter5" parent="Fire" instance=ExtResource("18_gnmtp")]
 position = Vector2(992, 528)
 
-[node name="Sign" parent="Fire" instance=ExtResource("19_mk7kg")]
+[node name="Light" type="PointLight2D" parent="Fire/VisibleTeleporter5"]
+position = Vector2(-135, -68.9999)
+scale = Vector2(0.390898, 0.448381)
+color = Color(1, 0.794927, 0.430618, 1)
+energy = 1.60865
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("22_jw4oh")
+offset = Vector2(377.88, 10.7686)
+texture_scale = 1.05432
+script = ExtResource("23_fcl8n")
+firelight_preset = "bonfire"
+base_energy = 1.5
+energy_variation = 0.5
+scale_variation = 0.25
+flicker_speed = 1.5
+use_circular_texture = false
+
+[node name="Sign" parent="." instance=ExtResource("19_mk7kg")]
 position = Vector2(1576, 888)
 
 [node name="Mushrooms" type="Node2D" parent="."]
@@ -1083,6 +1204,9 @@ position = Vector2(736, 1192)
 [node name="HidingMushroom9" parent="Mushrooms" instance=ExtResource("8_kfw15")]
 position = Vector2(1464, 1328)
 
+[node name="Rock4" parent="." instance=ExtResource("6_gs4jj")]
+position = Vector2(832, 576)
+
 [node name="CollectibleItem" parent="." instance=ExtResource("19_oitx1")]
 y_sort_enabled = true
 position = Vector2(1987, 398)
@@ -1094,3 +1218,5 @@ collected_dialogue = ExtResource("21_mvyck")
 script = ExtResource("23_et7ri")
 dialogue = ExtResource("25_a2wtj")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="Ligth" type="Node2D" parent="."]
