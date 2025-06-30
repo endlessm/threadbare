@@ -1,5 +1,6 @@
-[gd_scene load_steps=24 format=4 uid="uid://ijx5sg631jiu"]
+[gd_scene load_steps=27 format=4 uid="uid://ijx5sg631jiu"]
 
+[ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_a2wtj"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_p5rqr"]
 [ext_resource type="SpriteFrames" uid="uid://scdhb6kmfntd" path="res://scenes/quests/story_quests/Light_in_the_jungle/Light_in_the_jungle_player_components/Light_in_the_jungle_player.tres" id="3_skm37"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="3_w305a"]
@@ -14,6 +15,8 @@
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="19_oitx1"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="20_skm37"]
 [ext_resource type="Resource" uid="uid://dpv4wurvaamhb" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_collected.dialogue" id="21_mvyck"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="23_et7ri"]
+[ext_resource type="Resource" uid="uid://bnr3p42my71nm" path="res://scenes/quests/story_quests/Light_in_the_jungle/0_Light_in_the_jungle_intro/Light_in_the_jungle_intro_components/Light_in_the_jungle_intro.dialogue" id="25_a2wtj"]
 [ext_resource type="PackedScene" uid="uid://buuh0p3bjdpkv" path="res://scenes/game_elements/props/hint/input_key/input_key.tscn" id="26_kuoml"]
 [ext_resource type="Texture2D" uid="uid://cc5wontx8obvi" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Arrow_Right_Key_Dark.png" id="27_kwr88"]
 [ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="28_o128v"]
@@ -32,6 +35,13 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 [node name="Intro" type="Node2D"]
 y_sort_enabled = true
 texture_filter = 1
+
+[node name="StealthGameLogic" type="Node" parent="."]
+script = ExtResource("1_a2wtj")
+zoom = 2.0
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.273414, 0.580754, 0.910933, 1)
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -1069,3 +1079,8 @@ position = Vector2(1987, 398)
 next_scene = "uid://5iltaxbei3l8"
 item = SubResource("Resource_et7ri")
 collected_dialogue = ExtResource("21_mvyck")
+
+[node name="Cinematic" type="Node2D" parent="."]
+script = ExtResource("23_et7ri")
+dialogue = ExtResource("25_a2wtj")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
