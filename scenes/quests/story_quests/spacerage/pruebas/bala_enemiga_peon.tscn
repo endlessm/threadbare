@@ -1,10 +1,54 @@
-[gd_scene load_steps=5 format=3 uid="uid://bs43juaapnjap"]
+[gd_scene load_steps=10 format=3 uid="uid://bs43juaapnjap"]
 
 [ext_resource type="Texture2D" uid="uid://bhqanyxhpxpm" path="res://assets/first_party/rocks/Rock_Idle.png" id="1_6veg1"]
 [ext_resource type="Script" uid="uid://dny1qlfwrcdoe" path="res://bala_enemiga_peon.gd" id="1_008v7"]
+[ext_resource type="Texture2D" uid="uid://dokkx1psfsidh" path="res://scenes/quests/story_quests/spacerage/pruebas/flama_Idle.png" id="2_6emsp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h4ekh"]
+atlas = ExtResource("2_6emsp")
+region = Rect2(10, 51, 193, 134)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0wkvl"]
+atlas = ExtResource("2_6emsp")
+region = Rect2(245, 51, 193, 134)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7hhb8"]
+atlas = ExtResource("2_6emsp")
+region = Rect2(480, 51, 193, 134)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_t26vb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h4ekh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0wkvl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7hhb8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h4ekh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0wkvl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7hhb8")
+}],
+"loop": true,
+"name": &"bala_enemiga_animacion",
+"speed": 1.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6emsp"]
-radius = 14.0
+radius = 11.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h4ekh"]
 radius = 11.0
@@ -13,13 +57,20 @@ radius = 11.0
 collision_layer = 0
 script = ExtResource("1_008v7")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-3, 5.51013e-40)
+scale = Vector2(0.352604, 0.383179)
+sprite_frames = SubResource("SpriteFrames_t26vb")
+animation = &"bala_enemiga_animacion"
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(-1, -1)
 scale = Vector2(0.539063, 0.5)
 texture = ExtResource("1_6veg1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-2, -1)
+position = Vector2(-4, 2)
 shape = SubResource("CircleShape2D_6emsp")
 
 [node name="detector_de_daño" type="Area2D" parent="."]
