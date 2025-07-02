@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://dg7ou152hcr5y"]
+[gd_scene load_steps=17 format=4 uid="uid://dg7ou152hcr5y"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_0q3j5"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_sw6ys"]
@@ -12,8 +12,6 @@
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="8_1uowg"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="9_7ddj3"]
 [ext_resource type="Resource" uid="uid://dpv4wurvaamhb" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_collected.dialogue" id="10_06jbt"]
-[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="11_jxoif"]
-[ext_resource type="Resource" uid="uid://cggywn8t6s4le" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_stealth.dialogue" id="12_t8c6v"]
 
 [sub_resource type="Curve2D" id="Curve2D_vnsq3"]
 _data = {
@@ -61,7 +59,6 @@ tile_set = ExtResource("2_sw6ys")
 
 [node name="Player" parent="." instance=ExtResource("3_c4pe5")]
 position = Vector2(131, 463)
-scale = Vector2(2, 2)
 sprite_frames = ExtResource("4_f3yxj")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -90,7 +87,6 @@ curve = SubResource("Curve2D_vnsq3")
 
 [node name="Guard2-RunningInCircles" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("4_e1f5i")]
 position = Vector2(2435, 382)
-scale = Vector2(1.5, 1.5)
 sprite_frames = ExtResource("5_40kab")
 patrol_path = NodePath("../Guard2-RunningPath")
 wait_time = 0.3
@@ -119,12 +115,6 @@ debug_color = Color(0, 0, 0, 0.42)
 
 [node name="CollectibleItem" parent="." instance=ExtResource("8_1uowg")]
 position = Vector2(2335, 955)
-next_scene = "uid://thwcu5akkqp5"
+next_scene = "uid://d0v6d4reibob0"
 item = SubResource("Resource_idy4y")
 collected_dialogue = ExtResource("10_06jbt")
-
-[node name="Cinematic" type="Node2D" parent="."]
-script = ExtResource("11_jxoif")
-dialogue = ExtResource("12_t8c6v")
-next_scene = "uid://d0v6d4reibob0"
-metadata/_custom_type_script = "uid://x1mxt6bmei2o"
