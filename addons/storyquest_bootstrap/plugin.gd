@@ -34,11 +34,11 @@ func _new_storyquest_dialogue() -> void:
 	var filename := title.to_snake_case()
 	var storyquest_path := STORYQUESTS_PATH + filename
 	assert(not FileAccess.file_exists(storyquest_path))
-	_new_storyquest_from_template(title, description, filename, storyquest_path)
+	_new_storyquest_from_template(title, description, storyquest_path)
 
 
 func _new_storyquest_from_template(
-	title: String, description: String, filename: String, storyquest_path: String
+	title: String, description: String, storyquest_path: String
 ) -> void:
 	# TODO: Only for development. Remove.
 	OS.execute("rm", ["-r", "scenes/quests/story_quests/my_quest/"])
@@ -51,15 +51,15 @@ func _new_storyquest_from_template(
 		"/4_template_outro/template_outro_components/"
 	]:
 		error = DirAccess.make_dir_recursive_absolute(
-			storyquest_path + directory.replacen("template", filename)
+			storyquest_path + directory.replacen("template_", "")
 		)
 		assert(error == OK)
 
 	var template_intro_scene_subpath := "/0_template_intro/template_intro.tscn"
-	var intro_scene_subpath := template_intro_scene_subpath.replacen("template", filename)
+	var intro_scene_subpath := template_intro_scene_subpath.replacen("template_", "")
 
 	var template_outro_scene_subpath := "/4_template_outro/template_outro.tscn"
-	var outro_scene_subpath := template_outro_scene_subpath.replacen("template", filename)
+	var outro_scene_subpath := template_outro_scene_subpath.replacen("template_", "")
 
 	var template_intro_scene_uid := ResourceUID.id_to_text(
 		ResourceLoader.get_resource_uid(TEMPLATE_PATH + template_intro_scene_subpath)
@@ -97,7 +97,7 @@ func _new_storyquest_from_template(
 	var template_intro_dialogue_subpath := (
 		"/0_template_intro/" + "template_intro_components/template_intro.dialogue"
 	)
-	var intro_dialogue_subpath := template_intro_dialogue_subpath.replacen("template", filename)
+	var intro_dialogue_subpath := template_intro_dialogue_subpath.replacen("template_", "")
 	var template_intro_dialogue: DialogueResource = ResourceLoader.load(
 		TEMPLATE_PATH + template_intro_dialogue_subpath
 	)
