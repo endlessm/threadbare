@@ -40,6 +40,9 @@ func _new_storyquest_dialogue() -> void:
 func _new_storyquest_from_template(
 	title: String, description: String, filename: String, storyquest_path: String
 ) -> void:
+	# TODO: Only for development. Remove.
+	OS.execute("rm", ["-r", "scenes/quests/story_quests/my_quest/"])
+
 	var error := DirAccess.make_dir_absolute(storyquest_path)
 	assert(error == OK)
 
@@ -106,13 +109,15 @@ func _new_storyquest_from_template(
 	intro_dialogue_file.store_string(template_intro_dialogue.raw_text)
 	intro_dialogue_file.close()
 
-	# TODO: intro_dialogue_uid is invalid because the dialogue is not imported:
-	# Engine.get_meta("DMCache").mark_files_for_reimport([storyquest_path + intro_dialogue_subpath])
-	# EditorInterface.get_resource_filesystem().scan()
-
 	var template_intro_dialogue_uid := ResourceUID.id_to_text(
 		ResourceLoader.get_resource_uid(TEMPLATE_PATH + template_intro_dialogue_subpath)
 	)
+
+	EditorInterface.get_resource_filesystem().update_file(storyquest_path + intro_dialogue_subpath)
+	EditorInterface.get_resource_filesystem().reimport_files(
+		[storyquest_path + intro_dialogue_subpath]
+	)
+
 	var intro_dialogue_uid := ResourceUID.id_to_text(
 		ResourceLoader.get_resource_uid(storyquest_path + intro_dialogue_subpath)
 	)
