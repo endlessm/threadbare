@@ -61,39 +61,6 @@ func _new_storyquest_from_template(
 	var template_outro_scene_subpath := "/4_template_outro/template_outro.tscn"
 	var outro_scene_subpath := template_outro_scene_subpath.replacen("template_", "")
 
-	var template_intro_scene_uid := ResourceUID.id_to_text(
-		ResourceLoader.get_resource_uid(TEMPLATE_PATH + template_intro_scene_subpath)
-	)
-	var intro_scene_uid: String = ResourceUID.id_to_text(ResourceUID.create_id())
-
-	var template_outro_scene_uid := ResourceUID.id_to_text(
-		ResourceLoader.get_resource_uid(TEMPLATE_PATH + template_outro_scene_subpath)
-	)
-	var outro_scene_uid: String = ResourceUID.id_to_text(ResourceUID.create_id())
-
-	var outro_scene_contents = FileAccess.get_file_as_string(
-		TEMPLATE_PATH + template_outro_scene_subpath
-	)
-	outro_scene_contents = outro_scene_contents.replace(template_outro_scene_uid, outro_scene_uid)
-	var outro_scene_file := FileAccess.open(storyquest_path + outro_scene_subpath, FileAccess.WRITE)
-	outro_scene_file.store_string(outro_scene_contents)
-	outro_scene_file.close()
-
-	var intro_scene_contents = FileAccess.get_file_as_string(
-		TEMPLATE_PATH + template_intro_scene_subpath
-	)
-
-	intro_scene_contents = intro_scene_contents.replace(template_intro_scene_uid, intro_scene_uid)
-	var next_scene_match: RegExMatch = _next_scene_regex.search(intro_scene_contents)
-	if next_scene_match:
-		intro_scene_contents = _next_scene_regex.sub(
-			intro_scene_contents, NEXT_SCENE_FORMAT % outro_scene_uid
-		)
-
-	var intro_scene_file := FileAccess.open(storyquest_path + intro_scene_subpath, FileAccess.WRITE)
-	intro_scene_file.store_string(intro_scene_contents)
-	intro_scene_file.close()
-
 	var template_intro_dialogue_subpath := (
 		"/0_template_intro/" + "template_intro_components/template_intro.dialogue"
 	)
@@ -122,7 +89,41 @@ func _new_storyquest_from_template(
 		ResourceLoader.get_resource_uid(storyquest_path + intro_dialogue_subpath)
 	)
 
-	prints(template_intro_dialogue_uid, intro_dialogue_uid)
+	var template_intro_scene_uid := ResourceUID.id_to_text(
+		ResourceLoader.get_resource_uid(TEMPLATE_PATH + template_intro_scene_subpath)
+	)
+	var intro_scene_uid: String = ResourceUID.id_to_text(ResourceUID.create_id())
+
+	var template_outro_scene_uid := ResourceUID.id_to_text(
+		ResourceLoader.get_resource_uid(TEMPLATE_PATH + template_outro_scene_subpath)
+	)
+	var outro_scene_uid: String = ResourceUID.id_to_text(ResourceUID.create_id())
+
+	var outro_scene_contents = FileAccess.get_file_as_string(
+		TEMPLATE_PATH + template_outro_scene_subpath
+	)
+	outro_scene_contents = outro_scene_contents.replace(template_outro_scene_uid, outro_scene_uid)
+	var outro_scene_file := FileAccess.open(storyquest_path + outro_scene_subpath, FileAccess.WRITE)
+	outro_scene_file.store_string(outro_scene_contents)
+	outro_scene_file.close()
+
+	var intro_scene_contents = FileAccess.get_file_as_string(
+		TEMPLATE_PATH + template_intro_scene_subpath
+	)
+
+	intro_scene_contents = intro_scene_contents.replace(template_intro_scene_uid, intro_scene_uid)
+	intro_scene_contents = intro_scene_contents.replace(
+		template_intro_dialogue_uid, intro_dialogue_uid
+	)
+	var next_scene_match: RegExMatch = _next_scene_regex.search(intro_scene_contents)
+	if next_scene_match:
+		intro_scene_contents = _next_scene_regex.sub(
+			intro_scene_contents, NEXT_SCENE_FORMAT % outro_scene_uid
+		)
+
+	var intro_scene_file := FileAccess.open(storyquest_path + intro_scene_subpath, FileAccess.WRITE)
+	intro_scene_file.store_string(intro_scene_contents)
+	intro_scene_file.close()
 
 	var storyquest_resource = Storybook.STORY_QUEST_TEMPLATE.duplicate(true)
 	storyquest_resource.resource_path = storyquest_path + "/" + Storybook.QUEST_RESOURCE_NAME
