@@ -66,7 +66,6 @@ func invert_area_position(area: Area2D) -> void:
 func start_attack_sequence() -> void:
 	is_attacking = true
 	sprite.play("Attack")
-	
 	# Esperar el tiempo de delay antes de activar el hit area
 	await get_tree().create_timer(attack_delay).timeout
 	
@@ -93,7 +92,6 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 	if body.name == "Player":
 		player_detected = true
 		player = body
-		print("Player detectado")
 
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
@@ -118,7 +116,6 @@ func _on_attack_area_body_exited(body: Node2D) -> void:
 		# Si el jugador sale del área, detener cualquier ataque en curso
 		is_attacking = false
 		print("Player fuera de rango de ataque")
-		print("hola")
 
 
 func _on_hit_area_body_entered(body: Node2D) -> void:
