@@ -118,6 +118,7 @@ func _on_attack_area_body_exited(body: Node2D) -> void:
 		# Si el jugador sale del área, detener cualquier ataque en curso
 		is_attacking = false
 		print("Player fuera de rango de ataque")
+		print("hola")
 
 
 func _on_hit_area_body_entered(body: Node2D) -> void:
