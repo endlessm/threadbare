@@ -1,7 +1,6 @@
-[gd_scene load_steps=34 format=4 uid="uid://be2gr1lptrhxu"]
+[gd_scene load_steps=33 format=4 uid="uid://be2gr1lptrhxu"]
 
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_t3ulp"]
-[ext_resource type="Resource" uid="uid://3vrn5jdxov37" path="res://scenes/quests/story_quests/template/2_template_combat/template_combat_components/template_combat.dialogue" id="2_iobvm"]
 [ext_resource type="Resource" uid="uid://c2svjynjjcnrv" path="res://scenes/quests/story_quests/equipo2/2_equipo2_combat/equipo2_combat_components/equipo2_combat.dialogue" id="2_j6s2f"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="3_no3h1"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_grvmp"]
@@ -16,9 +15,9 @@
 [ext_resource type="Texture2D" uid="uid://8ujtwgp8fb1v" path="res://scenes/quests/story_quests/stella/1_stella_stealth/stella_stealth_components/stella_stealth_fire.png" id="10_0konm"]
 [ext_resource type="Texture2D" uid="uid://cw330muutqql7" path="res://assets/third_party/tiny-swords/Deco/05.png" id="10_adm0l"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="10_obsym"]
-[ext_resource type="PackedScene" uid="uid://s6xih4f50q4f" path="res://scenes/quests/story_quests/equipo2/2_equipo2_combat/torre.tscn" id="11_4ch8l"]
+[ext_resource type="PackedScene" uid="uid://s6xih4f50q4f" path="res://scenes/quests/story_quests/equipo2/2_equipo2_combat/equipo2_combat_components/torre.tscn" id="11_4ch8l"]
 [ext_resource type="SpriteFrames" uid="uid://llntds2dh6wr" path="res://scenes/quests/story_quests/equipo2/equipo2_player_components/equipo2_storyweaver.tres" id="12_adm0l"]
-[ext_resource type="PackedScene" uid="uid://dcg0whjjkk2db" path="res://scenes/quests/story_quests/equipo2/2_equipo2_combat/goblin_torre.tscn" id="12_f8rx3"]
+[ext_resource type="PackedScene" uid="uid://dcg0whjjkk2db" path="res://scenes/quests/story_quests/equipo2/2_equipo2_combat/equipo2_combat_components/goblin_torre.tscn" id="12_f8rx3"]
 [ext_resource type="SpriteFrames" uid="uid://c4d8ern43f006" path="res://scenes/quests/story_quests/equipo2/2_equipo2_combat/equipo2_combat_components/equipo2_throwing_enemy.tres" id="13_enq52"]
 [ext_resource type="SpriteFrames" uid="uid://qtq61h7mprbc" path="res://scenes/quests/story_quests/equipo2/2_equipo2_combat/equipo2_combat_components/equipo2_projectile_spriteframes.tres" id="15_4ch8l"]
 [ext_resource type="SpriteFrames" uid="uid://d0ci8wkfqhcai" path="res://scenes/quests/story_quests/equipo2/equipo2_player_components/equipo2_apolo_components/apolo_player.tres" id="15_adm0l"]
@@ -385,14 +384,22 @@ sprite_frames = ExtResource("13_enq52")
 projectile_duration = 2.0
 projectile_sprite_frames = ExtResource("15_4ch8l")
 
+[node name="ThrowingNPC7" parent="OnTheGround" instance=ExtResource("5_ekhpa")]
+position = Vector2(1312, 996)
+sprite_frames = ExtResource("13_enq52")
+projectile_duration = 2.0
+projectile_sprite_frames = ExtResource("15_4ch8l")
+
 [node name="ThrowingNPC4" parent="OnTheGround" instance=ExtResource("5_ekhpa")]
 position = Vector2(993, 1384)
 sprite_frames = ExtResource("13_enq52")
+projectile_speed = 35.0
 projectile_duration = 2.0
 projectile_sprite_frames = ExtResource("15_4ch8l")
 
 [node name="ThrowingNPC5" parent="OnTheGround" instance=ExtResource("5_ekhpa")]
 position = Vector2(864, 1640)
+odd_shoot = true
 sprite_frames = ExtResource("13_enq52")
 projectile_duration = 2.0
 projectile_sprite_frames = ExtResource("15_4ch8l")
@@ -405,13 +412,16 @@ projectile_sprite_frames = ExtResource("15_4ch8l")
 
 [node name="ThrowingNPC2" parent="OnTheGround" instance=ExtResource("5_ekhpa")]
 position = Vector2(872, 1000)
+odd_shoot = true
 sprite_frames = ExtResource("13_enq52")
 projectile_duration = 2.0
 projectile_sprite_frames = ExtResource("15_4ch8l")
 
 [node name="ThrowingNPC3" parent="OnTheGround" instance=ExtResource("5_ekhpa")]
 position = Vector2(1312, 1448)
+odd_shoot = true
 sprite_frames = ExtResource("13_enq52")
+projectile_speed = 35.0
 projectile_duration = 2.0
 projectile_sprite_frames = ExtResource("15_4ch8l")
 
@@ -421,7 +431,7 @@ position = Vector2(1156, 1882)
 revealed = false
 next_scene = "uid://7hehs33no2j3"
 item = SubResource("Resource_a51xm")
-collected_dialogue = ExtResource("2_iobvm")
+collected_dialogue = ExtResource("2_j6s2f")
 dialogue_title = &"well_done"
 
 [node name="Apolo" type="AnimatedSprite2D" parent="OnTheGround"]
