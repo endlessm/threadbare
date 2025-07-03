@@ -26,7 +26,8 @@ const NEIGHBORS := [
 @export_range(10, 100000, 10) var run_speed: float = 500.0
 
 var _moving: bool = false
-var _next_update: float = 1.0
+var _update_interval: float = 10.0 / 60.0
+var _next_update: float
 
 
 func _ready() -> void:
@@ -54,7 +55,7 @@ func _physics_process(delta: float) -> void:
 
 	_next_update -= delta
 	if navigation_agent.is_navigation_finished() or _next_update < 0:
-		_next_update = 1.0
+		_next_update = _update_interval
 		navigation_agent.target_position = player.global_position
 		return
 
