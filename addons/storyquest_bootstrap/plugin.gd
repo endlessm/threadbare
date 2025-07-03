@@ -64,30 +64,45 @@ func _new_storyquest_from_template(
 	var template_intro_dialogue_subpath := (
 		"/0_template_intro/" + "template_intro_components/template_intro.dialogue"
 	)
-	var intro_dialogue_subpath := template_intro_dialogue_subpath.replacen("template_", "")
-	var template_intro_dialogue: DialogueResource = ResourceLoader.load(
-		TEMPLATE_PATH + template_intro_dialogue_subpath
+
+	var template_outro_dialogue_subpath := (
+		"/4_template_outro/" + "template_outro_components/template_outro.dialogue"
 	)
 
-	# Saving the raw text because ResourceSaver.save() fails with ERR_FILE_UNRECOGNIZED
-	var intro_dialogue_file: FileAccess = FileAccess.open(
-		storyquest_path + intro_dialogue_subpath, FileAccess.WRITE
-	)
-	intro_dialogue_file.store_string(template_intro_dialogue.raw_text)
-	intro_dialogue_file.close()
+	var template_dialogue_uids := {}
+	var dialogue_uids := {}
+	var dialogues_per_scene := {
+		"intro": template_intro_dialogue_subpath, "outro": template_outro_dialogue_subpath
+	}
+	for scene in dialogues_per_scene:
+		var template_dialogue_subpath: String = dialogues_per_scene[scene]
+		var dialogue_subpath := template_dialogue_subpath.replacen("template_", "")
 
-	var template_intro_dialogue_uid := ResourceUID.id_to_text(
-		ResourceLoader.get_resource_uid(TEMPLATE_PATH + template_intro_dialogue_subpath)
-	)
+		var template_dialogue: DialogueResource = ResourceLoader.load(
+			TEMPLATE_PATH + template_dialogue_subpath
+		)
 
-	EditorInterface.get_resource_filesystem().update_file(storyquest_path + intro_dialogue_subpath)
-	EditorInterface.get_resource_filesystem().reimport_files(
-		[storyquest_path + intro_dialogue_subpath]
-	)
+		# Saving the raw text because ResourceSaver.save() fails with ERR_FILE_UNRECOGNIZED
+		var dialogue_file: FileAccess = FileAccess.open(
+			storyquest_path + dialogue_subpath, FileAccess.WRITE
+		)
+		dialogue_file.store_string(template_dialogue.raw_text)
+		dialogue_file.close()
 
-	var intro_dialogue_uid := ResourceUID.id_to_text(
-		ResourceLoader.get_resource_uid(storyquest_path + intro_dialogue_subpath)
-	)
+		var template_dialogue_uid := ResourceUID.id_to_text(
+			ResourceLoader.get_resource_uid(TEMPLATE_PATH + template_dialogue_subpath)
+		)
+		template_dialogue_uids[scene] = template_dialogue_uid
+
+		EditorInterface.get_resource_filesystem().update_file(storyquest_path + dialogue_subpath)
+		EditorInterface.get_resource_filesystem().reimport_files(
+			[storyquest_path + dialogue_subpath]
+		)
+
+		var dialogue_uid := ResourceUID.id_to_text(
+			ResourceLoader.get_resource_uid(storyquest_path + dialogue_subpath)
+		)
+		dialogue_uids[scene] = dialogue_uid
 
 	var template_intro_scene_uid := ResourceUID.id_to_text(
 		ResourceLoader.get_resource_uid(TEMPLATE_PATH + template_intro_scene_subpath)
@@ -103,6 +118,9 @@ func _new_storyquest_from_template(
 		TEMPLATE_PATH + template_outro_scene_subpath
 	)
 	outro_scene_contents = outro_scene_contents.replace(template_outro_scene_uid, outro_scene_uid)
+	outro_scene_contents = outro_scene_contents.replace(
+		template_dialogue_uids["outro"], dialogue_uids["outro"]
+	)
 	var outro_scene_file := FileAccess.open(storyquest_path + outro_scene_subpath, FileAccess.WRITE)
 	outro_scene_file.store_string(outro_scene_contents)
 	outro_scene_file.close()
@@ -113,7 +131,7 @@ func _new_storyquest_from_template(
 
 	intro_scene_contents = intro_scene_contents.replace(template_intro_scene_uid, intro_scene_uid)
 	intro_scene_contents = intro_scene_contents.replace(
-		template_intro_dialogue_uid, intro_dialogue_uid
+		template_dialogue_uids["intro"], dialogue_uids["intro"]
 	)
 	var next_scene_match: RegExMatch = _next_scene_regex.search(intro_scene_contents)
 	if next_scene_match:
