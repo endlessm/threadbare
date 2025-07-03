@@ -1,9 +1,9 @@
 [gd_scene load_steps=27 format=3 uid="uid://d30mw6uvpm14u"]
 
-[ext_resource type="Script" uid="uid://bn4t2io0p0c7b" path="res://Scenes/Enemy/enemy.gd" id="1_2t2r4"]
-[ext_resource type="Texture2D" uid="uid://cmuc37qg0hajd" path="res://Assets/Sprites/Enemy/Guardias_Parado.png" id="1_nvvbs"]
-[ext_resource type="Texture2D" uid="uid://djyvj7o0p0roq" path="res://Assets/Sprites/Enemy/Guardias_Caminando.png" id="2_2t2r4"]
-[ext_resource type="Texture2D" uid="uid://bxy5mvsmoymhi" path="res://Assets/Sprites/Enemy/Guardias_Atacando.png" id="2_dmwl5"]
+[ext_resource type="Script" uid="uid://bn4t2io0p0c7b" path="res://scenes/quests/story_quests/inka/1_inka_stealth/inka_stealth_components/inka_enemy/enemy.gd" id="1_2t2r4"]
+[ext_resource type="Texture2D" uid="uid://cmuc37qg0hajd" path="res://scenes/quests/story_quests/inka/1_inka_stealth/inka_stealth_components/inka_enemy/Guardias_Parado.png" id="1_nvvbs"]
+[ext_resource type="Texture2D" uid="uid://djyvj7o0p0roq" path="res://scenes/quests/story_quests/inka/1_inka_stealth/inka_stealth_components/inka_enemy/Guardias_Caminando.png" id="2_2t2r4"]
+[ext_resource type="Texture2D" uid="uid://bxy5mvsmoymhi" path="res://scenes/quests/story_quests/inka/1_inka_stealth/inka_stealth_components/inka_enemy/Guardias_Atacando.png" id="2_dmwl5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r1w2j"]
 atlas = ExtResource("2_dmwl5")
@@ -181,7 +181,16 @@ shape = SubResource("CircleShape2D_dmwl5")
 position = Vector2(-16.5, 4)
 shape = SubResource("RectangleShape2D_d40jh")
 
+[node name="HitArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+position = Vector2(-16.5, 4)
+shape = SubResource("RectangleShape2D_d40jh")
+
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
 [connection signal="body_entered" from="AttackArea" to="." method="_on_attack_area_body_entered"]
 [connection signal="body_exited" from="AttackArea" to="." method="_on_attack_area_body_exited"]
+[connection signal="body_entered" from="HitArea" to="." method="_on_attack_area_body_entered"]
+[connection signal="body_entered" from="HitArea" to="." method="_on_hit_area_body_entered"]
+[connection signal="body_exited" from="HitArea" to="." method="_on_attack_area_body_exited"]
