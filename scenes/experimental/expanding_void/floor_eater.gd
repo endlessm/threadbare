@@ -4,9 +4,13 @@ extends Node
 
 @export var layers_to_destroy: Array[TileMapLayer]
 @export var directions_to_destroy: Array[TileSet.CellNeighbor] = [
+	TileSet.CELL_NEIGHBOR_BOTTOM_RIGHT_CORNER,
 	TileSet.CELL_NEIGHBOR_BOTTOM_SIDE,
+	TileSet.CELL_NEIGHBOR_BOTTOM_LEFT_CORNER,
 	TileSet.CELL_NEIGHBOR_LEFT_SIDE,
+	TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER,
 	TileSet.CELL_NEIGHBOR_TOP_SIDE,
+	TileSet.CELL_NEIGHBOR_TOP_RIGHT_CORNER,
 	TileSet.CELL_NEIGHBOR_RIGHT_SIDE,
 ]
 @export var void_layer: TileMapLayer
@@ -14,8 +18,9 @@ extends Node
 @export var void_terrain_name: String = "Void"
 @export var starting_point: Marker2D
 @export var player: Player
+@export var destroyable_nodes: Node2D
 
-@export_range(0.1, 2, 0.01, "suffix:seconds") var interval = 1.0
+@export_range(0.01, 2, 0.01, "suffix:seconds") var interval = 1.0
 
 var _void_terrain_index: int = -1
 
@@ -63,8 +68,15 @@ func _physics_process(_delta: float) -> void:
 
 func destroy() -> void:
 	for layer: TileMapLayer in layers_to_destroy:
-		layer.set_cells_terrain_connect(_frontier, terrain_set_id, -1)
+		for cell in _frontier:
+			layer.erase_cell(cell)
 	void_layer.set_cells_terrain_connect(_frontier, terrain_set_id, _void_terrain_index)
+	#for cell in _frontier:
+	#void_layer.set_cell(cell, randi_range(9, 12), Vector2i(1, 1), 0)
+	for node: Node2D in destroyable_nodes.get_children():
+		var node_coords := void_layer.local_to_map(void_layer.to_local(node.global_position))
+		if node_coords in _frontier:
+			node.queue_free()
 
 
 func replan() -> void:
