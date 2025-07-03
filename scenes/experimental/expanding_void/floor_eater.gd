@@ -61,11 +61,14 @@ func _physics_process(_delta: float) -> void:
 			SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
 
 
-func _on_timer_timeout() -> void:
-	var new_frontier: Array[Vector2i]
+func destroy() -> void:
 	for layer: TileMapLayer in layers_to_destroy:
 		layer.set_cells_terrain_connect(_frontier, terrain_set_id, -1)
 	void_layer.set_cells_terrain_connect(_frontier, terrain_set_id, _void_terrain_index)
+
+
+func replan() -> void:
+	var new_frontier: Array[Vector2i]
 
 	for tile: Vector2i in _frontier:
 		for direction: TileSet.CellNeighbor in directions_to_destroy:
@@ -80,5 +83,10 @@ func _on_timer_timeout() -> void:
 					break
 
 	_frontier = new_frontier
+
+
+func _on_timer_timeout() -> void:
+	destroy()
+	replan()
 	if not _frontier:
 		_timer.stop()
