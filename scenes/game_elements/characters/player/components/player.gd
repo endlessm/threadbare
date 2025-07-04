@@ -214,3 +214,14 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	else:
 		print("Arma ya recogida")
 	
+
+
+func _on_portal_2_body_entered(body: Node2D) -> void:
+	get_tree().change_scene_to_file("res://scenes/quests/story_quests/spacerage/4_spacerage_outro/template_outro.tscn")
+
+
+func _on_cat_body_entered(body: Node2D) -> void:
+	vida += 10
+	vida = clamp(vida, 0, vida_max)
+	barra_vida.value = vida
+	print("Jugador curo ", 10, " de vida. Le queda ", vida)
