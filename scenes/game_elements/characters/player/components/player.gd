@@ -13,6 +13,7 @@ var arma_recogida := false
 @onready var barra_vida = $julian/vida_barra
 
 var arma = preload("res://scenes/quests/story_quests/spacerage/pruebas/arma_1.tscn")
+@onready var daño_player_sonido = $AudioStreamPlayer2D
 
 
 ## Controls how the player can interact with the world around them.
@@ -189,6 +190,7 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	_walk_sound.stream = walk_sound_stream
 	
 func recibir_daño(cantidad):
+	daño_player_sonido.play()
 	vida -= cantidad
 	vida = clamp(vida, 0, vida_max)
 	barra_vida.value = vida

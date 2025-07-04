@@ -4,9 +4,12 @@ extends Area2D
 @export var vida = 20
 
 @onready var barra_vida = $vida_barra
+@onready var daño_player_sonido = $AudioStreamPlayer2D
+
 
 
 func recibir_daño(cantidad):
+	daño_player_sonido.play()
 	vida -= cantidad
 	vida = clamp(vida, 0, vida_max)
 	barra_vida.value = vida

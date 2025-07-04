@@ -3,6 +3,7 @@ extends Node2D
 @onready var sonido_arma1 = $disparo_arma1
 @onready var mira_disparo = $mira_disparo
 @onready var recarga_arma1 = $recarga_arma1
+@onready var sonido_arma_recarga = $AudioStreamPlayer2D
 
 @export var cargador_max = 12
 var disparos_restantes = cargador_max
@@ -33,6 +34,7 @@ func disparar():
 	disparos_restantes -= 1
 
 func recargar():
+	sonido_arma_recarga.play()
 	recargando = true
 	recarga_arma1.start() 
 	
