@@ -1,5 +1,6 @@
-[gd_scene load_steps=30 format=3 uid="uid://dkl2pkqhm008k"]
+[gd_scene load_steps=37 format=3 uid="uid://dkl2pkqhm008k"]
 
+[ext_resource type="Script" uid="uid://bgeb08k7gr21m" path="res://KILLAWAR_codigo/nivel_1.gd" id="1_7jjxr"]
 [ext_resource type="PackedScene" uid="uid://dtp8ikfxri7po" path="res://KILLAWAR_escenas/chaska.tscn" id="1_r4m2x"]
 [ext_resource type="Texture2D" uid="uid://88ise0gdkubj" path="res://KILLAWAR_recursos/sprites/world_tileset.png" id="2_abaad"]
 [ext_resource type="PackedScene" uid="uid://b40mr0df0axju" path="res://KILLAWAR_escenas/plataforma_movible.tscn" id="2_vpch8"]
@@ -8,6 +9,12 @@
 [ext_resource type="PackedScene" uid="uid://c0qkhnrd5mnsf" path="res://KILLAWAR_escenas/enemigo_roca.tscn" id="6_qsurp"]
 [ext_resource type="PackedScene" uid="uid://cg1hiqgbwsapn" path="res://KILLAWAR_escenas/puas_madera.tscn" id="8_ha0jg"]
 [ext_resource type="PackedScene" uid="uid://cnnkow0koxipe" path="res://KILLAWAR_escenas/cueva.tscn" id="8_mtw0w"]
+[ext_resource type="AudioStream" uid="uid://cyx4iav25gqgj" path="res://KILLAWAR_recursos/music/lost-worlds-adventures-152990.mp3" id="9_ha0jg"]
+[ext_resource type="Texture2D" uid="uid://sbm3g0k5as7u" path="res://assets/third_party/inputs/keyboard-and-mouse/Blanks/Blank_Black_Wide.png" id="10_6r5ni"]
+[ext_resource type="Texture2D" uid="uid://0vklrnace8lu" path="res://assets/third_party/inputs/keyboard-and-mouse/Blanks/Blank_Black_Super_Wide.png" id="11_6vst0"]
+[ext_resource type="FontFile" uid="uid://2outhendp2nm" path="res://KILLAWAR_recursos/fonts/PixelOperator8.ttf" id="12_7jjxr"]
+[ext_resource type="Texture2D" uid="uid://gc5elvp846q2" path="res://KILLAWAR_recursos/sprites/flecha.png" id="13_ehagq"]
+[ext_resource type="Texture2D" uid="uid://bwl2ql5sovvq3" path="res://KILLAWAR_recursos/sprites/texto_PANEL.png" id="15_7jjxr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vpch8"]
 texture = ExtResource("2_abaad")
@@ -412,6 +419,7 @@ _data = {
 }
 
 [node name="Nivel1" type="Node2D"]
+script = ExtResource("1_7jjxr")
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(10, 0)
@@ -428,7 +436,7 @@ position = Vector2(-48, -17)
 [node name="Camera2D" type="Camera2D" parent="Chaska"]
 position = Vector2(-2, -8)
 zoom = Vector2(4, 4)
-limit_left = -233
+limit_left = -230
 limit_top = -333
 limit_right = 3338
 limit_bottom = 47
@@ -721,3 +729,137 @@ position = Vector2(2642, -22)
 [node name="Cueva" parent="." instance=ExtResource("8_mtw0w")]
 position = Vector2(3309, -23)
 next_escene_path = "res://KILLAWAR_escenas/nivel_2.tscn"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_ha0jg")
+volume_db = -10.31
+autoplay = true
+
+[node name="teclado" type="Node2D" parent="."]
+
+[node name="BlankBlackWide" type="Sprite2D" parent="teclado"]
+position = Vector2(-114.125, -128)
+scale = Vector2(0.1675, 0.225)
+texture = ExtResource("10_6r5ni")
+
+[node name="BlankBlackWide2" type="Sprite2D" parent="teclado"]
+position = Vector2(-96.75, -143.75)
+scale = Vector2(0.1675, 0.225)
+texture = ExtResource("10_6r5ni")
+
+[node name="BlankBlackWide3" type="Sprite2D" parent="teclado"]
+position = Vector2(-79.75, -127.75)
+scale = Vector2(0.1675, 0.225)
+texture = ExtResource("10_6r5ni")
+
+[node name="BlankBlackWide4" type="Sprite2D" parent="teclado"]
+position = Vector2(-96.75, -127.75)
+scale = Vector2(0.1675, 0.225)
+texture = ExtResource("10_6r5ni")
+
+[node name="BlankBlackSuperWide" type="Sprite2D" parent="teclado"]
+position = Vector2(-165.75, -128.75)
+scale = Vector2(0.525, 0.3)
+texture = ExtResource("11_6vst0")
+
+[node name="Label" type="Label" parent="teclado"]
+offset_left = -182.75
+offset_top = -132.75
+offset_right = -112.75
+offset_bottom = -116.75
+theme_override_colors/font_color = Color(0.239216, 0.239216, 0.243137, 1)
+theme_override_fonts/font = ExtResource("12_7jjxr")
+theme_override_font_sizes/font_size = 8
+text = "SPACE"
+
+[node name="Label2" type="Label" parent="teclado"]
+offset_left = -193.0
+offset_top = -117.75
+offset_right = -123.0
+offset_bottom = -101.75
+theme_override_colors/font_color = Color(0.4508, 0.4508, 0.46, 1)
+theme_override_fonts/font = ExtResource("12_7jjxr")
+theme_override_font_sizes/font_size = 8
+text = "JUMP"
+
+[node name="Label3" type="Label" parent="teclado"]
+offset_left = -121.0
+offset_top = -116.75
+offset_right = -51.0
+offset_bottom = -100.75
+theme_override_colors/font_color = Color(0.45098, 0.45098, 0.458824, 1)
+theme_override_fonts/font = ExtResource("12_7jjxr")
+theme_override_font_sizes/font_size = 8
+text = "DIRECTIONS"
+
+[node name="Flecha" type="Sprite2D" parent="teclado"]
+modulate = Color(1, 1, 1, 0.313726)
+position = Vector2(-79.75, -127.25)
+scale = Vector2(0.0195313, 0.0136719)
+texture = ExtResource("13_ehagq")
+
+[node name="Flecha3" type="Sprite2D" parent="teclado"]
+modulate = Color(1, 1, 1, 0.313726)
+position = Vector2(-96.7511, -127.379)
+rotation = 1.57365
+scale = Vector2(0.0134371, 0.0136719)
+texture = ExtResource("13_ehagq")
+
+[node name="Flecha5" type="Sprite2D" parent="teclado"]
+modulate = Color(1, 1, 1, 0.313726)
+position = Vector2(-96.75, -143.75)
+rotation = 4.71367
+scale = Vector2(0.0134371, 0.0136719)
+texture = ExtResource("13_ehagq")
+
+[node name="Flecha4" type="Sprite2D" parent="teclado"]
+modulate = Color(1, 1, 1, 0.313726)
+position = Vector2(-113.75, -127.75)
+scale = Vector2(0.0195313, 0.0136719)
+texture = ExtResource("13_ehagq")
+flip_h = true
+
+[node name="TextoPanel" type="Sprite2D" parent="."]
+position = Vector2(-85.1708, -75.875)
+scale = Vector2(0.577964, 0.585784)
+texture = ExtResource("15_7jjxr")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -193.0
+offset_top = -95.0
+offset_right = 618.0
+offset_bottom = -87.0
+theme_override_colors/font_color = Color(0.24, 0.1104, 0.1104, 1)
+theme_override_fonts/font = ExtResource("12_7jjxr")
+theme_override_font_sizes/font_size = 8
+text = "Chaska's brother has disappeared; "
+
+[node name="Label2" type="Label" parent="."]
+offset_left = -193.0
+offset_top = -86.0
+offset_right = 618.0
+offset_bottom = -78.0
+theme_override_colors/font_color = Color(0.24, 0.1104, 0.1104, 1)
+theme_override_fonts/font = ExtResource("12_7jjxr")
+theme_override_font_sizes/font_size = 8
+text = "an evil entity has taken him. "
+
+[node name="Label3" type="Label" parent="."]
+offset_left = -193.0
+offset_top = -77.0
+offset_right = 618.0
+offset_bottom = -69.0
+theme_override_colors/font_color = Color(0.24, 0.1104, 0.1104, 1)
+theme_override_fonts/font = ExtResource("12_7jjxr")
+theme_override_font_sizes/font_size = 8
+text = "Chaska must find him before it's "
+
+[node name="Label4" type="Label" parent="."]
+offset_left = -193.0
+offset_top = -69.0
+offset_right = 618.0
+offset_bottom = -61.0
+theme_override_colors/font_color = Color(0.24, 0.1104, 0.1104, 1)
+theme_override_fonts/font = ExtResource("12_7jjxr")
+theme_override_font_sizes/font_size = 8
+text = "too late."

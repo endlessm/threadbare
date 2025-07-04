@@ -1,0 +1,66 @@
+[gd_scene load_steps=13 format=3 uid="uid://cnkl7bifax6yf"]
+
+[ext_resource type="Script" uid="uid://citdvhqfr1ww2" path="res://enemigo_condor_2.gd" id="1_wbuuw"]
+[ext_resource type="Texture2D" uid="uid://brt0l7j4gf73g" path="res://KILLAWAR_recursos/sprites/condor1.png" id="2_xpm2c"]
+[ext_resource type="Texture2D" uid="uid://cl4bgxps56ttx" path="res://KILLAWAR_recursos/sprites/condor2.png" id="3_hrk03"]
+[ext_resource type="Texture2D" uid="uid://ljux12dr230y" path="res://KILLAWAR_recursos/sprites/condor3.png" id="4_3ni7b"]
+[ext_resource type="Texture2D" uid="uid://bi8hawurk8qt0" path="res://KILLAWAR_recursos/sprites/condor4.png" id="5_r60o4"]
+[ext_resource type="Texture2D" uid="uid://csy24jl77yig3" path="res://KILLAWAR_recursos/sprites/condor5.png" id="6_3c04h"]
+[ext_resource type="Texture2D" uid="uid://ct7upv6dh3ue8" path="res://KILLAWAR_recursos/sprites/condor6.png" id="7_crubh"]
+[ext_resource type="Texture2D" uid="uid://bmq0dvnd4ato6" path="res://KILLAWAR_recursos/sprites/condor7.png" id="8_mxb1g"]
+[ext_resource type="Texture2D" uid="uid://clmjonphctmoj" path="res://KILLAWAR_recursos/sprites/condor8.png" id="9_4b4oo"]
+[ext_resource type="PackedScene" uid="uid://crniss7w6hhvk" path="res://KILLAWAR_escenas/zona_de_muerte.tscn" id="10_38a1m"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qq6ug"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_xpm2c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_hrk03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_3ni7b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_r60o4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_3c04h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_crubh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_mxb1g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_4b4oo")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dgyyh"]
+radius = 6.0
+
+[node name="EnemigoCondor2" type="Node2D"]
+script = ExtResource("1_wbuuw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_qq6ug")
+autoplay = "default"
+frame_progress = 0.693674
+
+[node name="zona_de_muerte" parent="." instance=ExtResource("10_38a1m")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="zona_de_muerte"]
+shape = SubResource("CircleShape2D_dgyyh")
+
+[node name="RayCastderecha" type="RayCast2D" parent="."]
+target_position = Vector2(7, 0)
+
+[node name="RayCastizquierda" type="RayCast2D" parent="."]
+target_position = Vector2(-6, 0)
