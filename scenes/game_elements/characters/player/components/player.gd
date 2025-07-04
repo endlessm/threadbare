@@ -8,8 +8,11 @@ signal mode_changed(mode: Mode)
 @export var vida_max := 20
 var vida: int
 
+var arma_recogida := false
 
 @onready var barra_vida = $julian/vida_barra
+
+var arma = preload("res://scenes/quests/story_quests/spacerage/pruebas/arma_1.tscn")
 
 
 ## Controls how the player can interact with the world around them.
@@ -195,6 +198,16 @@ func recibir_daño(cantidad):
 		print("Jugador murió")
 		queue_free()  
 
-	
-	
+# al entrar al area donde se puede recoger el arma
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if !arma_recogida:
+		print("Picking up gun, first time")
+		var arma_instancia = arma.instantiate()
+		add_child(arma_instancia)
+		arma_instancia.position = Vector2(0,0 )
+		arma_instancia.name = "arma"
+		arma_recogida = true
+		
+	else:
+		print("Arma ya recogida")
 	
