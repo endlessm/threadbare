@@ -9,6 +9,7 @@ extends CharacterBody2D
 @export var bala_escena = preload("res://scenes/quests/story_quests/spacerage/pruebas/bala_enemiga_peon.tscn")
 @export var canIshoot = false
 @export var isTarget = false
+@export var shooting_point = 10
 
 func _ready():
 	tiempo_peon_bala.timeout.connect(_disparar)
@@ -25,7 +26,7 @@ func _disparar():
 	if jugador == null:
 		print("Jugador no encontrado")
 		return
-	if jugador.global_position >= Vector2(2256.683, 368.451):
+	if jugador.global_position.x >= shooting_point && !isTarget:
 		canIshoot = true
 
 	if canIshoot == true:
