@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://bvpd7flewjkle"]
+
+[ext_resource type="Script" uid="uid://dv11604x2etuq" path="res://scenes/game_elements/characters/npcs/shared_components/npc.gd" id="1_h0oj0"]
+[ext_resource type="SpriteFrames" uid="uid://dnswfspgfmqo5" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_red.tres" id="2_b23fb"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
+height = 42.0
+
+[node name="fray_idle" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_h0oj0")
+sprite_frames = ExtResource("2_b23fb")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -30)
+sprite_frames = ExtResource("2_b23fb")
+animation = &"idle"
+frame_progress = 0.948213
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_3vyb7")
