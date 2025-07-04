@@ -64,9 +64,11 @@ var interactive_hint: bool = false:
 
 @onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
 @onready var interact_area: InteractArea = %InteractArea
+@onready var hint_label: Label = $HintLabel
 
 @onready var solved_player: AudioStreamPlayer2D = %SolvedPlayer
 @onready var solved_ambient_player: AudioStreamPlayer2D = %SolvedAmbientPlayer
+
 
 
 func _ready() -> void:
@@ -96,6 +98,16 @@ func set_solved() -> void:
 
 
 func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -> void:
+	if hint_label:
+		hint_label.visible = true
+		await get_tree().create_timer(4.0).timeout
+		hint_label.visible = false
+		var thought_label := $HelenaThoughtLabel
+		if thought_label:
+			thought_label.visible = true
+			await get_tree().create_timer(3.5).timeout
+			thought_label.visible = false
+
 	if sprite_frames.has_animation(&"hint"):
 		animated_sprite.play(&"hint")
 
@@ -103,7 +115,7 @@ func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -
 		demonstrate_sequence.emit()
 	else:
 		demonstration_finished()
-
+	
 
 ## Should be called by the handler of [signal demonstrate_sequence] when the demonstration is
 ## complete.
