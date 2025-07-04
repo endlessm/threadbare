@@ -206,6 +206,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		add_child(arma_instancia)
 		arma_instancia.position = Vector2(0,0 )
 		arma_instancia.name = "arma"
+		$"../TileMapLayers/Stone/Area2D/Sprite2D".visible = false;
 		arma_recogida = true
 		
 	else:
