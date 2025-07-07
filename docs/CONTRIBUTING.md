@@ -130,3 +130,42 @@ happy to help.
 
 For significant contributions, add yourself (or the copyright owner of your
 work, if not you) to the [AUTHORS](../AUTHORS) file.
+
+### AI-generated assets
+
+In general, we prefer that original assets are created by hand. However,
+we do accept AI-generated assets, provided that:
+
+1. the AI tool used is cited in a corresponding `.license` file;
+
+2. the AI tool's terms of use allows the asset to be placed under a suitable
+   license for this project;
+
+3. the commit message or `.license` file describe who used the AI tool, whether
+   the asset is purely AI-generated or whether the creator modified it after
+   generation or provided another asset as input to the AI tool, and ideally the
+   prompt used.
+
+For example, the [main menu
+logo](https://github.com/endlessm/threadbare/blob/main/assets/first_party/logo/threadbare-logo.png)
+was generated with Midjourney, with no modifications. It is accompanied by a [`.license`
+file](https://github.com/endlessm/threadbare/blob/main/assets/first_party/logo/threadbare-logo.png.license)
+which reads:
+
+```
+SPDX-FileCopyrightText: The Threadbare Authors
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+This image was created using Midjourney by Joana Filizola.
+```
+
+The [Midjourney Terms of
+Service](https://docs.midjourney.com/hc/en-us/articles/32083055291277-Terms-of-Service)
+state that:
+
+> You own all Assets You create with the Services to the fullest extent possible
+> under applicable law.
+
+so we are able to place the resulting asset under
+[CC-BY-SA-4.0](../LICENSES/CC-BY-SA-4.0.txt), the preferred asset license for
+this project.
