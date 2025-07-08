@@ -131,6 +131,14 @@ happy to help.
 For significant contributions, add yourself (or the copyright owner of your
 work, if not you) to the [AUTHORS](../AUTHORS) file.
 
+Assets may not knowingly infringe somebody else's intellectual property. For
+example, a hand-drawn illustration of a Star Wars character cannot be accepted
+by the project, even if the illustration itself is your own original work. By
+contrast, fan art based on an original image where the original image is
+licensed under CC-BY-SA-4.0 or another suitable license is allowed by that
+license and so is acceptable, provided the copyright owner of the original work
+is also cited as a joint owner of the fan art.
+
 ### AI-generated assets
 
 In general, we prefer that original assets are created by hand. However,
