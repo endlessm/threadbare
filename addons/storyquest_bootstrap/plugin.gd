@@ -3,12 +3,17 @@
 @tool
 extends EditorPlugin
 
+const NEW_STORYQUEST_DIALOG = preload(
+	"res://addons/storyquest_bootstrap/new_storyquest_dialog.tscn"
+)
+
 const TOOL_MENU_LABEL := "Create StoryQuest from template..."
 
 const STORYQUESTS_PATH := "res://scenes/quests/story_quests/"
 # Using + instead of String.path_join() here because it errors with:
 # Assigned value for constant "TEMPLATE_PATH" isn't a constant expression.
 const TEMPLATE_PATH := STORYQUESTS_PATH + "template/"
+const MIN_TITLE_LENGTH := 4
 
 const NEXT_SCENE_FORMAT = 'next_scene = "%s")'
 const NEXT_SCENE_PATTERN = 'next_scene = "(?<next_scene_uid>[^\\s]*")'
@@ -31,9 +36,11 @@ var template_info := {
 	}
 }
 
+var _new_storyquest_dialog: Window
+
 
 func _enter_tree() -> void:
-	add_tool_menu_item(TOOL_MENU_LABEL, _new_storyquest_dialogue)
+	add_tool_menu_item(TOOL_MENU_LABEL, _open_new_storyquest_dialog)
 
 
 func _exit_tree() -> void:
@@ -41,30 +48,43 @@ func _exit_tree() -> void:
 
 
 func _open_new_storyquest_dialog() -> void:
-	# TODO:
-	# - Open a dialogue and ask the title of the new StoryQuest.
-	# - Derive a filename from the StoryQuest title, and suggest it as folder name.
-	# - Allow editing the folder name, and validate that it's a valid name:
-	# -- Check or force snake_case format.
-	# -- Check that the path doesn't exist.
-	var title := "My quest"
-	var description := "This is a test"
-	var filename := title.to_snake_case()
-	_on_create_storyquest(title, description, filename)
+	_new_storyquest_dialog = NEW_STORYQUEST_DIALOG.instantiate()
+	_new_storyquest_dialog.storyquests_path = STORYQUESTS_PATH
+	_new_storyquest_dialog.validate_title = validate_title
+	_new_storyquest_dialog.validate_filename = validate_filename
+	_new_storyquest_dialog.create_storyquest.connect(_on_create_storyquest)
+	_new_storyquest_dialog.close_requested.connect(_close_dialog)
+	EditorInterface.popup_dialog(_new_storyquest_dialog)
+
+
+func _close_dialog() -> void:
+	_new_storyquest_dialog.queue_free()
+	_new_storyquest_dialog = null
+
+
+func validate_title(title: String) -> PackedStringArray:
+	var errors: PackedStringArray
+	if title.length() < MIN_TITLE_LENGTH:
+		errors.append("⚠ The title length must be bigger than %d." % MIN_TITLE_LENGTH)
+	return errors
+
+
+func validate_filename(filename: String) -> PackedStringArray:
+	var errors: PackedStringArray
+	if DirAccess.dir_exists_absolute(STORYQUESTS_PATH.path_join(filename)):
+		errors.append(
+			"⚠ The StoryQuest folder %s already exists." % STORYQUESTS_PATH.path_join(filename)
+		)
+	return errors
 
 
 func _on_create_storyquest(title: String, description: String, filename: String) -> void:
+	_close_dialog()
+
+	assert(not validate_title(title).size())
+	assert(not validate_filename(filename).size())
+
 	var storyquest_path := STORYQUESTS_PATH.path_join(filename)
-	assert(not FileAccess.file_exists(storyquest_path))
-	_new_storyquest_from_template(title, description, storyquest_path)
-
-
-func _new_storyquest_from_template(
-	title: String, description: String, storyquest_path: String
-) -> void:
-	# TODO: Only for development. Remove.
-	OS.execute("rm", ["-r", "scenes/quests/story_quests/my_quest/"])
-
 	var error := DirAccess.make_dir_absolute(storyquest_path)
 	assert(error == OK)
 
