@@ -5,13 +5,13 @@ extends CharacterBody2D
 const TERRAIN_SET: int = 0
 const VOID_TERRAIN: int = 8
 const NEIGHBORS := [
-	TileSet.CELL_NEIGHBOR_BOTTOM_RIGHT_CORNER,
+	# TileSet.CELL_NEIGHBOR_BOTTOM_RIGHT_CORNER,
 	TileSet.CELL_NEIGHBOR_BOTTOM_SIDE,
-	TileSet.CELL_NEIGHBOR_BOTTOM_LEFT_CORNER,
+	# TileSet.CELL_NEIGHBOR_BOTTOM_LEFT_CORNER,
 	TileSet.CELL_NEIGHBOR_LEFT_SIDE,
-	TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER,
+	# TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER,
 	TileSet.CELL_NEIGHBOR_TOP_SIDE,
-	TileSet.CELL_NEIGHBOR_TOP_RIGHT_CORNER,
+	# TileSet.CELL_NEIGHBOR_TOP_RIGHT_CORNER,
 	TileSet.CELL_NEIGHBOR_RIGHT_SIDE,
 ]
 
@@ -19,6 +19,7 @@ const NEIGHBORS := [
 @export var void_layer: TileMapLayer
 @export var player: Player
 @export var animated_sprite_2d: AnimatedSprite2D
+@export var particles: GPUParticles2D
 @export var navigation_agent: NavigationAgent2D
 @export var destroyable_nodes: Node2D
 
@@ -35,9 +36,12 @@ func _ready() -> void:
 	for layer in layers_to_destroy:
 		assert(layer.global_position == void_layer.global_position)
 
+	particles.emitting = false
+
 
 func start(_dummy: bool) -> void:
 	_moving = true
+	particles.emitting = true
 	animated_sprite_2d.play(&"walk")
 	navigation_agent.target_position = player.global_position
 
@@ -112,6 +116,7 @@ func _process(_delta: float) -> void:
 
 	if dead:
 		_moving = false
+		particles.emitting = false
 		animated_sprite_2d.play(&"alerted")
 		player.mode = Player.Mode.DEFEATED
 		var tween := create_tween()
