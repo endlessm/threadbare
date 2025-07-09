@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://evb46lm6ssu2"]
+
+[ext_resource type="Texture2D" uid="uid://bgxnqey15x485" path="res://scenes/needle.png" id="1_gcph1"]
+[ext_resource type="Script" uid="uid://dabvr3pqmyya4" path="res://scenes/hookable_area.gd" id="2_bfd1i"]
+
+[sub_resource type="GDScript" id="GDScript_bfd1i"]
+script/source = "extends StaticBody2D
+
+
+@export var disable_ground_collider: bool = false
+
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+
+func _ready() -> void:
+	collision_shape_2d.disabled = disable_ground_collider
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bfd1i"]
+size = Vector2(50, 76)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gcph1"]
+
+[node name="Needle" type="StaticBody2D"]
+collision_layer = 16
+collision_mask = 0
+script = SubResource("GDScript_bfd1i")
+disable_ground_collider = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -32)
+texture = ExtResource("1_gcph1")
+
+[node name="HookableArea" type="Area2D" parent="."]
+collision_layer = 4096
+collision_mask = 0
+script = ExtResource("2_bfd1i")
+autopull = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea"]
+position = Vector2(0, -28)
+shape = SubResource("RectangleShape2D_bfd1i")
+debug_color = Color(0.689707, 0.288376, 1, 0.42)
+
+[node name="Marker2D" type="Marker2D" parent="HookableArea"]
+position = Vector2(0, -36)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_gcph1")
