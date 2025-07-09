@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=36 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/game_elements/characters/player/components/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/template_player_components/template_player.tres" id="2_blfj0"]
@@ -12,7 +12,9 @@
 [ext_resource type="Texture2D" uid="uid://dda0lxfswrncy" path="res://scenes/game_elements/characters/player/components/repel.png" id="9_je7p5"]
 [ext_resource type="AudioStream" uid="uid://crfylo055wa8e" path="res://scenes/game_elements/characters/player/components/repel.wav" id="10_fm80t"]
 [ext_resource type="AudioStream" uid="uid://cx6jv2cflrmqu" path="res://assets/third_party/sounds/characters/player/Foot.ogg" id="11_blfj0"]
+[ext_resource type="Script" uid="uid://b7704hdflt5t8" path="res://scenes/game_elements/characters/player/components/player_hook.gd" id="11_nrnyj"]
 [ext_resource type="Texture2D" uid="uid://dxaq5piwxqnht" path="res://scenes/game_elements/characters/player/components/dust.png" id="12_3in67"]
+[ext_resource type="Texture2D" uid="uid://cchrnxunruf23" path="res://scenes/hook-arrow.png" id="12_4nivu"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_j0tly"]
 blend_mode = 1
@@ -647,6 +649,14 @@ unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_1n58k")
 }
+
+[node name="PlayerHook" type="Node2D" parent="."]
+position = Vector2(0, -20)
+script = ExtResource("11_nrnyj")
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerHook"]
+position = Vector2(51, 0)
+texture = ExtResource("12_4nivu")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 visible = false
