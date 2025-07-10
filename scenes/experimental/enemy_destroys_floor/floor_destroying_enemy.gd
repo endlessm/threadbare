@@ -85,7 +85,6 @@ func _process(_delta: float) -> void:
 	if not _moving:
 		return
 
-	var dead := false
 	var coord := hacky_water_layer.local_to_map(hacky_water_layer.to_local(global_position))
 	var coords: Array[Vector2i] = [coord]
 	for neighbor: int in NEIGHBORS:
@@ -96,12 +95,6 @@ func _process(_delta: float) -> void:
 		if not _has_tile(c):
 			coords.remove_at(i)
 		else:
-			var player_coords := hacky_water_layer.local_to_map(
-				hacky_water_layer.to_local(player.global_position)
-			)
-			if c == player_coords:
-				dead = true
-
 			for node: Node2D in destroyable_nodes.get_children():
 				var node_coords := hacky_water_layer.local_to_map(
 					hacky_water_layer.to_local(node.global_position)
@@ -115,12 +108,19 @@ func _process(_delta: float) -> void:
 		for c in coords:
 			hacky_water_layer.set_cell(c, 0, Vector2i(0, 0), 0)
 
-	if dead:
-		_moving = false
-		#particles.emitting = false
-		animated_sprite_2d.play(&"alerted")
-		player.mode = Player.Mode.DEFEATED
-		var tween := create_tween()
-		tween.tween_property(player, "scale", Vector2.ZERO, 2.0)
-		await get_tree().create_timer(2.0).timeout
-		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+
+func _on_player_capture_area_body_entered(body: Node2D) -> void:
+	if body != player:
+		return
+
+	if not _moving:
+		return
+
+	_moving = false
+	#particles.emitting = false
+	animated_sprite_2d.play(&"alerted")
+	player.mode = Player.Mode.DEFEATED
+	var tween := create_tween()
+	tween.tween_property(player, "scale", Vector2.ZERO, 2.0)
+	await get_tree().create_timer(2.0).timeout
+	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
