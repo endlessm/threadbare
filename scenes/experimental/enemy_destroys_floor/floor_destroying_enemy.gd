@@ -15,8 +15,7 @@ const NEIGHBORS := [
 	TileSet.CELL_NEIGHBOR_RIGHT_SIDE,
 ]
 
-@export var layers_to_destroy: Array[TileMapLayer]
-@export var hacky_water_layer: TileMapLayer
+@export var void_layer: TileMapLayer
 @export var player: Player
 @export var animated_sprite_2d: AnimatedSprite2D
 @export var particles: GPUParticles2D
@@ -32,10 +31,6 @@ var _next_update: float
 
 
 func _ready() -> void:
-	# Simplifies matching up tile coordinates; could be relaxed later
-	for layer in layers_to_destroy:
-		assert(layer.global_position == hacky_water_layer.global_position)
-
 	particles.emitting = false
 
 
@@ -72,41 +67,33 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-func _has_tile(coord: Vector2i) -> bool:
-	for layer in layers_to_destroy:
-		var source_id := layer.get_cell_source_id(coord)
-		if source_id != -1:
-			return true
-
-	return false
-
-
 func _process(_delta: float) -> void:
 	if not _moving:
 		return
 
-	var coord := hacky_water_layer.local_to_map(hacky_water_layer.to_local(global_position))
+	var coord := void_layer.local_to_map(void_layer.to_local(global_position))
 	var coords: Array[Vector2i] = [coord]
+	# TODO: this looks bad because as soon as the enemy enters the left-hand
+	# edge of tile (x, y) they destroy tile (x+1, y).
+	# It would look better if it was based on distance to the centre of the
+	# enemy/how much of the area of destruction covers the target tile.
 	for neighbor: int in NEIGHBORS:
-		coords.append(hacky_water_layer.get_neighbor_cell(coord, neighbor))
+		coords.append(void_layer.get_neighbor_cell(coord, neighbor))
 
 	for i in range(coords.size() - 1, -1, -1):
 		var c: Vector2i = coords[i]
-		if not _has_tile(c):
+
+		if void_layer.get_cell_source_id(c) != -1:
 			coords.remove_at(i)
-		else:
-			for node: Node2D in destroyable_nodes.get_children():
-				var node_coords := hacky_water_layer.local_to_map(
-					hacky_water_layer.to_local(node.global_position)
-				)
-				if c == node_coords:
-					node.queue_free()
+			continue
+
+		for node: Node2D in destroyable_nodes.get_children():
+			var node_coords := void_layer.local_to_map(void_layer.to_local(node.global_position))
+			if c == node_coords:
+				node.queue_free()
 
 	if coords:
-		for layer in layers_to_destroy:
-			layer.set_cells_terrain_connect(coords, TERRAIN_SET, -1)
-		for c in coords:
-			hacky_water_layer.set_cell(c, 0, Vector2i(0, 0), 0)
+		void_layer.set_cells_terrain_connect(coords, TERRAIN_SET, VOID_TERRAIN)
 
 
 func _on_player_capture_area_body_entered(body: Node2D) -> void:
