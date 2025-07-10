@@ -16,7 +16,7 @@ const NEIGHBORS := [
 ]
 
 @export var layers_to_destroy: Array[TileMapLayer]
-@export var void_layer: TileMapLayer
+@export var hacky_water_layer: TileMapLayer
 @export var player: Player
 @export var animated_sprite_2d: AnimatedSprite2D
 @export var particles: GPUParticles2D
@@ -34,7 +34,7 @@ var _next_update: float
 func _ready() -> void:
 	# Simplifies matching up tile coordinates; could be relaxed later
 	for layer in layers_to_destroy:
-		assert(layer.global_position == void_layer.global_position)
+		assert(layer.global_position == hacky_water_layer.global_position)
 
 	particles.emitting = false
 
@@ -86,25 +86,25 @@ func _process(_delta: float) -> void:
 		return
 
 	var dead := false
-	var coord := void_layer.local_to_map(void_layer.to_local(global_position))
+	var coord := hacky_water_layer.local_to_map(hacky_water_layer.to_local(global_position))
 	var coords: Array[Vector2i] = [coord]
 	for neighbor: int in NEIGHBORS:
-		coords.append(void_layer.get_neighbor_cell(coord, neighbor))
+		coords.append(hacky_water_layer.get_neighbor_cell(coord, neighbor))
 
 	for i in range(coords.size() - 1, -1, -1):
 		var c: Vector2i = coords[i]
 		if not _has_tile(c):
 			coords.remove_at(i)
 		else:
-			var player_coords := void_layer.local_to_map(
-				void_layer.to_local(player.global_position)
+			var player_coords := hacky_water_layer.local_to_map(
+				hacky_water_layer.to_local(player.global_position)
 			)
 			if c == player_coords:
 				dead = true
 
 			for node: Node2D in destroyable_nodes.get_children():
-				var node_coords := void_layer.local_to_map(
-					void_layer.to_local(node.global_position)
+				var node_coords := hacky_water_layer.local_to_map(
+					hacky_water_layer.to_local(node.global_position)
 				)
 				if c == node_coords:
 					node.queue_free()
@@ -112,11 +112,12 @@ func _process(_delta: float) -> void:
 	if coords:
 		for layer in layers_to_destroy:
 			layer.set_cells_terrain_connect(coords, TERRAIN_SET, -1)
-		void_layer.set_cells_terrain_connect(coords, TERRAIN_SET, VOID_TERRAIN)
+		for c in coords:
+			hacky_water_layer.set_cell(c, 0, Vector2i(0, 0), 0)
 
 	if dead:
 		_moving = false
-		particles.emitting = false
+		#particles.emitting = false
 		animated_sprite_2d.play(&"alerted")
 		player.mode = Player.Mode.DEFEATED
 		var tween := create_tween()
