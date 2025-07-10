@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://b8aheoch2m7t1" path="res://scenes/simulate_touch_controls.gd" id="4_b0nem"]
 [ext_resource type="Script" uid="uid://bnl4n5u8plpys" path="res://scenes/analog_control.gd" id="4_vephn"]
 [ext_resource type="Texture2D" uid="uid://q3c2qavtccvu" path="res://scenes/hook-string.png" id="4_x0xbu"]
-[ext_resource type="Texture2D" uid="uid://bgxnqey15x485" path="res://scenes/needle.png" id="5_7qr1p"]
+[ext_resource type="PackedScene" uid="uid://fl5am43g7j1h" path="res://scenes/needle.tscn" id="5_7qr1p"]
 
 [sub_resource type="GDScript" id="GDScript_m0rpm"]
 script/source = "extends Node2D
@@ -84,6 +84,8 @@ func _on_control_right_analog_input(analog: Vector2, _activated: bool) -> void:
 
 
 func _process(_delta: float) -> void:
+	if player.position.is_equal_approx(string.points[-1]):
+		return
 	var previous_length = Vector2(string.points[-1] - string.points[-2]).length()
 	string.points[-1] = player.position + Vector2(0, -20.) - string.position
 	var new_length = Vector2(string.points[-1] - string.points[-2]).length()
@@ -133,33 +135,26 @@ sprite_frames = ExtResource("2_0bhed")
 zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 
-[node name="Sprite2D" type="Sprite2D" parent="OnTheGround"]
-position = Vector2(617, 285)
-texture = ExtResource("5_7qr1p")
+[node name="Needle" parent="OnTheGround" instance=ExtResource("5_7qr1p")]
+position = Vector2(617, 319)
 
-[node name="Sprite2D2" type="Sprite2D" parent="OnTheGround"]
-position = Vector2(786, 397)
-texture = ExtResource("5_7qr1p")
+[node name="Needle2" parent="OnTheGround" instance=ExtResource("5_7qr1p")]
+position = Vector2(785, 432)
 
-[node name="Sprite2D3" type="Sprite2D" parent="OnTheGround"]
-position = Vector2(719, 489)
-texture = ExtResource("5_7qr1p")
+[node name="Needle3" parent="OnTheGround" instance=ExtResource("5_7qr1p")]
+position = Vector2(719, 523)
 
-[node name="Sprite2D4" type="Sprite2D" parent="OnTheGround"]
-position = Vector2(283, 125)
-texture = ExtResource("5_7qr1p")
+[node name="Needle4" parent="OnTheGround" instance=ExtResource("5_7qr1p")]
+position = Vector2(231, 161)
 
-[node name="Sprite2D5" type="Sprite2D" parent="OnTheGround"]
-position = Vector2(-28, 211)
-texture = ExtResource("5_7qr1p")
+[node name="Needle5" parent="OnTheGround" instance=ExtResource("5_7qr1p")]
+position = Vector2(39, 268)
 
-[node name="Sprite2D7" type="Sprite2D" parent="OnTheGround"]
-position = Vector2(-24, 467)
-texture = ExtResource("5_7qr1p")
+[node name="Needle6" parent="OnTheGround" instance=ExtResource("5_7qr1p")]
+position = Vector2(147, 362)
 
-[node name="Sprite2D6" type="Sprite2D" parent="OnTheGround"]
-position = Vector2(47, 348)
-texture = ExtResource("5_7qr1p")
+[node name="Needle7" parent="OnTheGround" instance=ExtResource("5_7qr1p")]
+position = Vector2(57, 418)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
