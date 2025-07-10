@@ -88,6 +88,9 @@ tile_set = ExtResource("1_0gjk4")
 tile_map_data = PackedByteArray("AAAuAB0AAwACAAMAAAAvAB0AAwACAAMAAAAwAB0AAwACAAMAAAAxAB0AAwACAAMAAAAyAB0AAwACAAMAAAAzAB0AAwACAAMAAAA=")
 tile_set = ExtResource("1_0gjk4")
 
+[node name="HackyWaterLayer" type="TileMapLayer" parent="TileMapLayers"]
+tile_set = ExtResource("1_0gjk4")
+
 [node name="OnTheGround" type="Node2D" parent="."]
 y_sort_enabled = true
 
@@ -121,19 +124,33 @@ position = Vector2(1533.62, 2905.31)
 [node name="HidingMushroom2" parent="OnTheGround/DestroyableNodes" instance=ExtResource("9_05yrb")]
 position = Vector2(1680.03, 3042.94)
 
-[node name="FloorDestroyingEnemy" type="CharacterBody2D" parent="OnTheGround" node_paths=PackedStringArray("layers_to_destroy", "void_layer", "player", "animated_sprite_2d", "particles", "navigation_agent", "destroyable_nodes")]
+[node name="Tree" parent="OnTheGround/DestroyableNodes" instance=ExtResource("12_u00aj")]
+position = Vector2(1694.09, 2216.03)
+scale = Vector2(1.15556, 1.11648)
+
+[node name="Tree2" parent="OnTheGround/DestroyableNodes" instance=ExtResource("12_u00aj")]
+position = Vector2(1442.71, 2845.47)
+scale = Vector2(0.946809, 0.922672)
+
+[node name="Tree3" parent="OnTheGround/DestroyableNodes" instance=ExtResource("12_u00aj")]
+position = Vector2(1567.42, 2594.08)
+scale = Vector2(0.913911, 0.870997)
+
+[node name="Tree4" parent="OnTheGround/DestroyableNodes" instance=ExtResource("12_u00aj")]
+position = Vector2(1243.94, 1964.65)
+scale = Vector2(0.93534, 0.971438)
+
+[node name="FloorDestroyingEnemy" type="CharacterBody2D" parent="OnTheGround" node_paths=PackedStringArray("layers_to_destroy", "hacky_water_layer", "player", "animated_sprite_2d", "particles", "navigation_agent", "destroyable_nodes")]
 position = Vector2(1052, 3106)
 motion_mode = 1
 script = ExtResource("8_u00aj")
 layers_to_destroy = [NodePath("../../TileMapLayers/Grass"), NodePath("../../TileMapLayers/Cliffs")]
-void_layer = NodePath("../../TileMapLayers/Void")
+hacky_water_layer = NodePath("../../TileMapLayers/HackyWaterLayer")
 player = NodePath("../Player")
 animated_sprite_2d = NodePath("AnimatedSprite2D")
 particles = NodePath("GPUParticles2D")
 navigation_agent = NodePath("NavigationAgent2D")
 destroyable_nodes = NodePath("../DestroyableNodes")
-walk_speed = 250.0
-run_speed = 350.0
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="OnTheGround/FloorDestroyingEnemy"]
 amount = 10
