@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://bm4ewr8p48x0i"]
+[gd_scene load_steps=25 format=4 uid="uid://bm4ewr8p48x0i"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_0gjk4"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_8g3pn"]
@@ -46,6 +46,9 @@ alpha_curve = SubResource("CurveTexture_rrhr1")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8g3pn"]
 size = Vector2(68, 20)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8l6e1"]
+radius = 72.0
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_05yrb"]
 vertices = PackedVector2Array(2931.99, 2055.53, 2862.41, 2750.37, 2319.96, 3277.97, 625.969, 3269.05, 624, 2448.72, 765.672, 1466.92, 2928.06, 1449.08)
@@ -170,6 +173,13 @@ shape = SubResource("RectangleShape2D_8g3pn")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="OnTheGround/FloorDestroyingEnemy"]
 debug_enabled = true
 
+[node name="PlayerCaptureArea" type="Area2D" parent="OnTheGround/FloorDestroyingEnemy"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FloorDestroyingEnemy/PlayerCaptureArea"]
+shape = SubResource("CircleShape2D_8l6e1")
+debug_color = Color(0.911153, 9.95344e-05, 0.727585, 0.42)
+
 [node name="Sign" parent="OnTheGround" instance=ExtResource("10_v2yi1")]
 position = Vector2(2817, 1776)
 direction = 1
@@ -252,3 +262,4 @@ navigation_polygon = SubResource("NavigationPolygon_05yrb")
 [node name="HUD" parent="." instance=ExtResource("17_8l6e1")]
 
 [connection signal="toggled" from="OnTheGround/DestroyableNodes/Lever1" to="OnTheGround/FloorDestroyingEnemy" method="start"]
+[connection signal="body_entered" from="OnTheGround/FloorDestroyingEnemy/PlayerCaptureArea" to="OnTheGround/FloorDestroyingEnemy" method="_on_player_capture_area_body_entered"]
