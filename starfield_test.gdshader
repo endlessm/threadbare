@@ -14,7 +14,7 @@ void fragment() {
 		vec2 uv = UV;
 		uv.x *= resolution.x / resolution.y;
 		float stars = 0.0;
-		stars += step(0.2, pow(texture(noise_texture, uv).r, density));
+		stars += step(0.2, pow(texture(noise_texture, uv + (camera_pos / resolution)).r, density));
 		COLOR = vec4(vec3(stars), 1.0);
 	} else {
 		COLOR.a = 0.0;

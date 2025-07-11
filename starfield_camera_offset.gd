@@ -6,4 +6,8 @@ extends Node
 
 
 func _process(_delta: float) -> void:
-	(get_parent().material as ShaderMaterial).set_shader_parameter("camera_pos", camera.position)
+	print(get_viewport().canvas_transform)
+
+	(get_parent().material as ShaderMaterial).set_shader_parameter(
+		"camera_pos", get_viewport().canvas_transform.origin
+	)
