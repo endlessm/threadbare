@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://fl5am43g7j1h"]
+
+[ext_resource type="Texture2D" uid="uid://bgxnqey15x485" path="res://scenes/needle.png" id="1_gcph1"]
+[ext_resource type="Script" uid="uid://dabvr3pqmyya4" path="res://scenes/hookable_area.gd" id="2_bfd1i"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gcph1"]
+radius = 32.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gcph1"]
+
+[node name="Needle" type="StaticBody2D"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -32)
+texture = ExtResource("1_gcph1")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4096
+collision_mask = 0
+script = ExtResource("2_bfd1i")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -48)
+shape = SubResource("CircleShape2D_gcph1")
+debug_color = Color(0.689707, 0.288376, 1, 0.42)
+
+[node name="Marker2D" type="Marker2D" parent="Area2D"]
+position = Vector2(0, -36)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_gcph1")

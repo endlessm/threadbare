@@ -1,0 +1,134 @@
+class_name PlayerHook
+extends Node2D
+
+signal string_thrown
+
+const STRING_THROW_LENGTH: float = 200
+const PULL_VELOCITY: float = 1500
+const NON_WALKABLE_FLOOR_LAYER: int = 10
+
+@export var hook_string_texture: Texture2D = preload("res://scenes/hook-string.png")
+
+var hooked: bool = false
+var pulling: bool = false
+var hook_angle: float
+var hook_string: Line2D
+
+@onready var player: Player = self.owner as Player
+@onready var ray_cast_2d: RayCast2D = $RayCast2D
+@onready var sprite_2d: Sprite2D = $Sprite2D
+
+
+func _ready() -> void:
+	ray_cast_2d.target_position = Vector2(STRING_THROW_LENGTH, 0)
+
+
+func throw_string() -> void:
+	if not ray_cast_2d.is_colliding():
+		pass
+		# return
+	var hookable = ray_cast_2d.get_collider() as HookableArea
+
+	string_thrown.emit()
+
+	var p: Vector2
+	if hookable:
+		hooked = true
+		p = hookable.get_hooking_point() - player.global_position - position
+	else:
+		hooked = false
+		p = Vector2(STRING_THROW_LENGTH, 0).rotated(hook_angle)
+
+	if hook_string:
+		hook_string.queue_free()
+
+	hook_string = Line2D.new()
+	hook_string.width = 16
+	hook_string.texture = hook_string_texture
+	hook_string.texture_mode = Line2D.LINE_TEXTURE_TILE
+	hook_string.joint_mode = Line2D.LINE_JOINT_ROUND
+	hook_string.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+	hook_string.add_point(p)
+	hook_string.add_point(Vector2.ZERO)
+	player.add_sibling(hook_string)
+	hook_string.owner = player.owner
+	hook_string.position = player.position + position
+
+
+func remove_string() -> void:
+	if pulling:
+		return
+	if hook_string:
+		hook_string.queue_free()
+	hooked = false
+
+
+func pull_string() -> void:
+	pulling = true
+	player.set_collision_mask_value(NON_WALKABLE_FLOOR_LAYER, false)
+
+
+func stop_pulling() -> void:
+	player.set_collision_mask_value(NON_WALKABLE_FLOOR_LAYER, true)
+	pulling = false
+	remove_string()
+
+
+func _unhandled_input(_event: InputEvent) -> void:
+	if Input.is_action_just_pressed(&"repel") and hook_string:
+		remove_string()
+		return
+
+	if Input.is_action_just_pressed(&"throw"):
+		if hooked:
+			pull_string()
+		else:
+			throw_string()
+		return
+
+	var axis: Vector2
+	if _event is InputEventMouseMotion:
+		axis = get_global_mouse_position() - global_position
+	else:
+		axis = Input.get_vector(&"hook_left", &"hook_right", &"hook_up", &"hook_down")
+
+	if not axis.is_zero_approx():
+		hook_angle = axis.angle()
+
+
+func _process(delta: float) -> void:
+	rotation = hook_angle
+	if ray_cast_2d.is_colliding():
+		sprite_2d.modulate = Color.WHITE
+	else:
+		sprite_2d.modulate = Color(Color.WHITE, 0.2)
+
+	if hook_string:
+		hook_string.points[-1] = player.position + position - hook_string.position
+
+		if not hooked:
+			hook_string.points[0] = hook_string.points[0].move_toward(
+				hook_string.points[-1], delta * 500
+			)
+
+	if pulling:
+		var v: Vector2 = hook_string.points[0] - hook_string.points[-1]
+		if v.length_squared() < 1000:
+			player.velocity = Vector2.ZERO
+			stop_pulling()
+			return
+
+		player.velocity = v.normalized() * PULL_VELOCITY
+		player.move_and_slide()
+
+		var stuck_tolerance = 400.0
+		var collision: KinematicCollision2D = player.get_last_slide_collision()
+		if (
+			collision
+			and (
+				collision.get_travel().length_squared()
+				< collision.get_remainder().length_squared() / stuck_tolerance
+			)
+		):
+			player.velocity = Vector2.ZERO
+			stop_pulling()

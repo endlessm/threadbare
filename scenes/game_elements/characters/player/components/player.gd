@@ -51,6 +51,7 @@ var input_vector: Vector2
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: Node2D = %PlayerFighting
+@onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
@@ -138,6 +139,10 @@ func is_running() -> bool:
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
+		return
+
+	if player_hook.pulling:
+		# TODO: movement handled in PlayerHook _process
 		return
 
 	if player_interaction.is_interacting or mode == Mode.DEFEATED:
