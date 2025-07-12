@@ -1,11 +1,10 @@
-[gd_scene load_steps=12 format=4 uid="uid://d1o1hx0x80d5k"]
+[gd_scene load_steps=11 format=4 uid="uid://d1o1hx0x80d5k"]
 
 [ext_resource type="Shader" uid="uid://l5pb8umik6s6" path="res://starfield_test.gdshader" id="1_4oyo3"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_ebh07"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_bmckr"]
 [ext_resource type="SpriteFrames" uid="uid://07di3updrwh0" path="res://scenes/game_elements/characters/shared_components/sprite_frames/storyweaver_purple.tres" id="3_or6yk"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="3_xager"]
-[ext_resource type="Script" uid="uid://brfa0i43lh1xf" path="res://starfield_chroma_key.gd" id="4_kv6pk"]
 [ext_resource type="PackedScene" uid="uid://bbsc3wssndtfe" path="res://scenes/game_elements/props/decoration/hiding_mushroom/hiding_mushroom.tscn" id="4_or6yk"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="7_04s7k"]
 
@@ -22,7 +21,6 @@ shader_parameter/resolution = Vector2(1920, 1080)
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_bmckr")
 shader_parameter/density = 20.0
 shader_parameter/chroma_key = Color(0.0862745, 0.109804, 0.180392, 1)
-shader_parameter/camera_pos = Vector2(0, 0)
 
 [node name="Node2D" type="Node2D"]
 
@@ -37,6 +35,7 @@ tile_map_data = PackedByteArray("AAD8//3/BAABAAEAAAD9//3/BAABAAIAAAD9//7/BAABAAM
 tile_set = ExtResource("1_ebh07")
 
 [node name="Void" type="TileMapLayer" parent="TileMapLayers"]
+material = SubResource("ShaderMaterial_4wj8d")
 tile_map_data = PackedByteArray("AAABAAIACAABAAEAAAABAAMACAABAAEAAAABAAQACAABAAEAAAABAAUACAABAAEAAAABAAYACAABAAEAAAABAAcACAABAAEAAAACAAIACAABAAEAAAACAAMACAABAAEAAAACAAQACAABAAEAAAACAAUACAABAAEAAAACAAYACAABAAEAAAACAAcACAABAAEAAAADAAIACAABAAEAAAADAAMACAABAAEAAAADAAQADAACAAEAAAADAAUADAACAAEAAAADAAYACAABAAEAAAADAAcACAABAAEAAAAEAAIACAABAAEAAAAEAAMACAABAAIAAAAEAAYACgABAAAAAAAEAAcACAABAAEAAAAFAAIACAABAAEAAAAFAAMACQABAAIAAAAFAAYADAABAAAAAAAFAAcACAABAAEAAAAGAAIACAABAAEAAAAGAAMACAABAAIAAAAGAAYACgABAAAAAAAGAAcACAABAAEAAAAHAAIACAABAAEAAAAHAAMACAABAAIAAAAHAAYACgABAAAAAAAHAAcACAABAAEAAAAIAAIACAABAAEAAAAIAAMADAABAAIAAAAIAAYACwABAAAAAAAIAAcACAABAAEAAAAJAAIACAABAAEAAAAJAAMACwABAAIAAAAJAAYACAABAAAAAAAJAAcACAABAAEAAAAKAAIACAABAAEAAAAKAAMACQABAAIAAAAKAAYACAABAAAAAAAKAAcACAABAAEAAAALAAIACAABAAEAAAALAAMACAABAAEAAAALAAQACgAAAAIAAAALAAYACwABAAAAAAALAAcACAABAAEAAAAMAAIACgACAAEAAAAMAAMACwACAAEAAAAMAAQACwACAAIAAAAMAAYACgABAAAAAAAMAAcACAABAAEAAAANAAYACgABAAAAAAANAAcACAABAAEAAAAAAAEACAAAAAAAAAABAAEACAABAAAAAAACAAEACAABAAAAAAADAAEACAABAAAAAAAEAAEACAABAAAAAAAFAAEACAABAAAAAAAGAAEACAABAAAAAAAHAAEACAABAAAAAAAIAAEACAABAAAAAAAJAAEACAABAAAAAAAKAAEACAABAAAAAAALAAEACAABAAAAAAAMAAEACwACAAAAAAAOAAQACQADAAAAAAAOAAUACQADAAEAAAAOAAYACAACAAEAAAAOAAcACAACAAEAAAAAAAIACAAAAAEAAAAAAAMACAAAAAEAAAAAAAQACAAAAAEAAAAAAAUACAAAAAEAAAAAAAYACAAAAAEAAAAAAAcACAAAAAEAAAABAAgACAABAAIAAAACAAgACAABAAIAAAADAAgACAABAAIAAAAEAAgACAABAAIAAAAFAAgACAABAAIAAAAGAAgACAABAAIAAAAHAAgACAABAAIAAAAIAAgACAABAAIAAAAJAAgACAABAAIAAAAKAAgACAABAAIAAAALAAgACAABAAIAAAAMAAgACAABAAIAAAANAAgACAABAAIAAAAOAAgACAACAAIAAAAAAAgACAAAAAIAAAA=")
 tile_set = ExtResource("1_ebh07")
 
@@ -67,19 +66,3 @@ position = Vector2(772, 41)
 direction = 1
 text = "Abandon All Hope All
 Ye Who Enter Here"
-
-[node name="ScreenOverlay" type="CanvasLayer" parent="."]
-
-[node name="StarfieldChromaKey" type="ColorRect" parent="ScreenOverlay"]
-material = SubResource("ShaderMaterial_4wj8d")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("4_kv6pk")
-
-[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
-position = Vector2(479, 314)
-scale = Vector2(48.9, 26.5)
-enable_node_path = NodePath("../ScreenOverlay/StarfieldChromaKey")
