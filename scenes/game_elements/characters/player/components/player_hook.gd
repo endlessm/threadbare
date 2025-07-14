@@ -11,7 +11,7 @@ const NON_WALKABLE_FLOOR_LAYER: int = 10
 @export_range(0.0, 1.0, 0.1) var bounce_amount_when_stuck: float = 0.5
 @export var hook_string_texture: Texture2D = preload("res://scenes/hook-string.png")
 
-var hooked: bool = false
+var hooked_to: HookableArea
 var pulling: bool = false
 var hook_angle: float
 var hook_string: Line2D
@@ -29,16 +29,15 @@ func throw_string() -> void:
 	if not ray_cast_2d.is_colliding():
 		pass
 		# return
-	var hookable = ray_cast_2d.get_collider() as HookableArea
+	hooked_to = ray_cast_2d.get_collider() as HookableArea
 
 	string_thrown.emit()
 
 	var p: Vector2
-	if hookable:
-		hooked = true
-		p = hookable.get_hooking_point() - player.global_position - position
+	if hooked_to:
+		p = hooked_to.get_hooking_point() - player.global_position - position
+		# prints(hooked_to.weight, hooked_to.owner)
 	else:
-		hooked = false
 		p = Vector2(STRING_THROW_LENGTH, 0).rotated(hook_angle)
 
 	if hook_string:
@@ -62,7 +61,7 @@ func remove_string() -> void:
 		return
 	if hook_string:
 		hook_string.queue_free()
-	hooked = false
+	hooked_to = null
 
 
 func pull_string() -> void:
@@ -82,7 +81,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 		return
 
 	if Input.is_action_just_pressed(&"throw"):
-		if hooked:
+		if hooked_to:
 			pull_string()
 		else:
 			throw_string()
@@ -107,31 +106,64 @@ func _process(delta: float) -> void:
 
 	if hook_string:
 		hook_string.points[-1] = player.position + position - hook_string.position
+		if hooked_to:
+			# pass
+			hook_string.points[0] = hooked_to.get_hooking_point() - hook_string.position
 
-		if not hooked:
+		if not hooked_to:
 			hook_string.points[0] = hook_string.points[0].move_toward(
 				hook_string.points[-1], delta * 500
 			)
 
 	if pulling:
-		var v: Vector2 = hook_string.points[0] - hook_string.points[-1]
-		if v.length_squared() < 1000:
-			if full_stop_after_pull:
-				player.velocity = Vector2.ZERO
+		if not hooked_to:
 			stop_pulling()
 			return
+		if hooked_to.weight == 1.0:
+			# move the player
+			var v: Vector2 = hook_string.points[0] - hook_string.points[-1]
+			if v.length_squared() < 1000:
+				if full_stop_after_pull:
+					player.velocity = Vector2.ZERO
+				stop_pulling()
+				return
 
-		player.velocity = v.normalized() * pull_velocity
-		player.move_and_slide()
+			player.velocity = v.normalized() * pull_velocity
+			player.move_and_slide()
 
-		var stuck_tolerance = 400.0
-		var collision: KinematicCollision2D = player.get_last_slide_collision()
-		if (
-			collision
-			and (
-				collision.get_travel().length_squared()
-				< collision.get_remainder().length_squared() / stuck_tolerance
-			)
-		):
-			player.velocity *= -1 * bounce_amount_when_stuck
-			stop_pulling()
+			var stuck_tolerance = 400.0
+			var collision: KinematicCollision2D = player.get_last_slide_collision()
+			if (
+				collision
+				and (
+					collision.get_travel().length_squared()
+					< collision.get_remainder().length_squared() / stuck_tolerance
+				)
+			):
+				player.velocity *= -1 * bounce_amount_when_stuck
+				stop_pulling()
+
+		elif hooked_to.weight == 0:
+			# move the hooked owner
+			var target: CharacterBody2D = hooked_to.owner as CharacterBody2D
+			var v: Vector2 = hook_string.points[-1] - hook_string.points[0]
+			if v.length_squared() < 1000:
+				if full_stop_after_pull:
+					target.velocity = Vector2.ZERO
+				stop_pulling()
+				return
+
+			target.velocity = v.normalized() * pull_velocity
+			target.move_and_slide()
+
+			var stuck_tolerance = 400.0
+			var collision: KinematicCollision2D = target.get_last_slide_collision()
+			if (
+				collision
+				and (
+					collision.get_travel().length_squared()
+					< collision.get_remainder().length_squared() / stuck_tolerance
+				)
+			):
+				target.velocity *= -1 * bounce_amount_when_stuck
+				stop_pulling()
