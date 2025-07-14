@@ -3,9 +3,11 @@ extends Node2D
 
 signal string_thrown
 
-const STRING_THROW_LENGTH: float = 200
 const NON_WALKABLE_FLOOR_LAYER: int = 10
 
+@export_range(0.0, 500.0, 1.0, "or_greater") var string_throw_length: float = 200.0
+@export_range(0.0, 500.0, 1.0, "or_greater") var string_max_length: float = 300.0
+@export_range(0.0, 500.0, 1.0, "or_greater") var string_stop_pulling_length: float = 30.0
 @export var full_stop_after_pull: bool = true
 @export_range(0.0, 5000.0, 1.0, "or_greater", "or_less") var pull_velocity: float = 1500.0
 @export_range(0.0, 1.0, 0.1) var bounce_amount_when_stuck: float = 0.5
@@ -22,7 +24,7 @@ var hook_string: Line2D
 
 
 func _ready() -> void:
-	ray_cast_2d.target_position = Vector2(STRING_THROW_LENGTH, 0)
+	ray_cast_2d.target_position = Vector2(string_throw_length, 0)
 
 
 func throw_string() -> void:
@@ -38,7 +40,7 @@ func throw_string() -> void:
 		p = hooked_to.get_hooking_point() - player.global_position - position
 		# prints(hooked_to.weight, hooked_to.owner)
 	else:
-		p = Vector2(STRING_THROW_LENGTH, 0).rotated(hook_angle)
+		p = Vector2(string_throw_length, 0).rotated(hook_angle)
 
 	if hook_string:
 		hook_string.queue_free()
@@ -107,22 +109,28 @@ func _process(delta: float) -> void:
 	if hook_string:
 		hook_string.points[-1] = player.position + position - hook_string.position
 		if hooked_to:
-			# pass
 			hook_string.points[0] = hooked_to.get_hooking_point() - hook_string.position
-
-		if not hooked_to:
+		else:
 			hook_string.points[0] = hook_string.points[0].move_toward(
 				hook_string.points[-1], delta * 500
 			)
 
-	if pulling:
-		if not hooked_to:
+	if not hooked_to:
+		if not hooked_to or hooked_to.owner == null or hooked_to.owner.is_queued_for_deletion():
 			stop_pulling()
 			return
+
+	if not pulling:
+		var v: Vector2 = hook_string.points[0] - hook_string.points[-1]
+		if v.length_squared() > string_max_length * string_max_length:
+			remove_string()
+
+	else:
+		var target = hooked_to.owner
 		if hooked_to.weight == 1.0:
 			# move the player
 			var v: Vector2 = hook_string.points[0] - hook_string.points[-1]
-			if v.length_squared() < 1000:
+			if v.length_squared() < string_stop_pulling_length * string_stop_pulling_length:
 				if full_stop_after_pull:
 					player.velocity = Vector2.ZERO
 				stop_pulling()
@@ -145,9 +153,8 @@ func _process(delta: float) -> void:
 
 		elif hooked_to.weight == 0:
 			# move the hooked owner
-			var target: CharacterBody2D = hooked_to.owner as CharacterBody2D
 			var v: Vector2 = hook_string.points[-1] - hook_string.points[0]
-			if v.length_squared() < 1000:
+			if v.length_squared() < string_stop_pulling_length * string_stop_pulling_length:
 				if full_stop_after_pull:
 					target.velocity = Vector2.ZERO
 				stop_pulling()
