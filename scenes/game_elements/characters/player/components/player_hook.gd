@@ -7,7 +7,7 @@ const NON_WALKABLE_FLOOR_LAYER: int = 10
 
 @export_range(0.0, 500.0, 1.0, "or_greater") var string_throw_length: float = 200.0
 @export_range(0.0, 500.0, 1.0, "or_greater") var string_max_length: float = 300.0
-@export_range(0.0, 500.0, 1.0, "or_greater") var string_stop_pulling_length: float = 30.0
+@export_range(0.0, 500.0, 1.0, "or_greater") var string_stop_pulling_length: float = 10.0
 @export var full_stop_after_pull: bool = true
 @export_range(0.0, 5000.0, 1.0, "or_greater", "or_less") var pull_velocity: float = 1500.0
 @export_range(0.0, 1.0, 0.1) var bounce_amount_when_stuck: float = 0.5
@@ -38,7 +38,6 @@ func throw_string() -> void:
 	var p: Vector2
 	if hooked_to:
 		p = hooked_to.get_hooking_point() - player.global_position - position
-		# prints(hooked_to.weight, hooked_to.owner)
 	else:
 		p = Vector2(string_throw_length, 0).rotated(hook_angle)
 
@@ -127,49 +126,53 @@ func _process(delta: float) -> void:
 
 	else:
 		var target = hooked_to.owner
-		if hooked_to.weight == 1.0:
-			# move the player
-			var v: Vector2 = hook_string.points[0] - hook_string.points[-1]
-			if v.length_squared() < string_stop_pulling_length * string_stop_pulling_length:
+		var weight = hooked_to.weight if target is CharacterBody2D else 1.0
+		# vector from player to first point
+		var v1: Vector2 = (hook_string.points[0] - hook_string.points[1]) * weight
+
+		# vector from target to previous point
+		var v2: Vector2 = (hook_string.points[-1] - hook_string.points[-2]) * (1 - weight)
+
+		if v1 != Vector2.ZERO:
+			if v1.length_squared() < string_stop_pulling_length * string_stop_pulling_length:
 				if full_stop_after_pull:
 					player.velocity = Vector2.ZERO
 				stop_pulling()
 				return
 
-			player.velocity = v.normalized() * pull_velocity
-			player.move_and_slide()
-
-			var stuck_tolerance = 400.0
-			var collision: KinematicCollision2D = player.get_last_slide_collision()
-			if (
-				collision
-				and (
-					collision.get_travel().length_squared()
-					< collision.get_remainder().length_squared() / stuck_tolerance
-				)
-			):
-				player.velocity *= -1 * bounce_amount_when_stuck
-				stop_pulling()
-
-		elif hooked_to.weight == 0:
-			# move the hooked owner
-			var v: Vector2 = hook_string.points[-1] - hook_string.points[0]
-			if v.length_squared() < string_stop_pulling_length * string_stop_pulling_length:
+		if v2 != Vector2.ZERO:
+			if v2.length_squared() < string_stop_pulling_length * string_stop_pulling_length:
 				if full_stop_after_pull:
 					target.velocity = Vector2.ZERO
 				stop_pulling()
 				return
 
-			target.velocity = v.normalized() * pull_velocity
+		player.velocity = v1.normalized() * pull_velocity * weight
+		player.move_and_slide()
+
+		if target is CharacterBody2D:
+			target.velocity = v2.normalized() * pull_velocity * (1 - weight)
 			target.move_and_slide()
 
-			var stuck_tolerance = 400.0
-			var collision: KinematicCollision2D = target.get_last_slide_collision()
+		var stuck_tolerance = 400.0
+		var player_collision: KinematicCollision2D = player.get_last_slide_collision()
+		if (
+			player_collision
+			and (
+				player_collision.get_travel().length_squared()
+				< player_collision.get_remainder().length_squared() / stuck_tolerance
+			)
+		):
+			player.velocity *= -1 * bounce_amount_when_stuck
+			stop_pulling()
+
+		if target is CharacterBody2D:
+			var target_collision: KinematicCollision2D = target.get_last_slide_collision()
 			if (
-				collision
+				target_collision
 				and (
-					collision.get_travel().length_squared()
-					< collision.get_remainder().length_squared() / stuck_tolerance
+					target_collision.get_travel().length_squared()
+					< target_collision.get_remainder().length_squared() / stuck_tolerance
 				)
 			):
 				target.velocity *= -1 * bounce_amount_when_stuck
