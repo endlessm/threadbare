@@ -1,7 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://fl5am43g7j1h"]
+[gd_scene load_steps=6 format=3 uid="uid://fl5am43g7j1h"]
 
 [ext_resource type="Texture2D" uid="uid://bgxnqey15x485" path="res://scenes/needle.png" id="1_gcph1"]
 [ext_resource type="Script" uid="uid://dabvr3pqmyya4" path="res://scenes/hookable_area.gd" id="2_bfd1i"]
+
+[sub_resource type="GDScript" id="GDScript_bfd1i"]
+script/source = "extends StaticBody2D
+
+
+@export var disable_ground_collider: bool = false
+
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+
+func _ready() -> void:
+	collision_shape_2d.disabled = disable_ground_collider
+"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gcph1"]
 radius = 32.0
@@ -11,6 +23,8 @@ radius = 32.0
 [node name="Needle" type="StaticBody2D"]
 collision_layer = 16
 collision_mask = 0
+script = SubResource("GDScript_bfd1i")
+disable_ground_collider = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -32)

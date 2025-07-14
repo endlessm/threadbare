@@ -4,9 +4,11 @@ extends Node2D
 signal string_thrown
 
 const STRING_THROW_LENGTH: float = 200
-const PULL_VELOCITY: float = 1500
 const NON_WALKABLE_FLOOR_LAYER: int = 10
 
+@export var full_stop_after_pull: bool = true
+@export_range(0.0, 5000.0, 1.0, "or_greater", "or_less") var pull_velocity: float = 1500.0
+@export_range(0.0, 1.0, 0.1) var bounce_amount_when_stuck: float = 0.5
 @export var hook_string_texture: Texture2D = preload("res://scenes/hook-string.png")
 
 var hooked: bool = false
@@ -114,11 +116,12 @@ func _process(delta: float) -> void:
 	if pulling:
 		var v: Vector2 = hook_string.points[0] - hook_string.points[-1]
 		if v.length_squared() < 1000:
-			player.velocity = Vector2.ZERO
+			if full_stop_after_pull:
+				player.velocity = Vector2.ZERO
 			stop_pulling()
 			return
 
-		player.velocity = v.normalized() * PULL_VELOCITY
+		player.velocity = v.normalized() * pull_velocity
 		player.move_and_slide()
 
 		var stuck_tolerance = 400.0
@@ -130,5 +133,5 @@ func _process(delta: float) -> void:
 				< collision.get_remainder().length_squared() / stuck_tolerance
 			)
 		):
-			player.velocity = Vector2.ZERO
+			player.velocity *= -1 * bounce_amount_when_stuck
 			stop_pulling()
