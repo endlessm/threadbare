@@ -7,6 +7,7 @@ const NON_WALKABLE_FLOOR_LAYER: int = 10
 
 @export_range(0.0, 500.0, 1.0, "or_greater") var string_throw_length: float = 200.0
 @export_range(0.0, 500.0, 1.0, "or_greater") var string_max_length: float = 300.0
+@export_range(0.0, 500.0, 1.0, "or_greater") var string_min_length: float = 10.0
 @export_range(0.0, 500.0, 1.0, "or_greater") var string_stop_pulling_length: float = 10.0
 @export var full_stop_after_pull: bool = true
 @export_range(0.0, 5000.0, 1.0, "or_greater", "or_less") var pull_velocity: float = 1500.0
@@ -100,6 +101,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	rotation = hook_angle
+
 	if ray_cast_2d.is_colliding():
 		sprite_2d.modulate = Color.WHITE
 	else:
@@ -110,28 +112,32 @@ func _process(delta: float) -> void:
 		if hooked_to:
 			hook_string.points[0] = hooked_to.get_hooking_point() - hook_string.position
 		else:
-			hook_string.points[0] = hook_string.points[0].move_toward(
+			hook_string.points[-2] = hook_string.points[-2].move_toward(
 				hook_string.points[-1], delta * 500
 			)
-
-	if not hooked_to:
-		if not hooked_to or hooked_to.owner == null or hooked_to.owner.is_queued_for_deletion():
-			stop_pulling()
-			return
+			if (
+				(hook_string.points[-2] - hook_string.points[-1]).length_squared()
+				< string_min_length * string_min_length
+			):
+				hook_string.queue_free()
 
 	if not pulling:
-		var v: Vector2 = hook_string.points[0] - hook_string.points[-1]
-		if v.length_squared() > string_max_length * string_max_length:
-			remove_string()
+		if hook_string:
+			var v: Vector2 = hook_string.points[0] - hook_string.points[-1]
+			if v.length_squared() > string_max_length * string_max_length:
+				remove_string()
 
 	else:
+		if not is_instance_valid(hooked_to):
+			stop_pulling()
+			return
 		var target = hooked_to.owner
 		var weight = hooked_to.weight if target is CharacterBody2D else 1.0
 		# vector from player to first point
-		var v1: Vector2 = (hook_string.points[0] - hook_string.points[1]) * weight
+		var v1: Vector2 = (hook_string.points[-2] - hook_string.points[-1]) * weight
 
 		# vector from target to previous point
-		var v2: Vector2 = (hook_string.points[-1] - hook_string.points[-2]) * (1 - weight)
+		var v2: Vector2 = (hook_string.points[1] - hook_string.points[0]) * (1 - weight)
 
 		if v1 != Vector2.ZERO:
 			if v1.length_squared() < string_stop_pulling_length * string_stop_pulling_length:

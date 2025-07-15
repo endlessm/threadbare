@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://bpy6cvw4swy07"]
+[gd_scene load_steps=12 format=4 uid="uid://bpy6cvw4swy07"]
 
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_5hfv0"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_m0rpm"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://q3c2qavtccvu" path="res://scenes/hook-string.png" id="4_x0xbu"]
 [ext_resource type="PackedScene" uid="uid://fl5am43g7j1h" path="res://scenes/needle.tscn" id="5_7qr1p"]
 [ext_resource type="PackedScene" uid="uid://1vunygl4wpj6" path="res://scenes/button_item.tscn" id="6_e66cg"]
+[ext_resource type="PackedScene" uid="uid://bcuvngpsgllak" path="res://scenes/hookable_button_item.tscn" id="9_5fme1"]
 
 [sub_resource type="GDScript" id="GDScript_m0rpm"]
 script/source = "extends Node2D
@@ -94,6 +95,22 @@ func _process(_delta: float) -> void:
 	string.points[0] = string.points[0] + string.points[0].direction_to(string.points[1]).normalized() * diff
 "
 
+[sub_resource type="GDScript" id="GDScript_i5psm"]
+script/source = "extends CharacterBody2D
+
+@onready var animation_player_2: AnimationPlayer = $AnimationPlayer2
+
+func _ready() -> void:
+	animation_player_2.stop()
+	var t: float = (sin(global_position.x) + 1) * 0.5 + (cos(global_position.y) + 1) * 0.5
+	await get_tree().create_timer(t).timeout
+	animation_player_2.play(\"up-down\")
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	if area.owner is Player:
+		queue_free()
+"
+
 [node name="Demo" type="Node2D"]
 script = SubResource("GDScript_m0rpm")
 
@@ -174,92 +191,63 @@ position = Vector2(57, 418)
 
 [node name="ButtonItem" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(-211, 326)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem6" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(-171, 326)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem2" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(757, 71)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem3" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(796, 32)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem4" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(832, -5)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem5" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(722, 106)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem7" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(807, 543)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem8" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(818, 599)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem9" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(831, 653)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem10" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(291, 770)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem11" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(332, 805)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem12" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(361, 758)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem13" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(396, 799)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem14" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(423, 750)
+script = SubResource("GDScript_i5psm")
 
 [node name="ButtonItem15" parent="OnTheGround" instance=ExtResource("6_e66cg")]
 position = Vector2(474, 781)
-
-[node name="ButtonItem24" parent="OnTheGround" instance=ExtResource("6_e66cg")]
-position = Vector2(672, 803)
-scale = Vector2(1.68006, 1.68006)
-
-[node name="AnimatedSprite2D" parent="OnTheGround/ButtonItem24" index="0"]
-modulate = Color(100, 1, 1, 1)
-
-[node name="Area2D" parent="OnTheGround/ButtonItem24" index="5"]
-weight = 0.4
-
-[node name="ButtonItem25" parent="OnTheGround" instance=ExtResource("6_e66cg")]
-position = Vector2(951, 807)
-scale = Vector2(1.68006, 1.68006)
-
-[node name="AnimatedSprite2D" parent="OnTheGround/ButtonItem25" index="0"]
-modulate = Color(1, 1, 0, 1)
-
-[node name="Area2D" parent="OnTheGround/ButtonItem25" index="5"]
-weight = 0.6
-
-[node name="ButtonItem16" parent="OnTheGround" instance=ExtResource("6_e66cg")]
-position = Vector2(406, 457)
-
-[node name="ButtonItem17" parent="OnTheGround" instance=ExtResource("6_e66cg")]
-position = Vector2(472, 469)
-
-[node name="ButtonItem18" parent="OnTheGround" instance=ExtResource("6_e66cg")]
-position = Vector2(529, 458)
-
-[node name="ButtonItem19" parent="OnTheGround" instance=ExtResource("6_e66cg")]
-position = Vector2(593, 469)
-
-[node name="ButtonItem20" parent="OnTheGround" instance=ExtResource("6_e66cg")]
-position = Vector2(351, 475)
-
-[node name="ButtonItem21" parent="OnTheGround" instance=ExtResource("6_e66cg")]
-position = Vector2(297, 457)
-
-[node name="ButtonItem22" parent="OnTheGround" instance=ExtResource("6_e66cg")]
-position = Vector2(233, 475)
-
-[node name="ButtonItem23" parent="OnTheGround" instance=ExtResource("6_e66cg")]
-position = Vector2(306, 290)
+script = SubResource("GDScript_i5psm")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
@@ -299,8 +287,8 @@ offset_right = 1506.48
 offset_bottom = 731.76
 script = ExtResource("4_vephn")
 
+[node name="HookableButtonItem" parent="." instance=ExtResource("9_5fme1")]
+position = Vector2(373, 447)
+
 [connection signal="analog_input" from="ScreenOverlay/SimulateTouchControls/ControlLeft" to="." method="_on_control_left_analog_input"]
 [connection signal="analog_input" from="ScreenOverlay/SimulateTouchControls/ControlRight" to="." method="_on_control_right_analog_input"]
-
-[editable path="OnTheGround/ButtonItem24"]
-[editable path="OnTheGround/ButtonItem25"]
