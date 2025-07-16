@@ -52,6 +52,7 @@ func throw_string() -> void:
 	hook_string.joint_mode = Line2D.LINE_JOINT_ROUND
 	hook_string.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
 	hook_string.add_point(p)
+	# hook_string.add_point(Vector2(0.0, -200.0))
 	hook_string.add_point(Vector2.ZERO)
 	player.add_sibling(hook_string)
 	hook_string.owner = player.owner
@@ -106,6 +107,9 @@ func _process(delta: float) -> void:
 		sprite_2d.modulate = Color.WHITE
 	else:
 		sprite_2d.modulate = Color(Color.WHITE, 0.2)
+
+	if hook_string and hook_string.points.size() < 2:
+		pass
 
 	if hook_string:
 		hook_string.points[-1] = player.position + position - hook_string.position
