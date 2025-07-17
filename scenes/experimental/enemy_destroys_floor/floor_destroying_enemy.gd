@@ -3,7 +3,7 @@
 extends CharacterBody2D
 
 const TERRAIN_SET: int = 0
-const VOID_TERRAIN: int = 8
+const VOID_TERRAIN: int = 9
 const NEIGHBORS := [
 	# TileSet.CELL_NEIGHBOR_BOTTOM_RIGHT_CORNER,
 	TileSet.CELL_NEIGHBOR_BOTTOM_SIDE,
