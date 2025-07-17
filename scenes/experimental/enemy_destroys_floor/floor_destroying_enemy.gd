@@ -20,7 +20,7 @@ const NEIGHBORS := [
 @export var animated_sprite_2d: AnimatedSprite2D
 @export var particles: GPUParticles2D
 @export var navigation_agent: NavigationAgent2D
-@export var destroyable_nodes: Node2D
+@export var void_component: VoidComponent
 
 @export_range(10, 100000, 10) var walk_speed: float = 300.0
 @export_range(10, 100000, 10) var run_speed: float = 500.0
@@ -28,6 +28,7 @@ const NEIGHBORS := [
 var _moving: bool = false
 var _update_interval: float = 10.0 / 60.0
 var _next_update: float
+var _erased: Array[Array] = []
 
 
 func _ready() -> void:
@@ -61,7 +62,7 @@ func _physics_process(delta: float) -> void:
 	var current_agent_position: Vector2 = global_position
 	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
 	var running := navigation_agent.distance_to_target() > (64 * 3)
-	var speed = run_speed if running else walk_speed
+	var speed := run_speed if running else walk_speed
 	# TODO: smoothly change between running & walking speed?
 	velocity = current_agent_position.direction_to(next_path_position) * speed
 	move_and_slide()
@@ -87,13 +88,11 @@ func _process(_delta: float) -> void:
 			coords.remove_at(i)
 			continue
 
-		for node: Node2D in destroyable_nodes.get_children():
-			var node_coords := void_layer.local_to_map(void_layer.to_local(node.global_position))
-			if c == node_coords:
-				node.queue_free()
+		void_component.consume(c)
 
 	if coords:
 		void_layer.set_cells_terrain_connect(coords, TERRAIN_SET, VOID_TERRAIN)
+		_erased.append(coords)
 
 
 func _on_player_capture_area_body_entered(body: Node2D) -> void:

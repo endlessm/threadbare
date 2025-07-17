@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=4 uid="uid://bm4ewr8p48x0i"]
+[gd_scene load_steps=28 format=4 uid="uid://bm4ewr8p48x0i"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_0gjk4"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_8g3pn"]
@@ -19,12 +19,7 @@
 [ext_resource type="SpriteFrames" uid="uid://cuokvpf58hkee" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_purple.tres" id="14_8l6e1"]
 [ext_resource type="SpriteFrames" uid="uid://brspwu70qbdaf" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_blue.tres" id="15_rrhr1"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="17_8l6e1"]
-
-[sub_resource type="Resource" id="Resource_8l6e1"]
-script = ExtResource("7_1ag5a")
-name = "Imagination"
-type = 1
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+[ext_resource type="Script" uid="uid://d1ly6uhh500xu" path="res://scenes/experimental/enemy_destroys_floor/void_component.gd" id="17_g3urp"]
 
 [sub_resource type="Curve" id="Curve_8l6e1"]
 _data = [Vector2(0, 0.733414), 0.0, 0.0, 0, 0, Vector2(0.315152, 0.717732), 0.0, 0.0, 0, 0, Vector2(0.9, 0), 0.0, 0.0, 0, 0, Vector2(0.99697, 0), 0.0, 0.0, 0, 0]
@@ -51,6 +46,12 @@ size = Vector2(68, 20)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8l6e1"]
 radius = 72.0
+
+[sub_resource type="Resource" id="Resource_8l6e1"]
+script = ExtResource("7_1ag5a")
+name = "Imagination"
+type = 1
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_05yrb"]
 vertices = PackedVector2Array(2931.99, 2055.53, 2862.41, 2750.37, 2319.96, 3277.97, 625.969, 3269.05, 624, 2448.72, 765.672, 1466.92, 2928.06, 1449.08)
@@ -116,12 +117,6 @@ position = Vector2(1632, 2816)
 [node name="Lever1" parent="OnTheGround/DestroyableNodes" node_paths=PackedStringArray("targets") instance=ExtResource("5_otanl")]
 position = Vector2(1312, 2912)
 targets = [NodePath("../Door1")]
-
-[node name="CollectibleItem" parent="OnTheGround/DestroyableNodes" instance=ExtResource("6_o2l7q")]
-position = Vector2(3584, 1856)
-next_scene = "uid://dm23tu5v7pgu5"
-item = SubResource("Resource_8l6e1")
-collected_dialogue = ExtResource("8_jh8wj")
 
 [node name="HidingMushroom" parent="OnTheGround/DestroyableNodes" instance=ExtResource("9_05yrb")]
 position = Vector2(1533.62, 2905.31)
@@ -244,7 +239,7 @@ position = Vector2(2817, 1776)
 direction = 1
 text = "Sanctuary"
 
-[node name="FloorDestroyingEnemy" type="CharacterBody2D" parent="OnTheGround" node_paths=PackedStringArray("void_layer", "player", "animated_sprite_2d", "particles", "navigation_agent", "destroyable_nodes")]
+[node name="FloorDestroyingEnemy" type="CharacterBody2D" parent="OnTheGround" node_paths=PackedStringArray("void_layer", "player", "animated_sprite_2d", "particles", "navigation_agent", "void_component")]
 position = Vector2(1052, 3106)
 motion_mode = 1
 script = ExtResource("8_u00aj")
@@ -253,7 +248,7 @@ player = NodePath("../Player")
 animated_sprite_2d = NodePath("AnimatedSprite2D")
 particles = NodePath("GPUParticles2D")
 navigation_agent = NodePath("NavigationAgent2D")
-destroyable_nodes = NodePath("../DestroyableNodes")
+void_component = NodePath("VoidComponent")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="OnTheGround/FloorDestroyingEnemy"]
 amount = 10
@@ -278,6 +273,11 @@ collision_layer = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FloorDestroyingEnemy/PlayerCaptureArea"]
 shape = SubResource("CircleShape2D_8l6e1")
 debug_color = Color(0.911153, 9.95344e-05, 0.727585, 0.42)
+
+[node name="VoidComponent" type="Node2D" parent="OnTheGround/FloorDestroyingEnemy" node_paths=PackedStringArray("void_layer", "consumable_node_holders")]
+script = ExtResource("17_g3urp")
+void_layer = NodePath("../../../TileMapLayers/Void")
+consumable_node_holders = [NodePath("../../DestroyableNodes")]
 
 [node name="Woods" type="Node2D" parent="OnTheGround"]
 y_sort_enabled = true
@@ -346,6 +346,16 @@ sprite_frames = ExtResource("14_8l6e1")
 position = Vector2(3505.48, 1740.11)
 scale = Vector2(0.937681, 1.0068)
 sprite_frames = ExtResource("15_rrhr1")
+
+[node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("6_o2l7q")]
+position = Vector2(3584, 1856)
+next_scene = "uid://dm23tu5v7pgu5"
+item = SubResource("Resource_8l6e1")
+collected_dialogue = ExtResource("8_jh8wj")
+
+[node name="Lever" parent="OnTheGround" instance=ExtResource("5_otanl")]
+position = Vector2(3451, 1821)
+is_on = true
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 visible = false
