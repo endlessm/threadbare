@@ -102,10 +102,15 @@ func change_to_packed_with_transition(
 
 
 func reload_with_transition(
+	# TODO: names are backwards
 	enter_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE,
-	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
+	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE,
+	enter_focus: Vector2 = Vector2(0.5, 0.5),
+	exit_focus: Vector2 = Vector2(0.5, 0.5),
 ) -> void:
-	Transitions.do_transition(get_tree().reload_current_scene, enter_transition, exit_transition)
+	Transitions.do_transition(
+		get_tree().reload_current_scene, enter_transition, exit_transition, enter_focus, exit_focus
+	)
 
 
 func change_to_file(scene_path: String, spawn_point: NodePath = ^"") -> void:

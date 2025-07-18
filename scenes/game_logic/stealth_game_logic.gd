@@ -17,9 +17,15 @@ func _ready() -> void:
 
 
 func _on_player_detected(player: Player) -> void:
+	var xform := player.get_global_transform_with_canvas()
+	var player_screen_position := xform * player.position
+	var exit_focus := player_screen_position / Vector2(1920, 1080)
+	print(exit_focus)
 	player.mode = Player.Mode.DEFEATED
 	await get_tree().create_timer(2.0).timeout
-	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+	SceneSwitcher.reload_with_transition(Transition.Effect.RADIAL, Transition.Effect.RADIAL,
+	exit_focus,
+		Vector2(1, 1),)
 
 
 func _set_zoom(new_value: float) -> void:
