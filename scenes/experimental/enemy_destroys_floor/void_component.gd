@@ -5,7 +5,10 @@ extends Node2D
 
 const _DURATION: float = 0.25
 
+## Used only as a coordinate grid for the scene
 @export var void_layer: TileMapLayer
+
+## Nodes whose direct children (but not grandchildren) can be consumed.
 @export var consumable_node_holders: Array[Node]
 
 var _unconsumed_nodes: Dictionary[Vector2i, Array] = {}
