@@ -39,12 +39,15 @@ uniform vec4 background_color: source_color = vec4(0.086, 0.11, 0.18, 1.0);
 // The origin is the upper-left corner of the screen and coordinates ranging from (0.0, 0.0) to viewport size.
 varying vec2 screen_pos;
 
+varying vec4 modulate;
+
 void vertex() {
 	screen_pos = (CANVAS_MATRIX * MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
+	modulate = COLOR;
 }
 
 void fragment() {
-	if (COLOR == chroma_key) {
+	if (texture(TEXTURE, UV) == chroma_key) {
 		vec2 uv = screen_pos / resolution;
 		uv.x *= resolution.x / resolution.y;
 
@@ -69,4 +72,6 @@ void fragment() {
 
 		COLOR = background_color + vec4(vec3(stars), 1.0);
 	}
+
+	COLOR *= modulate;
 }
