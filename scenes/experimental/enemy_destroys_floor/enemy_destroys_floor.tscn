@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://bm4ewr8p48x0i"]
+[gd_scene load_steps=35 format=4 uid="uid://bm4ewr8p48x0i"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_0gjk4"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_8g3pn"]
@@ -20,9 +20,10 @@
 [ext_resource type="SpriteFrames" uid="uid://cuokvpf58hkee" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_purple.tres" id="14_8l6e1"]
 [ext_resource type="SpriteFrames" uid="uid://brspwu70qbdaf" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_blue.tres" id="15_rrhr1"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="17_8l6e1"]
-[ext_resource type="Script" uid="uid://d1ly6uhh500xu" path="res://scenes/experimental/enemy_destroys_floor/void_component.gd" id="17_g3urp"]
+[ext_resource type="Script" uid="uid://d1ly6uhh500xu" path="res://scenes/experimental/enemy_destroys_floor/tile_map_cover.gd" id="17_g3urp"]
 [ext_resource type="SpriteFrames" uid="uid://clx8sssi4tw8q" path="res://scenes/game_elements/characters/shared_components/sprite_frames/musician.tres" id="22_4lqt1"]
 [ext_resource type="Script" uid="uid://c1snt67xajl63" path="res://scenes/experimental/enemy_destroys_floor/monk.gd" id="22_nwhxo"]
+[ext_resource type="PackedScene" uid="uid://bo0lpa7s4xppi" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="23_lutqc"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="23_nwhxo"]
 
 [sub_resource type="Curve" id="Curve_8l6e1"]
@@ -49,7 +50,7 @@ alpha_curve = SubResource("CurveTexture_rrhr1")
 size = Vector2(68, 20)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8l6e1"]
-radius = 72.0
+radius = 96.0
 
 [sub_resource type="Resource" id="Resource_8l6e1"]
 script = ExtResource("7_1ag5a")
@@ -69,6 +70,7 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5, 6)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(757, 1457, 2938, 1439, 2942, 2056, 2872, 2755, 2324, 3288, 616, 3279, 614, 2448)])
 
 [node name="EnemyDestroysFloor" type="Node2D"]
+metadata/_edit_lock_ = true
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -126,158 +128,158 @@ limit_bottom = 3200
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="DestroyableNodes" type="Node2D" parent="OnTheGround"]
+[node name="Props" type="Node2D" parent="OnTheGround"]
 y_sort_enabled = true
 
-[node name="Door1" parent="OnTheGround/DestroyableNodes" instance=ExtResource("4_jh8wj")]
+[node name="Door1" parent="OnTheGround/Props" instance=ExtResource("4_jh8wj")]
 position = Vector2(1632, 2752)
 
-[node name="Lever1" parent="OnTheGround/DestroyableNodes" node_paths=PackedStringArray("targets") instance=ExtResource("5_otanl")]
+[node name="Lever1" parent="OnTheGround/Props" node_paths=PackedStringArray("targets") instance=ExtResource("5_otanl")]
 position = Vector2(1312, 2912)
 targets = [NodePath("../Door1")]
 
-[node name="HidingMushroom" parent="OnTheGround/DestroyableNodes" instance=ExtResource("9_05yrb")]
+[node name="HidingMushroom" parent="OnTheGround/Props" instance=ExtResource("9_05yrb")]
 position = Vector2(1533.62, 2905.31)
 
-[node name="HidingMushroom2" parent="OnTheGround/DestroyableNodes" instance=ExtResource("9_05yrb")]
+[node name="HidingMushroom2" parent="OnTheGround/Props" instance=ExtResource("9_05yrb")]
 position = Vector2(1680.03, 3042.94)
 
-[node name="Tree" parent="OnTheGround/DestroyableNodes" instance=ExtResource("12_u00aj")]
+[node name="Tree" parent="OnTheGround/Props" instance=ExtResource("12_u00aj")]
 position = Vector2(1694.09, 2216.03)
 scale = Vector2(1.15556, 1.11648)
 
-[node name="Tree2" parent="OnTheGround/DestroyableNodes" instance=ExtResource("12_u00aj")]
+[node name="Tree2" parent="OnTheGround/Props" instance=ExtResource("12_u00aj")]
 position = Vector2(1442.71, 2845.47)
 scale = Vector2(0.946809, 0.922672)
 
-[node name="Tree3" parent="OnTheGround/DestroyableNodes" instance=ExtResource("12_u00aj")]
+[node name="Tree3" parent="OnTheGround/Props" instance=ExtResource("12_u00aj")]
 position = Vector2(1567.42, 2594.08)
 scale = Vector2(0.913911, 0.870997)
 
-[node name="Tree4" parent="OnTheGround/DestroyableNodes" instance=ExtResource("12_u00aj")]
+[node name="Tree4" parent="OnTheGround/Props" instance=ExtResource("12_u00aj")]
 position = Vector2(1243.94, 1964.65)
 scale = Vector2(0.93534, 0.971438)
 
-[node name="Rock" parent="OnTheGround/DestroyableNodes" instance=ExtResource("12_g3urp")]
+[node name="Rock" parent="OnTheGround/Props" instance=ExtResource("12_g3urp")]
 position = Vector2(1430, 1911)
 
-[node name="Rock3" parent="OnTheGround/DestroyableNodes" instance=ExtResource("12_g3urp")]
+[node name="Rock3" parent="OnTheGround/Props" instance=ExtResource("12_g3urp")]
 position = Vector2(1440, 1937)
 scale = Vector2(0.4, 0.4)
 
-[node name="Rock2" parent="OnTheGround/DestroyableNodes" instance=ExtResource("12_g3urp")]
+[node name="Rock2" parent="OnTheGround/Props" instance=ExtResource("12_g3urp")]
 position = Vector2(1409, 1935)
 scale = Vector2(0.6, 0.6)
 
-[node name="Rock4" parent="OnTheGround/DestroyableNodes" instance=ExtResource("12_g3urp")]
+[node name="Rock4" parent="OnTheGround/Props" instance=ExtResource("12_g3urp")]
 position = Vector2(1462, 1957)
 scale = Vector2(0.7, 0.7)
 
-[node name="HidingMushroom3" parent="OnTheGround/DestroyableNodes" instance=ExtResource("9_05yrb")]
+[node name="HidingMushroom3" parent="OnTheGround/Props" instance=ExtResource("9_05yrb")]
 position = Vector2(1572, 1875)
 
-[node name="Tree23" parent="OnTheGround/DestroyableNodes" instance=ExtResource("12_u00aj")]
+[node name="Tree23" parent="OnTheGround/Props" instance=ExtResource("12_u00aj")]
 position = Vector2(2583, 2088)
 scale = Vector2(0.864, 0.943)
 
-[node name="Sign" parent="OnTheGround/DestroyableNodes" instance=ExtResource("10_v2yi1")]
+[node name="Sign" parent="OnTheGround/Props" instance=ExtResource("10_v2yi1")]
 position = Vector2(2817, 1776)
 direction = 1
 text = "Sanctuary"
 
-[node name="Copse" type="Area2D" parent="OnTheGround/DestroyableNodes"]
+[node name="Copse" type="Area2D" parent="OnTheGround/Props"]
 y_sort_enabled = true
 
-[node name="AreaFiller" type="Node" parent="OnTheGround/DestroyableNodes/Copse"]
+[node name="AreaFiller" type="Node" parent="OnTheGround/Props/Copse"]
 script = ExtResource("11_jv772")
 scenes = Array[PackedScene]([ExtResource("12_u00aj")])
 minimum_separation = 96.0
 metadata/_custom_type_script = "uid://bdhjixygupit1"
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="OnTheGround/DestroyableNodes/Copse"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="OnTheGround/Props/Copse"]
 polygon = PackedVector2Array(1097, 1485, 1914, 1483, 1917, 1737, 2041, 1735, 2042, 1812, 1904, 1794, 1796, 1791, 1795, 1724, 1669, 1723, 1669, 1660, 1282, 1661, 1281, 1722, 1149, 1731, 1148, 1787, 1085, 1789, 1081, 1851, 964, 1851, 911, 1848, 903, 1803, 966, 1803, 970, 1747, 1029, 1740, 1035, 1607, 1098, 1606)
 
-[node name="Tree" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1183.74, 1728.63)
 scale = Vector2(1.04748, 1.09627)
 
-[node name="Tree2" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree2" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1129.71, 1582.43)
 scale = Vector2(0.830769, 0.819189)
 
-[node name="Tree3" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree3" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1052.85, 1648.56)
 scale = Vector2(1.07941, 1.17884)
 
-[node name="Tree4" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree4" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1020.82, 1794.9)
 scale = Vector2(1.0043, 0.980129)
 
-[node name="Tree5" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree5" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1224.4, 1546.33)
 scale = Vector2(1.04371, 1.08287)
 
-[node name="Tree6" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree6" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1266.46, 1676.3)
 scale = Vector2(0.845808, 0.81815)
 
-[node name="Tree7" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree7" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1366.62, 1616.64)
 scale = Vector2(0.778952, 0.8154)
 
-[node name="Tree8" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree8" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1351.24, 1510.3)
 scale = Vector2(0.879245, 0.806334)
 
-[node name="Tree9" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree9" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1471.78, 1550.68)
 scale = Vector2(1.01978, 0.982163)
 
-[node name="Tree10" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree10" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1609.33, 1513.13)
 scale = Vector2(1.17217, 1.17234)
 
-[node name="Tree11" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree11" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1463.72, 1656.03)
 scale = Vector2(1.08585, 1.08882)
 
-[node name="Tree12" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree12" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1588.6, 1656.16)
 scale = Vector2(1.01608, 1.11433)
 
-[node name="Tree13" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree13" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1734.47, 1710.83)
 scale = Vector2(0.966045, 0.91347)
 
-[node name="Tree14" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree14" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1746.05, 1547.96)
 scale = Vector2(0.854523, 0.847615)
 
-[node name="Tree15" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree15" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1910.94, 1606.04)
 scale = Vector2(0.825484, 0.825738)
 
-[node name="Tree16" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree16" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1828.88, 1493.32)
 scale = Vector2(0.891529, 0.919781)
 
-[node name="Tree17" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree17" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1909.19, 1724.31)
 scale = Vector2(1.00547, 1.0292)
 
-[node name="Tree18" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree18" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1823.2, 1649.9)
 scale = Vector2(1.06824, 1.14592)
 
-[node name="Tree19" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree19" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(2013.09, 1753.67)
 scale = Vector2(0.924241, 0.879928)
 
-[node name="Tree20" parent="OnTheGround/DestroyableNodes/Copse" instance=ExtResource("12_u00aj")]
+[node name="Tree20" parent="OnTheGround/Props/Copse" instance=ExtResource("12_u00aj")]
 position = Vector2(1836.47, 1789.65)
 scale = Vector2(1.11761, 1.03315)
 
-[node name="FloorDestroyingEnemy" type="CharacterBody2D" parent="OnTheGround" node_paths=PackedStringArray("void_layer", "player", "animated_sprite_2d", "particles", "navigation_agent", "void_component")]
+[node name="FloorDestroyingEnemy" type="CharacterBody2D" parent="OnTheGround" node_paths=PackedStringArray("void_layer", "player", "animated_sprite_2d", "particles", "navigation_agent", "tile_map_cover")]
 position = Vector2(1052, 3106)
 motion_mode = 1
 script = ExtResource("8_u00aj")
@@ -286,7 +288,7 @@ player = NodePath("../Player")
 animated_sprite_2d = NodePath("AnimatedSprite2D")
 particles = NodePath("GPUParticles2D")
 navigation_agent = NodePath("NavigationAgent2D")
-void_component = NodePath("VoidComponent")
+tile_map_cover = NodePath("../../TileMapCover")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="OnTheGround/FloorDestroyingEnemy"]
 amount = 10
@@ -312,76 +314,71 @@ collision_layer = 0
 shape = SubResource("CircleShape2D_8l6e1")
 debug_color = Color(0.911153, 9.95344e-05, 0.727585, 0.42)
 
-[node name="VoidComponent" type="Node2D" parent="OnTheGround/FloorDestroyingEnemy" node_paths=PackedStringArray("void_layer", "consumable_node_holders")]
-script = ExtResource("17_g3urp")
-void_layer = NodePath("../../../TileMapLayers/Void")
-consumable_node_holders = [NodePath("../../DestroyableNodes"), NodePath("../../DestroyableNodes/Copse")]
-
-[node name="Woods" type="Node2D" parent="OnTheGround"]
+[node name="SanctuaryWoods" type="Node2D" parent="OnTheGround"]
 y_sort_enabled = true
 position = Vector2(315, 24)
 
-[node name="Tree" parent="OnTheGround/Woods" instance=ExtResource("12_u00aj")]
+[node name="Tree" parent="OnTheGround/SanctuaryWoods" instance=ExtResource("12_u00aj")]
 position = Vector2(3710.01, 1638.94)
 scale = Vector2(1.10599, 1.00819)
 sprite_frames = ExtResource("14_8l6e1")
 
-[node name="Tree2" parent="OnTheGround/Woods" instance=ExtResource("12_u00aj")]
+[node name="Tree2" parent="OnTheGround/SanctuaryWoods" instance=ExtResource("12_u00aj")]
 position = Vector2(3612.86, 1668)
 scale = Vector2(0.961356, 0.925736)
 sprite_frames = ExtResource("15_rrhr1")
 
-[node name="Tree3" parent="OnTheGround/Woods" instance=ExtResource("12_u00aj")]
+[node name="Tree3" parent="OnTheGround/SanctuaryWoods" instance=ExtResource("12_u00aj")]
 position = Vector2(3652.16, 1575.18)
 scale = Vector2(1.2317, 1.19719)
 sprite_frames = ExtResource("15_rrhr1")
 
-[node name="Tree4" parent="OnTheGround/Woods" instance=ExtResource("12_u00aj")]
+[node name="Tree4" parent="OnTheGround/SanctuaryWoods" instance=ExtResource("12_u00aj")]
 position = Vector2(3703, 1751)
 scale = Vector2(1.14272, 1.06449)
 sprite_frames = ExtResource("15_rrhr1")
 
-[node name="Tree5" parent="OnTheGround/Woods" instance=ExtResource("12_u00aj")]
+[node name="Tree5" parent="OnTheGround/SanctuaryWoods" instance=ExtResource("12_u00aj")]
 position = Vector2(3583.49, 1735.3)
 scale = Vector2(1.08331, 1.01583)
 sprite_frames = ExtResource("14_8l6e1")
 
-[node name="Tree6" parent="OnTheGround/Woods" instance=ExtResource("12_u00aj")]
+[node name="Tree6" parent="OnTheGround/SanctuaryWoods" instance=ExtResource("12_u00aj")]
 position = Vector2(3518.63, 1652.46)
 scale = Vector2(0.887775, 0.932817)
 sprite_frames = ExtResource("15_rrhr1")
 
-[node name="Tree7" parent="OnTheGround/Woods" instance=ExtResource("12_u00aj")]
+[node name="Tree7" parent="OnTheGround/SanctuaryWoods" instance=ExtResource("12_u00aj")]
 position = Vector2(3472.41, 1549.37)
 scale = Vector2(0.809767, 0.865171)
 sprite_frames = ExtResource("14_8l6e1")
 
-[node name="Tree8" parent="OnTheGround/Woods" instance=ExtResource("12_u00aj")]
+[node name="Tree8" parent="OnTheGround/SanctuaryWoods" instance=ExtResource("12_u00aj")]
 position = Vector2(3424.74, 1604.85)
 scale = Vector2(0.93802, 0.996691)
 sprite_frames = ExtResource("15_rrhr1")
 
-[node name="Tree9" parent="OnTheGround/Woods" instance=ExtResource("12_u00aj")]
+[node name="Tree9" parent="OnTheGround/SanctuaryWoods" instance=ExtResource("12_u00aj")]
 position = Vector2(3759, 1746)
 scale = Vector2(0.954272, 0.897718)
 sprite_frames = ExtResource("15_rrhr1")
 
-[node name="Tree10" parent="OnTheGround/Woods" instance=ExtResource("12_u00aj")]
+[node name="Tree10" parent="OnTheGround/SanctuaryWoods" instance=ExtResource("12_u00aj")]
 position = Vector2(3434.99, 1713.34)
 scale = Vector2(0.982737, 1.01698)
 sprite_frames = ExtResource("14_8l6e1")
 
-[node name="Tree11" parent="OnTheGround/Woods" instance=ExtResource("12_u00aj")]
+[node name="Tree11" parent="OnTheGround/SanctuaryWoods" instance=ExtResource("12_u00aj")]
 position = Vector2(3355, 1685)
 scale = Vector2(1.15123, 1.05607)
 sprite_frames = ExtResource("14_8l6e1")
 
-[node name="Tree12" parent="OnTheGround/Woods" instance=ExtResource("12_u00aj")]
+[node name="Tree12" parent="OnTheGround/SanctuaryWoods" instance=ExtResource("12_u00aj")]
 position = Vector2(3568.35, 1550.73)
 scale = Vector2(1.22524, 1.1271)
 sprite_frames = ExtResource("14_8l6e1")
 
-[node name="Tree13" parent="OnTheGround/Woods" instance=ExtResource("12_u00aj")]
+[node name="Tree13" parent="OnTheGround/SanctuaryWoods" instance=ExtResource("12_u00aj")]
 position = Vector2(3505.48, 1740.11)
 scale = Vector2(0.937681, 1.0068)
 sprite_frames = ExtResource("15_rrhr1")
@@ -418,6 +415,31 @@ position = Vector2(0, -29)
 shape = SubResource("RectangleShape2D_bqjp5")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
+[node name="WaterRock" parent="OnTheGround" instance=ExtResource("23_lutqc")]
+position = Vector2(2151, 2077)
+
+[node name="WaterRock2" parent="OnTheGround" instance=ExtResource("23_lutqc")]
+position = Vector2(3576, 1896)
+
+[node name="WaterRock3" parent="OnTheGround" instance=ExtResource("23_lutqc")]
+position = Vector2(3459, 1731)
+
+[node name="WaterRock4" parent="OnTheGround" instance=ExtResource("23_lutqc")]
+position = Vector2(3297, 1617)
+
+[node name="WaterRock6" parent="OnTheGround" instance=ExtResource("23_lutqc")]
+position = Vector2(2865, 1506)
+
+[node name="WaterRock5" parent="OnTheGround" instance=ExtResource("23_lutqc")]
+position = Vector2(3657, 2075)
+
+[node name="TileMapCover" type="Node2D" parent="." node_paths=PackedStringArray("layer", "consumable_node_holders")]
+position = Vector2(1052, 3106)
+script = ExtResource("17_g3urp")
+layer = NodePath("../TileMapLayers/Void")
+terrain_name = "VoidChromakey"
+consumable_node_holders = [NodePath("../OnTheGround/Props"), NodePath("../OnTheGround/Props/Copse")]
+
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 visible = false
 navigation_polygon = SubResource("NavigationPolygon_05yrb")
@@ -426,6 +448,6 @@ navigation_polygon = SubResource("NavigationPolygon_05yrb")
 
 [node name="HUD" parent="." instance=ExtResource("17_8l6e1")]
 
-[connection signal="toggled" from="OnTheGround/DestroyableNodes/Lever1" to="OnTheGround/FloorDestroyingEnemy" method="start"]
+[connection signal="toggled" from="OnTheGround/Props/Lever1" to="OnTheGround/FloorDestroyingEnemy" method="start"]
 [connection signal="body_entered" from="OnTheGround/FloorDestroyingEnemy/PlayerCaptureArea" to="OnTheGround/FloorDestroyingEnemy" method="_on_player_capture_area_body_entered"]
 [connection signal="interaction_started" from="OnTheGround/Monk/InteractArea" to="OnTheGround/Monk" method="_on_interact_area_interaction_started"]

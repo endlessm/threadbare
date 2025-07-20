@@ -20,7 +20,7 @@ const NEIGHBORS := [
 @export var animated_sprite_2d: AnimatedSprite2D
 @export var particles: GPUParticles2D
 @export var navigation_agent: NavigationAgent2D
-@export var void_component: VoidComponent
+@export var tile_map_cover: TileMapCover
 
 @export_range(10, 100000, 10) var walk_speed: float = 300.0
 @export_range(10, 100000, 10) var run_speed: float = 500.0
@@ -81,17 +81,8 @@ func _process(_delta: float) -> void:
 	for neighbor: int in NEIGHBORS:
 		coords.append(void_layer.get_neighbor_cell(coord, neighbor))
 
-	for i in range(coords.size() - 1, -1, -1):
-		var c: Vector2i = coords[i]
-
-		if void_layer.get_cell_source_id(c) != -1:
-			coords.remove_at(i)
-			continue
-
-		void_component.consume(c)
-
+	tile_map_cover.consume_cells(coords)
 	if coords:
-		void_layer.set_cells_terrain_connect(coords, TERRAIN_SET, VOID_TERRAIN)
 		_erased.append(coords)
 
 
