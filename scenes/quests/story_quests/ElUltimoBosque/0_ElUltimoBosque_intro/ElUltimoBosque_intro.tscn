@@ -1,0 +1,191 @@
+[gd_scene load_steps=15 format=4 uid="uid://b8x8p6hsf5a5p"]
+
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_68qua"]
+[ext_resource type="SpriteFrames" uid="uid://uq1wu8ahkc66" path="res://scenes/quests/story_quests/ElUltimoBosque/ElUltimoBosque_player_components/ElUltimoBosque_player.tres" id="3_f7sy0"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_e8pjd"]
+[ext_resource type="Resource" uid="uid://brvu36iw0raer" path="res://scenes/quests/story_quests/ElUltimoBosque/0_ElUltimoBosque_intro/ElUltimoBosque_intro_components/ElUltimoBosque_intro.dialogue" id="5_70r05"]
+[ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_klb7d"]
+[ext_resource type="Texture2D" uid="uid://of7tskinoot3" path="res://scenes/quests/story_quests/ElUltimoBosque/nuevasEntidades/Trees/Tree.png" id="7_10iok"]
+[ext_resource type="AudioStream" uid="uid://ccry1r5nrnnej" path="res://scenes/quests/story_quests/ElUltimoBosque/beilstone-116426.wav" id="8_10iok"]
+[ext_resource type="Texture2D" uid="uid://doc4qg7e3kgs" path="res://assets/third_party/tiny-swords/Terrain/Water/Water.png" id="8_f7sy0"]
+
+[sub_resource type="Animation" id="Animation_ld06i"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(400, 349)]
+}
+
+[sub_resource type="Animation" id="Animation_7swpb"]
+resource_name = "walk_off"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(495, 478), Vector2(1010, 478)]
+}
+
+[sub_resource type="Animation" id="Animation_blo5s"]
+resource_name = "walk_on"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-50, 478), Vector2(495, 478)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qdpvj"]
+_data = {
+&"RESET": SubResource("Animation_ld06i"),
+&"walk_off": SubResource("Animation_7swpb"),
+&"walk_on": SubResource("Animation_blo5s")
+}
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cafhd"]
+texture = ExtResource("7_10iok")
+texture_region_size = Vector2i(64, 64)
+0:0/size_in_atlas = Vector2i(3, 3)
+0:0/0 = 0
+3:0/size_in_atlas = Vector2i(3, 3)
+3:0/0 = 0
+6:0/size_in_atlas = Vector2i(3, 3)
+6:0/0 = 0
+9:0/size_in_atlas = Vector2i(3, 3)
+9:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_c1e8o"]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_cafhd")
+
+[node name="Intro" type="Node2D"]
+texture_filter = 1
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+
+[node name="Ground" type="TileMapLayer" parent="TileMapLayers"]
+modulate = Color(0.84338, 0.516003, 0.12056, 1)
+tile_map_data = PackedByteArray("AAAAAAUAAQAAAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAEAAAAFAAUAAQABAAEAAAAGAAUAAQABAAEAAAAHAAUAAQABAAEAAAAIAAUAAQABAAEAAAAJAAUAAQABAAEAAAAKAAUAAQABAAEAAAALAAUAAQABAAEAAAAMAAUAAQABAAEAAAANAAUAAQABAAEAAAAOAAUAAQACAAEAAAAAAAYAAQAAAAEAAAAAAAgAAQAAAAEAAAABAAYAAQABAAEAAAABAAgAAQABAAEAAAACAAYAAQABAAEAAAACAAgAAQABAAEAAAADAAYAAQABAAEAAAADAAgAAQABAAEAAAAEAAYAAQABAAEAAAAEAAgAAQABAAEAAAAFAAYAAQABAAEAAAAFAAgAAQABAAEAAAAGAAYAAQABAAEAAAAGAAgAAQABAAEAAAAHAAYAAQABAAEAAAAHAAgAAQABAAEAAAAIAAYAAQABAAEAAAAIAAgAAQABAAEAAAAJAAYAAQABAAEAAAAJAAgAAQABAAEAAAAKAAYAAQABAAEAAAAKAAgAAQABAAEAAAALAAYAAQABAAEAAAALAAgAAQABAAEAAAAMAAYAAQABAAEAAAAMAAgAAQABAAEAAAANAAYAAQABAAEAAAANAAcAAQABAAEAAAANAAgAAQABAAEAAAAOAAYAAQACAAEAAAAOAAcAAQACAAEAAAAOAAgAAQACAAEAAAAAAAAAAQAAAAAAAAAAAAEAAQAAAAEAAAABAAEAAQABAAEAAAACAAEAAQABAAEAAAACAAIAAQABAAEAAAADAAIAAQABAAEAAAAEAAIAAQABAAEAAAAFAAIAAQABAAEAAAAFAAMAAQABAAEAAAAGAAMAAQABAAEAAAAHAAQAAQABAAEAAAAIAAQAAQABAAEAAAAOAAQAAQACAAEAAAAOAAMAAQACAAEAAAAOAAIAAQACAAEAAAAOAAEAAQACAAEAAAAOAAAAAQACAAAAAAANAAQAAQABAAEAAAANAAMAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAANAAAAAQABAAAAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAEAAAAMAAAAAQABAAAAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAEAAAALAAAAAQABAAAAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAKAAEAAQABAAEAAAAKAAAAAQABAAAAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAJAAEAAQABAAEAAAAJAAAAAQABAAAAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAIAAEAAQABAAEAAAAIAAAAAQABAAAAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAEAAAAHAAAAAQABAAAAAAAGAAQAAQABAAEAAAAGAAIAAQABAAEAAAAGAAEAAQABAAEAAAAGAAAAAQABAAAAAAAFAAQAAQABAAEAAAAFAAEAAQABAAEAAAAFAAAAAQABAAAAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAEAAQABAAEAAAAEAAAAAQABAAAAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAEAAQABAAEAAAADAAAAAQABAAAAAAACAAQAAQABAAEAAAACAAMAAQABAAEAAAACAAAAAQABAAAAAAABAAQAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAABAAAAAQABAAAAAAAAAAQAAQAAAAEAAAAAAAMAAQAAAAEAAAAAAAIAAQAAAAEAAAAAAAcAAQAAAAEAAAABAAcAAQABAAEAAAAEAAcAAQABAAEAAAAFAAcAAQABAAEAAAAGAAcAAQABAAEAAAAHAAcAAQABAAEAAAAIAAcAAQABAAEAAAAJAAcAAQABAAEAAAAKAAcAAQABAAEAAAALAAcAAQABAAEAAAAMAAcAAQABAAEAAAACAAcAAQABAAEAAAADAAcAAQABAAEAAAA=")
+tile_set = ExtResource("1_68qua")
+metadata/_edit_lock_ = true
+
+[node name="IntroImage" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(770, 227)
+scale = Vector2(0.802083, 0.802083)
+texture = ExtResource("8_f7sy0")
+
+[node name="Sand" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAKAAEABgAAAAAAAAAKAAIABgADAAEAAAAKAAMABgADAAEAAAAKAAQABgADAAEAAAANAAEABgACAAAAAAANAAIABgADAAEAAAANAAMABgADAAEAAAANAAQABgADAAEAAAAKAAUABgAAAAIAAAALAAEABgABAAMAAAALAAUABgABAAMAAAAMAAEABgABAAMAAAAMAAUABgABAAMAAAANAAUABgACAAIAAAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAA=")
+tile_set = ExtResource("1_68qua")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(153, 366)
+zoom = Vector2(2, 2)
+limit_left = 0
+limit_top = 0
+limit_right = 960
+limit_bottom = 540
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(400, 349)
+sprite_frames = ExtResource("3_f7sy0")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_qdpvj")
+}
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
+script = ExtResource("4_e8pjd")
+dialogue = ExtResource("5_70r05")
+animation_player = NodePath("../OnTheGround/AnimationPlayer")
+next_scene = "uid://euwow6oc8gcn"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="Rock" parent="." instance=ExtResource("6_klb7d")]
+position = Vector2(252, 436)
+
+[node name="ElUltimoBosqueTronco" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(311, 1042)
+scale = Vector2(2.01563, 3.07813)
+texture = ExtResource("8_f7sy0")
+
+[node name="ElUltimoBosqueIntroNuevo" type="Node2D" parent="."]
+
+[node name="Arboles" type="TileMapLayer" parent="ElUltimoBosqueIntroNuevo"]
+modulate = Color(0.774712, 0.31924, 0.556745, 1)
+tile_map_data = PackedByteArray("AAAAAP//AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAABAP//AAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAACAP//AAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAADAP//AAAAAAAAAAADAAIAAAAAAAAAAAADAAMAAAAAAAAAAAAEAP//AAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAFAP//AAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAGAP//AAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAHAP//AAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAIAP//AAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAJAP//AAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAKAP//AAAAAAAAAAAKAAIAAAAAAAAAAAAKAAMAAAAAAAAAAAALAP//AAAAAAAAAAALAAIAAAAAAAAAAAALAAMAAAAAAAAAAAAMAP//AAAAAAAAAAAMAAIAAAAAAAAAAAAMAAMAAAAAAAAAAAANAP//AAAAAAAAAAANAAIAAAAAAAAAAAANAAMAAAAAAAAAAAAOAP//AAAAAAAAAAAOAAIAAAAAAAAAAAAOAAMAAAAAAAAAAAD//wgAAAAAAAAAAAD//wkAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAkAAAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAABAAgAAAAAAAAAAAABAAkAAAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAQAAAAAAAAAAAACAAUAAAAAAAAAAAACAAgAAAAAAAAAAAACAAkAAAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAQAAAAAAAAAAAADAAUAAAAAAAAAAAADAAgAAAAAAAAAAAADAAkAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAEAAgAAAAAAAAAAAAEAAkAAAAAAAAAAAAFAAAAAAAAAAAAAAAFAAEAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAAAAAAAAAAFAAgAAAAAAAAAAAAFAAkAAAAAAAAAAAAGAAAAAAAAAAAAAAAGAAEAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAUAAAAAAAAAAAAGAAgAAAAAAAAAAAAGAAkAAAAAAAAAAAAHAAAAAAAAAAAAAAAHAAEAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAgAAAAAAAAAAAAHAAkAAAAAAAAAAAAIAAAAAAAAAAAAAAAIAAEAAAAAAAAAAAAIAAQAAAAAAAAAAAAIAAUAAAAAAAAAAAAIAAgAAAAAAAAAAAAIAAkAAAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAAJAAgAAAAAAAAAAAAJAAkAAAAAAAAAAAAKAAAAAAAAAAAAAAAKAAEAAAAAAAAAAAAKAAQAAAAAAAAAAAAKAAUAAAAAAAAAAAAKAAgAAAAAAAAAAAAKAAkAAAAAAAAAAAALAAAAAAAAAAAAAAALAAEAAAAAAAAAAAALAAQAAAAAAAAAAAALAAUAAAAAAAAAAAALAAgAAAAAAAAAAAALAAkAAAAAAAAAAAAMAAAAAAAAAAAAAAAMAAEAAAAAAAAAAAAMAAQAAAAAAAAAAAAMAAUAAAAAAAAAAAAMAAgAAAAAAAAAAAAMAAkAAAAAAAAAAAANAAAAAAAAAAAAAAANAAEAAAAAAAAAAAANAAQAAAAAAAAAAAANAAUAAAAAAAAAAAANAAgAAAAAAAAAAAANAAkAAAAAAAAAAAAOAAAAAAAAAAAAAAAOAAEAAAAAAAAAAAAOAAQAAAAAAAAAAAAOAAUAAAAAAAAAAAAOAAgAAAAAAAAAAAAOAAkAAAAAAAAAAAAPAAgAAAAAAAAAAAAPAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_c1e8o")
+
+[node name="Beilstone-116427" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_10iok")
+volume_db = -15.375
+autoplay = true
