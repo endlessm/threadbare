@@ -15,12 +15,11 @@ const NEIGHBORS := [
 	TileSet.CELL_NEIGHBOR_RIGHT_SIDE,
 ]
 
-@export var void_layer: TileMapLayer
+@export var void_layer: TileMapCover
 @export var player: Player
 @export var animated_sprite_2d: AnimatedSprite2D
 @export var particles: GPUParticles2D
 @export var navigation_agent: NavigationAgent2D
-@export var tile_map_cover: TileMapCover
 
 @export_range(10, 100000, 10) var walk_speed: float = 300.0
 @export_range(10, 100000, 10) var run_speed: float = 500.0
@@ -72,7 +71,7 @@ func _process(_delta: float) -> void:
 	if not _moving:
 		return
 
-	var coord := void_layer.local_to_map(void_layer.to_local(global_position))
+	var coord := void_layer.coord_for(self)
 	var coords: Array[Vector2i] = [coord]
 	# TODO: this looks bad because as soon as the enemy enters the left-hand
 	# edge of tile (x, y) they destroy tile (x+1, y).
@@ -81,7 +80,7 @@ func _process(_delta: float) -> void:
 	for neighbor: int in NEIGHBORS:
 		coords.append(void_layer.get_neighbor_cell(coord, neighbor))
 
-	tile_map_cover.consume_cells(coords)
+	void_layer.consume_cells(coords)
 	if coords:
 		_erased.append(coords)
 
