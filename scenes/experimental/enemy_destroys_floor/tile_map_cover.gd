@@ -68,16 +68,17 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 func _update_terrain_id() -> void:
 	_terrain_id = -1
+
 	if not tile_set:
 		return
 
 	if 0 > terrain_set or terrain_set >= tile_set.get_terrain_sets_count():
 		return
 
-	for index: int in range(0, tile_set.get_terrains_count(terrain_set)):
-		var name: String = tile_set.get_terrain_name(terrain_set, index)
-		if name == terrain_name:
-			_terrain_id = index
+	for i: int in range(0, tile_set.get_terrains_count(terrain_set)):
+		var i_name: String = tile_set.get_terrain_name(terrain_set, i)
+		if i_name == terrain_name:
+			_terrain_id = i
 			return
 
 

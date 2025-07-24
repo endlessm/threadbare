@@ -16,10 +16,11 @@ func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -
 	var tween := create_tween()
 	var original_zoom := camera.zoom
 	tween.tween_property(camera, "zoom", original_zoom / 4.0, 1.0).set_ease(Tween.EASE_OUT)
-	#tween.parallel().tween_property(void_layer, "modulate:a", 0.0, 3.0).set_ease(Tween.EASE_OUT)
-	#tween.tween_property(camera, "zoom", original_zoom, 1.0).set_ease(Tween.EASE_IN)
+	tween.parallel().tween_property(void_layer, "modulate:a", 0.0, 3.0).set_ease(Tween.EASE_OUT)
+	tween.tween_property(camera, "zoom", original_zoom, 1.0).set_ease(Tween.EASE_IN)
 	await tween.finished
-	#timer.stop()
-	#void_layer.enabled = false
+	timer.stop()
+
+	void_layer.enabled = false
 	interact_area.end_interaction()
 	interact_area.disabled = true

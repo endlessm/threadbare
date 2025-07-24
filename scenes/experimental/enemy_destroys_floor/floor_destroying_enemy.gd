@@ -34,7 +34,7 @@ func _ready() -> void:
 	particles.emitting = false
 
 
-func start(_dummy: bool) -> void:
+func start(_dummy: Node2D) -> void:
 	_moving = true
 	particles.emitting = true
 	animated_sprite_2d.play(&"walk")
