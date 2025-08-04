@@ -3,14 +3,8 @@
 name: "Build and Export Game"
 on:
   workflow_dispatch:
-    inputs:
-      build_flatpak:
-        description: 'Also build a Flatpak bundle'
-        type: boolean
   pull_request:
   release:
-    types:
-      - published
   push:
     branches:
       - '*'
@@ -54,13 +48,13 @@ jobs:
           mkdir -p build && cd build
 
           # Download Godot Engine itself
-          wget --progress=dot:giga https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip && \
+          wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip && \
           unzip Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip && \
           mv Godot_v${GODOT_VERSION}-stable_linux.x86_64 godot
 
           # Download export templates
           mkdir -p editor_data/export_templates
-          wget --progress=dot:giga https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz && \
+          wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz && \
           unzip Godot_v${GODOT_VERSION}-stable_export_templates.tpz && \
           mv templates editor_data/export_templates/${GODOT_VERSION}.stable
 
@@ -139,7 +133,7 @@ jobs:
 
   release:
     name: Attach to release
-    needs: [build, flatpak]
+    needs: build
     if: ${{ github.event_name == 'release' }}
     runs-on: ubuntu-latest
     steps:
