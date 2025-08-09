@@ -7,11 +7,13 @@ const REPEL_ANTICIPATION_TIME: float = 0.3
 @onready var player: Player = owner
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var player_fighting: Node2D = %PlayerFighting
+@onready var player_hook: Node2D = %PlayerHook
 @onready var original_speed_scale: float = speed_scale
 
 
 func _ready() -> void:
 	player.mode_changed.connect(_on_player_mode_changed)
+	player_hook.string_thrown.connect(_on_player_hook_string_thrown)
 
 
 func _process(_delta: float) -> void:
@@ -42,6 +44,10 @@ func _process_walk_idle(_delta: float) -> void:
 
 func _process_fighting(delta: float) -> void:
 	var repel: StringName = _get_repel_animation()
+
+	if current_animation == &"throw_string":
+		return
+
 	if not player_fighting.is_fighting:
 		# If the current animation is repel and it has passed the anticipation
 		# phase, it plays until the end.
@@ -62,3 +68,9 @@ func _on_player_mode_changed(mode: Player.Mode) -> void:
 	match player.mode:
 		Player.Mode.DEFEATED:
 			play(&"defeated")
+
+
+func _on_player_hook_string_thrown() -> void:
+	if current_animation == &"throw_string":
+		stop()
+	play(&"throw_string")

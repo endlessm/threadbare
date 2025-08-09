@@ -44,6 +44,7 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 	set = _set_mode
 @export_range(10, 100000, 10) var walk_speed: float = 300.0
 @export_range(10, 100000, 10) var run_speed: float = 500.0
+@export_range(10, 100000, 10) var hooking_speed: float = 100.0
 @export_range(10, 100000, 10) var stopping_step: float = 1500.0
 @export_range(10, 100000, 10) var moving_step: float = 4000.0
 
@@ -61,6 +62,7 @@ var input_vector: Vector2
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: Node2D = %PlayerFighting
+@onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
@@ -138,7 +140,9 @@ func _unhandled_input(_event: InputEvent) -> void:
 	var axis: Vector2 = Input.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
 
 	var speed: float
-	if Input.is_action_pressed(&"running"):
+	if player_hook.hook_control.pressing_throw_action:
+		speed = hooking_speed
+	elif Input.is_action_pressed(&"running"):
 		speed = run_speed
 	else:
 		speed = walk_speed
@@ -157,6 +161,10 @@ func is_running() -> bool:
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
+		return
+
+	if player_hook.pulling:  # or player_hook.hook_control.pressing_throw_action:
+		# TODO: movement handled in PlayerHook _process
 		return
 
 	if player_interaction.is_interacting or mode == Mode.DEFEATED:
