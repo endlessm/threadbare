@@ -40,6 +40,7 @@ const TRANSIENT_SCENES := [
 var incorporating_threads: bool = false
 
 var persist_progress: bool
+var got_longer_hook: bool = false
 var _state := ConfigFile.new()
 
 
