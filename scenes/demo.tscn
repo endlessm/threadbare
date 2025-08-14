@@ -1,0 +1,86 @@
+[gd_scene load_steps=7 format=4 uid="uid://b750ioqxn6ec0"]
+
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_l20p6"]
+[ext_resource type="SpriteFrames" uid="uid://b3r84ksew5djp" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_purple.tres" id="1_tqfh0"]
+[ext_resource type="Script" uid="uid://cx0sk4uhvnii0" path="res://scenes/game_logic/erratic_walk_behavior.gd" id="2_ba4lm"]
+[ext_resource type="Script" uid="uid://q4jj6ou7yonf" path="res://scenes/game_logic/bounce_walk_behavior.gd" id="4_vephn"]
+[ext_resource type="Script" uid="uid://cwoclmik3db2" path="res://scenes/game_logic/follow_walk_behavior.gd" id="5_b0nem"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7cn4i"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Node2D"]
+tile_map_data = PackedByteArray("AAAAAAgAAAAAAAAAAAABAAgAAAAAAAAAAAACAAgAAAAAAAAAAAADAAgAAAAAAAAAAAAEAAgAAAAAAAAAAAAFAAgAAAAAAAAAAAAGAAgAAAAAAAAAAAAHAAgAAAAAAAAAAAAIAAgAAAAAAAAAAAAJAAgAAAAAAAAAAAAKAAgAAAAAAAAAAAALAAgAAAAAAAAAAAAMAAgAAAAAAAAAAAANAAgAAAAAAAAAAAAOAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAALAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAANAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAOAAEAAAAAAAAAAAAOAAIAAAAAAAAAAAAOAAMAAAAAAAAAAAAOAAQAAAAAAAAAAAAOAAUAAAAAAAAAAAAOAAYAAAAAAAAAAAAOAAcAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAA=")
+tile_set = ExtResource("1_l20p6")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+position = Vector2(419, 306)
+collision_mask = 528
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_7cn4i")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+position = Vector2(0, -37)
+sprite_frames = ExtResource("1_tqfh0")
+animation = &"idle"
+
+[node name="ErraticWalkBehavior" type="Node2D" parent="CharacterBody2D"]
+process_mode = 4
+script = ExtResource("2_ba4lm")
+stuck_speed = 300.0
+travel_distance = 30.0
+metadata/_custom_type_script = "uid://cx0sk4uhvnii0"
+
+[node name="BounceWalkBehavior" type="Node2D" parent="CharacterBody2D"]
+script = ExtResource("4_vephn")
+metadata/_custom_type_script = "uid://q4jj6ou7yonf"
+
+[node name="FollowWalkBehavior" type="Node2D" parent="CharacterBody2D" node_paths=PackedStringArray("target")]
+process_mode = 4
+position = Vector2(164, 55)
+script = ExtResource("5_b0nem")
+target = NodePath("..")
+metadata/_custom_type_script = "uid://cwoclmik3db2"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(2, 2)
+
+[node name="CharacterBody2D2" type="CharacterBody2D" parent="."]
+position = Vector2(583, 361)
+collision_mask = 528
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D2"]
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_7cn4i")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D2"]
+position = Vector2(0, -37)
+sprite_frames = ExtResource("1_tqfh0")
+animation = &"idle"
+
+[node name="ErraticWalkBehavior" type="Node2D" parent="CharacterBody2D2"]
+process_mode = 4
+script = ExtResource("2_ba4lm")
+stuck_speed = 300.0
+travel_distance = 30.0
+metadata/_custom_type_script = "uid://cx0sk4uhvnii0"
+
+[node name="BounceWalkBehavior" type="Node2D" parent="CharacterBody2D2"]
+process_mode = 4
+script = ExtResource("4_vephn")
+metadata/_custom_type_script = "uid://q4jj6ou7yonf"
+
+[node name="FollowWalkBehavior" type="Node2D" parent="CharacterBody2D2" node_paths=PackedStringArray("target")]
+script = ExtResource("5_b0nem")
+walk_speed = 100.0
+target = NodePath("../../CharacterBody2D")
+travel_distance = 10.0
+metadata/_custom_type_script = "uid://cwoclmik3db2"
