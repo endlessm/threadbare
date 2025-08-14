@@ -27,7 +27,6 @@ const NEIGHBORS := [
 var _moving: bool = false
 var _update_interval: float = 10.0 / 60.0
 var _next_update: float
-var _erased: Array[Array] = []
 
 
 func _ready() -> void:
@@ -81,8 +80,6 @@ func _process(_delta: float) -> void:
 		coords.append(void_layer.get_neighbor_cell(coord, neighbor))
 
 	void_layer.consume_cells(coords)
-	if coords:
-		_erased.append(coords)
 
 
 func _on_player_capture_area_body_entered(body: Node2D) -> void:

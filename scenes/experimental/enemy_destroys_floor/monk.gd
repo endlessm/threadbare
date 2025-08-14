@@ -7,7 +7,6 @@ extends CharacterBody2D
 @export var enemy: CharacterBody2D
 
 @onready var interact_area: InteractArea = $InteractArea
-@onready var timer: Timer = $Timer
 
 
 func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -> void:
@@ -16,11 +15,12 @@ func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -
 	var tween := create_tween()
 	var original_zoom := camera.zoom
 	tween.tween_property(camera, "zoom", original_zoom / 4.0, 1.0).set_ease(Tween.EASE_OUT)
-	tween.parallel().tween_property(void_layer, "modulate:a", 0.0, 3.0).set_ease(Tween.EASE_OUT)
+	await void_layer.uncover_all(3.0)
+	tween.stop()
+
+	tween = create_tween()
 	tween.tween_property(camera, "zoom", original_zoom, 1.0).set_ease(Tween.EASE_IN)
 	await tween.finished
-	timer.stop()
 
-	void_layer.enabled = false
 	interact_area.end_interaction()
 	interact_area.disabled = true

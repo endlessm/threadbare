@@ -89,6 +89,9 @@ func coord_for(node: Node2D) -> Vector2i:
 func _ready() -> void:
 	_update_terrain_id()
 
+	if Engine.is_editor_hint():
+		return
+
 	for parent: Node in consumable_node_holders:
 		for child: Node in parent.get_children():
 			if child is Node2D:
@@ -96,6 +99,9 @@ func _ready() -> void:
 				var nodes: Array = _unconsumed_nodes.get_or_add(coord, [])
 				assert(child not in nodes)
 				nodes.append(child)
+
+	for coord: Vector2i in get_used_cells():
+		consume(coord, true)
 
 
 func consume_cells(cells: Array[Vector2i], immediate: bool = false) -> void:
@@ -119,7 +125,7 @@ func consume(coord: Vector2i, immediate: bool = false) -> void:
 
 	var nodes: Array = _unconsumed_nodes[coord]
 	_unconsumed_nodes.erase(coord)
-	# TODO: store previous modulate.a to restore in restore()
+	# TODO: store previous modulate.a to restore in uncover_all()
 	if immediate:
 		for node: Node2D in nodes:
 			node.modulate.a = 0.0
@@ -129,35 +135,21 @@ func consume(coord: Vector2i, immediate: bool = false) -> void:
 			tween.tween_property(node, "modulate:a", 0.0, _DURATION).set_ease(Tween.EASE_OUT)
 		await tween.finished
 
-	for node in nodes:
+	for node: Node in nodes:
+		# TODO: also store original process mode?
 		node.process_mode = Node.PROCESS_MODE_DISABLED
 	_consumed_nodes[coord] = nodes
 
 
-func restore_cells(cells: Array[Vector2i], immediate: bool = false) -> void:
-	for i in range(cells.size() - 1, -1, -1):
-		var c: Vector2i = cells[i]
+func uncover_all(duration: float) -> void:
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	tween.set_parallel(true)
+	tween.tween_property(self, "modulate:a", 0.0, duration / 2)
+	for nodes: Array in _consumed_nodes.values():
+		for node: Node2D in nodes:
+			tween.tween_property(node, "modulate:a", 1.0, duration)
+			node.process_mode = Node.PROCESS_MODE_INHERIT
 
-		if get_cell_source_id(c) == -1:
-			cells.remove_at(i)
-			continue
-
-	if cells:
-		set_cells_terrain_connect(cells, terrain_set, -1)
-
-		for cell in cells:
-			restore(cell, immediate)
-
-
-func restore(coord: Vector2i, _immediate: bool) -> void:
-	if coord not in _consumed_nodes:
-		return
-
-	var nodes: Array = _consumed_nodes.get(coord)
-	for node: Node2D in nodes:
-		node.process_mode = Node.PROCESS_MODE_ALWAYS
-		var tween := create_tween()
-		tween.tween_property(node, "modulate:a", 1.0, _DURATION)
-
-	_unconsumed_nodes[coord] = nodes
-	_consumed_nodes.erase(coord)
+	await tween.finished
+	clear()
