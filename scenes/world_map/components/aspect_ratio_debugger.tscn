@@ -1,0 +1,70 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5oi15v411wc6"]
+
+[ext_resource type="PackedScene" uid="uid://cufkthb25mpxy" path="res://scenes/world_map/frays_end.tscn" id="1_tf87j"]
+
+[sub_resource type="GDScript" id="GDScript_t2i6g"]
+script/source = "extends ColorRect
+
+const MINIMUM_ASPECT_RATIO := 1.5
+const MAXIMUM_ASPECT_RATIO := 2.2
+
+
+func _draw():
+	var aspect = get_size().aspect()
+	# Too wide, add vertical bars:
+	if aspect >= MAXIMUM_ASPECT_RATIO:
+		var bar_width := (get_size().x - (get_size().y * MAXIMUM_ASPECT_RATIO)) / 2.0
+		draw_rect(Rect2(0, 0, bar_width, get_size().y), Color(Color.RED, 0.4))
+		draw_rect(Rect2(get_size().x - bar_width, 0, bar_width, get_size().y), Color(Color.RED, 0.4))
+	# Too tall, add vertical bars:
+	elif aspect < MINIMUM_ASPECT_RATIO:
+		var bar_width := ((get_size().y * MINIMUM_ASPECT_RATIO) - get_size().x ) / 2.0
+		draw_rect(Rect2(0, 0, get_size().x, bar_width), Color(Color.RED, 0.4))
+		draw_rect(Rect2(0, get_size().y - bar_width, get_size().x, bar_width), Color(Color.RED, 0.4))
+"
+
+[node name="AspectRatioDebugger" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+size = Vector2i(1920, 1080)
+
+[node name="FraysEnd" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_tf87j")]
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+color = Color(1, 1, 1, 0)
+script = SubResource("GDScript_t2i6g")
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
