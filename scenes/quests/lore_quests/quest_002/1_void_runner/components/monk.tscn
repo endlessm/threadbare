@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://dme77bdscoo1o"]
+
+[ext_resource type="Script" uid="uid://c1snt67xajl63" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/monk.gd" id="1_et70a"]
+[ext_resource type="SpriteFrames" uid="uid://clx8sssi4tw8q" path="res://scenes/game_elements/characters/components/sprite_frames/musician.tres" id="2_8g08d"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="3_2wo0h"]
+[ext_resource type="Script" path="res://scenes/game_logic/talk_behavior.gd" id="4_8g08d"]
+[ext_resource type="Resource" uid="uid://cx8jmresqdqak" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/monk.dialogue" id="5_2wo0h"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lutqc"]
+height = 73.6055
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bqjp5"]
+size = Vector2(52, 50)
+
+[node name="Monk" type="CharacterBody2D"]
+script = ExtResource("1_et70a")
+npc_name = "Matilda"
+look_at_side = 0
+sprite_frames = ExtResource("2_8g08d")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -40)
+sprite_frames = ExtResource("2_8g08d")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_lutqc")
+
+[node name="InteractArea" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_2wo0h")
+interact_label_position = Vector2(0, -100)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(0, -29)
+shape = SubResource("RectangleShape2D_bqjp5")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="." node_paths=PackedStringArray("interact_area")]
+script = ExtResource("4_8g08d")
+dialogue = ExtResource("5_2wo0h")
+interact_area = NodePath("../InteractArea")
