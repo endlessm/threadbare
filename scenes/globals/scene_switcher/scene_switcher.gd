@@ -11,6 +11,13 @@ const _SCENE_SUFFIX = ".tscn"
 ## Proxy object for the 'window' DOM object, or null if not running on the web
 var _window: JavaScriptObject
 
+## Proxy object for the [method _hashchange_cb] callback, or null if not running on the web
+var _hashchange_cb_ref: JavaScriptObject
+
+## The last URL that was set by [method _set_hash], if running on the web.
+## If we observe the URL changing to something different, the user has edited the URL manually.
+var _current_url: String
+
 ## Matches the expected absolute path for a scene, with a capture group
 ## representing a more human-readable substring.
 var _scene_rx := RegEx.create_from_string(
@@ -22,6 +29,8 @@ func _ready() -> void:
 	if OS.has_feature("web"):
 		_window = JavaScriptBridge.get_interface("window")
 		_restore_from_hash.call_deferred()
+		_hashchange_cb_ref = JavaScriptBridge.create_callback(_hashchange_cb)
+		_window.onhashchange = _hashchange_cb_ref
 
 
 ## On the web, load the world indicated by the URL hash, if any.
@@ -69,7 +78,15 @@ func _set_hash(resource_path: String) -> void:
 		# Replace the current URL rather than simply updating window.location to
 		# avoid creating misleading history entries that don't work if you press
 		# the browser's back button.
+		_current_url = url.href
 		_window.location.replace(url.href)
+
+
+func _hashchange_cb(args: Array) -> void:
+	var event := args[0] as JavaScriptObject
+	var new_url := event.newURL as String
+	if new_url != _current_url:
+		_restore_from_hash()
 
 
 func change_to_file_with_transition(
