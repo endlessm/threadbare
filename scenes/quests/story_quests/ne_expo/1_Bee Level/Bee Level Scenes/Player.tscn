@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://fegl5npowc4u"]
+
+[ext_resource type="Texture2D" uid="uid://dwwh85vhh4lhe" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Player Components/Bumbly Bee Wings flutter.png" id="1_hthnt"]
+[ext_resource type="Script" uid="uid://1glccm7bx0ob" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee level Scripts/player.gd" id="1_wgidg"]
+[ext_resource type="Texture2D" uid="uid://ch2mdf08rdpdp" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Player Components/Bumbly Bee Wings up aseprite colors.png" id="2_wgidg"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oywj0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_hthnt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_wgidg")
+}],
+"loop": true,
+"name": &"Movement",
+"speed": 60.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4g8q3"]
+radius = 163.443
+height = 835.304
+
+[node name="CharacterBody2D (player)" type="CharacterBody2D"]
+scale = Vector2(0.1, 0.1)
+collision_mask = 510
+motion_mode = 1
+script = ExtResource("1_wgidg")
+
+[node name="AnimatedSprite2D (player)" type="AnimatedSprite2D" parent="."]
+self_modulate = Color(0, 0, 0, 0.4)
+show_behind_parent = true
+scale = Vector2(0.95, 0.95)
+sprite_frames = SubResource("SpriteFrames_oywj0")
+animation = &"Movement"
+autoplay = "Movement"
+frame_progress = 0.5805
+offset = Vector2(0, 550)
+
+[node name="shadow (player)" type="AnimatedSprite2D" parent="AnimatedSprite2D (player)"]
+scale = Vector2(1.05263, 1.05263)
+sprite_frames = SubResource("SpriteFrames_oywj0")
+animation = &"Movement"
+autoplay = "Movement"
+frame_progress = 0.744164
+
+[node name="CollisionShape2D (player)" type="CollisionShape2D" parent="."]
+position = Vector2(-31, 61)
+rotation = -0.947225
+shape = SubResource("CapsuleShape2D_4g8q3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(8.6, 8.6)
