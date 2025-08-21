@@ -42,7 +42,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 	axis = Input.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
 	if not axis.is_zero_approx():
 		if pressing_throw_action:
-			_hook_angle = lerp_angle(_hook_angle, axis.angle(), 0.1)
+			_hook_angle = rotate_toward(_hook_angle, axis.angle(), 0.05)
+			# _hook_angle = lerp_angle(_hook_angle, axis.angle(), 0.1)
 		else:
 			_hook_angle = axis.angle()
 
