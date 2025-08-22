@@ -92,15 +92,6 @@ func _on_kicked(object: SequencePuzzleObject) -> void:
 		_debug("Didn't match")
 		_position = 0
 		_debug("Matching again at start of sequence...")
-
-	if sequence[_position] != object:
-		_debug("Didn't match")
-		for r: SequencePuzzleObject in _objects:
-			r.stop_hint()
-		if hint_levels.get(get_progress(), 0) >= wobble_hint_min_level:
-			hint_timer.start()
-		return
-
 	_position += 1
 	hint_timer.start()
 	if _position != sequence.size():
