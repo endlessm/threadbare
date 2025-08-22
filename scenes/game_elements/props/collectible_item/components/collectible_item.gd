@@ -110,4 +110,3 @@ func _update_based_on_revealed() -> void:
 		sprite_2d.visible = revealed
 	if physical_collider:
 		physical_collider.disabled = not revealed
-	
