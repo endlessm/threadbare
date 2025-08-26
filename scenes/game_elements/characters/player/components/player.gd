@@ -4,11 +4,6 @@
 class_name Player
 extends CharacterBody2D
 
-# 🔑 Llaves para abrir puerta
-var llaves: int = 0
-@export var llaves_maximas: int = 3
-var puerta
-
 signal mode_changed(mode: Mode)
 
 ## Controls how the player can interact with the world around them.
@@ -69,16 +64,6 @@ var input_vector: Vector2
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
-
-# ✅ Actualizar llaves recogidas
-func ActualizarLlaves():
-	if llaves >= llaves_maximas:
-		AbrirSalida()
-
-
-func AbrirSalida():
-	if puerta:
-		puerta.queue_free()
 
 
 func _set_mode(new_mode: Mode) -> void:
@@ -148,8 +133,6 @@ func _get_configuration_warnings() -> PackedStringArray:
 func _ready() -> void:
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
-	if get_parent().has_node("Puerta"):
-		puerta = get_parent().get_node("Puerta")
 
 
 func _unhandled_input(_event: InputEvent) -> void:
