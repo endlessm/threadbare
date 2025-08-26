@@ -1,6 +1,8 @@
 @tool
 extends ThrowingEnemy
 
+signal Defeated
+
 func shoot_projectile() -> void:
 	var player: Player = get_tree().get_first_node_in_group("player")
 	if not is_instance_valid(player):
@@ -31,4 +33,5 @@ func shoot_projectile() -> void:
 	
 func _on_got_hit(body: Node2D) -> void:
 	super(body)
+	Defeated.emit()
 	remove()
