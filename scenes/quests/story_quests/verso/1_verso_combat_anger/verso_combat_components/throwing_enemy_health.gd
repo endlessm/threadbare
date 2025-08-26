@@ -16,7 +16,7 @@ func shoot_projectile() -> void:
 	projectile.label = allowed_labels.pick_random()
 	if projectile.label in color_per_label:
 		projectile.color = color_per_label[projectile.label]
-	projectile.global_position = (projectile_marker.global_position + (projectile.direction * 45.))
+	projectile.global_position = (projectile_marker.global_position + (projectile.direction * 75.))
 	if projectile_follows_player:
 		projectile.node_to_follow = player
 	projectile.sprite_frames = projectile_sprite_frames
