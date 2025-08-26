@@ -4,8 +4,9 @@
 extends Node2D
 
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
-@onready var hide_player: AudioStreamPlayer2D = $AudioStreamPlayer2D_Hide
-@onready var reveal_player: AudioStreamPlayer2D = $AudioStreamPlayer2D_Reveal
+@onready var hide_player: AudioStreamPlayer2D = $HideSound
+@onready var reveal_player: AudioStreamPlayer2D = $RevealSound
+
 
 func _hide() -> void:
 	animated_sprite_2d.play(&"hide")

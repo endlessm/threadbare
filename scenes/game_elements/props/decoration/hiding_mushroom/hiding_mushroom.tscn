@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://5s56lmeleerc" path="res://scenes/game_elements/props/decoration/hiding_mushroom/components/Mushroom_Hiding.png" id="2_u5x8h"]
 [ext_resource type="Texture2D" uid="uid://caajyl18koevp" path="res://scenes/game_elements/props/decoration/hiding_mushroom/components/Mushroom_Idle.png" id="3_gyonr"]
 [ext_resource type="Texture2D" uid="uid://b3jrnsvk46nji" path="res://scenes/game_elements/props/decoration/hiding_mushroom/components/Mushroom_Revealing.png" id="4_nlg6p"]
-[ext_resource type="AudioStream" uid="uid://dgwytqo5nvymw" path="res://assets/first_party/sounds/mushroom/Hu.mp3" id="5_gyonr"]
-[ext_resource type="AudioStream" uid="uid://iu6xdqfm3bfr" path="res://assets/first_party/sounds/mushroom/sh.mp3" id="6_nlg6p"]
+[ext_resource type="AudioStream" uid="uid://1gnb8sf687eo" path="res://assets/first_party/sounds/mushroom/Hu.ogg" id="5_gyonr"]
+[ext_resource type="AudioStream" uid="uid://b0d3tfg0p06bp" path="res://assets/first_party/sounds/mushroom/sh.ogg" id="5_u5x8h"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kbtpn"]
 atlas = ExtResource("2_u5x8h")
@@ -142,13 +142,13 @@ collision_layer = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
 shape = SubResource("CircleShape2D_v208a")
 
-[node name="AudioStreamPlayer2D_Hide" type="AudioStreamPlayer2D" parent="."]
+[node name="HideSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_gyonr")
-volume_db = 2.0
+bus = &"SFX"
 
-[node name="AudioStreamPlayer2D_Reveal" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("6_nlg6p")
-volume_db = -1.0
+[node name="RevealSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_u5x8h")
+bus = &"SFX"
 
 [connection signal="body_entered" from="PlayerDetector" to="." method="_on_player_detector_body_entered"]
 [connection signal="body_exited" from="PlayerDetector" to="." method="_on_player_detector_body_exited"]
