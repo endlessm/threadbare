@@ -2,13 +2,16 @@ extends Node
 
 @export var intro_dialogue: DialogueResource
 
-var enemies_left: int = 0
+var enemies_left: int = 6
+
+signal goal_reached
 
 func start() -> void:
 	var player: Player = get_tree().get_first_node_in_group("player")
 	if player:
 		player.mode = Player.Mode.FIGHTING
 	get_tree().call_group("throwing_enemy", "start")
+	
 	
 func _ready() -> void:
 	if intro_dialogue:
@@ -26,4 +29,9 @@ func _update_allowed_colors() -> void:
 
 
 func _on_enemy_defeated() -> void:
-	pass # Replace with function body.
+	enemies_left -= 1
+	if enemies_left <= 0:
+		var player: Player = get_tree().get_first_node_in_group("player")
+		if player:
+			player.mode = Player.Mode.COZY
+		goal_reached.emit()
