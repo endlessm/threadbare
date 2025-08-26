@@ -1,6 +1,6 @@
-[gd_scene load_steps=43 format=4 uid="uid://csils82h5vm3d"]
+[gd_scene load_steps=41 format=4 uid="uid://csils82h5vm3d"]
 
-[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_f45u6"]
+[ext_resource type="Script" uid="uid://c7mhyw74ssjpy" path="res://scenes/quests/story_quests/verso/1_verso_combat_anger/defeat_enemy.gd" id="1_2bah4"]
 [ext_resource type="Texture2D" uid="uid://cnlp5ijrpt33" path="res://assets/first_party/tiles/Desk_Tiles.png" id="3_5sxs3"]
 [ext_resource type="Texture2D" uid="uid://fg81hso7a3fn" path="res://assets/first_party/tiles/Right_Border_Desk_Tiles.png" id="3_gbl6x"]
 [ext_resource type="Texture2D" uid="uid://c0b6fehp1xr2l" path="res://assets/first_party/tiles/Border_Desk_Tiles.png" id="4_gcgby"]
@@ -8,12 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_tkq7k"]
 [ext_resource type="Texture2D" uid="uid://cd6jsvp0ihrqj" path="res://assets/first_party/tiles/Corner_Desk_Tiles.png" id="5_7j4aa"]
 [ext_resource type="Texture2D" uid="uid://cax768hgbvvqe" path="res://assets/first_party/tiles/Blank_Paper_Tiles.png.png" id="5_hdh3l"]
-[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="5_kgheh"]
 [ext_resource type="Texture2D" uid="uid://chkstgfndpv2b" path="res://assets/first_party/tiles/Blank_Stack_Paper_Tiles.png.png" id="6_enr1a"]
-[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="6_iknpy"]
 [ext_resource type="Texture2D" uid="uid://da7b6rpgmqb0m" path="res://assets/first_party/tiles/Right_Corners_Desk_Tiles.png" id="7_7w3iw"]
 [ext_resource type="Texture2D" uid="uid://b3m46v2gayxeg" path="res://assets/first_party/tiles/Calculator_Hello_Tiles.png" id="7_7yave"]
-[ext_resource type="SpriteFrames" uid="uid://c50725q5ey5j5" path="res://scenes/quests/story_quests/template/2_template_combat/template_combat_components/template_target_spriteframes.tres" id="7_hj1oc"]
 [ext_resource type="Texture2D" uid="uid://byuind64x6a6l" path="res://assets/first_party/tiles/Stapler_Tiles.png" id="8_7w3iw"]
 [ext_resource type="Texture2D" uid="uid://b5bjnifjleyh5" path="res://assets/first_party/tiles/Pencil_Tiles.png.png" id="8_7yave"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="8_weewi"]
@@ -24,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://bvanws8kq1xde" path="res://assets/first_party/tiles/Eraser_Tiles.png" id="13_qh7o3"]
 [ext_resource type="SpriteFrames" uid="uid://dy4hi40ctxeno" path="res://scenes/quests/story_quests/verso/verso_player_components/verso_player.tres" id="18_2bah4"]
 [ext_resource type="PackedScene" uid="uid://bwqrh7clivubq" path="res://scenes/game_elements/props/decoration/sharpener/pencil_sharpener.tscn" id="22_gbl6x"]
+[ext_resource type="PackedScene" uid="uid://dcoas3imo10p5" path="res://scenes/quests/story_quests/verso/1_verso_combat_anger/verso_combat_components/ThrowingEnemyHealth.tscn" id="26_d6umq"]
 [ext_resource type="Resource" uid="uid://dbjm7schpu1dk" path="res://scenes/quests/story_quests/verso/1_verso_combat_anger/verso_combat_components/verso_combat.dialogue" id="26_m5ihe"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2bah4"]
@@ -324,8 +322,8 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 [node name="Combat" type="Node2D"]
 y_sort_enabled = true
 
-[node name="FillGameLogic" type="Node" parent="."]
-script = ExtResource("1_f45u6")
+[node name="defeatGameLogic" type="Node" parent="."]
+script = ExtResource("1_2bah4")
 intro_dialogue = ExtResource("26_m5ihe")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
@@ -355,45 +353,6 @@ limit_top = -500
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="ThrowingNPC" parent="OnTheGround" instance=ExtResource("5_kgheh")]
-position = Vector2(857, 300)
-
-[node name="Target" parent="OnTheGround" instance=ExtResource("6_iknpy")]
-position = Vector2(510, 164)
-sprite_frames = ExtResource("7_hj1oc")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target2" parent="OnTheGround" instance=ExtResource("6_iknpy")]
-position = Vector2(766, 164)
-sprite_frames = ExtResource("7_hj1oc")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target3" parent="OnTheGround" instance=ExtResource("6_iknpy")]
-position = Vector2(769, 497)
-sprite_frames = ExtResource("7_hj1oc")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target4" parent="OnTheGround" instance=ExtResource("6_iknpy")]
-position = Vector2(640, 497)
-sprite_frames = ExtResource("7_hj1oc")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target5" parent="OnTheGround" instance=ExtResource("6_iknpy")]
-position = Vector2(641, 164)
-sprite_frames = ExtResource("7_hj1oc")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target6" parent="OnTheGround" instance=ExtResource("6_iknpy")]
-position = Vector2(509, 497)
-sprite_frames = ExtResource("7_hj1oc")
-label = ""
-color = Color(1, 1, 1, 1)
-
 [node name="Pencil Sharpener" parent="OnTheGround" instance=ExtResource("22_gbl6x")]
 position = Vector2(1450, 606)
 
@@ -406,8 +365,32 @@ item = SubResource("Resource_a51xm")
 collected_dialogue = ExtResource("26_m5ihe")
 dialogue_title = &"well_done"
 
+[node name="ThrowingEnemyHealth" parent="OnTheGround" instance=ExtResource("26_d6umq")]
+position = Vector2(1003, 129)
+
+[node name="ThrowingEnemyHealth2" parent="OnTheGround" instance=ExtResource("26_d6umq")]
+position = Vector2(586, 653)
+
+[node name="ThrowingEnemyHealth3" parent="OnTheGround" instance=ExtResource("26_d6umq")]
+position = Vector2(1100, 666)
+
+[node name="ThrowingEnemyHealth4" parent="OnTheGround" instance=ExtResource("26_d6umq")]
+position = Vector2(587, 175)
+
+[node name="ThrowingEnemyHealth5" parent="OnTheGround" instance=ExtResource("26_d6umq")]
+position = Vector2(1252, 338)
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource("10_ntgxy")]
 
-[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
+[node name="ThrowingEnemyHealth" parent="." instance=ExtResource("26_d6umq")]
+position = Vector2(685, 441)
+
+[connection signal="goal_reached" from="defeatGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
+[connection signal="Defeated" from="OnTheGround/ThrowingEnemyHealth" to="defeatGameLogic" method="_on_enemy_defeated"]
+[connection signal="Defeated" from="OnTheGround/ThrowingEnemyHealth2" to="defeatGameLogic" method="_on_enemy_defeated"]
+[connection signal="Defeated" from="OnTheGround/ThrowingEnemyHealth3" to="defeatGameLogic" method="_on_enemy_defeated"]
+[connection signal="Defeated" from="OnTheGround/ThrowingEnemyHealth4" to="defeatGameLogic" method="_on_enemy_defeated"]
+[connection signal="Defeated" from="OnTheGround/ThrowingEnemyHealth5" to="defeatGameLogic" method="_on_enemy_defeated"]
+[connection signal="Defeated" from="ThrowingEnemyHealth" to="defeatGameLogic" method="_on_enemy_defeated"]
