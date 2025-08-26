@@ -25,13 +25,18 @@ func _unhandled_input(_event: InputEvent) -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	body = body as Projectile
-	if not body:
+	# Si golpea un proyectil, comportamiento normal
+	if body is Projectile:
+		body.add_small_fx()
+		body.queue_free()
+		got_hit_animation.play(&"got_hit")
+		CameraShake.shake()
 		return
-	body.add_small_fx()
-	body.queue_free()
-	got_hit_animation.play(&"got_hit")
-	CameraShake.shake()
+
+	# ✅ Si golpea una puerta, y la puerta tiene el método `open()`
+	if body.is_in_group("door") and body.has_method("open"):
+		body.open()
+
 
 
 func _on_air_stream_body_entered(body: Projectile) -> void:
