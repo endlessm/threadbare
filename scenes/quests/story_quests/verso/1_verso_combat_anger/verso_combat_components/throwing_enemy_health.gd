@@ -14,7 +14,7 @@ func shoot_projectile() -> void:
 	projectile.label = allowed_labels.pick_random()
 	if projectile.label in color_per_label:
 		projectile.color = color_per_label[projectile.label]
-	projectile.global_position = (projectile_marker.global_position + projectile.direction * 20.)
+	projectile.global_position = (projectile_marker.global_position + (projectile.direction * 45.))
 	if projectile_follows_player:
 		projectile.node_to_follow = player
 	projectile.sprite_frames = projectile_sprite_frames
@@ -28,3 +28,7 @@ func shoot_projectile() -> void:
 	get_tree().current_scene.add_child(projectile)
 	_set_target_position()
 	_is_attacking = false
+	
+func _on_got_hit(body: Node2D) -> void:
+	super(body)
+	remove()
