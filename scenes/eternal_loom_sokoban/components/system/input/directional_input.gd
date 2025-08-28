@@ -26,7 +26,7 @@ var _repeat_direction_v := Vector2i.ZERO
 var _time_until_next_repeat: float = 0.0
 
 
-func _unhandled_input(event: InputEvent)-> void:
+func _unhandled_input(event: InputEvent) -> void:
 	# Handle newly-pressed input directions
 	if event.is_action_pressed(action_up):
 		_input_immediately(Vector2i.UP)
@@ -54,6 +54,8 @@ func _unhandled_input(event: InputEvent)-> void:
 		_repeat_direction_h = Vector2i.ZERO
 	if event.is_action_released(action_right) and _repeat_direction_h == Vector2i.RIGHT:
 		_repeat_direction_h = Vector2i.ZERO
+		
+		
 func _process(delta: float) -> void:
 	# Count down until repeat input
 	if _time_until_next_repeat > 0.0:
