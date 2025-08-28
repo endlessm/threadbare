@@ -1,4 +1,4 @@
-[gd_scene load_steps=85 format=4 uid="uid://dyx8toyemw2vx"]
+[gd_scene load_steps=87 format=4 uid="uid://dyx8toyemw2vx"]
 
 [ext_resource type="Script" uid="uid://bb15xji6f5syf" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/ScripBase.gd" id="1_f2sr3"]
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_wjmvn"]
@@ -40,6 +40,8 @@
 [ext_resource type="AudioStream" uid="uid://v5g7lsr5oblg" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/Music/Project_2.wav" id="29_lldb0"]
 [ext_resource type="PackedScene" uid="uid://bdtis4ye3hah2" path="res://scenes/quests/story_quests/shjourney/9_shjourney_outro_2/neblina.tscn" id="30_1olun"]
 [ext_resource type="PackedScene" uid="uid://due8sqsrtdke1" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/fire_fly.tscn" id="35_lldb0"]
+[ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="39_qn20b"]
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="40_u1x3w"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sdlc6"]
 texture = ExtResource("5_bw2w6")
@@ -1123,10 +1125,10 @@ color = Color(0, 0, 0, 1)
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 y_sort_enabled = true
-metadata/_edit_lock_ = true
+position = Vector2(1, 0)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="TileMapLayers"]
-position = Vector2(4910, 416)
+position = Vector2(4910, 415)
 scale = Vector2(1.86, 1.86)
 tile_map_data = PackedByteArray("AAD9////RAADAAAAAAAAAP//RAADAAAAAAA=")
 tile_set = ExtResource("2_n2lu8")
@@ -1154,7 +1156,8 @@ tile_map_data = PackedByteArray("AAAAAC0AEQAAAAMAAAABAC0AEQABAAMAAAACAC0AEQABAAM
 tile_set = ExtResource("2_n2lu8")
 
 [node name="Stone2" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAD//0AAFgAAAAAAAAD//0EAFgAAAAAAAAD//0IAFgAAAAAAAAAAAEIAFgAAAAAAAAABAEIAFgAAAAAAAAACAEIAFgAAAAAAAAADAEIAFgAAAAAAAAAEAEIAFgAAAAAAAAAFAEIAFgAAAAAAAAAGAEIAFgAAAAAAAAAHAEIAFgAAAAAAAAAIAEIAFgAAAAAAAAAJAEIAFgAAAAAAAAAKAEIAFgAAAAAAAAALAEIAFgAAAAAAAAAMAEIAFgAAAAAAAAANAEIAFgAAAAAAAAAOAEIAFgAAAAAAAAAPAEIAFgAAAAAAAAAQAEIAFgAAAAAAAAARAEIAFgAAAAAAAAASAEIAFgAAAAAAAAATAEIAFgAAAAAAAAAUAEIAFgAAAAAAAAAVAEIAFgAAAAAAAAAWAEIAFgAAAAAAAAAXAEIAFgAAAAAAAAAYAEIAFgAAAAAAAAAZAEIAFgAAAAAAAAAaAEIAFgAAAAAAAAAbAEIAFgAAAAAAAAAcAEIAFgAAAAAAAAAdAEIAFgAAAAAAAAAeAEIAFgAAAAAAAAAfAEIAFgAAAAAAAAAgAEIAFgAAAAAAAAAhAEIAFgAAAAAAAAAiAEIAFgAAAAAAAAAjAEIAFgAAAAAAAAAkAEIAFgAAAAAAAAAlAEIAFgAAAAAAAAAmAEIAFgAAAAAAAAAnAEIAFgAAAAAAAAAoAEIAFgAAAAAAAAApAEIAFgAAAAAAAAAqAEIAFgAAAAAAAAArAEIAFgAAAAAAAAAsAEIAFgAAAAAAAAAtAEIAFgAAAAAAAAAuAEIAFgAAAAAAAAAvAEIAFgAAAAAAAAAwAEIAFgAAAAAAAAAxAEIAFgAAAAAAAAAyAEIAFgAAAAAAAAAzAEIAFgAAAAAAAAA0AEIAFgAAAAAAAAA1AEIAFgAAAAAAAAA2AEIAFgAAAAAAAAD//zQAFgAAAAAAAAD//zUAFgAAAAAAAAD//zYAFgAAAAAAAAD//zcAFgAAAAAAAAD//zgAFgAAAAAAAAD//zkAFgAAAAAAAAD//zoAFgAAAAAAAAD//zsAFgAAAAAAAAD//zwAFgAAAAAAAAD//z0AFgAAAAAAAAD//z4AFgAAAAAAAAD//z8AFgAAAAAAAAAAADkAAwABAAAAAAABADkAAwACAAAAAAApAAcAKQAAAAQAAAAqAAcAKQABAAQAAAArAAcAKQACAAQAAAApAAYAKQAAAAMAAAAqAAYAKQABAAMAAAArAAYAKQACAAMAAAAqAAUAKQABAAIAAAArAAUAKQACAAIAAAApAAUAKQAAAAIAAAAqAAQAKQABAAEAAAArAAQAKQACAAEAAAApAAQAKQAAAAEAAAAqAAMAKQABAAAAAAArAAMAKQACAAAAAAApAAMAKQAAAAAAAAAqAAkALwACAAEAAAArAAkALwADAAEAAAApAAkALwABAAEAAAApAAoALwABAAIAAAAoAAoALwAAAAIAAAAoAAkALwAAAAEAAAAqAAoALwACAAIAAAArAAsALwADAAMAAAArAAoALwADAAIAAAAsAAoALwAEAAIAAAAsAAkALwAEAAEAAAAsAAsALwAEAAMAAAAoAAsALwAAAAMAAAApAAsALwABAAMAAAAqAAsALwACAAMAAAAAADgAAgABAAEAAAAAADcAAgABAAEAAAAAADoAAgABAAEAAAAAADsAAgABAAEAAAA7ACYAPgAAAAAAAAA8ACYAPgAAAAAAAAA9ACYAPgAAAAAAAAA+ACYAPgAAAAAAAABNAAUAMAABAAAAAABOAAYAMAACAAEAAABOAAUAMAACAAAAAABNAAYAMAABAAEAAABNAAcAMAABAAIAAABOAAcAMAACAAIAAABIAAUAMAABAAAAAABIAAYAMAABAAEAAABIAAcAMAABAAIAAABJAAUAMAACAAAAAABJAAYAMAACAAEAAABJAAcAMAACAAIAAABHAAUAMAAAAAAAAABHAAYAMAAAAAAAAABMAAUAMAAAAAAAAABMAAYAMAAAAAAAAABMAAcAMAABAAIAAABHAAcAMAACAAIAAAA=")
+z_index = 1
+tile_map_data = PackedByteArray("AAD//0AAFgAAAAAAAAD//0EAFgAAAAAAAAD//0IAFgAAAAAAAAAAAEIAFgAAAAAAAAABAEIAFgAAAAAAAAACAEIAFgAAAAAAAAADAEIAFgAAAAAAAAAEAEIAFgAAAAAAAAAFAEIAFgAAAAAAAAAGAEIAFgAAAAAAAAAHAEIAFgAAAAAAAAAIAEIAFgAAAAAAAAAJAEIAFgAAAAAAAAAKAEIAFgAAAAAAAAALAEIAFgAAAAAAAAAMAEIAFgAAAAAAAAANAEIAFgAAAAAAAAAOAEIAFgAAAAAAAAAPAEIAFgAAAAAAAAAQAEIAFgAAAAAAAAARAEIAFgAAAAAAAAASAEIAFgAAAAAAAAATAEIAFgAAAAAAAAAUAEIAFgAAAAAAAAAVAEIAFgAAAAAAAAAWAEIAFgAAAAAAAAAXAEIAFgAAAAAAAAAYAEIAFgAAAAAAAAAZAEIAFgAAAAAAAAAaAEIAFgAAAAAAAAAbAEIAFgAAAAAAAAAcAEIAFgAAAAAAAAAdAEIAFgAAAAAAAAAeAEIAFgAAAAAAAAAfAEIAFgAAAAAAAAAgAEIAFgAAAAAAAAAhAEIAFgAAAAAAAAAiAEIAFgAAAAAAAAAjAEIAFgAAAAAAAAAkAEIAFgAAAAAAAAAlAEIAFgAAAAAAAAAmAEIAFgAAAAAAAAAnAEIAFgAAAAAAAAAoAEIAFgAAAAAAAAApAEIAFgAAAAAAAAAqAEIAFgAAAAAAAAArAEIAFgAAAAAAAAAsAEIAFgAAAAAAAAAtAEIAFgAAAAAAAAAuAEIAFgAAAAAAAAAvAEIAFgAAAAAAAAAwAEIAFgAAAAAAAAAxAEIAFgAAAAAAAAAyAEIAFgAAAAAAAAAzAEIAFgAAAAAAAAA0AEIAFgAAAAAAAAA1AEIAFgAAAAAAAAA2AEIAFgAAAAAAAAD//zQAFgAAAAAAAAD//zUAFgAAAAAAAAD//zYAFgAAAAAAAAD//zcAFgAAAAAAAAD//zgAFgAAAAAAAAD//zkAFgAAAAAAAAD//zoAFgAAAAAAAAD//zsAFgAAAAAAAAD//zwAFgAAAAAAAAD//z0AFgAAAAAAAAD//z4AFgAAAAAAAAD//z8AFgAAAAAAAAAAADkAAwABAAAAAAABADkAAwACAAAAAAAqAAkALwACAAEAAAArAAkALwADAAEAAAApAAkALwABAAEAAAApAAoALwABAAIAAAAoAAoALwAAAAIAAAAoAAkALwAAAAEAAAAqAAoALwACAAIAAAArAAsALwADAAMAAAArAAoALwADAAIAAAAsAAoALwAEAAIAAAAsAAkALwAEAAEAAAAsAAsALwAEAAMAAAAoAAsALwAAAAMAAAApAAsALwABAAMAAAAqAAsALwACAAMAAAAAADgAAgABAAEAAAAAADcAAgABAAEAAAAAADoAAgABAAEAAAAAADsAAgABAAEAAAA7ACYAPgAAAAAAAAA8ACYAPgAAAAAAAAA9ACYAPgAAAAAAAAA+ACYAPgAAAAAAAABNAAUAMAABAAAAAABOAAYAMAACAAEAAABOAAUAMAACAAAAAABNAAYAMAABAAEAAABNAAcAMAABAAIAAABOAAcAMAACAAIAAABIAAUAMAABAAAAAABIAAYAMAABAAEAAABIAAcAMAABAAIAAABJAAUAMAACAAAAAABJAAYAMAACAAEAAABJAAcAMAACAAIAAABHAAUAMAAAAAAAAABHAAYAMAAAAAAAAABMAAUAMAAAAAAAAABMAAYAMAAAAAAAAABMAAcAMAABAAIAAABHAAcAMAACAAIAAAA=")
 tile_set = ExtResource("2_n2lu8")
 
 [node name="Stone3" type="TileMapLayer" parent="TileMapLayers"]
@@ -1376,8 +1379,7 @@ position = Vector2(0, -1.33333)
 texture = ExtResource("4_y5vmk")
 
 [node name="puertadungeon" parent="TileMapLayers/Arbustos" instance=ExtResource("5_6ha8o")]
-z_index = 1
-position = Vector2(2714, -26)
+position = Vector2(2715, 23)
 
 [node name="Angel" type="Node" parent="TileMapLayers"]
 
@@ -2097,6 +2099,7 @@ position = Vector2(1797, 554)
 
 [node name="Player" parent="." instance=ExtResource("4_atgg6")]
 visibility_layer = 5
+z_index = 1
 position = Vector2(165, 3692)
 scale = Vector2(1.34, 1.34)
 player_name = "Tim"
@@ -2250,17 +2253,6 @@ autoplay = true
 max_distance = 333.0
 script = ExtResource("22_jg4bf")
 
-[node name="ScreenOverlay" type="CanvasLayer" parent="."]
-
-[node name="Label" type="Label" parent="ScreenOverlay"]
-visible = false
-offset_left = 2906.0
-offset_top = 636.0
-offset_right = 2946.0
-offset_bottom = 659.0
-scale = Vector2(2, 2)
-text = "Hola"
-
 [node name="HUD" parent="." instance=ExtResource("8_w3xtx")]
 visible = false
 follow_viewport_enabled = true
@@ -2348,7 +2340,7 @@ shape = SubResource("RectangleShape2D_7ve7e")
 [node name="LLaves1" type="Node" parent="."]
 
 [node name="Llave" type="Sprite2D" parent="LLaves1"]
-position = Vector2(4799, 369)
+position = Vector2(4798, 368)
 texture = ExtResource("21_v7h05")
 script = ExtResource("22_r751j")
 
@@ -2357,18 +2349,18 @@ script = ExtResource("22_r751j")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LLaves1/Llave/Area2D"]
 shape = SubResource("CircleShape2D_7ve7e")
 
-[node name="Node2D" parent="LLaves1/Llave/Area2D" instance=ExtResource("7_bolto")]
-position = Vector2(550, 1734)
-scale = Vector2(4.58, 4.58)
-
 [node name="Node2D" parent="LLaves1/Llave" instance=ExtResource("7_bolto")]
 visible = false
 scale = Vector2(4.46, 4.46)
 
 [node name="Llave2" type="Sprite2D" parent="LLaves1"]
-position = Vector2(5353, 2097)
+position = Vector2(5362, 2106)
 texture = ExtResource("21_v7h05")
 script = ExtResource("22_r751j")
+
+[node name="Node2D" parent="LLaves1/Llave2" instance=ExtResource("7_bolto")]
+position = Vector2(-4, 6)
+scale = Vector2(4.58, 4.58)
 
 [node name="Area2D" type="Area2D" parent="LLaves1/Llave2"]
 
@@ -2376,7 +2368,7 @@ script = ExtResource("22_r751j")
 shape = SubResource("CircleShape2D_7ve7e")
 
 [node name="Llave3" type="Sprite2D" parent="LLaves1"]
-position = Vector2(1054, 416)
+position = Vector2(1076, 394)
 texture = ExtResource("21_v7h05")
 script = ExtResource("22_r751j")
 
@@ -2396,9 +2388,41 @@ position = Vector2(2715, 467)
 enabled = false
 zoom = Vector2(2, 2)
 
+[node name="ScreenOverlay" type="CanvasLayer" parent="CamaraPuerta"]
+visible = false
+
+[node name="Label" type="Label" parent="CamaraPuerta/ScreenOverlay"]
+offset_left = 2492.0
+offset_top = 676.0
+offset_right = 2724.0
+offset_bottom = 699.0
+scale = Vector2(2, 2)
+text = "Ya puedes acceder a la puerta"
+
+[node name="InteractInput" type="TextureRect" parent="CamaraPuerta"]
+z_index = 2
+offset_left = -142.0
+offset_top = 181.0
+offset_right = -19.0
+offset_bottom = 281.0
+script = ExtResource("39_qn20b")
+action_name = &"running"
+
+[node name="Label" type="Label" parent="CamaraPuerta/InteractInput"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = -279.0
+offset_right = 408.0
+offset_bottom = -243.0
+theme = ExtResource("40_u1x3w")
+theme_type_variation = &"HintLabel"
+text = "Puerta desbloqueada"
+metadata/_edit_use_anchors_ = true
+
 [node name="Node2D" parent="." instance=ExtResource("7_bolto")]
+z_index = 1
 z_as_relative = false
-position = Vector2(2717, 296)
+position = Vector2(2734, 280)
 scale = Vector2(7.465, 7.465)
 
 [node name="TimerPuerta" type="Timer" parent="."]
@@ -2507,6 +2531,14 @@ position = Vector2(1592, 3298)
 
 [node name="FireFly33" parent="." instance=ExtResource("35_lldb0")]
 position = Vector2(2135, 3180)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TileMapLayer2" type="TileMapLayer" parent="."]
+z_index = 2
+position = Vector2(1, 0)
+tile_map_data = PackedByteArray("AAAqAAUAKQAAAAAAAAA=")
+tile_set = ExtResource("2_n2lu8")
 
 [connection signal="body_entered" from="kaenamanto/AttackArea" to="kaenamanto" method="_on_attack_area_body_entered"]
 [connection signal="body_entered" from="LLaves1/Llave/Area2D" to="LLaves1/Llave" method="CuandoEntraJugador"]
