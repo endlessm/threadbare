@@ -54,8 +54,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		_repeat_direction_h = Vector2i.ZERO
 	if event.is_action_released(action_right) and _repeat_direction_h == Vector2i.RIGHT:
 		_repeat_direction_h = Vector2i.ZERO
-		
-		
 
 
 func _process(delta: float) -> void:
