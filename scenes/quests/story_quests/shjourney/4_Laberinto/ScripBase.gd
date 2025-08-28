@@ -12,3 +12,4 @@ func ActualizarLlaves():
 func _on_timer_puerta_timeout() -> void:
 	$"CamaraPuerta".enabled = false
 	$"Player/Camera2D".enabled = true
+	$CamaraPuerta/InteractInput.visible = false  # Oculta cuando vuelve al jugador
