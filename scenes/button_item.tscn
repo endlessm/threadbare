@@ -1,23 +1,8 @@
-[gd_scene load_steps=22 format=3 uid="uid://1vunygl4wpj6"]
+[gd_scene load_steps=21 format=3 uid="uid://1vunygl4wpj6"]
 
+[ext_resource type="Script" uid="uid://nejfw5t8xub5" path="res://scenes/button_item.gd" id="1_14phb"]
 [ext_resource type="Texture2D" uid="uid://dpaqpkkj38f16" path="res://scenes/button-yellow.png" id="1_i5psm"]
 [ext_resource type="Texture2D" uid="uid://dlpjjca2udf42" path="res://scenes/button-shadow.png" id="2_14phb"]
-
-[sub_resource type="GDScript" id="GDScript_i5psm"]
-script/source = "extends CharacterBody2D
-
-@onready var animation_player_2: AnimationPlayer = $AnimationPlayer2
-
-func _ready() -> void:
-	animation_player_2.stop()
-	var t: float = (sin(global_position.x) + 1) * 0.5 + (cos(global_position.y) + 1) * 0.5
-	await get_tree().create_timer(t).timeout
-	animation_player_2.play(\"up-down\")
-
-func _on_area_2d_area_entered(area: Area2D) -> void:
-	if area.owner is Player:
-		queue_free()
-"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_14phb"]
 atlas = ExtResource("1_i5psm")
@@ -96,7 +81,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/path = NodePath("ButtonSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -108,7 +93,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D:flip_h")
+tracks/1/path = NodePath("ButtonSprite:flip_h")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -120,7 +105,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("AnimatedSprite2D2:frame")
+tracks/2/path = NodePath("ShadowSprite:frame")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -138,7 +123,7 @@ step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/path = NodePath("ButtonSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -150,7 +135,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D:flip_h")
+tracks/1/path = NodePath("ButtonSprite:flip_h")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -162,7 +147,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("AnimatedSprite2D2:frame")
+tracks/2/path = NodePath("ShadowSprite:frame")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -183,7 +168,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:position")
+tracks/0/path = NodePath("ButtonSprite:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -200,7 +185,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:position")
+tracks/0/path = NodePath("ButtonSprite:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -216,43 +201,34 @@ _data = {
 &"up-down": SubResource("Animation_wx015")
 }
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i5psm"]
-radius = 4.0
-height = 12.0
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_i5psm"]
 radius = 30.0167
 
-[node name="ButtonItem" type="CharacterBody2D"]
-script = SubResource("GDScript_i5psm")
+[node name="ButtonItem" type="Node2D"]
+script = ExtResource("1_14phb")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="ButtonSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -24)
 sprite_frames = SubResource("SpriteFrames_6ba1g")
 autoplay = "default"
 
-[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
+[node name="ShadowSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -24)
 sprite_frames = SubResource("SpriteFrames_vorhs")
 autoplay = "default"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="FrameByFrameAnimation" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_wx015")
 }
 autoplay = "default"
 
-[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+[node name="UpDownAnimation" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_eonoi")
 }
 autoplay = "up-down"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-rotation = -1.5708
-shape = SubResource("CapsuleShape2D_i5psm")
-disabled = true
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 0

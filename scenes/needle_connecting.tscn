@@ -32,13 +32,14 @@ disable_ground_collider = true
 position = Vector2(0, -32)
 texture = ExtResource("1_51v7k")
 
-[node name="HookableArea" type="Area2D" parent="." node_paths=PackedStringArray("hook_control")]
+[node name="HookableArea" type="Area2D" parent="." node_paths=PackedStringArray("hook_control", "hooking_point")]
 collision_layer = 4096
 collision_mask = 0
 script = ExtResource("2_te154")
 is_pullable = false
 autopull = false
-hook_control = NodePath("Marker2D/HookControl")
+hook_control = NodePath("HookControl")
+hooking_point = NodePath("Marker2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea"]
 position = Vector2(0, -28)
@@ -48,7 +49,8 @@ debug_color = Color(0.689707, 0.288376, 1, 0.42)
 [node name="Marker2D" type="Marker2D" parent="HookableArea"]
 position = Vector2(0, -48)
 
-[node name="HookControl" parent="HookableArea/Marker2D" instance=ExtResource("3_te154")]
+[node name="HookControl" parent="HookableArea" instance=ExtResource("3_te154")]
+position = Vector2(0, -48)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = -1.5708

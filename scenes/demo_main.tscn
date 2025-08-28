@@ -4,7 +4,7 @@
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="2_drlay"]
 [ext_resource type="Texture2D" uid="uid://q3c2qavtccvu" path="res://scenes/hook-string.png" id="3_0j0ad"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_min1h"]
-[ext_resource type="SpriteFrames" uid="uid://07di3updrwh0" path="res://scenes/game_elements/characters/shared_components/sprite_frames/storyweaver_purple.tres" id="5_kr8u1"]
+[ext_resource type="SpriteFrames" uid="uid://07di3updrwh0" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_purple.tres" id="5_kr8u1"]
 [ext_resource type="PackedScene" uid="uid://evb46lm6ssu2" path="res://scenes/needle.tscn" id="6_1qah2"]
 [ext_resource type="PackedScene" uid="uid://1vunygl4wpj6" path="res://scenes/button_item.tscn" id="7_a6sgt"]
 [ext_resource type="PackedScene" uid="uid://dvj15pnuqr2ua" path="res://scenes/hookable_button_item.tscn" id="8_jvm87"]
@@ -27,18 +27,22 @@ func _ready() -> void:
 "
 
 [sub_resource type="GDScript" id="GDScript_jknfk"]
-script/source = "extends CharacterBody2D
+script/source = "extends Node2D
+## A button that dissapears on contact with Player.
 
-@onready var animation_player_2: AnimationPlayer = $AnimationPlayer2
+@onready var up_down_animation: AnimationPlayer = %UpDownAnimation
 
 func _ready() -> void:
-	animation_player_2.stop()
+	# Delay the up and down animation according to the global position,
+	# so multiple buttons in a row form a wave:
+	up_down_animation.stop()
 	var t: float = (sin(global_position.x) + 1) * 0.5 + (cos(global_position.y) + 1) * 0.5
 	await get_tree().create_timer(t).timeout
-	animation_player_2.play(\"up-down\")
+	up_down_animation.play(\"up-down\")
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
-	if area.owner is Player:
+	# TODO: This is not added to an inventory or anything, is just cosmetic.
+	if area.owner.is_in_group(&\"player\"):
 		queue_free()
 "
 

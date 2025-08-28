@@ -62,7 +62,7 @@ func _new_hook_string() -> Line2D:
 
 
 func hit_target(_new_hooked_to: HookableArea) -> void:
-	var p: Vector2 = _new_hooked_to.get_hooking_point()
+	var p: Vector2 = _new_hooked_to.get_hooking_position()
 	if not hook_string:
 		hook_string = _new_hook_string()
 	hook_string.add_point(p, 0)
@@ -144,7 +144,7 @@ func _process(delta: float) -> void:
 		hook_string.points[-1] = player.position + position
 		if hooked_to:
 			# Move first point to the hooked position.
-			hook_string.points[0] = hooked_to.get_hooking_point()
+			hook_string.points[0] = hooked_to.get_hooking_position()
 		else:
 			# Not hooked, so a throw that hit air or wall.
 			# Progressively shorten the line.

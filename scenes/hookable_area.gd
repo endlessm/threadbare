@@ -1,11 +1,27 @@
 class_name HookableArea
 extends Area2D
+## Area to connect the grappling hook.
+##
+## It is an important piece of the grappling hook mechanic.[br][br]
+##
+## When the grappling hook ray enters, it connects at the
+## [member hooking_point].[br][br]
+##
+## If [member hook_control] is provided, this becomes a connection
+## so the grappling hook can in turn hook from here.[br][br]
+##
+## If this is not a connection, it could be pulled. For
+## that the owner must be a [CharacterBody2D].[br][br]
+##
+## Note: This area is expected to be in the "hookable" collision layer.
 
-## 1: player moves towards this
-## 0: owner moves towards player
+## When this is hooked:
+## - 1: The other side moves towards this.
+## - 0: This moves towards the other side.
 @export var weight: float = 1.0
 
-## Whether the player can pull this.
+## Whether this can be pulled.
+## TODO: Change for weight == 1?
 @export var is_pullable: bool = true
 
 ## Whether the player will pull automatically at the moment
@@ -17,9 +33,10 @@ extends Area2D
 ## all the above is irrelevant / false
 @export var hook_control: HookControl
 
-## The position to connect the string.
-@onready var marker_2d: Marker2D = $Marker2D
+## Its global position will be used to connect the string.
+@export var hooking_point: Marker2D
 
 
-func get_hooking_point() -> Vector2:
-	return marker_2d.global_position
+## Return the hooking point global position.
+func get_hooking_position() -> Vector2:
+	return hooking_point.global_position
