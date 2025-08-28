@@ -44,9 +44,22 @@ func _ready() -> void:
 	interact_area.interaction_ended.connect(_on_interaction_ended)
 	animated_sprite_2d.connect("frame_changed", _on_frame_changed)
 
+
 	if quest_directory:
 		_storybook = STORYBOOK_SCENE.instantiate()
 		_storybook.quest_directory = quest_directory
+
+
+func _enter_tree() -> void:	
+	# Check if the sprite_frames resource exists and if its path ends with "elder2.tres"
+	var is_mirrored := sprite_frames and sprite_frames.resource_path.ends_with("elder2.tres")
+
+	if is_mirrored:
+		$BodyShape.position.x = -abs($BodyShape.position.x)
+		$StaffShape.position.x = -abs($StaffShape.position.x)
+	else:
+		$BodyShape.position.x = abs($BodyShape.position.x)
+		$StaffShape.position.x = abs($StaffShape.position.x)
 
 
 func _get_configuration_warnings() -> PackedStringArray:
