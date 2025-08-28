@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://dohb701lxbe5s"]
+
+[ext_resource type="Texture2D" uid="uid://cdsv6qj0s3enp" path="res://scenes/needle-2.png" id="1_51v7k"]
+[ext_resource type="Script" uid="uid://ygi737mupwq7" path="res://scenes/needle_connecting.gd" id="1_sglsm"]
+[ext_resource type="Script" uid="uid://dabvr3pqmyya4" path="res://scenes/hookable_area.gd" id="2_te154"]
+[ext_resource type="PackedScene" uid="uid://b0dehcnfo68j1" path="res://scenes/hook_control.tscn" id="3_te154"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bfd1i"]
+size = Vector2(50, 76)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gcph1"]
+
+[node name="NeedleConnecting" type="StaticBody2D"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_sglsm")
+disable_ground_collider = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -32)
+texture = ExtResource("1_51v7k")
+
+[node name="HookableArea" type="Area2D" parent="." node_paths=PackedStringArray("hook_control", "anchor_point")]
+collision_layer = 4096
+collision_mask = 0
+script = ExtResource("2_te154")
+hook_control = NodePath("HookControl")
+anchor_point = NodePath("Marker2D")
+autopull = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea"]
+position = Vector2(0, -28)
+shape = SubResource("RectangleShape2D_bfd1i")
+debug_color = Color(0.689707, 0.288376, 1, 0.42)
+
+[node name="Marker2D" type="Marker2D" parent="HookableArea"]
+position = Vector2(0, -48)
+
+[node name="HookControl" parent="HookableArea" instance=ExtResource("3_te154")]
+position = Vector2(0, -48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_gcph1")

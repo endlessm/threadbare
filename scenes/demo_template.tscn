@@ -1,0 +1,244 @@
+[gd_scene load_steps=17 format=4 uid="uid://cmrtmpnae3p61"]
+
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_vxrrm"]
+[ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="2_e6jjc"]
+[ext_resource type="Texture2D" uid="uid://q3c2qavtccvu" path="res://scenes/hook-string.png" id="3_5l0yq"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_7nfq3"]
+[ext_resource type="SpriteFrames" uid="uid://07di3updrwh0" path="res://scenes/game_elements/characters/shared_components/sprite_frames/storyweaver_purple.tres" id="5_hua7y"]
+[ext_resource type="PackedScene" uid="uid://evb46lm6ssu2" path="res://scenes/needle.tscn" id="6_bad2y"]
+[ext_resource type="PackedScene" uid="uid://dohb701lxbe5s" path="res://scenes/needle_connecting.tscn" id="7_e6jjc"]
+[ext_resource type="PackedScene" path="res://scenes/button_item.tscn" id="7_sba71"]
+[ext_resource type="PackedScene" uid="uid://dvj15pnuqr2ua" path="res://scenes/hookable_button_item.tscn" id="8_4a1k5"]
+[ext_resource type="PackedScene" uid="uid://4u7dloafx55f" path="res://scenes/game_elements/props/teleporter/teleporter/teleporter.tscn" id="9_j6rdn"]
+[ext_resource type="Script" path="res://scenes/simulate_touch_controls.gd" id="10_fcce0"]
+[ext_resource type="Script" path="res://scenes/analog_control.gd" id="11_ovy6t"]
+[ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="12_tq6mw"]
+
+[sub_resource type="GDScript" id="GDScript_m0rpm"]
+script/source = "extends Node2D
+
+@onready var control_left: Control = %ControlLeft
+@onready var control_right: Control = %ControlRight
+@onready var string: Line2D = %TestString
+@onready var player: Player = %Player
+
+var flip = false
+
+
+func _ready() -> void:
+	# Input.mouse_mode = Input.MOUSE_MODE_CONFINED
+	pass
+
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is not InputEventKey or not event.is_released():
+		return
+	if event.as_text() == \"V\":
+		flip = not flip
+		control_left.process_mode = Node.PROCESS_MODE_DISABLED if flip else Node.PROCESS_MODE_INHERIT
+		control_right.process_mode = Node.PROCESS_MODE_DISABLED if not flip else Node.PROCESS_MODE_INHERIT
+
+
+func _on_control_left_analog_input(analog: Vector2, activated: bool) -> void:
+	if activated:
+		Input.action_press(\"running\")
+	else:
+		Input.action_release(\"running\")
+
+	if analog == Vector2.ZERO:
+		Input.action_press(&\"ui_right\", 0)
+		Input.action_press(&\"ui_left\", 0)
+		Input.action_press(&\"ui_down\", 0)
+		Input.action_press(&\"ui_up\", 0)
+		return
+
+	if analog.x > 0:
+		Input.action_press(&\"ui_right\", analog.x)
+		Input.action_press(&\"ui_left\", 0)
+	elif analog.x < 0:
+		Input.action_press(&\"ui_right\", 0)
+		Input.action_press(&\"ui_left\", -analog.x)
+	if analog.y > 0:
+		Input.action_press(&\"ui_up\", 0)
+		Input.action_press(&\"ui_down\", analog.y)
+	elif analog.y < 0:
+		Input.action_press(&\"ui_up\", -analog.y)
+		Input.action_press(&\"ui_down\", 0)
+
+
+func _on_control_right_analog_input(analog: Vector2, _activated: bool) -> void:
+	if analog == Vector2.ZERO:
+		Input.action_press(&\"hook_right\", 0)
+		Input.action_press(&\"hook_left\", 0)
+		Input.action_press(&\"hook_down\", 0)
+		Input.action_press(&\"hook_up\", 0)
+		return
+
+	if analog.x > 0:
+		Input.action_press(&\"hook_right\", analog.x)
+		Input.action_press(&\"hook_left\", 0)
+	elif analog.x < 0:
+		Input.action_press(&\"hook_right\", 0)
+		Input.action_press(&\"hook_left\", -analog.x)
+	if analog.y > 0:
+		Input.action_press(&\"hook_up\", 0)
+		Input.action_press(&\"hook_down\", analog.y)
+	elif analog.y < 0:
+		Input.action_press(&\"hook_up\", -analog.y)
+		Input.action_press(&\"hook_down\", 0)
+
+
+func _process(_delta: float) -> void:
+	if player.position.is_equal_approx(string.points[-1]):
+		return
+	var previous_length = Vector2(string.points[-1] - string.points[-2]).length()
+	string.points[-1] = player.position + Vector2(0, -20.) - string.position
+	var new_length = Vector2(string.points[-1] - string.points[-2]).length()
+	var diff = new_length - previous_length
+	string.points[0] = string.points[0] + string.points[0].direction_to(string.points[1]).normalized() * diff
+"
+
+[sub_resource type="GDScript" id="GDScript_i5psm"]
+script/source = "extends CharacterBody2D
+
+@onready var animation_player_2: AnimationPlayer = $AnimationPlayer2
+
+func _ready() -> void:
+	animation_player_2.stop()
+	var t: float = (sin(global_position.x) + 1) * 0.5 + (cos(global_position.y) + 1) * 0.5
+	await get_tree().create_timer(t).timeout
+	animation_player_2.play(\"up-down\")
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	if area.owner is Player:
+		queue_free()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6gsge"]
+radius = 51.0098
+
+[node name="Demo" type="Node2D"]
+script = SubResource("GDScript_m0rpm")
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+
+[node name="WaterBackground" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AADw//n/AAAAAAAAAQDw//r/AAAAAAAAAQDw//v/AAAAAAAAAQDw//z/AAAAAAAAAQDw//3/AAAAAAAAAQDw//7/AAAAAAAAAQDw////AAAAAAAAAQDw/wAAAAAAAAAAAQDx/wAAAAAAAAAAAQDy/wAAAAAAAAAAAQDz/wAAAAAAAAAAAQD0/wAAAAAAAAAAAQD1/wAAAAAAAAAAAQD2/wAAAAAAAAAAAQD3/wAAAAAAAAAAAQD4/wAAAAAAAAAAAQD4////AAAAAAAAAQD4//7/AAAAAAAAAQD4//3/AAAAAAAAAQD4//z/AAAAAAAAAQD4//v/AAAAAAAAAQD4//r/AAAAAAAAAQD4//n/AAAAAAAAAQD3//n/AAAAAAAAAQD2//n/AAAAAAAAAQD1//n/AAAAAAAAAQD0//n/AAAAAAAAAQDz//n/AAAAAAAAAQDy//n/AAAAAAAAAQDx//n/AAAAAAAAAQDx//r/AAAAAAAAAQDx//v/AAAAAAAAAQDx//z/AAAAAAAAAQDx//3/AAAAAAAAAQDx//7/AAAAAAAAAQDx////AAAAAAAAAQDy//r/AAAAAAAAAQDy//v/AAAAAAAAAQDy//z/AAAAAAAAAQDy//3/AAAAAAAAAQDy//7/AAAAAAAAAQDy////AAAAAAAAAQDz//r/AAAAAAAAAQDz//v/AAAAAAAAAQDz//z/AAAAAAAAAQDz//3/AAAAAAAAAQDz//7/AAAAAAAAAQDz////AAAAAAAAAQD0//r/AAAAAAAAAQD0//v/AAAAAAAAAQD0//z/AAAAAAAAAQD0//3/AAAAAAAAAQD0//7/AAAAAAAAAQD0////AAAAAAAAAQD1//r/AAAAAAAAAQD1//v/AAAAAAAAAQD1//z/AAAAAAAAAQD1//3/AAAAAAAAAQD1//7/AAAAAAAAAQD1////AAAAAAAAAQD2//r/AAAAAAAAAQD2//v/AAAAAAAAAQD2//z/AAAAAAAAAQD2//3/AAAAAAAAAQD2//7/AAAAAAAAAQD2////AAAAAAAAAQD3//r/AAAAAAAAAQD3//v/AAAAAAAAAQD3//z/AAAAAAAAAQD3//3/AAAAAAAAAQD3//7/AAAAAAAAAQD3////AAAAAAAAAQA=")
+tile_set = ExtResource("1_vxrrm")
+
+[node name="WaterNonWalkable" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AADy//v/AAAAAAAAAADy//z/AAAAAAAAAADy//3/AAAAAAAAAADy//7/AAAAAAAAAADz//v/AAAAAAAAAADz//z/AAAAAAAAAADz//3/AAAAAAAAAADz//7/AAAAAAAAAAD0//v/AAAAAAAAAAD0//z/AAAAAAAAAAD0//3/AAAAAAAAAAD0//7/AAAAAAAAAAD1//v/AAAAAAAAAAD1//z/AAAAAAAAAAD1//3/AAAAAAAAAAD1//7/AAAAAAAAAAD2//v/AAAAAAAAAAD2//z/AAAAAAAAAAD2//3/AAAAAAAAAAD2//7/AAAAAAAAAAA=")
+tile_set = ExtResource("1_vxrrm")
+
+[node name="Floor" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAD3////AQACAAIAAAD2////AQABAAMAAAD1////AQABAAMAAAD0////AQABAAMAAADz////AQABAAMAAADy////AQABAAMAAADx////AQAAAAIAAAD3//r/AQACAAAAAAD3//v/AQADAAEAAAD3//z/AQADAAEAAAD3//3/AQADAAEAAAD3//7/AQADAAEAAADx//r/AQAAAAAAAADy//r/AQABAAMAAADz//r/AQABAAMAAAD0//r/AQABAAMAAAD1//r/AQABAAMAAAD2//r/AQABAAMAAADx//7/AQADAAEAAADx//3/AQADAAEAAADx//z/AQADAAEAAADx//v/AQADAAEAAAA=")
+tile_set = ExtResource("1_vxrrm")
+
+[node name="Floor2" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAD4/wEABQABAAAAAAD3/wEABQABAAAAAAD2/wEABQABAAAAAAD1/wEABQABAAAAAAD0/wEABQABAAAAAADz/wEABQABAAAAAADy/wEABQABAAAAAADx/wEABQABAAAAAADw/wEABQABAAAAAADv/wMABQAAAAIAAADv/wIABQAAAAEAAADv/wEABQAAAAAAAADx/wMABQABAAEAAADw/wMABQABAAIAAAD5/wMABQACAAIAAAD4/wMABQABAAIAAAD3/wMABQABAAIAAAD2/wMABQABAAEAAAD5/wEABQACAAAAAAD5/wIABQACAAEAAAD1/wMABQABAAEAAAD0/wMABQABAAEAAADz/wMABQABAAEAAADy/wMABQABAAEAAADx/wYABQAAAAIAAADx/wUABQAAAAEAAADx/wQABQAAAAEAAAD2/wYABQACAAIAAAD1/wYABQABAAIAAAD0/wYABQABAAIAAADz/wYABQABAAIAAADy/wYABQABAAIAAAD2/wQABQACAAEAAAD2/wUABQACAAEAAADy/wUABQABAAEAAADz/wUABQABAAEAAAD0/wUABQABAAEAAAD1/wUABQABAAEAAAD1/wQABQABAAEAAAD0/wQABQABAAEAAADz/wQABQABAAEAAADy/wQABQABAAEAAAD4/wIABQABAAEAAAD3/wIABQABAAEAAAD2/wIABQABAAEAAAD1/wIABQABAAEAAAD0/wIABQABAAEAAADz/wIABQABAAEAAADy/wIABQABAAEAAADx/wIABQABAAEAAADw/wIABQABAAEAAAA=")
+tile_set = ExtResource("1_vxrrm")
+
+[node name="Floor3" type="TileMapLayer" parent="TileMapLayers"]
+texture_filter = 1
+material = ExtResource("2_e6jjc")
+tile_map_data = PackedByteArray("AAD4/wIAAQAHAAMAAAD3/wIAAQAGAAMAAAD2/wIAAQAGAAMAAAD1/wIAAQAGAAMAAAD0/wIAAQAGAAMAAADz/wIAAQAGAAMAAADy/wIAAQAGAAMAAADx/wIAAQAGAAMAAADw/wIAAQAFAAMAAAA=")
+tile_set = ExtResource("1_vxrrm")
+
+[node name="Void" type="TileMapLayer" parent="TileMapLayers"]
+texture_filter = 1
+material = ExtResource("2_e6jjc")
+tile_map_data = PackedByteArray("AAD1/wUADQACAAIAAAD1/wQADQACAAEAAAD1/wMADQACAAAAAAD0/wUADQABAAIAAAD0/wQADQABAAEAAAD0/wMADQABAAAAAADz/wUADQABAAIAAADz/wQADQABAAEAAADz/wMADQABAAAAAADy/wUADQAAAAIAAADy/wQADQAAAAEAAADy/wMADQAAAAAAAAA=")
+tile_set = ExtResource("1_vxrrm")
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="TestString" type="Line2D" parent="OnTheGround"]
+unique_name_in_owner = true
+visible = false
+show_behind_parent = true
+texture_repeat = 2
+position = Vector2(445, 301)
+points = PackedVector2Array(465, 253, 266, 184, 345, 93, 171, -20, 0, 0)
+width = 16.0
+texture = ExtResource("3_5l0yq")
+texture_mode = 1
+joint_mode = 2
+
+[node name="Player" parent="OnTheGround" instance=ExtResource("4_7nfq3")]
+unique_name_in_owner = true
+position = Vector2(87, 95)
+scale = Vector2(1.03448, 1)
+player_name = "Storyweaver"
+mode = 1
+sprite_frames = ExtResource("5_hua7y")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+
+[node name="Needle" parent="OnTheGround" instance=ExtResource("6_bad2y")]
+position = Vector2(-358, 126)
+
+[node name="NeedleConnecting" parent="OnTheGround" instance=ExtResource("7_e6jjc")]
+position = Vector2(-358, 226)
+
+[node name="ButtonItem" parent="OnTheGround" instance=ExtResource("7_sba71")]
+position = Vector2(-355, -80)
+script = SubResource("GDScript_i5psm")
+
+[node name="HookableButtonItem" parent="OnTheGround" instance=ExtResource("8_4a1k5")]
+position = Vector2(-352, 10)
+
+[node name="Teleporter" parent="." instance=ExtResource("9_j6rdn")]
+position = Vector2(-358, 383)
+enter_transition = 3
+exit_transition = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter"]
+shape = SubResource("CircleShape2D_6gsge")
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="SimulateTouchControls" type="Control" parent="ScreenOverlay"]
+process_mode = 4
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("10_fcce0")
+
+[node name="ControlLeft" type="Control" parent="ScreenOverlay/SimulateTouchControls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0.204
+anchor_top = 0.694
+anchor_right = 0.204
+anchor_bottom = 0.694
+offset_left = 383.52
+offset_top = 721.76
+offset_right = 393.52
+offset_bottom = 731.76
+script = ExtResource("11_ovy6t")
+
+[node name="ControlRight" type="Control" parent="ScreenOverlay/SimulateTouchControls"]
+unique_name_in_owner = true
+process_mode = 4
+layout_mode = 1
+anchor_left = 0.796
+anchor_top = 0.694
+anchor_right = 0.796
+anchor_bottom = 0.694
+offset_left = 1496.48
+offset_top = 721.76
+offset_right = 1506.48
+offset_bottom = 731.76
+script = ExtResource("11_ovy6t")
+
+[node name="SpawnPoint" parent="." instance=ExtResource("12_tq6mw")]
+position = Vector2(416, 287)
+
+[connection signal="analog_input" from="ScreenOverlay/SimulateTouchControls/ControlLeft" to="." method="_on_control_left_analog_input"]
+[connection signal="analog_input" from="ScreenOverlay/SimulateTouchControls/ControlRight" to="." method="_on_control_right_analog_input"]
