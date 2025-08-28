@@ -9,4 +9,5 @@ func CuandoEntraJugador(body: Node2D) -> void:
 		if nodoRaiz.llaves == 3:
 			$"../../CamaraPuerta".enabled = true
 			$"../../Player/Camera2D".enabled = false
+			$"../../CamaraPuerta/InteractInput".visible = true
 			$"../../TimerPuerta".start()

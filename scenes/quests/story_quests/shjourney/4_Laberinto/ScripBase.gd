@@ -1,5 +1,8 @@
 extends Node2D
 
+func _ready():
+	$CamaraPuerta/InteractInput.visible = false
+
 var llaves: int = 0
 @export var llaves_maximas: int = 3
 @onready var puerta: StaticBody2D = $Puerta
