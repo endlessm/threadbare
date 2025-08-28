@@ -1,9 +1,15 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+
 @tool
 class_name Quest
 extends Resource
-## Information that defines a playable quest
+enum Status {
+	WORK_IN_PROGRESS,
+	COMPLETE,
+	BROKEN
+}
+@export var status: Status = Status.WORK_IN_PROGRESS
 
 ## The quest's title. This should be short, like the title of a novel.
 @export var title: String
@@ -32,6 +38,7 @@ extends Resource
 
 ## The animation in [member sprite_frames] to display. This should typically be a looping animation.
 @export var animation_name: StringName = &""
+
 
 
 func _validate_property(property: Dictionary) -> void:
