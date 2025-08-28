@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: MPL-2.0
 class_name HookControl
 extends Node2D
+## Control for the grappling hook.
+##
+## This is a piece of the grappling hook mechanic.[br][br]
+##
 
 # signal connected
 
@@ -22,8 +26,8 @@ enum State {
 @export var state: State = State.DISABLED:
 	set = _set_state
 
-var connected_to: HookableArea
-var pressing_throw_action = false
+var hooked_to: HookableArea
+var pressing_throw_action: bool = false
 var _hook_angle: float
 
 @onready var sprite_2d: Sprite2D = %Sprite2D
@@ -39,11 +43,19 @@ func _unhandled_input(_event: InputEvent) -> void:
 			_hook_angle = axis.angle()
 		return
 
+	# When aiming with keyboard, do not change the hook angle if one of these actions was released.
+	# This makes it possible to aim in diagonal directions.
+	if (
+		_event.is_action_released(&"ui_left")
+		or _event.is_action_released(&"ui_right")
+		or _event.is_action_released(&"ui_up")
+		or _event.is_action_released(&"ui_down")
+	):
+		return
 	axis = Input.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
 	if not axis.is_zero_approx():
 		if pressing_throw_action:
 			_hook_angle = rotate_toward(_hook_angle, axis.angle(), 0.05)
-			# _hook_angle = lerp_angle(_hook_angle, axis.angle(), 0.1)
 		else:
 			_hook_angle = axis.angle()
 
@@ -59,12 +71,11 @@ func _unhandled_input(_event: InputEvent) -> void:
 func _throw() -> void:
 	if ray_cast_2d.is_colliding():
 		if ray_cast_2d.get_collider() is HookableArea:
-			connected_to = ray_cast_2d.get_collider() as HookableArea
-			if connected_to.hook_control:
-				connected_to.hook_control.state = State.AIMING
+			hooked_to = ray_cast_2d.get_collider() as HookableArea
+			if hooked_to.hook_control:
+				hooked_to.hook_control.state = State.AIMING
 				state = State.DISABLED
-			# ray_cast_2d.target_position = connected_to.get_hooking_point() - global_position
-			get_tree().call_group(&"hook_listener", &"hit_target", connected_to)
+			get_tree().call_group(&"hook_listener", &"hit_target", hooked_to)
 		else:
 			var wall_point := ray_cast_2d.get_collision_point()
 			get_tree().call_group(&"hook_listener", &"hit_wall", wall_point)
@@ -102,7 +113,7 @@ func _process(_delta: float) -> void:
 		return
 	rotation = _hook_angle
 	sprite_2d.modulate = Color.WHITE if _can_connect() else Color(Color.WHITE, 0.5)
-	if connected_to:
+	if hooked_to:
 		return
 	if state != State.AIMING_PAUSED and pressing_throw_action:
 		_throw()

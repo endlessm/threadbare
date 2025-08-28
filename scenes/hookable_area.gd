@@ -2,7 +2,12 @@ class_name HookableArea
 extends Area2D
 ## Area to connect the grappling hook.
 ##
-## It is an important piece of the grappling hook mechanic.[br][br]
+## An area to connect the grappling hook to the scene owner.
+## While the final connection is a single [member hooking_point],
+## the collision is checked against this area that can be big enough
+## for player forgiveness.[br][br]
+##
+## This is a piece of the grappling hook mechanic.[br][br]
 ##
 ## When the grappling hook ray enters, it connects at the
 ## [member hooking_point].[br][br]
@@ -10,33 +15,27 @@ extends Area2D
 ## If [member hook_control] is provided, this becomes a connection
 ## so the grappling hook can in turn hook from here.[br][br]
 ##
-## If this is not a connection, it could be pulled. For
-## that the owner must be a [CharacterBody2D].[br][br]
+## If this is not a connection, it could be pulled.
+## When pulled, the owner of this area could be attracted to the player,
+## or the player can be attracted to this owner (or something in between)
+## depending on the value of [member weight] and the owner being a
+## [CharacterBody2D].[br][br]
 ##
 ## Note: This area is expected to be in the "hookable" collision layer.
+
+## Control that makes this area a connection.
+@export var hook_control: HookControl
+
+## The point to attach the string.
+@export var anchor_point: Marker2D
 
 ## When this is hooked:
 ## - 1: The other side moves towards this.
 ## - 0: This moves towards the other side.
+## Not relevant if [member hook_control] is set.
 @export var weight: float = 1.0
 
-## Whether this can be pulled.
-## TODO: Change for weight == 1?
-@export var is_pullable: bool = true
-
 ## Whether the player will pull automatically at the moment
-## this is hooked. Only if [member pullable] is true.
+## this is hooked.
+## Not relevant if [member hook_control] is set.
 @export var autopull: bool = true
-
-## Add a hook control if this area is a connection.
-## TODO: If this area has a hook control, then
-## all the above is irrelevant / false
-@export var hook_control: HookControl
-
-## Its global position will be used to connect the string.
-@export var hooking_point: Marker2D
-
-
-## Return the hooking point global position.
-func get_hooking_position() -> Vector2:
-	return hooking_point.global_position

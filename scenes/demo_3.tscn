@@ -32,13 +32,13 @@ script/source = "extends Node2D
 
 @onready var door: Node2D = %Door
 
-var _remaining: int
+var _amount_remaining: int
 
 func _ready() -> void:
-	_remaining = 0
+	_amount_remaining = 0
 	for c in get_children():
 		if \"hook_control\" in c:
-			_remaining += 1
+			_amount_remaining += 1
 		else:
 			c.process_mode = Node.PROCESS_MODE_DISABLED
 			c.visible = false
@@ -46,24 +46,26 @@ func _ready() -> void:
 
 func _award() -> void:
 	for c in get_children():
+		# TODO: identify the buttons differently.
 		if not \"hook_control\" in c:
 			c.process_mode = Node.PROCESS_MODE_INHERIT
 			c.visible = true
+	# TODO: more elegant way to cancel the current grappling hook.
 	var player: Player = get_tree().get_first_node_in_group(\"player\")
 	player.get_node(\"%PlayerHook\").remove_string()
 	door.opened = true
 
 
 func hit_target(_target: HookableArea) -> void:
-	var connected: int = 0
+	var amount_hooked: int = 0
 	for c in get_children():
 		if not \"hook_control\" in c:
 			continue
 		if not c.hook_control:
 			continue
-		if c.hook_control.connected_to:
-			connected += 1
-	if connected >= _remaining:
+		if (c.hook_control as HookControl).hooked_to:
+			amount_hooked += 1
+	if amount_hooked >= _amount_remaining:
 		_award()
 "
 

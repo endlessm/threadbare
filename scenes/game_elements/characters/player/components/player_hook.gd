@@ -28,9 +28,25 @@ var debug_hit_from_inside: bool = false:
 		debug_hit_from_inside = new_value
 		ray_cast_2d.hit_from_inside = debug_hit_from_inside
 
-var connections: Array[HookableArea]
-var hooked_to: HookableArea
+## All the areas that have been hooked and through which anchor points
+## the [member hook_string] passes.[br][br]
+##
+## If this array has more than one area, then all except the last one must
+## be connections.[br][br]
+##
+## If the last area is not a connection, the player can pull it.
+## When pulling, the area owner and the player get closer and closer,
+## passing through all the connections in between, until the hook string
+## is consumed.
+var areas_hooked: Array[HookableArea]
+
+## True if a pull is happening.
 var pulling: bool = false
+
+## The hook string.
+##
+## This line starts at the player and goes through all [member areas_hooked],
+## and the last point can also be in the air.
 var hook_string: Line2D
 
 @onready var player: Player = self.owner as Player
@@ -62,15 +78,12 @@ func _new_hook_string() -> Line2D:
 
 
 func hit_target(_new_hooked_to: HookableArea) -> void:
-	var p: Vector2 = _new_hooked_to.get_hooking_position()
+	var p: Vector2 = _new_hooked_to.anchor_point.global_position
 	if not hook_string:
 		hook_string = _new_hook_string()
 	hook_string.add_point(p, 0)
-	hooked_to = _new_hooked_to
-	if hooked_to.hook_control:
-		# hooked_to.hook_control.state = HookControl.State.AIMING
-		connections.append(hooked_to)
-	if hooked_to.autopull:
+	areas_hooked.append(_new_hooked_to)
+	if _new_hooked_to.autopull:
 		pull_string()
 
 
@@ -78,7 +91,6 @@ func hit_wall(wall_point: Vector2) -> void:
 	if not hook_string:
 		hook_string = _new_hook_string()
 	hook_string.add_point(wall_point, 0)
-	hooked_to = null
 
 
 func hit_air(air_point: Vector2) -> void:
@@ -87,64 +99,90 @@ func hit_air(air_point: Vector2) -> void:
 	if not hook_string:
 		hook_string = _new_hook_string()
 	hook_string.add_point(air_point, 0)
-	hooked_to = null
 
 
+## Remove the [member hook_string].
 func remove_string() -> void:
 	if pulling:
 		return
+
 	if hook_string:
 		hook_string.queue_free()
-	if hooked_to and hooked_to.hook_control:
-		hooked_to.hook_control.state = HookControl.State.DISABLED
-	hooked_to = null
-	for c: HookableArea in connections:
-		if not is_instance_valid(c):
+
+	for area: HookableArea in areas_hooked:
+		# The area may be freed. For example, when the player
+		# collects a button.
+		if not is_instance_valid(area):
 			continue
-		if c.hook_control:
-			c.hook_control.connected_to = null
-			c.hook_control.state = HookControl.State.DISABLED
-	connections.clear()
+		if area.hook_control:
+			area.hook_control.hooked_to = null
+			area.hook_control.state = HookControl.State.DISABLED
+	areas_hooked.clear()
+
+	# Wait for the string to be freed before reenabling aiming:
 	if is_instance_valid(hook_string):
 		await hook_string.tree_exited
-	hook_control.connected_to = null
+
+	# Reenable aiming so a new string can be thrown:
+	hook_control.hooked_to = null
 	hook_control.state = HookControl.State.AIMING
 
 
+## Start pulling.[br][br]
+##
+## While pulling, the player is allowed to go through non-walkable floor.
 func pull_string() -> void:
 	pulling = true
 	player.set_collision_mask_value(NON_WALKABLE_FLOOR_LAYER, false)
 
 
+## Stop pulling and remove the [member hook_string].[br][br]
+##
+## After pulling, the player is back to normal and not able to go through
+## non-walkable floor.
 func stop_pulling() -> void:
 	player.set_collision_mask_value(NON_WALKABLE_FLOOR_LAYER, true)
 	pulling = false
 	remove_string()
 
 
+## Helper function to return the last area hooked, or
+## null if nothing was hooked.
+func get_ending_area() -> HookableArea:
+	if areas_hooked.is_empty():
+		return null
+	return areas_hooked[-1]
+
+
 func _unhandled_input(_event: InputEvent) -> void:
+	# TODO: and not pulling:
 	if Input.is_action_just_pressed(&"repel") and hook_string:
 		remove_string()
 		return
 
 	if Input.is_action_just_released(&"throw"):
-		if hooked_to and hooked_to.is_pullable:
+		var ending_area := get_ending_area()
+		if ending_area and not ending_area.hook_control:
 			pull_string()
 		return
 
 
 func _process(delta: float) -> void:
+	# TODO: if not is_instance_valid(hook_string) return
+
 	# Only one point in the Line2D, so not a line.
 	# This shouldn't ever happen.
 	if is_instance_valid(hook_string) and hook_string.get_point_count() < 2:
+		push_error("Only one point in hook_string.")
 		return
 
 	if is_instance_valid(hook_string):
 		# Move last point to the player position.
 		hook_string.points[-1] = player.position + position
-		if hooked_to:
+		var ending_area := get_ending_area()
+		if ending_area:
 			# Move first point to the hooked position.
-			hook_string.points[0] = hooked_to.get_hooking_position()
+			hook_string.points[0] = ending_area.anchor_point.global_position
 		else:
 			# Not hooked, so a throw that hit air or wall.
 			# Progressively shorten the line.
@@ -170,11 +208,12 @@ func _process(delta: float) -> void:
 
 func _process_pulling(_delta: float) -> void:
 	# The thing that was being pulled was freed, or the string was freed:
-	if not is_instance_valid(hooked_to) or not is_instance_valid(hook_string):
+	var ending_area := get_ending_area()
+	if not is_instance_valid(ending_area) or not is_instance_valid(hook_string):
 		stop_pulling()
 		return
-	var target = hooked_to.owner
-	var weight = hooked_to.weight if target is CharacterBody2D else 1.0
+	var target := ending_area.owner
+	var weight := ending_area.weight if target is CharacterBody2D else 1.0
 	# vector from player to first point
 	var player_distance: Vector2 = hook_string.points[-2] - hook_string.points[-1]
 

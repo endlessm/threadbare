@@ -142,6 +142,12 @@ func _unhandled_input(_event: InputEvent) -> void:
 	var speed: float
 	if player_hook.hook_control.pressing_throw_action:
 		speed = hooking_speed
+	elif (
+		player_hook.get_ending_area()
+		and player_hook.get_ending_area().hook_control
+		and player_hook.get_ending_area().hook_control.state == HookControl.State.AIMING
+	):
+		speed = hooking_speed
 	elif Input.is_action_pressed(&"running"):
 		speed = run_speed
 	else:
