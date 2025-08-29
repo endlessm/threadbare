@@ -21,6 +21,9 @@ const VIDEO_WINDOW_MODE_KEY := "Window Mode"
 ## than the base resolution.
 const MINIMUM_WINDOW_SIZE := Vector2i(1280, 720)
 
+const MINIMUM_ASPECT_RATIO := 1.5
+const MAXIMUM_ASPECT_RATIO := 2.2
+
 var _settings := ConfigFile.new()
 
 
