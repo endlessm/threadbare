@@ -116,7 +116,8 @@ func _ready() -> void:
 
 ## Cover all [param cells] with [member terrain_name], hiding any nodes in those cells which are
 ## direct children of [member consumable_node_holders].
-func consume_cells(cells: Array[Vector2i], immediate: bool = false) -> void:
+## Return true if any cells were consumed.
+func consume_cells(cells: Array[Vector2i], immediate: bool = false) -> bool:
 	for i in range(cells.size() - 1, -1, -1):
 		var c: Vector2i = cells[i]
 
@@ -129,6 +130,8 @@ func consume_cells(cells: Array[Vector2i], immediate: bool = false) -> void:
 
 		for cell in cells:
 			consume(cell, immediate)
+		return true
+	return false
 
 
 ## Hide all nodes in cell [param coord] which are direct children of
