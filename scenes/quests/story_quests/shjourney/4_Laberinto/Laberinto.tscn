@@ -1,4 +1,4 @@
-[gd_scene load_steps=87 format=4 uid="uid://dyx8toyemw2vx"]
+[gd_scene load_steps=89 format=4 uid="uid://dyx8toyemw2vx"]
 
 [ext_resource type="Script" uid="uid://bb15xji6f5syf" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/ScripBase.gd" id="1_f2sr3"]
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_wjmvn"]
@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="12_37aoh"]
 [ext_resource type="SpriteFrames" uid="uid://bjfl1ii3am8ll" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/guardia_sprite_frames.tres" id="13_656p3"]
 [ext_resource type="AudioStream" uid="uid://msyjqs06jmy7" path="res://scenes/quests/story_quests/shjourney/3_shjourney_intro/Musica/horror-orchestra-warning-338415 (1).mp3" id="13_a7iuo"]
+[ext_resource type="Script" uid="uid://d1gt3e47m6nts" path="res://UI-KEYS.gd" id="14_u1x3w"]
 [ext_resource type="Texture2D" uid="uid://5wscjc8yqqts" path="res://assets/first_party/collectibles/world_memory.png" id="16_7ve7e"]
 [ext_resource type="SpriteFrames" uid="uid://bshou7t46r4nu" path="res://scenes/quests/story_quests/shjourney/Angel/components/angel.tres" id="16_656p3"]
 [ext_resource type="Script" uid="uid://ctpayvvawhld4" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/kaenamanto.gd" id="16_mv628"]
@@ -834,6 +835,13 @@ texture_region_size = Vector2i(64, 64)
 [sub_resource type="TileSet" id="TileSet_jg4bf"]
 tile_size = Vector2i(64, 64)
 sources/0 = SubResource("TileSetAtlasSource_sdlc6")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qn20b"]
+bg_color = Color(0.6, 0.6, 0.6, 0.309804)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="Curve2D" id="Curve2D_wjmvn"]
 _data = {
@@ -2119,6 +2127,43 @@ editor_draw_limits = true
 [node name="AudioListener2D" type="AudioListener2D" parent="Player/Camera2D"]
 current = true
 
+[node name="HUDKEYS" type="CanvasLayer" parent="Player/Camera2D"]
+script = ExtResource("14_u1x3w")
+
+[node name="Panel" type="Panel" parent="Player/Camera2D/HUDKEYS"]
+offset_left = 16.0
+offset_top = 39.0
+offset_right = 56.0
+offset_bottom = 79.0
+scale = Vector2(5.77915, 2.37959)
+theme_override_styles/panel = SubResource("StyleBoxFlat_qn20b")
+
+[node name="TextureRect" type="TextureRect" parent="Player/Camera2D/HUDKEYS"]
+offset_left = 6.0
+offset_top = 27.0
+offset_right = 70.0
+offset_bottom = 91.0
+scale = Vector2(1.9155, 1.67432)
+texture = ExtResource("21_v7h05")
+
+[node name="DoubloDot" type="Label" parent="Player/Camera2D/HUDKEYS"]
+offset_left = 124.0
+offset_top = 36.0
+offset_right = 164.0
+offset_bottom = 105.0
+scale = Vector2(1.21561, 1.27257)
+theme_override_font_sizes/font_size = 50
+text = ": "
+
+[node name="KeysCollectText" type="Label" parent="Player/Camera2D/HUDKEYS"]
+offset_left = 150.0
+offset_top = 35.0
+offset_right = 207.0
+offset_bottom = 104.0
+scale = Vector2(1.21561, 1.27257)
+theme_override_font_sizes/font_size = 50
+text = "00"
+
 [node name="Node2D" parent="Player" instance=ExtResource("7_bolto")]
 position = Vector2(3, -21)
 scale = Vector2(5, 5)
@@ -2340,7 +2385,7 @@ shape = SubResource("RectangleShape2D_7ve7e")
 [node name="LLaves1" type="Node" parent="."]
 
 [node name="Llave" type="Sprite2D" parent="LLaves1"]
-position = Vector2(4798, 368)
+position = Vector2(4799, 366)
 texture = ExtResource("21_v7h05")
 script = ExtResource("22_r751j")
 
@@ -2354,7 +2399,7 @@ visible = false
 scale = Vector2(4.46, 4.46)
 
 [node name="Llave2" type="Sprite2D" parent="LLaves1"]
-position = Vector2(5362, 2106)
+position = Vector2(5326, 2025)
 texture = ExtResource("21_v7h05")
 script = ExtResource("22_r751j")
 
@@ -2368,7 +2413,7 @@ scale = Vector2(4.58, 4.58)
 shape = SubResource("CircleShape2D_7ve7e")
 
 [node name="Llave3" type="Sprite2D" parent="LLaves1"]
-position = Vector2(1076, 394)
+position = Vector2(765, 364)
 texture = ExtResource("21_v7h05")
 script = ExtResource("22_r751j")
 
@@ -2531,8 +2576,6 @@ position = Vector2(1592, 3298)
 
 [node name="FireFly33" parent="." instance=ExtResource("35_lldb0")]
 position = Vector2(2135, 3180)
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="."]
 z_index = 2
