@@ -1,4 +1,4 @@
-[gd_scene load_steps=89 format=4 uid="uid://dyx8toyemw2vx"]
+[gd_scene load_steps=90 format=4 uid="uid://dyx8toyemw2vx"]
 
 [ext_resource type="Script" uid="uid://bb15xji6f5syf" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/ScripBase.gd" id="1_f2sr3"]
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_wjmvn"]
@@ -42,6 +42,7 @@
 [ext_resource type="PackedScene" uid="uid://bdtis4ye3hah2" path="res://scenes/quests/story_quests/shjourney/9_shjourney_outro_2/neblina.tscn" id="30_1olun"]
 [ext_resource type="PackedScene" uid="uid://due8sqsrtdke1" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/fire_fly.tscn" id="35_lldb0"]
 [ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="39_qn20b"]
+[ext_resource type="AudioStream" uid="uid://d3yutcmxk1e5s" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/Music/the-sound-of-keys-jingling-in-videogames_v2.mp3" id="40_3ri7t"]
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="40_u1x3w"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sdlc6"]
@@ -2385,7 +2386,7 @@ shape = SubResource("RectangleShape2D_7ve7e")
 [node name="LLaves1" type="Node" parent="."]
 
 [node name="Llave" type="Sprite2D" parent="LLaves1"]
-position = Vector2(4799, 366)
+position = Vector2(4801, 365)
 texture = ExtResource("21_v7h05")
 script = ExtResource("22_r751j")
 
@@ -2398,8 +2399,11 @@ shape = SubResource("CircleShape2D_7ve7e")
 visible = false
 scale = Vector2(4.46, 4.46)
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="LLaves1/Llave"]
+stream = ExtResource("40_3ri7t")
+
 [node name="Llave2" type="Sprite2D" parent="LLaves1"]
-position = Vector2(5326, 2025)
+position = Vector2(5348, 2055)
 texture = ExtResource("21_v7h05")
 script = ExtResource("22_r751j")
 
@@ -2412,8 +2416,12 @@ scale = Vector2(4.58, 4.58)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LLaves1/Llave2/Area2D"]
 shape = SubResource("CircleShape2D_7ve7e")
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="LLaves1/Llave2"]
+position = Vector2(-113, -21)
+stream = ExtResource("40_3ri7t")
+
 [node name="Llave3" type="Sprite2D" parent="LLaves1"]
-position = Vector2(765, 364)
+position = Vector2(965, 411)
 texture = ExtResource("21_v7h05")
 script = ExtResource("22_r751j")
 
@@ -2427,6 +2435,10 @@ shape = SubResource("CircleShape2D_7ve7e")
 
 [node name="Node2D" parent="LLaves1/Llave3" instance=ExtResource("7_bolto")]
 position = Vector2(-5269, -1984)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="LLaves1/Llave3"]
+position = Vector2(-377, 3312)
+stream = ExtResource("40_3ri7t")
 
 [node name="CamaraPuerta" type="Camera2D" parent="."]
 position = Vector2(2715, 467)
