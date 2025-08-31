@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=4 uid="uid://djrxlfp43b7pt"]
+[gd_scene load_steps=49 format=4 uid="uid://djrxlfp43b7pt"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_mtosg"]
 [ext_resource type="PackedScene" uid="uid://p6q2uo2us0il" path="res://scenes/quests/story_quests/shjourney/light.tscn" id="2_5gqe7"]
@@ -21,6 +21,8 @@
 [ext_resource type="PackedScene" uid="uid://bdtis4ye3hah2" path="res://scenes/quests/story_quests/shjourney/9_shjourney_outro_2/neblina.tscn" id="16_iptbp"]
 [ext_resource type="PackedScene" uid="uid://buuh0p3bjdpkv" path="res://scenes/game_elements/props/hint/input_key/input_key.tscn" id="17_u8380"]
 [ext_resource type="Texture2D" uid="uid://dwloomqbao5j1" path="res://assets/third_party/inputs/keyboard-and-mouse/Light/Arrow_Left_Key_Light.png" id="18_4ek3l"]
+[ext_resource type="AudioStream" uid="uid://bevbl87lg5xnu" path="res://scenes/quests/story_quests/shjourney/3_shjourney_intro/Musica/angelicalSound.mp3" id="18_4ttmx"]
+[ext_resource type="Script" uid="uid://hs14yse0u0uh" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/music.gd" id="19_0dc1f"]
 [ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="19_4ek3l"]
 [ext_resource type="Texture2D" uid="uid://bhtf0ipgfttv4" path="res://assets/third_party/inputs/keyboard-and-mouse/Light/Arrow_Right_Key_Light.png" id="19_6ltfn"]
 [ext_resource type="Texture2D" uid="uid://qkedw0kou5j8" path="res://assets/third_party/inputs/keyboard-and-mouse/Light/Arrow_Down_Key_Light.png" id="21_x6v85"]
@@ -127,7 +129,7 @@ script = ExtResource("1_mtosg")
 zoom = 1.7
 
 [node name="Node2D4" parent="." instance=ExtResource("2_5gqe7")]
-position = Vector2(7642, 4034)
+position = Vector2(7640, 4115)
 scale = Vector2(1.33, 1.33)
 
 [node name="Node2D3" parent="." instance=ExtResource("2_5gqe7")]
@@ -135,11 +137,11 @@ position = Vector2(7642, 3824)
 scale = Vector2(1.225, 1.225)
 
 [node name="Node2D" parent="." instance=ExtResource("2_5gqe7")]
-position = Vector2(259, 72)
+position = Vector2(259, 61)
 scale = Vector2(1.285, 1.285)
 
 [node name="Node2D2" parent="." instance=ExtResource("2_5gqe7")]
-position = Vector2(466, 77)
+position = Vector2(466, 63)
 scale = Vector2(1.13, 1.13)
 
 [node name="EnemyGuards" type="Node2D" parent="."]
@@ -342,15 +344,21 @@ tile_set = ExtResource("5_oectw")
 collision_enabled = false
 
 [node name="Ground5" type="TileMapLayer" parent="TileMapLayers2/Sand"]
-position = Vector2(-28, 58)
+position = Vector2(-1946, -76)
+scale = Vector2(1.997, 1.997)
+tile_map_data = PackedByteArray("AABKACQAAgABAAAAAABKACgAAgACAAEAAABKACkAAgACAAEAAABKACoAAgACAAEAAABKACsAAgACAAEAAABMACgAAgACAAEAAABKADAAAgABAAEAAABLADAAAgABAAIAAABLADEAAgACAAEAAABJADIAAgABAAEAAABKADEAAgABAAEAAABKADIAAgACAAEAAABLAC8AAgABAAEAAABKAC8AAgABAAEAAABIADIAAgABAAEAAABHADIAAgABAAEAAABGADIAAgABAAEAAABJADMAAgABAAIAAABIADMAAgABAAIAAABFADIAAgABAAEAAABGADMAAgABAAIAAABFADEAAgABAAEAAABLACMAAgACAAEAAABLACIAAgACAAEAAABMACIAAgACAAEAAABMACMAAgACAAEAAABMACQAAgACAAEAAABMACAAAgACAAEAAABLAB8AAgACAAEAAABJAB4AAgABAAEAAABLACAAAgABAAEAAABKAB8AAgABAAEAAABIAB4AAgABAAEAAABIAB0AAgABAAAAAABHAB0AAgABAAEAAABJAB0AAgABAAAAAABKAB4AAgABAAAAAABHABwAAgABAAAAAABMACEAAgACAAEAAABLACkAAgACAAEAAABLACoAAgACAAEAAABLACsAAgACAAEAAABLACwAAgACAAEAAABLAC0AAgACAAEAAABLACcAAgACAAEAAABLACYAAgACAAEAAABLACUAAgACAAEAAABLAC4AAgACAAEAAABLACQAAgACAAEAAAA=")
+tile_set = ExtResource("5_oectw")
+
+[node name="Ground8" type="TileMapLayer" parent="TileMapLayers2/Sand"]
+position = Vector2(-39, 62)
 scale = Vector2(1.627, 1.627)
-tile_map_data = PackedByteArray("AABKACYAAgAAAAEAAABKACQAAgABAAAAAABKACUAAgAAAAEAAABLACcAAgACAAEAAABLACYAAgABAAEAAABLACUAAgACAAEAAABLACgAAgABAAEAAABKACgAAgACAAEAAABKACkAAgACAAEAAABKACoAAgACAAEAAABKACsAAgACAAEAAABLACsAAgACAAEAAABLACwAAgACAAEAAABLACoAAgACAAEAAABLACkAAgABAAEAAABLAC0AAgACAAEAAABMACkAAgACAAEAAABMACcAAgACAAEAAABMACYAAgACAAEAAABMACgAAgACAAEAAABMACoAAgACAAEAAABMACsAAgACAAEAAABMACwAAgACAAEAAABMAC0AAgACAAEAAABMAC4AAgACAAEAAABMAC8AAgACAAEAAABKADAAAgABAAEAAABLADAAAgABAAIAAABLADEAAgACAAEAAABJADIAAgABAAEAAABKADEAAgABAAEAAABKADIAAgACAAEAAABLAC8AAgABAAEAAABKAC8AAgABAAEAAABIADIAAgABAAEAAABHADIAAgABAAEAAABGADIAAgABAAEAAABJADMAAgABAAIAAABIADMAAgABAAIAAABFADIAAgABAAEAAABGADMAAgABAAIAAABFADEAAgABAAEAAABMACUAAgACAAEAAABLACQAAgACAAEAAABLACMAAgACAAEAAABLACIAAgACAAEAAABMACIAAgACAAEAAABMACMAAgACAAEAAABMACQAAgACAAEAAABMACAAAgACAAEAAABLAB8AAgACAAEAAABJAB4AAgABAAEAAABLACAAAgABAAEAAABKAB8AAgABAAEAAABIAB4AAgABAAEAAABIAB0AAgABAAAAAABHAB0AAgABAAEAAABJAB0AAgABAAAAAABKAB4AAgABAAAAAABHABwAAgABAAAAAABMACEAAgACAAEAAAA=")
+tile_map_data = PackedByteArray("AABKACYAAgAAAAEAAABKACQAAgABAAAAAABKACUAAgAAAAEAAABLACUAAgACAAEAAABLACgAAgABAAEAAABKACgAAgACAAEAAABKACkAAgACAAEAAABKACoAAgACAAEAAABKACsAAgACAAEAAABLAC0AAgACAAEAAABMACgAAgACAAEAAABMAC8AAgACAAEAAABKADAAAgABAAEAAABLADAAAgABAAIAAABLADEAAgACAAEAAABJADIAAgABAAEAAABKADEAAgABAAEAAABKADIAAgACAAEAAABLAC8AAgABAAEAAABKAC8AAgABAAEAAABIADIAAgABAAEAAABHADIAAgABAAEAAABGADIAAgABAAEAAABJADMAAgABAAIAAABIADMAAgABAAIAAABFADIAAgABAAEAAABGADMAAgABAAIAAABFADEAAgABAAEAAABMACUAAgACAAEAAABLACQAAgACAAEAAABLACMAAgACAAEAAABLACIAAgACAAEAAABMACIAAgACAAEAAABMACMAAgACAAEAAABMACQAAgACAAEAAABMACAAAgACAAEAAABLAB8AAgACAAEAAABJAB4AAgABAAEAAABLACAAAgABAAEAAABKAB8AAgABAAEAAABIAB4AAgABAAEAAABIAB0AAgABAAAAAABHAB0AAgABAAEAAABJAB0AAgABAAAAAABKAB4AAgABAAAAAABHABwAAgABAAAAAABMACEAAgACAAEAAABLAC4AAgACAAEAAAA=")
 tile_set = ExtResource("5_oectw")
 
 [node name="Ground6" type="TileMapLayer" parent="TileMapLayers2/Sand"]
 position = Vector2(-73.5, 152.25)
 scale = Vector2(1.625, 1.625)
-tile_map_data = PackedByteArray("AABKACYAAgAAAAEAAABKACQAAgABAAAAAABKACUAFwADAAAAAABLACYAAgABAAEAAABLACUAAgACAAEAAABLACgAAgABAAEAAABKACgAAgACAAEAAABKACkAAgACAAEAAABKACoAAgACAAEAAABKACsAAgACAAEAAABLACsAAgACAAEAAABLACwAAgACAAEAAABLACoAAgACAAEAAABLACkAAgABAAEAAABLAC0AAgACAAEAAABMACkAAgACAAEAAABNACcAAwABAAAAAABOACcAAwABAAAAAABPACcAAwABAAAAAABQACcAAwABAAAAAABRACcAAwABAAAAAABLACcAAwAAAAAAAABMACcAAwABAAAAAABSACcAAwABAAAAAAADAAEAFwADAAAAAAAFAAEAFwADAAAAAABKACcAFwADAAAAAAA=")
+tile_map_data = PackedByteArray("AABKACYAAgAAAAEAAABKACQAAgABAAAAAABKACUAFwAGAAEAAABLACUAAgACAAEAAABKACgAFwAGAAEAAABKACkAAgACAAEAAABKACoAAgACAAEAAABKACsAAgACAAEAAABLACsAAgACAAEAAABLACwAAgACAAEAAABLACoAAgACAAEAAABLAC0AAgACAAEAAABNACcAAwABAAAAAABOACcAAwABAAAAAABPACcAAwABAAAAAABQACcAAwABAAAAAABRACcAAwABAAAAAABLACcAAwAAAAAAAABMACcAAwABAAAAAABSACcAAwABAAAAAAADAAEAFwAGAAEAAAAFAAEAFwAGAAEAAAA=")
 tile_set = ExtResource("5_oectw")
 
 [node name="Player" parent="." instance=ExtResource("10_tm8dh")]
@@ -420,6 +428,13 @@ dialogue = ExtResource("13_4184i")
 position = Vector2(10.4116, -0.0563965)
 shape = SubResource("RectangleShape2D_03851")
 debug_color = Color(0, 0, 0, 0.42)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Checkpoint"]
+stream = ExtResource("18_4ttmx")
+volume_db = -4.953
+autoplay = true
+max_distance = 333.0
+script = ExtResource("19_0dc1f")
 
 [node name="RosaAzul1" type="Node2D" parent="."]
 show_behind_parent = true
@@ -656,5 +671,9 @@ position = Vector2(7656, 3848)
 
 [node name="FireFly17" parent="." instance=ExtResource("30_g2jpu")]
 position = Vector2(7617, 3799)
+
+[node name="Rosaazul1" type="Sprite2D" parent="."]
+position = Vector2(2558, 2145)
+texture = ExtResource("13_03851")
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]
