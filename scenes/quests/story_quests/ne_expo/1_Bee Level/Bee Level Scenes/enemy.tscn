@@ -1,0 +1,61 @@
+[gd_scene load_steps=8 format=3 uid="uid://dvrhbeg68gecb"]
+
+[ext_resource type="Script" uid="uid://dn178nh51fx35" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee level Scripts/enemy.gd" id="1_kstgp"]
+[ext_resource type="Texture2D" uid="uid://dnu0rlrtwemeu" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Enemy Components/Hornet Frames.png" id="2_kstgp"]
+[ext_resource type="PackedScene" uid="uid://bokydnrcfid1g" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee Level Scenes/Utility/hurt_box.tscn" id="3_je6bk"]
+[ext_resource type="PackedScene" uid="uid://et6tb2piys5t" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee Level Scenes/Utility/hit_box.tscn" id="4_w05dn"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kstgp"]
+radius = 10.2582
+height = 67.1337
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w05dn"]
+size = Vector2(116.564, 69.9064)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ph2f4"]
+size = Vector2(68.6405, 22.8359)
+
+[node name="enemy_hornet_weak" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_kstgp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -12)
+scale = Vector2(0.177639, 0.178571)
+texture = ExtResource("2_kstgp")
+hframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 6)
+rotation = -1.14895
+shape = SubResource("CapsuleShape2D_kstgp")
+
+[node name="flyTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.006
+one_shot = true
+
+[node name="HurtBox" parent="." instance=ExtResource("3_je6bk")]
+visible = false
+collision_layer = 128
+collision_mask = 128
+
+[node name="CollisionShape2D" parent="HurtBox" index="0"]
+position = Vector2(1.09689, 11.7669)
+rotation = 0.350639
+shape = SubResource("RectangleShape2D_w05dn")
+
+[node name="HitBox" parent="." instance=ExtResource("4_w05dn")]
+collision_layer = 64
+collision_mask = 64
+
+[node name="CollisionShape2D" parent="HitBox" index="0"]
+position = Vector2(-2, 5.5)
+rotation = 0.418088
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_ph2f4")
+
+[connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
+
+[editable path="HurtBox"]
+[editable path="HitBox"]
