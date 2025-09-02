@@ -1,9 +1,11 @@
-[gd_scene load_steps=21 format=3 uid="uid://bbsc3wssndtfe"]
+[gd_scene load_steps=23 format=3 uid="uid://bbsc3wssndtfe"]
 
 [ext_resource type="Script" uid="uid://dnb4ys8yvi1pj" path="res://scenes/game_elements/props/decoration/hiding_mushroom/hiding_mushroom.gd" id="1_v208a"]
 [ext_resource type="Texture2D" uid="uid://5s56lmeleerc" path="res://scenes/game_elements/props/decoration/hiding_mushroom/components/Mushroom_Hiding.png" id="2_u5x8h"]
 [ext_resource type="Texture2D" uid="uid://caajyl18koevp" path="res://scenes/game_elements/props/decoration/hiding_mushroom/components/Mushroom_Idle.png" id="3_gyonr"]
 [ext_resource type="Texture2D" uid="uid://b3jrnsvk46nji" path="res://scenes/game_elements/props/decoration/hiding_mushroom/components/Mushroom_Revealing.png" id="4_nlg6p"]
+[ext_resource type="AudioStream" uid="uid://1gnb8sf687eo" path="res://assets/first_party/sounds/mushroom/Hu.ogg" id="5_gyonr"]
+[ext_resource type="AudioStream" uid="uid://b0d3tfg0p06bp" path="res://assets/first_party/sounds/mushroom/sh.ogg" id="5_u5x8h"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kbtpn"]
 atlas = ExtResource("2_u5x8h")
@@ -139,6 +141,14 @@ collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
 shape = SubResource("CircleShape2D_v208a")
+
+[node name="HideSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_gyonr")
+bus = &"SFX"
+
+[node name="RevealSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_u5x8h")
+bus = &"SFX"
 
 [connection signal="body_entered" from="PlayerDetector" to="." method="_on_player_detector_body_entered"]
 [connection signal="body_exited" from="PlayerDetector" to="." method="_on_player_detector_body_exited"]
