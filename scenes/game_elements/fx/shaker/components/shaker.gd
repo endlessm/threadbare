@@ -66,8 +66,13 @@ func _ready() -> void:
 func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 	noise.seed = randi()
 	started.emit()
-	if _last_controller_id >= 0:
-		Input.start_joy_vibration(_last_controller_id, 0.5, 0.5, time)
+	# Previously: we used _last_controller_id to trigger vibration.
+	# Now we rely on InputHelper.device_index, which is -1 if no controller is active.
+	# if _last_controller_id >= 0:
+	#     Input.start_joy_vibration(_last_controller_id, 0.5, 0.5, time)
+	if Engine.has_singleton("InputHelper") and InputHelper.device_index >= 0:
+		Input.start_joy_vibration(InputHelper.device_index, 0.5, 0.5, time)
+
 	var shaking_already_in_progress: bool = shake_tween and shake_tween.is_valid()
 	if shaking_already_in_progress:
 		shake_tween.kill()
@@ -86,13 +91,6 @@ func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 	finished.emit()
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventJoypadButton or event is InputEventJoypadMotion:
-		_last_controller_id = event.device
-	elif event is InputEventKey:
-		_last_controller_id = -1
-
-
 func _process(delta: float) -> void:
 	if current_intensity > 0.0:
 		time_passed += delta * frequency
@@ -109,3 +107,8 @@ func _process(delta: float) -> void:
 		else:
 			target.position = new_position
 		target.rotation = new_rotation
+		
+		
+## Respond to input device changes
+func _on_device_changed(device: String, device_index: int) -> void:
+	print("Device changed to:", device, "Index:", device_index)
