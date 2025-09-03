@@ -8,8 +8,8 @@ signal started
 ## Emitted when a transition to a new scene finishes
 signal finished
 
-enum Effect { 
-	FADE, LEFT_TO_RIGHT_WIPE, RIGHT_TO_LEFT_WIPE, RADIAL, TOP_TO_BOTTOM_WIPE, BOTTOM_TO_TOP_WIPE 
+enum Effect {
+	FADE, LEFT_TO_RIGHT_WIPE, RIGHT_TO_LEFT_WIPE, RADIAL, TOP_TO_BOTTOM_WIPE, BOTTOM_TO_TOP_WIPE
 }
 
 const FADE_TEXTURE: Texture = preload("uid://cpvc4xmg7at7r")
