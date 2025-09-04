@@ -10,8 +10,8 @@ extends Control
 const BAR_COLOR := Color(Color.RED, 0.4)
 
 
-func _draw():
-	var aspect = size.aspect()
+func _draw() -> void:
+	var aspect := size.aspect()
 
 	# Too wide, add vertical bars:
 	if aspect >= Settings.MAXIMUM_ASPECT_RATIO:

@@ -1,28 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://cokul8w425pja"]
+[gd_scene load_steps=4 format=3 uid="uid://cokul8w425pja"]
 
 [ext_resource type="Script" uid="uid://dil8mgaf03bei" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_spreading_enemy.gd" id="1_304le"]
-[ext_resource type="Texture2D" uid="uid://crqn2002jp6ot" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/dust-cloud.png" id="2_45we0"]
-[ext_resource type="SpriteFrames" uid="uid://xolbc1j4a62f" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_blue.tres" id="3_2dnul"]
-
-[sub_resource type="Curve" id="Curve_8l6e1"]
-_data = [Vector2(0, 0.733414), 0.0, 0.0, 0, 0, Vector2(0.315152, 0.717732), 0.0, 0.0, 0, 0, Vector2(0.9, 0), 0.0, 0.0, 0, 0, Vector2(0.99697, 0), 0.0, 0.0, 0, 0]
-point_count = 4
-
-[sub_resource type="CurveTexture" id="CurveTexture_rrhr1"]
-curve = SubResource("Curve_8l6e1")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rrhr1"]
-lifetime_randomness = 0.2
-particle_flag_disable_z = true
-emission_shape = 1
-emission_sphere_radius = 8.0
-direction = Vector3(0, 0, 0)
-angular_velocity_min = -10.0
-angular_velocity_max = 9.99998
-gravity = Vector3(0, 0, 0)
-scale_min = 1.6
-scale_max = 1.8
-alpha_curve = SubResource("CurveTexture_rrhr1")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8g3pn"]
 size = Vector2(68, 20)
@@ -35,20 +13,6 @@ collision_layer = 0
 collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_304le")
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-unique_name_in_owner = true
-amount = 10
-texture = ExtResource("2_45we0")
-process_material = SubResource("ParticleProcessMaterial_rrhr1")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-unique_name_in_owner = true
-editor_description = "This sprite is a placeholder"
-position = Vector2(0, -24)
-sprite_frames = ExtResource("3_2dnul")
-animation = &"idle"
-autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(5, 0)

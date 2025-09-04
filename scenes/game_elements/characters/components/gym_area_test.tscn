@@ -1,13 +1,78 @@
-[gd_scene load_steps=9 format=4 uid="uid://ikgvi75j5dls"]
+[gd_scene load_steps=29 format=4 uid="uid://ikgvi75j5dls"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_5xpm5"]
-[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_5127f"]
 [ext_resource type="SpriteFrames" uid="uid://07di3updrwh0" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_purple.tres" id="3_6axvd"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="3_7132a"]
 [ext_resource type="SpriteFrames" uid="uid://brspwu70qbdaf" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_blue.tres" id="4_5127f"]
 [ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="5_7132a"]
 [ext_resource type="PackedScene" uid="uid://bbsc3wssndtfe" path="res://scenes/game_elements/props/decoration/hiding_mushroom/hiding_mushroom.tscn" id="6_l45sp"]
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="7_1aydi"]
+[ext_resource type="SpriteFrames" uid="uid://b3r84ksew5djp" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_purple.tres" id="9_6nfeg"]
+[ext_resource type="Script" uid="uid://cx0sk4uhvnii0" path="res://scenes/game_logic/erratic_walk_behavior.gd" id="10_k43ew"]
+[ext_resource type="Script" uid="uid://q4jj6ou7yonf" path="res://scenes/game_logic/bounce_walk_behavior.gd" id="11_utmd2"]
+[ext_resource type="Script" uid="uid://cwoclmik3db2" path="res://scenes/game_logic/follow_walk_behavior.gd" id="12_w4jvh"]
+[ext_resource type="SpriteFrames" uid="uid://qwlhm21ndgn2" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_orange.tres" id="12_wq1h3"]
+[ext_resource type="SpriteFrames" uid="uid://3ujiuhj7wpm2" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_red.tres" id="13_wq1h3"]
+[ext_resource type="Script" uid="uid://c8xbryhknipab" path="res://scenes/game_logic/input_walk_behavior.gd" id="15_k43ew"]
+[ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/character_sprite_behavior.gd" id="15_utmd2"]
+[ext_resource type="Texture2D" uid="uid://dxaq5piwxqnht" path="res://scenes/game_elements/characters/player/components/dust.png" id="16_w4jvh"]
+[ext_resource type="SpriteFrames" uid="uid://r3dn5pxqk1sv" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_gray.tres" id="17_w4jvh"]
+[ext_resource type="Script" uid="uid://id28maao3vdy" path="res://scenes/game_logic/path_walk_behavior.gd" id="18_wq1h3"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oojqe"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
+height = 42.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wq1h3"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 5
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_itker"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1e-05, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.71104, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_j0tly"]
+curve = SubResource("Curve_itker")
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_3in67"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_oojqe"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 25.0
+spread = 0.0
+initial_velocity_min = -40.0
+initial_velocity_max = -10.0
+directional_velocity_min = 1.0
+directional_velocity_max = 1.0
+directional_velocity_curve = SubResource("CurveXYZTexture_3in67")
+gravity = Vector3(0, 0, 0)
+scale_max = 1.5
+alpha_curve = SubResource("CurveTexture_j0tly")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[sub_resource type="GDScript" id="GDScript_w4jvh"]
+script/source = "extends GPUParticles2D
+
+
+func _on_input_walk_behavior_running_changed(is_running: bool) -> void:
+	emitting = is_running
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_itker"]
+radius = 13.0
+height = 66.0
+
+[sub_resource type="Curve2D" id="Curve2D_wq1h3"]
+_data = {
+"points": PackedVector2Array(-30.7395, -24.1992, 30.7395, 24.1992, 138, 42, -34.3214, -51.6631, 34.3214, 51.6631, 464, 60, -4.09808, -51.226, 4.09808, 51.226, 485, 563, 114.063, -1.36603, -114.063, 1.36603, 323, 682, 63.8618, -12.7724, -63.8618, 12.7724, -335, 678, 35.585, 52.1139, -35.585, -52.1139, -502, 645, 13.6603, 56.5038, -13.6603, -56.5038, -500, 93, -94.38, 15.523, 94.38, -15.523, -463, -136, -100.476, 1.69342, 100.476, -1.69342, -229, -129, -38.0165, -26.4463, 38.0165, 26.4463, 18, -121, -30.739, -24.199, 0, 0, 138, 42)
+}
+point_count = 11
 
 [node name="TestGymArea" type="Node2D"]
 
@@ -35,15 +100,6 @@ tile_set = ExtResource("1_5xpm5")
 
 [node name="OnTheGround" type="Node2D" parent="."]
 y_sort_enabled = true
-
-[node name="Player" parent="OnTheGround" instance=ExtResource("2_5127f")]
-position = Vector2(1312, 740)
-sprite_frames = ExtResource("3_6axvd")
-
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
-limit_left = -320
-limit_top = -640
-editor_draw_limits = true
 
 [node name="Decoration" type="Node2D" parent="OnTheGround"]
 y_sort_enabled = true
@@ -96,4 +152,162 @@ position = Vector2(1415, -187)
 [node name="WaterRock6" parent="OnTheGround/Decoration" instance=ExtResource("7_1aydi")]
 position = Vector2(1578, 1718)
 
+[node name="CharacterBody2D" type="CharacterBody2D" parent="OnTheGround"]
+position = Vector2(1594, 896)
+collision_layer = 2
+collision_mask = 531
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/CharacterBody2D"]
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_oojqe")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/CharacterBody2D"]
+position = Vector2(0, -37)
+sprite_frames = ExtResource("9_6nfeg")
+animation = &"idle"
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D/AnimatedSprite2D" node_paths=PackedStringArray("character", "sprite")]
+script = ExtResource("15_utmd2")
+character = NodePath("../..")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="ErraticWalkBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D" node_paths=PackedStringArray("character")]
+script = ExtResource("10_k43ew")
+travel_distance = 100.0
+character = NodePath("..")
+
+[node name="CharacterBody2D2" type="CharacterBody2D" parent="OnTheGround"]
+position = Vector2(921, 621)
+collision_layer = 2
+collision_mask = 531
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/CharacterBody2D2"]
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_oojqe")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/CharacterBody2D2"]
+position = Vector2(0, -37)
+sprite_frames = ExtResource("13_wq1h3")
+animation = &"idle"
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D2/AnimatedSprite2D" node_paths=PackedStringArray("character", "sprite")]
+position = Vector2(0, 37)
+script = ExtResource("15_utmd2")
+character = NodePath("../..")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="FollowWalkBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D2" node_paths=PackedStringArray("target", "character")]
+script = ExtResource("12_w4jvh")
+walk_speed = 170.0
+target = NodePath("../../CharacterBody2D")
+character = NodePath("..")
+
+[node name="CharacterBody2D3" type="CharacterBody2D" parent="OnTheGround"]
+position = Vector2(1691, 621)
+collision_layer = 2
+collision_mask = 531
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/CharacterBody2D3"]
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_oojqe")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/CharacterBody2D3"]
+position = Vector2(0, -37)
+sprite_frames = ExtResource("12_wq1h3")
+animation = &"idle"
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D3/AnimatedSprite2D" node_paths=PackedStringArray("character", "sprite")]
+script = ExtResource("15_utmd2")
+character = NodePath("../..")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="BounceWalkBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D3" node_paths=PackedStringArray("character")]
+script = ExtResource("11_utmd2")
+walk_speed = 50.0
+character = NodePath("..")
+
+[node name="CharacterBody2D4" type="CharacterBody2D" parent="OnTheGround" groups=["player"]]
+position = Vector2(1312, 760.076)
+collision_mask = 531
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/CharacterBody2D4"]
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_3vyb7")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="OnTheGround/CharacterBody2D4"]
+modulate = Color(1, 1, 1, 0.498039)
+material = SubResource("CanvasItemMaterial_wq1h3")
+position = Vector2(0, -6)
+emitting = false
+amount = 6
+texture = ExtResource("16_w4jvh")
+lifetime = 0.5
+randomness = 0.6
+fixed_fps = 10
+process_material = SubResource("ParticleProcessMaterial_oojqe")
+script = SubResource("GDScript_w4jvh")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/CharacterBody2D4"]
+position = Vector2(0, -17)
+sprite_frames = ExtResource("3_6axvd")
+animation = &"idle"
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D4/AnimatedSprite2D" node_paths=PackedStringArray("character", "sprite")]
+script = ExtResource("15_utmd2")
+character = NodePath("../..")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="InputWalkBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D4" node_paths=PackedStringArray("character")]
+script = ExtResource("15_k43ew")
+character = NodePath("..")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/CharacterBody2D4"]
+limit_left = -320
+limit_top = -640
+editor_draw_limits = true
+
+[node name="CharacterBody2D5" type="CharacterBody2D" parent="OnTheGround"]
+position = Vector2(977, 907)
+collision_layer = 2
+collision_mask = 531
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/CharacterBody2D5"]
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_itker")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/CharacterBody2D5"]
+position = Vector2(0, -27)
+sprite_frames = ExtResource("17_w4jvh")
+animation = &"idle"
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D5/AnimatedSprite2D" node_paths=PackedStringArray("character", "sprite")]
+position = Vector2(0, 37)
+script = ExtResource("15_utmd2")
+character = NodePath("../..")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="PathWalkBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D5" node_paths=PackedStringArray("walking_path", "character")]
+script = ExtResource("18_wq1h3")
+walk_speed = 90.0
+stuck_speed = 20.0
+walking_path = NodePath("../../Path2D")
+character = NodePath("..")
+
+[node name="Path2D" type="Path2D" parent="OnTheGround"]
+position = Vector2(839, 865)
+curve = SubResource("Curve2D_wq1h3")
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[connection signal="running_changed" from="OnTheGround/CharacterBody2D4/InputWalkBehavior" to="OnTheGround/CharacterBody2D4/GPUParticles2D" method="_on_input_walk_behavior_running_changed"]
+[connection signal="running_changed" from="OnTheGround/CharacterBody2D4/InputWalkBehavior" to="OnTheGround/CharacterBody2D4/AnimatedSprite2D/CharacterSpriteBehavior" method="on_running_changed"]
