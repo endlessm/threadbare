@@ -63,11 +63,8 @@ func _ready() -> void:
 ## Emits the [signal started] signal as soon as it's called. [br]
 ## If the shake is called multiple times, it will only emit the [signal
 ## finished] signal when the last effect is completed.
-## When shake is no more needed don't call target to avoid 'previously freed' error
+## After the shake happens the target could have been freed, so consider that to avoid an error.
 func shake(intensity: float = shake_intensity, time: float = duration) -> void:
-	if not is_instance_valid(target):
-		return
-	
 	noise.seed = randi()
 	started.emit()
 	if _last_controller_id >= 0:
@@ -91,7 +88,7 @@ func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 			target.offset = Vector2(original_position.x, original_position.y)
 		else:
 			target.position = Vector2(original_position.x, original_position.y)
-	rotation = original_rotation
+		target.rotation = original_rotation
 	finished.emit()
 
 
@@ -101,7 +98,7 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventKey:
 		_last_controller_id = -1
 
-#The extra validation 'is_instance_valid(target)' was added in the conditional inside of func _process
+
 func _process(delta: float) -> void:
 	if current_intensity > 0.0 and is_instance_valid(target):
 		time_passed += delta * frequency
@@ -115,7 +112,7 @@ func _process(delta: float) -> void:
 		var new_rotation := original_rotation + rotation_offset
 		 
 		if target is Camera2D:
-				target.offset = new_position
+			target.offset = new_position
 		else:
 			target.position = new_position
 		target.rotation = new_rotation
