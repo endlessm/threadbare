@@ -10,7 +10,6 @@ enum Status {
 	BROKEN
 }
 @export var status: Status = Status.WORK_IN_PROGRESS
-
 ## The quest's title. This should be short, like the title of a novel.
 @export var title: String
 
