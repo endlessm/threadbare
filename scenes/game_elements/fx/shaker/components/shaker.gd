@@ -82,7 +82,7 @@ func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 	time_passed = 0.0
 	await shake_tween.tween_property(self, "current_intensity", 0.0, time).from(intensity).finished
 	shake_tween.kill()
-	
+
 	if is_instance_valid(target):
 		if target is Camera2D:
 			target.offset = Vector2(original_position.x, original_position.y)
@@ -110,7 +110,7 @@ func _process(delta: float) -> void:
 
 		var new_position := Vector2(original_position.x + offset_x, original_position.y + offset_y)
 		var new_rotation := original_rotation + rotation_offset
-		 
+
 		if target is Camera2D:
 			target.offset = new_position
 		else:
