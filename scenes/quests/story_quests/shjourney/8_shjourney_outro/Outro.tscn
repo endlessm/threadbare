@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=4 uid="uid://b4dotq384vljq"]
+[gd_scene load_steps=41 format=4 uid="uid://b4dotq384vljq"]
 
 [ext_resource type="TileSet" uid="uid://birttlb0sk74i" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/tilesetOutro.tres" id="1_0jcvd"]
 [ext_resource type="Script" uid="uid://bdvg77f0s1ymu" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/outro.gd" id="1_bov4k"]
@@ -19,7 +19,6 @@
 [ext_resource type="Texture2D" uid="uid://jecho3fall7h" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/TilesIntro/TreeBIG.png" id="12_mpons"]
 [ext_resource type="Resource" uid="uid://cedpvxg2reiu1" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/Dialogos/frag1.dialogue" id="12_tribl"]
 [ext_resource type="Texture2D" uid="uid://oh5m43w30wku" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/template_combat_components/arbol_ojos.png" id="14_2sl0a"]
-[ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="14_ubp8u"]
 [ext_resource type="Script" uid="uid://b6yvlmarhnya3" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/ArbolFantasma2.gd" id="15_bov4k"]
 [ext_resource type="Resource" uid="uid://boorxrn6sdbmj" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/Dialogos/frag2.dialogue" id="16_avnit"]
 [ext_resource type="AudioStream" uid="uid://shhqt44ngtx7" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/template_combat_components/mysterious-dark-background-310162.mp3" id="16_xfafg"]
@@ -32,8 +31,8 @@
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="23_a1kpq"]
 [ext_resource type="Texture2D" uid="uid://p8kty3uxifxu" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Space_Key_Dark.png" id="24_gs4mb"]
 [ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="25_2sl0a"]
-[ext_resource type="Script" uid="uid://cmo1brc6c632n" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/puerta.gd" id="26_v1avb"]
 [ext_resource type="PackedScene" uid="uid://bdtis4ye3hah2" path="res://scenes/quests/story_quests/shjourney/9_shjourney_outro_2/neblina.tscn" id="27_2sl0a"]
+[ext_resource type="PackedScene" uid="uid://bhipktaj0oefq" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/Puerta.tscn" id="28_qomnf"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xpyxp"]
 atlas = ExtResource("14_2sl0a")
@@ -366,11 +365,9 @@ position = Vector2(16, 111)
 scale = Vector2(0.863669, 1)
 shape = SubResource("CircleShape2D_gkb0b")
 
-[node name="Puerta" parent="." groups=["guard_enemy"] instance=ExtResource("14_ubp8u")]
-modulate = Color(0.492032, 0.537218, 0.481467, 1)
-position = Vector2(894, 4451)
-scale = Vector2(2.3, 2.3)
-script = ExtResource("26_v1avb")
+[node name="Puerta" parent="." instance=ExtResource("28_qomnf")]
+position = Vector2(897, 4469)
+scale = Vector2(2.5, 2.5)
 
 [node name="PensamientoTim" type="Area2D" parent="." groups=["player"]]
 z_index = 1
@@ -445,11 +442,11 @@ texture = ExtResource("24_gs4mb")
 scale = Vector2(3.7, 3.7)
 transform = Transform2D(3.7, 0, 0, 3.7, 0, 0)
 
+[connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="reportar_arbol_contactado"]
 [connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="_on_arbol_dialogo_terminado"]
 [connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="_on_arbol_fantasma_1_dialogo_terminado"]
-[connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="reportar_arbol_contactado"]
 [connection signal="dialogo_terminado2" from="quest_arbol2/ArbolFantasma2" to="quest_arbol2" method="_on_arbol_fantasma_2_dialogo_terminado_2"]
 [connection signal="dialogo_terminado2" from="quest_arbol2/ArbolFantasma2" to="quest_arbol2" method="reportar_arbol_contactado2"]
-[connection signal="dialogo_terminado3" from="quest_arbol3/ArbolFantasma3" to="quest_arbol3" method="reportar_arbol_contactado3"]
 [connection signal="dialogo_terminado3" from="quest_arbol3/ArbolFantasma3" to="quest_arbol3" method="_on_arbol_fantasma_3_dialogo_terminado_3"]
+[connection signal="dialogo_terminado3" from="quest_arbol3/ArbolFantasma3" to="quest_arbol3" method="reportar_arbol_contactado3"]
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]
