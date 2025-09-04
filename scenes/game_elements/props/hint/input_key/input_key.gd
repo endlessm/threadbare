@@ -10,3 +10,11 @@ func _physics_process(_delta: float) -> void:
 		modulate = Color.GRAY
 	else:
 		modulate = Color.WHITE
+
+func _ready() -> void:
+	InputHelper.device_changed.connect(_on_input_device_changed)
+
+
+func _on_input_device_changed(device: String, device_index: int) -> void:
+	print("XBox? ", device == InputHelper.DEVICE_XBOX_CONTROLLER)
+	print("Device index? ", device_index) # Probably 0
