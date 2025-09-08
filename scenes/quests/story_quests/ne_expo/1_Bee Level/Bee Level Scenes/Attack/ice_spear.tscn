@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://668wrtwx1jn0"]
+
+[ext_resource type="Script" uid="uid://dwuf5pdk11qtk" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee level Scripts/ice_spear.gd" id="1_giglc"]
+[ext_resource type="Texture2D" uid="uid://bxqxrhtdeygyw" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Attack Components/Icicle Sprite.png" id="2_db0ay"]
+[ext_resource type="AudioStream" uid="uid://6y7r5lfxpqlm" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Attack Components/Icicle Fire Sound.wav" id="3_db0ay"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n5gjj"]
+size = Vector2(4.94975, 20)
+
+[node name="IceSpear" type="Area2D" groups=["attack"]]
+top_level = true
+scale = Vector2(0.1, 0.1)
+collision_layer = 128
+collision_mask = 0
+script = ExtResource("1_giglc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_db0ay")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.25, 0.25)
+rotation = -0.785398
+shape = SubResource("RectangleShape2D_n5gjj")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[node name="snd_play" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_db0ay")
+volume_db = -10.0
+pitch_scale = 0.9
+autoplay = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
