@@ -13,47 +13,39 @@ grow_vertical = 2
 theme = ExtResource("1_gmidg")
 script = ExtResource("2_3tvx1")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1, 1.03033)
-theme_override_constants/margin_left = 64
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 64
-theme_override_constants/margin_bottom = 64
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Authors" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Authors" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/Authors"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/Authors"]
 layout_mode = 2
 
-[node name="TitlePanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/Authors/VBoxContainer"]
+[node name="TitlePanel" type="PanelContainer" parent="VBoxContainer/HBoxContainer/Authors/VBoxContainer"]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_type_variation = &"PlayerRibbon"
 
-[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Authors/VBoxContainer/TitlePanel"]
+[node name="Title" type="Label" parent="VBoxContainer/HBoxContainer/Authors/VBoxContainer/TitlePanel"]
 layout_mode = 2
 mouse_filter = 1
 text = "Authors"
 horizontal_alignment = 1
 
-[node name="Body" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer/Authors/VBoxContainer"]
+[node name="Body" type="RichTextLabel" parent="VBoxContainer/HBoxContainer/Authors/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
@@ -72,78 +64,71 @@ Stephen Reid
 Tobías Romero
 Will Thompson"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Art" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Art" type="PanelContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.72
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Art"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art"]
 layout_mode = 2
 
-[node name="TitlePanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer"]
+[node name="ArtTitlePanel" type="PanelContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer"]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_type_variation = &"NPCRibbon"
 
-[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/TitlePanel"]
+[node name="Title" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/ArtTitlePanel"]
 layout_mode = 2
 mouse_filter = 1
 text = "Art and Music"
 horizontal_alignment = 1
 
-[node name="Body" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer"]
+[node name="ArtBody" type="RichTextLabel" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
 text = "Additional original art by [url=https://pixelfrog-assets.itch.io/]Pixel Frog[/url]
 Original music by John Wright"
 
-[node name="ThirdPartyComponents" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ThirdPartyComponents"]
-layout_mode = 2
-
-[node name="TitlePanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ThirdPartyComponents/VBoxContainer"]
+[node name="ThirdPartyTitlePanel" type="PanelContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer"]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_type_variation = &"NPCRibbon"
 
-[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ThirdPartyComponents/VBoxContainer/TitlePanel"]
+[node name="Title" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/ThirdPartyTitlePanel"]
 layout_mode = 2
 mouse_filter = 1
 text = "Third-Party Components"
 horizontal_alignment = 1
 
-[node name="Body" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ThirdPartyComponents/VBoxContainer"]
+[node name="ThirdPartyBody" type="RichTextLabel" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 bbcode_enabled = true
 text = "Built with [url=https://godotengine.org/]Godot Engine[/url] ([url=https://godotengine.org/license/]MIT license[/url])
 Uses [url=https://dialogue.nathanhoad.net/]Godot Dialogue Manager[/url] by Nathan Hoad ([url=https://github.com/nathanhoad/godot_dialogue_manager/blob/main/LICENSE]MIT license[/url])
 Uses [url=https://dialogue.nathanhoad.net/]Godot Git Describe[/url] by Joseph Michael Ware ([url=https://github.com/zibetnu/godot-git-describe/blob/main/LICENSE]MIT license[/url])
 Uses [url=https://github.com/scfried/soft-type-jersey]Jersey[/url] by Sarah Cadigan-Fried and The Soft Type Project Authors ([url=https://github.com/scfried/soft-type-jersey?tab=OFL-1.1-1-ov-file]OFL-1.1 license[/url])"
 
-[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="BackButton" type="Button" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-theme_type_variation = &"BigFlatButton"
+theme_type_variation = &"FlatButton"
 text = "< back"
 flat = true
 
-[connection signal="meta_clicked" from="MarginContainer/VBoxContainer/HBoxContainer/Authors/VBoxContainer/Body" to="." method="_on_rich_text_label_meta_clicked"]
-[connection signal="meta_clicked" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/Body" to="." method="_on_rich_text_label_meta_clicked"]
-[connection signal="visibility_changed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/Body" to="." method="_on_visibility_changed"]
-[connection signal="meta_clicked" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ThirdPartyComponents/VBoxContainer/Body" to="." method="_on_rich_text_label_meta_clicked"]
-[connection signal="visibility_changed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ThirdPartyComponents/VBoxContainer/Body" to="." method="_on_visibility_changed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="meta_clicked" from="VBoxContainer/HBoxContainer/Authors/VBoxContainer/Body" to="." method="_on_rich_text_label_meta_clicked"]
+[connection signal="meta_clicked" from="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/ArtBody" to="." method="_on_rich_text_label_meta_clicked"]
+[connection signal="visibility_changed" from="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/ArtBody" to="." method="_on_visibility_changed"]
+[connection signal="meta_clicked" from="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/ThirdPartyBody" to="." method="_on_rich_text_label_meta_clicked"]
+[connection signal="visibility_changed" from="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/ThirdPartyBody" to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
