@@ -224,6 +224,8 @@ z_index = 1
 position = Vector2(113, 5326)
 scale = Vector2(1.199, 1.199)
 player_name = "Tim"
+walk_speed = 200.0
+run_speed = 300.0
 sprite_frames = ExtResource("9_kdw2l")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -243,26 +245,28 @@ direction = 1
 text = "Vuelta a casa"
 
 [node name="Node2D3" parent="." instance=ExtResource("5_14vr6")]
-position = Vector2(467.633, 3030.5)
+position = Vector2(471, 3064)
 
 [node name="Node2D4" parent="." instance=ExtResource("5_14vr6")]
 position = Vector2(4888, 365)
 scale = Vector2(5, 5)
 
 [node name="Node2D5" parent="." instance=ExtResource("5_14vr6")]
-position = Vector2(1374.48, 1277.48)
+position = Vector2(1377, 1316)
 
 [node name="Node2D6" parent="." instance=ExtResource("5_14vr6")]
-position = Vector2(893.99, 2498.95)
+position = Vector2(897, 2549)
 
 [node name="Node2D2" parent="." instance=ExtResource("5_14vr6")]
 position = Vector2(489, 5254)
 
 [node name="Node2D7" parent="." instance=ExtResource("5_14vr6")]
+z_index = 1
 position = Vector2(627, 4477)
 scale = Vector2(5, 5)
 
 [node name="Node2D8" parent="." instance=ExtResource("5_14vr6")]
+z_index = 1
 position = Vector2(1144, 4474)
 scale = Vector2(5, 5)
 
@@ -283,7 +287,7 @@ sprite_frames = SubResource("SpriteFrames_ni461")
 script = ExtResource("17_3urrv")
 
 [node name="ArbolFantasma2" parent="quest_arbol2" instance=ExtResource("6_s07u0")]
-position = Vector2(892, 2578)
+position = Vector2(893, 2603)
 script = ExtResource("15_bov4k")
 dialogue = ExtResource("16_avnit")
 npc_name = "frag2"
@@ -393,6 +397,7 @@ skip_pause_at_abbreviations = PackedStringArray("Mr", "Mrs", "Ms", "Dr", "etc", 
 metadata/_custom_type_script = "uid://g32um0mltv5d"
 
 [node name="Label2" type="Label" parent="."]
+z_index = 1
 offset_left = 530.0
 offset_top = 4398.0
 offset_right = 938.0
@@ -404,6 +409,7 @@ A veces un buen
 golpe resolvería "
 
 [node name="Label" type="Label" parent="."]
+z_index = 1
 offset_left = 1078.0
 offset_top = 4431.0
 offset_right = 1486.0
@@ -442,11 +448,11 @@ texture = ExtResource("24_gs4mb")
 scale = Vector2(3.7, 3.7)
 transform = Transform2D(3.7, 0, 0, 3.7, 0, 0)
 
-[connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="reportar_arbol_contactado"]
 [connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="_on_arbol_dialogo_terminado"]
 [connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="_on_arbol_fantasma_1_dialogo_terminado"]
-[connection signal="dialogo_terminado2" from="quest_arbol2/ArbolFantasma2" to="quest_arbol2" method="_on_arbol_fantasma_2_dialogo_terminado_2"]
+[connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="reportar_arbol_contactado"]
 [connection signal="dialogo_terminado2" from="quest_arbol2/ArbolFantasma2" to="quest_arbol2" method="reportar_arbol_contactado2"]
-[connection signal="dialogo_terminado3" from="quest_arbol3/ArbolFantasma3" to="quest_arbol3" method="_on_arbol_fantasma_3_dialogo_terminado_3"]
+[connection signal="dialogo_terminado2" from="quest_arbol2/ArbolFantasma2" to="quest_arbol2" method="_on_arbol_fantasma_2_dialogo_terminado_2"]
 [connection signal="dialogo_terminado3" from="quest_arbol3/ArbolFantasma3" to="quest_arbol3" method="reportar_arbol_contactado3"]
+[connection signal="dialogo_terminado3" from="quest_arbol3/ArbolFantasma3" to="quest_arbol3" method="_on_arbol_fantasma_3_dialogo_terminado_3"]
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]
