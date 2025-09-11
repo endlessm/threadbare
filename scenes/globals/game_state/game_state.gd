@@ -167,4 +167,4 @@ func _save() -> void:
 		return
 	var err := _state.save(GAME_STATE_PATH)
 	if err != OK:
-		push_error("Failed to save settings to %s: %s" % [GAME_STATE_PATH, err])
+		push_error("Failed to save settings to %s : %s" % [GAME_STATE_PATH, err])
