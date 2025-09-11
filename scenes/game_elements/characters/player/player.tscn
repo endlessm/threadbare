@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=39 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/game_elements/characters/player/components/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/template/template_player_components/template_player.tres" id="2_blfj0"]
@@ -12,7 +12,12 @@
 [ext_resource type="Texture2D" uid="uid://dda0lxfswrncy" path="res://scenes/game_elements/characters/player/components/blow.png" id="9_je7p5"]
 [ext_resource type="AudioStream" uid="uid://crfylo055wa8e" path="res://scenes/game_elements/characters/player/components/blow.wav" id="10_fm80t"]
 [ext_resource type="AudioStream" uid="uid://cx6jv2cflrmqu" path="res://assets/third_party/sounds/characters/player/Foot.ogg" id="11_blfj0"]
+[ext_resource type="Script" uid="uid://b7704hdflt5t8" path="res://scenes/game_elements/characters/player/components/player_hook.gd" id="11_nrnyj"]
 [ext_resource type="Texture2D" uid="uid://dxaq5piwxqnht" path="res://scenes/game_elements/characters/player/components/dust.png" id="12_3in67"]
+[ext_resource type="PackedScene" uid="uid://b0dehcnfo68j1" path="res://scenes/game_elements/props/hook_control/hook_control.tscn" id="13_ecbbk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_je7p5"]
+size = Vector2(32, 47)
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_j0tly"]
 blend_mode = 1
@@ -51,9 +56,6 @@ height = 42.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blfj0"]
 size = Vector2(110, 80)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_je7p5"]
-size = Vector2(32, 47)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h17s1"]
 radius = 20.0
@@ -379,20 +381,19 @@ tracks/8/use_blend = true
 
 [sub_resource type="Animation" id="Animation_j0tly"]
 resource_name = "repel_deprecated"
-length = 0.6
-loop_mode = 1
+length = 0.4
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerFighting/AirStream/AirStreamCollision:disabled")
+tracks/0/path = NodePath("PlayerSprite:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [true, false, true]
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [&"attack_01"]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -401,98 +402,11 @@ tracks/1/path = NodePath("PlayerSprite:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [0, 0, 0, 1, 2, 3, 3]
+"values": [0, 1, 2, 3, 3]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("PlayerSprite:animation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [&"attack_01"]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("PlayerFighting/AirStream/AirStreamCollision:shape:radius")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.3, 0.6),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [20.0, 150.0]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("PlayerFighting/AirStream:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -24)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("PlayerFighting/AirStream/Sprite2D:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [false, true, false]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("PlayerFighting/AirStream/Sprite2D:scale")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0.3, 0.6),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0.12577, 0.12577), Vector2(1, 1)]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("PlayerFighting/AirStream/Sprite2D:modulate")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0.3, 0.5, 0.6),
-"transitions": PackedFloat32Array(2, 0.5, 0.5),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.456), Color(1, 1, 1, 0)]
-}
-tracks/8/type = "audio"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("PlayerFighting/AirStream/AudioStreamPlayer2D")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"clips": [{
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": ExtResource("10_fm80t")
-}],
-"times": PackedFloat32Array(0.3)
-}
-tracks/8/use_blend = true
 
 [sub_resource type="Animation" id="Animation_nrnyj"]
 resource_name = "run"
@@ -534,6 +448,35 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, true, true]
+}
+
+[sub_resource type="Animation" id="Animation_4nivu"]
+resource_name = "throw_string"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [&"attack_01"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0, 1, 2, 3, 3]
 }
 
 [sub_resource type="Animation" id="Animation_qek5x"]
@@ -586,12 +529,23 @@ _data = {
 &"repel": SubResource("Animation_u5klv"),
 &"repel_deprecated": SubResource("Animation_j0tly"),
 &"run": SubResource("Animation_nrnyj"),
+&"throw_string": SubResource("Animation_4nivu"),
 &"walk": SubResource("Animation_qek5x")
 }
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_mask = 531
 script = ExtResource("1_g2els")
+
+[node name="HitBox" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 64
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, -28.5)
+shape = SubResource("RectangleShape2D_je7p5")
+debug_color = Color(0.94902, 0.231373, 0, 0.419608)
 
 [node name="PlayerDustParticles" type="GPUParticles2D" parent="."]
 unique_name_in_owner = true
@@ -656,16 +610,6 @@ process_mode = 4
 visible = false
 script = ExtResource("7_5gtgg")
 
-[node name="HitBox" type="Area2D" parent="PlayerFighting"]
-unique_name_in_owner = true
-collision_layer = 64
-collision_mask = 256
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerFighting/HitBox"]
-position = Vector2(0, -28.5)
-shape = SubResource("RectangleShape2D_je7p5")
-debug_color = Color(0.94902, 0.231373, 0, 0.419608)
-
 [node name="AirStream" type="Area2D" parent="PlayerFighting"]
 unique_name_in_owner = true
 position = Vector2(0, -24)
@@ -690,6 +634,16 @@ unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_1n58k")
 }
+
+[node name="PlayerHook" type="Node2D" parent="." groups=["hook_listener"]]
+unique_name_in_owner = true
+process_mode = 4
+visible = false
+position = Vector2(0, -20)
+script = ExtResource("11_nrnyj")
+
+[node name="HookControl" parent="PlayerHook" instance=ExtResource("13_ecbbk")]
+state = 1
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 visible = false

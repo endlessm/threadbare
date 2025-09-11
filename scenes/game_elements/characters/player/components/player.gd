@@ -13,6 +13,8 @@ enum Mode {
 	COZY,
 	## Player is engaged in combat. Player can use combat actions.
 	FIGHTING,
+	## Player is using the grappling hook.
+	HOOKING,
 	## Player can't be controlled anymore.
 	DEFEATED,
 }
@@ -44,6 +46,7 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 	set = _set_mode
 @export_range(10, 100000, 10) var walk_speed: float = 300.0
 @export_range(10, 100000, 10) var run_speed: float = 500.0
+@export_range(10, 100000, 10) var aiming_speed: float = 100.0
 @export_range(10, 100000, 10) var stopping_step: float = 1500.0
 @export_range(10, 100000, 10) var moving_step: float = 4000.0
 
@@ -61,6 +64,7 @@ var input_vector: Vector2
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: Node2D = %PlayerFighting
+@onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
@@ -74,12 +78,19 @@ func _set_mode(new_mode: Mode) -> void:
 		Mode.COZY:
 			_toggle_player_behavior(player_interaction, true)
 			_toggle_player_behavior(player_fighting, false)
+			_toggle_player_behavior(player_hook, false)
 		Mode.FIGHTING:
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_fighting, true)
+			_toggle_player_behavior(player_hook, false)
+		Mode.HOOKING:
+			_toggle_player_behavior(player_interaction, false)
+			_toggle_player_behavior(player_fighting, false)
+			_toggle_player_behavior(player_hook, true)
 		Mode.DEFEATED:
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_fighting, false)
+			_toggle_player_behavior(player_hook, false)
 	if mode != previous_mode:
 		mode_changed.emit(mode)
 
@@ -138,7 +149,9 @@ func _unhandled_input(_event: InputEvent) -> void:
 	var axis: Vector2 = Input.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
 
 	var speed: float
-	if Input.is_action_pressed(&"running"):
+	if player_hook.is_throwing_or_aiming():
+		speed = aiming_speed
+	elif Input.is_action_pressed(&"running"):
 		speed = run_speed
 	else:
 		speed = walk_speed
@@ -157,6 +170,10 @@ func is_running() -> bool:
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
+		return
+
+	# While pulling the grappling hook, the movement is handled in PlayerHook._process.
+	if player_hook.pulling:
 		return
 
 	if player_interaction.is_interacting or mode == Mode.DEFEATED:
