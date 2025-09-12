@@ -12,7 +12,8 @@ extends Node2D
 @export var character: CharacterBody2D
 
 ## Whether to play the sprite animations or not. If not, the only thing that will happen is that
-## the sprite will be flipped horizontally according to the velocity of [member character].
+## the sprite will be flipped horizontally according to the velocity of [member character] and
+## the value of [member default_facing].
 ## Use this when using more advanced animation through an AnimationPlayer node.
 @export var play_animations: bool = true
 
@@ -22,6 +23,12 @@ extends Node2D
 ## the parent node will be automatically assigned to this variable.
 @export var sprite: AnimatedSprite2D:
 	set = _set_sprite
+
+## What direction [member sprite] is facing by default. If this is [member
+## Enums.LookAtSide.UNSPECIFIED], the sprite will never be flipped horizontally;
+## otherwise, the sprite will be flipped horizontally if the velocity of [member
+## character] is in the opposite direction.
+@export var default_facing := Enums.LookAtSide.RIGHT
 
 var _is_character_running: bool = false
 
@@ -57,7 +64,13 @@ func _process(delta: float) -> void:
 		_process_animations(delta)
 
 	if not is_zero_approx(character.velocity.x):
-		sprite.flip_h = character.velocity.x < 0
+		match default_facing:
+			Enums.LookAtSide.LEFT:
+				sprite.flip_h = character.velocity.x > 0
+			Enums.LookAtSide.RIGHT:
+				sprite.flip_h = character.velocity.x < 0
+			Enums.LookAtSide.UNSPECIFIED:
+				pass
 
 
 func _process_animations(_delta: float) -> void:
