@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://ikgvi75j5dls"]
+[gd_scene load_steps=37 format=4 uid="uid://ikgvi75j5dls"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_5xpm5"]
 [ext_resource type="SpriteFrames" uid="uid://07di3updrwh0" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_purple.tres" id="3_6axvd"]
@@ -19,6 +19,13 @@
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="17_itker"]
 [ext_resource type="SpriteFrames" uid="uid://r3dn5pxqk1sv" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_gray.tres" id="17_w4jvh"]
 [ext_resource type="Script" uid="uid://id28maao3vdy" path="res://scenes/game_logic/walk_behaviors/path_walk_behavior.gd" id="18_wq1h3"]
+[ext_resource type="SpriteFrames" uid="uid://dnq8cw1cio2we" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_green.tres" id="20_jdub8"]
+[ext_resource type="Script" uid="uid://r1kriwyodjlt" path="res://scenes/game_logic/walk_behaviors/navigation_follow_walk_behavior.gd" id="21_jdub8"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_oojqe"]
+vertices = PackedVector2Array(2612.09, 882.242, 1372.27, 799.719, 1388.82, 670.781, 2393.78, 645.758, 2512.78, -340, 2413.06, -200.32, 1470.91, -340, 1455.69, -202.648, -91.9688, -367.812, 1185.81, -149, 214.844, -149, 1448.35, 0.960938, 1188.65, 0.03125, -89.0234, 939, 227.094, 641.859, 380.844, 893.93, 378.094, 727.859)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 0, 3, 5), PackedInt32Array(6, 4, 5, 7), PackedInt32Array(8, 6, 7, 9, 10), PackedInt32Array(11, 12, 9, 7), PackedInt32Array(13, 8, 10, 14), PackedInt32Array(15, 13, 14, 16)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-99, 950, 391, 903, 388, 722, 237, 636, 225, -139, 1176, -139, 1178.83, 10, 1458, 11, 1465.33, -192.625, 2402.83, -190.337, 2384, 636, 1380, 661, 1361, 809, 2623, 893, 2522, -350, 1471, -350, -102, -378)])
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oojqe"]
 
@@ -102,6 +109,10 @@ _data = {
 }
 point_count = 11
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jdub8"]
+radius = 6.0
+height = 21.9972
+
 [node name="TestGymArea" type="Node2D"]
 
 [node name="TileMapLayers" type="Node2D" parent="."]
@@ -125,6 +136,9 @@ tile_set = ExtResource("1_5xpm5")
 [node name="TileMapLayerElevation" type="TileMapLayer" parent="TileMapLayers"]
 tile_map_data = PackedByteArray("AAALABIABAABAAAAAAAMABIABAABAAAAAAANABIABAABAAAAAAAOABIABAABAAAAAAAPABIABAABAAAAAAAQABIABAABAAAAAAARABIABAABAAAAAAAWABIABAAAAAAAAAAXABIABAABAAAAAAAYABIABAABAAAAAAAZABIABAABAAAAAAAaABIABAABAAAAAAAbABIABAABAAAAAAAcABIABAABAAAAAAAdABIABAABAAAAAAAeABIABAABAAAAAAAKABIABAABAAAAAAAKABMABAABAAIAAAALABMABAABAAIAAAANABMABAABAAIAAAAMABMABAABAAIAAAAOABMABAABAAIAAAAPABMABAABAAIAAAAQABMABAABAAIAAAARABMABAABAAIAAAAWABMABAAAAAIAAAAXABMABAABAAIAAAAYABMABAABAAIAAAAZABMABAABAAIAAAAaABMABAABAAIAAAAbABMABAABAAIAAAAcABMABAABAAIAAAAdABMABAABAAIAAAAeABMABAABAAIAAAAKABQABAABAAMAAAALABQABAABAAMAAAAMABQABAABAAMAAAANABQABAABAAMAAAAOABQABAABAAMAAAAPABQABAABAAMAAAAQABQABAABAAMAAAARABQABAABAAMAAAAWABQABAAAAAMAAAAXABQABAABAAMAAAAYABQABAABAAMAAAAZABQABAABAAMAAAAaABQABAABAAMAAAAbABQABAABAAMAAAAcABQABAABAAMAAAAdABQABAABAAMAAAAeABQABAABAAMAAAASABQABAACAAMAAAASABMABAACAAEAAAASABIABAACAAAAAAAJABMABAABAAIAAAAJABIABAABAAEAAAAJABEABAACAAEAAAAJABAABAACAAEAAAAJAA8ABAACAAEAAAAJAA4ABAACAAEAAAAJAA0ABAACAAAAAAAIABMABAAAAAIAAAAIABIABAAAAAEAAAAIABEABAAAAAEAAAAIABAABAAAAAEAAAAIAA8ABAAAAAEAAAAIAA4ABAAAAAEAAAAIAA0ABAAAAAAAAAAgABMABAACAAIAAAAgABIABAACAAEAAAAgABEABAACAAEAAAAgABAABAACAAEAAAAgAA8ABAACAAEAAAAgAA4ABAACAAEAAAAfABMABAABAAIAAAAfABIABAABAAEAAAAfABEABAAAAAEAAAAfABAABAAAAAEAAAAfAA8ABAAAAAEAAAAfAA4ABAAAAAEAAAAfAA0ABAAAAAAAAAAJABQABAABAAMAAAAIABQABAAAAAMAAAAgABQABAACAAMAAAAfABQABAABAAMAAAAgAA0ABAACAAAAAAAIAAMABAAAAAEAAAAIAAQABAAAAAEAAAAIAAUABAAAAAEAAAAIAAYABAAAAAEAAAAIAAcABAAAAAEAAAAIAAgABAAAAAIAAAAIAAkABAAAAAMAAAAJAAMABAABAAEAAAAJAAQABAACAAEAAAAJAAUABAACAAEAAAAJAAYABAACAAEAAAAJAAcABAACAAEAAAAJAAgABAACAAIAAAAJAAkABAACAAMAAAAKAAMABAABAAIAAAAKAAQABAABAAMAAAALAAMABAABAAEAAAALAAQABAABAAMAAAAMAAMABAABAAEAAAAMAAQABAABAAMAAAANAAMABAABAAEAAAANAAQABAABAAMAAAAOAAMABAABAAEAAAAOAAQABAABAAMAAAAPAAMABAABAAEAAAAPAAQABAABAAMAAAAQAAMABAABAAEAAAAQAAQABAABAAMAAAARAAMABAABAAEAAAARAAQABAABAAMAAAASAAMABAACAAEAAAASAAQABAACAAMAAAAWAAMABAAAAAIAAAAWAAQABAAAAAMAAAAXAAMABAABAAEAAAAXAAQABAABAAMAAAAYAAMABAABAAEAAAAYAAQABAABAAMAAAAZAAMABAABAAEAAAAZAAQABAABAAMAAAAaAAMABAABAAEAAAAaAAQABAABAAMAAAAbAAMABAABAAEAAAAbAAQABAABAAMAAAAcAAMABAABAAEAAAAcAAQABAABAAMAAAAdAAMABAABAAEAAAAdAAQABAABAAMAAAAeAAMABAABAAIAAAAeAAQABAABAAMAAAAfAAMABAABAAEAAAAfAAQABAAAAAEAAAAfAAUABAAAAAEAAAAfAAYABAAAAAEAAAAfAAcABAAAAAEAAAAfAAgABAAAAAIAAAAfAAkABAAAAAMAAAAgAAMABAACAAEAAAAgAAQABAACAAEAAAAgAAUABAACAAEAAAAgAAYABAACAAEAAAAgAAcABAACAAEAAAAgAAgABAACAAIAAAAgAAkABAACAAMAAAAIAAIABAAAAAAAAAAJAAIABAABAAAAAAAKAAIABAABAAAAAAALAAIABAABAAAAAAAMAAIABAABAAAAAAANAAIABAABAAAAAAAOAAIABAABAAAAAAAPAAIABAABAAAAAAAQAAIABAABAAAAAAARAAIABAABAAAAAAASAAIABAACAAAAAAAWAAIABAAAAAAAAAAXAAIABAABAAAAAAAYAAIABAABAAAAAAAZAAIABAABAAAAAAAaAAIABAABAAAAAAAbAAIABAABAAAAAAAcAAIABAABAAAAAAAdAAIABAABAAAAAAAeAAIABAABAAAAAAAfAAIABAABAAAAAAAgAAIABAACAAAAAAA=")
 tile_set = ExtResource("1_5xpm5")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_oojqe")
 
 [node name="OnTheGround" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -334,7 +348,37 @@ character = NodePath("..")
 position = Vector2(839, 865)
 curve = SubResource("Curve2D_wq1h3")
 
+[node name="CharacterBody2D6" type="CharacterBody2D" parent="OnTheGround"]
+collision_layer = 2
+collision_mask = 19
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/CharacterBody2D6"]
+rotation = -1.55475
+shape = SubResource("CapsuleShape2D_jdub8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/CharacterBody2D6"]
+position = Vector2(0, -39)
+sprite_frames = ExtResource("20_jdub8")
+animation = &"idle"
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D6/AnimatedSprite2D" node_paths=PackedStringArray("character", "sprite")]
+script = ExtResource("15_utmd2")
+character = NodePath("../..")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="OnTheGround/CharacterBody2D6"]
+path_desired_distance = 64.0
+target_desired_distance = 64.0
+
+[node name="NavigationFollowWalkBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D6" node_paths=PackedStringArray("target", "agent", "character")]
+script = ExtResource("21_jdub8")
+target = NodePath("../../CharacterBody2D4")
+agent = NodePath("../NavigationAgent2D")
+character = NodePath("..")
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [connection signal="running_changed" from="OnTheGround/CharacterBody2D4/InputWalkBehavior" to="OnTheGround/CharacterBody2D4/GPUParticles2D" method="_on_input_walk_behavior_running_changed"]
 [connection signal="running_changed" from="OnTheGround/CharacterBody2D4/InputWalkBehavior" to="OnTheGround/CharacterBody2D4/AnimatedSprite2D/CharacterSpriteBehavior" method="on_running_changed"]
+[connection signal="running_changed" from="OnTheGround/CharacterBody2D6/NavigationFollowWalkBehavior" to="OnTheGround/CharacterBody2D6/AnimatedSprite2D/CharacterSpriteBehavior" method="on_running_changed"]
