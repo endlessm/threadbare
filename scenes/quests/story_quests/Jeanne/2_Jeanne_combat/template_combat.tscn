@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://cy1s10bygjqey"]
+[gd_scene load_steps=13 format=4 uid="uid://cy1s10bygjqey"]
 
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_7tqwv"]
 [ext_resource type="Resource" uid="uid://3vrn5jdxov37" path="res://scenes/quests/story_quests/template/2_template_combat/template_combat_components/template_combat.dialogue" id="2_vs53a"]
@@ -6,10 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_lgvfj"]
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="5_4n5ry"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="6_7x1oq"]
-[ext_resource type="SpriteFrames" uid="uid://c50725q5ey5j5" path="res://scenes/quests/story_quests/template/2_template_combat/template_combat_components/template_target_spriteframes.tres" id="7_4ccme"]
+[ext_resource type="SpriteFrames" uid="uid://c0oxk3u358gyj" path="res://scenes/quests/story_quests/Jeanne/2_Jeanne_combat/template_combat_components/template_target_spriteframes.tres" id="7_bptgk"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="8_edt2t"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="9_dt2j5"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="10_ntnfx"]
+[ext_resource type="Resource" uid="uid://b0wuowjesi0ia" path="res://scenes/quests/story_quests/Jeanne/2_Jeanne_combat/template_combat_components/template_combat.dialogue" id="10_umk5v"]
 
 [sub_resource type="Resource" id="Resource_a51xm"]
 script = ExtResource("9_dt2j5")
@@ -32,6 +33,7 @@ tile_map_data = PackedByteArray("AAANAAcAAAAAAAAAAAANAAYAAAAAAAAAAAANAAUABgACAAI
 tile_set = ExtResource("3_7a4ry")
 
 [node name="Stones" type="TileMapLayer" parent="TileMapLayers"]
+position = Vector2(-1, 0)
 tile_map_data = PackedByteArray("AAAGAAgAAAAAAAAAAAAHAAgAAAAAAAAAAAAIAAgAAAAAAAAAAAAJAAgAAAAAAAAAAAAKAAgAAAAAAAAAAAALAAgAAAAAAAAAAAAMAAgAAAAAAAAAAAANAAgAAAAAAAAAAAAOAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAACAAEABgABAAAAAAACAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEABgABAAAAAAAFAAEABgABAAAAAAADAAEABgABAAAAAAANAAcAAAAAAAAAAAAOAAcAAAAAAAAAAAANAAYAAAAAAAAAAAAOAAYAAAAAAAAAAAAOAAUAAAAAAAAAAAAOAAMAAAAAAAAAAAAOAAIAAAAAAAAAAAANAAEAAAAAAAAAAAANAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAOAAEAAAAAAAAAAAAOAAQAAAAAAAAAAAAMAAAAAAAAAAAAAAALAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAANAAIAAAAAAAAAAAANAAMABgACAAAAAAAHAAEABgABAAAAAAAIAAEABgABAAAAAAAKAAEABgABAAAAAAALAAEABgABAAAAAAAJAAEABgABAAAAAAAMAAEABgACAAAAAAAGAAAAAAAAAAAAAAAGAAEABgABAAAAAAAAAAgAAAAAAAAAAAABAAgAAAAAAAAAAAACAAgAAAAAAAAAAAADAAgAAAAAAAAAAAAEAAgAAAAAAAAAAAAFAAgAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAwACAAAAAAAAAAcAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAUAAAAAAAAAAAANAAQABgACAAEAAAANAAUABgACAAIAAAAKAAUABgAFAAAAAAACAAYABgAFAAAAAAAEAAMABgAFAAAAAAAGAAYABgAGAAAAAAACAAIABgAGAAAAAAAMAAcABgACAAIAAAAIAAMABgAGAAAAAAADAAUABgAFAAAAAAALAAIABgAFAAAAAAAJAAYABgAFAAAAAAAMAAMABgABAAEAAAA=")
 tile_set = ExtResource("3_7a4ry")
 
@@ -45,38 +47,44 @@ position = Vector2(348, 335)
 position = Vector2(857, 300)
 
 [node name="Target" parent="OnTheGround" instance=ExtResource("6_7x1oq")]
-position = Vector2(502, 164)
-sprite_frames = ExtResource("7_4ccme")
+position = Vector2(345, 141)
+scale = Vector2(0.6, 0.6)
+sprite_frames = ExtResource("7_bptgk")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target2" parent="OnTheGround" instance=ExtResource("6_7x1oq")]
-position = Vector2(758, 164)
-sprite_frames = ExtResource("7_4ccme")
+position = Vector2(730, 138)
+scale = Vector2(0.6, 0.6)
+sprite_frames = ExtResource("7_bptgk")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target3" parent="OnTheGround" instance=ExtResource("6_7x1oq")]
-position = Vector2(763, 447)
-sprite_frames = ExtResource("7_4ccme")
+position = Vector2(740, 416)
+scale = Vector2(0.6, 0.6)
+sprite_frames = ExtResource("7_bptgk")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target4" parent="OnTheGround" instance=ExtResource("6_7x1oq")]
-position = Vector2(637, 448)
-sprite_frames = ExtResource("7_4ccme")
+position = Vector2(551, 417)
+scale = Vector2(0.6, 0.6)
+sprite_frames = ExtResource("7_bptgk")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target5" parent="OnTheGround" instance=ExtResource("6_7x1oq")]
-position = Vector2(633, 164)
-sprite_frames = ExtResource("7_4ccme")
+position = Vector2(535, 140)
+scale = Vector2(0.6, 0.6)
+sprite_frames = ExtResource("7_bptgk")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target6" parent="OnTheGround" instance=ExtResource("6_7x1oq")]
-position = Vector2(502, 444)
-sprite_frames = ExtResource("7_4ccme")
+position = Vector2(348, 419)
+scale = Vector2(0.6, 0.6)
+sprite_frames = ExtResource("7_bptgk")
 label = ""
 color = Color(1, 1, 1, 1)
 
@@ -84,9 +92,9 @@ color = Color(1, 1, 1, 1)
 unique_name_in_owner = true
 position = Vector2(868, 303)
 revealed = false
-next_scene = "uid://x3wm2ce0ax8i"
+next_scene = "uid://cm63u8f67rc35"
 item = SubResource("Resource_a51xm")
-collected_dialogue = ExtResource("2_vs53a")
+collected_dialogue = ExtResource("10_umk5v")
 dialogue_title = &"well_done"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
