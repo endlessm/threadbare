@@ -3,6 +3,19 @@
 extends CharacterBody2D
 ## @experimental
 
+## The state of this enemy
+enum State {
+	## The void is lying in wait
+	IDLE,
+	## The void is chasing the player
+	CHASING,
+	## The void has engulfed the player
+	CAUGHT,
+}
+
+const VOID_PARTICLES = preload(
+	"res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_particles.tscn"
+)
 const TERRAIN_SET: int = 0
 const VOID_TERRAIN: int = 9
 const NEIGHBORS := [
@@ -14,61 +27,44 @@ const NEIGHBORS := [
 
 @export var void_layer: TileMapCover
 
-@export_range(10, 100000, 10) var walk_speed: float = 300.0
-@export_range(10, 100000, 10) var run_speed: float = 500.0
+var player: Player:
+	set = _set_player
 
-var player: Player
+var state := State.IDLE:
+	set = _set_state
 
-var _moving: bool = false
-var _update_interval: float = 10.0 / 60.0
-var _next_update: float
+@onready var walk: NavigationFollowWalkBehavior = %NavigationFollowWalkBehavior
 
-@onready var particles: GPUParticles2D = %GPUParticles2D
-@onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
-@onready var navigation_agent: NavigationAgent2D = %NavigationAgent2D
+
+func _set_player(new_player: Player) -> void:
+	player = new_player
+	if walk:
+		walk.target = player
+
+
+func _set_state(new_state: State) -> void:
+	state = new_state
+	if walk:
+		match state:
+			State.IDLE:
+				walk.process_mode = Node.PROCESS_MODE_DISABLED
+			State.CHASING:
+				walk.process_mode = Node.PROCESS_MODE_INHERIT
 
 
 func _ready() -> void:
-	particles.emitting = false
+	player = player
+	state = state
 
 
 func start(detected_node: Node2D) -> void:
-	assert(detected_node is Player)
-	player = detected_node as Player
-	_moving = true
-	particles.emitting = true
-	animated_sprite_2d.play(&"walk")
-	navigation_agent.target_position = player.global_position
-
-
-func _physics_process(delta: float) -> void:
-	if not _moving:
-		velocity = Vector2.ZERO
-		return
-
-	if not navigation_agent.is_target_reachable():
-		# We made it to safety!
-		animated_sprite_2d.play(&"alerted")
-	else:
-		animated_sprite_2d.play(&"walk")
-
-	_next_update -= delta
-	if navigation_agent.is_navigation_finished() or _next_update < 0:
-		_next_update = _update_interval
-		navigation_agent.target_position = player.global_position
-		return
-
-	var current_agent_position: Vector2 = global_position
-	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
-	var running := navigation_agent.distance_to_target() > (64 * 3)
-	var speed := run_speed if running else walk_speed
-	# TODO: smoothly change between running & walking speed?
-	velocity = current_agent_position.direction_to(next_path_position) * speed
-	move_and_slide()
+	if detected_node is Player:
+		player = detected_node
+		state = State.CHASING
 
 
 func _process(_delta: float) -> void:
-	if not _moving:
+	if state == State.IDLE:
 		return
 
 	var coord := void_layer.coord_for(self)
@@ -80,19 +76,23 @@ func _process(_delta: float) -> void:
 	for neighbor: int in NEIGHBORS:
 		coords.append(void_layer.get_neighbor_cell(coord, neighbor))
 
-	void_layer.consume_cells(coords)
+	var consumed := void_layer.consume_cells(coords)
+	if consumed:
+		var particles := VOID_PARTICLES.instantiate()
+		particles.emitting = true
+		add_child(particles)
+		await particles.finished
+		particles.queue_free()
 
 
 func _on_player_capture_area_body_entered(body: Node2D) -> void:
 	if body != player:
 		return
 
-	if not _moving:
+	if state != State.CHASING:
 		return
 
-	_moving = false
-	#particles.emitting = false
-	animated_sprite_2d.play(&"alerted")
+	state = State.CAUGHT
 	player.mode = Player.Mode.DEFEATED
 	var tween := create_tween()
 	tween.tween_property(player, "scale", Vector2.ZERO, 2.0)

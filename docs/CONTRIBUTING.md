@@ -4,12 +4,14 @@ SPDX-License-Identifier: MPL-2.0
 -->
 # Contributing to Threadbare
 
-We welcome contributions to Threadbare!
+We welcome contributions to Threadbare! This document lays out some of the
+requirements for a contribution to be expected. There is a corresponding
+document for [reviewing contributions](./REVIEWING.md).
 
 ## Language
 
 In-game text and dialogue for the main storyline should be written in English,
-for translation into other languages. Learner-contributed text and dialogue may
+for translation into other languages. Text and dialogue in StoryQuests may
 be written in another language if preferred.
 
 Prefer US English spellings for in-game text and dialogue, as well as source
@@ -92,6 +94,27 @@ good commit message:
   by Joel Chippindale
 - [Git (and how we Commit)](https://groengaard.dev/blog/git-and-how-we-commit)
   Christian Grøngaard
+
+### Multiple authors
+
+If multiple people have contributed to a single change, special care must be
+taken to make sure they each receive credit for their work. If a pull request is
+made up of several commits, with different authors, this is sufficient. But if
+all commits on a pull request are made by the same person, the other
+contributors must be identified with a specially-formatted tag in the commit
+message or pull request description, as described in GitHub's
+[Creating a commit with multiple authors][co-authored-by] guide. In brief, if
+Jane Doe submits a pull request to add a new enemy, with original art created by
+Alice Jones, the pull request description should end with:
+
+```
+Co-authored-by: Alice Jones <alice.jones@example.com>
+```
+
+If you're not sure how to do this, the Threadbare maintainers will be happy to
+help.
+
+[co-authored-by]: https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors
 
 ## Licensing
 

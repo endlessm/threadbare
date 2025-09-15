@@ -3,7 +3,14 @@
 class_name SequencePuzzle
 extends Node2D
 
+## Emitted when the entire puzzle is solved
 signal solved
+
+## Emitted when an individual step of the puzzle is completed.
+## [param step_index] is the index of the step that was just completed.
+## This allows level designers to trigger events when specific steps are solved,
+## beyond just the solved animation on the hint sign.
+signal step_solved(step_index: int)
 
 ## The order in which the player must interact with objects to solve each step of the puzzle
 @export var steps: Array[SequencePuzzleStep]
@@ -107,8 +114,13 @@ func _on_kicked(object: SequencePuzzleObject) -> void:
 		_debug("Played %s, awaiting %s", [sequence.slice(0, _position), sequence.slice(_position)])
 		return
 
-	_debug("Finished sequnce")
+	_debug("Finished sequence")
 	step.hint_sign.set_solved()
+
+	# Emit step_solved signal to allow level designers to react to individual step completion
+	step_solved.emit(_current_step)
+	_debug("Step %d solved", [_current_step])
+
 	_update_current_step()
 
 	_clear_last_hint_object()

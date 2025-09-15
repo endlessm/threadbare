@@ -63,6 +63,7 @@ func _ready() -> void:
 ## Emits the [signal started] signal as soon as it's called. [br]
 ## If the shake is called multiple times, it will only emit the [signal
 ## finished] signal when the last effect is completed.
+## After the shake happens the target could have been freed, so consider that to avoid an error.
 func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 	noise.seed = randi()
 	started.emit()
@@ -86,13 +87,18 @@ func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 	time_passed = 0.0
 	await shake_tween.tween_property(self, "current_intensity", 0.0, time).from(intensity).finished
 	shake_tween.kill()
-	target.position = Vector2(original_position.x, original_position.y)
-	rotation = original_rotation
+
+	if is_instance_valid(target):
+		if target is Camera2D:
+			target.offset = Vector2(original_position.x, original_position.y)
+		else:
+			target.position = Vector2(original_position.x, original_position.y)
+		target.rotation = original_rotation
 	finished.emit()
 
 
 func _process(delta: float) -> void:
-	if current_intensity > 0.0:
+	if current_intensity > 0.0 and is_instance_valid(target):
 		time_passed += delta * frequency
 		var offset_x: float = noise.get_noise_1d(time_passed) * current_intensity
 		var offset_y: float = noise.get_noise_1d(time_passed + 100) * current_intensity
@@ -102,13 +108,9 @@ func _process(delta: float) -> void:
 
 		var new_position := Vector2(original_position.x + offset_x, original_position.y + offset_y)
 		var new_rotation := original_rotation + rotation_offset
+
 		if target is Camera2D:
 			target.offset = new_position
 		else:
 			target.position = new_position
 		target.rotation = new_rotation
-		
-		
-## Respond to input device changes
-func _on_device_changed(device: String, device_index: int) -> void:
-	print("Device changed to:", device, "Index:", device_index)

@@ -2,10 +2,14 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node
 
-## Prefix to strip from scene path when setting URL hash
-const _SCENE_PREFIX = "res://scenes/"
+## Prefixes to try adding to non-absolute path in URL hash, which may have been stripped to make it
+## more human-readable.
+const _SCENE_PREFIXES = [
+	"res://",
+	"res://scenes/",
+]
 
-## Suffix to strip from scene path when setting URL hash
+## Suffix stripped from path to make it more human-readable
 const _SCENE_SUFFIX = ".tscn"
 
 ## Proxy object for the 'window' DOM object, or null if not running on the web
@@ -21,7 +25,7 @@ var _current_url: String
 ## Matches the expected absolute path for a scene, with a capture group
 ## representing a more human-readable substring.
 var _scene_rx := RegEx.create_from_string(
-	"^" + _SCENE_PREFIX + "(?<scene>.+)\\" + _SCENE_SUFFIX + "$"
+	"^" + _SCENE_PREFIXES[-1] + "(?<scene>.+)\\" + _SCENE_SUFFIX + "$"
 )
 
 
@@ -40,10 +44,13 @@ func _restore_from_hash() -> void:
 		var path: String = url_hash.right(-1).uri_decode()
 
 		if path.is_relative_path():
-			path = _SCENE_PREFIX + path
-
 			if not path.ends_with(_SCENE_SUFFIX):
 				path += _SCENE_SUFFIX
+
+			for prefix: String in _SCENE_PREFIXES:
+				if ResourceLoader.exists(prefix + path, "PackedScene"):
+					path = prefix + path
+					break
 		# otherwise, this is an absolute uid:// or res:// path
 
 		if ResourceLoader.exists(path, "PackedScene"):
