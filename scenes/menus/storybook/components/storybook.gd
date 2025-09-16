@@ -29,7 +29,10 @@ const QUEST_RESOURCE_NAME := "quest.tres"
 @onready var quest_list: VBoxContainer = %QuestList
 @onready var storybook_page: StorybookPage = %StorybookPage
 @onready var back_button: Button = %BackButton
+@onready var animated_book: AnimatedTextureRect = %AnimatedTextureRect
 
+var _last_focused_button: Button
+var _last_focus_index: int = -1
 
 func _enumerate_quests() -> Array[Quest]:
 	var has_template: bool = false
@@ -86,6 +89,15 @@ func _on_button_focused(button: Button, quest: Quest) -> void:
 	storybook_page.play_button.focus_next = button.get_path()
 	storybook_page.play_button.focus_neighbor_left = button.get_path()
 	storybook_page.quest = quest
+	
+	var current_index = quest_list.get_children().find(button)
+	
+	if _last_focus_index != -1:
+		if current_index > _last_focus_index:
+			animated_book.animation_name = "book_right"
+		elif current_index < _last_focus_index:
+			animated_book.animation_name = "book_left"
+	_last_focus_index = current_index
 
 
 func _on_storybook_page_selected(quest: Quest) -> void:
