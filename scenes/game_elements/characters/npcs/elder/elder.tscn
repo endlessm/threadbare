@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bytkm0r5fe5xb"]
+[gd_scene load_steps=10 format=3 uid="uid://bytkm0r5fe5xb"]
 
 [ext_resource type="Script" uid="uid://dedhjloxblho6" path="res://scenes/game_elements/characters/npcs/elder/components/elder.gd" id="1_jlpjw"]
 [ext_resource type="Resource" uid="uid://ykdgo73x62wa" path="res://scenes/game_elements/characters/npcs/elder/components/story_quest_starter.dialogue" id="2_kqtes"]
@@ -10,6 +10,10 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
 radius = 12.0
 height = 74.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ak236"]
+radius = 8.0
+height = 24.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3eksq"]
 size = Vector2(67, 72)
@@ -27,12 +31,16 @@ position = Vector2(0, -40)
 sprite_frames = ExtResource("3_ak236")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.757037
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(8, 0)
+[node name="BodyShape" type="CollisionShape2D" parent="."]
+position = Vector2(1, 0)
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_3vyb7")
+
+[node name="StaffShape" type="CollisionShape2D" parent="."]
+position = Vector2(49, 15)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_ak236")
 
 [node name="InteractArea" type="Area2D" parent="."]
 unique_name_in_owner = true
