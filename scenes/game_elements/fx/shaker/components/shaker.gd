@@ -42,10 +42,6 @@ var current_intensity: float = 0.0
 ## Reference to the tween that will decrease the [member current_intensity]
 var shake_tween: Tween
 
-## The device ID for the last controller we saw input from, or -1 if we have never seen input from a
-## controller or if the last input was on a keyboard.
-var _last_controller_id: int = -1
-
 
 func _ready() -> void:
 	noise.noise_type = FastNoiseLite.TYPE_PERLIN
@@ -67,10 +63,6 @@ func _ready() -> void:
 func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 	noise.seed = randi()
 	started.emit()
-	# Previously: we used _last_controller_id to trigger vibration.
-	# Now we rely on InputHelper.device_index, which is -1 if no controller is active.
-	# if _last_controller_id >= 0:
-	#     Input.start_joy_vibration(_last_controller_id, 0.5, 0.5, time)
 	if Engine.has_singleton("InputHelper") and InputHelper.device_index >= 0:
 		Input.start_joy_vibration(InputHelper.device_index, 0.5, 0.5, time)
 

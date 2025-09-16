@@ -22,8 +22,8 @@ var is_keyboard_mode: bool = true
 
 func _physics_process(_delta: float) -> void:
 	if is_keyboard_mode:
-		return  # El nodo de mando no hace nada en modo teclado
-	
+		return  
+		
 	if is_controller_main_display:
 		var is_pressed = Input.is_action_pressed(action_name)
 		var any_direction_pressed = (
