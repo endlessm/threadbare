@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dua6mynlw2ptw"]
+[gd_scene load_steps=7 format=3 uid="uid://dua6mynlw2ptw"]
 
 [ext_resource type="Script" uid="uid://bk5ri1yoakaqp" path="res://scenes/game_elements/props/checkpoint/components/checkpoint.gd" id="1_kkoqv"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="2_s5d1s"]
 [ext_resource type="SpriteFrames" uid="uid://dmg1egdoye3ns" path="res://scenes/game_elements/props/checkpoint/components/knitwitch_frames_purple.tres" id="4_3xcwf"]
-[ext_resource type="PackedScene" uid="uid://p6q2uo2us0il" path="res://scenes/quests/story_quests/shjourney/light.tscn" id="4_bjlxs"]
 [ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="4_cukws"]
-[ext_resource type="Script" path="res://scenes/game_logic/talk_behavior.gd" id="5_3xcwf"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="5_3xcwf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3xcwf"]
 radius = 48.0
@@ -25,16 +24,12 @@ sprite_frames = ExtResource("4_3xcwf")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="Node2D" parent="Sprite" instance=ExtResource("4_bjlxs")]
-position = Vector2(0, 3)
-scale = Vector2(3, 3)
-
 [node name="InteractArea" parent="." instance=ExtResource("4_cukws")]
 unique_name_in_owner = true
 collision_layer = 0
 interact_label_position = Vector2(0, -128)
 disabled = true
-action = "Checkpoint"
+action = "Admire"
 
 [node name="CollisionShape" type="CollisionShape2D" parent="InteractArea"]
 position = Vector2(1, -4)
@@ -45,3 +40,4 @@ debug_color = Color(0.600391, 0.54335, 0, 0.42)
 unique_name_in_owner = true
 script = ExtResource("5_3xcwf")
 interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
