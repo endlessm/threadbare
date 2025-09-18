@@ -30,6 +30,8 @@ const QUEST_RESOURCE_NAME := "quest.tres"
 @onready var storybook_page: StorybookPage = %StorybookPage
 @onready var back_button: Button = %BackButton
 @onready var animated_book: AnimatedTextureRect = %AnimatedTextureRect
+@onready var ui_container: MarginContainer = %CenterContainer
+
 
 var _last_focused_button: Button
 var _last_focus_index: int = -1
@@ -91,13 +93,25 @@ func _on_button_focused(button: Button, quest: Quest) -> void:
 	storybook_page.quest = quest
 	
 	var current_index = quest_list.get_children().find(button)
-	
+
 	if _last_focus_index != -1:
 		if current_index > _last_focus_index:
 			animated_book.animation_name = "book_right"
+			_hide_ui_temporarily(button)
 		elif current_index < _last_focus_index:
 			animated_book.animation_name = "book_left"
+			_hide_ui_temporarily(button)
+
 	_last_focus_index = current_index
+
+	
+func _hide_ui_temporarily(button: Button) -> void:
+	ui_container.visible = false
+	await get_tree().create_timer(0.2).timeout
+	ui_container.visible = true
+	if is_instance_valid(button):
+		button.grab_focus()
+
 
 
 func _on_storybook_page_selected(quest: Quest) -> void:
