@@ -1,11 +1,15 @@
-[gd_scene load_steps=29 format=3 uid="uid://bhm7fdjvppt8b"]
+[gd_scene load_steps=33 format=3 uid="uid://bhm7fdjvppt8b"]
 
 [ext_resource type="Script" uid="uid://5bt5um5g1g3p" path="res://scenes/menus/storybook/components/storybook.gd" id="1_gw8hn"]
 [ext_resource type="Theme" uid="uid://rybigifrdpw6" path="res://scenes/ui_elements/components/Storybook.tres" id="1_n2i2u"]
 [ext_resource type="Texture2D" uid="uid://cabmo1e1xm6um" path="res://scenes/ui_elements/story_quest_progress/Textures/Book_open_Right.png" id="3_ab72c"]
 [ext_resource type="PackedScene" uid="uid://cgtonist08yxn" path="res://scenes/menus/storybook/components/storybook_page.tscn" id="3_n2i2u"]
 [ext_resource type="Script" uid="uid://dfx8s2ybd11mt" path="res://scenes/menus/storybook/components/animated_texture_rect.gd" id="4_ab72c"]
+[ext_resource type="Texture2D" uid="uid://bsery0guj5nq2" path="res://scenes/ui_elements/story_quest_progress/Textures/Button_Left.png" id="4_ofgxb"]
+[ext_resource type="Texture2D" uid="uid://btfc401ig1o5f" path="res://scenes/ui_elements/story_quest_progress/Textures/Button_press_left.png" id="5_8qcyx"]
 [ext_resource type="Texture2D" uid="uid://dakvpilaqdm3b" path="res://scenes/ui_elements/story_quest_progress/Textures/Book_open_left.png" id="5_dg0bn"]
+[ext_resource type="Texture2D" uid="uid://crs0yvjubjftu" path="res://scenes/ui_elements/story_quest_progress/Textures/Button_right.png" id="6_xkl6m"]
+[ext_resource type="Texture2D" uid="uid://do3fmxcpwvwgr" path="res://scenes/ui_elements/story_quest_progress/Textures/Button_press_right.png" id="7_p0vqm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e4w0c"]
 atlas = ExtResource("5_dg0bn")
@@ -193,26 +197,24 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Panel" type="Panel" parent="Panel"]
+[node name="Background" type="Panel" parent="Panel"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="Panel/Panel"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 77.0
-offset_top = -53.0
-offset_right = 182.0
-offset_bottom = 53.0
-grow_vertical = 2
-theme = ExtResource("1_n2i2u")
-text = "<-"
-
-[node name="AnimatedTextureRect" type="TextureRect" parent="Panel"]
+[node name="AnimatedTextureRect" type="TextureRect" parent="Panel/Background"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1280, 720)
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 640.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = SubResource("AtlasTexture_e4w0c")
 expand_mode = 1
 stretch_mode = 3
@@ -220,7 +222,7 @@ script = ExtResource("4_ab72c")
 sprite_frames = SubResource("SpriteFrames_ab72c")
 metadata/_custom_type_script = "uid://dfx8s2ybd11mt"
 
-[node name="CenterContainer" type="MarginContainer" parent="Panel/AnimatedTextureRect"]
+[node name="CenterContainer" type="MarginContainer" parent="Panel/Background/AnimatedTextureRect"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -237,26 +239,26 @@ grow_vertical = 2
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 30
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/AnimatedTextureRect/CenterContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/Background/AnimatedTextureRect/CenterContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="LeftPage" type="MarginContainer" parent="Panel/AnimatedTextureRect/CenterContainer/HBoxContainer"]
+[node name="LeftPage" type="MarginContainer" parent="Panel/Background/AnimatedTextureRect/CenterContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/margin_right = 40
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/AnimatedTextureRect/CenterContainer/HBoxContainer/LeftPage"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/Background/AnimatedTextureRect/CenterContainer/HBoxContainer/LeftPage"]
 layout_mode = 2
 
-[node name="QuestList" type="VBoxContainer" parent="Panel/AnimatedTextureRect/CenterContainer/HBoxContainer/LeftPage/VBoxContainer"]
+[node name="QuestList" type="VBoxContainer" parent="Panel/Background/AnimatedTextureRect/CenterContainer/HBoxContainer/LeftPage/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="BackButton" type="Button" parent="Panel/AnimatedTextureRect/CenterContainer/HBoxContainer/LeftPage/VBoxContainer"]
+[node name="BackButton" type="Button" parent="Panel/Background/AnimatedTextureRect/CenterContainer/HBoxContainer/LeftPage/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_next = NodePath("../../../StorybookPage/VBoxContainer/PlayButton")
@@ -264,11 +266,44 @@ theme_type_variation = &"FlatButton"
 text = "< back"
 flat = true
 
-[node name="StorybookPage" parent="Panel/AnimatedTextureRect/CenterContainer/HBoxContainer" instance=ExtResource("3_n2i2u")]
+[node name="StorybookPage" parent="Panel/Background/AnimatedTextureRect/CenterContainer/HBoxContainer" instance=ExtResource("3_n2i2u")]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_right = 20
 
-[connection signal="pressed" from="Panel/AnimatedTextureRect/CenterContainer/HBoxContainer/LeftPage/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="selected" from="Panel/AnimatedTextureRect/CenterContainer/HBoxContainer/StorybookPage" to="." method="_on_storybook_page_selected"]
+[node name="Left_Button" type="TextureButton" parent="Panel/Background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.501
+anchor_bottom = 0.501
+offset_left = 43.0
+offset_top = -49.72
+offset_right = 136.0
+offset_bottom = 49.28
+grow_vertical = 2
+texture_normal = ExtResource("4_ofgxb")
+texture_pressed = ExtResource("5_8qcyx")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="Right_Button" type="TextureButton" parent="Panel/Background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.501
+anchor_right = 1.0
+anchor_bottom = 0.501
+offset_left = -124.0
+offset_top = -49.72
+offset_right = -31.0
+offset_bottom = 49.28
+grow_horizontal = 0
+grow_vertical = 2
+texture_normal = ExtResource("6_xkl6m")
+texture_pressed = ExtResource("7_p0vqm")
+ignore_texture_size = true
+stretch_mode = 4
+
+[connection signal="pressed" from="Panel/Background/AnimatedTextureRect/CenterContainer/HBoxContainer/LeftPage/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="selected" from="Panel/Background/AnimatedTextureRect/CenterContainer/HBoxContainer/StorybookPage" to="." method="_on_storybook_page_selected"]
