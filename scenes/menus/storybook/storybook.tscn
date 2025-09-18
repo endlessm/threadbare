@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://bhm7fdjvppt8b"]
+[gd_scene load_steps=41 format=3 uid="uid://bhm7fdjvppt8b"]
 
 [ext_resource type="Script" uid="uid://5bt5um5g1g3p" path="res://scenes/menus/storybook/components/storybook.gd" id="1_gw8hn"]
 [ext_resource type="Theme" uid="uid://rybigifrdpw6" path="res://scenes/ui_elements/components/Storybook.tres" id="1_n2i2u"]
@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://dakvpilaqdm3b" path="res://scenes/ui_elements/story_quest_progress/Textures/Book_open_left.png" id="5_dg0bn"]
 [ext_resource type="Texture2D" uid="uid://crs0yvjubjftu" path="res://scenes/ui_elements/story_quest_progress/Textures/Button_right.png" id="6_xkl6m"]
 [ext_resource type="Texture2D" uid="uid://do3fmxcpwvwgr" path="res://scenes/ui_elements/story_quest_progress/Textures/Button_press_right.png" id="7_p0vqm"]
+[ext_resource type="Texture2D" uid="uid://mhy8kouynmkv" path="res://scenes/ui_elements/story_quest_progress/Textures/button_hover_left.png" id="9_8qcyx"]
+[ext_resource type="Texture2D" uid="uid://d0g7p48fbk2xa" path="res://scenes/ui_elements/story_quest_progress/Textures/button_hover_right.png" id="12_xkl6m"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e4w0c"]
 atlas = ExtResource("5_dg0bn")
@@ -176,6 +178,24 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y0b3i"]
+texture = ExtResource("5_8qcyx")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8qcyx"]
+texture = ExtResource("4_ofgxb")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nkrro"]
+texture = ExtResource("9_8qcyx")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xkl6m"]
+texture = ExtResource("7_p0vqm")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p0vqm"]
+texture = ExtResource("6_xkl6m")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bnrpt"]
+texture = ExtResource("12_xkl6m")
+
 [node name="Storybook" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -272,7 +292,8 @@ layout_mode = 2
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_right = 20
 
-[node name="Left_Button" type="TextureButton" parent="Panel/Background"]
+[node name="Left_Button" type="Button" parent="Panel/Background"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.501
@@ -282,12 +303,15 @@ offset_top = -49.72
 offset_right = 136.0
 offset_bottom = 49.28
 grow_vertical = 2
-texture_normal = ExtResource("4_ofgxb")
-texture_pressed = ExtResource("5_8qcyx")
-ignore_texture_size = true
-stretch_mode = 4
+theme = ExtResource("1_n2i2u")
+theme_override_styles/focus = SubResource("StyleBoxTexture_y0b3i")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_8qcyx")
+theme_override_styles/hover = SubResource("StyleBoxTexture_nkrro")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_y0b3i")
+theme_override_styles/normal = SubResource("StyleBoxTexture_8qcyx")
 
-[node name="Right_Button" type="TextureButton" parent="Panel/Background"]
+[node name="Right_Button" type="Button" parent="Panel/Background"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -300,10 +324,11 @@ offset_right = -31.0
 offset_bottom = 49.28
 grow_horizontal = 0
 grow_vertical = 2
-texture_normal = ExtResource("6_xkl6m")
-texture_pressed = ExtResource("7_p0vqm")
-ignore_texture_size = true
-stretch_mode = 4
+theme_override_styles/focus = SubResource("StyleBoxTexture_xkl6m")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_p0vqm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_bnrpt")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_xkl6m")
+theme_override_styles/normal = SubResource("StyleBoxTexture_p0vqm")
 
 [connection signal="pressed" from="Panel/Background/AnimatedTextureRect/CenterContainer/HBoxContainer/LeftPage/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="selected" from="Panel/Background/AnimatedTextureRect/CenterContainer/HBoxContainer/StorybookPage" to="." method="_on_storybook_page_selected"]

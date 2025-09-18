@@ -31,12 +31,12 @@ const QUEST_RESOURCE_NAME := "quest.tres"
 @onready var back_button: Button = %BackButton
 @onready var animated_book: AnimatedTextureRect = %AnimatedTextureRect
 @onready var ui_container: MarginContainer = %CenterContainer
-
+@onready var left_button: Button = %Left_Button
+@onready var right_button: Button = %Right_Button
 
 var _last_focused_button: Button
 var _last_focus_index: int = -1
 var _cooldown_active: bool = false
-
 
 func _enumerate_quests() -> Array[Quest]:
 	var has_template: bool = false
@@ -77,10 +77,33 @@ func _ready() -> void:
 
 	previous_button.focus_neighbor_bottom = back_button.get_path()
 	back_button.focus_neighbor_top = previous_button.get_path()
-
+	left_button.pressed.connect(_on_left_button_pressed)
+	right_button.pressed.connect(_on_right_button_pressed)
 	reset_focus()
 
+func _on_left_button_pressed() -> void:
+	if _last_focus_index > 0:
+		var prev_button: Button = quest_list.get_child(_last_focus_index - 1)
+		if is_instance_valid(prev_button):
+			prev_button.grab_focus()
+	else:
+		# Si estamos en el primero → ir al último
+		var last_button: Button = quest_list.get_child(quest_list.get_child_count() - 1)
+		if is_instance_valid(last_button):
+			last_button.grab_focus()
 
+
+func _on_right_button_pressed() -> void:
+	if _last_focus_index < quest_list.get_child_count() - 1:
+		var next_button: Button = quest_list.get_child(_last_focus_index + 1)
+		if is_instance_valid(next_button):
+			next_button.grab_focus()
+	else:
+		# Si estamos en el último → volver al primero
+		var first_button: Button = quest_list.get_child(0)
+		if is_instance_valid(first_button):
+			first_button.grab_focus()
+			
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		# Go back
