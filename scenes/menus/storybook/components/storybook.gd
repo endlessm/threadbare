@@ -35,6 +35,8 @@ const QUEST_RESOURCE_NAME := "quest.tres"
 
 var _last_focused_button: Button
 var _last_focus_index: int = -1
+var _cooldown_active: bool = false
+
 
 func _enumerate_quests() -> Array[Quest]:
 	var has_template: bool = false
@@ -87,14 +89,19 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_button_focused(button: Button, quest: Quest) -> void:
+	if _cooldown_active:
+		return
+		
+	var current_index = quest_list.get_children().find(button)
+	if current_index == _last_focus_index:
+		return 
+
 	back_button.focus_previous = button.get_path()
 	storybook_page.play_button.focus_next = button.get_path()
 	storybook_page.play_button.focus_neighbor_left = button.get_path()
 	storybook_page.quest = quest
-	
-	var current_index = quest_list.get_children().find(button)
-
-	if _last_focus_index != -1:
+		
+	if _last_focus_index != -1 :
 		if current_index > _last_focus_index:
 			animated_book.animation_name = "book_right"
 			_hide_ui_temporarily(button)
