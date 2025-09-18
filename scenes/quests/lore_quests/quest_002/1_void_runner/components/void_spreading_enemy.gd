@@ -11,6 +11,8 @@ enum State {
 	CHASING,
 	## The void has engulfed the player
 	CAUGHT,
+	## The void can't reach the player
+	UNREACHABLE,
 }
 
 const VOID_PARTICLES = preload(
@@ -27,33 +29,52 @@ const NEIGHBORS := [
 
 @export var void_layer: TileMapCover
 
+@export var idle_patrol_path: Path2D:
+	set = _set_idle_patrol_path
+
 var player: Player:
 	set = _set_player
 
 var state := State.IDLE:
 	set = _set_state
 
-@onready var walk: NavigationFollowWalkBehavior = %NavigationFollowWalkBehavior
+@onready var idle_particle_timer: Timer = %IdleParticleTimer
+@onready var path_walk_behavior: PathWalkBehavior = %PathWalkBehavior
+
+@onready var follow_walk_behavior: NavigationFollowWalkBehavior = %NavigationFollowWalkBehavior
+
+func _set_idle_patrol_path(new_path: Path2D) -> void:
+	idle_patrol_path = new_path
+	if path_walk_behavior:
+		path_walk_behavior.walking_path = idle_patrol_path
 
 
 func _set_player(new_player: Player) -> void:
 	player = new_player
-	if walk:
-		walk.target = player
+	if follow_walk_behavior:
+		follow_walk_behavior.target = player
 
 
 func _set_state(new_state: State) -> void:
 	state = new_state
-	if walk:
-		match state:
-			State.IDLE:
-				walk.process_mode = Node.PROCESS_MODE_DISABLED
-			State.CHASING:
-				walk.process_mode = Node.PROCESS_MODE_INHERIT
+
+	if not is_node_ready():
+		return
+
+	match state:
+		State.IDLE:
+			path_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+			follow_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			idle_particle_timer.start()
+		State.CHASING:
+			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			follow_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+			idle_particle_timer.stop()
 
 
 func _ready() -> void:
 	player = player
+	idle_patrol_path = idle_patrol_path
 	state = state
 
 
@@ -64,9 +85,6 @@ func start(detected_node: Node2D) -> void:
 
 
 func _process(_delta: float) -> void:
-	if state == State.IDLE:
-		return
-
 	var coord := void_layer.coord_for(self)
 	var coords: Array[Vector2i] = [coord]
 	# TODO: this looks bad because as soon as the enemy enters the left-hand
@@ -77,12 +95,19 @@ func _process(_delta: float) -> void:
 		coords.append(void_layer.get_neighbor_cell(coord, neighbor))
 
 	var consumed := void_layer.consume_cells(coords)
-	if consumed:
-		var particles := VOID_PARTICLES.instantiate()
-		particles.emitting = true
-		add_child(particles)
-		await particles.finished
-		particles.queue_free()
+	if consumed: 
+		_emit_particles()
+
+		if state == State.IDLE:
+			idle_particle_timer.start()
+
+
+func _emit_particles() -> void:
+	var particles := VOID_PARTICLES.instantiate()
+	particles.emitting = true
+	add_child(particles)
+	await particles.finished
+	particles.queue_free()
 
 
 func _on_player_capture_area_body_entered(body: Node2D) -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://bm4ewr8p48x0i"]
+[gd_scene load_steps=34 format=4 uid="uid://bm4ewr8p48x0i"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_wy2h8"]
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="2_ljnmn"]
@@ -37,6 +37,12 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(813, 1462, 2938, 1439, 
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lutqc"]
 size = Vector2(72, 351)
+
+[sub_resource type="Curve2D" id="Curve2D_wy2h8"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 726, 3145, 30.2699, 20.711, -30.2699, -20.711, 698, 3104, 34.7308, -1.27452, -34.7308, 1.27452, 625, 3138, 22.9414, -0.318631, -22.9414, 0.318631, 553, 3097, 0, 0, 0, 0, 490, 3146, 0, 0, 0, 0, 420, 3094, 0, 0, 0, 0, 356, 3147, 0, 0, 0, 0, 269, 3091, 0, 0, 0, 0, 198, 3154, 0, 0, 0, 0, 132, 3097, 0, 0, 0, 0, 49, 3146, 0, 0, 0, 0, -39, 3095, 0, 0, 0, 0, -100, 3141, 0, 0, 0, 0, -157, 3099, 0, 0, 0, 0, -203, 3140, 0, 0, 0, 0, -258, 3093, 0, 0, 0, 0, -303, 3141)
+}
+point_count = 17
 
 [sub_resource type="Resource" id="Resource_8l6e1"]
 script = ExtResource("23_amu0w")
@@ -122,9 +128,14 @@ limit_bottom = 4288
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="VoidSpreadingEnemy" parent="OnTheGround" node_paths=PackedStringArray("void_layer") instance=ExtResource("6_wtoj6")]
-position = Vector2(871, 3183)
+[node name="VoidSpreadingEnemy" parent="OnTheGround" node_paths=PackedStringArray("void_layer", "idle_patrol_path") instance=ExtResource("6_wtoj6")]
+position = Vector2(735, 3148)
 void_layer = NodePath("../../TileMapLayers/Void")
+idle_patrol_path = NodePath("../VoidSpreadingEnemyPatrolPath")
+
+[node name="VoidSpreadingEnemyPatrolPath" type="Path2D" parent="OnTheGround"]
+position = Vector2(10, 6)
+curve = SubResource("Curve2D_wy2h8")
 
 [node name="StartingIsland" type="Node2D" parent="OnTheGround"]
 y_sort_enabled = true

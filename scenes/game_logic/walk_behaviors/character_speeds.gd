@@ -11,7 +11,7 @@ extends Resource
 ## behaviors.
 
 ## The character walking speed.
-@export_range(10, 1000, 10, "or_greater", "suffix:m/s") var walk_speed: float = 300.0
+@export_range(10, 1000, 1, "or_greater", "suffix:m/s") var walk_speed: float = 300.0
 
 ## The character running speed.
 @export_range(10, 1000, 10, "or_greater", "suffix:m/s") var run_speed: float = 500.0
