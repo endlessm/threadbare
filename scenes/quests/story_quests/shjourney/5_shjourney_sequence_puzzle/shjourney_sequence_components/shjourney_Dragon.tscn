@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://bkm7k4cqs6bbe"]
+
+[ext_resource type="Texture2D" uid="uid://bhi776gv7jllq" path="res://scenes/quests/story_quests/shjourney/5_shjourney_sequence_puzzle/shjourney_sequence_components/shjourney_Dragon.png" id="1_40mty"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dbbek"]
+atlas = ExtResource("1_40mty")
+region = Rect2(0, 0, 110, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nyhrn"]
+atlas = ExtResource("1_40mty")
+region = Rect2(110, 0, 110, 110)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ngo4q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dbbek")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nyhrn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2bbk1"]
+size = Vector2(102, 61)
+
+[node name="Dragon" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ngo4q")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -5.5)
+shape = SubResource("RectangleShape2D_2bbk1")
