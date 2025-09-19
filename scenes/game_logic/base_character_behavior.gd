@@ -21,7 +21,7 @@ func _enter_tree() -> void:
 		character = get_parent()
 
 
-func _set_character(new_character: CharacterBody2D):
+func _set_character(new_character: CharacterBody2D) -> void:
 	character = new_character
 	update_configuration_warnings()
 

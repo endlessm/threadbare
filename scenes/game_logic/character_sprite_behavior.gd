@@ -31,7 +31,7 @@ func _enter_tree() -> void:
 		sprite = get_parent()
 
 
-func _set_sprite(new_sprite: AnimatedSprite2D):
+func _set_sprite(new_sprite: AnimatedSprite2D) -> void:
 	sprite = new_sprite
 	update_configuration_warnings()
 

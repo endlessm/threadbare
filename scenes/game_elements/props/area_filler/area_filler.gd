@@ -35,6 +35,7 @@ extends Node
 @export_tool_button("Refill") var fill_button: Callable = fill
 
 var _area: CollisionObject2D
+var _undoredo: Object  # EditorUndoRedoManager
 
 
 func _enter_tree() -> void:
@@ -47,6 +48,16 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	_area = null
 	update_configuration_warnings()
+
+
+func _ready() -> void:
+	if not Engine.is_editor_hint():
+		self.queue_free()
+		return
+
+	var plugin: Node = ClassDB.instantiate("EditorPlugin")
+	_undoredo = plugin.get_undo_redo()
+	plugin.queue_free()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -88,19 +99,13 @@ func _generate_points() -> PackedVector2Array:
 	return points
 
 
-func _clear_area() -> void:
-	for child: Node in _area.get_children():
-		if child != self and child is not CollisionPolygon2D and child is not CollisionShape2D:
-			child.queue_free()
-
-
-func _add_child(pos: Vector2) -> void:
-	var child: Node2D = scenes.pick_random().instantiate()
+func _prepare_child(pos: Vector2) -> Node2D:
+	var scene: PackedScene = scenes.pick_random()
+	var child: Node2D = scene.instantiate(PackedScene.GenEditState.GEN_EDIT_STATE_INSTANCE)
 	child.position = pos
 	if sprite_frames and "sprite_frames" in child:
 		child.sprite_frames = sprite_frames.pick_random()
-	_area.add_child(child, true)
-	child.owner = get_tree().edited_scene_root
+	return child
 
 
 ## Clears [member area] (except for this node and any collision shapes),
@@ -108,11 +113,32 @@ func _add_child(pos: Vector2) -> void:
 ## parameters, and fill [member area] with instances of [member scenes]
 ## at those points.
 func fill() -> void:
-	_clear_area()
+	var scene := get_tree().edited_scene_root
 
-	# Wait a tick so that the old children are freed and their names can be reused
-	await get_tree().process_frame
+	_undoredo.create_action("Refill area", UndoRedo.MergeMode.MERGE_DISABLE, scene, false)
+
+	var old_children: Array[Node]
+	var new_children: Array[Node]
+
+	for child: Node in _area.get_children():
+		if child != self and child is not CollisionPolygon2D and child is not CollisionShape2D:
+			old_children.append(child)
 
 	var points := _generate_points()
 	for point in points:
-		_add_child(point)
+		new_children.append(_prepare_child(point))
+
+	# When performing the action in either direction, we want to remove, then add.
+	for child in old_children:
+		_undoredo.add_do_method(_area, "remove_child", child)
+
+	for child in new_children:
+		_undoredo.add_do_method(_area, "add_child", child, true)
+		_undoredo.add_do_property(child, "owner", scene)
+		_undoredo.add_undo_method(_area, "remove_child", child)
+
+	for child in old_children:
+		_undoredo.add_undo_method(_area, "add_child", child, true)
+		_undoredo.add_undo_property(child, "owner", scene)
+
+	_undoredo.commit_action()

@@ -62,10 +62,6 @@ var _player_name: String = ""
 ## The label showing the currently spoken dialogue
 @onready var dialogue_label: DialogueLabel = %DialogueLabel
 
-## The “Next” button container, visible when the current line is complete and there are
-## no response choices.
-@onready var next_button_container: MarginContainer = %NextButtonContainer
-
 ## The “Next” button, to connect signals.
 @onready var next_button: Button = %NextButton
 
@@ -140,7 +136,7 @@ func apply_dialogue_line() -> void:
 	responses_menu.hide()
 	responses_menu.responses = dialogue_line.responses
 
-	next_button_container.hide()
+	next_button.hide()
 
 	# Show our balloon
 	balloon.show()
@@ -169,7 +165,7 @@ func apply_dialogue_line() -> void:
 		is_waiting_for_input = true
 		balloon.focus_mode = Control.FOCUS_ALL
 		balloon.grab_focus()
-		next_button_container.show()
+		next_button.show()
 
 
 ## Go to the next line

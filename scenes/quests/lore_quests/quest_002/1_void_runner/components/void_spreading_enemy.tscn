@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cokul8w425pja"]
+[gd_scene load_steps=5 format=3 uid="uid://cokul8w425pja"]
 
 [ext_resource type="Script" uid="uid://dil8mgaf03bei" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_spreading_enemy.gd" id="1_304le"]
+[ext_resource type="Script" uid="uid://r1kriwyodjlt" path="res://scenes/game_logic/walk_behaviors/navigation_follow_walk_behavior.gd" id="2_31awk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8g3pn"]
 size = Vector2(68, 20)
@@ -27,5 +28,12 @@ collision_layer = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCaptureArea"]
 shape = SubResource("CircleShape2D_8l6e1")
 debug_color = Color(0.911153, 9.95344e-05, 0.727585, 0.42)
+
+[node name="NavigationFollowWalkBehavior" type="Node2D" parent="." node_paths=PackedStringArray("agent", "character")]
+unique_name_in_owner = true
+script = ExtResource("2_31awk")
+agent = NodePath("../NavigationAgent2D")
+character = NodePath("..")
+metadata/_custom_type_script = "uid://r1kriwyodjlt"
 
 [connection signal="body_entered" from="PlayerCaptureArea" to="." method="_on_player_capture_area_body_entered"]

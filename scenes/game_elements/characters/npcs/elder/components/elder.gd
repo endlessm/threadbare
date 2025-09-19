@@ -33,12 +33,26 @@ var _storybook: Storybook
 @onready var talk_behavior: TalkBehavior = %TalkBehavior
 @onready var _book_sound: AudioStreamPlayer2D = %BookSound
 @onready var _storybook_layer: CanvasLayer = %StorybookLayer
+@onready var _shapes: Array[CollisionShape2D] = [$BodyShape, $StaffShape]
 
 
 func _ready() -> void:
 	super._ready()
+
+	# Verify if the sprite_frames resource exists and matches the mirrored asset
+	var is_mirrored := sprite_frames and sprite_frames.resource_path.ends_with("elder2.tres")
+
+	for shape in _shapes:
+		if shape:
+			# Mirror or reset X position depending on the resource path
+			if is_mirrored:
+				shape.position.x = -abs(shape.position.x)
+			else:
+				shape.position.x = abs(shape.position.x)
+
 	if Engine.is_editor_hint():
 		return
+
 	talk_behavior.dialogue = dialogue
 	talk_behavior.before_dialogue = _before_dialogue
 	interact_area.interaction_ended.connect(_on_interaction_ended)
