@@ -8,11 +8,11 @@ extends Resource
 ## The development status of a quest.
 enum Status {
 	## The quest is still being developed. It is playable but incomplete.
-	WORK_IN_PROGRESS,
+	WORK_IN_PROGRESS = 0,
 	## The quest has been fully implemented and is ready for all players to play.
-	COMPLETE,
+	COMPLETE = 1,
 	## The quest is actively broken. If played, it may be unwinnable, may crash, etc.
-	BROKEN,
+	BROKEN = 2,
 }
 
 ## The development status of this quest.
