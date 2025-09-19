@@ -1,39 +1,49 @@
-[gd_scene load_steps=7 format=3 uid="uid://cgtonist08yxn"]
+[gd_scene load_steps=9 format=3 uid="uid://cgtonist08yxn"]
 
 [ext_resource type="Script" uid="uid://csl2nw1r7fhpj" path="res://scenes/menus/storybook/components/storybook_page.gd" id="1_jl23h"]
 [ext_resource type="Theme" uid="uid://rybigifrdpw6" path="res://scenes/ui_elements/components/Storybook.tres" id="1_otsbv"]
 [ext_resource type="Texture2D" uid="uid://c34pfs7jyf2qp" path="res://scenes/game_elements/props/checkpoint/components/Blue/Knitwitch_Idle.png" id="2_otsbv"]
+[ext_resource type="Texture2D" uid="uid://ccavio2v8sk7c" path="res://assets/third_party/tiny-swords/UI/Banners/Carved_3Slides.png" id="3_0inj8"]
 [ext_resource type="Script" uid="uid://dfx8s2ybd11mt" path="res://scenes/menus/storybook/components/animated_texture_rect.gd" id="3_rxv6h"]
 [ext_resource type="SpriteFrames" uid="uid://3elulifvmamm" path="res://scenes/game_elements/props/checkpoint/components/knitwitch_frames_blue.tres" id="4_0inj8"]
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_km4jt"]
+texture = ExtResource("3_0inj8")
+expand_margin_top = 7.0
+expand_margin_bottom = 15.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_1tfpy"]
 atlas = ExtResource("2_otsbv")
-region = Rect2(0, 0, 192, 192)
+region = Rect2(0, 0, 200, 200)
 
 [node name="StorybookPage" type="MarginContainer"]
 anchors_preset = -1
-anchor_right = 0.355
-anchor_bottom = 0.683
-offset_top = -15.0
-offset_right = -0.400024
-offset_bottom = 15.24
+anchor_top = -0.037
+anchor_right = 0.281
+anchor_bottom = 0.674
+offset_top = -0.360001
+offset_right = 0.319977
+offset_bottom = -0.280029
+grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_otsbv")
 theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 25
+theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 script = ExtResource("1_jl23h")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
-size_flags_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 4
 theme_override_constants/separation = 15
 
 [node name="TitleBox" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 0
+size_flags_vertical = 4
 theme_type_variation = &"PlayerRibbon"
 
 [node name="Title" type="Label" parent="VBoxContainer/TitleBox"]
@@ -41,26 +51,47 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Title of the Quest"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(360, 149.66)
+[node name="Panel" type="Panel" parent="VBoxContainer"]
+custom_minimum_size = Vector2(360, 200)
 layout_mode = 2
+theme = ExtResource("1_otsbv")
+theme_override_styles/panel = SubResource("StyleBoxTexture_km4jt")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Panel"]
+custom_minimum_size = Vector2(300, 180)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -147.72
+offset_top = -67.92
+offset_right = 160.28
+offset_bottom = 82.08
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
+theme = ExtResource("1_otsbv")
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Panel/ScrollContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_constants/separation = 5
 
-[node name="Description" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+[node name="Description" type="Label" parent="VBoxContainer/Panel/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(360, 0)
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam pulvinar, erat non consectetur cursus, erat erat lobortis massa, quis mattis purus dolor ac lorem. In hac habitasse platea dictumst. Suspendisse vulputate felis purus, ac scelerisque mauris tristique sit amet. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 autowrap_mode = 3
 
-[node name="Authors" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+[node name="Authors" type="Label" parent="VBoxContainer/Panel/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(360, 0)
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -69,7 +100,7 @@ autowrap_mode = 2
 
 [node name="Animation" type="TextureRect" parent="VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 200)
+custom_minimum_size = Vector2(180, 180)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -81,7 +112,7 @@ sprite_frames = ExtResource("4_0inj8")
 [node name="PlayButton" type="Button" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_vertical = 8
 focus_neighbor_top = NodePath(".")
 focus_neighbor_bottom = NodePath(".")
 focus_previous = NodePath("../../../LeftPage/VBoxContainer/BackButton")
