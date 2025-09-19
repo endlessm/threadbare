@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-extends Node2D
+extends Control
 
 const NEXT_SCENE: PackedScene = preload("uid://stdqc6ttomff")
 

@@ -13,12 +13,17 @@ const SOKOBANS := [
 	"uid://b64uft76tbblp",
 ]
 
+var _have_threads := is_item_offering_possible()
+
 @onready var interact_area: InteractArea = %InteractArea
+@onready var talk_behavior: TalkBehavior = %TalkBehavior
 @onready var loom_offering_animation_player: AnimationPlayer = %LoomOfferingAnimationPlayer
 
 
 func _ready() -> void:
-	interact_area.interaction_started.connect(self._on_interacted)
+	talk_behavior.dialogue = ETERNAL_LOOM_INTERACTION
+	talk_behavior.title = "have_threads" if _have_threads else "no_threads"
+	interact_area.interaction_ended.connect(self._on_interaction_ended)
 
 	if GameState.incorporating_threads:
 		if Transitions.is_running():
@@ -31,16 +36,8 @@ func _ready() -> void:
 		GameState.set_incorporating_threads(false)
 
 
-func _on_interacted(player: Player, _from_right: bool) -> void:
-	var have_threads := is_item_offering_possible()
-
-	var title := "have_threads" if have_threads else "no_threads"
-	DialogueManager.show_dialogue_balloon(ETERNAL_LOOM_INTERACTION, title, [self, player])
-	await DialogueManager.dialogue_ended
-
-	interact_area.end_interaction()
-
-	if have_threads:
+func _on_interaction_ended() -> void:
+	if _have_threads:
 		# Hide interact label during scene transition
 		interact_area.disabled = true
 

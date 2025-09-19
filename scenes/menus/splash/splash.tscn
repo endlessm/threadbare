@@ -18,27 +18,62 @@ _data = {
 }
 point_count = 27
 
-[node name="Splash" type="Node2D"]
+[node name="Splash" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_a6n0j")
 
-[node name="FabricBackground" type="Sprite2D" parent="."]
+[node name="FabricBackground" type="TextureRect" parent="."]
 modulate = Color(0.345098, 0.215686, 0.929412, 1)
-position = Vector2(960, 540)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("2_cy8yo")
+stretch_mode = 6
 
-[node name="LogoReference" type="Sprite2D" parent="."]
+[node name="LogoReference" type="TextureRect" parent="."]
 visible = false
-position = Vector2(960, 540)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -512.0
+offset_top = -203.0
+offset_right = 512.0
+offset_bottom = 203.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("2_a6n0j")
 
-[node name="LogoStitcher" type="Node2D" parent="." node_paths=PackedStringArray("path", "audio")]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LogoStitcher" type="Control" parent="AspectRatioContainer" node_paths=PackedStringArray("path", "audio")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 script = ExtResource("3_m61hw")
 path = NodePath("Path2D")
 width_curve = SubResource("Curve_7hvf5")
-audio = NodePath("../AudioStreamPlayer")
+audio = NodePath("../../AudioStreamPlayer")
 
-[node name="Path2D" type="Path2D" parent="LogoStitcher"]
+[node name="Path2D" type="Path2D" parent="AspectRatioContainer/LogoStitcher"]
 curve = SubResource("Curve2D_eqfq0")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

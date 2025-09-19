@@ -13,16 +13,28 @@ enum Mode {
 	COZY,
 	## Player is engaged in combat. Player can use combat actions.
 	FIGHTING,
+	## Player is using the grappling hook.
+	HOOKING,
 	## Player can't be controlled anymore.
 	DEFEATED,
 }
 
+## The animations which must be provided by [member sprite_frames], each with the corresponding
+## number of frames.
 const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
 	&"idle": 10,
 	&"walk": 6,
 	&"attack_01": 4,
+	&"attack_02": 4,
 	&"defeated": 11,
 }
+
+## Optional animations which, if provided by [member sprite_frames], must have the corresponding
+## number of frames.
+const OPTIONAL_ANIMATION_FRAMES: Dictionary[StringName, int] = {
+	&"run": 6,
+}
+
 const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 
 ## The character's name. This is used to highlight when the player's character
@@ -34,11 +46,12 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 	set = _set_mode
 @export_range(10, 100000, 10) var walk_speed: float = 300.0
 @export_range(10, 100000, 10) var run_speed: float = 500.0
+@export_range(10, 100000, 10) var aiming_speed: float = 100.0
 @export_range(10, 100000, 10) var stopping_step: float = 1500.0
 @export_range(10, 100000, 10) var moving_step: float = 4000.0
 
 ## The SpriteFrames must have specific animations with a certain amount of frames.
-## See [member REQUIRED_ANIMATION_FRAMES].
+## See [constant REQUIRED_ANIMATION_FRAMES] and [constant OPTIONAL_ANIMATION_FRAMES].
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
 
@@ -51,6 +64,7 @@ var input_vector: Vector2
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: Node2D = %PlayerFighting
+@onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
@@ -64,12 +78,19 @@ func _set_mode(new_mode: Mode) -> void:
 		Mode.COZY:
 			_toggle_player_behavior(player_interaction, true)
 			_toggle_player_behavior(player_fighting, false)
+			_toggle_player_behavior(player_hook, false)
 		Mode.FIGHTING:
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_fighting, true)
+			_toggle_player_behavior(player_hook, false)
+		Mode.HOOKING:
+			_toggle_player_behavior(player_interaction, false)
+			_toggle_player_behavior(player_fighting, false)
+			_toggle_player_behavior(player_hook, true)
 		Mode.DEFEATED:
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_fighting, false)
+			_toggle_player_behavior(player_hook, false)
 	if mode != previous_mode:
 		mode_changed.emit(mode)
 
@@ -93,20 +114,29 @@ func _toggle_player_behavior(behavior_node: Node2D, is_active: bool) -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
-	for animation in REQUIRED_ANIMATION_FRAMES:
+
+	for animation: StringName in REQUIRED_ANIMATION_FRAMES:
 		if not sprite_frames.has_animation(animation):
 			warnings.append("sprite_frames is missing the following animation: %s" % animation)
-		elif sprite_frames.get_frame_count(animation) != REQUIRED_ANIMATION_FRAMES[animation]:
+
+	var animations: Dictionary[StringName, int] = REQUIRED_ANIMATION_FRAMES.merged(
+		OPTIONAL_ANIMATION_FRAMES
+	)
+	for animation: StringName in animations:
+		if not sprite_frames.has_animation(animation):
+			continue
+
+		var count := sprite_frames.get_frame_count(animation)
+		var expected_count := animations[animation]
+
+		if count != expected_count:
 			warnings.append(
 				(
 					"sprite_frames animation %s has %d frames, but should have %d"
-					% [
-						animation,
-						sprite_frames.get_frame_count(animation),
-						REQUIRED_ANIMATION_FRAMES[animation]
-					]
+					% [animation, count, expected_count]
 				)
 			)
+
 	return warnings
 
 
@@ -119,7 +149,9 @@ func _unhandled_input(_event: InputEvent) -> void:
 	var axis: Vector2 = Input.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
 
 	var speed: float
-	if Input.is_action_pressed(&"running"):
+	if player_hook.is_throwing_or_aiming():
+		speed = aiming_speed
+	elif Input.is_action_pressed(&"running"):
 		speed = run_speed
 	else:
 		speed = walk_speed
@@ -138,6 +170,10 @@ func is_running() -> bool:
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
+		return
+
+	# While pulling the grappling hook, the movement is handled in PlayerHook._process.
+	if player_hook.pulling:
 		return
 
 	if player_interaction.is_interacting or mode == Mode.DEFEATED:

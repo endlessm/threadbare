@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://dua6mynlw2ptw"]
+[gd_scene load_steps=7 format=3 uid="uid://dua6mynlw2ptw"]
 
 [ext_resource type="Script" uid="uid://bk5ri1yoakaqp" path="res://scenes/game_elements/props/checkpoint/components/checkpoint.gd" id="1_kkoqv"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="2_s5d1s"]
 [ext_resource type="SpriteFrames" uid="uid://dmg1egdoye3ns" path="res://scenes/game_elements/props/checkpoint/components/knitwitch_frames_purple.tres" id="4_3xcwf"]
 [ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="4_cukws"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="5_3xcwf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3xcwf"]
 radius = 48.0
@@ -33,4 +34,10 @@ action = "Admire"
 [node name="CollisionShape" type="CollisionShape2D" parent="InteractArea"]
 position = Vector2(1, -4)
 shape = SubResource("CircleShape2D_3xcwf")
-debug_color = Color(0, 0.606449, 0.661205, 0.42)
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="." node_paths=PackedStringArray("interact_area")]
+unique_name_in_owner = true
+script = ExtResource("5_3xcwf")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"

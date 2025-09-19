@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_bk6nl"]
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="6_e81yh"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="7_btlpg"]
-[ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/shared_components/sprite_frames/storyweaver_blue.tres" id="9_bk6nl"]
+[ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="9_bk6nl"]
 [ext_resource type="SpriteFrames" uid="uid://bs0idpewu2plj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_yellow.tres" id="10_0kd4s"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="10_muw2v"]
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="10_wqron"]
@@ -69,11 +69,11 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAA
 tile_set = ExtResource("4_0kd4s")
 
 [node name="Foam" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAJAAIAAgACAAEAAAAJAAMAAgACAAEAAAAJAAQAAgACAAEAAAAJAAUAAgACAAEAAAAJAAYAAgACAAEAAAAJAAcAAgACAAEAAAALAAIAAgAAAAEAAAALAAMAAgAAAAEAAAALAAQAAgAAAAEAAAALAAUAAgAAAAEAAAALAAYAAgAAAAEAAAALAAcAAgAAAAEAAAA=")
+tile_map_data = PackedByteArray("AAAJAAIAAgACAAEAAAAJAAMAAgACAAEAAAAJAAQAAgACAAEAAAAJAAUAAgACAAEAAAAJAAYAAgACAAEAAAAJAAcAAgACAAEAAAALAAIAAgAAAAEAAAALAAMAAgAAAAEAAAALAAQAAgAAAAEAAAALAAUAAgAAAAEAAAALAAYAAgAAAAEAAAALAAcAAgAAAAEAAAAIAAIAAgABAAEAAAAIAAMAAgABAAEAAAAIAAQAAgABAAEAAAAIAAUAAgABAAEAAAAIAAYAAgABAAEAAAAIAAcAAgABAAEAAAAMAAIAAgABAAEAAAAMAAMAAgABAAEAAAAMAAQAAgABAAEAAAAMAAUAAgABAAEAAAAMAAcAAgABAAEAAAAMAAYAAgABAAEAAAANAAYAAgABAAEAAAAMAAEAAgABAAEAAAAIAAEAAgABAAEAAAACAAIAAgABAAEAAAACAAMAAgABAAEAAAACAAQAAgABAAEAAAACAAUAAgABAAEAAAACAAYAAgABAAEAAAACAAcAAgABAAEAAAABAAIAAgAAAAEAAAABAAMAAgAAAAEAAAABAAQAAgAAAAEAAAABAAUAAgAAAAEAAAABAAYAAgAAAAEAAAABAAcAAgAAAAEAAAA=")
 tile_set = ExtResource("4_0kd4s")
 
 [node name="Foam Level 2" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAJAAIAAgABAAIAAAAKAAIAAgABAAIAAAALAAIAAgABAAIAAAANAAYAAgABAAIAAAAMAAYAAgABAAIAAAA=")
+tile_map_data = PackedByteArray("AAAJAAIAAgABAAIAAAAKAAIAAgABAAIAAAALAAIAAgABAAIAAAAAAAEAAgABAAEAAAAAAAIAAgABAAIAAAABAAEAAgABAAEAAAABAAIAAgABAAIAAAAJAAEAAgABAAEAAAAKAAEAAgABAAEAAAALAAEAAgABAAEAAAA=")
 tile_set = ExtResource("4_0kd4s")
 
 [node name="Grass" type="TileMapLayer" parent="TileMapLayers"]
@@ -110,7 +110,6 @@ position = Vector2(416, 0)
 
 [node name="Door Exit" parent="OnTheGround/LevelExit" instance=ExtResource("10_wqron")]
 position = Vector2(0, 82)
-scale = Vector2(1.1, 1.1)
 play_victory_fanfare_on_open = true
 
 [node name="Teleporter" type="Area2D" parent="OnTheGround/LevelExit"]
@@ -118,9 +117,8 @@ position = Vector2(0, -25)
 collision_layer = 4
 script = ExtResource("11_0kd4s")
 next_scene = "uid://bo6qfusag3fae"
-enter_transition = 3
-exit_transition = 3
-spawn_point_path = NodePath("")
+enter_transition = 4
+exit_transition = 5
 metadata/_custom_type_script = "uid://hqdquinbimce"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/LevelExit/Teleporter"]
@@ -168,14 +166,13 @@ color = Color(1, 0.972549, 0, 1)
 
 [node name="Door Enter" parent="OnTheGround" instance=ExtResource("10_wqron")]
 position = Vector2(417, 592)
-scale = Vector2(1.1, 1.1)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource("10_muw2v")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
+zoom = Vector2(1.333, 1.333)
 limit_left = 0
 limit_top = 0
 limit_right = 2048

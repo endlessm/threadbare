@@ -271,8 +271,11 @@ _data = {
 &"reveal": SubResource("Animation_qy0vu")
 }
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hhgm5"]
+radius = 9.0
+height = 28.0
+
 [node name="CollectibleItem" type="Node2D"]
-z_index = 1
 script = ExtResource("1_7ff3m")
 
 [node name="InteractArea" parent="." instance=ExtResource("6_j0enh")]
@@ -281,6 +284,7 @@ action = "Collect"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
 shape = SubResource("CircleShape2D_ghwae")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -290,7 +294,6 @@ libraries = {
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(1, 1, 1, 0)
-texture_filter = 1
 texture = ExtResource("3_p8e5a")
 
 [node name="CollectedSound" type="AudioStreamPlayer" parent="."]
@@ -301,3 +304,12 @@ bus = &"SFX"
 unique_name_in_owner = true
 stream = ExtResource("5_oh62b")
 bus = &"SFX"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1, 14)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_hhgm5")
+debug_color = Color(0.976711, 0, 0.409753, 0.42)

@@ -41,6 +41,7 @@ func reimport_files(and_files: PackedStringArray = []) -> void:
 	if _files_marked_for_reimport.is_empty(): return
 
 	EditorInterface.get_resource_filesystem().reimport_files(_files_marked_for_reimport)
+	_files_marked_for_reimport.clear()
 
 
 ## Add a dialogue file to the cache.

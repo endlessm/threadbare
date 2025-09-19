@@ -36,6 +36,7 @@ const REQUIRED_ANIMATIONS := [&"idle", &"appear"]
 @onready var sprite: AnimatedSprite2D = %Sprite
 
 @onready var interact_area: InteractArea = %InteractArea
+@onready var talk_behavior: TalkBehavior = %TalkBehavior
 
 
 func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
@@ -62,9 +63,11 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
+	talk_behavior.dialogue = dialogue
 	sprite.visible = false
 	body_entered.connect(func(_body: Node2D) -> void: self.activate())
 	interact_area.interaction_started.connect(_on_interaction_started)
+	interact_area.interaction_ended.connect(_on_interaction_ended)
 
 
 ## Makes this the active checkpoint.
@@ -80,11 +83,9 @@ func activate() -> void:
 	sprite.play(&"idle")
 
 
-func _on_interaction_started(player: Player, from_right: bool) -> void:
+func _on_interaction_started(_player: Player, from_right: bool) -> void:
 	sprite.flip_h = from_right
 
-	DialogueManager.show_dialogue_balloon(dialogue, "", [self, player])
-	await DialogueManager.dialogue_ended
 
+func _on_interaction_ended() -> void:
 	sprite.flip_h = false
-	interact_area.interaction_ended.emit()

@@ -12,8 +12,8 @@ uniform float scale: hint_range(0.1, 10.0, 0.1) = 1.0;
 varying vec2 world_pos;
 
 void vertex() {
-   // Transform it into world coordinates
-   world_pos = (MODEL_MATRIX * vec4(1.0, 1.0, 0.0, 1.0)).xy;
+	// Transform it into world coordinates
+	world_pos = (MODEL_MATRIX * vec4(1.0, 1.0, 0.0, 1.0)).xy;
 }
 
 vec2 to_uv_coordinates(vec2 position, sampler2D tex) {

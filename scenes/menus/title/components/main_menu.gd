@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-extends HBoxContainer
+extends Control
 
 signal continue_pressed
 signal start_pressed

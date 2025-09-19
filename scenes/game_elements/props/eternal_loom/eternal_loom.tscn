@@ -1,9 +1,10 @@
-[gd_scene load_steps=29 format=3 uid="uid://712saqgof3kf"]
+[gd_scene load_steps=30 format=3 uid="uid://712saqgof3kf"]
 
 [ext_resource type="Script" uid="uid://dj5shb75ckk2a" path="res://scenes/game_elements/props/eternal_loom/components/eternal_loom.gd" id="1_0f752"]
 [ext_resource type="Texture2D" uid="uid://cj62bpasgf643" path="res://scenes/game_elements/props/eternal_loom/components/eternal_loom_blue.png" id="2_dj2yp"]
 [ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="3_kyhkd"]
 [ext_resource type="Texture2D" uid="uid://5wscjc8yqqts" path="res://assets/first_party/collectibles/world_memory.png" id="4_12bvc"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="4_eq7jh"]
 [ext_resource type="Texture2D" uid="uid://6bf8rum68wq3" path="res://assets/first_party/collectibles/world_imagination.png" id="5_eq7jh"]
 [ext_resource type="Texture2D" uid="uid://cepg1o3ihp055" path="res://assets/first_party/collectibles/world_spirit.png" id="6_hfqem"]
 [ext_resource type="AudioStream" uid="uid://bg8u4en3hlo6w" path="res://assets/third_party/sounds/eternal_loom/EternalLoomShort.ogg" id="7_12bvc"]
@@ -521,7 +522,6 @@ _data = {
 script = ExtResource("1_0f752")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-texture_filter = 1
 scale = Vector2(1.5, 1.43)
 sprite_frames = SubResource("SpriteFrames_1jart")
 autoplay = "default"
@@ -552,6 +552,13 @@ action = "Use Eternal Loom"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
 position = Vector2(0, 120)
 shape = SubResource("RectangleShape2D_uhynt")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="." node_paths=PackedStringArray("interact_area")]
+unique_name_in_owner = true
+script = ExtResource("4_eq7jh")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
 
 [node name="LoomOfferingAnimation" type="Node2D" parent="."]
 z_index = 1
@@ -566,19 +573,16 @@ libraries = {
 
 [node name="Memory" type="Sprite2D" parent="LoomOfferingAnimation"]
 visible = false
-texture_filter = 1
 position = Vector2(1, -34)
 texture = ExtResource("4_12bvc")
 
 [node name="Imagination" type="Sprite2D" parent="LoomOfferingAnimation"]
 visible = false
-texture_filter = 1
 position = Vector2(50, 33)
 texture = ExtResource("5_eq7jh")
 
 [node name="Spirit" type="Sprite2D" parent="LoomOfferingAnimation"]
 visible = false
-texture_filter = 1
 position = Vector2(-48, 33)
 texture = ExtResource("6_hfqem")
 
