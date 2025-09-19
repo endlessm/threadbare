@@ -4,11 +4,12 @@
 @tool
 class_name Quest
 extends Resource
+
 ## The development status of a quest.
 enum Status {
-	## [your description here]
+	## The quest is still being developed. It is playable but incomplete.
 	WORK_IN_PROGRESS,
-	## [your description here]
+	## The quest has been fully implemented and is ready for all players to play.
 	COMPLETE,
 	## The quest is actively broken. If played, it may be unwinnable, may crash, etc.
 	BROKEN,
@@ -16,6 +17,7 @@ enum Status {
 
 ## The development status of this quest.
 @export var status: Status = Status.WORK_IN_PROGRESS
+
 ## The quest's title. This should be short, like the title of a novel.
 @export var title: String
 
@@ -43,7 +45,6 @@ enum Status {
 
 ## The animation in [member sprite_frames] to display. This should typically be a looping animation.
 @export var animation_name: StringName = &""
-
 
 
 func _validate_property(property: Dictionary) -> void:
