@@ -36,6 +36,7 @@ func _ready() -> void:
 		GameState.set_incorporating_threads(false)
 
 
+
 func _on_interaction_ended() -> void:
 	if _have_threads:
 		# Hide interact label during scene transition
@@ -48,6 +49,9 @@ func _on_interaction_ended() -> void:
 func on_offering_succeeded() -> void:
 	loom_offering_animation_player.play(&"loom_offering")
 	await loom_offering_animation_player.animation_finished
+	#Mark mission completed
+	var quest_path: String = GameState._state.get_value(GameState.QUEST_SECTION, GameState.QUEST_PATH_KEY, "")
+	GameState.add_completed_mission(quest_path)
 	GameState.clear_inventory()
 
 
