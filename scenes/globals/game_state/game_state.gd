@@ -2,16 +2,8 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node
 
-## Emitted when a new item is collected, even if it wasn't added to the
-## inventory due to it being already there.
 signal item_collected(item: InventoryItem)
-
-## Emitted when a item is consumed, causing it to be removed from the
-## [member inventory].
 signal item_consumed(item: InventoryItem)
-
-## Emitted whenever the items in the inventory change, either by collecting
-## or consuming an item.
 signal collected_items_changed(updated_items: Array[InventoryItem])
 
 const GAME_STATE_PATH := "user://game_state.cfg"
@@ -23,25 +15,21 @@ const QUEST_CURRENTSCENE_KEY := "current_scene"
 const QUEST_SPAWNPOINT_KEY := "current_spawn_point"
 const GLOBAL_SECTION := "global"
 const GLOBAL_INCORPORATING_THREADS_KEY := "incorporating_threads"
+const COLLECTIBLES_SECTION := "collectibles"
+const COLLECTED_IDS_KEY := "collected_ids"
 
-## Scenes to skip from saving.
 const TRANSIENT_SCENES := [
 	"res://scenes/menus/title/title_screen.tscn",
 	"res://scenes/menus/intro/intro.tscn",
 ]
 
-## Global inventory, used to track the items the player obtains and that
-## can be added to the loom.
 @export var inventory: Array[InventoryItem] = []
 @export var current_spawn_point: NodePath
 
-## Set when the loom transports the player to a trio of Sokoban puzzles, so that
-## when the player returns to Fray's End the loom can trigger a brief cutscene.
 var incorporating_threads: bool = false
-
 var persist_progress: bool
 var _state := ConfigFile.new()
-
+var collected_ids: Array[String] = []
 
 func _ready() -> void:
 	var initial_scene_uid := ResourceLoader.get_resource_uid(
@@ -57,15 +45,11 @@ func _ready() -> void:
 	if err != OK and err != ERR_FILE_NOT_FOUND:
 		push_error("Failed to load %s: %s" % [GAME_STATE_PATH, err])
 
-
-## Set the [member incorporating_threads] flag.
 func set_incorporating_threads(new_incorporating_threads: bool) -> void:
 	incorporating_threads = new_incorporating_threads
 	_state.set_value(GLOBAL_SECTION, GLOBAL_INCORPORATING_THREADS_KEY, incorporating_threads)
 	_save()
 
-
-## Set the [Quest] and clear the [member inventory].
 func start_quest(quest: Quest) -> void:
 	_do_clear_inventory()
 	_update_inventory_state()
@@ -73,30 +57,22 @@ func start_quest(quest: Quest) -> void:
 	_do_set_scene(quest.first_scene, ^"")
 	_save()
 
-
-## Set the scene path and [member current_spawn_point].
 func set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
 	if scene_path in TRANSIENT_SCENES:
 		return
 	_do_set_scene(scene_path, spawn_point)
 	_save()
 
-
-## Set the [member current_spawn_point].
 func set_current_spawn_point(spawn_point: NodePath = ^"") -> void:
 	current_spawn_point = spawn_point
 	_state.set_value(QUEST_SECTION, QUEST_SPAWNPOINT_KEY, current_spawn_point)
 	_save()
 
-
-## Set the scene path and [member current_spawn_point] without triggering a save.
 func _do_set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
 	current_spawn_point = spawn_point
 	_state.set_value(QUEST_SECTION, QUEST_CURRENTSCENE_KEY, scene_path)
 	_state.set_value(QUEST_SECTION, QUEST_SPAWNPOINT_KEY, current_spawn_point)
 
-
-## Add the [InventoryItem] to the [member inventory].
 func add_collected_item(item: InventoryItem) -> void:
 	inventory.append(item)
 	item_collected.emit(item)
@@ -104,50 +80,41 @@ func add_collected_item(item: InventoryItem) -> void:
 	_update_inventory_state()
 	_save()
 
-
-## Remove all [InventoryItem] from the [member inventory].
 func clear_inventory() -> void:
 	_do_clear_inventory()
 	_update_inventory_state()
 	_save()
 
-
-## Remove all [InventoryItem] from the [member inventory] without triggering a save.
 func _do_clear_inventory() -> void:
 	for item: InventoryItem in inventory.duplicate():
 		inventory.erase(item)
 		item_consumed.emit(item)
 	collected_items_changed.emit(items_collected())
 
-
-## Return all the items collected so far in the [member inventory].
 func items_collected() -> Array[InventoryItem]:
 	return inventory.duplicate()
-
 
 func _update_inventory_state() -> void:
 	var amount: int = clamp(inventory.size(), 0, InventoryItem.ItemType.size())
 	_state.set_value(INVENTORY_SECTION, INVENTORY_ITEMS_AMOUNT_KEY, amount)
 
-
-## Clear the persisted state.
 func clear() -> void:
 	_state.clear()
 	_save()
 
-
-## Check if there is persisted state.
 func can_restore() -> bool:
 	return _state.get_sections().size()
 
-
-## If there is a scene to restore, return it.
 func get_scene_to_restore() -> String:
 	return _state.get_value(QUEST_SECTION, QUEST_CURRENTSCENE_KEY, "")
 
-
-## Restore the persisted state.
 func restore() -> Dictionary:
+	var loaded_ids = _state.get_value(COLLECTIBLES_SECTION, COLLECTED_IDS_KEY, [])
+	collected_ids.clear()
+	if loaded_ids is Array:
+		for id in loaded_ids:
+			if typeof(id) == TYPE_STRING:
+				collected_ids.append(id)
 	var amount_in_state: int = _state.get_value(INVENTORY_SECTION, INVENTORY_ITEMS_AMOUNT_KEY, 0)
 	var amount: int = clamp(amount_in_state, 0, InventoryItem.ItemType.size())
 	inventory.clear()
@@ -161,10 +128,18 @@ func restore() -> Dictionary:
 	)
 	return {"scene_path": scene_path, "spawn_point": current_spawn_point}
 
+func has_collected(unique_id: String) -> bool:
+	return collected_ids.has(unique_id)
+
+func mark_collected(unique_id: String, item: InventoryItem) -> void:
+	if not has_collected(unique_id):
+		collected_ids.append(unique_id)
+		add_collected_item(item)  # maneja inventario + señales
 
 func _save() -> void:
 	if not persist_progress:
 		return
+	_state.set_value(COLLECTIBLES_SECTION, COLLECTED_IDS_KEY, collected_ids)
 	var err := _state.save(GAME_STATE_PATH)
 	if err != OK:
 		push_error("Failed to save settings to %s: %s" % [GAME_STATE_PATH, err])
