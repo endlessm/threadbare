@@ -1,9 +1,9 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-
 @tool
 class_name Quest
 extends Resource
+## Information that defines a playable quest
 
 ## The development status of a quest.
 enum Status {
