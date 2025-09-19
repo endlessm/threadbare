@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Control
 
-const NEXT_SCENE: PackedScene = preload("uid://stdqc6ttomff")
+@export_file("*.tscn") var next_scene: String
 
 @onready var logo_stitcher: LogoStitcher = %LogoStitcher
 @onready var scene_switch_timer: Timer = %SceneSwitchTimer
@@ -25,6 +25,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func switch_to_intro() -> void:
 	scene_switch_timer.timeout.disconnect(switch_to_intro)
-	SceneSwitcher.change_to_packed_with_transition(
-		NEXT_SCENE, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+	SceneSwitcher.change_to_file_with_transition(
+		next_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 	)
