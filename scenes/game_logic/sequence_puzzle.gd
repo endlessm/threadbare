@@ -41,6 +41,12 @@ var _position: int = 0
 
 func _ready() -> void:
 	_find_objects()
+	
+	# If the steps array is empty, automatically discover the puzzle steps from the scene children.
+	if steps.is_empty():
+		for child in get_children():
+			if child is SequencePuzzleStep:
+				steps.append(child)
 
 	hint_timer.one_shot = true
 	hint_timer.wait_time = wobble_hint_time
