@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-FileCopyrightText: The Threadbare Authors  
 # SPDX-License-Identifier: MPL-2.0
 class_name Storybook
 extends Control
@@ -29,11 +29,18 @@ const QUEST_RESOURCE_NAME := "quest.tres"
 @onready var quest_list: VBoxContainer = %QuestList
 @onready var storybook_page: StorybookPage = %StorybookPage
 @onready var back_button: Button = %BackButton
+@onready var animated_book: AnimatedSprite2D = %AnimatedSprite2D
+@onready var ui_container: MarginContainer = %MarginContainer
+@onready var left_button: Button = %Left_Button
+@onready var right_button: Button = %Right_Button
 
+var _last_focused_button: Button = null
+var _last_focus_index: int = -1
+var _navigation_locked: bool = false
 
 func _enumerate_quests() -> Array[Quest]:
 	var has_template: bool = false
-	var quests: Array[Quest]
+	var quests: Array[Quest] = []
 
 	for dir in ResourceLoader.list_directory(quest_directory):
 		var quest_path := quest_directory.path_join(dir).path_join(QUEST_RESOURCE_NAME)
@@ -49,14 +56,17 @@ func _enumerate_quests() -> Array[Quest]:
 
 	return quests
 
-
 func _ready() -> void:
+	if animated_book:
+		animated_book.animation_finished.connect(_on_animation_finished)
+	
 	var previous_button: Button = null
 	for quest in _enumerate_quests():
 		var button := Button.new()
 		button.text = quest.get_title()
 		button.theme_type_variation = "FlatButton"
 		quest_list.add_child(button)
+		button.set_meta("quest", quest)
 
 		button.focus_entered.connect(_on_button_focused.bind(button, quest))
 		button.focus_next = back_button.get_path()
@@ -68,34 +78,105 @@ func _ready() -> void:
 
 		previous_button = button
 
-	previous_button.focus_neighbor_bottom = back_button.get_path()
-	back_button.focus_neighbor_top = previous_button.get_path()
+	if previous_button:
+		previous_button.focus_neighbor_bottom = back_button.get_path()
+		back_button.focus_neighbor_top = previous_button.get_path()
 
+	left_button.pressed.connect(_on_left_button_pressed)
+	right_button.pressed.connect(_on_right_button_pressed)
 	reset_focus()
 
+func _change_focus_to(index: int) -> void:
+	if _navigation_locked:
+		return
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		# Go back
-		get_viewport().set_input_as_handled()
-		selected.emit(null)
+	if not quest_list:
+		return
+	var total := quest_list.get_child_count()
+	if total == 0:
+		return
+	if index < 0 or index >= total:
+		return
+	if index == _last_focus_index:
+		return
 
+	_navigation_locked = true
 
-func _on_button_focused(button: Button, quest: Quest) -> void:
+	var button: Button = quest_list.get_child(index)
+	if not is_instance_valid(button):
+		_navigation_locked = false
+		return
+
+	var quest: Quest = button.get_meta("quest") if button.has_meta("quest") else null
+
+	var old_index := _last_focus_index
+	_last_focus_index = index
+	_last_focused_button = button
+
 	back_button.focus_previous = button.get_path()
 	storybook_page.play_button.focus_next = button.get_path()
 	storybook_page.play_button.focus_neighbor_left = button.get_path()
-	storybook_page.quest = quest
+	if quest:
+		storybook_page.quest = quest
 
+	if old_index != -1:
+		if index > old_index:
+			animated_book.play("book_right")
+		else:
+			animated_book.play("book_left")
+		_hide_ui_temporarily()
+	else:
+		if not button.has_focus():
+			button.grab_focus()
+		_navigation_locked = false
+
+func _on_animation_finished():
+	_navigation_locked = false
+	
+	if _last_focused_button and is_instance_valid(_last_focused_button):
+		if not _last_focused_button.has_focus():
+			_last_focused_button.grab_focus()
+
+func _on_left_button_pressed() -> void:
+	if _navigation_locked:
+		return
+	var target := _last_focus_index - 1
+	if target < 0:
+		target = max(0, quest_list.get_child_count() - 1)
+	_change_focus_to(target)
+
+func _on_right_button_pressed() -> void:
+	if _navigation_locked:
+		return
+	var target := _last_focus_index + 1
+	if target >= quest_list.get_child_count():
+		target = 0
+	_change_focus_to(target)
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		get_viewport().set_input_as_handled()
+		selected.emit(null)
+
+func _on_button_focused(button: Button, _quest: Quest) -> void:
+	if _navigation_locked:
+		return
+	var current_index: int = quest_list.get_children().find(button)
+	if current_index == -1:
+		return
+	_change_focus_to(current_index)
+
+func _hide_ui_temporarily() -> void:
+	ui_container.visible = false
+	await get_tree().create_timer(0.2).timeout
+	ui_container.visible = true
 
 func _on_storybook_page_selected(quest: Quest) -> void:
 	selected.emit(quest)
 
-
 func _on_back_button_pressed() -> void:
 	selected.emit(null)
 
-
 func reset_focus() -> void:
 	if quest_list and quest_list.get_child_count() > 0:
-		quest_list.get_child(0).grab_focus()
+		_change_focus_to(0)
