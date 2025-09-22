@@ -1,24 +1,21 @@
 extends Node2D
 
+@onready var arbol_fantasma_3: CharacterBody2D = $ArbolFantasma3
+
 var arboles_contactados: int = 0
 const PREGUNTAS_NECESARIOS := 1
 
+
 func _ready() -> void:
-	# Busca en TODO el árbol de la escena, recursivamente, nodos de tipo ArbolFantasma1
-	var arboles: Array = get_tree().get_root().find_children("*", "ArbolFantasma3", true, false)
-	var conectados := 0
-	for a in arboles:
-		# Evita conexiones duplicadas
-		if not a.dialogo_terminado3.is_connected(reportar_arbol_contactado3):
-			a.dialogo_terminado3.connect(reportar_arbol_contactado3)
-			conectados += 1
-	print("Árboles ArbolFantasma1 encontrados:", arboles.size(), " | Conectados ahora:", conectados)
+	arbol_fantasma_3.dialogo_terminado3.connect(reportar_arbol_contactado3)
+
 
 func reportar_arbol_contactado3() -> void:
 	arboles_contactados += 1
 	print("Progreso árboles: ", arboles_contactados, "/", PREGUNTAS_NECESARIOS)
 	if arboles_contactados >= PREGUNTAS_NECESARIOS:
 		abrir_camino()
+
 
 func abrir_camino() -> void:
 	var obstaculo3 := get_tree().get_nodes_in_group("bloqueo_camino3")
@@ -29,4 +26,4 @@ func abrir_camino() -> void:
 
 
 func _on_arbol_fantasma_3_dialogo_terminado_3() -> void:
-	pass # Replace with function body.
+	pass  # Replace with function body.

@@ -1,3 +1,4 @@
+@tool
 extends Talker
 signal dialogo_terminado
 
