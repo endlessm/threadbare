@@ -1,6 +1,7 @@
-class_name ArbolFantasma2
+@tool
 extends Talker
 signal dialogo_terminado2
+
 
 # Esta función la llamará el .dialogue al terminar
 func avisar_que_el_dialogo_termino2() -> void:

@@ -2,11 +2,8 @@
 # SPDX-License-Identifier: MPL-2.0
 ## Shows a dialogue, then transitions to another scene.
 ## Intended for use in non-interactive cutscenes, such as the intro and outro to a quest
-class_name CinematicSprite
 extends Node2D
 @onready var sprite: AnimatedSprite2D = $"../Sleeping"
-
-
 
 ## Dialogue for cinematic scene
 @export var dialogue: DialogueResource = preload("uid://b7ad8nar1hmfs")
