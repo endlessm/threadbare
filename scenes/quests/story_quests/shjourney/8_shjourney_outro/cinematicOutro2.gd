@@ -2,10 +2,8 @@
 # SPDX-License-Identifier: MPL-2.0
 ## Shows a dialogue, then transitions to another scene.
 ## Intended for use in non-interactive cutscenes, such as the intro and outro to a quest
-class_name CinematicOutro2
 extends Node2D
 @export var video_player: VideoStreamPlayer
-
 
 ## Dialogue for cinematic scene
 @export var dialogue: DialogueResource = preload("uid://b7ad8nar1hmfs")

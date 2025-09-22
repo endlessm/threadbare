@@ -1,6 +1,5 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name FillGameLogic2
 extends Node
 
 signal goal_reached

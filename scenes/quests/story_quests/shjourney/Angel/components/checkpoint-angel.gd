@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name Checkpoint2
 extends Area2D
 ## A place where the player respawns if the current scene is reloaded.
 ##
