@@ -2,19 +2,30 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node
 
-## Prefix to strip from scene path when setting URL hash
-const _SCENE_PREFIX = "res://scenes/"
+## Prefixes to try adding to non-absolute path in URL hash, which may have been stripped to make it
+## more human-readable.
+const _SCENE_PREFIXES = [
+	"res://",
+	"res://scenes/",
+]
 
-## Suffix to strip from scene path when setting URL hash
+## Suffix stripped from path to make it more human-readable
 const _SCENE_SUFFIX = ".tscn"
 
 ## Proxy object for the 'window' DOM object, or null if not running on the web
 var _window: JavaScriptObject
 
+## Proxy object for the [method _on_hash_changed] callback, or null if not running on the web
+var _on_hash_changed_ref: JavaScriptObject
+
+## The last URL that was set by [method _set_hash], if running on the web.
+## If we observe the URL changing to something different, the user has edited the URL manually.
+var _current_url: String
+
 ## Matches the expected absolute path for a scene, with a capture group
 ## representing a more human-readable substring.
 var _scene_rx := RegEx.create_from_string(
-	"^" + _SCENE_PREFIX + "(?<scene>.+)\\" + _SCENE_SUFFIX + "$"
+	"^" + _SCENE_PREFIXES[-1] + "(?<scene>.+)\\" + _SCENE_SUFFIX + "$"
 )
 
 
@@ -22,6 +33,8 @@ func _ready() -> void:
 	if OS.has_feature("web"):
 		_window = JavaScriptBridge.get_interface("window")
 		_restore_from_hash.call_deferred()
+		_on_hash_changed_ref = JavaScriptBridge.create_callback(_on_hash_changed)
+		_window.onhashchange = _on_hash_changed_ref
 
 
 ## On the web, load the world indicated by the URL hash, if any.
@@ -31,10 +44,13 @@ func _restore_from_hash() -> void:
 		var path: String = url_hash.right(-1).uri_decode()
 
 		if path.is_relative_path():
-			path = _SCENE_PREFIX + path
-
 			if not path.ends_with(_SCENE_SUFFIX):
 				path += _SCENE_SUFFIX
+
+			for prefix: String in _SCENE_PREFIXES:
+				if ResourceLoader.exists(prefix + path, "PackedScene"):
+					path = prefix + path
+					break
 		# otherwise, this is an absolute uid:// or res:// path
 
 		if ResourceLoader.exists(path, "PackedScene"):
@@ -69,7 +85,15 @@ func _set_hash(resource_path: String) -> void:
 		# Replace the current URL rather than simply updating window.location to
 		# avoid creating misleading history entries that don't work if you press
 		# the browser's back button.
+		_current_url = url.href
 		_window.location.replace(url.href)
+
+
+func _on_hash_changed(args: Array) -> void:
+	var event := args[0] as JavaScriptObject
+	var new_url := event.newURL as String
+	if new_url != _current_url:
+		_restore_from_hash()
 
 
 func change_to_file_with_transition(

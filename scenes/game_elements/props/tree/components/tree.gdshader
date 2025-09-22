@@ -10,10 +10,13 @@ uniform float max_wind_intensity : hint_range(0.0, 10.0, 0.1) = 2.0;
 uniform float animation_frames : hint_range(1.0, 10.0, 1.0) = 6.0;
 
 varying vec2 world_pos;
+varying vec4 modulate;
 
 void vertex() {
-   // Transform it into world coordinates
-   world_pos = (MODEL_MATRIX * vec4(1.0, 1.0, 0.0, 1.0)).xy;
+	// Transform it into world coordinates
+	world_pos = (MODEL_MATRIX * vec4(1.0, 1.0, 0.0, 1.0)).xy;
+
+	modulate = COLOR;
 }
 
 void fragment() {
@@ -22,5 +25,5 @@ void fragment() {
 	float wind_speed = noise_value * max_wind_speed;
 	float max_offset = sin(TIME * wind_speed + wind_phase) * max_wind_intensity;
 	float curve_value = texture(wind_affect_curve, vec2((1.0 - UV.y), 0.0)).x / animation_frames;
-	COLOR = texture(TEXTURE, UV + vec2(max_offset * (1.0 - UV.y) * curve_value * 0.02, 0.0));
+	COLOR = modulate * texture(TEXTURE, UV + vec2(max_offset * (1.0 - UV.y) * curve_value * 0.02, 0.0));
 }

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Control
 
-@export var next_scene: PackedScene
+@export_file("*.tscn") var intro_scene: String
 
 @onready var main_menu: Control = %MainMenu
 @onready var options: Control = %Options
@@ -32,8 +32,8 @@ func _on_start_pressed() -> void:
 		GameState.clear()
 	(
 		SceneSwitcher
-		. change_to_packed_with_transition(
-			next_scene,
+		. change_to_file_with_transition(
+			intro_scene,
 			^"",
 			Transition.Effect.FADE,
 			Transition.Effect.FADE,

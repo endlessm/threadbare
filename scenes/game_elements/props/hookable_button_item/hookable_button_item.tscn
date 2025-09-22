@@ -1,0 +1,85 @@
+[gd_scene load_steps=12 format=3 uid="uid://dvj15pnuqr2ua"]
+
+[ext_resource type="Texture2D" uid="uid://b5bkbfgvghf7u" path="res://scenes/game_elements/props/button_item/components/button-purple.png" id="1_atpgr"]
+[ext_resource type="Script" uid="uid://18l0p87ifn3f" path="res://scenes/game_elements/props/hookable_button_item/components/hookable_button_item.gd" id="1_oue3d"]
+[ext_resource type="PackedScene" uid="uid://1vunygl4wpj6" path="res://scenes/game_elements/props/button_item/button_item.tscn" id="1_vymxr"]
+[ext_resource type="Script" uid="uid://dabvr3pqmyya4" path="res://scenes/game_elements/props/hookable_area/components/hookable_area.gd" id="3_qptlv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vymxr"]
+atlas = ExtResource("1_atpgr")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qptlv"]
+atlas = ExtResource("1_atpgr")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p5uhy"]
+atlas = ExtResource("1_atpgr")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rnj11"]
+atlas = ExtResource("1_atpgr")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6ba1g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vymxr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qptlv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p5uhy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rnj11")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i5psm"]
+radius = 4.0
+height = 12.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_atpgr"]
+size = Vector2(60, 60)
+
+[node name="HookableButtonItem" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_oue3d")
+
+[node name="ButtonItem" parent="." instance=ExtResource("1_vymxr")]
+unique_name_in_owner = true
+
+[node name="ButtonSprite" parent="ButtonItem" index="0"]
+sprite_frames = SubResource("SpriteFrames_6ba1g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_i5psm")
+disabled = true
+
+[node name="HookableArea" type="Area2D" parent="." node_paths=PackedStringArray("anchor_point")]
+collision_layer = 4096
+collision_mask = 64
+script = ExtResource("3_qptlv")
+anchor_point = NodePath("Marker2D")
+weight = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea"]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_atpgr")
+debug_color = Color(0.689707, 0.288376, 1, 0.42)
+
+[node name="Marker2D" type="Marker2D" parent="HookableArea"]
+position = Vector2(0, -24)
+
+[connection signal="collected" from="ButtonItem" to="." method="_on_button_item_collected"]
+[connection signal="area_entered" from="HookableArea" to="." method="_on_area_2d_area_entered"]
+
+[editable path="ButtonItem"]

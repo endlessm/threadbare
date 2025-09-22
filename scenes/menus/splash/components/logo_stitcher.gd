@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 @tool
 class_name LogoStitcher
-extends Node2D
+extends Control
 ## Simulates stitching along a continuous path with variable width, in order to draw the Endless
 ## logo (though other things could be animated in the same way).
 

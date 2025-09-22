@@ -1,0 +1,20 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://64aeyjitacv3"]
+
+[ext_resource type="Shader" uid="uid://l5pb8umik6s6" path="res://scenes/game_elements/props/void/components/void_chromakey.gdshader" id="1_nktdb"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ebh07"]
+noise_type = 0
+frequency = 0.3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bmckr"]
+noise = SubResource("FastNoiseLite_ebh07")
+
+[resource]
+shader = ExtResource("1_nktdb")
+shader_parameter/resolution = Vector2(1920, 1080)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_bmckr")
+shader_parameter/sparsity = 20.0
+shader_parameter/flicker_rate = 7.0
+shader_parameter/chroma_key = Color(1, 0, 0, 1)
+shader_parameter/background_color = Color(0.086, 0.11, 0.18, 1)
+shader_parameter/wipe_progress = Vector2(0, 0)

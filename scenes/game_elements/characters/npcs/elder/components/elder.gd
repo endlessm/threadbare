@@ -2,9 +2,11 @@
 # SPDX-License-Identifier: MPL-2.0
 @tool
 class_name Elder
-extends Talker
+extends NPC
 
 const STORYBOOK_SCENE := preload("uid://bhm7fdjvppt8b")
+
+@export var dialogue: DialogueResource = preload("uid://cc3paugq4mma4")
 
 ## Directory of quests that this NPC offers to the player during interactions.
 @export_dir var quest_directory: String
@@ -27,12 +29,33 @@ var chosen_quest: Quest
 var _dialogue_balloon: CanvasLayer
 var _storybook: Storybook
 
+@onready var interact_area: InteractArea = %InteractArea
+@onready var talk_behavior: TalkBehavior = %TalkBehavior
 @onready var _book_sound: AudioStreamPlayer2D = %BookSound
 @onready var _storybook_layer: CanvasLayer = %StorybookLayer
+@onready var _shapes: Array[CollisionShape2D] = [$BodyShape, $StaffShape]
 
 
 func _ready() -> void:
 	super._ready()
+
+	# Verify if the sprite_frames resource exists and matches the mirrored asset
+	var is_mirrored := sprite_frames and sprite_frames.resource_path.ends_with("elder2.tres")
+
+	for shape in _shapes:
+		if shape:
+			# Mirror or reset X position depending on the resource path
+			if is_mirrored:
+				shape.position.x = -abs(shape.position.x)
+			else:
+				shape.position.x = abs(shape.position.x)
+
+	if Engine.is_editor_hint():
+		return
+
+	talk_behavior.dialogue = dialogue
+	talk_behavior.before_dialogue = _before_dialogue
+	interact_area.interaction_ended.connect(_on_interaction_ended)
 	animated_sprite_2d.connect("frame_changed", _on_frame_changed)
 
 	if quest_directory:
@@ -52,16 +75,6 @@ func _get_configuration_warnings() -> PackedStringArray:
 	return warnings
 
 
-# Override this talker method so we can vary the dialogue title based on
-# whether the loom offering is possible.
-func _on_interaction_started(player: Player, _from_right: bool) -> void:
-	var title: String = ""
-	if eternal_loom and eternal_loom.is_item_offering_possible():
-		title = "go_to_loom"
-	DialogueManager.dialogue_ended.connect(_on_dialogue_ended, CONNECT_ONE_SHOT)
-	_dialogue_balloon = DialogueManager.show_dialogue_balloon(dialogue, title, [self, player])
-
-
 ## Show a storybook to the player, and wait for them to select a story or close the book.
 func show_storybook() -> void:
 	if not _storybook:
@@ -78,11 +91,14 @@ func show_storybook() -> void:
 	_storybook_layer.remove_child(_storybook)
 
 
-func _on_dialogue_ended(dialogue_resource: DialogueResource) -> void:
-	super(dialogue_resource)
+func _before_dialogue() -> void:
+	if eternal_loom and eternal_loom.is_item_offering_possible():
+		talk_behavior.title = "go_to_loom"
 
+
+func _on_interaction_ended() -> void:
 	if chosen_quest:
-		%InteractArea.disabled = true
+		interact_area.disabled = true
 		GameState.start_quest(chosen_quest)
 		SceneSwitcher.change_to_file_with_transition(
 			chosen_quest.first_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE

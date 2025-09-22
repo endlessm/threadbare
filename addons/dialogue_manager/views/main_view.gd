@@ -30,6 +30,12 @@ signal confirmation_closed()
 
 @onready var parse_timer: Timer = $ParseTimer
 
+# Banner
+@onready var banner: CenterContainer = %Banner
+@onready var banner_new_button: Button = %BannerNewButton
+@onready var banner_quick_open: Button = %BannerQuickOpen
+@onready var banner_examples: Button = %BannerExamples
+
 # Dialogs
 @onready var new_dialog: FileDialog = $NewDialog
 @onready var save_dialog: FileDialog = $SaveDialog
@@ -87,6 +93,7 @@ var current_file_path: String = "":
 			title_list.hide()
 			code_edit.hide()
 			errors_panel.hide()
+			banner.show()
 		else:
 			test_button.disabled = false
 			test_line_button.disabled = false
@@ -97,6 +104,7 @@ var current_file_path: String = "":
 			files_list.show()
 			title_list.show()
 			code_edit.show()
+			banner.hide()
 
 			var cursor: Vector2 = DMSettings.get_caret(current_file_path)
 			var scroll_vertical: int = DMSettings.get_scroll(current_file_path)
@@ -278,6 +286,12 @@ func open_file(path: String) -> void:
 	self.current_file_path = path
 
 
+func quick_open() -> void:
+	quick_open_files_list.files = Engine.get_meta("DMCache").get_files()
+	quick_open_dialog.popup_centered()
+	quick_open_files_list.focus_filter()
+
+
 func show_file_in_filesystem(path: String) -> void:
 	EditorInterface.get_file_system_dock().navigate_to_path(path)
 
@@ -375,6 +389,9 @@ func apply_theme() -> void:
 
 			font_size = editor_settings.get_setting("interface/editor/code_font_size")
 		}
+
+		banner_new_button.icon = get_theme_icon("New", "EditorIcons")
+		banner_quick_open.icon = get_theme_icon("Load", "EditorIcons")
 
 		new_button.icon = get_theme_icon("New", "EditorIcons")
 		new_button.tooltip_text = DMConstants.translate(&"start_a_new_file")
@@ -502,8 +519,8 @@ func show_build_error_dialog() -> void:
 
 # Generate translation line IDs for any line that doesn't already have one
 func generate_translations_keys() -> void:
-	randomize()
-	seed(Time.get_unix_time_from_system())
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+	rng.randomize()
 
 	var cursor: Vector2 = code_edit.get_cursor()
 	var lines: PackedStringArray = code_edit.text.split("\n")
@@ -550,17 +567,24 @@ func generate_translations_keys() -> void:
 			key = known_keys.find_key(text)
 		else:
 			var regex: DMCompilerRegEx = DMCompilerRegEx.new()
-			key = regex.ALPHA_NUMERIC.sub(text.strip_edges(), "_", true).substr(0, 30)
-			if key.begins_with("_"):
-				key = key.substr(1)
-			if key.ends_with("_"):
-				key = key.substr(0, key.length() - 1)
+			if DMSettings.get_setting(DMSettings.USE_UUID_ONLY_FOR_IDS, false):
+				# Generate UUID only
+				var uuid = str(randi() % 1000000).sha1_text().substr(0, 12)
+				key = uuid.to_upper()
+			else:
+				# Generate text prefix + hash
+				var prefix_length = DMSettings.get_setting(DMSettings.AUTO_GENERATED_ID_PREFIX_LENGTH, 30)
+				key = regex.ALPHA_NUMERIC.sub(text.strip_edges(), "_", true).substr(0, prefix_length)
+				if key.begins_with("_"):
+					key = key.substr(1)
+				if key.ends_with("_"):
+					key = key.substr(0, key.length() - 1)
 
-			# Make sure key is unique
-			var hashed_key: String = key + "_" + str(randi() % 1000000).sha1_text().substr(0, 6)
-			while hashed_key in known_keys and text != known_keys.get(hashed_key):
-				hashed_key = key + "_" + str(randi() % 1000000).sha1_text().substr(0, 6)
-			key = hashed_key.to_upper()
+				# Make sure key is unique
+				var hashed_key: String = key + "_" + str(randi() % 1000000).sha1_text().substr(0, 6)
+				while hashed_key in known_keys and text != known_keys.get(hashed_key):
+					hashed_key = key + "_" + str(randi() % 1000000).sha1_text().substr(0, 6)
+				key = hashed_key.to_upper()
 
 		line = line.replace("\\n", "!NEWLINE!")
 		text = text.replace("\n", "!NEWLINE!")
@@ -811,6 +835,16 @@ func show_search_form(is_enabled: bool) -> void:
 	search_and_replace.focus_line_edit()
 
 
+func run_test_scene(from_key: String) -> void:
+	DMSettings.set_user_value("run_title", from_key)
+	DMSettings.set_user_value("is_running_test_scene", true)
+	DMSettings.set_user_value("run_resource_path", current_file_path)
+	var test_scene_path: String = DMSettings.get_setting(DMSettings.CUSTOM_TEST_SCENE_PATH, "res://addons/dialogue_manager/test_scene.tscn")
+	if ResourceUID.has_id(ResourceUID.text_to_id(test_scene_path)):
+		test_scene_path = ResourceUID.get_id_path(ResourceUID.text_to_id(test_scene_path))
+	EditorInterface.play_custom_scene(test_scene_path)
+
+
 ### Signals
 
 
@@ -843,9 +877,7 @@ func _on_open_menu_id_pressed(id: int) -> void:
 		OPEN_OPEN:
 			open_dialog.popup_centered()
 		OPEN_QUICK:
-			quick_open_files_list.files = Engine.get_meta("DMCache").get_files()
-			quick_open_dialog.popup_centered()
-			quick_open_files_list.focus_filter()
+			quick_open()
 		OPEN_CLEAR:
 			DMSettings.clear_recent_files()
 			build_open_menu()
@@ -935,15 +967,16 @@ func _on_main_view_visibility_changed() -> void:
 
 
 func _on_new_button_pressed() -> void:
-	new_dialog.current_file = "dialogue"
+	new_dialog.current_file = "untitled"
 	new_dialog.popup_centered()
 
 
 func _on_new_dialog_confirmed() -> void:
-	if new_dialog.current_file.get_basename() == "":
-		var path = "res://untitled.dialogue"
-		new_file(path)
-		open_file(path)
+	var path: String = new_dialog.current_path
+	if path.get_file() == ".dialogue":
+		path = "%s/untitled.dialogue" % path.get_basename()
+	new_file(path)
+	open_file(path)
 
 
 func _on_new_dialog_file_selected(path: String) -> void:
@@ -972,8 +1005,8 @@ func _on_quick_open_files_list_file_double_clicked(file_path: String) -> void:
 
 
 func _on_quick_open_dialog_confirmed() -> void:
-	if quick_open_files_list.current_file_path:
-		open_file(quick_open_files_list.current_file_path)
+	if quick_open_files_list.last_selected_file_path:
+		open_file(quick_open_files_list.last_selected_file_path)
 
 
 func _on_save_all_button_pressed() -> void:
@@ -1049,11 +1082,7 @@ func _on_test_button_pressed() -> void:
 		errors_dialog.popup_centered()
 		return
 
-	DMSettings.set_user_value("run_title", "")
-	DMSettings.set_user_value("is_running_test_scene", true)
-	DMSettings.set_user_value("run_resource_path", current_file_path)
-	var test_scene_path: String = DMSettings.get_setting(DMSettings.CUSTOM_TEST_SCENE_PATH, "res://addons/dialogue_manager/test_scene.tscn")
-	EditorInterface.play_custom_scene(test_scene_path)
+	run_test_scene("")
 
 
 func _on_test_line_button_pressed() -> void:
@@ -1068,12 +1097,9 @@ func _on_test_line_button_pressed() -> void:
 	for i in range(code_edit.get_cursor().y, code_edit.get_line_count()):
 		if not code_edit.get_line(i).is_empty():
 			line_to_run = i
-			break;
-	DMSettings.set_user_value("run_title", str(line_to_run))
-	DMSettings.set_user_value("is_running_test_scene", true)
-	DMSettings.set_user_value("run_resource_path", current_file_path)
-	var test_scene_path: String = DMSettings.get_setting(DMSettings.CUSTOM_TEST_SCENE_PATH, "res://addons/dialogue_manager/test_scene.tscn")
-	EditorInterface.play_custom_scene(test_scene_path)
+			break
+
+	run_test_scene(str(line_to_run))
 
 
 func _on_support_button_pressed() -> void:
@@ -1156,3 +1182,21 @@ func _on_find_in_files_result_selected(path: String, cursor: Vector2, length: in
 	open_file(path)
 	code_edit.select(cursor.y, cursor.x, cursor.y, cursor.x + length)
 	code_edit.set_line_as_center_visible(cursor.y)
+
+
+func _on_banner_image_gui_input(event:  InputEvent) -> void:
+	if event.is_pressed():
+		OS.shell_open("https://bravestcoconut.com/wishlist")
+
+
+func _on_banner_new_button_pressed() -> void:
+	new_dialog.current_file = "untitled"
+	new_dialog.popup_centered()
+
+
+func _on_banner_quick_open_pressed() -> void:
+	quick_open()
+
+
+func _on_banner_examples_pressed() -> void:
+	OS.shell_open("https://itch.io/c/5226650/godot-dialogue-manager-example-projects")

@@ -65,6 +65,8 @@ var _method_info_cache: Dictionary = {}
 
 var _dotnet_dialogue_manager: RefCounted
 
+var _expression_parser: DMExpressionParser = DMExpressionParser.new()
+
 
 func _ready() -> void:
 	# Cache the known Node2D properties
@@ -291,7 +293,15 @@ func get_resolved_line_data(data: Dictionary, extra_game_states: Array = []) -> 
 	var text: String = translate(data)
 
 	# Resolve variables
-	for replacement in data.get(&"text_replacements", [] as Array[Dictionary]):
+	var text_replacements: Array[Dictionary] = data.get(&"text_replacements", [] as Array[Dictionary])
+	if text_replacements.size() == 0 and "{{" in text:
+		# This line is translated but has expressions that didn't exist in the base text.
+		text_replacements = _expression_parser.extract_replacements(text, 0)
+
+	for replacement in text_replacements:
+		if replacement.has("error"):
+			assert(false, "%s \"%s\"" % [DMConstants.get_error_message(replacement.get("error")), text])
+
 		var value = await _resolve(replacement.expression.duplicate(true), extra_game_states)
 		var index: int = text.find(replacement.value_in_text)
 		if index == -1:
@@ -699,6 +709,7 @@ func _check_case_value(match_value: Variant, data: Dictionary, extra_game_states
 	return false
 
 
+
 # Make a change to game state or run a method
 func _mutate(mutation: Dictionary, extra_game_states: Array, is_inline_mutation: bool = false) -> void:
 	var expression: Array[Dictionary] = mutation.expression
@@ -778,6 +789,13 @@ func _get_state_value(property: String, extra_game_states: Array):
 			if state.has(property):
 				return state.get(property)
 		else:
+			# Try for a C# constant first
+			if state.get_script() \
+			and state.get_script().resource_path.ends_with(".cs") \
+			and _get_dotnet_dialogue_manager().ThingHasConstant(state, property):
+				return _get_dotnet_dialogue_manager().ResolveThingConstant(state, property)
+
+			# Otherwise just let Godot try and resolve it.
 			var result = expression.execute([], state, false)
 			if not expression.has_execute_failed():
 				return result
@@ -1397,6 +1415,10 @@ func _thing_has_property(thing: Object, property: String) -> bool:
 			continue
 		if p.name == property:
 			return true
+
+	if thing.get_script() and thing.get_script().resource_path.ends_with(".cs"):
+		# If we get this far then the property might be a C# constant.
+		return _get_dotnet_dialogue_manager().ThingHasConstant(thing, property)
 
 	return false
 
