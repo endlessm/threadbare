@@ -36,8 +36,6 @@ uniform vec4 chroma_key: source_color = vec4(1.0, 0.0, 0.0, 1.0);
  */
 uniform vec4 background_color: source_color = vec4(0.086, 0.11, 0.18, 1.0);
 
-uniform vec2 wipe_progress;
-
 // The origin is the upper-left corner of the screen and coordinates ranging from (0.0, 0.0) to viewport size.
 varying vec2 screen_pos;
 
