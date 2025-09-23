@@ -3,7 +3,7 @@ extends CanvasLayer
 var llaves = 0
 
 func _ready():
-	
+
 	$KeysCollectText.text = "0/3"
 
 func handleKeyCollector(llaves_actuales: int, llaves_maximas: int):

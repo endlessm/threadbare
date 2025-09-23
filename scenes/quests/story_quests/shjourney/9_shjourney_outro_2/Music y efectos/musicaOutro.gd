@@ -4,14 +4,14 @@ extends Node2D
 
 func _ready():
 	print("=== DIAGNÓSTICO DE AUDIO ===")
-	
+
 	# Verificar que el audio_player existe
 	if audio_player == null:
 		print("ERROR: audio_player es null")
 		return
 	else:
 		print("✓ AudioStreamPlayer2 encontrado")
-	
+
 	# Cargar la música
 	var audio_stream = load("res://scenes/quests/story_quests/shjourney/9_shjourney_outro_2/Music y efectos/MusicaOutro.mp3")
 	if audio_stream == null:
@@ -19,14 +19,14 @@ func _ready():
 		return
 	else:
 		print("✓ Archivo de audio cargado correctamente")
-	
+
 	audio_player.stream = audio_stream
 	print("✓ Stream asignado al AudioStreamPlayer2")
-	
+
 	# Conectar la señal
 	animation_player.animation_started.connect(_on_animation_started)
 	print("✓ Señal conectada")
-	
+
 	# Verificar las animaciones disponibles
 	print("Animaciones disponibles:")
 	for anim_name in animation_player.get_animation_list():
@@ -35,7 +35,7 @@ func _ready():
 func _on_animation_started(anim_name: StringName):
 	print("=== ANIMACIÓN INICIADA ===")
 	print("Nombre de animación: ", anim_name)
-	
+
 	if anim_name == "Tim_position":
 		print("✓ Es la animación Tim_position - reproduciendo audio")
 		if audio_player != null and audio_player.stream != null:

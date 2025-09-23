@@ -9,7 +9,7 @@ func _ready():
 	var hud = get_node("Player/Camera2D/HUDKEYS")  # Ajusta la ruta según tu estructura
 	if hud:
 		connect("llave_recolectada", hud.handleKeyCollector)
-	
+
 	# Emitir señal inicial para mostrar 0/3
 	emit_signal("llave_recolectada", llaves, llaves_maximas)
 
@@ -20,7 +20,7 @@ var llaves: int = 0
 func ActualizarLlaves():
 	# Emitir señal para actualizar HUD
 	emit_signal("llave_recolectada", llaves, llaves_maximas)
-	
+
 	if llaves >= llaves_maximas:
 		puerta.queue_free()
 

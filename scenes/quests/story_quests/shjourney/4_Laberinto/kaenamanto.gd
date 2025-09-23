@@ -15,7 +15,7 @@ var can_attack: bool = true
 var has_screamed: bool = false  # <- control de grito por detección
 
 func _ready() -> void:
-	$CollisionShape2D.disabled = false  
+	$CollisionShape2D.disabled = false
 	vision_area.body_entered.connect(_on_body_entered)
 	vision_area.body_exited.connect(_on_body_exited)
 	attack_area.body_entered.connect(_on_attack_area_entered)
