@@ -15,6 +15,9 @@ signal step_solved(step_index: int)
 ## The order in which the player must interact with objects to solve each step of the puzzle.
 ## If this is empty, [SequencePuzzleStep] nodes that are children (or grandchildren, etc.) of
 ## this node will be used, in depth-first order.
+##
+## @deprecated: Don't set this property directly: rely on the SequencePuzzleStep nodes being found
+##              automatically.
 @export var steps: Array[SequencePuzzleStep]
 
 ## If enabled, the [SequencePuzzleHintSign] for the current step of the puzzle
