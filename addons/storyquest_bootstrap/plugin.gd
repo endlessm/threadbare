@@ -12,7 +12,7 @@ const TOOL_MENU_LABEL := "Create StoryQuest from template..."
 const STORYQUESTS_PATH := "res://scenes/quests/story_quests/"
 # Using + instead of String.path_join() here because it errors with:
 # Assigned value for constant "TEMPLATE_PATH" isn't a constant expression.
-const TEMPLATE_PATH := STORYQUESTS_PATH + "template/"
+const TEMPLATE_PATH := STORYQUESTS_PATH + "NO_EDIT/"
 const QUEST_FILENAME := "quest.tres"
 const MIN_TITLE_LENGTH := 4
 
