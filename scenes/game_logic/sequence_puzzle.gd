@@ -12,7 +12,9 @@ signal solved
 ## beyond just the solved animation on the hint sign.
 signal step_solved(step_index: int)
 
-## The order in which the player must interact with objects to solve each step of the puzzle
+## The order in which the player must interact with objects to solve each step of the puzzle.
+## If this is empty, [SequencePuzzleStep] nodes that are children (or grandchildren, etc.) of
+## this node will be used, in depth-first order.
 @export var steps: Array[SequencePuzzleStep]
 
 ## If enabled, the [SequencePuzzleHintSign] for the current step of the puzzle
@@ -39,14 +41,19 @@ var _current_step: int = 0
 var _position: int = 0
 
 
+func _find_steps(node: Node) -> void:
+	if node is SequencePuzzleStep:
+		steps.append(node)
+	for child in node.get_children():
+		_find_steps(child)
+
+
 func _ready() -> void:
 	_find_objects()
-	
-	# If the steps array is empty, automatically discover the puzzle steps from the scene children.
+
+	# If the steps array is empty, find all steps that are within this node
 	if steps.is_empty():
-		for child in get_children():
-			if child is SequencePuzzleStep:
-				steps.append(child)
+		_find_steps(self)
 
 	hint_timer.one_shot = true
 	hint_timer.wait_time = wobble_hint_time
