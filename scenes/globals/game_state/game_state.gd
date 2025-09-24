@@ -21,9 +21,9 @@ const QUEST_SECTION := "quest"
 const QUEST_PATH_KEY := "resource_path"
 const QUEST_CURRENTSCENE_KEY := "current_scene"
 const QUEST_SPAWNPOINT_KEY := "current_spawn_point"
-const QUEST_COMPLETED_KEY := "completed_missions"
 const GLOBAL_SECTION := "global"
 const GLOBAL_INCORPORATING_THREADS_KEY := "incorporating_threads"
+const COMPLETED_QUESTS_KEY := "completed_quests"
 
 ## Scenes to skip from saving.
 const TRANSIENT_SCENES := [
@@ -35,11 +35,13 @@ const TRANSIENT_SCENES := [
 ## can be added to the loom.
 @export var inventory: Array[InventoryItem] = []
 @export var current_spawn_point: NodePath
-@export var completed_missions: Array[String] = []
 
 ## Set when the loom transports the player to a trio of Sokoban puzzles, so that
 ## when the player returns to Fray's End the loom can trigger a brief cutscene.
 var incorporating_threads: bool = false
+
+## The paths to the [Quest]s that the player has completed, in the order that they were completed.
+var completed_quests: Array[String] = []
 
 var persist_progress: bool
 var _state := ConfigFile.new()
@@ -89,12 +91,14 @@ func set_current_spawn_point(spawn_point: NodePath = ^"") -> void:
 	current_spawn_point = spawn_point
 	_state.set_value(QUEST_SECTION, QUEST_SPAWNPOINT_KEY, current_spawn_point)
 	_save()
-	
 
-func add_completed_mission(mission_name: String) -> void:
-	if mission_name not in completed_missions:
-		completed_missions.append(mission_name)
-		_state.set_value(QUEST_SECTION, QUEST_COMPLETED_KEY, completed_missions)
+
+## Marks the current quest (if any) as completed.
+func mark_quest_completed() -> void:
+	var quest_name: String = _state.get_value(QUEST_SECTION, QUEST_PATH_KEY)
+	if quest_name and quest_name not in completed_quests:
+		completed_quests.append(quest_name)
+		_state.set_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, completed_quests)
 		_save()
 
 
@@ -142,7 +146,7 @@ func _update_inventory_state() -> void:
 ## Clear the persisted state.
 func clear() -> void:
 	_state.clear()
-	completed_missions.clear()
+	completed_quests = []
 	_save()
 
 
@@ -169,7 +173,7 @@ func restore() -> Dictionary:
 	incorporating_threads = _state.get_value(
 		GLOBAL_SECTION, GLOBAL_INCORPORATING_THREADS_KEY, false
 	)
-	completed_missions = _state.get_value(QUEST_SECTION, QUEST_COMPLETED_KEY, []) 
+	completed_quests = _state.get_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, [])
 	return {"scene_path": scene_path, "spawn_point": current_spawn_point}
 
 
@@ -178,4 +182,4 @@ func _save() -> void:
 		return
 	var err := _state.save(GAME_STATE_PATH)
 	if err != OK:
-		push_error("Failed to save settings to %s : %s" % [GAME_STATE_PATH, err])
+		push_error("Failed to save settings to %s: %s" % [GAME_STATE_PATH, err])
