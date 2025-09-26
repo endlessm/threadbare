@@ -10,24 +10,37 @@ const NEW_STORYQUEST_DIALOG = preload(
 const TOOL_MENU_LABEL := "Create StoryQuest from template..."
 
 const STORYQUESTS_PATH := "res://scenes/quests/story_quests/"
+const TEMPLATE_PREFIX := "NO_EDIT"
 # Using + instead of String.path_join() here because it errors with:
 # Assigned value for constant "TEMPLATE_PATH" isn't a constant expression.
-const TEMPLATE_PATH := STORYQUESTS_PATH + "template/"
+const TEMPLATE_PATH := STORYQUESTS_PATH + TEMPLATE_PREFIX + "/"
+const QUEST_FILENAME := "quest.tres"
 const MIN_TITLE_LENGTH := 4
 
 var template_info := {
 	"intro":
 	{
-		"scene_path": "/0_template_intro/template_intro.tscn",
-		"components_path": "/0_template_intro/template_intro_components/",
-		"dialogue_path": "/0_template_intro/template_intro_components/template_intro.dialogue",
-		"image_path": "0_template_intro/template_intro_components/template_intro_image.png",
+		"scene_path": "/0_{prefix}_intro/{prefix}_intro.tscn".format({"prefix": TEMPLATE_PREFIX}),
+		"components_path":
+		"/0_{prefix}_intro/{prefix}_intro_components/".format({"prefix": TEMPLATE_PREFIX}),
+		"dialogue_path":
+		"/0_{prefix}_intro/{prefix}_intro_components/{prefix}_intro.dialogue".format(
+			{"prefix": TEMPLATE_PREFIX}
+		),
+		"image_path":
+		"0_{prefix}_intro/{prefix}_intro_components/{prefix}_intro_image.png".format(
+			{"prefix": TEMPLATE_PREFIX}
+		),
 	},
 	"outro":
 	{
-		"scene_path": "/4_template_outro/template_outro.tscn",
-		"components_path": "/4_template_outro/template_outro_components/",
-		"dialogue_path": "/4_template_outro/template_outro_components/template_outro.dialogue",
+		"scene_path": "/4_{prefix}_outro/{prefix}_outro.tscn".format({"prefix": TEMPLATE_PREFIX}),
+		"components_path":
+		"/4_{prefix}_outro/{prefix}_outro_components/".format({"prefix": TEMPLATE_PREFIX}),
+		"dialogue_path":
+		"/4_{prefix}_outro/{prefix}_outro_components/{prefix}_outro.dialogue".format(
+			{"prefix": TEMPLATE_PREFIX}
+		),
 	}
 }
 
@@ -90,11 +103,13 @@ func _on_create_storyquest(title: String, description: String, filename: String)
 	for i in template_info:
 		var directory: String = template_info[i]["components_path"]
 		error = DirAccess.make_dir_recursive_absolute(
-			storyquest_path.path_join(directory.replacen("template_", ""))
+			storyquest_path.path_join(directory.replacen(TEMPLATE_PREFIX + "_", ""))
 		)
 		assert(error == OK)
 
-		var dialogue_path: String = template_info[i]["dialogue_path"].replacen("template_", "")
+		var dialogue_path: String = template_info[i]["dialogue_path"].replacen(
+			TEMPLATE_PREFIX + "_", ""
+		)
 
 		var template_dialogue: DialogueResource = ResourceLoader.load(
 			TEMPLATE_PATH.path_join(template_info[i]["dialogue_path"])
@@ -113,7 +128,9 @@ func _on_create_storyquest(title: String, description: String, filename: String)
 			# If we use ResourceLoader.load() it brings an CompressedTexture2D from a ctex file.
 			# so if we then use resource.duplicate() and try to save it with ResourceSaver.save()
 			# to a PNG file, it fails with ERR_FILE_UNRECOGNIZED.
-			image_path = storyquest_path.path_join(template_image_path.replacen("template_", ""))
+			image_path = storyquest_path.path_join(
+				template_image_path.replacen(TEMPLATE_PREFIX + "_", "")
+			)
 			error = DirAccess.copy_absolute(
 				TEMPLATE_PATH.path_join(template_image_path), image_path
 			)
@@ -137,7 +154,7 @@ func _on_create_storyquest(title: String, description: String, filename: String)
 		var template_scene := load(TEMPLATE_PATH.path_join(template_info[i]["scene_path"]))
 		var packed_scene: PackedScene = template_scene.duplicate(true)
 		var scene_path := storyquest_path.path_join(
-			template_info[i]["scene_path"].replacen("template_", "")
+			template_info[i]["scene_path"].replacen(TEMPLATE_PREFIX + "_", "")
 		)
 		if i == "intro":
 			intro_scene_path = scene_path
@@ -147,7 +164,7 @@ func _on_create_storyquest(title: String, description: String, filename: String)
 		cinematic_node.set("dialogue", dialogue)
 		if i == "intro":
 			var outro_scene_path := storyquest_path.path_join(
-				template_info["outro"]["scene_path"].replacen("template_", "")
+				template_info["outro"]["scene_path"].replacen(TEMPLATE_PREFIX + "_", "")
 			)
 			cinematic_node.set("next_scene", outro_scene_path)
 
@@ -163,9 +180,9 @@ func _on_create_storyquest(title: String, description: String, filename: String)
 		error = ResourceSaver.save(packed_scene, scene_path)
 		assert(error == OK)
 
-	var storyquest_resource := Storybook.STORY_QUEST_TEMPLATE.duplicate(true)
+	var storyquest_resource := load(TEMPLATE_PATH.path_join(QUEST_FILENAME)).duplicate(true)
 	var intro_uid := ResourceUID.id_to_text(ResourceLoader.get_resource_uid(intro_scene_path))
-	storyquest_resource.resource_path = storyquest_path.path_join(Storybook.QUEST_RESOURCE_NAME)
+	storyquest_resource.resource_path = storyquest_path.path_join(QUEST_FILENAME)
 	storyquest_resource.title = title
 	storyquest_resource.description = description
 	storyquest_resource.first_scene = intro_uid
