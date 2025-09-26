@@ -1,0 +1,295 @@
+[gd_scene load_steps=17 format=3 uid="uid://bqrl8yghaljxh"]
+
+[ext_resource type="Script" uid="uid://dmf866kgfnp3c" path="res://scenes/game_elements/characters/enemies/guard/components/guard.gd" id="1_723gi"]
+[ext_resource type="Script" uid="uid://c477jgx4lwr86" path="res://scenes/game_elements/characters/enemies/guard/components/guard_movement.gd" id="2_xqer3"]
+[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="3_aeg22"]
+[ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="4_1aufm"]
+[ext_resource type="SpriteFrames" uid="uid://ovu5wqo15s5g" path="res://scenes/quests/story_quests/template/1_template_stealth/template_stealth_components/template_guard_enemy.tres" id="5_2buw4"]
+[ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="6_5j7ww"]
+[ext_resource type="AudioStream" uid="uid://dgpeb1dtmfqud" path="res://assets/third_party/sounds/characters/enemies/guard/AlertSound.ogg" id="7_s7mok"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g173s"]
+radius = 35.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nv25s"]
+radius = 15.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nv25s"]
+light_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0hjcv"]
+light_mode = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_nv25s"]
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_mswbt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sounds/TorchHitSound:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sounds/FootSound:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_innil"]
+resource_name = "hit"
+length = 0.40001
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"alerted"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 2]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sounds/TorchHitSound:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.40001),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_8vt0k"]
+resource_name = "walk"
+length = 0.8
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sounds/FootSound:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_innil"]
+_data = {
+&"RESET": SubResource("Animation_mswbt"),
+&"alerted": SubResource("Animation_innil"),
+&"walk": SubResource("Animation_8vt0k")
+}
+
+[node name="Guardian_SueñosNocturnos" type="CharacterBody2D" groups=["guard_enemy"]]
+collision_layer = 0
+collision_mask = 528
+motion_mode = 1
+script = ExtResource("1_723gi")
+
+[node name="GuardMovement" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_xqer3")
+
+[node name="SightRayCast" type="RayCast2D" parent="."]
+unique_name_in_owner = true
+collision_mask = 8
+hit_from_inside = true
+collide_with_areas = true
+
+[node name="InstantDetectionArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InstantDetectionArea"]
+shape = SubResource("CircleShape2D_g173s")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -19)
+collision_layer = 0
+
+[node name="Light" type="PointLight2D" parent="DetectionArea"]
+position = Vector2(37.3333, 1.33333)
+scale = Vector2(0.340496, 0.340496)
+color = Color(1, 1, 0.796078, 1)
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("3_aeg22")
+offset = Vector2(377.88, 10.7686)
+script = ExtResource("4_1aufm")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea"]
+position = Vector2(-29.3333, -132)
+polygon = PackedVector2Array(302, 48, 283, 52, 279, 52, 101, 114, 98, 114, 79, 124, 77, 124, 72, 131, 71, 131, 71, 138, 78, 145, 78, 146, 95, 154, 95, 155, 275, 226, 275, 227, 292, 231, 292, 232, 312, 230, 316, 230, 330, 222, 332, 222, 340, 214, 341, 214, 346, 205, 347, 205, 351, 185, 351, 100, 347, 82, 347, 79, 338, 67, 338, 65, 325, 55, 325, 54, 302, 47)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -16)
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("5_2buw4")
+animation = &"idle"
+autoplay = "alerted"
+frame = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_nv25s")
+
+[node name="PlayerAwareness" type="TextureProgressBar" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
+z_index = 1
+material = SubResource("CanvasItemMaterial_nv25s")
+offset_left = -62.0
+offset_top = -172.0
+offset_right = 62.0
+offset_bottom = -48.0
+pivot_offset = Vector2(62, 102)
+step = 0.01
+fill_mode = 3
+nine_patch_stretch = true
+texture_under = ExtResource("6_5j7ww")
+texture_progress = ExtResource("6_5j7ww")
+tint_under = Color(1, 1, 1, 0.392157)
+tint_progress = Color(1, 1, 0, 1)
+
+[node name="DebugInfo" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = 100
+material = SubResource("CanvasItemMaterial_0hjcv")
+offset_left = -36.0
+offset_top = 20.0
+offset_right = 4.0
+offset_bottom = 43.0
+text = "position: (0.0, 0.0)
+state: Patroling
+previous_patrol_point_idx: -1
+current_patrol_point_idx: 0
+time left: 0.00
+target point: (0.0, 0.0)
+"
+label_settings = SubResource("LabelSettings_nv25s")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_innil")
+}
+
+[node name="Sounds" type="Node2D" parent="."]
+
+[node name="AlertSound" type="AudioStreamPlayer" parent="Sounds"]
+unique_name_in_owner = true
+stream = ExtResource("7_s7mok")
+volume_db = -5.0
+bus = &"SFX"
+
+[node name="FootSound" type="AudioStreamPlayer2D" parent="Sounds"]
+unique_name_in_owner = true
+volume_db = -2.0
+max_distance = 350.0
+bus = &"SFX"
+
+[node name="FireSound" type="AudioStreamPlayer2D" parent="Sounds"]
+unique_name_in_owner = true
+volume_db = -2.0
+autoplay = true
+max_distance = 500.0
+attenuation = 2.0
+bus = &"SFX"
+
+[node name="TorchHitSound" type="AudioStreamPlayer2D" parent="Sounds"]
+unique_name_in_owner = true
+volume_db = -2.0
+max_distance = 500.0
+bus = &"SFX"
