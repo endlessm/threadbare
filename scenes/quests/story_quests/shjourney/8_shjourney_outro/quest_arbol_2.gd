@@ -20,10 +20,11 @@ func reportar_arbol_contactado2() -> void:
 func abrir_camino() -> void:
 	var obstaculo2 := get_tree().get_nodes_in_group("bloqueo_camino2")
 	print("Meta alcanzada. Obstáculos encontrados en 'bloqueo_camino2': ", obstaculo2.size())
-	#for o in obstaculos:
-	obstaculo2[0].queue_free()
-	print("Camino abierto.")
-
+	if obstaculo2.size() > 0:
+		obstaculo2[0].queue_free()
+		print("Camino abierto.")
+	else:
+		print("No hay obstáculos para eliminar o ya fueron eliminados.")
 
 func _on_arbol_fantasma_2_dialogo_terminado_2() -> void:
 	pass  # Replace with function body.
