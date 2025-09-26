@@ -18,7 +18,10 @@ func reportar_arbol_contactado() -> void:
 
 
 func abrir_camino() -> void:
-	var obstaculo1 := get_tree().get_nodes_in_group("bloqueo_camino1")
-	print(" Meta alcanzada. Obstáculos encontrados en 'bloqueo_camino': ", obstaculo1.size())
-	obstaculo1[0].queue_free()
-	print("Camino abierto.")
+	var obstaculo1 = get_tree().get_nodes_in_group("bloqueo_camino1")
+	print("Meta alcanzada. Obstáculos encontrados en 'bloqueo_camino1': ", obstaculo1.size())
+	if obstaculo1.size() > 0:
+		obstaculo1[0].queue_free()
+		print("Camino abierto.")
+	else:
+		print("No hay obstáculos para eliminar o ya fueron eliminados.")
