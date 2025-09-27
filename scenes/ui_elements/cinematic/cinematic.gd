@@ -21,16 +21,15 @@ extends Node2D
 
 
 func _ready() -> void:
-	DialogueManager.show_dialogue_balloon(dialogue, "", [self])
-	await DialogueManager.dialogue_ended
+	if not GameState.intro_dialogue_shown:
+		DialogueManager.show_dialogue_balloon(dialogue, "", [self])
+		await DialogueManager.dialogue_ended
+		GameState.intro_dialogue_shown = true
 
 	if next_scene:
-		(
-			SceneSwitcher
-			. change_to_file_with_transition(
-				next_scene,
-				spawn_point_path,
-				Transition.Effect.FADE,
-				Transition.Effect.FADE,
-			)
+		SceneSwitcher.change_to_file_with_transition(
+			next_scene,
+			spawn_point_path,
+			Transition.Effect.FADE,
+			Transition.Effect.FADE,
 		)
