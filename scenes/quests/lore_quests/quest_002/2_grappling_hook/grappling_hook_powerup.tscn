@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://bk8rjvfmm20b7"]
+[gd_scene load_steps=20 format=4 uid="uid://bk8rjvfmm20b7"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_efavn"]
 [ext_resource type="Script" uid="uid://ca7w1ib458a7x" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/grappling_hook_powerup.gd" id="1_hx14g"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dohb701lxbe5s" path="res://scenes/game_elements/props/hookable_needle/hookable_needle.tscn" id="4_7gbyj"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_rup4f"]
 [ext_resource type="SpriteFrames" uid="uid://07di3updrwh0" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_purple.tres" id="5_ptg16"]
+[ext_resource type="Script" uid="uid://dagrhfrj0f33i" path="res://scenes/game_logic/camera_behaviors/frame_camera_behavior.gd" id="6_7gbyj"]
 [ext_resource type="PackedScene" uid="uid://evb46lm6ssu2" path="res://scenes/game_elements/props/hookable_pin/hookable_pin.tscn" id="6_vodlh"]
 [ext_resource type="PackedScene" uid="uid://dvj15pnuqr2ua" path="res://scenes/game_elements/props/hookable_button_item/hookable_button_item.tscn" id="7_rlnni"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="8_g2ubw"]
@@ -89,6 +90,14 @@ limit_right = 1920
 limit_bottom = 2368
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="FrameCameraBehavior" type="Node2D" parent="OnTheGround/Player/Camera2D" node_paths=PackedStringArray("camera", "main_target", "frame_target")]
+unique_name_in_owner = true
+script = ExtResource("6_7gbyj")
+camera = NodePath("..")
+main_target = NodePath("../..")
+frame_target = NodePath("../../PlayerHook/HookEnding")
+metadata/_custom_type_script = "uid://dagrhfrj0f33i"
 
 [node name="ButtonsA" type="Node2D" parent="OnTheGround"]
 y_sort_enabled = true
@@ -231,7 +240,8 @@ scale = Vector2(2, 2)
 [node name="ButtonSprite" parent="OnTheGround/LongerStringPowerUp/ButtonItem" index="0"]
 sprite_frames = SubResource("SpriteFrames_g2ubw")
 
-[node name="HookableArea" parent="OnTheGround/LongerStringPowerUp" index="2"]
+[node name="HookableArea" parent="OnTheGround/LongerStringPowerUp" index="2" node_paths=PackedStringArray("controlled_entity")]
+controlled_entity = NodePath("..")
 weight = 0.3
 
 [node name="Teleporter" parent="." instance=ExtResource("9_4a5bj")]
