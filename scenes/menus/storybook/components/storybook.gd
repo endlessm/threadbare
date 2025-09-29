@@ -34,7 +34,7 @@ var _navigation_locked: bool = false
 @onready var storybook_page: StorybookPage = %StorybookPage
 @onready var back_button: Button = %BackButton
 @onready var animated_book: AnimatedSprite2D = %AnimatedSprite2D
-@onready var ui_container: MarginContainer = %MarginContainer
+@onready var ui_container: Control = %StoryBookContent
 @onready var left_button: Button = %Left_Button
 @onready var right_button: Button = %Right_Button
 
