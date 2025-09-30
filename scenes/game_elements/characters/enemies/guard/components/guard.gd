@@ -22,8 +22,6 @@ enum State {
 
 const DEFAULT_SPRITE_FRAMES = preload("uid://ovu5wqo15s5g")
 
-const LOOK_AT_TURN_SPEED: float = 10.0
-
 @export_category("Appearance")
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAMES:
 	set = _set_sprite_frames
@@ -156,8 +154,6 @@ func _process(delta: float) -> void:
 	_process_state()
 	guard_movement.move()
 
-	_update_direction(delta)
-
 	if state != State.ALERTED:
 		_update_player_awareness(delta)
 
@@ -183,20 +179,6 @@ func _process_state() -> void:
 				state = State.PATROLLING
 		State.ALERTED:
 			guard_movement.stop_moving()
-
-
-## Updates where the Guard is looking at.
-func _update_direction(delta: float) -> void:
-	if velocity.is_zero_approx():
-		return
-
-	var target_angle: float = velocity.angle()
-	detection_area.rotation = rotate_toward(
-		detection_area.rotation, target_angle, delta * LOOK_AT_TURN_SPEED
-	)
-
-	if not is_zero_approx(velocity.x):
-		animated_sprite_2d.flip_h = velocity.x < 0
 
 
 ## Changes how PlayerAwareness looks to reflect how close is the player to
