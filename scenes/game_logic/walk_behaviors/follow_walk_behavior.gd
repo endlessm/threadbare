@@ -8,7 +8,8 @@ extends BaseCharacterBehavior
 ## Make the character follow a target.
 ##
 ## The character retargets after traveling [member travel_distance],
-## or when it gets stuck colliding with something.
+## or when it gets stuck colliding with something, or when a new target
+## is set.
 
 ## Emitted when [member target] becomes reached or not.
 signal target_reached_changed(is_reached: bool)
@@ -51,6 +52,8 @@ var is_target_reached: bool:
 func _set_target(new_target: Node2D) -> void:
 	target = new_target
 	update_configuration_warnings()
+	if target:
+		_update_direction()
 
 
 func _set_is_target_reached(new_is_target_reached: bool) -> void:
@@ -79,7 +82,8 @@ func _ready() -> void:
 	if not speeds:
 		speeds = CharacterSpeeds.new()
 
-	_update_direction()
+	if target:
+		_update_direction()
 
 
 func _physics_process(delta: float) -> void:
