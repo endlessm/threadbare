@@ -84,7 +84,7 @@ var last_seen_position: Vector2
 var breadcrumbs: Array[Vector2] = []
 ## Current state of the guard.
 var state: State = State.PATROLLING:
-	set = _change_state
+	set = _set_state
 
 # The player that's being detected.
 var _player: Player
@@ -180,7 +180,7 @@ func _process_state() -> void:
 				var target_position: Vector2 = breadcrumbs.back()
 				guard_movement.set_destination(target_position)
 			else:
-				_change_state(State.PATROLLING)
+				state = State.PATROLLING
 		State.ALERTED:
 			guard_movement.stop_moving()
 
@@ -238,24 +238,6 @@ func _update_debug_info() -> void:
 	debug_value("target point", guard_movement.destination)
 
 
-## What happens when a certain state is
-func _on_enter_state(new_state: State) -> void:
-	match new_state:
-		State.DETECTING:
-			if not _alert_sound.playing:
-				_alert_sound.play()
-		State.ALERTED:
-			if not _alert_sound.playing:
-				_alert_sound.play()
-			animation_player.play(&"alerted")
-			player_awareness.ratio = 1.0
-			player_awareness.tint_progress = Color.RED
-			player_awareness.visible = true
-		State.INVESTIGATING:
-			guard_movement.start_moving_now()
-			breadcrumbs.push_back(global_position)
-
-
 ## What happens when the guard reached the point it was walking towards
 func _on_destination_reached() -> void:
 	match state:
@@ -272,7 +254,7 @@ func _on_destination_reached() -> void:
 func _on_still_time_finished() -> void:
 	match state:
 		State.INVESTIGATING:
-			_change_state(State.RETURNING)
+			state = State.RETURNING
 
 
 ## What happens if the guard cannot reach their destination because it got
@@ -288,18 +270,32 @@ func _on_path_blocked() -> void:
 				previous_patrol_point_idx = current_patrol_point_idx
 				current_patrol_point_idx = new_patrol_point
 		State.INVESTIGATING:
-			_change_state(State.RETURNING)
+			state = State.RETURNING
 		State.RETURNING:
 			if not breadcrumbs.is_empty():
 				breadcrumbs.pop_back()
 
 
-func _change_state(next_state: State) -> void:
-	if next_state == state:
+func _set_state(new_state: State) -> void:
+	if state == new_state:
 		return
 
-	state = next_state
-	_on_enter_state(state)
+	state = new_state
+
+	match state:
+		State.DETECTING:
+			if not _alert_sound.playing:
+				_alert_sound.play()
+		State.ALERTED:
+			if not _alert_sound.playing:
+				_alert_sound.play()
+			animation_player.play(&"alerted")
+			player_awareness.ratio = 1.0
+			player_awareness.tint_progress = Color.RED
+			player_awareness.visible = true
+		State.INVESTIGATING:
+			guard_movement.start_moving_now()
+			breadcrumbs.push_back(global_position)
 
 
 ## Pass a property name as a parameter and it shows its name and its value
