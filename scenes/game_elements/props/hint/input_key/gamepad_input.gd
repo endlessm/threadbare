@@ -20,31 +20,46 @@ extends TextureRect
 var current_device: String = ""
 var is_keyboard_mode: bool = true
 
+
 func _physics_process(_delta: float) -> void:
 	if is_keyboard_mode:
-		return  
-		
+		return
+
 	if is_controller_main_display:
 		var is_pressed = Input.is_action_pressed(action_name)
 		var any_direction_pressed = (
-			Input.is_action_pressed("ui_up") or
-			Input.is_action_pressed("ui_down") or
-			Input.is_action_pressed("ui_left") or
-			Input.is_action_pressed("ui_right")
+			Input.is_action_pressed("ui_up")
+			or Input.is_action_pressed("ui_down")
+			or Input.is_action_pressed("ui_left")
+			or Input.is_action_pressed("ui_right")
 		)
-		
+
 		if is_pressed:
 			visible = true
 			modulate = Color.WHITE
 			match current_device:
 				InputHelper.DEVICE_XBOX_CONTROLLER:
-					texture = xbox_pressed_texture if xbox_pressed_texture else controller_pressed_texture
+					texture = (
+						xbox_pressed_texture if xbox_pressed_texture else controller_pressed_texture
+					)
 				InputHelper.DEVICE_PLAYSTATION_CONTROLLER:
-					texture = playstation_pressed_texture if playstation_pressed_texture else controller_pressed_texture
+					texture = (
+						playstation_pressed_texture
+						if playstation_pressed_texture
+						else controller_pressed_texture
+					)
 				InputHelper.DEVICE_SWITCH_CONTROLLER:
-					texture = nintendo_pressed_texture if nintendo_pressed_texture else controller_pressed_texture
+					texture = (
+						nintendo_pressed_texture
+						if nintendo_pressed_texture
+						else controller_pressed_texture
+					)
 				InputHelper.DEVICE_STEAMDECK_CONTROLLER:
-					texture = steam_pressed_texture if steam_pressed_texture else controller_pressed_texture
+					texture = (
+						steam_pressed_texture
+						if steam_pressed_texture
+						else controller_pressed_texture
+					)
 				_:
 					texture = controller_pressed_texture
 		elif not any_direction_pressed:
@@ -64,10 +79,12 @@ func _physics_process(_delta: float) -> void:
 		else:
 			visible = false
 
+
 func _ready() -> void:
 	print("Controller node ready: ", name, " - Is main display: ", is_controller_main_display)
 	InputHelper.device_changed.connect(_on_input_device_changed)
 	_detect_initial_device()
+
 
 func _detect_initial_device():
 	var joypads = Input.get_connected_joypads()
@@ -85,14 +102,15 @@ func _detect_initial_device():
 		elif joy_name.find("steam") != -1:
 			_on_input_device_changed(InputHelper.DEVICE_STEAMDECK_CONTROLLER, device_id)
 		else:
-			_on_input_device_changed(InputHelper.DEVICE_XBOX_CONTROLLER, device_id) # fallback
+			_on_input_device_changed(InputHelper.DEVICE_XBOX_CONTROLLER, device_id)  # fallback
 	else:
 		_on_input_device_changed(InputHelper.DEVICE_KEYBOARD, 0)
 
-func _on_input_device_changed(device: String, device_index: int) -> void:
+
+func _on_input_device_changed(device: String, _device_index: int) -> void:
 	print("Controller node - Device detected: ", device, " - Node: ", name)
 	current_device = device
-	
+
 	match device:
 		InputHelper.DEVICE_KEYBOARD:
 			is_keyboard_mode = true
@@ -100,25 +118,25 @@ func _on_input_device_changed(device: String, device_index: int) -> void:
 				visible = false
 			else:
 				visible = false
-				
+
 		InputHelper.DEVICE_XBOX_CONTROLLER:
 			is_keyboard_mode = false
 			if is_controller_main_display:
 				visible = true
 				texture = xbox_controller_texture
-				
+
 		InputHelper.DEVICE_PLAYSTATION_CONTROLLER:
 			is_keyboard_mode = false
 			if is_controller_main_display:
 				visible = true
 				texture = playstation_controller_texture
-				
+
 		InputHelper.DEVICE_SWITCH_CONTROLLER:
 			is_keyboard_mode = false
 			if is_controller_main_display:
 				visible = true
 				texture = nintendo_controller_texture
-				
+
 		InputHelper.DEVICE_STEAMDECK_CONTROLLER:
 			is_keyboard_mode = false
 			if is_controller_main_display:
