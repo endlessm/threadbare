@@ -58,7 +58,7 @@ func _on_input_device_changed(device: String, device_index: int) -> void:
 			texture = playstation_controller_texture
 			print("Interact showing PlayStation texture")
 			
-		InputHelper.DEVICE_NINTENDO_CONTROLLER:
+		InputHelper.DEVICE_SWITCH_CONTROLLER:
 			is_keyboard_mode = false
 			texture = nintendo_controller_texture
 			print("Interact showing Nintendo texture")

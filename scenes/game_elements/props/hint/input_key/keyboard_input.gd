@@ -33,7 +33,7 @@ func _initialize_device_state() -> void:
 		elif joy_name.find("sony") != -1 or joy_name.find("ps") != -1:
 			_on_input_device_changed(InputHelper.DEVICE_PLAYSTATION_CONTROLLER, device_id)
 		elif joy_name.find("nintendo") != -1 or joy_name.find("switch") != -1:
-			_on_input_device_changed(InputHelper.DEVICE_NINTENDO_CONTROLLER, device_id)
+			_on_input_device_changed(InputHelper.DEVICE_SWITCH_CONTROLLER, device_id)
 		elif joy_name.find("steam") != -1:
 			_on_input_device_changed(InputHelper.DEVICE_STEAMDECK_CONTROLLER, device_id)
 		else:

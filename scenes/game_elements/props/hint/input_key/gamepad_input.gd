@@ -41,7 +41,7 @@ func _physics_process(_delta: float) -> void:
 					texture = xbox_pressed_texture if xbox_pressed_texture else controller_pressed_texture
 				InputHelper.DEVICE_PLAYSTATION_CONTROLLER:
 					texture = playstation_pressed_texture if playstation_pressed_texture else controller_pressed_texture
-				InputHelper.DEVICE_NINTENDO_CONTROLLER:
+				InputHelper.DEVICE_SWITCH_CONTROLLER:
 					texture = nintendo_pressed_texture if nintendo_pressed_texture else controller_pressed_texture
 				InputHelper.DEVICE_STEAMDECK_CONTROLLER:
 					texture = steam_pressed_texture if steam_pressed_texture else controller_pressed_texture
@@ -55,7 +55,7 @@ func _physics_process(_delta: float) -> void:
 					texture = xbox_controller_texture
 				InputHelper.DEVICE_PLAYSTATION_CONTROLLER:
 					texture = playstation_controller_texture
-				InputHelper.DEVICE_NINTENDO_CONTROLLER:
+				InputHelper.DEVICE_SWITCH_CONTROLLER:
 					texture = nintendo_controller_texture
 				InputHelper.DEVICE_STEAMDECK_CONTROLLER:
 					texture = steam_controller_texture
@@ -81,7 +81,7 @@ func _detect_initial_device():
 		elif joy_name.find("sony") != -1 or joy_name.find("ps") != -1:
 			_on_input_device_changed(InputHelper.DEVICE_PLAYSTATION_CONTROLLER, device_id)
 		elif joy_name.find("nintendo") != -1 or joy_name.find("switch") != -1:
-			_on_input_device_changed(InputHelper.DEVICE_NINTENDO_CONTROLLER, device_id)
+			_on_input_device_changed(InputHelper.DEVICE_SWITCH_CONTROLLER, device_id)
 		elif joy_name.find("steam") != -1:
 			_on_input_device_changed(InputHelper.DEVICE_STEAMDECK_CONTROLLER, device_id)
 		else:
@@ -113,7 +113,7 @@ func _on_input_device_changed(device: String, device_index: int) -> void:
 				visible = true
 				texture = playstation_controller_texture
 				
-		InputHelper.DEVICE_NINTENDO_CONTROLLER:
+		InputHelper.DEVICE_SWITCH_CONTROLLER:
 			is_keyboard_mode = false
 			if is_controller_main_display:
 				visible = true
