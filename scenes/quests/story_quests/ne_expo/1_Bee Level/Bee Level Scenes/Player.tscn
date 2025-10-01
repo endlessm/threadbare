@@ -80,9 +80,18 @@ shape = SubResource("RectangleShape2D_4g8q3")
 unique_name_in_owner = true
 wait_time = 1.5
 
-[node name="IceSpearATtackTimer" type="Timer" parent="Attack"]
+[node name="IceSpearATtackTimer" type="Timer" parent="Attack/IceSpearTimer"]
 unique_name_in_owner = true
 wait_time = 0.075
+
+[node name="TornadoTimer" type="Timer" parent="Attack"]
+unique_name_in_owner = true
+
+[node name="TornadoAttackTimer" type="Timer" parent="Attack/TornadoTimer"]
+unique_name_in_owner = true
+
+[node name="AttackBeesBase" type="Node2D" parent="Attack"]
+unique_name_in_owner = true
 
 [node name="EnemyDetectionArea" type="Area2D" parent="."]
 collision_layer = 128
@@ -94,7 +103,9 @@ shape = SubResource("CircleShape2D_oywj0")
 
 [connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
 [connection signal="timeout" from="Attack/IceSpearTimer" to="." method="_on_ice_spear_timer_timeout"]
-[connection signal="timeout" from="Attack/IceSpearATtackTimer" to="." method="_on_ice_spear_a_ttack_timer_timeout"]
+[connection signal="timeout" from="Attack/IceSpearTimer/IceSpearATtackTimer" to="." method="_on_ice_spear_a_ttack_timer_timeout"]
+[connection signal="timeout" from="Attack/TornadoTimer" to="." method="_on_tornado_timer_timeout"]
+[connection signal="timeout" from="Attack/TornadoTimer/TornadoAttackTimer" to="." method="_on_tornado_attack_timer_timeout"]
 [connection signal="body_entered" from="EnemyDetectionArea" to="." method="_on_enemy_detection_area_body_entered"]
 [connection signal="body_exited" from="EnemyDetectionArea" to="." method="_on_enemy_detection_area_body_exited"]
 
