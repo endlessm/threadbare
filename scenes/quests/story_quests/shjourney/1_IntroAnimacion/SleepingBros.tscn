@@ -3,10 +3,10 @@
 [ext_resource type="Texture2D" uid="uid://dbsjs5bpkvckp" path="res://scenes/quests/story_quests/shjourney/1_IntroAnimacion/timysuhermanadurmiendo-Sheet.png" id="1_5qws3"]
 [ext_resource type="Script" uid="uid://d013y37215by1" path="res://scenes/quests/story_quests/shjourney/1_IntroAnimacion/saltar_escena.gd" id="2_f6rwu"]
 [ext_resource type="PackedScene" uid="uid://p6q2uo2us0il" path="res://scenes/quests/story_quests/shjourney/light.tscn" id="2_shlmy"]
-[ext_resource type="AudioStream" uid="uid://1nprqkieqwed" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/template_intro_components/EffectSounds/Slow_cinematic_clock-#2-1758941480262.wav" id="4_bnyr3"]
-[ext_resource type="AudioStream" uid="uid://cg62shqjwgpre" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/template_intro_components/EffectSounds/switch_off_lamp-#2-1758941050164.wav" id="4_xcuh4"]
-[ext_resource type="AudioStream" uid="uid://w08oint4ut6v" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/template_intro_components/EffectSounds/surprice_gap_girl_ec-#1-1758944647123.wav" id="5_2buwu"]
-[ext_resource type="AudioStream" uid="uid://b2v6ubcpiqfpq" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/template_intro_components/EffectSounds/cinematic_magical_di-#2-1758941298732.wav" id="7_f6rwu"]
+[ext_resource type="AudioStream" uid="uid://c5v8fsnkut3xc" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/template_intro_components/EffectSounds/switch-off.wav" id="4_f6rwu"]
+[ext_resource type="AudioStream" uid="uid://clmxwnxcaonc" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/template_intro_components/EffectSounds/Dessapear-effect.wav" id="5_u1rls"]
+[ext_resource type="AudioStream" uid="uid://cy2i2517hhtvo" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/template_intro_components/EffectSounds/clock-tickingecho.wav" id="6_rrck4"]
+[ext_resource type="AudioStream" uid="uid://d3f7n4510edop" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/template_intro_components/EffectSounds/woman-gasping.mp3" id="7_su3c6"]
 [ext_resource type="Script" uid="uid://dgfhfulwcprar" path="res://scenes/quests/story_quests/shjourney/1_IntroAnimacion/cinematicSprite.gd" id="8_f6rwu"]
 [ext_resource type="Texture2D" uid="uid://p8kty3uxifxu" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Space_Key_Dark.png" id="9_u1rls"]
 [ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="10_rrck4"]
@@ -721,7 +721,7 @@ tracks/1/path = NodePath("../../SoundEffects/offLamp:playing")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(4.73333),
+"times": PackedFloat32Array(5.06667),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -745,7 +745,19 @@ tracks/3/path = NodePath("../../SoundEffects/voice:playing")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(7.26667),
+"times": PackedFloat32Array(14.8667),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../../SoundEffects/clock:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -801,6 +813,18 @@ tracks/3/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../../SoundEffects/clock:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0y5ta"]
 _data = {
@@ -844,20 +868,18 @@ autoplay = "OffLight"
 [node name="SoundEffects" type="Node2D" parent="."]
 
 [node name="offLamp" type="AudioStreamPlayer2D" parent="SoundEffects"]
-stream = ExtResource("4_xcuh4")
+stream = ExtResource("4_f6rwu")
 
 [node name="Dessapear" type="AudioStreamPlayer2D" parent="SoundEffects"]
-stream = ExtResource("5_2buwu")
+stream = ExtResource("5_u1rls")
 volume_db = -16.838
 
 [node name="clock" type="AudioStreamPlayer2D" parent="SoundEffects"]
-stream = ExtResource("4_bnyr3")
-volume_db = -25.608
+stream = ExtResource("6_rrck4")
 autoplay = true
 
 [node name="voice" type="AudioStreamPlayer2D" parent="SoundEffects"]
-stream = ExtResource("7_f6rwu")
-volume_db = -15.848
+stream = ExtResource("7_su3c6")
 
 [node name="CinematicSprite" type="Node2D" parent="."]
 script = ExtResource("8_f6rwu")

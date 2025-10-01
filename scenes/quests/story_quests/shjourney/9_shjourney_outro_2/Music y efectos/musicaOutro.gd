@@ -13,7 +13,7 @@ func _ready():
 		print("✓ AudioStreamPlayer2 encontrado")
 	
 	# Cargar la música
-	var audio_stream = load("res://scenes/quests/story_quests/shjourney/9_shjourney_outro_2/Music y efectos/MusicaOutro_V1.mp3")
+	var audio_stream = load("res://scenes/quests/story_quests/shjourney/2_shjourney_intro/template_intro_components/EffectSounds/emotional-orchestral-music.wav")
 	if audio_stream == null:
 		print("ERROR: No se pudo cargar el archivo de audio")
 		return
