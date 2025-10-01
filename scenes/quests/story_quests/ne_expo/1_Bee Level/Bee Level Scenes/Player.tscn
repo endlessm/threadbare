@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://j6sd2eeuefkn"]
+[gd_scene load_steps=9 format=3 uid="uid://j6sd2eeuefkn"]
 
 [ext_resource type="Texture2D" uid="uid://dwwh85vhh4lhe" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Player Components/Bumbly Bee Wings flutter.png" id="1_hthnt"]
 [ext_resource type="Script" uid="uid://1glccm7bx0ob" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee level Scripts/player.gd" id="1_wgidg"]
@@ -25,6 +25,9 @@ height = 588.202
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4g8q3"]
 size = Vector2(310, 648.902)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oywj0"]
+radius = 6804.97
 
 [node name="CharacterBody2D (player)" type="CharacterBody2D" groups=["beeplayer"]]
 scale = Vector2(0.1, 0.1)
@@ -55,7 +58,6 @@ scale = Vector2(8.6, 8.6)
 [node name="CollisionShape2D (player)" type="CollisionShape2D" parent="."]
 position = Vector2(-30, 60)
 rotation = -0.947225
-scale = Vector2(1, 1)
 shape = SubResource("CapsuleShape2D_4g8q3")
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -72,6 +74,39 @@ rotation = -0.925983
 scale = Vector2(0.999999, 0.999999)
 shape = SubResource("RectangleShape2D_4g8q3")
 
+[node name="Attack" type="Node2D" parent="."]
+
+[node name="IceSpearTimer" type="Timer" parent="Attack"]
+unique_name_in_owner = true
+wait_time = 1.5
+
+[node name="IceSpearATtackTimer" type="Timer" parent="Attack/IceSpearTimer"]
+unique_name_in_owner = true
+wait_time = 0.075
+
+[node name="TornadoTimer" type="Timer" parent="Attack"]
+unique_name_in_owner = true
+
+[node name="TornadoAttackTimer" type="Timer" parent="Attack/TornadoTimer"]
+unique_name_in_owner = true
+
+[node name="AttackBeesBase" type="Node2D" parent="Attack"]
+unique_name_in_owner = true
+
+[node name="EnemyDetectionArea" type="Area2D" parent="."]
+collision_layer = 128
+collision_mask = 128
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetectionArea"]
+shape = SubResource("CircleShape2D_oywj0")
+
 [connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
+[connection signal="timeout" from="Attack/IceSpearTimer" to="." method="_on_ice_spear_timer_timeout"]
+[connection signal="timeout" from="Attack/IceSpearTimer/IceSpearATtackTimer" to="." method="_on_ice_spear_a_ttack_timer_timeout"]
+[connection signal="timeout" from="Attack/TornadoTimer" to="." method="_on_tornado_timer_timeout"]
+[connection signal="timeout" from="Attack/TornadoTimer/TornadoAttackTimer" to="." method="_on_tornado_attack_timer_timeout"]
+[connection signal="body_entered" from="EnemyDetectionArea" to="." method="_on_enemy_detection_area_body_entered"]
+[connection signal="body_exited" from="EnemyDetectionArea" to="." method="_on_enemy_detection_area_body_exited"]
 
 [editable path="HurtBox"]

@@ -1,9 +1,26 @@
-[gd_scene load_steps=5 format=4 uid="uid://dy22gq75ye3gi"]
+[gd_scene load_steps=9 format=4 uid="uid://dy22gq75ye3gi"]
 
 [ext_resource type="Texture2D" uid="uid://kwdyjjg0dqus" path="res://scenes/quests/story_quests/ne_expo/ne_expo_tiles/Bee level background-1.png.png" id="1_chl35"]
 [ext_resource type="TileSet" uid="uid://bx06pkg7s7xyk" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/ne_expo_tileset.tres" id="2_bwf2w"]
 [ext_resource type="PackedScene" uid="uid://j6sd2eeuefkn" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee Level Scenes/Player.tscn" id="2_rj34u"]
-[ext_resource type="PackedScene" uid="uid://dvrhbeg68gecb" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee Level Scenes/enemy.tscn" id="4_bwf2w"]
+[ext_resource type="PackedScene" uid="uid://jo5vy6hf1euo" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee Level Scenes/Utility/enemy_spawner.tscn" id="4_bwf2w"]
+[ext_resource type="Script" uid="uid://dv6uoi4iflrl7" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee level Scripts/spawn_info.gd" id="5_fhyr3"]
+[ext_resource type="PackedScene" uid="uid://dvrhbeg68gecb" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee Level Scenes/enemy.tscn" id="6_klxsj"]
+
+[sub_resource type="Resource" id="Resource_sqck2"]
+script = ExtResource("5_fhyr3")
+time_end = 5
+enemy = ExtResource("6_klxsj")
+enemy_num = 1
+metadata/_custom_type_script = "uid://dv6uoi4iflrl7"
+
+[sub_resource type="Resource" id="Resource_s6ah7"]
+script = ExtResource("5_fhyr3")
+time_start = 5
+time_end = 60
+enemy = ExtResource("6_klxsj")
+enemy_num = 10
+metadata/_custom_type_script = "uid://dv6uoi4iflrl7"
 
 [node name="World" type="Node2D"]
 
@@ -20,7 +37,6 @@ tile_map_data = PackedByteArray("AABD/z8ACwABAAEAAABE/z8ACQABAAEAAABD/z4ADAABAAE
 tile_set = ExtResource("2_bwf2w")
 
 [node name="CharacterBody2D (player)" parent="." instance=ExtResource("2_rj34u")]
-position = Vector2(24, 18)
 
-[node name="enemy_hornet_weak" parent="." instance=ExtResource("4_bwf2w")]
-position = Vector2(327, -55)
+[node name="EnemySpawner" parent="." instance=ExtResource("4_bwf2w")]
+spawns = Array[ExtResource("5_fhyr3")]([SubResource("Resource_sqck2"), SubResource("Resource_s6ah7")])

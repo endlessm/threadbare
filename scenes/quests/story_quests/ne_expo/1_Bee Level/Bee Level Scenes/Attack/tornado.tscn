@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://bgrde1550ef18"]
+
+[ext_resource type="Script" uid="uid://c7g8ggkd2duoa" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee level Scripts/tornado.gd" id="1_2k7xl"]
+[ext_resource type="Texture2D" uid="uid://cfo54gnadpwli" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Attack Components/Tornado(1)-sheet.png" id="1_o3fb2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2k7xl"]
+atlas = ExtResource("1_o3fb2")
+region = Rect2(0, 0, 1080, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gdurr"]
+atlas = ExtResource("1_o3fb2")
+region = Rect2(1080, 0, 1080, 1080)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6fvxd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2k7xl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gdurr")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y8qd6"]
+radius = 433.0
+height = 1052.0
+
+[node name="Tornado" type="Area2D" groups=["attack"]]
+top_level = true
+scale = Vector2(0.05, 0.05)
+collision_layer = 128
+collision_mask = 0
+script = ExtResource("1_2k7xl")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_6fvxd")
+autoplay = "default"
+frame_progress = 0.6390222
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_y8qd6")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 20.0
+autostart = true
+
+[node name="sound_attack" type="AudioStreamPlayer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
