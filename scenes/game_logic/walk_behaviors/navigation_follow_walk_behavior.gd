@@ -122,8 +122,8 @@ func _on_agent_navigation_finished() -> void:
 
 
 func _ready() -> void:
+	super._ready()
 	if Engine.is_editor_hint():
-		set_physics_process(false)
 		return
 
 	if not speeds:

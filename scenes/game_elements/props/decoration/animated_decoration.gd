@@ -23,13 +23,3 @@ func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 
 func _ready() -> void:
 	_set_sprite_frames(sprite_frames)
-	var frames_length: int = animated_sprite_2d.sprite_frames.get_frame_count(
-		animated_sprite_2d.animation
-	)
-	animated_sprite_2d.frame = randi_range(0, frames_length)
-
-
-func _notification(what: int) -> void:
-	match what:
-		NOTIFICATION_EDITOR_PRE_SAVE:
-			animated_sprite_2d.frame_progress = 0

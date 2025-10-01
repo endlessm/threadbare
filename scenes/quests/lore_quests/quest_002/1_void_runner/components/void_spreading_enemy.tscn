@@ -1,13 +1,33 @@
-[gd_scene load_steps=5 format=3 uid="uid://cokul8w425pja"]
+[gd_scene load_steps=9 format=3 uid="uid://cokul8w425pja"]
 
 [ext_resource type="Script" uid="uid://dil8mgaf03bei" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_spreading_enemy.gd" id="1_304le"]
 [ext_resource type="Script" uid="uid://r1kriwyodjlt" path="res://scenes/game_logic/walk_behaviors/navigation_follow_walk_behavior.gd" id="2_31awk"]
+[ext_resource type="Script" uid="uid://id28maao3vdy" path="res://scenes/game_logic/walk_behaviors/path_walk_behavior.gd" id="2_304le"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="3_45we0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8g3pn"]
 size = Vector2(68, 20)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8l6e1"]
 radius = 96.0
+
+[sub_resource type="Resource" id="Resource_2dnul"]
+script = ExtResource("3_45we0")
+walk_speed = 90.0
+run_speed = 500.0
+stopping_step = 1500.0
+moving_step = 4000.0
+stuck_speed = 300.0
+metadata/_custom_type_script = "uid://csev4hv57utxv"
+
+[sub_resource type="Resource" id="Resource_pumxu"]
+script = ExtResource("3_45we0")
+walk_speed = 270.0
+run_speed = 500.0
+stopping_step = 1500.0
+moving_step = 4000.0
+stuck_speed = 300.0
+metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [node name="VoidSpreadingEnemy" type="CharacterBody2D"]
 collision_layer = 0
@@ -29,9 +49,17 @@ collision_layer = 0
 shape = SubResource("CircleShape2D_8l6e1")
 debug_color = Color(0.911153, 9.95344e-05, 0.727585, 0.42)
 
+[node name="PathWalkBehavior" type="Node2D" parent="." node_paths=PackedStringArray("character")]
+unique_name_in_owner = true
+script = ExtResource("2_304le")
+speeds = SubResource("Resource_2dnul")
+character = NodePath("..")
+metadata/_custom_type_script = "uid://id28maao3vdy"
+
 [node name="NavigationFollowWalkBehavior" type="Node2D" parent="." node_paths=PackedStringArray("agent", "character")]
 unique_name_in_owner = true
 script = ExtResource("2_31awk")
+speeds = SubResource("Resource_pumxu")
 agent = NodePath("../NavigationAgent2D")
 character = NodePath("..")
 metadata/_custom_type_script = "uid://r1kriwyodjlt"

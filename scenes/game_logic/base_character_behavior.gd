@@ -21,6 +21,13 @@ func _enter_tree() -> void:
 		character = get_parent()
 
 
+func _ready() -> void:
+	if Engine.is_editor_hint():
+		set_physics_process(false)
+	elif character.motion_mode != CharacterBody2D.MotionMode.MOTION_MODE_FLOATING:
+		push_warning("Consider setting %s Motion Mode to Floating." % character.name)
+
+
 func _set_character(new_character: CharacterBody2D) -> void:
 	character = new_character
 	update_configuration_warnings()

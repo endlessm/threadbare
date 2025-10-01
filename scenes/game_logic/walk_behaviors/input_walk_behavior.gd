@@ -30,8 +30,8 @@ func _set_is_running(new_is_running: bool) -> void:
 
 
 func _ready() -> void:
+	super._ready()
 	if Engine.is_editor_hint():
-		set_physics_process(false)
 		return
 
 	if not speeds:

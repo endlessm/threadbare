@@ -27,10 +27,6 @@ func _ready() -> void:
 		scale = Vector2.ONE
 
 	_set_sprite_frames(sprite_frames)
-	var frames_length: int = animated_sprite_2d.sprite_frames.get_frame_count(
-		animated_sprite_2d.animation
-	)
-	animated_sprite_2d.frame = randi_range(0, frames_length)
 
 
 func _notification(what: int) -> void:
@@ -39,5 +35,3 @@ func _notification(what: int) -> void:
 			var y_scale := randf_range(0.8, 1.2)
 			var x_scale := y_scale * randf_range(0.9, 1.1)
 			scale = Vector2(x_scale, y_scale)
-		NOTIFICATION_EDITOR_PRE_SAVE:
-			animated_sprite_2d.frame_progress = 0
