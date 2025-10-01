@@ -13,6 +13,7 @@ config_version=5
 config/name="Threadbare"
 config/tags=PackedStringArray("2d", "endless", "game", "tilemap", "top_down")
 run/main_scene="uid://huuo8mnwsphv"
+config/project_settings_override="user://custom_overrides.cfg"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="uid://bc70phmq55dkf"
 
@@ -26,6 +27,7 @@ Settings="*res://scenes/globals/settings/settings.gd"
 PauseOverlay="*res://scenes/globals/pause/pause_overlay.tscn"
 MusicPlayer="*res://scenes/globals/music_player/music_player.tscn"
 CameraShake="*res://scenes/globals/camera_shaker/camera_shake.tscn"
+InputHelper="*res://addons/input_helper/input_helper.gd"
 AspectRatioDebugger="*res://scenes/globals/aspect_ratio_debugger/aspect_ratio_debugger.tscn"
 
 [debug]
@@ -47,21 +49,24 @@ editor/translations/update_pot_files_automatically=false
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+window/size/mode=4
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 mouse_cursor/custom_image="uid://cee2juvnxco6c"
 mouse_cursor/tooltip_position_offset=Vector2(19, 29)
+window/size/mode.editor=0
+window/size/mode.web=0
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg", "res://addons/git_describe/plugin.cfg", "res://addons/git_lfs_checker/plugin.cfg", "res://addons/sprite_frames_exported_textures/plugin.cfg", "res://addons/storyquest_bootstrap/plugin.cfg", "res://addons/threadbare_project_settings/plugin.cfg")
+enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg", "res://addons/git_describe/plugin.cfg", "res://addons/git_lfs_checker/plugin.cfg", "res://addons/input_helper/plugin.cfg", "res://addons/sprite_frames_exported_textures/plugin.cfg", "res://addons/storyquest_bootstrap/plugin.cfg")
 
 [file_customization]
 
 folder_colors={
 "res://scenes/quests/lore_quests/": "purple",
 "res://scenes/quests/story_quests/": "green",
-"res://scenes/quests/story_quests/template/": "yellow"
+"res://scenes/quests/story_quests/NO_EDIT/": "yellow"
 }
 
 [global_group]
@@ -73,6 +78,7 @@ filling_barrels=""
 projectiles=""
 guard_enemy=""
 sequence_object=""
+hook_listener=""
 
 [input]
 
@@ -181,6 +187,7 @@ sokoban_skip={
 2d_physics/layer_8="enemies hitbox"
 2d_physics/layer_9="projectiles"
 2d_physics/layer_10="non_walkable_floor"
+2d_physics/layer_13="hookable"
 
 [rendering]
 

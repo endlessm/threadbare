@@ -95,6 +95,18 @@ func do_transition(
 	finished.emit()
 
 
+## Transition out, leaving the screen blanked at the end of the transition.
+## [br][br]
+## This is only intended to fade out when quitting the game. Unlike [method do_transition], this
+## does not emit [signal started] or [signal finished]; use [code]await[/code] to wait for the
+## fade-out to finish.
+func do_out_transition(
+	out_transition: Transition.Effect = Transition.Effect.FADE,
+) -> void:
+	visible = true
+	await _leave_scene(out_transition)
+
+
 ## Returns true if a transition is currently running. Monitor [signal started]
 ## and [signal finished] for changes.
 func is_running() -> bool:

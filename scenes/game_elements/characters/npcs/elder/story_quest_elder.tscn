@@ -1,0 +1,77 @@
+[gd_scene load_steps=10 format=3 uid="uid://v2uakefmp67y"]
+
+[ext_resource type="Script" uid="uid://dedhjloxblho6" path="res://scenes/game_elements/characters/npcs/elder/components/elder.gd" id="1_rah8h"]
+[ext_resource type="Resource" uid="uid://ykdgo73x62wa" path="res://scenes/game_elements/characters/npcs/elder/components/story_quest_starter.dialogue" id="2_dyfur"]
+[ext_resource type="SpriteFrames" uid="uid://cqe47tmqq3mu4" path="res://scenes/game_elements/characters/components/sprite_frames/elder2.tres" id="3_rah8h"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="4_v03uk"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="5_bi5h8"]
+[ext_resource type="AudioStream" uid="uid://dxbxx6x5h7d8p" path="res://assets/third_party/sounds/characters/npcs/elder/BookPage.ogg" id="6_h7p2j"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
+radius = 12.0
+height = 74.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ak236"]
+radius = 8.0
+height = 24.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3eksq"]
+size = Vector2(67, 72)
+
+[node name="StoryQuestElder" type="CharacterBody2D"]
+collision_layer = 2
+motion_mode = 1
+script = ExtResource("1_rah8h")
+quest_directory = "res://scenes/quests/story_quests/"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -40)
+sprite_frames = ExtResource("3_rah8h")
+animation = &"idle"
+autoplay = "idle"
+frame = 5
+
+[node name="BodyShape" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 0)
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_3vyb7")
+
+[node name="StaffShape" type="CollisionShape2D" parent="."]
+position = Vector2(-49, 15)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_ak236")
+
+[node name="InteractArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("4_v03uk")
+action = "Talk to StoryQuest Elder"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(7.5, -40)
+shape = SubResource("RectangleShape2D_3eksq")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="." node_paths=PackedStringArray("interact_area")]
+unique_name_in_owner = true
+script = ExtResource("5_bi5h8")
+dialogue = ExtResource("2_dyfur")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
+
+[node name="Sounds" type="Node2D" parent="."]
+
+[node name="BookSound" type="AudioStreamPlayer2D" parent="Sounds"]
+unique_name_in_owner = true
+stream = ExtResource("6_h7p2j")
+volume_db = -6.0
+pitch_scale = 2.0
+max_distance = 1500.0
+attenuation = 3.0
+bus = &"SFX"
+
+[node name="StorybookLayer" type="CanvasLayer" parent="."]
+unique_name_in_owner = true

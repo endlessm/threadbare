@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=4 uid="uid://ikgvi75j5dls"]
+[gd_scene load_steps=44 format=4 uid="uid://ikgvi75j5dls"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_5xpm5"]
 [ext_resource type="SpriteFrames" uid="uid://07di3updrwh0" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_purple.tres" id="3_6axvd"]
@@ -7,6 +7,7 @@
 [ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="5_7132a"]
 [ext_resource type="PackedScene" uid="uid://bbsc3wssndtfe" path="res://scenes/game_elements/props/decoration/hiding_mushroom/hiding_mushroom.tscn" id="6_l45sp"]
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="7_1aydi"]
+[ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="9_1x76l"]
 [ext_resource type="SpriteFrames" uid="uid://b3r84ksew5djp" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_purple.tres" id="9_6nfeg"]
 [ext_resource type="Script" uid="uid://cx0sk4uhvnii0" path="res://scenes/game_logic/walk_behaviors/erratic_walk_behavior.gd" id="10_k43ew"]
 [ext_resource type="Script" uid="uid://q4jj6ou7yonf" path="res://scenes/game_logic/walk_behaviors/bounce_walk_behavior.gd" id="11_utmd2"]
@@ -17,6 +18,7 @@
 [ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/character_sprite_behavior.gd" id="15_utmd2"]
 [ext_resource type="Texture2D" uid="uid://dxaq5piwxqnht" path="res://scenes/game_elements/characters/player/components/dust.png" id="16_w4jvh"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="17_itker"]
+[ext_resource type="AudioStream" uid="uid://4ec6e2alns71" path="res://assets/third_party/sounds/characters/enemies/guard/GrassFoot.ogg" id="17_p4wnd"]
 [ext_resource type="SpriteFrames" uid="uid://r3dn5pxqk1sv" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_gray.tres" id="17_w4jvh"]
 [ext_resource type="Script" uid="uid://id28maao3vdy" path="res://scenes/game_logic/walk_behaviors/path_walk_behavior.gd" id="18_wq1h3"]
 [ext_resource type="SpriteFrames" uid="uid://dnq8cw1cio2we" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_green.tres" id="20_jdub8"]
@@ -89,6 +91,204 @@ script/source = "extends GPUParticles2D
 func _on_input_walk_behavior_running_changed(is_running: bool) -> void:
 	emitting = is_running
 "
+
+[sub_resource type="Animation" id="Animation_6nfeg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AudioStreamPlayer2D:volume_db")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-14.776]
+}
+
+[sub_resource type="Animation" id="Animation_dx6fu"]
+resource_name = "idle"
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9]
+}
+
+[sub_resource type="Animation" id="Animation_makbw"]
+resource_name = "run"
+length = 0.300005
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 5]
+}
+tracks/2/type = "audio"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AudioStreamPlayer2D")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"clips": [{
+"end_offset": 0.2353,
+"start_offset": 0.0954,
+"stream": ExtResource("17_p4wnd")
+}, {
+"end_offset": 0.2353,
+"start_offset": 0.0954,
+"stream": ExtResource("17_p4wnd")
+}],
+"times": PackedFloat32Array(0, 0.15)
+}
+tracks/2/use_blend = true
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AudioStreamPlayer2D:volume_db")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-7.388]
+}
+
+[sub_resource type="Animation" id="Animation_gv2vc"]
+resource_name = "walk"
+length = 0.60001
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 5]
+}
+tracks/2/type = "audio"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AudioStreamPlayer2D")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"clips": [{
+"end_offset": 0.0869,
+"start_offset": 0.0975,
+"stream": ExtResource("17_p4wnd")
+}, {
+"end_offset": 0.0869,
+"start_offset": 0.0975,
+"stream": ExtResource("17_p4wnd")
+}],
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/2/use_blend = true
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AudioStreamPlayer2D:volume_db")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-23.869]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6nfeg"]
+_data = {
+&"RESET": SubResource("Animation_6nfeg"),
+&"idle": SubResource("Animation_dx6fu"),
+&"run": SubResource("Animation_makbw"),
+&"walk": SubResource("Animation_gv2vc")
+}
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_itker"]
 radius = 13.0
@@ -304,8 +504,24 @@ animation = &"idle"
 [node name="CharacterSpriteBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D4/AnimatedSprite2D" node_paths=PackedStringArray("character", "sprite")]
 script = ExtResource("15_utmd2")
 character = NodePath("../..")
+play_animations = false
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround/CharacterBody2D4"]
+libraries = {
+&"": SubResource("AnimationLibrary_6nfeg")
+}
+
+[node name="CharacterAnimationPlayerBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D4/AnimationPlayer" node_paths=PackedStringArray("character", "animation_player")]
+script = ExtResource("9_1x76l")
+character = NodePath("../..")
+animation_player = NodePath("..")
+metadata/_custom_type_script = "uid://b3hx1n2yl88qr"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="OnTheGround/CharacterBody2D4"]
+volume_db = -14.776
+bus = &"SFX"
 
 [node name="InputWalkBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D4" node_paths=PackedStringArray("character")]
 script = ExtResource("15_k43ew")
@@ -351,6 +567,7 @@ curve = SubResource("Curve2D_wq1h3")
 [node name="CharacterBody2D6" type="CharacterBody2D" parent="OnTheGround"]
 collision_layer = 2
 collision_mask = 19
+motion_mode = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/CharacterBody2D6"]
 rotation = -1.55475
@@ -380,5 +597,5 @@ character = NodePath("..")
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [connection signal="running_changed" from="OnTheGround/CharacterBody2D4/InputWalkBehavior" to="OnTheGround/CharacterBody2D4/GPUParticles2D" method="_on_input_walk_behavior_running_changed"]
-[connection signal="running_changed" from="OnTheGround/CharacterBody2D4/InputWalkBehavior" to="OnTheGround/CharacterBody2D4/AnimatedSprite2D/CharacterSpriteBehavior" method="on_running_changed"]
+[connection signal="running_changed" from="OnTheGround/CharacterBody2D4/InputWalkBehavior" to="OnTheGround/CharacterBody2D4/AnimationPlayer/CharacterAnimationPlayerBehavior" method="on_running_changed"]
 [connection signal="running_changed" from="OnTheGround/CharacterBody2D6/NavigationFollowWalkBehavior" to="OnTheGround/CharacterBody2D6/AnimatedSprite2D/CharacterSpriteBehavior" method="on_running_changed"]

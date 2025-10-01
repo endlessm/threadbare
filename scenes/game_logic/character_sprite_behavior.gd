@@ -9,6 +9,9 @@ extends Node2D
 ## to the velocity of [member character].
 
 ## The [member CharacterBody2D.velocity] is used to change the [member sprite].
+## [br][br]
+## [b]Note:[/b] If the grandparent node is a CharacterBody2D and this isn't set,
+## the grandparent node will be automatically assigned to this variable.
 @export var character: CharacterBody2D
 
 ## Whether to play the sprite animations or not. If not, the only thing that will happen is that
@@ -16,9 +19,9 @@ extends Node2D
 ## Use this when using more advanced animation through an AnimationPlayer node.
 @export var play_animations: bool = true
 
-## The controlled sprite.[br][br]
-##
-## [b]Note:[/b] If the parent node is a AnimatedSprite2D and sprite isn't set,
+## The controlled sprite.
+## [br][br]
+## [b]Note:[/b] If the parent node is a AnimatedSprite2D and this isn't set,
 ## the parent node will be automatically assigned to this variable.
 @export var sprite: AnimatedSprite2D:
 	set = _set_sprite
@@ -29,6 +32,8 @@ var _is_character_running: bool = false
 func _enter_tree() -> void:
 	if not sprite and get_parent() is AnimatedSprite2D:
 		sprite = get_parent()
+	if not character and get_parent() and get_parent().get_parent() is CharacterBody2D:
+		character = get_parent().get_parent()
 
 
 func _set_sprite(new_sprite: AnimatedSprite2D) -> void:

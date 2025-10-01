@@ -25,7 +25,12 @@ const NEIGHBORS := [
 	TileSet.CELL_NEIGHBOR_RIGHT_SIDE,
 ]
 
+const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
+
 @export var void_layer: TileMapCover
+
+@export var idle_patrol_path: Path2D:
+	set = _set_idle_patrol_path
 
 var player: Player:
 	set = _set_player
@@ -33,28 +38,45 @@ var player: Player:
 var state := State.IDLE:
 	set = _set_state
 
-@onready var walk: NavigationFollowWalkBehavior = %NavigationFollowWalkBehavior
+var _last_position: Vector2
+var _distance_since_emit: float = 0.0
+
+@onready var path_walk_behavior: PathWalkBehavior = %PathWalkBehavior
+@onready var follow_walk_behavior: NavigationFollowWalkBehavior = %NavigationFollowWalkBehavior
+
+
+func _set_idle_patrol_path(new_path: Path2D) -> void:
+	idle_patrol_path = new_path
+	if path_walk_behavior:
+		path_walk_behavior.walking_path = idle_patrol_path
 
 
 func _set_player(new_player: Player) -> void:
 	player = new_player
-	if walk:
-		walk.target = player
+	if follow_walk_behavior:
+		follow_walk_behavior.target = player
 
 
 func _set_state(new_state: State) -> void:
 	state = new_state
-	if walk:
-		match state:
-			State.IDLE:
-				walk.process_mode = Node.PROCESS_MODE_DISABLED
-			State.CHASING:
-				walk.process_mode = Node.PROCESS_MODE_INHERIT
+
+	if not is_node_ready():
+		return
+
+	match state:
+		State.IDLE:
+			path_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+			follow_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+		State.CHASING:
+			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			follow_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
 
 
 func _ready() -> void:
 	player = player
+	idle_patrol_path = idle_patrol_path
 	state = state
+	_last_position = position
 
 
 func start(detected_node: Node2D) -> void:
@@ -64,8 +86,8 @@ func start(detected_node: Node2D) -> void:
 
 
 func _process(_delta: float) -> void:
-	if state == State.IDLE:
-		return
+	_distance_since_emit += (position - _last_position).length()
+	_last_position = position
 
 	var coord := void_layer.coord_for(self)
 	var coords: Array[Vector2i] = [coord]
@@ -77,12 +99,18 @@ func _process(_delta: float) -> void:
 		coords.append(void_layer.get_neighbor_cell(coord, neighbor))
 
 	var consumed := void_layer.consume_cells(coords)
-	if consumed:
-		var particles := VOID_PARTICLES.instantiate()
-		particles.emitting = true
-		add_child(particles)
-		await particles.finished
-		particles.queue_free()
+	if consumed or _distance_since_emit >= IDLE_EMIT_DISTANCE:
+		_emit_particles()
+
+
+func _emit_particles() -> void:
+	_distance_since_emit = 0
+
+	var particles := VOID_PARTICLES.instantiate()
+	particles.emitting = true
+	add_child(particles)
+	await particles.finished
+	particles.queue_free()
 
 
 func _on_player_capture_area_body_entered(body: Node2D) -> void:

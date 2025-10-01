@@ -14,23 +14,47 @@ repos:
   - id: check-illegal-windows-names
   - id: check-yaml
   - id: end-of-file-fixer
-    exclude: \.svg$
+    exclude: |
+      (?x)(
+        \.piskel$|
+        ^scenes/quests/story_quests/(?!stella/|NO_EDIT/)
+      )
+    exclude_types: [image]
   - id: trailing-whitespace
-    exclude: \.svg$
+    exclude: |
+      (?x)(
+        \.piskel$|
+        ^scenes/quests/story_quests/(?!stella/|NO_EDIT/)
+      )
+    exclude_types: [image]
 
 - repo: https://github.com/editorconfig-checker/editorconfig-checker
   rev: v3.4.0
   hooks:
   - id: editorconfig-checker
+    exclude: |
+      (?x)^(
+        scenes/quests/story_quests/(?!stella/|NO_EDIT/)
+      )
 
 - repo: https://github.com/Scony/godot-gdscript-toolkit
   rev: 4.3.4
   hooks:
   - id: gdformat
+    exclude: |
+      (?x)^(
+        scenes/quests/story_quests/(?!stella/|NO_EDIT/)
+      )
   - id: gdlint
-    exclude: script_templates/
+    exclude: |
+      (?x)^(
+        script_templates/|
+        scenes/quests/story_quests/(?!stella/|NO_EDIT/)
+      )
+
 exclude: |
   (?x)^(
     addons/dialogue_manager/(.*)|
+    addons/input_helper/(.*)|
     addons/git_describe/(.*)
   )$

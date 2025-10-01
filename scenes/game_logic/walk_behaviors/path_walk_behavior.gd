@@ -83,8 +83,8 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 func _ready() -> void:
+	super._ready()
 	if Engine.is_editor_hint():
-		set_physics_process(false)
 		return
 
 	if not speeds:
