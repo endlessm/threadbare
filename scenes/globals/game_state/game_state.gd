@@ -46,6 +46,7 @@ var completed_quests: Array[String] = []
 var persist_progress: bool
 var _state := ConfigFile.new()
 
+var intro_dialogue_shown: bool = false
 
 func _ready() -> void:
 	var initial_scene_uid := ResourceLoader.get_resource_uid(
