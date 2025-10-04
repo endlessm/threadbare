@@ -20,27 +20,10 @@ func _physics_process(_delta: float) -> void:
 
 func _ready() -> void:
 	InputHelper.device_changed.connect(_on_input_device_changed)
-	_initialize_device_state()
-
-
-func _initialize_device_state() -> void:
-	var joypads = Input.get_connected_joypads()
-	if joypads.size() > 0:
-		var device_id = joypads[0]
-		var joy_name = Input.get_joy_name(device_id).to_lower()
-
-		if joy_name.find("xbox") != -1:
-			_on_input_device_changed(InputHelper.DEVICE_XBOX_CONTROLLER, device_id)
-		elif joy_name.find("sony") != -1 or joy_name.find("ps") != -1:
-			_on_input_device_changed(InputHelper.DEVICE_PLAYSTATION_CONTROLLER, device_id)
-		elif joy_name.find("nintendo") != -1 or joy_name.find("switch") != -1:
-			_on_input_device_changed(InputHelper.DEVICE_SWITCH_CONTROLLER, device_id)
-		elif joy_name.find("steam") != -1:
-			_on_input_device_changed(InputHelper.DEVICE_STEAMDECK_CONTROLLER, device_id)
-		else:
-			_on_input_device_changed(InputHelper.DEVICE_XBOX_CONTROLLER, device_id)  # fallback
-	else:
-		_on_input_device_changed(InputHelper.DEVICE_KEYBOARD, 0)
+	_on_input_device_changed(
+		InputHelper.last_known_joypad_device,
+		InputHelper.last_known_joypad_index,
+	)
 
 
 func _on_input_device_changed(device: String, _device_index: int) -> void:

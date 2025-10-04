@@ -28,15 +28,10 @@ func _physics_process(_delta: float) -> void:
 
 func _ready() -> void:
 	InputHelper.device_changed.connect(_on_input_device_changed)
-	_detect_initial_device()
-
-
-func _detect_initial_device():
-	var joy_count = Input.get_connected_joypads().size()
-	if joy_count > 0:
-		_on_input_device_changed(InputHelper.DEVICE_XBOX_CONTROLLER, 0)
-	else:
-		_on_input_device_changed(InputHelper.DEVICE_KEYBOARD, 0)
+	_on_input_device_changed(
+		InputHelper.last_known_joypad_device,
+		InputHelper.last_known_joypad_index,
+	)
 
 
 func _on_input_device_changed(device: String, _device_index: int) -> void:
@@ -64,3 +59,7 @@ func _on_input_device_changed(device: String, _device_index: int) -> void:
 		InputHelper.DEVICE_STEAMDECK_CONTROLLER:
 			is_keyboard_mode = false
 			texture = steam_controller_texture
+
+		_:
+			is_keyboard_mode = false
+			texture = xbox_controller_texture
