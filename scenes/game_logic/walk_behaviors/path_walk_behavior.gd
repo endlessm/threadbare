@@ -9,7 +9,7 @@ extends BaseCharacterBehavior
 ##
 ## If the path is closed the character walks in circles. If not, they walk back and forth turning
 ## around in endings.
-##
+## [br][br]
 ## If the character gets stuck while walking the path, they turn around, unless
 ## [member turn_around] has been disabled.
 
@@ -94,9 +94,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var closest_offset := walking_path.curve.get_closest_offset(
-		character.position - initial_position + walking_path.curve.get_point_position(0)
-	)
+	var closest_offset := get_closest_offset_to_character()
 	var new_offset := closest_offset + speeds.walk_speed * delta * direction
 
 	for idx in range(_standing_offsets.size()):
@@ -116,7 +114,7 @@ func _physics_process(delta: float) -> void:
 			):
 				pointy_path_reached.emit()
 
-	if not _is_path_closed():
+	if not is_path_closed():
 		# Turn around in endings:
 		if new_offset > walking_path.curve.get_baked_length() or new_offset < 0.0:
 			ending_reached.emit()
@@ -139,6 +137,15 @@ func _physics_process(delta: float) -> void:
 				direction *= -1
 
 
+## Return the distance in pixels along the curve
+## from the beginning of the path
+## to the point that is closest to the character position.
+func get_closest_offset_to_character() -> float:
+	return walking_path.curve.get_closest_offset(
+		character.position - initial_position + walking_path.curve.get_point_position(0)
+	)
+
+
 func _setup_standing_offsets() -> void:
 	for idx in range(walking_path.curve.point_count):
 		var point_position := walking_path.curve.get_point_position(idx)
@@ -146,9 +153,9 @@ func _setup_standing_offsets() -> void:
 		var p_out := walking_path.curve.get_point_out(idx)
 		# Ignore if at this point, the in and out controls make the path continuous and not pointy:
 		# TODO: Compare length_squared() < path_pointy_tolerance
-		if idx == 0 and not _is_path_closed():
+		if idx == 0 and not is_path_closed():
 			_standing_offsets.append(walking_path.curve.get_closest_offset(point_position))
-		elif idx == walking_path.curve.point_count - 1 and not _is_path_closed():
+		elif idx == walking_path.curve.point_count - 1 and not is_path_closed():
 			# This especial case is because get_closest_offset() returns zero for the last point
 			# if the path is closed:
 			_standing_offsets.append(walking_path.curve.get_baked_length())
@@ -159,7 +166,7 @@ func _setup_standing_offsets() -> void:
 
 
 ## Return true if the end of the path is the same point as the beginning.
-func _is_path_closed() -> bool:
+func is_path_closed() -> bool:
 	if walking_path.curve.point_count < 3:
 		return false
 
