@@ -84,6 +84,11 @@ var hook_string: Line2D
 ## It is set to aiming when there is no [member hook_string].
 @onready var hook_control: HookControl = $HookControl
 
+## Marker which position is set to the ending of the hook.
+## [br][br]
+## This can be used to pan or zoom the camera to frame the ending of the grappling hook.
+@onready var hook_ending: Marker2D = $HookEnding
+
 
 func _enter_tree() -> void:
 	if not character and get_parent() is CharacterBody2D:
@@ -128,6 +133,7 @@ func hooked(_new_hooked_to: HookableArea, is_loop: bool) -> void:
 	if not hook_string:
 		hook_string = _new_hook_string()
 	hook_string.add_point(p, 0)
+	hook_ending.global_position = p
 	areas_hooked.append(_new_hooked_to)
 	if not _new_hooked_to.hook_control:
 		pull_string()
@@ -191,6 +197,8 @@ func remove_string() -> void:
 	# Reenable aiming so a new string can be thrown:
 	hook_control.release()
 	hook_control.state = HookControl.State.AIMING
+
+	hook_ending.global_position = global_position
 
 
 ## Start pulling.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://c3iv8nbog410p"]
+[gd_scene load_steps=17 format=4 uid="uid://c3iv8nbog410p"]
 
 [ext_resource type="Script" uid="uid://3eynuk3w4m4a" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/grappling_hook_needles.gd" id="1_omyxq"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_dwcg4"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://4u7dloafx55f" path="res://scenes/game_elements/props/teleporter/teleporter/teleporter.tscn" id="13_p8sis"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="14_bxmjx"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="14_omyxq"]
+[ext_resource type="Script" uid="uid://dagrhfrj0f33i" path="res://scenes/game_logic/camera_behaviors/frame_camera_behavior.gd" id="15_dwcg4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_41yfr"]
 size = Vector2(140.5, 194.5)
@@ -71,6 +72,13 @@ limit_right = 1920
 limit_bottom = 1728
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="FrameCameraBehavior" type="Node2D" parent="OnTheGround/Player/Camera2D" node_paths=PackedStringArray("camera", "main_target", "frame_target")]
+unique_name_in_owner = true
+script = ExtResource("15_dwcg4")
+camera = NodePath("..")
+main_target = NodePath("../..")
+frame_target = NodePath("../../PlayerHook/HookEnding")
 
 [node name="ButtonsA" type="Node2D" parent="OnTheGround"]
 y_sort_enabled = true
