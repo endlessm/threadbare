@@ -34,6 +34,7 @@ func _ready() -> void:
 		)
 		await DialogueManager.dialogue_ended
 		GameState.set_incorporating_threads(false)
+		GameState.mark_quest_completed()
 
 
 func _on_interaction_ended() -> void:

@@ -42,10 +42,6 @@ var current_intensity: float = 0.0
 ## Reference to the tween that will decrease the [member current_intensity]
 var shake_tween: Tween
 
-## The device ID for the last controller we saw input from, or -1 if we have never seen input from a
-## controller or if the last input was on a keyboard.
-var _last_controller_id: int = -1
-
 
 func _ready() -> void:
 	noise.noise_type = FastNoiseLite.TYPE_PERLIN
@@ -63,11 +59,13 @@ func _ready() -> void:
 ## Emits the [signal started] signal as soon as it's called. [br]
 ## If the shake is called multiple times, it will only emit the [signal
 ## finished] signal when the last effect is completed.
+## After the shake happens the target could have been freed, so consider that to avoid an error.
 func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 	noise.seed = randi()
 	started.emit()
-	if _last_controller_id >= 0:
-		Input.start_joy_vibration(_last_controller_id, 0.5, 0.5, time)
+	if Engine.has_singleton("InputHelper") and InputHelper.device_index >= 0:
+		Input.start_joy_vibration(InputHelper.device_index, 0.5, 0.5, time)
+
 	var shaking_already_in_progress: bool = shake_tween and shake_tween.is_valid()
 	if shaking_already_in_progress:
 		shake_tween.kill()
@@ -81,20 +79,18 @@ func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 	time_passed = 0.0
 	await shake_tween.tween_property(self, "current_intensity", 0.0, time).from(intensity).finished
 	shake_tween.kill()
-	target.position = Vector2(original_position.x, original_position.y)
-	rotation = original_rotation
+
+	if is_instance_valid(target):
+		if target is Camera2D:
+			target.offset = Vector2(original_position.x, original_position.y)
+		else:
+			target.position = Vector2(original_position.x, original_position.y)
+		target.rotation = original_rotation
 	finished.emit()
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventJoypadButton or event is InputEventJoypadMotion:
-		_last_controller_id = event.device
-	elif event is InputEventKey:
-		_last_controller_id = -1
-
-
 func _process(delta: float) -> void:
-	if current_intensity > 0.0:
+	if current_intensity > 0.0 and is_instance_valid(target):
 		time_passed += delta * frequency
 		var offset_x: float = noise.get_noise_1d(time_passed) * current_intensity
 		var offset_y: float = noise.get_noise_1d(time_passed + 100) * current_intensity
@@ -104,6 +100,7 @@ func _process(delta: float) -> void:
 
 		var new_position := Vector2(original_position.x + offset_x, original_position.y + offset_y)
 		var new_rotation := original_rotation + rotation_offset
+
 		if target is Camera2D:
 			target.offset = new_position
 		else:

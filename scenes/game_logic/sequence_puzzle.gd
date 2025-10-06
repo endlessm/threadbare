@@ -3,9 +3,21 @@
 class_name SequencePuzzle
 extends Node2D
 
+## Emitted when the entire puzzle is solved
 signal solved
 
-## The order in which the player must interact with objects to solve each step of the puzzle
+## Emitted when an individual step of the puzzle is completed.
+## [param step_index] is the index of the step that was just completed.
+## This allows level designers to trigger events when specific steps are solved,
+## beyond just the solved animation on the hint sign.
+signal step_solved(step_index: int)
+
+## The order in which the player must interact with objects to solve each step of the puzzle.
+## If this is empty, [SequencePuzzleStep] nodes that are children (or grandchildren, etc.) of
+## this node will be used, in depth-first order.
+##
+## @deprecated: Don't set this property directly: rely on the SequencePuzzleStep nodes being found
+##              automatically.
 @export var steps: Array[SequencePuzzleStep]
 
 ## If enabled, the [SequencePuzzleHintSign] for the current step of the puzzle
@@ -32,8 +44,19 @@ var _current_step: int = 0
 var _position: int = 0
 
 
+func _find_steps(node: Node) -> void:
+	if node is SequencePuzzleStep:
+		steps.append(node)
+	for child in node.get_children():
+		_find_steps(child)
+
+
 func _ready() -> void:
 	_find_objects()
+
+	# If the steps array is empty, find all steps that are within this node
+	if steps.is_empty():
+		_find_steps(self)
 
 	hint_timer.one_shot = true
 	hint_timer.wait_time = wobble_hint_time
@@ -107,8 +130,13 @@ func _on_kicked(object: SequencePuzzleObject) -> void:
 		_debug("Played %s, awaiting %s", [sequence.slice(0, _position), sequence.slice(_position)])
 		return
 
-	_debug("Finished sequnce")
+	_debug("Finished sequence")
 	step.hint_sign.set_solved()
+
+	# Emit step_solved signal to allow level designers to react to individual step completion
+	step_solved.emit(_current_step)
+	_debug("Step %d solved", [_current_step])
+
 	_update_current_step()
 
 	_clear_last_hint_object()

@@ -3,10 +3,12 @@
 extends CanvasLayer
 
 const TITLE_SCENE: PackedScene = preload("uid://stdqc6ttomff")
+const FRAYS_END := "uid://cufkthb25mpxy"
 
 @onready var pause_menu: Control = %PauseMenu
 @onready var resume_button: Button = %ResumeButton
 @onready var options: Control = %Options
+@onready var abandon_quest_button: Button = %AbandonQuestButton
 
 
 func _ready() -> void:
@@ -25,8 +27,17 @@ func toggle_pause() -> void:
 	get_tree().paused = new_state
 
 	if new_state:
+		abandon_quest_button.visible = GameState.is_on_quest()
 		pause_menu.show()
 		resume_button.grab_focus()
+
+
+func _on_abandon_quest_pressed() -> void:
+	toggle_pause()
+	GameState.abandon_quest()
+	SceneSwitcher.change_to_file_with_transition(
+		FRAYS_END, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+	)
 
 
 func _on_options_button_pressed() -> void:

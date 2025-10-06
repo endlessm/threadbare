@@ -1,0 +1,64 @@
+[gd_scene load_steps=7 format=3 uid="uid://cymvc6g2rbx12"]
+
+[ext_resource type="VideoStream" uid="uid://b88hkpe17wfy" path="res://scenes/quests/story_quests/shjourney/0_IntroVideo/INTRO-SHADOWJOURNEY.ogv" id="1_ukt3l"]
+[ext_resource type="Script" uid="uid://by0he8a7u0dpy" path="res://scenes/quests/story_quests/shjourney/0_IntroVideo/saltar_video.gd" id="2_4m12n"]
+[ext_resource type="Script" uid="uid://c1dkwfla1u75g" path="res://scenes/quests/story_quests/shjourney/0_IntroVideo/cinematicVideo.gd" id="3_4m12n"]
+[ext_resource type="Texture2D" uid="uid://p8kty3uxifxu" path="res://assets/third_party/inputs/keyboard-and-mouse/Dark/Space_Key_Dark.png" id="3_m1isl"]
+[ext_resource type="Script" uid="uid://d4bfnn5upde7h" path="res://scenes/game_elements/props/hint/input_key/input_key.gd" id="4_4m12n"]
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="6_4m12n"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("1_ukt3l")
+autoplay = true
+expand = true
+script = ExtResource("2_4m12n")
+
+[node name="CinematicaVideos" type="Node2D" parent="." node_paths=PackedStringArray("video_player")]
+script = ExtResource("3_4m12n")
+video_player = NodePath("../VideoStreamPlayer")
+next_scene = "uid://b8sewsfnsdw4u"
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="InputHint" type="Control" parent="ScreenOverlay"]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+scale = Vector2(2, 2)
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenOverlay/InputHint"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -82.5
+offset_right = 272.0
+offset_bottom = 17.5
+
+[node name="InteractInput" type="TextureRect" parent="ScreenOverlay/InputHint/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3_m1isl")
+script = ExtResource("4_4m12n")
+action_name = &"ui_accept"
+
+[node name="Label" type="Label" parent="ScreenOverlay/InputHint/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("6_4m12n")
+theme_type_variation = &"HintLabel"
+text = "Saltar cinemática."

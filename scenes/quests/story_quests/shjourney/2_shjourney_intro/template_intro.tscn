@@ -1,0 +1,469 @@
+[gd_scene load_steps=25 format=4 uid="uid://bb1mgn8l00yo7"]
+
+[ext_resource type="TileSet" uid="uid://d30304ne3bph" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/tileselaberinto.tres" id="2_aeas8"]
+[ext_resource type="TileSet" uid="uid://bcx22clccr7qe" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/tilesetIntro02.tres" id="2_u7gwd"]
+[ext_resource type="Shader" uid="uid://bvb4l5wskqwhf" path="res://scenes/quests/story_quests/shjourney/3_shjourney_intro/intro0.2.gdshader" id="3_0bl5u"]
+[ext_resource type="TileSet" uid="uid://bpyv8qhmeyo6l" path="res://scenes/quests/story_quests/shjourney/3_shjourney_intro/tilesetIntro.tres" id="3_pa4hc"]
+[ext_resource type="PackedScene" uid="uid://due8sqsrtdke1" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/fire_fly.tscn" id="4_u7gwd"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_ug0ds"]
+[ext_resource type="PackedScene" uid="uid://p6q2uo2us0il" path="res://scenes/quests/story_quests/shjourney/light.tscn" id="5_gilgp"]
+[ext_resource type="PackedScene" uid="uid://bmih4w66b6t36" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/Personajes/elfo_del_bosque_ojos_iluminados.tscn" id="6_iu8xy"]
+[ext_resource type="Resource" uid="uid://c5d8ip4lqme83" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/Dialogo/template_intro02.dialogue" id="7_1kvnf"]
+[ext_resource type="SpriteFrames" uid="uid://vrthlt7kah8w" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/tim_sprite_frames.tres" id="8_aeas8"]
+[ext_resource type="Script" uid="uid://hs14yse0u0uh" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/music.gd" id="11_ecyos"]
+[ext_resource type="AudioStream" uid="uid://bvq56m78f2v7g" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/musicas/2 The Veil of Night Loop 1 Start .wav" id="12_1kvnf"]
+[ext_resource type="PackedScene" uid="uid://bdtis4ye3hah2" path="res://scenes/quests/story_quests/shjourney/9_shjourney_outro_2/neblina.tscn" id="12_6jtbm"]
+[ext_resource type="AudioStream" uid="uid://dbwjolg3xlntq" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/template_intro_components/EffectSounds/amazon-rainforest.mp3" id="12_aeas8"]
+[ext_resource type="PackedScene" uid="uid://c5f62dk57ymem" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/arbusto.tscn" id="16_aeas8"]
+[ext_resource type="Texture2D" uid="uid://s6olixcsyfky" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/personajes/image (1).png" id="17_pa4hc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u7gwd"]
+shader = ExtResource("3_0bl5u")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6jtbm"]
+shader = ExtResource("3_0bl5u")
+
+[sub_resource type="Animation" id="Animation_ld06i"]
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-0.0333333, 1, 1.05449),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [&"idle", &"idle", &"walk"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(506, -132.86), Vector2(506, 70.0174)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Character:flip_h")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TileMapLayers/Sand/ElfoDelBosque:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(279, 612)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TileMapLayers/Sand/ElfoDelBosque:animation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"iddle"]
+}
+
+[sub_resource type="Animation" id="Animation_hv65c"]
+resource_name = "talk_elfo"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.03984),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(504, 141.525), Vector2(504, 210.36)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2.05691, 2.10812, 2.18494),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [&"walk", &"walk", &"idle", &"idle"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Character:flip_h")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(2.10812, 2.14226),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TileMapLayers/Sand/ElfoDelBosque:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(3.20059, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(279, 612), Vector2(454.17, 612)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TileMapLayers/Sand/ElfoDelBosque:animation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(3.19, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"iddle"]
+}
+
+[sub_resource type="Animation" id="Animation_7swpb"]
+resource_name = "walk_off"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.97),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(521, 243), Vector2(521, 499.315)]
+}
+
+[sub_resource type="Animation" id="Animation_blo5s"]
+resource_name = "walk_on"
+length = 2.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.43333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2.43333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(504, 61), Vector2(504, 141.525)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qdpvj"]
+_data = {
+&"RESET": SubResource("Animation_ld06i"),
+&"talk_elfo": SubResource("Animation_hv65c"),
+&"walk_off": SubResource("Animation_7swpb"),
+&"walk_on": SubResource("Animation_blo5s")
+}
+
+[sub_resource type="GDScript" id="GDScript_aeas8"]
+script/source = "extends AudioStreamPlayer2D
+
+func _ready() -> void:
+	play()
+	finished.connect(_on_audio_finished)
+
+func _on_audio_finished():
+	play()
+"
+
+[node name="Intro" type="Node2D"]
+texture_filter = 1
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+
+[node name="Sand" type="TileMapLayer" parent="TileMapLayers"]
+position = Vector2(-35, -208)
+tile_map_data = PackedByteArray("AAD//wEAGQADAAIAAAD//wIAGQADAAIAAAD//wMAGQADAAIAAAD//wQAGQADAAIAAAD//wUAGQADAAIAAAD//wYAGQADAAIAAAD//wcAGQADAAIAAAD//wgAGQADAAIAAAD//wkAGQADAAIAAAD//woAGQADAAIAAAD//wsAGQADAAIAAAD//wwAGQADAAIAAAD//w0AGQADAAIAAAD//w4AGQADAAIAAAD//w8AGQADAAIAAAD//xAAGQADAAIAAAAAAAEAGQADAAIAAAAAAAIAGQADAAIAAAAAAAMAGQADAAIAAAAAAAQAGQADAAIAAAAAAAUAGQADAAIAAAAAAAYAGQADAAIAAAAAAAcAGQADAAIAAAAAAAgAGQADAAIAAAAAAAkAGQADAAIAAAAAAAoAGQADAAIAAAAAAAsAGQADAAIAAAAAAAwAGQADAAIAAAAAAA0AGQADAAIAAAAAAA4AGQADAAIAAAAAAA8AGQADAAIAAAAAABAAGQADAAIAAAABAAEAGQADAAIAAAABAAIAGQADAAIAAAABAAMAGQADAAIAAAABAAQAGQADAAIAAAABAAUAGQADAAIAAAABAAYAGQADAAIAAAABAAcAGQADAAIAAAABAAgAGQADAAIAAAABAAkAGQADAAIAAAABAAoAGQADAAIAAAABAAsAGQADAAIAAAABAAwAGQADAAIAAAABAA0AGQADAAIAAAABAA4AGQADAAIAAAABAA8AGQADAAIAAAABABAAGQADAAIAAAACAAEAGQADAAIAAAACAAIAGQADAAIAAAACAAMAGQADAAIAAAACAAQAGQADAAIAAAACAAUAGQADAAIAAAACAAYAGQADAAIAAAACAAcAGQADAAIAAAACAAgAGQADAAIAAAACAAkAGQADAAIAAAACAAoAGQADAAIAAAACAAsAGQADAAIAAAACAAwAGQADAAIAAAACAA0AGQADAAIAAAACAA4AGQADAAIAAAACAA8AGQADAAIAAAACABAAGQADAAIAAAADAAEAGQADAAIAAAADAAIAGQADAAIAAAADAAMAGQADAAIAAAADAAQAGQADAAIAAAADAAUAGQADAAIAAAADAAYAGQADAAIAAAADAAcAGQADAAIAAAADAAgAGQADAAIAAAADAAkAGQADAAIAAAADAAoAGQADAAIAAAADAAsAGQADAAIAAAADAAwAGQADAAIAAAADAA0AGQADAAIAAAADAA4AGQADAAIAAAADAA8AGQADAAIAAAADABAAGQADAAIAAAAEAAEAGQADAAIAAAAEAAIAGQADAAIAAAAEAAMAGQADAAIAAAAEAAQAGQADAAIAAAAEAAUAGQADAAIAAAAEAAYAGQADAAIAAAAEAAcAGQADAAIAAAAEAAgAGQADAAIAAAAEAAkAGQADAAIAAAAEAAoAGQADAAIAAAAEAAsAGQADAAIAAAAEAAwAGQADAAIAAAAEAA0AGQADAAIAAAAEAA4AGQADAAIAAAAEAA8AGQADAAIAAAAEABAAGQADAAIAAAAFAAEAGQADAAIAAAAFAAIAGQADAAIAAAAFAAMAGQADAAIAAAAFAAQAGQADAAIAAAAFAAUAGQADAAIAAAAFAAYAGQADAAIAAAAFAAcAGQADAAIAAAAFAAgAGQADAAIAAAAFAAkAGQADAAIAAAAFAAoAGQADAAIAAAAFAAsAGQABAAIAAAAFAAwAGQADAAIAAAAFAA0AGQADAAIAAAAFAA4AGQADAAIAAAAFAA8AGQADAAIAAAAFABAAGQADAAIAAAAGAAEAGQADAAIAAAAGAAIAGQADAAIAAAAGAAMAGQADAAIAAAAGAAQAGQADAAIAAAAGAAUAGQADAAIAAAAGAAYAGQADAAIAAAAGAAcAGQADAAIAAAAGAAgAGQADAAIAAAAGAAkAGQADAAIAAAAGAAoAGQADAAIAAAAGAAsAGQADAAIAAAAGAAwAGQADAAIAAAAGAA0AGQADAAIAAAAGAA4AGQADAAIAAAAGAA8AGQADAAIAAAAGABAAGQADAAIAAAAHAAEAGQADAAIAAAAHAAIAGQADAAIAAAAHAAMAGQADAAIAAAAHAAQAGQADAAIAAAAHAAUAGQADAAIAAAAHAAYAGQADAAIAAAAHAAcAGQADAAIAAAAHAAgAGQABAAMAAAAHAAkAGQADAAIAAAAHAAoAGQADAAIAAAAHAAsAGQADAAIAAAAHAAwAGQADAAIAAAAHAA0AGQADAAIAAAAHAA4AGQADAAIAAAAHAA8AGQADAAIAAAAHABAAGQADAAIAAAAIAAEAGQADAAIAAAAIAAIAGQADAAIAAAAIAAMAGQADAAIAAAAIAAQAGQADAAIAAAAIAAUAGQADAAIAAAAIAAYAGQAEAAMAAAAIAAcAGQADAAIAAAAIAAgAGQADAAIAAAAIAAkAGQADAAIAAAAIAAoAGQADAAIAAAAIAAsAGQADAAIAAAAIAAwAGQACAAQAAAAIAA0AGQADAAIAAAAIAA4AGQADAAIAAAAIAA8AGQADAAIAAAAIABAAGQADAAIAAAAJAAEAGQADAAIAAAAJAAIAGQADAAIAAAAJAAMAGQADAAIAAAAJAAQAGQADAAIAAAAJAAUAGQADAAIAAAAJAAYAGQADAAIAAAAJAAcAGQADAAIAAAAJAAgAGQADAAIAAAAJAAkAGQADAAIAAAAJAAoAGQADAAIAAAAJAAsAGQADAAIAAAAJAAwAGQADAAIAAAAJAA0AGQADAAIAAAAJAA4AGQADAAIAAAAJAA8AGQADAAIAAAAJABAAGQADAAIAAAAKAAEAGQADAAIAAAAKAAIAGQADAAIAAAAKAAMAGQADAAIAAAAKAAQAGQADAAIAAAAKAAUAGQADAAIAAAAKAAYAGQADAAIAAAAKAAcAGQADAAIAAAAKAAgAGQADAAIAAAAKAAkAGQADAAIAAAAKAAoAGQACAAQAAAAKAAsAGQADAAIAAAAKAAwAGQADAAIAAAAKAA0AGQADAAIAAAAKAA4AGQADAAIAAAAKAA8AGQADAAIAAAAKABAAGQADAAIAAAALAAEAGQADAAIAAAALAAIAGQADAAIAAAALAAMAGQADAAIAAAALAAQAGQADAAIAAAALAAUAGQADAAIAAAALAAYAGQADAAIAAAALAAcAGQADAAIAAAALAAgAGQADAAIAAAALAAkAGQADAAIAAAALAAoAGQADAAIAAAALAAsAGQADAAIAAAALAAwAGQADAAIAAAALAA0AGQADAAIAAAALAA4AGQADAAIAAAALAA8AGQADAAIAAAALABAAGQADAAIAAAAMAAEAGQADAAIAAAAMAAIAGQADAAIAAAAMAAMAGQADAAIAAAAMAAQAGQADAAIAAAAMAAUAGQADAAIAAAAMAAYAGQADAAIAAAAMAAcAGQADAAIAAAAMAAgAGQADAAIAAAAMAAkAGQADAAIAAAAMAAoAGQADAAIAAAAMAAsAGQADAAIAAAAMAAwAGQADAAIAAAAMAA0AGQADAAIAAAAMAA4AGQADAAIAAAAMAA8AGQADAAIAAAAMABAAGQADAAIAAAANAAEAGQADAAIAAAANAAIAGQADAAIAAAANAAMAGQADAAIAAAANAAQAGQADAAIAAAANAAUAGQADAAIAAAANAAYAGQADAAIAAAANAAcAGQADAAIAAAANAAgAGQADAAIAAAANAAkAGQADAAIAAAANAAoAGQADAAIAAAANAAsAGQADAAIAAAANAAwAGQADAAIAAAANAA0AGQADAAIAAAANAA4AGQADAAIAAAANAA8AGQADAAIAAAANABAAGQADAAIAAAAOAAEAGQADAAIAAAAOAAIAGQADAAIAAAAOAAMAGQADAAIAAAAOAAQAGQADAAIAAAAOAAUAGQADAAIAAAAOAAYAGQADAAIAAAAOAAcAGQADAAIAAAAOAAgAGQADAAIAAAAOAAkAGQADAAIAAAAOAAoAGQADAAIAAAAOAAsAGQADAAIAAAAOAAwAGQADAAIAAAAOAA0AGQADAAIAAAAOAA4AGQADAAIAAAAOAA8AGQADAAIAAAAOABAAGQADAAIAAAAPAAEAGQADAAIAAAAPAAIAGQADAAIAAAAPAAMAGQADAAIAAAAPAAQAGQADAAIAAAAPAAUAGQADAAIAAAAPAAYAGQADAAIAAAAPAAcAGQADAAIAAAAPAAgAGQADAAIAAAAPAAkAGQADAAIAAAAPAAoAGQADAAIAAAAPAAsAGQADAAIAAAAPAAwAGQADAAIAAAAPAA0AGQADAAIAAAAPAA4AGQADAAIAAAAPAA8AGQADAAIAAAAPABAAGQADAAIAAAAQAAEAGQADAAIAAAAQAAIAGQADAAIAAAAQAAMAGQADAAIAAAAQAAQAGQADAAIAAAAQAAUAGQADAAIAAAAQAAYAGQADAAIAAAAQAAcAGQADAAIAAAAQAAgAGQADAAIAAAAQAAkAGQADAAIAAAAQAAoAGQADAAIAAAAQAAsAGQADAAIAAAAQAAwAGQADAAIAAAAQAA0AGQADAAIAAAAQAA4AGQADAAIAAAAQAA8AGQADAAIAAAAQABAAGQADAAIAAAARAAEAGQADAAIAAAARAAIAGQADAAIAAAARAAMAGQADAAIAAAARAAQAGQADAAIAAAARAAUAGQADAAIAAAARAAYAGQADAAIAAAARAAcAGQADAAIAAAARAAgAGQADAAIAAAARAAkAGQADAAIAAAARAAoAGQADAAIAAAARAAsAGQADAAIAAAARAAwAGQADAAIAAAARAA0AGQADAAIAAAARAA4AGQADAAIAAAARAA8AGQADAAIAAAARABAAGQADAAIAAAASAAEAGQADAAIAAAASAAIAGQADAAIAAAASAAMAGQADAAIAAAASAAQAGQADAAIAAAASAAUAGQADAAIAAAASAAYAGQADAAIAAAASAAcAGQADAAIAAAASAAgAGQADAAIAAAASAAkAGQADAAIAAAASAAoAGQADAAIAAAASAAsAGQADAAIAAAASAAwAGQADAAIAAAASAA0AGQADAAIAAAASAA4AGQADAAIAAAASAA8AGQADAAIAAAASABAAGQADAAIAAAA=")
+tile_set = ExtResource("2_u7gwd")
+
+[node name="TileMapLayer2" type="TileMapLayer" parent="TileMapLayers/Sand"]
+position = Vector2(-246, -187)
+tile_map_data = PackedByteArray("AAAFAAMAFwABAAUAAAAGAAQAEwAEAAEAAAAGAAYAFwABAAUAAAADAAYAFwABAAUAAAADAAMAFwABAAUAAAAGAAUAEwABAAIAAAA=")
+tile_set = ExtResource("2_aeas8")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="TileMapLayers/Sand"]
+position = Vector2(-246, -187)
+scale = Vector2(2.28, 2.28)
+tile_map_data = PackedByteArray("AAAFAAMAFwABAAUAAAADAAMAFwABAAUAAAAGAAUAJAACAAMAAAAEAAUAJAACAAMAAAA=")
+tile_set = ExtResource("3_pa4hc")
+
+[node name="Node2D" parent="TileMapLayers/Sand" instance=ExtResource("16_aeas8")]
+position = Vector2(750.996, 527.273)
+
+[node name="Node2D2" parent="TileMapLayers/Sand" instance=ExtResource("16_aeas8")]
+position = Vector2(337.996, 607.273)
+scale = Vector2(-1, 1)
+
+[node name="Ground2" type="TileMapLayer" parent="TileMapLayers/Sand"]
+position = Vector2(-1065, -221)
+scale = Vector2(1.865, 1.865)
+tile_map_data = PackedByteArray("AAALAAYAFwADAAAAAAA=")
+tile_set = ExtResource("2_u7gwd")
+
+[node name="Ground6" type="TileMapLayer" parent="TileMapLayers/Sand"]
+position = Vector2(-2136, -538)
+scale = Vector2(3.415, 3.415)
+tile_map_data = PackedByteArray("AAAKAAUAGgAAAAAAAAAKAAYAGgAAAAAAAAAKAAQAGgAAAAAAAAALAAMAGgAAAAAAAAAKAAMAGgAAAAAAAAAMAAMAGgAAAAAAAAANAAMAGgAAAAAAAAANAAQAGgAAAAAAAAAOAAUAGgAAAAAAAAANAAUAGgAAAAAAAAANAAYAGgAAAAAAAAAOAAYAGgAAAAAAAAALAAQAGgAAAAAAAAA=")
+tile_set = ExtResource("2_u7gwd")
+
+[node name="ElfoDelBosque" parent="TileMapLayers/Sand" instance=ExtResource("6_iu8xy")]
+position = Vector2(279, 612)
+scale = Vector2(1.82, 1.82)
+frame_progress = 0.0
+
+[node name="Piso agrietado" type="Node2D" parent="TileMapLayers/Sand"]
+position = Vector2(399.546, 398.818)
+scale = Vector2(1, 0.67)
+
+[node name="Image(1)" type="Sprite2D" parent="TileMapLayers/Sand/Piso agrietado"]
+position = Vector2(160.421, 53.826)
+scale = Vector2(1.31897, 2.5)
+texture = ExtResource("17_pa4hc")
+
+[node name="Image(1)7" type="Sprite2D" parent="TileMapLayers/Sand/Piso agrietado"]
+position = Vector2(160.421, 596.567)
+scale = Vector2(1.31897, 2.5)
+texture = ExtResource("17_pa4hc")
+
+[node name="Image(1)6" type="Sprite2D" parent="TileMapLayers/Sand/Piso agrietado"]
+position = Vector2(160.421, 53.826)
+scale = Vector2(1.31897, 2.5)
+texture = ExtResource("17_pa4hc")
+
+[node name="Image(1)4" type="Sprite2D" parent="TileMapLayers/Sand/Piso agrietado"]
+position = Vector2(160.421, 53.826)
+scale = Vector2(1.31897, 2.5)
+texture = ExtResource("17_pa4hc")
+
+[node name="Image(1)3" type="Sprite2D" parent="TileMapLayers/Sand/Piso agrietado"]
+position = Vector2(152.721, 321.126)
+rotation = -0.0371693
+scale = Vector2(1.31897, 2.5)
+texture = ExtResource("17_pa4hc")
+
+[node name="Image(1)9" type="Sprite2D" parent="TileMapLayers/Sand/Piso agrietado"]
+position = Vector2(165.448, 872.008)
+rotation = -0.0371693
+scale = Vector2(1.31897, 2.5)
+texture = ExtResource("17_pa4hc")
+
+[node name="Image(1)2" type="Sprite2D" parent="TileMapLayers/Sand/Piso agrietado"]
+position = Vector2(153.821, 184.726)
+rotation = -3.10036
+scale = Vector2(1.319, -2.5)
+texture = ExtResource("17_pa4hc")
+
+[node name="Image(1)10" type="Sprite2D" parent="TileMapLayers/Sand/Piso agrietado"]
+position = Vector2(155.454, -69.8776)
+rotation = -3.21713
+scale = Vector2(1.319, -2.5)
+texture = ExtResource("17_pa4hc")
+
+[node name="Image(1)5" type="Sprite2D" parent="TileMapLayers/Sand/Piso agrietado"]
+position = Vector2(159.321, 468.526)
+rotation = 3.12402
+scale = Vector2(1.319, -2.5)
+texture = ExtResource("17_pa4hc")
+
+[node name="Image(1)8" type="Sprite2D" parent="TileMapLayers/Sand/Piso agrietado"]
+position = Vector2(162.958, 734.469)
+rotation = 3.12402
+scale = Vector2(1.319, -2.5)
+texture = ExtResource("17_pa4hc")
+
+[node name="Ground3" type="TileMapLayer" parent="TileMapLayers/Sand"]
+position = Vector2(-712, -380)
+scale = Vector2(1.865, 1.865)
+tile_map_data = PackedByteArray("AAALAAYAFwADAAAAAAA=")
+tile_set = ExtResource("2_u7gwd")
+
+[node name="Ground" type="TileMapLayer" parent="TileMapLayers/Sand"]
+material = SubResource("ShaderMaterial_u7gwd")
+position = Vector2(-28, 58)
+scale = Vector2(1.625, 1.625)
+tile_set = ExtResource("2_u7gwd")
+
+[node name="Ground4" type="TileMapLayer" parent="TileMapLayers/Sand"]
+position = Vector2(-917, 45)
+scale = Vector2(1.865, 1.865)
+tile_map_data = PackedByteArray("AAALAAYAFwADAAAAAAA=")
+tile_set = ExtResource("2_u7gwd")
+
+[node name="Ground5" type="TileMapLayer" parent="TileMapLayers/Sand"]
+material = SubResource("ShaderMaterial_6jtbm")
+position = Vector2(-2136, -538)
+scale = Vector2(3.415, 3.415)
+tile_map_data = PackedByteArray("AAAKAAUAGgAAAAAAAAAKAAYAGgAAAAAAAAAKAAQAGgAAAAAAAAAKAAMAGgAAAAAAAAAMAAMAGgAAAAAAAAANAAMAGgAAAAAAAAANAAQAGgAAAAAAAAAOAAUAGgAAAAAAAAANAAUAGgAAAAAAAAANAAYAGgAAAAAAAAAOAAYAGgAAAAAAAAA=")
+tile_set = ExtResource("2_u7gwd")
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(506, -132.86)
+scale = Vector2(1.32, 1.32)
+sprite_frames = ExtResource("8_aeas8")
+animation = &"idle"
+autoplay = "idle"
+offset = Vector2(0, 146.255)
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Character"]
+position = Vector2(3.03031, 144.697)
+zoom = Vector2(2.305, 2.305)
+limit_bottom = 730
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_qdpvj")
+}
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
+script = ExtResource("4_ug0ds")
+dialogue = ExtResource("7_1kvnf")
+animation_player = NodePath("../OnTheGround/AnimationPlayer")
+next_scene = "uid://djrxlfp43b7pt"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="Darkness" type="Node2D" parent="."]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="Darkness"]
+color = Color(0, 0, 0, 1)
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="Darkness/CanvasModulate"]
+color = Color(0.204637, 0.223766, 0.681066, 1)
+
+[node name="Node2D" parent="Darkness/CanvasModulate" instance=ExtResource("5_gilgp")]
+position = Vector2(271, 315)
+scale = Vector2(2.24, 2.24)
+
+[node name="Node2D2" parent="Darkness/CanvasModulate" instance=ExtResource("5_gilgp")]
+position = Vector2(418, 584)
+scale = Vector2(1.97, 1.97)
+
+[node name="Node2D3" parent="Darkness/CanvasModulate" instance=ExtResource("5_gilgp")]
+position = Vector2(625, 158)
+scale = Vector2(1.97, 1.97)
+
+[node name="SoundEffects" type="Node2D" parent="."]
+
+[node name="Ambient" type="AudioStreamPlayer2D" parent="SoundEffects"]
+stream = ExtResource("12_aeas8")
+volume_db = -9.905
+script = SubResource("GDScript_aeas8")
+
+[node name="Music" type="AudioStreamPlayer2D" parent="SoundEffects"]
+stream = ExtResource("12_1kvnf")
+script = ExtResource("11_ecyos")
+
+[node name="ParallaxBackground" parent="." instance=ExtResource("12_6jtbm")]
+scale = Vector2(3.7, 3.7)
+transform = Transform2D(3.7, 0, 0, 3.7, 0, 0)
+
+[node name="Fireflies" type="Node2D" parent="."]
+position = Vector2(363, 229)
+
+[node name="FireFly" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+
+[node name="FireFly2" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(380, 138)
+
+[node name="FireFly3" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(46, 333)
+
+[node name="FireFly4" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(218, -46)
+
+[node name="FireFly5" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(87, 347)
+
+[node name="FireFly6" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(21, 359)
+
+[node name="FireFly7" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(71, 387)
+
+[node name="FireFly8" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(-34, 8)
+
+[node name="FireFly9" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(427, 167)
+
+[node name="FireFly10" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(362, 183)
+
+[node name="FireFly11" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(256, -110)
+
+[node name="FireFly12" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(290, -75)
+
+[node name="FireFly13" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(226, -85)
+
+[node name="FireFly14" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(-47, -39)
+
+[node name="FireFly15" parent="Fireflies" instance=ExtResource("4_u7gwd")]
+position = Vector2(17, -40)
