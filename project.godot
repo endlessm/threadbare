@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Threadbare"
+config/tags=PackedStringArray("2d", "endless", "game", "tilemap", "top_down")
 run/main_scene="uid://huuo8mnwsphv"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="uid://bc70phmq55dkf"
@@ -25,6 +26,7 @@ Settings="*res://scenes/globals/settings/settings.gd"
 PauseOverlay="*res://scenes/globals/pause/pause_overlay.tscn"
 MusicPlayer="*res://scenes/globals/music_player/music_player.tscn"
 CameraShake="*res://scenes/globals/camera_shaker/camera_shake.tscn"
+AspectRatioDebugger="*res://scenes/globals/aspect_ratio_debugger/aspect_ratio_debugger.tscn"
 
 [debug]
 
@@ -35,7 +37,7 @@ gdscript/warnings/untyped_declaration=1
 editor/new_file_template="# SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 ~ start
-{{npc_name}}: [[Hi|Hello|Greetings]], {{player_name}}
+[[Hi|Hello|Greetings]], {{player_name}}
 => END
 "
 runtime/balloon_path="uid://dhydhpp43urah"
@@ -43,17 +45,16 @@ editor/translations/update_pot_files_automatically=false
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
-window/stretch/mode="viewport"
-
-[dotnet]
-
-project/assembly_name="Threadbare"
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+mouse_cursor/custom_image="uid://cee2juvnxco6c"
+mouse_cursor/tooltip_position_offset=Vector2(19, 29)
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg", "res://addons/git_lfs_checker/plugin.cfg", "res://addons/sprite_frames_exported_textures/plugin.cfg")
+enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg", "res://addons/git_describe/plugin.cfg", "res://addons/git_lfs_checker/plugin.cfg", "res://addons/sprite_frames_exported_textures/plugin.cfg", "res://addons/storyquest_bootstrap/plugin.cfg", "res://addons/threadbare_project_settings/plugin.cfg")
 
 [file_customization]
 
@@ -72,6 +73,7 @@ filling_barrels=""
 projectiles=""
 guard_enemy=""
 sequence_object=""
+hook_listener=""
 
 [input]
 
@@ -180,9 +182,10 @@ sokoban_skip={
 2d_physics/layer_8="enemies hitbox"
 2d_physics/layer_9="projectiles"
 2d_physics/layer_10="non_walkable_floor"
+2d_physics/layer_13="hookable"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-2d/snap/snap_2d_transforms_to_pixel=true

@@ -13,6 +13,12 @@ const DEFAULT_VOLUMES: Dictionary[String, float] = {
 const VIDEO_SECTION := "Video"
 const VIDEO_WINDOW_MODE_KEY := "Window Mode"
 
+## 5:4 ratio of 1280×1024, 1024×768, and other pre-widescreen monitors.
+const MINIMUM_ASPECT_RATIO := 1.25
+
+## An arbitrary wide ratio, lower than 21:9 ("ultrawide").
+const MAXIMUM_ASPECT_RATIO := 2.2
+
 var _settings := ConfigFile.new()
 
 
@@ -23,6 +29,7 @@ func _ready() -> void:
 
 	_restore_volumes()
 	_restore_video_settings()
+	_set_minimum_window_size()
 
 
 func _restore_volumes() -> void:
@@ -47,6 +54,14 @@ func _restore_video_settings() -> void:
 	if window_mode == DisplayServer.window_get_mode():
 		return
 	DisplayServer.window_set_mode(window_mode)
+
+
+func _set_minimum_window_size() -> void:
+	var minimum_window_size := Vector2i(
+		ProjectSettings.get_setting("display/window/size/viewport_width"),
+		ProjectSettings.get_setting("display/window/size/viewport_height")
+	)
+	get_window().min_size = minimum_window_size
 
 
 func get_volume(bus: String) -> float:

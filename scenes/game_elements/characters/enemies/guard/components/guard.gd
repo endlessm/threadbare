@@ -406,11 +406,10 @@ func _notification(what: int) -> void:
 			_reset()
 
 
-func _editor_interface() -> Node:
-	# Cannot directly reference [class EditorInterface] in code that isn't
-	# part of a script that runs only in the editor (like plugins).
-	# This function should only be called in the editor, but having a direct
-	# reference to the [class EditorInterface] causes errors on runtime builds.
+static func _editor_interface() -> Object:
+	# TODO: Workaround for https://github.com/godotengine/godot/issues/91713
+	# Referencing [class EditorInterface] in scripts that don't run in the editor
+	# fails to load the script with a parse error.
 	return Engine.get_singleton("EditorInterface")
 
 
