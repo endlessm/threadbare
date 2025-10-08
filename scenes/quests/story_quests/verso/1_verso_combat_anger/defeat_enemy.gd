@@ -1,5 +1,6 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 extends Node
-
 @export var intro_dialogue: DialogueResource
 
 var enemies_left: int = 6
