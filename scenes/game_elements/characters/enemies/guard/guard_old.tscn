@@ -1,15 +1,11 @@
-[gd_scene load_steps=21 format=3 uid="uid://d37mebu7atru7"]
+[gd_scene load_steps=17 format=3 uid="uid://b5q7wcvu0yyg7"]
 
-[ext_resource type="Script" uid="uid://dmf866kgfnp3c" path="res://scenes/game_elements/characters/enemies/guard/components/guard.gd" id="1_g173s"]
-[ext_resource type="Script" uid="uid://id28maao3vdy" path="res://scenes/game_logic/walk_behaviors/path_walk_behavior.gd" id="2_wckbf"]
-[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="3_0hjcv"]
-[ext_resource type="Script" uid="uid://cwoclmik3db2" path="res://scenes/game_logic/walk_behaviors/follow_walk_behavior.gd" id="3_innil"]
-[ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="3_pnkgp"]
-[ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="4_lptvm"]
-[ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="4_mswbt"]
-[ext_resource type="SpriteFrames" uid="uid://ovu5wqo15s5g" path="res://scenes/quests/story_quests/NO_EDIT/1_NO_EDIT_stealth/NO_EDIT_stealth_components/NO_EDIT_guard_enemy.tres" id="5_mswbt"]
-[ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/character_sprite_behavior.gd" id="7_klpct"]
-[ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="9_8vt0k"]
+[ext_resource type="Script" uid="uid://bsvugqph0h8k" path="res://scenes/game_elements/characters/enemies/guard/components/guard_old.gd" id="1_423jh"]
+[ext_resource type="Script" uid="uid://6x0k3w2lhoev" path="res://scenes/game_elements/characters/enemies/guard/components/guard_movement_old.gd" id="2_423jh"]
+[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="3_82wql"]
+[ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="4_4op8y"]
+[ext_resource type="SpriteFrames" path="res://scenes/quests/story_quests/NO_EDIT/1_NO_EDIT_stealth/NO_EDIT_stealth_components/NO_EDIT_guard_enemy.tres" id="5_vbwly"]
+[ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="6_oogm1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g173s"]
 radius = 35.0
@@ -201,33 +197,16 @@ _data = {
 &"walk": SubResource("Animation_8vt0k")
 }
 
-[node name="Guard" type="CharacterBody2D" groups=["guard_enemy"]]
+[node name="GuardOld" type="CharacterBody2D" groups=["guard_enemy"]]
 collision_layer = 0
 collision_mask = 528
 motion_mode = 1
-script = ExtResource("1_g173s")
+script = ExtResource("1_423jh")
+sprite_frames = ExtResource("5_vbwly")
 
-[node name="PatrollingBehavior" type="Node2D" parent="." node_paths=PackedStringArray("character")]
+[node name="GuardMovement" type="Node2D" parent="."]
 unique_name_in_owner = true
-script = ExtResource("2_wckbf")
-character = NodePath("..")
-metadata/_custom_type_script = "uid://id28maao3vdy"
-
-[node name="InvestigatingBehavior" type="Node2D" parent="." node_paths=PackedStringArray("character")]
-unique_name_in_owner = true
-process_mode = 4
-script = ExtResource("3_innil")
-target_reached_distance = 10.0
-character = NodePath("..")
-metadata/_custom_type_script = "uid://cwoclmik3db2"
-
-[node name="ReturningBehavior" type="Node2D" parent="." node_paths=PackedStringArray("character")]
-unique_name_in_owner = true
-process_mode = 4
-script = ExtResource("2_wckbf")
-turn_around = false
-character = NodePath("..")
-metadata/_custom_type_script = "uid://id28maao3vdy"
+script = ExtResource("2_423jh")
 
 [node name="SightRayCast" type="RayCast2D" parent="."]
 unique_name_in_owner = true
@@ -246,7 +225,6 @@ shape = SubResource("CircleShape2D_g173s")
 unique_name_in_owner = true
 position = Vector2(0, -19)
 collision_layer = 0
-script = ExtResource("4_mswbt")
 
 [node name="Light" type="PointLight2D" parent="DetectionArea"]
 position = Vector2(37.3333, 1.33333)
@@ -256,9 +234,9 @@ blend_mode = 2
 shadow_enabled = true
 shadow_filter = 1
 shadow_filter_smooth = 0.5
-texture = ExtResource("3_0hjcv")
+texture = ExtResource("3_82wql")
 offset = Vector2(377.88, 10.7686)
-script = ExtResource("4_lptvm")
+script = ExtResource("4_4op8y")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea"]
 position = Vector2(-29.3333, -132)
@@ -267,16 +245,9 @@ polygon = PackedVector2Array(302, 48, 283, 52, 279, 52, 101, 114, 98, 114, 79, 1
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(0, -16)
-sprite_frames = ExtResource("5_mswbt")
+sprite_frames = ExtResource("5_vbwly")
 animation = &"walk"
 autoplay = "idle"
-
-[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" node_paths=PackedStringArray("character", "sprite")]
-script = ExtResource("7_klpct")
-character = NodePath("../..")
-play_animations = false
-sprite = NodePath("..")
-metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_nv25s")
@@ -295,8 +266,8 @@ pivot_offset = Vector2(62, 102)
 step = 0.01
 fill_mode = 3
 nine_patch_stretch = true
-texture_under = ExtResource("3_pnkgp")
-texture_progress = ExtResource("3_pnkgp")
+texture_under = ExtResource("6_oogm1")
+texture_progress = ExtResource("6_oogm1")
 tint_under = Color(1, 1, 1, 0.392157)
 tint_progress = Color(1, 1, 0, 1)
 
@@ -322,13 +293,6 @@ label_settings = SubResource("LabelSettings_nv25s")
 libraries = {
 &"": SubResource("AnimationLibrary_innil")
 }
-
-[node name="CharacterAnimationPlayerBehavior" type="Node2D" parent="AnimationPlayer" node_paths=PackedStringArray("character", "animation_player")]
-unique_name_in_owner = true
-script = ExtResource("9_8vt0k")
-character = NodePath("../..")
-animation_player = NodePath("..")
-metadata/_custom_type_script = "uid://b3hx1n2yl88qr"
 
 [node name="Sounds" type="Node2D" parent="."]
 
@@ -357,12 +321,6 @@ volume_db = -2.0
 max_distance = 500.0
 bus = &"SFX"
 
-[connection signal="got_stuck" from="PatrollingBehavior" to="." method="_on_patrolling_behavior_got_stuck"]
-[connection signal="pointy_path_reached" from="PatrollingBehavior" to="." method="_on_patrolling_behavior_pointy_path_reached"]
-[connection signal="got_stuck" from="InvestigatingBehavior" to="." method="_on_investigating_behavior_got_stuck"]
-[connection signal="target_reached_changed" from="InvestigatingBehavior" to="." method="_on_investigating_behavior_target_reached_changed"]
-[connection signal="ending_reached" from="ReturningBehavior" to="." method="_on_returning_behavior_ending_reached"]
-[connection signal="pointy_path_reached" from="ReturningBehavior" to="." method="_on_returning_behavior_pointy_path_reached"]
 [connection signal="body_entered" from="InstantDetectionArea" to="." method="_on_instant_detection_area_body_entered"]
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
