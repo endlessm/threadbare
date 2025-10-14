@@ -163,9 +163,9 @@ wholly by AI, provided that:
    generation or provided another asset as input to the AI tool, and ideally the
    model (if known) and prompt used.
 
-For example, the previous main menu logo
+For example, the previous main menu logo at `assets/first_party/logo/threadbare-logo.png`
 was generated with Midjourney, with no modifications. It was accompanied by a
-`.license` file which said:
+`threadbare-logo.png.license` file in the same folder which said:
 
 ```
 SPDX-FileCopyrightText: The Threadbare Authors
