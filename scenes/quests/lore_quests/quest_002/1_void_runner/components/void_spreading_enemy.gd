@@ -32,8 +32,8 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 @export var idle_patrol_path: Path2D:
 	set = _set_idle_patrol_path
 
-var player: Player:
-	set = _set_player
+var node_to_follow: Node2D:
+	set = _set_node_to_follow
 
 var state := State.IDLE:
 	set = _set_state
@@ -51,10 +51,10 @@ func _set_idle_patrol_path(new_path: Path2D) -> void:
 		path_walk_behavior.walking_path = idle_patrol_path
 
 
-func _set_player(new_player: Player) -> void:
-	player = new_player
+func _set_node_to_follow(new_node_to_follow: Node2D) -> void:
+	node_to_follow = new_node_to_follow
 	if follow_walk_behavior:
-		follow_walk_behavior.target = player
+		follow_walk_behavior.target = node_to_follow
 
 
 func _set_state(new_state: State) -> void:
@@ -73,16 +73,14 @@ func _set_state(new_state: State) -> void:
 
 
 func _ready() -> void:
-	player = player
 	idle_patrol_path = idle_patrol_path
 	state = state
 	_last_position = position
 
 
 func start(detected_node: Node2D) -> void:
-	if detected_node is Player:
-		player = detected_node
-		state = State.CHASING
+	node_to_follow = detected_node
+	state = State.CHASING
 
 
 func _process(_delta: float) -> void:
@@ -114,13 +112,12 @@ func _emit_particles() -> void:
 
 
 func _on_player_capture_area_body_entered(body: Node2D) -> void:
-	if body != player:
-		return
-
-	if state != State.CHASING:
+	if body is not Player:
 		return
 
 	state = State.CAUGHT
+
+	var player := body as Player
 	player.mode = Player.Mode.DEFEATED
 	var tween := create_tween()
 	tween.tween_property(player, "scale", Vector2.ZERO, 2.0)
