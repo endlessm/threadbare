@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://ktjtnp64e63v"]
+
+[ext_resource type="Texture2D" uid="uid://cyvi71ryavsld" path="res://scenes/game_elements/props/decoration/books/components/Books_2.png" id="1_lljyg"]
+[ext_resource type="Texture2D" uid="uid://b65dg7i548oip" path="res://scenes/game_elements/props/decoration/books/components/Books_1.png" id="2_ej8sk"]
+[ext_resource type="Script" uid="uid://dabvr3pqmyya4" path="res://scenes/game_elements/props/hookable_area/components/hookable_area.gd" id="3_ej8sk"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_grfk2"]
+radius = 12.0
+height = 62.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5vg6g"]
+size = Vector2(72, 124)
+
+[node name="BooksPile" type="CharacterBody2D"]
+metadata/ingest_time = 2.0
+
+[node name="Books2" type="Sprite2D" parent="."]
+position = Vector2(2, -15)
+texture = ExtResource("1_lljyg")
+
+[node name="Books1" type="Sprite2D" parent="."]
+position = Vector2(-2, -47)
+texture = ExtResource("2_ej8sk")
+
+[node name="Books3" type="Sprite2D" parent="."]
+position = Vector2(-7, -73)
+texture = ExtResource("2_ej8sk")
+
+[node name="Books4" type="Sprite2D" parent="."]
+position = Vector2(-1, -94)
+texture = ExtResource("2_ej8sk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_grfk2")
+
+[node name="HookableArea" type="Area2D" parent="." node_paths=PackedStringArray("controlled_entity")]
+collision_layer = 4096
+collision_mask = 0
+script = ExtResource("3_ej8sk")
+controlled_entity = NodePath("..")
+weight = 0.0
+metadata/_custom_type_script = "uid://dabvr3pqmyya4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea"]
+position = Vector2(0, -51)
+shape = SubResource("RectangleShape2D_5vg6g")
+debug_color = Color(0.689707, 0.288376, 1, 0.42)
