@@ -82,10 +82,6 @@ func _stop() -> void:
 		animated_sprite.play("default")
 
 
-func wobble_silently() -> void:
-	await play(true)
-
-
 ## Stop the silent hint animation, if playing.
 func stop_hint() -> void:
 	await _stop()
