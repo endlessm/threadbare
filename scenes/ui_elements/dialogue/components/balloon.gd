@@ -7,10 +7,10 @@ const PLAYER_RIBBON_TYPE_VARIATION := &"PlayerRibbon"
 const NPC_RIBBON_TYPE_VARIATION := &"NPCRibbon"
 
 ## The action to use for advancing the dialogue
-@export var next_action: StringName = &"dialogue_next"
+@export var next_action: StringName = &"ui_accept"
 
 ## The action to use to skip typing the dialogue
-@export var skip_action: StringName = &"dialogue_skip"
+@export var skip_action: StringName = &"ui_cancel"
 
 ## The dialogue resource
 var resource: DialogueResource
