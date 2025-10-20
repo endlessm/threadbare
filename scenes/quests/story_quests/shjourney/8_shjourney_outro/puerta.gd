@@ -20,7 +20,7 @@ func _ready():
 
 
 func _process(delta):
-	if jugador_cerca and Input.is_action_just_pressed(&"ui_accept"):
+	if jugador_cerca and Input.is_action_just_pressed(&"interact"):
 		if not opened:
 			open()
 

@@ -9,9 +9,9 @@ extends Node2D
 ## Handles the input to control the aiming and throwing.
 ## This is a piece of the grappling hook mechanic.
 ## [br][br]
-## The [b]ui_accept[/b] action is used for throwing.
+## The [b]throw[/b] action is used for throwing.
 ## [br][br]
-## The [b]ui_up, ui_down, ui_left and ui_right[/b] actions are used for aiming.
+## The [b]aim_up, aim_down, aim_left and aim_right[/b] actions are used for aiming.
 ## Additionally, the mouse movement can also be used for aiming,
 ## but the mouse not considered the primary input.
 ## [br][br]
@@ -83,30 +83,51 @@ var _hook_angle: float
 ## The ray cast to handle collisions with hookable areas.
 @onready var ray_cast_2d: RayCast2D = %RayCast2D
 
+## Timer to let a directional pad continue aiming in
+## diagonal directions when releasing the input actions.
+@onready var d_pad_timer: Timer = %DPadTimer
+
 
 func _unhandled_input(_event: InputEvent) -> void:
-	var axis: Vector2
-
 	if _event is InputEventMouseMotion:
-		axis = get_global_mouse_position() - global_position
+		var axis := get_global_mouse_position() - global_position
 		if not axis.is_zero_approx():
 			_hook_angle = axis.angle()
 			_hook_angle_set = true
 		return
 
-	# When aiming with keyboard, do not change the hook angle if one of these actions was released.
-	# This makes it possible to aim in diagonal directions.
+	# When aiming with keyboard, do not change the hook angle immediately if one of these actions
+	# was released. This makes it possible to aim in diagonal directions.
 	# Otherwise, if for example left and down are pressed to aim in diagonal and both are released,
 	# there is always one that is released first so the aim direction ends up being either left or
 	# down, not left AND down.
 	if (
-		_event.is_action_released(&"ui_left")
-		or _event.is_action_released(&"ui_right")
-		or _event.is_action_released(&"ui_up")
-		or _event.is_action_released(&"ui_down")
+		_event is InputEventKey
+		and (
+			_event.is_action_released(&"aim_left")
+			or _event.is_action_released(&"aim_right")
+			or _event.is_action_released(&"aim_up")
+			or _event.is_action_released(&"aim_down")
+		)
 	):
+		d_pad_timer.start()
 		return
-	axis = Input.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
+
+	_update_hook_angle()
+
+	if Input.is_action_just_pressed(&"throw"):
+		pressing_throw_action = true
+		return
+
+	if Input.is_action_just_released(&"throw"):
+		pressing_throw_action = false
+		throw_failed_while_pressing = false
+		return
+
+
+func _update_hook_angle() -> void:
+	var axis: Vector2
+	axis = Input.get_vector(&"aim_left", &"aim_right", &"aim_up", &"aim_down")
 	if not axis.is_zero_approx():
 		if pressing_throw_action:
 			_hook_angle = rotate_toward(_hook_angle, axis.angle(), 0.05)
@@ -114,15 +135,6 @@ func _unhandled_input(_event: InputEvent) -> void:
 		else:
 			_hook_angle = axis.angle()
 			_hook_angle_set = true
-
-	if Input.is_action_just_pressed(&"ui_accept"):
-		pressing_throw_action = true
-		return
-
-	if Input.is_action_just_released(&"ui_accept"):
-		pressing_throw_action = false
-		throw_failed_while_pressing = false
-		return
 
 
 func _get_hook_angle() -> float:
@@ -204,3 +216,7 @@ func _process(_delta: float) -> void:
 		return
 	if state != State.AIMING_PAUSED and pressing_throw_action and not throw_failed_while_pressing:
 		_throw()
+
+
+func _on_d_pad_timer_timeout() -> void:
+	_update_hook_angle()

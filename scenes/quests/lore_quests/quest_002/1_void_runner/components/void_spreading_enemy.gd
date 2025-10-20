@@ -11,6 +11,8 @@ enum State {
 	CHASING,
 	## The void has engulfed the player
 	CAUGHT,
+	## The void has been defeated
+	DEFEATED,
 }
 
 const VOID_PARTICLES = preload(
@@ -32,14 +34,15 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 @export var idle_patrol_path: Path2D:
 	set = _set_idle_patrol_path
 
-var player: Player:
-	set = _set_player
+var node_to_follow: Node2D:
+	set = _set_node_to_follow
 
 var state := State.IDLE:
 	set = _set_state
 
 var _last_position: Vector2
 var _distance_since_emit: float = 0.0
+var _live_particles: int = 0
 
 @onready var path_walk_behavior: PathWalkBehavior = %PathWalkBehavior
 @onready var follow_walk_behavior: NavigationFollowWalkBehavior = %NavigationFollowWalkBehavior
@@ -51,10 +54,10 @@ func _set_idle_patrol_path(new_path: Path2D) -> void:
 		path_walk_behavior.walking_path = idle_patrol_path
 
 
-func _set_player(new_player: Player) -> void:
-	player = new_player
+func _set_node_to_follow(new_node_to_follow: Node2D) -> void:
+	node_to_follow = new_node_to_follow
 	if follow_walk_behavior:
-		follow_walk_behavior.target = player
+		follow_walk_behavior.target = node_to_follow
 
 
 func _set_state(new_state: State) -> void:
@@ -70,22 +73,32 @@ func _set_state(new_state: State) -> void:
 		State.CHASING:
 			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			follow_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+		State.DEFEATED:
+			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			follow_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 
 
 func _ready() -> void:
-	player = player
 	idle_patrol_path = idle_patrol_path
 	state = state
 	_last_position = position
 
 
 func start(detected_node: Node2D) -> void:
-	if detected_node is Player:
-		player = detected_node
-		state = State.CHASING
+	node_to_follow = detected_node
+	state = State.CHASING
+
+
+func defeat() -> void:
+	state = State.DEFEATED
+	if _live_particles == 0:
+		queue_free()
+	# else wait for `_emit_particles` to free this node after all particles are finished.
 
 
 func _process(_delta: float) -> void:
+	if state == State.DEFEATED:
+		return
 	_distance_since_emit += (position - _last_position).length()
 	_last_position = position
 
@@ -106,21 +119,26 @@ func _process(_delta: float) -> void:
 func _emit_particles() -> void:
 	_distance_since_emit = 0
 
-	var particles := VOID_PARTICLES.instantiate()
+	var particles: GPUParticles2D = VOID_PARTICLES.instantiate()
 	particles.emitting = true
 	add_child(particles)
+	_live_particles += 1
+
 	await particles.finished
+
 	particles.queue_free()
+	_live_particles -= 1
+	if state == State.DEFEATED and _live_particles == 0:
+		queue_free()
 
 
 func _on_player_capture_area_body_entered(body: Node2D) -> void:
-	if body != player:
-		return
-
-	if state != State.CHASING:
+	if body is not Player:
 		return
 
 	state = State.CAUGHT
+
+	var player := body as Player
 	player.mode = Player.Mode.DEFEATED
 	var tween := create_tween()
 	tween.tween_property(player, "scale", Vector2.ZERO, 2.0)

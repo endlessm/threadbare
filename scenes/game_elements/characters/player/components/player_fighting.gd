@@ -18,9 +18,9 @@ func _ready() -> void:
 
 
 func _unhandled_input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed(&"ui_accept"):
+	if Input.is_action_just_pressed(&"repel"):
 		is_fighting = true
-	elif Input.is_action_just_released(&"ui_accept"):
+	elif Input.is_action_just_released(&"repel"):
 		is_fighting = false
 
 

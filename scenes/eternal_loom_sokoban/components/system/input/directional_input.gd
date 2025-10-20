@@ -5,10 +5,10 @@ class_name DirectionalInput
 extends Node
 
 @export_group("Action Bindings")
-@export var action_up: StringName = "ui_up"
-@export var action_down: StringName = "ui_down"
-@export var action_left: StringName = "ui_left"
-@export var action_right: StringName = "ui_right"
+@export var action_up: StringName = "move_up"
+@export var action_down: StringName = "move_down"
+@export var action_left: StringName = "move_left"
+@export var action_right: StringName = "move_right"
 
 @export_group("Behavior")
 ## If true, will alternate between diagonals when held. Else, will repeat the most recent direction

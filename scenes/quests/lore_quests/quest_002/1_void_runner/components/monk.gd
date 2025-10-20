@@ -26,6 +26,4 @@ func repel_void() -> void:
 	tween.tween_property(camera, "zoom", original_zoom, 1.0).set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
 
-	GameState.add_collected_item(InventoryItem.with_type(InventoryItem.ItemType.MEMORY))
-
 	_repelled = true
