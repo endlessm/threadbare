@@ -116,8 +116,8 @@ func _ready() -> void:
 
 ## Cover all [param cells] with [member terrain_name], hiding any nodes in those cells which are
 ## direct children of [member consumable_node_holders].
-## Return true if any cells were consumed.
-func consume_cells(cells: Array[Vector2i], immediate: bool = false) -> bool:
+## Return true if any nodes were consumed.
+func consume_cells(cells: Array[Vector2i], immediate: bool = false) -> Array[Node2D]:
 	for i in range(cells.size() - 1, -1, -1):
 		var c: Vector2i = cells[i]
 
@@ -128,17 +128,21 @@ func consume_cells(cells: Array[Vector2i], immediate: bool = false) -> bool:
 	if cells:
 		set_cells_terrain_connect(cells, terrain_set, _terrain_id)
 
+		var consumed_nodes := [] as Array[Node2D]
 		for cell in cells:
-			consume(cell, immediate)
-		return true
-	return false
+			var nodes := consume(cell, immediate)
+			consumed_nodes.append_array(nodes)
+		return consumed_nodes
+	return []
 
 
 ## Hide all nodes in cell [param coord] which are direct children of
 ## [member consumable_node_holders].
-func consume(coord: Vector2i, immediate: bool = false) -> void:
+func consume(coord: Vector2i, immediate: bool = false) -> Array[Node2D]:
 	if coord not in _unconsumed_nodes:
-		return
+		return []
+
+	var consumed_nodes := [] as Array[Node2D]
 
 	var nodes: Array = _unconsumed_nodes[coord]
 	_unconsumed_nodes.erase(coord)
@@ -146,17 +150,22 @@ func consume(coord: Vector2i, immediate: bool = false) -> void:
 	if immediate:
 		for node: Node2D in nodes:
 			node.modulate.a = 0.0
+			consumed_nodes.append(node)
 	else:
 		var tween := create_tween().set_parallel(true)
 		for node: Node2D in nodes:
 			tween.tween_property(node, "modulate:a", 0.0, _DURATION).set_ease(Tween.EASE_OUT)
-		await tween.finished
+			tween.finished.connect(_on_consumed_node_tween_finished.bind(node))
+			consumed_nodes.append(node)
 
-	for node: Node2D in nodes:
-		# TODO: also store original visibility and process mode
-		node.visible = false
-		node.process_mode = Node.PROCESS_MODE_DISABLED
 	_consumed_nodes[coord] = nodes
+	return consumed_nodes
+
+
+func _on_consumed_node_tween_finished(node: Node2D) -> void:
+	## TODO: also store original visibility and process mode
+	node.visible = false
+	node.process_mode = Node.PROCESS_MODE_DISABLED
 
 
 ## Clear this layer, and reveal all previously-"consumed" nodes, with an animation.

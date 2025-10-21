@@ -9,6 +9,8 @@ enum State {
 	IDLE,
 	## The void is chasing the player
 	CHASING,
+	## The void is busy ingesting something else, not the player for now
+	INGESTING,
 	## The void has engulfed the player
 	CAUGHT,
 	## The void has been defeated
@@ -28,6 +30,7 @@ const NEIGHBORS := [
 ]
 
 const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
+const IDLE_EMIT_TIME := 0.4
 
 @export var void_layer: TileMapCover
 
@@ -42,6 +45,7 @@ var state := State.IDLE:
 
 var _last_position: Vector2
 var _distance_since_emit: float = 0.0
+var _time_since_emit: float = 0.0
 var _live_particles: int = 0
 
 @onready var path_walk_behavior: PathWalkBehavior = %PathWalkBehavior
@@ -73,6 +77,9 @@ func _set_state(new_state: State) -> void:
 		State.CHASING:
 			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			follow_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+		State.INGESTING:
+			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			follow_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 		State.DEFEATED:
 			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			follow_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
@@ -99,6 +106,7 @@ func defeat() -> void:
 func _process(_delta: float) -> void:
 	if state == State.DEFEATED:
 		return
+	_time_since_emit += _delta
 	_distance_since_emit += (position - _last_position).length()
 	_last_position = position
 
@@ -111,12 +119,26 @@ func _process(_delta: float) -> void:
 	for neighbor: int in NEIGHBORS:
 		coords.append(void_layer.get_neighbor_cell(coord, neighbor))
 
-	var consumed := void_layer.consume_cells(coords)
-	if consumed or _distance_since_emit >= IDLE_EMIT_DISTANCE:
+	var consumed_nodes := void_layer.consume_cells(coords)
+	if (
+		consumed_nodes
+		or _distance_since_emit >= IDLE_EMIT_DISTANCE
+		or _time_since_emit >= IDLE_EMIT_TIME
+	):
 		_emit_particles()
+
+	if state == State.INGESTING:
+		return
+	for node in consumed_nodes:
+		if node.has_meta(&"ingest_time"):
+			var previous_state := state
+			state = State.INGESTING
+			await get_tree().create_timer(node.get_meta(&"ingest_time")).timeout
+			state = previous_state
 
 
 func _emit_particles() -> void:
+	_time_since_emit = 0
 	_distance_since_emit = 0
 
 	var particles: GPUParticles2D = VOID_PARTICLES.instantiate()
