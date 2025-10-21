@@ -155,7 +155,9 @@ func consume(coord: Vector2i, immediate: bool = false) -> Array[Node2D]:
 		var tween := create_tween().set_parallel(true)
 		for node: Node2D in nodes:
 			tween.tween_property(node, "modulate:a", 0.0, _DURATION).set_ease(Tween.EASE_OUT)
-			tween.finished.connect(_on_consumed_node_tween_finished.bind(node))
+			tween.finished.connect(
+				_on_consumed_node_tween_finished.bind(node), CONNECT_REFERENCE_COUNTED
+			)
 			consumed_nodes.append(node)
 
 	_consumed_nodes[coord] = nodes
