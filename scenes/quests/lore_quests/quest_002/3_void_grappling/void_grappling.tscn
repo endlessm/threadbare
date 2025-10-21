@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=4 uid="uid://ce7nk8qmi64d2"]
+[gd_scene load_steps=29 format=4 uid="uid://ce7nk8qmi64d2"]
 
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_5a8rg"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_d6l2m"]
@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://cokul8w425pja" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_spreading_enemy.tscn" id="6_m0g5h"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="8_c2723"]
 [ext_resource type="PackedScene" uid="uid://ktjtnp64e63v" path="res://scenes/quests/lore_quests/quest_002/3_void_grappling/components/books_pile.tscn" id="10_g4kbc"]
+[ext_resource type="Script" uid="uid://be84u27t0yhj2" path="res://scenes/quests/lore_quests/quest_002/3_void_grappling/components/return_needles.gd" id="11_ayr6d"]
+[ext_resource type="PackedScene" uid="uid://dohb701lxbe5s" path="res://scenes/game_elements/props/hookable_needle/hookable_needle.tscn" id="11_grfk2"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="12_wgn4u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wgn4u"]
@@ -63,9 +65,9 @@ _data = {
 point_count = 5
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_c2723"]
-vertices = PackedVector2Array(953, 1726.7969, -135, 1726.9922, -135, 147, 2149, 147, 2149, 1727, 1061, 1727, 953, 1869.1406, 1061, 1868.5078, 1322.1875, 2195, 5733, 2195, 5733, 2303, 1318.7969, 2303, 1254.7969, 2623, 886.8125, 2623, 825, 2375.7734, 825, 1997.1406)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(0, 3, 4, 5), PackedInt32Array(6, 0, 5, 7), PackedInt32Array(8, 9, 10, 11), PackedInt32Array(7, 8, 11, 12, 13, 14, 15, 6)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(815, 1993, 943, 1865, 943.00006, 1736.8054, -145, 1737, -145, 137, 2159, 137, 2159, 1737, 1071, 1737, 1071, 1865, 1327, 2185, 5743, 2185, 5743, 2313, 1327, 2313, 1263, 2633, 879, 2633, 815, 2377)])
+vertices = PackedVector2Array(953, 1726.7969, -135, 1726.9922, -135, 147, 2149, 147, 2149, 1727, 1061, 1727, 953, 1869.1406, 1061, 1866.6172, 825, 2371.6406, 825, 1997.1406, 1126.6016, 2063.4219, 1010.03125, 2495, 1193.6484, 2495, 1317, 2190.3516, 1317, 2309.9688)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(0, 3, 4, 5), PackedInt32Array(6, 0, 5, 7), PackedInt32Array(8, 9, 6, 7, 10, 11), PackedInt32Array(12, 11, 10, 13, 14)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(815, 1993, 943, 1865, 943.00006, 1736.8054, -145, 1737, -145, 137, 2159, 137, 2159, 1737, 1071, 1737, 1071, 1865, 1135, 2057, 1327, 2185, 1327, 2313, 1199, 2505, 1007, 2505, 815, 2377)])
 
 [node name="VoidGrappling" type="Node2D"]
 metadata/_edit_lock_ = true
@@ -316,6 +318,53 @@ position = Vector2(891, -1496)
 [node name="BooksPile3" parent="OnTheGround/Props" instance=ExtResource("10_g4kbc")]
 position = Vector2(1954, -606)
 
+[node name="ReturnNeedles" type="Node2D" parent="OnTheGround"]
+unique_name_in_owner = true
+y_sort_enabled = true
+script = ExtResource("11_ayr6d")
+
+[node name="HookableNeedle" parent="OnTheGround/ReturnNeedles" instance=ExtResource("11_grfk2")]
+position = Vector2(2288, -560)
+
+[node name="HookableNeedle2" parent="OnTheGround/ReturnNeedles" instance=ExtResource("11_grfk2")]
+position = Vector2(2128, -560)
+
+[node name="HookableNeedle3" parent="OnTheGround/ReturnNeedles" instance=ExtResource("11_grfk2")]
+position = Vector2(1984, -704)
+
+[node name="HookableNeedle4" parent="OnTheGround/ReturnNeedles" instance=ExtResource("11_grfk2")]
+position = Vector2(1808, -720)
+
+[node name="HookableNeedle5" parent="OnTheGround/ReturnNeedles" instance=ExtResource("11_grfk2")]
+position = Vector2(1656, -616)
+
+[node name="HookableNeedle6" parent="OnTheGround/ReturnNeedles" instance=ExtResource("11_grfk2")]
+position = Vector2(1496, -488)
+
+[node name="HookableNeedle7" parent="OnTheGround/ReturnNeedles" instance=ExtResource("11_grfk2")]
+position = Vector2(1312, -496)
+
+[node name="HookableNeedle8" parent="OnTheGround/ReturnNeedles" instance=ExtResource("11_grfk2")]
+position = Vector2(1167, -398)
+
+[node name="HookableNeedle9" parent="OnTheGround/ReturnNeedles" instance=ExtResource("11_grfk2")]
+position = Vector2(1280, -208)
+
+[node name="HookableNeedle10" parent="OnTheGround/ReturnNeedles" instance=ExtResource("11_grfk2")]
+position = Vector2(1408, -112)
+
+[node name="HookableNeedle11" parent="OnTheGround/ReturnNeedles" instance=ExtResource("11_grfk2")]
+position = Vector2(1172, -287)
+
+[node name="HookableNeedle12" parent="OnTheGround/ReturnNeedles" instance=ExtResource("11_grfk2")]
+position = Vector2(1504, 0)
+
+[node name="HookableNeedle13" parent="OnTheGround/ReturnNeedles" instance=ExtResource("11_grfk2")]
+position = Vector2(1496, 104)
+
+[node name="HookablePin9" parent="OnTheGround/ReturnNeedles" instance=ExtResource("6_kmyoj")]
+position = Vector2(1504, 208)
+
 [node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("4_jrfsf")]
 position = Vector2(2693, -483)
 next_scene = "uid://cufkthb25mpxy"
@@ -368,6 +417,7 @@ metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
 [connection signal="body_entered" from="EnemyChaseTrigger" to="OnTheGround/VoidChasing" method="start"]
+[connection signal="body_entered" from="EnemyDefeatTrigger" to="OnTheGround/ReturnNeedles" method="appear" unbinds=1]
 [connection signal="body_entered" from="EnemyDefeatTrigger" to="OnTheGround/VoidChasing" method="defeat" unbinds=1]
 [connection signal="body_entered" from="SwitchModeArea" to="SwitchModeArea" method="_on_body_entered"]
 [connection signal="body_exited" from="SwitchModeArea" to="SwitchModeArea" method="_on_body_exited"]
