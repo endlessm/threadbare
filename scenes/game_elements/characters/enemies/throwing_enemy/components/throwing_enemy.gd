@@ -32,7 +32,7 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 
 ## The period of time between throwing projectiles.
 ## Note: Currently this is limited by the length of the AnimationPlayer animation "attack".
-@export_range(0.1, 10., 0.1, "or_greater", "suffix:s") var throwing_period: float = 5.0
+@export_range(0.1, 10., 0.1, "or_greater", "suffix:s") var throwing_period: float = 0.2
 
 ## Use this to have 2 enemies throwing projectiles alternatively and at the same pace
 ## (same [member throwing_period]).
@@ -66,7 +66,7 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 
 ## The speed of the projectile initial impulse and the projectile bouncing impulse.
 @export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s")
-var projectile_speed: float = 30.0
+var projectile_speed: float = 100.0
 
 ## The life span of the projectile.
 @export_range(0., 10., 0.1, "or_greater", "suffix:s") var projectile_duration: float = 5.0

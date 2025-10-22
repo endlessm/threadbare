@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://fuhl3l6gxq5k"]
+[gd_scene load_steps=13 format=3 uid="uid://fuhl3l6gxq5k"]
 
 [ext_resource type="Script" uid="uid://be7lr8ty24cix" path="res://scenes/game_elements/props/collectible_item/components/collectible_item.gd" id="1_7ff3m"]
-[ext_resource type="Texture2D" uid="uid://6bf8rum68wq3" path="res://assets/first_party/collectibles/world_imagination.png" id="3_p8e5a"]
 [ext_resource type="AudioStream" uid="uid://bhgpds38q0j4r" path="res://assets/third_party/sounds/collectibles/MemoryCollectable.ogg" id="5_hhgm5"]
 [ext_resource type="AudioStream" uid="uid://38xwdjm46478" path="res://assets/third_party/sounds/collectibles/CollectibleAppear.ogg" id="5_oh62b"]
+[ext_resource type="AudioStream" uid="uid://byojl1c5vgh2b" path="res://scenes/quests/story_quests/jasbh/2_combat/combat_components/Explotion.wav" id="5_owoci"]
 [ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="6_j0enh"]
+[ext_resource type="AudioStream" uid="uid://7ufvw6wmws86" path="res://scenes/quests/story_quests/jasbh/2_combat/combat_components/Collect.wav" id="6_oh62b"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ghwae"]
 radius = 20.0
@@ -294,7 +295,6 @@ libraries = {
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(1, 1, 1, 0)
-texture = ExtResource("3_p8e5a")
 
 [node name="CollectedSound" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
@@ -304,6 +304,12 @@ bus = &"SFX"
 unique_name_in_owner = true
 stream = ExtResource("5_oh62b")
 bus = &"SFX"
+
+[node name="Explotion" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_owoci")
+
+[node name="Collect" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_oh62b")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_mask = 0

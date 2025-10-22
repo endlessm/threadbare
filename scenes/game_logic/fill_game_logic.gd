@@ -22,7 +22,7 @@ extends Node
 signal goal_reached
 
 ## How many barrels to complete for winning.
-@export var barrels_to_win: int = 1
+@export var barrels_to_win: int = 6
 
 @export var intro_dialogue: DialogueResource
 
