@@ -1,5 +1,6 @@
-[gd_scene load_steps=26 format=4 uid="uid://bfr7svwx5hqkf"]
+[gd_scene load_steps=27 format=4 uid="uid://bfr7svwx5hqkf"]
 
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="1_ndyje"]
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_xf1x3"]
 [ext_resource type="Resource" uid="uid://bx08jgaq2ruin" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_combat.dialogue" id="2_awu4o"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="3_oj7ex"]
@@ -66,9 +67,13 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 [node name="Combat" type="Node2D"]
 y_sort_enabled = true
 
+[node name="Cinematic" type="Node2D" parent="."]
+script = ExtResource("1_ndyje")
+dialogue = ExtResource("2_awu4o")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
 [node name="FillGameLogic" type="Node" parent="."]
 script = ExtResource("1_xf1x3")
-intro_dialogue = ExtResource("2_awu4o")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="."]
@@ -114,6 +119,8 @@ y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("4_kirjo")]
 position = Vector2(1209, 283)
+player_name = "Stella"
+mode = 1
 sprite_frames = ExtResource("5_e46so")
 
 [node name="ThrowingNPC" parent="OnTheGround" instance=ExtResource("5_1o8f3")]
@@ -196,6 +203,7 @@ dialogue = ExtResource("2_awu4o")
 npc_name = "Fisherman"
 sprite_frames = ExtResource("14_e46so")
 
+[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
 
 [editable path="OnTheGround/Target"]

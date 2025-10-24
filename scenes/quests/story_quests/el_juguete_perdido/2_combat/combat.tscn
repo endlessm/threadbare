@@ -1,5 +1,6 @@
-[gd_scene load_steps=33 format=4 uid="uid://be2gr1lptrhxu"]
+[gd_scene load_steps=34 format=4 uid="uid://be2gr1lptrhxu"]
 
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="1_prg73"]
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_t3ulp"]
 [ext_resource type="Resource" uid="uid://c2svjynjjcnrv" path="res://scenes/quests/story_quests/el_juguete_perdido/2_combat/components/combat.dialogue" id="2_j6s2f"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="3_no3h1"]
@@ -89,10 +90,14 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 [node name="Combat" type="Node2D"]
 y_sort_enabled = true
 
+[node name="Cinematic" type="Node2D" parent="."]
+script = ExtResource("1_prg73")
+dialogue = ExtResource("2_j6s2f")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
 [node name="FillGameLogic" type="Node" parent="."]
 script = ExtResource("1_t3ulp")
 barrels_to_win = 4
-intro_dialogue = ExtResource("2_j6s2f")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="."]
@@ -369,6 +374,7 @@ y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("4_grvmp")]
 position = Vector2(551, 303)
+mode = 1
 sprite_frames = ExtResource("14_3qwhi")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
@@ -481,4 +487,5 @@ limit_bottom = 2048
 position_smoothing_enabled = true
 editor_draw_limits = true
 
+[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
