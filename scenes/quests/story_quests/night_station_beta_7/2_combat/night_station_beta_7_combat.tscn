@@ -1,0 +1,110 @@
+[gd_scene load_steps=15 format=4 uid="uid://0nixxfiocbn0"]
+
+[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_fvcvk"]
+[ext_resource type="Resource" uid="uid://bit5f8sp317ut" path="res://scenes/quests/story_quests/night_station_beta_7/2_combat/combat_components/night_station_beta_7_combat.dialogue" id="2_df2aj"]
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="3_2ni3e"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_y04xi"]
+[ext_resource type="SpriteFrames" uid="uid://cbpl4wtrlalk4" path="res://scenes/quests/story_quests/night_station_beta_7/player_components/night_station_beta_7_player.tres" id="5_hn3la"]
+[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="6_m2itd"]
+[ext_resource type="SpriteFrames" uid="uid://smo0gvriwi3k" path="res://scenes/quests/story_quests/night_station_beta_7/2_combat/combat_components/night_station_beta_7_throwing_enemy.tres" id="7_ewljb"]
+[ext_resource type="SpriteFrames" uid="uid://bu38aca267jhk" path="res://scenes/quests/story_quests/night_station_beta_7/2_combat/combat_components/night_station_beta_7_projectile_spriteframes.tres" id="8_d7jxj"]
+[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="9_5lfsr"]
+[ext_resource type="SpriteFrames" uid="uid://h0q62srkpf7y" path="res://scenes/quests/story_quests/night_station_beta_7/2_combat/combat_components/night_station_beta_7_target_spriteframes.tres" id="10_2kn33"]
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="11_ps8oq"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="12_s2qsb"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="13_c7knw"]
+
+[sub_resource type="Resource" id="Resource_5dmn2"]
+script = ExtResource("12_s2qsb")
+type = 1
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[node name="Combat" type="Node2D"]
+y_sort_enabled = true
+
+[node name="FillGameLogic" type="Node" parent="."]
+script = ExtResource("1_fvcvk")
+intro_dialogue = ExtResource("2_df2aj")
+metadata/_custom_type_script = "uid://cp54mgi54nywo"
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+
+[node name="Grass" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAANAAcAAQABAAEAAAANAAYAAQABAAEAAAANAAUAAQABAAEAAAANAAQAAQABAAEAAAANAAMAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAAMAAcAAQABAAEAAAAMAAYAAQABAAEAAAAMAAUAAQABAAEAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAEAAAALAAcAAQABAAEAAAALAAYAAQABAAEAAAALAAUAAQABAAEAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAEAAAAKAAcAAQABAAEAAAAKAAYAAQABAAEAAAAKAAUAAQABAAEAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAKAAEAAQABAAEAAAAJAAcAAQABAAEAAAAJAAYAAQABAAEAAAAJAAUAAQABAAEAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAJAAEAAQABAAEAAAAIAAcAAQABAAEAAAAIAAYAAQABAAEAAAAIAAUAAQABAAEAAAAIAAQAAQABAAEAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAIAAEAAQABAAEAAAAHAAcAAQABAAEAAAAHAAYAAQABAAEAAAAHAAUAAQABAAEAAAAHAAQAAQABAAEAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAEAAAAGAAcAAQABAAEAAAAGAAYAAQABAAEAAAAGAAUAAQABAAEAAAAGAAQAAQABAAEAAAAGAAMAAQABAAEAAAAGAAIAAQABAAEAAAAFAAcAAQABAAEAAAAFAAYAAQABAAEAAAAFAAUAAQABAAEAAAAFAAQAAQABAAEAAAAFAAMAAQABAAEAAAAFAAIAAQABAAEAAAAFAAEAAQABAAEAAAAEAAcAAQABAAEAAAAEAAYAAQABAAEAAAAEAAUAAQABAAEAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAIAAQABAAEAAAAEAAEAAQABAAEAAAADAAcAAQABAAEAAAADAAYAAQABAAEAAAADAAUAAQABAAEAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAIAAQABAAEAAAADAAEAAQABAAEAAAACAAcAAQABAAEAAAACAAYAAQABAAEAAAACAAUAAQABAAEAAAACAAMAAQABAAEAAAACAAIAAQABAAEAAAACAAEAAQABAAEAAAABAAcAAQABAAEAAAABAAYAAQABAAEAAAABAAUAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAABAAEAAQABAAEAAAACAAQAAQABAAEAAAABAAQAAQABAAEAAAAAAAQAAQABAAEAAAAAAAUAAQABAAEAAAAAAAYAAQABAAEAAAAAAAcAAQABAAEAAAAGAAAAAQABAAEAAAAGAAEAAQABAAEAAAAHAAAAAQABAAEAAAAFAAAAAQABAAEAAAAIAAAAAQABAAEAAAAJAAAAAQABAAEAAAALAAAAAQABAAEAAAAMAAAAAQABAAEAAAAKAAAAAQABAAEAAAANAAAAAQABAAEAAAAEAAAAAQABAAEAAAADAAAAAQABAAEAAAACAAAAAQABAAEAAAABAAAAAQABAAEAAAAAAAAAAQABAAEAAAAAAAEAAQABAAEAAAAAAAIAAQABAAEAAAAAAAMAAQABAAEAAAAAAAgAAQABAAEAAAABAAgAAQABAAEAAAACAAgAAQABAAEAAAADAAgAAQABAAEAAAAEAAgAAQABAAEAAAAFAAgAAQABAAEAAAAGAAgAAQABAAEAAAAHAAgAAQABAAEAAAAIAAgAAQABAAEAAAAJAAgAAQABAAEAAAAKAAgAAQABAAEAAAAMAAgAAQABAAEAAAALAAgAAQABAAEAAAANAAgAAQABAAEAAAAOAAgAAQABAAEAAAAOAAcAAQABAAEAAAAOAAYAAQABAAEAAAAOAAUAAQABAAEAAAAOAAQAAQABAAEAAAAOAAMAAQABAAEAAAAOAAIAAQABAAEAAAAOAAEAAQABAAEAAAAOAAAAAQABAAEAAAA=")
+tile_set = ExtResource("3_2ni3e")
+
+[node name="Stones" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAGAAkABAABAAUAAAAHAAkABAABAAUAAAAIAAkABAABAAUAAAAJAAkABAABAAUAAAAKAAkABAABAAUAAAALAAkABAABAAUAAAAMAAkABAABAAUAAAANAAkABAABAAUAAAAOAAkABAABAAUAAAAGAAgABAABAAQAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAABAAQAAAAOAAgABAABAAQAAAAAAAEABAACAAEAAAABAAEABAABAAMAAAACAAEABAABAAUAAAACAAAABAABAAQAAAABAAAABAABAAIAAAAAAAAABAABAAEAAAADAAAABAABAAIAAAAFAAAABAACAAIAAAAEAAAABAABAAEAAAAEAAEABAABAAMAAAAFAAEABAABAAUAAAADAAEABAABAAUAAAANAAcABAAAAAEAAAAOAAcABAABAAEAAAANAAYABAAAAAAAAAAOAAYABAABAAEAAAAOAAUABAAAAAEAAAAOAAMABAAAAAEAAAAOAAIABAABAAEAAAANAAEABAAAAAEAAAANAAAABAABAAAAAAAOAAAABAABAAAAAAAOAAEABAABAAEAAAAOAAQABAAAAAEAAAAMAAAABAABAAAAAAALAAAABAABAAAAAAAKAAAABAABAAAAAAAJAAAABAABAAAAAAAIAAAABAABAAAAAAAHAAAABAAAAAEAAAANAAIABAAAAAIAAAANAAMABAAAAAMAAAAHAAEABAABAAMAAAAIAAEABAABAAUAAAAKAAEABAABAAUAAAALAAEABAABAAUAAAAJAAEABAABAAMAAAAMAAEABAABAAMAAAAGAAAABAABAAIAAAAGAAEABAABAAMAAAAAAAkABAABAAUAAAABAAkABAABAAUAAAACAAkABAABAAUAAAADAAkABAABAAUAAAAEAAkABAABAAUAAAAFAAkABAABAAUAAAAAAAgABAABAAQAAAABAAgABAABAAQAAAACAAgABAABAAQAAAADAAgABAABAAQAAAAEAAgABAABAAQAAAAFAAgABAABAAQAAAAAAAIABAACAAEAAAAAAAMABAACAAEAAAAAAAQABAACAAEAAAAAAAcABAACAAEAAAAAAAYABAACAAEAAAAAAAUABAACAAEAAAA=")
+tile_set = ExtResource("3_2ni3e")
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="OnTheGround" instance=ExtResource("4_y04xi")]
+position = Vector2(348, 335)
+sprite_frames = ExtResource("5_hn3la")
+
+[node name="ThrowingNPC" parent="OnTheGround" instance=ExtResource("6_m2itd")]
+position = Vector2(857, 300)
+sprite_frames = ExtResource("7_ewljb")
+projectile_sprite_frames = ExtResource("8_d7jxj")
+
+[node name="Target" parent="OnTheGround" instance=ExtResource("9_5lfsr")]
+position = Vector2(502, 164)
+sprite_frames = ExtResource("10_2kn33")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target2" parent="OnTheGround" instance=ExtResource("9_5lfsr")]
+position = Vector2(758, 164)
+sprite_frames = ExtResource("10_2kn33")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target3" parent="OnTheGround" instance=ExtResource("9_5lfsr")]
+position = Vector2(761, 497)
+sprite_frames = ExtResource("10_2kn33")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target4" parent="OnTheGround" instance=ExtResource("9_5lfsr")]
+position = Vector2(632, 497)
+sprite_frames = ExtResource("10_2kn33")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target5" parent="OnTheGround" instance=ExtResource("9_5lfsr")]
+position = Vector2(633, 164)
+sprite_frames = ExtResource("10_2kn33")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target6" parent="OnTheGround" instance=ExtResource("9_5lfsr")]
+position = Vector2(501, 497)
+sprite_frames = ExtResource("10_2kn33")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("11_ps8oq")]
+unique_name_in_owner = true
+position = Vector2(868, 303)
+revealed = false
+next_scene = "uid://dxxyxhcoy1ew3"
+item = SubResource("Resource_5dmn2")
+collected_dialogue = ExtResource("2_df2aj")
+dialogue_title = &"well_done"
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="." instance=ExtResource("13_c7knw")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.333, 1.333)
+limit_left = 0
+limit_top = 0
+limit_right = 2048
+limit_bottom = 2048
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
