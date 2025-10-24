@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://bdtis4ye3hah2"]
+
+[ext_resource type="Shader" uid="uid://b7n5nakusu8b5" path="res://scenes/quests/story_quests/shjourney/9_shjourney_outro_2/fog.gdshader" id="1_t7twm"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jw523"]
+frequency = 0.0075
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ys0ab"]
+width = 320
+height = 180
+seamless = true
+seamless_blend_skirt = 0.75
+noise = SubResource("FastNoiseLite_jw523")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nwsd5"]
+shader = ExtResource("1_t7twm")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_ys0ab")
+shader_parameter/density = 0.25
+shader_parameter/speed = Vector2(0.02, 0.01)
+
+[node name="ParallaxBackground" type="ParallaxBackground"]
+layer = 2
+scroll_ignore_camera_zoom = true
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="."]
+motion_mirroring = Vector2(1920, 1080)
+
+[node name="ColorRect" type="ColorRect" parent="ParallaxLayer"]
+material = SubResource("ShaderMaterial_nwsd5")
+offset_top = -6.0
+offset_right = 1920.0
+offset_bottom = 1074.0

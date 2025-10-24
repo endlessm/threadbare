@@ -8,12 +8,16 @@ signal started
 ## Emitted when a transition to a new scene finishes
 signal finished
 
-enum Effect { FADE, LEFT_TO_RIGHT_WIPE, RIGHT_TO_LEFT_WIPE, RADIAL }
+enum Effect {
+	FADE, LEFT_TO_RIGHT_WIPE, RIGHT_TO_LEFT_WIPE, RADIAL, TOP_TO_BOTTOM_WIPE, BOTTOM_TO_TOP_WIPE
+}
 
 const FADE_TEXTURE: Texture = preload("uid://cpvc4xmg7at7r")
 const LEFT_TO_RIGHT_WIPE_TEXTURE: Texture = preload("uid://wxf47acry7qc")
 const RADIAL_TEXTURE: Texture = preload("uid://dcwmaoqgu5t84")
 const RIGHT_TO_LEFT_WIPE_TEXTURE: Texture = preload("uid://b4lvabnu81em4")
+const TOP_TO_BOTTOM_WIPE_TEXTURE: Texture = preload("uid://o26lx6drd3p1")
+const BOTTOM_TO_TOP_WIPE_TEXTURE: Texture = preload("uid://dv8a5iybchwot")
 
 var _current_tween: Tween
 
@@ -41,6 +45,10 @@ func _do_tween(
 			transition_mask.material.set("shader_parameter/mask", RIGHT_TO_LEFT_WIPE_TEXTURE)
 		Effect.RADIAL:
 			transition_mask.material.set("shader_parameter/mask", RADIAL_TEXTURE)
+		Effect.TOP_TO_BOTTOM_WIPE:
+			transition_mask.material.set("shader_parameter/mask", TOP_TO_BOTTOM_WIPE_TEXTURE)
+		Effect.BOTTOM_TO_TOP_WIPE:
+			transition_mask.material.set("shader_parameter/mask", BOTTOM_TO_TOP_WIPE_TEXTURE)
 	if is_instance_valid(_current_tween) and _current_tween.is_running():
 		_current_tween.finished.emit()
 		_current_tween.kill()
@@ -85,6 +93,18 @@ func do_transition(
 	await _introduce_scene(in_transition)
 	visible = false
 	finished.emit()
+
+
+## Transition out, leaving the screen blanked at the end of the transition.
+## [br][br]
+## This is only intended to fade out when quitting the game. Unlike [method do_transition], this
+## does not emit [signal started] or [signal finished]; use [code]await[/code] to wait for the
+## fade-out to finish.
+func do_out_transition(
+	out_transition: Transition.Effect = Transition.Effect.FADE,
+) -> void:
+	visible = true
+	await _leave_scene(out_transition)
 
 
 ## Returns true if a transition is currently running. Monitor [signal started]

@@ -36,6 +36,7 @@ class_name CollectibleItem extends Node2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var appear_sound: AudioStreamPlayer = %AppearSound
+@onready var physical_collider: CollisionShape2D = $StaticBody2D/CollisionShape2D
 
 
 func _validate_property(property: Dictionary) -> void:
@@ -107,3 +108,5 @@ func _update_based_on_revealed() -> void:
 		interact_area.disabled = not revealed
 	if sprite_2d:
 		sprite_2d.visible = revealed
+	if physical_collider:
+		physical_collider.disabled = not revealed

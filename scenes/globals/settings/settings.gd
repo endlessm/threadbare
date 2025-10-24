@@ -10,18 +10,16 @@ const DEFAULT_VOLUMES: Dictionary[String, float] = {
 	"Music": -15.0,
 }
 
-const VIDEO_SECTION := "Video"
-const VIDEO_WINDOW_MODE_KEY := "Window Mode"
+## 5:4 ratio of 1280×1024, 1024×768, and other pre-widescreen monitors.
+const MINIMUM_ASPECT_RATIO := 1.25
 
-## This is deliberately smaller than the base resolution of the game, so that the game is playable
-## on smaller screens even if it is not perfectly legible.
-##
-## If we later reduce the base resolution of the game, we should replace this constant with looking
-## up the base resolution from the project settings at runtime, so that the window cannot be smaller
-## than the base resolution.
-const MINIMUM_WINDOW_SIZE := Vector2i(1280, 720)
+## An arbitrary wide ratio, lower than 21:9 ("ultrawide").
+const MAXIMUM_ASPECT_RATIO := 2.2
 
 var _settings := ConfigFile.new()
+
+var _overrides_path: String
+var _overrides := ConfigFile.new()
 
 
 func _ready() -> void:
@@ -30,7 +28,7 @@ func _ready() -> void:
 		push_error("Failed to load %s: %s" % [SETTINGS_PATH, err])
 
 	_restore_volumes()
-	_restore_video_settings()
+	_load_project_settings_overrides()
 	_set_minimum_window_size()
 
 
@@ -43,23 +41,28 @@ func _restore_volumes() -> void:
 		_set_volume(bus_idx, volume_db)
 
 
-func _restore_video_settings() -> void:
-	var default_window_mode: int = ProjectSettings.get_setting("display/window/size/mode")
-	var window_mode: int = (
-		_settings
-		. get_value(
-			VIDEO_SECTION,
-			VIDEO_WINDOW_MODE_KEY,
-			default_window_mode,
-		)
+func _load_project_settings_overrides() -> void:
+	_overrides_path = ProjectSettings.globalize_path(
+		ProjectSettings.get_setting("application/config/project_settings_override")
 	)
-	if window_mode == DisplayServer.window_get_mode():
-		return
-	DisplayServer.window_set_mode(window_mode)
+	print_verbose("Project settings override path: ", _overrides_path)
+	if _overrides_path:
+		var ret := _overrides.load(_overrides_path)
+		match ret:
+			OK, ERR_FILE_NOT_FOUND:
+				pass
+			_:
+				push_warning("Failed to load ", _overrides_path, ": ", error_string(ret))
+	else:
+		push_warning("project_settings_override not configured")
 
 
 func _set_minimum_window_size() -> void:
-	get_window().min_size = MINIMUM_WINDOW_SIZE
+	var minimum_window_size := Vector2i(
+		ProjectSettings.get_setting("display/window/size/viewport_width"),
+		ProjectSettings.get_setting("display/window/size/viewport_height")
+	)
+	get_window().min_size = minimum_window_size
 
 
 func get_volume(bus: String) -> float:
@@ -77,20 +80,26 @@ func set_volume(bus: String, volume_db: float) -> void:
 
 
 func is_fullscreen() -> bool:
-	return DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
+	return DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 
 
 func toggle_fullscreen(toggled_on: bool) -> void:
-	var default_window_mode: int = ProjectSettings.get_setting("display/window/size/mode")
-	set_window_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if toggled_on else default_window_mode)
+	if toggled_on:
+		set_window_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+	else:
+		set_window_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 
 
 func set_window_mode(window_mode: int) -> void:
 	if window_mode == DisplayServer.window_get_mode():
 		return
 	DisplayServer.window_set_mode(window_mode)
-	_settings.set_value(VIDEO_SECTION, VIDEO_WINDOW_MODE_KEY, window_mode)
-	_save()
+
+	if _overrides_path:
+		_overrides.set_value("display", "window/size/mode", window_mode)
+		var ret := _overrides.save(_overrides_path)
+		if ret != OK:
+			push_warning("Failed to save to", _overrides_path, ": ", error_string(ret))
 
 
 func _set_volume(bus_idx: int, volume_db: float) -> void:

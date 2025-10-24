@@ -7,7 +7,8 @@ extends Area2D
 signal interaction_started(player: Player, from_right: bool)
 signal interaction_ended
 
-const EXAMPLE_INTERACTION_FONT = preload("uid://d05uo8wmexkd8")
+const EXAMPLE_INTERACTION_FONT = preload("uid://c3bb7lmvdqc5e")
+const EXAMPLE_INTERACTION_FONT_SIZE = 34
 const INTERACTABLE_LAYER = 6
 
 ## Vector2 that approximates the position in which the interact label would
@@ -55,15 +56,19 @@ func _draw() -> void:
 	if not Engine.is_editor_hint():
 		return
 
-	var font_size := 30
 	var string_size := EXAMPLE_INTERACTION_FONT.get_string_size(
-		action, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size
+		action, HORIZONTAL_ALIGNMENT_LEFT, -1, EXAMPLE_INTERACTION_FONT_SIZE
 	)
 	var draw_position := (
 		interact_label_position - Vector2(string_size.x, -string_size.y * 2.0) / 2.0
 	)
 	draw_string(
-		EXAMPLE_INTERACTION_FONT, draw_position, action, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size
+		EXAMPLE_INTERACTION_FONT,
+		draw_position,
+		action,
+		HORIZONTAL_ALIGNMENT_LEFT,
+		-1,
+		EXAMPLE_INTERACTION_FONT_SIZE
 	)
 	draw_string_outline(
 		EXAMPLE_INTERACTION_FONT,
@@ -71,7 +76,7 @@ func _draw() -> void:
 		action,
 		HORIZONTAL_ALIGNMENT_LEFT,
 		-1,
-		font_size,
+		EXAMPLE_INTERACTION_FONT_SIZE,
 		1,
 		Color.BLACK
 	)
