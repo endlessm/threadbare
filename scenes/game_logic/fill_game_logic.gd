@@ -24,30 +24,27 @@ signal goal_reached
 ## How many barrels to complete for winning.
 @export var barrels_to_win: int = 1
 
-@export var intro_dialogue: DialogueResource
+## Whether to start the game logic automatically.
+## If false, make sure to call [method start].
+@export var autostart: bool = false
 
 ## Counter for the completed barrels.
 var barrels_completed: int = 0
 
 
+## Update the allowed labels/colors and tell enemies to start.
 func start() -> void:
-	var player: Player = get_tree().get_first_node_in_group("player")
-	if player:
-		player.mode = Player.Mode.FIGHTING
-	get_tree().call_group("throwing_enemy", "start")
-	for filling_barrel: FillingBarrel in get_tree().get_nodes_in_group("filling_barrels"):
-		filling_barrel.completed.connect(_on_barrel_completed)
 	_update_allowed_colors()
+	get_tree().call_group("throwing_enemy", "start")
 
 
 func _ready() -> void:
 	var filling_barrels: Array = get_tree().get_nodes_in_group("filling_barrels")
 	barrels_to_win = clampi(barrels_to_win, 0, filling_barrels.size())
-	if intro_dialogue:
-		var player: Player = get_tree().get_first_node_in_group("player")
-		DialogueManager.show_dialogue_balloon(intro_dialogue, "", [self, player])
-		await DialogueManager.dialogue_ended
-	start()
+	for barrel: FillingBarrel in filling_barrels:
+		barrel.completed.connect(_on_barrel_completed)
+	if autostart:
+		start()
 
 
 func _update_allowed_colors() -> void:
@@ -73,6 +70,8 @@ func _on_barrel_completed() -> void:
 		return
 	get_tree().call_group("throwing_enemy", "remove")
 	get_tree().call_group("projectiles", "remove")
+	# TODO: Do not change player mode!
+	# https://github.com/endlessm/threadbare/issues/1375
 	var player: Player = get_tree().get_first_node_in_group("player")
 	if player:
 		player.mode = Player.Mode.COZY
