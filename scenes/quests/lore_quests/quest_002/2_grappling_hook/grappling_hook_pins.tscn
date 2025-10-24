@@ -1,20 +1,30 @@
-[gd_scene load_steps=12 format=4 uid="uid://dpv6x7h2p2i3l"]
+[gd_scene load_steps=17 format=4 uid="uid://dpv6x7h2p2i3l"]
 
+[ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_5vumy"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_dbigu"]
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="2_5vumy"]
+[ext_resource type="AudioStream" uid="uid://bbamdm6wtjjcn" path="res://assets/first_party/music/Threadbare_Bed.ogg" id="2_w8fse"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_w8fse"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="4_syhn3"]
 [ext_resource type="PackedScene" uid="uid://evb46lm6ssu2" path="res://scenes/game_elements/props/hookable_pin/hookable_pin.tscn" id="5_udo54"]
 [ext_resource type="PackedScene" uid="uid://1vunygl4wpj6" path="res://scenes/game_elements/props/button_item/button_item.tscn" id="6_8mj0p"]
 [ext_resource type="PackedScene" uid="uid://dvj15pnuqr2ua" path="res://scenes/game_elements/props/hookable_button_item/hookable_button_item.tscn" id="7_g02tq"]
+[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter/components/teleporter.gd" id="10_w83h4"]
+[ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="11_m63nr"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="12_50o53"]
 [ext_resource type="PackedScene" uid="uid://4u7dloafx55f" path="res://scenes/game_elements/props/teleporter/teleporter/teleporter.tscn" id="13_6ihfv"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="14_nlj8l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_drlay"]
-size = Vector2(59, 147)
+size = Vector2(64, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w83h4"]
+size = Vector2(64, 128)
 
 [node name="GrapplingHookPins" type="Node2D"]
+
+[node name="BackgroundMusic" parent="." instance=ExtResource("1_5vumy")]
+stream = ExtResource("2_w8fse")
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -42,7 +52,7 @@ sprite_frames = ExtResource("4_syhn3")
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
 limit_left = 0
 limit_top = 0
-limit_right = 2744
+limit_right = 2752
 limit_bottom = 2488
 position_smoothing_enabled = true
 editor_draw_limits = true
@@ -264,14 +274,33 @@ direction = 1
 text = "Go!
 "
 
-[node name="Teleporter" parent="." instance=ExtResource("13_6ihfv")]
+[node name="TeleporterNext" parent="." instance=ExtResource("13_6ihfv")]
 position = Vector2(2759, 1281)
 next_scene = "uid://c3iv8nbog410p"
 enter_transition = 2
-exit_transition = 0
+exit_transition = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TeleporterNext"]
+position = Vector2(25, -1)
 shape = SubResource("RectangleShape2D_drlay")
+
+[node name="TeleporterBack" type="Area2D" parent="."]
+position = Vector2(-36, 1271)
+collision_layer = 4
+script = ExtResource("10_w83h4")
+next_scene = "uid://b8mfigsd8y5qs"
+spawn_point_path = NodePath("SpawnPointBack")
+metadata/_custom_type_script = "uid://hqdquinbimce"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TeleporterBack"]
+position = Vector2(4, 9)
+shape = SubResource("RectangleShape2D_w83h4")
+
+[node name="SpawnPointBack" type="Marker2D" parent="." groups=["spawn_point"]]
+position = Vector2(2688, 1313)
+script = ExtResource("11_m63nr")
+look_at_side_on_spawn = -1
+metadata/_custom_type_script = "uid://0enyu5v4ra34"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 

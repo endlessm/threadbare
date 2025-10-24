@@ -43,6 +43,7 @@ var _distance_since_emit: float = 0.0
 
 @onready var path_walk_behavior: PathWalkBehavior = %PathWalkBehavior
 @onready var follow_walk_behavior: NavigationFollowWalkBehavior = %NavigationFollowWalkBehavior
+@onready var alert_animation: AnimationPlayer = %AlertAnimation
 
 
 func _set_idle_patrol_path(new_path: Path2D) -> void:
@@ -70,7 +71,10 @@ func _set_state(new_state: State) -> void:
 		State.CHASING:
 			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			follow_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
-
+			alert_animation.play(&"alert")
+		State.DEFEATED:
+			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			follow_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 
 func _ready() -> void:
 	player = player

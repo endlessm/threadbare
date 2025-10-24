@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=4 uid="uid://ikgvi75j5dls"]
+[gd_scene load_steps=48 format=4 uid="uid://ikgvi75j5dls"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_5xpm5"]
 [ext_resource type="SpriteFrames" uid="uid://07di3updrwh0" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_purple.tres" id="3_6axvd"]
@@ -13,7 +13,9 @@
 [ext_resource type="Script" uid="uid://q4jj6ou7yonf" path="res://scenes/game_logic/walk_behaviors/bounce_walk_behavior.gd" id="11_utmd2"]
 [ext_resource type="Script" uid="uid://cwoclmik3db2" path="res://scenes/game_logic/walk_behaviors/follow_walk_behavior.gd" id="12_w4jvh"]
 [ext_resource type="SpriteFrames" uid="uid://qwlhm21ndgn2" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_orange.tres" id="12_wq1h3"]
+[ext_resource type="Script" uid="uid://bvf2s4qrvcdo0" path="res://scenes/game_logic/throw_projectile_behavior.gd" id="13_hm5jk"]
 [ext_resource type="SpriteFrames" uid="uid://3ujiuhj7wpm2" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_red.tres" id="13_wq1h3"]
+[ext_resource type="PackedScene" uid="uid://dbjkflg62mj47" path="res://scenes/game_elements/characters/components/projectile_test.tscn" id="14_ow6r2"]
 [ext_resource type="Script" uid="uid://c8xbryhknipab" path="res://scenes/game_logic/walk_behaviors/input_walk_behavior.gd" id="15_k43ew"]
 [ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/character_sprite_behavior.gd" id="15_utmd2"]
 [ext_resource type="Texture2D" uid="uid://dxaq5piwxqnht" path="res://scenes/game_elements/characters/player/components/dust.png" id="16_w4jvh"]
@@ -31,22 +33,24 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-99, 950, 391, 903, 388
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oojqe"]
 
+[sub_resource type="GDScript" id="GDScript_ow6r2"]
+script/source = "extends Area2D
+
+func _on_body_entered(body: Node2D) -> void:
+		body.queue_free()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ow6r2"]
+radius = 48.0
+
 [sub_resource type="Resource" id="Resource_itker"]
 script = ExtResource("17_itker")
 walk_speed = 170.0
-run_speed = 500.0
-stopping_step = 1500.0
-moving_step = 4000.0
-stuck_speed = 300.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [sub_resource type="Resource" id="Resource_oojqe"]
 script = ExtResource("17_itker")
 walk_speed = 50.0
-run_speed = 500.0
-stopping_step = 1500.0
-moving_step = 4000.0
-stuck_speed = 300.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
@@ -297,9 +301,6 @@ height = 66.0
 [sub_resource type="Resource" id="Resource_jdub8"]
 script = ExtResource("17_itker")
 walk_speed = 90.0
-run_speed = 500.0
-stopping_step = 1500.0
-moving_step = 4000.0
 stuck_speed = 20.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
 
@@ -420,6 +421,16 @@ script = ExtResource("10_k43ew")
 travel_distance = 100.0
 character = NodePath("..")
 
+[node name="Area2D" type="Area2D" parent="OnTheGround/CharacterBody2D"]
+collision_layer = 128
+collision_mask = 256
+script = SubResource("GDScript_ow6r2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/CharacterBody2D/Area2D"]
+position = Vector2(0, -48)
+shape = SubResource("CircleShape2D_ow6r2")
+debug_color = Color(1, 0, 0, 0.41960785)
+
 [node name="CharacterBody2D2" type="CharacterBody2D" parent="OnTheGround"]
 position = Vector2(921, 621)
 collision_layer = 2
@@ -447,6 +458,17 @@ script = ExtResource("12_w4jvh")
 speeds = SubResource("Resource_itker")
 target = NodePath("../../CharacterBody2D")
 character = NodePath("..")
+
+[node name="ThrowProjectileBehavior" type="Node2D" parent="OnTheGround/CharacterBody2D2" node_paths=PackedStringArray("target", "reference")]
+position = Vector2(0, -45)
+script = ExtResource("13_hm5jk")
+projectile_scenes = Array[PackedScene]([ExtResource("14_ow6r2")])
+target = NodePath("../../CharacterBody2D")
+impulse = 700.0
+reference = NodePath("../..")
+
+[node name="Timer" type="Timer" parent="OnTheGround/CharacterBody2D2"]
+autostart = true
 
 [node name="CharacterBody2D3" type="CharacterBody2D" parent="OnTheGround"]
 position = Vector2(1691, 621)
@@ -596,6 +618,8 @@ character = NodePath("..")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
+[connection signal="body_entered" from="OnTheGround/CharacterBody2D/Area2D" to="OnTheGround/CharacterBody2D/Area2D" method="_on_body_entered"]
+[connection signal="timeout" from="OnTheGround/CharacterBody2D2/Timer" to="OnTheGround/CharacterBody2D2/ThrowProjectileBehavior" method="throw"]
 [connection signal="running_changed" from="OnTheGround/CharacterBody2D4/InputWalkBehavior" to="OnTheGround/CharacterBody2D4/GPUParticles2D" method="_on_input_walk_behavior_running_changed"]
 [connection signal="running_changed" from="OnTheGround/CharacterBody2D4/InputWalkBehavior" to="OnTheGround/CharacterBody2D4/AnimationPlayer/CharacterAnimationPlayerBehavior" method="on_running_changed"]
 [connection signal="running_changed" from="OnTheGround/CharacterBody2D6/NavigationFollowWalkBehavior" to="OnTheGround/CharacterBody2D6/AnimatedSprite2D/CharacterSpriteBehavior" method="on_running_changed"]

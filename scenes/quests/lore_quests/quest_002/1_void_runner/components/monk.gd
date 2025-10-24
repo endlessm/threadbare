@@ -10,8 +10,6 @@ extends NPC
 
 var _repelled := false
 
-@onready var interact_area: InteractArea = $InteractArea
-
 
 func repel_void() -> void:
 	enemy.queue_free()
