@@ -132,13 +132,10 @@ jobs:
       - name: Create Linux metadata bundle
         run: |
           tar --create --gzip \
+            --dereference \
             --file threadbare-linux-metadata.tar.gz \
             --transform=s,^,threadbare-linux-metadata/, \
-            icon.png \
-            icon-256.png \
-            linux/launcher.desktop \
-            linux/metainfo.xml \
-            linux/releases.xml
+            linux/*
 
       - name: Upload Linux metadata bundle
         uses: actions/upload-artifact@v4
