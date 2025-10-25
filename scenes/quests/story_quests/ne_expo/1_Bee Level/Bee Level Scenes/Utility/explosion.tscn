@@ -1,0 +1,70 @@
+[gd_scene load_steps=14 format=3 uid="uid://ckwdm2l73e0no"]
+
+[ext_resource type="Texture2D" uid="uid://c6vxpie13gd7s" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Explosion Components/Explosion assets/Explosion_1/Explosion_1.png" id="1_qvrtf"]
+[ext_resource type="Texture2D" uid="uid://idjdjvsjs4dw" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Explosion Components/Explosion assets/Explosion_1/Explosion_2.png" id="2_otidt"]
+[ext_resource type="Texture2D" uid="uid://3mxt864mmbq3" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Explosion Components/Explosion assets/Explosion_1/Explosion_3.png" id="3_lcrbw"]
+[ext_resource type="Texture2D" uid="uid://cyst8gkpnvguk" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Explosion Components/Explosion assets/Explosion_1/Explosion_4.png" id="4_b7wy8"]
+[ext_resource type="Texture2D" uid="uid://c7vkix1s8sk6u" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Explosion Components/Explosion assets/Explosion_1/Explosion_5.png" id="5_pgi4q"]
+[ext_resource type="Texture2D" uid="uid://gm61n3rkrpyr" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Explosion Components/Explosion assets/Explosion_1/Explosion_6.png" id="6_fk6o0"]
+[ext_resource type="Texture2D" uid="uid://c7w3aq6tpagju" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Explosion Components/Explosion assets/Explosion_1/Explosion_7.png" id="7_saequ"]
+[ext_resource type="Texture2D" uid="uid://bkxqjbl3rkrbu" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Explosion Components/Explosion assets/Explosion_1/Explosion_8.png" id="8_5wteg"]
+[ext_resource type="Texture2D" uid="uid://cptarhlwnqfhs" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Explosion Components/Explosion assets/Explosion_1/Explosion_9.png" id="9_yob4u"]
+[ext_resource type="Texture2D" uid="uid://dtk5fweof45pw" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Explosion Components/Explosion assets/Explosion_1/Explosion_10.png" id="10_7dpaf"]
+[ext_resource type="Script" uid="uid://d0qh63hbxn6hy" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee level Scripts/explosion.gd" id="11_h4yfj"]
+[ext_resource type="AudioStream" uid="uid://ugcr01hoccvv" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Explosion Components/Explosion assets/Enemy Explosion.wav" id="11_kiwgf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wb6hu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_qvrtf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_otidt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_lcrbw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_b7wy8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_pgi4q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_fk6o0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_saequ")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_5wteg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_yob4u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_7dpaf")
+}],
+"loop": false,
+"name": &"explode",
+"speed": 5.0
+}]
+
+[node name="Explosion" type="AnimatedSprite2D"]
+z_index = 1
+sprite_frames = SubResource("SpriteFrames_wb6hu")
+animation = &"explode"
+autoplay = "explode"
+frame = 9
+frame_progress = 1.0
+speed_scale = 9.0
+script = ExtResource("11_h4yfj")
+
+[node name="snd_explosion" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_kiwgf")
+volume_db = -10.0
+pitch_scale = 0.91
+autoplay = true
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]
