@@ -77,6 +77,19 @@ audio = NodePath("../../AudioStreamPlayer")
 [node name="Path2D" type="Path2D" parent="AspectRatioContainer/LogoStitcher"]
 curve = SubResource("Curve2D_eqfq0")
 
+[node name="LogoStitcher" type="Control" parent="AspectRatioContainer/LogoStitcher" node_paths=PackedStringArray("path", "audio")]
+custom_minimum_size = Vector2(1920, 1080)
+anchors_preset = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("3_m61hw")
+path = NodePath("Path2D")
+width_curve = SubResource("Curve_7hvf5")
+audio = NodePath("../../../AudioStreamPlayer")
+
+[node name="Path2D" type="Path2D" parent="AspectRatioContainer/LogoStitcher/LogoStitcher"]
+curve = SubResource("Curve2D_eqfq0")
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_xtuk2")
 volume_db = -6.0
