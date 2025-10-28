@@ -42,7 +42,7 @@ func is_template_uid(uid: String) -> bool:
 
 
 func is_template_resource(resource: Resource) -> bool:
-	return resource.resource_path.begins_with(TEMPLATE_PATH)
+	return resource.resource_path.begins_with(TEMPLATE_PATH) or resource is TileSet
 
 
 func reimport(_path: String) -> void:
@@ -144,6 +144,19 @@ func copy_sprite_frames(sprite_frames: SpriteFrames, copy_path: String) -> Resou
 	return copied
 
 
+func copy_tile_set(tile_set: TileSet, copy_path: String) -> Resource:
+	var copied: TileSet = tile_set.duplicate()
+
+	# We don't bother copying the referenced textures. We don't expect anyone to
+	# accidentally edit them by mistake.
+
+	copied.resource_path = copy_path
+	var result := ResourceSaver.save(copied)
+	assert(result == OK, "Failed to save %s to %s" % [copied, copy_path])
+
+	return copied
+
+
 func copy_as_file(resource: Resource, copy_path: String) -> Resource:
 	var result := DirAccess.copy_absolute(resource.resource_path, copy_path)
 	assert(
@@ -156,20 +169,27 @@ func copy_as_file(resource: Resource, copy_path: String) -> Resource:
 
 func copy(uid: String, resource: Resource) -> Resource:
 	assert(uid.begins_with("uid://"), "'%s' is not a uid" % uid)
-	assert(
-		resource.resource_path.begins_with(TEMPLATE_PATH),
-		"'%s' is not a storyquest resource" % resource
-	)
 
 	if uid in orig_uid_to_copy:
 		return orig_uid_to_copy[uid]
 
-	var subpath := resource.resource_path.right(-TEMPLATE_PATH.length())
-	var subdir := subpath.get_base_dir()
-	var filename := subpath.get_file()
+	var subdir: String
+	var filename: String
 
-	subdir = subdir.replace(TEMPLATE_PREFIX + "_", "")
-	filename = filename.replace(TEMPLATE_PREFIX, quest_name)
+	if resource.resource_path.begins_with(TEMPLATE_PATH):
+		var subpath := resource.resource_path.right(-TEMPLATE_PATH.length())
+		subdir = subpath.get_base_dir()
+		filename = subpath.get_file()
+
+		subdir = subdir.replace(TEMPLATE_PREFIX + "_", "")
+		filename = filename.replace(TEMPLATE_PREFIX, quest_name)
+	elif resource is TileSet:
+		subdir = "tiles"
+		filename = quest_name + "_" + resource.resource_path.get_file()
+	else:
+		assert(false, "'%s' is not a storyquest or tileset resource" % resource)
+		return null
+
 	var copy_path := target_path.path_join(subdir).path_join(filename)
 
 	_debug(["Copying", uid, resource.resource_path, "to", copy_path])
@@ -187,6 +207,8 @@ func copy(uid: String, resource: Resource) -> Resource:
 		copied = await copy_as_file(resource, copy_path)
 	elif resource is SpriteFrames:
 		copied = await copy_sprite_frames(resource, copy_path)
+	elif resource is TileSet:
+		copied = await copy_tile_set(resource, copy_path)
 	else:
 		assert(false, "Don't know how to copy %s" % resource)
 
