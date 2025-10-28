@@ -1,12 +1,14 @@
-[gd_scene load_steps=25 format=4 uid="uid://b8mfigsd8y5qs"]
+[gd_scene load_steps=30 format=4 uid="uid://b8mfigsd8y5qs"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_0g35k"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_wxpj0"]
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="2_85rkf"]
 [ext_resource type="AudioStream" uid="uid://bbamdm6wtjjcn" path="res://assets/first_party/music/Threadbare_Bed.ogg" id="2_p44d7"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_gbtro"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="3_p44d7"]
 [ext_resource type="Script" uid="uid://d1ly6uhh500xu" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/tile_map_cover.gd" id="3_upilw"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="4_10ahs"]
+[ext_resource type="Resource" uid="uid://1jkpxbyl7bqk" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/intro_start.dialogue" id="4_aiq76"]
 [ext_resource type="PackedScene" uid="uid://evb46lm6ssu2" path="res://scenes/game_elements/props/hookable_pin/hookable_pin.tscn" id="5_cspw2"]
 [ext_resource type="PackedScene" uid="uid://dvj15pnuqr2ua" path="res://scenes/game_elements/props/hookable_button_item/hookable_button_item.tscn" id="6_3g3x4"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="7_upilw"]
@@ -20,6 +22,43 @@
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="13_3g3x4"]
 [ext_resource type="PackedScene" uid="uid://dt1y8odxq0xys" path="res://scenes/ui_elements/input_hints/movement_input_hints.tscn" id="14_cspw2"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="14_jqq45"]
+
+[sub_resource type="Animation" id="Animation_aiq76"]
+resource_name = "eat_floor"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/VoidPatrolling:process_mode")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_w67qe"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/VoidPatrolling:process_mode")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ngr1v"]
+_data = {
+&"RESET": SubResource("Animation_w67qe"),
+&"eat_floor": SubResource("Animation_aiq76")
+}
 
 [sub_resource type="Resource" id="Resource_kr8u1"]
 script = ExtResource("8_jqq45")
@@ -45,6 +84,17 @@ size = Vector2(64, 128)
 
 [node name="BackgroundMusic" parent="." instance=ExtResource("1_wxpj0")]
 stream = ExtResource("2_p44d7")
+
+[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
+script = ExtResource("3_p44d7")
+dialogue = ExtResource("4_aiq76")
+animation_player = NodePath("../AnimationPlayer")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ngr1v")
+}
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -150,6 +200,7 @@ direction = 1
 text = "Go!"
 
 [node name="VoidPatrolling" parent="OnTheGround" node_paths=PackedStringArray("void_layer", "idle_patrol_path") instance=ExtResource("9_3g3x4")]
+process_mode = 4
 position = Vector2(1100, 677)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidSpreadingEnemyPatrolPath")
