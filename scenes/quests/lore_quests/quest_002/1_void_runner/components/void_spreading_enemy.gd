@@ -46,6 +46,7 @@ var _live_particles: int = 0
 
 @onready var path_walk_behavior: PathWalkBehavior = %PathWalkBehavior
 @onready var follow_walk_behavior: NavigationFollowWalkBehavior = %NavigationFollowWalkBehavior
+@onready var alert_animation: AnimationPlayer = %AlertAnimation
 
 
 func _set_idle_patrol_path(new_path: Path2D) -> void:
@@ -73,6 +74,7 @@ func _set_state(new_state: State) -> void:
 		State.CHASING:
 			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			follow_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+			alert_animation.play(&"alert")
 		State.DEFEATED:
 			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			follow_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
@@ -139,8 +141,4 @@ func _on_player_capture_area_body_entered(body: Node2D) -> void:
 	state = State.CAUGHT
 
 	var player := body as Player
-	player.mode = Player.Mode.DEFEATED
-	var tween := create_tween()
-	tween.tween_property(player, "scale", Vector2.ZERO, 2.0)
-	await get_tree().create_timer(2.0).timeout
-	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+	player.defeat(true)
