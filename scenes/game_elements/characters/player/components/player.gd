@@ -223,3 +223,22 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	if not is_node_ready():
 		await ready
 	_walk_sound.stream = walk_sound_stream
+
+
+## Sets the player's [member mode] to [constant DEFEATED], if it is
+## not already. Reloads the current scene after a short interval.
+## [br][br]
+## If [param falling] is [code]true[/code], scale the player to zero, as if they
+## are falling into the screen as they unravel.
+func defeat(falling: bool = false) -> void:
+	if mode == Player.Mode.DEFEATED:
+		return
+
+	mode = Player.Mode.DEFEATED
+
+	if falling:
+		var tween := create_tween()
+		tween.tween_property(self, "scale", Vector2.ZERO, 2.0)
+
+	await get_tree().create_timer(2.0).timeout
+	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)

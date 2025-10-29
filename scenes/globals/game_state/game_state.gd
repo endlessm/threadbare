@@ -47,6 +47,11 @@ var intro_dialogue_shown: bool = false
 ## The paths to the [Quest]s that the player has completed, in the order that they were completed.
 var completed_quests: Array[String] = []
 
+## The quest that the player is currently playing, or [code]null[/code] if they
+## are not playing a quest. Update this with [method start_quest], [method
+## mark_quest_completed] and [method abandon_quest].
+var current_quest: Quest
+
 var persist_progress: bool
 var _state := ConfigFile.new()
 
@@ -73,10 +78,11 @@ func set_incorporating_threads(new_incorporating_threads: bool) -> void:
 	_save()
 
 
-## Set the [Quest] and clear the [member inventory].
+## Set [member current_quest] and clear the [member inventory].
 func start_quest(quest: Quest) -> void:
 	_do_clear_inventory()
 	_update_inventory_state()
+	current_quest = quest
 	_state.set_value(QUEST_SECTION, QUEST_PATH_KEY, quest.resource_path)
 	_do_set_scene(quest.first_scene, ^"")
 	_save()
@@ -97,17 +103,22 @@ func set_current_spawn_point(spawn_point: NodePath = ^"") -> void:
 	_save()
 
 
+## Returns [code]true[/code] if the player is currently on a quest; i.e. if
+## [member current_quest] is not [code]null[/code].
 func is_on_quest() -> bool:
-	return _state.has_section_key(QUEST_SECTION, QUEST_PATH_KEY)
+	return current_quest != null
 
 
-## Marks the current quest (if any) as completed.
+## If [member current_quest] is set, record this quest as having been completed,
+## and unset it.
 func mark_quest_completed() -> void:
-	var quest_name: String = _state.get_value(QUEST_SECTION, QUEST_PATH_KEY, "")
-	if quest_name:
+	if current_quest:
+		var quest_name := current_quest.resource_path
 		if quest_name not in completed_quests:
 			completed_quests.append(quest_name)
 			_state.set_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, completed_quests)
+
+		current_quest = null
 		_state.erase_section_key(QUEST_SECTION, QUEST_PATH_KEY)
 		_save()
 
@@ -131,9 +142,12 @@ func add_collected_item(item: InventoryItem) -> void:
 	_save()
 
 
+## If [member current_quest] is set, unset it, without recording the quest as
+## having been completed.
 func abandon_quest() -> void:
 	set_incorporating_threads(false)
 	_state.erase_section_key(QUEST_SECTION, QUEST_PATH_KEY)
+	current_quest = null
 	clear_inventory()
 
 
@@ -187,6 +201,10 @@ func restore() -> Dictionary:
 	for index in range(amount):
 		var item := InventoryItem.with_type(index)
 		inventory.append(item)
+
+	if _state.has_section_key(QUEST_SECTION, QUEST_PATH_KEY):
+		current_quest = load(_state.get_value(QUEST_SECTION, QUEST_PATH_KEY)) as Quest
+
 	var scene_path: String = _state.get_value(QUEST_SECTION, QUEST_CURRENTSCENE_KEY, "")
 	current_spawn_point = _state.get_value(QUEST_SECTION, QUEST_SPAWNPOINT_KEY, ^"")
 	incorporating_threads = _state.get_value(
