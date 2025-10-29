@@ -7,6 +7,7 @@ const STORYQUESTS_PATH := "res://scenes/quests/story_quests/"
 const TEMPLATE_PREFIX := "NO_EDIT"
 const TEMPLATE_PATH := STORYQUESTS_PATH + TEMPLATE_PREFIX + "/"
 const QUEST_FILENAME := "quest.tres"
+const TILES_PATH := "res://tiles/"
 
 ## Map from UID to already-copied resource
 var orig_uid_to_copy: Dictionary[String, Resource]
@@ -235,7 +236,24 @@ func copy_uid(uid: String) -> String:
 	return copied_uid
 
 
+func copy_tilesets() -> void:
+	var dir := DirAccess.open(TILES_PATH)
+	assert(dir, error_string(DirAccess.get_open_error()))
+
+	dir.list_dir_begin()
+	var file := dir.get_next()
+	while file != "":
+		if not dir.current_is_dir() and file.ends_with(".tres"):
+			var tileset := ResourceLoader.load(TILES_PATH.path_join(file))
+			if tileset is TileSet:
+				await copy_resource(tileset)
+		file = dir.get_next()
+	dir.list_dir_end()
+
+
 func create_storyquest() -> void:
+	copy_tilesets()
+
 	var quest: Quest = load(TEMPLATE_PATH.path_join(QUEST_FILENAME))
 	await copy_resource(quest)
 	EditorInterface.save_all_scenes()
