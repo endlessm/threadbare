@@ -141,8 +141,4 @@ func _on_player_capture_area_body_entered(body: Node2D) -> void:
 	state = State.CAUGHT
 
 	var player := body as Player
-	player.mode = Player.Mode.DEFEATED
-	var tween := create_tween()
-	tween.tween_property(player, "scale", Vector2.ZERO, 2.0)
-	await get_tree().create_timer(2.0).timeout
-	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+	player.defeat(true)
