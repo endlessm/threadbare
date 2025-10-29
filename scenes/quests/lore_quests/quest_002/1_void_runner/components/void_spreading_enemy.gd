@@ -139,6 +139,3 @@ func _on_player_capture_area_body_entered(body: Node2D) -> void:
 		return
 
 	state = State.CAUGHT
-
-	var player := body as Player
-	player.defeat(true)

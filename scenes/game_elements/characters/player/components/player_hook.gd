@@ -24,6 +24,8 @@ signal string_thrown
 @export var character: CharacterBody2D:
 	set = _set_character
 
+@export var void_detector: Area2D
+
 ## How far can the initial throw reach.
 @export_range(0.0, 500.0, 1.0, "or_greater") var string_throw_length: float = 200.0:
 	set(new_val):
@@ -205,6 +207,7 @@ func remove_string() -> void:
 func pull_string() -> void:
 	pulling = true
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, false)
+	void_detector.set_collision_mask_value(Enums.CollisionLayers.VOID, false)
 
 
 ## Stop pulling and remove the [member hook_string].
@@ -213,6 +216,7 @@ func pull_string() -> void:
 ## non-walkable floor.
 func stop_pulling() -> void:
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, true)
+	void_detector.set_collision_mask_value(Enums.CollisionLayers.VOID, true)
 	pulling = false
 	remove_string()
 
