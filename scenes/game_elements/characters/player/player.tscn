@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene load_steps=40 format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/game_elements/characters/player/components/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/story_quests/NO_EDIT/NO_EDIT_player_components/NO_EDIT_player.tres" id="2_blfj0"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://b7704hdflt5t8" path="res://scenes/game_elements/characters/player/components/player_hook.gd" id="11_nrnyj"]
 [ext_resource type="Texture2D" uid="uid://dxaq5piwxqnht" path="res://scenes/game_elements/characters/player/components/dust.png" id="12_3in67"]
 [ext_resource type="PackedScene" uid="uid://b0dehcnfo68j1" path="res://scenes/game_elements/props/hook_control/hook_control.tscn" id="13_ecbbk"]
+[ext_resource type="Script" uid="uid://cplkoi3u4ray8" path="res://scenes/game_elements/characters/player/components/void_detector.gd" id="16_ecbbk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_je7p5"]
 size = Vector2(32, 47)
@@ -503,6 +504,10 @@ _data = {
 &"walk": SubResource("Animation_qek5x")
 }
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ecbbk"]
+radius = 2.0
+height = 8.0
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_mask = 531
 motion_mode = 1
@@ -608,12 +613,13 @@ libraries = {
 &"": SubResource("AnimationLibrary_1n58k")
 }
 
-[node name="PlayerHook" type="Node2D" parent="." groups=["hook_listener"]]
+[node name="PlayerHook" type="Node2D" parent="." node_paths=PackedStringArray("void_detector") groups=["hook_listener"]]
 unique_name_in_owner = true
 process_mode = 4
 visible = false
 position = Vector2(0, -20)
 script = ExtResource("11_nrnyj")
+void_detector = NodePath("../VoidDetector")
 
 [node name="HookControl" parent="PlayerHook" instance=ExtResource("13_ecbbk")]
 state = 1
@@ -638,3 +644,15 @@ stream = ExtResource("11_blfj0")
 volume_db = -5.0
 pitch_scale = 7.0
 bus = &"SFX"
+
+[node name="VoidDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1024
+script = ExtResource("16_ecbbk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VoidDetector"]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_ecbbk")
+debug_color = Color(0.8996324, 0.00017596602, 0.7668337, 0.41960785)
+
+[connection signal="detected" from="VoidDetector" to="." method="defeat" binds= [true]]
