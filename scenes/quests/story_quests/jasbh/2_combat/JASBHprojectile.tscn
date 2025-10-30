@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://dtexhoglmk6m4"]
+
+[ext_resource type="Script" uid="uid://bofv3bcwj3rx2" path="res://scenes/game_elements/props/projectile/components/projectile.gd" id="1_6b4b7"]
+[ext_resource type="SpriteFrames" uid="uid://bhamin2pby7tq" path="res://scenes/game_elements/props/projectile/components/inkblob_spriteframes.tres" id="2_6wroq"]
+[ext_resource type="AudioStream" uid="uid://7jlv4wqpihl7" path="res://scenes/game_elements/props/projectile/components/blob_hit.wav" id="3_prlj8"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_6wroq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eo5ve"]
+size = Vector2(11, 10)
+
+[node name="JasbHprojectile" type="RigidBody2D"]
+collision_layer = 256
+collision_mask = 64
+mass = 0.3
+physics_material_override = SubResource("PhysicsMaterial_6wroq")
+gravity_scale = 0.0
+lock_rotation = true
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_6b4b7")
+metadata/_custom_type_script = "uid://bofv3bcwj3rx2"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_eo5ve")
+
+[node name="VisibleThings" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-3, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VisibleThings"]
+unique_name_in_owner = true
+position = Vector2(3, 0)
+sprite_frames = ExtResource("2_6wroq")
+autoplay = "default"
+
+[node name="TrailFXMarker" type="Marker2D" parent="VisibleThings"]
+unique_name_in_owner = true
+position = Vector2(-40, 0)
+
+[node name="DurationTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("3_prlj8")
