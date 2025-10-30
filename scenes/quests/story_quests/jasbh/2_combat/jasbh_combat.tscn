@@ -1,6 +1,6 @@
-[gd_scene load_steps=15 format=4 uid="uid://t6copl86fpi3"]
+[gd_scene load_steps=16 format=4 uid="uid://t6copl86fpi3"]
 
-[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_sasch"]
+[ext_resource type="Script" uid="uid://3bd3w335cr0b" path="res://scenes/quests/story_quests/jasbh/2_combat/JASBHlogic.gd" id="1_ebfa5"]
 [ext_resource type="Resource" uid="uid://dwa0u6l8e0v42" path="res://scenes/quests/story_quests/jasbh/2_combat/combat_components/jasbh_combat.dialogue" id="2_ebfa5"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="3_x5v3f"]
 [ext_resource type="SpriteFrames" uid="uid://bcps2nw20tkqa" path="res://scenes/quests/story_quests/jasbh/2_combat/combat_components/jasbh_projectile_spriteframes.tres" id="8_8haf0"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dtexhoglmk6m4" path="res://scenes/quests/story_quests/jasbh/2_combat/JASBHprojectile.tscn" id="10_ebfa5"]
 [ext_resource type="SpriteFrames" uid="uid://cpgxwlrkpyopu" path="res://scenes/quests/story_quests/jasbh/2_combat/combat_components/jasbh_target_spriteframes.tres" id="10_nygnm"]
 [ext_resource type="SpriteFrames" uid="uid://d1a2dl86o3sk4" path="res://scenes/quests/story_quests/jasbh/2_combat/combat_components/jasbh_enemy.tres" id="10_sasch"]
+[ext_resource type="Script" uid="uid://2ga74pfw73b" path="res://scenes/quests/story_quests/jasbh/2_combat/JASBHenemyScript.gd" id="10_x5v3f"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="11_cs1wu"]
 [ext_resource type="PackedScene" uid="uid://c6am1wx10j633" path="res://scenes/quests/story_quests/jasbh/2_combat/JASBHplayer.tscn" id="11_yywyp"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="12_1f2tu"]
@@ -23,8 +24,7 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 y_sort_enabled = true
 
 [node name="FillGameLogic" type="Node" parent="."]
-script = ExtResource("1_sasch")
-intro_dialogue = ExtResource("2_ebfa5")
+script = ExtResource("1_ebfa5")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="."]
@@ -53,6 +53,8 @@ dialogue_title = &"well_done"
 position = Vector2(499, 432)
 collision_mask = 19
 motion_mode = 1
+walk_speed = 500.0
+run_speed = 150.0
 stopping_step = 42270.0
 moving_step = 42830.0
 
@@ -62,13 +64,13 @@ sprite_frames = ExtResource("10_nygnm")
 label = ""
 color = Color(1, 1, 1, 1)
 
-[node name="JasbHenemy" parent="OnTheGround" groups=["throwing_enemy"] instance=ExtResource("9_yywyp")]
+[node name="JasbHenemy" parent="OnTheGround" groups=["JASBHenemy"] instance=ExtResource("9_yywyp")]
 position = Vector2(491, 55)
+script = ExtResource("10_x5v3f")
 projectile_scene = ExtResource("10_ebfa5")
-throwing_period = 0.2
+throwing_period = 0.1
 sprite_frames = ExtResource("10_sasch")
-projectile_speed = 40.0
-projectile_duration = 10.0
+projectile_speed = 100.0
 projectile_sprite_frames = ExtResource("8_8haf0")
 
 [node name="Timer" type="Timer" parent="OnTheGround"]
@@ -86,5 +88,3 @@ limit_right = 2048
 limit_bottom = 2048
 position_smoothing_enabled = true
 editor_draw_limits = true
-
-[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]

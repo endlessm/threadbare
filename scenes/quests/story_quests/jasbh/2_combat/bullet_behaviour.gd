@@ -104,9 +104,9 @@ func throw() -> void:
 		if count == 0:
 			direction = vec_angle(aimX)
 		elif count % 2 == 0:
-			direction = vec_angle(aimX + Vector2(80, 0))
+			direction = vec_angle(aimX + Vector2(0, 20))
 		else:
-			direction = vec_angle(aimX - Vector2(80, 0))
+			direction = vec_angle(aimX - Vector2(0, 20))
 		vel = vec_rotate(direction, none)
 		projectile.global_position = global_position + vel * distance
 		if projectile is RigidBody2D:
