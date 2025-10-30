@@ -54,7 +54,8 @@ func _physics_process(_delta: float) -> void:
 	# Check whether the action for this icon is being pressed right now.
 	var is_pressed := Input.is_action_pressed(action_name)
 
-	# Also check if any directional input is being pressed (used to hide controller icon while moving).
+	# Also check if any directional input is being pressed
+	# (used to hide controller icon while moving).
 	var any_direction_pressed := (
 		Input.is_action_pressed("move_up")
 		or Input.is_action_pressed("move_down")
@@ -82,7 +83,8 @@ func _physics_process(_delta: float) -> void:
 				texture = keyboard_texture
 				modulate = Color.WHITE
 		else:
-			# No keyboard asset available: hide this node (alternatively you could show a controller fallback).
+			# No keyboard asset available: hide this node 
+			#(alternatively you could show a controller fallback).
 			visible = false
 
 		# We've handled keyboard mode entirely, return early.
@@ -91,18 +93,23 @@ func _physics_process(_delta: float) -> void:
 	# ---- CONTROLLER MODE ----
 	# The following logic only runs when we are not in keyboard mode.
 	if is_controller_main_display:
-		# If the bound action is pressed, show a pressed controller texture (platform-specific if available).
+		# If the bound action is pressed, 
+		#show a pressed controller texture (platform-specific if available).
 		if is_pressed:
 			visible = true
 			match current_device:
 				InputHelper.DEVICE_XBOX_CONTROLLER:
-					texture = (xbox_pressed_texture if xbox_pressed_texture else controller_pressed_texture)
+					texture = (xbox_pressed_texture if xbox_pressed_texture 
+					else controller_pressed_texture)
 				InputHelper.DEVICE_PLAYSTATION_CONTROLLER:
-					texture = (playstation_pressed_texture if playstation_pressed_texture else controller_pressed_texture)
+					texture = (playstation_pressed_texture if playstation_pressed_texture 
+					else controller_pressed_texture)
 				InputHelper.DEVICE_SWITCH_CONTROLLER:
-					texture = (nintendo_pressed_texture if nintendo_pressed_texture else controller_pressed_texture)
+					texture = (nintendo_pressed_texture if nintendo_pressed_texture 
+					else controller_pressed_texture)
 				InputHelper.DEVICE_STEAMDECK_CONTROLLER:
-					texture = (steam_pressed_texture if steam_pressed_texture else controller_pressed_texture)
+					texture = (steam_pressed_texture if steam_pressed_texture 
+					else controller_pressed_texture)
 				_:
 					# Default pressed controller texture
 					texture = controller_pressed_texture
@@ -158,7 +165,8 @@ func _update_visual_state() -> void:
 		else:
 			visible = false
 	else:
-		# Controller mode: if controllers are enabled as the main display, pick the correct idle texture.
+		# Controller mode: if controllers are enabled as the main display, 
+		#pick the correct idle texture.
 		if is_controller_main_display:
 			visible = true
 			match current_device:
@@ -171,7 +179,8 @@ func _update_visual_state() -> void:
 				InputHelper.DEVICE_STEAMDECK_CONTROLLER:
 					texture = steam_controller_texture
 				_:
-					# Fallback controller texture when the device is unknown or unsupported.
+					# Fallback controller texture when the device 
+					#is unknown or unsupported.
 					texture = controller_default_texture
 		else:
 			# Controller visuals are not the primary display: hide the node.

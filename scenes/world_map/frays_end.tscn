@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=4 uid="uid://cufkthb25mpxy"]
+[gd_scene load_steps=50 format=4 uid="uid://cufkthb25mpxy"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_4evgk"]
 [ext_resource type="Script" uid="uid://8div00rgvsds" path="res://scenes/world_map/components/frays_end.gd" id="1_4gse6"]
@@ -38,6 +38,7 @@
 [ext_resource type="Texture2D" uid="uid://bayuvsa5uudt7" path="res://assets/third_party/inputs/kenney_input-prompts_1.4/PlayStation Series/Default/playstation_button_cross_outline.png" id="32_eodqy"]
 [ext_resource type="Texture2D" uid="uid://br6xq6vis20mu" path="res://assets/third_party/inputs/kenney_input-prompts_1.4/Nintendo Switch/Default/switch_button_a_outline.png" id="33_2eaa5"]
 [ext_resource type="Texture2D" uid="uid://ci243i6vgephw" path="res://assets/third_party/inputs/kenney_input-prompts_1.4/Steam Deck/Default/steamdeck_button_a_outline.png" id="34_6ss6a"]
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="35_ljovl"]
 [ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="37_thm8h"]
 [ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="38_cjmkx"]
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="38_jqkod"]
@@ -352,11 +353,21 @@ grow_vertical = 0
 [node name="MovementInputHints" parent="ScreenOverlay/HBoxContainer" instance=ExtResource("28_lftgk")]
 layout_mode = 2
 
-[node name="InteractionInputHints" type="CenterContainer" parent="ScreenOverlay/HBoxContainer"]
+[node name="Label" type="Label" parent="ScreenOverlay/HBoxContainer/MovementInputHints"]
+layout_mode = 2
+theme = ExtResource("35_ljovl")
+theme_type_variation = &"HintLabel"
+theme_override_font_sizes/font_size = 25
+text = "Walk"
+
+[node name="Repel_hint" type="HBoxContainer" parent="ScreenOverlay/HBoxContainer"]
+layout_mode = 2
+
+[node name="InteractionInputHints" type="CenterContainer" parent="ScreenOverlay/HBoxContainer/Repel_hint"]
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="InteractionInputHint" type="TextureRect" parent="ScreenOverlay/HBoxContainer/InteractionInputHints"]
+[node name="InteractionInputHint" type="TextureRect" parent="ScreenOverlay/HBoxContainer/Repel_hint/InteractionInputHints"]
 layout_mode = 2
 size_flags_vertical = 8
 texture = ExtResource("29_lftgk")
@@ -367,6 +378,16 @@ xbox_controller_texture = ExtResource("29_lftgk")
 playstation_controller_texture = ExtResource("32_eodqy")
 nintendo_controller_texture = ExtResource("33_2eaa5")
 steam_controller_texture = ExtResource("34_6ss6a")
+
+[node name="Label" type="Label" parent="ScreenOverlay/HBoxContainer/Repel_hint/InteractionInputHints/InteractionInputHint"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 17.0
+offset_right = 118.0
+offset_bottom = 44.0
+theme = ExtResource("35_ljovl")
+theme_type_variation = &"HintLabel"
+text = "Repel"
 
 [node name="HUD" parent="." instance=ExtResource("27_aj6tp")]
 unique_name_in_owner = true
@@ -1023,7 +1044,7 @@ position = Vector2(514, 1613)
 dialogue = ExtResource("32_djq26")
 
 [node name="InteractInputHint" parent="Tutorial/Talker" node_paths=PackedStringArray("hint_node") instance=ExtResource("26_w8iew")]
-hint_node = NodePath("../../../ScreenOverlay/HBoxContainer/InteractionInputHints")
+hint_node = NodePath("../../../ScreenOverlay/HBoxContainer/Repel_hint/InteractionInputHints")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/Talker/InteractInputHint"]
 position = Vector2(0.5, -8.5)
