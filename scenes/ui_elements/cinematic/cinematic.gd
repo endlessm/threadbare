@@ -30,8 +30,6 @@ func _ready() -> void:
 	if not GameState.intro_dialogue_shown:
 		DialogueManager.show_dialogue_balloon(dialogue, "", [self])
 		await DialogueManager.dialogue_ended
-		if animation_player and animation_player.is_playing():
-			await animation_player.animation_finished
 		cinematic_finished.emit()
 		GameState.intro_dialogue_shown = true
 
