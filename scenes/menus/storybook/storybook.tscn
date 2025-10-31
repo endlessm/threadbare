@@ -239,20 +239,20 @@ arrow/styles/hover = SubResource("StyleBoxFlat_bk7gi")
 arrow/styles/normal = SubResource("StyleBoxFlat_bk7gi")
 arrow/styles/pressed = SubResource("StyleBoxFlat_bk7gi")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y0b3i"]
-texture = ExtResource("14_jl72s")
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8qcyx"]
 texture = ExtResource("14_m2ghf")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y0b3i"]
+texture = ExtResource("14_jl72s")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nkrro"]
 texture = ExtResource("15_jl72s")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xkl6m"]
-texture = ExtResource("18_m2ghf")
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p0vqm"]
 texture = ExtResource("17_m2ghf")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xkl6m"]
+texture = ExtResource("18_m2ghf")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bnrpt"]
 texture = ExtResource("18_jl72s")
@@ -324,24 +324,20 @@ grow_vertical = 2
 scale = Vector2(0.8, 0.8)
 theme_override_constants/margin_top = -20
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel/Background/StoryBookContent/MarginContainer"]
+[node name="QuestContainer" type="ScrollContainer" parent="Panel/Background/StoryBookContent/MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/Background/StoryBookContent/MarginContainer/ScrollContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-alignment = 1
-
-[node name="LeftPage" type="MarginContainer" parent="Panel/Background/StoryBookContent/MarginContainer/ScrollContainer/HBoxContainer"]
+[node name="LeftPage" type="MarginContainer" parent="Panel/Background/StoryBookContent/MarginContainer/QuestContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 40
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/Background/StoryBookContent/MarginContainer/ScrollContainer/HBoxContainer/LeftPage"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/Background/StoryBookContent/MarginContainer/QuestContainer/LeftPage"]
 layout_mode = 2
 
-[node name="QuestList" type="VBoxContainer" parent="Panel/Background/StoryBookContent/MarginContainer/ScrollContainer/HBoxContainer/LeftPage/VBoxContainer"]
+[node name="QuestList" type="VBoxContainer" parent="Panel/Background/StoryBookContent/MarginContainer/QuestContainer/LeftPage/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -354,11 +350,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 14.0
-offset_top = -272.0
-offset_right = 414.0
-offset_bottom = 240.0
-theme_override_constants/margin_left = 40
+offset_left = -372.0
+offset_top = -270.0
+offset_right = 418.0
+offset_bottom = 241.0
+theme_override_constants/margin_left = -5
 
 [node name="BackButton" type="Button" parent="Panel/Background/StoryBookContent"]
 unique_name_in_owner = true
@@ -368,15 +364,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -296.0
-offset_top = 173.0
-offset_right = -90.0
-offset_bottom = 233.0
+offset_left = -341.0
+offset_top = 178.0
+offset_right = -39.0
+offset_bottom = 238.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 focus_next = NodePath("../StorybookPage/VBoxContainer/PlayButton")
+mouse_filter = 1
 theme_type_variation = &"FlatButton"
 text = "< back"
 flat = true
@@ -394,11 +391,11 @@ offset_right = 175.0
 offset_bottom = 49.28
 grow_vertical = 2
 theme = SubResource("Theme_rf3dg")
-theme_override_styles/focus = SubResource("StyleBoxTexture_y0b3i")
-theme_override_styles/disabled = SubResource("StyleBoxTexture_8qcyx")
-theme_override_styles/hover = SubResource("StyleBoxTexture_nkrro")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_y0b3i")
 theme_override_styles/normal = SubResource("StyleBoxTexture_8qcyx")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_y0b3i")
+theme_override_styles/hover = SubResource("StyleBoxTexture_nkrro")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_8qcyx")
+theme_override_styles/focus = SubResource("StyleBoxTexture_y0b3i")
 
 [node name="Right_Button" type="Button" parent="Panel/Background"]
 unique_name_in_owner = true
@@ -415,11 +412,11 @@ offset_right = -51.0
 offset_bottom = 49.28
 grow_horizontal = 0
 grow_vertical = 2
-theme_override_styles/focus = SubResource("StyleBoxTexture_xkl6m")
-theme_override_styles/disabled = SubResource("StyleBoxTexture_p0vqm")
-theme_override_styles/hover = SubResource("StyleBoxTexture_bnrpt")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_xkl6m")
 theme_override_styles/normal = SubResource("StyleBoxTexture_p0vqm")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_xkl6m")
+theme_override_styles/hover = SubResource("StyleBoxTexture_bnrpt")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_p0vqm")
+theme_override_styles/focus = SubResource("StyleBoxTexture_xkl6m")
 
 [connection signal="selected" from="Panel/Background/StoryBookContent/StorybookPage" to="." method="_on_storybook_page_selected"]
 [connection signal="pressed" from="Panel/Background/StoryBookContent/BackButton" to="." method="_on_back_button_pressed"]
