@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://cgtonist08yxn"]
+[gd_scene load_steps=35 format=3 uid="uid://cgtonist08yxn"]
 
 [ext_resource type="Texture2D" uid="uid://bqe8u2t2tsoma" path="res://assets/third_party/tiny-swords/UI/Buttons/Button_Disable_3Slides.png" id="1_dojit"]
 [ext_resource type="Script" uid="uid://csl2nw1r7fhpj" path="res://scenes/menus/storybook/components/storybook_page.gd" id="1_jl23h"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://dcum6i8n2paam" path="res://assets/third_party/tiny-swords/UI/Buttons/Button_Blue_3Slides_Pressed.png" id="4_lr2ha"]
 [ext_resource type="Texture2D" uid="uid://rwt2v0hex5nm" path="res://assets/third_party/tiny-swords/UI/Ribbons/Ribbon_Yellow_3Slides.png" id="7_803va"]
 [ext_resource type="Texture2D" uid="uid://1po5xmfs16ot" path="res://assets/third_party/tiny-swords/UI/Ribbons/Ribbon_BlueLight_3Slides.png" id="8_4vxpl"]
+[ext_resource type="Texture2D" uid="uid://dh4tixu06hfwt" path="res://assets/third_party/tiny-swords/UI/Banners/Carved_9Slides.png" id="12_wm85a"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iy6d2"]
 texture = ExtResource("1_dojit")
@@ -235,6 +236,10 @@ arrow/styles/pressed = SubResource("StyleBoxFlat_bk7gi")
 atlas = ExtResource("2_otsbv")
 region = Rect2(0, 0, 192, 192)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dojit"]
+texture = ExtResource("12_wm85a")
+texture_margin_left = 15.0
+
 [node name="StorybookPage" type="MarginContainer"]
 anchors_preset = -1
 anchor_top = -0.048
@@ -255,14 +260,14 @@ script = ExtResource("1_jl23h")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 99
+theme_override_constants/separation = 45
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 15
+theme_override_constants/separation = 5
 
 [node name="TitleBox" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 64)
+custom_minimum_size = Vector2(370, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -272,24 +277,31 @@ theme_type_variation = &"PlayerRibbon"
 unique_name_in_owner = true
 layout_mode = 2
 text = "Title of the Quest"
+horizontal_alignment = 1
 
 [node name="Animation" type="TextureRect" parent="HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(180, 180)
+custom_minimum_size = Vector2(140, 300)
 layout_direction = 1
 layout_mode = 2
-size_flags_vertical = 3
 texture = SubResource("AtlasTexture_1tfpy")
 expand_mode = 1
 stretch_mode = 5
 script = ExtResource("3_rxv6h")
 sprite_frames = ExtResource("4_0inj8")
 
-[node name="Authors" type="Label" parent="HBoxContainer/VBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 0)
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(370, 80)
 layout_mode = 2
-size_flags_vertical = 1
+size_flags_vertical = 4
+horizontal_scroll_mode = 0
+
+[node name="Authors" type="Label" parent="HBoxContainer/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(370, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
 text = "by Jane Bloggs, Erika Mustermann and Jóna Jónsdóttir"
 horizontal_alignment = 1
 autowrap_mode = 2
@@ -299,23 +311,19 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer2"]
-custom_minimum_size = Vector2(360, 180)
+custom_minimum_size = Vector2(360, 430)
 layout_mode = 2
 size_flags_horizontal = 4
 theme = SubResource("Theme_rf3dg")
+theme_override_styles/panel = SubResource("StyleBoxTexture_dojit")
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer2/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/separation = 5
-
-[node name="Description" type="Label" parent="HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer"]
+[node name="Description" type="Label" parent="HBoxContainer/VBoxContainer2/ScrollContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 6
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam pulvinar, erat non consectetur cursus, erat erat lobortis massa, quis mattis purus dolor ac lorem. In hac habitasse platea dictumst. Suspendisse vulputate felis purus, ac scelerisque mauris tristique sit amet. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 autowrap_mode = 3
 
