@@ -61,9 +61,9 @@ func _enumerate_quests() -> Array[Quest]:
 
 func _ready() -> void:
 	animated_book.animation_finished.connect(_on_animation_finished)
-	
+
 	_quests = _enumerate_quests()
-	
+
 	var previous_button: Button = null
 	for i in _quests.size():
 		var quest: Quest = _quests[i]
@@ -89,16 +89,17 @@ func _ready() -> void:
 
 	left_button.pressed.connect(_on_left_button_pressed)
 	right_button.pressed.connect(_on_right_button_pressed)
-	
+
 	#storybook_page.selected.connect(_on_storybook_page_selected)
 	reset_focus()
+
 
 #This func shows/hide index/details pages
 func _update_page_visibility() -> void:
 	if _current_spread_index == 0:
 		quest_container.visible = true
 		storybook_page.visible = false
-		
+
 		if quest_list.get_child_count() > 0:
 			var first_button: Button = quest_list.get_child(0)
 			if first_button and is_instance_valid(first_button) and not first_button.has_focus():
@@ -106,18 +107,19 @@ func _update_page_visibility() -> void:
 	else:
 		quest_container.visible = false
 		storybook_page.visible = true
-		
+
 		var quest_index: int = _current_spread_index - 1
 		if quest_index >= 0 and quest_index < _quests.size():
 			storybook_page.quest = _quests[quest_index]
-			
+
 			if storybook_page.play_button and is_instance_valid(storybook_page.play_button):
 				if not storybook_page.play_button.has_focus():
 					storybook_page.play_button.grab_focus()
-					
+
 			back_button.focus_previous = storybook_page.play_button.get_path()
 			storybook_page.play_button.focus_next = back_button.get_path()
 			storybook_page.play_button.focus_neighbor_left = back_button.get_path()
+
 
 func _switch_to_page(spread_index: int) -> void:
 	if _navigation_locked:
@@ -126,26 +128,26 @@ func _switch_to_page(spread_index: int) -> void:
 	var total_spreads: int = _quests.size() + 1
 	if total_spreads <= 1:
 		return
-	
+
 	if spread_index < 0:
 		spread_index = total_spreads - 1
 	if spread_index >= total_spreads:
 		spread_index = 0
-		
+
 	if spread_index == _current_spread_index:
 		return
-		
+
 	_navigation_locked = true
 	var old_index: int = _current_spread_index
 	_current_spread_index = spread_index
-	
+
 	if old_index != -1:
 		if spread_index > old_index or (spread_index == 0 and old_index == total_spreads - 1):
 			animated_book.play("book_right")
 		else:
 			animated_book.play("book_left")
 		ui_container.visible = false
-		
+
 	else:
 		_update_page_visibility()
 		_navigation_locked = false
@@ -188,12 +190,14 @@ func _input(event: InputEvent) -> void:
 #		return
 #	_switch_to_page(current_index)
 
+
 func _on_quest_button_pressed(button: Button) -> void:
 	if not button.has_meta("quest_index"):
 		return
-		
+
 	var quest_index: int = button.get_meta("quest_index")
 	_switch_to_page(quest_index + 1)
+
 
 func _on_storybook_page_selected(quest: Quest) -> void:
 	selected.emit(quest)
