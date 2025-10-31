@@ -90,7 +90,7 @@ func _ready() -> void:
 	left_button.pressed.connect(_on_left_button_pressed)
 	right_button.pressed.connect(_on_right_button_pressed)
 	
-	storybook_page.selected.connect(_on_storybook_page_selected)
+	#storybook_page.selected.connect(_on_storybook_page_selected)
 	reset_focus()
 
 #This func shows/hide index/details pages
