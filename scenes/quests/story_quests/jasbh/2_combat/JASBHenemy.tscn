@@ -1,13 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://dcoas3imo10p5"]
+[gd_scene load_steps=12 format=3 uid="uid://cy6grqtxfycog"]
 
-[ext_resource type="Script" uid="uid://djmphyxuypgn1" path="res://scenes/quests/story_quests/verso/1_verso_combat_anger/verso_combat_components/throwing_enemy_health.gd" id="1_88n2w"]
-[ext_resource type="SpriteFrames" uid="uid://deosvk5k4su5f" path="res://scenes/quests/story_quests/NO_EDIT/2_NO_EDIT_combat/NO_EDIT_combat_components/NO_EDIT_throwing_enemy.tres" id="2_88n2w"]
+[ext_resource type="Script" uid="uid://dfj3625owet5p" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/throwing_enemy.gd" id="1_3aqyg"]
+[ext_resource type="SpriteFrames" uid="uid://deosvk5k4su5f" path="res://scenes/quests/story_quests/NO_EDIT/2_NO_EDIT_combat/NO_EDIT_combat_components/NO_EDIT_throwing_enemy.tres" id="2_bkwt7"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
-height = 42.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bkal1"]
+size = Vector2(67.25026, 100.99979)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ffq0m"]
-size = Vector2(78, 75)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e1ywq"]
+size = Vector2(116, 79.5)
 
 [sub_resource type="Animation" id="Animation_xcanh"]
 length = 0.001
@@ -82,7 +82,7 @@ tracks/0/path = NodePath("AnimatedSprite2D:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.7),
+"times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [&"attack anticipation", &"attack"]
@@ -94,10 +94,10 @@ tracks/1/path = NodePath("AnimatedSprite2D:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.65, 0.7, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0, 3, 0, 3]
+"values": [0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -118,7 +118,7 @@ tracks/3/path = NodePath(".")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.7),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -238,21 +238,21 @@ _data = {
 &"remove": SubResource("Animation_lx56l")
 }
 
-[node name="ThrowingEnemyHealth" type="CharacterBody2D" groups=["throwing_enemy"]]
-script = ExtResource("1_88n2w")
+[node name="JasbHenemy" type="CharacterBody2D"]
+script = ExtResource("1_3aqyg")
+throwing_period = 0.2
 metadata/_custom_type_script = "uid://dfj3625owet5p"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(0, -30)
-sprite_frames = ExtResource("2_88n2w")
+sprite_frames = ExtResource("2_bkwt7")
 animation = &"walk"
 autoplay = "idle"
 flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = -1.5708
-shape = SubResource("CapsuleShape2D_3vyb7")
+shape = SubResource("RectangleShape2D_bkal1")
 
 [node name="Timer" type="Timer" parent="."]
 unique_name_in_owner = true
@@ -261,7 +261,7 @@ wait_time = 5.0
 
 [node name="ProjectileMarker" type="Marker2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(-35, -31)
+position = Vector2(0, 1)
 
 [node name="HitBox" type="Area2D" parent="."]
 unique_name_in_owner = true
@@ -269,8 +269,7 @@ collision_layer = 128
 collision_mask = 256
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-position = Vector2(0, -31.5)
-shape = SubResource("RectangleShape2D_ffq0m")
+shape = SubResource("RectangleShape2D_e1ywq")
 debug_color = Color(0.990065, 0, 0.28292, 0.42)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
