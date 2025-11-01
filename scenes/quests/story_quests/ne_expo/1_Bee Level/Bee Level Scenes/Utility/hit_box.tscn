@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://et6tb2piys5t"]
+
+[ext_resource type="Script" uid="uid://c73ux0slhsv7k" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee level Scripts/hit_box.gd" id="1_tuwvs"]
+
+[node name="HitBox" type="Area2D" groups=["attack"]]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_tuwvs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="DisabledHitboxTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="timeout" from="DisabledHitboxTimer" to="." method="_on_disabled_hitbox_timer_timeout"]

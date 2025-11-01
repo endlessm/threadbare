@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://seemkpivvmvm"]
+
+[ext_resource type="Script" uid="uid://bo80vmigm11en" path="res://scenes/quests/story_quests/ne_expo/1_Bee Level/Bee level Scripts/attack_bees.gd" id="1_0xgv2"]
+[ext_resource type="Texture2D" uid="uid://bd28lkvj0qacj" path="res://scenes/quests/story_quests/ne_expo/ne_expo_components/Attack Components/baby bee.png" id="1_ai4jy"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0xgv2"]
+radius = 31.0
+height = 98.95656
+
+[node name="AttackBees" type="Area2D" groups=["attack"]]
+top_level = true
+collision_layer = 128
+collision_mask = 0
+script = ExtResource("1_0xgv2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_ai4jy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 0.7898097
+shape = SubResource("CapsuleShape2D_0xgv2")
+disabled = true
+
+[node name="AttackTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="ChangeDirection" type="Timer" parent="AttackTimer"]
+unique_name_in_owner = true
+
+[node name="ResetPosTimer" type="Timer" parent="AttackTimer/ChangeDirection"]
+unique_name_in_owner = true
+wait_time = 3.0
+autostart = true
+
+[node name="sound_attack" type="AudioStreamPlayer2D" parent="."]
+
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="AttackTimer/ChangeDirection" to="." method="_on_change_direction_timeout"]
+[connection signal="timeout" from="AttackTimer/ChangeDirection/ResetPosTimer" to="." method="_on_reset_pos_timer_timeout"]
