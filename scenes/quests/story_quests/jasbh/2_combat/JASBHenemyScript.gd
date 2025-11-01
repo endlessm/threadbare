@@ -260,11 +260,17 @@ func shoot_projectile() -> void:
 	if not allowed_labels:
 		_is_attacking = false
 		return
-	var bullet_count := 10
-	var dir := player.global_position - (Vector2(((bullet_count / 2) - 1) * 100, 0))
-	for i in bullet_count - 1:
+	var bullet_count := 15
+	var separation_angle := PI / 1.0
+	var start_angle := -separation_angle / 2
+	var global_angle := (player.global_position - projectile_marker.global_position).normalized()
+	var dir_angle := global_angle.angle()
+	var speed_change := false
+	for i in bullet_count:
 		var projectile: Projectile = projectile_scene.instantiate()
-		projectile.direction = projectile_marker.global_position.direction_to(dir + Vector2(i * 100, 0))
+		var offset_angle := start_angle + (separation_angle / (bullet_count - 1)) * i
+		var target_direction := Vector2.from_angle(dir_angle + offset_angle)
+		projectile.direction = target_direction
 		scale.x = 1 if projectile.direction.x < 0 else -1
 		projectile.label = allowed_labels.pick_random()
 		if projectile.label in color_per_label:
@@ -277,11 +283,19 @@ func shoot_projectile() -> void:
 		projectile.small_fx_scene = projectile_small_fx_scene
 		projectile.big_fx_scene = projectile_big_fx_scene
 		projectile.trail_fx_scene = projectile_trail_fx_scene
-		projectile.speed = projectile_speed
+		if speed_change:
+			projectile.speed = projectile_speed * 1.5
+		else:
+			projectile.speed = projectile_speed
+		
 		projectile.duration = projectile_duration
 		get_tree().current_scene.add_child(projectile)
 		_set_target_position()
 		_is_attacking = false
+		if speed_change:
+			speed_change = false
+		else:
+			speed_change = true
 	
 
 
