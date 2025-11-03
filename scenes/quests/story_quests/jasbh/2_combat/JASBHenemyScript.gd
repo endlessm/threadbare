@@ -69,6 +69,12 @@ var projectile_speed: float = 30.0
 ## The life span of the projectile.
 @export_range(0., 10., 0.1, "or_greater", "suffix:s") var projectile_duration: float = 5.0
 
+@export_range(1, 50, 1, "or_greater") var bullet_count: int = 5
+
+@export_range(0.1, 10., 0.1, "or_greater") var separation: float = 2.0
+
+@export_range(0.1, 10., 0.1, "or_greater") var bullet_speed_multiplier: float = 1.5
+
 ## If true, the projectile will constantly adjust itself to target the player.
 @export var projectile_follows_player: bool = false
 
@@ -260,8 +266,7 @@ func shoot_projectile() -> void:
 	if not allowed_labels:
 		_is_attacking = false
 		return
-	var bullet_count := 15
-	var separation_angle := PI / 1.0
+	var separation_angle := PI / separation
 	var start_angle := -separation_angle / 2
 	var global_angle := (player.global_position - projectile_marker.global_position).normalized()
 	var dir_angle := global_angle.angle()
@@ -284,7 +289,7 @@ func shoot_projectile() -> void:
 		projectile.big_fx_scene = projectile_big_fx_scene
 		projectile.trail_fx_scene = projectile_trail_fx_scene
 		if speed_change:
-			projectile.speed = projectile_speed * 1.5
+			projectile.speed = projectile_speed * bullet_speed_multiplier
 		else:
 			projectile.speed = projectile_speed
 		
