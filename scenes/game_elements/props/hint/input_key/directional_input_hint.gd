@@ -16,12 +16,9 @@ extends TextureRect
 @export var playstation_controller_texture: Texture2D
 @export var nintendo_controller_texture: Texture2D
 @export var steam_controller_texture: Texture2D
-# Fallback controller image when platform-specific one is not provided.
-@export var controller_default_texture: Texture2D
 
 # --- Controller pressed variants ---
 # Textures shown when the controller button is pressed.
-@export var controller_pressed_texture: Texture2D
 @export var xbox_pressed_texture: Texture2D
 @export var playstation_pressed_texture: Texture2D
 @export var nintendo_pressed_texture: Texture2D
@@ -100,29 +97,34 @@ func _physics_process(_delta: float) -> void:
 			match current_device:
 				InputHelper.DEVICE_XBOX_CONTROLLER:
 					texture = (
-						xbox_pressed_texture if xbox_pressed_texture else controller_pressed_texture
+						xbox_pressed_texture if xbox_pressed_texture else null
 					)
 				InputHelper.DEVICE_PLAYSTATION_CONTROLLER:
 					texture = (
 						playstation_pressed_texture
 						if playstation_pressed_texture
-						else controller_pressed_texture
+						else null
 					)
 				InputHelper.DEVICE_SWITCH_CONTROLLER:
 					texture = (
 						nintendo_pressed_texture
 						if nintendo_pressed_texture
-						else controller_pressed_texture
+						else null
 					)
 				InputHelper.DEVICE_STEAMDECK_CONTROLLER:
 					texture = (
 						steam_pressed_texture
 						if steam_pressed_texture
-						else controller_pressed_texture
+						else null
 					)
 				_:
-					# Default pressed controller texture
-					texture = controller_pressed_texture
+					# Default pressed texture (fallback to Xbox pressed, then Steam pressed)
+					texture = xbox_pressed_texture if xbox_pressed_texture else steam_pressed_texture
+
+			# If specific pressed texture was null and we fell through, ensure there's at least some texture.
+			if not texture:
+				# try xbox/steam pressed as a final fallback
+				texture = xbox_pressed_texture if xbox_pressed_texture else steam_pressed_texture
 
 		# If no directional input is pressed, show the idle (not pressed) controller texture.
 		elif not any_direction_pressed:
@@ -137,8 +139,8 @@ func _physics_process(_delta: float) -> void:
 				InputHelper.DEVICE_STEAMDECK_CONTROLLER:
 					texture = steam_controller_texture
 				_:
-					# Default controller image when platform-specific asset is missing.
-					texture = controller_default_texture
+					# Default controller image (fallback to Xbox, then Steam)
+					texture = xbox_controller_texture if xbox_controller_texture else steam_controller_texture
 		else:
 			# If the player is using directional input (e.g. moving), hide the controller action icon.
 			visible = false
@@ -189,9 +191,8 @@ func _update_visual_state() -> void:
 				InputHelper.DEVICE_STEAMDECK_CONTROLLER:
 					texture = steam_controller_texture
 				_:
-					# Fallback controller texture when the device
-					#is unknown or unsupported.
-					texture = controller_default_texture
+					# Fallback controller texture when the device is unknown or unsupported.
+					texture = xbox_controller_texture if xbox_controller_texture else steam_controller_texture
 		else:
 			# Controller visuals are not the primary display: hide the node.
 			visible = false
