@@ -35,8 +35,6 @@ var is_keyboard_mode: bool = true  # whether we are currently showing keyboard v
 
 func _ready() -> void:
 	# Attempt to use the project's InputHelper singleton (Threadbare addon).
-	# If it exists, connect to its device change signal and initialize state.
-	# If not present, we fall back to a simple keyboard-only assumption.
 	if Engine.has_singleton("InputHelper"):
 		# Connect our handler so we update visuals whenever the input device changes.
 		InputHelper.device_changed.connect(_on_input_device_changed)
@@ -62,12 +60,9 @@ func _physics_process(_delta: float) -> void:
 
 	# ---- KEYBOARD MODE ----
 	if is_keyboard_mode:
-		# If a keyboard texture is assigned, show it and update its pressed visual.
 		if keyboard_texture:
 			visible = true
 			if is_pressed:
-				# If a pressed variant exists, use it. Otherwise simulate a "pressed" look
-				# by using the normal texture and darkening the modulation.
 				if keyboard_pressed_texture:
 					texture = keyboard_pressed_texture
 					modulate = Color.WHITE
@@ -80,53 +75,31 @@ func _physics_process(_delta: float) -> void:
 				texture = keyboard_texture
 				modulate = Color.WHITE
 		else:
-			# No keyboard asset available: hide this node
-			#(alternatively you could show a controller fallback).
 			visible = false
-
-		# We've handled keyboard mode entirely, return early.
 		return
 
 	# ---- CONTROLLER MODE ----
-	# The following logic only runs when we are not in keyboard mode.
 	if is_controller_main_display:
-		# If the bound action is pressed,
-		#show a pressed controller texture (platform-specific if available).
 		if is_pressed:
 			visible = true
+			# Assign platform-specific pressed texture directly.
 			match current_device:
 				InputHelper.DEVICE_XBOX_CONTROLLER:
-					texture = (
-						xbox_pressed_texture if xbox_pressed_texture else null
-					)
+					texture = xbox_pressed_texture
 				InputHelper.DEVICE_PLAYSTATION_CONTROLLER:
-					texture = (
-						playstation_pressed_texture
-						if playstation_pressed_texture
-						else null
-					)
+					texture = playstation_pressed_texture
 				InputHelper.DEVICE_SWITCH_CONTROLLER:
-					texture = (
-						nintendo_pressed_texture
-						if nintendo_pressed_texture
-						else null
-					)
+					texture = nintendo_pressed_texture
 				InputHelper.DEVICE_STEAMDECK_CONTROLLER:
-					texture = (
-						steam_pressed_texture
-						if steam_pressed_texture
-						else null
-					)
+					texture = steam_pressed_texture
 				_:
-					# Default pressed texture (fallback to Xbox pressed, then Steam pressed)
-					texture = xbox_pressed_texture if xbox_pressed_texture else steam_pressed_texture
+					# leave texture as null for now; we will apply a fallback below
+					texture = null
 
-			# If specific pressed texture was null and we fell through, ensure there's at least some texture.
+			# Final pressed texture fallback: prefer Xbox pressed, then Steam pressed.
 			if not texture:
-				# try xbox/steam pressed as a final fallback
 				texture = xbox_pressed_texture if xbox_pressed_texture else steam_pressed_texture
 
-		# If no directional input is pressed, show the idle (not pressed) controller texture.
 		elif not any_direction_pressed:
 			visible = true
 			match current_device:
@@ -139,37 +112,27 @@ func _physics_process(_delta: float) -> void:
 				InputHelper.DEVICE_STEAMDECK_CONTROLLER:
 					texture = steam_controller_texture
 				_:
-					# Default controller image (fallback to Xbox, then Steam)
+					# Fallback controller image (prefer Xbox, then Steam)
 					texture = xbox_controller_texture if xbox_controller_texture else steam_controller_texture
 		else:
-			# If the player is using directional input (e.g. moving), hide the controller action icon.
 			visible = false
 	else:
-		# If controller visuals are not the main display, hide the node.
 		visible = false
 
 
 func _on_input_device_changed(device: String, _device_index: int) -> void:
-	# Called when InputHelper (or fallback) notifies us of a device change.
 	current_device = device
 
-	# Determine whether we should be in keyboard mode.
-	# Prefer the InputHelper constant if available; otherwise compare the device string.
 	if Engine.has_singleton("InputHelper"):
-		# InputHelper.DEVICE_KEYBOARD should be defined by the addon.
 		is_keyboard_mode = (device == InputHelper.DEVICE_KEYBOARD)
 	else:
-		# Fallback: check if the device string equals "keyboard" (case-insensitive).
 		is_keyboard_mode = device.to_lower() == "keyboard"
 
-	# Immediately refresh visuals to reflect the new device mode.
 	_update_visual_state()
 
 
 func _update_visual_state() -> void:
-	# Force a visual refresh according to the current input mode and device.
 	if is_keyboard_mode:
-		# Keyboard mode: show keyboard texture if assigned, otherwise hide.
 		if keyboard_texture:
 			visible = true
 			texture = keyboard_texture
@@ -177,8 +140,6 @@ func _update_visual_state() -> void:
 		else:
 			visible = false
 	else:
-		# Controller mode: if controllers are enabled as the main display,
-		#pick the correct idle texture.
 		if is_controller_main_display:
 			visible = true
 			match current_device:
@@ -191,8 +152,6 @@ func _update_visual_state() -> void:
 				InputHelper.DEVICE_STEAMDECK_CONTROLLER:
 					texture = steam_controller_texture
 				_:
-					# Fallback controller texture when the device is unknown or unsupported.
 					texture = xbox_controller_texture if xbox_controller_texture else steam_controller_texture
 		else:
-			# Controller visuals are not the primary display: hide the node.
 			visible = false
