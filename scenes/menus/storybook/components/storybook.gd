@@ -26,10 +26,12 @@ const QUEST_RESOURCE_NAME := "quest.tres"
 ## have a [code]quest.tres[/code] file within.
 @export_dir var quest_directory: String = "res://scenes/quests/story_quests"
 
-var _current_page_index: int = -1
+var _quests: Array[Quest] = []
+var _current_spread_index: int = -1
 var _navigation_locked: bool = false
 
 @onready var quest_list: VBoxContainer = %QuestList
+@onready var quest_container: Control = %QuestContainer
 @onready var storybook_page: StorybookPage = %StorybookPage
 @onready var back_button: Button = %BackButton
 @onready var animated_book: AnimatedSprite2D = %AnimatedSprite2D
@@ -60,17 +62,19 @@ func _enumerate_quests() -> Array[Quest]:
 func _ready() -> void:
 	animated_book.animation_finished.connect(_on_animation_finished)
 
+	_quests = _enumerate_quests()
+
 	var previous_button: Button = null
-	for quest in _enumerate_quests():
+	for i in _quests.size():
+		var quest: Quest = _quests[i]
 		var button := Button.new()
 		button.text = quest.get_title()
 		button.theme_type_variation = "FlatButton"
 		quest_list.add_child(button)
-		button.set_meta("quest", quest)
+		button.set_meta("quest_index", i)
 
-		button.focus_entered.connect(_on_button_focused.bind(button, quest))
+		button.pressed.connect(_on_quest_button_pressed.bind(button))
 		button.focus_next = back_button.get_path()
-		button.focus_previous = storybook_page.play_button.get_path()
 
 		if previous_button:
 			button.focus_neighbor_top = previous_button.get_path()
@@ -84,75 +88,86 @@ func _ready() -> void:
 
 	left_button.pressed.connect(_on_left_button_pressed)
 	right_button.pressed.connect(_on_right_button_pressed)
+
 	reset_focus()
 
 
-func _switch_to_page(page_index: int) -> void:
+## Show/hide index or detail pages
+func _update_page_visibility() -> void:
+	if _current_spread_index == 0:
+		quest_container.visible = true
+		storybook_page.visible = false
+
+		if quest_list.get_child_count() > 0:
+			var first_button: Button = quest_list.get_child(0)
+			if first_button and is_instance_valid(first_button) and not first_button.has_focus():
+				first_button.grab_focus()
+	else:
+		quest_container.visible = false
+		storybook_page.visible = true
+
+		var quest_index: int = _current_spread_index - 1
+		if quest_index >= 0 and quest_index < _quests.size():
+			storybook_page.quest = _quests[quest_index]
+
+			if storybook_page.play_button and is_instance_valid(storybook_page.play_button):
+				if not storybook_page.play_button.has_focus():
+					storybook_page.play_button.grab_focus()
+
+			back_button.focus_previous = storybook_page.play_button.get_path()
+			storybook_page.play_button.focus_next = back_button.get_path()
+			storybook_page.play_button.focus_neighbor_left = back_button.get_path()
+
+
+func _switch_to_page(spread_index: int) -> void:
 	if _navigation_locked:
 		return
 
-	var total := quest_list.get_child_count()
-	if total == 0:
+	var total_spreads: int = _quests.size() + 1
+	if total_spreads <= 1:
 		return
-	if page_index < 0 or page_index >= total:
-		return
-	if page_index == _current_page_index:
+
+	if spread_index < 0:
+		spread_index = total_spreads - 1
+	if spread_index >= total_spreads:
+		spread_index = 0
+
+	if spread_index == _current_spread_index:
 		return
 
 	_navigation_locked = true
+	var old_index: int = _current_spread_index
+	_current_spread_index = spread_index
 
-	var button: Button = quest_list.get_child(page_index)
-	if not is_instance_valid(button):
-		_navigation_locked = false
-		return
-
-	var quest: Quest = button.get_meta("quest") if button.has_meta("quest") else null
-
-	back_button.focus_previous = button.get_path()
-	storybook_page.play_button.focus_next = button.get_path()
-	storybook_page.play_button.focus_neighbor_left = button.get_path()
-	if quest:
-		storybook_page.quest = quest
-
-	if _current_page_index != -1:
-		if page_index > _current_page_index:
+	if old_index != -1:
+		if spread_index > old_index or (spread_index == 0 and old_index == total_spreads - 1):
 			animated_book.play("book_right")
 		else:
 			animated_book.play("book_left")
 		ui_container.visible = false
-	else:
-		if not button.has_focus():
-			button.grab_focus()
-		_navigation_locked = false
 
-	_current_page_index = page_index
+	else:
+		_update_page_visibility()
+		_navigation_locked = false
 
 
 func _on_animation_finished() -> void:
 	_navigation_locked = false
 	ui_container.visible = true
 
-	var button: Button = quest_list.get_child(_current_page_index)
-	if button and is_instance_valid(button) and not button.has_focus():
-		button.grab_focus()
+	_update_page_visibility()
 
 
 func _on_left_button_pressed() -> void:
 	if _navigation_locked:
 		return
-	var target := _current_page_index - 1
-	if target < 0:
-		target = max(0, quest_list.get_child_count() - 1)
-	_switch_to_page(target)
+	_switch_to_page(_current_spread_index - 1)
 
 
 func _on_right_button_pressed() -> void:
 	if _navigation_locked:
 		return
-	var target := _current_page_index + 1
-	if target >= quest_list.get_child_count():
-		target = 0
-	_switch_to_page(target)
+	_switch_to_page(_current_spread_index + 1)
 
 
 func _input(event: InputEvent) -> void:
@@ -162,13 +177,12 @@ func _input(event: InputEvent) -> void:
 		selected.emit(null)
 
 
-func _on_button_focused(button: Button, _quest: Quest) -> void:
-	if _navigation_locked:
+func _on_quest_button_pressed(button: Button) -> void:
+	if not button.has_meta("quest_index"):
 		return
-	var current_index: int = quest_list.get_children().find(button)
-	if current_index == -1:
-		return
-	_switch_to_page(current_index)
+
+	var quest_index: int = button.get_meta("quest_index")
+	_switch_to_page(quest_index + 1)
 
 
 func _on_storybook_page_selected(quest: Quest) -> void:
@@ -180,5 +194,4 @@ func _on_back_button_pressed() -> void:
 
 
 func reset_focus() -> void:
-	if quest_list and quest_list.get_child_count() > 0:
-		_switch_to_page(0)
+	_switch_to_page(0)
