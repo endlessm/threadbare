@@ -112,12 +112,13 @@ func _physics_process(_delta: float) -> void:
 				InputHelper.DEVICE_STEAMDECK_CONTROLLER:
 					texture = steam_controller_texture
 				_:
-					# Fallback controller image (prefer Xbox, then Steam)
-					texture = (
-						xbox_controller_texture
-						if xbox_controller_texture
-						else steam_controller_texture
-						)
+					texture = null
+
+			if not texture:
+				# Fallback controller image (prefer Xbox, then Steam)
+				texture = (
+					xbox_controller_texture if xbox_controller_texture else steam_controller_texture
+				)
 
 		else:
 			visible = false
@@ -158,8 +159,8 @@ func _update_visual_state() -> void:
 					texture = steam_controller_texture
 				_:
 					texture = (
-						xbox_controller_texture 
-						if xbox_controller_texture 
+						xbox_controller_texture
+						if xbox_controller_texture
 						else steam_controller_texture
 					)
 		else:
