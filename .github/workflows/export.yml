@@ -126,7 +126,7 @@ jobs:
   flatpak:
     name: Build Flatpak
     needs: build
-    if: ${{ inputs.build_flatpak || github.event_name == 'release' || needs.build.outputs.linux-changed == 'true' }}
+    #if: ${{ inputs.build_flatpak || github.event_name == 'release' || needs.build.outputs.linux-changed == 'true' }}
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
@@ -135,12 +135,16 @@ jobs:
       - uses: actions/checkout@v5
         with:
           lfs: true
+          sparse-checkout: |
+            linux
+
       - name: Download Artifact
         uses: actions/download-artifact@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           name: pck
           path: build
+
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
           bundle: threadbare.flatpak
