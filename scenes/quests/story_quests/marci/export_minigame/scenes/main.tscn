@@ -1,0 +1,81 @@
+[gd_scene load_steps=11 format=3 uid="uid://bemc8cvitjcnb"]
+
+[ext_resource type="Script" uid="uid://bw5dg342kn0gn" path="res://scenes/quests/story_quests/marci/export_minigame/scripts/main.gd" id="1_iua0r"]
+[ext_resource type="PackedScene" uid="uid://dd1whwjg1rxbg" path="res://scenes/quests/story_quests/marci/export_minigame/scenes/player.tscn" id="2_asnni"]
+[ext_resource type="PackedScene" uid="uid://cs8jdqahf1uld" path="res://scenes/quests/story_quests/marci/export_minigame/scenes/enemy.tscn" id="3_4pm7b"]
+[ext_resource type="PackedScene" uid="uid://dywwv7t1yk5j1" path="res://scenes/quests/story_quests/marci/export_minigame/scenes/bullet.tscn" id="4_c2g2e"]
+[ext_resource type="PackedScene" uid="uid://d4febf58dx33l" path="res://scenes/quests/story_quests/marci/export_minigame/scenes/powerup.tscn" id="5_7pqrx"]
+[ext_resource type="Shader" uid="uid://gupemrk5svml" path="res://scenes/quests/story_quests/marci/export_minigame/scenes/main.gdshader" id="6_xhbrg"]
+[ext_resource type="Script" uid="uid://bjar5gsacdmjd" path="res://scenes/quests/story_quests/marci/export_minigame/scripts/tile_map.gd" id="7_860jx"]
+[ext_resource type="PackedScene" uid="uid://po012t6sude4" path="res://scenes/quests/story_quests/marci/export_minigame/scenes/chunk_01.tscn" id="8_xly03"]
+[ext_resource type="AudioStream" uid="uid://dbj1atwdi5pxg" path="res://scenes/quests/story_quests/marci/export_minigame/assets/ost_segundo_juego.mp3" id="9_pf8g5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_85g3d"]
+shader = ExtResource("6_xhbrg")
+
+[node name="Main" type="Node2D" groups=["main"]]
+script = ExtResource("1_iua0r")
+
+[node name="Player" parent="." instance=ExtResource("2_asnni")]
+position = Vector2(527, 363)
+scale = Vector2(0.7916667, 0.6304348)
+up_direction = Vector2(1, -1.996008e-06)
+
+[node name="Sprite2D" parent="Player" index="0"]
+position = Vector2(0, 5.5517254)
+scale = Vector2(0.20659547, 0.22279295)
+
+[node name="CollisionShape2D" parent="Player" index="1"]
+scale = Vector2(10.520626, 12.646667)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="EnemySpawner" type="Timer" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="LabelScore" type="Label" parent="CanvasLayer"]
+offset_left = 7.0
+offset_top = 57.0
+offset_right = 68.0
+offset_bottom = 80.0
+text = "Score: 0"
+
+[node name="LabelHP" type="Label" parent="CanvasLayer"]
+offset_left = 8.0
+offset_top = 20.0
+offset_right = 50.0
+offset_bottom = 43.0
+text = "hp : 5"
+
+[node name="Enemy" parent="." instance=ExtResource("3_4pm7b")]
+position = Vector2(-75, -1)
+
+[node name="Bullet" parent="." instance=ExtResource("4_c2g2e")]
+position = Vector2(-95, 75)
+
+[node name="Powerup" parent="." instance=ExtResource("5_7pqrx")]
+position = Vector2(-84, 143)
+
+[node name="FogOfWar" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_85g3d")
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(4.2972975, 3.2432432)
+color = Color(0, 0, 0, 1)
+
+[node name="TileMap" type="TileMap" parent="."]
+show_behind_parent = true
+format = 2
+script = ExtResource("7_860jx")
+chunk_scene = ExtResource("8_xly03")
+chunk_size = 256
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_pf8g5")
+autoplay = true
+
+[connection signal="body_entered" from="Bullet" to="Bullet" method="_on_body_entered"]
+[connection signal="body_entered" from="Powerup" to="Powerup" method="_on_body_entered"]
+
+[editable path="Player"]
