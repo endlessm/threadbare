@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://d0f07t8ncxp3v"]
+[gd_scene load_steps=20 format=4 uid="uid://d0f07t8ncxp3v"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_mw183"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_t0wgn"]
@@ -26,6 +26,12 @@ _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 477, 46, 0, 0, 0, 0, 362, 221, 0, 0, 0, 0, 174, 223, 0, 0, 0, 0, 63, 57, 0, 0, 0, 0, 169, -97, 0, 0, 0, 0, 354, -101, 0, 0, 0, 0, 478, 46)
 }
 point_count = 7
+
+[sub_resource type="Curve2D" id="Curve2D_mw183"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 693, -11, 0, 0, 0, 0, -1, -11)
+}
+point_count = 2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8bmx2"]
 size = Vector2(168.25, 122)
@@ -99,39 +105,37 @@ detection_area_scale = 0.1
 position = Vector2(3582, 181)
 curve = SubResource("Curve2D_repg0")
 
-[node name="Guard2-RunningInCircles2" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_70m16")]
+[node name="Guard3-RunningInCircles" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_70m16")]
 position = Vector2(4504, 590)
 sprite_frames = ExtResource("6_ssgbr")
-patrol_path = NodePath("../Guard2-RunningPath2")
+patrol_path = NodePath("../Guard3-RunningPath")
 wait_time = 0.2
 move_speed = 2000.0
 detection_area_scale = 0.1
 
-[node name="Guard2-RunningPath2" type="Path2D" parent="EnemyGuards"]
+[node name="Guard3-RunningPath" type="Path2D" parent="EnemyGuards"]
 position = Vector2(4027, 544)
 curve = SubResource("Curve2D_repg0")
 
-[node name="Guard1-GoingBackAndForth2" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_70m16")]
-position = Vector2(1781, 362.00012)
+[node name="Guard4-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_70m16")]
+position = Vector2(2943, 338)
 sprite_frames = ExtResource("6_ssgbr")
-patrol_path = NodePath("../Guard1-PatrolPath2")
+patrol_path = NodePath("../Guard4-GoingBackAndForth-PatrolPath")
 wait_time = 0.5
 move_speed = 200.0
 
-[node name="Guard1-PatrolPath2" type="Path2D" parent="EnemyGuards"]
-top_level = true
-position = Vector2(2287.0002, 776.81805)
-scale = Vector2(0.107143, 0.352768)
-curve = SubResource("Curve2D_nn2tt")
+[node name="Guard4-GoingBackAndForth-PatrolPath" type="Path2D" parent="EnemyGuards"]
+position = Vector2(2250, 349)
+curve = SubResource("Curve2D_mw183")
 
-[node name="Guard1-GoingBackAndForth3" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_70m16")]
+[node name="Guard5-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_70m16")]
 position = Vector2(1788, 445)
 sprite_frames = ExtResource("6_ssgbr")
-patrol_path = NodePath("../Guard1-PatrolPath3")
+patrol_path = NodePath("../Guard5-PatrolPath")
 wait_time = 0.5
 move_speed = 200.0
 
-[node name="Guard1-PatrolPath3" type="Path2D" parent="EnemyGuards"]
+[node name="Guard5-PatrolPath" type="Path2D" parent="EnemyGuards"]
 top_level = true
 position = Vector2(2294.0002, 859.81793)
 scale = Vector2(0.107143, 0.352768)
