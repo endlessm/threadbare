@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://clo0tnpl0lldd"]
+
+[ext_resource type="Script" uid="uid://d1clcyl2elo0c" path="res://Fireball.gd" id="1_mojgf"]
+[ext_resource type="Texture2D" uid="uid://bdhfcs6igu6di" path="res://assets/third_party/tiny-swords/Deco/14.png" id="2_devog"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_devog"]
+radius = 3.4093316
+
+[node name="Fireball" type="Area2D" groups=["projectiles"]]
+collision_layer = 4
+collision_mask = 255
+script = ExtResource("1_mojgf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(3.5197513, 1.111345)
+shape = SubResource("CircleShape2D_devog")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.36787283, 0.013959649, 0.042622827, 1)
+self_modulate = Color(0.849371, 0.76548886, 0.13506523, 1)
+z_index = 10
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_devog")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

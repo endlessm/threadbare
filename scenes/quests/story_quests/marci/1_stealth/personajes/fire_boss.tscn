@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://b7dftq16nso76"]
+
+[ext_resource type="Script" uid="uid://c26m8gvqi1xvj" path="res://FireBoss.gd" id="1_4ofp4"]
+[ext_resource type="PackedScene" uid="uid://clo0tnpl0lldd" path="res://scenes/quests/story_quests/marci/1_stealth/personajes/fireball.tscn" id="2_l27v5"]
+[ext_resource type="Texture2D" uid="uid://1h7luv2b3rwl" path="res://scenes/world_map/components/cat.png" id="2_lu5yo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lu5yo"]
+radius = 42.941822
+
+[node name="FireBoss" type="Area2D"]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_4ofp4")
+fireball_scene = ExtResource("2_l27v5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_lu5yo")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_lu5yo")

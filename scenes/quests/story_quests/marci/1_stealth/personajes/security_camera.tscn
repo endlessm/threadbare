@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://b627s6x0mwy07"]
+
+[ext_resource type="Script" uid="uid://unqr5m2tt75a" path="res://scenes/quests/story_quests/marci/1_stealth/personajes/SecurityCamera.gd" id="1_mc2dk"]
+[ext_resource type="Texture2D" uid="uid://d0jaie1o5eft4" path="res://scenes/quests/story_quests/marci/1_stealth/personajes/camara.png" id="2_dh3e7"]
+[ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="3_kfv3m"]
+[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="4_3r2jj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cv5dv"]
+radius = 25.079872
+
+[node name="SecurityCamera" type="Node2D"]
+script = ExtResource("1_mc2dk")
+
+[node name="CameraBody" type="Sprite2D" parent="."]
+rotation = 3.1363957
+texture = ExtResource("2_dh3e7")
+
+[node name="Light" type="PointLight2D" parent="."]
+light_mask = 2
+visibility_layer = 4
+texture_filter = 6
+texture_repeat = 2
+material = ExtResource("3_kfv3m")
+position = Vector2(1, 1)
+energy = 0.5
+texture = ExtResource("4_3r2jj")
+
+[node name="VisionArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea"]
+position = Vector2(-1, 0)
+shape = SubResource("CircleShape2D_cv5dv")
+
+[node name="DetectionRay" type="RayCast2D" parent="."]
+exclude_parent = false
+
+[node name="AlertAudio" type="AudioStreamPlayer2D" parent="."]
+max_distance = 1000.0
+attenuation = 2.0
+bus = &"SFX"
+
+[node name="SuspiciousAudio" type="AudioStreamPlayer2D" parent="."]
+max_distance = 1000.0
+attenuation = 2.0
+bus = &"SFX"
