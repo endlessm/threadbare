@@ -129,6 +129,8 @@ var _is_attacking: bool
 var _is_defeated: bool
 var _has_started: bool = false
 
+var bullet_change = false
+
 @onready var timer: Timer = %Timer
 @onready var projectile_marker: Marker2D = %ProjectileMarker
 @onready var hit_box: Area2D = %HitBox
@@ -266,14 +268,21 @@ func shoot_projectile() -> void:
 	if not allowed_labels:
 		_is_attacking = false
 		return
+	var bullet_count_copy : int
+	if bullet_change:
+		bullet_count_copy = bullet_count - 2
+		bullet_change = false
+	else:
+		bullet_count_copy = bullet_count
+		bullet_change = true
 	var separation_angle := PI / separation
 	var start_angle := -separation_angle / 2
 	var global_angle := (player.global_position - projectile_marker.global_position).normalized()
 	var dir_angle := global_angle.angle()
 	var speed_change := false
-	for i in bullet_count:
+	for i in bullet_count_copy:
 		var projectile: Projectile = projectile_scene.instantiate()
-		var offset_angle := start_angle + (separation_angle / (bullet_count - 1)) * i
+		var offset_angle := start_angle + (separation_angle / (bullet_count_copy - 1)) * i
 		var target_direction := Vector2.from_angle(dir_angle + offset_angle)
 		projectile.direction = target_direction
 		scale.x = 1 if projectile.direction.x < 0 else -1
