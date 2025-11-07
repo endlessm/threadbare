@@ -1,11 +1,15 @@
-[gd_scene load_steps=9 format=4 uid="uid://cp4bkrfd422a2"]
+[gd_scene load_steps=13 format=4 uid="uid://cp4bkrfd422a2"]
 
 [ext_resource type="TileSet" uid="uid://dphcd7mvjgflw" path="res://scenes/quests/story_quests/somnus/somnus_tileset.tres" id="1_yscxn"]
-[ext_resource type="SpriteFrames" uid="uid://b6ijk8vi5x3tv" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/somnus_player.tres" id="3_244di"]
+[ext_resource type="Texture2D" uid="uid://07k43id4c81h" path="res://scenes/quests/story_quests/NO_EDIT/0_NO_EDIT_intro/NO_EDIT_intro_components/NO_EDIT_intro_image.png" id="2_q7iov"]
+[ext_resource type="Texture2D" uid="uid://dlycv61tqjmsr" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/cama hospital.png" id="3_244di"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_17bmf"]
-[ext_resource type="Resource" uid="uid://dyf62epnwxr2w" path="res://scenes/quests/story_quests/somnus/0_intro/intro_components/somnus_intro.dialogue" id="5_kp45h"]
+[ext_resource type="SpriteFrames" uid="uid://b6ijk8vi5x3tv" path="res://scenes/quests/story_quests/somnus/player_components/somnus_player.tres" id="6_244di"]
+[ext_resource type="Texture2D" uid="uid://c2r2106ec1w2u" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/room_ecg_cart.png" id="7_17bmf"]
+[ext_resource type="Resource" uid="uid://dyf62epnwxr2w" path="res://scenes/quests/story_quests/somnus/0_intro/intro_components/somnus_intro.dialogue" id="8_244di"]
+[ext_resource type="Texture2D" uid="uid://cgo3y62kxsh1a" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/room_iv_stand_w.png" id="8_kp45h"]
 
-[sub_resource type="Animation" id="Animation_w407k"]
+[sub_resource type="Animation" id="Animation_ld06i"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -32,7 +36,7 @@ tracks/1/keys = {
 "values": [Vector2(400, 349)]
 }
 
-[sub_resource type="Animation" id="Animation_g8nb6"]
+[sub_resource type="Animation" id="Animation_7swpb"]
 resource_name = "walk_off"
 length = 2.0
 tracks/0/type = "value"
@@ -60,7 +64,7 @@ tracks/1/keys = {
 "values": [Vector2(495, 478), Vector2(1010, 478)]
 }
 
-[sub_resource type="Animation" id="Animation_qja4p"]
+[sub_resource type="Animation" id="Animation_blo5s"]
 resource_name = "walk_on"
 length = 2.0
 tracks/0/type = "value"
@@ -88,58 +92,114 @@ tracks/1/keys = {
 "values": [Vector2(-50, 478), Vector2(495, 478)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_p8mw8"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qdpvj"]
 _data = {
-&"RESET": SubResource("Animation_w407k"),
-&"walk_off": SubResource("Animation_g8nb6"),
-&"walk_on": SubResource("Animation_qja4p")
+&"RESET": SubResource("Animation_ld06i"),
+&"walk_off": SubResource("Animation_7swpb"),
+&"walk_on": SubResource("Animation_blo5s")
 }
 
 [node name="Intro" type="Node2D"]
 
 [node name="TileMapLayers" type="Node2D" parent="."]
+position = Vector2(8, 170)
 
 [node name="piso" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAAAAEAEgAAAAAAAAAAAAIAEgAAAAAAAAAAAAMAEgAAAAAAAAABAAEAEgAAAAAAAAABAAIAEgAAAAAAAAABAAMAEgAAAAAAAAACAAEAEgAAAAAAAAACAAIAEgAAAAAAAAACAAMAEgAAAAAAAAADAAEAEgAAAAAAAAADAAIAEgAAAAAAAAADAAMAEgAAAAAAAAAEAAEAEgAAAAAAAAAEAAIAEgAAAAAAAAAEAAMAEgAAAAAAAAAFAAMAEgAAAAAAAAAFAAIAEgAAAAAAAAAFAAEAEgAAAAAAAAACAAQAEgAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAAAAAUADgAAAAAAAAABAAUADgAAAAAAAAACAAUADgAAAAAAAAADAAUADgAAAAAAAAAEAAUADgAAAAAAAAAFAAUADgAAAAAAAAAGAAUADgAAAAAAAAAHAAUADgAAAAAAAAAIAAUADgAAAAAAAAAJAAUADgAAAAAAAAAKAAUADgAAAAAAAAALAAUADgAAAAAAAAAMAAUADgAAAAAAAAANAAUADgAAAAAAAAAOAAUADgAAAAAAAAAAAAYADgAAAAAAAAAAAAcADgAAAAAAAAABAAYADgAAAAAAAAABAAcADgAAAAAAAAACAAYADgAAAAAAAAACAAcADgAAAAAAAAADAAYADgAAAAAAAAADAAcADgAAAAAAAAAEAAYADgAAAAAAAAAEAAcADgAAAAAAAAAFAAYADgAAAAAAAAAFAAcADgAAAAAAAAAHAAYADgAAAAAAAAAHAAcADgAAAAAAAAAIAAYADgAAAAAAAAAIAAcADgAAAAAAAAAJAAYADgAAAAAAAAAJAAcADgAAAAAAAAAKAAYADgAAAAAAAAAKAAcADgAAAAAAAAALAAYADgAAAAAAAAALAAcADgAAAAAAAAAMAAYADgAAAAAAAAAMAAcADgAAAAAAAAANAAYADgAAAAAAAAANAAcADgAAAAAAAAAOAAYADgAAAAAAAAAOAAcADgAAAAAAAAAFAAMADgAAAAAAAAAHAAQADgAAAAAAAAAIAAQADgAAAAAAAAAOAAQADgAAAAAAAAAOAAMADgAAAAAAAAANAAQADgAAAAAAAAANAAMADgAAAAAAAAAMAAQADgAAAAAAAAAMAAMADgAAAAAAAAALAAQADgAAAAAAAAALAAMADgAAAAAAAAAKAAQADgAAAAAAAAAKAAMADgAAAAAAAAAJAAQADgAAAAAAAAAJAAMADgAAAAAAAAAIAAMADgAAAAAAAAAHAAMADgAAAAAAAAAFAAQADgAAAAAAAAAEAAQADgAAAAAAAAAEAAMADgAAAAAAAAADAAQADgAAAAAAAAADAAMADgAAAAAAAAACAAQADgAAAAAAAAACAAMADgAAAAAAAAABAAQADgAAAAAAAAABAAMADgAAAAAAAAAAAAQADgAAAAAAAAAAAAMADgAAAAAAAAAGAAQADgAAAAAAAAAGAAMADwAAAAAAAAAGAAYADwAAAAAAAAA=")
 tile_set = ExtResource("1_yscxn")
+metadata/_edit_lock_ = true
 
-[node name="objetos" type="TileMapLayer" parent="TileMapLayers"]
-tile_set = ExtResource("1_yscxn")
+[node name="CamaHospital" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(51, 410)
+scale = Vector2(1.421875, 1.4296876)
+texture = ExtResource("3_244di")
+
+[node name="RoomIvStandW" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(48, 364)
+scale = Vector2(1.5625, 1.484375)
+texture = ExtResource("8_kp45h")
+
+[node name="RoomEcgCart" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(127, 438)
+scale = Vector2(1.4999999, 1.3671875)
+texture = ExtResource("7_17bmf")
 
 [node name="paredes" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAEAAAAGAAAAAAAAAAAAAQAGAAAAAAAAAAFAAQAGAAAAAAAAAAFAAAAGAAAAAAAAAABAAQAFAAAAAAAAAACAAQAEwAAAAAAAAADAAQAFAAAAAAAAAAEAAQAGAAAAAAAAAAAAAAAFAAAAAAAAAABAAAAGAAAAAAAAAACAAAAGAAAAAAAAAADAAAAGAAAAAAAAAD//wIAJQAAAAAAAAD//wEAJQAAAAAAAAD//wMAJQAAAAAAAAD//wQAIgAAAAAAAAD//wAAJAAAAAAAAAAGAAAAGgAAAAAAAAAGAAEAGwAAAAAAAAAGAAIAGwAAAAAAAAAGAAMAGwAAAAAAAAAGAAQAIQAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAAAAAIADwAAAAAAAAABAAIAEAAAAAAAAAADAAIADwAAAAAAAAAEAAIADwAAAAAAAAAFAAIADwAAAAAAAAAGAAIAGQAAAAAAAAAHAAIAEAAAAAAAAAAIAAIAEQAAAAAAAAAJAAIADwAAAAAAAAAKAAIADwAAAAAAAAALAAIAEAAAAAAAAAAOAAIADwAAAAAAAAACAAIADwAAAAAAAAAAAAcADwAAAAAAAAABAAcADwAAAAAAAAACAAcADwAAAAAAAAADAAcAEAAAAAAAAAAEAAcADwAAAAAAAAAFAAcADwAAAAAAAAAGAAcAFwAAAAAAAAAHAAcADwAAAAAAAAAIAAcAEAAAAAAAAAAJAAcAEQAAAAAAAAAKAAcAEAAAAAAAAAALAAcADwAAAAAAAAAMAAcAEAAAAAAAAAANAAcAEQAAAAAAAAAOAAcADwAAAAAAAAD//wIAFAAAAAAAAAD//wMAFQAAAAAAAAD//wQAFQAAAAAAAAD//wUAFQAAAAAAAAD//wYAFQAAAAAAAAD//wcAFgAAAAAAAAAGAAYAEwAAAAAAAAAGAAMAGwAAAAAAAAAMAAIAEQAAAAAAAAANAAIAEAAAAAAAAAA=")
 tile_set = ExtResource("1_yscxn")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAGAAMAHQAAAAAAAAAGAAIAFAAAAAAAAAAGAAYAHwAAAAAAAAAGAAcAFgAAAAAAAAA=")
+tile_set = ExtResource("1_yscxn")
+
+[node name="TileMapLayer2" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAGAAYAIAAAAAAAAAA=")
+tile_set = ExtResource("1_yscxn")
+
+[node name="IntroImage" type="Sprite2D" parent="TileMapLayers"]
+visible = false
+position = Vector2(657.00006, 214)
+scale = Vector2(0.39062473, 0.36284724)
+texture = ExtResource("2_q7iov")
+
+[node name="CamaHospital2" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(50.5, 197.25)
+scale = Vector2(1.421875, 1.4296876)
+texture = ExtResource("3_244di")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(153, 366)
 zoom = Vector2(1.333, 1.333)
-limit_left = 0
-limit_top = 0
+limit_left = -28
+limit_top = 281
 limit_right = 960
-limit_bottom = 540
+limit_bottom = 695
 position_smoothing_enabled = true
 editor_draw_limits = true
 
 [node name="OnTheGround" type="Node2D" parent="."]
 y_sort_enabled = true
+position = Vector2(66, 4)
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
 position = Vector2(400, 349)
-sprite_frames = ExtResource("3_244di")
+scale = Vector2(2.5, 2.5)
+sprite_frames = ExtResource("6_244di")
 animation = &"idle"
-autoplay = "idle"
+autoplay = "idles"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
 root_node = NodePath("../..")
 libraries = {
-&"": SubResource("AnimationLibrary_p8mw8")
+&"": SubResource("AnimationLibrary_qdpvj")
 }
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
+position = Vector2(-35, 23)
 script = ExtResource("4_17bmf")
-dialogue = ExtResource("5_kp45h")
+dialogue = ExtResource("8_244di")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
 next_scene = "uid://bqkpgcj8mqslv"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="RoomEcgCart" type="Sprite2D" parent="."]
+position = Vector2(131.00002, 358)
+scale = Vector2(1.4999999, 1.3671875)
+texture = ExtResource("7_17bmf")
+
+[node name="RoomIvStandW" type="Sprite2D" parent="."]
+position = Vector2(38, 417)
+scale = Vector2(1.5625, 1.484375)
+texture = ExtResource("8_kp45h")
+
+[node name="RoomEcgCart2" type="Sprite2D" parent="."]
+position = Vector2(626.00006, 339)
+scale = Vector2(1.4999999, 1.3671875)
+texture = ExtResource("7_17bmf")
+
+[node name="RoomIvStandW2" type="Sprite2D" parent="."]
+position = Vector2(495, 576)
+scale = Vector2(1.5625, 1.484375)
+texture = ExtResource("8_kp45h")
