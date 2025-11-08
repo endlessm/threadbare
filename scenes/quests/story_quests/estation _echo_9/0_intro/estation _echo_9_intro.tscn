@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=4 uid="uid://k8k7u7lnllbq"]
+[gd_scene load_steps=63 format=4 uid="uid://k8k7u7lnllbq"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_b2oe6"]
 [ext_resource type="Texture2D" uid="uid://l6kdotudyih6" path="res://scenes/quests/story_quests/estation _echo_9/0_intro/intro_components/estation _echo_9_intro_image.png" id="2_htafo"]
@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://cledckq31klvq" path="res://assets/first_party/tiles/Cliff_Mines_Tiles.png" id="13_xqmx5"]
 [ext_resource type="Texture2D" uid="uid://r7scukca5yro" path="res://assets/first_party/tiles/Void_Tiles_Empty.png" id="14_ol3l6"]
 [ext_resource type="Texture2D" uid="uid://cn2j018vohdap" path="res://assets/first_party/tiles/Void_Tiles_Stars_Level1.png" id="15_p2tbr"]
+[ext_resource type="Shader" uid="uid://di1yvo812ri4x" path="res://scenes/quests/story_quests/estation _echo_9/0_intro/Shader/estation _echo_9_shader.gdshader" id="21_b125w"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_0wfyh"]
 tile_data = PackedInt32Array(0, 1, 0, 65536, 1, 1, 131072, 1, 2, 1, 65537, 0, 65537, 65537, 1, 131073, 65537, 2, 2, 131073, 0, 65538, 131073, 1, 131074, 131073, 2)
@@ -1549,6 +1550,13 @@ _data = {
 &"walk_on": SubResource("Animation_qi123")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j7idc"]
+shader = ExtResource("21_b125w")
+
+[sub_resource type="QuadMesh" id="QuadMesh_vmok1"]
+size = Vector2(1280, 720)
+center_offset = Vector3(640, 360, 0)
+
 [node name="Intro" type="Node2D"]
 
 [node name="TileMapLayers" type="Node2D" parent="."]
@@ -1605,9 +1613,16 @@ libraries = {
 script = ExtResource("4_u4wxx")
 dialogue = ExtResource("5_0pj63")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
-next_scene = "uid://cm0usgfjx4b4i"
+next_scene = "uid://dxxyxhcoy1ew3"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." instance=ExtResource("6_nbd47")]
 visible = false
 position = Vector2(125, 403)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_j7idc")
+position = Vector2(-2, -5)
+mesh = SubResource("QuadMesh_vmok1")
