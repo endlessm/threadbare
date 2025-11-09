@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://gkf6jhut35x7"]
+
+[ext_resource type="Script" uid="uid://cdann4hj0bofn" path="res://scenes/quests/story_quests/proyecto_01/1_stealth/Programación/linterna_v_1.gd" id="1_ctxda"]
+[ext_resource type="AudioStream" uid="uid://bdifn7627h44y" path="res://scenes/quests/story_quests/proyecto_01/1_stealth/Sonido/linterna-sonidos/flashlight-included.wav" id="2_auxt4"]
+[ext_resource type="AudioStream" uid="uid://ycvbow6gka1q" path="res://scenes/quests/story_quests/proyecto_01/1_stealth/Sonido/linterna-sonidos/flashlight-turned-off.wav" id="3_g4vdh"]
+
+[sub_resource type="Gradient" id="Gradient_t2q3w"]
+offsets = PackedFloat32Array(0, 0.70542634)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ctxda"]
+gradient = SubResource("Gradient_t2q3w")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="Linterna" type="Node2D"]
+script = ExtResource("1_ctxda")
+
+[node name="Luz" type="PointLight2D" parent="."]
+z_index = 5
+scale = Vector2(1.5, 1.5)
+energy = 1.5
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_ctxda")
+texture_scale = 3.0
+
+[node name="SonidoOn" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_auxt4")
+volume_db = -5.0
+
+[node name="SonidoOff" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_g4vdh")
+volume_db = -3.0
