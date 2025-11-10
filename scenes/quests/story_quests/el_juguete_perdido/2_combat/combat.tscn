@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://be2gr1lptrhxu"]
+[gd_scene load_steps=35 format=4 uid="uid://be2gr1lptrhxu"]
 
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_t3ulp"]
 [ext_resource type="Resource" uid="uid://c2svjynjjcnrv" path="res://scenes/quests/story_quests/el_juguete_perdido/2_combat/components/combat.dialogue" id="2_j6s2f"]
@@ -85,6 +85,12 @@ animations = [{
 script = ExtResource("9_w3dy0")
 type = 1
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3qwhi"]
+bounce = 0.1
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3qwhi"]
+radius = 31.384693
 
 [node name="Combat" type="Node2D"]
 y_sort_enabled = true
@@ -476,5 +482,74 @@ limit_right = 2048
 limit_bottom = 2048
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="Rock4" type="Sprite2D" parent="."]
+position = Vector2(1138, 430)
+texture = ExtResource("10_adm0l")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Rock4"]
+position = Vector2(4, 4)
+physics_material_override = SubResource("PhysicsMaterial_3qwhi")
+
+[node name="Sprite2D" type="Sprite2D" parent="Rock4/StaticBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rock4/StaticBody2D"]
+position = Vector2(1, 1)
+shape = SubResource("CircleShape2D_3qwhi")
+
+[node name="Rock5" type="Sprite2D" parent="."]
+position = Vector2(1150, 436)
+texture = ExtResource("10_adm0l")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Rock5"]
+position = Vector2(-3, -3)
+physics_material_override = SubResource("PhysicsMaterial_3qwhi")
+
+[node name="Sprite2D" type="Sprite2D" parent="Rock5/StaticBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rock5/StaticBody2D"]
+position = Vector2(-3, 0)
+shape = SubResource("CircleShape2D_3qwhi")
+
+[node name="Rock6" type="Sprite2D" parent="."]
+position = Vector2(1170, 278)
+texture = ExtResource("10_adm0l")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Rock6"]
+physics_material_override = SubResource("PhysicsMaterial_3qwhi")
+
+[node name="Sprite2D" type="Sprite2D" parent="Rock6/StaticBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rock6/StaticBody2D"]
+position = Vector2(-15, -2)
+shape = SubResource("CircleShape2D_3qwhi")
+
+[node name="Rock7" type="Sprite2D" parent="."]
+position = Vector2(1158, 275)
+texture = ExtResource("10_adm0l")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Rock7"]
+position = Vector2(-4, 0)
+physics_material_override = SubResource("PhysicsMaterial_3qwhi")
+
+[node name="Sprite2D" type="Sprite2D" parent="Rock7/StaticBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rock7/StaticBody2D"]
+position = Vector2(15, 5)
+shape = SubResource("CircleShape2D_3qwhi")
+
+[node name="Rock8" type="Sprite2D" parent="."]
+position = Vector2(1443, 314)
+texture = ExtResource("10_adm0l")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Rock8"]
+position = Vector2(-4, 0)
+physics_material_override = SubResource("PhysicsMaterial_3qwhi")
+
+[node name="Sprite2D" type="Sprite2D" parent="Rock8/StaticBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rock8/StaticBody2D"]
+position = Vector2(3, -2)
+shape = SubResource("CircleShape2D_3qwhi")
 
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
