@@ -48,7 +48,7 @@ func _setup_reset_collision() -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
-		print("¡Jugador chocó con el objeto!")
+		print("💥 Jugador chocó con la roca, reiniciando nivel...")
 		
-		if body.has_method("volver_al_inicio"):
-			body.volver_al_inicio()
+		if body.has_method("defeat"):
+			body.defeat()

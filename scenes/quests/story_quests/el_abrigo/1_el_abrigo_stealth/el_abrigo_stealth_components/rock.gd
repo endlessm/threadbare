@@ -18,10 +18,9 @@ func _ready() -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
-		print("¡Jugador chocó con la roca!")
 		
-		if body.has_method("volver_al_inicio"):
-			body.volver_al_inicio()
+		if body.has_method("defeat"):
+			body.defeat()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

@@ -202,25 +202,15 @@ func _process(delta: float) -> void:
 	velocity = velocity.move_toward(input_vector, step * delta)
 
 	move_and_slide()
-
-
-func teleport_to(
-	tele_position: Vector2,
-	smooth_camera: bool = false,
-	look_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
-) -> void:
-	var camera: Camera2D = get_viewport().get_camera_2d()
-
-	if is_instance_valid(camera):
-		var smoothing_was_enabled: bool = camera.position_smoothing_enabled
-		camera.position_smoothing_enabled = smooth_camera
-		global_position = tele_position
-		%PlayerSprite.look_at_side(look_side)
-		await get_tree().process_frame
-		camera.position_smoothing_enabled = smoothing_was_enabled
-	else:
-		global_position = tele_position
-
+	
+		# 👇 Nueva parte: revisar colisiones
+	for i in range(get_slide_collision_count()):
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		
+		if collider.is_in_group("obstacle"):
+			defeat()
+			return
 
 func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	walk_sound_stream = new_value
@@ -228,10 +218,7 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 		await ready
 	_walk_sound.stream = walk_sound_stream
 	
-func volver_al_inicio() -> void:
-	print("📢 Jugador volviendo al inicio!")
-	global_position = posicion_inicial
-	velocity = Vector2.ZERO  # Resetear velocidad
+
 
 ## Sets the player's [member mode] to [constant DEFEATED], if it is
 ## not already. Reloads the current scene after a short interval.
@@ -250,3 +237,5 @@ func defeat(falling: bool = false) -> void:
 
 	await get_tree().create_timer(2.0).timeout
 	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+	
+	
