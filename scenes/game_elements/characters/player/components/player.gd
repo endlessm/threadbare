@@ -3,6 +3,7 @@
 @tool
 class_name Player
 extends CharacterBody2D
+var posicion_inicial: Vector2
 
 signal mode_changed(mode: Mode)
 
@@ -153,6 +154,9 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 func _ready() -> void:
+	add_to_group("player")
+	posicion_inicial = global_position
+	
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
 
@@ -223,7 +227,11 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	if not is_node_ready():
 		await ready
 	_walk_sound.stream = walk_sound_stream
-
+	
+func volver_al_inicio() -> void:
+	print("📢 Jugador volviendo al inicio!")
+	global_position = posicion_inicial
+	velocity = Vector2.ZERO  # Resetear velocidad
 
 ## Sets the player's [member mode] to [constant DEFEATED], if it is
 ## not already. Reloads the current scene after a short interval.
