@@ -7,32 +7,74 @@
 script/source = "extends CharacterBody2D
 
 @export_category(\"Principal Variables\")
-@export var velocidad:int = 100
-@export var daño:int = 1
-@export var correr:float = 2.5
+@export var velocidad_base: int = 100
+@export var dano: int = 1
+@export var multiplicador_correr: float = 2.5
+@export var recarga_stamina_rate: float = 0.5
+
+var esta_corriendo: bool = false
+var puede_recargar_stamina: bool = false
+var velocidad_actual: float = 0.0
+
+func _ready() -> void:
+	velocidad_actual = float(velocidad_base)
 
 func _process(_delta: float) -> void:
 	Movimiento()
 	
 func Movimiento() -> void:
-	var direccion: Vector2 = Input.get_vector(\"move_left\",\"move_right\",\"move_up\",\"move_down\")
-	if Input.is_action_pressed(\"running\") && direccion != Vector2.ZERO && $Stamina/StaminaBar.value != 0:
+	var direccion: Vector2 = Input.get_vector(\"move_left\", \"move_right\", \"move_up\", \"move_down\")
+	
+	esta_corriendo = false
+
+	if Input.is_action_pressed(\"running\") and direccion != Vector2.ZERO and $Stamina/StaminaBar.value > 0:
 		$Stamina/StaminaBar.value -= 0.5
-	elif direccion == Vector2.ZERO:
-		$Stamina/StaminaBar.value += 1.5
-		direccion *= correr
+		velocidad_actual = velocidad_base * multiplicador_correr
+		esta_corriendo = true
+		$ReloadStamina.stop()
+		puede_recargar_stamina = false
+	else:
+		velocidad_actual = float(velocidad_base)
+		
+		if Input.is_action_just_released(\"running\") and not esta_corriendo:
+			$ReloadStamina.start()
+			
+		if puede_recargar_stamina == true:
+			$Stamina/StaminaBar.value += recarga_stamina_rate
+
 	animacion(direccion)
-	velocity = direccion * velocidad
+	velocity = direccion * velocidad_actual
 	move_and_slide()
 
 func animacion(direccion: Vector2) -> void:
 	if direccion == Vector2(0,0):
 		$Animacion.play(\"Idle\")
+	elif esta_corriendo:
+		$Animacion.play(\"Run\") 
 	else:
 		$Animacion.play(\"Walk\")
 	
-	if direccion.x != 0:
-		$Animacion.flip_h = direccion.x < 0
+	if direccion.x < 0:
+		$Animacion.flip_h = true
+		$HitBox.scale.x = -1
+		$Collision.scale.x = -1
+		$Light.scale.x = -1
+	elif direccion.x > 0:
+		$Animacion.flip_h = false
+		$HitBox.scale.x = 1
+		$Collision.scale.x = 1
+		$Light.scale.x = 1
+
+
+func _on_reload_stamina_timeout() -> void:
+	puede_recargar_stamina = true
+
+
+func _on_minigame_1_area_entered(_area: Area2D) -> void:
+	velocidad_base = 100
+
+func _on_minigame_1_area_exited(_area: Area2D) -> void:
+	velocidad_base = 200
 "
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_86gje"]
@@ -182,12 +224,12 @@ fill_from = Vector2(0.5, 0.5)
 blend_mode = 1
 light_mode = 2
 
-[sub_resource type="Gradient" id="Gradient_86gje"]
+[sub_resource type="Gradient" id="Gradient_42co5"]
 offsets = PackedFloat32Array(0, 0.7476923)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_y51gy"]
-gradient = SubResource("Gradient_86gje")
+gradient = SubResource("Gradient_42co5")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
@@ -200,7 +242,6 @@ animation = &"Walk"
 frame_progress = 0.939993
 
 [node name="HitBox" type="Area2D" parent="."]
-visible = false
 position = Vector2(0.5, 16.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
@@ -227,12 +268,19 @@ value = 300.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="PointLight2D" type="PointLight2D" parent="."]
+[node name="ReloadStamina" type="Timer" parent="."]
+one_shot = true
+
+[node name="Light" type="Node2D" parent="."]
+
+[node name="Light" type="PointLight2D" parent="Light" groups=["player"]]
 position = Vector2(35, -20)
 texture = SubResource("GradientTexture2D_42co5")
 
-[node name="Sprite2D" type="Sprite2D" parent="PointLight2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Light/Light"]
 modulate = Color(0.57144064, 0.5615486, 0.12771055, 0.30980393)
 material = SubResource("CanvasItemMaterial_cco3e")
 position = Vector2(1, 2)
 texture = SubResource("GradientTexture2D_y51gy")
+
+[connection signal="timeout" from="ReloadStamina" to="." method="_on_reload_stamina_timeout"]

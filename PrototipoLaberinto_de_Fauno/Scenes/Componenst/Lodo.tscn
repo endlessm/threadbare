@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://bgnb7ojsp1dpe"]
+
+[ext_resource type="Texture2D" uid="uid://bhqanyxhpxpm" path="res://assets/first_party/rocks/Rock_Idle.png" id="1_r7hli"]
+
+[sub_resource type="GDScript" id="GDScript_r7hli"]
+script/source = "extends CharacterBody2D
+
+const BULLET_SPEED = 300.0
+var initial_direction:Vector2 = Vector2.ZERO
+
+func start_move(target_position: Vector2) -> void:
+	initial_direction = (target_position - global_position).normalized()
+
+func _physics_process(_delta: float) -> void:
+	velocity = initial_direction * BULLET_SPEED
+	move_and_slide()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g6m0j"]
+radius = 26.019224
+
+[node name="Area2D" type="CharacterBody2D"]
+script = SubResource("GDScript_r7hli")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_g6m0j")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_r7hli")

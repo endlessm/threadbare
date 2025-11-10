@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://b1ap4onq0sl1"]
+
+[ext_resource type="SpriteFrames" uid="uid://caou2u7vffhei" path="res://scenes/world_map/components/cat.tres" id="1_u622y"]
+
+[sub_resource type="GDScript" id="GDScript_ckvkc"]
+script/source = "extends CharacterBody2D
+
+const LODO_SCENE = preload(\"res://PrototipoLaberinto_de_Fauno/Scenes/Componenst/Lodo.tscn\")
+@export var player: CharacterBody2D 
+
+func enemy_disparar_a_jugador() -> void:
+	if player == null:
+		return
+
+	var lodo_instance:CharacterBody2D = LODO_SCENE.instantiate()
+	lodo_instance.global_position = global_position
+	
+	lodo_instance.start_move(player.global_position) 
+
+	get_parent().add_child(lodo_instance)
+
+
+func _on_timer_timeout() -> void:
+	enemy_disparar_a_jugador()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5qup2"]
+radius = 40.04997
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = SubResource("GDScript_ckvkc")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("1_u622y")
+animation = &"idle"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 4.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_5qup2")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
