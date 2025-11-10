@@ -1,20 +1,21 @@
-[gd_scene load_steps=14 format=4 uid="uid://dqce7xhc6imlc"]
+[gd_scene load_steps=15 format=4 uid="uid://dqce7xhc6imlc"]
 
-[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_kd34r"]
-[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_p6c1g"]
-[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_6rvt6"]
-[ext_resource type="SpriteFrames" uid="uid://maj2nfoclfwd" path="res://scenes/quests/story_quests/el_abrigo/el_abrigo_player_components/el_abrigo_player.tres" id="4_87tri"]
-[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="5_st22d"]
-[ext_resource type="SpriteFrames" uid="uid://ckr2m2l4yc04k" path="res://scenes/quests/story_quests/el_abrigo/2_el_abrigo_combat/el_abrigo_combat_components/el_abrigo_throwing_enemy.tres" id="6_6606n"]
-[ext_resource type="SpriteFrames" uid="uid://ddqj00vubufte" path="res://scenes/quests/story_quests/el_abrigo/2_el_abrigo_combat/el_abrigo_combat_components/el_abrigo_projectile_spriteframes.tres" id="7_j6sj8"]
-[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="8_tupax"]
-[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="9_cjwf2"]
-[ext_resource type="Resource" uid="uid://06kxyjkdwkhf" path="res://scenes/quests/story_quests/el_abrigo/2_el_abrigo_combat/el_abrigo_combat_components/el_abrigo_combat.dialogue" id="10_4etyc"]
-[ext_resource type="PackedScene" uid="uid://dibb6fpkk2qax" path="res://scenes/quests/story_quests/el_abrigo/el_abrigo_ambient_components/static_body_2d.tscn" id="11_mvt2x"]
-[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="12_gwann"]
+[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_4eclr"]
+[ext_resource type="Resource" uid="uid://06kxyjkdwkhf" path="res://scenes/quests/story_quests/el_abrigo/2_el_abrigo_combat/el_abrigo_combat_components/el_abrigo_combat.dialogue" id="2_mh4bm"]
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="3_8h5p6"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_dco2f"]
+[ext_resource type="SpriteFrames" uid="uid://maj2nfoclfwd" path="res://scenes/quests/story_quests/el_abrigo/el_abrigo_player_components/el_abrigo_player.tres" id="5_7lhqx"]
+[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="6_rwp4d"]
+[ext_resource type="SpriteFrames" uid="uid://ckr2m2l4yc04k" path="res://scenes/quests/story_quests/el_abrigo/2_el_abrigo_combat/el_abrigo_combat_components/el_abrigo_throwing_enemy.tres" id="7_dh640"]
+[ext_resource type="SpriteFrames" uid="uid://ddqj00vubufte" path="res://scenes/quests/story_quests/el_abrigo/2_el_abrigo_combat/el_abrigo_combat_components/el_abrigo_projectile_spriteframes.tres" id="8_c26gb"]
+[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="9_u0yar"]
+[ext_resource type="SpriteFrames" uid="uid://dfrhbnbfpdeqp" path="res://scenes/quests/story_quests/el_abrigo/2_el_abrigo_combat/el_abrigo_combat_components/el_abrigo_target_spriteframes.tres" id="10_e8vge"]
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="11_5nx13"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="12_vch7u"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="13_j1b1t"]
 
 [sub_resource type="Resource" id="Resource_bk8c5"]
-script = ExtResource("9_cjwf2")
+script = ExtResource("12_vch7u")
 type = 1
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
@@ -22,61 +23,88 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 y_sort_enabled = true
 
 [node name="FillGameLogic" type="Node" parent="."]
-script = ExtResource("1_kd34r")
+script = ExtResource("1_4eclr")
+intro_dialogue = ExtResource("2_mh4bm")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
 [node name="Grass" type="TileMapLayer" parent="TileMapLayers"]
 tile_map_data = PackedByteArray("AAANAAcAAQABAAEAAAANAAYAAQABAAEAAAANAAUAAQABAAEAAAANAAQAAQABAAEAAAANAAMAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAAMAAcAAQABAAEAAAAMAAYAAQABAAEAAAAMAAUAAQABAAEAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAEAAAALAAcAAQABAAEAAAALAAYAAQABAAEAAAALAAUAAQABAAEAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAEAAAAKAAcAAQABAAEAAAAKAAYAAQABAAEAAAAKAAUAAQABAAEAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAKAAEAAQABAAEAAAAJAAcAAQABAAEAAAAJAAYAAQABAAEAAAAJAAUAAQABAAEAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAJAAEAAQABAAEAAAAIAAcAAQABAAEAAAAIAAYAAQABAAEAAAAIAAUAAQABAAEAAAAIAAQAAQABAAEAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAIAAEAAQABAAEAAAAHAAcAAQABAAEAAAAHAAYAAQABAAEAAAAHAAUAAQABAAEAAAAHAAQAAQABAAEAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAEAAAAGAAcAAQABAAEAAAAGAAYAAQABAAEAAAAGAAUAAQABAAEAAAAGAAQAAQABAAEAAAAGAAMAAQABAAEAAAAGAAIAAQABAAEAAAAFAAcAAQABAAEAAAAFAAYAAQABAAEAAAAFAAUAAQABAAEAAAAFAAQAAQABAAEAAAAFAAMAAQABAAEAAAAFAAIAAQABAAEAAAAFAAEAAQABAAEAAAAEAAcAAQABAAEAAAAEAAYAAQABAAEAAAAEAAUAAQABAAEAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAIAAQABAAEAAAAEAAEAAQABAAEAAAADAAcAAQABAAEAAAADAAYAAQABAAEAAAADAAUAAQABAAEAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAIAAQABAAEAAAADAAEAAQABAAEAAAACAAcAAQABAAEAAAACAAYAAQABAAEAAAACAAUAAQABAAEAAAACAAMAAQABAAEAAAACAAIAAQABAAEAAAACAAEAAQABAAEAAAABAAcAAQABAAEAAAABAAYAAQABAAEAAAABAAUAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAABAAEAAQABAAEAAAACAAQAAQABAAEAAAABAAQAAQABAAEAAAAAAAQAAQABAAEAAAAAAAUAAQABAAEAAAAAAAYAAQABAAEAAAAAAAcAAQABAAEAAAAGAAAAAQABAAEAAAAGAAEAAQABAAEAAAAHAAAAAQABAAEAAAAFAAAAAQABAAEAAAAIAAAAAQABAAEAAAAJAAAAAQABAAEAAAALAAAAAQABAAEAAAAMAAAAAQABAAEAAAAKAAAAAQABAAEAAAANAAAAAQABAAEAAAAEAAAAAQABAAEAAAADAAAAAQABAAEAAAACAAAAAQABAAEAAAABAAAAAQABAAEAAAAAAAAAAQABAAEAAAAAAAEAAQABAAEAAAAAAAIAAQABAAEAAAAAAAMAAQABAAEAAAAAAAgAAQABAAEAAAABAAgAAQABAAEAAAACAAgAAQABAAEAAAADAAgAAQABAAEAAAAEAAgAAQABAAEAAAAFAAgAAQABAAEAAAAGAAgAAQABAAEAAAAHAAgAAQABAAEAAAAIAAgAAQABAAEAAAAJAAgAAQABAAEAAAAKAAgAAQABAAEAAAAMAAgAAQABAAEAAAALAAgAAQABAAEAAAANAAgAAQABAAEAAAAOAAgAAQABAAEAAAAOAAcAAQABAAEAAAAOAAYAAQABAAEAAAAOAAUAAQABAAEAAAAOAAQAAQABAAEAAAAOAAMAAQABAAEAAAAOAAIAAQABAAEAAAAOAAEAAQABAAEAAAAOAAAAAQABAAEAAAA=")
-tile_set = ExtResource("2_p6c1g")
+tile_set = ExtResource("3_8h5p6")
 
 [node name="Stones" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAGAAkABAABAAUAAAAHAAkABAABAAUAAAAIAAkABAABAAUAAAAJAAkABAABAAUAAAAKAAkABAABAAUAAAALAAkABAABAAUAAAAMAAkABAABAAUAAAANAAkABAABAAUAAAAOAAkABAABAAUAAAAGAAgABAABAAQAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAABAAQAAAAOAAgABAABAAQAAAAAAAEABAACAAEAAAABAAEABAABAAMAAAACAAEABAABAAUAAAACAAAABAABAAQAAAABAAAABAABAAIAAAAAAAAABAABAAEAAAADAAAABAABAAIAAAAFAAAABAACAAIAAAAEAAAABAABAAEAAAAEAAEABAABAAMAAAAFAAEABAABAAUAAAADAAEABAABAAUAAAANAAEABAAAAAEAAAANAAAABAABAAAAAAAOAAAABAABAAAAAAAOAAEABAABAAEAAAAMAAAABAABAAAAAAALAAAABAABAAAAAAAKAAAABAABAAAAAAAJAAAABAABAAAAAAAIAAAABAABAAAAAAAHAAAABAAAAAEAAAAHAAEABAABAAMAAAAIAAEABAABAAUAAAAKAAEABAABAAUAAAALAAEABAABAAUAAAAJAAEABAABAAMAAAAMAAEABAABAAMAAAAGAAAABAABAAIAAAAGAAEABAABAAMAAAAAAAkABAABAAUAAAABAAkABAABAAUAAAACAAkABAABAAUAAAADAAkABAABAAUAAAAEAAkABAABAAUAAAAFAAkABAABAAUAAAAAAAgABAABAAQAAAABAAgABAABAAQAAAACAAgABAABAAQAAAADAAgABAABAAQAAAAEAAgABAABAAQAAAAFAAgABAABAAQAAAAAAAIABAACAAEAAAAAAAMABAACAAEAAAAAAAQABAACAAEAAAAAAAcABAACAAEAAAAAAAYABAACAAEAAAAAAAUABAACAAEAAAANAAIABAAAAAIAAAAOAAIABAABAAIAAAAPAAIABAACAAIAAAANAAMABAAAAAMAAAAPAAMABAACAAMAAAAOAAMABAABAAMAAAAPAAEABAACAAEAAAA=")
-tile_set = ExtResource("2_p6c1g")
+tile_map_data = PackedByteArray("AAAGAAkABAABAAUAAAAHAAkABAABAAUAAAAIAAkABAABAAUAAAAJAAkABAABAAUAAAAKAAkABAABAAUAAAALAAkABAABAAUAAAAMAAkABAABAAUAAAANAAkABAABAAUAAAAOAAkABAABAAUAAAAGAAgABAABAAQAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAABAAQAAAAOAAgABAABAAQAAAAAAAEABAACAAEAAAABAAEABAABAAMAAAACAAEABAABAAUAAAACAAAABAABAAQAAAABAAAABAABAAIAAAAAAAAABAABAAEAAAADAAAABAABAAIAAAAFAAAABAACAAIAAAAEAAAABAABAAEAAAAEAAEABAABAAMAAAAFAAEABAABAAUAAAADAAEABAABAAUAAAANAAcABAAAAAEAAAAOAAcABAABAAEAAAANAAYABAAAAAAAAAAOAAYABAABAAEAAAAOAAUABAAAAAEAAAAOAAMABAAAAAEAAAAOAAIABAABAAEAAAANAAEABAAAAAEAAAANAAAABAABAAAAAAAOAAAABAABAAAAAAAOAAEABAABAAEAAAAOAAQABAAAAAEAAAAMAAAABAABAAAAAAALAAAABAABAAAAAAAKAAAABAABAAAAAAAJAAAABAABAAAAAAAIAAAABAABAAAAAAAHAAAABAAAAAEAAAANAAIABAAAAAIAAAANAAMABAAAAAMAAAAHAAEABAABAAMAAAAIAAEABAABAAUAAAAKAAEABAABAAUAAAALAAEABAABAAUAAAAJAAEABAABAAMAAAAMAAEABAABAAMAAAAGAAAABAABAAIAAAAGAAEABAABAAMAAAAAAAkABAABAAUAAAABAAkABAABAAUAAAACAAkABAABAAUAAAADAAkABAABAAUAAAAEAAkABAABAAUAAAAFAAkABAABAAUAAAAAAAgABAABAAQAAAABAAgABAABAAQAAAACAAgABAABAAQAAAADAAgABAABAAQAAAAEAAgABAABAAQAAAAFAAgABAABAAQAAAAAAAIABAACAAEAAAAAAAMABAACAAEAAAAAAAQABAACAAEAAAAAAAcABAACAAEAAAAAAAYABAACAAEAAAAAAAUABAACAAEAAAA=")
+tile_set = ExtResource("3_8h5p6")
 
 [node name="OnTheGround" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Player" parent="OnTheGround" instance=ExtResource("3_6rvt6")]
+[node name="Player" parent="OnTheGround" instance=ExtResource("4_dco2f")]
 position = Vector2(348, 335)
-sprite_frames = ExtResource("4_87tri")
+sprite_frames = ExtResource("5_7lhqx")
 
-[node name="ThrowingNPC" parent="OnTheGround" instance=ExtResource("5_st22d")]
+[node name="ThrowingNPC" parent="OnTheGround" instance=ExtResource("6_rwp4d")]
 position = Vector2(857, 300)
-sprite_frames = ExtResource("6_6606n")
-projectile_sprite_frames = ExtResource("7_j6sj8")
+sprite_frames = ExtResource("7_dh640")
+projectile_sprite_frames = ExtResource("8_c26gb")
 
-[node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("8_tupax")]
+[node name="Target" parent="OnTheGround" instance=ExtResource("9_u0yar")]
+position = Vector2(502, 164)
+sprite_frames = ExtResource("10_e8vge")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target2" parent="OnTheGround" instance=ExtResource("9_u0yar")]
+position = Vector2(758, 164)
+sprite_frames = ExtResource("10_e8vge")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target3" parent="OnTheGround" instance=ExtResource("9_u0yar")]
+position = Vector2(761, 497)
+sprite_frames = ExtResource("10_e8vge")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target4" parent="OnTheGround" instance=ExtResource("9_u0yar")]
+position = Vector2(632, 497)
+sprite_frames = ExtResource("10_e8vge")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target5" parent="OnTheGround" instance=ExtResource("9_u0yar")]
+position = Vector2(633, 164)
+sprite_frames = ExtResource("10_e8vge")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target6" parent="OnTheGround" instance=ExtResource("9_u0yar")]
+position = Vector2(501, 497)
+sprite_frames = ExtResource("10_e8vge")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("11_5nx13")]
 unique_name_in_owner = true
 position = Vector2(868, 303)
 revealed = false
 next_scene = "uid://c1ysvkwgay1fg"
 item = SubResource("Resource_bk8c5")
-collected_dialogue = ExtResource("10_4etyc")
+collected_dialogue = ExtResource("2_mh4bm")
 dialogue_title = &"well_done"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
-[node name="HUD" parent="." instance=ExtResource("12_gwann")]
+[node name="HUD" parent="." instance=ExtResource("13_j1b1t")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-process_mode = 3
 zoom = Vector2(1.333, 1.333)
 limit_left = 0
 limit_top = 0
-limit_right = 6913
-limit_bottom = 5069
+limit_right = 2048
+limit_bottom = 2048
 position_smoothing_enabled = true
 editor_draw_limits = true
-
-[node name="tree" parent="." instance=ExtResource("11_mvt2x")]
-position = Vector2(116, 64)
-
-[node name="tree2" parent="." instance=ExtResource("11_mvt2x")]
-position = Vector2(199, 85)
-
-[node name="tree3" parent="." instance=ExtResource("11_mvt2x")]
-position = Vector2(284, 70)
 
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
