@@ -78,7 +78,8 @@ func activate() -> void:
 
 	sprite.visible = true
 	sprite.play(&"appear")
-	interact_area.disabled = dialogue == null
+	if dialogue != null:
+		interact_area.disabled = false
 	await sprite.animation_finished
 	sprite.play(&"idle")
 
