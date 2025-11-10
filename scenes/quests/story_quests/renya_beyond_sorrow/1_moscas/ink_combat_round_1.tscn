@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=4 uid="uid://cqia8wihr6512"]
+[gd_scene load_steps=29 format=4 uid="uid://cqia8wihr6512"]
 
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_0sehy"]
 [ext_resource type="AudioStream" uid="uid://dgwihwibc8ah6" path="res://assets/first_party/music/Threadbare_Combat.ogg" id="2_1q4ne"]
@@ -6,7 +6,7 @@
 [ext_resource type="Resource" uid="uid://catymcy8v3d5u" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_moscas/components/dialogues/ink_well.dialogue" id="4_i8ulg"]
 [ext_resource type="TileSet" uid="uid://dmg13wgcc7so5" path="res://scenes/quests/story_quests/renya_beyond_sorrow/renya_tileset.tres" id="5_o60la"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="6_ulko6"]
-[ext_resource type="SpriteFrames" uid="uid://dd23jc8q0dyo7" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_moscas/bush/components/bush_spriteframes_green_large.tres" id="7_1c52m"]
+[ext_resource type="SpriteFrames" uid="uid://bxe8tg855s145" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_moscas/bush/components/bush_spriteframes_purple_large.tres" id="7_5mbgn"]
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="7_ilmvt"]
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter/components/teleporter.gd" id="8_gdj00"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="9_d7n4r"]
@@ -21,8 +21,9 @@
 [ext_resource type="PackedScene" uid="uid://b4qu6wml5gd7a" path="res://scenes/game_elements/fx/liquid_big_splat/liquid_big_splat.tscn" id="18_g5p1a"]
 [ext_resource type="PackedScene" uid="uid://bgce3qns72g3m" path="res://scenes/game_elements/fx/liquid_trail.tscn" id="19_pilai"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="20_6urbs"]
-[ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="21_oag52"]
 [ext_resource type="PackedScene" uid="uid://dkx3dgc1br3b4" path="res://scenes/ui_elements/input_hints/repel_hint.tscn" id="22_28yyq"]
+[ext_resource type="PackedScene" uid="uid://dckcomgbkbkwu" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_moscas/tree/tree.tscn" id="22_e8dsv"]
+[ext_resource type="SpriteFrames" uid="uid://cyhwjliscqdbb" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_moscas/tree/components/tree_spriteframes_purple.tres" id="23_6axrc"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="23_vhod7"]
 
 [sub_resource type="Animation" id="Animation_nlryc"]
@@ -58,6 +59,7 @@ stream = ExtResource("2_1q4ne")
 
 [node name="FillGameLogic" type="Node" parent="."]
 script = ExtResource("3_fmi44")
+barrels_to_win = 2
 intro_dialogue = ExtResource("4_i8ulg")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
@@ -105,23 +107,27 @@ position = Vector2(129, 984)
 
 [node name="Bush" parent="OnTheGround" instance=ExtResource("6_ulko6")]
 position = Vector2(693, -222)
-sprite_frames = ExtResource("7_1c52m")
+sprite_frames = ExtResource("7_5mbgn")
 
 [node name="Bush2" parent="OnTheGround" instance=ExtResource("6_ulko6")]
 position = Vector2(659, -4.999985)
 scale = Vector2(0.8, 0.8)
-
-[node name="Bush4" parent="OnTheGround" instance=ExtResource("6_ulko6")]
-position = Vector2(-73.00001, -115.999985)
-scale = Vector2(0.8, 0.8)
+sprite_frames = ExtResource("7_5mbgn")
 
 [node name="Bush3" parent="OnTheGround" instance=ExtResource("6_ulko6")]
 position = Vector2(21, -162)
 scale = Vector2(0.65, 0.65)
+sprite_frames = ExtResource("7_5mbgn")
+
+[node name="Bush4" parent="OnTheGround" instance=ExtResource("6_ulko6")]
+position = Vector2(-73.00001, -115.999985)
+scale = Vector2(0.8, 0.8)
+sprite_frames = ExtResource("7_5mbgn")
 
 [node name="Bush5" parent="OnTheGround" instance=ExtResource("6_ulko6")]
 position = Vector2(740, -198)
 scale = Vector2(0.45, 0.45)
+sprite_frames = ExtResource("7_5mbgn")
 
 [node name="LevelExit" type="Node2D" parent="OnTheGround"]
 y_sort_enabled = true
@@ -135,7 +141,7 @@ play_victory_fanfare_on_open = true
 position = Vector2(0, -25)
 collision_layer = 4
 script = ExtResource("8_gdj00")
-next_scene = "uid://cgemeabsewy1f"
+next_scene = "uid://buvo0sgtr3qeg"
 enter_transition = 4
 exit_transition = 5
 metadata/_custom_type_script = "uid://hqdquinbimce"
@@ -194,13 +200,25 @@ position = Vector2(672, -557)
 label = "Cyan"
 color = Color(0, 1, 1, 1)
 
-[node name="Tree" parent="OnTheGround" instance=ExtResource("21_oag52")]
-position = Vector2(-38.000008, -181)
-scale = Vector2(1.00063, 0.911434)
+[node name="Tree" parent="OnTheGround" instance=ExtResource("22_e8dsv")]
+position = Vector2(580, -216)
+scale = Vector2(0.7827488, 0.81916684)
+sprite_frames = ExtResource("23_6axrc")
 
-[node name="Tree2" parent="OnTheGround" instance=ExtResource("21_oag52")]
-position = Vector2(598.00006, -20)
-scale = Vector2(0.95, 0.95)
+[node name="Tree2" parent="OnTheGround" instance=ExtResource("22_e8dsv")]
+position = Vector2(-49.000004, -183)
+scale = Vector2(0.8576081, 0.86341697)
+sprite_frames = ExtResource("23_6axrc")
+
+[node name="Tree3" parent="OnTheGround" instance=ExtResource("22_e8dsv")]
+position = Vector2(108, 0)
+scale = Vector2(0.8407946, 0.8712404)
+sprite_frames = ExtResource("23_6axrc")
+
+[node name="Tree4" parent="OnTheGround" instance=ExtResource("22_e8dsv")]
+position = Vector2(631.00006, -11)
+scale = Vector2(0.7455229, 0.8102155)
+sprite_frames = ExtResource("23_6axrc")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
