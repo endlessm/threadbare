@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0an4r4pl20fi"]
+
+[ext_resource type="Script" uid="uid://t6h6hqsogtoq" path="res://scenes/quests/story_quests/proyecto_01/1_stealth/Sonido/musica/area_ambiente.gd" id="1_bbkhv"]
+[ext_resource type="AudioStream" uid="uid://cvne8klon7he7" path="res://scenes/quests/story_quests/proyecto_01/1_stealth/Sonido/musica/night-cricket-ambience-22484.wav" id="2_hcoe3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i4k70"]
+
+[node name="AreaAmbiente" type="Node2D"]
+script = ExtResource("1_bbkhv")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+scale = Vector2(24, 24)
+shape = SubResource("RectangleShape2D_i4k70")
+
+[node name="Audio" type="AudioStreamPlayer2D" parent="Area2D"]
+stream = ExtResource("2_hcoe3")
+volume_db = -6.0
+max_distance = 10000.0
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
