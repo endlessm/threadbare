@@ -9,7 +9,7 @@ extends TextureRect
 @export var is_controller_main_display: bool = true
 
 # Runtime state variables
-var current_device: String = ""         
+var current_device: String = ""
 var is_keyboard_mode: bool = true
 
 
@@ -40,7 +40,7 @@ func _on_input_device_changed(device: String, _device_index: int) -> void:
 
 func _physics_process(_delta: float) -> void:
 	# Check which movement direction (if any) is currently pressed
-	var pressed_dir := ""   
+	var pressed_dir := ""
 	if Input.is_action_pressed("move_up"):
 		pressed_dir = "move_up"
 	elif Input.is_action_pressed("move_down"):

@@ -1,14 +1,11 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-extends Node
 class_name InputHintManager
+extends Node
 
 # This script manages loading and providing textures for input hints.
 # It finds which controller (Xbox, PlayStation, etc.) is currently used
 # and returns the proper texture for a given action.
-
-# Cache to avoid re-loading resources frequently.
-var resource_cache: Dictionary = {}
 
 # Map of keywords -> resource path
 const DEVICE_MAP: Dictionary = {
@@ -27,6 +24,8 @@ const DEVICE_MAP: Dictionary = {
 # This makes xbox icons the default when no specific match is found.
 const GENERIC_RESOURCE: String = "res://scenes/game_elements/props/hint/resources/xbox.tres"
 
+# Cache to avoid re-loading resources frequently.
+var resource_cache: Dictionary = {}
 
 
 func _load_resource(path: String) -> Resource:
