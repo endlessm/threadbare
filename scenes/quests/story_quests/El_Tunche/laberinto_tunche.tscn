@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=4 uid="uid://b43368jinjumk"]
+[gd_scene load_steps=46 format=4 uid="uid://b43368jinjumk"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_slvav"]
 [ext_resource type="PackedScene" uid="uid://p6q2uo2us0il" path="res://scenes/quests/story_quests/shjourney/light.tscn" id="2_rkw41"]
@@ -27,6 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://ccoqpcy371psq" path="res://scenes/quests/story_quests/shjourney/3_shjourney_intro/sign.tscn" id="25_xbwat"]
 [ext_resource type="PackedScene" uid="uid://due8sqsrtdke1" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/fire_fly.tscn" id="26_l8h7s"]
 [ext_resource type="PackedScene" uid="uid://btuq3nuwjtgp8" path="res://scenes/quests/story_quests/El_Tunche/recolectables/antorcha.tscn" id="27_tq4v7"]
+[ext_resource type="Texture2D" uid="uid://dsjti25tlgt1t" path="res://scenes/quests/story_quests/El_Tunche/1_laberinto/diseños/pixil-frame-0 (1).png" id="28_sqqst"]
 
 [sub_resource type="Curve2D" id="Curve2D_s8exg"]
 _data = {
@@ -140,6 +141,7 @@ position = Vector2(466, 63)
 scale = Vector2(1.13, 1.13)
 
 [node name="EnemyGuards" type="Node2D" parent="."]
+visible = false
 y_sort_enabled = true
 
 [node name="Guard2-RunningPath4" type="Path2D" parent="EnemyGuards"]
@@ -454,7 +456,7 @@ script = ExtResource("17_8qksp")
 
 [node name="Musica" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("18_tq4v7")
-volume_db = 5.0
+volume_db = 3.0
 autoplay = true
 script = ExtResource("17_8qksp")
 
@@ -475,6 +477,7 @@ max_distance = 333.0
 script = ExtResource("22_mflba")
 
 [node name="RosaAzul1" type="Node2D" parent="."]
+visible = false
 show_behind_parent = true
 light_mask = 2
 visibility_layer = 1047554
@@ -630,12 +633,36 @@ texture = ExtResource("23_0pr6t")
 [node name="Antorchas" type="Node2D" parent="."]
 
 [node name="Antorcha" parent="Antorchas" instance=ExtResource("27_tq4v7")]
-position = Vector2(718, 261)
+position = Vector2(874, 182)
+
+[node name="PointLight2D" type="PointLight2D" parent="Antorchas/Antorcha"]
+position = Vector2(66.99997, 55)
+scale = Vector2(31.171871, 25.390625)
+color = Color(1, 1, 0.9764706, 1)
+energy = 0.8
+texture = ExtResource("28_sqqst")
+texture_scale = 3.0
 
 [node name="Antorcha2" parent="Antorchas" instance=ExtResource("27_tq4v7")]
 position = Vector2(1507, 152)
 
+[node name="PointLight2D" type="PointLight2D" parent="Antorchas/Antorcha2"]
+position = Vector2(66.99997, 55)
+scale = Vector2(31.171871, 25.390625)
+color = Color(1, 1, 0.9764706, 1)
+energy = 0.8
+texture = ExtResource("28_sqqst")
+texture_scale = 3.0
+
 [node name="Antorcha3" parent="Antorchas" instance=ExtResource("27_tq4v7")]
 position = Vector2(2310, 145)
+
+[node name="PointLight2D" type="PointLight2D" parent="Antorchas/Antorcha3"]
+position = Vector2(66.99997, 55)
+scale = Vector2(31.171871, 25.390625)
+color = Color(1, 1, 0.9764706, 1)
+energy = 0.8
+texture = ExtResource("28_sqqst")
+texture_scale = 3.0
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]
