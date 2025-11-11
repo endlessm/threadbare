@@ -5,7 +5,7 @@ extends RefCounted
 
 const STORYQUESTS_PATH := "res://scenes/quests/story_quests/"
 const TEMPLATE_PREFIX := "NO_EDIT"
-const TEMPLATE_PATH := STORYQUESTS_PATH + TEMPLATE_PREFIX + "/"
+const TEMPLATE_PATH := "res://scenes/quests/template_quests/" + TEMPLATE_PREFIX + "/"
 const QUEST_FILENAME := "quest.tres"
 const TILES_PATH := "res://tiles/"
 
