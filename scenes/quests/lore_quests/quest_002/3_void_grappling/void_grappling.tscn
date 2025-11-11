@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=4 uid="uid://ce7nk8qmi64d2"]
+[gd_scene load_steps=37 format=4 uid="uid://ce7nk8qmi64d2"]
 
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_5a8rg"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_grfk2"]
@@ -17,7 +17,14 @@
 [ext_resource type="TileSet" uid="uid://yducoif83sia" path="res://tiles/foam.tres" id="6_vt06m"]
 [ext_resource type="TileSet" uid="uid://ciq5guijvlyb0" path="res://tiles/void_chromakey.tres" id="7_unlva"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="8_c2723"]
-[ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="12_wgn4u"]
+[ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="16_unlva"]
+[ext_resource type="SpriteFrames" uid="uid://c4da2w5tt3u7j" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_blue_small.tres" id="17_pystb"]
+[ext_resource type="SpriteFrames" uid="uid://b6doys1c3yelx" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_red_small.tres" id="18_5axji"]
+[ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="18_pystb"]
+[ext_resource type="SpriteFrames" uid="uid://ckf0ncgsrnhek" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_purple_large.tres" id="19_c6u7c"]
+[ext_resource type="SpriteFrames" uid="uid://7yx2vrxg6ytx" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_blue_large.tres" id="20_5axji"]
+[ext_resource type="SpriteFrames" uid="uid://k4jucjwkxxhc" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_purple_small.tres" id="21_bmrvw"]
+[ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="21_c6u7c"]
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter/components/teleporter.gd" id="22_rk3po"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wgn4u"]
@@ -92,13 +99,17 @@ tile_map_data = PackedByteArray("AAAgAAUAAQABAAEAAAAgAAYAAQABAAEAAAAhAAUAAQABAAE
 tile_set = ExtResource("5_etmy4")
 metadata/_edit_lock_ = true
 
+[node name="Patches" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAXAPT/BQABAAEAAAAXAPX/BQABAAEAAAAXAPb/BQABAAEAAAAXAPf/BQABAAIAAAAYAPf/BQABAAIAAAAZAPf/BQABAAIAAAAZAPb/BQABAAEAAAAZAPX/BQABAAEAAAAZAPT/BQABAAEAAAAYAPT/BQABAAEAAAAYAPb/BQABAAEAAAAYAPX/BQABAAEAAAAaAPf/BQACAAIAAAAaAPb/BQACAAEAAAAaAPX/BQACAAEAAAAaAPT/BQACAAEAAAAWAPf/BQAAAAIAAAAWAPb/BQAAAAEAAAAWAPX/BQAAAAEAAAAWAPT/BQAAAAEAAAAaAPP/BQACAAAAAAAZAPP/BQABAAAAAAAYAPP/BQABAAAAAAAXAPP/BQABAAAAAAAWAPP/BQAAAAAAAAAOAPD/BQACAAIAAAANAPD/BQABAAIAAAAMAPD/BQABAAIAAAALAPD/BQABAAIAAAAKAPD/BQABAAIAAAAJAPD/BQAAAAIAAAAJAO//BQAAAAEAAAAJAO7/BQAAAAEAAAAJAO3/BQAAAAEAAAAJAOz/BQAAAAEAAAAJAOv/BQAAAAAAAAAKAOv/BQABAAAAAAALAOv/BQABAAAAAAAMAOv/BQABAAAAAAANAOv/BQABAAAAAAAOAOv/BQACAAAAAAAOAOz/BQACAAEAAAAOAO3/BQACAAEAAAAOAO7/BQACAAEAAAAOAO//BQACAAEAAAANAO//BQABAAEAAAAMAO//BQABAAEAAAALAO//BQABAAEAAAAKAO//BQABAAEAAAAKAO7/BQABAAEAAAALAO7/BQABAAEAAAAMAO7/BQABAAEAAAANAO7/BQABAAEAAAANAO3/BQABAAEAAAAMAO3/BQABAAEAAAALAO3/BQABAAEAAAAKAO3/BQABAAEAAAAKAOz/BQABAAEAAAALAOz/BQABAAEAAAAMAOz/BQABAAEAAAANAOz/BQABAAEAAAAaAOj/BQAAAAAAAAAaAOn/BQAAAAEAAAAaAOr/BQAAAAEAAAAaAOv/BQAAAAIAAAAbAOv/BQABAAIAAAAcAOv/BQABAAIAAAAdAOv/BQACAAIAAAAdAOr/BQACAAEAAAAdAOn/BQACAAEAAAAdAOj/BQACAAAAAAAcAOj/BQABAAAAAAAbAOj/BQABAAAAAAAbAOn/BQABAAEAAAAbAOr/BQABAAEAAAAcAOr/BQABAAEAAAAcAOn/BQABAAEAAAAfAPT/BQAAAAAAAAAfAPX/BQAAAAEAAAAfAPb/BQAAAAEAAAAfAPf/BQAAAAIAAAAgAPf/BQABAAIAAAAhAPf/BQABAAIAAAAiAPf/BQACAAIAAAAiAPb/BQACAAEAAAAiAPX/BQACAAEAAAAiAPT/BQACAAAAAAAhAPT/BQABAAAAAAAgAPT/BQABAAAAAAAgAPX/BQABAAEAAAAhAPX/BQABAAEAAAAhAPb/BQABAAEAAAAgAPb/BQABAAEAAAApAPb/BQAAAAMAAAAqAPb/BQABAAMAAAArAPb/BQACAAMAAAAvAPb/BQAAAAMAAAAwAPb/BQACAAMAAAAvAPr/BQACAAMAAAAuAPr/BQABAAMAAAAtAPr/BQAAAAMAAAAQAPj/BQACAAAAAAAQAPn/BQACAAEAAAAQAPr/BQACAAIAAAAPAPr/BQABAAIAAAAOAPr/BQAAAAIAAAAOAPn/BQAAAAEAAAAOAPj/BQAAAAAAAAAPAPj/BQABAAAAAAAPAPn/BQABAAEAAAATAPv/BQAAAAAAAAATAPz/BQAAAAEAAAATAP3/BQAAAAIAAAAUAP3/BQABAAIAAAAVAP3/BQACAAIAAAAVAPz/BQACAAEAAAAVAPv/BQACAAAAAAAUAPv/BQABAAAAAAAUAPz/BQABAAEAAAACAAQABQABAAEAAAADAAQABQABAAEAAAAEAAQABQABAAEAAAAFAAQABQACAAEAAAAFAAUABQACAAEAAAAFAAYABQACAAEAAAAFAAcABQACAAIAAAAEAAcABQABAAIAAAADAAcABQABAAIAAAACAAcABQABAAIAAAACAAYABQABAAEAAAACAAUABQABAAEAAAADAAUABQABAAEAAAADAAYABQABAAEAAAAEAAUABQABAAEAAAAEAAYABQABAAEAAAAFAAMABQACAAEAAAAFAAIABQACAAEAAAAFAAEABQACAAEAAAAFAAAABQACAAEAAAAFAP//BQACAAEAAAAFAP7/BQACAAAAAAAEAP7/BQABAAAAAAADAP7/BQABAAAAAAACAP7/BQABAAAAAAACAP//BQABAAEAAAACAAAABQABAAEAAAACAAEABQABAAEAAAACAAIABQABAAEAAAACAAMABQABAAEAAAADAAMABQABAAEAAAADAAIABQABAAEAAAADAAEABQABAAEAAAADAAAABQABAAEAAAADAP//BQABAAEAAAAEAP//BQABAAEAAAAEAAAABQABAAEAAAAEAAEABQABAAEAAAAEAAIABQABAAEAAAAEAAMABQABAAEAAAASAAYABQAAAAIAAAASAAUABQAAAAEAAAASAAQABQAAAAEAAAASAAMABQAAAAEAAAATAAMABQABAAEAAAAUAAMABQABAAEAAAAVAAMABQABAAEAAAAVAAQABQABAAEAAAAVAAUABQABAAEAAAAVAAYABQABAAIAAAAUAAYABQABAAIAAAATAAYABQABAAIAAAATAAUABQABAAEAAAATAAQABQABAAEAAAAUAAQABQABAAEAAAAUAAUABQABAAEAAAASAAIABQAAAAAAAAATAAIABQABAAAAAAAUAAIABQABAAAAAAAVAAIABQABAAAAAAAWAAIABQACAAAAAAAWAAMABQACAAEAAAAWAAQABQACAAEAAAAWAAUABQACAAEAAAAWAAYABQACAAIAAAAZAAcABQAAAAAAAAAZAAgABQAAAAEAAAAZAAkABQAAAAEAAAAZAAoABQAAAAEAAAAZAAsABQAAAAIAAAAaAAsABQABAAIAAAAbAAsABQABAAIAAAAcAAsABQABAAIAAAAdAAsABQACAAIAAAAdAAoABQACAAEAAAAdAAkABQACAAEAAAAdAAgABQACAAEAAAAdAAcABQACAAAAAAAcAAcABQABAAAAAAAbAAcABQABAAAAAAAaAAcABQABAAAAAAAaAAgABQABAAEAAAAbAAgABQABAAEAAAAcAAgABQABAAEAAAAcAAkABQABAAEAAAAbAAkABQABAAEAAAAaAAkABQABAAEAAAAaAAoABQABAAEAAAAbAAoABQABAAEAAAAcAAoABQABAAEAAAAFAPP/BQAAAAAAAAAGAPP/BQABAAAAAAAHAPP/BQACAAAAAAAHAPT/BQACAAEAAAAHAPX/BQACAAIAAAAGAPX/BQABAAIAAAAFAPX/BQAAAAIAAAAFAPT/BQAAAAEAAAAGAPT/BQABAAEAAAABAAcABQABAAIAAAAAAAcABQABAAIAAAD//wcABQABAAIAAAD+/wcABQABAAIAAAD9/wcABQABAAIAAAD8/wcABQAAAAIAAAD8/wYABQAAAAEAAAD8/wUABQAAAAEAAAD8/wQABQAAAAEAAAD8/wMABQAAAAEAAAD8/wIABQAAAAEAAAD8/wEABQAAAAEAAAD8/wAABQAAAAEAAAD8////BQAAAAEAAAD8//7/BQAAAAAAAAD9//7/BQABAAAAAAD+//7/BQABAAAAAAD///7/BQABAAAAAAAAAP7/BQABAAAAAAABAP7/BQABAAAAAAABAP//BQABAAEAAAAAAP//BQABAAEAAAD/////BQABAAEAAAD+////BQABAAEAAAD9////BQABAAEAAAD//wAABQABAAEAAAAAAAAABQABAAEAAAABAAAABQABAAEAAAD+/wAABQABAAEAAAD9/wAABQABAAEAAAABAAEABQABAAEAAAAAAAEABQABAAEAAAD//wEABQABAAEAAAD+/wEABQABAAEAAAD9/wEABQABAAEAAAABAAIABQABAAEAAAAAAAIABQABAAEAAAD//wIABQABAAEAAAD+/wIABQABAAEAAAD9/wIABQABAAEAAAD9/wMABQABAAEAAAD+/wMABQABAAEAAAD//wMABQABAAEAAAAAAAMABQABAAEAAAABAAMABQABAAEAAAD9/wQABQABAAEAAAD+/wQABQABAAEAAAD//wQABQABAAEAAAAAAAQABQABAAEAAAABAAQABQABAAEAAAABAAUABQABAAEAAAAAAAUABQABAAEAAAD//wUABQABAAEAAAD+/wUABQABAAEAAAD9/wUABQABAAEAAAABAAYABQABAAEAAAAAAAYABQABAAEAAAD//wYABQABAAEAAAD+/wYABQABAAEAAAD9/wYABQABAAEAAAA=")
+tile_set = ExtResource("5_etmy4")
+
 [node name="DangerTiles" type="TileMapLayer" parent="TileMapLayers"]
 tile_map_data = PackedByteArray("AAASAP//BgABAAAAAAARAP//BgABAAAAAAAQAP//BgAAAAAAAAAQAAAABgAAAAIAAAARAAAABgABAAIAAAASAAAABgABAAIAAAATAP//BgACAAAAAAATAAAABgACAAIAAAA=")
 tile_set = ExtResource("5_etmy4")
 metadata/_edit_lock_ = true
 
 [node name="SafeTiles" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAmAPj/AQAFAAEAAAAmAPn/AQAFAAIAAAAnAPj/AQAHAAEAAAAnAPn/AQAHAAIAAAAmAPf/AQAFAAAAAAAnAPf/AQAHAAAAAAA=")
+tile_map_data = PackedByteArray("AAAmAPj/AQAFAAEAAAAmAPn/AQAFAAIAAAAnAPj/AQAGAAEAAAAnAPn/AQAHAAIAAAAmAPf/AQAFAAAAAAAnAPf/AQAHAAAAAAAoAPj/AQAGAAMAAAApAPj/AQAGAAMAAAAqAPj/AQAGAAMAAAArAPj/AQAGAAMAAAAsAPj/AQAGAAMAAAAtAPj/AQAGAAMAAAAuAPj/AQAGAAMAAAAvAPj/AQAGAAMAAAAwAPj/AQAGAAMAAAAxAPj/AQAGAAMAAAAyAPj/AQAGAAMAAAAzAPj/AQAGAAMAAAA0APj/AQAGAAMAAAA1APj/AQAGAAMAAAA2APj/AQAGAAMAAAA3APj/AQAGAAMAAAA4APj/AQAGAAMAAAA5APj/AQAGAAMAAAA6APj/AQAGAAMAAAA7APj/AQAGAAMAAAA8APj/AQAGAAMAAAA9APj/AQAGAAMAAAA+APj/AQAGAAMAAAA/APj/AQAHAAMAAAA=")
 tile_set = ExtResource("5_etmy4")
 
 [node name="Void" type="TileMapLayer" parent="TileMapLayers" node_paths=PackedStringArray("consumable_node_holders")]
@@ -170,7 +181,7 @@ position = Vector2(1104, 445)
 position = Vector2(1213, 188)
 
 [node name="HookablePin10" parent="OnTheGround/Props" instance=ExtResource("6_kmyoj")]
-position = Vector2(2452, -456)
+position = Vector2(2452, -482)
 
 [node name="HookablePin11" parent="OnTheGround/Props" instance=ExtResource("6_kmyoj")]
 position = Vector2(749, -772)
@@ -292,25 +303,222 @@ position = Vector2(442, -1221)
 [node name="HookablePin27" parent="OnTheGround/Props" instance=ExtResource("6_kmyoj")]
 position = Vector2(618, -1221)
 
-[node name="Tree4" parent="OnTheGround/Props" instance=ExtResource("12_wgn4u")]
-position = Vector2(1062, -262.00003)
-scale = Vector2(1.22224, 1.15899)
+[node name="Bush" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1270, -201)
+sprite_frames = ExtResource("17_pystb")
 
-[node name="Tree7" parent="OnTheGround/Props" instance=ExtResource("12_wgn4u")]
-position = Vector2(1189, -997)
-scale = Vector2(1.22224, 1.15899)
+[node name="Bush2" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1248, -264)
 
-[node name="Tree8" parent="OnTheGround/Props" instance=ExtResource("12_wgn4u")]
-position = Vector2(421.00003, -1445)
-scale = Vector2(1.22224, 1.15899)
+[node name="Bush3" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1269, -234)
+sprite_frames = ExtResource("19_c6u7c")
 
-[node name="Tree5" parent="OnTheGround/Props" instance=ExtResource("12_wgn4u")]
-position = Vector2(1128, -464)
-scale = Vector2(1.22224, 1.15899)
+[node name="Bush4" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1035, -377)
+sprite_frames = ExtResource("18_pystb")
 
-[node name="Tree6" parent="OnTheGround/Props" instance=ExtResource("12_wgn4u")]
-position = Vector2(1256, -363)
-scale = Vector2(1.22224, 1.15899)
+[node name="Bush5" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1045, -440)
+sprite_frames = ExtResource("17_pystb")
+
+[node name="Bush6" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1058, -411)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush7" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1269, -538)
+sprite_frames = ExtResource("17_pystb")
+
+[node name="Bush8" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1232, -569)
+sprite_frames = ExtResource("18_pystb")
+
+[node name="Bush9" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1268, -564)
+
+[node name="Bush10" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1159, -989)
+
+[node name="Bush11" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1200, -996)
+sprite_frames = ExtResource("18_pystb")
+
+[node name="Bush12" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1168, -1017)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush13" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(480, -1463)
+sprite_frames = ExtResource("17_pystb")
+
+[node name="Bush14" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(393, -1439)
+sprite_frames = ExtResource("18_pystb")
+
+[node name="Bush15" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(424, -1452)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush16" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1009, -1502)
+sprite_frames = ExtResource("17_pystb")
+
+[node name="Bush17" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(979, -1516)
+sprite_frames = ExtResource("18_pystb")
+
+[node name="Bush18" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1010, -1529)
+
+[node name="Bush19" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1900, -715)
+sprite_frames = ExtResource("17_pystb")
+
+[node name="Bush31" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1803, -712)
+sprite_frames = ExtResource("17_pystb")
+
+[node name="Bush20" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1879, -697)
+sprite_frames = ExtResource("17_pystb")
+
+[node name="Bush21" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1854, -714)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush22" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(2740, -599)
+sprite_frames = ExtResource("17_pystb")
+
+[node name="Bush23" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(2720, -615)
+sprite_frames = ExtResource("18_5axji")
+
+[node name="Bush24" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(2773, -616)
+
+[node name="Bush25" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(2970, -325)
+sprite_frames = ExtResource("17_pystb")
+
+[node name="Bush26" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(2992, -336)
+sprite_frames = ExtResource("18_5axji")
+
+[node name="Bush27" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(2905, -337)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush28" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(3068, -631)
+sprite_frames = ExtResource("20_5axji")
+
+[node name="Bush29" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(3084, -610)
+sprite_frames = ExtResource("18_5axji")
+
+[node name="Bush30" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(3132, -622)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush32" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(437, 268)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush33" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(472, 286)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush34" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(504, 254)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush35" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(479, 559)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush36" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(459, 585)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush37" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(535, 593)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush38" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(743, 585)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush39" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(779, 565)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush43" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(816, 610)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush44" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1135, 803)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush45" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1172, 788)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush46" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1245, 812)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush47" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1275, 831)
+sprite_frames = ExtResource("21_bmrvw")
+
+[node name="Bush51" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1669, 467)
+sprite_frames = ExtResource("21_bmrvw")
+
+[node name="Bush48" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1360, 803)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush49" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1388, 770)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush50" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1646, 498)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush40" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1204, 526)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush41" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1175, 505)
+sprite_frames = ExtResource("19_c6u7c")
+
+[node name="Bush42" parent="OnTheGround/Props" instance=ExtResource("16_unlva")]
+position = Vector2(1211, 487)
+sprite_frames = ExtResource("21_bmrvw")
+
+[node name="WaterRock" parent="OnTheGround/Props" instance=ExtResource("21_c6u7c")]
+position = Vector2(2492, -669)
+
+[node name="WaterRock2" parent="OnTheGround/Props" instance=ExtResource("21_c6u7c")]
+position = Vector2(2824, -720)
+
+[node name="WaterRock3" parent="OnTheGround/Props" instance=ExtResource("21_c6u7c")]
+position = Vector2(2882, -697)
+
+[node name="WaterRock4" parent="OnTheGround/Props" instance=ExtResource("21_c6u7c")]
+position = Vector2(2612, -281)
+
+[node name="WaterRock5" parent="OnTheGround/Props" instance=ExtResource("21_c6u7c")]
+position = Vector2(3130, -262)
+
+[node name="WaterRock6" parent="OnTheGround/Props" instance=ExtResource("21_c6u7c")]
+position = Vector2(2676, -291)
 
 [node name="VoidPatrolling" parent="OnTheGround" node_paths=PackedStringArray("void_layer", "idle_patrol_path") instance=ExtResource("6_m0g5h")]
 position = Vector2(712, 154)
