@@ -1,0 +1,106 @@
+[gd_scene load_steps=16 format=3 uid="uid://b6upqefy7eghl"]
+
+[ext_resource type="Texture2D" uid="uid://cr3w0x7kyglo5" path="res://scenes/quests/story_quests/marci/assets/sprites/objetos/fuegoAnimado.png" id="1_gj6mv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6qrvk"]
+atlas = ExtResource("1_gj6mv")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5778h"]
+atlas = ExtResource("1_gj6mv")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nlgxw"]
+atlas = ExtResource("1_gj6mv")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_76ma3"]
+atlas = ExtResource("1_gj6mv")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wqtfw"]
+atlas = ExtResource("1_gj6mv")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jpqfn"]
+atlas = ExtResource("1_gj6mv")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cqjus"]
+atlas = ExtResource("1_gj6mv")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b88ub"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6qrvk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5778h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nlgxw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_76ma3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wqtfw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jpqfn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cqjus")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_i1s24"]
+blend_mode = 1
+light_mode = 2
+
+[sub_resource type="Gradient" id="Gradient_1bw5o"]
+offsets = PackedFloat32Array(0.0054644807, 0.47540984)
+colors = PackedColorArray(0.9529412, 0.7294118, 0.5882353, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3ocdo"]
+gradient = SubResource("Gradient_1bw5o")
+width = 128
+height = 128
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gj6mv"]
+blend_mode = 1
+light_mode = 2
+
+[sub_resource type="Gradient" id="Gradient_6qrvk"]
+offsets = PackedFloat32Array(0, 0.56557375)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5778h"]
+gradient = SubResource("Gradient_6qrvk")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D"]
+modulate = Color(0.81462973, 0.7587214, 0.56130636, 1)
+sprite_frames = SubResource("SpriteFrames_b88ub")
+autoplay = "default"
+frame_progress = 0.88586
+
+[node name="Light" type="PointLight2D" parent="."]
+material = SubResource("CanvasItemMaterial_i1s24")
+texture = SubResource("GradientTexture2D_3ocdo")
+
+[node name="Volumetric" type="Sprite2D" parent="."]
+modulate = Color(0.25882354, 0.20784314, 0.12941177, 0.39215687)
+material = SubResource("CanvasItemMaterial_gj6mv")
+texture = SubResource("GradientTexture2D_5778h")
