@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://dl1qb7ao1hrcm"]
+
+[ext_resource type="Script" uid="uid://mbfqmrnr6h06" path="res://scenes/game_elements/characters/npcs/talker/components/talker.gd" id="1_hnva7"]
+[ext_resource type="SpriteFrames" uid="uid://cpm5o35ede3qs" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_purple.tres" id="2_8pe2x"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="3_thyyx"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="4_euesp"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
+height = 42.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3eksq"]
+size = Vector2(52, 50)
+
+[node name="Talker" type="CharacterBody2D"]
+collision_layer = 2
+motion_mode = 1
+script = ExtResource("1_hnva7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -30)
+sprite_frames = ExtResource("2_8pe2x")
+animation = &"idle"
+autoplay = "idle"
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_3vyb7")
+
+[node name="InteractArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_thyyx")
+interact_label_position = Vector2(0, -100)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(0, -29)
+shape = SubResource("RectangleShape2D_3eksq")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="." node_paths=PackedStringArray("interact_area")]
+unique_name_in_owner = true
+script = ExtResource("4_euesp")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"

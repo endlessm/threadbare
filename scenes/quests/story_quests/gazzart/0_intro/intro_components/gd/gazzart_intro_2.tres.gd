@@ -32,14 +32,16 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	var player: Player = $"../Player"
 	
-	# Verifica si el jugador supera los límites del mapa
-	if player.position.x > 3190 or player.position.y > 2690:
+	# límite de mapa
+	if player.position.x > 3190:
 		if next_scene:
-			SceneSwitcher.change_to_file_with_transition(
+			(
+				SceneSwitcher.change_to_file_with_transition(
 				next_scene,
 				spawn_point_path,
 				Transition.Effect.FADE,
-				Transition.Effect.FADE
+				Transition.Effect.FADE,
+				)
 			)
 	
 		
