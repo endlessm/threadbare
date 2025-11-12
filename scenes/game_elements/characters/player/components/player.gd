@@ -4,6 +4,7 @@
 class_name Player
 extends CharacterBody2D
 
+
 signal mode_changed(mode: Mode)
 
 ## Controls how the player can interact with the world around them.
