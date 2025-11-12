@@ -1,13 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://cy6grqtxfycog"]
+[gd_scene load_steps=13 format=3 uid="uid://cy6grqtxfycog"]
 
 [ext_resource type="Script" uid="uid://2ga74pfw73b" path="res://scenes/quests/story_quests/jasbh/2_combat/JASBHenemyScript.gd" id="1_bkwt7"]
 [ext_resource type="SpriteFrames" uid="uid://deosvk5k4su5f" path="res://scenes/quests/story_quests/NO_EDIT/2_NO_EDIT_combat/NO_EDIT_combat_components/NO_EDIT_throwing_enemy.tres" id="2_bkwt7"]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_bkwt7"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bkal1"]
-size = Vector2(67.25026, 100.99979)
+size = Vector2(80.00042, 115.99971)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e1ywq"]
-size = Vector2(116, 79.5)
+size = Vector2(132, 92)
 
 [sub_resource type="Animation" id="Animation_xcanh"]
 length = 0.001
@@ -18,7 +20,7 @@ tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(0.033333335),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
@@ -74,7 +76,7 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_u0rnr"]
 resource_name = "attack"
-length = 0.5
+length = 0.2
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -158,7 +160,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_ffq0m"]
 resource_name = "got hit"
-length = 0.3
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -166,7 +168,7 @@ tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
+"times": PackedFloat32Array(0, 0.36666667),
 "transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0.112), Color(1, 1, 1, 1)]
@@ -240,9 +242,13 @@ _data = {
 }
 
 [node name="JasbHenemy" type="CharacterBody2D" groups=["throwing_enemy"]]
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_bkwt7")
+projectile_2_scene = null
 throwing_period = 0.2
 bullet_count = 9
+projectile_2_sprite_frames = SubResource("SpriteFrames_bkwt7")
 metadata/_custom_type_script = "uid://dfj3625owet5p"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -253,6 +259,7 @@ autoplay = "idle"
 flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1.9073486e-06)
 rotation = -1.5708
 shape = SubResource("RectangleShape2D_bkal1")
 
@@ -279,6 +286,7 @@ unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_fbb2g")
 }
+speed_scale = 4.0
 
 [node name="Sounds" type="Node2D" parent="."]
 

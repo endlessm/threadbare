@@ -64,13 +64,38 @@ func _update_allowed_colors() -> void:
 	for enemy: JASBHenemy in get_tree().get_nodes_in_group("JASBHenemy"):
 		enemy.allowed_labels = allowed_labels
 		enemy.color_per_label = color_per_label
+		if enemy._is_defeated:
+			barrels_completed = 1
 
+func _on_enemy_defeated() -> void:
+	get_tree().call_group("JASBHenemy", "remove")
+	get_tree().call_group("projectiles", "remove")
+	var player: Player = get_tree().get_first_node_in_group("player")
+	if player:
+		player.mode = Player.Mode.COZY
+	goal_reached.emit()
 
 func _on_barrel_completed() -> void:
 	barrels_completed += 1
 	_update_allowed_colors()
 	if barrels_completed < barrels_to_win:
 		return
+	get_tree().call_group("JASBHenemy", "remove")
+	get_tree().call_group("projectiles", "remove")
+	var player: Player = get_tree().get_first_node_in_group("player")
+	if player:
+		player.mode = Player.Mode.COZY
+	goal_reached.emit()
+
+func _on_player_defeated() -> void:
+	var player: Player = get_tree().get_first_node_in_group("player")
+	if player.is_defeated:
+		await get_tree().create_timer(2.0).timeout
+		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+		player.life = 3
+
+
+func _on_jasb_henemy_completed() -> void:
 	get_tree().call_group("JASBHenemy", "remove")
 	get_tree().call_group("projectiles", "remove")
 	var player: Player = get_tree().get_first_node_in_group("player")

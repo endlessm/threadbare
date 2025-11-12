@@ -1,0 +1,92 @@
+[gd_scene load_steps=10 format=3 uid="uid://0isby2nhnk4b"]
+
+[ext_resource type="Script" uid="uid://bofv3bcwj3rx2" path="res://scenes/game_elements/props/projectile/components/projectile.gd" id="1_qanu4"]
+[ext_resource type="SpriteFrames" uid="uid://bhamin2pby7tq" path="res://scenes/game_elements/props/projectile/components/inkblob_spriteframes.tres" id="2_glrux"]
+[ext_resource type="AudioStream" uid="uid://7jlv4wqpihl7" path="res://scenes/game_elements/props/projectile/components/blob_hit.wav" id="3_bsvtt"]
+[ext_resource type="Texture2D" uid="uid://bbgbpkyhiob3x" path="res://scenes/quests/story_quests/jasbh/2_combat/combat_components/grazingSparks.png" id="4_gklew"]
+[ext_resource type="Script" uid="uid://bm5svkkhqv8ad" path="res://scenes/quests/story_quests/jasbh/2_combat/grazing.gd" id="5_0lijp"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_6wroq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eo5ve"]
+size = Vector2(11, 10)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_tsdi3"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 5
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mbjbp"]
+particle_flag_disable_z = true
+emission_shape = 4
+emission_point_count = 1
+angle_min = 1.0728835e-05
+angle_max = 228.60002
+gravity = Vector3(0, 0, 0)
+scale_min = 4.0
+scale_max = 4.0
+anim_speed_min = 1.5999999
+anim_speed_max = 1.5999999
+
+[node name="JasbHprojectile" type="RigidBody2D"]
+top_level = true
+collision_layer = 2097408
+collision_mask = 2097152
+mass = 0.3
+physics_material_override = SubResource("PhysicsMaterial_6wroq")
+gravity_scale = 0.0
+lock_rotation = true
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_qanu4")
+metadata/_custom_type_script = "uid://bofv3bcwj3rx2"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_eo5ve")
+
+[node name="VisibleThings" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-3, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VisibleThings"]
+unique_name_in_owner = true
+position = Vector2(3, 0)
+sprite_frames = ExtResource("2_glrux")
+autoplay = "default"
+
+[node name="TrailFXMarker" type="Marker2D" parent="VisibleThings"]
+unique_name_in_owner = true
+position = Vector2(-40, 0)
+
+[node name="DurationTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("3_bsvtt")
+
+[node name="grazeParticles" type="GPUParticles2D" parent="."]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_tsdi3")
+emitting = false
+amount = 1
+texture = ExtResource("4_gklew")
+lifetime = 0.55
+preprocess = 0.45
+speed_scale = 6.9399999999999995
+fixed_fps = 10
+process_material = SubResource("ParticleProcessMaterial_mbjbp")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_mask = 2097221
+script = ExtResource("5_0lijp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_eo5ve")
+
+[connection signal="timeout" from="DurationTimer" to="." method="_on_duration_timer_timeout"]
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
+[connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]

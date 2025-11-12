@@ -1,0 +1,104 @@
+[gd_scene load_steps=18 format=4 uid="uid://d0otio1ro3hvd"]
+
+[ext_resource type="Script" uid="uid://3bd3w335cr0b" path="res://scenes/quests/story_quests/jasbh/2_combat/JASBHlogic.gd" id="1_acj0j"]
+[ext_resource type="Resource" uid="uid://dwa0u6l8e0v42" path="res://scenes/quests/story_quests/jasbh/2_combat/combat_components/jasbh_combat.dialogue" id="2_u6a6g"]
+[ext_resource type="TileSet" uid="uid://cm7vvb0mfp0ri" path="res://scenes/quests/story_quests/jasbh/JASBHtileset.tres" id="3_bmble"]
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="4_r8pf2"]
+[ext_resource type="PackedScene" uid="uid://c3wumplbeyvd1" path="res://scenes/quests/story_quests/jasbh/JASBHCollectable.tscn" id="5_nigfs"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="6_780f1"]
+[ext_resource type="PackedScene" uid="uid://c6am1wx10j633" path="res://scenes/quests/story_quests/jasbh/2_combat/JASBHplayer.tscn" id="7_peiop"]
+[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="8_wgvl1"]
+[ext_resource type="SpriteFrames" uid="uid://cpgxwlrkpyopu" path="res://scenes/quests/story_quests/jasbh/2_combat/combat_components/jasbh_target_spriteframes.tres" id="9_lcro7"]
+[ext_resource type="PackedScene" uid="uid://cy6grqtxfycog" path="res://scenes/quests/story_quests/jasbh/2_combat/JASBHenemy.tscn" id="10_ur3t0"]
+[ext_resource type="PackedScene" uid="uid://dtexhoglmk6m4" path="res://scenes/quests/story_quests/jasbh/2_combat/JASBHprojectile.tscn" id="11_s8pxx"]
+[ext_resource type="PackedScene" uid="uid://0isby2nhnk4b" path="res://scenes/quests/story_quests/jasbh/2_combat/JASBHprojectileSpecial.tscn" id="12_71esi"]
+[ext_resource type="SpriteFrames" uid="uid://d1a2dl86o3sk4" path="res://scenes/quests/story_quests/jasbh/2_combat/combat_components/jasbh_enemy.tres" id="13_om0qg"]
+[ext_resource type="SpriteFrames" uid="uid://bcps2nw20tkqa" path="res://scenes/quests/story_quests/jasbh/2_combat/combat_components/jasbh_projectile_spriteframes.tres" id="14_gylpr"]
+[ext_resource type="SpriteFrames" uid="uid://d3b7i23e5cepu" path="res://scenes/quests/story_quests/jasbh/2_combat/combat_components/JASBH_specialBullet.tres" id="15_mud23"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="16_pksh4"]
+
+[sub_resource type="Resource" id="Resource_x5v3f"]
+script = ExtResource("6_780f1")
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[node name="Combat" type="Node2D"]
+y_sort_enabled = true
+
+[node name="FillGameLogic" type="Node" parent="."]
+script = ExtResource("1_acj0j")
+intro_dialogue = ExtResource("2_u6a6g")
+metadata/_custom_type_script = "uid://cp54mgi54nywo"
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+
+[node name="Grass" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAANAAcAAQAAAAAAAAANAAYABAACAAAAAAANAAUABAACAAAAAAANAAQAAQAAAAAAAAANAAMAAQAAAAAAAAANAAIAAQAAAAAAAAANAAEAAQAAAAAAAAAMAAcAAQAAAAAAAAAMAAYABAACAAAAAAAMAAUAAQAAAAAAAAAMAAQAAQAAAAAAAAAMAAMAAQAAAAAAAAAMAAIAAQAAAAAAAAAMAAEAAQAAAAAAAAALAAcABAACAAAAAAALAAYAAQAAAAAAAAALAAUAAQAAAAAAAAALAAQAAQAAAAAAAAALAAMAAQAAAAAAAAALAAIABAABAAAAAAALAAEABAACAAAAAAAKAAcAAQAAAAAAAAAKAAYAAQAAAAAAAAAKAAUABAACAAAAAAAKAAQABAACAAAAAAAKAAMABAACAAAAAAAKAAIABAACAAAAAAAKAAEABAACAAAAAAAJAAcABAACAAAAAAAJAAYAAQAAAAAAAAAJAAUABAACAAAAAAAJAAQAAQAAAAAAAAAJAAMAAQAAAAAAAAAJAAIABAACAAAAAAAJAAEABAABAAAAAAAIAAcAAQAAAAAAAAAIAAYAAQAAAAAAAAAIAAUABAACAAAAAAAIAAQAAQAAAAAAAAAIAAMABAACAAAAAAAIAAIABAACAAAAAAAIAAEABAABAAAAAAAHAAcABAACAAAAAAAHAAYAAQAAAAAAAAAHAAUAAQAAAAAAAAAHAAQAAQAAAAAAAAAHAAMAAQAAAAAAAAAHAAIABAACAAAAAAAHAAEABAABAAAAAAAGAAcABAACAAAAAAAGAAYAAQAAAAAAAAAGAAUAAQAAAAAAAAAGAAQAAQAAAAAAAAAGAAMAAQAAAAAAAAAGAAIABAACAAAAAAAFAAcAAQAAAAAAAAAFAAYABAACAAAAAAAFAAUAAQAAAAAAAAAFAAQAAQAAAAAAAAAFAAMAAQAAAAAAAAAFAAIABAACAAAAAAAFAAEABAABAAAAAAAEAAcAAQAAAAAAAAAEAAYABAACAAAAAAAEAAUABAACAAAAAAAEAAQAAQAAAAAAAAAEAAMABAABAAAAAAAEAAIABAACAAAAAAAEAAEABAACAAAAAAADAAcABAACAAAAAAADAAYAAQAAAAAAAAADAAUABAACAAAAAAADAAQAAQAAAAAAAAADAAMAAQAAAAAAAAADAAIAAQAAAAAAAAADAAEABAACAAAAAAACAAcAAQAAAAAAAAACAAYAAQAAAAAAAAACAAUABAACAAAAAAACAAMABAACAAAAAAACAAIAAQAAAAAAAAACAAEABAACAAAAAAABAAcAAQAAAAAAAAABAAYAAQAAAAAAAAABAAUAAQAAAAAAAAABAAMABAACAAAAAAABAAIAAQAAAAAAAAABAAEABAACAAAAAAACAAQAAQAAAAAAAAABAAQABAACAAAAAAAAAAQAAQAAAAAAAAAAAAUAAQAAAAAAAAAAAAYAAQAAAAAAAAAAAAcABAACAAAAAAAGAAAABAABAAAAAAAGAAEABAABAAAAAAAHAAAABAABAAAAAAAFAAAABAABAAAAAAAIAAAABAABAAAAAAAJAAAABAABAAAAAAALAAAABAABAAAAAAAMAAAAAQAAAAAAAAAKAAAABAACAAAAAAANAAAAAQAAAAAAAAAEAAAABAACAAAAAAADAAAAAQAAAAAAAAACAAAAAQAAAAAAAAABAAAAAQAAAAAAAAAAAAAAAQAAAAAAAAAAAAEAAQAAAAAAAAAAAAIAAQAAAAAAAAAAAAMAAQAAAAAAAAAAAAgAAQAAAAAAAAABAAgABAACAAAAAAACAAgAAQAAAAAAAAADAAgABAACAAAAAAAEAAgABAACAAAAAAAFAAgAAQAAAAAAAAAGAAgAAQAAAAAAAAAHAAgAAQAAAAAAAAAIAAgAAQAAAAAAAAAJAAgAAQAAAAAAAAAKAAgAAQAAAAAAAAAMAAgAAQAAAAAAAAALAAgAAQAAAAAAAAANAAgABAACAAAAAAAOAAgABAACAAAAAAAOAAcABAACAAAAAAAOAAYABAACAAAAAAAOAAUAAQAAAAAAAAAOAAQAAQAAAAAAAAAOAAMABAACAAAAAAAOAAIAAQAAAAAAAAAOAAEABAACAAAAAAAOAAAAAQAAAAAAAAAPAAAAAQAAAAAAAAAPAAEABAACAAAAAAAPAAIABAACAAAAAAAPAAMAAQAAAAAAAAAPAAQAAQAAAAAAAAAPAAUAAQAAAAAAAAAPAAYABAACAAAAAAAPAAcAAQAAAAAAAAAPAAgAAQAAAAAAAAANAAkAAgACAAAAAAA=")
+tile_set = ExtResource("3_bmble")
+
+[node name="Stones" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAD//wAABAACAAEAAAD//wEABAACAAEAAAD//wIABAACAAEAAAD//wMABAACAAEAAAD//wQABAACAAEAAAD//wUABAACAAEAAAD//wYABAACAAEAAAD//wcABAACAAEAAAD//wgABAACAAEAAAAAAAkABAABAAAAAAABAAkABAABAAAAAAACAAkABAABAAAAAAADAAkABAABAAAAAAAEAAkABAABAAAAAAAFAAkABAABAAAAAAAGAAkABAABAAAAAAAHAAkABAABAAAAAAAIAAkABAABAAAAAAAJAAkABAABAAAAAAAKAAkABAABAAAAAAALAAkABAABAAAAAAAMAAkABAABAAAAAAANAAkABAABAAAAAAAOAAkABAABAAAAAAAAAP//BAABAAMAAAABAP//BAABAAMAAAACAP//BAABAAMAAAADAP//BAABAAMAAAAEAP//BAABAAMAAAAFAP//BAABAAMAAAAGAP//BAABAAMAAAAHAP//BAABAAMAAAAIAP//BAABAAMAAAAJAP//BAABAAMAAAAKAP//BAABAAMAAAALAP//BAABAAMAAAAMAP//BAABAAMAAAANAP//BAABAAMAAAAOAP//BAABAAMAAAAQAAAABAAAAAEAAAAQAAEABAAAAAEAAAAQAAIABAAAAAEAAAAQAAMABAAAAAEAAAAQAAQABAAAAAEAAAAQAAUABAAAAAEAAAAQAAYABAAAAAEAAAAQAAcABAAAAAEAAAAQAAgABAAAAAEAAAAPAP//BAABAAMAAQAPAAkABAABAAAAAAA=")
+tile_set = ExtResource("4_r8pf2")
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="CollectableItem" parent="OnTheGround" instance=ExtResource("5_nigfs")]
+unique_name_in_owner = true
+position = Vector2(494, 48)
+revealed = false
+next_scene = "uid://dv6g5t63pp6if"
+item = SubResource("Resource_x5v3f")
+collected_dialogue = ExtResource("2_u6a6g")
+dialogue_title = &"well_done"
+
+[node name="Player" parent="OnTheGround" groups=["player"] instance=ExtResource("7_peiop")]
+position = Vector2(499, 432)
+collision_mask = 19
+motion_mode = 1
+walk_speed = 500.0
+run_speed = 150.0
+stopping_step = 42270.0
+moving_step = 42830.0
+
+[node name="Target2" parent="OnTheGround" instance=ExtResource("8_wgvl1")]
+position = Vector2(1229, 401)
+sprite_frames = ExtResource("9_lcro7")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="JasbHenemy" parent="OnTheGround" groups=["JASBHenemy"] instance=ExtResource("10_ur3t0")]
+position = Vector2(491, 55)
+collision_mask = 16
+projectile_scene = ExtResource("11_s8pxx")
+projectile_2_scene = ExtResource("12_71esi")
+throwing_period = 2.0
+sprite_frames = ExtResource("13_om0qg")
+distance = 10.0
+projectile_speed = 40.0
+projectile_duration = 6.4
+bullet_count = 3
+separation = 1.6
+projectile_sprite_frames = ExtResource("14_gylpr")
+projectile_2_sprite_frames = ExtResource("15_mud23")
+walking_time = 1.0
+walking_range = 250.0
+walking_speed = 300.0
+
+[node name="Timer" type="Timer" parent="OnTheGround"]
+autostart = true
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="." instance=ExtResource("16_pksh4")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.25, 1.25)
+limit_left = 0
+limit_top = 0
+limit_right = 2048
+limit_bottom = 2048
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectableItem" method="reveal"]
+[connection signal="completed" from="OnTheGround/JasbHenemy" to="FillGameLogic" method="_on_jasb_henemy_completed"]

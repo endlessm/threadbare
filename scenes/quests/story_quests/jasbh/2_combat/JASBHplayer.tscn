@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://bpu6jo4kvehlg" path="res://scenes/game_elements/characters/player/components/player_interaction.gd" id="6_1wx4b"]
 [ext_resource type="Script" uid="uid://necvar42rnih" path="res://scenes/game_elements/characters/player/components/interact_zone.gd" id="7_yx1xn"]
 [ext_resource type="PackedScene" uid="uid://yfpfno276rol" path="res://scenes/game_elements/props/fixed_size_label/fixed_size_label.tscn" id="8_eq84x"]
-[ext_resource type="Script" uid="uid://kni2yl26matc" path="res://scenes/game_elements/characters/player/components/player_fighting.gd" id="9_uaci2"]
+[ext_resource type="Script" uid="uid://btaedoo6sdj8i" path="res://scenes/quests/story_quests/jasbh/JASBHfighting.gd" id="9_buwou"]
 [ext_resource type="Texture2D" uid="uid://dda0lxfswrncy" path="res://scenes/game_elements/characters/player/components/blow.png" id="10_0sykb"]
 [ext_resource type="Script" uid="uid://b7704hdflt5t8" path="res://scenes/game_elements/characters/player/components/player_hook.gd" id="11_e3s6c"]
 [ext_resource type="PackedScene" uid="uid://b0dehcnfo68j1" path="res://scenes/game_elements/props/hook_control/hook_control.tscn" id="12_d81cq"]
@@ -64,7 +64,7 @@ radius = 20.0
 blend_mode = 1
 
 [sub_resource type="Animation" id="Animation_wvgcx"]
-length = 0.001
+length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -80,7 +80,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_4ypcv"]
 resource_name = "got_hit"
-length = 0.3
+length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -88,10 +88,10 @@ tracks/0/path = NodePath("../PlayerSprite:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.23333333, 0.46666667, 0.7, 0.93333334, 1.1666666, 1.4, 1.6333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1n58k"]
@@ -577,17 +577,17 @@ metadata/_edit_use_anchors_ = true
 [node name="PlayerFighting" type="Node2D" parent="."]
 unique_name_in_owner = true
 process_mode = 4
-visible = false
-script = ExtResource("9_uaci2")
+script = ExtResource("9_buwou")
 
 [node name="AirStream" type="Area2D" parent="PlayerFighting"]
 unique_name_in_owner = true
 position = Vector2(0, -24)
 collision_layer = 0
-collision_mask = 32
+collision_mask = 2097152
 
 [node name="AirStreamCollision" type="CollisionShape2D" parent="PlayerFighting/AirStream"]
 unique_name_in_owner = true
+position = Vector2(0, 24)
 shape = SubResource("CircleShape2D_3ga26")
 disabled = true
 
@@ -604,6 +604,10 @@ unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_1n58k")
 }
+
+[node name="Timer" type="Timer" parent="PlayerFighting"]
+unique_name_in_owner = true
+wait_time = 2.0
 
 [node name="PlayerHook" type="Node2D" parent="." groups=["hook_listener"]]
 unique_name_in_owner = true
@@ -635,3 +639,8 @@ stream = ExtResource("15_s1ne8")
 volume_db = -5.0
 pitch_scale = 7.0
 bus = &"SFX"
+
+[node name="ProjectileMarker" type="Marker2D" parent="."]
+unique_name_in_owner = true
+
+[connection signal="timeout" from="PlayerFighting/Timer" to="PlayerFighting" method="_on_timer_timeout"]
