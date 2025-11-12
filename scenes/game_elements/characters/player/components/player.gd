@@ -212,6 +212,23 @@ func _process(delta: float) -> void:
 			defeat()
 			return
 
+func teleport_to(
+	tele_position: Vector2,
+	smooth_camera: bool = false,
+	look_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
+) -> void:
+	var camera: Camera2D = get_viewport().get_camera_2d()
+
+	if is_instance_valid(camera):
+		var smoothing_was_enabled: bool = camera.position_smoothing_enabled
+		camera.position_smoothing_enabled = smooth_camera
+		global_position = tele_position
+		%PlayerSprite.look_at_side(look_side)
+		await get_tree().process_frame
+		camera.position_smoothing_enabled = smoothing_was_enabled
+	else:
+		global_position = tele_position
+
 func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	walk_sound_stream = new_value
 	if not is_node_ready():

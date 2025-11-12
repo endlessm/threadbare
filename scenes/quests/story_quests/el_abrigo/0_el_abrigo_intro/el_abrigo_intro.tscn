@@ -1,10 +1,13 @@
-[gd_scene load_steps=11 format=4 uid="uid://bal803byshlbc"]
+[gd_scene load_steps=20 format=4 uid="uid://bal803byshlbc"]
 
 [ext_resource type="TileSet" uid="uid://chmqpyc2nqxxt" path="res://scenes/quests/story_quests/el_abrigo/el_abrigo_tileset/el_abrigo_tileset.tres" id="1_id63g"]
-[ext_resource type="Texture2D" uid="uid://s65bb5aypory" path="res://scenes/quests/story_quests/el_abrigo/0_el_abrigo_intro/intro_components/el_abrigo_intro_image.png" id="2_kfsy6"]
+[ext_resource type="Texture2D" uid="uid://b8lsrb3nntxoo" path="res://scenes/quests/story_quests/el_abrigo/0_el_abrigo_intro/intro_components/el_abrigo_npc_Intro_idle.png" id="3_id63g"]
 [ext_resource type="SpriteFrames" uid="uid://maj2nfoclfwd" path="res://scenes/quests/story_quests/el_abrigo/el_abrigo_player_components/el_abrigo_player.tres" id="3_p845x"]
+[ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="4_6httn"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_r3of1"]
 [ext_resource type="Resource" uid="uid://etv84qdvoy8m" path="res://scenes/quests/story_quests/el_abrigo/0_el_abrigo_intro/intro_components/el_abrigo_intro.dialogue" id="5_ge0cj"]
+[ext_resource type="SpriteFrames" uid="uid://djwymcffy83" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_red.tres" id="5_m7ipy"]
+[ext_resource type="PackedScene" uid="uid://bp20cjimwi8l0" path="res://scenes/game_elements/props/buildings/house/house_2.tscn" id="6_6httn"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_vwcbt"]
 
 [sub_resource type="Animation" id="Animation_qkaig"]
@@ -97,6 +100,49 @@ _data = {
 &"walk_on": SubResource("Animation_hxgeb")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_aie5h"]
+atlas = ExtResource("3_id63g")
+region = Rect2(0, 0, 115, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_47cyo"]
+atlas = ExtResource("3_id63g")
+region = Rect2(115, 0, 115, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6httn"]
+atlas = ExtResource("3_id63g")
+region = Rect2(230, 0, 115, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m7ipy"]
+atlas = ExtResource("3_id63g")
+region = Rect2(345, 0, 115, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knf77"]
+atlas = ExtResource("3_id63g")
+region = Rect2(460, 0, 115, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yshwq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aie5h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_47cyo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6httn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m7ipy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knf77")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
 [node name="Intro" type="Node2D"]
 
 [node name="TileMapLayers" type="Node2D" parent="."]
@@ -106,13 +152,8 @@ tile_map_data = PackedByteArray("AAAAAAUAAQAAAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAE
 tile_set = ExtResource("1_id63g")
 metadata/_edit_lock_ = true
 
-[node name="IntroImage" type="Sprite2D" parent="TileMapLayers"]
-position = Vector2(770, 227)
-scale = Vector2(0.802083, 0.802083)
-texture = ExtResource("2_kfsy6")
-
 [node name="Sand" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAKAAEABgAAAAAAAAAKAAIABgADAAEAAAAKAAMABgADAAEAAAAKAAQABgADAAEAAAANAAEABgACAAAAAAANAAIABgADAAEAAAANAAMABgADAAEAAAANAAQABgADAAEAAAAKAAUABgAAAAIAAAALAAEABgABAAMAAAALAAUABgABAAMAAAAMAAEABgABAAMAAAAMAAUABgABAAMAAAANAAUABgACAAIAAAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAA=")
+tile_map_data = PackedByteArray("AAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAA=")
 tile_set = ExtResource("1_id63g")
 
 [node name="Water" type="TileMapLayer" parent="TileMapLayers"]
@@ -141,13 +182,88 @@ position = Vector2(400, 349)
 sprite_frames = ExtResource("3_p845x")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.682571
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
 root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_lp8iq")
 }
+
+[node name="Merchant" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(577, 411)
+sprite_frames = SubResource("SpriteFrames_yshwq")
+autoplay = "default"
+frame = 4
+frame_progress = 0.80819327
+
+[node name="Decoration" type="Node2D" parent="OnTheGround"]
+
+[node name="Trees" type="Node2D" parent="OnTheGround/Decoration"]
+
+[node name="Tree1" parent="OnTheGround/Decoration/Trees" instance=ExtResource("4_6httn")]
+position = Vector2(541, 136)
+scale = Vector2(1.2198, 1.16248)
+sprite_frames = ExtResource("5_m7ipy")
+
+[node name="Tree2" parent="OnTheGround/Decoration/Trees" instance=ExtResource("4_6httn")]
+position = Vector2(702, 113)
+scale = Vector2(1.2198, 1.16248)
+sprite_frames = ExtResource("5_m7ipy")
+
+[node name="Tree3" parent="OnTheGround/Decoration/Trees" instance=ExtResource("4_6httn")]
+position = Vector2(892.00006, 150)
+scale = Vector2(1.2198, 1.16248)
+sprite_frames = ExtResource("5_m7ipy")
+
+[node name="Tree4" parent="OnTheGround/Decoration/Trees" instance=ExtResource("4_6httn")]
+position = Vector2(756, 221)
+scale = Vector2(1.2198, 1.16248)
+sprite_frames = ExtResource("5_m7ipy")
+
+[node name="Tree5" parent="OnTheGround/Decoration/Trees" instance=ExtResource("4_6httn")]
+position = Vector2(613, 253)
+scale = Vector2(1.2198, 1.16248)
+sprite_frames = ExtResource("5_m7ipy")
+
+[node name="Tree6" parent="OnTheGround/Decoration/Trees" instance=ExtResource("4_6httn")]
+position = Vector2(485.00003, 272)
+scale = Vector2(1.2198, 1.16248)
+sprite_frames = ExtResource("5_m7ipy")
+
+[node name="Tree7" parent="OnTheGround/Decoration/Trees" instance=ExtResource("4_6httn")]
+position = Vector2(886, 289)
+scale = Vector2(1.2198, 1.16248)
+sprite_frames = ExtResource("5_m7ipy")
+
+[node name="Tree8" parent="OnTheGround/Decoration/Trees" instance=ExtResource("4_6httn")]
+position = Vector2(98.00006, 218)
+scale = Vector2(1.2198, 1.16248)
+sprite_frames = ExtResource("5_m7ipy")
+
+[node name="Tree9" parent="OnTheGround/Decoration/Trees" instance=ExtResource("4_6httn")]
+position = Vector2(156.00002, 352)
+scale = Vector2(1.2198, 1.16248)
+sprite_frames = ExtResource("5_m7ipy")
+
+[node name="Tree10" parent="OnTheGround/Decoration/Trees" instance=ExtResource("4_6httn")]
+z_index = 1
+position = Vector2(173.00002, 664)
+scale = Vector2(1.2198, 1.16248)
+sprite_frames = ExtResource("5_m7ipy")
+
+[node name="Tree11" parent="OnTheGround/Decoration/Trees" instance=ExtResource("4_6httn")]
+position = Vector2(354, 708)
+scale = Vector2(1.2198, 1.16248)
+sprite_frames = ExtResource("5_m7ipy")
+
+[node name="Tree12" parent="OnTheGround/Decoration/Trees" instance=ExtResource("4_6httn")]
+z_index = 1
+position = Vector2(744.00006, 681)
+scale = Vector2(1.2198, 1.16248)
+sprite_frames = ExtResource("5_m7ipy")
+
+[node name="House_2" parent="OnTheGround/Decoration" instance=ExtResource("6_6httn")]
+position = Vector2(743, 346)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
@@ -159,4 +275,4 @@ next_scene = "uid://ikqwy7kpa5ly"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." instance=ExtResource("6_vwcbt")]
-position = Vector2(125, 403)
+position = Vector2(350, 218)
