@@ -1,4 +1,4 @@
-[gd_scene load_steps=145 format=4 uid="uid://bnrkqt6j6ph7u"]
+[gd_scene load_steps=147 format=4 uid="uid://bnrkqt6j6ph7u"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_ay8xn"]
 [ext_resource type="TileSet" uid="uid://dmg13wgcc7so5" path="res://scenes/quests/story_quests/renya_beyond_sorrow/renya_tileset.tres" id="2_f8t42"]
@@ -5095,6 +5095,12 @@ size = Vector2(168.25, 122)
 script = ExtResource("11_x3apo")
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v54vi"]
+size = Vector2(133, 87)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fgmj8"]
+size = Vector2(133.5, 112)
+
 [node name="StealthTemplateLevel" type="Node2D"]
 y_sort_enabled = true
 
@@ -5329,3 +5335,13 @@ collected_dialogue = ExtResource("12_1cfkr")
 script = ExtResource("13_m7vwu")
 dialogue = ExtResource("14_ooi2f")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(139, 451)
+shape = SubResource("RectangleShape2D_v54vi")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(511.75, 436)
+shape = SubResource("RectangleShape2D_fgmj8")
