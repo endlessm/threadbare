@@ -3,7 +3,6 @@
 @tool
 class_name Player
 extends CharacterBody2D
-var posicion_inicial: Vector2
 
 signal mode_changed(mode: Mode)
 
@@ -154,8 +153,6 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 func _ready() -> void:
-	add_to_group("player")
-	posicion_inicial = global_position
 	
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
@@ -203,14 +200,7 @@ func _process(delta: float) -> void:
 
 	move_and_slide()
 	
-		# 👇 Nueva parte: revisar colisiones
-	for i in range(get_slide_collision_count()):
-		var collision = get_slide_collision(i)
-		var collider = collision.get_collider()
-		
-		if collider.is_in_group("obstacle"):
-			defeat()
-			return
+
 
 func teleport_to(
 	tele_position: Vector2,
@@ -235,8 +225,6 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 		await ready
 	_walk_sound.stream = walk_sound_stream
 	
-
-
 ## Sets the player's [member mode] to [constant DEFEATED], if it is
 ## not already. Reloads the current scene after a short interval.
 ## [br][br]
@@ -254,5 +242,3 @@ func defeat(falling: bool = false) -> void:
 
 	await get_tree().create_timer(2.0).timeout
 	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
-	
-	
