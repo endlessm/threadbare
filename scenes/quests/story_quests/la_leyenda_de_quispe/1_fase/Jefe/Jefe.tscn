@@ -1,0 +1,40 @@
+[gd_scene load_steps=8 format=3 uid="uid://jal35sae0q8a"]
+
+[ext_resource type="Script" uid="uid://bfawqvbf2e2ie" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/1_fase/Jefe/jefe.gd" id="1_xf0fj"]
+[ext_resource type="PackedScene" uid="uid://dc231hghta05i" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/1_fase/Bala/Bala.tscn" id="2_vt1il"]
+[ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="2_w6n1h"]
+[ext_resource type="PackedScene" uid="uid://cadb5gldv1s3w" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/1_fase/Bala_especial_jefe/Bala_especial_jefe.tscn" id="3_w0a2y"]
+[ext_resource type="SpriteFrames" uid="uid://bpr8iqgeltif7" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/2_fase/combat_components/la_leyenda_de_quispe_throwing_enemy.tres" id="5_w0a2y"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w0a2y"]
+radius = 600.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vt1il"]
+radius = 100.0
+
+[node name="Jefe" type="CharacterBody2D"]
+script = ExtResource("1_xf0fj")
+bullet_scene = ExtResource("2_vt1il")
+special_bullet_scene = ExtResource("3_w0a2y")
+
+[node name="SpawnPoint" type="Marker2D" parent="." groups=["spawn_point"]]
+script = ExtResource("2_w6n1h")
+metadata/_custom_type_script = "uid://0enyu5v4ra34"
+
+[node name="ShootTimer" type="Timer" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
+shape = SubResource("CircleShape2D_w0a2y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_vt1il")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("5_w0a2y")
+animation = &"idle"
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
