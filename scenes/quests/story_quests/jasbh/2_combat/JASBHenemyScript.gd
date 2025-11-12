@@ -25,8 +25,12 @@ const WALK_TARGET_SKIP_ANGLE: float = PI / 4.
 ## circle is this proportion of the [member walking_range].
 const WALK_TARGET_SKIP_RANGE: float = 0.25
 
+signal completed
+
 ## The projectile scene to instantiate when spawning a projectile.
 @export var projectile_scene: PackedScene = preload("uid://j8mqjkg0rvai")
+
+@export var projectile_2_scene: PackedScene = preload("uid://j8mqjkg0rvai")
 
 ## The period of time between throwing projectiles.
 ## Note: Currently this is limited by the length of the AnimationPlayer animation "attack".
@@ -81,6 +85,8 @@ var projectile_speed: float = 30.0
 ## The projectile SpriteFrames. It should have a looping animation in autoplay.
 @export var projectile_sprite_frames: SpriteFrames = preload("uid://b00dcfe4dtvkh")
 
+@export var projectile_2_sprite_frames: SpriteFrames = preload("uid://b00dcfe4dtvkh")
+
 ## Sound that plays when the projectile hits something.
 @export var projectile_hit_sound_stream: AudioStream
 
@@ -130,6 +136,11 @@ var _is_defeated: bool
 var _has_started: bool = false
 
 var bullet_change = false
+var pattern_counter = 0
+var rank = 0
+var rank_level_up = 10
+var special_counter = 0
+var boss_hp = 10
 
 @onready var timer: Timer = %Timer
 @onready var projectile_marker: Marker2D = %ProjectileMarker
@@ -269,6 +280,11 @@ func shoot_projectile() -> void:
 		_is_attacking = false
 		return
 	var bullet_count_copy : int
+	if rank >= rank_level_up && rank_level_up < 50:
+		bullet_count = bullet_count + 2
+		projectile_speed = projectile_speed + 5
+		throwing_period = throwing_period - 0.25
+		rank_level_up = rank_level_up + 10
 	if bullet_change:
 		bullet_count_copy = bullet_count - 2
 		bullet_change = false
@@ -280,12 +296,21 @@ func shoot_projectile() -> void:
 	var global_angle := (player.global_position - projectile_marker.global_position).normalized()
 	var dir_angle := global_angle.angle()
 	var speed_change := false
+	var speed_clone := projectile_speed
 	for i in bullet_count_copy:
 		var projectile: Projectile = projectile_scene.instantiate()
-		var offset_angle := start_angle + (separation_angle / (bullet_count_copy - 1)) * i
-		var target_direction := Vector2.from_angle(dir_angle + offset_angle)
-		projectile.direction = target_direction
+		var offset_angle
+		var target_direction
+		if pattern_counter == 3:
+			target_direction = Vector2.from_angle(dir_angle)
+			projectile.direction = target_direction
+			speed_clone = speed_clone + 10
+		else:
+			offset_angle = start_angle + (separation_angle / (bullet_count_copy - 1)) * i
+			target_direction = Vector2.from_angle(dir_angle + offset_angle)
+			projectile.direction = target_direction
 		scale.x = 1 if projectile.direction.x < 0 else -1
+		projectile.speed = speed_clone
 		projectile.label = allowed_labels.pick_random()
 		if projectile.label in color_per_label:
 			projectile.color = color_per_label[projectile.label]
@@ -297,10 +322,10 @@ func shoot_projectile() -> void:
 		projectile.small_fx_scene = projectile_small_fx_scene
 		projectile.big_fx_scene = projectile_big_fx_scene
 		projectile.trail_fx_scene = projectile_trail_fx_scene
-		if speed_change:
+		if speed_change && pattern_counter < 3:
 			projectile.speed = projectile_speed * bullet_speed_multiplier
 		else:
-			projectile.speed = projectile_speed
+			projectile.speed = speed_clone
 		
 		projectile.duration = projectile_duration
 		get_tree().current_scene.add_child(projectile)
@@ -310,14 +335,43 @@ func shoot_projectile() -> void:
 			speed_change = false
 		else:
 			speed_change = true
-	
-
+	if pattern_counter == 3:
+		pattern_counter = 0
+	else:
+		pattern_counter = pattern_counter + 1
+	if rank_level_up < 50:
+		rank = rank + 1
+	if special_counter == 3:
+		global_angle = (player.global_position - projectile_marker.global_position).normalized()
+		dir_angle = global_angle.angle()
+		var projectile2: Projectile = projectile_2_scene.instantiate()
+		var target_direction := Vector2.from_angle(dir_angle)
+		projectile2.direction = target_direction
+		scale.x = 1 if projectile2.direction.x < 0 else -1
+		projectile2.speed = 40
+		projectile2.label = allowed_labels.pick_random()
+		if projectile2.label in color_per_label:
+			projectile2.color = color_per_label[projectile2.label]
+		projectile2.global_position = projectile_marker.global_position + projectile2.direction * distance
+		projectile2.sprite_frames = projectile_2_sprite_frames
+		projectile2.duration = projectile_duration
+		projectile2.hit_sound_stream = projectile_hit_sound_stream
+		get_tree().current_scene.add_child(projectile2)
+		_set_target_position()
+		_is_attacking = false
+		special_counter = 0
+	special_counter = special_counter + 1
 
 func _on_got_hit(body: Node2D) -> void:
 	if body is Projectile and not body.can_hit_enemy and not _is_defeated:
 		return
 	body.queue_free()
+	boss_hp = boss_hp - 1
+	rank = rank + 5
 	animation_player.play(&"got hit")
+	if boss_hp <= 0:
+		_is_defeated = true
+		completed.emit()
 
 
 ## Start attacking and/or walking. The enemy will be idle until this is called.
