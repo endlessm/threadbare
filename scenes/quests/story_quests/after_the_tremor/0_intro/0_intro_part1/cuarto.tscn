@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=4 uid="uid://v0dycqqbwsch"]
+[gd_scene load_steps=15 format=4 uid="uid://v0dycqqbwsch"]
 
 [ext_resource type="TileSet" uid="uid://cfq6453gjaw4f" path="res://scenes/quests/story_quests/after_the_tremor/mystoryquest_tileset.tres" id="1_ddeo8"]
 [ext_resource type="Texture2D" uid="uid://f7wuktrhbbca" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part1/intro_components/Imagenes/bed-free.png" id="2_7txh2"]
-[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_r3ob0"]
+[ext_resource type="Script" uid="uid://qwpw1s4f4e0n" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part1/dark_theme.gd" id="4_2snff"]
+[ext_resource type="SpriteFrames" uid="uid://lpp6mctu1kfx" path="res://scenes/quests/story_quests/after_the_tremor/player_components/bryan_sleeping.tres" id="4_r6dgf"]
 [ext_resource type="Resource" uid="uid://x6hj47nsmetu" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part1/intro_components/cuarto.dialogue" id="5_sax1y"]
+[ext_resource type="Shader" uid="uid://dmm7vum4u3k5e" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part6/night.gdshader" id="6_r6dgf"]
 [ext_resource type="SpriteFrames" uid="uid://4dv47uivdjes" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/mom.tres" id="7_0211v"]
 
 [sub_resource type="Animation" id="Animation_37wf5"]
@@ -39,6 +41,18 @@ tracks/2/path = NodePath(".:flip_h")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../../Cinematic/TextureRect:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -141,13 +155,41 @@ tracks/1/keys = {
 "values": [Vector2(738, 259), Vector2(590, 264)]
 }
 
+[sub_resource type="Animation" id="Animation_2snff"]
+resource_name = "off_texture"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../Cinematic/TextureRect:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hcwr0"]
 _data = {
 &"RESET": SubResource("Animation_37wf5"),
+&"off_texture": SubResource("Animation_2snff"),
 &"run_to_bed": SubResource("Animation_pt6mo"),
 &"walk_off": SubResource("Animation_aerqn"),
 &"walk_on": SubResource("Animation_41r41")
 }
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yqc5d"]
+shader = ExtResource("6_r6dgf")
+shader_parameter/enable_base_dark = true
+shader_parameter/darkness = 1.0
+shader_parameter/vignette_strength = 5.0000002375
+shader_parameter/vignette_size = 0.46100001863762
+shader_parameter/enable_desat = true
+shader_parameter/desaturation = 0.4850000230375
+shader_parameter/enable_noise = false
+shader_parameter/noise_intensity = 0.0550000026125
+shader_parameter/grain_amount = 0.70000003325
 
 [node name="Intro" type="Node2D"]
 
@@ -164,11 +206,6 @@ tile_set = ExtResource("1_ddeo8")
 [node name="BedFree" type="Sprite2D" parent="TileMapLayers"]
 position = Vector2(87.99999, 151)
 scale = Vector2(2.2, 1.475)
-texture = ExtResource("2_7txh2")
-
-[node name="BedFree" type="Sprite2D" parent="TileMapLayers/BedFree"]
-position = Vector2(112.500015, 5.8252335)
-scale = Vector2(0.9786843, 1.03)
 texture = ExtResource("2_7txh2")
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -198,11 +235,27 @@ libraries = {
 &"": SubResource("AnimationLibrary_hcwr0")
 }
 
+[node name="Bryan" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(335.99997, 150)
+scale = Vector2(0.7366665, 0.6666667)
+sprite_frames = ExtResource("4_r6dgf")
+animation = &"blink"
+autoplay = "blink"
+frame_progress = 0.2682215
+speed_scale = 0.7
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
-script = ExtResource("4_r3ob0")
+script = ExtResource("4_2snff")
 dialogue = ExtResource("5_sax1y")
 animation_player = NodePath("../OnTheGround/Mom/AnimationPlayer")
 next_scene = "uid://462n67vv3yea"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="TextureRect" type="ColorRect" parent="Cinematic"]
+material = SubResource("ShaderMaterial_yqc5d")
+offset_left = -75.0
+offset_top = -66.0
+offset_right = 1028.0
+offset_bottom = 608.0
