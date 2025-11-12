@@ -12,6 +12,10 @@ script/source = "extends CharacterBody2D
 @export var multiplicador_correr: float = 2.5
 @export var recarga_stamina_rate: float = 0.5
 
+const LERP_SPEED = 0.15
+const ESCALA_NORMAL = 6.5
+const ESCALA_CORRER = 3.5
+
 var esta_corriendo: bool = false
 var puede_recargar_stamina: bool = false
 var velocidad_actual: float = 0.0
@@ -22,6 +26,14 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	Movimiento()
 	
+	var target_scale: float
+	if esta_corriendo:
+		target_scale = ESCALA_CORRER
+	else:
+		target_scale = ESCALA_NORMAL
+
+	$Light/Light.texture_scale = lerp($Light/Light.texture_scale, target_scale, LERP_SPEED)
+
 func Movimiento() -> void:
 	var direccion: Vector2 = Input.get_vector(\"move_left\", \"move_right\", \"move_up\", \"move_down\")
 	
@@ -33,6 +45,7 @@ func Movimiento() -> void:
 		esta_corriendo = true
 		$ReloadStamina.stop()
 		puede_recargar_stamina = false
+		
 	else:
 		velocidad_actual = float(velocidad_base)
 		
@@ -70,10 +83,11 @@ func _on_reload_stamina_timeout() -> void:
 	puede_recargar_stamina = true
 
 
-func _on_minigame_1_area_entered(_area: Area2D) -> void:
+func _on_minigame_1_body_entered(_body: Node2D) -> void:
 	velocidad_base = 100
 
-func _on_minigame_1_area_exited(_area: Area2D) -> void:
+
+func _on_minigame_1_body_exited(_body: Node2D) -> void:
 	velocidad_base = 200
 "
 
@@ -234,6 +248,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [node name="Player" type="CharacterBody2D"]
+collision_mask = 402
 script = SubResource("GDScript_cco3e")
 
 [node name="Animacion" type="AnimatedSprite2D" parent="."]
@@ -243,6 +258,8 @@ frame_progress = 0.939993
 
 [node name="HitBox" type="Area2D" parent="."]
 position = Vector2(0.5, 16.5)
+collision_layer = 64
+collision_mask = 256
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 position = Vector2(-2, -20.5)
@@ -273,9 +290,10 @@ one_shot = true
 
 [node name="Light" type="Node2D" parent="."]
 
-[node name="Light" type="PointLight2D" parent="Light" groups=["player"]]
+[node name="Light" type="PointLight2D" parent="Light"]
 position = Vector2(35, -20)
 texture = SubResource("GradientTexture2D_42co5")
+texture_scale = 5.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Light/Light"]
 modulate = Color(0.57144064, 0.5615486, 0.12771055, 0.30980393)

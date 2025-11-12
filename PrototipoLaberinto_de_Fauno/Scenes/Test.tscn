@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cntrxfdbr6mku"]
+[gd_scene load_steps=8 format=3 uid="uid://cntrxfdbr6mku"]
 
 [ext_resource type="TileSet" uid="uid://d30304ne3bph" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/tileselaberinto.tres" id="1_6djyp"]
 [ext_resource type="PackedScene" uid="uid://cgecv3j2usijt" path="res://PrototipoLaberinto_de_Fauno/Scenes/Player/player.tscn" id="2_gtubp"]
+[ext_resource type="Script" uid="uid://dggoe706nwbky" path="res://scenes/menus/splash/components/splash.gd" id="3_4fck1"]
 [ext_resource type="PackedScene" uid="uid://b1ap4onq0sl1" path="res://PrototipoLaberinto_de_Fauno/Scenes/Componenst/Enemy.tscn" id="3_gtubp"]
 [ext_resource type="PackedScene" uid="uid://c1cuy5dif4li5" path="res://PrototipoLaberinto_de_Fauno/Scenes/Componenst/Enemy_red.tscn" id="4_agucj"]
 [ext_resource type="PackedScene" uid="uid://c5riuetedecc0" path="res://PrototipoLaberinto_de_Fauno/Scenes/Componenst/luciernaga.tscn" id="5_wpepj"]
@@ -10,23 +11,24 @@
 script/source = "extends Node2D
 
 
-func _on_minigame_1_area_entered(_area: Area2D) -> void:
+
+
+func _on_minigame_1_body_entered(_body: Node2D) -> void:
 	$CharacterBody2D/Timer.start()
 	$CharacterBody2D2/Timer.start()
 
-func _on_minigame_1_area_exited(_area: Area2D) -> void:
+func _on_minigame_1_body_exited(_body: Node2D) -> void:
 	$CharacterBody2D/Timer.stop()
 	$CharacterBody2D2/Timer.stop()
 
-
-func _on_area_2d_area_entered(_area: Area2D) -> void:
+func _on_minigame_2_body_entered(_body: Node2D) -> void:
 	$CharacterBody2D3/Timer.start()
 	$CharacterBody2D4/Timer.start()
 	$CharacterBody2D5/Timer.start()
 	$CharacterBody2D6/Timer.start()
 
 
-func _on_area_2d_area_exited(_area: Area2D) -> void:
+func _on_minigame_2_body_exited(_body: Node2D) -> void:
 	$CharacterBody2D3/Timer.stop()
 	$CharacterBody2D4/Timer.stop()
 	$CharacterBody2D5/Timer.stop()
@@ -36,9 +38,9 @@ func _on_area_2d_area_exited(_area: Area2D) -> void:
 [node name="Node2D" type="Node2D"]
 script = SubResource("GDScript_wpepj")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Minigame2" type="Area2D" parent="."]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Minigame2"]
 polygon = PackedVector2Array(-260, 642, -255, 761, -314, 769, -318, 821, -380, 831, -385, 886, -447, 898, -449, 963, -512, 966, -513, 1018, -569, 1022, -569, 1151, -513, 1147, -510, 1213, -440, 1213, -443, 1274, -376, 1273, -377, 1335, -312, 1336, -308, 1399, -260, 1400, -249, 1534, -129, 1532, -133, 1403, -71, 1404, -62, 1327, -7, 1329, -8, 1145, 137, 1147, 135, 1331, 196, 1338, 200, 1397, 269, 1407, 263, 1525, 379, 1521, 376, 1392, 423, 1391, 451, 1323, 507, 1323, 508, 1271, 570, 1271, 571, 1203, 631, 1200, 631, 1137, 698, 1139, 698, 1024, 633, 1027, 627, 959, 587, 959, 569, 892, 506, 899, 501, 833, 457, 833, 443, 775, 380, 765, 375, 636, 264, 641, 259, 771, 194, 770, 201, 822, 143, 839, 140, 1031, 3, 1033, -4, 838, -64, 839, -73, 780, -140, 771, -133, 649)
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -54,9 +56,11 @@ position = Vector2(-2, 0)
 color = Color(0, 0, 0, 1)
 
 [node name="Player" parent="." groups=["player"] instance=ExtResource("2_gtubp")]
-position = Vector2(-459, -192)
+position = Vector2(-452, -192)
 
 [node name="Minigame1" type="Area2D" parent="."]
+collision_layer = 20
+script = ExtResource("3_4fck1")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Minigame1"]
 polygon = PackedVector2Array(-127, -64, -65, -64, -65, 0, 0, 1, 1, 61, 70, 61, 70, 126, 202, 127, 202, 248, 313, 250, 312, 121, 443, 121, 444, 58, 508, 61, 508, -5, 571, -5, 573, -66, 634, -67, 634, -139, 701, -137, 700, -252, 634, -253, 634, -317, 570, -317, 570, -380, 513, -381, 508, -445, 446, -447, 444, -511, 313, -509, 315, -638, 199, -639, 195, -505, 70, -508, 67, -436, 6, -439, 0, -378, -62, -378, -63, -321, -120, -316, -124, -259, -190, -252, -188, -133, -121, -131)
@@ -98,11 +102,11 @@ player = NodePath("../Player")
 position = Vector2(-192, 706)
 player = NodePath("../Player")
 
-[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
-[connection signal="area_entered" from="Area2D" to="Player" method="_on_minigame_1_area_entered"]
-[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
-[connection signal="area_exited" from="Area2D" to="Player" method="_on_minigame_1_area_exited"]
-[connection signal="area_entered" from="Minigame1" to="." method="_on_minigame_1_area_entered"]
-[connection signal="area_entered" from="Minigame1" to="Player" method="_on_minigame_1_area_entered"]
-[connection signal="area_exited" from="Minigame1" to="." method="_on_minigame_1_area_exited"]
-[connection signal="area_exited" from="Minigame1" to="Player" method="_on_minigame_1_area_exited"]
+[connection signal="body_entered" from="Minigame2" to="." method="_on_minigame_2_body_entered"]
+[connection signal="body_entered" from="Minigame2" to="Player" method="_on_minigame_1_body_entered"]
+[connection signal="body_exited" from="Minigame2" to="." method="_on_minigame_2_body_exited"]
+[connection signal="body_exited" from="Minigame2" to="Player" method="_on_minigame_1_body_exited"]
+[connection signal="body_entered" from="Minigame1" to="." method="_on_minigame_1_body_entered"]
+[connection signal="body_entered" from="Minigame1" to="Player" method="_on_minigame_1_body_entered"]
+[connection signal="body_exited" from="Minigame1" to="." method="_on_minigame_1_body_exited"]
+[connection signal="body_exited" from="Minigame1" to="Player" method="_on_minigame_1_body_exited"]
