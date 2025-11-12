@@ -1,0 +1,401 @@
+[gd_scene load_steps=29 format=4 uid="uid://itffb0po38mn"]
+
+[ext_resource type="Texture2D" uid="uid://cxgiwbgef548u" path="res://scenes/quests/story_quests/marci/assets/sprites/tiles/sueloRocoso.png" id="1_43d37"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="1_lf6x5"]
+[ext_resource type="SpriteFrames" uid="uid://l8snxyxqisao" path="res://scenes/quests/story_quests/marci/player_components/marci_player.tres" id="1_ropwr"]
+[ext_resource type="Texture2D" uid="uid://dtmsv5lqluadq" path="res://scenes/quests/story_quests/marci/assets/sprites/tiles/sueloAgrietado.png" id="2_drmtq"]
+[ext_resource type="Texture2D" uid="uid://cq35v2etgx2jb" path="res://scenes/quests/story_quests/marci/assets/sprites/tiles/paredRocosa.png" id="3_6uswx"]
+[ext_resource type="Texture2D" uid="uid://cnpw8baxwwphp" path="res://scenes/quests/story_quests/marci/assets/sprites/tiles/charcosAgua.png" id="3_rn8sf"]
+[ext_resource type="Texture2D" uid="uid://bu4ap73hyxddu" path="res://scenes/quests/story_quests/marci/assets/sprites/tiles/celdas.png" id="4_drmtq"]
+[ext_resource type="Texture2D" uid="uid://bp31d4xh8hdyw" path="res://scenes/quests/story_quests/marci/assets/sprites/objetos/toilet.png" id="4_x5evy"]
+[ext_resource type="Texture2D" uid="uid://bgt422jfoxcgd" path="res://scenes/quests/story_quests/marci/assets/sprites/objetos/mueble.png" id="5_v4uxp"]
+[ext_resource type="Resource" uid="uid://dc3um62pog8u0" path="res://scenes/quests/story_quests/marci/1_intro_cinematica/intro_components/intro_marci.dialogue" id="6_43d37"]
+[ext_resource type="PackedScene" uid="uid://pddn7lhg43km" path="res://scenes/quests/story_quests/marci/assets/sprites/objetos/celdaAbriendose.tscn" id="8_6uswx"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1wm4c"]
+texture = ExtResource("2_drmtq")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_568b0"]
+texture = ExtResource("1_43d37")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_021y2"]
+tile_size = Vector2i(64, 64)
+sources/1 = SubResource("TileSetAtlasSource_1wm4c")
+sources/2 = SubResource("TileSetAtlasSource_568b0")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r3wbd"]
+texture = ExtResource("4_x5evy")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_x5evy"]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_r3wbd")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x5evy"]
+texture = ExtResource("5_v4uxp")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_v4uxp"]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_x5evy")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v4uxp"]
+texture = ExtResource("3_rn8sf")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_cw8kf"]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_v4uxp")
+
+[sub_resource type="Animation" id="Animation_t5esw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TileMapLayer/OnTheGround/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(249, 632)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TileMapLayer/OnTheGround/Character:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TileMapLayer/OnTheGround/Camera2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1330.5862, 674.527)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TileMapLayer/AnimatedSprite2D:animation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"abriendose"]
+}
+
+[sub_resource type="Animation" id="Animation_yx4qw"]
+resource_name = "marci_on_bed"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TileMapLayer/OnTheGround/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(606.425, 157.77), Vector2(606.425, 157.77)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TileMapLayer/OnTheGround/Character:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"idle", &"idle"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TileMapLayer/OnTheGround/Camera2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2.9666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(678.62, 198.58), Vector2(678.62, 198.58)]
+}
+
+[sub_resource type="Animation" id="Animation_drmtq"]
+resource_name = "walk_off"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TileMapLayer/OnTheGround/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.9666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(941.728, 618.667), Vector2(1302.583, 618.667)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TileMapLayer/OnTheGround/Character:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.9666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"walk"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TileMapLayer/OnTheGround/Camera2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(877.67, 524.92)]
+}
+
+[sub_resource type="Animation" id="Animation_43d37"]
+resource_name = "walk_on"
+length = 7.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TileMapLayer/OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.7333333, 3.5333333, 5.9666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [&"walk", &"idle", &"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TileMapLayer/OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2.7333333, 3.5333333, 5.9666667),
+"transitions": PackedFloat32Array(1, -2, -2, -2),
+"update": 0,
+"values": [Vector2(606.425, 157.77), Vector2(931.843, 346.902), Vector2(931.843, 346.902), Vector2(941.728, 618.667)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TileMapLayer/OnTheGround/Camera2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3.5333333, 5.9666667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(678.62, 198.58), Vector2(740.4, 198.58), Vector2(877.67, 524.92)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TileMapLayer/AnimatedSprite2D:animation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.033333335, 2.7333333, 3.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [&"default", &"abriendose", &"abierto"]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_t5esw"]
+_data = {
+&"RESET": SubResource("Animation_t5esw"),
+&"dream_on": SubResource("Animation_yx4qw"),
+&"walk_off": SubResource("Animation_drmtq"),
+&"walk_on": SubResource("Animation_43d37")
+}
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7sjsx"]
+texture = ExtResource("3_6uswx")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_25jyd"]
+texture = ExtResource("4_drmtq")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_c6uet"]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_7sjsx")
+sources/1 = SubResource("TileSetAtlasSource_25jyd")
+
+[node name="Intro" type="Node2D"]
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+color = Color(0.02573248, 0.11884002, 0.2110669, 1)
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.37036446, 0.3703645, 0.37036446, 1)
+
+[node name="TileMapLayer" type="Node2D" parent="."]
+
+[node name="suelo" type="TileMapLayer" parent="TileMapLayer"]
+tile_map_data = PackedByteArray("AAAAAAEAAQAAAAEAAAAAAAAAAQAAAAAAAAAAAAIAAQAAAAEAAAAAAAMAAQAAAAEAAAAAAAQAAQAAAAEAAAAAAAUAAQABAAEAAAAAAAYAAQAAAAEAAAABAAAAAQABAAAAAAACAAAAAQABAAAAAAADAAAAAQABAAAAAAAEAAAAAQABAAAAAAAFAAAAAQABAAAAAAAGAAAAAQABAAAAAAAHAAAAAQABAAAAAAAIAAAAAQABAAAAAAAJAAAAAQABAAAAAAAKAAAAAQABAAAAAAALAAAAAQABAAAAAAAMAAAAAQABAAAAAAANAAAAAQABAAAAAAAOAAAAAQABAAAAAAAPAAAAAQABAAAAAAAQAAAAAQABAAAAAAARAAAAAQABAAAAAAASAAAAAQABAAAAAAATAAAAAQACAAAAAAATAAEAAQACAAEAAAATAAIAAQACAAEAAAATAAMAAQACAAEAAAATAAQAAQACAAEAAAATAAUAAQACAAEAAAATAAYAAQACAAEAAAATAAcAAQACAAEAAAATAAgAAQACAAEAAAATAAkAAQABAAEAAAATAAoAAQABAAEAAAAAAAcAAQAAAAEAAAAAAAgAAQAAAAEAAAAAAAkAAQAAAAEAAAAAAAoAAQAAAAEAAAABAAEAAQABAAEAAAACAAEAAQABAAEAAAADAAEAAQABAAEAAAAEAAEAAQABAAEAAAAFAAEAAQABAAEAAAAGAAEAAQABAAEAAAAHAAEAAQABAAEAAAAIAAEAAQABAAEAAAAJAAEAAQABAAEAAAAKAAEAAQABAAEAAAALAAEAAQABAAEAAAAMAAEAAQABAAEAAAANAAEAAQABAAEAAAAOAAEAAQABAAEAAAAOAAIAAQABAAEAAAAPAAIAAQABAAEAAAAPAAEAAQABAAEAAAAQAAEAAQABAAEAAAARAAEAAQABAAEAAAARAAIAAQABAAEAAAAQAAIAAQABAAEAAAANAAIAAQABAAEAAAAMAAIAAQABAAEAAAALAAIAAQABAAEAAAAKAAIAAgABAAEAAAAJAAIAAgABAAEAAAAIAAIAAQABAAEAAAAHAAIAAQABAAEAAAAGAAIAAQABAAEAAAAFAAIAAQABAAEAAAAEAAIAAQABAAEAAAADAAIAAQABAAEAAAADAAMAAQABAAEAAAAEAAMAAQABAAEAAAAFAAMAAQABAAEAAAAGAAMAAQABAAEAAAAHAAMAAQABAAEAAAAIAAMAAQABAAEAAAAJAAMAAgABAAEAAAAKAAMAAQABAAEAAAARAAMAAgABAAEAAAASAAMAAQABAAEAAAASAAIAAQABAAEAAAASAAEAAQABAAEAAAARAAQAAgABAAEAAAARAAUAAQABAAEAAAAQAAUAAgABAAEAAAAPAAUAAgABAAEAAAAOAAUAAQABAAEAAAANAAUAAQABAAEAAAANAAQAAQABAAEAAAAMAAQAAQABAAEAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAAJAAQAAgABAAEAAAAIAAQAAQABAAEAAAAHAAQAAQABAAEAAAAHAAUAAQABAAEAAAAHAAYAAQABAAEAAAAIAAcAAQABAAEAAAAJAAcAAQABAAEAAAAKAAcAAgABAAEAAAAMAAcAAQABAAEAAAANAAcAAQABAAEAAAAOAAYAAgABAAEAAAAPAAYAAgABAAEAAAAQAAYAAQABAAEAAAAQAAQAAgABAAEAAAAPAAQAAQABAAEAAAAOAAQAAQABAAEAAAAMAAMAAQABAAEAAAANAAMAAQABAAEAAAAOAAMAAQABAAEAAAAPAAMAAQABAAEAAAARAAYAAQABAAEAAAAQAAcAAQABAAEAAAAPAAcAAgABAAEAAAAOAAcAAgABAAEAAAANAAYAAQABAAEAAAAMAAUAAQABAAEAAAASAAYAAQABAAEAAAASAAcAAQABAAEAAAARAAcAAQABAAEAAAAQAAMAAQABAAEAAAARAAgAAQABAAEAAAAQAAgAAgABAAEAAAASAAQAAQABAAEAAAASAAUAAQABAAEAAAASAAgAAQABAAEAAAASAAkAAQABAAEAAAAPAAkAAgABAAEAAAAOAAkAAgABAAEAAAANAAkAAgABAAEAAAAMAAkAAgABAAEAAAALAAkAAgABAAEAAAAKAAkAAQABAAEAAAASAAoAAQABAAEAAAAPAAoAAQABAAEAAAAOAAoAAQABAAEAAAANAAoAAQABAAEAAAAMAAoAAQABAAEAAAALAAoAAQABAAEAAAAKAAoAAQABAAEAAAAJAAoAAQABAAEAAAAIAAoAAQABAAEAAAAHAAoAAQABAAEAAAAGAAoAAQABAAEAAAAFAAoAAQABAAEAAAAEAAoAAQABAAEAAAADAAoAAQABAAEAAAACAAoAAQABAAEAAAACAAkAAQABAAEAAAACAAgAAQABAAEAAAABAAgAAQABAAEAAAABAAcAAQABAAEAAAABAAYAAQABAAEAAAABAAUAAQABAAEAAAABAAQAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAACAAMAAQABAAEAAAACAAIAAQABAAEAAAACAAQAAQABAAEAAAACAAUAAQABAAEAAAACAAYAAQABAAEAAAACAAcAAQABAAEAAAADAAgAAQABAAEAAAADAAkAAQABAAEAAAADAAcAAQABAAEAAAADAAYAAgABAAEAAAADAAUAAgABAAEAAAADAAQAAQABAAEAAAAEAAQAAQABAAEAAAAFAAUAAQABAAEAAAAGAAYAAQABAAEAAAAHAAcAAQABAAEAAAAGAAcAAgABAAEAAAAFAAcAAgABAAEAAAAFAAYAAgABAAEAAAAEAAYAAgABAAEAAAAGAAQAAQABAAEAAAAJAAUAAgABAAEAAAAKAAYAAQABAAEAAAAJAAkAAQABAAEAAAAIAAgAAQABAAEAAAAHAAgAAQABAAEAAAAEAAUAAQABAAEAAAAFAAQAAQABAAEAAAAGAAUAAQABAAEAAAAIAAYAAQABAAEAAAAGAAgAAgABAAEAAAAEAAcAAQABAAEAAAAIAAUAAQABAAEAAAAKAAUAAQABAAEAAAALAAUAAQABAAEAAAAMAAYAAQABAAEAAAAMAAgAAQABAAEAAAALAAgAAgABAAEAAAAKAAQAAQABAAEAAAAJAAYAAQABAAEAAAAPAAgAAgABAAEAAAAOAAgAAgABAAEAAAALAAYAAQABAAEAAAAFAAgAAgABAAEAAAAEAAgAAgABAAEAAAAEAAkAAgABAAEAAAAHAAkAAQABAAEAAAAIAAkAAQABAAEAAAANAAgAAgABAAEAAAAGAAkAAQABAAEAAAAFAAkAAgABAAEAAAABAAkAAQABAAEAAAABAAoAAQABAAEAAAAOAAsAAgABAAEAAAANAAsAAgABAAEAAAAMAAsAAgABAAEAAAALAAsAAgABAAEAAAAKAAsAAgABAAEAAAAJAAsAAgABAAEAAAAIAAsAAgABAAEAAAAHAAsAAgABAAEAAAAGAAsAAgABAAEAAAAFAAsAAgABAAEAAAAEAAsAAgABAAEAAAADAAsAAgABAAEAAAACAAsAAgABAAEAAAABAAsAAgABAAEAAAAAAAsAAgABAAEAAAAPAAsAAgABAAEAAAAQAAsAAgABAAEAAAARAAsAAgABAAEAAAASAAsAAgABAAEAAAATAAsAAgABAAEAAAAKAAgAAgABAAEAAAAJAAgAAQABAAEAAAALAAcAAQABAAEAAAARAAkAAQABAAEAAAAQAAkAAgABAAEAAAAQAAoAAQABAAEAAAARAAoAAQABAAEAAAA=")
+tile_set = SubResource("TileSet_021y2")
+
+[node name="toilet" type="TileMapLayer" parent="TileMapLayer"]
+tile_map_data = PackedByteArray("AAAPAAMAAAAAAAAAABA=")
+tile_set = SubResource("TileSet_x5evy")
+
+[node name="mueble" type="TileMapLayer" parent="TileMapLayer"]
+tile_map_data = PackedByteArray("AAAOAAIAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_v4uxp")
+
+[node name="charcos" type="TileMapLayer" parent="TileMapLayer"]
+tile_map_data = PackedByteArray("AAARAAoAAAAAAAEAAAASAAoAAAABAAEAAAARAAkAAAAAAAAAAAASAAkAAAABAAAAAAANAAYAAAACAAAAAAAKAAcAAAAAAAIAAAALAAcAAAABAAIAAAA=")
+tile_set = SubResource("TileSet_cw8kf")
+
+[node name="OnTheGround" type="Node2D" parent="TileMapLayer"]
+y_sort_enabled = true
+
+[node name="Camera2D" type="Camera2D" parent="TileMapLayer/OnTheGround"]
+position = Vector2(1330.5862, 674.527)
+scale = Vector2(2.1600013, 1)
+zoom = Vector2(1.845, 1.845)
+limit_bottom = 730
+
+[node name="Character" type="AnimatedSprite2D" parent="TileMapLayer/OnTheGround"]
+position = Vector2(249, 632)
+sprite_frames = ExtResource("1_ropwr")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TileMapLayer/OnTheGround"]
+root_node = NodePath("../../..")
+libraries = {
+&"": SubResource("AnimationLibrary_t5esw")
+}
+
+[node name="pared" type="TileMapLayer" parent="TileMapLayer"]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAQAAAABAAAAAAABAAQAAAACAAAAAAABAAQAAAADAAAAAAABAAQAAAAEAAAAAAABAAQAAAAFAAAAAAABAAQAAAAGAAAAAAABAAQAAAAHAAAAAAABAAQAAAAIAAAAAAAEAAAAAAAJAAAAAAABAAQAAAAKAAAAAAABAAQAAAALAAAAAAABAAQAAAAMAAAAAAABAAQAAAANAAAAAAABAAQAAAAOAAAAAAABAAQAAAAPAAAAAAABAAQAAAAIAAEAAAADAAEAAAABAAEAAAABAAUAAAACAAEAAAABAAUAAAADAAEAAAABAAUAAAAEAAEAAAABAAUAAAAFAAEAAAABAAUAAAAGAAEAAAABAAUAAAAHAAEAAAABAAUAAAAIAAIAAAADAAEAAAAIAAMAAAADAAEAAAAIAAQAAAADAAIAAAAIAAUAAAADAAMAAAAQAAEAAAAAAAEAAAAQAAIAAAAAAAEAAAAQAAMAAAAAAAEAAAAQAAQAAAAAAAIAAAAQAAUAAAAAAAMAAAAJAAEAAAABAAUAAAAKAAEAAAABAAUAAAALAAEAAAABAAUAAAAMAAEAAAABAAUAAAANAAEAAAABAAUAAAAOAAEAAAABAAUAAAAPAAEAAAABAAUAAAAQAAAAAAABAAAAAAARAAAAAAABAAAAAAASAAAAAAABAAAAAAATAAAAAAABAAAAAAAAAAEAAAADAAEAAAAAAAIAAAADAAEAAAAAAAMAAAADAAEAAAAAAAQAAAADAAEAAAAAAAUAAAADAAEAAAAAAAYAAAADAAEAAAAAAAcAAAADAAEAAAAAAAgAAAADAAEAAAAAAAkAAAADAAEAAAAAAAoAAAADAAEAAAAJAAUAAQAAAAAAAAAKAAUAAQABAAAAAAALAAUAAQAAAAAAAAAMAAUAAQABAAAAAAANAAUAAQACAAAAAAAPAAUAAQABAAAAAAAHAAUAAQACAAAAAAAGAAUAAQADAAAAAAAFAAUAAQABAAAAAAAEAAUAAQABAAAAAAADAAUAAQABAAAAAAACAAUAAQABAAAAAAABAAUAAQABAAAAAAARAAUAAAABAAMAAAASAAUAAAABAAMAAAATAAUAAAABAAMAAAARAAQAAAABAAIAAAASAAQAAAABAAIAAAATAAQAAAABAAIAAAARAAEAAAABAAEAAAASAAEAAAABAAEAAAASAAIAAAABAAEAAAATAAIAAAABAAEAAAATAAEAAAABAAEAAAAUAAEAAAABAAEAAAARAAIAAAABAAEAAAARAAMAAAABAAEAAAASAAMAAAABAAEAAAATAAMAAAABAAEAAAAQAAsAAAABAAAAAAAPAAsAAAABAAAAAAAOAAsAAAABAAAAAAANAAsAAAABAAAAAAAMAAsAAAABAAAAAAALAAsAAAABAAAAAAAKAAsAAAABAAAAAAAJAAsAAAABAAAAAAAIAAsAAAABAAAAAAAHAAsAAAABAAAAAAAGAAsAAAABAAAAAAAFAAsAAAABAAAAAAAEAAsAAAABAAAAAAADAAsAAAABAAAAAAACAAsAAAABAAAAAAABAAsAAAABAAAAAAAAAAsAAAABAAAAAAARAAsAAAABAAAAAAASAAsAAAABAAAAAAATAAsAAAABAAAAAAA=")
+tile_set = SubResource("TileSet_c6uet")
+
+[node name="AnimatedSprite2D" parent="TileMapLayer" instance=ExtResource("8_6uswx")]
+position = Vector2(928, 352)
+animation = &"abriendose"
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
+script = ExtResource("1_lf6x5")
+dialogue = ExtResource("6_43d37")
+animation_player = NodePath("../TileMapLayer/OnTheGround/AnimationPlayer")
+next_scene = "uid://bme3hwyxlawtw"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
