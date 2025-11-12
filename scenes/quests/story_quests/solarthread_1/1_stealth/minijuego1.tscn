@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=4 uid="uid://ng6btae7fiwj"]
+[gd_scene load_steps=18 format=4 uid="uid://ng6btae7fiwj"]
 
 [ext_resource type="TileSet" uid="uid://brkuadfux2drl" path="res://scenes/quests/story_quests/solarthread_1/my_tiles/sand_floor.tres" id="1_3juu8"]
 [ext_resource type="TileSet" uid="uid://cfguao3ikr2md" path="res://scenes/quests/story_quests/solarthread_1/my_tiles/columnaarena1.tres" id="3_mxoh4"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_t2n3p"]
 [ext_resource type="Texture2D" uid="uid://b6p2tlelcb36w" path="res://scenes/quests/story_quests/solarthread_1/my_tiles/luz1.png" id="5_mxoh4"]
 [ext_resource type="SpriteFrames" uid="uid://4uhvya1ymh8y" path="res://scenes/quests/story_quests/solarthread_1/player_components/solarthread_1_player.tres" id="5_nyy0g"]
+[ext_resource type="SpriteFrames" uid="uid://dhio0f8mcmdii" path="res://scenes/quests/story_quests/solarthread_1/quri1.tres" id="8_c5q7r"]
 [ext_resource type="AudioStream" uid="uid://bxlt1m57g2oj3" path="res://scenes/quests/story_quests/solarthread_1/my_tiles/musicalab1-1.mp3" id="8_t2n3p"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="9_755mb"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="9_c28wv"]
@@ -56,11 +57,11 @@ range_z_max = 100
 texture = ExtResource("5_mxoh4")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-visible = false
 color = Color(0.01699838, 0.010595616, 0.08914431, 0.8235294)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_t2n3p")
+volume_db = -27.0
 autoplay = true
 
 [node name="Checkpoints" type="Node2D" parent="."]
@@ -70,6 +71,7 @@ scale = Vector2(0.5, 0.5)
 
 [node name="Checkpoint" parent="Checkpoints" instance=ExtResource("9_755mb")]
 position = Vector2(1691, 728)
+sprite_frames = ExtResource("8_c5q7r")
 dialogue = ExtResource("10_c28wv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint"]
