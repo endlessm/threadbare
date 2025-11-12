@@ -1,0 +1,73 @@
+[gd_scene load_steps=11 format=3 uid="uid://bufi82s2dixsn"]
+
+[ext_resource type="Texture2D" uid="uid://bprrxiv7b4jwx" path="res://scenes/quests/story_quests/spectral_code__story/0_intro/intro_components/TERRENO COSTA/AGUA-1.png" id="1_6drjd"]
+[ext_resource type="Script" uid="uid://dptw7lox7k3wg" path="res://scenes/quests/story_quests/spectral_code__story/0_intro/intro_components/TERRENO COSTA/agua_1.gd" id="1_ffb0c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qakj7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6drjd"]
+atlas = ExtResource("1_6drjd")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ffb0c"]
+atlas = ExtResource("1_6drjd")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dcsgy"]
+atlas = ExtResource("1_6drjd")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5a30v"]
+atlas = ExtResource("1_6drjd")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hmduw"]
+atlas = ExtResource("1_6drjd")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qakj7"]
+atlas = ExtResource("1_6drjd")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hmduw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6drjd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ffb0c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dcsgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5a30v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hmduw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qakj7")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="AGUA-1" type="Node2D"]
+scale = Vector2(2, 2)
+script = ExtResource("1_ffb0c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1.0000002)
+scale = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_qakj7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -1.0000002)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_hmduw")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.6542587
