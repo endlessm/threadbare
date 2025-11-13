@@ -10,6 +10,7 @@ extends Resource
 @export var move_left: Texture2D
 @export var move_right: Texture2D
 
+
 # Add more actions here as your project requires.
 func get_texture_for_action(action_name: String) -> Texture2D:
 	# Match the action name and return the associated exported texture.
