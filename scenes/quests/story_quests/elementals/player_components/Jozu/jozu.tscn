@@ -1,0 +1,74 @@
+[gd_scene load_steps=7 format=3 uid="uid://c2dk88w1i3yey"]
+
+[ext_resource type="Script" uid="uid://cxchosgwf8kr2" path="res://scenes/quests/story_quests/elementals/1_room/jozu.gd" id="1_pwaf6"]
+[ext_resource type="PackedScene" uid="uid://dbdkhhbwd32lu" path="res://scenes/quests/story_quests/elementals/player_components/Fireball/bullet.tscn" id="2_1y7gw"]
+[ext_resource type="SpriteFrames" uid="uid://0in7xun5tr8u" path="res://scenes/quests/story_quests/elementals/player_components/player1.tres" id="3_78idv"]
+[ext_resource type="Texture2D" uid="uid://dt5lxkbt5rhw2" path="res://scenes/quests/story_quests/elementals/player_components/Fireball/Light.png" id="4_7hwx3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ky21q"]
+size = Vector2(17.00005, 54)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pwaf6"]
+size = Vector2(32, 129)
+
+[node name="Jozu" type="CharacterBody2D" groups=["player"]]
+collision_mask = 17
+script = ExtResource("1_pwaf6")
+bullet_scene = ExtResource("2_1y7gw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1.5258789e-05, -74)
+rotation = 6.2831855
+sprite_frames = ExtResource("3_78idv")
+animation = &"attack_front"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+process_mode = 3
+position = Vector2(0, -57)
+limit_left = -3
+limit_top = 3
+limit_right = 9999997
+limit_bottom = 10000003
+position_smoothing_speed = 10.0
+editor_draw_limits = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3.872363e-06, 0.50004005)
+rotation = -1.5708
+shape = SubResource("RectangleShape2D_ky21q")
+
+[node name="InvulnerabilityTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(1.9999999, -54.899986)
+scale = Vector2(0.8, 0.87890816)
+energy = 0.5
+texture = ExtResource("4_7hwx3")
+
+[node name="SpawnPointRight" type="Marker2D" parent="."]
+position = Vector2(37, -57)
+
+[node name="SpawnPointLeft" type="Marker2D" parent="."]
+position = Vector2(-37, -57)
+
+[node name="SpawnPointUp" type="Marker2D" parent="."]
+position = Vector2(0, -57)
+
+[node name="SpawnPointDown" type="Marker2D" parent="."]
+position = Vector2(0, -1)
+
+[node name="BulletSpawnRaycast" type="RayCast2D" parent="."]
+collision_mask = 16
+
+[node name="HitBox" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 64
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, -60)
+shape = SubResource("RectangleShape2D_pwaf6")
+debug_color = Color(0.990065, 0, 0.28292, 0.42)
+
+[connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]

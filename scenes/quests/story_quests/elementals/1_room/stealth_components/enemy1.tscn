@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://dn5eeloem4mw3"]
+
+[ext_resource type="Script" uid="uid://beqhvepvx6iai" path="res://scenes/quests/story_quests/elementals/1_room/stealth_components/enemy_1.gd" id="1_lbmph"]
+[ext_resource type="SpriteFrames" uid="uid://deosvk5k4su5f" path="res://scenes/quests/story_quests/NO_EDIT/2_NO_EDIT_combat/NO_EDIT_combat_components/NO_EDIT_throwing_enemy.tres" id="2_8q6ks"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lbmph"]
+height = 38.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_60u3m"]
+radius = 560.0036
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbmph"]
+size = Vector2(83, 78)
+
+[node name="enemy1" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 2
+collision_mask = 19
+script = ExtResource("1_lbmph")
+attack_range = 60.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["throwing_enemy"]]
+unique_name_in_owner = true
+position = Vector2(0, -30)
+sprite_frames = ExtResource("2_8q6ks")
+animation = &"defeated"
+autoplay = "idle"
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 5)
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_lbmph")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(0, -41)
+shape = SubResource("CircleShape2D_60u3m")
+debug_color = Color(0.9761607, 0, 0.4175378, 0.41960785)
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 128
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(-2.5, -33)
+shape = SubResource("RectangleShape2D_lbmph")
+debug_color = Color(0.990065, 0, 0.28292, 0.42)
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]

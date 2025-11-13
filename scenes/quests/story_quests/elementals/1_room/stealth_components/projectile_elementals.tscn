@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://bt3n2sv0l3p6d"]
+
+[ext_resource type="Script" uid="uid://cbrgjs46igw85" path="res://scenes/quests/story_quests/elementals/1_room/stealth_components/projectile_elementals.gd" id="1_eanrv"]
+[ext_resource type="SpriteFrames" uid="uid://qtq61h7mprbc" path="res://scenes/quests/story_quests/el_juguete_perdido/2_combat/components/projectile_spriteframes.tres" id="2_oxrwa"]
+[ext_resource type="AudioStream" uid="uid://7jlv4wqpihl7" path="res://scenes/game_elements/props/projectile/components/blob_hit.wav" id="3_j24yn"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_oxrwa"]
+bounce = 3.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o6xl0"]
+size = Vector2(58, 53)
+
+[node name="Projectile" type="RigidBody2D" groups=["enemy_projectile", "projectiles"]]
+collision_layer = 256
+collision_mask = 80
+physics_material_override = SubResource("PhysicsMaterial_oxrwa")
+gravity_scale = 0.0
+script = ExtResource("1_eanrv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 2)
+shape = SubResource("RectangleShape2D_o6xl0")
+
+[node name="VisibleThings" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-3, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VisibleThings"]
+unique_name_in_owner = true
+sprite_frames = ExtResource("2_oxrwa")
+autoplay = "default"
+frame_progress = 0.48413378
+
+[node name="TrailFXMarker" type="Marker2D" parent="VisibleThings"]
+unique_name_in_owner = true
+position = Vector2(-40, 0)
+
+[node name="DurationTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("3_j24yn")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="DurationTimer" to="." method="_on_duration_timer_timeout"]
