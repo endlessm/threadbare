@@ -31,8 +31,17 @@ func _ready() -> void:
 		if Transitions.is_running():
 			await Transitions.finished
 
-		var elder := _find_elder(GameState.current_quest)
-		await elder.congratulate_player()
+		var elder: Elder
+		if GameState.current_quest:
+			elder = _find_elder(GameState.current_quest)
+		elif elders:
+			# If the game was started from a specific scene (in the editor or
+			# via the #fragment in the web build), rather than by picking a
+			# quest from an elder, GameState.current_quest will be null.
+			# Pick any elder.
+			elder = elders[0]
+		if elder:
+			await elder.congratulate_player()
 
 		GameState.set_incorporating_threads(false)
 		GameState.mark_quest_completed()
