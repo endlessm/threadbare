@@ -1,4 +1,4 @@
-class_name Player
+class_name Jozu
 extends CharacterBody2D
 
 @export var bullet_scene: PackedScene

@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3jyc0gb5lpap"]
+
+[ext_resource type="Script" uid="uid://dd48wpstumfko" path="res://scenes/quests/story_quests/elementals/1_room/meta.gd" id="1_7mmbq"]
+[ext_resource type="SpriteFrames" uid="uid://vay3whr8g5la" path="res://scenes/quests/story_quests/el_juguete_perdido/player_components/npcs_components/sheep_idle.tres" id="1_vsuiy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_570hl"]
+radius = 12.0
+
+[node name="Meta" type="Node2D"]
+script = ExtResource("1_7mmbq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("1_vsuiy")
+animation = &"idle"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_570hl")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
