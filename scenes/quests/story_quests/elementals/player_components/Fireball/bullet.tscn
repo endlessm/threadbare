@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=3 uid="uid://dbdkhhbwd32lu"]
+
+[ext_resource type="Script" uid="uid://upak35ra2dv4" path="res://scenes/quests/story_quests/elementals/player_components/Fireball/bullet.gd" id="1_e1ra6"]
+[ext_resource type="SpriteFrames" uid="uid://61yy0yh5qyr8" path="res://scenes/quests/story_quests/elementals/player_components/Fireball/bullet.tres" id="2_gu25n"]
+[ext_resource type="AudioStream" uid="uid://7jlv4wqpihl7" path="res://scenes/game_elements/props/projectile/components/blob_hit.wav" id="3_gu25n"]
+[ext_resource type="Texture2D" uid="uid://dt5lxkbt5rhw2" path="res://scenes/quests/story_quests/elementals/player_components/Fireball/Light.png" id="4_gu25n"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_e1ra6"]
+bounce = 3.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gu25n"]
+size = Vector2(63, 43)
+
+[node name="Bullet" type="RigidBody2D" groups=["bullet"]]
+z_index = 2
+collision_layer = 256
+collision_mask = 144
+physics_material_override = SubResource("PhysicsMaterial_e1ra6")
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_e1ra6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3.5, -2.5)
+shape = SubResource("RectangleShape2D_gu25n")
+
+[node name="VisibleThings" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-3, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VisibleThings"]
+unique_name_in_owner = true
+sprite_frames = ExtResource("2_gu25n")
+autoplay = "default"
+frame_progress = 0.43688214
+
+[node name="TrailFXMarker" type="Marker2D" parent="VisibleThings"]
+unique_name_in_owner = true
+position = Vector2(-40, 0)
+
+[node name="LifetimeTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 10.0
+one_shot = true
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("3_gu25n")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.97799164, 0.44195777, 0, 1)
+energy = 0.69
+texture = ExtResource("4_gu25n")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="LifetimeTimer" to="." method="_on_lifetime_timer_timeout"]
