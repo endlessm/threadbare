@@ -1,8 +1,10 @@
-[gd_scene load_steps=19 format=4 uid="uid://bfns6edhl5hsr"]
+[gd_scene load_steps=24 format=4 uid="uid://bfns6edhl5hsr"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_1r4o3"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_af8bo"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_ipyye"]
+[ext_resource type="Texture2D" uid="uid://fqphaan0yus8" path="res://scenes/quests/story_quests/story_quest_aventura/1_stealth/stealth_components/VELA.png" id="3_n4cyb"]
+[ext_resource type="PackedScene" uid="uid://p6q2uo2us0il" path="res://scenes/quests/story_quests/shjourney/light.tscn" id="4_aupm2"]
 [ext_resource type="SpriteFrames" uid="uid://b8lniybn3bqb1" path="res://scenes/quests/story_quests/story_quest_aventura/player_components/story_quest_aventura_player.tres" id="4_n4cyb"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="5_aupm2"]
 [ext_resource type="SpriteFrames" uid="uid://dwl4fn85glue" path="res://scenes/quests/story_quests/story_quest_aventura/1_stealth/stealth_components/story_quest_aventura_guard_enemy.tres" id="6_v1x6d"]
@@ -14,6 +16,139 @@
 [ext_resource type="Resource" uid="uid://dpyvkd8x34rrj" path="res://scenes/quests/story_quests/story_quest_aventura/1_stealth/stealth_components/story_quest_aventura_collected.dialogue" id="12_q8tju"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="13_lkogb"]
 [ext_resource type="Resource" uid="uid://cb4umw7an8qx" path="res://scenes/quests/story_quests/story_quest_aventura/1_stealth/stealth_components/story_quest_aventura_stealth.dialogue" id="14_ekmsc"]
+
+[sub_resource type="Animation" id="Animation_shlmy"]
+resource_name = "OffLight"
+length = 15.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5.72692),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../SoundEffects/offLamp:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(5.06667),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../SoundEffects/Dessapear:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(8.13333),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../../SoundEffects/voice:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(14.8667),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../../SoundEffects/clock:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_fcqpt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../SoundEffects/offLamp:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../SoundEffects/Dessapear:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../../SoundEffects/voice:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../../SoundEffects/clock:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0y5ta"]
+_data = {
+&"OffLight": SubResource("Animation_shlmy"),
+&"RESET": SubResource("Animation_fcqpt")
+}
 
 [sub_resource type="Curve2D" id="Curve2D_fhfe0"]
 _data = {
@@ -56,6 +191,21 @@ metadata/_edit_lock_ = true
 tile_map_data = PackedByteArray("AAAFAAQABAAAAAIAAAAFAAUABAAAAAMAAAAGAAQABAABAAQAAAAGAAUABAABAAMAAAAHAAQABAABAAIAAAAHAAUABAABAAMAAAAIAAQABAABAAQAAAAJAAQABAABAAIAAAAKAAQABAACAAIAAAAIAAUABAABAAMAAAAJAAUABAABAAMAAAAKAAUABAACAAMAAAAFAAMABAAAAAEAAAAGAAMABAABAAAAAAAHAAMABAABAAAAAAAIAAMABAABAAAAAAAJAAMABAABAAAAAAAKAAMABAABAAAAAAAFAAkABAAAAAEAAAAGAAkABAABAAEAAAAHAAkABAABAAEAAAAIAAkABAABAAEAAAAIAAoABAABAAEAAAAJAAkABAABAAEAAAAKAAkABAABAAEAAAALAAkABAABAAEAAAALAAoABAABAAEAAAAKAAoABAABAAEAAAAJAAoABAABAAEAAAAHAAoABAABAAEAAAAGAAoABAABAAEAAAAFAAoABAAAAAEAAAALAAMABAABAAQAAAALAAQABAABAAMAAAAMAAMABAABAAQAAAAMAAQABAABAAMAAAANAAMABAABAAAAAAANAAQABAAAAAIAAAANAAUABAAAAAMAAAAOAAMABAABAAAAAAAPAAMABAABAAAAAAAOAAQABAABAAIAAAAPAAQABAABAAIAAAAPAAUABAABAAMAAAAOAAUABAABAAMAAAAFAAgABAAAAAAAAAAPAAkABAABAAEAAAAPAAgABAABAAAAAAAOAAkABAABAAEAAAAOAAgABAABAAAAAAANAAkABAABAAEAAAANAAgABAABAAAAAAAMAAkABAABAAEAAAAMAAgABAABAAAAAAALAAgABAABAAAAAAAKAAgABAABAAAAAAAJAAgABAABAAAAAAAIAAgABAABAAAAAAAHAAgABAABAAAAAAAGAAgABAABAAAAAAAPAAoABAABAAEAAAAOAAoABAABAAEAAAANAAoABAABAAEAAAAMAAoABAABAAEAAAAdAAkABAABAAEAAAAdAAgABAABAAAAAAAcAAkABAABAAEAAAAcAAgABAABAAAAAAAbAAkABAABAAEAAAAbAAgABAABAAAAAAAaAAkABAABAAEAAAAaAAgABAABAAAAAAAZAAkABAABAAEAAAAZAAgABAABAAAAAAAYAAkABAABAAEAAAAYAAgABAABAAAAAAAXAAkABAABAAEAAAAXAAgABAABAAAAAAAWAAkABAABAAEAAAAWAAgABAABAAAAAAAVAAkABAABAAEAAAAVAAgABAABAAAAAAAUAAkABAABAAEAAAAUAAgABAABAAAAAAATAAkABAABAAEAAAATAAgABAABAAAAAAASAAkABAABAAEAAAASAAgABAABAAAAAAARAAkABAABAAEAAAARAAgABAABAAAAAAAQAAkABAABAAEAAAAQAAgABAABAAAAAAAdAAoABAABAAEAAAAcAAoABAABAAEAAAAbAAoABAABAAEAAAAaAAoABAABAAEAAAAZAAoABAABAAEAAAAYAAoABAABAAEAAAAXAAoABAABAAEAAAAWAAoABAABAAEAAAAVAAoABAABAAEAAAAUAAoABAABAAEAAAATAAoABAABAAEAAAASAAoABAABAAEAAAARAAoABAABAAEAAAAQAAoABAABAAEAAAAdAAQABAACAAIAAAAdAAMABAABAAAAAAAcAAQABAABAAIAAAAcAAMABAABAAAAAAAbAAQABAABAAIAAAAbAAMABAABAAAAAAAaAAQABAABAAIAAAAaAAMABAABAAAAAAAZAAQABAABAAIAAAAZAAMABAABAAAAAAAYAAQABAABAAIAAAAYAAMABAABAAAAAAAXAAQABAABAAQAAAAXAAMABAABAAAAAAAWAAQABAABAAIAAAAWAAMABAABAAAAAAAVAAQABAABAAIAAAAVAAMABAABAAAAAAAUAAQABAABAAQAAAAUAAMABAABAAAAAAATAAQABAABAAQAAAATAAMABAABAAAAAAASAAQABAABAAIAAAASAAMABAABAAAAAAARAAQABAABAAIAAAARAAMABAABAAAAAAAQAAQABAABAAQAAAAQAAMABAABAAAAAAAdAAUABAACAAMAAAAcAAUABAABAAMAAAAbAAUABAABAAMAAAAaAAUABAABAAMAAAAZAAUABAABAAMAAAAYAAUABAABAAMAAAAXAAUABAABAAMAAAAWAAUABAABAAMAAAAVAAUABAABAAMAAAAUAAUABAABAAMAAAATAAUABAABAAMAAAASAAUABAABAAMAAAARAAUABAABAAMAAAAQAAUABAABAAMAAAAfAAgABAACAAAAAAAeAAgABAABAAAAAAAeAAkABAABAAEAAAAfAAkABAABAAEAAAAiAAwABAACAAAAAAAiAA0ABAACAAEAAAAhAA0ABAABAAEAAAAhAAwABAABAAEAAAAhAAsABAABAAEAAAAhAAoABAACAAAAAAAgAAoABAABAAEAAAAgAAsABAAAAAEAAAAgAAwABAAAAAEAAAAgAA0ABAAAAAEAAAAfAAoABAABAAEAAAAeAAoABAABAAEAAAAiAA4ABAACAAEAAAAiAA8ABAACAAEAAAAiABAABAACAAEAAAAiABEABAABAAEAAAAhABEABAABAAEAAAAhABAABAABAAEAAAAgABAABAAAAAEAAAAgAA8ABAAAAAEAAAAgAA4ABAAAAAEAAAAhAA4ABAABAAEAAAAhAA8ABAABAAEAAAAgABEABAAAAAEAAAAgABIABAAAAAEAAAAgABMABAAAAAIAAAAgABQABAAAAAMAAAAhABMABAABAAIAAAAhABQABAABAAMAAAAiABQABAABAAMAAAAiABMABAABAAIAAAAhABIABAABAAEAAAAiABIABAABAAEAAAAjABMABAABAAIAAAAkABMABAABAAIAAAAlABMABAABAAIAAAAjABQABAABAAMAAAAkABQABAABAAMAAAAmABMABAABAAIAAAAnABMABAACAAIAAAAlABQABAABAAMAAAAmABQABAABAAMAAAAnABQABAACAAMAAAAjABIABAABAAEAAAAkABIABAABAAEAAAAlABIABAABAAEAAAAmABIABAABAAEAAAAnABIABAACAAEAAAAmAAoABAAAAAAAAAAmAAsABAAAAAEAAAAmAAwABAAAAAEAAAAmAA0ABAAAAAEAAAAmAA4ABAAAAAEAAAAmAA8ABAAAAAEAAAAnAA8ABAACAAEAAAAnABAABAACAAEAAAAmABAABAAAAAEAAAAmABEABAABAAEAAAAnABEABAACAAEAAAAnAA4ABAACAAEAAAAnAA0ABAACAAEAAAAnAAwABAACAAEAAAAnAAsABAACAAEAAAAnAAoABAACAAAAAAAjABEABAABAAAAAAAkABEABAABAAAAAAAlABEABAABAAAAAAAgAAkABAACAAAAAAAeAAQABAABAAMAAAAfAAQABAABAAUAAAAiAAQABAABAAMAAAAjAAQABAABAAUAAAAkAAQABAABAAMAAAAlAAQABAABAAMAAAAmAAQABAABAAUAAAAeAAMABAABAAIAAAAfAAMABAABAAIAAAAgAAMABAABAAIAAAAhAAMABAABAAIAAAAiAAMABAABAAIAAAAjAAMABAABAAIAAAAkAAMABAABAAIAAAAlAAMABAABAAIAAAAmAAMABAABAAIAAAAnAAMABAABAAIAAAAEAAoABAABAAAAAAADAAoABAABAAAAAAACAAoABAABAAQAAAABAAoABAABAAQAAAAAAAoABAABAAAAAAAAAAkABAADAAEAAAAAAAgABAACAAEAAAAAAAYABAACAAEAAAAEAAMABAABAAAAAAADAAMABAABAAIAAAACAAMABAABAAEAAAABAAMABAABAAAAAAAAAAMABAABAAAAAAAAAAQABAABAAAAAAAAAAUABAADAAEAAAABAAQABAABAAMAAAACAAQABAABAAMAAAADAAQABAABAAUAAAAEAAQABAABAAMAAAAjAAgABAAAAAUAAAAkAAgABAACAAUAAAAjAAcABAAAAAQAAAAkAAcABAACAAQAAAAhAAQABAABAAMAAAAgAAQABAABAAUAAAAnAAQABAAAAAIAAAAnAAUABAAAAAIAAAAnAAYABAAAAAIAAAAnAAcABAAAAAIAAAAnAAgABAAAAAIAAAAnAAkABAAAAAIAAAAAAAcABAACAAIAAAA=")
 tile_set = ExtResource("2_af8bo")
 
+[node name="Vela" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(428.5, 282.5)
+scale = Vector2(1.23125, 1.84375)
+texture = ExtResource("3_n4cyb")
+
+[node name="luz" parent="TileMapLayers" instance=ExtResource("4_aupm2")]
+position = Vector2(417, 298)
+scale = Vector2(3, 3)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TileMapLayers/luz"]
+libraries = {
+&"": SubResource("AnimationLibrary_0y5ta")
+}
+autoplay = "OffLight"
+
 [node name="Player" parent="." instance=ExtResource("3_ipyye")]
 position = Vector2(131, 463)
 sprite_frames = ExtResource("4_n4cyb")
@@ -71,7 +221,7 @@ editor_draw_limits = true
 y_sort_enabled = true
 
 [node name="Guard1-GoingBackAndForth" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_aupm2")]
-position = Vector2(526, 470)
+position = Vector2(525.9997, 470.00003)
 sprite_frames = ExtResource("6_v1x6d")
 patrol_path = NodePath("../Guard1-PatrolPath")
 move_speed = 200.0
