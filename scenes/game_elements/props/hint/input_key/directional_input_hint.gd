@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends TextureRect
 
-# The action this icon represents (e.g., "move_up", "move_left", etc.)
+# The input action this icon represents (e.g., "move_up", "move_left", etc.)
 @export var action_name: StringName = ""
 
 # If true, shows controller icons instead of keyboard icons
@@ -82,10 +82,10 @@ func _physics_process(_delta: float) -> void:
 
 
 func _update_texture() -> void:
-	# Obtener la textura desde el AutoLoad InputGlobal
+	# Obtain the texture from the InputGlobal autoload
 	var tex: Texture2D = InputGlobal.get_texture_for(current_device, action_name)
 
-	# Fallback: si no hay textura específica, usa "move_unpressed"
+	# Fallback: if there is no specific texture, use "move_unpressed"
 	if tex == null and action_name != "move_unpressed":
 		tex = InputGlobal.get_texture_for(current_device, "move_unpressed")
 

@@ -7,7 +7,7 @@ extends Node
 # It finds which controller (Xbox, PlayStation, etc.) is currently used
 # and returns the proper texture for a given action.
 
-# Map of keywords -> resource path
+## Mapping of controller keyword -> resource path
 const DEVICE_MAP: Dictionary = {
 	"xbox": "res://scenes/game_elements/props/hint/resources/xbox.tres",
 	"play": "res://scenes/game_elements/props/hint/resources/playstation.tres",
@@ -46,14 +46,14 @@ func _resource_for_device(device: String) -> JoypadButtonTextures:
 
 	var d: String = device.to_lower()
 	for key: String in DEVICE_MAP.keys():
-		if d.find(key) != -1:
+		if key in d:
 			return _load_resource(DEVICE_MAP[key]) as JoypadButtonTextures
 
 	# fallback final
 	return _load_resource(GENERIC_RESOURCE) as JoypadButtonTextures
 
 
-# Public: get texture by device and action name, with fallback to generic (xbox).
+## Get texture by device and action name, with fallback to generic (xbox).
 func get_texture_for(device: String, action_name: String) -> Texture2D:
 	var res: JoypadButtonTextures = _resource_for_device(device)
 	if res:
