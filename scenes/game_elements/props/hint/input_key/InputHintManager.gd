@@ -32,13 +32,13 @@ func _load_resource(path: String) -> Resource:
 func _resource_for_device(device: String) -> JoypadButtonTextures:
 	# If device is null or empty, return generic resource.
 	if device == null or device.is_empty():
-		return _load_resource(GENERIC_RESOURCE) as JoypadButtonTextures
+		return ResourceLoader.load(GENERIC_RESOURCE) as JoypadButtonTextures
 
 	var d: String = device.to_lower()
 	for key: String in DEVICE_MAP.keys():
 		if key in d:
-			return _load_resource(DEVICE_MAP[key]) as JoypadButtonTextures
-	return _load_resource(GENERIC_RESOURCE) as JoypadButtonTextures
+			return ResourceLoader.load(DEVICE_MAP[key]) as JoypadButtonTextures
+	return ResourceLoader.load(GENERIC_RESOURCE) as JoypadButtonTextures
 
 
 ## Get texture by device and action name, with fallback to generic (xbox).
@@ -49,7 +49,7 @@ func get_texture_for(device: String, action_name: String) -> Texture2D:
 		if tex:
 			return tex
 	# Fallback to generic resource's action texture if not found in specific resource.
-	var generic_res: JoypadButtonTextures = _load_resource(GENERIC_RESOURCE) as JoypadButtonTextures
+	var generic_res: JoypadButtonTextures = ResourceLoader.load(GENERIC_RESOURCE) as JoypadButtonTextures
 	if generic_res:
 		return generic_res.get_texture_for_action(action_name)
 	return null
