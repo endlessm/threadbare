@@ -25,9 +25,6 @@ const DEVICE_MAP: Dictionary = {
 const GENERIC_RESOURCE: String = "res://scenes/game_elements/props/hint/resources/xbox.tres"
 
 
-func _load_resource(path: String) -> Resource:
-	   return ResourceLoader.load(path)
-
 # Determine which JoypadButtonTextures resource to use for a given device string.
 func _resource_for_device(device: String) -> JoypadButtonTextures:
 	# If device is null or empty, return generic resource.
@@ -49,7 +46,9 @@ func get_texture_for(device: String, action_name: String) -> Texture2D:
 		if tex:
 			return tex
 	# Fallback to generic resource's action texture if not found in specific resource.
-	var generic_res: JoypadButtonTextures = ResourceLoader.load(GENERIC_RESOURCE) as JoypadButtonTextures
+	var generic_res: JoypadButtonTextures = (
+		ResourceLoader.load(GENERIC_RESOURCE) as JoypadButtonTextures
+	)
 	if generic_res:
 		return generic_res.get_texture_for_action(action_name)
 	return null
