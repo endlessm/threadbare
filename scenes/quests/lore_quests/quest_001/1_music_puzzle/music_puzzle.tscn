@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=4 uid="uid://7hoy2p14t6kc"]
+[gd_scene load_steps=54 format=4 uid="uid://7hoy2p14t6kc"]
 
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="1_ftljy"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_0ayb4"]
@@ -46,10 +46,16 @@
 [ext_resource type="AudioStream" uid="uid://c7om8kdork2rx" path="res://assets/third_party/sounds/characters/enemies/guard/Torch.ogg" id="31_ink4c"]
 [ext_resource type="SpriteFrames" uid="uid://cefk7kf0bpm3q" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign_backward.tres" id="32_0wfv2"]
 [ext_resource type="AudioStream" uid="uid://xuqj6b5qqs3w" path="res://assets/third_party/sounds/ambient/459405__pfannkuchn__small-river-1-fast-semi-close.ogg" id="35_l8fgn"]
+[ext_resource type="Script" uid="uid://cu3e06cs536ke" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/hintsect.gd" id="43_gajpc"]
+[ext_resource type="Texture2D" uid="uid://cjs01ayn2h6ir" path="res://assets/third_party/tiny-swords/Deco/12.png" id="44_pgedt"]
+[ext_resource type="Script" uid="uid://id28maao3vdy" path="res://scenes/game_logic/walk_behaviors/path_walk_behavior.gd" id="45_ps6xw"]
 
 [sub_resource type="Resource" id="Resource_dp3eg"]
 script = ExtResource("15_rxyid")
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gajpc"]
+radius = 64.45
 
 [sub_resource type="Curve2D" id="Curve2D_306df"]
 _data = {
@@ -1357,7 +1363,7 @@ position = Vector2(1044, 737)
 texture = ExtResource("9_nonj7")
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("2_0ayb4")]
-position = Vector2(539, 1972)
+position = Vector2(474, 1050)
 player_name = "StoryWeaver"
 sprite_frames = ExtResource("15_s3slv")
 
@@ -1429,6 +1435,7 @@ audio_stream = ExtResource("29_lbjl7")
 
 [node name="Bonfires" type="Node2D" parent="OnTheGround/SequencePuzzle"]
 y_sort_enabled = true
+position = Vector2(-2, 0)
 
 [node name="BonfireSign1" parent="OnTheGround/SequencePuzzle/Bonfires" instance=ExtResource("9_evicy")]
 position = Vector2(-1057, -212)
@@ -1488,6 +1495,39 @@ item = SubResource("Resource_dp3eg")
 collected_dialogue = ExtResource("6_l4i5r")
 dialogue_title = &"well_done"
 
+[node name="Hintsect" type="CharacterBody2D" parent="OnTheGround" node_paths=PackedStringArray("puzzle", "resting_position", "path_walk_behavior")]
+z_index = 1
+position = Vector2(184, 694)
+collision_layer = 0
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("43_gajpc")
+puzzle = NodePath("../SequencePuzzle")
+resting_position = NodePath("../Marker2D")
+path_walk_behavior = NodePath("PathWalkBehavior")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/Hintsect"]
+texture = ExtResource("44_pgedt")
+
+[node name="PathWalkBehavior" type="Node2D" parent="OnTheGround/Hintsect" node_paths=PackedStringArray("character")]
+process_mode = 4
+script = ExtResource("45_ps6xw")
+character = NodePath("..")
+metadata/_custom_type_script = "uid://id28maao3vdy"
+
+[node name="Bush" parent="OnTheGround" instance=ExtResource("17_wasqo")]
+position = Vector2(126, 725)
+
+[node name="Marker2D" type="Marker2D" parent="OnTheGround"]
+position = Vector2(131, 722)
+
+[node name="Area2D" type="Area2D" parent="OnTheGround"]
+position = Vector2(119, 715)
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Area2D"]
+shape = SubResource("CircleShape2D_gajpc")
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource("16_ytxvq")]
@@ -1509,7 +1549,7 @@ curve = SubResource("Curve2D_306df")
 
 [node name="PlayerFollower" type="PathFollow2D" parent="ForestSoundPath"]
 position = Vector2(64, 2088)
-rotation = -1.58865
+rotation = -1.5493928
 script = ExtResource("22_nonj7")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="ForestSoundPath/PlayerFollower"]
@@ -1527,7 +1567,7 @@ curve = SubResource("Curve2D_l8fgn")
 
 [node name="PlayerFollower" type="PathFollow2D" parent="RiverSoundPath"]
 position = Vector2(-408, 1104)
-rotation = -0.0696546
+rotation = -0.12495447
 script = ExtResource("22_nonj7")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="RiverSoundPath/PlayerFollower"]
@@ -1539,3 +1579,4 @@ panning_strength = 0.0
 bus = &"SFX"
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/SequencePuzzle/CollectibleItem" method="reveal"]
+[connection signal="body_entered" from="OnTheGround/Area2D" to="OnTheGround/Hintsect" method="hint" unbinds=1]
