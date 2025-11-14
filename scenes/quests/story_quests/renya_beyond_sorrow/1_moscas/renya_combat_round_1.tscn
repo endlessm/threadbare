@@ -1,0 +1,240 @@
+[gd_scene load_steps=29 format=4 uid="uid://cqia8wihr6512"]
+
+[ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_0sehy"]
+[ext_resource type="AudioStream" uid="uid://dgwihwibc8ah6" path="res://assets/first_party/music/Threadbare_Combat.ogg" id="2_1q4ne"]
+[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="3_fmi44"]
+[ext_resource type="Resource" uid="uid://ctmbv8jkb5j48" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_moscas/components/dialogues/renya_combat.dialogue" id="4_75x6t"]
+[ext_resource type="TileSet" uid="uid://dmg13wgcc7so5" path="res://scenes/quests/story_quests/renya_beyond_sorrow/renya_tileset.tres" id="5_o60la"]
+[ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="6_ulko6"]
+[ext_resource type="SpriteFrames" uid="uid://bxe8tg855s145" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_moscas/bush/components/bush_spriteframes_purple_large.tres" id="7_5mbgn"]
+[ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="7_ilmvt"]
+[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter/components/teleporter.gd" id="8_gdj00"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="9_d7n4r"]
+[ext_resource type="SpriteFrames" uid="uid://h5omfgpsbww3" path="res://scenes/quests/story_quests/renya_beyond_sorrow/player_components/renya_player_general.tres" id="10_o60la"]
+[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="11_28os0"]
+[ext_resource type="SpriteFrames" uid="uid://b3r84ksew5djp" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_purple.tres" id="12_bsras"]
+[ext_resource type="AudioStream" uid="uid://qf2d38rabx8o" path="res://assets/third_party/sounds/characters/enemies/throwing_enemy/Wings.ogg" id="13_jvpbg"]
+[ext_resource type="AudioStream" uid="uid://fcmjf1srys7n" path="res://assets/third_party/sounds/characters/enemies/throwing_enemy/Spit.ogg" id="14_y5lpn"]
+[ext_resource type="SpriteFrames" uid="uid://bhamin2pby7tq" path="res://scenes/game_elements/props/projectile/components/inkblob_spriteframes.tres" id="15_7pnwg"]
+[ext_resource type="AudioStream" uid="uid://7jlv4wqpihl7" path="res://scenes/game_elements/props/projectile/components/blob_hit.wav" id="16_p7tjk"]
+[ext_resource type="PackedScene" uid="uid://clgisducnnh0a" path="res://scenes/game_elements/fx/liquid_small_splat/liquid_small_splat.tscn" id="17_ya2tl"]
+[ext_resource type="PackedScene" uid="uid://b4qu6wml5gd7a" path="res://scenes/game_elements/fx/liquid_big_splat/liquid_big_splat.tscn" id="18_g5p1a"]
+[ext_resource type="PackedScene" uid="uid://bgce3qns72g3m" path="res://scenes/game_elements/fx/liquid_trail.tscn" id="19_pilai"]
+[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="20_6urbs"]
+[ext_resource type="PackedScene" uid="uid://dkx3dgc1br3b4" path="res://scenes/ui_elements/input_hints/repel_hint.tscn" id="22_28yyq"]
+[ext_resource type="PackedScene" uid="uid://dckcomgbkbkwu" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_moscas/tree/tree.tscn" id="22_e8dsv"]
+[ext_resource type="SpriteFrames" uid="uid://cyhwjliscqdbb" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_moscas/tree/components/tree_spriteframes_purple.tres" id="23_6axrc"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="23_vhod7"]
+
+[sub_resource type="Animation" id="Animation_nlryc"]
+resource_name = "goal_completed"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../OnTheGround/LevelExit/Door Exit")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"open"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hlahk"]
+_data = {
+&"goal_completed": SubResource("Animation_nlryc")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lmnu5"]
+size = Vector2(101, 49)
+
+[node name="InkCombat" type="Node2D"]
+y_sort_enabled = true
+
+[node name="BackgroundMusic" parent="." instance=ExtResource("1_0sehy")]
+stream = ExtResource("2_1q4ne")
+
+[node name="FillGameLogic" type="Node" parent="."]
+script = ExtResource("3_fmi44")
+barrels_to_win = 2
+intro_dialogue = ExtResource("4_75x6t")
+metadata/_custom_type_script = "uid://cp54mgi54nywo"
+
+[node name="LevelCompletedAnimation" type="AnimationPlayer" parent="FillGameLogic"]
+libraries = {
+&"": SubResource("AnimationLibrary_hlahk")
+}
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+
+[node name="Foam2" type="TileMapLayer" parent="TileMapLayers"]
+modulate = Color(0, 0, 0, 1)
+tile_map_data = PackedByteArray("AAAEAAgABgABAAEAAAAEAAcABgABAAEAAAAFAAcABgABAAEAAAAGAAYABgABAAEAAAAFAAUABgABAAEAAAAFAAQABgABAAEAAAAGAAgABgABAAEAAAAGAAkABgABAAEAAAAIAAgABgABAAEAAAAIAAkABgABAAEAAAAJAAcABgABAAEAAAAKAAcABgABAAEAAAAIAAUABgABAAEAAAAJAAQABgABAAEAAAAJAAMABgABAAEAAAAIAAIABgABAAEAAAAGAAIABgABAAEAAAAGAAMABgABAAEAAAAJAAYABgABAAEAAAA=")
+tile_set = ExtResource("5_o60la")
+
+[node name="Lava" type="TileMapLayer" parent="TileMapLayers"]
+modulate = Color(0.44460532, 0.28774506, 0.29993382, 1)
+tile_map_data = PackedByteArray("AAABAAIACgABAAEAAAACAAIACwABAAEAAAADAAIACwABAAEAAAAEAAIACQABAAEAAAAFAAIACgABAAEAAAAJAAIACQABAAEAAAAKAAIACQABAAEAAAALAAIACgABAAEAAAAMAAIACwABAAEAAAANAAIACAABAAEAAAANAAMACgABAAEAAAANAAQACgABAAEAAAANAAUADAABAAEAAAANAAYACQABAAEAAAANAAcACwABAAEAAAANAAgACAABAAEAAAAMAAgACAABAAEAAAALAAgACgABAAEAAAAKAAgADAABAAEAAAAJAAgACAABAAEAAAAFAAgACwABAAEAAAADAAgACgABAAEAAAACAAgACgABAAEAAAABAAgACwABAAEAAAABAAcACQABAAEAAAABAAYACgABAAEAAAABAAUADAABAAEAAAABAAQACQABAAEAAAABAAMADAABAAEAAAACAAMADAABAAEAAAACAAQADAABAAEAAAACAAUACAABAAEAAAACAAYADAABAAEAAAACAAcADAABAAEAAAADAAcACAABAAEAAAADAAYACAABAAEAAAADAAUACQABAAEAAAADAAQACgABAAEAAAADAAMACwABAAEAAAAEAAMACQABAAEAAAAEAAQACwABAAEAAAAEAAUACwABAAEAAAAEAAYACQABAAEAAAAKAAMACgABAAEAAAAKAAQACwABAAEAAAAKAAYADAABAAEAAAALAAcACwABAAEAAAALAAYADAABAAEAAAALAAUADAABAAEAAAALAAQACAABAAEAAAALAAMACwABAAEAAAAMAAMACQABAAEAAAAMAAQACwABAAEAAAAMAAUACAABAAEAAAAMAAYACwABAAEAAAAMAAcACAABAAEAAAAFAAkACwABAAEAAAAJAAkADAABAAEAAAABAAEACAABAAEAAAACAAEACgABAAEAAAADAAEADAABAAEAAAAEAAEACAABAAEAAAAFAAEADAABAAEAAAAGAAEACwABAAEAAAAIAAEADAABAAEAAAAJAAEACgABAAEAAAAKAAEACwABAAEAAAALAAEADAABAAEAAAAMAAEACwABAAEAAAANAAEACQABAAEAAAAJAAUACAABAAEAAAAKAAUACQABAAEAAAAFAAYACAABAAEAAAAFAAMACAABAAEAAAA=")
+tile_set = ExtResource("5_o60la")
+
+[node name="Grass" type="TileMapLayer" parent="TileMapLayers"]
+modulate = Color(0.28969964, 0.44594198, 0.9445657, 1)
+tile_map_data = PackedByteArray("AAAIAAcAAQABAAEAAAAIAAYAAQABAAEAAAAIAAUAAQACAAEAAAAIAAQAAQABAAEAAAAIAAMAAQABAAEAAAAIAAIAAQACAAEAAAAIAAEAAQABAAEAAAAHAAcAAQABAAEAAAAHAAYAAQABAAEAAAAHAAUAAQABAAEAAAAHAAQAAQABAAEAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAEAAAAGAAYAAQAAAAEAAAAGAAUAAQABAAEAAAAGAAQAAQABAAEAAAAGAAMAAQAAAAEAAAAGAAIAAQAAAAEAAAAAAAQAAQABAAEAAAAAAAUAAQABAAEAAAAAAAYAAQABAAEAAAAAAAcAAQABAAEAAAAGAAAAAQABAAEAAAAGAAEAAQABAAEAAAAHAAAAAQABAAEAAAAFAAAAAQABAAEAAAAIAAAAAQABAAEAAAAJAAAAAQABAAEAAAALAAAAAQABAAEAAAAMAAAAAQABAAEAAAAKAAAAAQABAAEAAAANAAAAAQABAAEAAAAEAAAAAQABAAEAAAADAAAAAQABAAEAAAACAAAAAQABAAEAAAABAAAAAQABAAEAAAAAAAAAAQABAAEAAAAAAAEAAQABAAEAAAAAAAIAAQABAAEAAAAAAAMAAQABAAEAAAAAAAgAAQABAAEAAAAGAAgAAQAAAAEAAAAHAAgAAQABAAEAAAAIAAgAAQACAAEAAAAOAAgAAQABAAEAAAAOAAcAAQABAAEAAAAOAAYAAQABAAEAAAAOAAUAAQABAAEAAAAOAAQAAQABAAEAAAAOAAMAAQABAAEAAAAOAAIAAQABAAEAAAAOAAEAAQABAAEAAAAOAAAAAQABAAEAAAAGAAkAAQAAAAEAAAAHAAkAAQABAAEAAAAIAAkAAQACAAEAAAAEAAkAAQABAAEAAAADAAkAAQABAAAAAAACAAkAAQABAAAAAAABAAkAAQABAAAAAAAAAAkAAQABAAEAAAAKAAkAAQAAAAAAAAALAAkAAQABAAAAAAAMAAkAAQABAAAAAAANAAkAAQABAAAAAAAOAAkAAQABAAEAAAAKAAoAAQABAAEAAAAJAAoAAQABAAAAAAAIAAoAAQABAAEAAAAHAAoAAQABAAEAAAAGAAoAAQABAAEAAAAFAAoAAQABAAAAAAAEAAoAAQABAAEAAAADAAoAAQABAAEAAAACAAoAAQABAAEAAAABAAoAAQABAAEAAAAAAAoAAQABAAEAAAALAAoAAQABAAEAAAAMAAoAAQABAAEAAAANAAoAAQABAAEAAAAAAAsAAQABAAEAAAABAAsAAQABAAEAAAACAAsAAQABAAEAAAADAAsAAQABAAEAAAAEAAsAAQABAAEAAAAFAAsAAQABAAEAAAAAAAwAAQABAAEAAAAAAA0AAQABAAEAAAAAAA4AAQABAAEAAAAAAA8AAQABAAEAAAABAA8AAQABAAEAAAACAA8AAQABAAEAAAADAA8AAQABAAEAAAAEAA8AAQABAAEAAAAFAA8AAQABAAEAAAAGAA8AAQABAAEAAAAHAA8AAQABAAEAAAAIAA8AAQABAAEAAAAJAA8AAQABAAEAAAAKAA8AAQABAAEAAAALAA8AAQABAAEAAAAMAA8AAQABAAEAAAANAA8AAQABAAEAAAAOAA8AAQABAAEAAAAOAA4AAQABAAEAAAAOAA0AAQABAAEAAAAOAAwAAQABAAEAAAAOAAsAAQABAAEAAAAOAAoAAQABAAEAAAANAAsAAQABAAEAAAANAAwAAQABAAEAAAANAA0AAQABAAEAAAANAA4AAQABAAEAAAAMAA4AAQABAAEAAAAMAA0AAQABAAEAAAAMAAwAAQABAAEAAAAMAAsAAQABAAEAAAALAA0AAQABAAEAAAALAA4AAQABAAEAAAALAAwAAQABAAEAAAALAAsAAQABAAEAAAAKAAsAAQABAAEAAAAKAAwAAQABAAEAAAAKAA0AAQABAAEAAAAJAA0AAQABAAEAAAAJAAwAAQABAAEAAAAJAAsAAQABAAEAAAAKAA4AAQABAAEAAAAJAA4AAQABAAEAAAAIAA4AAQABAAEAAAAIAA0AAQABAAEAAAAIAAwAAQABAAEAAAAIAAsAAQABAAEAAAAHAAwAAQABAAEAAAAHAA0AAQABAAEAAAAGAAwAAQABAAEAAAAGAAsAAQABAAEAAAAGAA0AAQABAAEAAAAHAAsAAQABAAEAAAAHAA4AAQABAAEAAAAGAA4AAQABAAEAAAAFAA4AAQABAAEAAAAFAA0AAQABAAEAAAAFAAwAAQABAAEAAAAEAAwAAQABAAEAAAAEAA0AAQABAAEAAAAEAA4AAQABAAEAAAADAAwAAQABAAEAAAADAA0AAQABAAEAAAADAA4AAQABAAEAAAACAA4AAQABAAEAAAACAA0AAQABAAEAAAACAAwAAQABAAEAAAABAA0AAQABAAEAAAABAAwAAQABAAEAAAABAA4AAQABAAEAAAAGAAcAAQABAAEAAAAFAAcAAQABAAMAAAAEAAcAAQAAAAAAAAAEAAgAAQADAAEAAAAFAAUAAQAAAAIAAAAFAAQAAQAAAAAAAAAJAAMAAQACAAAAAAAJAAQAAQACAAIAAAAJAAcAAQABAAIAAAAKAAcAAQACAAMAAAAJAAYAAQACAAAAAAA=")
+tile_set = ExtResource("5_o60la")
+
+[node name="Foam" type="TileMapLayer" parent="TileMapLayers"]
+modulate = Color(0.35249737, 0.17127031, 0.7031708, 1)
+tile_map_data = PackedByteArray("AAABAAEAAgABAAAAAAABAAIAAgABAAIAAAACAAEAAgABAAAAAAACAAIAAgABAAIAAAADAAEAAgABAAAAAAADAAIAAgABAAIAAAAEAAEAAgABAAAAAAAFAAEAAgABAAAAAAAJAAEAAgABAAAAAAAKAAEAAgABAAAAAAALAAEAAgABAAAAAAALAAIAAgABAAIAAAAMAAEAAgABAAAAAAAMAAIAAgABAAIAAAANAAEAAgABAAAAAAANAAIAAgABAAIAAAAEAAIAAgABAAIAAAAFAAIAAgABAAIAAAAJAAIAAgABAAIAAAAKAAIAAgABAAIAAAAFAAYAAgABAAIAAAAJAAQAAgABAAAAAAAJAAcAAgABAAAAAAAJAAgAAgABAAIAAAAKAAcAAgABAAAAAAAKAAgAAgABAAIAAAACAAMAAgABAAEAAAADAAMAAgABAAAAAAADAAQAAgABAAIAAAALAAMAAgABAAEAAAALAAQAAgABAAIAAAAMAAMAAgABAAAAAAAMAAQAAgABAAIAAAAEAAUAAgAAAAEAAAAGAAgAAgACAAEAAAAEAAgAAgACAAEAAAAFAAcAAgABAAAAAAAFAAQAAgACAAEAAAAEAAQAAgAAAAEAAAAGAAMAAgACAAEAAAAFAAMAAgAAAAEAAAAGAAIAAgACAAEAAAAEAAcAAgACAAEAAAADAAcAAgAAAAEAAAADAAgAAgAAAAEAAAAGAAkAAgACAAEAAAAFAAkAAgAAAAEAAAAOAAgAAgACAAEAAAANAAgAAgAAAAEAAAAOAAcAAgACAAEAAAANAAcAAgAAAAEAAAAOAAYAAgACAAEAAAANAAYAAgAAAAEAAAAOAAUAAgACAAEAAAANAAUAAgAAAAEAAAAOAAQAAgACAAEAAAANAAQAAgAAAAEAAAAOAAMAAgACAAEAAAANAAMAAgAAAAEAAAAOAAIAAgACAAEAAAACAAgAAgABAAIAAAABAAcAAgAAAAEAAAAMAAgAAgABAAIAAAALAAcAAgAAAAEAAAABAAMAAgAAAAEAAAACAAQAAgABAAIAAAAKAAMAAgAAAAEAAAA=")
+tile_set = ExtResource("5_o60la")
+
+[node name="Stones" type="TileMapLayer" parent="TileMapLayers"]
+modulate = Color(0.5683265, 0.4389978, 0.9555231, 1)
+tile_map_data = PackedByteArray("AAACAAAABAABAAQAAAABAAAABAABAAQAAAAAAAAABAAAAAAAAAADAAAABAABAAIAAAAEAAAABAABAAQAAAAMAAAABAABAAQAAAALAAAABAABAAQAAAAKAAAABAABAAQAAAAJAAAABAABAAQAAAAAAAEABAADAAEAAAAAAAIABAADAAEAAAAAAAMABAADAAEAAAAAAAQABAADAAEAAAAAAAUABAADAAEAAAAAAAYABAADAAEAAAAAAAcABAADAAEAAAAAAAgABAADAAEAAAAAAAkABAAAAAIAAAABAAkABAABAAQAAAACAAkABAABAAQAAAADAAkABAABAAQAAAAEAAkABAABAAQAAAAFAAkABAACAAAAAAACAAIABAAAAAQAAAACAAMABAAAAAMAAAAFAAAABAABAAQAAAADAAIABAACAAQAAAADAAMABAACAAMAAAALAAMABAAAAAMAAAAMAAMABAACAAMAAAALAAIABAAAAAAAAAAMAAIABAACAAAAAAAOAAMABAADAAEAAAAOAAQABAADAAEAAAAOAAUABAADAAEAAAAOAAYABAADAAEAAAAOAAcABAADAAEAAAAOAAgABAADAAEAAAANAAkABAABAAQAAAAMAAkABAABAAQAAAALAAkABAABAAQAAAAKAAkABAABAAQAAAAJAAkABAAAAAAAAAAGAAAABAACAAQAAAAIAAAABAAAAAQAAAANAAAABAABAAQAAAAOAAAABAACAAAAAAAOAAEABAADAAEAAAAOAAIABAADAAEAAAAOAAkABAACAAIAAAAAAAoABAAAAAMAAAABAAoABAABAAMAAAACAAoABAABAAMAAAADAAoABAABAAMAAAAEAAoABAACAAMAAAAFAAoABAADAAEAAAAJAAoABAADAAEAAAAKAAoABAAAAAMAAAALAAoABAABAAMAAAAMAAoABAABAAMAAAANAAoABAABAAMAAAAOAAoABAACAAMAAAABAAEABAAAAAMAAAACAAEABAABAAMAAAADAAEABAABAAMAAAAEAAEABAABAAMAAAAFAAEABAABAAMAAAAGAAEABAACAAMAAAAIAAEABAAAAAMAAAAJAAEABAABAAMAAAAKAAEABAABAAMAAAALAAEABAABAAMAAAAMAAEABAABAAMAAAANAAEABAACAAMAAAAFAAsABAADAAEAAAAFAAwABAADAAEAAAAFAA0ABAADAAEAAAAJAAsABAADAAEAAAAJAAwABAADAAEAAAAJAA0ABAADAAEAAAAJAA4ABAACAAIAAAAIAA4ABAAAAAQAAAAGAA4ABAACAAQAAAAFAA4ABAAAAAIAAAAFAA8ABAAAAAMAAAAGAA8ABAACAAMAAAAIAA8ABAAAAAMAAAAJAA8ABAACAAMAAAACAAcABAADAAMAAAAMAAcABAADAAMAAAA=")
+tile_set = ExtResource("5_o60la")
+
+[node name="Stones2" type="TileMapLayer" parent="TileMapLayers"]
+modulate = Color(0.5686275, 0.4392157, 0.95686275, 1)
+tile_map_data = PackedByteArray("AAACAAYABAADAAQAAAAMAAYABAADAAQAAAA=")
+tile_set = ExtResource("5_o60la")
+collision_enabled = false
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+position = Vector2(129, 984)
+
+[node name="Bush" parent="OnTheGround" instance=ExtResource("6_ulko6")]
+position = Vector2(693, -222)
+sprite_frames = ExtResource("7_5mbgn")
+
+[node name="Bush2" parent="OnTheGround" instance=ExtResource("6_ulko6")]
+position = Vector2(659, -4.999985)
+scale = Vector2(0.8, 0.8)
+sprite_frames = ExtResource("7_5mbgn")
+
+[node name="Bush3" parent="OnTheGround" instance=ExtResource("6_ulko6")]
+position = Vector2(21, -162)
+scale = Vector2(0.65, 0.65)
+sprite_frames = ExtResource("7_5mbgn")
+
+[node name="Bush4" parent="OnTheGround" instance=ExtResource("6_ulko6")]
+position = Vector2(-73.00001, -115.999985)
+scale = Vector2(0.8, 0.8)
+sprite_frames = ExtResource("7_5mbgn")
+
+[node name="Bush5" parent="OnTheGround" instance=ExtResource("6_ulko6")]
+position = Vector2(740, -198)
+scale = Vector2(0.45, 0.45)
+sprite_frames = ExtResource("7_5mbgn")
+
+[node name="LevelExit" type="Node2D" parent="OnTheGround"]
+y_sort_enabled = true
+position = Vector2(350, -949)
+
+[node name="Door Exit" parent="OnTheGround/LevelExit" instance=ExtResource("7_ilmvt")]
+position = Vector2(0, 72)
+play_victory_fanfare_on_open = true
+
+[node name="Teleporter" type="Area2D" parent="OnTheGround/LevelExit"]
+position = Vector2(0, -25)
+collision_layer = 4
+script = ExtResource("8_gdj00")
+next_scene = "uid://buvo0sgtr3qeg"
+enter_transition = 4
+exit_transition = 5
+metadata/_custom_type_script = "uid://hqdquinbimce"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/LevelExit/Teleporter"]
+position = Vector2(-1.5, -9.5)
+shape = SubResource("RectangleShape2D_lmnu5")
+
+[node name="Player" parent="OnTheGround" instance=ExtResource("9_d7n4r")]
+position = Vector2(351, -56)
+player_name = "StoryWeaver"
+sprite_frames = ExtResource("10_o60la")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
+position = Vector2(17, -178)
+zoom = Vector2(1.333, 1.333)
+limit_left = 0
+limit_top = 0
+limit_right = 958
+limit_bottom = 1028
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[node name="Door Enter" parent="OnTheGround" instance=ExtResource("7_ilmvt")]
+position = Vector2(352, 24)
+
+[node name="ThrowingEnemy" parent="OnTheGround" instance=ExtResource("11_28os0")]
+position = Vector2(101, -783)
+sprite_frames = ExtResource("12_bsras")
+idle_sound_stream = ExtResource("13_jvpbg")
+attack_sound_stream = ExtResource("14_y5lpn")
+projectile_sprite_frames = ExtResource("15_7pnwg")
+projectile_hit_sound_stream = ExtResource("16_p7tjk")
+projectile_small_fx_scene = ExtResource("17_ya2tl")
+projectile_big_fx_scene = ExtResource("18_g5p1a")
+projectile_trail_fx_scene = ExtResource("19_pilai")
+
+[node name="ThrowingEnemy2" parent="OnTheGround" instance=ExtResource("11_28os0")]
+position = Vector2(596, -780)
+sprite_frames = ExtResource("12_bsras")
+idle_sound_stream = ExtResource("13_jvpbg")
+attack_sound_stream = ExtResource("14_y5lpn")
+projectile_sprite_frames = ExtResource("15_7pnwg")
+projectile_hit_sound_stream = ExtResource("16_p7tjk")
+projectile_small_fx_scene = ExtResource("17_ya2tl")
+projectile_big_fx_scene = ExtResource("18_g5p1a")
+projectile_trail_fx_scene = ExtResource("19_pilai")
+
+[node name="FillingBarrel" parent="OnTheGround" instance=ExtResource("20_6urbs")]
+position = Vector2(32, -559)
+label = "Cyan"
+color = Color(0, 1, 1, 1)
+
+[node name="FillingBarrel2" parent="OnTheGround" instance=ExtResource("20_6urbs")]
+position = Vector2(672, -557)
+label = "Cyan"
+color = Color(0, 1, 1, 1)
+
+[node name="Tree" parent="OnTheGround" instance=ExtResource("22_e8dsv")]
+position = Vector2(580, -216)
+scale = Vector2(0.7827488, 0.81916684)
+sprite_frames = ExtResource("23_6axrc")
+
+[node name="Tree2" parent="OnTheGround" instance=ExtResource("22_e8dsv")]
+position = Vector2(-49.000004, -183)
+scale = Vector2(0.8576081, 0.86341697)
+sprite_frames = ExtResource("23_6axrc")
+
+[node name="Tree3" parent="OnTheGround" instance=ExtResource("22_e8dsv")]
+position = Vector2(108, 0)
+scale = Vector2(0.8407946, 0.8712404)
+sprite_frames = ExtResource("23_6axrc")
+
+[node name="Tree4" parent="OnTheGround" instance=ExtResource("22_e8dsv")]
+position = Vector2(631.00006, -11)
+scale = Vector2(0.7455229, 0.8102155)
+sprite_frames = ExtResource("23_6axrc")
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="InputHints" type="HBoxContainer" parent="ScreenOverlay"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 559.0
+offset_top = 46.0
+offset_right = 716.0
+offset_bottom = 146.0
+grow_vertical = 0
+
+[node name="RepelHint" parent="ScreenOverlay/InputHints" instance=ExtResource("22_28yyq")]
+layout_mode = 2
+
+[node name="HUD" parent="." instance=ExtResource("23_vhod7")]
+
+[connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]
