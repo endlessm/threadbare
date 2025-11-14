@@ -1,11 +1,13 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 extends PathFollow2D
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var player = get_tree().get_first_node_in_group("player")
 
-@export var base_speed: float = 0.035
-@export var min_speed: float = 0.02
-@export var max_speed: float = 0.065
+@export var base_speed: float = 0.050
+@export var min_speed: float = 0.050
+@export var max_speed: float = 0.07
 @export var ideal_distance: float = 250.0
 @export var too_close_distance: float = 200.0
 @export var too_far_distance: float = 500.0

@@ -153,7 +153,6 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 func _ready() -> void:
-	
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
 
@@ -201,7 +200,6 @@ func _process(delta: float) -> void:
 	move_and_slide()
 	
 
-
 func teleport_to(
 	tele_position: Vector2,
 	smooth_camera: bool = false,
@@ -219,11 +217,13 @@ func teleport_to(
 	else:
 		global_position = tele_position
 
+
 func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	walk_sound_stream = new_value
 	if not is_node_ready():
 		await ready
 	_walk_sound.stream = walk_sound_stream
+	
 	
 ## Sets the player's [member mode] to [constant DEFEATED], if it is
 ## not already. Reloads the current scene after a short interval.
