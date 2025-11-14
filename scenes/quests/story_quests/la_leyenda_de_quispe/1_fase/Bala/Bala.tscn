@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://dc231hghta05i"]
+
+[ext_resource type="Script" uid="uid://cbt0p2856pejq" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/1_fase/Bala/bala.gd" id="1_5k5i7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tm2r8"]
+
+[node name="Bala" type="Area2D"]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_5k5i7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_tm2r8")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.7150055, 0.006833099, 0.21628666, 1)
+
+[connection signal="area_entered" from="." to="." method="_on_hit"]

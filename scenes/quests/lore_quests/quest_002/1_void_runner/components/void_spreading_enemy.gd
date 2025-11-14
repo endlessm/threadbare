@@ -11,6 +11,7 @@ enum State {
 	CHASING,
 	## The void has engulfed the player
 	CAUGHT,
+	DEFEATED
 }
 
 const VOID_PARTICLES = preload(
