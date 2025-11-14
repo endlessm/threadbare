@@ -40,7 +40,6 @@ func _resource_for_device(device: String) -> JoypadButtonTextures:
 		if key in d:
 			return _load_resource(DEVICE_MAP[key]) as JoypadButtonTextures
 
-	# fallback final
 	return _load_resource(GENERIC_RESOURCE) as JoypadButtonTextures
 
 
