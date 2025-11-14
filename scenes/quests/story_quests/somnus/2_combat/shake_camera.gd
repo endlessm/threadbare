@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+
 extends Camera2D
 
 @export var target_path: NodePath = NodePath("")
@@ -12,7 +15,7 @@ var target: Node2D = null
 var timer: float = 0.0
 
 func _ready() -> void:
-	# Buscar el Player automáticamente si no se asignó
+	# Buscar el Player
 	if target_path != NodePath(""):
 		target = get_node_or_null(target_path) as Node2D
 	else:
