@@ -1,110 +1,199 @@
-[gd_scene load_steps=15 format=4 uid="uid://cqc3wor1nq28f"]
+[gd_scene load_steps=29 format=4 uid="uid://cqc3wor1nq28f"]
 
-[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_lh7d2"]
-[ext_resource type="Resource" uid="uid://bgmaxw1m2fiam" path="res://scenes/quests/story_quests/somnus/2_combat/combat_components/somnus_combat.dialogue" id="2_cj1u7"]
-[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="3_1axka"]
+[ext_resource type="TileSet" uid="uid://dphcd7mvjgflw" path="res://scenes/quests/story_quests/somnus/somnus_tileset.tres" id="3_lh7d2"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_p55gs"]
 [ext_resource type="SpriteFrames" uid="uid://b6ijk8vi5x3tv" path="res://scenes/quests/story_quests/somnus/player_components/somnus_player.tres" id="5_ihx58"]
-[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="6_1ym8c"]
-[ext_resource type="SpriteFrames" uid="uid://bujamn0lpyj2d" path="res://scenes/quests/story_quests/somnus/2_combat/combat_components/somnus_throwing_enemy.tres" id="7_pyipw"]
-[ext_resource type="SpriteFrames" uid="uid://b3osl3pd4asn5" path="res://scenes/quests/story_quests/somnus/2_combat/combat_components/somnus_projectile_spriteframes.tres" id="8_xtsjn"]
-[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="9_8lr4j"]
-[ext_resource type="SpriteFrames" uid="uid://c5utnim0d8k8g" path="res://scenes/quests/story_quests/somnus/2_combat/combat_components/somnus_target_spriteframes.tres" id="10_gtt2a"]
+[ext_resource type="Script" uid="uid://b6rxt5jecpkk8" path="res://scenes/quests/story_quests/somnus/2_combat/shake_camera.gd" id="5_sblfg"]
+[ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="8_8lr4j"]
+[ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/game_elements/props/sequence_puzzle_object/sequence_puzzle_object.tscn" id="9_gtt2a"]
+[ext_resource type="SpriteFrames" uid="uid://cskbvkw5vcrlr" path="res://scenes/quests/story_quests/somnus/3_sequence_puzzle/somnus_object.tres" id="10_sblfg"]
+[ext_resource type="AudioStream" uid="uid://cg57q82pb243w" path="res://assets/third_party/nepalese_hand_bells/handBells-c4.ogg" id="11_70kdh"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="11_sblfg"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="12_70kdh"]
+[ext_resource type="AudioStream" uid="uid://b83x8h0ob5mpq" path="res://assets/third_party/nepalese_hand_bells/handBells-d4.ogg" id="12_wgmvc"]
+[ext_resource type="AudioStream" uid="uid://cmtiwg2cylmts" path="res://assets/third_party/nepalese_hand_bells/handBells-e4.ogg" id="13_00wwj"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="13_wgmvc"]
+[ext_resource type="AudioStream" uid="uid://8k1hyi4gjae4" path="res://assets/third_party/nepalese_hand_bells/handBells-f4.ogg" id="14_inpgh"]
+[ext_resource type="AudioStream" uid="uid://6oahn2ucxxjv" path="res://assets/third_party/nepalese_hand_bells/handBells-g4.ogg" id="15_jb1o6"]
+[ext_resource type="AudioStream" uid="uid://bdboi4ndapqec" path="res://assets/third_party/nepalese_hand_bells/handBells-a4.ogg" id="16_u5pr0"]
+[ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/game_elements/props/sequence_puzzle_hint_sign/sequence_puzzle_hint_sign.tscn" id="17_vjuqt"]
+[ext_resource type="SpriteFrames" uid="uid://douutcm0btdxi" path="res://scenes/quests/story_quests/somnus/3_sequence_puzzle/somnus_sign.tres" id="18_iu4a5"]
+[ext_resource type="Resource" uid="uid://bew48awah1j10" path="res://scenes/quests/story_quests/somnus/3_sequence_puzzle/somnus_sequence_puzzle.dialogue" id="19_xtsjn"]
+[ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="20_lbf2s"]
+[ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="21_8lr4j"]
+[ext_resource type="Script" uid="uid://dtfnkop62xxog" path="res://scenes/quests/story_quests/somnus/2_combat/change.gd" id="22_gtt2a"]
+[ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="24_70kdh"]
+[ext_resource type="PackedScene" uid="uid://jdiwoc1cmxq0" path="res://scenes/quests/story_quests/somnus/assents/somnus_guard.tscn" id="24_wgmvc"]
+[ext_resource type="AudioStream" uid="uid://cqau5l52suuwu" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/alerta sonido.mp3" id="25_wgmvc"]
 
-[sub_resource type="Resource" id="Resource_00wwj"]
+[sub_resource type="Resource" id="Resource_gtt2a"]
 script = ExtResource("12_70kdh")
-type = 1
+type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sblfg"]
+size = Vector2(8, 136)
+
+[sub_resource type="Curve2D" id="Curve2D_00wwj"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 2406.445, 2194.5298, 0, 0, 0, 0, 2371.9941, 2235.6768, 0, 0, 0, 0, 2417.8428, 2112.2722, 0, 0, 0, 0, 2359.1392, 1158.2094, 0, 0, 0, 0, 2431.315, 1584.0593, 0, 0, 0, 0, 2423.182, 1972.283)
+}
+point_count = 6
 
 [node name="Combat" type="Node2D"]
 y_sort_enabled = true
 
-[node name="FillGameLogic" type="Node" parent="."]
-script = ExtResource("1_lh7d2")
-intro_dialogue = ExtResource("2_cj1u7")
-metadata/_custom_type_script = "uid://cp54mgi54nywo"
+[node name="Camera2D" type="Camera2D" parent="."]
+process_mode = 3
+position = Vector2(144, 352)
+scale = Vector2(2, 2)
+zoom = Vector2(1.333, 1.333)
+limit_left = 0
+limit_top = 0
+position_smoothing_enabled = true
+editor_draw_limits = true
+script = ExtResource("5_sblfg")
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
 [node name="Grass" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAANAAcAAQABAAEAAAANAAYAAQABAAEAAAANAAUAAQABAAEAAAANAAQAAQABAAEAAAANAAMAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAAMAAcAAQABAAEAAAAMAAYAAQABAAEAAAAMAAUAAQABAAEAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAEAAAALAAcAAQABAAEAAAALAAYAAQABAAEAAAALAAUAAQABAAEAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAEAAAAKAAcAAQABAAEAAAAKAAYAAQABAAEAAAAKAAUAAQABAAEAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAKAAEAAQABAAEAAAAJAAcAAQABAAEAAAAJAAYAAQABAAEAAAAJAAUAAQABAAEAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAJAAEAAQABAAEAAAAIAAcAAQABAAEAAAAIAAYAAQABAAEAAAAIAAUAAQABAAEAAAAIAAQAAQABAAEAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAIAAEAAQABAAEAAAAHAAcAAQABAAEAAAAHAAYAAQABAAEAAAAHAAUAAQABAAEAAAAHAAQAAQABAAEAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAEAAAAGAAcAAQABAAEAAAAGAAYAAQABAAEAAAAGAAUAAQABAAEAAAAGAAQAAQABAAEAAAAGAAMAAQABAAEAAAAGAAIAAQABAAEAAAAFAAcAAQABAAEAAAAFAAYAAQABAAEAAAAFAAUAAQABAAEAAAAFAAQAAQABAAEAAAAFAAMAAQABAAEAAAAFAAIAAQABAAEAAAAFAAEAAQABAAEAAAAEAAcAAQABAAEAAAAEAAYAAQABAAEAAAAEAAUAAQABAAEAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAIAAQABAAEAAAAEAAEAAQABAAEAAAADAAcAAQABAAEAAAADAAYAAQABAAEAAAADAAUAAQABAAEAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAIAAQABAAEAAAADAAEAAQABAAEAAAACAAcAAQABAAEAAAACAAYAAQABAAEAAAACAAUAAQABAAEAAAACAAMAAQABAAEAAAACAAIAAQABAAEAAAACAAEAAQABAAEAAAABAAcAAQABAAEAAAABAAYAAQABAAEAAAABAAUAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAABAAEAAQABAAEAAAACAAQAAQABAAEAAAABAAQAAQABAAEAAAAAAAQAAQABAAEAAAAAAAUAAQABAAEAAAAAAAYAAQABAAEAAAAAAAcAAQABAAEAAAAGAAAAAQABAAEAAAAGAAEAAQABAAEAAAAHAAAAAQABAAEAAAAFAAAAAQABAAEAAAAIAAAAAQABAAEAAAAJAAAAAQABAAEAAAALAAAAAQABAAEAAAAMAAAAAQABAAEAAAAKAAAAAQABAAEAAAANAAAAAQABAAEAAAAEAAAAAQABAAEAAAADAAAAAQABAAEAAAACAAAAAQABAAEAAAABAAAAAQABAAEAAAAAAAAAAQABAAEAAAAAAAEAAQABAAEAAAAAAAIAAQABAAEAAAAAAAMAAQABAAEAAAAAAAgAAQABAAEAAAABAAgAAQABAAEAAAACAAgAAQABAAEAAAADAAgAAQABAAEAAAAEAAgAAQABAAEAAAAFAAgAAQABAAEAAAAGAAgAAQABAAEAAAAHAAgAAQABAAEAAAAIAAgAAQABAAEAAAAJAAgAAQABAAEAAAAKAAgAAQABAAEAAAAMAAgAAQABAAEAAAALAAgAAQABAAEAAAANAAgAAQABAAEAAAAOAAgAAQABAAEAAAAOAAcAAQABAAEAAAAOAAYAAQABAAEAAAAOAAUAAQABAAEAAAAOAAQAAQABAAEAAAAOAAMAAQABAAEAAAAOAAIAAQABAAEAAAAOAAEAAQABAAEAAAAOAAAAAQABAAEAAAA=")
-tile_set = ExtResource("3_1axka")
+tile_map_data = PackedByteArray("AAANAAcADgAAAAAAAAANAAYADgAAAAAAAAANAAMADgAAAAAAAAANAAIADgAAAAAAAAANAAEADgAAAAAAAAAMAAEADgAAAAAAAAALAAEADgAAAAAAAAAKAAEADgAAAAAAAAAJAAEADgAAAAAAAAAIAAEADgAAAAAAAAAHAAEADgAAAAAAAAAFAAEADgAAAAAAAAAEAAEADgAAAAAAAAADAAEADgAAAAAAAAACAAEADgAAAAAAAAABAAEADgAAAAAAAAAGAAAADgAAAAAAAAAGAAEADgAAAAAAAAAHAAAADgAAAAAAAAAFAAAADgAAAAAAAAAIAAAADgAAAAAAAAAJAAAADgAAAAAAAAALAAAADgAAAAAAAAAMAAAADgAAAAAAAAAKAAAADgAAAAAAAAANAAAADgAAAAAAAAAEAAAADgAAAAAAAAADAAAADgAAAAAAAAACAAAADgAAAAAAAAABAAAADgAAAAAAAAABAAgADgAAAAAAAAACAAgADgAAAAAAAAADAAgADgAAAAAAAAAEAAgADgAAAAAAAAAFAAgADgAAAAAAAAAGAAgADgAAAAAAAAAHAAgADgAAAAAAAAAIAAgADgAAAAAAAAAJAAgADgAAAAAAAAAKAAgADgAAAAAAAAAMAAgADgAAAAAAAAALAAgADgAAAAAAAAANAAgADgAAAAAAAAAOAAgADgAAAAAAAAAOAAcADgAAAAAAAAAOAAYADgAAAAAAAAAOAAUADgAAAAAAAAAOAAQADgAAAAAAAAAOAAMADgAAAAAAAAAOAAIADgAAAAAAAAAOAAEADgAAAAAAAAAOAAAADgAAAAAAAAABAAIADgAAAAAAAAACAAIADgAAAAAAAAADAAIADgAAAAAAAAAEAAIADgAAAAAAAAAFAAIADgAAAAAAAAAGAAIADgAAAAAAAAAHAAIADgAAAAAAAAAIAAIADgAAAAAAAAAJAAIADgAAAAAAAAAKAAIADgAAAAAAAAALAAIADgAAAAAAAAAMAAIADgAAAAAAAAAMAAMADgAAAAAAAAAMAAQADgAAAAAAAAAMAAUADgAAAAAAAAAMAAYADgAAAAAAAAAMAAcADgAAAAAAAAANAAQADgAAAAAAAAANAAUADgAAAAAAAAALAAQADgAAAAAAAAALAAUADgAAAAAAAAAKAAUADgAAAAAAAAAKAAQADgAAAAAAAAALAAMADgAAAAAAAAAKAAMADgAAAAAAAAAJAAMADgAAAAAAAAAJAAQADgAAAAAAAAAJAAUADgAAAAAAAAAKAAYADgAAAAAAAAALAAYADgAAAAAAAAALAAcADgAAAAAAAAAKAAcADgAAAAAAAAAJAAcADgAAAAAAAAAJAAYADgAAAAAAAAAIAAYADgAAAAAAAAAIAAcADgAAAAAAAAAIAAUADgAAAAAAAAAIAAQADgAAAAAAAAAIAAMADgAAAAAAAAAHAAMADgAAAAAAAAAHAAQADgAAAAAAAAAHAAUADgAAAAAAAAAHAAYADgAAAAAAAAAHAAcADgAAAAAAAAAGAAcADgAAAAAAAAAGAAYADgAAAAAAAAAFAAYADgAAAAAAAAAFAAUADgAAAAAAAAAFAAQADgAAAAAAAAAFAAMADgAAAAAAAAAGAAMADgAAAAAAAAAGAAQADgAAAAAAAAAGAAUADgAAAAAAAAAFAAcADgAAAAAAAAAEAAcADgAAAAAAAAADAAcADgAAAAAAAAACAAcADgAAAAAAAAABAAcADgAAAAAAAAABAAYADgAAAAAAAAABAAUADgAAAAAAAAABAAQADgAAAAAAAAABAAMADgAAAAAAAAACAAMADgAAAAAAAAACAAQADgAAAAAAAAACAAUADgAAAAAAAAACAAYADgAAAAAAAAADAAYADgAAAAAAAAADAAUADgAAAAAAAAADAAQADgAAAAAAAAADAAMADgAAAAAAAAAEAAMADgAAAAAAAAAEAAQADgAAAAAAAAAEAAUADgAAAAAAAAAEAAYADgAAAAAAAAABAAkADgAAAAAAAAACAAkADgAAAAAAAAADAAkADgAAAAAAAAAEAAkADgAAAAAAAAAFAAkADgAAAAAAAAAGAAkADgAAAAAAAAAHAAkADgAAAAAAAAAIAAkADgAAAAAAAAAJAAkADgAAAAAAAAAKAAkADgAAAAAAAAALAAkADgAAAAAAAAALAAoADgAAAAAAAAAMAAoADgAAAAAAAAANAAoADgAAAAAAAAANAAkADgAAAAAAAAAOAAkADgAAAAAAAAAMAAkADgAAAAAAAAAOAAoADgAAAAAAAAAKAAoADgAAAAAAAAAJAAoADgAAAAAAAAAIAAoADgAAAAAAAAAHAAoADgAAAAAAAAAGAAoADgAAAAAAAAAFAAoADgAAAAAAAAAEAAoADgAAAAAAAAADAAoADgAAAAAAAAACAAoADgAAAAAAAAABAAoADgAAAAAAAAAPAAAADgAAAAAAAAAPAAEADgAAAAAAAAAPAAIADgAAAAAAAAAPAAMADgAAAAAAAAAPAAQADgAAAAAAAAAPAAUADgAAAAAAAAAPAAYADgAAAAAAAAAPAAcADgAAAAAAAAAPAAgADgAAAAAAAAAPAAkADgAAAAAAAAAPAAoADgAAAAAAAAAQAAAADgAAAAAAAAAQAAEADgAAAAAAAAAQAAIADgAAAAAAAAAQAAMADgAAAAAAAAAQAAQADgAAAAAAAAAQAAUADgAAAAAAAAAQAAYADgAAAAAAAAAQAAcADgAAAAAAAAAQAAgADgAAAAAAAAAQAAkADgAAAAAAAAAQAAoADgAAAAAAAAARAAoADgAAAAAAAAARAAkADgAAAAAAAAARAAgADgAAAAAAAAARAAcADgAAAAAAAAARAAYADgAAAAAAAAARAAUADgAAAAAAAAARAAAADgAAAAAAAAARAAEADgAAAAAAAAARAAIADgAAAAAAAAARAAMADgAAAAAAAAARAAQADgAAAAAAAAASAAAADgAAAAAAAAASAAEADgAAAAAAAAASAAIADgAAAAAAAAASAAMADgAAAAAAAAASAAQADgAAAAAAAAASAAUADgAAAAAAAAASAAYADgAAAAAAAAASAAcADgAAAAAAAAASAAgADgAAAAAAAAASAAkADgAAAAAAAAASAAoADgAAAAAAAAATAAoADgAAAAAAAAATAAkADgAAAAAAAAATAAgADgAAAAAAAAATAAcADgAAAAAAAAATAAYADgAAAAAAAAATAAUADgAAAAAAAAATAAAADgAAAAAAAAATAAEADgAAAAAAAAATAAIADgAAAAAAAAATAAMADgAAAAAAAAATAAQADgAAAAAAAAA=")
+tile_set = ExtResource("3_lh7d2")
 
-[node name="Stones" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAGAAkABAABAAUAAAAHAAkABAABAAUAAAAIAAkABAABAAUAAAAJAAkABAABAAUAAAAKAAkABAABAAUAAAALAAkABAABAAUAAAAMAAkABAABAAUAAAANAAkABAABAAUAAAAOAAkABAABAAUAAAAGAAgABAABAAQAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAABAAQAAAAOAAgABAABAAQAAAAAAAEABAACAAEAAAABAAEABAABAAMAAAACAAEABAABAAUAAAACAAAABAABAAQAAAABAAAABAABAAIAAAAAAAAABAABAAEAAAADAAAABAABAAIAAAAFAAAABAACAAIAAAAEAAAABAABAAEAAAAEAAEABAABAAMAAAAFAAEABAABAAUAAAADAAEABAABAAUAAAANAAcABAAAAAEAAAAOAAcABAABAAEAAAANAAYABAAAAAAAAAAOAAYABAABAAEAAAAOAAUABAAAAAEAAAAOAAMABAAAAAEAAAAOAAIABAABAAEAAAANAAEABAAAAAEAAAANAAAABAABAAAAAAAOAAAABAABAAAAAAAOAAEABAABAAEAAAAOAAQABAAAAAEAAAAMAAAABAABAAAAAAALAAAABAABAAAAAAAKAAAABAABAAAAAAAJAAAABAABAAAAAAAIAAAABAABAAAAAAAHAAAABAAAAAEAAAANAAIABAAAAAIAAAANAAMABAAAAAMAAAAHAAEABAABAAMAAAAIAAEABAABAAUAAAAKAAEABAABAAUAAAALAAEABAABAAUAAAAJAAEABAABAAMAAAAMAAEABAABAAMAAAAGAAAABAABAAIAAAAGAAEABAABAAMAAAAAAAkABAABAAUAAAABAAkABAABAAUAAAACAAkABAABAAUAAAADAAkABAABAAUAAAAEAAkABAABAAUAAAAFAAkABAABAAUAAAAAAAgABAABAAQAAAABAAgABAABAAQAAAACAAgABAABAAQAAAADAAgABAABAAQAAAAEAAgABAABAAQAAAAFAAgABAABAAQAAAAAAAIABAACAAEAAAAAAAMABAACAAEAAAAAAAQABAACAAEAAAAAAAcABAACAAEAAAAAAAYABAACAAEAAAAAAAUABAACAAEAAAA=")
-tile_set = ExtResource("3_1axka")
-
-[node name="OnTheGround" type="Node2D" parent="."]
-y_sort_enabled = true
-
-[node name="Player" parent="OnTheGround" instance=ExtResource("4_p55gs")]
-position = Vector2(348, 335)
-sprite_frames = ExtResource("5_ihx58")
-
-[node name="ThrowingNPC" parent="OnTheGround" instance=ExtResource("6_1ym8c")]
-position = Vector2(857, 300)
-sprite_frames = ExtResource("7_pyipw")
-projectile_sprite_frames = ExtResource("8_xtsjn")
-
-[node name="Target" parent="OnTheGround" instance=ExtResource("9_8lr4j")]
-position = Vector2(502, 164)
-sprite_frames = ExtResource("10_gtt2a")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target2" parent="OnTheGround" instance=ExtResource("9_8lr4j")]
-position = Vector2(758, 164)
-sprite_frames = ExtResource("10_gtt2a")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target3" parent="OnTheGround" instance=ExtResource("9_8lr4j")]
-position = Vector2(761, 497)
-sprite_frames = ExtResource("10_gtt2a")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target4" parent="OnTheGround" instance=ExtResource("9_8lr4j")]
-position = Vector2(632, 497)
-sprite_frames = ExtResource("10_gtt2a")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target5" parent="OnTheGround" instance=ExtResource("9_8lr4j")]
-position = Vector2(633, 164)
-sprite_frames = ExtResource("10_gtt2a")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target6" parent="OnTheGround" instance=ExtResource("9_8lr4j")]
-position = Vector2(501, 497)
-sprite_frames = ExtResource("10_gtt2a")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("11_sblfg")]
-unique_name_in_owner = true
-position = Vector2(868, 303)
-revealed = false
-next_scene = "uid://cex31yoe7rr3x"
-item = SubResource("Resource_00wwj")
-collected_dialogue = ExtResource("2_cj1u7")
-dialogue_title = &"well_done"
+[node name="Walls" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAACAAAADwAAAAAAAAADAAAAEAAAAAAAAAAEAAAAEQAAAAAAAAAFAAAADwAAAAAAAAAGAAAAEAAAAAAAAAAHAAAADwAAAAAAAAAIAAAADwAAAAAAAAAJAAAADwAAAAAAAAAKAAAADwAAAAAAAAALAAAAEAAAAAAAAAAMAAAAEQAAAAAAAAANAAAADwAAAAAAAAAAAAgAFQAAAAAAAAAAAAcAFQAAAAAAAAAAAAYAFQAAAAAAAAAAAAUAFQAAAAAAAAAAAAIAFQAAAAAAAAAAAAEAFQAAAAAAAAAAAAAAFAAAAAAAAAABAAAADwAAAAAAAAAOAAAADwAAAAAAAAAAAAkAFQAAAAAAAAAAAAoAFgAAAAAAAAABAAoAEAAAAAAAAAACAAoAEQAAAAAAAAADAAoAEAAAAAAAAAAEAAoADwAAAAAAAAAFAAoADwAAAAAAAAAGAAoADwAAAAAAAAAHAAoADwAAAAAAAAAIAAoADwAAAAAAAAAJAAoAEAAAAAAAAAAKAAoADwAAAAAAAAALAAoADwAAAAAAAAANAAoAEAAAAAAAAAAMAAoADwAAAAAAAAAOAAoADwAAAAAAAAAPAAoADwAAAAAAAAAPAAAADwAAAAAAAAAQAAAAEAAAAAAAAAARAAAADwAAAAAAAAASAAAADwAAAAAAAAATAAAADwAAAAAAAAAQAAoADwAAAAAAAAARAAoAEAAAAAAAAAASAAoADwAAAAAAAAATAAoADwAAAAAAAAAUAAoAHAAAAAAAAAAUAAkAEwAAAAAAAAAUAAgAEwAAAAAAAAAUAAcAEwAAAAAAAAAUAAYAEwAAAAAAAAAUAAUAEwAAAAAAAAAUAAQAEwAAAAAAAAAUAAMAEwAAAAAAAAAUAAIAEwAAAAAAAAAUAAEAEwAAAAAAAAAUAAAAGQAAAAAAAAA=")
+tile_set = ExtResource("3_lh7d2")
+navigation_enabled = false
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource("13_wgmvc")]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(1.333, 1.333)
-limit_left = 0
-limit_top = 0
-limit_right = 2048
-limit_bottom = 2048
-position_smoothing_enabled = true
-editor_draw_limits = true
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
 
-[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
+[node name="SequencePuzzle" type="Node2D" parent="OnTheGround"]
+y_sort_enabled = true
+position = Vector2(-1, 0)
+script = ExtResource("8_8lr4j")
+metadata/_custom_type_script = "uid://c68oh8dtr21ti"
+
+[node name="Objects" type="Node2D" parent="OnTheGround/SequencePuzzle"]
+y_sort_enabled = true
+position = Vector2(356, 453)
+
+[node name="Blue" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("9_gtt2a")]
+modulate = Color(0, 0.4, 0.6, 1)
+position = Vector2(325, -197)
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("10_sblfg")
+audio_stream = ExtResource("11_70kdh")
+
+[node name="Pink" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("9_gtt2a")]
+modulate = Color(0.89, 0.2937, 0.804817, 1)
+position = Vector2(-27, -253)
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("10_sblfg")
+audio_stream = ExtResource("12_wgmvc")
+
+[node name="Yellow" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("9_gtt2a")]
+modulate = Color(0.89, 0.804817, 0.2937, 1)
+position = Vector2(309, 59)
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("10_sblfg")
+audio_stream = ExtResource("13_00wwj")
+
+[node name="Green" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("9_gtt2a")]
+modulate = Color(0.188235, 0.717647, 0, 1)
+position = Vector2(29, 35)
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("10_sblfg")
+audio_stream = ExtResource("14_inpgh")
+
+[node name="Purple" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("9_gtt2a")]
+modulate = Color(0.464066, 0.2937, 0.89, 1)
+position = Vector2(653, -261)
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("10_sblfg")
+audio_stream = ExtResource("15_jb1o6")
+
+[node name="Red" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("9_gtt2a")]
+modulate = Color(0.89, 0.2937, 0.2937, 1)
+position = Vector2(677, 59)
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("10_sblfg")
+audio_stream = ExtResource("16_u5pr0")
+
+[node name="Signs" type="Node2D" parent="OnTheGround/SequencePuzzle"]
+y_sort_enabled = true
+
+[node name="HintSign1" parent="OnTheGround/SequencePuzzle/Signs" instance=ExtResource("17_vjuqt")]
+position = Vector2(585, 88)
+sprite_frames = ExtResource("18_iu4a5")
+
+[node name="HintSign2" parent="OnTheGround/SequencePuzzle/Signs" instance=ExtResource("17_vjuqt")]
+position = Vector2(817, 80)
+sprite_frames = ExtResource("18_iu4a5")
+
+[node name="Steps" type="Node2D" parent="OnTheGround/SequencePuzzle"]
+
+[node name="SequencePuzzleStep1" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("20_lbf2s")
+sequence = [NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), NodePath("../../Objects/Red"), NodePath("../../Objects/Purple"), NodePath("../../Objects/Pink")]
+hint_sign = NodePath("../../Signs/HintSign1")
+
+[node name="SequencePuzzleStep2" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("20_lbf2s")
+sequence = [NodePath("../../Objects/Purple"), NodePath("../../Objects/Green"), NodePath("../../Objects/Red"), NodePath("../../Objects/Blue"), NodePath("../../Objects/Purple"), NodePath("../../Objects/Red")]
+hint_sign = NodePath("../../Signs/HintSign2")
+
+[node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("11_sblfg")]
+position = Vector2(1192, 216)
+revealed = false
+next_scene = "uid://cp54p3n7acnjx"
+item = SubResource("Resource_gtt2a")
+collected_dialogue = ExtResource("19_xtsjn")
+dialogue_title = &"well_done"
+
+[node name="Sign" parent="OnTheGround" instance=ExtResource("21_8lr4j")]
+position = Vector2(136, 488)
+direction = 1
+text = "Enciende los interruptores"
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("22_gtt2a")
+next_scene_path = "res://scenes/quests/story_quests/somnus/1_stealth/somnus_stealth.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(60, 260)
+shape = SubResource("RectangleShape2D_sblfg")
+
+[node name="Player" parent="." instance=ExtResource("4_p55gs")]
+position = Vector2(120, 232)
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("5_ihx58")
+
+[node name="StealthGameLogic" type="Node" parent="."]
+script = ExtResource("24_70kdh")
+
+[node name="EnemyGuards" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Guard" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("24_wgmvc")]
+position = Vector2(151.99976, 376.00012)
+alerted_sound_stream = ExtResource("25_wgmvc")
+patrol_path = NodePath("../Path2D")
+wait_time = 0.1
+move_speed = 200.0
+time_to_detect_player = 100.0
+detection_area_scale = 0.5
+
+[node name="Path2D" type="Path2D" parent="EnemyGuards"]
+top_level = true
+position = Vector2(2287.9998, -1296)
+rotation = 1.5716951
+scale = Vector2(0.69559836, 0.9726441)
+curve = SubResource("Curve2D_00wwj")
+
+[connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
