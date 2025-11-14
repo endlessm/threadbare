@@ -29,7 +29,7 @@ func _on_body_exited(body: Node2D) -> void:
 		print("¡Jugador se fue!")
 
 func _process(_delta: float) -> void:
-	if player_is_near and Input.is_action_just_pressed("interact"):
+	if player_is_near and Input.is_action_just_pressed("speak"):
 		if not is_dialogue_running:
 			start_npc_dialogue()
 

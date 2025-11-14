@@ -6,9 +6,20 @@
 
 [node name="Bala" type="Area2D"]
 collision_layer = 2
+collision_mask = 3
 script = ExtResource("1_5k5i7")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_tm2r8")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.7150055, 0.006833099, 0.21628666, 1)
+
+[connection signal="area_entered" from="." to="." method="_on_hit"]

@@ -13,7 +13,11 @@ extends CharacterBody2D
 @export var max_health: int = 3400
 @export var invulnerability_time: float = 1.0
 @export var special_bullet_scene: PackedScene
+@export var dialogue_resource: DialogueResource
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+var player_node: Node2D = null
+var is_dialogue_running: bool = false
+var has_intro_played: bool = false
 var player_in_range: bool = false
 var start_position: Vector2
 var moving_right: bool = true
@@ -28,7 +32,8 @@ func _ready() -> void:
 	start_position = position
 	current_health = max_health
 	add_to_group("boss")
-	animated_sprite.play("walk") 
+	animated_sprite.play("Idle")
+	
 	if $Area2D:
 		$Area2D.body_entered.connect(_on_Area2D_body_entered)
 		$Area2D.body_exited.connect(_on_Area2D_body_exited)
@@ -50,14 +55,13 @@ func _ready() -> void:
 		invul_timer.timeout.connect(_on_invul_timeout)
 
 func _process(_delta: float) -> void:
-	if is_dead or is_attacking:
+	if is_dead or is_attacking or is_dialogue_running:
 		return
 	move_side_to_side(_delta)
 
 func move_side_to_side(delta: float) -> void:
 	if animated_sprite.animation != "walk":
 		animated_sprite.play("walk")
-
 	if moving_right:
 		animated_sprite.flip_h = false
 		position.x += speed * delta
@@ -72,19 +76,23 @@ func move_side_to_side(delta: float) -> void:
 func _on_Area2D_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
 		player_in_range = true
-		print("👀 Jugador detectado cerca del jefe — comenzando disparos")
-		$ShootTimer.start()
+		print("👀 Jugador detectado cerca del jefe")
+		if not has_intro_played and not is_dead:
+			start_dialogue("boss_start")
+		else:
+			$ShootTimer.start()
 
 func _on_Area2D_body_exited(body: Node) -> void:
 	if body.is_in_group("player"):
 		player_in_range = false
+		player_node = null
 		print("🚶‍♂️ Jugador salió del rango — deteniendo disparos")
 		$ShootTimer.stop()
 
 func _on_shoot_timer_timeout() -> void:
 	print("⏱️ Timer activado")
-	if not player_in_range or is_attacking or is_dead:
-		print("Jugador fuera de rango, no dispara")
+	if not player_in_range or is_attacking or is_dead or is_dialogue_running:
+		print("Jefe ocupado o jugador fuera, no dispara")
 		$ShootTimer.start()
 		return
 	is_attacking = true
@@ -102,8 +110,7 @@ func _on_shoot_timer_timeout() -> void:
 	$ShootTimer.start()
 
 func shoot_single() -> void:
-	if bullet_scene == null or not $SpawnPoint:
-		return
+	if bullet_scene == null or not $SpawnPoint: return
 	var bullet: Node2D = bullet_scene.instantiate()
 	bullet.position = $SpawnPoint.global_position
 	bullet.set("owner_type", "boss")
@@ -112,8 +119,7 @@ func shoot_single() -> void:
 	get_tree().current_scene.add_child(bullet)
 
 func shoot_circle() -> void:
-	if bullet_scene == null or not $SpawnPoint:
-		return
+	if bullet_scene == null or not $SpawnPoint: return
 	var bullet_count: int = 12
 	var radius: float = 40
 	var dir_to_player: Vector2 = (get_player_direction() if aim_at_player else shoot_direction).normalized()
@@ -124,9 +130,9 @@ func shoot_circle() -> void:
 		var offset: Vector2 = Vector2(cos(angle), sin(angle)) * radius
 		var bullet: Node2D = bullet_scene.instantiate()
 		bullet.position = center + offset
-		bullet.owner_type = "boss"
-		bullet.direction = dir_to_player
-		bullet.speed = bullet_speed
+		bullet.set("owner_type", "boss")
+		bullet.set("direction", dir_to_player) 
+		bullet.set("speed", bullet_speed)
 		get_tree().current_scene.add_child(bullet)
 
 func get_player_direction() -> Vector2:
@@ -168,7 +174,7 @@ func shoot_triangle_attack() -> void:
 	special_bullet.position = $SpawnPoint.global_position
 	special_bullet.set("direction", (get_player_direction() if aim_at_player else shoot_direction).normalized())
 	get_tree().current_scene.add_child(special_bullet)
-
+	
 func die() -> void:
 	if is_dead:
 		return
@@ -177,4 +183,26 @@ func die() -> void:
 	print("💀 Jefe derrotado")
 	animated_sprite.play("defeated")
 	await animated_sprite.animation_finished 
+	start_dialogue("boss_defeated")
+	await DialogueManager.dialogue_ended
 	queue_free()
+
+func start_dialogue(node_name: String) -> void:
+	if dialogue_resource == null:
+		print("❌ ERROR: No asignaste el archivo .dialogue al Jefe en el Inspector")
+		return
+	is_dialogue_running = true
+	if player_node:
+		player_node.set_physics_process(false)
+	DialogueManager.dialogue_ended.connect(_on_dialogue_finished)
+	DialogueManager.show_dialogue_balloon(dialogue_resource, node_name)
+
+func _on_dialogue_finished(_resource: DialogueResource) -> void:
+	is_dialogue_running = false
+	DialogueManager.dialogue_ended.disconnect(_on_dialogue_finished)
+	if player_node:
+		player_node.set_physics_process(true)
+	if not has_intro_played:
+		has_intro_played = true
+		if player_in_range:
+			$ShootTimer.start()
