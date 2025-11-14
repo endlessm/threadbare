@@ -1,11 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1cuy5dif4li5"]
+[gd_scene load_steps=7 format=3 uid="uid://c1cuy5dif4li5"]
 
-[ext_resource type="SpriteFrames" uid="uid://caou2u7vffhei" path="res://scenes/world_map/components/cat.tres" id="1_pddem"]
+[ext_resource type="Texture2D" uid="uid://dv2vwponmgn6g" path="res://PrototipoLaberinto_de_Fauno/Sprite/SapoRojo_Fotograma1-1.png.png" id="1_us47g"]
+[ext_resource type="Texture2D" uid="uid://cwr1rdo06png3" path="res://PrototipoLaberinto_de_Fauno/Sprite/SapoRojo_Fotograma2-3.png.png" id="2_7ikti"]
+[ext_resource type="Texture2D" uid="uid://bfhf8h0gyyhao" path="res://PrototipoLaberinto_de_Fauno/Sprite/SapoRojo_Fotograma3-4.png.png" id="3_0po6l"]
 
 [sub_resource type="GDScript" id="GDScript_ckvkc"]
 script/source = "extends CharacterBody2D
 
-const LODO_SCENE = preload(\"res://PrototipoLaberinto_de_Fauno/Scenes/Componenst/Lodo.tscn\")
+@export var lodo: PackedScene
 @export var player: CharacterBody2D 
 
 var is_firing_sequence: bool = false 
@@ -14,52 +16,81 @@ func disparar_un_lodo() -> void:
 	if player == null:
 		return
 
-	var lodo_instance:CharacterBody2D = LODO_SCENE.instantiate()
-	lodo_instance.global_position = global_position
-	
+	var lodo_instance:CharacterBody2D = lodo.instantiate()
+	lodo_instance.global_position = $Marker.global_position 
+
 	lodo_instance.start_move(player.global_position) 
 
 	get_parent().add_child(lodo_instance)
 
-func sequence_disparo_doble() -> void:
-	if player == null:
-		return
-		
-	if is_firing_sequence:
-		return
-		
-	is_firing_sequence = true
-	
-	disparar_un_lodo()
-
-	await get_tree().create_timer(0.5).timeout 
-
-	disparar_un_lodo() 
-	
-	is_firing_sequence = false
-
-
-
 func _on_timer_timeout() -> void:
-	sequence_disparo_doble()
+	$Sprite.play(\"Attack\") 
+
+func _on_sprite_frame_changed() -> void:
+	if $Sprite.frame == 2 or $Sprite.frame == 4:
+		disparar_un_lodo() 
+
+
+func _on_sprite_animation_finished() -> void:
+	await get_tree().create_timer(0.5).timeout
+	$Sprite.play(\"default\") 
 "
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5qup2"]
-radius = 40.04997
+radius = 48.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0c5kq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_us47g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_7ikti")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_0po6l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_7ikti")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_0po6l")
+}],
+"loop": false,
+"name": &"Attack",
+"speed": 2.5
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_us47g")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 collision_layer = 128
 script = SubResource("GDScript_ckvkc")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-modulate = Color(1, 0, 0, 1)
-sprite_frames = ExtResource("1_pddem")
-animation = &"idle"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_5qup2")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_0c5kq")
+animation = &"Attack"
+autoplay = "default"
+frame = 2
+frame_progress = 1.0
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 4.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_5qup2")
+[node name="Marker" type="Marker2D" parent="."]
+position = Vector2(0, -12)
 
+[connection signal="animation_finished" from="Sprite" to="." method="_on_sprite_animation_finished"]
+[connection signal="frame_changed" from="Sprite" to="." method="_on_sprite_frame_changed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
