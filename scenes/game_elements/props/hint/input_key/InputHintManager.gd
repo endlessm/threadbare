@@ -24,18 +24,9 @@ const DEVICE_MAP: Dictionary = {
 # This makes xbox icons the default when no specific match is found.
 const GENERIC_RESOURCE: String = "res://scenes/game_elements/props/hint/resources/xbox.tres"
 
-# Cache to avoid re-loading resources frequently.
-var resource_cache: Dictionary = {}
-
 
 func _load_resource(path: String) -> Resource:
-	if resource_cache.has(path):
-		return resource_cache[path]
-
-	var r: Resource = ResourceLoader.load(path)
-	if r:
-		resource_cache[path] = r
-	return r
+	 return ResourceLoader.load(path)
 
 
 # Determine which JoypadButtonTextures resource to use for a given device string.
