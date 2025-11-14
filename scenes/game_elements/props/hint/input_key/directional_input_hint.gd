@@ -89,7 +89,6 @@ func _update_texture() -> void:
 	if tex == null and action_name != "move_unpressed":
 		tex = InputGlobal.get_texture_for(current_device, "move_unpressed")
 
-	
 	if tex:
 		texture = tex
 		visible = true
