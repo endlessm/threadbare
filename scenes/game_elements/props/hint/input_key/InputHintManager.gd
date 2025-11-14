@@ -9,20 +9,20 @@ extends Node
 
 ## Mapping of controller keyword -> resource path
 const DEVICE_MAP: Dictionary = {
-	"xbox": "res://scenes/game_elements/props/hint/resources/xbox.tres",
-	"play": "res://scenes/game_elements/props/hint/resources/playstation.tres",
-	"ps": "res://scenes/game_elements/props/hint/resources/playstation.tres",
-	"playstation": "res://scenes/game_elements/props/hint/resources/playstation.tres",
-	"switch": "res://scenes/game_elements/props/hint/resources/switch.tres",
-	"nintendo": "res://scenes/game_elements/props/hint/resources/switch.tres",
-	"steam": "res://scenes/game_elements/props/hint/resources/steamdeck.tres",
-	"steamdeck": "res://scenes/game_elements/props/hint/resources/steamdeck.tres",
-	"keyboard": "res://scenes/game_elements/props/hint/resources/keyboard.tres"
+	"xbox": "res://scenes/game_elements/props/hint/resources/inputs.tres/xbox.tres",
+	"play": "res://scenes/game_elements/props/hint/resources/inputs.tres/playstation.tres",
+	"ps": "res://scenes/game_elements/props/hint/resources/inputs.tres/playstation.tres",
+	"playstation": "res://scenes/game_elements/props/hint/resources/inputs.tres/playstation.tres",
+	"switch": "res://scenes/game_elements/props/hint/resources/inputs.tres/switch.tres",
+	"nintendo": "res://scenes/game_elements/props/hint/resources/inputs.tres/switch.tres",
+	"steam": "res://scenes/game_elements/props/hint/resources/inputs.tres/steamdeck.tres",
+	"steamdeck": "res://scenes/game_elements/props/hint/resources/inputs.tres/steamdeck.tres",
+	"keyboard": "res://scenes/game_elements/props/hint/resources/inputs.tres/keyboard.tres",
 }
 
-# NOTE: Use xbox.tres as the "generic" fallback resource.
-# This makes xbox icons the default when no specific match is found.
-const GENERIC_RESOURCE: String = "res://scenes/game_elements/props/hint/resources/xbox.tres"
+const GENERIC_RESOURCE: String = (
+	"res://scenes/game_elements/props/hint/resources/inputs.tres/" + "xbox.tres"
+)
 
 # Cache to avoid re-loading resources frequently.
 var resource_cache: Dictionary = {}

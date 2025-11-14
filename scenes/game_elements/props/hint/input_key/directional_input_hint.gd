@@ -52,7 +52,6 @@ func _physics_process(_delta: float) -> void:
 
 	# If nothing is pressed -> show the idle hint (move_unpressed)
 	if pressed_dir == "":
-		# If this node is the idle node, ensure it's visible and has its texture
 		if String(action_name) == "move_unpressed":
 			_update_texture()
 			if texture:
@@ -60,10 +59,8 @@ func _physics_process(_delta: float) -> void:
 			else:
 				visible = false
 		else:
-			# Not the idle node: hide
 			visible = false
 	else:
-		# There is a direction pressed: only the corresponding node should be visible
 		if pressed_dir == action_name:
 			_update_texture()
 			if texture:
@@ -73,9 +70,8 @@ func _physics_process(_delta: float) -> void:
 		else:
 			visible = false
 
-	# Visual feedback when the actual action (e.g., move_up) is pressed
-	if Input.is_action_pressed(action_name):
-		# subtle pressed look
+	# Visual feedback when the actual action is pressed
+	if action_name != "move_unpressed" and Input.is_action_pressed(action_name):
 		modulate = Color(0.994, 0.99, 0.992, 1.0)
 	else:
 		modulate = Color.WHITE
