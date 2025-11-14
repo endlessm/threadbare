@@ -1,3 +1,4 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 extends "res://scenes/game_elements/characters/player/components/player.gd"
 
