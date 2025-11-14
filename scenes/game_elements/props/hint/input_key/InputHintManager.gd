@@ -26,8 +26,7 @@ const GENERIC_RESOURCE: String = "res://scenes/game_elements/props/hint/resource
 
 
 func _load_resource(path: String) -> Resource:
-	 return ResourceLoader.load(path)
-
+	   return ResourceLoader.load(path)
 
 # Determine which JoypadButtonTextures resource to use for a given device string.
 func _resource_for_device(device: String) -> JoypadButtonTextures:
