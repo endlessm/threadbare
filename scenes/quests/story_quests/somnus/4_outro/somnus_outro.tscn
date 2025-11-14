@@ -1,46 +1,118 @@
-[gd_scene load_steps=6 format=4 uid="uid://cp54p3n7acnjx"]
+[gd_scene load_steps=30 format=4 uid="uid://cp54p3n7acnjx"]
 
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_8i5eh"]
 [ext_resource type="TileSet" uid="uid://dphcd7mvjgflw" path="res://scenes/quests/story_quests/somnus/somnus_tileset.tres" id="2_8i5eh"]
-[ext_resource type="SpriteFrames" uid="uid://b6ijk8vi5x3tv" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/somnus_player.tres" id="3_ynt85"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_j7qew"]
+[ext_resource type="SpriteFrames" uid="uid://cufem6toe403p" path="res://scenes/quests/story_quests/somnus/1_stealth/stealth_components/somnus_guard_enemy.tres" id="4_tw86x"]
+[ext_resource type="Resource" uid="uid://ey8n82aqcrnl" path="res://scenes/quests/story_quests/somnus/4_outro/outro_components/somnus_dialogo_final.dialogue" id="5_4oqt4"]
 [ext_resource type="Resource" uid="uid://brdx1ktdrijch" path="res://scenes/quests/story_quests/somnus/4_outro/outro_components/somnus_outro.dialogue" id="5_6xg1o"]
+[ext_resource type="Texture2D" uid="uid://cgo3y62kxsh1a" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/room_iv_stand_w.png" id="6_cc6l0"]
+[ext_resource type="Texture2D" uid="uid://lqbwxlghrj3j" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/operation_table.png" id="7_53dj7"]
+[ext_resource type="Texture2D" uid="uid://derptlow6cx2u" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/maternity_light.png" id="8_chxae"]
+[ext_resource type="Texture2D" uid="uid://dbdsqic47becn" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/lab_medium_table.png" id="9_xb60x"]
+[ext_resource type="Texture2D" uid="uid://bl8655xh0ir7x" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/operation_ecg_full.png" id="10_dlmw3"]
+[ext_resource type="Texture2D" uid="uid://dka1oabvw336l" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/lab_automation_robot.png" id="11_cvfiq"]
+[ext_resource type="Texture2D" uid="uid://c2r2106ec1w2u" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/room_ecg_cart.png" id="12_xjacr"]
+[ext_resource type="Texture2D" uid="uid://cblw2s2f8t2i7" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/lab_computer.png" id="13_tw86x"]
+[ext_resource type="PackedScene" uid="uid://2t1gcgrhhbkp" path="res://scenes/quests/story_quests/somnus/player_components/somnus-player.tscn" id="14_xxvi0"]
+[ext_resource type="Texture2D" uid="uid://cl3j5t0m6m1tx" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/Estante cosas.png" id="15_tw86x"]
+[ext_resource type="Texture2D" uid="uid://cr2jn85nci6qu" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/Casillero2.png" id="16_xxvi0"]
+[ext_resource type="Texture2D" uid="uid://8qab5aipj3wt" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/operation_light.png" id="17_khb5o"]
+[ext_resource type="Texture2D" uid="uid://cmnetprep6gd0" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/maternity_bed.png" id="18_cik0e"]
+[ext_resource type="Texture2D" uid="uid://l5bkhml7vtwo" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/maternity_work_cabinet.png" id="19_sorsn"]
+[ext_resource type="Texture2D" uid="uid://oq267y181oml" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/operation_ultrasound_machine.png" id="20_4oqt4"]
+[ext_resource type="Texture2D" uid="uid://ku84od5lnxa4" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/room_cabinet.png" id="21_socuc"]
+[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="22_khb5o"]
+[ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="23_cik0e"]
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="23_sorsn"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="24_4oqt4"]
+[ext_resource type="AudioStream" uid="uid://3u6uo6eo3053" path="res://scenes/quests/story_quests/somnus/assents/estructura_hospital/sonido ambiente.mp3" id="27_socuc"]
+
+[sub_resource type="Resource" id="Resource_socuc"]
+script = ExtResource("24_4oqt4")
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qmwbi"]
+size = Vector2(137, 200)
 
 [node name="Outro" type="Node2D"]
+position = Vector2(259, 174)
 
 [node name="HUD" parent="." instance=ExtResource("1_8i5eh")]
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
 [node name="piso" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAAAAAAEgAAAAAAAAAAAAEAEgAAAAAAAAAAAAIAEgAAAAAAAAAAAAMAEgAAAAAAAAAAAAQAEgAAAAAAAAABAAAAEgAAAAAAAAABAAEAEgAAAAAAAAABAAIAEgAAAAAAAAABAAMAEgAAAAAAAAABAAQAEgAAAAAAAAACAAAAEgAAAAAAAAACAAEAEgAAAAAAAAACAAIAEgAAAAAAAAACAAMAEgAAAAAAAAACAAQAEgAAAAAAAAADAAAAEgAAAAAAAAADAAEAEgAAAAAAAAADAAIAEgAAAAAAAAADAAMAEgAAAAAAAAADAAQAEgAAAAAAAAAEAAAAEgAAAAAAAAAEAAEAEgAAAAAAAAAEAAIAEgAAAAAAAAAEAAMAEgAAAAAAAAAEAAQAEgAAAAAAAAAFAAAAEgAAAAAAAAAFAAEAEgAAAAAAAAAFAAIAEgAAAAAAAAAFAAMAEgAAAAAAAAAFAAQAEgAAAAAAAAAGAAAAEgAAAAAAAAAGAAEAEgAAAAAAAAAGAAIAEgAAAAAAAAAGAAMAEgAAAAAAAAAGAAQAEgAAAAAAAAACAAUAEgAAAAAAAAACAAYAEgAAAAAAAAADAAUAEgAAAAAAAAADAAYAEgAAAAAAAAAEAAUAEgAAAAAAAAAEAAYAEgAAAAAAAAACAAcAEgAAAAAAAAADAAcAEgAAAAAAAAAEAAcAEgAAAAAAAAADAAgAEgAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAAAAAAADgAAAAAAAAAAAAEADgAAAAAAAAAAAAIADgAAAAAAAAAAAAMADgAAAAAAAAAAAAQADgAAAAAAAAABAAAADgAAAAAAAAABAAEADgAAAAAAAAABAAIADgAAAAAAAAABAAMADgAAAAAAAAABAAQADgAAAAAAAAACAAAADgAAAAAAAAACAAEADgAAAAAAAAACAAIADgAAAAAAAAACAAMADgAAAAAAAAACAAQADgAAAAAAAAADAAAADgAAAAAAAAADAAEADgAAAAAAAAADAAIADgAAAAAAAAADAAMADgAAAAAAAAADAAQADgAAAAAAAAAEAAAADgAAAAAAAAAEAAEADgAAAAAAAAAEAAIADgAAAAAAAAAEAAMADgAAAAAAAAAEAAQADgAAAAAAAAAFAAAADgAAAAAAAAAFAAEADgAAAAAAAAAFAAIADgAAAAAAAAAFAAMADgAAAAAAAAAFAAQADgAAAAAAAAAGAAAADgAAAAAAAAAGAAEADgAAAAAAAAAGAAIADgAAAAAAAAAGAAMADgAAAAAAAAAGAAQADgAAAAAAAAACAAUADgAAAAAAAAACAAYADgAAAAAAAAADAAUADgAAAAAAAAADAAYADgAAAAAAAAAEAAUADgAAAAAAAAAEAAYADgAAAAAAAAACAAcADgAAAAAAAAADAAcADgAAAAAAAAAEAAcADgAAAAAAAAADAAgADgAAAAAAAAAAAAUADgAAAAAAAAABAAUADgAAAAAAAAAFAAUADgAAAAAAAAAGAAUADgAAAAAAAAD/////DgAAAAAAAAD//wAADgAAAAAAAAD//wEADgAAAAAAAAD//wIADgAAAAAAAAD//wMADgAAAAAAAAD//wQADgAAAAAAAAD//wUADgAAAAAAAAD//wYADgAAAAAAAAAAAP//DgAAAAAAAAAAAAYADgAAAAAAAAABAP//DgAAAAAAAAABAAYADgAAAAAAAAACAP//DgAAAAAAAAADAP//DgAAAAAAAAAEAP//DgAAAAAAAAAFAP//DgAAAAAAAAAFAAYADgAAAAAAAAAGAP//DgAAAAAAAAAGAAYADgAAAAAAAAAHAP//DgAAAAAAAAAHAAAADgAAAAAAAAAHAAEADgAAAAAAAAAHAAIADgAAAAAAAAAHAAMADgAAAAAAAAAHAAQADgAAAAAAAAAHAAUADgAAAAAAAAAHAAYADgAAAAAAAAACAAgADgAAAAAAAAACAAkADgAAAAAAAAACAAoADgAAAAAAAAADAAkADgAAAAAAAAADAAoADgAAAAAAAAAEAAgADgAAAAAAAAAEAAkADgAAAAAAAAAEAAoADgAAAAAAAAA=")
 tile_set = ExtResource("2_8i5eh")
 
+[node name="CollectibleItem" parent="TileMapLayers" instance=ExtResource("23_sorsn")]
+position = Vector2(227, 181)
+next_scene = "uid://cufkthb25mpxy"
+item = SubResource("Resource_socuc")
+collected_dialogue = ExtResource("5_4oqt4")
+
+[node name="MaternityWorkCabinet" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(497.5, 318.5)
+scale = Vector2(1.8125, 1.75)
+texture = ExtResource("19_sorsn")
+
+[node name="MaternityWorkCabinet2" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(498, 213)
+scale = Vector2(1.8125, 1.75)
+texture = ExtResource("19_sorsn")
+
+[node name="OperationUltrasoundMachine" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(117, 289)
+scale = Vector2(2.2968757, 2.2656262)
+texture = ExtResource("20_4oqt4")
+
+[node name="OperationTable" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(227, 182)
+scale = Vector2(2.21875, 1.8697917)
+texture = ExtResource("7_53dj7")
+
+[node name="RoomIvStandW2" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(185, 180)
+scale = Vector2(1.25, 1.1875)
+texture = ExtResource("6_cc6l0")
+
+[node name="MaternityLight" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(359, 116)
+scale = Vector2(-1.2507651, 1.2345642)
+texture = ExtResource("8_chxae")
+
+[node name="Player" parent="TileMapLayers" instance=ExtResource("14_xxvi0")]
+position = Vector2(193, 601)
+
+[node name="Camera2D" type="Camera2D" parent="TileMapLayers/Player"]
+process_mode = 3
+position = Vector2(-27.285446, -81.67676)
+scale = Vector2(2.5, 2.5)
+zoom = Vector2(1.5, 1.5)
+limit_left = 7
+limit_top = -790
+limit_right = 10000007
+limit_bottom = 9999210
+position_smoothing_enabled = true
+editor_draw_limits = true
+
 [node name="paredes" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAAAP//GAAAAAAAAAABAP//FAAAAAAAAAACAP//GAAAAAAAAAADAP//GAAAAAAAAAAEAP//GAAAAAAAAAAFAP//FAAAAAAAAAAGAP//GAAAAAAAAAAHAP//GgAAAAAAAAAHAAAAGwAAAAAAAAAHAAEAGwAAAAAAAAAHAAIAGwAAAAAAAAAHAAMAGwAAAAAAAAAHAAQAGwAAAAAAAAAFAAUAGAAAAAAAAAAGAAUAFAAAAAAAAAAAAAUAFAAAAAAAAAABAAUAGAAAAAAAAAD//wAAJQAAAAAAAAD//wEAJQAAAAAAAAD//wIAJQAAAAAAAAD//wMAJQAAAAAAAAD//wQAJQAAAAAAAAD//wUAIgAAAAAAAAAHAAUAIQAAAAAAAAD/////JAAAAAAAAAACAAgAFAAAAAAAAAABAAgAIgAAAAAAAAAEAAgAFAAAAAAAAAAFAAgAIQAAAAAAAAADAAgAEwAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAD//wYADwAAAAAAAAAAAAYAEAAAAAAAAAABAAYADwAAAAAAAAAFAAYADwAAAAAAAAAGAAYAEAAAAAAAAAAHAAYADwAAAAAAAAD/////DwAAAAAAAAAAAP//DwAAAAAAAAABAP//DwAAAAAAAAAFAP//DwAAAAAAAAAGAP//DwAAAAAAAAAHAP//DwAAAAAAAAACAP//DwAAAAAAAAADAP//EAAAAAAAAAAEAP//DwAAAAAAAAADAAoAEQAAAAAAAAACAAoAEAAAAAAAAAAEAAoAEAAAAAAAAAABAAoAFgAAAAAAAAAFAAoAFwAAAAAAAAABAAcAFQAAAAAAAAABAAgAFQAAAAAAAAABAAkAFQAAAAAAAAAFAAcAEwAAAAAAAAAFAAgAEwAAAAAAAAAFAAkAEwAAAAAAAAD+/wYAFgAAAAAAAAAIAAYAFwAAAAAAAAD+/wAAFQAAAAAAAAD+/wEAFQAAAAAAAAD+/wIAFQAAAAAAAAD+/wMAFQAAAAAAAAD+/wQAFQAAAAAAAAD+/wUAFQAAAAAAAAAIAAAAEwAAAAAAAAAIAAEAEwAAAAAAAAAIAAIAEwAAAAAAAAAIAAMAEwAAAAAAAAAIAAQAEwAAAAAAAAAIAAUAEwAAAAAAAAAIAP//EgAAAAAAACD+////EgAAAAAAADA=")
 tile_set = ExtResource("2_8i5eh")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAABAAcAJQAAAAAAAAABAAYAJQAAAAAAAAABAAUAJQAAAAAAAAAFAAcAGwAAAAAAAAAFAAYAGwAAAAAAAAAFAAUAGwAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAAFAAYAIAAAAAAAABABAAYAIAAAAAAAAAA=")
 tile_set = ExtResource("2_8i5eh")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(153, 366)
-zoom = Vector2(1.333, 1.333)
-limit_left = 0
-limit_top = 0
-limit_right = 960
-limit_bottom = 540
-position_smoothing_enabled = true
-editor_draw_limits = true
 
 [node name="OnTheGround" type="Node2D" parent="."]
 y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
-position = Vector2(115, 86)
-sprite_frames = ExtResource("3_ynt85")
-animation = &"new_animation"
+position = Vector2(56, 118.00001)
+scale = Vector2(2.5, 2.5)
+sprite_frames = ExtResource("4_tw86x")
+animation = &"idle"
 autoplay = "idle"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
@@ -48,5 +120,211 @@ autoplay = "idle"
 [node name="Cinematic" type="Node2D" parent="."]
 script = ExtResource("4_j7qew")
 dialogue = ExtResource("5_6xg1o")
-next_scene = "uid://cufkthb25mpxy"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="RoomIvStandW3" type="Sprite2D" parent="."]
+position = Vector2(-7.5, 348)
+scale = Vector2(1.25, 1.1875)
+texture = ExtResource("6_cc6l0")
+
+[node name="RoomIvStandW4" type="Sprite2D" parent="."]
+position = Vector2(478, 58)
+scale = Vector2(1.25, 1.1875)
+texture = ExtResource("6_cc6l0")
+
+[node name="Casillero2" type="Sprite2D" parent="."]
+position = Vector2(417, -10)
+scale = Vector2(1.171875, 1.1875)
+texture = ExtResource("16_xxvi0")
+
+[node name="MaternityLight2" type="Sprite2D" parent="."]
+position = Vector2(166, -11)
+scale = Vector2(1.2105263, 1.1764706)
+texture = ExtResource("8_chxae")
+
+[node name="MaternityLight3" type="Sprite2D" parent="."]
+position = Vector2(-7.5, 227)
+scale = Vector2(1.2105263, 1.1764706)
+texture = ExtResource("8_chxae")
+
+[node name="MaternityLight4" type="Sprite2D" parent="."]
+position = Vector2(399, 12)
+scale = Vector2(1.2105263, 1.1764706)
+texture = ExtResource("8_chxae")
+
+[node name="LabMediumTable" type="Sprite2D" parent="."]
+position = Vector2(310.5, 8)
+scale = Vector2(1.890625, 1.5)
+texture = ExtResource("9_xb60x")
+
+[node name="OperationEcgFull" type="Sprite2D" parent="."]
+position = Vector2(477, -11)
+scale = Vector2(1.171875, 1.328125)
+texture = ExtResource("10_dlmw3")
+
+[node name="OperationEcgFull3" type="Sprite2D" parent="."]
+position = Vector2(282, 122)
+scale = Vector2(1.171875, 1.328125)
+texture = ExtResource("10_dlmw3")
+
+[node name="OperationEcgFull2" type="Sprite2D" parent="."]
+position = Vector2(-26.5, 261)
+scale = Vector2(1.171875, 1.328125)
+texture = ExtResource("10_dlmw3")
+
+[node name="LabAutomationRobot" type="Sprite2D" parent="."]
+position = Vector2(332, -5)
+texture = ExtResource("11_cvfiq")
+
+[node name="RoomEcgCart" type="Sprite2D" parent="."]
+position = Vector2(238, -12)
+texture = ExtResource("12_xjacr")
+
+[node name="RoomEcgCart2" type="Sprite2D" parent="."]
+position = Vector2(203, -12)
+texture = ExtResource("12_xjacr")
+
+[node name="LabComputer" type="Sprite2D" parent="."]
+position = Vector2(288, -8)
+texture = ExtResource("13_tw86x")
+
+[node name="LabMediumTable2" type="Sprite2D" parent="."]
+position = Vector2(43.5, 254.00002)
+scale = Vector2(1.78125, 1.4375)
+texture = ExtResource("9_xb60x")
+
+[node name="LabAutomationRobot2" type="Sprite2D" parent="."]
+position = Vector2(63.5, 244)
+texture = ExtResource("11_cvfiq")
+
+[node name="LabComputer2" type="Sprite2D" parent="."]
+position = Vector2(22.5, 244)
+texture = ExtResource("13_tw86x")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.0649519, 0.27137804, 0.1455622, 1)
+
+[node name="EstanteCosas" type="Sprite2D" parent="."]
+position = Vector2(104, -10)
+scale = Vector2(1.140625, 1.21875)
+texture = ExtResource("15_tw86x")
+
+[node name="EstanteCosas2" type="Sprite2D" parent="."]
+position = Vector2(43.999992, -10)
+scale = Vector2(1.140625, 1.21875)
+texture = ExtResource("15_tw86x")
+
+[node name="OperationLight" type="Sprite2D" parent="."]
+position = Vector2(229, 95.00001)
+scale = Vector2(2.8437505, 2.8750002)
+texture = ExtResource("17_khb5o")
+
+[node name="MaternityBed" type="Sprite2D" parent="."]
+position = Vector2(58, 325)
+scale = Vector2(2.4629629, 2.3857143)
+texture = ExtResource("18_cik0e")
+
+[node name="RoomCabinet" type="Sprite2D" parent="."]
+position = Vector2(-4.999998, -16)
+scale = Vector2(2.1249998, 1.78125)
+texture = ExtResource("21_socuc")
+
+[node name="RoomCabinet2" type="Sprite2D" parent="."]
+position = Vector2(-43, -16)
+scale = Vector2(2.1249998, 1.78125)
+texture = ExtResource("21_socuc")
+
+[node name="Light5" type="PointLight2D" parent="."]
+position = Vector2(56.999992, 110.00001)
+rotation = 0.784688
+scale = Vector2(0.14065275, 0.1777117)
+color = Color(0.95305675, 0, 0.090719454, 1)
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("22_khb5o")
+offset = Vector2(377.88, 10.7686)
+texture_scale = 1.38
+script = ExtResource("23_cik0e")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(57.5, 287)
+shape = SubResource("RectangleShape2D_qmwbi")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(321, 168)
+scale = Vector2(2.852729, 0.3810105)
+shape = SubResource("RectangleShape2D_qmwbi")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(507, 215)
+scale = Vector2(0.31497622, -0.30383235)
+shape = SubResource("RectangleShape2D_qmwbi")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(506, 310.00003)
+scale = Vector2(0.31497622, -0.40022448)
+shape = SubResource("RectangleShape2D_qmwbi")
+
+[node name="Light6" type="PointLight2D" parent="."]
+position = Vector2(340, 107)
+rotation = 2.5047598
+scale = Vector2(0.13614443, 0.14381011)
+color = Color(1, 1, 0.796078, 1)
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("22_khb5o")
+offset = Vector2(377.88, 10.7686)
+texture_scale = 1.38
+script = ExtResource("23_cik0e")
+
+[node name="Light6" type="PointLight2D" parent="Light6"]
+position = Vector2(2403.0232, 783.12274)
+rotation = -1.627387
+scale = Vector2(0.6519199, 0.74662495)
+color = Color(1, 1, 0.796078, 1)
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("22_khb5o")
+offset = Vector2(377.88, 10.7686)
+texture_scale = 1.38
+script = ExtResource("23_cik0e")
+
+[node name="Light8" type="PointLight2D" parent="Light6"]
+position = Vector2(-926.43634, 285.38983)
+rotation = -1.627387
+scale = Vector2(0.6519199, 0.74662495)
+color = Color(1, 1, 0.796078, 1)
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("22_khb5o")
+offset = Vector2(377.88, 10.7686)
+texture_scale = 1.38
+script = ExtResource("23_cik0e")
+
+[node name="Light7" type="PointLight2D" parent="Light6"]
+position = Vector2(362.4037, 1395.4198)
+rotation = -1.627387
+scale = Vector2(0.6519199, 0.74662495)
+color = Color(1, 1, 0.796078, 1)
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("22_khb5o")
+offset = Vector2(377.88, 10.7686)
+texture_scale = 1.38
+script = ExtResource("23_cik0e")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("27_socuc")
+autoplay = true
