@@ -2,9 +2,9 @@
 
 [ext_resource type="TileSet" uid="uid://odqop1b8fuu6" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part4/intro_components/titleset_arboles.tres" id="1_qq8xw"]
 [ext_resource type="SpriteFrames" uid="uid://bek5ha0emgpqd" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/bryan2.tres" id="2_i8ugt"]
+[ext_resource type="SpriteFrames" uid="uid://bffx1trcr66r6" path="res://scenes/quests/story_quests/after_the_tremor/player_components/after_the_tremor_player.tres" id="3_m02s3"]
 [ext_resource type="Script" uid="uid://skmynvou4l31" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part4/intro_components/scripts/cinematicWithShake.gd" id="3_mfhaq"]
 [ext_resource type="SpriteFrames" uid="uid://dbe6l18tss360" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/charlie.tres" id="3_pa5b4"]
-[ext_resource type="SpriteFrames" uid="uid://nfm4t7txex23" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/ente.tres" id="4_2gl4w"]
 [ext_resource type="Script" uid="uid://dunsvrhq42214" path="res://scenes/game_elements/fx/shaker/components/shaker.gd" id="5_i8ugt"]
 [ext_resource type="Resource" uid="uid://bdiq2ur5cwfeu" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part6/intro_components/dialogue/escuela.dialogue" id="5_vnjc3"]
 [ext_resource type="Shader" uid="uid://dmm7vum4u3k5e" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part6/night.gdshader" id="9_pa5b4"]
@@ -117,7 +117,7 @@ tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
@@ -129,7 +129,7 @@ tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/10/type = "value"
 tracks/10/imported = false
@@ -313,7 +313,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -330,10 +330,22 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Entity:visible")
+tracks/2/path = NodePath("Entity:animation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
+"times": PackedFloat32Array(0.08),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Entity:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 0.39229202),
 "update": 1,
@@ -417,7 +429,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.36666673, 0.78666663),
 "transitions": PackedFloat32Array(1, 1, 2.219139),
 "update": 0,
-"values": [Vector2(883, 297), Vector2(768, 339), Vector2(626, 348)]
+"values": [Vector2(768, 339), Vector2(768, 339), Vector2(626, 348)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -453,18 +465,6 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1, 0.21763752),
 "update": 1,
 "values": [false, true]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Entity:flip_h")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_i8ugt"]
@@ -581,15 +581,14 @@ scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("3_pa5b4")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.49169102
 
 [node name="Entity" type="AnimatedSprite2D" parent="OnTheGround"]
+visible = false
 position = Vector2(1007, 171)
-scale = Vector2(0.5, 0.5)
-sprite_frames = ExtResource("4_2gl4w")
+scale = Vector2(0.755, 0.755)
+sprite_frames = ExtResource("3_m02s3")
 animation = &"idle"
 autoplay = "idle"
-flip_h = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
 libraries = {
@@ -603,6 +602,7 @@ script = ExtResource("3_mfhaq")
 shaker = NodePath("../Shaker")
 dialogue = ExtResource("5_vnjc3")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
+next_scene = "uid://c1y3kbmlueoa5"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Shaker" type="Node2D" parent="." node_paths=PackedStringArray("target")]
