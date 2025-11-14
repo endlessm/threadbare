@@ -39,9 +39,9 @@ func _check_hielo() -> void:
 	var tile_pos = tile_map_layer.local_to_map(local_center)
 	var tile_id = tile_map_layer.get_cell_source_id(tile_pos)
 	var data = tile_map_layer.get_cell_atlas_coords(tile_pos)
-	
-	if tile_id == 5 and data == Vector2i(0, 1):
+	if tile_id == 1 and (data == Vector2i(0, 1) or data ==Vector2i(1, 1)) :
 		if not is_sliding:
+			
 			is_sliding = true
 			slide_direction = character.input_vector.normalized()
 	else:
