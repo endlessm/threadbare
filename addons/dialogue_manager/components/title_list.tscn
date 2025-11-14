@@ -1,22 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://ctns6ouwwd68i"]
+[gd_scene load_steps=2 format=3 uid="uid://ctns6ouwwd68i"]
 
 [ext_resource type="Script" uid="uid://d0k2wndjj0ifm" path="res://addons/dialogue_manager/components/title_list.gd" id="1_5qqmd"]
-
-[sub_resource type="DPITexture" id="DPITexture_w0gko"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
-"
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d1e6u"]
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
 
 [node name="TitleList" type="VBoxContainer"]
 anchors_preset = 15
@@ -30,14 +14,12 @@ script = ExtResource("1_5qqmd")
 
 [node name="FilterEdit" type="LineEdit" parent="."]
 layout_mode = 2
-placeholder_text = "Filtrar títulos"
+placeholder_text = "Filter titles"
 clear_button_enabled = true
-right_icon = SubResource("DPITexture_w0gko")
 
 [node name="List" type="ItemList" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_d1e6u")
 allow_reselect = true
 
 [connection signal="theme_changed" from="." to="." method="_on_theme_changed"]

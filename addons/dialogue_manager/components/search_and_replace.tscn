@@ -1,10 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://gr8nakpbrhby"]
+[gd_scene load_steps=2 format=3 uid="uid://gr8nakpbrhby"]
 
 [ext_resource type="Script" uid="uid://cijsmjkq21cdq" path="res://addons/dialogue_manager/components/search_and_replace.gd" id="1_8oj1f"]
-
-[sub_resource type="DPITexture" id="DPITexture_w0gko"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
-"
 
 [node name="SearchAndReplace" type="VBoxContainer"]
 visible = false
@@ -21,29 +17,28 @@ layout_mode = 2
 [node name="Input" type="LineEdit" parent="Search"]
 layout_mode = 2
 size_flags_horizontal = 3
+placeholder_text = "Text to search for"
 metadata/_edit_use_custom_anchors = true
 
 [node name="MatchCaseCheckBox" type="CheckBox" parent="Search"]
 layout_mode = 2
-text = "Coincidir mayúsculas/minúsculas"
+text = "Match case"
 
 [node name="VSeparator" type="VSeparator" parent="Search"]
 layout_mode = 2
 
 [node name="PreviousButton" type="Button" parent="Search"]
 layout_mode = 2
-tooltip_text = "Anterior"
-icon = SubResource("DPITexture_w0gko")
+tooltip_text = "Previous"
 flat = true
 
 [node name="ResultLabel" type="Label" parent="Search"]
 layout_mode = 2
-text = "0 de 0"
+text = "0 of 0"
 
 [node name="NextButton" type="Button" parent="Search"]
 layout_mode = 2
-tooltip_text = "Siguiente"
-icon = SubResource("DPITexture_w0gko")
+tooltip_text = "Next"
 flat = true
 
 [node name="VSeparator2" type="VSeparator" parent="Search"]
@@ -51,7 +46,7 @@ layout_mode = 2
 
 [node name="ReplaceCheckButton" type="CheckButton" parent="Search"]
 layout_mode = 2
-text = "Reemplazar"
+text = "Replace"
 
 [node name="Replace" type="HBoxContainer" parent="."]
 visible = false
@@ -59,7 +54,7 @@ layout_mode = 2
 
 [node name="ReplaceLabel" type="Label" parent="Replace"]
 layout_mode = 2
-text = "Reemplazar con:"
+text = "Replace with:"
 
 [node name="Input" type="LineEdit" parent="Replace"]
 layout_mode = 2
@@ -68,13 +63,13 @@ size_flags_horizontal = 3
 [node name="ReplaceButton" type="Button" parent="Replace"]
 layout_mode = 2
 disabled = true
-text = "Reemplazar"
+text = "Replace"
 flat = true
 
 [node name="ReplaceAllButton" type="Button" parent="Replace"]
 layout_mode = 2
 disabled = true
-text = "Reemplazar todo"
+text = "Replace all"
 flat = true
 
 [connection signal="theme_changed" from="." to="." method="_on_search_and_replace_theme_changed"]
