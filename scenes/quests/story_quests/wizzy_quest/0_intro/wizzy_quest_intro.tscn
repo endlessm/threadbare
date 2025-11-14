@@ -1,0 +1,216 @@
+[gd_scene load_steps=16 format=4 uid="uid://bsn51v3gfmtvn"]
+
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_ipjqv"]
+[ext_resource type="PackedScene" uid="uid://bc3n4pbbrevxm" path="res://scenes/quests/story_quests/wizzy_quest/0_intro/intro_components/elementos/arboles1.tscn" id="2_6qcmh"]
+[ext_resource type="Texture2D" uid="uid://2cqgyp3qyys2" path="res://scenes/quests/story_quests/wizzy_quest/0_intro/intro_components/mago.png" id="3_3rlya"]
+[ext_resource type="SpriteFrames" uid="uid://b1sol6f5xak4b" path="res://scenes/quests/story_quests/wizzy_quest/player_components/wizzy_quest_player.tres" id="3_6qcmh"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_qgyin"]
+[ext_resource type="Resource" uid="uid://br7l03ywmnj1i" path="res://scenes/quests/story_quests/wizzy_quest/0_intro/intro_components/wizzy_quest_intro.dialogue" id="5_olulc"]
+[ext_resource type="SpriteFrames" uid="uid://uwdjwgblgvjr" path="res://scenes/quests/story_quests/wizzy_quest/0_intro/intro_components/elementos/runa_fuego.tres" id="8_3rlya"]
+[ext_resource type="PackedScene" uid="uid://bdba78m76jb57" path="res://scenes/quests/story_quests/wizzy_quest/0_intro/intro_components/elementos/runa.tscn" id="8_6qcmh"]
+[ext_resource type="SpriteFrames" uid="uid://bxh8altsecw3n" path="res://scenes/quests/story_quests/wizzy_quest/0_intro/intro_components/elementos/runa_luz.tres" id="9_etpm5"]
+[ext_resource type="SpriteFrames" uid="uid://blud6sa110r1r" path="res://scenes/quests/story_quests/wizzy_quest/0_intro/intro_components/elementos/runa_oscuridad.tres" id="10_aj5jk"]
+[ext_resource type="SpriteFrames" uid="uid://ccm3187a53jko" path="res://scenes/quests/story_quests/wizzy_quest/0_intro/intro_components/elementos/runa_agua.tres" id="11_vvxkt"]
+
+[sub_resource type="Animation" id="Animation_etpm5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(400, 349)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Character:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_aj5jk"]
+resource_name = "walk_off"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(495, 419), Vector2(1027, 419)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Character:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_vvxkt"]
+resource_name = "walk_on"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-50, 419), Vector2(495, 419)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Character:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w30kv"]
+_data = {
+&"RESET": SubResource("Animation_etpm5"),
+&"walk_off": SubResource("Animation_aj5jk"),
+&"walk_on": SubResource("Animation_vvxkt")
+}
+
+[node name="Intro" type="Node2D"]
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+modulate = Color(0.97, 0.9066267, 0.8924, 1)
+
+[node name="Ground" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAAAAUAAQAAAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAEAAAAFAAUAAQABAAEAAAAGAAUAAQABAAEAAAAHAAUAAQABAAEAAAAIAAUAAQABAAEAAAAJAAUAAQABAAEAAAAKAAUAAQABAAEAAAALAAUAAQABAAAAAAAMAAUAAQABAAAAAAANAAUAAQABAAEAAAAOAAUAAQACAAEAAAAAAAYAAQAAAAEAAAAAAAcAAQAAAAEAAAAAAAgAAQAAAAIAAAABAAYAAQABAAEAAAABAAcAAQABAAEAAAABAAgAAQABAAIAAAACAAYAAQABAAEAAAACAAcAAQABAAEAAAACAAgAAQABAAIAAAADAAYAAQABAAEAAAADAAcAAQABAAEAAAADAAgAAQABAAIAAAAEAAYAAQABAAEAAAAEAAcAAQABAAEAAAAEAAgAAQABAAIAAAAFAAYAAQABAAEAAAAFAAcAAQABAAEAAAAFAAgAAQABAAIAAAAGAAYAAQABAAEAAAAGAAcAAQABAAEAAAAGAAgAAQABAAIAAAAHAAYAAQABAAEAAAAHAAcAAQABAAEAAAAHAAgAAQABAAIAAAAIAAYAAQABAAEAAAAIAAcAAQABAAEAAAAIAAgAAQABAAIAAAAJAAYAAQABAAEAAAAJAAcAAQABAAEAAAAJAAgAAQABAAIAAAAKAAYAAQABAAEAAAAKAAcAAQABAAEAAAAKAAgAAQABAAIAAAALAAYAAQABAAEAAAALAAcAAQABAAEAAAALAAgAAQABAAIAAAAMAAYAAQABAAEAAAAMAAcAAQABAAEAAAAMAAgAAQABAAIAAAANAAYAAQABAAEAAAANAAcAAQABAAEAAAANAAgAAQABAAIAAAAOAAYAAQACAAEAAAAOAAcAAQACAAEAAAAOAAgAAQACAAIAAAAAAAEAAQAAAAEAAAABAAEAAQABAAEAAAACAAEAAQABAAEAAAACAAIAAQABAAEAAAADAAIAAQABAAEAAAAEAAIAAQABAAEAAAAFAAIAAQABAAEAAAAFAAMAAQABAAEAAAAGAAMAAQABAAEAAAAHAAQAAQABAAEAAAAIAAQAAQABAAEAAAAOAAQAAQACAAEAAAAOAAMAAQACAAEAAAAOAAIAAQACAAEAAAAOAAEAAQACAAEAAAANAAQAAQAAAAEAAAANAAMAAQAAAAEAAAANAAIAAQAAAAEAAAANAAEAAQABAAEAAAAMAAQACwACAAIAAAAMAAMACwACAAEAAAAMAAIADAACAAAAAAAMAAEAAQABAAIAAAALAAQADAAAAAIAAAALAAMACQAAAAEAAAALAAIADAAAAAAAAAALAAEAAQABAAIAAAAKAAQAAQACAAEAAAAKAAMAAQACAAEAAAAKAAIAAQACAAEAAAAKAAEAAQABAAEAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAJAAEAAQABAAEAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAIAAEAAQABAAEAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAEAAAAGAAQAAQABAAEAAAAGAAIAAQABAAEAAAAGAAEAAQABAAEAAAAFAAQAAQABAAEAAAAFAAEAAQABAAEAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAEAAQABAAEAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAEAAQABAAEAAAACAAQAAQABAAEAAAACAAMAAQABAAEAAAABAAQAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAAAAAQAAQAAAAEAAAAAAAMAAQAAAAEAAAAAAAIAAQAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAQABAAAAAAACAAAAAQABAAAAAAADAAAAAQABAAAAAAAEAAAAAQABAAAAAAAFAAAAAQABAAAAAAAGAAAAAQABAAAAAAAHAAAAAQABAAAAAAAIAAAAAQABAAAAAAAJAAAAAQABAAAAAAAKAAAAAQABAAAAAAALAAAAAQABAAAAAAAMAAAAAQABAAAAAAANAAAAAQABAAAAAAAOAAAAAQACAAAAAAA=")
+tile_set = ExtResource("1_ipjqv")
+metadata/_edit_lock_ = true
+
+[node name="Equipo2Trees1" parent="TileMapLayers" instance=ExtResource("2_6qcmh")]
+position = Vector2(30, 76)
+
+[node name="IntroImage" type="Sprite2D" parent="TileMapLayers"]
+position = Vector2(843, 260)
+scale = Vector2(2, 2)
+texture = ExtResource("3_3rlya")
+
+[node name="Sand" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAALAAUABAABAAIAAAAMAAUABAACAAIAAAANAAUABAACAAIAAAAAAAcABgAAAAMAAAABAAcABgABAAMAAAACAAcABgABAAMAAAADAAcABgABAAMAAAAKAAcABgABAAMAAAALAAcABgABAAMAAAAMAAcABgABAAMAAAANAAcABgABAAMAAAAOAAcABgACAAMAAAAIAAcABgABAAMAAAAJAAcABgABAAMAAAAHAAcABgABAAMAAAAGAAcABgABAAMAAAAFAAcABgABAAMAAAAEAAcABgABAAMAAAAKAAUABAAAAAIAAAAFAAMAEQAAAAAAAAAGAAQAEQAAAAAAAAAHAAMAEQAAAAAAAAAIAAQAEQAAAAAAAAAJAAMAEQAAAAAAAAAEAAQAEQAAAAAAAAADAAMAEgACAAAAAAABAAMAEgAAAAAAAAABAAQAEgAAAAEAAAABAAUAEgAAAAIAAAACAAMAEgABAAAAAAACAAQAEgABAAEAAAACAAUAEgABAAIAAAADAAQAEgACAAEAAAADAAUAEgACAAIAAAA=")
+tile_set = ExtResource("1_ipjqv")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(153, 366)
+zoom = Vector2(1.333, 1.333)
+limit_left = 0
+limit_top = 0
+limit_right = 960
+limit_bottom = 540
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(400, 349)
+scale = Vector2(0.7, 0.7)
+sprite_frames = ExtResource("3_6qcmh")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_w30kv")
+}
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
+script = ExtResource("4_qgyin")
+dialogue = ExtResource("5_olulc")
+animation_player = NodePath("../OnTheGround/AnimationPlayer")
+next_scene = "uid://g118barl1mcy"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="Runa-Fuego" parent="." instance=ExtResource("8_6qcmh")]
+position = Vector2(353, 223)
+scale = Vector2(0.8, 0.8)
+sprite_frames = ExtResource("8_3rlya")
+
+[node name="Runa-Luz" parent="." instance=ExtResource("8_6qcmh")]
+position = Vector2(547, 286)
+scale = Vector2(0.8, 0.8)
+sprite_frames = ExtResource("9_etpm5")
+
+[node name="Runa-Oscuridad" parent="." instance=ExtResource("8_6qcmh")]
+position = Vector2(483, 223)
+scale = Vector2(0.8, 0.8)
+sprite_frames = ExtResource("10_aj5jk")
+
+[node name="Runa-agua" parent="." instance=ExtResource("8_6qcmh")]
+position = Vector2(418, 287)
+scale = Vector2(0.8, 0.8)
+sprite_frames = ExtResource("11_vvxkt")
