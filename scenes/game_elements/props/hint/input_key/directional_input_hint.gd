@@ -74,7 +74,7 @@ func _physics_process(_delta: float) -> void:
 			visible = false
 
 	# Visual feedback when the actual action (e.g., move_up) is pressed
-	if Input.is_action_pressed(action_name):
+	if action_name != "move_unpressed" and Input.is_action_pressed(action_name):
 		# subtle pressed look
 		modulate = Color(0.994, 0.99, 0.992, 1.0)
 	else:
