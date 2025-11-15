@@ -1,14 +1,14 @@
-[gd_scene load_steps=20 format=3 uid="uid://d37mebu7atru7"]
+[gd_scene load_steps=20 format=3 uid="uid://hoirqdqf25tl"]
 
-[ext_resource type="Script" uid="uid://dmf866kgfnp3c" path="res://scenes/game_elements/characters/enemies/guard/components/guard.gd" id="1_g173s"]
-[ext_resource type="Script" uid="uid://c477jgx4lwr86" path="res://scenes/game_elements/characters/enemies/guard/components/guard_movement.gd" id="2_0hjcv"]
-[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="3_0hjcv"]
-[ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="3_pnkgp"]
-[ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="4_lptvm"]
-[ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="4_mswbt"]
-[ext_resource type="SpriteFrames" uid="uid://cg01qyy8bim2q" path="res://scenes/quests/story_quests/apu_inka/1_stealth/stealth_components/apu_inka_guard_enemy.tres" id="6_8vt0k"]
-[ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/character_sprite_behavior.gd" id="7_klpct"]
-[ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="9_8vt0k"]
+[ext_resource type="Script" uid="uid://dmf866kgfnp3c" path="res://scenes/game_elements/characters/enemies/guard/components/guard.gd" id="1_fqc4q"]
+[ext_resource type="Script" uid="uid://c477jgx4lwr86" path="res://scenes/game_elements/characters/enemies/guard/components/guard_movement.gd" id="2_638cr"]
+[ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="3_05lns"]
+[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="4_dl5si"]
+[ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="5_de54h"]
+[ext_resource type="SpriteFrames" uid="uid://ovu5wqo15s5g" path="res://scenes/quests/story_quests/NO_EDIT/1_NO_EDIT_stealth/NO_EDIT_stealth_components/NO_EDIT_guard_enemy.tres" id="6_bbl0i"]
+[ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/character_sprite_behavior.gd" id="7_4wif8"]
+[ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="8_d7cmo"]
+[ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="9_iri0r"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g173s"]
 radius = 35.0
@@ -200,15 +200,15 @@ _data = {
 &"walk": SubResource("Animation_8vt0k")
 }
 
-[node name="Guard" type="CharacterBody2D" groups=["guard_enemy"]]
+[node name="Golem" type="CharacterBody2D" groups=["guard_enemy"]]
 collision_layer = 0
 collision_mask = 528
 motion_mode = 1
-script = ExtResource("1_g173s")
+script = ExtResource("1_fqc4q")
 
 [node name="GuardMovement" type="Node2D" parent="."]
 unique_name_in_owner = true
-script = ExtResource("2_0hjcv")
+script = ExtResource("2_638cr")
 
 [node name="SightRayCast" type="RayCast2D" parent="."]
 unique_name_in_owner = true
@@ -227,7 +227,7 @@ shape = SubResource("CircleShape2D_g173s")
 unique_name_in_owner = true
 position = Vector2(0, -19)
 collision_layer = 0
-script = ExtResource("4_mswbt")
+script = ExtResource("3_05lns")
 
 [node name="Light" type="PointLight2D" parent="DetectionArea"]
 position = Vector2(37.3333, 1.33333)
@@ -237,22 +237,23 @@ blend_mode = 2
 shadow_enabled = true
 shadow_filter = 1
 shadow_filter_smooth = 0.5
-texture = ExtResource("3_0hjcv")
+texture = ExtResource("4_dl5si")
 offset = Vector2(377.88, 10.7686)
-script = ExtResource("4_lptvm")
+script = ExtResource("5_de54h")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea"]
-position = Vector2(-29.3333, -132)
+position = Vector2(-43, -97)
+scale = Vector2(0.8, 0.8)
 polygon = PackedVector2Array(302, 48, 283, 52, 279, 52, 101, 114, 98, 114, 79, 124, 77, 124, 72, 131, 71, 131, 71, 138, 78, 145, 78, 146, 95, 154, 95, 155, 275, 226, 275, 227, 292, 231, 292, 232, 312, 230, 316, 230, 330, 222, 332, 222, 340, 214, 341, 214, 346, 205, 347, 205, 351, 185, 351, 100, 347, 82, 347, 79, 338, 67, 338, 65, 325, 55, 325, 54, 302, 47)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(0, -16)
-sprite_frames = ExtResource("6_8vt0k")
+sprite_frames = ExtResource("6_bbl0i")
 animation = &"walk"
 
 [node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" node_paths=PackedStringArray("character", "sprite")]
-script = ExtResource("7_klpct")
+script = ExtResource("7_4wif8")
 character = NodePath("../..")
 play_animations = false
 sprite = NodePath("..")
@@ -275,8 +276,8 @@ pivot_offset = Vector2(62, 102)
 step = 0.01
 fill_mode = 3
 nine_patch_stretch = true
-texture_under = ExtResource("3_pnkgp")
-texture_progress = ExtResource("3_pnkgp")
+texture_under = ExtResource("8_d7cmo")
+texture_progress = ExtResource("8_d7cmo")
 tint_under = Color(1, 1, 1, 0.392157)
 tint_progress = Color(1, 1, 0, 1)
 
@@ -305,7 +306,7 @@ libraries = {
 
 [node name="CharacterAnimationPlayerBehavior" type="Node2D" parent="AnimationPlayer" node_paths=PackedStringArray("character", "animation_player")]
 unique_name_in_owner = true
-script = ExtResource("9_8vt0k")
+script = ExtResource("9_iri0r")
 character = NodePath("../..")
 animation_player = NodePath("..")
 metadata/_custom_type_script = "uid://b3hx1n2yl88qr"
