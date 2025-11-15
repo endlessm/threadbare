@@ -1,5 +1,6 @@
-[gd_scene load_steps=29 format=4 uid="uid://b43368jinjumk"]
+[gd_scene load_steps=30 format=4 uid="uid://b43368jinjumk"]
 
+[ext_resource type="Script" uid="uid://bwilwaitnppwo" path="res://scenes/quests/story_quests/El_Tunche/1_laberinto/scripts/recolección-principal.gd" id="1_dj1b7"]
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_slvav"]
 [ext_resource type="PackedScene" uid="uid://p6q2uo2us0il" path="res://scenes/quests/story_quests/shjourney/light.tscn" id="2_rkw41"]
 [ext_resource type="PackedScene" uid="uid://c6aoor4k6flst" path="res://scenes/quests/story_quests/El_Tunche/recolectables/arbol_prueba.tscn" id="5_t4s6v"]
@@ -19,8 +20,8 @@
 [ext_resource type="Script" uid="uid://hs14yse0u0uh" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/music.gd" id="22_mflba"]
 [ext_resource type="Texture2D" uid="uid://iptiy3bqigrh" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/personajes/presentacion/rosaazul1.png" id="23_0pr6t"]
 [ext_resource type="PackedScene" uid="uid://bdtis4ye3hah2" path="res://scenes/quests/story_quests/shjourney/9_shjourney_outro_2/neblina.tscn" id="24_a42ku"]
-[ext_resource type="Texture2D" uid="uid://dw78gx7anyy5e" path="res://scenes/quests/story_quests/El_Tunche/1_laberinto/diseños/niebla-de-guerra.png" id="24_hu5fd"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_p2mmn"]
+[ext_resource type="Texture2D" uid="uid://cw78o5acwjl3y" path="res://scenes/quests/story_quests/El_Tunche/1_laberinto/diseños/antorcha-gd (2).png" id="26_dj1b7"]
 [ext_resource type="PackedScene" uid="uid://due8sqsrtdke1" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/fire_fly.tscn" id="26_l8h7s"]
 [ext_resource type="Resource" uid="uid://8rhktu67sb0s" path="res://scenes/quests/story_quests/El_Tunche/1_laberinto/dialogos/dialogo1.dialogue" id="26_p2mmn"]
 [ext_resource type="PackedScene" uid="uid://btuq3nuwjtgp8" path="res://scenes/quests/story_quests/El_Tunche/recolectables/antorcha.tscn" id="27_tq4v7"]
@@ -34,8 +35,9 @@ radius = 140.114
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_03851"]
 size = Vector2(168.25, 122)
 
-[node name="StealthTemplateLevel" type="Node2D"]
+[node name="StealthTemplateLevel" type="Node2D" groups=["GameManager"]]
 y_sort_enabled = true
+script = ExtResource("1_dj1b7")
 
 [node name="StealthGameLogic" type="Node" parent="."]
 script = ExtResource("1_slvav")
@@ -942,6 +944,7 @@ size_flags_vertical = 8
 position = Vector2(492.153, 300.55)
 
 [node name="CanvasModulate-og" type="CanvasModulate" parent="Darkness"]
+visible = false
 color = Color(0, 0, 0, 1)
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="Darkness/CanvasModulate-og"]
@@ -1239,16 +1242,25 @@ energy = 0.8
 texture = ExtResource("28_sqqst")
 texture_scale = 3.0
 
-[node name="NieblaDeGuerra" type="Sprite2D" parent="."]
-visible = false
-z_index = 100
-position = Vector2(3823.5002, 2817)
-scale = Vector2(7813.0005, 5892)
-texture = ExtResource("24_hu5fd")
-
 [node name="Cinematic" type="Node2D" parent="."]
 script = ExtResource("25_p2mmn")
 dialogue = ExtResource("26_p2mmn")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+offset_left = 43.0
+offset_top = 27.0
+offset_right = 203.0
+offset_bottom = 153.0
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("26_dj1b7")
+
+[node name="Label" type="Label" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+text = "x10"
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]
