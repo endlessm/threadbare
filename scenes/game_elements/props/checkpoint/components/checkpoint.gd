@@ -18,7 +18,7 @@ const DEFAULT_SPRITE_FRAMES: SpriteFrames = preload("uid://dmg1egdoye3ns")
 ## and should not loop.
 ##
 ## [code]idle[/code] is played once the [code]appear[/code] animation finishes.
-const REQUIRED_ANIMATIONS := [&"idle", &"appear"]
+const REQUIRED_ANIMATIONS := [&"idle", &"appear", &"rest"]
 
 ## Animations for this checkpoint. The SpriteFrames must have specific animations;
 ## see [constant Checkpoint.REQUIRED_ANIMATIONS].
