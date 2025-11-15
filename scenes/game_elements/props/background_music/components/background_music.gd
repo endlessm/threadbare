@@ -69,3 +69,18 @@ func _exit_tree() -> void:
 	## in the editor, the music will keep playing.
 	if Engine.is_editor_hint():
 		_stop()
+
+
+## If [member stream] is an [AudioStreamInteractive], and music is playing,
+## switch to [param clip_name].
+func switch_to_clip(clip_name: StringName) -> void:
+	if not audio_stream_player.is_playing():
+		push_warning("Not currently playing")
+		return
+
+	if audio_stream_player.stream is not AudioStreamInteractive:
+		push_warning("Switching clips is only supported with AudioStreamInteractive")
+		return
+
+	var playback := audio_stream_player.get_stream_playback() as AudioStreamPlaybackInteractive
+	playback.switch_to_clip_by_name(clip_name)

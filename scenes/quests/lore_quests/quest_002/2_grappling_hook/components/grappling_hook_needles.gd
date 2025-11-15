@@ -27,7 +27,7 @@ func _award() -> void:
 	# Wait before opening the door, to avoid multiple things happening at the same time:
 	await get_tree().create_timer(1.0).timeout
 
-	door.opened = true
+	door.open()
 
 
 func _on_all_hooked_all_hooked() -> void:
