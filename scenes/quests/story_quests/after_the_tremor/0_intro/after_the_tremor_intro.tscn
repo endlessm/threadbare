@@ -1,59 +1,46 @@
-[gd_scene load_steps=14 format=4 uid="uid://wfrxmt65jhwr"]
+[gd_scene load_steps=15 format=4 uid="uid://v0dycqqbwsch"]
 
-[ext_resource type="TileSet" uid="uid://cfq6453gjaw4f" path="res://scenes/quests/story_quests/after_the_tremor/mystoryquest_tileset1.tres" id="1_u5c8g"]
-[ext_resource type="SpriteFrames" uid="uid://4dv47uivdjes" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/mom.tres" id="2_utmlb"]
-[ext_resource type="Script" uid="uid://qwpw1s4f4e0n" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part1/dark_theme.gd" id="3_jwsw4"]
-[ext_resource type="Resource" uid="uid://x6hj47nsmetu" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part1/intro_components/cuarto.dialogue" id="4_j58to"]
-[ext_resource type="Shader" uid="uid://dmm7vum4u3k5e" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part6/night.gdshader" id="5_t6ygj"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5m7ge"]
-load_path = "res://.godot/imported/bed-free.png-7ce7f771ec6c2e1d7de95762294a1879.ctex"
+[ext_resource type="TileSet" uid="uid://cfq6453gjaw4f" path="res://scenes/quests/story_quests/after_the_tremor/mystoryquest_tileset.tres" id="1_lerr4"]
+[ext_resource type="Texture2D" uid="uid://f7wuktrhbbca" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part1/intro_components/Imagenes/bed-free.png" id="2_prajh"]
+[ext_resource type="SpriteFrames" uid="uid://4dv47uivdjes" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/mom.tres" id="3_qquar"]
+[ext_resource type="SpriteFrames" uid="uid://lpp6mctu1kfx" path="res://scenes/quests/story_quests/after_the_tremor/player_components/bryan_sleeping.tres" id="4_qntfd"]
+[ext_resource type="Script" uid="uid://qwpw1s4f4e0n" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part1/dark_theme.gd" id="5_wcj4k"]
+[ext_resource type="Resource" uid="uid://x6hj47nsmetu" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part1/intro_components/cuarto.dialogue" id="6_arq2n"]
+[ext_resource type="Shader" uid="uid://dmm7vum4u3k5e" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part6/night.gdshader" id="7_ojft1"]
 
 [sub_resource type="Animation" id="Animation_37wf5"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:animation")
+tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"walk"]
+"update": 0,
+"values": [Vector2(738, 259)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath(".:position")
+tracks/1/path = NodePath(".:flip_h")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(738, 259)]
+"update": 1,
+"values": [true]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath(".:flip_h")
+tracks/2/path = NodePath("../../Cinematic/TextureRect:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("../../Cinematic/TextureRect:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -90,18 +77,6 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector2(590, 264), Vector2(436, 137)]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:animation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.9),
-"transitions": PackedFloat32Array(1, 0.5547847),
-"update": 1,
-"values": [&"idle", &"idle"]
-}
 
 [sub_resource type="Animation" id="Animation_aerqn"]
 resource_name = "walk_off"
@@ -130,18 +105,6 @@ tracks/1/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:animation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"idle"]
-}
 
 [sub_resource type="Animation" id="Animation_41r41"]
 resource_name = "walk_on"
@@ -149,22 +112,10 @@ length = 0.8
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:animation")
+tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.8),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [&"idle", &"idle"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.8),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
@@ -181,7 +132,7 @@ _data = {
 }
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yqc5d"]
-shader = ExtResource("5_t6ygj")
+shader = ExtResource("7_ojft1")
 shader_parameter/enable_base_dark = true
 shader_parameter/darkness = 1.0
 shader_parameter/vignette_strength = 5.0000002375
@@ -197,17 +148,17 @@ shader_parameter/grain_amount = 0.70000003325
 [node name="TileMapLayers" type="Node2D" parent="."]
 
 [node name="Ground" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAAAAUAEQABAAMAAAABAAUAEQAAAAQAAAACAAUAEQABAAMAAAADAAUAEQAAAAQAAAAEAAUAEQABAAMAAAAFAAUAEQAAAAQAAAAGAAUAEQABAAQAAAAHAAUAEQAAAAMAAAAIAAUAEQAAAAQAAAAJAAUAEQAAAAMAAAAKAAUAEQABAAQAAAALAAUAEQABAAMAAAAMAAUAEQABAAQAAAANAAUAEQAAAAMAAAAOAAUAEQABAAMAAAAAAAYAEQAAAAQAAAAAAAcAEQAAAAMAAAAAAAgAEQABAAQAAAABAAYAEQABAAMAAAABAAcAEQABAAQAAAABAAgAEQAAAAMAAAACAAYAEQAAAAMAAAACAAcAEQAAAAMAAAACAAgAEQAAAAMAAAADAAYAEQAAAAQAAAADAAcAEQABAAQAAAADAAgAEQAAAAQAAAAEAAYAEQABAAQAAAAEAAcAEQAAAAQAAAAEAAgAEQABAAQAAAAFAAYAEQAAAAMAAAAFAAcAEQAAAAMAAAAFAAgAEQAAAAMAAAAGAAYAEQAAAAMAAAAGAAcAEQAAAAQAAAAGAAgAEQAAAAMAAAAHAAYAEQABAAQAAAAHAAcAEQAAAAQAAAAHAAgAEQABAAMAAAAIAAYAEQAAAAMAAAAIAAcAEQAAAAMAAAAIAAgAEQABAAQAAAAJAAYAEQABAAQAAAAJAAcAEQABAAQAAAAJAAgAEQABAAMAAAAKAAYAEQABAAQAAAAKAAcAEQAAAAQAAAAKAAgAEQAAAAMAAAALAAYAEQAAAAMAAAALAAcAEQAAAAMAAAALAAgAEQAAAAQAAAAMAAYAEQAAAAMAAAAMAAcAEQABAAQAAAAMAAgAEQAAAAMAAAANAAYAEQAAAAQAAAANAAcAEQABAAMAAAANAAgAEQABAAMAAAAOAAYAEQAAAAMAAAAOAAcAEQAAAAQAAAAOAAgAEQAAAAQAAAAAAAAADwAAAAAAAAACAAIAEQAAAAMAAAADAAIAEQAAAAQAAAAEAAIAEQABAAQAAAAFAAIAEQAAAAQAAAAFAAMAEQABAAQAAAAGAAMAEQABAAQAAAAHAAQAEQABAAQAAAAIAAQAEQABAAQAAAAOAAQAEQABAAMAAAAOAAMAEQAAAAMAAAAOAAIAEQABAAQAAAAOAAEAEQAAAAQAAAAOAAAADwACAAAAAAANAAQAEQABAAQAAAANAAMAEQAAAAMAAAANAAIAEQABAAQAAAANAAAADwABAAAAAAAMAAQAEQABAAQAAAAMAAMAEQABAAMAAAAMAAIAEQABAAQAAAAMAAAADwABAAAAAAALAAQAEQAAAAMAAAALAAMAEQAAAAQAAAALAAIAEQABAAQAAAALAAAADwABAAAAAAAKAAQAEQABAAMAAAAKAAMAEQAAAAMAAAAKAAIAEQAAAAMAAAAKAAAADwABAAAAAAAJAAQAEQABAAMAAAAJAAMAEQABAAQAAAAJAAIAEQAAAAMAAAAJAAAADwABAAAAAAAIAAMAEQABAAQAAAAIAAIAEQABAAQAAAAIAAAADwABAAAAAAAHAAIAEQAAAAMAAAAHAAAADwABAAAAAAAGAAQAEQABAAQAAAAGAAIAEQAAAAQAAAAGAAAADwABAAAAAAAFAAQAEQAAAAMAAAAFAAAADwABAAAAAAAEAAQAEQAAAAMAAAAEAAMAEQAAAAQAAAAEAAAADwABAAAAAAADAAQAEQABAAMAAAADAAMAEQABAAMAAAADAAAADwABAAAAAAACAAQAEQAAAAQAAAACAAMAEQAAAAMAAAACAAAADwABAAAAAAABAAQAEQABAAMAAAABAAMAEQAAAAQAAAABAAIAEQAAAAMAAAABAAAADwABAAAAAAAAAAQAEQAAAAMAAAAAAAMAEQAAAAQAAAAAAAIAEQABAAQAAAAHAAMAEQABAAMAAAAAAAEAEQABAAQAAAABAAEAEQAAAAMAAAACAAEAEQAAAAQAAAADAAEAEQABAAQAAAAEAAEAEQABAAQAAAAFAAEAEQABAAMAAAAGAAEAEQABAAMAAAAHAAEAEQABAAMAAAAIAAEAEQAAAAMAAAAJAAEAEQAAAAQAAAAKAAEAEQABAAQAAAALAAEAEQAAAAMAAAAMAAEAEQABAAMAAAANAAEAEQABAAMAAAA=")
-tile_set = ExtResource("1_u5c8g")
+tile_map_data = PackedByteArray("AAAAAAUAEQAAAAMAAAABAAUAEQAAAAMAAAACAAUAEQAAAAMAAAADAAUAEQAAAAMAAAAEAAUAEQAAAAMAAAAFAAUAEQAAAAMAAAAGAAUAEQAAAAMAAAAHAAUAEQAAAAMAAAAIAAUAEQAAAAMAAAAJAAUAEQAAAAMAAAAKAAUAEQAAAAMAAAALAAUAEQAAAAMAAAAMAAUAEQAAAAMAAAANAAUAEQAAAAMAAAAOAAUAEQAAAAMAAAAAAAYAEQAAAAMAAAAAAAcAEQAAAAMAAAAAAAgAEQAAAAMAAAABAAYAEQAAAAMAAAABAAcAEQAAAAMAAAABAAgAEQAAAAMAAAACAAYAEQAAAAMAAAACAAcAEQAAAAMAAAACAAgAEQAAAAMAAAADAAYAEQAAAAMAAAADAAcAEQAAAAMAAAADAAgAEQAAAAMAAAAEAAYAEQAAAAMAAAAEAAcAEQAAAAMAAAAEAAgAEQAAAAMAAAAFAAYAEQAAAAMAAAAFAAcAEQAAAAMAAAAFAAgAEQAAAAMAAAAGAAYAEQAAAAMAAAAGAAcAEQAAAAMAAAAGAAgAEQAAAAMAAAAHAAYAEQAAAAMAAAAHAAcAEQAAAAMAAAAHAAgAEQAAAAMAAAAIAAYAEQAAAAMAAAAIAAcAEQAAAAMAAAAIAAgAEQAAAAMAAAAJAAYAEQAAAAMAAAAJAAcAEQAAAAMAAAAJAAgAEQAAAAMAAAAKAAYAEQAAAAMAAAAKAAcAEQAAAAMAAAAKAAgAEQAAAAMAAAALAAYAEQAAAAMAAAALAAcAEQAAAAMAAAALAAgAEQAAAAMAAAAMAAYAEQAAAAMAAAAMAAcAEQAAAAMAAAAMAAgAEQAAAAMAAAANAAYAEQAAAAMAAAANAAcAEQAAAAMAAAANAAgAEQAAAAMAAAAOAAYAEQAAAAMAAAAOAAcAEQAAAAMAAAAOAAgAEQAAAAMAAAAAAAAADwAAAAAAAAAAAAEAEQAAAAMAAAABAAEAEQAAAAMAAAACAAEAEQAAAAMAAAACAAIAEQAAAAMAAAADAAIAEQAAAAMAAAAEAAIAEQAAAAMAAAAFAAIAEQAAAAMAAAAFAAMAEQAAAAMAAAAGAAMAEQAAAAMAAAAHAAQAEQAAAAMAAAAIAAQAEQAAAAMAAAAOAAQAEQAAAAMAAAAOAAMAEQAAAAMAAAAOAAIAEQAAAAMAAAAOAAEAEQAAAAMAAAAOAAAADwACAAAAAAANAAQAEQAAAAMAAAANAAMAEQAAAAMAAAANAAIAEQAAAAMAAAANAAEAEQAAAAMAAAANAAAADwABAAAAAAAMAAQAEQAAAAMAAAAMAAMAEQAAAAMAAAAMAAIAEQAAAAMAAAAMAAEAEQAAAAMAAAAMAAAADwABAAAAAAALAAQAEQAAAAMAAAALAAMAEQAAAAMAAAALAAIAEQAAAAMAAAALAAEAEQAAAAMAAAALAAAADwABAAAAAAAKAAQAEQAAAAMAAAAKAAMAEQAAAAMAAAAKAAIAEQAAAAMAAAAKAAEAEQAAAAMAAAAKAAAADwABAAAAAAAJAAQAEQAAAAMAAAAJAAMAEQAAAAMAAAAJAAIAEQAAAAMAAAAJAAEAEQAAAAMAAAAJAAAADwABAAAAAAAIAAMAEQAAAAMAAAAIAAIAEQAAAAMAAAAIAAEAEQAAAAMAAAAIAAAADwABAAAAAAAHAAIAEQAAAAMAAAAHAAEAEQAAAAMAAAAHAAAADwABAAAAAAAGAAQAEQAAAAMAAAAGAAIAEQAAAAMAAAAGAAEAEQAAAAMAAAAGAAAADwABAAAAAAAFAAQAEQAAAAMAAAAFAAEAEQAAAAMAAAAFAAAADwABAAAAAAAEAAQAEQAAAAMAAAAEAAMAEQAAAAMAAAAEAAEAEQAAAAMAAAAEAAAADwABAAAAAAADAAQAEQAAAAMAAAADAAMAEQAAAAMAAAADAAEAEQAAAAMAAAADAAAADwABAAAAAAACAAQAEQAAAAMAAAACAAMAEQAAAAMAAAACAAAADwABAAAAAAABAAQAEQAAAAMAAAABAAMAEQAAAAMAAAABAAIAEQAAAAMAAAABAAAADwABAAAAAAAAAAQAEQAAAAMAAAAAAAMAEQAAAAMAAAAAAAIAEQAAAAMAAAAHAAMAEQAAAAMAAAA=")
+tile_set = ExtResource("1_lerr4")
 
 [node name="Sand" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAABAAAADwABAAAAAAACAAAADwABAAAAAAADAAAADwABAAAAAAAEAAAADwABAAAAAAAFAAAADwABAAAAAAAGAAAADwABAAAAAAAHAAAADwABAAAAAAAIAAAADwABAAAAAAAJAAAADwABAAAAAAAKAAAADwABAAAAAAALAAAADwABAAAAAAAMAAAADwABAAAAAAAAAAAADwAAAAAAAAAAAAEADwAAAAEAAAAAAAIADwAAAAEAAAAAAAMADwAAAAEAAAAAAAQADwAAAAEAAAAAAAUADwAAAAEAAAAAAAYADwAAAAEAAAAAAAcADwAAAAEAAAAAAAgADwAAAAEAAAAOAAIADwACAAEAAAAOAAMADwACAAEAAAAOAAQADwACAAEAAAAOAAUADwACAAEAAAAOAAYADwACAAEAAAAOAAcADwACAAEAAAAOAAgADwACAAEAAAANAAEAEQAAAAEAAAANAAAAEQAAAAAAAAAOAAEADwACAAEAAAALAAUAEQABAAAAAAAJAAUAEQAEAAIAAAANAAUAEQAFAAIAAAAKAAEAEQAEAAAAAAALAAEAEQAFAAAAAAAMAAEAEQAGAAAAAAADAAUAEQABAAEAAAA=")
-tile_set = ExtResource("1_u5c8g")
+tile_map_data = PackedByteArray("AAABAAAADwABAAAAAAACAAAADwABAAAAAAADAAAADwABAAAAAAAEAAAADwABAAAAAAAFAAAADwABAAAAAAAGAAAADwABAAAAAAAHAAAADwABAAAAAAAIAAAADwABAAAAAAAJAAAADwABAAAAAAAKAAAADwABAAAAAAALAAAADwABAAAAAAAMAAAADwABAAAAAAAAAAAADwAAAAAAAAAAAAEADwAAAAEAAAAAAAIADwAAAAEAAAAAAAMADwAAAAEAAAAAAAQADwAAAAEAAAAAAAUADwAAAAEAAAAAAAYADwAAAAEAAAAAAAcADwAAAAEAAAAAAAgADwAAAAEAAAAOAAIADwACAAEAAAAOAAMADwACAAEAAAAOAAQADwACAAEAAAAOAAUADwACAAEAAAAOAAYADwACAAEAAAAOAAcADwACAAEAAAAOAAgADwACAAEAAAANAAEAEQAAAAEAAAANAAAAEQAAAAAAAAAOAAEADwACAAEAAAAKAAEAEQAEAAAAAAALAAEAEQAFAAAAAAAMAAEAEQAGAAAAAAALAAUAEQABAAAAAAAJAAUAEQAEAAIAAAANAAUAEQAFAAIAAAADAAYAEQABAAEAAAA=")
+tile_set = ExtResource("1_lerr4")
 
 [node name="BedFree" type="Sprite2D" parent="TileMapLayers"]
 position = Vector2(87.99999, 151)
 scale = Vector2(2.2, 1.475)
-texture = SubResource("CompressedTexture2D_5m7ge")
+texture = ExtResource("2_prajh")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(322, 184)
@@ -226,8 +177,8 @@ y_sort_enabled = true
 [node name="Mom" type="AnimatedSprite2D" parent="OnTheGround"]
 position = Vector2(738, 259)
 scale = Vector2(0.5, 0.5)
-sprite_frames = ExtResource("2_utmlb")
-animation = &"walk"
+sprite_frames = ExtResource("3_qquar")
+animation = &"idle"
 autoplay = "idle"
 flip_h = true
 
@@ -239,7 +190,8 @@ libraries = {
 [node name="Bryan" type="AnimatedSprite2D" parent="OnTheGround"]
 position = Vector2(335.99997, 150)
 scale = Vector2(0.7366665, 0.6666667)
-animation = &""
+sprite_frames = ExtResource("4_qntfd")
+animation = &"blink"
 autoplay = "blink"
 frame_progress = 0.2682215
 speed_scale = 0.7
@@ -247,8 +199,8 @@ speed_scale = 0.7
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
-script = ExtResource("3_jwsw4")
-dialogue = ExtResource("4_j58to")
+script = ExtResource("5_wcj4k")
+dialogue = ExtResource("6_arq2n")
 animation_player = NodePath("../OnTheGround/Mom/AnimationPlayer")
 next_scene = "uid://462n67vv3yea"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"

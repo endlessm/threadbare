@@ -119,15 +119,9 @@ func _on_timer_timeout() -> void:
 	if final_collectible != NodePath(""):
 		var col := get_node_or_null(final_collectible)
 		if col:
-			# usa el setter para que haga update visual/colisión
-			if col.has_variable("revealed"):
-				col.revealed = false
-			else:
-				# fallback: si no tiene la propiedad, intentar ocultar visualmente
-				if col.has_node("Sprite2D"):
-					col.get_node("Sprite2D").visible = false
-				if col.has_node("InteractArea"):
-					col.get_node("InteractArea").disabled = true
+			# CollectibleItem tiene la propiedad 'revealed'
+			col.revealed = false
+
 
 	# feedback UI
 	if timer_label != NodePath(""):
@@ -139,17 +133,37 @@ func _on_timer_timeout() -> void:
 	await get_tree().create_timer(0.8).timeout
 
 	# reiniciar el minijuego desde cero
-	start_puzzle()
+	get_tree().reload_current_scene()
 	
 func _reset_zones_state() -> void:
-	# limpia arrays internos de AllHooked para poder reintentar
+	# Limpia el estado interno de cada AllHooked llamando a released(area)
 	for p in zone_nodes:
 		var n := get_node_or_null(p)
-		if n:
-			# si el nodo expone 'areas_hooked', lo limpiamos
-			if n.has_variable("areas_hooked"):
-				n.areas_hooked.clear()
-			_zones_done[n] = false
+		if not n:
+			continue
+
+		var areas: Array = []
+
+		# use get() para evitar llamar a APIs que no existen
+		if n.has_method("get"):
+			var temp = n.get("areas_to_hook")
+			if temp is Array:
+				areas = temp
+		else:
+			if n.has("areas_to_hook"):
+				var temp = n.get("areas_to_hook")
+				if temp is Array:
+					areas = temp
+
+		# Ahora es seguro recorrer
+		for area in areas:
+			if area and n.has_method("released"):
+				n.released(area)
+
+		# reset tracking local siempre
+		_zones_done[n] = false
+
+
 
 func _process(delta: float) -> void:
 	if _running and _timer:
