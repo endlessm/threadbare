@@ -1,7 +1,10 @@
-[gd_scene load_steps=16 format=4 uid="uid://c1y3kbmlueoa5"]
+[gd_scene load_steps=19 format=4 uid="uid://c1y3kbmlueoa5"]
 
+[ext_resource type="AudioStream" uid="uid://q0snt5ljuqha" path="res://scenes/quests/story_quests/after_the_tremor/music/sounds/dooropen.wav" id="2_63mv6"]
 [ext_resource type="SpriteFrames" uid="uid://dbe6l18tss360" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/charlie.tres" id="2_l41ux"]
 [ext_resource type="TileSet" uid="uid://cfq6453gjaw4f" path="res://scenes/quests/story_quests/after_the_tremor/mystoryquest_tileset.tres" id="2_ybeau"]
+[ext_resource type="AudioStream" uid="uid://fvgn4xad4ov5" path="res://scenes/quests/story_quests/after_the_tremor/music/sounds/lever.wav" id="3_104bv"]
+[ext_resource type="AudioStream" uid="uid://dgu0l8nit4pnx" path="res://scenes/quests/story_quests/after_the_tremor/music/sounds/fall.wav" id="4_htt8y"]
 [ext_resource type="SpriteFrames" uid="uid://dkcv15as5d6gw" path="res://scenes/quests/story_quests/after_the_tremor/bryan_components/after_the_tremor_bryan.tres" id="6_e8847"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="9_8gjtm"]
 [ext_resource type="Resource" uid="uid://db63wdolikh3c" path="res://scenes/quests/story_quests/after_the_tremor/1_colegiocinematica/stealth_components/after_the_tremor_stealth.dialogue" id="10_rrwun"]
@@ -489,10 +492,25 @@ tracks/6/keys = {
 "update": 1,
 "values": [true, false]
 }
+tracks/7/type = "audio"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("AudioStreamPlayer2D")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.3947,
+"stream": ExtResource("2_63mv6")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/7/use_blend = true
 
 [sub_resource type="Animation" id="Animation_htt8y"]
 resource_name = "trap_fall"
-length = 1.2
+length = 2.103
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -575,7 +593,7 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.5, 0.53333336),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0, 0, 0, 0.6)]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0, 0, 0, 0.26666668)]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
@@ -589,6 +607,25 @@ tracks/7/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0.003921569, 0, 0, 0)]
 }
+tracks/8/type = "audio"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("AudioStreamPlayer2D")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_104bv")
+}, {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("4_htt8y")
+}],
+"times": PackedFloat32Array(0.5, 1.6333333)
+}
+tracks/8/use_blend = true
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_e8847"]
 _data = {
@@ -685,3 +722,5 @@ dialogue = ExtResource("10_rrwun")
 animation_player = NodePath("../AnimationPlayer")
 next_scene = "uid://brc328pfil6c0"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

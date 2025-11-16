@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://byv07uyo4v33o"]
+[gd_scene load_steps=19 format=4 uid="uid://byv07uyo4v33o"]
 
 [ext_resource type="TileSet" uid="uid://odqop1b8fuu6" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part4/intro_components/titleset_arboles.tres" id="1_2a80n"]
 [ext_resource type="SpriteFrames" uid="uid://dbe6l18tss360" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/charlie.tres" id="3_1p1iu"]
@@ -8,8 +8,10 @@
 [ext_resource type="Texture2D" uid="uid://ciwy8mfi0mv65" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part3/intro_components/img/ball_free.png" id="6_5ws3c"]
 [ext_resource type="Resource" uid="uid://cxkuh283aeqhw" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part4/intro_components/dialogue/afuera_jugando.dialogue" id="6_jly1l"]
 [ext_resource type="Script" uid="uid://skmynvou4l31" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part4/intro_components/scripts/cinematicWithShake.gd" id="6_oegj3"]
+[ext_resource type="AudioStream" uid="uid://ylou7ug4knlg" path="res://scenes/quests/story_quests/after_the_tremor/music/sounds/soccerkick.wav" id="7_caxvh"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="7_fxwn8"]
 [ext_resource type="Shader" uid="uid://dmm7vum4u3k5e" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part6/night.gdshader" id="10_jy2m2"]
+[ext_resource type="AudioStream" uid="uid://dodt6m0o8wylm" path="res://scenes/quests/story_quests/after_the_tremor/music/sounds/tremor.wav" id="12_0qnio"]
 
 [sub_resource type="Animation" id="Animation_ff7m2"]
 length = 0.001
@@ -249,6 +251,21 @@ tracks/5/keys = {
 "update": 0,
 "values": [0.0, 6.283185307179586, 12.566370614359172, 18.84955592153876, 31.41592653589793, 31.41592653589793]
 }
+tracks/6/type = "audio"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../AudioStreamPlayer2D")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("7_caxvh")
+}],
+"times": PackedFloat32Array(0.23333333)
+}
+tracks/6/use_blend = true
 
 [sub_resource type="Animation" id="Animation_yd5tl"]
 resource_name = "walk_off"
@@ -362,7 +379,7 @@ editor_draw_limits = true
 script = ExtResource("5_ff7m2")
 target = NodePath("../Camera2D")
 shake_intensity = 45.0
-duration = 2.0
+duration = 7.0
 frequency = 40.0
 metadata/_custom_type_script = "uid://dunsvrhq42214"
 
@@ -409,9 +426,10 @@ libraries = {
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
-[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("shaker", "animation_player")]
+[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("shaker", "quake", "animation_player")]
 script = ExtResource("6_oegj3")
 shaker = NodePath("../Shaker")
+quake = NodePath("../quake")
 dialogue = ExtResource("6_jly1l")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
 next_scene = "uid://2djcqdm1n1hs"
@@ -426,3 +444,9 @@ offset_left = -75.0
 offset_top = -66.0
 offset_right = 1028.0
 offset_bottom = 608.0
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(383, 258)
+
+[node name="quake" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_0qnio")
