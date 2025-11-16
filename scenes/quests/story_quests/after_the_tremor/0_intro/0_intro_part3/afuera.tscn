@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=4 uid="uid://cyuxrp5u2bbwg"]
+[gd_scene load_steps=16 format=4 uid="uid://cyuxrp5u2bbwg"]
 
 [ext_resource type="TileSet" uid="uid://cfq6453gjaw4f" path="res://scenes/quests/story_quests/after_the_tremor/mystoryquest_tileset.tres" id="1_7sg4s"]
 [ext_resource type="SpriteFrames" uid="uid://bek5ha0emgpqd" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/bryan2.tres" id="2_fpuns"]
 [ext_resource type="SpriteFrames" uid="uid://dbe6l18tss360" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/charlie.tres" id="3_hj1es"]
 [ext_resource type="Texture2D" uid="uid://ciwy8mfi0mv65" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part3/intro_components/img/ball_free.png" id="4_jgd0q"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="5_0dp88"]
+[ext_resource type="AudioStream" uid="uid://q0snt5ljuqha" path="res://scenes/quests/story_quests/after_the_tremor/music/sounds/dooropen.wav" id="5_fpuns"]
 [ext_resource type="Resource" uid="uid://bdldr15jchxge" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part3/afuera.dialogue" id="6_n6ggs"]
 [ext_resource type="Shader" uid="uid://dmm7vum4u3k5e" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part6/night.gdshader" id="7_cpigk"]
 [ext_resource type="Texture2D" uid="uid://3vdikgx0rhob" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/0_intro_part3/intro_components/img/CasaBryan.png" id="8_7sg4s"]
@@ -323,6 +324,21 @@ tracks/2/keys = {
 "update": 1,
 "values": [&"walk", &"idle"]
 }
+tracks/3/type = "audio"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../AudioStreamPlayer2D")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("5_fpuns")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/3/use_blend = true
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_s1csh"]
 _data = {
@@ -419,3 +435,5 @@ offset_bottom = 608.0
 position = Vector2(437.0625, 110)
 scale = Vector2(0.50431037, 0.45798323)
 texture = ExtResource("8_7sg4s")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
