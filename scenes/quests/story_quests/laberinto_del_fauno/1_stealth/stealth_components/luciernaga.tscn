@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://c5riuetedecc0"]
+
+[sub_resource type="Gradient" id="Gradient_03v3g"]
+offsets = PackedFloat32Array(0, 0.6861538)
+colors = PackedColorArray(0.8545453, 0.8545453, 0.8545453, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4hx2r"]
+gradient = SubResource("Gradient_03v3g")
+width = 100
+height = 100
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="GDScript" id="GDScript_f2i60"]
+script/source = "extends PointLight2D
+
+var MIN_SCALE: float = randf_range(0.3,1.0)  
+var MAX_SCALE: float = randf_range(MIN_SCALE,2.5)  
+var PULSE_SPEED: float = 2.0 
+
+
+func _process(_delta: float) -> void:
+	var time_in_seconds: float = Time.get_ticks_msec() / 1000.0
+	
+	var sin_wave: float = sin(time_in_seconds * PULSE_SPEED)
+	
+	var normalized_pulse: float = (sin_wave + 1.0) / 2.0 
+	
+	var current_scale: float = lerp(MIN_SCALE, MAX_SCALE, normalized_pulse)
+	
+	self.texture_scale = current_scale
+"
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gkue5"]
+blend_mode = 1
+light_mode = 2
+
+[sub_resource type="Gradient" id="Gradient_42co5"]
+offsets = PackedFloat32Array(0, 0.7476923)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cwm0y"]
+gradient = SubResource("Gradient_42co5")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="Light" type="PointLight2D"]
+color = Color(1, 1, 0.24313726, 1)
+shadow_color = Color(0.22670749, 0.22670749, 0.22670746, 0)
+texture = SubResource("GradientTexture2D_4hx2r")
+texture_scale = 2.05
+script = SubResource("GDScript_f2i60")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.57144064, 0.5615486, 0.12771055, 0.30980393)
+material = SubResource("CanvasItemMaterial_gkue5")
+texture = SubResource("GradientTexture2D_cwm0y")
