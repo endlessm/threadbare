@@ -1,3 +1,4 @@
+@tool
 extends "res://scenes/game_elements/characters/player/components/player.gd"
 ## Custom player configuration for Wizzy Quest
 ##
@@ -15,8 +16,8 @@ func _ready() -> void:
 	super._ready()
 	
 	# Apply custom scale
-	scale = custom_scale
+	#scale = custom_scale
 	
 	# Apply position offset if specified
-	if custom_position != Vector2.ZERO:
-		position = custom_position
+	#if custom_position != Vector2.ZERO:
+		#position = custom_position
