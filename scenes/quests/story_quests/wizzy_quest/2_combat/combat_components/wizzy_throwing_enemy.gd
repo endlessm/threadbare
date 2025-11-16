@@ -17,9 +17,13 @@ const SHAKE_DURATION := 0.05
 const CUSTOM_PROJECTILE_SPEED := 50.0  # m/s (default: 30.0)
 const CUSTOM_THROWING_PERIOD := 3.0    # seconds (default: 5.0)
 
+# Custom sprite frames
+const WIZZY_SPRITE_FRAMES: SpriteFrames = preload("uid://bdop8df62qlht")
+
 
 func _ready() -> void:
 	super._ready()
+	sprite_frames = WIZZY_SPRITE_FRAMES
 	projectile_speed = CUSTOM_PROJECTILE_SPEED
 	throwing_period = CUSTOM_THROWING_PERIOD
 

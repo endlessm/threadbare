@@ -115,7 +115,7 @@ func _stop_projectile_motion() -> void:
 func _apply_disabled_visual() -> void:
 	if disabled_sprite_frames:
 		animated_sprite_2d.sprite_frames = disabled_sprite_frames
-		animated_sprite_2d.play()
+		animated_sprite_2d.play(&"disabled")
 	else:
 		modulate = DISABLED_TINT
 
