@@ -1,26 +1,29 @@
 extends FillGameLogic
-## Custom fill game logic for Wizzy Quest Combat
-## Extiende la lógica base sin modificar el archivo original
+## Wizzy Quest combat puzzle game logic
+##
+## Extends base FillGameLogic with custom features:
+## - Custom barrel win condition (2 barrels instead of 3)
+## - Enemy shake feedback when barrel is completed
+##
+## The inverted barrel mechanic is handled in wizzy_filling_barrel.gd
 
-# Sobrescribe variables exportadas si necesitas valores diferentes
-@export var custom_barrels_to_win: int = 2
-# @export var custom_intro_dialogue: DialogueResource
+## Number of barrels that must be emptied to win (inverted mechanic)
+@export var custom_barrels_to_win: int = 4
+
 
 func _ready() -> void:
-	# Puedes modificar valores antes de llamar al _ready() del padre
 	barrels_to_win = custom_barrels_to_win
-	
-	super._ready()  # Llama al _ready() del padre
-	
-	# Código adicional después de la inicialización
-	pass
+	super._ready()
 
 
-# Sobrescribe la función para agregar el efecto de temblor a los enemigos
+## Extends barrel completion with enemy shake feedback
 func _on_barrel_completed() -> void:
-	# Hacer temblar a todos los enemigos cuando se completa un barril
+	_shake_all_enemies()
+	super._on_barrel_completed()
+
+
+## Triggers shake animation on all throwing enemies as visual feedback
+func _shake_all_enemies() -> void:
 	for enemy in get_tree().get_nodes_in_group("throwing_enemy"):
 		if enemy.has_method("shake"):
 			enemy.shake()
-	
-	super._on_barrel_completed()  # Llama a la lógica original
