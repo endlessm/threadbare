@@ -340,7 +340,7 @@ func shoot_projectile() -> void:
 	else:
 		pattern_counter = pattern_counter + 1
 	if rank_level_up < 50:
-		rank = rank + 1
+		rank = rank + 0.5
 	if special_counter == 3:
 		global_angle = (player.global_position - projectile_marker.global_position).normalized()
 		dir_angle = global_angle.angle()
