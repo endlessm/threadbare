@@ -110,3 +110,7 @@ func _update_based_on_revealed() -> void:
 		sprite_2d.visible = revealed
 	if physical_collider:
 		physical_collider.disabled = not revealed
+
+
+func _on_sequence_puzzle_solved() -> void:
+	pass # Replace with function body.
