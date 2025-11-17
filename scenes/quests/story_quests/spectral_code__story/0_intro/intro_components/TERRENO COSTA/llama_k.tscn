@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://c7brt47qh6a2l"]
+
+[ext_resource type="Texture2D" uid="uid://blqntymr48ppf" path="res://scenes/quests/story_quests/spectral_code__story/0_intro/intro_components/TERRENO COSTA/llama sprite  (1).png" id="1_7mirk"]
+[ext_resource type="Script" uid="uid://d1uyohao56pbx" path="res://scenes/quests/story_quests/spectral_code__story/0_intro/intro_components/TERRENO COSTA/llama_k.gd" id="1_s8gwt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s8gwt"]
+size = Vector2(15, 51)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2pwao"]
+atlas = ExtResource("1_7mirk")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ys3jj"]
+atlas = ExtResource("1_7mirk")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cq52u"]
+atlas = ExtResource("1_7mirk")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ek2f2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2pwao")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ys3jj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cq52u")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="LLAMA-K" type="Node2D"]
+script = ExtResource("1_s8gwt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2.5)
+shape = SubResource("RectangleShape2D_s8gwt")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1.649501, -12.906911)
+scale = Vector2(-1.2960913, 1.3841674)
+sprite_frames = SubResource("SpriteFrames_ek2f2")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.37920228

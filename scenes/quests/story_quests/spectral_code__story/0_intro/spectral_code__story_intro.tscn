@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://b3p4q6714tpte"]
+[gd_scene load_steps=15 format=4 uid="uid://b3p4q6714tpte"]
 
 [ext_resource type="Texture2D" uid="uid://bgp24oc1y8wwk" path="res://scenes/quests/story_quests/spectral_code__story/0_intro/intro_components/spectral_code__story_intro_image.png" id="2_1pfb6"]
 [ext_resource type="TileSet" uid="uid://denej4vv168s7" path="res://scenes/quests/story_quests/spectral_code__story/SpectralCode.tres" id="2_8rodm"]
@@ -9,32 +9,33 @@
 [ext_resource type="PackedScene" uid="uid://b2pswtxgcu2jr" path="res://scenes/quests/story_quests/spectral_code__story/0_intro/intro_components/TERRENO COSTA/portal.tscn" id="6_8rodm"]
 [ext_resource type="PackedScene" uid="uid://bpr34tx1b1bnl" path="res://scenes/quests/story_quests/spectral_code__story/0_intro/intro_components/TERRENO COSTA/agua_2.tscn" id="7_j4qss"]
 [ext_resource type="PackedScene" uid="uid://65d2lia3fjdv" path="res://scenes/quests/story_quests/spectral_code__story/0_intro/intro_components/TERRENO COSTA/Bandera.tscn" id="9_8rodm"]
+[ext_resource type="PackedScene" uid="uid://c7brt47qh6a2l" path="res://scenes/quests/story_quests/spectral_code__story/0_intro/intro_components/TERRENO COSTA/llama_k.tscn" id="10_j4qss"]
 
 [sub_resource type="Animation" id="Animation_ld06i"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/path = NodePath("OnTheGround/Character:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"idle"]
+"values": [Vector2(400, 349)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/path = NodePath("OnTheGround/Character:animation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(400, 349)]
+"values": [&"idle"]
 }
 
 [sub_resource type="Animation" id="Animation_7swpb"]
@@ -43,26 +44,26 @@ length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/path = NodePath("OnTheGround/Character:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [&"walk", &"idle"]
+"update": 0,
+"values": [Vector2(495, 325), Vector2(1010, 320)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/path = NodePath("OnTheGround/Character:animation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(495, 325), Vector2(1010, 320)]
+"update": 1,
+"values": [&"walk", &"idle"]
 }
 
 [sub_resource type="Animation" id="Animation_blo5s"]
@@ -71,26 +72,26 @@ length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/path = NodePath("OnTheGround/Character:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [&"walk", &"idle"]
+"update": 0,
+"values": [Vector2(-50, 320), Vector2(500, 320)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/path = NodePath("OnTheGround/Character:animation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-50, 320), Vector2(500, 320)]
+"update": 1,
+"values": [&"walk", &"idle"]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qdpvj"]
@@ -106,6 +107,7 @@ metadata/_edit_vertical_guides_ = [-84.0]
 [node name="TileMapLayers" type="Node2D" parent="."]
 
 [node name="IntroImage" type="Sprite2D" parent="TileMapLayers"]
+visible = false
 position = Vector2(770, 227)
 scale = Vector2(0.802083, 0.802083)
 texture = ExtResource("2_1pfb6")
@@ -138,18 +140,12 @@ editor_draw_limits = true
 [node name="OnTheGround" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="AGUA-1" parent="OnTheGround" instance=ExtResource("5_8rodm")]
-visible = false
-modulate = Color(0.48439777, 0.4843983, 0.48439795, 1)
-position = Vector2(80, 209)
-
-[node name="AGUA-2" parent="OnTheGround" instance=ExtResource("7_j4qss")]
-visible = false
-modulate = Color(0.48439777, 0.4843983, 0.48439795, 1)
-position = Vector2(80, 271)
-
-[node name="PORTAL2" parent="OnTheGround" instance=ExtResource("6_8rodm")]
-position = Vector2(924, 277)
+[node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(400, 349)
+sprite_frames = ExtResource("3_ef1ya")
+animation = &"idle"
+autoplay = "idle"
+offset = Vector2(17, -47)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
 root_node = NodePath("../..")
@@ -158,12 +154,16 @@ libraries = {
 }
 autoplay = "RESET"
 
-[node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
-position = Vector2(400, 349)
-sprite_frames = ExtResource("3_ef1ya")
-animation = &"idle"
-autoplay = "idle"
-offset = Vector2(17, -47)
+[node name="AGUA-1" parent="OnTheGround" instance=ExtResource("5_8rodm")]
+modulate = Color(0.48439777, 0.4843983, 0.48439795, 1)
+position = Vector2(80, 209)
+
+[node name="AGUA-2" parent="OnTheGround" instance=ExtResource("7_j4qss")]
+modulate = Color(0.48439777, 0.4843983, 0.48439795, 1)
+position = Vector2(80, 271)
+
+[node name="PORTAL2" parent="OnTheGround" instance=ExtResource("6_8rodm")]
+position = Vector2(924, 277)
 
 [node name="ItemsAnimados" type="Node" parent="."]
 
@@ -175,12 +175,15 @@ position = Vector2(815, 232)
 [node name="Bandera2" parent="ItemsAnimados/bandera-peru" instance=ExtResource("9_8rodm")]
 position = Vector2(814, 69)
 
-[node name="Cinematic" type="Node2D" parent="ItemsAnimados" node_paths=PackedStringArray("animation_player")]
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="LLAMA-K" parent="." instance=ExtResource("10_j4qss")]
+position = Vector2(754, 352)
+
+[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
 position = Vector2(315, 260)
 script = ExtResource("4_8rodm")
 dialogue = ExtResource("5_j4qss")
-animation_player = NodePath("../../OnTheGround/AnimationPlayer")
+animation_player = NodePath("../OnTheGround/AnimationPlayer")
 next_scene = "uid://c2jo2cgob6fp"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
-
-[node name="ScreenOverlay" type="CanvasLayer" parent="."]

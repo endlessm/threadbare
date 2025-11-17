@@ -1,0 +1,90 @@
+[gd_scene load_steps=13 format=3 uid="uid://b80dcbyhe7e5l"]
+
+[ext_resource type="Script" uid="uid://qq1vrj18fn65" path="res://scenes/quests/story_quests/spectral_code__story/1_stealth/items-animados/DELFIN-1.gd" id="1_1qyko"]
+[ext_resource type="Texture2D" uid="uid://bashtsw77x0nn" path="res://scenes/quests/story_quests/spectral_code__story/1_stealth/items-animados/porpoise-vaquita-fast.png" id="2_qx26q"]
+[ext_resource type="Texture2D" uid="uid://6ncliscb3nrb" path="res://scenes/quests/story_quests/spectral_code__story/1_stealth/items-animados/porpoise-vaquita.png" id="3_3fp2q"]
+
+[sub_resource type="Curve2D" id="Curve2D_3or2u"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 7, 3.9999998, 0, 0, 0, 0, 282, 47, 0, 0, 0, 0, 426, 98, 0, 0, 0, 0, 529, 53, 0, 0, 0, 0, 669, 88, 0, 0, 0, 0, 726, 57, 0, 0, 0, 0, 782, 33, 0, 0, 0, 0, 849, 82, 0, 0, 0, 0, 938, 63, 0, 0, 0, 0, 1024, 102, 0, 0, 0, 0, 1092, 100, 0, 0, 0, 0, 1121, 88, 0, 0, 0, 0, 1197, 100, 0, 0, 0, 0, 1238, 92, 0, 0, 0, 0, 1268, 98, 0, 0, 0, 0, 1305, 86, 0, 0, 0, 0, 1332, 86, 0, 0, 0, 0, 1381, 82, 0, 0, 0, 0, 1731, 146, 0, 0, 0, 0, 1907, 47, 0, 0, 0, 0, 2034, 177, 0, 0, 0, 0, 2190, 123, 0, 0, 0, 0, 2208, 110, 0, 0, 0, 0, 2512, 136, 0, 0, 0, 0, 2622, 76, 0, 0, 0, 0, 2702, 83, 0, 0, 0, 0, 2797, 98, 0, 0, 0, 0, 2884, 83, 0, 0, 0, 0, 2899, 83, 0, 0, 0, 0, 2956, 83, 0, 0, 0, 0, 3802, 145, 0, 0, 0, 0, 4696, 84, 0, 0, 0, 0, 5042, 120, 0, 0, 0, 0, 5161, 108, 0, 0, 0, 0, 5185, 108, 0, 0, 0, 0, 5447, 144, 0, 0, 0, 0, 5900, 144, 0, 0, 0, 0, 6067, 120)
+}
+point_count = 38
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6brx2"]
+atlas = ExtResource("2_qx26q")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jkcib"]
+atlas = ExtResource("2_qx26q")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vtk5y"]
+atlas = ExtResource("2_qx26q")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k1r3u"]
+atlas = ExtResource("3_3fp2q")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bb76g"]
+atlas = ExtResource("3_3fp2q")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_irinx"]
+atlas = ExtResource("3_3fp2q")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_u8xx0"]
+animations = [{
+"frames": [{
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_6brx2")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_jkcib")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_vtk5y")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_k1r3u")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_bb76g")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_irinx")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_akf1m"]
+size = Vector2(20, 11)
+
+[node name="DELFIN" type="Node2D"]
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(0, 2.3841858e-07)
+curve = SubResource("Curve2D_3or2u")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(7, 3.9999998)
+rotation = 0.15510766
+scale = Vector2(4.3125, 3.1640625)
+script = ExtResource("1_1qyko")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Path2D/PathFollow2D"]
+position = Vector2(-13.054787, -10.388603)
+rotation = 0.22702809
+scale = Vector2(1.0119042, 0.99353266)
+skew = -0.10330808
+sprite_frames = SubResource("SpriteFrames_u8xx0")
+animation = &"idle"
+frame_progress = 0.33437937
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/AnimatedSprite2D"]
+position = Vector2(0.23188235, 0.9481482)
+scale = Vector2(0.2318841, 0.3160494)
+shape = SubResource("RectangleShape2D_akf1m")

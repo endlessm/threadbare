@@ -1,0 +1,66 @@
+[gd_scene load_steps=9 format=3 uid="uid://fo4hwuq2nktx"]
+
+[ext_resource type="Script" uid="uid://cpnfdam4yndwx" path="res://scenes/quests/story_quests/spectral_code__story/1_stealth/items-animados/meduza-1.gd" id="1_2pb1c"]
+[ext_resource type="Texture2D" uid="uid://cavk6p3ujdam1" path="res://scenes/quests/story_quests/spectral_code__story/1_stealth/items-animados/jellyfish-medium-Sheet.png" id="1_thvrf"]
+
+[sub_resource type="Curve2D" id="Curve2D_2pb1c"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1, -20, 0, 0, 0, 0, 11, -42, 0, 0, 0, 0, 45, -65, 0, 0, 0, 0, 69, -95, 0, 0, 0, 0, 108, -51, 0, 0, 0, 0, 83, -138, 0, 0, 0, 0, 83, -146, 0, 0, 0, 0, 160, -53, 0, 0, 0, 0, 115, -159, 0, 0, 0, 0, 181, -130, 0, 0, 0, 0, 172, -158, 0, 0, 0, 0, 191, -171, 0, 0, 0, 0, 210, -183, 0, 0, 0, 0, 215, -185, 0, 0, 0, 0, 232, -188, 0, 0, 0, 0, 243, -190, 0, 0, 0, 0, 257, -190, 0, 0, 0, 0, 271, -193, 0, 0, 0, 0, 279, -193, 0, 0, 0, 0, 264, -270, 0, 0, 0, 0, 270, -286, 0, 0, 0, 0, 272, -305, 0, 0, 0, 0, 214, -421, 0, 0, 0, 0, 312, -541, 0, 0, 0, 0, 244, -605, 0, 0, 0, 0, 81, -620, 0, 0, 0, 0, -26, -620, 0, 0, 0, 0, -102, -605, 0, 0, 0, 0, -124, -571, 0, 0, 0, 0, -143, -438, 0, 0, 0, 0, -139, -354, 0, 0, 0, 0, -105, -275, 0, 0, 0, 0, -71, -199, 0, 0, 0, 0, -45, -138, 0, 0, 0, 0, -29, -66, 0, 0, 0, 0, -14, -24)
+}
+point_count = 36
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ym1rx"]
+atlas = ExtResource("1_thvrf")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gnlrf"]
+atlas = ExtResource("1_thvrf")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jcf1m"]
+atlas = ExtResource("1_thvrf")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sdvmu"]
+atlas = ExtResource("1_thvrf")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3nqs5"]
+animations = [{
+"frames": [{
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_ym1rx")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_gnlrf")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_jcf1m")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_sdvmu")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="Node2D" type="Node2D"]
+metadata/_edit_horizontal_guides_ = [-612.0]
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_2pb1c")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(1, -20)
+rotation = -1.1441689
+script = ExtResource("1_2pb1c")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Path2D/PathFollow2D"]
+position = Vector2(-10.679909, -5.7447424)
+rotation = 0.63831985
+scale = Vector2(2.25, 3.0208333)
+sprite_frames = SubResource("SpriteFrames_3nqs5")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.04310483

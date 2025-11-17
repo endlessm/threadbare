@@ -1,0 +1,89 @@
+[gd_scene load_steps=12 format=3 uid="uid://2p7hqtwe4cny"]
+
+[ext_resource type="Script" uid="uid://qq1vrj18fn65" path="res://scenes/quests/story_quests/spectral_code__story/1_stealth/items-animados/DELFIN-1.gd" id="1_uytu5"]
+[ext_resource type="Texture2D" uid="uid://fdb1pedhephm" path="res://scenes/quests/story_quests/spectral_code__story/1_stealth/items-animados/crab-claws.png" id="2_rdjkj"]
+
+[sub_resource type="Curve2D" id="Curve2D_xs4pl"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -65, -47, 0, 0, 0, 0, 13, -105, 0, 0, 0, 0, 20, -142, 0, 0, 0, 0, 20, -168, 0, 0, 0, 0, 20, -189, 0, 0, 0, 0, 20, -201, 0, 0, 0, 0, 20, -215, 0, 0, 0, 0, 20, -215, 0, 0, 0, 0, 21, -222, 0, 0, 0, 0, 45, -287, 0, 0, 0, 0, 50, -320, 0, 0, 0, 0, 84, -331, 0, 0, 0, 0, 99, -295, 0, 0, 0, 0, 83, -270, 0, 0, 0, 0, 55, -251, 0, 0, 0, 0, 6, -239, 0, 0, 0, 0, -37, -219, 0, 0, 0, 0, -65, -198, 0, 0, 0, 0, -95, -168, 0, 0, 0, 0, -122, -118, 0, 0, 0, 0, -119, -64, 0, 0, 0, 0, -103, -27, 0, 0, 0, 0, -84, -28)
+}
+point_count = 23
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2cu4d"]
+atlas = ExtResource("2_rdjkj")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dlx23"]
+atlas = ExtResource("2_rdjkj")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_of2xn"]
+atlas = ExtResource("2_rdjkj")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2s3uu"]
+atlas = ExtResource("2_rdjkj")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pf0rg"]
+atlas = ExtResource("2_rdjkj")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smris"]
+atlas = ExtResource("2_rdjkj")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lr4f2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2cu4d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dlx23")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_of2xn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2s3uu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pf0rg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smris")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_83o5b"]
+size = Vector2(20, 11)
+
+[node name="cangrejo" type="Node2D"]
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(0, 2.3841858e-07)
+curve = SubResource("Curve2D_xs4pl")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(-65, -47)
+rotation = -0.6393859
+scale = Vector2(4.3125, 3.1640625)
+script = ExtResource("1_uytu5")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Path2D/PathFollow2D"]
+position = Vector2(-3.4782314, 0.019509315)
+rotation = 0.22702809
+scale = Vector2(0.51019037, 0.6261891)
+skew = -0.10330808
+sprite_frames = SubResource("SpriteFrames_lr4f2")
+animation = &"idle"
+frame_progress = 0.60568786
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/AnimatedSprite2D"]
+position = Vector2(0.23188235, 0.9481482)
+scale = Vector2(0.2318841, 0.3160494)
+shape = SubResource("RectangleShape2D_83o5b")
