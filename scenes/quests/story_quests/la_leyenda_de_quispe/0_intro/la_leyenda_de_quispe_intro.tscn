@@ -1,18 +1,22 @@
-[gd_scene load_steps=11 format=4 uid="uid://csg7np4lbp1aw"]
+[gd_scene load_steps=15 format=4 uid="uid://csg7np4lbp1aw"]
 
+[ext_resource type="Script" uid="uid://b06ajr4f6s80i" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/0_intro/la_leyenda_de_quispe_intro.gd" id="1_bfp0c"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_kecw4"]
 [ext_resource type="Texture2D" uid="uid://xgdfoo4rl36e" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/0_intro/intro_components/la_leyenda_de_quispe_intro_image.png" id="2_bfp0c"]
-[ext_resource type="SpriteFrames" uid="uid://brkbb6e25yqsi" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/player_components/la_leyenda_de_quispe_player.tres" id="3_jd6pp"]
+[ext_resource type="SpriteFrames" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/player_components/la_leyenda_de_quispe_player.tres" id="3_jd6pp"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_htoix"]
-[ext_resource type="Resource" uid="uid://rwo2pkfxg07n" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/0_intro/intro_components/la_leyenda_de_quispe_intro.dialogue" id="5_w2isj"]
+[ext_resource type="Resource" uid="uid://rwo2pkfxg07n" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/0_intro/intro_components/Intro.dialogue" id="5_w2isj"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_p2kh2"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bfp0c"]
+size = Vector2(80, 100)
+
 [sub_resource type="Animation" id="Animation_15ci5"]
-length = 0.001
+length = 6.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/path = NodePath("OnTheGround/Jugador/Character:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -24,14 +28,14 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/path = NodePath("OnTheGround/Jugador:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 6.5),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(400, 349)]
+"values": [Vector2(0, 0), Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_06a8y"]
@@ -40,7 +44,7 @@ length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/path = NodePath("OnTheGround/Jugador/Character:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -52,7 +56,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/path = NodePath("OnTheGround/Jugador/Character:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -68,7 +72,7 @@ length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/path = NodePath("OnTheGround/Jugador/Character:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -80,7 +84,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/path = NodePath("OnTheGround/Jugador/Character:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -97,7 +101,21 @@ _data = {
 &"walk_on": SubResource("Animation_qw04o")
 }
 
+[sub_resource type="GDScript" id="GDScript_bfp0c"]
+script/source = "extends Area2D
+
+@export var speed: float = 300.0
+
+func _physics_process(delta: float) -> void:
+	var input_direction: Vector2 = Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
+	var velocity: Vector2 = input_direction * speed
+	position += velocity * delta
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bfp0c"]
+
 [node name="Intro" type="Node2D"]
+script = ExtResource("1_bfp0c")
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -115,6 +133,12 @@ texture = ExtResource("2_bfp0c")
 tile_map_data = PackedByteArray("AAAKAAEABgAAAAAAAAAKAAIABgADAAEAAAAKAAMABgADAAEAAAAKAAQABgADAAEAAAANAAEABgACAAAAAAANAAIABgADAAEAAAANAAMABgADAAEAAAANAAQABgADAAEAAAAKAAUABgAAAAIAAAALAAEABgABAAMAAAALAAUABgABAAMAAAAMAAEABgABAAMAAAAMAAUABgABAAMAAAANAAUABgACAAIAAAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAA=")
 tile_set = ExtResource("1_kecw4")
 
+[node name="SalidaEscena" type="Area2D" parent="TileMapLayers"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TileMapLayers/SalidaEscena"]
+position = Vector2(977, 476)
+shape = SubResource("RectangleShape2D_bfp0c")
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(153, 366)
 zoom = Vector2(1.333, 1.333)
@@ -128,17 +152,24 @@ editor_draw_limits = true
 [node name="OnTheGround" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
-position = Vector2(400, 349)
-sprite_frames = ExtResource("3_jd6pp")
-animation = &"idle"
-autoplay = "idle"
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
 root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_3nrud")
 }
+
+[node name="Jugador" type="Area2D" parent="OnTheGround"]
+script = SubResource("GDScript_bfp0c")
+
+[node name="Character" type="AnimatedSprite2D" parent="OnTheGround/Jugador" groups=["player"]]
+position = Vector2(400, 349)
+sprite_frames = ExtResource("3_jd6pp")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Jugador"]
+position = Vector2(-14, 482)
+shape = SubResource("CapsuleShape2D_bfp0c")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
@@ -151,3 +182,5 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." instance=ExtResource("6_p2kh2")]
 position = Vector2(125, 403)
+
+[connection signal="area_entered" from="TileMapLayers/SalidaEscena" to="." method="_on_salida_escena_area_entered"]
