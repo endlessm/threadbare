@@ -1,6 +1,6 @@
 [gd_scene load_steps=35 format=4 uid="uid://g118barl1mcy"]
 
-[ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_ifr6t"]
+[ext_resource type="Script" uid="uid://bvdmin15878w6" path="res://scenes/quests/story_quests/wizzy_quest/1_stealth/stealth_components/wizzy_stealth_game_logic.gd" id="1_la7g5"]
 [ext_resource type="TileSet" uid="uid://b30mp2rngaixn" path="res://scenes/quests/story_quests/wizzy_quest/wizzy_tileset.tres" id="2_ifr6t"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_fy2qe"]
 [ext_resource type="SpriteFrames" uid="uid://b1sol6f5xak4b" path="res://scenes/quests/story_quests/wizzy_quest/player_components/wizzy_quest_player.tres" id="4_la7g5"]
@@ -8,6 +8,7 @@
 [ext_resource type="SpriteFrames" uid="uid://belcothvu2lat" path="res://scenes/quests/story_quests/wizzy_quest/1_stealth/stealth_components/wizzy_quest_guard_enemy.tres" id="6_wot55"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="7_p0b5d"]
 [ext_resource type="Resource" uid="uid://dwoljw1ukn3ni" path="res://scenes/quests/story_quests/wizzy_quest/1_stealth/stealth_components/wizzy_quest_checkpoint1.dialogue" id="8_3w5vk"]
+[ext_resource type="SpriteFrames" uid="uid://cjvv4invjxssd" path="res://scenes/quests/story_quests/wizzy_quest/1_stealth/stealth_components/wizzy_quest_guard_enemy_shark.tres" id="8_fy2qe"]
 [ext_resource type="Resource" uid="uid://d1edvtgj82phd" path="res://scenes/quests/story_quests/wizzy_quest/1_stealth/stealth_components/wizzy_quest_checkpoint.dialogue" id="8_gksxr"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="9_p6mhu"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="10_8bwwe"]
@@ -129,7 +130,7 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 y_sort_enabled = true
 
 [node name="StealthGameLogic" type="Node" parent="."]
-script = ExtResource("1_ifr6t")
+script = ExtResource("1_la7g5")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.481789, 0.48179, 0.481789, 1)
@@ -157,8 +158,8 @@ tile_map_data = PackedByteArray("AAAEAAQABAAAAAcAAAAEAAMABAAAAAcAAAAEAAIABAAAAAc
 tile_set = ExtResource("2_ifr6t")
 
 [node name="Player" parent="." instance=ExtResource("3_fy2qe")]
-position = Vector2(131, 463)
-scale = Vector2(1.4, 1.4)
+position = Vector2(131, 433)
+scale = Vector2(0.8, 0.8)
 sprite_frames = ExtResource("4_la7g5")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -187,7 +188,7 @@ curve = SubResource("Curve2D_v71t3")
 
 [node name="Guard2-RunningInCircles" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_bewgq")]
 position = Vector2(3623, 1623)
-sprite_frames = ExtResource("6_wot55")
+sprite_frames = ExtResource("8_fy2qe")
 patrol_path = NodePath("../Guard2-RunningPath")
 wait_time = 0.3
 move_speed = 600.0
@@ -356,7 +357,7 @@ curve = SubResource("Curve2D_8bwwe")
 
 [node name="Guard16-EnLinea" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_bewgq")]
 position = Vector2(3624.9998, 2172)
-sprite_frames = ExtResource("6_wot55")
+sprite_frames = ExtResource("8_fy2qe")
 patrol_path = NodePath("../Guard16-PatrolPath")
 wait_time = 0.0
 move_speed = 700.0
@@ -369,7 +370,7 @@ curve = SubResource("Curve2D_ycvx8")
 
 [node name="Guard17-EnLinea" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_bewgq")]
 position = Vector2(2785, 2172)
-sprite_frames = ExtResource("6_wot55")
+sprite_frames = ExtResource("8_fy2qe")
 patrol_path = NodePath("../Guard17-PatrolPath")
 wait_time = 0.0
 move_speed = 700.0
@@ -381,8 +382,8 @@ scale = Vector2(0.758341, 0.15915523)
 curve = SubResource("Curve2D_dojuq")
 
 [node name="Guard18-EnLinea" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_bewgq")]
-position = Vector2(1956, 2170)
-sprite_frames = ExtResource("6_wot55")
+position = Vector2(1957, 2170)
+sprite_frames = ExtResource("8_fy2qe")
 patrol_path = NodePath("../Guard18-PatrolPath")
 wait_time = 0.0
 move_speed = 700.0
@@ -394,7 +395,7 @@ curve = SubResource("Curve2D_hsvk0")
 
 [node name="Guard19-EnLinea" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_bewgq")]
 position = Vector2(2463, 2562)
-sprite_frames = ExtResource("6_wot55")
+sprite_frames = ExtResource("8_fy2qe")
 patrol_path = NodePath("../Guard19-PatrolPath")
 wait_time = 0.0
 move_speed = 700.0
@@ -407,7 +408,7 @@ curve = SubResource("Curve2D_dq3if")
 
 [node name="Guard20-EnLinea" parent="EnemyGuards" node_paths=PackedStringArray("patrol_path") instance=ExtResource("5_bewgq")]
 position = Vector2(3312.9998, 2562.0002)
-sprite_frames = ExtResource("6_wot55")
+sprite_frames = ExtResource("8_fy2qe")
 patrol_path = NodePath("../Guard20-PatrolPath")
 wait_time = 0.0
 move_speed = 700.0
