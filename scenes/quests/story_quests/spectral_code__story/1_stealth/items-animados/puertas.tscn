@@ -1,0 +1,56 @@
+[gd_scene load_steps=9 format=3 uid="uid://dst38j4kbd2yg"]
+
+[ext_resource type="Script" uid="uid://c2m7d1nuxv25n" path="res://scenes/quests/story_quests/spectral_code__story/2_combat/combat_components/puertas.gd" id="1_a2hvp"]
+[ext_resource type="Texture2D" uid="uid://de368gp0c1eub" path="res://scenes/quests/story_quests/spectral_code__story/0_intro/intro_components/TERRENO COSTA/Terreno Sierra.png" id="1_e23c2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a2hvp"]
+size = Vector2(60, 63.5)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wpffd"]
+atlas = ExtResource("1_e23c2")
+region = Rect2(0, 448, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5pj38"]
+atlas = ExtResource("1_e23c2")
+region = Rect2(64, 448, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ebspw"]
+atlas = ExtResource("1_e23c2")
+region = Rect2(128, 448, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o3cp2"]
+atlas = ExtResource("1_e23c2")
+region = Rect2(192, 448, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fapip"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wpffd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5pj38")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ebspw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o3cp2")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="puertas" type="Node2D"]
+script = ExtResource("1_a2hvp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1252, 475.25)
+shape = SubResource("RectangleShape2D_a2hvp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1252, 476.5)
+scale = Vector2(1, 1.078125)
+sprite_frames = SubResource("SpriteFrames_fapip")
+animation = &"idle"

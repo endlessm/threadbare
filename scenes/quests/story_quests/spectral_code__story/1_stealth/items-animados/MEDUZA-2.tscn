@@ -1,0 +1,75 @@
+[gd_scene load_steps=10 format=3 uid="uid://5hhqnlej5tkk"]
+
+[ext_resource type="Script" uid="uid://qq1vrj18fn65" path="res://scenes/quests/story_quests/spectral_code__story/1_stealth/items-animados/DELFIN-1.gd" id="1_ho7bj"]
+[ext_resource type="Texture2D" uid="uid://dvms1bxi6henw" path="res://scenes/quests/story_quests/spectral_code__story/1_stealth/items-animados/fish-angler-Sheet.png" id="2_ho7bj"]
+
+[sub_resource type="Curve2D" id="Curve2D_p3vit"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -28, -25, 0, 0, 0, 0, 2, -32, 0, 0, 0, 0, 15, -47, 0, 0, 0, 0, 28, -66, 0, 0, 0, 0, 19, -149, 0, 0, 0, 0, 14, -156, 0, 0, 0, 0, -25, -156, 0, 0, 0, 0, -39, -147, 0, 0, 0, 0, -52, -129, 0, 0, 0, 0, -54, -97, 0, 0, 0, 0, -53, -54, 0, 0, 0, 0, -52, -28, 0, 0, 0, 0, -31, -19, 0, 0, 0, 0, -24, -25)
+}
+point_count = 14
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vihnp"]
+atlas = ExtResource("2_ho7bj")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p3vit"]
+atlas = ExtResource("2_ho7bj")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rbeum"]
+atlas = ExtResource("2_ho7bj")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u4p2o"]
+atlas = ExtResource("2_ho7bj")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qfe32"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vihnp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p3vit")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rbeum")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u4p2o")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a8wet"]
+size = Vector2(20, 11)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(0, 2.3841858e-07)
+curve = SubResource("Curve2D_p3vit")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(-28, -25)
+rotation = -0.22923194
+scale = Vector2(4.3125, 3.1640625)
+script = ExtResource("1_ho7bj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Path2D/PathFollow2D"]
+position = Vector2(-2.8913352, -1.2003274)
+rotation = 0.22702809
+scale = Vector2(0.51019037, 0.72688293)
+skew = -0.10330808
+sprite_frames = SubResource("SpriteFrames_qfe32")
+animation = &"idle"
+frame_progress = 0.65891314
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/AnimatedSprite2D"]
+position = Vector2(0.23188235, 0.9481482)
+scale = Vector2(0.2318841, 0.3160494)
+shape = SubResource("RectangleShape2D_a8wet")

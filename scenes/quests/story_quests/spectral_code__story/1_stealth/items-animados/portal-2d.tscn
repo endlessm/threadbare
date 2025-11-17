@@ -1,0 +1,88 @@
+[gd_scene load_steps=13 format=3 uid="uid://cpn66qsofr31a"]
+
+[ext_resource type="Script" uid="uid://no45q3a4uxgg" path="res://scenes/quests/story_quests/spectral_code__story/1_stealth/items-animados/portal_2d.gd" id="1_1gtwq"]
+[ext_resource type="Texture2D" uid="uid://dr6hvxekr1ip1" path="res://scenes/quests/story_quests/spectral_code__story/0_intro/intro_components/TERRENO COSTA/portalsSpriteSheet.png" id="1_668j1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1gtwq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_05ttf"]
+atlas = ExtResource("1_668j1")
+region = Rect2(0, 144, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajar6"]
+atlas = ExtResource("1_668j1")
+region = Rect2(32, 144, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ca7rb"]
+atlas = ExtResource("1_668j1")
+region = Rect2(64, 144, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a2cn3"]
+atlas = ExtResource("1_668j1")
+region = Rect2(96, 144, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8xgoq"]
+atlas = ExtResource("1_668j1")
+region = Rect2(0, 48, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3k12x"]
+atlas = ExtResource("1_668j1")
+region = Rect2(32, 48, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sql0i"]
+atlas = ExtResource("1_668j1")
+region = Rect2(64, 48, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8man0"]
+atlas = ExtResource("1_668j1")
+region = Rect2(96, 48, 32, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bk1sv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_05ttf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ajar6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ca7rb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a2cn3")
+}],
+"loop": true,
+"name": &"aparecer",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8xgoq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3k12x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sql0i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8man0")
+}],
+"loop": true,
+"name": &"aparecer_1",
+"speed": 5.0
+}]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_1gtwq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(-1, -1)
+shape = SubResource("RectangleShape2D_1gtwq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(8.000002, -5.999998)
+scale = Vector2(-2.8686805, -2.590366)
+sprite_frames = SubResource("SpriteFrames_bk1sv")
+animation = &"aparecer"
