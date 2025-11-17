@@ -3,7 +3,6 @@
 @tool
 extends EditorPlugin
 
-const SOME_LFS_MANAGED_FILE: String = "uid://bc70phmq55dkf"
 const LFS_HEADER: String = "version https://git-lfs.github.com/spec/v1"
 const LFS_DOCUMENTATION_URL: String = "https://github.com/endlessm/threadbare/discussions/772"
 
@@ -28,12 +27,11 @@ func _enter_tree() -> void:
 ## Returns true if the repo was cloned without Git LFS. Returns false in other
 ## cases, including if we're not sure.
 func _lfs_missing() -> bool:
-	var file := FileAccess.open(SOME_LFS_MANAGED_FILE, FileAccess.READ)
+	var icon := ProjectSettings.get_setting("application/config/icon")
+	var file := FileAccess.open(icon, FileAccess.READ)
 	if not file:
 		var error := FileAccess.get_open_error()
-		push_warning(
-			"Failed to open ", SOME_LFS_MANAGED_FILE, " to check for Git LFS: ", error_string(error)
-		)
+		push_warning("Failed to open ", icon, " to check for Git LFS: ", error_string(error))
 		return false
 
 	var lfs_header := LFS_HEADER.to_ascii_buffer()

@@ -65,6 +65,7 @@ func _restore_from_hash() -> void:
 				# for testing or debugging.
 				GameState.persist_progress = false
 				GameState.clear()
+				# TODO: Try to look up the quest that the scene corresponds to
 
 			# In theory, we might like to avoid switching scene if the specified
 			# scene is the default scene. In practice, that will not happen, and

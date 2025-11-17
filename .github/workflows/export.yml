@@ -19,7 +19,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
 
 env:
-  GODOT_VERSION: 4.5
+  GODOT_VERSION: "4.5.1"
   PCK_NAME: threadbare
 
 jobs:
@@ -32,12 +32,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          lfs: true
           # TODO: can we use --filter to avoid fetching the trees & blobs for
           # all historical commits, while still fetching the commit history &
           # tags?
           fetch-depth: 0
           fetch-tags: true
+
+      - name: Create Git LFS file list
+        run: git lfs ls-files -l |cut -d' ' -f1 |sort >.git/lfs-hashes.txt
+
+      - name: Restore Git LFS object cache
+        uses: actions/cache@v4
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfsdata-v1-${{ hashFiles('.git/lfs-hashes.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-lfsdata-v1-
+            ${{ runner.os }}-lfsdata
+
+      - name: Fetch any needed Git LFS objects and prune extraneous ones
+        run: git lfs fetch --prune
+
+      - name: Check out Git LFS content
+        run: git lfs checkout
 
       - id: changes
         uses: dorny/paths-filter@v3
@@ -45,6 +62,7 @@ jobs:
           filters: |
             linux:
               - 'linux/**'
+              - .github/workflows/export.yml
 
       - name: Cache Godot Engine downloads
         id: cache-godot
@@ -94,13 +112,13 @@ jobs:
           cp web/index.pck '${{ env.PCK_NAME }}.pck'
 
       - name: Upload web artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: web
           path: build/web
 
       - name: Upload PCK artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: pck
           path: build/${{ env.PCK_NAME }}.pck
@@ -111,18 +129,22 @@ jobs:
     if: ${{ inputs.build_flatpak || github.event_name == 'release' || needs.build.outputs.linux-changed == 'true' }}
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-24.08
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
       options: --privileged
     steps:
       - uses: actions/checkout@v5
         with:
           lfs: true
+          sparse-checkout: |
+            linux
+
       - name: Download Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           name: pck
           path: build
+
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
           bundle: threadbare.flatpak
@@ -132,16 +154,13 @@ jobs:
       - name: Create Linux metadata bundle
         run: |
           tar --create --gzip \
+            --dereference \
             --file threadbare-linux-metadata.tar.gz \
             --transform=s,^,threadbare-linux-metadata/, \
-            icon.png \
-            icon-256.png \
-            linux/launcher.desktop \
-            linux/metainfo.xml \
-            linux/releases.xml
+            linux/*
 
       - name: Upload Linux metadata bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: threadbare-linux-metadata
           path: threadbare-linux-metadata.tar.gz
@@ -153,7 +172,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download PCK
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pck
 
@@ -165,7 +184,7 @@ jobs:
           gh release upload '${{ github.ref_name }}' '${{ env.PCK_NAME }}-${{ github.ref_name }}.pck' --repo '${{ github.repository }}'
 
       - name: Download Flatpak bundle
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: threadbare-x86_64.flatpak
 
@@ -177,7 +196,7 @@ jobs:
           gh release upload '${{ github.ref_name }}' 'threadbare-${{ github.ref_name }}-x86_64.flatpak' --repo '${{ github.repository }}'
 
       - name: Download web bundle
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: web
           path: web
@@ -193,7 +212,7 @@ jobs:
           gh release upload '${{ github.ref_name }}' 'threadbare-${{ github.ref_name }}-web.zip' --repo '${{ github.repository }}'
 
       - name: Download Linux metadata bundle
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: threadbare-linux-metadata
 
