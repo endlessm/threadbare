@@ -8,6 +8,7 @@ extends CharacterBody2D
 signal mode_changed(mode: Mode)
 
 ## Controls how the player can interact with the world around them.
+
 enum Mode {
 	## Player can explore the world, interact with items and NPCs, but is not
 	## engaged in combat. Combat actions are not available in this mode.
@@ -80,7 +81,7 @@ var input_vector: Vector2
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
-
+@onready var hieloAbajo = false
 
 func _set_mode(new_mode: Mode) -> void:
 	var previous_mode: Mode = mode
@@ -160,6 +161,20 @@ func _ready() -> void:
 
 func _unhandled_input(_event: InputEvent) -> void:
 	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	var pressed_count := 0
+	if(hieloAbajo):
+		if Input.is_action_pressed("move_left"):
+			pressed_count += 1
+		if Input.is_action_pressed("move_right"):
+			pressed_count += 1
+		if Input.is_action_pressed("move_up"):
+			pressed_count += 1
+		if Input.is_action_pressed("move_down"):
+			pressed_count += 1
+		# Si hay dos o más inputs, no hacer nada
+		if pressed_count >= 2:
+			input_vector = Vector2.ZERO
+			return
 
 	var speed: float
 	if player_hook.is_throwing_or_aiming():

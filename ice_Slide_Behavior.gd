@@ -32,6 +32,7 @@ func _physics_process(delta: float) -> void:
 			_check_hielo()
 	
 func _check_hielo() -> void:
+	
 	if tile_map_layer == null:
 		return
 	var center = hitbox.global_position 
@@ -39,20 +40,25 @@ func _check_hielo() -> void:
 	var tile_pos = tile_map_layer.local_to_map(local_center)
 	var tile_id = tile_map_layer.get_cell_source_id(tile_pos)
 	var data = tile_map_layer.get_cell_atlas_coords(tile_pos)
+	
 	if tile_id == 1 and (data == Vector2i(0, 1)) :
+		character.hieloAbajo = true
+		var direccion = character.input_vector
+		var x = abs(direccion.x)
+		var y = abs(direccion.y)
+		print(character.hieloAbajo)
+		if(x==y):
+			if(direccion.y)>0:
+				y = 300
+			if(direccion.y<0):
+				y = -300
+			x =0
+			direccion = Vector2(x,y)				
 		if not is_sliding:
-			
 			is_sliding = true
-			slide_direction = character.input_vector.normalized()
+			print(direccion)
+			slide_direction = direccion.normalized()
 	else:
-		is_sliding = false		
+		is_sliding = false
+		character.hieloAbajo = false		
 		
-func hieloAbajo() -> bool:
-	if tile_map_layer == null:
-		return false
-	var center = hitbox.global_position 
-	var local_center = tile_map_layer.to_local(center)
-	var tile_pos = tile_map_layer.local_to_map(local_center)
-	var tile_id = tile_map_layer.get_cell_source_id(tile_pos)
-	var data = tile_map_layer.get_cell_atlas_coords(tile_pos)
-	return tile_id == 5 and data == Vector2i(0, 1)
