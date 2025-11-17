@@ -1,8 +1,9 @@
-[gd_scene load_steps=16 format=4 uid="uid://cakexw1g553y1"]
+[gd_scene load_steps=18 format=4 uid="uid://cakexw1g553y1"]
 
 [ext_resource type="PackedScene" uid="uid://c1aw8jcai3mt3" path="res://scenes/quests/story_quests/wizzy_quest/3_sequence_puzzle/wizzy_quest_sequence_puzzle.tscn" id="1_6jqig"]
 [ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/game_elements/props/sequence_puzzle_hint_sign/sequence_puzzle_hint_sign.tscn" id="2_1kch1"]
 [ext_resource type="SpriteFrames" uid="uid://ciplxknjgb3by" path="res://scenes/quests/story_quests/wizzy_quest/3_sequence_puzzle/wizzy_quest_sign_3.tres" id="3_oefbf"]
+[ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="4_ircmh"]
 [ext_resource type="Texture2D" uid="uid://drp57sd7hcor3" path="res://scenes/quests/story_quests/wizzy_quest/3_sequence_puzzle/Adornos_y_animaciones/Rey_marino_durmiendo_minijuego1.png" id="5_a1u3m"]
 [ext_resource type="Texture2D" uid="uid://bphs4adyna6nb" path="res://scenes/quests/story_quests/wizzy_quest/3_sequence_puzzle/Adornos_y_animaciones/Rey_marino_durmiendo_minijuego2.png" id="6_xjwyw"]
 [ext_resource type="Texture2D" uid="uid://bqtsylwcoqe2o" path="res://scenes/quests/story_quests/wizzy_quest/3_sequence_puzzle/Adornos_y_animaciones/Rey_marino_durmiendo_minijuego3.png" id="7_d0sll"]
@@ -12,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://bppqn0ppc2sak" path="res://scenes/quests/story_quests/wizzy_quest/3_sequence_puzzle/Adornos_y_animaciones/Guardia_minijuego3.png" id="11_p0bkw"]
 [ext_resource type="Texture2D" uid="uid://tutgft3mg0ik" path="res://scenes/quests/story_quests/wizzy_quest/3_sequence_puzzle/Adornos_y_animaciones/guardiavolteado1.png" id="12_f2qw8"]
 [ext_resource type="Texture2D" uid="uid://cilagj0wadfet" path="res://scenes/quests/story_quests/wizzy_quest/3_sequence_puzzle/Adornos_y_animaciones/guardiavolteado2.png" id="13_eb3eo"]
+[ext_resource type="AudioStream" uid="uid://cu5wkx8t4dlj2" path="res://scenes/quests/story_quests/wizzy_quest/Musica/TownTheme.mp3" id="13_maes3"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_oefbf"]
 animations = [{
@@ -108,12 +110,17 @@ position = Vector2(63, 692)
 scale = Vector2(0.7, 0.7)
 
 [node name="HintSign4" parent="OnTheGround/SequencePuzzle/Signs" index="2" instance=ExtResource("2_1kch1")]
-position = Vector2(65, 599)
+position = Vector2(77.000015, 583)
 scale = Vector2(0.7, 0.7)
 sprite_frames = ExtResource("3_oefbf")
 
 [node name="SequencePuzzleStep2" parent="OnTheGround/SequencePuzzle/Steps" index="1" node_paths=PackedStringArray("sequence")]
-sequence = [NodePath("../../Objects/Blue"), NodePath("../../Objects/Green"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), NodePath("../../Objects/Purple"), NodePath("../../Objects/Pink")]
+sequence = [NodePath("../../Objects/Blue"), NodePath("../../Objects/Green"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), NodePath("../../Objects/Red")]
+
+[node name="SequencePuzzleStep3" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" index="2" node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("4_ircmh")
+sequence = [NodePath("../../Objects/Blue"), NodePath("../../Objects/Green"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), NodePath("../../Objects/Purple"), NodePath("../../Objects/Pink"), NodePath("../../Objects/Blue")]
+hint_sign = NodePath("../../Signs/HintSign4")
 
 [node name="CollectibleItem" parent="OnTheGround" index="2"]
 position = Vector2(624, 558)
@@ -121,6 +128,8 @@ next_scene = "uid://cfi1hvtuesjjk"
 
 [node name="Sign" parent="OnTheGround" index="3"]
 position = Vector2(502, 706)
+text = "Toca las caracolas
+magicas musicales"
 
 [node name="Rey_marino" type="AnimatedSprite2D" parent="OnTheGround" index="4"]
 position = Vector2(638, 417)
@@ -144,6 +153,11 @@ sprite_frames = SubResource("SpriteFrames_qw82b")
 autoplay = "default"
 frame = 2
 frame_progress = 0.5697749
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="OnTheGround" index="7"]
+stream = ExtResource("13_maes3")
+volume_db = -10.0
+autoplay = true
 
 [node name="Camera2D" parent="." index="4"]
 scale = Vector2(1.2, 1.2)
