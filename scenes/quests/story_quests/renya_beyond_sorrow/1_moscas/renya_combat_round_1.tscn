@@ -1,8 +1,7 @@
-[gd_scene load_steps=30 format=4 uid="uid://cqia8wihr6512"]
+[gd_scene load_steps=29 format=4 uid="uid://cqia8wihr6512"]
 
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_0sehy"]
 [ext_resource type="AudioStream" uid="uid://dgwihwibc8ah6" path="res://assets/first_party/music/Threadbare_Combat.ogg" id="2_1q4ne"]
-[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="3_8rl0p"]
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="3_fmi44"]
 [ext_resource type="Resource" uid="uid://ctmbv8jkb5j48" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_moscas/components/dialogues/renya_combat.dialogue" id="4_75x6t"]
 [ext_resource type="TileSet" uid="uid://dmg13wgcc7so5" path="res://scenes/quests/story_quests/renya_beyond_sorrow/renya_tileset.tres" id="5_o60la"]
@@ -58,14 +57,10 @@ y_sort_enabled = true
 [node name="BackgroundMusic" parent="." instance=ExtResource("1_0sehy")]
 stream = ExtResource("2_1q4ne")
 
-[node name="Cinematic" type="Node2D" parent="."]
-script = ExtResource("3_8rl0p")
-dialogue = ExtResource("4_75x6t")
-metadata/_custom_type_script = "uid://x1mxt6bmei2o"
-
 [node name="FillGameLogic" type="Node" parent="."]
 script = ExtResource("3_fmi44")
 barrels_to_win = 2
+intro_dialogue = ExtResource("4_75x6t")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="LevelCompletedAnimation" type="AnimationPlayer" parent="FillGameLogic"]
@@ -158,7 +153,6 @@ shape = SubResource("RectangleShape2D_lmnu5")
 [node name="Player" parent="OnTheGround" instance=ExtResource("9_d7n4r")]
 position = Vector2(351, -56)
 player_name = "StoryWeaver"
-mode = 1
 sprite_frames = ExtResource("10_o60la")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
@@ -243,5 +237,4 @@ layout_mode = 2
 
 [node name="HUD" parent="." instance=ExtResource("23_vhod7")]
 
-[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]
