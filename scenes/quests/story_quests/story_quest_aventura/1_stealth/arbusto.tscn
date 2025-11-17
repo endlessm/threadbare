@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://dlgqxghydk62r"]
+
+[ext_resource type="SpriteFrames" uid="uid://dm5jcge3jb7p1" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_large.tres" id="1_4kd2s"]
+[ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_elements/props/decoration/random_frame_animated_sprite.gd" id="2_q75lq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7v6qx"]
+radius = 33.24154
+
+[node name="arbusto" type="Node2D"]
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
+position = Vector2(-3, 2)
+scale = Vector2(1.4253165, 1.5209256)
+sprite_frames = ExtResource("1_4kd2s")
+autoplay = "default"
+frame = 2
+script = ExtResource("2_q75lq")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("CircleShape2D_7v6qx")
