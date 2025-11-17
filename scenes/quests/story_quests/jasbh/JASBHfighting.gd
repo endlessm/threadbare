@@ -36,6 +36,7 @@ func _on_body_entered(body: Node2D) -> void:
 	CameraShake.shake()
 	if life == 0:
 		player.mode = Player.Mode.DEFEATED
+		hit_box.set_collision_mask_value(9, false)
 		await get_tree().create_timer(2.0).timeout
 		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
 	hit_box.set_collision_mask_value(9, false)
