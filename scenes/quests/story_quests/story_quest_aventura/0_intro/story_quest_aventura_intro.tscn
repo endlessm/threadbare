@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://bui1lvx3o1nco"]
+[gd_scene load_steps=13 format=4 uid="uid://bui1lvx3o1nco"]
 
 [ext_resource type="TileSet" uid="uid://jr4exjygx8nf" path="res://scenes/quests/story_quests/story_quest_aventura/story_quest_aventura_tileset.tres" id="1_nxn1o"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_y163d"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_pu87m"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_dk4gs"]
 [ext_resource type="PackedScene" uid="uid://bdtis4ye3hah2" path="res://scenes/quests/story_quests/shjourney/9_shjourney_outro_2/neblina.tscn" id="7_nxn1o"]
+[ext_resource type="Texture2D" uid="uid://duhbtwgn1tmvg" path="res://scenes/quests/story_quests/story_quest_aventura/0_intro/intro_components/LUNA_eclipse_1.png" id="8_y4l0r"]
 
 [sub_resource type="Animation" id="Animation_brlu3"]
 length = 0.001
@@ -99,7 +100,7 @@ _data = {
 }
 
 [node name="Intro" type="Node2D"]
-modulate = Color(0.49747366, 0.49747366, 0.49747366, 1)
+modulate = Color(0.61339027, 0.61339027, 0.61339027, 1)
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 modulate = Color(0.46229059, 0.46229059, 0.46229059, 1)
@@ -113,9 +114,23 @@ metadata/_edit_lock_ = true
 tile_map_data = PackedByteArray("AAAAAAcAAwABAAAAAAABAAcAAwABAAAAAAADAAcAAwABAAAAAAAEAAcAAwABAAAAAAAFAAcAAwABAAAAAAAGAAcAAwABAAAAAAAHAAcAAwABAAAAAAAIAAcAAwABAAAAAAAJAAcAAwABAAAAAAAKAAcAAwABAAAAAAALAAcAAwABAAAAAAAMAAcAAwABAAAAAAANAAcAAwABAAAAAAAOAAcAAwABAAAAAAACAAcAAwABAAAAAAA=")
 tile_set = ExtResource("1_y163d")
 
-[node name="Acantilados" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAAAAAMACwABAAEAAAABAAIACgABAAEAAAABAAEACwABAAEAAAAAAAEACwABAAEAAAAAAAIACgABAAEAAAACAAEACwABAAEAAAACAAAACwABAAEAAAABAAAACwABAAEAAAADAAEADAABAAEAAAAFAAEADAABAAEAAAAEAAAADAABAAEAAAAEAAEADAABAAEAAAAAAAAACwABAAEAAAADAAAADAABAAEAAAAFAAAADAABAAEAAAAGAAAADQAAAAAAAAAGAAEADQAAAAIAAAAHAAEADQACAAIAAAAIAAAACwABAAEAAAAJAAAACwABAAEAAAAOAAEACwABAAEAAAAOAAAACwABAAEAAAANAAAACwABAAEAAAALAAAACwABAAEAAAAKAAAACwABAAEAAAAHAAAADQACAAAAAAAIAAEACAABAAEAAAAOAAIACwABAAEAAAAJAAEACwABAAEAAAAMAAAACwABAAEAAAABAAMACwABAAEAAAACAAIACgABAAEAAAADAAIACgABAAEAAAAEAAIACgABAAEAAAAFAAIACgABAAEAAAAGAAIACgABAAEAAAAHAAIACgABAAEAAAAIAAIACgABAAEAAAAJAAIACwABAAEAAAADAAMACwABAAEAAAAEAAMACwABAAEAAAAGAAMACwABAAEAAAAHAAMACwABAAEAAAAKAAEACgABAAEAAAALAAEACgABAAEAAAAMAAEACAABAAEAAAANAAEACwABAAEAAAANAAIACwABAAEAAAAMAAIACwABAAEAAAALAAIACwABAAEAAAAKAAIACwABAAEAAAAMAAMACAABAAEAAAANAAMACwABAAEAAAAOAAMACwABAAEAAAALAAMACwABAAEAAAAKAAMACwABAAEAAAAJAAMACwABAAEAAAAIAAMACwABAAEAAAAFAAMACwABAAEAAAACAAMACwABAAEAAAA=")
+[node name="Acantilados" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAAAAMACwABAAEAAAABAAIACgABAAEAAAABAAEACwABAAEAAAAAAAEACwABAAEAAAAAAAIACgABAAEAAAACAAEACwABAAEAAAACAAAACwABAAEAAAABAAAACwABAAEAAAADAAEADAABAAEAAAAFAAEADAABAAEAAAAEAAAADAABAAEAAAAEAAEADAABAAEAAAAAAAAACwABAAEAAAADAAAADAABAAEAAAAFAAAADAABAAEAAAAIAAAACwABAAEAAAAJAAAACwABAAEAAAAOAAEACwABAAEAAAAOAAAACwABAAEAAAANAAAACwABAAEAAAALAAAACwABAAEAAAAKAAAACwABAAEAAAAIAAEACAABAAEAAAAOAAIACwABAAEAAAAJAAEACwABAAEAAAAMAAAACwABAAEAAAABAAMACwABAAEAAAACAAIACgABAAEAAAADAAIACgABAAEAAAAEAAIACgABAAEAAAAFAAIACgABAAEAAAAGAAIACgABAAEAAAAHAAIACgABAAEAAAAJAAIACwABAAEAAAADAAMACwABAAEAAAAEAAMACwABAAEAAAAGAAMACwABAAEAAAAHAAMACwABAAEAAAAKAAEACgABAAEAAAALAAEACgABAAEAAAAMAAEACAABAAEAAAANAAEACwABAAEAAAANAAIACwABAAEAAAAMAAIACwABAAEAAAALAAIACwABAAEAAAAKAAIACwABAAEAAAAMAAMACAABAAEAAAANAAMACwABAAEAAAAOAAMACwABAAEAAAALAAMACwABAAEAAAAKAAMACwABAAEAAAAJAAMACwABAAEAAAAIAAMACwABAAEAAAAFAAMACwABAAEAAAACAAMACwABAAEAAAAGAAEACwABAAEAAAAGAAAACwABAAEAAAAHAAAACwABAAEAAAAHAAEACwABAAEAAAAIAAIACwABAAEAAAA=")
 tile_set = ExtResource("1_y163d")
+
+[node name="Hijaeren" type="Sprite2D" parent="TileMapLayers"]
+self_modulate = Color(0.32915837, 0.3291584, 0.3291584, 1)
+position = Vector2(751, 163.99998)
+scale = Vector2(1.2277768, 1.1999996)
+texture = ExtResource("3_y163d")
+
+[node name="LunaEclipse1" type="Sprite2D" parent="TileMapLayers"]
+self_modulate = Color(2.6126626, 2.6126626, 2.6126626, 1)
+position = Vector2(455, 70.00001)
+scale = Vector2(2.25, 1.96875)
+texture = ExtResource("8_y4l0r")
+
+[node name="Neblina" parent="TileMapLayers" instance=ExtResource("7_nxn1o")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(153, 366)
@@ -132,11 +147,11 @@ y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
 position = Vector2(400, 349)
-scale = Vector2(1.8983302, 1.859375)
+scale = Vector2(2.0897896, 2.085938)
 sprite_frames = ExtResource("3_y4l0r")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.883324
+centered = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
 root_node = NodePath("../..")
@@ -153,12 +168,5 @@ next_scene = "uid://bfns6edhl5hsr"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." instance=ExtResource("6_dk4gs")]
+visible = false
 position = Vector2(125, 403)
-
-[node name="Hijaeren" type="Sprite2D" parent="."]
-self_modulate = Color(0.32915837, 0.3291584, 0.3291584, 1)
-position = Vector2(751, 163.99998)
-scale = Vector2(1.2277768, 1.1999996)
-texture = ExtResource("3_y163d")
-
-[node name="ParallaxBackground" parent="." instance=ExtResource("7_nxn1o")]
