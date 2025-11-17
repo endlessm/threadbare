@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dirth48cj3phd"]
+
+[ext_resource type="Script" uid="uid://csmgd6lwmi7up" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/Jugador/jugador.gd" id="1_2tkwx"]
+[ext_resource type="PackedScene" uid="uid://dc231hghta05i" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/1_fase/Bala/Bala.tscn" id="2_c53sy"]
+[ext_resource type="SpriteFrames" uid="uid://py6h5gelq25f" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/Jugador/Jugador.tres" id="2_dtvk5"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dtvk5"]
+radius = 21.0
+height = 42.0
+
+[node name="Jugador" type="CharacterBody2D"]
+script = ExtResource("1_2tkwx")
+bullet_scene = ExtResource("2_c53sy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_dtvk5")
+animation = &"Iddle"
+frame = 2
+frame_progress = 0.1464618
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 15)
+shape = SubResource("CapsuleShape2D_dtvk5")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+limit_left = -9000000
+limit_top = -9000000
+limit_right = 9000000
+limit_bottom = 9000000
