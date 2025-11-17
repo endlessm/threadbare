@@ -3,65 +3,93 @@
 class_name InputHintManager
 extends Node
 
-# This script manages loading and providing textures for input hints.
-# It finds which controller (Xbox, PlayStation, etc.) is currently used
-# and returns the proper texture for a given action.
+# generic fallback
+const GENERIC_RESOURCE := "res://scenes/game_elements/props/hint/resources/input_tres/xbox.tres"
 
-## Mapping of controller keyword -> resource path
-const DEVICE_MAP: Dictionary = {
-	"xbox": "res://scenes/game_elements/props/hint/resources/inputs.tres/xbox.tres",
-	"play": "res://scenes/game_elements/props/hint/resources/inputs.tres/playstation.tres",
-	"ps": "res://scenes/game_elements/props/hint/resources/inputs.tres/playstation.tres",
-	"playstation": "res://scenes/game_elements/props/hint/resources/inputs.tres/playstation.tres",
-	"switch": "res://scenes/game_elements/props/hint/resources/inputs.tres/switch.tres",
-	"nintendo": "res://scenes/game_elements/props/hint/resources/inputs.tres/switch.tres",
-	"steam": "res://scenes/game_elements/props/hint/resources/inputs.tres/steamdeck.tres",
-	"steamdeck": "res://scenes/game_elements/props/hint/resources/inputs.tres/steamdeck.tres",
-	"keyboard": "res://scenes/game_elements/props/hint/resources/inputs.tres/keyboard.tres",
+# MULTI-FILE DEVICE MAP
+# Each device maps to an Array of .tres files
+var device_map := {
+	"xbox":
+	[
+		"res://scenes/game_elements/props/hint/resources/input_tres/xbox.tres",
+	],
+	"play":
+	[
+		"res://scenes/game_elements/props/hint/resources/input_tres/playstation.tres",
+	],
+	"ps":
+	[
+		"res://scenes/game_elements/props/hint/resources/input_tres/playstation.tres",
+	],
+	"playstation":
+	[
+		"res://scenes/game_elements/props/hint/resources/input_tres/playstation.tres",
+	],
+	"switch":
+	[
+		"res://scenes/game_elements/props/hint/resources/input_tres/switch.tres",
+	],
+	"nintendo":
+	[
+		"res://scenes/game_elements/props/hint/resources/input_tres/switch.tres",
+	],
+	"steam":
+	[
+		"res://scenes/game_elements/props/hint/resources/input_tres/steamdeck.tres",
+	],
+	"steamdeck":
+	[
+		"res://scenes/game_elements/props/hint/resources/input.tres/steamdeck.tres",
+	],
+	"keyboard": ["res://scenes/game_elements/props/hint/resources/input_tres/keyboard.tres"],
 }
 
-const GENERIC_RESOURCE: String = (
-	"res://scenes/game_elements/props/hint/resources/inputs.tres/" + "xbox.tres"
-)
-
-# Cache to avoid re-loading resources frequently.
+# loaded resource cache
 var resource_cache: Dictionary = {}
 
 
+# Load a resource with caching
 func _load_resource(path: String) -> Resource:
 	if resource_cache.has(path):
 		return resource_cache[path]
 
-	var r: Resource = ResourceLoader.load(path)
-	if r:
+	var r := ResourceLoader.load(path)
+	if r != null:
 		resource_cache[path] = r
 	return r
 
 
-# Determine which JoypadButtonTextures resource to use for a given device string.
+# Get the appropriate JoypadButtonTextures resource
+# for the given detected device
 func _resource_for_device(device: String) -> JoypadButtonTextures:
-	# If device is null or empty, return generic resource.
 	if device == null or device.is_empty():
 		return _load_resource(GENERIC_RESOURCE) as JoypadButtonTextures
 
-	var d: String = device.to_lower()
-	for key: String in DEVICE_MAP.keys():
-		if key in d:
-			return _load_resource(DEVICE_MAP[key]) as JoypadButtonTextures
+	var d := device.to_lower()
 
-	# fallback final
+	for key: String in device_map.keys():
+		if key in d:
+			var paths := device_map[key] as Array  # <- SAFE
+			for p: String in paths:
+				var res := _load_resource(p)
+				if res != null:
+					return res as JoypadButtonTextures
+
+	# final fallback
 	return _load_resource(GENERIC_RESOURCE) as JoypadButtonTextures
 
 
-## Get texture by device and action name, with fallback to generic (xbox).
+# Public accessor — returns Texture2D for given action
 func get_texture_for(device: String, action_name: String) -> Texture2D:
-	var res: JoypadButtonTextures = _resource_for_device(device)
-	if res:
-		var tex: Texture2D = res.get_texture_for_action(action_name)
-		if tex:
+	var res := _resource_for_device(device)
+	if res != null:
+		var tex := res.get_texture_for_action(action_name)
+		if tex != null:
 			return tex
-	# Fallback to generic resource's action texture if not found in specific resource.
-	var generic_res: JoypadButtonTextures = _load_resource(GENERIC_RESOURCE) as JoypadButtonTextures
-	if generic_res:
-		return generic_res.get_texture_for_action(action_name)
+
+	# fallback to generic if not found
+	var g := _load_resource(GENERIC_RESOURCE) as JoypadButtonTextures
+	if g != null:
+		return g.get_texture_for_action(action_name)
+
 	return null
