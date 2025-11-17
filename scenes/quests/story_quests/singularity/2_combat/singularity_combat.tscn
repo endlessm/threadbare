@@ -1,0 +1,144 @@
+[gd_scene load_steps=17 format=4 uid="uid://c6tqh0kbopgxn"]
+
+[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_u5cgv"]
+[ext_resource type="Resource" uid="uid://1ng78qu1mb10" path="res://scenes/quests/story_quests/singularity/2_combat/combat_components/singularity_combat.dialogue" id="2_uhmuq"]
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="3_vu73m"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_g6dy3"]
+[ext_resource type="SpriteFrames" uid="uid://bdhve3tx6eapx" path="res://scenes/quests/story_quests/singularity/player_components/singularity_player.tres" id="5_tda3w"]
+[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="6_hpwe4"]
+[ext_resource type="SpriteFrames" uid="uid://deuqwmlq7lnc3" path="res://scenes/quests/story_quests/singularity/2_combat/combat_components/singularity_throwing_enemy.tres" id="7_ai6pu"]
+[ext_resource type="SpriteFrames" uid="uid://dq8dl1srtdtgf" path="res://scenes/quests/story_quests/singularity/2_combat/combat_components/singularity_projectile_spriteframes.tres" id="8_420xa"]
+[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="9_atnn7"]
+[ext_resource type="SpriteFrames" uid="uid://oap3trm61nun" path="res://scenes/quests/story_quests/singularity/2_combat/combat_components/singularity_target_spriteframes.tres" id="10_h01ww"]
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="11_m0iof"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="12_nillh"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="13_1fa5j"]
+
+[sub_resource type="GDScript" id="GDScript_u5cgv"]
+script/source = "extends Area2D
+
+@export var hits_to_win: int = 3
+var hits: int = 0
+
+func _on_body_entered(body: Node2D) -> void:
+	hits += 1
+	if(hits >= hits_to_win):
+		set_deferred(\"monitoring\", true)
+	pass # Replace with function body.
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vu73m"]
+size = Vector2(51, 57.5)
+
+[sub_resource type="Resource" id="Resource_yutas"]
+script = ExtResource("12_nillh")
+type = 1
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[node name="Combat" type="Node2D"]
+y_sort_enabled = true
+
+[node name="FillGameLogic" type="Node" parent="."]
+script = ExtResource("1_u5cgv")
+barrels_to_win = 6
+metadata/_custom_type_script = "uid://cp54mgi54nywo"
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="TileMapLayers"]
+offset_right = 960.0
+offset_bottom = 639.0
+color = Color(0.023529412, 0.34901962, 0.49019608, 1)
+
+[node name="Grass" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAABAAIAEAAAAAEAAAABAAcAEAAAAAAAAAACAAYAEAAHAAAAAAACAAcAEAAHAAEAAAACAAIAEAAHAAIAAAACAAMAEAAHAAMAAAADAAMAEAABAAQAAAAEAAMAEAABAAQAAAAFAAMAEAABAAQAAAAGAAMAEAABAAQAAAAHAAMAEAABAAQAAAAIAAMAEAABAAQAAAAJAAMAEAABAAQAAAAKAAMAEAABAAQAAAALAAMAEAABAAQAAAADAAYAEAABAAQAAAAEAAYAEAABAAQAAAAFAAYAEAABAAQAAAAGAAYAEAABAAQAAAAMAAMAEAACAAQAAAAHAAYAEAAFAAEAAAAMAAYAEAABAAEAAAAIAAYAEAAEAAUAAAAJAAYAEAAEAAUAAAAKAAYAEAAEAAUAAAALAAYAEAAEAAUAAAAFAAUAEAABAAQAAAAGAAUAEAABAAQAAAAHAAUAEAABAAQAAAAIAAUAEAABAAQAAAAJAAUAEAABAAQAAAAKAAUAEAABAAQAAAAKAAQAEAAEAAQAAAAJAAQAEAAEAAQAAAAIAAQAEAACAAEAAAAHAAQAEAAEAAUAAAAGAAQAEAAEAAUAAAAEAAQAEAAEAAUAAAADAAQAEAADAAEAAAACAAUAEAAEAAUAAAAEAAUAEAAEAAEAAAAFAAQAEAAEAAUAAAACAAQAEAAEAAQAAAABAAUAEAAAAAEAAAADAAUAEAAEAAUAAAALAAUAEAAFAAEAAAAMAAUAEAABAAEAAAADAAcAEAAGAAIAAAADAAgAEAAGAAMAAAAKAAcAEAAHAAIAAAAKAAgAEAAHAAMAAAAEAAcAEAAEAAUAAAAJAAcAEAAEAAUAAAAFAAcAEAAEAAUAAAAGAAcAEAAEAAUAAAAHAAcAEAAEAAUAAAAIAAcAEAAEAAUAAAAFAAIAEAAEAAQAAAAGAAIAEAAEAAQAAAAHAAIAEAAEAAQAAAAIAAIAEAAEAAQAAAAJAAIAEAAEAAQAAAAKAAIAEAADAAEAAAALAAIAEAAEAAUAAAAMAAIAEAAEAAUAAAADAAEAEAAGAAAAAAADAAIAEAAGAAEAAAAEAAIAEAAEAAQAAAABAAQAEAAAAAAAAAAMAAQAEAACAAQAAAALAAQAEAAEAAAAAAANAAIAEAAEAAUAAAA=")
+tile_set = ExtResource("3_vu73m")
+
+[node name="Stones" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAGAAkADwABAAUAAAAHAAkADwABAAUAAAAIAAkADwABAAUAAAAJAAkADwABAAUAAAAKAAkADwABAAUAAAALAAkADwABAAUAAAAMAAkADwABAAUAAAANAAkADwABAAMAAAAOAAkADwACAAMAAAAGAAgADwABAAQAAAAHAAgADwABAAQAAAAIAAgADwABAAQAAAAJAAgADwABAAQAAAAKAAgADwABAAQAAAALAAgADwABAAQAAAAMAAgADwABAAQAAAANAAgADwABAAIAAAAOAAgADwACAAIAAAAAAAEADwADAAEAAAABAAEADwABAAUAAAACAAEADwABAAUAAAACAAAADwABAAQAAAABAAAADwABAAQAAAAAAAAADwAAAAAAAAADAAAADwABAAQAAAAFAAAADwABAAQAAAAEAAAADwABAAQAAAAEAAEADwABAAUAAAAFAAEADwABAAUAAAADAAEADwABAAUAAAANAAcADwAAAAEAAAAOAAcADwACAAEAAAANAAYADwAAAAAAAAAOAAYADwACAAEAAAAOAAUADwADAAEAAAAOAAMADwADAAEAAAAOAAIADwACAAEAAAANAAEADwAAAAEAAAANAAAADwABAAAAAAAOAAAADwACAAAAAAAOAAEADwACAAEAAAAOAAQADwADAAEAAAAMAAAADwABAAQAAAALAAAADwABAAQAAAAKAAAADwABAAQAAAAJAAAADwABAAQAAAAIAAAADwABAAQAAAAHAAAADwABAAQAAAANAAIADwAAAAIAAAANAAMADwAAAAMAAAAHAAEADwABAAUAAAAIAAEADwABAAUAAAAKAAEADwABAAUAAAALAAEADwABAAUAAAAJAAEADwABAAUAAAAMAAEADwABAAUAAAAGAAAADwABAAQAAAAGAAEADwABAAUAAAAAAAkADwAAAAMAAAABAAkADwABAAUAAAACAAkADwABAAUAAAADAAkADwABAAUAAAAEAAkADwABAAUAAAAFAAkADwABAAUAAAAAAAgADwAAAAIAAAABAAgADwABAAQAAAACAAgADwABAAQAAAADAAgADwABAAQAAAAEAAgADwABAAQAAAAFAAgADwABAAQAAAAAAAIADwADAAEAAAAAAAMADwADAAEAAAAAAAQADwADAAEAAAAAAAcADwADAAEAAAAAAAYADwADAAEAAAAAAAUADwADAAEAAAA=")
+tile_set = ExtResource("3_vu73m")
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="OnTheGround" instance=ExtResource("4_g6dy3")]
+position = Vector2(348, 335)
+sprite_frames = ExtResource("5_tda3w")
+
+[node name="ThrowingNPC" parent="OnTheGround" instance=ExtResource("6_hpwe4")]
+position = Vector2(857, 300)
+throwing_period = 1.5
+sprite_frames = ExtResource("7_ai6pu")
+distance = 11.0
+projectile_speed = 60.0
+projectile_follows_player = true
+projectile_sprite_frames = ExtResource("8_420xa")
+
+[node name="Area2D" type="Area2D" parent="OnTheGround/ThrowingNPC"]
+script = SubResource("GDScript_u5cgv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/ThrowingNPC/Area2D"]
+position = Vector2(-7, 6)
+shape = SubResource("RectangleShape2D_vu73m")
+
+[node name="Target" parent="OnTheGround" instance=ExtResource("9_atnn7")]
+position = Vector2(352, 144)
+sprite_frames = ExtResource("10_h01ww")
+needed_amount = 2
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target2" parent="OnTheGround" instance=ExtResource("9_atnn7")]
+position = Vector2(736, 144)
+sprite_frames = ExtResource("10_h01ww")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target3" parent="OnTheGround" instance=ExtResource("9_atnn7")]
+position = Vector2(736, 472)
+sprite_frames = ExtResource("10_h01ww")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target4" parent="OnTheGround" instance=ExtResource("9_atnn7")]
+position = Vector2(544, 472)
+sprite_frames = ExtResource("10_h01ww")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target5" parent="OnTheGround" instance=ExtResource("9_atnn7")]
+position = Vector2(544, 144)
+sprite_frames = ExtResource("10_h01ww")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target6" parent="OnTheGround" instance=ExtResource("9_atnn7")]
+position = Vector2(352, 472)
+sprite_frames = ExtResource("10_h01ww")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("11_m0iof")]
+unique_name_in_owner = true
+position = Vector2(868, 303)
+revealed = false
+next_scene = "uid://r17go4bsu5w"
+item = SubResource("Resource_yutas")
+collected_dialogue = ExtResource("2_uhmuq")
+dialogue_title = &"well_done"
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="." instance=ExtResource("13_1fa5j")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.333, 1.333)
+limit_left = 0
+limit_top = 0
+limit_right = 2048
+limit_bottom = 2048
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
+[connection signal="body_entered" from="OnTheGround/ThrowingNPC/Area2D" to="OnTheGround/ThrowingNPC/Area2D" method="_on_body_entered"]
