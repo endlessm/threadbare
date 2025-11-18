@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://xdcib3l37dcy"]
+[gd_scene load_steps=24 format=4 uid="uid://xdcib3l37dcy"]
 
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_unn6p"]
 [ext_resource type="Resource" uid="uid://bshqwbkexyn15" path="res://scenes/quests/story_quests/spectral_code__story/2_combat/combat_components/spectral_code__story_combat.dialogue" id="2_4dsf5"]
@@ -18,7 +18,9 @@
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="14_pj75r"]
 [ext_resource type="Resource" uid="uid://du46srer4yi3s" path="res://scenes/quests/story_quests/spectral_code__story/1_stealth/items-animados/Dialgos Checkpoints/D6.dialogue" id="15_wpffd"]
 [ext_resource type="PackedScene" uid="uid://dst38j4kbd2yg" path="res://scenes/quests/story_quests/spectral_code__story/1_stealth/items-animados/puertas.tscn" id="18_rdo5b"]
+[ext_resource type="AudioStream" uid="uid://dvt2mi6h0bb64" path="res://scenes/quests/story_quests/spectral_code__story/2_combat/Sierra.mp3" id="20_5pj38"]
 [ext_resource type="PackedScene" uid="uid://bkl3wh4ngt8hv" path="res://scenes/quests/story_quests/spectral_code__story/1_stealth/items-animados/portal-3.tscn" id="20_wpffd"]
+[ext_resource type="Script" uid="uid://cm1nn6farm0t1" path="res://scenes/quests/story_quests/spectral_code__story/2_combat/audio_stream_player.gd" id="21_ebspw"]
 
 [sub_resource type="Resource" id="Resource_glyea"]
 script = ExtResource("12_o3cp2")
@@ -162,5 +164,10 @@ position = Vector2(73, 495)
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource("13_r7cwc")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("20_5pj38")
+autoplay = true
+script = ExtResource("21_ebspw")
 
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
