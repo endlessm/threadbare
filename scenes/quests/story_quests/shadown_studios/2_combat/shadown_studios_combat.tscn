@@ -33,7 +33,7 @@ type = 1
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ixdfj"]
-size = Vector2(18.23468, 31.120033)
+size = Vector2(24.920738, 31.120033)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_34xyd"]
 size = Vector2(885, 508)
@@ -47,7 +47,7 @@ intro_dialogue = ExtResource("2_8lcnc")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.68999463, 0.66365814, 0.7487817, 1)
+color = Color(0.2642055, 0.24317947, 0.30967695, 1)
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -108,7 +108,9 @@ sprite_frames = ExtResource("5_ppjlb")
 
 [node name="ThrowingNPC" parent="OnTheGround" instance=ExtResource("6_y0xbj")]
 position = Vector2(857, 300)
+throwing_period = 6.0
 sprite_frames = ExtResource("7_ixdfj")
+projectile_speed = 60.0
 projectile_sprite_frames = ExtResource("8_34xyd")
 
 [node name="Target" parent="OnTheGround" instance=ExtResource("9_xbsql")]
@@ -162,15 +164,16 @@ dialogue_title = &"well_done"
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 physics_interpolation_mode = 1
-position = Vector2(2131.3438, 1173)
+position = Vector2(2183, 1172)
 scale = Vector2(4.6146274, 4.4665785)
 color = Color(0.90588236, 0, 0.015686275, 1)
-energy = 9.92
+energy = 2.93
 shadow_enabled = true
 texture = ExtResource("16_7cbqg")
 script = ExtResource("17_ppjlb")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PointLight2D"]
+position = Vector2(18.202988, -4.253788)
 stream = ExtResource("18_34xyd")
 autoplay = true
 max_distance = 1800.0
@@ -187,7 +190,7 @@ interior_almacen = NodePath("../TileMapLayers/Piso_nave_almacen_alas")
 exterior_pared_nave = NodePath("../TileMapLayers/AvionFin")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(22.103632, 1.1194185)
+position = Vector2(16.361053, 1.567215)
 shape = SubResource("RectangleShape2D_ixdfj")
 
 [node name="InicioPara Sonido" type="Area2D" parent="."]
@@ -203,5 +206,11 @@ stream = ExtResource("20_34xyd")
 volume_db = 5.049
 autoplay = true
 attenuation = 0.437
+
+[node name="LuzLunar" type="PointLight2D" parent="."]
+position = Vector2(590.75, 1750.5)
+scale = Vector2(2.6758864, 11.2736845)
+energy = 0.69
+texture = ExtResource("16_7cbqg")
 
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]

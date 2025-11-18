@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=4 uid="uid://cl084qnadgxef"]
+[gd_scene load_steps=34 format=4 uid="uid://cl084qnadgxef"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_kqvb5"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_kt6jr"]
@@ -19,6 +19,9 @@
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="13_hduai"]
 [ext_resource type="Resource" uid="uid://bu1qsqk21ng14" path="res://scenes/quests/story_quests/shadown_studios/1_search/search_components/shadown_studios_stealth.dialogue" id="14_m7wpe"]
 [ext_resource type="AudioStream" uid="uid://ditov4cucfch1" path="res://scenes/quests/story_quests/shadown_studios/1_search/search_components/BackGroundM1.wav" id="20_0rxsj"]
+[ext_resource type="Script" uid="uid://dltqbrfyjdf82" path="res://scenes/quests/story_quests/shadown_studios/1_search/AdminGame.gd" id="20_4hgnf"]
+[ext_resource type="Texture2D" uid="uid://dr4leucy0b4x2" path="res://scenes/quests/story_quests/shadown_studios/Tiles_Components/mineral.png" id="21_guhpg"]
+[ext_resource type="Script" uid="uid://dluva3wfganw3" path="res://scenes/quests/story_quests/shadown_studios/1_search/search_components/Mineral.gd" id="22_23mcv"]
 
 [sub_resource type="Curve2D" id="Curve2D_qfamk"]
 _data = {
@@ -88,7 +91,7 @@ y_sort_enabled = true
 script = ExtResource("1_kqvb5")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.12955844, 0.12955847, 0.12955844, 1)
+color = Color(0.83033526, 0.83033514, 0.83033514, 1)
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -344,16 +347,6 @@ next_scene = "uid://cwl27y8uyk856"
 item = SubResource("Resource_hoh51")
 collected_dialogue = ExtResource("12_gfxjs")
 
-[node name="CollectibleItem2" parent="." instance=ExtResource("10_mdf3r")]
-position = Vector2(1996, 3029)
-item = SubResource("Resource_hoh51")
-collected_dialogue = ExtResource("12_gfxjs")
-
-[node name="CollectibleItem3" parent="." instance=ExtResource("10_mdf3r")]
-position = Vector2(2333, 1012)
-item = SubResource("Resource_hoh51")
-collected_dialogue = ExtResource("12_gfxjs")
-
 [node name="Cinematic" type="Node2D" parent="."]
 script = ExtResource("13_hduai")
 dialogue = ExtResource("14_m7wpe")
@@ -363,3 +356,17 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 stream = ExtResource("20_0rxsj")
 volume_db = 0.025
 autoplay = true
+
+[node name="AdminGame" type="Node" parent="." node_paths=PackedStringArray("collectible_item")]
+script = ExtResource("20_4hgnf")
+collectible_item = NodePath("../CollectibleItem")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(2334, 995)
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+modulate = Color(1, 0.3254902, 1, 1)
+position = Vector2(-1, 1)
+scale = Vector2(2.187499, 2.3750005)
+texture = ExtResource("21_guhpg")
+script = ExtResource("22_23mcv")
