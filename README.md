@@ -1,6 +1,6 @@
 # Threadbare
 
-A story-driven, collaborative game where players don’t just explore a world—they co-create it. In Threadbare, players rebuild a world unraveling at the seams by recovering knowledge, crafting stories, and designing characters, quests, and cultures drawn from their own lives.
+A story-driven, collaborative game where players don't just explore a world—they co-create it. In Threadbare, players rebuild a world unraveling at the seams by recovering knowledge, crafting stories, and designing characters, quests, and cultures drawn from their own lives.
 
 **Threadbare is currently in pre-alpha** and being used in select learning programs as a scaffolded learning experience. Learners create non-canon StoryQuests that live alongside the canon narrative. In the future, contributors will be able to contribute canon LoreQuests to the core narrative of Threadbare.
 
