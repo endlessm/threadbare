@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_7y6db"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="1_16xyg"]
 [ext_resource type="TileSet" uid="uid://yducoif83sia" path="res://tiles/foam.tres" id="1_rmat6"]
-[ext_resource type="AudioStream" uid="uid://dgwihwibc8ah6" path="res://assets/first_party/music/Threadbare_Combat.ogg" id="2_ck7cp"]
+[ext_resource type="AudioStream" uid="uid://dkgtyb0x1i0m2" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/combat_music.tres" id="2_1a5yo"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="2_g1en3"]
 [ext_resource type="TileSet" uid="uid://dfp36ffpanjq2" path="res://tiles/elevation.tres" id="2_s2t2y"]
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="3_1a5yo"]
@@ -60,7 +60,7 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 [node name="InkCombatRound6" type="Node2D"]
 
 [node name="BackgroundMusic" parent="." instance=ExtResource("1_7y6db")]
-stream = ExtResource("2_ck7cp")
+stream = ExtResource("2_1a5yo")
 
 [node name="FillGameLogic" type="Node" parent="."]
 script = ExtResource("3_1a5yo")
@@ -253,4 +253,5 @@ editor_draw_limits = true
 
 [node name="HUD" parent="." instance=ExtResource("27_7y6db")]
 
+[connection signal="goal_reached" from="FillGameLogic" to="BackgroundMusic" method="switch_to_clip" binds= [&"cozy"]]
 [connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]
