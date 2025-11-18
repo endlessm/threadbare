@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://cl084qnadgxef"]
+[gd_scene load_steps=32 format=4 uid="uid://cl084qnadgxef"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_kqvb5"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_kt6jr"]
@@ -20,8 +20,6 @@
 [ext_resource type="Resource" uid="uid://bu1qsqk21ng14" path="res://scenes/quests/story_quests/shadown_studios/1_search/search_components/shadown_studios_stealth.dialogue" id="14_m7wpe"]
 [ext_resource type="AudioStream" uid="uid://ditov4cucfch1" path="res://scenes/quests/story_quests/shadown_studios/1_search/search_components/BackGroundM1.wav" id="20_0rxsj"]
 [ext_resource type="Script" uid="uid://dltqbrfyjdf82" path="res://scenes/quests/story_quests/shadown_studios/1_search/AdminGame.gd" id="20_4hgnf"]
-[ext_resource type="Texture2D" uid="uid://dr4leucy0b4x2" path="res://scenes/quests/story_quests/shadown_studios/Tiles_Components/mineral.png" id="21_guhpg"]
-[ext_resource type="Script" uid="uid://dluva3wfganw3" path="res://scenes/quests/story_quests/shadown_studios/1_search/search_components/Mineral.gd" id="22_23mcv"]
 
 [sub_resource type="Curve2D" id="Curve2D_qfamk"]
 _data = {
@@ -43,9 +41,9 @@ point_count = 2
 
 [sub_resource type="Curve2D" id="Curve2D_v44y2"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 380, -9, 0, 0, 0, 0, 383, -137, 0, 0, 0, 0, 505, -137, 0, 0, 0, 0, 514, -54, 0, 0, 0, 0, 639, -60, 0, 0, 0, 0, 642, 69, 0, 0, 0, 0, 754, 49, 0, 0, 0, 0, 762, -2, 0, 0, 0, 0, 948, -2, 0, 0, 0, 0, 942, 69, 0, 0, 0, 0, 676, 97, 0, 0, 0, 0, 699, 254, 0, 0, 0, 0, 306, 226, 0, 0, 0, 0, 314, 460, 0, 0, 0, 0, 126, 488, 0, 0, 0, 0, 116, 262, 0, 0, 0, 0, -12, 262, 0, 0, 0, 0, -1, 90)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 380, -9, 0, 0, 0, 0, 383, -137, 0, 0, 0, 0, 505, -137, 0, 0, 0, 0, 514, -54, 0, 0, 0, 0, 639, -60, 0, 0, 0, 0, 643, 249, 0, 0, 0, 0, 300, 249, 0, 0, 0, 0, 292, 444, 0, 0, 0, 0, 124, 457, 0, 0, 0, 0, 116, 262, 0, 0, 0, 0, -12, 262, 0, 0, 0, 0, -1, 90)
 }
-point_count = 19
+point_count = 13
 
 [sub_resource type="Curve2D" id="Curve2D_fona5"]
 _data = {
@@ -91,7 +89,7 @@ y_sort_enabled = true
 script = ExtResource("1_kqvb5")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.83033526, 0.83033514, 0.83033514, 1)
+color = Color(0.2627451, 0.24313726, 0.30980393, 1)
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -347,6 +345,13 @@ next_scene = "uid://cwl27y8uyk856"
 item = SubResource("Resource_hoh51")
 collected_dialogue = ExtResource("12_gfxjs")
 
+[node name="PointLight2D" type="PointLight2D" parent="CollectibleItem"]
+position = Vector2(-2.0000648, -1.9999809)
+scale = Vector2(0.23687933, 0.32210535)
+color = Color(0.9336116, 0.91348827, 0.39510992, 1)
+energy = 1.78
+texture = ExtResource("11_4hgnf")
+
 [node name="Cinematic" type="Node2D" parent="."]
 script = ExtResource("13_hduai")
 dialogue = ExtResource("14_m7wpe")
@@ -361,12 +366,19 @@ autoplay = true
 script = ExtResource("20_4hgnf")
 collectible_item = NodePath("../CollectibleItem")
 
-[node name="Area2D" type="Area2D" parent="."]
-position = Vector2(2334, 995)
+[node name="CollectibleItem2" parent="." instance=ExtResource("10_mdf3r")]
+position = Vector2(1518, 2956)
+item = SubResource("Resource_hoh51")
+collected_dialogue = ExtResource("12_gfxjs")
 
-[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
-modulate = Color(1, 0.3254902, 1, 1)
-position = Vector2(-1, 1)
-scale = Vector2(2.187499, 2.3750005)
-texture = ExtResource("21_guhpg")
-script = ExtResource("22_23mcv")
+[node name="PointLight2D" type="PointLight2D" parent="CollectibleItem2"]
+position = Vector2(-4.7683716e-05, -4.0000005)
+scale = Vector2(0.14555062, 0.2031579)
+color = Color(0.9336116, 0.91348827, 0.39510992, 1)
+energy = 1.78
+texture = ExtResource("11_4hgnf")
+
+[node name="CollectibleItem3" parent="." instance=ExtResource("10_mdf3r")]
+position = Vector2(2349, 996)
+item = SubResource("Resource_hoh51")
+collected_dialogue = ExtResource("12_gfxjs")
