@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=4 uid="uid://d2807rf3y6ff2"]
+[gd_scene load_steps=32 format=4 uid="uid://d2807rf3y6ff2"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_qtt13"]
 [ext_resource type="TileSet" uid="uid://denej4vv168s7" path="res://scenes/quests/story_quests/spectral_code__story/SpectralCode.tres" id="1_x2b0u"]
@@ -24,6 +24,8 @@
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="20_b3082"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="21_i1me2"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="22_bdlv4"]
+[ext_resource type="AudioStream" uid="uid://dbce7kar6c6yf" path="res://scenes/quests/story_quests/spectral_code__story/3_sequence_puzzle/Selva.wav" id="25_wb0ik"]
+[ext_resource type="Script" uid="uid://chjir3s4cutvv" path="res://scenes/quests/story_quests/spectral_code__story/3_sequence_puzzle/audio_stream_player.gd" id="26_npeeb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wb0ik"]
 texture = ExtResource("3_1et0a")
@@ -7334,5 +7336,10 @@ position_smoothing_enabled = true
 script = ExtResource("22_bdlv4")
 dialogue = ExtResource("19_7xr35")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("25_wb0ik")
+autoplay = true
+script = ExtResource("26_npeeb")
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]
