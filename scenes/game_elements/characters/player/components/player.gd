@@ -176,6 +176,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 			input_vector = Vector2.ZERO
 			return
 
+
 	var speed: float
 	if player_hook.is_throwing_or_aiming():
 		speed = aiming_speed
