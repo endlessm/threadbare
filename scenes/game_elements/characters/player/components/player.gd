@@ -24,11 +24,10 @@ enum Mode {
 
 ## Animaciones OBLIGATORIAS: deben existir en el 'sprite_frames' con el número de cuadros indicado.
 const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
-	&"idle": 10, # Animación quieto (10 cuadros)
-	&"walk": 6, # Animación caminando (6 cuadros)
-	&"attack_01": 4, # Animación de ataque 1 (4 cuadros)
-	&"attack_02": 4, # Animación de ataque 2 (4 cuadros)
-	&"defeated": 11, # Animación de derrota (11 cuadros)
+	&"idle": 10,
+	&"walk": 10,
+	&"attack_01": 10,
+	&"defeated": 10,
 }
 
 ## Animaciones OPCIONALES: si existen, deben tener el número de cuadros indicado.
