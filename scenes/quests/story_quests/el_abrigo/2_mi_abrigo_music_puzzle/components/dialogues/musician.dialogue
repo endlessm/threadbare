@@ -1,0 +1,97 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+~ start
+if puzzle.is_solved():
+	=> item_hint
+
+if not first_conversation:
+	=> hello_again
+
+set first_conversation = false
+
+Musician: Ah! Another wanderer. Welcome to the Song Sanctuary. Or what's left of it.
+StoryWeaver: What happened here?
+Musician: Songs stopped being sung. And when a song is forgotten... the world forgets itself.
+if puzzle.get_progress() >= 1:
+	Musician: Oh! Have you been playing with the stones over there?
+	StoryWeaver: I tapped them and something strange happened...
+	Musician: They can be used to create music...
+else:
+	Musician: See those stones over there? They can be used to create music...
+Musician: The songs can make wonderful things happen... make items or creatures appear, or even open portals to other regions of Threadbare.
+Musician: Those altars? They hold the memory of each song in the ashes of their fires.
+Musician: Now, if I remember correctly, there's a song that used to open the portal to the Ink Well, where songwriters found the ink to write all the songs of the world.
+Musician: Let's see if I can remember how it works...
+Musician: Try tapping the first, and second stones, then check the first altar above. If you see flames, we're on to the right melody.
+=> END
+
+~ hello_again
+Musician: Hello again, StoryWeaver. Would you like a hint?
+- Yes
+	match puzzle.get_progress()
+		when 0
+			=>< hint_melody_0
+		when 1
+			=>< hint_melody_1
+		when 2
+			=>< hint_melody_2
+		when 3
+			=>< hint_melody_3
+	do advance_hint_level()
+	=> END
+- No
+	Musician: OK then, good luck.
+	=> END
+
+~ hint_melody_0
+match get_hint_level()
+	when 0
+		Musician: Hmmm... Try tapping the first, second, and third stones in that order.
+	when 1
+		Musician: Even I'm forgetting in this torn world, let's see...
+		Musician: OK, I remember tapping the first, second, third, and fifth stones.
+	else
+		Musician: I remember tapping the first, second, third, and fifth stones.
+=> END
+
+~ hint_melody_1
+match get_hint_level()
+	when 0
+		Musician: How wonderful! We lit the first altar!
+		Musician: Look at the symbol on the second altar to see if you can work out what the next part of the melody might be.
+	when 1
+		Musician: The symbol seems to suggest that you need to move up one note, and repeat the first melody.
+	else
+		Musician: I think that altar symbol means start with the second note... then third, fourth, and sixth.
+=> END
+
+~ hint_melody_2
+match get_hint_level()
+	when 0
+		Musician: For the third part of the melody, the altar symbol suggests the next melody is played backwards.
+	when 1
+		Musician: Try playing the previous melody but in reverse.
+	else
+		Musician: OK, I think it is sixth, fourth, third, and second for this one.
+=> END
+
+~ hint_melody_3
+match get_hint_level()
+	when 0
+		Musician: Last one... you can do this! Look at the symbol and play the final melody.
+	when 1
+		Musician: Think about what you have already played... the answer is there.
+	else
+		Musician: Play the very first melody, but in reverse. Fifth, third, second, and first should do it.
+=> END
+
+~ item_hint
+Musician: You did it!... That's the magical melody... how wonderful. It's been so long since I heard it.
+Musician: You have opened the portal to the Ink Well. Let's go there to collect ink so songs and stories can be written again.
+Musician: But we must be careful, InkDrinkers dwell there!
+Musician: The melody awakened the memory of song. Collect the Memory threads before you go!
+=> END
+
+~ well_done
+StoryWeaver: Ink Well, here we come!
+=> END

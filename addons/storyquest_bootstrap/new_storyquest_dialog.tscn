@@ -38,6 +38,18 @@ theme_override_constants/margin_bottom = 10
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 layout_mode = 2
 
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="LinkButton" type="LinkButton" parent="PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Open guide with instructions."
+uri = "https://github.com/endlessm/threadbare/discussions/599"
+
 [node name="GridContainer" type="GridContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 columns = 2
@@ -97,11 +109,11 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 10
 
-[node name="CreateButton" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer"]
+[node name="CreateButton" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
@@ -114,4 +126,4 @@ text = "Create"
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/GridContainer/TitleEdit" to="." method="_on_title_edit_text_changed"]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/GridContainer/FolderEdit" to="." method="_on_folder_edit_text_changed"]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/DescriptionEdit" to="." method="_on_description_edit_text_changed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/CreateButton" to="." method="_on_create_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer2/CreateButton" to="." method="_on_create_button_pressed"]

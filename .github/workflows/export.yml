@@ -126,7 +126,7 @@ jobs:
   flatpak:
     name: Build Flatpak
     needs: build
-    #if: ${{ inputs.build_flatpak || github.event_name == 'release' || needs.build.outputs.linux-changed == 'true' }}
+    if: ${{ inputs.build_flatpak || github.event_name == 'release' || needs.build.outputs.linux-changed == 'true' }}
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
