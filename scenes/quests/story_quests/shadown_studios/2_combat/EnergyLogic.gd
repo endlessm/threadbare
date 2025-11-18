@@ -1,6 +1,5 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name FillGameLogic
 extends Node
 ## Manages the logic of the fill-matching game.
 ##
