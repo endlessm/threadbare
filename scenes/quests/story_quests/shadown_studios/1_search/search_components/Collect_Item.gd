@@ -22,7 +22,7 @@ class_name Collect_Item extends Node2D
 	set = _set_item
 
 ## Cantidad necesaria para completar la recolección
-@export var required_amount: int = 3
+@export var required_amount: int = 4
 
 @export_category("Dialogue")
 
