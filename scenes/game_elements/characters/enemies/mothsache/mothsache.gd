@@ -19,16 +19,25 @@ const ErraticWalkBehaviorScript = preload(
 const FAST_DETECT_TIME: float = 0.2
 const MAX_SPEED: float = 300
 
+## If true, displays debug information.
+@export var debug_mode: bool = false
+## Time required to fully detect the player.
 @export var time_to_detect_player: float = 1.2
+## If true, detection is almost instantaneous when the player enters the area.
 @export var instantly_detect: bool = true
 
 @export_category("Movement")
+## Speed used when chasing the player.
 @export var chase_speed: float = 250
+## Time spent in IDLE state before starting to wander.
 @export_range(1.0, 10.0, 0.5, "suffix:s") var idle_wait_time: float = 3.0
+## Duration of WANDERING state before returning home.
 @export_range(1.0, 30.0, 0.5, "suffix:s") var wandering_duration: float = 10.0
+## Deceleration rate applied after an initial burst of speed.
 @export var burst_deceleration: float = 400.0
 
 @export_category("Sounds")
+## Sound played when entering DETECTING or ALERTED states.
 @export var alert_sound_stream: AudioStream:
 	set = _set_alert_sound_stream
 
@@ -52,10 +61,16 @@ var _previous_non_detecting_state: State = State.IDLE
 @onready var behavior_timer: Timer = %BehaviorTimer
 @onready var debug_label: Label = %DebugInfo
 @onready var attack_radius: Area2D = $AttackRadius
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready
+var char_sprite_behavior: CharacterSpriteBehavior = $AnimatedSprite2D/CharacterSpriteBehavior
 @onready var _alert_sound: AudioStreamPlayer = $Sounds/AlertSound
 
 
 func _ready() -> void:
+	if is_instance_valid(debug_label):
+		debug_label.visible = debug_mode
+
 	awareness_bar.max_value = time_to_detect_player
 	awareness_bar.value = 0.0
 	awareness_bar.visible = false
@@ -70,12 +85,14 @@ func _ready() -> void:
 		behavior_timer.timeout.connect(_on_BehaviorTimer_timeout)
 	if not attack_radius.body_entered.is_connected(_on_attack_radius_body_entered):
 		attack_radius.body_entered.connect(_on_attack_radius_body_entered)
+	if not animated_sprite.animation_finished.is_connected(_on_animated_sprite_animation_finished):
+		animated_sprite.animation_finished.connect(_on_animated_sprite_animation_finished)
 
 	state = State.IDLE
 
 
 func _physics_process(delta: float) -> void:
-	if state != State.ALERTED:
+	if state != State.ALERTED and state != State.ATTACKING:
 		_update_detection(delta)
 
 	_process_movement(delta)
@@ -93,10 +110,17 @@ func _physics_process(delta: float) -> void:
 	elif state == State.RETURNING and not is_colliding:
 		_return_direction = global_position.direction_to(_initial_position)
 
+	if not debug_mode and state == State.ALERTED and is_instance_valid(_player):
+		if attack_radius.overlaps_body(_player):
+			state = State.ATTACKING
+
 	_check_if_stuck(delta)
-	_update_debug_info()
+
+	if debug_mode:
+		_update_debug_info()
 
 
+## Applies movement logic based on the current state.
 func _process_movement(delta: float) -> void:
 	var walk_speed: float = 0.0
 	if erratic_walk_behavior.get("speeds"):
@@ -130,7 +154,7 @@ func _process_movement(delta: float) -> void:
 				var direction_to_player: Vector2 = global_position.direction_to(
 					_player.global_position
 				)
-				velocity = velocity.lerp(direction_to_player * walk_speed, 0.15)
+				velocity = velocity.lerp(direction_to_player * (walk_speed * 0.5), 0.15)
 			else:
 				velocity = velocity.move_toward(Vector2.ZERO, 500.0 * delta)
 			_reached_max_speed = false
@@ -156,6 +180,7 @@ func _process_movement(delta: float) -> void:
 			_reached_max_speed = false
 
 
+## Checks if stuck in RETURNING state and forces WANDERING if so.
 func _check_if_stuck(delta: float) -> void:
 	if state == State.RETURNING:
 		var distance_moved: float = global_position.distance_to(_return_start_position)
@@ -171,6 +196,7 @@ func _check_if_stuck(delta: float) -> void:
 			_stuck_timer = 0.0
 
 
+## Updates player awareness level and manages state transitions to DETECTING and ALERTED.
 func _update_detection(delta: float) -> void:
 	var target_awareness: float = 0.0
 	var awareness_speed: float = 1.0
@@ -181,7 +207,8 @@ func _update_detection(delta: float) -> void:
 		if state == State.IDLE or state == State.WANDERING:
 			_previous_non_detecting_state = state
 
-		state = State.DETECTING
+		if state != State.ALERTED and state != State.ATTACKING:
+			state = State.DETECTING
 
 		if instantly_detect:
 			awareness_speed = time_to_detect_player / FAST_DETECT_TIME
@@ -204,16 +231,21 @@ func _update_detection(delta: float) -> void:
 		and state != State.IDLE
 		and state != State.WANDERING
 		and state != State.RETURNING
+		and state != State.ATTACKING
 	):
 		state = State.WANDERING
 
 
+## Changes the current state and performs associated transition actions.
 func _set_state(new_state: State) -> void:
 	if state == new_state:
 		return
 
 	state = new_state
 	behavior_timer.stop()
+
+	if char_sprite_behavior:
+		char_sprite_behavior.play_animations = true
 
 	match state:
 		State.IDLE:
@@ -242,6 +274,10 @@ func _set_state(new_state: State) -> void:
 			awareness_bar.tint_progress = Color.WHITE
 			_reached_max_speed = false
 
+			if char_sprite_behavior:
+				char_sprite_behavior.play_animations = false
+			animated_sprite.play("attack_anticipation")
+
 		State.ALERTED:
 			if not _alert_sound.playing:
 				_alert_sound.play()
@@ -249,6 +285,10 @@ func _set_state(new_state: State) -> void:
 			awareness_bar.tint_progress = Color.RED
 			awareness_bar.modulate.a = 1.0
 			_reached_max_speed = true
+
+			if char_sprite_behavior:
+				char_sprite_behavior.play_animations = false
+			animated_sprite.play("attack_anticipation")
 
 			if is_instance_valid(_player):
 				if _can_burst:
@@ -263,7 +303,9 @@ func _set_state(new_state: State) -> void:
 				velocity = direction_to_player * _current_chase_speed
 
 		State.ATTACKING:
-			pass
+			if char_sprite_behavior:
+				char_sprite_behavior.play_animations = false
+			animated_sprite.play("attack")
 
 
 func _set_alert_sound_stream(new_value: AudioStream) -> void:
@@ -273,6 +315,7 @@ func _set_alert_sound_stream(new_value: AudioStream) -> void:
 	_alert_sound.stream = new_value
 
 
+## Called when a body enters the detection area.
 func _on_detection_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		_player = body
@@ -281,6 +324,7 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 			pass
 
 
+## Called when a body exits the detection area.
 func _on_detection_area_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		_player = null
@@ -291,6 +335,7 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
 				state = State.RETURNING
 
 
+## Called when behavior timer times out during IDLE or WANDERING states.
 func _on_BehaviorTimer_timeout() -> void:
 	match state:
 		State.IDLE:
@@ -299,14 +344,30 @@ func _on_BehaviorTimer_timeout() -> void:
 			state = State.RETURNING
 
 
+## Called when a body enters the attack radius.
+## Ignored if debug mode is enabled.
 func _on_attack_radius_body_entered(body: Node2D) -> void:
+	if debug_mode:
+		return
+
 	if body.is_in_group("player"):
-		state = State.ATTACKING
+		if state != State.ATTACKING:
+			state = State.ATTACKING
+
 		if body.has_method("defeat"):
 			var player: Node2D = body
 			player.defeat(true)
 
 
+## Called when the attack animation finishes.
+## Returns to ALERTED state to resume chasing the player.
+func _on_animated_sprite_animation_finished() -> void:
+	if state == State.ATTACKING and animated_sprite.animation == "attack":
+		state = State.ALERTED
+
+
+## Updates the debugging information display.
+## Only called when debug mode is enabled.
 func _update_debug_info() -> void:
 	if not is_instance_valid(debug_label):
 		return
