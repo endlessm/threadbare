@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://dpv6x7h2p2i3l"]
+[gd_scene load_steps=23 format=4 uid="uid://dpv6x7h2p2i3l"]
 
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_5vumy"]
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="2_5vumy"]
@@ -17,6 +17,11 @@
 [ext_resource type="PackedScene" uid="uid://4u7dloafx55f" path="res://scenes/game_elements/props/teleporter/teleporter/teleporter.tscn" id="13_6ihfv"]
 [ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="13_udo54"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="14_nlj8l"]
+[ext_resource type="Script" uid="uid://d2m5qm4ranctd" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/switch_mode_area.gd" id="15_8mj0p"]
+[ext_resource type="PackedScene" uid="uid://mruqy04d0vl8" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/buttons_collector.tscn" id="18_udo54"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8mj0p"]
+size = Vector2(131, 87)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_drlay"]
 size = Vector2(64, 128)
@@ -320,6 +325,18 @@ position = Vector2(2572, 1209)
 position = Vector2(2680, 1224)
 sprite_frames = ExtResource("13_udo54")
 
+[node name="ButtonsCollector" parent="OnTheGround" instance=ExtResource("18_udo54")]
+position = Vector2(2451, 1246)
+
+[node name="SwitchModeArea" type="Area2D" parent="OnTheGround/ButtonsCollector"]
+position = Vector2(1, -12)
+collision_layer = 0
+script = ExtResource("15_8mj0p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/ButtonsCollector/SwitchModeArea"]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_8mj0p")
+
 [node name="TeleporterNext" parent="." instance=ExtResource("13_6ihfv")]
 position = Vector2(2759, 1281)
 next_scene = "uid://c3iv8nbog410p"
@@ -351,3 +368,6 @@ metadata/_custom_type_script = "uid://0enyu5v4ra34"
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource("14_nlj8l")]
+
+[connection signal="body_entered" from="OnTheGround/ButtonsCollector/SwitchModeArea" to="OnTheGround/ButtonsCollector/SwitchModeArea" method="_on_body_entered"]
+[connection signal="body_exited" from="OnTheGround/ButtonsCollector/SwitchModeArea" to="OnTheGround/ButtonsCollector/SwitchModeArea" method="_on_body_exited"]
