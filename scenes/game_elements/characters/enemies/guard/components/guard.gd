@@ -221,7 +221,7 @@ func _update_animation() -> void:
 		return
 	if velocity.is_zero_approx(): # Si está quieto:
 		animation_player.play(&"idle")
-	else: # Si se está moviendo:
+	else:
 		animation_player.play(&"walk")
 		
 # --- Funciones de Debug (Ayuda para desarrolladores) ---
