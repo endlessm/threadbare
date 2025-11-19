@@ -219,13 +219,11 @@ func _update_player_awareness(delta: float) -> void:
 func _update_animation() -> void:
 	if state == State.ALERTED: # Si está alertado, la animación es fija (la de alerta).
 		return
-
-	if guard_movement.velocity.is_zero_approx(): # Si está quieto:
+	if velocity.is_zero_approx(): # Si está quieto:
 		animation_player.play(&"idle")
 	else: # Si se está moviendo:
 		animation_player.play(&"walk")
-
-
+		
 # --- Funciones de Debug (Ayuda para desarrolladores) ---
 
 ## Actualiza el texto de depuración con el estado y las variables internas.
