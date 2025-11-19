@@ -198,7 +198,7 @@ func _process(delta: float) -> void:
 	velocity = velocity.move_toward(input_vector, step * delta)
 
 	move_and_slide()
-	
+
 
 func teleport_to(
 	tele_position: Vector2,
@@ -223,8 +223,8 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	if not is_node_ready():
 		await ready
 	_walk_sound.stream = walk_sound_stream
-	
-	
+
+
 ## Sets the player's [member mode] to [constant DEFEATED], if it is
 ## not already. Reloads the current scene after a short interval.
 ## [br][br]
