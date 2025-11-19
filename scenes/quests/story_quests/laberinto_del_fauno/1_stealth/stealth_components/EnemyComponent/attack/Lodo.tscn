@@ -22,9 +22,8 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group(\"player\"):
 		body.life -= 1 
 		var knockback_direcion:Vector2 = (body.global_position - global_position).normalized()
-		print(knockback_direcion)
-		body.apply_knockback(knockback_direcion, 150.0, 0.12)
-		self.queue_free()
+		body.apply_knockback(knockback_direcion, 150.0, 0.2)
+	self.queue_free()
 
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
@@ -70,6 +69,7 @@ frame = 2
 frame_progress = 0.78828865
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_mask = 17
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_xtf6e")

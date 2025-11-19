@@ -20,6 +20,7 @@ func _process(delta: float) -> void:
 			knockback = Vector2.ZERO
 		move_and_slide()
 	else:
+		self.set_collision_layer_value(1, true)
 		mode = Mode.COZY
 	if velocity.x < 0:
 		$Light.scale.x = -1
@@ -39,7 +40,8 @@ func _process(delta: float) -> void:
 		life = 3
 
 func apply_knockback(direcion:Vector2, force: float, knockback_duration:float) -> void:
-	print("1")
 	mode = Mode.DEFEATED
+	self.set_collision_layer_value(1, false)
 	knockback = direcion * force
 	knockback_timer = knockback_duration
+	
