@@ -1,0 +1,82 @@
+[gd_scene load_steps=14 format=3 uid="uid://dfac6hlbev5ct"]
+
+[ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="1_t5r0s"]
+[ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/game_elements/props/sequence_puzzle_object/sequence_puzzle_object.tscn" id="2_i1m3g"]
+[ext_resource type="SpriteFrames" uid="uid://ti5lt6d78cu4" path="res://scenes/quests/story_quests/juego_inca/3_sequence_puzzle/grupo_3_juego_inca_object.tres" id="3_vva1r"]
+[ext_resource type="AudioStream" uid="uid://cg57q82pb243w" path="res://assets/third_party/nepalese_hand_bells/handBells-c4.ogg" id="4_pfhrm"]
+[ext_resource type="AudioStream" uid="uid://b83x8h0ob5mpq" path="res://assets/third_party/nepalese_hand_bells/handBells-d4.ogg" id="5_igyo6"]
+[ext_resource type="AudioStream" uid="uid://cmtiwg2cylmts" path="res://assets/third_party/nepalese_hand_bells/handBells-e4.ogg" id="6_rsidp"]
+[ext_resource type="AudioStream" uid="uid://8k1hyi4gjae4" path="res://assets/third_party/nepalese_hand_bells/handBells-f4.ogg" id="7_a4w57"]
+[ext_resource type="AudioStream" uid="uid://6oahn2ucxxjv" path="res://assets/third_party/nepalese_hand_bells/handBells-g4.ogg" id="8_lfqkb"]
+[ext_resource type="AudioStream" uid="uid://bdboi4ndapqec" path="res://assets/third_party/nepalese_hand_bells/handBells-a4.ogg" id="9_6tjbe"]
+[ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/game_elements/props/sequence_puzzle_hint_sign/sequence_puzzle_hint_sign.tscn" id="10_5a6xf"]
+[ext_resource type="SpriteFrames" uid="uid://cy6w77wk7apod" path="res://scenes/quests/story_quests/juego_inca/3_sequence_puzzle/grupo_3_juego_inca_sign.tres" id="11_a3gyd"]
+[ext_resource type="SpriteFrames" uid="uid://k05c5rqdd1l6" path="res://scenes/quests/story_quests/juego_inca/3_sequence_puzzle/grupo_3_juego_inca_sign_2.tres" id="12_kr7lw"]
+[ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="13_cayor"]
+
+[node name="SequencePuzzle" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_t5r0s")
+metadata/_custom_type_script = "uid://c68oh8dtr21ti"
+
+[node name="Objects" type="Node2D" parent="."]
+y_sort_enabled = true
+position = Vector2(356, 453)
+
+[node name="Blue" parent="Objects" instance=ExtResource("2_i1m3g")]
+modulate = Color(0, 0.4, 0.6, 1)
+sprite_frames = ExtResource("3_vva1r")
+audio_stream = ExtResource("4_pfhrm")
+
+[node name="Pink" parent="Objects" instance=ExtResource("2_i1m3g")]
+modulate = Color(0.89, 0.2937, 0.804817, 1)
+position = Vector2(80, -8)
+sprite_frames = ExtResource("3_vva1r")
+audio_stream = ExtResource("5_igyo6")
+
+[node name="Yellow" parent="Objects" instance=ExtResource("2_i1m3g")]
+modulate = Color(0.89, 0.804817, 0.2937, 1)
+position = Vector2(160, -16)
+sprite_frames = ExtResource("3_vva1r")
+audio_stream = ExtResource("6_rsidp")
+
+[node name="Green" parent="Objects" instance=ExtResource("2_i1m3g")]
+modulate = Color(0.188235, 0.717647, 0, 1)
+position = Vector2(240, -24)
+sprite_frames = ExtResource("3_vva1r")
+audio_stream = ExtResource("7_a4w57")
+
+[node name="Purple" parent="Objects" instance=ExtResource("2_i1m3g")]
+modulate = Color(0.464066, 0.2937, 0.89, 1)
+position = Vector2(320, -32)
+sprite_frames = ExtResource("3_vva1r")
+audio_stream = ExtResource("8_lfqkb")
+
+[node name="Red" parent="Objects" instance=ExtResource("2_i1m3g")]
+modulate = Color(0.89, 0.2937, 0.2937, 1)
+position = Vector2(400, -40)
+sprite_frames = ExtResource("3_vva1r")
+audio_stream = ExtResource("9_6tjbe")
+
+[node name="Signs" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="HintSign1" parent="Signs" instance=ExtResource("10_5a6xf")]
+position = Vector2(506, 210)
+sprite_frames = ExtResource("11_a3gyd")
+
+[node name="HintSign2" parent="Signs" instance=ExtResource("10_5a6xf")]
+position = Vector2(593, 200)
+sprite_frames = ExtResource("12_kr7lw")
+
+[node name="Steps" type="Node2D" parent="."]
+
+[node name="SequencePuzzleStep1" type="Node2D" parent="Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("13_cayor")
+sequence = [NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), NodePath("../../Objects/Blue")]
+hint_sign = NodePath("../../Signs/HintSign1")
+
+[node name="SequencePuzzleStep2" type="Node2D" parent="Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("13_cayor")
+sequence = [NodePath("../../Objects/Blue"), NodePath("../../Objects/Green"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green")]
+hint_sign = NodePath("../../Signs/HintSign2")
