@@ -1,0 +1,69 @@
+[gd_scene load_steps=10 format=3 uid="uid://d0joaml4a3qmh"]
+
+[ext_resource type="Texture2D" uid="uid://bbsi8iubuwkll" path="res://scenes/quests/story_quests/juego_inca/3_sequence_puzzle/ojo.png" id="1_qvdel"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="2_o8c2d"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_chdxp"]
+atlas = ExtResource("1_qvdel")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v8qvr"]
+atlas = ExtResource("1_qvdel")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_54cn7"]
+atlas = ExtResource("1_qvdel")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ieby7"]
+atlas = ExtResource("1_qvdel")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oe5lh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_chdxp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v8qvr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_54cn7")
+}],
+"loop": true,
+"name": &"movement",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ieby7")
+}],
+"loop": true,
+"name": &"static",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4dl3n"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_733dm"]
+
+[node name="ojo" type="StaticBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_oe5lh")
+animation = &"movement"
+frame_progress = 0.7048077
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_4dl3n")
+
+[node name="InteractArea" type="Area2D" parent="."]
+collision_layer = 33
+script = ExtResource("2_o8c2d")
+interact_label_position = Vector2(0, 30)
+action = "Tap"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+shape = SubResource("CircleShape2D_733dm")
