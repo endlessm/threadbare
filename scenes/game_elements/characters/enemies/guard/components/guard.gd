@@ -86,6 +86,8 @@ var state: State = State.PATROLLING:
 
 # The player that's being detected.
 var _player: Player
+var _has_detected_player: bool = false  # <--- AGREGAR ESTA LÍNEA
+var _attack_cooldown_timer: float = 0.0  # <--- AGREGAR ESTA LÍNEA
 
 ## Area that represents the sight of the guard. If a player is in this area
 ## and there are no walls in between detected by [member sight_ray_cast], it
@@ -163,6 +165,10 @@ func _process(delta: float) -> void:
 
 	if state != State.ALERTED:
 		_update_player_awareness(delta)
+	
+	# Reducir cooldown de ataque
+	if _attack_cooldown_timer > 0:
+		_attack_cooldown_timer -= delta
 
 	_update_animation()
 
@@ -199,9 +205,12 @@ func _update_player_awareness(delta: float) -> void:
 	player_awareness.visible = player_awareness.ratio > 0.0
 	player_awareness.modulate.a = clamp(player_awareness.ratio, 0.5, 1.0)
 
-	if player_awareness.ratio >= 1.0:
+	if player_awareness.ratio >= 1.0 and state != State.ALERTED:
 		state = State.ALERTED
-		player_detected.emit(_player)
+		if not _has_detected_player and _attack_cooldown_timer <= 0:
+			_has_detected_player = true
+			_attack_cooldown_timer = 2.0  # Cooldown de 2 segundos
+			player_detected.emit(_player)
 
 
 func _update_animation() -> void:
@@ -282,7 +291,10 @@ func _set_state(new_state: State) -> void:
 			animation_player.play(&"alerted")
 			player_awareness.ratio = 1.0
 			player_awareness.tint_progress = Color.RED
-			player_awareness.visible = true
+			player_awareness.visible = true ##LUEGO PASAN 3 SEGUNDOS
+			await  get_tree().create_timer(1.5).timeout
+			if state == State.ALERTED:
+				state = State.INVESTIGATING
 		State.INVESTIGATING:
 			guard_movement.start_moving_now()
 			breadcrumbs.push_back(global_position)
@@ -456,8 +468,11 @@ func _set_alert_other_sound_stream(new_value: AudioStream) -> void:
 func _on_instant_detection_area_body_entered(body: Node2D) -> void:
 	if not body is Player:
 		return
-	state = State.ALERTED
-	player_detected.emit(body as Player)
+	if state != State.ALERTED:
+		state = State.ALERTED
+		if not _has_detected_player:
+			_has_detected_player = true
+			player_detected.emit(body as Player)
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
@@ -468,7 +483,9 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 		return
 	if player_instantly_detected_on_sight:
 		state = State.ALERTED
-		player_detected.emit(_player)
+		if not _has_detected_player:  # <--- AGREGAR ESTA LÍNEA
+			_has_detected_player = true  # <--- AGREGAR ESTA LÍNEA
+			player_detected.emit(_player)
 	else:
 		state = State.DETECTING
 
@@ -481,3 +498,6 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
 	if state == State.DETECTING:
 		guard_movement.stop_moving()
 		state = State.INVESTIGATING
+	elif state == State.ALERTED:
+		# Resetear para permitir nuevo ataque cuando vuelva a entrar
+		_has_detected_player = false

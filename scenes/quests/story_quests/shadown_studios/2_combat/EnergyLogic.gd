@@ -1,33 +1,14 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 extends Node
-## Manages the logic of the fill-matching game.
-##
-## @tutorial: https://github.com/endlessm/threadbare/discussions/1323
-##
-## This is a piece of the fill-matching mechanic.
-## [br][br]
-## Grabs the label and optional color of each [FillingBarrel] that exist in the
-## current scene, and assigns them as the allowed label/color of the [Projectile]
-## that each [ThrowingEnemy] is allowed to throw.
-## Each time a [FillingBarrel] is filled, perform the label/color assignment again
-## so [ThrowingEnemy]s only throw projectiles that can increase the amount of
-## the remaining barrels.
-## [br][br]
-## Also keep track of the completed [FillingBarrel]s and emit [signal goal_reached]
-## when [member barrels_to_win] is reached.
 
-## Emited when [member barrels_completed] reaches [member barrels_to_win].
 signal goal_reached
 
-## How many barrels to complete for winning.
 @export var barrels_to_win: int = 1
-
 @export var intro_dialogue: DialogueResource
 
-## Counter for the completed barrels.
 var barrels_completed: int = 0
-
+var _can_take_damage: bool = true  # Controla si el jugador puede recibir daño
 
 func start() -> void:
 	var player: Player = get_tree().get_first_node_in_group("player")
@@ -42,7 +23,6 @@ func start() -> void:
 	for guard: Guard in get_tree().get_nodes_in_group(&"guard_enemy"):
 		guard.player_detected.connect(self._on_player_detected)
 
-
 func _ready() -> void:
 	var filling_barrels: Array = get_tree().get_nodes_in_group("filling_barrels")
 	barrels_to_win = clampi(barrels_to_win, 0, filling_barrels.size())
@@ -51,7 +31,6 @@ func _ready() -> void:
 		DialogueManager.show_dialogue_balloon(intro_dialogue, "", [self, player])
 		await DialogueManager.dialogue_ended
 	start()
-
 
 func _update_allowed_colors() -> void:
 	var allowed_labels: Array[String] = []
@@ -68,7 +47,6 @@ func _update_allowed_colors() -> void:
 		enemy.allowed_labels = allowed_labels
 		enemy.color_per_label = color_per_label
 
-
 func _on_barrel_completed() -> void:
 	barrels_completed += 1
 	_update_allowed_colors()
@@ -82,6 +60,32 @@ func _on_barrel_completed() -> void:
 	goal_reached.emit()
 
 func _on_player_detected(player: Player) -> void:
-	player.mode = Player.Mode.DEFEATED
+	print("=== FUNCIÓN LLAMADA ===")
+	
+	# Desconectar TODAS las señales de los guardias temporalmente
+	for guard: Guard in get_tree().get_nodes_in_group(&"guard_enemy"):
+		if guard.player_detected.is_connected(self._on_player_detected):
+			guard.player_detected.disconnect(self._on_player_detected)
+			print("Señal desconectada de ", guard.name)
+	
+	# Aplicar daño
+	player.life -= 50
+	print("¡Jugador detectado! Vida restante: ", player.life)
+	
+	if player.life <= 0:
+		player.mode = Player.Mode.DEFEATED
+		print("Jugador muerto, reiniciando nivel...")
+		await get_tree().create_timer(2.0).timeout
+		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+		return
+	
+	print("Esperando 2 segundos...")
 	await get_tree().create_timer(2.0).timeout
-	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+	print("Reconectando señales...")
+	
+	for guard: Guard in get_tree().get_nodes_in_group(&"guard_enemy"):
+		if not guard.player_detected.is_connected(self._on_player_detected):
+			guard.player_detected.connect(self._on_player_detected)
+			print("Señal reconectada a ", guard.name)
+	
+	print("=== FUNCIÓN TERMINADA ===")

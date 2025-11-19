@@ -71,6 +71,14 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 ## Sound that plays for each step during the walk animation
 @export var walk_sound_stream: AudioStream = preload("uid://cx6jv2cflrmqu"):
 	set = _set_walk_sound_stream
+##INICIANDO EL CODIGO PARA BARRA DE VIDA
+var life: float = 100:
+	set(new_value):
+		life = clamp(new_value, 0, 100)
+		if health_bar:
+			health_bar.value = life
+		
+##TERMINANDO EL CODIGO DE BARRA DE VIDA
 
 var input_vector: Vector2
 
@@ -79,6 +87,7 @@ var input_vector: Vector2
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
+@onready var health_bar: TextureProgressBar = $TextureProgressBar  # <--- BARRA DE VIDA
 
 
 func _set_mode(new_mode: Mode) -> void:
@@ -155,7 +164,10 @@ func _get_configuration_warnings() -> PackedStringArray:
 func _ready() -> void:
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
-
+	##iniciar barradevida
+	if health_bar:
+		health_bar.max_value = 100
+		health_bar.value = life
 
 func _unhandled_input(_event: InputEvent) -> void:
 	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
