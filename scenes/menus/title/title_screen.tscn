@@ -1,0 +1,71 @@
+[gd_scene load_steps=10 format=3 uid="uid://stdqc6ttomff"]
+
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_kj1pq"]
+[ext_resource type="Script" uid="uid://c6nc0jka32ow2" path="res://scenes/menus/title/components/title_screen.gd" id="2_0vy2n"]
+[ext_resource type="Texture2D" uid="uid://bvlx57seuur65" path="res://assets/first_party/intro/background.png" id="3_2ijyo"]
+[ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="4_c6kyi"]
+[ext_resource type="PackedScene" uid="uid://wgmdsj1sbmja" path="res://scenes/menus/title/components/main_menu.tscn" id="5_0vy2n"]
+[ext_resource type="AudioStream" uid="uid://kc657macgib4" path="res://assets/first_party/music/Threadbare_Main_Loud.ogg" id="5_5uobg"]
+[ext_resource type="PackedScene" uid="uid://6s70kur03rjk" path="res://scenes/menus/title/components/credits.tscn" id="6_2ijyo"]
+[ext_resource type="PackedScene" uid="uid://dkeb0yjgcfi86" path="res://scenes/menus/options/options.tscn" id="8_5uobg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2ijyo"]
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_kj1pq")
+script = ExtResource("2_0vy2n")
+intro_scene = "uid://dow5vc7yb5k2c"
+
+[node name="BackgroundMusic" parent="." instance=ExtResource("4_c6kyi")]
+stream = ExtResource("5_5uobg")
+
+[node name="FabricBackground" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_2ijyo")
+expand_mode = 3
+stretch_mode = 6
+
+[node name="Pages" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_2ijyo")
+current_tab = 0
+tabs_visible = false
+
+[node name="MainMenu" parent="Pages" instance=ExtResource("5_0vy2n")]
+unique_name_in_owner = true
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Options" parent="Pages" instance=ExtResource("8_5uobg")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Credits" parent="Pages" instance=ExtResource("6_2ijyo")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[connection signal="continue_pressed" from="Pages/MainMenu" to="." method="_on_main_menu_continue_pressed"]
+[connection signal="credits_pressed" from="Pages/MainMenu" to="." method="_on_main_menu_credits_pressed"]
+[connection signal="options_pressed" from="Pages/MainMenu" to="." method="_on_main_menu_options_pressed"]
+[connection signal="start_pressed" from="Pages/MainMenu" to="." method="_on_start_pressed"]
+[connection signal="back" from="Pages/Options" to="." method="_on_options_back"]
+[connection signal="back" from="Pages/Credits" to="." method="_on_credits_back"]

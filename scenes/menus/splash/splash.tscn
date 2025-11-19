@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=3 uid="uid://huuo8mnwsphv"]
+
+[ext_resource type="Script" uid="uid://dggoe706nwbky" path="res://scenes/menus/splash/components/splash.gd" id="1_a6n0j"]
+[ext_resource type="Texture2D" uid="uid://bay28tg4l1p1h" path="res://assets/third_party/endless/logo.png" id="2_a6n0j"]
+[ext_resource type="Texture2D" uid="uid://bvlx57seuur65" path="res://assets/first_party/intro/background.png" id="2_cy8yo"]
+[ext_resource type="Script" uid="uid://bcc0gc6fkr2m4" path="res://scenes/menus/splash/components/logo_stitcher.gd" id="3_m61hw"]
+[ext_resource type="AudioStream" uid="uid://dwkbxxoh57hht" path="res://assets/third_party/sewing-machine/746897__kzarkses__machantq_sewing-machine-running_cp_none_mke600.ogg" id="4_xtuk2"]
+
+[sub_resource type="Curve" id="Curve_7hvf5"]
+bake_resolution = 400
+_data = [Vector2(0.0138504, 0.38666), 0.0, 2.27233, 0, 0, Vector2(0.0886427, 0.464208), 2.08228, 2.08228, 0, 0, Vector2(0.180055, 0.689805), 0.0, 0.0, 0, 0, Vector2(0.429363, 0.964751), -0.299413, -0.299413, 0, 0, Vector2(0.592798, 0.908351), -2.39958, -2.39958, 0, 0, Vector2(0.759003, 0.647505), -1.69667, -1.69667, 0, 0, Vector2(0.858726, 0.436009), 0.0, 0.0, 0, 0, Vector2(1, 0.287961), -3.70184, 0.0, 0, 0]
+point_count = 8
+
+[sub_resource type="Curve2D" id="Curve2D_eqfq0"]
+bake_interval = 1.0
+_data = {
+"points": PackedVector2Array(19.0833, 19.944, -19.0833, -19.944, 781, 527, 0, 0, 0, 0, 683, 480, 30.5785, -5.78512, -30.5785, 5.78512, 598, 476, 15.4545, -11.8182, -15.4545, 11.8182, 524, 497, 12.2988, -23.3254, -12.2988, 23.3254, 487, 546, -1.69856, -20.9743, 1.69856, 20.9743, 477, 605, -8.21053, -11.2895, 8.21053, 11.2895, 503, 660, -21.0395, -8.21053, 21.0395, 8.21053, 546, 691, 0, 0, 0, 0, 628, 700, -22.5394, 11.6112, 22.5394, -11.6112, 703, 679, 0, 0, 0, 0, 782, 627, -51.2397, 42.9752, 51.2397, -42.9752, 912, 525, 0, 0, 0, 0, 1019, 450, 0, 0, 0, 0, 1107, 406, -39.8129, 4.06393, 39.8129, -4.06393, 1207, 384, -27.0951, -7.1853, 27.0951, 7.1853, 1304, 397, 0, 0, 0, 0, 1370, 437, 0, 0, 0, 0, 1398, 467, -5.78512, -23.9669, 5.78512, 23.9669, 1430, 523, 7.51315, -33.4677, -7.51315, 33.4677, 1429, 601, 8.19616, -12.2942, -8.19616, 12.2942, 1393, 662, 24.2724, -7.33816, -24.2724, 7.33816, 1314, 709, 0, 0, 0, 0, 1229, 721, 0, 0, 0, 0, 1130, 709, 0, 0, 0, 0, 1062, 685, 0, 0, 0, 0, 1009, 656, 9.81268, 7.63421, -9.81268, -7.63421, 937, 612)
+}
+point_count = 27
+
+[node name="Splash" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_a6n0j")
+next_scene = "uid://stdqc6ttomff"
+
+[node name="FabricBackground" type="TextureRect" parent="."]
+modulate = Color(0.345098, 0.215686, 0.929412, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_cy8yo")
+stretch_mode = 6
+
+[node name="LogoReference" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -512.0
+offset_top = -203.0
+offset_right = 512.0
+offset_bottom = 203.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_a6n0j")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LogoStitcher" type="Control" parent="AspectRatioContainer" node_paths=PackedStringArray("path", "audio")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("3_m61hw")
+path = NodePath("Path2D")
+width_curve = SubResource("Curve_7hvf5")
+audio = NodePath("../../AudioStreamPlayer")
+
+[node name="Path2D" type="Path2D" parent="AspectRatioContainer/LogoStitcher"]
+curve = SubResource("Curve2D_eqfq0")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_xtuk2")
+volume_db = -6.0
+pitch_scale = 2.0
+autoplay = true
+bus = &"SFX"
+
+[node name="SceneSwitchTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 5.0
+one_shot = true
