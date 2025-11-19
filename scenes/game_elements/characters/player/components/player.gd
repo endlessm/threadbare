@@ -27,6 +27,7 @@ const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
 	&"idle": 10,
 	&"walk": 10,
 	&"attack_01": 10,
+	&"attack_02": 10,
 	&"defeated": 10,
 }
 
