@@ -324,8 +324,15 @@ texture = ExtResource("5_j4wmw")
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("2_cmyqc")]
-position = Vector2(566, 327)
+position = Vector2(564, 297)
 sprite_frames = ExtResource("3_4jij4")
+
+[node name="PlayerSprite" parent="OnTheGround/Player" index="2"]
+scale = Vector2(2.5, 2.5)
+sprite_frames = ExtResource("3_4jij4")
+
+[node name="CollisionShape2D" parent="OnTheGround/Player" index="3"]
+position = Vector2(-5, 37)
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
 position = Vector2(-383, -371)
@@ -441,7 +448,6 @@ text = "Sólo quien devuelve la mirada, ve la salida."
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource("21_8a0p7")]
-visible = false
 
 [node name="Cinematic" type="Node2D" parent="."]
 script = ExtResource("22_s6pej")
@@ -452,3 +458,5 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 color = Color(0.43853313, 0.44031382, 0.6039477, 1)
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]
+
+[editable path="OnTheGround/Player"]
