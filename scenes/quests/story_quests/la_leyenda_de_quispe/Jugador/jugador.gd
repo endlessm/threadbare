@@ -1,13 +1,18 @@
 extends CharacterBody2D
 
 @export var speed: float = 200.0
+# --- NUEVA VARIABLE: Velocidad al correr ---
+@export var run_speed: float = 350.0 
+
 @export var max_health: int = 150
 @export var invulnerability_time: float = 1.0
 @export var bullet_scene: PackedScene
 @export var shoot_cooldown: float = 0.4 
 @export var charge_threshold: float = 0.5
 @export var charged_shot_scale: float = 2.0
+
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+
 var is_charging: bool = false
 var charge_timer: float = 0.0
 var current_health: int = 0
@@ -37,19 +42,25 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
+		
 	var dir: Vector2 = Vector2.ZERO
 	dir.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	dir.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
+	
 	if dir != Vector2.ZERO:
 		last_direction = dir.normalized()
 		if dir.x != 0:
 			animated_sprite.flip_h = (dir.x < 0)
-	velocity = dir.normalized() * speed
+	
+	# --- LÓGICA DE CORRER AÑADIDA ---
+	var current_speed: float = speed
+	if Input.is_action_pressed("running") and dir != Vector2.ZERO:
+		current_speed = run_speed
+	velocity = dir.normalized() * current_speed
 	move_and_slide()
 	if Input.is_action_just_pressed("interact") and can_shoot:
 		is_charging = true
 		charge_timer = 0.0
-
 	if is_charging:
 		charge_timer += delta
 		if Input.is_action_just_released("interact"):
@@ -64,8 +75,12 @@ func _physics_process(delta: float) -> void:
 		if animated_sprite.animation != "Iddle":
 			animated_sprite.play("Iddle")
 	else:
-		if animated_sprite.animation != "Walk":
-			animated_sprite.play("Walk")
+		if Input.is_action_pressed("running") and animated_sprite.sprite_frames.has_animation("Run"):
+			if animated_sprite.animation != "Run":
+				animated_sprite.play("Run")
+		else:
+			if animated_sprite.animation != "Walk":
+				animated_sprite.play("Walk")
 
 func shoot(is_charged: bool) -> void:
 	if bullet_scene == null:
