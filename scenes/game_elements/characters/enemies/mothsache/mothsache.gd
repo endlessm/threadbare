@@ -13,9 +13,6 @@ enum State {
 	ATTACKING,
 }
 
-const ErraticWalkBehaviorScript = preload(
-	"res://scenes/game_logic/walk_behaviors/erratic_walk_behavior.gd"
-)
 const FAST_DETECT_TIME: float = 0.2
 const MAX_SPEED: float = 300
 
