@@ -1,4 +1,5 @@
-# CinematicController.gd - Cinemática completa + movimiento personajes + hole en TileMap + transición a minijuego/escena
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 extends Node2D
 
 # --- Recursos / escenas ---

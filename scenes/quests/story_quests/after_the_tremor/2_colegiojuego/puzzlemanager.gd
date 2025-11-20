@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 extends Node
 
 @export var zone_nodes: Array[NodePath] = []        # Paths a cada AllHooked (3 elementos)
