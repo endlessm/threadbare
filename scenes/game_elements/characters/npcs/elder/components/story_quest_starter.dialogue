@@ -9,8 +9,30 @@ if chosen_quest == null:
 	% StoryQuest Elder: I hope to see you again. We really need you!
 	% StoryQuest Elder: The people of Threadbare are counting on you. I hope you change your mind!
 elif chosen_quest.resource_path in GameState.completed_quests:
-	% StoryQuest Elder: You've done this before, mate.
-	% StoryQuest Elder: Yawn, too easy for you.
+	# Custom dialogues for completed quests
+	if chosen_quest.resource_path == "res://scenes/quests/story_quests/el_juguete_perdido/quest.tres":
+		StoryQuest Elder: Has rescatado a Apolo antes… y gracias a ti volvió sano y salvo.
+		StoryQuest Elder: Su espíritu es travieso, pero tu valentía lo mantiene a salvo de la oscuridad del bosque.
+		StoryQuest Elder: Si vuelves a seguir sus pasos, recuerda: incluso las sombras respetan tu determinación.
+
+	elif chosen_quest.resource_path == "res://scenes/quests/story_quests/shjourney/quest.tres":
+		StoryQuest Elder: Ya has enfrentado al bosque que devora recuerdos… pocos regresan de él.
+		StoryQuest Elder: Tim logró avanzar gracias a tu guía; su memoria es más fuerte ahora.
+		StoryQuest Elder: Si vuelves a internarte allí, que tus pasos no vacilen. El bosque recuerda… y te respeta
+
+	elif chosen_quest.resource_path == "res://scenes/quests/story_quests/stella/quest.tres":
+		StoryQuest Elder: Stella sigue mirando al cielo con esperanza gracias a ti.
+		StoryQuest Elder: La estrella que ayudaste a recuperar brilla cada noche… un faro nacido de tu bondad.
+		StoryQuest Elder: Si vuelves a acompañarla, recuerda que incluso la luz más pequeña puede perderse sin guía.
+
+	elif chosen_quest.resource_path == "res://scenes/quests/story_quests/verso/quest.tres":
+		StoryQuest Elder: Tu apoyo le devolvió la confianza a Nora cuando más lo necesitaba.
+		StoryQuest Elder: Ese libro ya no la engaña… porque tú le enseñaste a no temerle.
+		StoryQuest Elder: Si decides volver a ayudarla, recuerda: el conocimiento florece donde la duda se disipa.
+
+	else:
+		% StoryQuest Elder: Well done, traveler. Another story is restored.
+		% StoryQuest Elder: Hope grows stronger with every thread you weave.
 else:
 	StoryQuest Elder: We believe in you, StoryWeaver. Become the hero, and see where the path leads.
 => END

@@ -9,8 +9,21 @@ if chosen_quest == null:
 	% LoreQuest Elder: I hope to see you again. We really need you!
 	% LoreQuest Elder: The people of Threadbare are counting on you. I hope you change your mind!
 elif chosen_quest.resource_path in GameState.completed_quests:
-	% LoreQuest Elder: You've done this before, mate.
-	% LoreQuest Elder: Yawn, too easy for you.
+	# Custom dialogues for completed quests
+	if chosen_quest.resource_path == "res://scenes/quests/lore_quests/quest_001/quest.tres":
+		LoreQuest Elder: Ah, the Song Sanctuary sings once more... You’ve restored its melody to the world.
+		LoreQuest Elder: The stones hum with life again. Music returns to Threadbare thanks to you, StoryWeaver.
+
+	elif chosen_quest.resource_path == "res://scenes/quests/lore_quests/quest_002/quest.tres":
+		LoreQuest Elder: The Void trembles now, pushed back by your courage.
+
+	elif chosen_quest.resource_path == "res://scenes/quests/lore_quests/quest_003/quest.tres":
+		LoreQuest Elder: You’ve gathered both Imagination and Spirit... the twin flames of creation.
+		LoreQuest Elder: The Loom will remember your deeds, StoryWeaver.
+
+	else:
+		% LoreQuest Elder: Well done, traveler. Another story is restored.
+		% LoreQuest Elder: Hope grows stronger with every thread you weave.
 else:
 	LoreQuest Elder: We believe in you, StoryWeaver.
 => END
