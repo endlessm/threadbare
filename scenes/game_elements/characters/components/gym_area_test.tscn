@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=4 uid="uid://ikgvi75j5dls"]
+[gd_scene load_steps=52 format=4 uid="uid://ikgvi75j5dls"]
 
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="1_0nnh3"]
 [ext_resource type="TileSet" uid="uid://yducoif83sia" path="res://tiles/foam.tres" id="2_phf8p"]
@@ -28,6 +28,7 @@
 [ext_resource type="Script" uid="uid://id28maao3vdy" path="res://scenes/game_logic/walk_behaviors/path_walk_behavior.gd" id="18_wq1h3"]
 [ext_resource type="SpriteFrames" uid="uid://dnq8cw1cio2we" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_green.tres" id="20_jdub8"]
 [ext_resource type="Script" uid="uid://r1kriwyodjlt" path="res://scenes/game_logic/walk_behaviors/navigation_follow_walk_behavior.gd" id="21_jdub8"]
+[ext_resource type="PackedScene" uid="uid://dy8ohrl7j24qy" path="res://scenes/game_elements/characters/enemies/mothsache/Mothsache.tscn" id="29_phf8p"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_oojqe"]
 vertices = PackedVector2Array(2612.09, 882.242, 1372.27, 799.719, 1388.82, 670.781, 2393.78, 645.758, 2512.78, -340, 2413.06, -200.32, 1470.91, -340, 1455.69, -202.648, -91.9688, -367.812, 1185.81, -149, 214.844, -149, 1448.35, 0.960938, 1188.65, 0.03125, -89.0234, 939, 227.094, 641.859, 380.844, 893.93, 378.094, 727.859)
@@ -620,6 +621,10 @@ agent = NodePath("../NavigationAgent2D")
 character = NodePath("..")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="Mothsache" parent="." instance=ExtResource("29_phf8p")]
+position = Vector2(1064, 752)
+debug_mode = true
 
 [connection signal="body_entered" from="OnTheGround/CharacterBody2D/Area2D" to="OnTheGround/CharacterBody2D/Area2D" method="_on_body_entered"]
 [connection signal="timeout" from="OnTheGround/CharacterBody2D2/Timer" to="OnTheGround/CharacterBody2D2/ThrowProjectileBehavior" method="throw"]
