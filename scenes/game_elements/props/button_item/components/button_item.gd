@@ -30,7 +30,7 @@ func _ready() -> void:
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	# TODO: This is not added to an inventory or anything, is just cosmetic.
-	if area.owner.is_in_group("player"):
+	if area.owner.is_in_group(&"player"):
 		collected.emit()
 		
 		# Activate player particles if you have the method
