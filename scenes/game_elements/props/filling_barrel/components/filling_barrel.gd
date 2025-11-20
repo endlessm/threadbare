@@ -28,7 +28,7 @@ const FILLING_NAME_ANIMATION: StringName = &"filling"
 
 ## The amount of times the barrel needs to be filled.[br]
 ## When the barrel is filled that many times, it emits [signal completed].
-@export var needed_amount: int = 3
+@export var needed_amount: int = 4
 
 ## Projectiles with this label fill the barrel.
 @export var label: String = "???"
