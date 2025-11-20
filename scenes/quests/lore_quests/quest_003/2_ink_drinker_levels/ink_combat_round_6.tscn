@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://biwvr6vxj6ykk"]
+[gd_scene load_steps=34 format=4 uid="uid://biwvr6vxj6ykk"]
 
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_7y6db"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="1_16xyg"]
@@ -29,6 +29,7 @@
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="27_4co4a"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="27_7y6db"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="28_ihx08"]
+[ext_resource type="PackedScene" uid="uid://dy8ohrl7j24qy" path="res://scenes/game_elements/characters/enemies/mothsache/Mothsache.tscn" id="30_4co4a"]
 
 [sub_resource type="Animation" id="Animation_k5uk8"]
 resource_name = "goal_completed"
@@ -252,6 +253,9 @@ editor_draw_limits = true
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource("27_7y6db")]
+
+[node name="Mothsache" parent="." instance=ExtResource("30_4co4a")]
+position = Vector2(800, 362)
 
 [connection signal="goal_reached" from="FillGameLogic" to="BackgroundMusic" method="switch_to_clip" binds= [&"cozy"]]
 [connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]
