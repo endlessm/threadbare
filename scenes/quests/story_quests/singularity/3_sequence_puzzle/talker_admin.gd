@@ -21,12 +21,13 @@ func _ready() -> void:
 	talk_behavior.dialogue = dialogue
 	interact_area.interaction_started.connect(_on_interaction_started)
 	interact_area.interaction_ended.connect(_on_interaction_ended)
+	look_at_side = Enums.LookAtSide.RIGHT
 
 
 func _on_interaction_started(_player: Player, from_right: bool) -> void:
 	_previous_look_at_side = look_at_side
-	if look_at_side != Enums.LookAtSide.UNSPECIFIED:
-		look_at_side = Enums.LookAtSide.RIGHT if from_right else Enums.LookAtSide.LEFT
+	#if look_at_side != Enums.LookAtSide.UNSPECIFIED:
+		#look_at_side = Enums.LookAtSide.RIGHT if from_right else Enums.LookAtSide.LEFT
 
 
 func _on_interaction_ended() -> void:
