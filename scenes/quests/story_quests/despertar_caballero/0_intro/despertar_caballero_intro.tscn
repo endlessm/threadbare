@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=4 uid="uid://6gif8usay3uw"]
+[gd_scene load_steps=13 format=4 uid="uid://6gif8usay3uw"]
 
 [ext_resource type="TileSet" uid="uid://dqluison67wnv" path="res://scenes/quests/story_quests/despertar_caballero/tiles/despertar_caballero_exterior_floors.tres" id="1_q7ehv"]
 [ext_resource type="Texture2D" uid="uid://bet2fe7kj2h51" path="res://scenes/quests/story_quests/despertar_caballero/0_intro/intro_components/despertar_caballero_intro_image.png" id="2_0iqen"]
+[ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="3_6w6nc"]
 [ext_resource type="SpriteFrames" uid="uid://ig2vrlg4cbrr" path="res://scenes/quests/story_quests/despertar_caballero/player_components/despertar_caballero_player.tres" id="3_hdoij"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_6w6nc"]
+[ext_resource type="SpriteFrames" uid="uid://djwymcffy83" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_red.tres" id="4_w6q5v"]
 [ext_resource type="Resource" uid="uid://ddgo55s6bv3yr" path="res://scenes/quests/story_quests/despertar_caballero/0_intro/intro_components/despertar_caballero_intro.dialogue" id="5_w6q5v"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_5sdpw"]
 
@@ -114,6 +116,23 @@ texture = ExtResource("2_0iqen")
 tile_map_data = PackedByteArray("AAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAAMAAUABgABAAMAAAAKAAUABgAAAAIAAAAKAAMABgADAAEAAAAKAAIABgADAAEAAAAKAAQABgADAAEAAAALAAUABgABAAMAAAANAAUABgACAAIAAAANAAQABgADAAEAAAANAAMABgADAAEAAAANAAIABgADAAEAAAANAAEABgACAAAAAAAMAAEABgABAAMAAAALAAEABgABAAMAAAAKAAEABgAAAAAAAAAJAAMAAQABAAEAAAAJAAQAAQABAAEAAAAJAAIAAQABAAEAAAAJAAEAAQABAAEAAAALAAAAAQABAAEAAAAMAAAAAQABAAEAAAAOAAEAAQABAAEAAAAOAAIAAQABAAEAAAANAAAAAQABAAEAAAAOAAMAAQABAAEAAAAOAAQAAQABAAEAAAANAAYAAQABAAEAAAAOAAYAAQABAAEAAAAOAAUAAQABAAEAAAAMAAYAAQABAAEAAAALAAYAAQABAAEAAAAKAAYAAQABAAEAAAAJAAYAAQABAAEAAAAJAAUAAQABAAEAAAAIAAQAAQABAAEAAAAIAAMAAQABAAEAAAA=")
 tile_set = ExtResource("1_q7ehv")
 
+[node name="Trees" type="Node2D" parent="TileMapLayers"]
+
+[node name="Tree" parent="TileMapLayers/Trees" instance=ExtResource("3_6w6nc")]
+position = Vector2(342.00003, 313)
+scale = Vector2(1.2198, 1.16248)
+sprite_frames = ExtResource("4_w6q5v")
+
+[node name="Tree2" parent="TileMapLayers/Trees" instance=ExtResource("3_6w6nc")]
+position = Vector2(553, 412)
+scale = Vector2(1.4879122, 1.3513597)
+sprite_frames = ExtResource("4_w6q5v")
+
+[node name="Tree3" parent="TileMapLayers/Trees" instance=ExtResource("3_6w6nc")]
+position = Vector2(130, 408)
+scale = Vector2(1.487912, 1.3513597)
+sprite_frames = ExtResource("4_w6q5v")
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(153, 366)
 zoom = Vector2(1.333, 1.333)
@@ -150,4 +169,7 @@ next_scene = "uid://cij1ba4vshwhr"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." instance=ExtResource("6_5sdpw")]
-position = Vector2(76, 414)
+position = Vector2(47, 418)
+
+[node name="Rock" parent="Rock" instance=ExtResource("6_5sdpw")]
+position = Vector2(869, -2)
