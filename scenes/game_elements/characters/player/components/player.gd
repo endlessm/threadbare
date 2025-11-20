@@ -245,6 +245,4 @@ func defeat(falling: bool = false) -> void:
 
 ##Visual activation of brightness when picking up a button
 func activate_shine_particles() -> void:
-	shine_particles.one_shot = true
-	shine_particles.emitting = true
 	shine_particles.restart()
