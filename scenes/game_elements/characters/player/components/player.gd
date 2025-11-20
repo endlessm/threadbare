@@ -79,7 +79,7 @@ var input_vector: Vector2
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
-
+@onready var shine_particles: GPUParticles2D = $PlayerShineParticles
 
 func _set_mode(new_mode: Mode) -> void:
 	var previous_mode: Mode = mode
@@ -242,3 +242,9 @@ func defeat(falling: bool = false) -> void:
 
 	await get_tree().create_timer(2.0).timeout
 	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+
+##Visual activation of brightness when picking up a button
+func activate_shine_particles() -> void:
+	shine_particles.one_shot = true
+	shine_particles.emitting = true
+	shine_particles.restart()
