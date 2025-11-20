@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: The Threadbare Authors
+// SPDX-License-Identifier: MPL-2.0
+
 shader_type canvas_item;
 
 uniform bool enable_base_dark = true;
