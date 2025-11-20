@@ -5,14 +5,6 @@
 @tool
 class_name ThrowingEnemyelementals
 extends CharacterBody2D
-## Enemy that throws [Projectile]s to the player.
-##
-## @tutorial: https://github.com/endlessm/threadbare/discussions/1323
-##
-## This is a piece of the fill-matching mechanic.
-## [br][br]
-## When throwing, the label/color of the projectile is picked from
-## [member allowed_labels] and [member color_per_label].
 
 enum State { IDLE, WALKING, ATTACKING, DEFEATED }
 
@@ -21,112 +13,75 @@ const REQUIRED_ANIMATIONS: Array[StringName] = [
 ]
 
 const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://deosvk5k4su5f")
-
-## When targetting the next walking position, skip this slice of the circle.
 const WALK_TARGET_SKIP_ANGLE: float = PI / 4.
-
-## When targetting the next walking position, skip an inner circle. The radius of the inner
-## circle is this proportion of the [member walking_range].
 const WALK_TARGET_SKIP_RANGE: float = 0.25
 
-## The projectile scene to instantiate when spawning a projectile.
 @export var projectile_scene: PackedScene = preload("res://scenes/quests/story_quests/elementals/1_room/stealth_components/projectile_elementals.tscn")
-
-## The period of time between throwing projectiles.
-## Note: Currently this is limited by the length of the AnimationPlayer animation "attack".
 @export_range(0.1, 10., 0.1, "or_greater", "suffix:s") var throwing_period: float = 5.0
-
-## Use this to have 2 enemies throwing projectiles alternatively and at the same pace
-## (same [member throwing_period]).
 @export var odd_shoot: bool = false
-
-## Whether the enemy starts attacking or walking automatically. If false, make sure
-## to call [method start].
 @export var autostart: bool = false
 
 @export_group("Visuals")
-
-## The SpriteFrames must have specific animations.
-## See [member REQUIRED_ANIMATIONS].
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
 
 @export_group("Sounds")
-
-## Sound that plays while this enemy is not attacking
 @export var idle_sound_stream: AudioStream:
 	set = _set_idle_sound_stream
-## Sound that plays when this enemy starts its attack.
 @export var attack_sound_stream: AudioStream:
 	set = _set_attack_sound_stream
 
 @export_group("Projectile", "projectile")
-
-## The projectile will be instantiated at this distance from the [member projectile_marker] node,
-## in the direction of the player.
 @export_range(0., 100., 1., "or_greater", "suffix:m") var distance: float = 20.0
-
-## The speed of the projectile initial impulse and the projectile bouncing impulse.
 @export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s")
 var projectile_speed: float = 30.0
-
-## The life span of the projectile.
 @export_range(0., 10., 0.1, "or_greater", "suffix:s") var projectile_duration: float = 5.0
-
-## If true, the projectile will constantly adjust itself to target the player.
 @export var projectile_follows_player: bool = false
-
-## The projectile SpriteFrames. It should have a looping animation in autoplay.
 @export var projectile_sprite_frames: SpriteFrames = preload("uid://b00dcfe4dtvkh")
-
-## Sound that plays when the projectile hits something.
 @export var projectile_hit_sound_stream: AudioStream
-
-## A small visual effect used when the projectile collides with things.
 @export var projectile_small_fx_scene: PackedScene
-
-## A big visual effect used when the projectile explodes.
 @export var projectile_big_fx_scene: PackedScene
-
-## A scene with a trail particles visual effect. It should contain a [class GPUParticles2D] as
-## root node. When the projectile gets hit, the [member GPUParticles2D.amount_ratio] is set to 1.
 @export var projectile_trail_fx_scene: PackedScene
 
 @export_group("Walking", "walking")
-
-## If this is not zero, the enemy walks this amount of time between being idle and
-## throwing. If it is bigger than [member throwing_period], the enemy walks all the
-## time.
 @export_range(0., 10., 0.1, "or_greater", "suffix:s") var walking_time: float = 0.0:
 	set(value):
 		walking_time = value
 		queue_redraw()
-
-## The range that the enemy is allowed to walk. This is the radius of a circle that
-## has the initial position as center. The range is visible in the editor when
-## [member walking_time] is not zero.
 @export_range(0., 500., 1., "or_greater", "suffix:m") var walking_range: float = 300.0:
 	set(value):
 		walking_range = value
 		queue_redraw()
-
-## The moving speed of the enemy when walking.
 @export_range(20, 300, 5, "or_greater", "or_less", "suffix:m/s") var walking_speed: float = 50.0
 
-
-##elementals vida enemigo
 # --- SISTEMA DE VIDA DEL ENEMIGO ---
-@export var max_health: int = 3 ##cantidad de vida
+@export var max_health: int = 3 
 var health: int
+var tween: Tween
 
-
-
+# --- FUNCIÓN CORREGIDA: USA ANIMATEDSPRITE2D ---
 func take_damage(amount: int):
 	health -= amount
 	print("[ThrowingEnemy] Recibí daño. Vida restante:", health)
+	
+	# Ejecutamos el parpadeo en el sprite
+	flash_red()
+	
+	# NOTA: Quitamos 'animation_player.play("got hit")' para evitar errores
+	# si esa animación no existe en el AnimationPlayer.
 
 	if health <= 0:
 		die()
+
+func flash_red():
+	if tween:
+		tween.kill()
+	
+	tween = create_tween()
+	# Usamos 'animated_sprite_2d' que es la referencia correcta en este script
+	tween.tween_property(animated_sprite_2d, "modulate", Color.RED, 0.0)
+	tween.tween_interval(0.1)
+	tween.tween_property(animated_sprite_2d, "modulate", Color.WHITE, 0.0)
 
 func die():
 	if _is_defeated:
@@ -134,35 +89,29 @@ func die():
 	print("[ThrowingEnemy] He muerto 💀")
 	_is_defeated = true
 
-	# Detenemos el timer y cualquier acción
 	timer.stop()
 	_is_attacking = false
 
-	# Reproducimos la animación de muerte
-	animation_player.play("defeated")
+	# Usamos la animación de muerte del Sprite directamente si existe,
+	# o mantenemos el AnimationPlayer si tienes una animación compleja ahí.
+	# Por seguridad, intentamos reproducir la animación en ambos o priorizamos el AnimationPlayer
+	# si tu lógica de "defeat" (desaparecer) depende de él.
+	animation_player.play("defeated") 
 
-	# Desactivamos colisiones para que no siga interactuando
 	hit_box.monitoring = false
 	hit_box.monitorable = false
 	if $CollisionShape2D:
 		$CollisionShape2D.disabled = true
 
-	# Conectamos señal para eliminar al enemigo al terminar animación
 	if not animation_player.animation_finished.is_connected(_on_death_animation_finished):
 		animation_player.animation_finished.connect(_on_death_animation_finished)
-
 
 func _on_death_animation_finished(anim_name: String) -> void:
 	if anim_name == "defeated":
 		queue_free()
-##fin elemental cambio
+# --- FIN CAMBIOS ELEMENTAL ---
 
-## The label of each projectile thrown will be a random choice from this array.
-## So if a label appears more than once, this will increase the chance that it is thrown.
 @export var allowed_labels: Array[String] = ["???"]
-
-## Optional mapping of color per label. This is used to tint projectiles to make a
-## color-matching game.
 var color_per_label: Dictionary[String, Color]
 
 var _initial_position: Vector2
@@ -199,11 +148,13 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 func _ready() -> void:
-	##elemental
 	health = max_health
-	##fin elemental
 	_initial_position = position
 	_set_sprite_frames(sprite_frames)
+	
+	if not hit_box.body_entered.is_connected(_on_hit_box_body_entered):
+		hit_box.body_entered.connect(_on_hit_box_body_entered)
+	
 	if Engine.is_editor_hint():
 		return
 	var player = get_tree().get_first_node_in_group("player")
@@ -227,7 +178,6 @@ func _draw() -> void:
 			Color(0.0, 0.0, 0.0, 0.3)
 		)
 		if get_tree().is_debugging_collisions_hint():
-			## Only when playing with collision shapes visible, draw a dot for the target position:
 			draw_circle(_target_position - position, 10., Color(1.0, 0.0, 0.0, 0.7))
 
 
@@ -275,7 +225,6 @@ func _process(_delta: float) -> void:
 			velocity = _get_velocity()
 			move_and_slide()
 			if get_tree().is_debugging_collisions_hint():
-				# Update the debug shapes when the position changes:
 				queue_redraw()
 			if not velocity.is_zero_approx():
 				animated_sprite_2d.play(&"walk")
@@ -297,8 +246,6 @@ func _set_target_position() -> void:
 
 func _on_timeout() -> void:
 	print("[ThrowingEnemyelementals] _on_timeout() — timer fired for ", self.name)
-	
-	# --- ESTA ES LA LÍNEA CORREGIDA ---
 	var player = get_tree().get_first_node_in_group("player")
 	
 	if not is_instance_valid(player):
@@ -311,8 +258,6 @@ func _on_timeout() -> void:
 
 func shoot_projectile() -> void:
 	print("[ThrowingEnemyelementals] shoot_projectile() called")
-	
-	# --- ESTA ES LA LÍNEA CORREGIDA ---
 	var player = get_tree().get_first_node_in_group("player")
 
 	if not is_instance_valid(player):
@@ -324,8 +269,7 @@ func shoot_projectile() -> void:
 		print("[ThrowingEnemyelementals] no allowed_labels, abort")
 		return
 	
-	# Aquí es donde se usa la variable @export para crear la escena que elegiste
-	var projectile: Projectile = projectile_scene.instantiate()
+	var projectile = projectile_scene.instantiate()
 	
 	if projectile == null:
 		print("[ThrowingEnemyelementals] projectile_scene.instantiate() returned null")
@@ -333,8 +277,7 @@ func shoot_projectile() -> void:
 	projectile.direction = projectile_marker.global_position.direction_to(player.global_position)
 	scale.x = 1 if projectile.direction.x < 0 else -1
 	
-	# ESTA LÍNEA AHORA USA LA VARIABLE DEL INSPECTOR
-	projectile.label = allowed_labels.pick_random() 
+	projectile.label = allowed_labels.pick_random()
 	
 	if projectile.label in color_per_label:
 		projectile.color = color_per_label[projectile.label]
@@ -348,7 +291,7 @@ func shoot_projectile() -> void:
 	projectile.trail_fx_scene = projectile_trail_fx_scene
 	projectile.speed = projectile_speed
 	projectile.duration = projectile_duration
-	# 🟢 Agregamos los grupos correctos antes de añadirlo
+	
 	projectile.add_to_group("enemy_projectile")
 	projectile.add_to_group("projectiles")
 	
@@ -358,15 +301,6 @@ func shoot_projectile() -> void:
 	_is_attacking = false
 
 
-func _on_got_hit(body: Node2D) -> void:
-	if body is Projectile and not body.can_hit_enemy and not _is_defeated:
-		return
-	body.queue_free()
-	animation_player.play(&"got hit")
-
-
-## Start attacking and/or walking. The enemy will be idle until this is called.
-## See [member autostart].
 func start() -> void:
 	if _has_started:
 		return
@@ -375,20 +309,16 @@ func start() -> void:
 		await ready
 	print("[ThrowingEnemyelementals] start() called on ", self.name)
 	timer.wait_time = throwing_period
-	# reconnect safe: avoid double connects
 	if not timer.timeout.is_connected(_on_timeout):
 		timer.timeout.connect(_on_timeout)
-	if not hit_box.body_entered.is_connected(_on_got_hit):
-		hit_box.body_entered.connect(_on_got_hit)
+
 	if odd_shoot:
 		await get_tree().create_timer(throwing_period / 2).timeout
 	timer.start()
 	_initial_position = position
 	_set_target_position()
-	
-	
 
-## Play a remove animation and then remove the enemy from the scene.
+
 func remove() -> void:
 	timer.stop()
 	_is_defeated = true
@@ -412,12 +342,6 @@ func _set_attack_sound_stream(new_value: AudioStream) -> void:
 
 
 func _on_hit_box_body_entered(body: Node2D) -> void:
-	# Comprobamos si el 'body' que entró está en el grupo "bullet"
 	if body.is_in_group("bullet"):
-	
-		# 1. Llama a la función de morir (de forma segura)
-		call_deferred("take_damage",1)
-	
-		# 2. Destruye la bala que nos golpeó
+		call_deferred("take_damage", 1)
 		body.queue_free()
-	pass # Replace with function body.

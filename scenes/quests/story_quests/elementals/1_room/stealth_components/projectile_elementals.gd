@@ -1,5 +1,5 @@
 # Archivo: projectile_elementals.gd
-class_name Projectile
+class_name ProjectileElementals
 extends RigidBody2D # O el nodo que uses (Area2D, etc.)
 
 # --- VARIABLES REQUERIDAS POR EL ENEMIGO ---
