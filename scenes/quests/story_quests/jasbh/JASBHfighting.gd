@@ -12,6 +12,8 @@ var is_fighting: bool = false
 
 var life = 3
 
+var rank = 0
+
 
 func _ready() -> void:
 	hit_box.body_entered.connect(_on_body_entered)
@@ -29,7 +31,14 @@ func _on_body_entered(body: Node2D) -> void:
 	body = body as Projectile
 	if not body:
 		return
-	life = life - 1 
+	life = life - 1
+	var enemy: JASBHenemy = get_tree().get_first_node_in_group("JASBHenemy")
+	if enemy && enemy.rank > 0 && enemy.rank_level_up > 10:
+		enemy.rank = enemy.rank - 10
+		enemy.bullet_count = enemy.bullet_count - 2
+		enemy.projectile_speed = enemy.projectile_speed - 5
+		enemy.throwing_period = enemy.throwing_period + 0.25
+		enemy.rank_level_up = enemy.rank_level_up - 10
 	body.add_small_fx()
 	body.queue_free()
 	got_hit_animation.play(&"got_hit")

@@ -140,7 +140,7 @@ var pattern_counter = 0
 var rank = 0
 var rank_level_up = 10
 var special_counter = 0
-var boss_hp = 10
+var boss_hp = 15
 
 @onready var timer: Timer = %Timer
 @onready var projectile_marker: Marker2D = %ProjectileMarker
@@ -280,7 +280,7 @@ func shoot_projectile() -> void:
 		_is_attacking = false
 		return
 	var bullet_count_copy : int
-	if rank >= rank_level_up && rank_level_up < 50:
+	if rank >= rank_level_up && rank_level_up < 80:
 		bullet_count = bullet_count + 2
 		projectile_speed = projectile_speed + 5
 		throwing_period = throwing_period - 0.25
@@ -339,8 +339,8 @@ func shoot_projectile() -> void:
 		pattern_counter = 0
 	else:
 		pattern_counter = pattern_counter + 1
-	if rank_level_up < 50:
-		rank = rank + 0.5
+	if rank_level_up < 80:
+		rank = rank + 1
 	if special_counter == 3:
 		global_angle = (player.global_position - projectile_marker.global_position).normalized()
 		dir_angle = global_angle.angle()
@@ -361,13 +361,15 @@ func shoot_projectile() -> void:
 		_is_attacking = false
 		special_counter = 0
 	special_counter = special_counter + 1
+	print(rank)
+	print(rank_level_up)
 
 func _on_got_hit(body: Node2D) -> void:
 	if body is Projectile and not body.can_hit_enemy and not _is_defeated:
 		return
 	body.queue_free()
 	boss_hp = boss_hp - 1
-	rank = rank + 5
+	rank = rank + 8
 	animation_player.play(&"got hit")
 	if boss_hp <= 0:
 		_is_defeated = true
