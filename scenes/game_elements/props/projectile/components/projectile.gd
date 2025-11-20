@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name Projectile
+class_name Projectiles
 extends RigidBody2D
 ## A projectile that can fill matching [FillingBarrel]s.
 ##
