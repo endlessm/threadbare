@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://cqia8wihr6512"]
+[gd_scene load_steps=25 format=4 uid="uid://cqia8wihr6512"]
 
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_0sehy"]
 [ext_resource type="AudioStream" uid="uid://m3utsrhd2bc3" path="res://scenes/quests/story_quests/renya_beyond_sorrow/Complementos/music/7. Silent Longing (Loop).mp3" id="2_bl6pj"]
@@ -16,6 +16,7 @@
 [ext_resource type="SpriteFrames" uid="uid://478kw5lbumtn" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_combat/enemies_components/projectile_spriteframes.tres" id="16_goiri"]
 [ext_resource type="SpriteFrames" uid="uid://lt1fwrvd4a5h" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_combat/relleno/filling_spriteframes.tres" id="18_l4apx"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="20_6urbs"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="20_63j25"]
 [ext_resource type="PackedScene" uid="uid://dkx3dgc1br3b4" path="res://scenes/ui_elements/input_hints/repel_hint.tscn" id="22_28yyq"]
 [ext_resource type="PackedScene" uid="uid://dckcomgbkbkwu" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_combat/components/decoration/tree/tree.tscn" id="22_e8dsv"]
 [ext_resource type="SpriteFrames" uid="uid://cyhwjliscqdbb" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_combat/components/decoration/tree/components/tree_spriteframes_purple.tres" id="23_6axrc"]
@@ -55,7 +56,6 @@ stream = ExtResource("2_bl6pj")
 [node name="FillGameLogic" type="Node" parent="."]
 script = ExtResource("3_fmi44")
 barrels_to_win = 2
-intro_dialogue = ExtResource("4_75x6t")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="LevelCompletedAnimation" type="AnimationPlayer" parent="FillGameLogic"]
@@ -148,6 +148,7 @@ shape = SubResource("RectangleShape2D_lmnu5")
 [node name="Player" parent="OnTheGround" instance=ExtResource("9_d7n4r")]
 position = Vector2(351, -56)
 player_name = "StoryWeaver"
+mode = 1
 sprite_frames = ExtResource("11_bl6pj")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
@@ -220,6 +221,12 @@ grow_vertical = 0
 [node name="RepelHint" parent="ScreenOverlay/InputHints" instance=ExtResource("22_28yyq")]
 layout_mode = 2
 
+[node name="Cinematic" type="Node2D" parent="."]
+script = ExtResource("20_63j25")
+dialogue = ExtResource("4_75x6t")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
 [node name="HUD" parent="." instance=ExtResource("23_vhod7")]
 
 [connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]
+[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
