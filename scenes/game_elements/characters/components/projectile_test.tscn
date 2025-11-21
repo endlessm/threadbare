@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=3 uid="uid://dbjkflg62mj47"]
+
+[ext_resource type="SpriteFrames" uid="uid://bhamin2pby7tq" path="res://scenes/game_elements/props/projectile/components/inkblob_spriteframes.tres" id="1_04mvg"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_04mvg"]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="GDScript" id="GDScript_04mvg"]
+script/source = "extends RigidBody2D
+
+const MAX_BOUNCES: int = 3
+
+@onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
+
+var bounces := 0
+
+func _process(_delta: float) -> void:
+	animated_sprite_2d.rotation = linear_velocity.angle()
+
+
+func _on_body_entered(_body: Node) -> void:
+	bounces += 1
+	if bounces > MAX_BOUNCES:
+		queue_free()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_04mvg"]
+radius = 17.029387
+
+[node name="ProjectileTest" type="RigidBody2D"]
+collision_layer = 256
+collision_mask = 208
+physics_material_override = SubResource("PhysicsMaterial_04mvg")
+gravity_scale = 0.0
+lock_rotation = true
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 1
+script = SubResource("GDScript_04mvg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+modulate = Color(0.78431374, 0.2901961, 1, 1)
+position = Vector2(-9, 0)
+sprite_frames = ExtResource("1_04mvg")
+autoplay = "default"
+frame = 5
+frame_progress = 0.5892674
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_04mvg")
+debug_color = Color(0.9764706, 0, 0, 0.41960785)
+
+[node name="LifeTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="LifeTimer" to="." method="queue_free"]

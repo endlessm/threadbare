@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://mruqy04d0vl8"]
+
+[ext_resource type="Script" uid="uid://0bdnfcarw8b0" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/buttons_collector.gd" id="1_t7odl"]
+[ext_resource type="SpriteFrames" uid="uid://qwlhm21ndgn2" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_orange.tres" id="2_vnm58"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="3_bpxq8"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="4_tv1as"]
+[ext_resource type="Resource" uid="uid://ctbctlk6xcaja" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/buttons_collector.dialogue" id="5_vnm58"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vnm58"]
+height = 73.6055
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vnm58"]
+size = Vector2(52, 50)
+
+[node name="ButtonsCollector" type="CharacterBody2D"]
+script = ExtResource("1_t7odl")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -29)
+sprite_frames = ExtResource("2_vnm58")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_vnm58")
+
+[node name="InteractArea" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_bpxq8")
+interact_label_position = Vector2(0, -128)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(0, -29)
+shape = SubResource("RectangleShape2D_vnm58")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="." node_paths=PackedStringArray("interact_area")]
+script = ExtResource("4_tv1as")
+dialogue = ExtResource("5_vnm58")
+interact_area = NodePath("../InteractArea")
+
+[connection signal="interaction_ended" from="InteractArea" to="." method="_on_interact_area_interaction_ended"]
+[connection signal="interaction_started" from="InteractArea" to="." method="_on_interact_area_interaction_started"]
