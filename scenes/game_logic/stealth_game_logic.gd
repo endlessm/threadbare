@@ -13,6 +13,4 @@ func _ready() -> void:
 
 
 func _on_player_detected(player: Player) -> void:
-	player.mode = Player.Mode.DEFEATED
-	await get_tree().create_timer(2.0).timeout
-	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+	player.defeat()

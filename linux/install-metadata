@@ -1,0 +1,14 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+set -ex
+
+cd "$(dirname "$0")"
+
+# The repo uses git-lfs for assets, so ensure any checkout is done using lfs;
+# otherwise, this icon will not be present
+install -Dm644 "$(readlink -f icon-256.png)" ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png
+
+install -Dm644 launcher.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
+install -Dm644 metainfo.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml
+install -Dm644 releases.xml ${FLATPAK_DEST}/share/metainfo/releases/${FLATPAK_ID}.releases.xml

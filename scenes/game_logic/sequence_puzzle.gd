@@ -30,16 +30,10 @@ signal step_solved(step_index: int)
 ## If enabled, show messages in the console describing the player's progress (or not) in the puzzle
 @export var debug: bool = false
 
-@export var wobble_hint_time: float = 10.0
-@export var wobble_hint_min_level: int = 2
-
-var hint_timer: Timer = Timer.new()
-
 var hint_levels: Dictionary = {}
 
 var _objects: Array[SequencePuzzleObject]
 
-var _last_hint_object: SequencePuzzleObject = null
 var _current_step: int = 0
 var _position: int = 0
 
@@ -57,11 +51,6 @@ func _ready() -> void:
 	# If the steps array is empty, find all steps that are within this node
 	if steps.is_empty():
 		_find_steps(self)
-
-	hint_timer.one_shot = true
-	hint_timer.wait_time = wobble_hint_time
-	hint_timer.timeout.connect(_on_hint_timer_timeout)
-	add_child(hint_timer)
 
 	for step: SequencePuzzleStep in steps:
 		step.hint_sign.demonstrate_sequence.connect(_on_demonstrate_sequence.bind(step))
@@ -118,14 +107,9 @@ func _on_kicked(object: SequencePuzzleObject) -> void:
 
 	if sequence[_position] != object:
 		_debug("Didn't match")
-		for r: SequencePuzzleObject in _objects:
-			r.stop_hint()
-		if hint_levels.get(get_progress(), 0) >= wobble_hint_min_level:
-			hint_timer.start()
 		return
 
 	_position += 1
-	hint_timer.start()
 	if _position != sequence.size():
 		_debug("Played %s, awaiting %s", [sequence.slice(0, _position), sequence.slice(_position)])
 		return
@@ -138,8 +122,6 @@ func _on_kicked(object: SequencePuzzleObject) -> void:
 	_debug("Step %d solved", [_current_step])
 
 	_update_current_step()
-
-	_clear_last_hint_object()
 
 	if _current_step == steps.size():
 		_debug("All sequences played")
@@ -160,37 +142,3 @@ func _on_demonstrate_sequence(step: SequencePuzzleStep) -> void:
 	for object in step.sequence:
 		await object.play()
 	step.hint_sign.demonstration_finished()
-
-
-func _on_hint_timer_timeout() -> void:
-	if _current_step >= steps.size():
-		return
-
-	var sequence := steps[_current_step].sequence
-	var object := sequence[_position]
-	if object:
-		if object != _last_hint_object:
-			_clear_last_hint_object()
-			_last_hint_object = object
-
-		if is_instance_valid(_last_hint_object):
-			_last_hint_object.wobble_silently()
-
-	hint_timer.start()
-
-
-func _clear_last_hint_object() -> void:
-	if _last_hint_object and is_instance_valid(_last_hint_object):
-		_last_hint_object.stop_hint()
-		_last_hint_object = null
-
-
-func stop_hints() -> void:
-	hint_timer.stop()
-	_clear_last_hint_object()
-
-
-func reset_hint_timer() -> void:
-	hint_timer.stop()
-	if _current_step < steps.size():
-		hint_timer.start()
