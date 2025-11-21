@@ -2,20 +2,29 @@ extends Area2D
 
 @export var dialogue_resource: DialogueResource
 @export var dialogue_node: String = "start"
+@onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D 
+@onready var audio_idle: AudioStreamPlayer2D = $AudioStreamPlayer2D
 var player_is_near: bool = false
 var player: Node2D = null
 var is_dialogue_running: bool = false
 
 func _ready() -> void:
+	if anim_sprite:
+		anim_sprite.play("idle")
+		anim_sprite.frame_changed.connect(_on_frame_changed)
 	if dialogue_resource == null:
 		print_rich("[color=red]ERROR: El NPC (%s) no tiene un 'Dialogue Resource' asignado.[/color]" % self.name)
 		return
-
 	if Engine.has_singleton("DialogueManager"):
 		DialogueManager.dialogue_ended.connect(_on_dialogue_finished)
 	else:
 		print("ERROR: El Autoload 'DialogueManager' no se encontró.")
 
+func _on_frame_changed() -> void:
+	if anim_sprite.animation == "idle":
+		if anim_sprite.frame == 3:
+			audio_idle.play()
+			
 func _on_body_entered(body: Node2D) -> void:
 	if body.name == "Jugador":
 		player_is_near = true

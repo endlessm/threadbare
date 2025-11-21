@@ -1,17 +1,31 @@
-[gd_scene load_steps=2 format=3 uid="uid://cadb5gldv1s3w"]
+[gd_scene load_steps=5 format=3 uid="uid://cadb5gldv1s3w"]
 
 [ext_resource type="Script" uid="uid://b6tq3gafp2xfr" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/1_fase/Ataque_especial_Sol/bala_especial_jefe.gd" id="1_dr3n0"]
+[ext_resource type="Texture2D" uid="uid://cxj5yrgaur7tb" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/1_fase/Ataque_especial_Sol/ProyecSUN.png" id="2_4weq5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_un2tn"]
+atlas = ExtResource("2_4weq5")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yk5mw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_un2tn")
+}],
+"loop": true,
+"name": &"bala_especial",
+"speed": 5.0
+}]
 
 [node name="BalaEspecialJefe" type="Area2D"]
 script = ExtResource("1_dr3n0")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_left = -4.0
-offset_right = 4.0
-offset_bottom = 7.0
-color = Color(1, 0, 0, 1)
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-0.9999995, 1.500001)
+scale = Vector2(1.7500001, 1.84375)
+sprite_frames = SubResource("SpriteFrames_yk5mw")
+animation = &"bala_especial"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(0, 10, 10, 0, -10, 0)
+polygon = PackedVector2Array(-26, 25, 25, 25, 0, -26)

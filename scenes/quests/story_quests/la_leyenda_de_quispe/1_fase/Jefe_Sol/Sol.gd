@@ -79,6 +79,8 @@ func _on_Area2D_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
 		player_in_range = true
 		player_node = body
+		if body.has_method("activar_camara_fija"):
+			body.activar_camara_fija()
 		print("👀 Jugador detectado cerca del jefe")
 		if not has_intro_played and not is_dead:
 			start_dialogue("boss_start")
@@ -179,10 +181,16 @@ func die() -> void:
 		return
 	is_dead = true
 	$ShootTimer.stop()
-	print("💀 Jefe derrotado")
+	print("💀 Jefe de Fase 1 derrotado")
 	start_dialogue("boss_defeated")
 	await DialogueManager.dialogue_ended
-	queue_free()
+	var ruta_fase_2: String = "res://escenas/jefe_fase_2/jefe_fase_2.tscn" 
+	var error: Error = get_tree().change_scene_to_file("res://scenes/quests/story_quests/la_leyenda_de_quispe/2_fase/Main/Main_Fase_2.tscn")
+	if error != OK:
+		print("❌ ERROR CRÍTICO: No se pudo cargar la escena de la Fase 2.")
+		print("Verifica que la ruta sea correcta: ", ruta_fase_2)
+	else:
+		print("✅ Cargando Fase 2...")
 
 func start_dialogue(node_name: String) -> void:
 	if dialogue_resource == null:

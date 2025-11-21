@@ -2,26 +2,27 @@ extends CharacterBody2D
 
 @export var speed: float = 70.0
 @export var move_distance: float = 250.0
-@export var bullet_scene: PackedScene
-@export var bullet_speed: float = 300.0
-@export var random_fire_range: Vector2 = Vector2(1.0, 3.0)
-@export var shoot_direction: Vector2 = Vector2.LEFT
-@export var aim_at_player: bool = true
 @export var max_health: int = 3400
 @export var invulnerability_time: float = 1.0
 @export var dialogue_resource: DialogueResource
-@export_group("Ataque Escopeta")
+@export var bullet_scene: PackedScene
+@export var bullet_speed: float = 300.0
+@export var bullet_scale: float = 2.0
+@export var random_fire_range: Vector2 = Vector2(1.0, 3.0)
+@export var shoot_direction: Vector2 = Vector2.LEFT
+@export var aim_at_player: bool = true
 @export var fan_shot_angle: float = 40.0
 @export var fan_shot_count: int = 7
-@export_group("Ataque Embestida")
 @export var dash_speed: float = 900.0
 @export var dash_duration: float = 0.4
 @export var dash_damage: int = 25
-@export_group("Probabilidades")
 @export var chance_dash: float = 0.2
 @export var chance_shotgun: float = 0.4
 @export var chance_circle: float = 0.7
+@export var hover_amplitude: float = 6.0
+@export var hover_speed: float = 3.0
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var spawn_point: Marker2D = $SpawnPoint 
 var player_node: Node2D = null
 var is_dialogue_running: bool = false
 var has_intro_played: bool = false
@@ -36,13 +37,14 @@ var is_attacking: bool = false
 var is_returning: bool = false
 var is_dashing: bool = false
 var dash_target_direction: Vector2 = Vector2.ZERO
+var hover_timer: float = 0.0
 
 func _ready() -> void:
 	randomize()
 	start_position = position
 	current_health = max_health
 	add_to_group("boss")
-	animated_sprite.play("Idle")
+	animated_sprite.play("SoLuna")
 	if $Area2D:
 		$Area2D.body_entered.connect(_on_Area2D_body_entered)
 		$Area2D.body_exited.connect(_on_Area2D_body_exited)
@@ -55,6 +57,7 @@ func _ready() -> void:
 	if not $ShootTimer.timeout.is_connected(_on_shoot_timer_timeout):
 		$ShootTimer.timeout.connect(_on_shoot_timer_timeout)
 	$ShootTimer.stop()
+	
 	if not has_node("InvulTimer"):
 		var invul_timer: Timer = Timer.new()
 		invul_timer.name = "InvulTimer"
@@ -67,14 +70,18 @@ func _process(delta: float) -> void:
 	if is_dead or is_dialogue_running:
 		return
 	if is_dashing:
+		animated_sprite.position.y = 0
+		if spawn_point: spawn_point.position.y = 0
 		velocity = dash_target_direction * dash_speed
 		move_and_slide()
 		var collision: KinematicCollision2D = get_last_slide_collision()
 		if collision and collision.get_collider().is_in_group("player"):
 			print("💥 ¡Embestida golpeó al jugador!")
-			collision.get_collider().take_damage(dash_damage)
+			if collision.get_collider().has_method("take_damage"):
+				collision.get_collider().take_damage(dash_damage)
 			stop_dash()
-		return
+		return 
+	aplicar_efecto_vuelo(delta)
 	if is_attacking:
 		return
 	var target_y: float = start_position.y
@@ -86,6 +93,13 @@ func _process(delta: float) -> void:
 	else:
 		is_returning = false
 	move_side_to_side(delta)
+
+func aplicar_efecto_vuelo(delta: float) -> void:
+	hover_timer += delta
+	var visual_offset_y: float = sin(hover_timer * hover_speed) * hover_amplitude
+	animated_sprite.position.y = visual_offset_y
+	if spawn_point:
+		spawn_point.position.y = visual_offset_y
 
 func return_to_lane(delta: float, y_diff: float) -> void:
 	position.y += sign(y_diff) * speed * delta
@@ -110,6 +124,8 @@ func _on_Area2D_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
 		player_in_range = true
 		player_node = body
+		if body.has_method("activar_camara_fija"):
+			body.activar_camara_fija()
 		print("👀 Jugador detectado cerca del jefe")
 		if not has_intro_played and not is_dead:
 			start_dialogue("boss_start")
@@ -153,6 +169,7 @@ func _on_shoot_timer_timeout() -> void:
 func shoot_single() -> void:
 	if bullet_scene == null or not $SpawnPoint: return
 	var bullet: Node2D = bullet_scene.instantiate()
+	bullet.scale = Vector2(bullet_scale, bullet_scale)
 	bullet.position = $SpawnPoint.global_position
 	bullet.set("owner_type", "boss")
 	bullet.set("direction", (get_player_direction() if aim_at_player else shoot_direction).normalized())
@@ -171,6 +188,7 @@ func shoot_shotgun() -> void:
 		var angle: float = start_angle + (i * angle_step)
 		var bullet_dir: Vector2 = Vector2.from_angle(angle)
 		var bullet: Node2D = bullet_scene.instantiate()
+		bullet.scale = Vector2(bullet_scale, bullet_scale)
 		bullet.position = $SpawnPoint.global_position
 		bullet.set("owner_type", "boss")
 		bullet.set("direction", bullet_dir)
@@ -188,9 +206,10 @@ func shoot_circle() -> void:
 		var angle: float = i * angle_step
 		var offset: Vector2 = Vector2(cos(angle), sin(angle)) * radius
 		var bullet: Node2D = bullet_scene.instantiate()
+		bullet.scale = Vector2(bullet_scale, bullet_scale)
 		bullet.position = center + offset
 		bullet.set("owner_type", "boss")
-		bullet.set("direction", dir_to_player) # Van hacia el jugador
+		bullet.set("direction", dir_to_player) 
 		bullet.set("speed", bullet_speed)
 		get_tree().current_scene.add_child(bullet)
 
@@ -241,12 +260,14 @@ func die() -> void:
 	await DialogueManager.dialogue_ended
 	print("¡VICTORIA FINAL!")
 	queue_free()
-
+	
 func start_dialogue(node_name: String) -> void:
 	if dialogue_resource == null:
 		print("❌ ERROR: No asignaste el archivo .dialogue")
 		return
 	is_dialogue_running = true
+	animated_sprite.pause()
+	$ShootTimer.stop()
 	if player_node:
 		player_node.set_physics_process(false)
 	DialogueManager.dialogue_ended.connect(_on_dialogue_finished)
@@ -257,7 +278,10 @@ func _on_dialogue_finished(_resource: DialogueResource) -> void:
 	DialogueManager.dialogue_ended.disconnect(_on_dialogue_finished)
 	if player_node:
 		player_node.set_physics_process(true)
+	animated_sprite.play()
 	if not has_intro_played:
 		has_intro_played = true
 		if player_in_range:
 			$ShootTimer.start()
+	elif player_in_range and not is_dead:
+		$ShootTimer.start()

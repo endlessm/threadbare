@@ -1,18 +1,16 @@
 extends CharacterBody2D
 
 @export var speed: float = 200.0
-# --- NUEVA VARIABLE: Velocidad al correr ---
 @export var run_speed: float = 350.0 
-
 @export var max_health: int = 150
 @export var invulnerability_time: float = 1.0
 @export var bullet_scene: PackedScene
 @export var shoot_cooldown: float = 0.4 
 @export var charge_threshold: float = 0.5
 @export var charged_shot_scale: float = 2.0
-
+@export var lock_camera: bool = false
+@export var fixed_camera_position: Vector2 = Vector2.ZERO
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-
 var is_charging: bool = false
 var charge_timer: float = 0.0
 var current_health: int = 0
@@ -42,17 +40,13 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
-		
 	var dir: Vector2 = Vector2.ZERO
 	dir.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	dir.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
-	
 	if dir != Vector2.ZERO:
 		last_direction = dir.normalized()
 		if dir.x != 0:
 			animated_sprite.flip_h = (dir.x < 0)
-	
-	# --- LÓGICA DE CORRER AÑADIDA ---
 	var current_speed: float = speed
 	if Input.is_action_pressed("running") and dir != Vector2.ZERO:
 		current_speed = run_speed
@@ -141,3 +135,23 @@ func die() -> void:
 	DatosGlobales.current_health = DatosGlobales.max_health
 	await get_tree().create_timer(1.0).timeout
 	get_tree().reload_current_scene()
+
+func activar_camara_fija() -> void:
+	print("⚡ INTENTANDO ACTIVAR CÁMARA FIJA...")
+	if not lock_camera:
+		print("❌ ERROR: La casilla 'Lock Camera' no está activada en el Inspector.")
+		return
+	if has_node("Camera2D"):
+		var cam: Camera2D = $Camera2D
+		cam.top_level = true 
+		cam.limit_left = -10000000
+		cam.limit_top = -10000000
+		cam.limit_right = 10000000
+		cam.limit_bottom = 10000000
+		print("✅ Moviendo cámara de ", cam.global_position, " a ", fixed_camera_position)
+		var tween: Tween = get_tree().create_tween()
+		tween.set_trans(Tween.TRANS_CUBIC)
+		tween.set_ease(Tween.EASE_OUT)
+		tween.tween_property(cam, "global_position", fixed_camera_position, 1.5)
+	else:
+		print("⚠️ ERROR: No se encontró el nodo Camera2D")
