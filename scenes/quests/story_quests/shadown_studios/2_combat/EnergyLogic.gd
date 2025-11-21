@@ -25,7 +25,7 @@ func start() -> void:
 
 func _ready() -> void:
 	var filling_barrels: Array = get_tree().get_nodes_in_group("filling_barrels")
-	barrels_to_win = clampi(barrels_to_win, 0, filling_barrels.size())
+	barrels_to_win = clampi(barrels_to_win, 3, filling_barrels.size())
 	if intro_dialogue:
 		var player: Player = get_tree().get_first_node_in_group("player")
 		DialogueManager.show_dialogue_balloon(intro_dialogue, "", [self, player])
