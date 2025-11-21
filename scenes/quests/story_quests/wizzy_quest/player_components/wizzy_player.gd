@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2025 Game-Lab-5-0-UTP-Group-1-Team-1 Contributors
+# SPDX-License-Identifier: MPL-2.0
+
 @tool
 extends "res://scenes/game_elements/characters/player/components/player.gd"
 ## Custom player configuration for Wizzy Quest
