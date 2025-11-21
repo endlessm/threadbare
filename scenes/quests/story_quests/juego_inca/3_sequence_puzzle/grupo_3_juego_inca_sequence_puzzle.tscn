@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://uiatf8w72cs2"]
+[gd_scene load_steps=31 format=4 uid="uid://uiatf8w72cs2"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_1ro2b"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_ucfn8"]
@@ -27,6 +27,8 @@
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="20_u0qx0"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="21_t1nhh"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="22_smy60"]
+[ext_resource type="Texture2D" uid="uid://bk7y0yaxrpuka" path="res://scenes/quests/story_quests/juego_inca/3_sequence_puzzle/num.png" id="28_475nb"]
+[ext_resource type="Texture2D" uid="uid://c05ydt4uatxmn" path="res://scenes/quests/story_quests/juego_inca/3_sequence_puzzle/ere.png" id="29_p6swl"]
 
 [sub_resource type="Resource" id="Resource_32pm7"]
 script = ExtResource("18_08aei")
@@ -154,7 +156,7 @@ hint_sign = NodePath("../../../Signs/HintSign2")
 [node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("17_desen")]
 position = Vector2(919, 347)
 revealed = false
-next_scene = "uid://irgfi4cpxtg6"
+next_scene = "uid://cbe26q0wurug4"
 item = SubResource("Resource_32pm7")
 collected_dialogue = ExtResource("19_623w7")
 dialogue_title = &"well_done"
@@ -178,7 +180,7 @@ tus alegrías y tristezas"
 modulate = Color(2.0325725, 0.35064197, 0.37867376, 1)
 position = Vector2(100, 236)
 direction = 1
-text = "Kimsa. El mundo es gigantesco, 
+text = "Kinsa. El mundo es gigantesco, 
 pero en este pueblo, 
 solo viven 5 hermanos."
 
@@ -208,11 +210,11 @@ y_sort_enabled = true
 position = Vector2(-1, 0)
 
 [node name="HintSign1" parent="OnTheGround/Signs" instance=ExtResource("13_h3fqf")]
-position = Vector2(341, 157)
+position = Vector2(205, -82)
 sprite_frames = ExtResource("14_qqfix")
 
 [node name="HintSign2" parent="OnTheGround/Signs" instance=ExtResource("13_h3fqf")]
-position = Vector2(630, 151)
+position = Vector2(671, -49)
 sprite_frames = ExtResource("15_hhiga")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
@@ -228,5 +230,17 @@ position_smoothing_enabled = true
 script = ExtResource("22_smy60")
 dialogue = ExtResource("19_623w7")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="Num" type="Sprite2D" parent="."]
+modulate = Color(0.55815613, 0.55815613, 0.55815613, 1)
+position = Vector2(361, 91)
+scale = Vector2(0.54115224, 0.5585366)
+texture = ExtResource("28_475nb")
+
+[node name="Ere" type="Sprite2D" parent="."]
+modulate = Color(0.5801458, 0.5801458, 0.5801458, 1)
+position = Vector2(607, 89)
+scale = Vector2(0.5156863, 0.557971)
+texture = ExtResource("29_p6swl")
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]

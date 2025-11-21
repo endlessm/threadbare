@@ -1,10 +1,72 @@
-[gd_scene load_steps=6 format=4 uid="uid://irgfi4cpxtg6"]
+[gd_scene load_steps=10 format=4 uid="uid://irgfi4cpxtg6"]
 
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_x4g6w"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_mxcfa"]
 [ext_resource type="SpriteFrames" uid="uid://b2kmcwpni62wi" path="res://scenes/quests/story_quests/juego_inca/player_components/grupo_3_juego_inca_player.tres" id="3_fbcdm"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_uqwsq"]
 [ext_resource type="Resource" uid="uid://cd1tmhrdp5w2n" path="res://scenes/quests/story_quests/juego_inca/4_outro/outro_components/grupo_3_juego_inca_outro.dialogue" id="5_rrjom"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_win4w"]
+
+[sub_resource type="Animation" id="Animation_lhtvo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(46, 340)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Character:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+
+[sub_resource type="Animation" id="Animation_win4w"]
+resource_name = "conoce"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.033333335, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(46, 340), Vector2(46, 340)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Character:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7vlsj"]
+_data = {
+&"RESET": SubResource("Animation_lhtvo"),
+&"camina": SubResource("Animation_win4w")
+}
 
 [node name="Outro" type="Node2D"]
 
@@ -31,10 +93,22 @@ editor_draw_limits = true
 y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
-position = Vector2(400, 349)
+position = Vector2(46, 340)
 sprite_frames = ExtResource("3_fbcdm")
-animation = &"idle"
+animation = &"walk"
 autoplay = "idle"
+
+[node name="Node2D" type="Node2D" parent="OnTheGround/Character"]
+position = Vector2(89, 27)
+
+[node name="Supay" type="AnimatedSprite2D" parent="OnTheGround"]
+sprite_frames = SubResource("SpriteFrames_win4w")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
+libraries = {
+&"": SubResource("AnimationLibrary_7vlsj")
+}
+autoplay = "camina"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
