@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=4 uid="uid://cwl27y8uyk856"]
+[gd_scene load_steps=46 format=4 uid="uid://cwl27y8uyk856"]
 
 [ext_resource type="Script" uid="uid://27wwvbceqqb" path="res://scenes/quests/story_quests/shadown_studios/2_combat/EnergyLogic.gd" id="1_7pf6k"]
 [ext_resource type="Resource" uid="uid://wqcmcwohra8c" path="res://scenes/quests/story_quests/shadown_studios/2_combat/combat_components/shadown_studios_combat.dialogue" id="2_8lcnc"]
@@ -22,8 +22,9 @@
 [ext_resource type="Texture2D" uid="uid://d0hquq5fnrdd0" path="res://scenes/quests/story_quests/shadown_studios/2_combat/combat_components/glow_ligth.png" id="16_7cbqg"]
 [ext_resource type="SpriteFrames" uid="uid://bbcirlixtjgrg" path="res://scenes/quests/story_quests/shadown_studios/1_search/search_components/shadown_studios_guard_enemy.tres" id="16_pkyeu"]
 [ext_resource type="Script" uid="uid://ctu503el6k4dm" path="res://scenes/quests/story_quests/shadown_studios/2_combat/combat_components/parpadeolight.gd" id="17_ppjlb"]
-[ext_resource type="SpriteFrames" uid="uid://1swci3thw1qn" path="res://scenes/quests/story_quests/shadown_studios/2_combat/combat_components/shadown_studios_target_spriteframes.tres" id="17_q8pas"]
+[ext_resource type="Texture2D" uid="uid://dhqkdlivxbuxr" path="res://scenes/quests/story_quests/shadown_studios/2_combat/combat_components/shadown_studios_target.png" id="17_q8pas"]
 [ext_resource type="AudioStream" uid="uid://c8bp7l3or16pl" path="res://scenes/quests/story_quests/shadown_studios/1_search/search_components/screamSound_.wav" id="17_xqdph"]
+[ext_resource type="SpriteFrames" uid="uid://1swci3thw1qn" path="res://scenes/quests/story_quests/shadown_studios/2_combat/combat_components/shadown_studios_target_spriteframes.tres" id="18_4xxdg"]
 [ext_resource type="AudioStream" uid="uid://0gu4axl7tser" path="res://scenes/quests/story_quests/shadown_studios/2_combat/combat_components/MINIJUEGO2_AUDIO.mp3" id="18_34xyd"]
 [ext_resource type="AudioStream" uid="uid://can6ttxjc6mg4" path="res://scenes/quests/story_quests/shadown_studios/1_search/search_components/RunMonsterShadow.wav" id="18_m4yxm"]
 [ext_resource type="AudioStream" uid="uid://dwww8wppg7vmp" path="res://scenes/quests/story_quests/shadown_studios/1_search/search_components/ScreamAttackMonsterShadow.wav" id="19_co65f"]
@@ -38,6 +39,43 @@ polygon = PackedVector2Array(1600, 1212, 1728, 1212, 1728, 1408, 1600, 1413, 159
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ppjlb"]
 polygon = PackedVector2Array(1663, 1090, 1723, 1086, 1726, 1025, 1790, 1022, 1792, 832, 1851, 832, 1854, 766, 1915, 766, 1919, 700, 1976, 697, 1972, 631, 2044, 627, 2048, 567, 2100, 571, 2099, 505, 2172, 501, 2173, 308, 2232, 308, 2233, 242, 2297, 242, 2297, 159, 2941, 159, 2935, 120, 2300, 125, 1670, 776)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8prwn"]
+atlas = ExtResource("17_q8pas")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_laup2"]
+atlas = ExtResource("17_q8pas")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dryj4"]
+atlas = ExtResource("17_q8pas")
+region = Rect2(400, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_plypm"]
+atlas = ExtResource("17_q8pas")
+region = Rect2(600, 0, 200, 200)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hmkxr"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8prwn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_laup2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dryj4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_plypm")
+}],
+"loop": true,
+"name": &"filling",
+"speed": 10.0
+}]
 
 [sub_resource type="Resource" id="Resource_pkyeu"]
 script = ExtResource("12_ckelp")
@@ -192,10 +230,10 @@ projectile_sprite_frames = ExtResource("8_34xyd")
 
 [node name="Target" parent="OnTheGround" instance=ExtResource("9_xbsql")]
 position = Vector2(2148, 1062)
-sprite_frames = ExtResource("17_q8pas")
+sprite_frames = SubResource("SpriteFrames_hmkxr")
 
 [node name="PointLight2D" type="PointLight2D" parent="OnTheGround/Target"]
-position = Vector2(27, -29)
+position = Vector2(1, -20)
 scale = Vector2(0.18085106, 0.23052631)
 color = Color(1.2032688e-06, 0.8872473, 0.06837358, 1)
 energy = 1.47
@@ -203,10 +241,10 @@ texture = ExtResource("16_7cbqg")
 
 [node name="Target2" parent="OnTheGround" instance=ExtResource("9_xbsql")]
 position = Vector2(3053, 1052)
-sprite_frames = ExtResource("17_q8pas")
+sprite_frames = ExtResource("18_4xxdg")
 
 [node name="PointLight2D" type="PointLight2D" parent="OnTheGround/Target2"]
-position = Vector2(30, -23)
+position = Vector2(8, -14)
 scale = Vector2(0.18085106, 0.23052631)
 color = Color(1.2032688e-06, 0.8872473, 0.06837358, 1)
 energy = 1.47
@@ -214,7 +252,7 @@ texture = ExtResource("16_7cbqg")
 
 [node name="Target3" parent="OnTheGround" instance=ExtResource("9_xbsql")]
 position = Vector2(2834, 1877)
-sprite_frames = ExtResource("17_q8pas")
+sprite_frames = ExtResource("18_4xxdg")
 needed_amount = 1
 
 [node name="PointLight2D" type="PointLight2D" parent="OnTheGround/Target3"]
