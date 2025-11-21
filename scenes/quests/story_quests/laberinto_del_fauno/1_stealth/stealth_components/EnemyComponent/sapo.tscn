@@ -1,0 +1,67 @@
+[gd_scene load_steps=5 format=3 uid="uid://blshmtftl23r3"]
+
+[ext_resource type="PackedScene" uid="uid://bgnb7ojsp1dpe" path="res://scenes/quests/story_quests/laberinto_del_fauno/1_stealth/stealth_components/EnemyComponent/attack/Lodo.tscn" id="1_mer8k"]
+[ext_resource type="SpriteFrames" uid="uid://5yh60ce1366u" path="res://scenes/quests/story_quests/laberinto_del_fauno/1_stealth/stealth_components/EnemyComponent/laberinto_del_fauno_SapoGreen_enemy.tres" id="2_5a6iq"]
+
+[sub_resource type="GDScript" id="GDScript_ckvkc"]
+script/source = "@tool
+extends CharacterBody2D
+
+@export var lodo: PackedScene
+@export var player: CharacterBody2D 
+@export var SpriteFrame: SpriteFrames = preload(\"res://scenes/quests/story_quests/laberinto_del_fauno/1_stealth/stealth_components/EnemyComponent/laberinto_del_fauno_SapoGreen_enemy.tres\")
+var is_firing_sequence: bool = false 
+
+func _ready() -> void:
+	$Sprite.sprite_frames = SpriteFrame
+
+func disparar_un_lodo() -> void:
+	if player == null:
+		return
+
+	var lodo_instance:CharacterBody2D = lodo.instantiate()
+	lodo_instance.global_position = $Marker.global_position 
+
+	lodo_instance.start_move(player.global_position) 
+
+	get_parent().add_child(lodo_instance)
+
+func _on_timer_timeout() -> void:
+	$Sprite.play(\"Attack\") 
+
+func _on_sprite_frame_changed() -> void:
+	if $Sprite.frame == 2 or $Sprite.frame == 4:
+		disparar_un_lodo() 
+
+
+func _on_sprite_animation_finished() -> void:
+	await get_tree().create_timer(0.5).timeout
+	$Sprite.play(\"default\") 
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5qup2"]
+radius = 48.0
+
+[node name="Sapo" type="CharacterBody2D" groups=["guard_enemy"]]
+collision_layer = 128
+script = SubResource("GDScript_ckvkc")
+lodo = ExtResource("1_mer8k")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_5qup2")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+sprite_frames = ExtResource("2_5a6iq")
+animation = &"Attack"
+autoplay = "default"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="Marker" type="Marker2D" parent="."]
+position = Vector2(0, -12)
+
+[connection signal="animation_finished" from="Sprite" to="." method="_on_sprite_animation_finished"]
+[connection signal="frame_changed" from="Sprite" to="." method="_on_sprite_frame_changed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
