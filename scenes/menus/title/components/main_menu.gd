@@ -31,22 +31,27 @@ func _ready() -> void:
 
 
 func _on_continue_button_pressed() -> void:
+	AudioManager.play_ui_click()
 	continue_pressed.emit()
 
 
 func _on_start_button_pressed() -> void:
+	AudioManager.play_ui_click()
 	start_pressed.emit()
 
 
 func _on_options_button_pressed() -> void:
+	AudioManager.play_ui_click()
 	options_pressed.emit()
 
 
 func _on_credits_button_pressed() -> void:
+	AudioManager.play_ui_click()
 	credits_pressed.emit()
 
 
 func _on_quit_button_pressed() -> void:
+	AudioManager.play_ui_click_back()
 	await Transitions.do_out_transition()
 	get_tree().quit.call_deferred()
 

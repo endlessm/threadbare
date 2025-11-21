@@ -17,4 +17,5 @@ func _on_visibility_changed() -> void:
 
 
 func _on_back_button_pressed() -> void:
+	AudioManager.play_ui_click_back()
 	back.emit()

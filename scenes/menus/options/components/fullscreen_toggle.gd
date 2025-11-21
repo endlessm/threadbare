@@ -18,4 +18,5 @@ func _refresh() -> void:
 
 
 func _on_toggled(toggled_on: bool) -> void:
+	AudioManager.play_ui_click()
 	Settings.toggle_fullscreen(toggled_on)
