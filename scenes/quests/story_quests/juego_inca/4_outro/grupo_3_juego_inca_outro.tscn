@@ -1,71 +1,106 @@
-[gd_scene load_steps=10 format=4 uid="uid://irgfi4cpxtg6"]
+[gd_scene load_steps=17 format=4 uid="uid://irgfi4cpxtg6"]
 
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_x4g6w"]
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_mxcfa"]
 [ext_resource type="SpriteFrames" uid="uid://b2kmcwpni62wi" path="res://scenes/quests/story_quests/juego_inca/player_components/grupo_3_juego_inca_player.tres" id="3_fbcdm"]
+[ext_resource type="Texture2D" uid="uid://ba0w45mqppuok" path="res://scenes/quests/story_quests/juego_inca/player_components/real supay.png" id="4_lhtvo"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_uqwsq"]
+[ext_resource type="Texture2D" uid="uid://ciypdv7bipsfu" path="res://scenes/quests/story_quests/juego_inca/player_components/Betz.png" id="5_7vlsj"]
 [ext_resource type="Resource" uid="uid://cd1tmhrdp5w2n" path="res://scenes/quests/story_quests/juego_inca/4_outro/outro_components/grupo_3_juego_inca_outro.dialogue" id="5_rrjom"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_win4w"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_7vlsj"]
+atlas = ExtResource("4_lhtvo")
+region = Rect2(0, 0, 192, 192)
 
-[sub_resource type="Animation" id="Animation_lhtvo"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_win4w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7vlsj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7vlsj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7vlsj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7vlsj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7vlsj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7vlsj")
+}],
+"loop": false,
+"name": &"default",
+"speed": 3.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0t0mc"]
+atlas = ExtResource("5_7vlsj")
+region = Rect2(0, 0, 128, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sxan4"]
+atlas = ExtResource("5_7vlsj")
+region = Rect2(128, 0, 128, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fl88p"]
+atlas = ExtResource("5_7vlsj")
+region = Rect2(256, 0, 128, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7uuy6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0t0mc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sxan4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fl88p")
+}],
+"loop": true,
+"name": &"titilar",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_7vlsj"]
+resource_name = "new_animation"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Betzaida:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"titilar"]
+}
+
+[sub_resource type="Animation" id="Animation_0t0mc"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Character:position")
+tracks/0/path = NodePath("Betzaida:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(46, 340)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Character:animation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"walk"]
+"values": [&"titilar"]
 }
 
-[sub_resource type="Animation" id="Animation_win4w"]
-resource_name = "conoce"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Character:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.033333335, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(46, 340), Vector2(46, 340)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Character:animation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"walk"]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_7vlsj"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sxan4"]
 _data = {
-&"RESET": SubResource("Animation_lhtvo"),
-&"camina": SubResource("Animation_win4w")
+&"RESET": SubResource("Animation_0t0mc"),
+&"new_animation": SubResource("Animation_7vlsj")
 }
 
 [node name="Outro" type="Node2D"]
@@ -75,9 +110,14 @@ _data = {
 [node name="TileMapLayers" type="Node2D" parent="."]
 
 [node name="Ground" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAAAAUAAQAGAAMAAAABAAUAAQAGAAMAAAACAAUAAQAGAAMAAAADAAUAAQAGAAMAAAAEAAUAAQAGAAMAAAAFAAUAAQAGAAMAAAAGAAUAAQAGAAMAAAAHAAUAAQAGAAMAAAAIAAUAAQAGAAMAAAAJAAUAAQAGAAMAAAAKAAUAAQAGAAMAAAALAAUAAQAGAAMAAAAMAAUAAQAGAAMAAAANAAUAAQAGAAMAAAAOAAUAAQAGAAMAAAAAAAYAAQAAAAAAAAAAAAcAAQAAAAEAAAABAAYAAQABAAAAAAABAAcAAQABAAEAAAACAAYAAQABAAAAAAACAAcAAQABAAEAAAADAAYAAQABAAAAAAADAAcAAQABAAEAAAAEAAYAAQABAAAAAAAEAAcAAQABAAEAAAAFAAYAAQABAAAAAAAFAAcAAQABAAEAAAAGAAYAAQABAAAAAAAGAAcAAQABAAEAAAAHAAYAAQABAAAAAAAHAAcAAQABAAEAAAAIAAYAAQABAAAAAAAIAAcAAQABAAEAAAAJAAYAAQABAAAAAAAJAAcAAQABAAEAAAAKAAYAAQABAAAAAAAKAAcAAQABAAEAAAALAAYAAQABAAAAAAALAAcAAQABAAEAAAAMAAYAAQABAAAAAAAMAAcAAQABAAEAAAANAAYAAQABAAAAAAANAAcAAQABAAEAAAAOAAYAAQACAAAAAAAOAAcAAQACAAEAAAAAAAAAAQAAAAAAAAAAAAEAAQAAAAEAAAABAAEAAQABAAEAAAACAAEAAQABAAEAAAADAAEAAQABAAEAAAADAAIAAQABAAEAAAAEAAIAAQABAAEAAAAFAAIAAQABAAEAAAAFAAMAAQABAAEAAAABAAAAAQABAAAAAAABAAIAAQABAAEAAAAAAAIAAQAAAAEAAAAAAAMAAQAAAAEAAAAAAAQAAQAAAAIAAAABAAMAAQABAAEAAAABAAQAAQABAAIAAAACAAQAAQABAAIAAAACAAMAAQABAAEAAAACAAIAAQABAAEAAAADAAQAAQABAAIAAAADAAMAAQABAAEAAAAEAAMAAQABAAEAAAAEAAQAAQABAAIAAAAFAAQAAQABAAIAAAAGAAQAAQABAAIAAAAHAAQAAQABAAIAAAAIAAQAAQABAAIAAAAJAAQAAQABAAIAAAAKAAQAAQABAAIAAAALAAQAAQABAAIAAAAMAAQAAQABAAIAAAANAAQAAQABAAIAAAAOAAQAAQACAAIAAAAOAAMAAQACAAEAAAAOAAIAAQACAAEAAAAOAAEAAQACAAEAAAAOAAAAAQACAAAAAAANAAAAAQABAAAAAAAMAAAAAQABAAAAAAALAAAAAQABAAAAAAAKAAAAAQABAAAAAAAJAAAAAQABAAAAAAAIAAAAAQABAAAAAAAHAAAAAQABAAAAAAAGAAAAAQABAAAAAAAFAAAAAQABAAAAAAAEAAAAAQABAAAAAAACAAAAAQABAAAAAAADAAAAAQABAAAAAAAEAAEAAQABAAEAAAAFAAEAAQABAAEAAAAGAAEAAQABAAEAAAAHAAEAAQABAAEAAAAIAAEAAQABAAEAAAAJAAEAAQABAAEAAAAKAAEAAQABAAEAAAALAAEAAQABAAEAAAAMAAEAAQABAAEAAAANAAEAAQABAAEAAAANAAIAAQABAAEAAAANAAMAAQABAAEAAAAMAAMAAQABAAEAAAALAAMAAQABAAEAAAAKAAMAAQABAAEAAAAJAAMAAQABAAEAAAAIAAMAAQABAAEAAAAHAAMAAQABAAEAAAAGAAMAAQABAAEAAAAGAAIAAQABAAEAAAAHAAIAAQABAAEAAAAIAAIAAQABAAEAAAAJAAIAAQABAAEAAAAKAAIAAQABAAEAAAALAAIAAQABAAEAAAAMAAIAAQABAAEAAAAAAAgAAQAAAAIAAAABAAgAAQABAAIAAAACAAgAAQABAAIAAAADAAgAAQABAAIAAAAEAAgAAQABAAIAAAAFAAgAAQABAAIAAAAGAAgAAQABAAIAAAAHAAgAAQABAAIAAAAIAAgAAQABAAIAAAAJAAgAAQABAAIAAAAKAAgAAQABAAIAAAALAAgAAQABAAIAAAAMAAgAAQABAAIAAAANAAgAAQABAAIAAAAOAAgAAQACAAIAAAA=")
+modulate = Color(0.4597081, 0.4597081, 0.4597081, 1)
+tile_map_data = PackedByteArray("AAAAAAUAAQAGAAMAAAABAAUAAQAGAAMAAAACAAUAAQAGAAMAAAADAAUAAQAGAAMAAAAEAAUAAQAGAAMAAAAFAAUAAQAGAAMAAAAGAAUAAQAGAAMAAAAHAAUAAQAGAAMAAAAIAAUAAQAGAAMAAAAJAAUAAQAGAAMAAAAKAAUAAQAGAAMAAAALAAUAAQAGAAMAAAAMAAUAAQAGAAMAAAANAAUAAQAGAAMAAAAOAAUAAQAGAAMAAAAAAAYAAQAAAAAAAAAAAAcAAQAAAAEAAAABAAYAAQABAAAAAAABAAcAAQABAAEAAAACAAYAAQABAAAAAAACAAcAAQABAAEAAAADAAYAAQABAAAAAAADAAcAAQABAAEAAAAEAAYAAQABAAAAAAAEAAcAAQABAAEAAAAFAAYAAQABAAAAAAAFAAcAAQABAAEAAAAGAAYAAQABAAAAAAAGAAcAAQABAAEAAAAHAAYAAQABAAAAAAAHAAcAAQABAAEAAAAIAAYAAQABAAAAAAAIAAcAAQABAAEAAAAJAAYAAQABAAAAAAAJAAcAAQABAAEAAAAKAAYAAQABAAAAAAAKAAcAAQABAAEAAAALAAYAAQABAAAAAAALAAcAAQABAAEAAAAMAAYAAQABAAAAAAAMAAcAAQABAAEAAAANAAYAAQABAAAAAAANAAcAAQABAAEAAAAOAAYAAQACAAAAAAAOAAcAAQACAAEAAAAAAAAAAQAAAAAAAAAAAAEAAQAAAAEAAAABAAEAAQABAAEAAAACAAEAAQABAAEAAAADAAEAAQABAAEAAAADAAIAAQABAAEAAAAEAAIAAQABAAEAAAAFAAIAAQABAAEAAAAFAAMACwABAAEAAAABAAAAAQABAAAAAAABAAIAAQABAAEAAAAAAAIAAQAAAAEAAAAAAAMACwABAAEAAAAAAAQAAQAAAAIAAAABAAMACwABAAEAAAABAAQAAQABAAIAAAACAAQAAQABAAIAAAACAAMACwABAAEAAAACAAIAAQABAAEAAAADAAQAAQABAAIAAAADAAMACwABAAEAAAAEAAMACwABAAEAAAAEAAQAAQABAAIAAAAFAAQAAQABAAIAAAAGAAQAAQABAAIAAAAHAAQAAQABAAIAAAAIAAQAAQABAAIAAAAJAAQAAQABAAIAAAAKAAQAAQABAAIAAAALAAQAAQABAAIAAAAMAAQAAQABAAIAAAANAAQAAQABAAIAAAAOAAQAAQACAAIAAAAOAAMAAQACAAEAAAAOAAIAAQACAAEAAAAOAAEAAQACAAEAAAAOAAAAAQACAAAAAAANAAAAAQABAAAAAAAMAAAAAQABAAAAAAALAAAAAQABAAAAAAAKAAAAAQABAAAAAAAJAAAAAQABAAAAAAAIAAAAAQABAAAAAAAHAAAAAQABAAAAAAAGAAAAAQABAAAAAAAFAAAAAQABAAAAAAAEAAAAAQABAAAAAAACAAAAAQABAAAAAAADAAAAAQABAAAAAAAEAAEAAQABAAEAAAAFAAEAAQABAAEAAAAGAAEAAQABAAEAAAAHAAEAAQABAAEAAAAIAAEAAQABAAEAAAAJAAEAAQABAAEAAAAKAAEAAQABAAEAAAALAAEAAQABAAEAAAAMAAEAAQABAAEAAAANAAEAAQABAAEAAAANAAIAAQABAAEAAAANAAMAAQABAAEAAAAMAAMAAQABAAEAAAALAAMAAQABAAEAAAAKAAMAAQABAAEAAAAJAAMAAQABAAEAAAAIAAMAAQABAAEAAAAHAAMAAQABAAEAAAAGAAMAAQABAAEAAAAGAAIAAQABAAEAAAAHAAIAAQABAAEAAAAIAAIAAQABAAEAAAAJAAIAAQABAAEAAAAKAAIAAQABAAEAAAALAAIAAQABAAEAAAAMAAIAAQABAAEAAAAAAAgAAQAAAAIAAAABAAgAAQABAAIAAAACAAgAAQABAAIAAAADAAgAAQABAAIAAAAEAAgAAQABAAIAAAAFAAgAAQABAAIAAAAGAAgAAQABAAIAAAAHAAgAAQABAAIAAAAIAAgAAQABAAIAAAAJAAgAAQABAAIAAAAKAAgAAQABAAIAAAALAAgAAQABAAIAAAAMAAgAAQABAAIAAAANAAgAAQABAAIAAAAOAAgAAQACAAIAAAA=")
 tile_set = ExtResource("2_mxcfa")
 metadata/_edit_lock_ = true
+
+[node name="TileMapLayer" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAAAAMACwABAAEAAAABAAMACwABAAEAAAACAAMACwABAAEAAAADAAMACwABAAEAAAAEAAMACwABAAEAAAAFAAMACwABAAEAAAAGAAMACwABAAEAAAAHAAMACwABAAEAAAAIAAMACwABAAEAAAAJAAMACwABAAEAAAAKAAMACwABAAEAAAALAAMACwABAAEAAAAMAAMACwABAAEAAAANAAMACwABAAEAAAAOAAMACwABAAEAAAAAAAIACwABAAEAAAABAAIACwABAAEAAAACAAIACwABAAEAAAADAAIACwABAAEAAAAEAAIACwABAAEAAAAFAAIACwABAAEAAAAGAAIACwABAAEAAAAHAAIACgABAAEAAAAIAAIACgABAAEAAAAJAAIACgABAAEAAAAKAAIACgABAAEAAAALAAIACwABAAEAAAAMAAIACwABAAEAAAANAAIACwABAAEAAAAOAAIACwABAAEAAAAAAAEACgABAAEAAAABAAEACgABAAEAAAACAAEACgABAAEAAAADAAEACgABAAEAAAAEAAEACwABAAEAAAAFAAEACwABAAEAAAAGAAEACwABAAEAAAAKAAEACgABAAEAAAALAAEACgABAAEAAAAMAAEACgABAAEAAAANAAEACgABAAEAAAAOAAEACgABAAEAAAAHAAEACwABAAEAAAAIAAEACwABAAEAAAAJAAEACwABAAEAAAAAAAAACwABAAEAAAABAAAACwABAAEAAAACAAAACwABAAEAAAADAAAACwABAAEAAAAJAAAACwABAAEAAAAKAAAACwABAAEAAAAIAAAACwABAAEAAAAHAAAACwABAAEAAAAGAAAACwABAAEAAAAFAAAACwABAAEAAAAEAAAACwABAAEAAAAMAAAACwABAAEAAAALAAAACwABAAEAAAANAAAACwABAAEAAAAOAAAACwABAAEAAAA=")
+tile_set = ExtResource("2_mxcfa")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(153, 366)
@@ -93,22 +133,29 @@ editor_draw_limits = true
 y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
-position = Vector2(46, 340)
+position = Vector2(294, 341)
 sprite_frames = ExtResource("3_fbcdm")
-animation = &"walk"
+animation = &"idle"
 autoplay = "idle"
 
-[node name="Node2D" type="Node2D" parent="OnTheGround/Character"]
-position = Vector2(89, 27)
-
 [node name="Supay" type="AnimatedSprite2D" parent="OnTheGround"]
+modulate = Color(0.7016299, 0.7016299, 0.7016299, 1)
+visibility_layer = 32
+position = Vector2(644, 269)
+scale = Vector2(1.6733508, 1.824)
 sprite_frames = SubResource("SpriteFrames_win4w")
+
+[node name="Betzaida" type="AnimatedSprite2D" parent="OnTheGround"]
+position = Vector2(477.00003, 92.99999)
+scale = Vector2(0.24609357, 0.2050781)
+sprite_frames = SubResource("SpriteFrames_7uuy6")
+animation = &"titilar"
+frame_progress = 0.39024606
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
 libraries = {
-&"": SubResource("AnimationLibrary_7vlsj")
+&"": SubResource("AnimationLibrary_sxan4")
 }
-autoplay = "camina"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
