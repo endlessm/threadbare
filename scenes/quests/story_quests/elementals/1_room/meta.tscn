@@ -1,18 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://d3jyc0gb5lpap"]
+[gd_scene load_steps=5 format=3 uid="uid://d3jyc0gb5lpap"]
 
 [ext_resource type="Script" uid="uid://dd48wpstumfko" path="res://scenes/quests/story_quests/elementals/1_room/meta.gd" id="1_7mmbq"]
-[ext_resource type="SpriteFrames" uid="uid://vay3whr8g5la" path="res://scenes/quests/story_quests/el_juguete_perdido/player_components/npcs_components/sheep_idle.tres" id="1_vsuiy"]
+[ext_resource type="Texture2D" uid="uid://c7th0bmt5cn1e" path="res://scenes/quests/story_quests/elementals/0_intro/portal.png" id="2_570hl"]
+[ext_resource type="Texture2D" uid="uid://dt5lxkbt5rhw2" path="res://scenes/quests/story_quests/elementals/player_components/Fireball/Light.png" id="3_al6yu"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_570hl"]
-radius = 36.013885
+radius = 150.6154
 
 [node name="Meta" type="Node2D"]
 script = ExtResource("1_7mmbq")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = ExtResource("1_vsuiy")
-animation = &"idle"
-frame_progress = 0.23542891
+[node name="IntroImage" type="Sprite2D" parent="."]
+z_index = 1
+scale = Vector2(5.4062495, 5.095301)
+texture = ExtResource("2_570hl")
+
+[node name="PointLight2D" type="PointLight2D" parent="IntroImage"]
+position = Vector2(-3.8146973e-06, -0.9812927)
+scale = Vector2(0.38333526, 0.38333526)
+color = Color(0.22149885, 0.9999997, 0.9480055, 1)
+energy = 0.53
+texture = ExtResource("3_al6yu")
 
 [node name="Area2D" type="Area2D" parent="."]
 
