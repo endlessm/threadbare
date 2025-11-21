@@ -1,30 +1,41 @@
-[gd_scene load_steps=6 format=3 uid="uid://dn5eeloem4mw3"]
+[gd_scene load_steps=7 format=3 uid="uid://dn5eeloem4mw3"]
 
 [ext_resource type="Script" uid="uid://beqhvepvx6iai" path="res://scenes/quests/story_quests/elementals/1_room/stealth_components/enemy_1.gd" id="1_lbmph"]
-[ext_resource type="SpriteFrames" uid="uid://deosvk5k4su5f" path="res://scenes/quests/story_quests/NO_EDIT/2_NO_EDIT_combat/NO_EDIT_combat_components/NO_EDIT_throwing_enemy.tres" id="2_8q6ks"]
+[ext_resource type="SpriteFrames" uid="uid://xa1d60cmdpjf" path="res://scenes/quests/story_quests/elementals/2_combat/combat_components/elementals_throwing_enemy.tres" id="2_8q6ks"]
+[ext_resource type="Texture2D" uid="uid://dt5lxkbt5rhw2" path="res://scenes/quests/story_quests/elementals/player_components/Fireball/Light.png" id="3_8q6ks"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lbmph"]
-height = 38.0
+height = 58.00002
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_60u3m"]
 radius = 560.0036
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lbmph"]
-size = Vector2(83, 78)
+size = Vector2(83, 145)
 
 [node name="enemy1" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 2
 collision_mask = 19
 script = ExtResource("1_lbmph")
+speed = 250.0
 attack_range = 60.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["throwing_enemy"]]
 unique_name_in_owner = true
-position = Vector2(0, -30)
+z_index = 1
+position = Vector2(0, -68)
 sprite_frames = ExtResource("2_8q6ks")
-animation = &"defeated"
+animation = &"walk"
 autoplay = "idle"
 flip_h = true
+
+[node name="PointLight2D" type="PointLight2D" parent="AnimatedSprite2D"]
+position = Vector2(-1.9999999, 12)
+scale = Vector2(0.8, 0.87890816)
+color = Color(0, 0, 1, 1)
+shadow_filter = 1
+shadow_filter_smooth = 64.0
+texture = ExtResource("3_8q6ks")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
@@ -44,7 +55,7 @@ collision_layer = 128
 collision_mask = 256
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-position = Vector2(-2.5, -33)
+position = Vector2(-2.5, -66.5)
 shape = SubResource("RectangleShape2D_lbmph")
 debug_color = Color(0.990065, 0, 0.28292, 0.42)
 

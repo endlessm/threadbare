@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c2dk88w1i3yey"]
+[gd_scene load_steps=8 format=3 uid="uid://c2dk88w1i3yey"]
 
 [ext_resource type="Script" uid="uid://cxchosgwf8kr2" path="res://scenes/quests/story_quests/elementals/1_room/jozu.gd" id="1_pwaf6"]
 [ext_resource type="PackedScene" uid="uid://dbdkhhbwd32lu" path="res://scenes/quests/story_quests/elementals/player_components/Fireball/fireball.tscn" id="2_1y7gw"]
+[ext_resource type="Resource" uid="uid://b54bfpkyvckrr" path="res://scenes/quests/story_quests/elementals/1_room/stealth_components/elementals_collected.dialogue" id="3_1y7gw"]
 [ext_resource type="SpriteFrames" uid="uid://0in7xun5tr8u" path="res://scenes/quests/story_quests/elementals/player_components/player1.tres" id="3_78idv"]
 [ext_resource type="Texture2D" uid="uid://dt5lxkbt5rhw2" path="res://scenes/quests/story_quests/elementals/player_components/Fireball/Light.png" id="4_7hwx3"]
 
@@ -12,19 +13,24 @@ size = Vector2(17.00005, 54)
 size = Vector2(32, 129)
 
 [node name="Jozu" type="CharacterBody2D" groups=["player"]]
+z_index = 2
 collision_mask = 17
 script = ExtResource("1_pwaf6")
 bullet_scene = ExtResource("2_1y7gw")
+death_dialogue = ExtResource("3_1y7gw")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(1.5258789e-05, -74)
 rotation = 6.2831855
 sprite_frames = ExtResource("3_78idv")
-animation = &"attack_front"
+animation = &"attack_back"
+frame = 5
+frame_progress = 1.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 process_mode = 3
 position = Vector2(0, -57)
+zoom = Vector2(0.8, 0.8)
 limit_left = -3
 limit_top = 3
 limit_right = 9999997
@@ -44,6 +50,8 @@ wait_time = 2.0
 position = Vector2(1.9999999, -54.899986)
 scale = Vector2(0.8, 0.87890816)
 energy = 0.5
+shadow_filter = 1
+shadow_filter_smooth = 64.0
 texture = ExtResource("4_7hwx3")
 
 [node name="SpawnPointRight" type="Marker2D" parent="."]

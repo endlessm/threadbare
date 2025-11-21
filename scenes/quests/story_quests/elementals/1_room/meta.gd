@@ -1,24 +1,24 @@
 extends Node2D
 
-
 ## ¡Aquí puedes elegir la escena!
-## Arrastra tu archivo .tscn aquí desde el Inspector.
 @export_file("*.tscn") var escena_siguiente: String
 
-
-
-
+## (Opcional) Si quieres que aparezca en un punto específico
+@export var spawn_point_path: String = ""
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	# Verificamos si el 'body' que entró está en el grupo "player".
-	# ¡Asegúrate de que tu jugador esté en este grupo!
 	if body.is_in_group("player"):
 		
-		# Revisamos si hemos asignado una escena en el Inspector.
-		if not escena_siguiente:
-			print("ERROR (PortalEscena): No se ha asignado una 'escena_siguiente' en el Inspector.")
+		if escena_siguiente == "":
+			print("ERROR: No asignaste escena siguiente.")
 			return
 
-		# Si todo está bien, cambiamos a la escena.
-		get_tree().change_scene_to_file(escena_siguiente)
-	pass # Replace with function body.
+		# --- CORRECCIÓN ---
+		# En lugar de cortar de golpe, usamos SceneSwitcher para hacer FADE (Fundido)
+		SceneSwitcher.change_to_file_with_transition(
+			escena_siguiente,
+			spawn_point_path,
+			Transition.Effect.FADE, # Efecto de entrada
+			Transition.Effect.FADE  # Efecto de salida
+		)

@@ -4,19 +4,40 @@ extends CharacterBody2D
 @export var bullet_scene: PackedScene
 @export var speed: float = 250.0
 @export var momentum_factor: float = 0.5
-@export var shoot_cooldown: float = 2.0
+
+# ### NUEVO: Aquí arrastras el diálogo que quieres que salga al morir ###
+@export var death_dialogue: DialogueResource 
+
+# Configuración de Ráfaga
+@export var shoot_cooldown: float = 0.15 
+
+# --- VARIABLES DE DASH ---
+@export var dash_speed: float = 600.0 
+@export var dash_duration: float = 0.4 
+@export var dash_cooldown: float = 2.0 
 
 var can_shoot: bool = true
-var cooldown_counter: float = 0.0
+var shoot_cooldown_counter: float = 0.0
 
 # --- Variables de Estado ---
 var is_attacking: bool = false
-var is_hurting: bool = false # Estado de "herido"
-var is_dead: bool = false # <-- AÑADIDO: Estado de "muerto"
+var is_hurting: bool = false 
+var is_dead: bool = false 
+
+# --- Variables de Estado Dash ---
+var is_dashing: bool = false
+var can_dash: bool = true
+var dash_timer: float = 0.0
+var dash_cooldown_timer: float = 0.0
+var dash_direction: Vector2 = Vector2.DOWN
+# ---------------------------------------
+
+var fire_sequence_index: int = 1 
+var last_shoot_direction: Vector2 = Vector2.DOWN 
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
-# --- (Referencias a los nodos de disparo) ---
+# --- Referencias a los nodos de disparo ---
 @onready var bullet_spawn_raycast: RayCast2D = $BulletSpawnRaycast
 @onready var spawn_right: Marker2D = $SpawnPointRight
 @onready var spawn_left: Marker2D = $SpawnPointLeft
@@ -28,78 +49,122 @@ var facing_direction: Vector2 = Vector2.DOWN
 
 func _physics_process(delta):
 	
-	# --- 1. LÓGICA DE COOLDOWN ---
+	# --- 0. GESTIÓN DE TIEMPOS ---
 	if not can_shoot:
-		cooldown_counter += delta
-		if cooldown_counter >= shoot_cooldown:
+		shoot_cooldown_counter += delta
+		if shoot_cooldown_counter >= shoot_cooldown:
 			can_shoot = true
-			cooldown_counter = 0.0
-
-	# --- 2. LÓGICA DE MOVIMIENTO (WASD) ---
-	var move_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+			shoot_cooldown_counter = 0.0
+			
+	if is_dashing:
+		dash_timer -= delta
+		if dash_timer <= 0:
+			stop_dash()
 	
-	if not is_attacking and current_health_halves > 0:
+	if not can_dash:
+		dash_cooldown_timer -= delta
+		if dash_cooldown_timer <= 0:
+			can_dash = true
+
+	# --- 1. ACTIVACIÓN DEL DASH ---
+	if Input.is_action_just_pressed("sokoban_skip") and can_dash and not is_hurting and not is_dead and not is_dashing:
+		start_dash()
+
+	# --- 2. LÓGICA DE MOVIMIENTO ---
+	if is_dashing:
+		velocity = dash_direction * dash_speed
+		
+	elif not is_attacking and not is_hurting and not is_dead:
+		var move_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 		velocity = move_direction * speed
-		
-		# --- (OPCIONAL) CÓDIGO DE "TROPEZÓN" ---
-		#if is_hurting:
-		#	velocity *= 0.5
-		
 	else:
 		velocity = Vector2.ZERO
 		
 	move_and_slide()
 	
-	# --- 3. LÓGICA DE ANIMACIÓN (MOVIMIENTO) ---
-	if not is_attacking and not is_hurting and current_health_halves > 0:
+	# --- 3. LÓGICA DE ANIMACIÓN ---
+	if not is_attacking and not is_hurting and not is_dead and not is_dashing:
 		if velocity.length() > 0:
-			if abs(velocity.x) > abs(velocity.y):
-				animated_sprite.play("walk_side")
+			animated_sprite.play("walk_side")
+			animated_sprite.flip_h = false 
+
+			if abs(velocity.x) > 0:
 				facing_direction = Vector2(sign(velocity.x), 0)
-				if velocity.x < 0:
-					animated_sprite.flip_h = true
-				else:
-					animated_sprite.flip_h = false
-			else:
-				animated_sprite.flip_h = false
-				if velocity.y < 0:
-					animated_sprite.play("walk_back")
-					facing_direction = Vector2.UP
-				else:
-					animated_sprite.play("walk_front")
-					facing_direction = Vector2.DOWN
+			elif abs(velocity.y) > 0:
+				facing_direction = Vector2(0, sign(velocity.y))
+
+			if velocity.x < 0:
+				animated_sprite.flip_h = true 
+			elif velocity.x > 0:
+				animated_sprite.flip_h = false 
 		else:
 			animated_sprite.play("idle")
 	
-	# --- 4. LÓGICA DE DISPARO (FLECHAS) ---
-	if can_shoot and not is_attacking and not is_hurting and current_health_halves > 0:
-		if Input.is_action_pressed("shoot_up"):
+	# --- 4. LÓGICA DE DISPARO (SECUENCIAL 1 al 5) ---
+	if can_shoot and not is_hurting and current_health_halves > 0 and not is_dashing:
+		if Input.is_action_pressed("sokoban_undo"):
 			is_attacking = true
-			can_shoot = false
-			animated_sprite.play("attack_back")
-			shoot(Vector2.UP)
-		elif Input.is_action_pressed("shoot_down"):
-			is_attacking = true
-			can_shoot = false
-			animated_sprite.play("attack_front")
-			shoot(Vector2.DOWN)
-		elif Input.is_action_pressed("shoot_left"):
-			is_attacking = true
-			can_shoot = false
-			animated_sprite.play("attack_side")
-			animated_sprite.flip_h = true
-			shoot(Vector2.LEFT)
-		elif Input.is_action_pressed("shoot_right"):
-			is_attacking = true
-			can_shoot = false
-			animated_sprite.play("attack_side")
-			animated_sprite.flip_h = false
-			shoot(Vector2.RIGHT)
 			
-	# --- 5. LÓGICA DE PARPADEO ---
+			match fire_sequence_index:
+				1: shoot(facing_direction)
+				2:
+					shoot(facing_direction.rotated(deg_to_rad(-5)))
+					shoot(facing_direction.rotated(deg_to_rad(5)))
+				3:
+					shoot(facing_direction)
+					shoot(facing_direction.rotated(deg_to_rad(-15)))
+					shoot(facing_direction.rotated(deg_to_rad(15)))
+				4:
+					shoot(facing_direction.rotated(deg_to_rad(-7)))
+					shoot(facing_direction.rotated(deg_to_rad(7)))
+					shoot(facing_direction.rotated(deg_to_rad(-20)))
+					shoot(facing_direction.rotated(deg_to_rad(20)))
+				5:
+					shoot(facing_direction) 
+					shoot(facing_direction.rotated(deg_to_rad(-12))) 
+					shoot(facing_direction.rotated(deg_to_rad(12)))
+					shoot(facing_direction.rotated(deg_to_rad(-25))) 
+					shoot(facing_direction.rotated(deg_to_rad(25)))
+			
+			fire_sequence_index += 1
+			if fire_sequence_index > 5: fire_sequence_index = 1 
+			
+			if facing_direction == Vector2.UP: start_attack_visual("attack_back", true)
+			elif facing_direction == Vector2.DOWN: start_attack_visual("attack_front", true)
+			elif facing_direction == Vector2.LEFT: start_attack_visual("attack_side", true)
+			elif facing_direction == Vector2.RIGHT: start_attack_visual("attack_side", false)
+			
+			can_shoot = false
+			
 	update_blinking_effect()
-		
-		
+
+# --- FUNCIONES AUXILIARES ---
+func start_dash():
+	is_dashing = true
+	can_dash = false
+	dash_timer = dash_duration
+	dash_cooldown_timer = dash_cooldown
+	var input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	if input_dir != Vector2.ZERO: dash_direction = input_dir.normalized()
+	else: dash_direction = facing_direction
+	animated_sprite.modulate = Color(0.5, 0.5, 1, 0.8)
+	fire_burst()
+
+func stop_dash():
+	is_dashing = false
+	velocity = Vector2.ZERO
+	animated_sprite.modulate = Color(1, 1, 1, 1)
+
+func fire_burst():
+	var directions = [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT]
+	directions.append_array([Vector2(1,1).normalized(), Vector2(-1,1).normalized(), Vector2(1,-1).normalized(), Vector2(-1,-1).normalized()])
+	for dir in directions: shoot(dir)
+
+func start_attack_visual(anim_name: String, flip_needed: bool):
+	animated_sprite.play(anim_name)
+	animated_sprite.frame = 0 
+	if anim_name == "attack_side": animated_sprite.flip_h = flip_needed
+
 # --- CÓDIGO DE VIDA ---
 @export var max_health_halves: int = 6
 var current_health_halves: int
@@ -112,17 +177,15 @@ func _ready():
 	current_health_halves = max_health_halves
 	health_changed.emit(current_health_halves)
 	invulnerability_timer.timeout.connect(_on_invulnerability_timer_timeout)
-	
-	animated_sprite.animation_finished.connect(_on_animation_finished)
+	if not animated_sprite.animation_finished.is_connected(_on_animation_finished):
+		animated_sprite.animation_finished.connect(_on_animation_finished)
 
 func take_damage(damage_amount_halves: int = 1):
-	# MODIFICADO: Añadido 'is_dead' a la comprobación
-	if is_invulnerable or is_hurting or is_dead: return
+	if is_invulnerable or is_hurting or is_dead or is_dashing: return
 	if current_health_halves <= 0: return
 
 	current_health_halves -= damage_amount_halves
 	current_health_halves = max(0, current_health_halves)
-	print("Vida actual: ", current_health_halves)
 	health_changed.emit(current_health_halves)
 	
 	if current_health_halves == 0:
@@ -130,126 +193,87 @@ func take_damage(damage_amount_halves: int = 1):
 	else:
 		is_invulnerable = true
 		invulnerability_timer.start()
-		
 		is_attacking = false
 		is_hurting = true
 		animated_sprite.play("hurt")
 
-
 func heal(heal_amount_halves: int = 1):
 	current_health_halves += heal_amount_halves
 	current_health_halves = min(current_health_halves, max_health_halves)
-	print("Vida actual: ", current_health_halves)
 	health_changed.emit(current_health_halves)
 
 func add_heart_container():
 	max_health_halves += 2
 	heal(2)
 
-# --- MODIFICADO: Lógica de 'die()' ---
+# ### FUNCIÓN DE MUERTE MODIFICADA ###
 func die():
-	# 1. Comprueba si ya estamos muertos
 	if is_dead: return
-	
-	# 2. Establece el estado
 	is_dead = true
 	is_attacking = false
 	is_hurting = false
-	
-	print("¡El jugador ha muerto!")
 	died.emit()
 	
-	# 3. Detiene la física (movimiento)
-	set_physics_process(false)
+	# 1. Detenemos el movimiento
+	velocity = Vector2.ZERO
+	set_physics_process(false) # Congelamos controles
 	
-	# 4. Reproduce la animación de muerte
-	# (La lógica de reinicio se moverá a '_on_animation_finished')
+	# 2. Animación de muerte
 	animated_sprite.play("die")
 
+	# 3. Esperamos un momento para ver la animación
+	await get_tree().create_timer(1.0).timeout
+	
+	# 4. Mostramos diálogo si existe
+	if death_dialogue:
+		DialogueManager.show_dialogue_balloon(death_dialogue, "")
+		await DialogueManager.dialogue_ended
+	
+	# 5. Reiniciamos
+	get_tree().reload_current_scene()
 
 func _on_invulnerability_timer_timeout():
 	is_invulnerable = false
 
 func update_blinking_effect():
-	if is_invulnerable:
+	if is_invulnerable and not is_dashing:
 		animated_sprite.modulate.a = abs(sin(Time.get_ticks_msec() * 0.02))
-	else:
+	elif not is_dashing:
 		animated_sprite.modulate.a = 1.0
-# --- FIN DE CÓDIGO DE VIDA ---
 
-
-# --- FUNCIÓN DE DISPARO ---
 func shoot(shoot_direction: Vector2):
-	if not bullet_scene:
-		print("ERROR: No se asignó la 'Bullet Scene' en el Inspector.")
-		return
-
+	if not bullet_scene: return
 	var bullet = bullet_scene.instantiate()
 	bullet.direction = shoot_direction
 	
-	var spawn_pos: Vector2
 	var target_marker: Marker2D
-	if shoot_direction == Vector2.RIGHT:
-		target_marker = spawn_right
-	elif shoot_direction == Vector2.LEFT:
-		target_marker = spawn_left
-	elif shoot_direction == Vector2.UP:
-		target_marker = spawn_up
-	else:
-		target_marker = spawn_down
+	if shoot_direction.x > 0: target_marker = spawn_right
+	elif shoot_direction.x < 0: target_marker = spawn_left
+	elif shoot_direction.y < 0: target_marker = spawn_up
+	else: target_marker = spawn_down
 
 	var target_local_pos = bullet_spawn_raycast.to_local(target_marker.global_position)
 	bullet_spawn_raycast.target_position = target_local_pos
 	bullet_spawn_raycast.force_raycast_update()
 	
-	if bullet_spawn_raycast.is_colliding():
-		spawn_pos = bullet_spawn_raycast.get_collision_point()
-	else:
-		spawn_pos = target_marker.global_position
+	var spawn_pos: Vector2
+	if bullet_spawn_raycast.is_colliding(): spawn_pos = bullet_spawn_raycast.get_collision_point()
+	else: spawn_pos = target_marker.global_position
 		
 	bullet.global_position = spawn_pos
-	
-	if shoot_direction == Vector2.LEFT:
-		bullet.rotation_degrees = 180
-	elif shoot_direction == Vector2.UP:
-		bullet.rotation_degrees = -90
-	elif shoot_direction == Vector2.DOWN:
-		bullet.rotation_degrees = 90
-	
+	bullet.rotation = shoot_direction.angle()
 	get_tree().current_scene.add_child(bullet)
 	
 	var bullet_base_velocity = shoot_direction * bullet.speed
-	var final_velocity = bullet_base_velocity + (velocity * momentum_factor)
-	bullet.linear_velocity = final_velocity 
-# --- FUNCIÓN DE FIN DE ANIMACIÓN ---
-# --- MODIFICADO: Añadida la lógica para 'die' ---
+	if is_dashing: bullet.linear_velocity = bullet_base_velocity
+	else: bullet.linear_velocity = bullet_base_velocity + (velocity * momentum_factor)
+
 func _on_animation_finished():
 	var anim_name = animated_sprite.animation
-	
-	# Comprueba si la animación que terminó es una de las de ataque
-	if anim_name == "attack_front" or anim_name == "attack_back" or anim_name == "attack_side":
-		is_attacking = false
-		
-	# Comprueba si la animación que terminó fue la de "hurt"
-	if anim_name == "hurt":
-		is_hurting = false
-
-	# --- ¡BLOQUE AÑADIDO PARA LA MUERTE! ---
-	# Comprueba si la animación que terminó fue la de "morir"
-	if anim_name == "die":
-		# Ahora que la animación terminó, oculta al jugador y reinicia
-		hide()
-		await get_tree().create_timer(2.0).timeout
-		get_tree().reload_current_scene()
-
+	if anim_name == "attack_front" or anim_name == "attack_back" or anim_name == "attack_side": is_attacking = false
+	if anim_name == "hurt": is_hurting = false
 
 func _on_hit_box_body_entered(body: Node2D) -> void:
-	# Comprobamos si el 'body' que entró está en el grupo "bullet"
 	if body.is_in_group("enemy_projectile"):
-	
-		# 1. Llama a la función de morir (de forma segura)
-		call_deferred("take_damage",1)
-	
-		# 2. Destruye la bala que nos golpeó
+		call_deferred("take_damage", 1)
 		body.queue_free()
-	pass # Replace with function body.
