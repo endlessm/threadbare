@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://bal803byshlbc"]
+[gd_scene load_steps=21 format=4 uid="uid://bal803byshlbc"]
 
 [ext_resource type="TileSet" uid="uid://chmqpyc2nqxxt" path="res://scenes/quests/story_quests/el_abrigo/el_abrigo_tileset/el_abrigo_tileset.tres" id="1_id63g"]
 [ext_resource type="Texture2D" uid="uid://b8lsrb3nntxoo" path="res://scenes/quests/story_quests/el_abrigo/0_el_abrigo_intro/intro_components/el_abrigo_npc_Intro_idle.png" id="3_id63g"]
@@ -9,6 +9,7 @@
 [ext_resource type="SpriteFrames" uid="uid://djwymcffy83" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_red.tres" id="5_m7ipy"]
 [ext_resource type="PackedScene" uid="uid://bp20cjimwi8l0" path="res://scenes/game_elements/props/buildings/house/house_2.tscn" id="6_6httn"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_vwcbt"]
+[ext_resource type="AudioStream" uid="uid://dk10o5q87xbct" path="res://assets/first_party/music/Threadbare Loop_Main_Bridge_01.ogg" id="10_m7ipy"]
 
 [sub_resource type="Animation" id="Animation_qkaig"]
 length = 0.001
@@ -271,8 +272,13 @@ position = Vector2(743, 346)
 script = ExtResource("4_r3of1")
 dialogue = ExtResource("5_ge0cj")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
-next_scene = "uid://ikqwy7kpa5ly"
+next_scene = "uid://c1ysvkwgay1fg"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." instance=ExtResource("6_vwcbt")]
 position = Vector2(350, 218)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_m7ipy")
+autoplay = true
+parameters/looping = true
