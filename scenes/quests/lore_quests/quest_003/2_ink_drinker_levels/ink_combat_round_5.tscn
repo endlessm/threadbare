@@ -1,6 +1,7 @@
-[gd_scene load_steps=32 format=4 uid="uid://ncxowd35nxap"]
+[gd_scene load_steps=33 format=4 uid="uid://ncxowd35nxap"]
 
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="1_6g6ab"]
+[ext_resource type="Script" uid="uid://baodcrrlprx08" path="res://scenes/quests/lore_quests/quest_003/2_ink_drinker_levels/components/vase_destruction_tracker.gd" id="1_brd5j"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_u63rw"]
 [ext_resource type="TileSet" uid="uid://yducoif83sia" path="res://tiles/foam.tres" id="2_7t80u"]
 [ext_resource type="AudioStream" uid="uid://dkgtyb0x1i0m2" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/combat_music.tres" id="2_djbws"]
@@ -21,13 +22,13 @@
 [ext_resource type="PackedScene" uid="uid://clgisducnnh0a" path="res://scenes/game_elements/fx/liquid_small_splat/liquid_small_splat.tscn" id="19_32m70"]
 [ext_resource type="PackedScene" uid="uid://b4qu6wml5gd7a" path="res://scenes/game_elements/fx/liquid_big_splat/liquid_big_splat.tscn" id="20_ai5el"]
 [ext_resource type="PackedScene" uid="uid://bgce3qns72g3m" path="res://scenes/game_elements/fx/liquid_trail.tscn" id="21_kqt6a"]
-[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="22_jmban"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="23_fv7ji"]
 [ext_resource type="SpriteFrames" uid="uid://dxbt7cgoq3dg5" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_blue.tres" id="23_ifeq7"]
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="24_brd5j"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="25_c2wf5"]
 [ext_resource type="SpriteFrames" uid="uid://r0w8oerw0kga" path="res://scenes/game_elements/props/decoration/water_rock/components/water_rock_01.tres" id="25_k8ch5"]
 [ext_resource type="SpriteFrames" uid="uid://c5q1t8qd1h1pl" path="res://scenes/game_elements/props/decoration/water_rock/components/water_rock_02.tres" id="26_3urin"]
+[ext_resource type="PackedScene" uid="uid://co4mogwvmwf82" path="res://scenes/game_elements/props/filling_barrel/fragile_vase.tscn" id="28_k8ch5"]
 
 [sub_resource type="Animation" id="Animation_nlryc"]
 resource_name = "goal_completed"
@@ -55,6 +56,7 @@ _data = {
 size = Vector2(101, 49)
 
 [node name="InkCombatRound5" type="Node2D"]
+script = ExtResource("1_brd5j")
 
 [node name="BackgroundMusic" parent="." instance=ExtResource("1_u63rw")]
 stream = ExtResource("2_djbws")
@@ -209,18 +211,18 @@ position = Vector2(385, 404)
 scale = Vector2(1.1, 1.1)
 sprite_frames = ExtResource("26_3urin")
 
-[node name="FillingBarrel" parent="OnTheGround" instance=ExtResource("22_jmban")]
-position = Vector2(123, 554)
+[node name="FragileVase" parent="OnTheGround" groups=["Vases"] instance=ExtResource("28_k8ch5")]
+position = Vector2(935, 106)
 label = "Cyan"
 color = Color(0, 1, 1, 1)
 
-[node name="FillingBarrel2" parent="OnTheGround" instance=ExtResource("22_jmban")]
-position = Vector2(991, 112)
+[node name="FragileVase2" parent="OnTheGround" groups=["Vases"] instance=ExtResource("28_k8ch5")]
+position = Vector2(259, 48)
 label = "Magenta"
 color = Color(1, 0, 1, 1)
 
-[node name="FillingBarrel3" parent="OnTheGround" instance=ExtResource("22_jmban")]
-position = Vector2(213, 49)
+[node name="FragileVase3" parent="OnTheGround" groups=["Vases"] instance=ExtResource("28_k8ch5")]
+position = Vector2(143, 581)
 label = "Yellow"
 color = Color(1, 0.972549, 0, 1)
 
