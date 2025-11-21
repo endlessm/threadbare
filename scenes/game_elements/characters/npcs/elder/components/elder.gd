@@ -33,6 +33,9 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
+	if self not in eternal_loom.elders:
+		eternal_loom.elders.append(self)
+
 	talk_behavior.before_dialogue = _before_dialogue
 	interact_area.interaction_ended.connect(_on_interaction_ended)
 	animated_sprite_2d.connect("frame_changed", _on_frame_changed)
@@ -68,6 +71,11 @@ func show_storybook() -> void:
 	_storybook.reset_focus()
 	chosen_quest = await _storybook.selected
 	_storybook_layer.remove_child(_storybook)
+
+
+func congratulate_player() -> void:
+	DialogueManager.show_dialogue_balloon(talk_behavior.dialogue, "threads_incorporated", [self])
+	await DialogueManager.dialogue_ended
 
 
 func _before_dialogue() -> void:

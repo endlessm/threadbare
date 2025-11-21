@@ -1,9 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://cokul8w425pja"]
+[gd_scene load_steps=14 format=3 uid="uid://cokul8w425pja"]
 
 [ext_resource type="Script" uid="uid://dil8mgaf03bei" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_spreading_enemy.gd" id="1_304le"]
 [ext_resource type="Script" uid="uid://r1kriwyodjlt" path="res://scenes/game_logic/walk_behaviors/navigation_follow_walk_behavior.gd" id="2_31awk"]
 [ext_resource type="Script" uid="uid://id28maao3vdy" path="res://scenes/game_logic/walk_behaviors/path_walk_behavior.gd" id="2_304le"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="3_45we0"]
+[ext_resource type="AudioStream" uid="uid://dgpeb1dtmfqud" path="res://assets/third_party/sounds/characters/enemies/guard/AlertSound.ogg" id="5_2dnul"]
+[ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="6_pumxu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8g3pn"]
 size = Vector2(68, 20)
@@ -14,20 +16,88 @@ radius = 96.0
 [sub_resource type="Resource" id="Resource_2dnul"]
 script = ExtResource("3_45we0")
 walk_speed = 90.0
-run_speed = 500.0
-stopping_step = 1500.0
-moving_step = 4000.0
-stuck_speed = 300.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [sub_resource type="Resource" id="Resource_pumxu"]
 script = ExtResource("3_45we0")
 walk_speed = 270.0
-run_speed = 500.0
-stopping_step = 1500.0
-moving_step = 4000.0
-stuck_speed = 300.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
+
+[sub_resource type="Animation" id="Animation_pumxu"]
+resource_name = "alert"
+step = 0.1
+tracks/0/type = "audio"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AlertSound")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("5_2dnul")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/0/use_blend = true
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AlertSymbol:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AlertSymbol:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_o4sxw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AlertSymbol:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AlertSymbol:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gwqur"]
+_data = {
+&"RESET": SubResource("Animation_o4sxw"),
+&"alert": SubResource("Animation_pumxu")
+}
 
 [node name="VoidSpreadingEnemy" type="CharacterBody2D"]
 collision_layer = 0
@@ -63,5 +133,32 @@ speeds = SubResource("Resource_pumxu")
 agent = NodePath("../NavigationAgent2D")
 character = NodePath("..")
 metadata/_custom_type_script = "uid://r1kriwyodjlt"
+
+[node name="AlertSound" type="AudioStreamPlayer" parent="."]
+volume_db = -5.0
+bus = &"SFX"
+
+[node name="AlertSymbol" type="TextureRect" parent="."]
+visible = false
+modulate = Color(1, 0, 0, 1)
+self_modulate = Color(1, 1, 1, 0)
+z_index = 10
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -62.0
+offset_top = -124.0
+offset_right = 62.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("6_pumxu")
+
+[node name="AlertAnimation" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_gwqur")
+}
 
 [connection signal="body_entered" from="PlayerCaptureArea" to="." method="_on_player_capture_area_body_entered"]
