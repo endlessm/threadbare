@@ -4,12 +4,13 @@
 [ext_resource type="PackedScene" uid="uid://c2dk88w1i3yey" path="res://scenes/quests/story_quests/elementals/player_components/Jozu/jozu.tscn" id="2_i50ek"]
 [ext_resource type="PackedScene" uid="uid://dn5eeloem4mw3" path="res://scenes/quests/story_quests/elementals/1_room/stealth_components/enemy1.tscn" id="3_oka1a"]
 [ext_resource type="PackedScene" uid="uid://bjbh1ows4s0jt" path="res://scenes/quests/story_quests/elementals/1_room/stealth_components/throwing_enemy_elementals.tscn" id="4_gkqpq"]
+[ext_resource type="SpriteFrames" uid="uid://xa1d60cmdpjf" path="res://scenes/quests/story_quests/elementals/2_combat/combat_components/elementals_throwing_enemy.tres" id="4_p5nme"]
 [ext_resource type="PackedScene" uid="uid://d3jyc0gb5lpap" path="res://scenes/quests/story_quests/elementals/1_room/meta.tscn" id="4_t64rs"]
 [ext_resource type="PackedScene" uid="uid://k6hg11uhespi" path="res://scenes/quests/story_quests/elementals/player_components/Health_Ui.tscn" id="5_t64rs"]
 [ext_resource type="Texture2D" uid="uid://drrig6ejccnl2" path="res://scenes/quests/story_quests/elementals/1_stealth/Tilemap/tilemap_packed_new.png" id="8_tgdsa"]
-[ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="9_kx224"]
-[ext_resource type="AudioStream" uid="uid://vcnn2ujq6fg3" path="res://scenes/quests/story_quests/elementals/1_room/musica_mapa1/Minijuego uno Elementals (mp3cut.net) (1).mp3" id="10_5bldn"]
-[ext_resource type="Resource" uid="uid://bins3yi7qdspl" path="res://scenes/quests/story_quests/elementals/1_stealth/stealth_components/elementals_checkpoint.dialogue" id="10_th56i"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="10_tgdsa"]
+[ext_resource type="Resource" uid="uid://ncmlwwqi6urq" path="res://scenes/quests/story_quests/elementals/1_stealth/stealth_components/elementals_stealth.dialogue" id="11_kx224"]
+[ext_resource type="AudioStream" uid="uid://dvant0g3aqgcs" path="res://scenes/quests/story_quests/elementals/0_intro/musica intro/nuevo_sountrack_intro.mp3" id="11_p5nme"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hvotr"]
 texture = ExtResource("8_tgdsa")
@@ -6805,14 +6806,11 @@ physics_layer_2/collision_layer = 0
 physics_layer_2/collision_mask = 0
 sources/1 = SubResource("TileSetAtlasSource_hvotr")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_a4nrt"]
-size = Vector2(168.25, 122)
-
 [node name="StealthTemplateLevel2" type="Node2D"]
 y_sort_enabled = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.481789, 0.48179, 0.481789, 1)
+color = Color(0.58103293, 0.581033, 0.58103275, 1)
 
 [node name="OnTheGround" type="Node2D" parent="."]
 z_index = 1
@@ -6827,440 +6825,369 @@ shoot_cooldown = 0.5
 [node name="Group enemy1" type="Node" parent="OnTheGround"]
 
 [node name="enemy1" parent="OnTheGround/Group enemy1" instance=ExtResource("3_oka1a")]
-position = Vector2(1040, 247)
+position = Vector2(2422, 851)
 
 [node name="enemy2" parent="OnTheGround/Group enemy1" instance=ExtResource("3_oka1a")]
-position = Vector2(1389, 854)
+position = Vector2(2586, 899)
 
 [node name="enemy3" parent="OnTheGround/Group enemy1" instance=ExtResource("3_oka1a")]
-position = Vector2(1428, 446)
+position = Vector2(2707, 499)
 
-[node name="ThrowingEnemy" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
-position = Vector2(5011, 380)
+[node name="ThrowingEnemy7" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(3054, 531)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy" parent="OnTheGround/Group enemy1/ThrowingEnemy" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3237, 82)
+[node name="ThrowingEnemy8" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(3181, 749)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy2" parent="OnTheGround/Group enemy1/ThrowingEnemy" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3140, 233)
+[node name="ThrowingEnemy9" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(4543, 4435)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy4" parent="OnTheGround/Group enemy1/ThrowingEnemy" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1751, 49)
+[node name="ThrowingEnemy10" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(4523, 4888)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy5" parent="OnTheGround/Group enemy1/ThrowingEnemy" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1662, 173)
+[node name="ThrowingEnemy11" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(4663, 4671)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy6" parent="OnTheGround/Group enemy1/ThrowingEnemy" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1655, 343)
+[node name="ThrowingEnemy13" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(3062, 857)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy7" parent="OnTheGround/Group enemy1/ThrowingEnemy" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1756, 517)
+[node name="ThrowingEnemy14" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(3356, 508)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy3" parent="OnTheGround/Group enemy1/ThrowingEnemy" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3211, 492)
+[node name="ThrowingEnemy20" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(3396, 882)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
 [node name="ThrowingEnemy2" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
-position = Vector2(5011, 380)
+position = Vector2(4835, 620)
 throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy" parent="OnTheGround/Group enemy1/ThrowingEnemy2" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3237, 82)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy2" parent="OnTheGround/Group enemy1/ThrowingEnemy2" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3140, 233)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy4" parent="OnTheGround/Group enemy1/ThrowingEnemy2" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1751, 49)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy5" parent="OnTheGround/Group enemy1/ThrowingEnemy2" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1662, 173)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy6" parent="OnTheGround/Group enemy1/ThrowingEnemy2" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1655, 343)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy7" parent="OnTheGround/Group enemy1/ThrowingEnemy2" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1756, 517)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy3" parent="OnTheGround/Group enemy1/ThrowingEnemy2" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3211, 492)
-throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
 [node name="ThrowingEnemy3" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
-position = Vector2(5011, 380)
+position = Vector2(4870, 910)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy" parent="OnTheGround/Group enemy1/ThrowingEnemy3" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3237, 82)
+[node name="ThrowingEnemy23" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(4867, 4639)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy2" parent="OnTheGround/Group enemy1/ThrowingEnemy3" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3140, 233)
+[node name="ThrowingEnemy24" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(1363, 4489)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy4" parent="OnTheGround/Group enemy1/ThrowingEnemy3" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1751, 49)
+[node name="ThrowingEnemy25" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(1365, 4664)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy5" parent="OnTheGround/Group enemy1/ThrowingEnemy3" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1662, 173)
+[node name="ThrowingEnemy26" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(4730, 4433)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy6" parent="OnTheGround/Group enemy1/ThrowingEnemy3" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1655, 343)
+[node name="ThrowingEnemy28" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(3617, 526)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy7" parent="OnTheGround/Group enemy1/ThrowingEnemy3" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1756, 517)
+[node name="ThrowingEnemy29" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(3714, 677)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy3" parent="OnTheGround/Group enemy1/ThrowingEnemy3" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3211, 492)
+[node name="ThrowingEnemy30" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(4745, 4915)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy4" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
-position = Vector2(5011, 380)
+[node name="ThrowingEnemy31" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(1138, 4489)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy" parent="OnTheGround/Group enemy1/ThrowingEnemy4" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3237, 82)
+[node name="ThrowingEnemy32" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(1145, 4659)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy2" parent="OnTheGround/Group enemy1/ThrowingEnemy4" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3140, 233)
+[node name="ThrowingEnemy33" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(1044, 4833)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy4" parent="OnTheGround/Group enemy1/ThrowingEnemy4" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1751, 49)
+[node name="ThrowingEnemy34" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(3670, 865)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy5" parent="OnTheGround/Group enemy1/ThrowingEnemy4" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1662, 173)
+[node name="ThrowingEnemy35" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(5454, 547)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy6" parent="OnTheGround/Group enemy1/ThrowingEnemy4" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1655, 343)
+[node name="ThrowingEnemy36" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(2978, 4534)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy7" parent="OnTheGround/Group enemy1/ThrowingEnemy4" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1756, 517)
+[node name="ThrowingEnemy37" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(2857, 4739)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy3" parent="OnTheGround/Group enemy1/ThrowingEnemy4" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3211, 492)
+[node name="ThrowingEnemy38" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(2817, 4587)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
+projectile_speed = 500.0
+projectile_duration = 3.0
+projectile_follows_player = true
+
+[node name="ThrowingEnemy39" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(2679, 4707)
+throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
+projectile_speed = 500.0
+projectile_duration = 3.0
+projectile_follows_player = true
+
+[node name="ThrowingEnemy40" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(5431, 2053)
+throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
+projectile_speed = 500.0
+projectile_duration = 3.0
+projectile_follows_player = true
+
+[node name="ThrowingEnemy41" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(3742, 2629)
+throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
+projectile_speed = 500.0
+projectile_duration = 3.0
+projectile_follows_player = true
+
+[node name="ThrowingEnemy42" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(3736, 2435)
+throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
+projectile_speed = 500.0
+projectile_duration = 3.0
+projectile_follows_player = true
+
+[node name="ThrowingEnemy43" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(3736, 2837)
+throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
+projectile_speed = 500.0
+projectile_duration = 3.0
+projectile_follows_player = true
+
+[node name="ThrowingEnemy44" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(183, 2306)
+throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
+projectile_speed = 500.0
+projectile_duration = 3.0
+projectile_follows_player = true
+
+[node name="ThrowingEnemy45" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(1343, 2186)
+throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
+projectile_speed = 500.0
+projectile_duration = 3.0
+projectile_follows_player = true
+
+[node name="ThrowingEnemy46" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(1134, 2267)
+throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
+projectile_speed = 500.0
+projectile_duration = 3.0
+projectile_follows_player = true
+
+[node name="ThrowingEnemy48" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(277, 2313)
+throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
+projectile_speed = 500.0
+projectile_duration = 3.0
+projectile_follows_player = true
+
+[node name="ThrowingEnemy49" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(102, 2306)
+throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
+projectile_speed = 500.0
+projectile_duration = 3.0
+projectile_follows_player = true
+
+[node name="ThrowingEnemy51" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(5023, 4936)
+throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
+projectile_speed = 500.0
+projectile_duration = 3.0
+projectile_follows_player = true
+
+[node name="ThrowingEnemy52" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(5123, 4790)
+throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
 [node name="ThrowingEnemy5" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
-position = Vector2(5011, 380)
+position = Vector2(4760, 798)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3237, 82)
+[node name="ThrowingEnemy47" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(1085, 3167)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy2" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3140, 233)
+[node name="ThrowingEnemy50" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(1179, 3174)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy4" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1751, 49)
+[node name="ThrowingEnemy54" parent="OnTheGround/Group enemy1" instance=ExtResource("4_gkqpq")]
+position = Vector2(1004, 3167)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
-[node name="ThrowingEnemy5" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1662, 173)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
+[node name="enemy4" parent="OnTheGround/Group enemy1" instance=ExtResource("3_oka1a")]
+position = Vector2(2205, 870)
 
-[node name="ThrowingEnemy6" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1655, 343)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
+[node name="enemy5" parent="OnTheGround/Group enemy1" instance=ExtResource("3_oka1a")]
+position = Vector2(1602, 838)
 
-[node name="ThrowingEnemy7" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1756, 517)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
+[node name="enemy6" parent="OnTheGround/Group enemy1" instance=ExtResource("3_oka1a")]
+position = Vector2(1791, 887)
 
-[node name="ThrowingEnemy3" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3211, 492)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
+[node name="enemy7" parent="OnTheGround/Group enemy1" instance=ExtResource("3_oka1a")]
+position = Vector2(2142, 483)
 
-[node name="ThrowingEnemy8" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(241, 57)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
+[node name="enemy8" parent="OnTheGround/Group enemy1" instance=ExtResource("3_oka1a")]
+position = Vector2(1671, 549)
+speed = 350.0
 
-[node name="ThrowingEnemy9" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(494, -90)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
+[node name="enemy9" parent="OnTheGround/Group enemy1" instance=ExtResource("3_oka1a")]
+position = Vector2(1992, 820)
+speed = 350.0
 
-[node name="ThrowingEnemy10" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(666, -4)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
+[node name="enemy10" parent="OnTheGround/Group enemy1" instance=ExtResource("3_oka1a")]
+position = Vector2(1763, 697)
+speed = 350.0
 
-[node name="ThrowingEnemy11" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(626, 183)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy12" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(631, 380)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy13" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-143, 1678)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy15" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1832, 2254)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy16" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1838, 2060)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy17" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-1838, 2462)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy18" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3658, 1877)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy19" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-4117, 2018)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy20" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-4417, 2042)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy21" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-4778, 1920)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy22" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3879, 2740)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy23" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-4258, 2813)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy24" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-4649, 2807)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy25" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-4863, 2440)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy26" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-3204, 3901)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy27" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-551, 4561)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy28" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(-451, 4415)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
-
-[node name="ThrowingEnemy14" parent="OnTheGround/Group enemy1/ThrowingEnemy5" instance=ExtResource("4_gkqpq")]
-position = Vector2(543, 2115)
-throwing_period = 4.0
-projectile_speed = 500.0
-projectile_duration = 3.0
-projectile_follows_player = true
+[node name="enemy11" parent="OnTheGround/Group enemy1" instance=ExtResource("3_oka1a")]
+position = Vector2(2240, 648)
+speed = 350.0
 
 [node name="Group enemy4" type="Node" parent="OnTheGround"]
 
@@ -7271,43 +7198,46 @@ position = Vector2(411, 4399)
 position = Vector2(870, 4228)
 
 [node name="enemy5" parent="OnTheGround/Group enemy4" instance=ExtResource("3_oka1a")]
-position = Vector2(1109, 4381)
+position = Vector2(916, 4482)
 
 [node name="enemy6" parent="OnTheGround/Group enemy4" instance=ExtResource("3_oka1a")]
-position = Vector2(3917, 4409)
+position = Vector2(3632, 4708)
 
 [node name="enemy7" parent="OnTheGround/Group enemy4" instance=ExtResource("3_oka1a")]
-position = Vector2(4041, 4561)
+position = Vector2(4084, 4656)
 
 [node name="enemy8" parent="OnTheGround/Group enemy4" instance=ExtResource("3_oka1a")]
-position = Vector2(4046, 4708)
+position = Vector2(3854, 4773)
 
 [node name="enemy9" parent="OnTheGround/Group enemy4" instance=ExtResource("3_oka1a")]
-position = Vector2(3963, 4864)
+position = Vector2(3875, 4921)
 
 [node name="enemy2" parent="OnTheGround/Group enemy4" instance=ExtResource("3_oka1a")]
-position = Vector2(704, 5056)
+position = Vector2(744, 4881)
 
 [node name="enemy3" parent="OnTheGround/Group enemy4" instance=ExtResource("3_oka1a")]
 position = Vector2(714, 4554)
 
 [node name="ThrowingEnemy" parent="OnTheGround/Group enemy4" instance=ExtResource("4_gkqpq")]
-position = Vector2(4619, 4608)
+position = Vector2(5044, 4644)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
 [node name="ThrowingEnemy2" parent="OnTheGround/Group enemy4" instance=ExtResource("4_gkqpq")]
-position = Vector2(4558, 4444)
+position = Vector2(5072, 4478)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
 
 [node name="ThrowingEnemy3" parent="OnTheGround/Group enemy4" instance=ExtResource("4_gkqpq")]
-position = Vector2(4414, 4309)
+position = Vector2(4956, 4405)
 throwing_period = 4.0
+sprite_frames = ExtResource("4_p5nme")
 projectile_speed = 500.0
 projectile_duration = 3.0
 projectile_follows_player = true
@@ -7315,22 +7245,19 @@ projectile_follows_player = true
 [node name="Group enemy2" type="Node" parent="OnTheGround"]
 
 [node name="enemy1" parent="OnTheGround/Group enemy2" instance=ExtResource("3_oka1a")]
-position = Vector2(3544, 400)
+position = Vector2(4098, 4398)
 
 [node name="enemy2" parent="OnTheGround/Group enemy2" instance=ExtResource("3_oka1a")]
-position = Vector2(3554, 907)
-
-[node name="enemy7" parent="OnTheGround/Group enemy2" instance=ExtResource("3_oka1a")]
-position = Vector2(4848, 472)
+position = Vector2(4127, 4888)
 
 [node name="enemy8" parent="OnTheGround/Group enemy2" instance=ExtResource("3_oka1a")]
-position = Vector2(5086, 578)
+position = Vector2(5067, 730)
 
 [node name="enemy9" parent="OnTheGround/Group enemy2" instance=ExtResource("3_oka1a")]
-position = Vector2(5323, 679)
+position = Vector2(5250, 647)
 
 [node name="enemy10" parent="OnTheGround/Group enemy2" instance=ExtResource("3_oka1a")]
-position = Vector2(5237, 892)
+position = Vector2(3327, 4679)
 
 [node name="enemy12" parent="OnTheGround/Group enemy2" instance=ExtResource("3_oka1a")]
 position = Vector2(5131, 1878)
@@ -7342,7 +7269,7 @@ position = Vector2(5326, 1939)
 position = Vector2(5231, 2261)
 
 [node name="enemy19" parent="OnTheGround/Group enemy2" instance=ExtResource("3_oka1a")]
-position = Vector2(3929, 2302)
+position = Vector2(2333, 2645)
 
 [node name="enemy28" parent="OnTheGround/Group enemy2" instance=ExtResource("3_oka1a")]
 position = Vector2(1171, 4052)
@@ -7363,16 +7290,16 @@ position = Vector2(5535, 1959)
 position = Vector2(5112, 1007)
 
 [node name="enemy3" parent="OnTheGround/Group enemy2" instance=ExtResource("3_oka1a")]
-position = Vector2(3554, 648)
+position = Vector2(3767, 4507)
 
 [node name="enemy4" parent="OnTheGround/Group enemy2" instance=ExtResource("3_oka1a")]
-position = Vector2(2987, 419)
+position = Vector2(3465, 4420)
 
 [node name="enemy5" parent="OnTheGround/Group enemy2" instance=ExtResource("3_oka1a")]
-position = Vector2(2997, 926)
+position = Vector2(3520, 4903)
 
 [node name="enemy6" parent="OnTheGround/Group enemy2" instance=ExtResource("3_oka1a")]
-position = Vector2(2991, 656)
+position = Vector2(3514, 4633)
 
 [node name="Group enemy3" type="Node" parent="OnTheGround"]
 
@@ -7395,13 +7322,13 @@ position = Vector2(2879, 2909)
 position = Vector2(2879, 2650)
 
 [node name="enemy7" parent="OnTheGround/Group enemy3" instance=ExtResource("3_oka1a")]
-position = Vector2(1644, 2479)
+position = Vector2(2566, 2499)
 
 [node name="enemy8" parent="OnTheGround/Group enemy3" instance=ExtResource("3_oka1a")]
-position = Vector2(1650, 2632)
+position = Vector2(2572, 2652)
 
 [node name="enemy9" parent="OnTheGround/Group enemy3" instance=ExtResource("3_oka1a")]
-position = Vector2(1668, 2828)
+position = Vector2(2583, 2828)
 
 [node name="enemy10" parent="OnTheGround/Group enemy3" instance=ExtResource("3_oka1a")]
 position = Vector2(885, 3391)
@@ -7418,23 +7345,48 @@ position = Vector2(231, 3403)
 [node name="Group enemy5" type="Node" parent="OnTheGround"]
 
 [node name="enemy1" parent="OnTheGround/Group enemy5" instance=ExtResource("3_oka1a")]
-position = Vector2(1040, 247)
+position = Vector2(2491, 562)
 speed = 350.0
 
 [node name="enemy2" parent="OnTheGround/Group enemy5" instance=ExtResource("3_oka1a")]
-position = Vector2(1566, 797)
+position = Vector2(2833, 827)
 speed = 350.0
 
 [node name="enemy4" parent="OnTheGround/Group enemy5" instance=ExtResource("3_oka1a")]
-position = Vector2(1293, 662)
+position = Vector2(2628, 696)
 speed = 350.0
 
 [node name="enemy3" parent="OnTheGround/Group enemy5" instance=ExtResource("3_oka1a")]
-position = Vector2(1526, 611)
+position = Vector2(2805, 664)
+speed = 350.0
+
+[node name="enemy5" parent="OnTheGround/Group enemy5" instance=ExtResource("3_oka1a")]
+position = Vector2(1017, 824)
+
+[node name="enemy6" parent="OnTheGround/Group enemy5" instance=ExtResource("3_oka1a")]
+position = Vector2(1181, 872)
+
+[node name="enemy7" parent="OnTheGround/Group enemy5" instance=ExtResource("3_oka1a")]
+position = Vector2(1302, 472)
+
+[node name="enemy8" parent="OnTheGround/Group enemy5" instance=ExtResource("3_oka1a")]
+position = Vector2(1086, 535)
+speed = 350.0
+
+[node name="enemy9" parent="OnTheGround/Group enemy5" instance=ExtResource("3_oka1a")]
+position = Vector2(1428, 800)
+speed = 350.0
+
+[node name="enemy10" parent="OnTheGround/Group enemy5" instance=ExtResource("3_oka1a")]
+position = Vector2(1178, 683)
+speed = 350.0
+
+[node name="enemy11" parent="OnTheGround/Group enemy5" instance=ExtResource("3_oka1a")]
+position = Vector2(1400, 637)
 speed = 350.0
 
 [node name="Meta" parent="OnTheGround" instance=ExtResource("4_t64rs")]
-position = Vector2(5462, 4685)
+position = Vector2(702, 540)
 escena_siguiente = "uid://dwsy2xlsfg6fo"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -7468,19 +7420,11 @@ z_index = 1
 tile_map_data = PackedByteArray("AAABAAMAAQAIAAsAAAAIAAIAAQALAAkAAAAJAAIAAQALAAkAAAAIAP//AQAQAAgAAAAIAAAAAQAQAAkAAABcAEUAAQAAAAwAAABcAEYAAQAAAA0AAABcAEcAAQAAAA4AAABcAEgAAQAAAAwAAABcAEkAAQAAAA0AAABcAEoAAQAAAA4AAABJAE8AAQASAAgAAABJAFAAAQASAAkAAABJAFEAAQASAAoAAABKAE8AAQATAAgAAABKAFAAAQATAAkAAABKAFEAAQATAAoAAABLAE8AAQASAAgAAABLAFAAAQASAAkAAABLAFEAAQASAAoAAABMAE8AAQATAAgAAABMAFAAAQATAAkAAABMAFEAAQATAAoAAABNAE8AAQASAAgAAABNAFAAAQASAAkAAABNAFEAAQASAAoAAABOAE8AAQATAAgAAABOAFAAAQATAAkAAABOAFEAAQATAAoAAABPAE8AAQAUAAgAAABPAFAAAQAUAAkAAABPAFEAAQAUAAoAAABGAFAAAQASAAgAAABGAFEAAQASAAkAAABGAFIAAQASAAoAAABHAFAAAQATAAgAAABHAFEAAQATAAkAAABHAFIAAQATAAoAAABIAFAAAQAUAAgAAABIAFEAAQAUAAkAAABIAFIAAQAUAAoAAABDAFAAAQAUAAgAAABDAFEAAQAUAAkAAABDAFIAAQAUAAoAAABEAFAAAQATAAgAAABEAFEAAQATAAkAAABEAFIAAQATAAoAAABFAFAAAQAUAAgAAABFAFEAAQAUAAkAAABFAFIAAQAUAAoAAABBAFAAAQASAAgAAABBAFEAAQASAAkAAABBAFIAAQASAAoAAABCAFAAAQATAAgAAABCAFEAAQATAAkAAABCAFIAAQATAAoAAAA+AFAAAQASAAgAAAA+AFEAAQASAAkAAAA+AFIAAQASAAoAAAA/AFAAAQATAAgAAAA/AFEAAQATAAkAAAA/AFIAAQATAAoAAABAAFAAAQAUAAgAAABAAFEAAQAUAAkAAABAAFIAAQAUAAoAAABcAE4AAQASAAgAAABcAE8AAQASAAkAAABcAFAAAQASAAoAAABdAE4AAQATAAgAAABdAE8AAQATAAkAAABdAFAAAQATAAoAAABeAE4AAQAUAAgAAABeAE8AAQAUAAkAAABeAFAAAQAUAAoAAABcAFEAAQASAAgAAABcAFIAAQASAAkAAABdAFEAAQATAAgAAABdAFIAAQATAAkAAABeAFEAAQAUAAgAAABeAFIAAQAUAAkAAABcAFMAAQASAAoAAABcAFQAAQASAAgAAABdAFMAAQATAAoAAABdAFQAAQATAAgAAABeAFMAAQAUAAoAAABeAFQAAQAUAAgAAABcAFUAAQASAAkAAABcAFYAAQASAAoAAABdAFUAAQATAAkAAABdAFYAAQATAAoAAABeAFUAAQAUAAkAAABeAFYAAQAUAAoAAABcAD8AAQASAAgAAABcAEAAAQASAAkAAABcAEEAAQASAAoAAABdAD8AAQATAAgAAABdAEAAAQATAAkAAABdAEEAAQATAAoAAABeAD8AAQAUAAgAAABeAEAAAQAUAAkAAABeAEEAAQAUAAoAAABcADwAAQASAAgAAABcAD0AAQASAAkAAABcAD4AAQASAAoAAABdADwAAQATAAgAAABdAD0AAQATAAkAAABdAD4AAQATAAoAAABeADwAAQAUAAgAAABeAD0AAQAUAAkAAABeAD4AAQAUAAoAAABcADkAAQASAAgAAABcADoAAQASAAkAAABcADsAAQASAAoAAABdADkAAQATAAgAAABdADoAAQATAAkAAABdADsAAQATAAoAAABeADkAAQAUAAgAAABeADoAAQAUAAkAAABeADsAAQAUAAoAAABfADkAAQASAAgAAABfADoAAQASAAkAAABfADsAAQASAAoAAABgADkAAQATAAgAAABgADoAAQATAAkAAABgADsAAQATAAoAAABhADkAAQAUAAgAAABhADoAAQAUAAkAAABhADsAAQAUAAoAAABiADkAAQASAAgAAABiADoAAQASAAkAAABiADsAAQASAAoAAABjADkAAQATAAgAAABjADoAAQATAAkAAABjADsAAQATAAoAAABfADwAAQASAAgAAABfAD0AAQASAAkAAABfAD4AAQASAAoAAABgADwAAQATAAgAAABgAD0AAQATAAkAAABgAD4AAQATAAoAAABhADwAAQAUAAgAAABhAD0AAQAUAAkAAABhAD4AAQAUAAoAAABkADkAAQAUAAgAAABkADoAAQAUAAkAAABkADsAAQAUAAoAAABiADwAAQASAAgAAABiAD0AAQASAAkAAABiAD4AAQASAAoAAABjADwAAQATAAgAAABjAD0AAQATAAkAAABjAD4AAQATAAoAAABkADwAAQAUAAgAAABkAD0AAQAUAAkAAABkAD4AAQAUAAoAAABfAD8AAQASAAgAAABfAEAAAQASAAkAAABfAEEAAQASAAoAAABgAD8AAQATAAgAAABgAEAAAQATAAkAAABgAEEAAQATAAoAAABhAD8AAQAUAAgAAABhAEAAAQAUAAkAAABhAEEAAQAUAAoAAABiAD8AAQASAAgAAABiAEAAAQASAAkAAABiAEEAAQASAAoAAABjAD8AAQATAAgAAABjAEAAAQATAAkAAABjAEEAAQATAAoAAABkAD8AAQAUAAgAAABkAEAAAQAUAAkAAABkAEEAAQAUAAoAAABfAE4AAQASAAgAAABfAE8AAQASAAkAAABfAFAAAQASAAoAAABgAE4AAQATAAgAAABgAE8AAQATAAkAAABgAFAAAQATAAoAAABhAE4AAQAUAAgAAABhAE8AAQAUAAkAAABhAFAAAQAUAAoAAABfAFEAAQASAAgAAABfAFIAAQASAAkAAABfAFMAAQASAAoAAABgAFEAAQATAAgAAABgAFIAAQATAAkAAABgAFMAAQATAAoAAABhAFEAAQAUAAgAAABhAFIAAQAUAAkAAABhAFMAAQAUAAoAAABfAFQAAQASAAgAAABfAFUAAQASAAkAAABfAFYAAQASAAoAAABgAFQAAQATAAgAAABgAFUAAQATAAkAAABgAFYAAQATAAoAAABhAFQAAQAUAAgAAABhAFUAAQAUAAkAAABhAFYAAQAUAAoAAABiAE4AAQASAAgAAABiAE8AAQASAAkAAABiAFAAAQASAAoAAABjAE4AAQATAAgAAABjAE8AAQATAAkAAABjAFAAAQATAAoAAABkAE4AAQAUAAgAAABkAE8AAQAUAAkAAABkAFAAAQAUAAoAAABiAFEAAQASAAgAAABiAFIAAQASAAkAAABiAFMAAQASAAoAAABjAFEAAQATAAgAAABjAFIAAQATAAkAAABjAFMAAQATAAoAAABkAFEAAQAUAAgAAABkAFIAAQAUAAkAAABkAFMAAQAUAAoAAABiAFQAAQASAAgAAABiAFUAAQASAAkAAABiAFYAAQASAAoAAABjAFQAAQATAAgAAABjAFUAAQATAAkAAABjAFYAAQATAAoAAABkAFQAAQAUAAgAAABkAFUAAQAUAAkAAABkAFYAAQAUAAoAAABQAFIAAQASAAgAAABQAFMAAQASAAkAAABQAFQAAQASAAoAAABRAFIAAQATAAgAAABRAFMAAQATAAkAAABRAFQAAQATAAoAAABSAFIAAQAUAAgAAABSAFMAAQAUAAkAAABSAFQAAQASAAgAAABSAFUAAQASAAkAAABSAFYAAQASAAoAAABTAFQAAQATAAgAAABTAFUAAQATAAkAAABTAFYAAQATAAoAAABUAFQAAQAUAAgAAABUAFUAAQAUAAkAAABUAFYAAQAUAAoAAABVAFQAAQASAAgAAABVAFUAAQASAAkAAABVAFYAAQASAAoAAABWAFQAAQATAAgAAABWAFUAAQATAAkAAABWAFYAAQATAAoAAABXAFQAAQAUAAgAAABXAFUAAQAUAAkAAABXAFYAAQAUAAoAAABYAFQAAQASAAgAAABYAFUAAQASAAkAAABYAFYAAQASAAoAAABZAFQAAQATAAgAAABZAFUAAQATAAkAAABZAFYAAQATAAoAAABaAFQAAQAUAAgAAABaAFUAAQAUAAkAAABaAFYAAQAUAAoAAABZAFEAAQASAAgAAABZAFIAAQASAAkAAABZAFMAAQASAAoAAABaAFEAAQATAAgAAABaAFIAAQATAAkAAABaAFMAAQATAAoAAABbAFEAAQAUAAgAAABbAFIAAQAUAAkAAABbAFMAAQAUAAoAAABZADoAAQASAAgAAABZADsAAQASAAkAAABZADwAAQASAAoAAABaADoAAQATAAgAAABaADsAAQATAAkAAABaADwAAQATAAoAAABbADoAAQAUAAgAAABbADsAAQAUAAkAAABbADwAAQAUAAoAAABWADkAAQASAAgAAABWADoAAQASAAkAAABWADsAAQASAAoAAABXADkAAQATAAgAAABXADoAAQATAAkAAABXADsAAQATAAoAAABYADkAAQAUAAgAAABYADoAAQAUAAkAAABYADsAAQAUAAoAAABTADkAAQASAAgAAABTADoAAQASAAkAAABTADsAAQASAAoAAABUADkAAQATAAgAAABUADoAAQATAAkAAABUADsAAQATAAoAAABVADkAAQAUAAgAAABVADoAAQAUAAkAAABVADsAAQAUAAoAAABQADoAAQASAAgAAABQADsAAQAUAAgAAABQADwAAQAUAAkAAABRADoAAQATAAgAAABRADsAAQATAAkAAABRADwAAQATAAoAAABSADoAAQAUAAgAAABSADsAAQAUAAkAAABSADwAAQAUAAoAAABOADsAAQASAAgAAABOADwAAQASAAkAAABOAD0AAQASAAoAAABPADsAAQATAAgAAABPADwAAQATAAkAAABPAD0AAQATAAoAAABQAD0AAQAUAAoAAAA9AD0AAQASAAgAAAA9AD4AAQASAAkAAAA9AD8AAQASAAoAAAA+AD0AAQATAAgAAAA+AD4AAQATAAkAAAA+AD8AAQATAAoAAAA/AD0AAQAUAAgAAAA/AD4AAQAUAAkAAAA/AD8AAQAUAAoAAAA5AD0AAQASAAgAAAA5AD4AAQASAAkAAAA5AD8AAQASAAoAAAA6AD0AAQATAAgAAAA6AD4AAQATAAkAAAA6AD8AAQATAAoAAAA7AD0AAQAUAAgAAAA7AD4AAQAUAAkAAAA7AD8AAQAUAAoAAAA/AEAAAQAKAAkAAABOAD8AAQAKAAkAAAA5AEAAAQAKAAkAAAA8AEIAAQAIAAoAAAAMAAMAAQABAAcAAAAhAAMAAQABAAcAAAAlAAMAAQABAAcAAABTAAMAAQABAAcAAABXAAIAAQAGAAkAAABYAAIAAQAGAAkAAABZAAIAAQAGAAkAAABaAAMAAQAGAAkAAABbAAQAAQAGAAkAAABaAAUAAQAGAAkAAABaAAYAAQAGAAkAAABaAAAAAQAFAAYAAABaAAEAAQAFAAcAAABaAAsAAQASAAgAAABaAAwAAQASAAkAAABaAA0AAQASAAoAAABbAAsAAQATAAgAAABbAAwAAQATAAkAAABbAA0AAQATAAoAAABcAAsAAQAUAAgAAABcAAwAAQAUAAkAAABcAA0AAQAUAAoAAABbAAgAAQASAAgAAABbAAkAAQASAAkAAABbAAoAAQASAAoAAABcAAgAAQATAAgAAABcAAkAAQATAAkAAABcAAoAAQATAAoAAABdAAgAAQAUAAgAAABdAAkAAQAUAAkAAABdAAoAAQAUAAoAAABeAAYAAQASAAgAAABeAAcAAQASAAkAAABeAAgAAQASAAoAAABfAAYAAQATAAgAAABfAAcAAQATAAkAAABfAAgAAQATAAoAAABgAAYAAQAUAAgAAABgAAcAAQAUAAkAAABgAAgAAQAUAAoAAABdAAMAAQASAAgAAABdAAQAAQASAAkAAABdAAUAAQASAAoAAABeAAMAAQATAAgAAABeAAQAAQATAAkAAABeAAUAAQATAAoAAABfAAMAAQAUAAgAAABfAAQAAQAUAAkAAABfAAUAAQAUAAoAAABbABIAAQALAAkAAABbABMAAQALAAkAAABcABMAAQALAAkAAABcABIAAQALAAkAAABcABoAAQAQAAgAAABcABsAAQAQAAkAAABbABoAAQAQAAgAAABbABsAAQAQAAkAAABdABoAAQAQAAgAAABdABsAAQAQAAkAAABcACYAAQAQAAgAAABcACcAAQAQAAkAAABOABUAAQAIAAoAAABZACgAAQASAAgAAABZACkAAQASAAkAAABZACoAAQAUAAgAAABaACgAAQATAAgAAABaACkAAQATAAkAAABaACoAAQATAAoAAABbACgAAQAUAAgAAABbACkAAQAUAAkAAABbACoAAQAUAAoAAABXACoAAQASAAgAAABXACsAAQASAAkAAABXACwAAQASAAoAAABYACoAAQATAAgAAABYACsAAQATAAkAAABYACwAAQATAAoAAABZACsAAQAUAAkAAABZACwAAQAUAAoAAABUACsAAQASAAgAAABUACwAAQASAAkAAABUAC0AAQASAAoAAABVACsAAQATAAgAAABVACwAAQATAAkAAABVAC0AAQATAAoAAABWACsAAQAUAAgAAABWACwAAQAUAAkAAABWAC0AAQAUAAoAAABRACwAAQASAAgAAABRAC0AAQASAAkAAABRAC4AAQASAAoAAABSACwAAQATAAgAAABSAC0AAQATAAkAAABSAC4AAQATAAoAAABTACwAAQAUAAgAAABTAC0AAQAUAAkAAABTAC4AAQAUAAoAAABOAC4AAQASAAgAAABOAC8AAQASAAkAAABOADAAAQASAAoAAABPAC4AAQATAAgAAABPAC8AAQATAAkAAABPADAAAQATAAoAAABQAC4AAQAUAAgAAABQAC8AAQAUAAkAAABQADAAAQAUAAoAAABLAC8AAQASAAgAAABLADAAAQASAAkAAABLADEAAQASAAoAAABMAC8AAQATAAgAAABMADAAAQATAAkAAABMADEAAQATAAoAAABNAC8AAQAUAAgAAABNADAAAQAUAAkAAABNADEAAQAUAAoAAABIAC8AAQASAAgAAABIADAAAQASAAkAAABIADEAAQASAAoAAABJAC8AAQATAAgAAABJADAAAQATAAkAAABJADEAAQATAAoAAABKAC8AAQAUAAgAAABKADAAAQAUAAkAAABKADEAAQAUAAoAAABFAC8AAQASAAgAAABFADAAAQASAAkAAABFADEAAQASAAoAAABGAC8AAQATAAgAAABGADAAAQATAAkAAABGADEAAQATAAoAAABHAC8AAQAUAAgAAABHADAAAQAUAAkAAABHADEAAQAUAAoAAABCAC8AAQASAAgAAABCADAAAQASAAkAAABCADEAAQASAAoAAABDAC8AAQATAAgAAABDADAAAQATAAkAAABDADEAAQATAAoAAABEAC8AAQAUAAgAAABEADAAAQAUAAkAAABEADEAAQAUAAoAAAA/AC8AAQASAAgAAAA/ADAAAQASAAkAAAA/ADEAAQASAAoAAABAAC8AAQATAAgAAABAADAAAQATAAkAAABAADEAAQATAAoAAABBAC8AAQAUAAgAAABBADAAAQAUAAkAAABBADEAAQAUAAoAAAA8AC8AAQASAAgAAAA8ADAAAQASAAkAAAA8ADEAAQASAAoAAAA9AC8AAQATAAgAAAA9ADAAAQATAAkAAAA9ADEAAQATAAoAAAA+AC8AAQAUAAgAAAA+ADAAAQAUAAkAAAA+ADEAAQAUAAoAAAA5AC8AAQASAAgAAAA5ADAAAQASAAkAAAA5ADEAAQASAAoAAAA6AC8AAQATAAgAAAA6ADAAAQATAAkAAAA6ADEAAQATAAoAAAA7AC8AAQAUAAgAAAA7ADAAAQAUAAkAAAA7ADEAAQAUAAoAAAA2AC8AAQASAAgAAAA2ADAAAQASAAkAAAA2ADEAAQASAAoAAAA3AC8AAQATAAgAAAA3ADAAAQATAAkAAAA3ADEAAQATAAoAAAA4AC8AAQAUAAgAAAA4ADAAAQAUAAkAAAA4ADEAAQAUAAoAAAAzAC8AAQASAAgAAAAzADAAAQASAAkAAAAzADEAAQASAAoAAAA0AC8AAQATAAgAAAA0ADAAAQATAAkAAAA0ADEAAQATAAoAAAA1AC8AAQAUAAgAAAA1ADAAAQAUAAkAAAA1ADEAAQAUAAoAAAAwAC8AAQASAAgAAAAwADAAAQASAAkAAAAwADEAAQASAAoAAAAxAC8AAQATAAgAAAAxADAAAQATAAkAAAAxADEAAQATAAoAAAAyAC8AAQAUAAgAAAAyADAAAQAUAAkAAAAyADEAAQAUAAoAAAAtAC8AAQASAAgAAAAtADAAAQASAAkAAAAtADEAAQASAAoAAAAuAC8AAQATAAgAAAAuADAAAQATAAkAAAAuADEAAQATAAoAAAAvAC8AAQAUAAgAAAAvADAAAQAUAAkAAAAvADEAAQAUAAoAAAAqAC8AAQASAAgAAAAqADAAAQASAAkAAAAqADEAAQASAAoAAAArAC8AAQATAAgAAAArADAAAQATAAkAAAArADEAAQATAAoAAAAsAC8AAQAUAAgAAAAsADAAAQAUAAkAAAAsADEAAQAUAAoAAAAnAC8AAQASAAgAAAAnADAAAQASAAkAAAAnADEAAQASAAoAAAAoAC8AAQATAAgAAAAoADAAAQATAAkAAAAoADEAAQATAAoAAAApAC8AAQAUAAgAAAApADAAAQAUAAkAAAApADEAAQAUAAoAAAAkAC8AAQASAAgAAAAkADAAAQASAAkAAAAkADEAAQASAAoAAAAlAC8AAQATAAgAAAAlADAAAQATAAkAAAAlADEAAQATAAoAAAAmAC8AAQAUAAgAAAAmADAAAQAUAAkAAAAmADEAAQAUAAoAAAAhAC8AAQASAAgAAAAhADAAAQASAAkAAAAhADEAAQASAAoAAAAiAC8AAQATAAgAAAAiADAAAQATAAkAAAAiADEAAQATAAoAAAAjAC8AAQAUAAgAAAAjADAAAQAUAAkAAAAjADEAAQAUAAoAAAAeAC8AAQASAAgAAAAeADAAAQASAAkAAAAeADEAAQASAAoAAAAfAC8AAQATAAgAAAAfADAAAQATAAkAAAAfADEAAQATAAoAAAAgAC8AAQAUAAgAAAAgADAAAQAUAAkAAAAgADEAAQAUAAoAAAAbAC8AAQASAAgAAAAbADAAAQASAAkAAAAbADEAAQASAAoAAAAcAC8AAQATAAgAAAAcADAAAQATAAkAAAAcADEAAQATAAoAAAAdAC8AAQAUAAgAAAAdADAAAQAUAAkAAAAdADEAAQAUAAoAAAAYAC8AAQASAAgAAAAYADAAAQASAAkAAAAYADEAAQASAAoAAAAZAC8AAQATAAgAAAAZADAAAQATAAkAAAAZADEAAQATAAoAAAAaAC8AAQAUAAgAAAAaADAAAQAUAAkAAAAaADEAAQAUAAoAAAAVADAAAQASAAgAAAAVADEAAQASAAkAAAAVADIAAQASAAoAAAAWADAAAQATAAgAAAAWADEAAQATAAkAAAAWADIAAQATAAoAAAAXADAAAQAUAAgAAAAXADEAAQAUAAkAAAAXADIAAQAUAAoAAAATADMAAQAQAAgAAAATADQAAQAQAAkAAAAUADMAAQAQAAgAAAAUADQAAQAQAAkAAAAVADMAAQAQAAgAAAAVADQAAQAQAAkAAAAAAEUAAQASAAgAAAAAAEYAAQASAAkAAAAAAEcAAQASAAoAAAABAEUAAQATAAgAAAABAEYAAQATAAkAAAABAEcAAQATAAoAAAACAEUAAQAUAAgAAAACAEYAAQAUAAkAAAACAEcAAQAUAAoAAAABAEgAAQASAAgAAAABAEkAAQASAAkAAAABAEoAAQASAAoAAAACAEgAAQATAAgAAAACAEkAAQATAAkAAAACAEoAAQATAAoAAAADAEgAAQAUAAgAAAADAEkAAQAUAAkAAAADAEoAAQAUAAoAAAADAEsAAQASAAgAAAADAEwAAQASAAkAAAADAE0AAQASAAoAAAAEAEsAAQATAAgAAAAEAEwAAQATAAkAAAAEAE0AAQATAAoAAAAFAEsAAQAUAAgAAAAFAEwAAQAUAAkAAAAFAE0AAQAUAAoAAAAFAE4AAQASAAgAAAAFAE8AAQASAAkAAAAFAFAAAQASAAoAAAAGAE4AAQATAAgAAAAGAE8AAQATAAkAAAAGAFAAAQATAAoAAAAHAE4AAQAUAAgAAAAHAE8AAQAUAAkAAAAHAFAAAQAUAAoAAAAIAE4AAQASAAgAAAAIAE8AAQASAAkAAAAIAFAAAQASAAoAAAAJAE4AAQATAAgAAAAJAE8AAQATAAkAAAAJAFAAAQATAAoAAAAKAE4AAQAUAAgAAAAKAE8AAQAUAAkAAAAKAFAAAQAUAAoAAAALAE4AAQASAAgAAAALAE8AAQASAAkAAAALAFAAAQASAAoAAAAMAE4AAQATAAgAAAAMAE8AAQATAAkAAAAMAFAAAQATAAoAAAANAE4AAQAUAAgAAAANAE8AAQAUAAkAAAANAFAAAQAUAAoAAAAOAE4AAQASAAgAAAAOAE8AAQASAAkAAAAOAFAAAQASAAoAAAAPAE4AAQATAAgAAAAPAE8AAQATAAkAAAAPAFAAAQATAAoAAAAQAE4AAQAUAAgAAAAQAE8AAQAUAAkAAAAQAFAAAQAUAAoAAAARAE4AAQASAAgAAAARAE8AAQASAAkAAAARAFAAAQASAAoAAAASAE4AAQATAAgAAAASAE8AAQATAAkAAAASAFAAAQATAAoAAAATAE4AAQAUAAgAAAATAE8AAQAUAAkAAAATAFAAAQAUAAoAAAAUAE4AAQASAAgAAAAUAE8AAQASAAkAAAAUAFAAAQASAAoAAAAVAE4AAQATAAgAAAAVAE8AAQATAAkAAAAVAFAAAQATAAoAAAAWAE4AAQAUAAgAAAAWAE8AAQAUAAkAAAAWAFAAAQAUAAoAAAAXAE4AAQASAAgAAAAXAE8AAQASAAkAAAAXAFAAAQASAAoAAAAYAE4AAQATAAgAAAAYAE8AAQATAAkAAAAYAFAAAQATAAoAAAAZAE4AAQAUAAgAAAAZAE8AAQAUAAkAAAAZAFAAAQAUAAoAAAAaAE4AAQASAAgAAAAaAE8AAQASAAkAAAAaAFAAAQASAAoAAAAbAE4AAQATAAgAAAAbAE8AAQATAAkAAAAbAFAAAQATAAoAAAAcAE4AAQAUAAgAAAAcAE8AAQAUAAkAAAAcAFAAAQAUAAoAAAAdAE4AAQASAAgAAAAdAE8AAQASAAkAAAAdAFAAAQASAAoAAAAeAE4AAQATAAgAAAAeAE8AAQATAAkAAAAeAFAAAQATAAoAAAAfAE4AAQAUAAgAAAAfAE8AAQAUAAkAAAAfAFAAAQAUAAoAAAAgAE4AAQASAAgAAAAgAE8AAQASAAkAAAAgAFAAAQASAAoAAAAhAE4AAQATAAgAAAAhAE8AAQATAAkAAAAhAFAAAQATAAoAAAAiAE4AAQAUAAgAAAAiAE8AAQAUAAkAAAAiAFAAAQAUAAoAAAAjAE4AAQASAAgAAAAjAE8AAQASAAkAAAAjAFAAAQASAAoAAAAkAE4AAQATAAgAAAAkAE8AAQATAAkAAAAkAFAAAQATAAoAAAAlAE4AAQAUAAgAAAAlAE8AAQAUAAkAAAAlAFAAAQAUAAoAAAAmAE4AAQASAAgAAAAmAE8AAQASAAkAAAAmAFAAAQASAAoAAAAnAE4AAQATAAgAAAAnAE8AAQATAAkAAAAnAFAAAQATAAoAAAAoAE4AAQAUAAgAAAAoAE8AAQAUAAkAAAAoAFAAAQAUAAoAAAApAE4AAQASAAgAAAApAE8AAQASAAkAAAApAFAAAQASAAoAAAAqAE4AAQATAAgAAAAqAE8AAQATAAkAAAAqAFAAAQATAAoAAAArAE4AAQAUAAgAAAArAE8AAQAUAAkAAAArAFAAAQAUAAoAAAAsAE4AAQASAAgAAAAsAE8AAQASAAkAAAAsAFAAAQASAAoAAAAtAE4AAQATAAgAAAAtAE8AAQATAAkAAAAtAFAAAQATAAoAAAAuAE4AAQAUAAgAAAAuAE8AAQAUAAkAAAAuAFAAAQAUAAoAAAAvAE4AAQASAAgAAAAvAE8AAQASAAkAAAAvAFAAAQASAAoAAAAwAE4AAQATAAgAAAAwAE8AAQATAAkAAAAwAFAAAQATAAoAAAAxAE4AAQAUAAgAAAAxAE8AAQAUAAkAAAAxAFAAAQAUAAoAAAAyAE4AAQASAAgAAAAyAE8AAQASAAkAAAAyAFAAAQASAAoAAAAzAE4AAQATAAgAAAAzAE8AAQATAAkAAAAzAFAAAQATAAoAAAA0AE4AAQAUAAgAAAA0AE8AAQAUAAkAAAA0AFAAAQAUAAoAAAA1AE4AAQASAAgAAAA1AE8AAQASAAkAAAA1AFAAAQASAAoAAAA2AE4AAQATAAgAAAA2AE8AAQATAAkAAAA2AFAAAQATAAoAAAA3AE4AAQAUAAgAAAA3AE8AAQAUAAkAAAA3AFAAAQAUAAoAAAAGAFEAAQASAAgAAAAGAFIAAQASAAkAAAAGAFMAAQASAAoAAAAHAFEAAQATAAgAAAAHAFIAAQATAAkAAAAHAFMAAQATAAoAAAAIAFEAAQAUAAgAAAAIAFIAAQAUAAkAAAAIAFMAAQAUAAoAAAAJAFEAAQASAAgAAAAJAFIAAQASAAkAAAAJAFMAAQASAAoAAAAKAFEAAQATAAgAAAAKAFIAAQATAAkAAAAKAFMAAQATAAoAAAALAFEAAQAUAAgAAAALAFIAAQAUAAkAAAALAFMAAQAUAAoAAAAMAFEAAQASAAgAAAAMAFIAAQASAAkAAAAMAFMAAQASAAoAAAANAFEAAQATAAgAAAANAFIAAQATAAkAAAANAFMAAQATAAoAAAAOAFEAAQAUAAgAAAAOAFIAAQAUAAkAAAAOAFMAAQAUAAoAAAAPAFEAAQASAAgAAAAPAFIAAQASAAkAAAAPAFMAAQASAAoAAAAQAFEAAQATAAgAAAAQAFIAAQATAAkAAAAQAFMAAQATAAoAAAARAFEAAQAUAAgAAAARAFIAAQAUAAkAAAARAFMAAQAUAAoAAAASAFEAAQASAAgAAAASAFIAAQASAAkAAAASAFMAAQASAAoAAAATAFEAAQATAAgAAAATAFIAAQATAAkAAAATAFMAAQATAAoAAAAUAFEAAQAUAAgAAAAUAFIAAQAUAAkAAAAUAFMAAQAUAAoAAAAVAFEAAQASAAgAAAAVAFIAAQASAAkAAAAVAFMAAQASAAoAAAAWAFEAAQATAAgAAAAWAFIAAQATAAkAAAAWAFMAAQATAAoAAAAXAFEAAQAUAAgAAAAXAFIAAQAUAAkAAAAXAFMAAQAUAAoAAAAYAFEAAQASAAgAAAAYAFIAAQASAAkAAAAYAFMAAQASAAoAAAAZAFEAAQATAAgAAAAZAFIAAQATAAkAAAAZAFMAAQATAAoAAAAaAFEAAQAUAAgAAAAaAFIAAQAUAAkAAAAaAFMAAQAUAAoAAAAbAFEAAQASAAgAAAAbAFIAAQASAAkAAAAbAFMAAQASAAoAAAAcAFEAAQATAAgAAAAcAFIAAQATAAkAAAAcAFMAAQATAAoAAAAdAFEAAQAUAAgAAAAdAFIAAQAUAAkAAAAdAFMAAQAUAAoAAAAeAFEAAQASAAgAAAAeAFIAAQASAAkAAAAeAFMAAQASAAoAAAAfAFEAAQATAAgAAAAfAFIAAQATAAkAAAAfAFMAAQATAAoAAAAgAFEAAQAUAAgAAAAgAFIAAQAUAAkAAAAgAFMAAQAUAAoAAAAhAFEAAQASAAgAAAAhAFIAAQASAAkAAAAhAFMAAQASAAoAAAAiAFEAAQATAAgAAAAiAFIAAQATAAkAAAAiAFMAAQATAAoAAAAjAFEAAQAUAAgAAAAjAFIAAQAUAAkAAAAjAFMAAQAUAAoAAAAkAFEAAQASAAgAAAAkAFIAAQASAAkAAAAkAFMAAQASAAoAAAAlAFEAAQATAAgAAAAlAFIAAQATAAkAAAAlAFMAAQATAAoAAAAmAFEAAQAUAAgAAAAmAFIAAQAUAAkAAAAmAFMAAQAUAAoAAAAnAFEAAQASAAgAAAAnAFIAAQASAAkAAAAnAFMAAQASAAoAAAAoAFEAAQATAAgAAAAoAFIAAQATAAkAAAAoAFMAAQATAAoAAAApAFEAAQAUAAgAAAApAFIAAQAUAAkAAAApAFMAAQAUAAoAAAAqAFEAAQASAAgAAAAqAFIAAQASAAkAAAAqAFMAAQASAAoAAAArAFEAAQATAAgAAAArAFIAAQATAAkAAAArAFMAAQATAAoAAAAsAFEAAQAUAAgAAAAsAFIAAQAUAAkAAAAsAFMAAQAUAAoAAAAtAFEAAQASAAgAAAAtAFIAAQASAAkAAAAtAFMAAQASAAoAAAAuAFEAAQATAAgAAAAuAFIAAQATAAkAAAAuAFMAAQATAAoAAAAvAFEAAQAUAAgAAAAvAFIAAQAUAAkAAAAvAFMAAQAUAAoAAAAwAFEAAQASAAgAAAAwAFIAAQASAAkAAAAwAFMAAQASAAoAAAAxAFEAAQATAAgAAAAxAFIAAQATAAkAAAAxAFMAAQATAAoAAAAyAFEAAQAUAAgAAAAyAFIAAQAUAAkAAAAyAFMAAQAUAAoAAAAzAFEAAQASAAgAAAAzAFIAAQASAAkAAAAzAFMAAQASAAoAAAA0AFEAAQATAAgAAAA0AFIAAQATAAkAAAA0AFMAAQATAAoAAAA1AFEAAQAUAAgAAAA1AFIAAQAUAAkAAAA1AFMAAQAUAAoAAAD//0sAAQAUAAgAAAD//0wAAQAUAAkAAAD//00AAQAUAAoAAAAAAEsAAQASAAgAAAAAAEwAAQASAAkAAAAAAE0AAQASAAoAAAABAEsAAQATAAgAAAABAEwAAQATAAkAAAABAE0AAQATAAoAAAACAEsAAQAUAAgAAAACAEwAAQAUAAkAAAACAE0AAQAUAAoAAAD//08AAQASAAgAAAD//1AAAQASAAkAAAD//1EAAQASAAoAAAAAAE8AAQATAAgAAAAAAFAAAQATAAkAAAAAAFEAAQATAAoAAAABAE8AAQAUAAgAAAABAFAAAQAUAAkAAAABAFEAAQAUAAoAAAACAFAAAQASAAgAAAACAFEAAQASAAkAAAACAFIAAQASAAoAAAADAFAAAQATAAgAAAADAFEAAQATAAkAAAADAFIAAQATAAoAAAAEAFAAAQAUAAgAAAAEAFEAAQAUAAkAAAAEAFIAAQAUAAoAAAD9/0sAAQASAAgAAAD9/0wAAQASAAkAAAD9/00AAQASAAoAAAD+/0sAAQATAAgAAAD+/0wAAQATAAkAAAD+/00AAQATAAoAAAA2AFEAAQASAAgAAAA2AFIAAQASAAkAAAA2AFMAAQASAAoAAAA3AFEAAQATAAgAAAA3AFIAAQATAAkAAAA3AFMAAQATAAoAAAA4AFEAAQAUAAgAAAA4AFIAAQAUAAkAAAA4AFMAAQAUAAoAAAA5AFEAAQASAAgAAAA5AFIAAQASAAkAAAA5AFMAAQASAAoAAAA6AFEAAQATAAgAAAA6AFIAAQATAAkAAAA6AFMAAQATAAoAAAA7AFEAAQAUAAgAAAA7AFIAAQAUAAkAAAA7AFMAAQAUAAoAAAA4AE4AAQASAAgAAAA4AE8AAQASAAkAAAA4AFAAAQASAAoAAAA5AE4AAQATAAgAAAA5AE8AAQATAAkAAAA5AFAAAQATAAoAAAA6AE4AAQAUAAgAAAA6AE8AAQAUAAkAAAA6AFAAAQAUAAoAAAA7AE4AAQASAAgAAAA7AE8AAQASAAkAAAA7AFAAAQASAAoAAAA8AE4AAQATAAgAAAA8AE8AAQATAAkAAAA8AFAAAQATAAoAAAA9AE4AAQAUAAgAAAA9AE8AAQAUAAkAAAA9AFAAAQAUAAoAAAA8AFIAAQAQAAgAAAA8AFMAAQAQAAkAAAA9AFIAAQAQAAgAAAA9AFMAAQAQAAkAAAA/AE4AAQAQAAgAAAA/AE8AAQAQAAkAAABAAE4AAQAQAAgAAABAAE8AAQAQAAkAAAA+AE4AAQAQAAgAAAA+AE8AAQAQAAkAAABbAAUAAQAKAAsAAABbAAMAAQAKAAsAAABaAAIAAQAKAAsAAABZAAEAAQAKAAsAAABYAAEAAQAKAAsAAABaABIAAQAFAAoAAABaABMAAQAFAAoAAAABABEAAQASAAgAAAABABIAAQASAAkAAAABABMAAQASAAoAAAACABEAAQATAAgAAAACABIAAQATAAkAAAACABMAAQATAAoAAAADABEAAQAUAAgAAAADABIAAQAUAAkAAAADABMAAQAUAAoAAAAFABEAAQASAAsAAAAFABIAAQASAAwAAAAFABMAAQASAA0AAAAGABEAAQATAAsAAAAGABIAAQATAAwAAAAGABMAAQATAA0AAAAHABEAAQAUAAsAAAAHABIAAQAUAAwAAAAHABMAAQAUAA0AAAAJABEAAQASAAgAAAAJABIAAQASAAkAAAAJABMAAQASAAoAAAAKABEAAQATAAgAAAAKABIAAQATAAkAAAAKABMAAQATAAoAAAALABEAAQAUAAgAAAALABIAAQAUAAkAAAALABMAAQAUAAoAAAANABEAAQASAAsAAAANABIAAQASAAwAAAANABMAAQASAA0AAAAOABEAAQATAAsAAAAOABIAAQATAAwAAAAOABMAAQATAA0AAAAPABEAAQAUAAsAAAAPABIAAQAUAAwAAAAPABMAAQAUAA0AAAARABEAAQASAAgAAAARABIAAQASAAkAAAARABMAAQASAAoAAAASABEAAQATAAgAAAASABIAAQATAAkAAAASABMAAQATAAoAAAATABEAAQAUAAgAAAATABIAAQAUAAkAAAATABMAAQAUAAoAAAAVABEAAQASAAsAAAAVABIAAQASAAwAAAAVABMAAQASAA0AAAAWABEAAQATAAsAAAAWABIAAQATAAwAAAAWABMAAQATAA0AAAAXABEAAQAUAAsAAAAXABIAAQAUAAwAAAAXABMAAQAUAA0AAAAZABEAAQASAAgAAAAZABIAAQASAAkAAAAZABMAAQASAAoAAAAaABEAAQATAAgAAAAaABIAAQATAAkAAAAaABMAAQATAAoAAAAbABEAAQAUAAgAAAAbABIAAQAUAAkAAAAbABMAAQAUAAoAAAAdABEAAQASAAgAAAAdABIAAQASAAkAAAAdABMAAQASAAoAAAAeABEAAQATAAgAAAAeABIAAQATAAkAAAAeABMAAQATAAoAAAAfABEAAQAUAAgAAAAfABIAAQAUAAkAAAAfABMAAQAUAAoAAAAhABEAAQASAAsAAAAhABIAAQASAAwAAAAhABMAAQASAA0AAAAiABEAAQATAAsAAAAiABIAAQATAAwAAAAiABMAAQATAA0AAAAjABEAAQAUAAsAAAAjABIAAQAUAAwAAAAjABMAAQAUAA0AAAAlABEAAQASAAgAAAAlABIAAQASAAkAAAAlABMAAQASAAoAAAAmABEAAQATAAgAAAAmABIAAQATAAkAAAAmABMAAQATAAoAAAAnABEAAQAUAAgAAAAnABIAAQAUAAkAAAAnABMAAQAUAAoAAAAoABEAAQASAAgAAAAoABIAAQASAAkAAAAoABMAAQASAAoAAAApABEAAQATAAgAAAApABIAAQATAAkAAAApABMAAQATAAoAAAAqABEAAQAUAAgAAAAqABIAAQAUAAkAAAAqABMAAQAUAAoAAAArABEAAQASAAsAAAArABIAAQASAAwAAAArABMAAQASAA0AAAAsABEAAQATAAsAAAAsABIAAQATAAwAAAAsABMAAQATAA0AAAAtABEAAQAUAAsAAAAtABIAAQAUAAwAAAAtABMAAQAUAA0AAAAuABEAAQASAAsAAAAuABIAAQASAAwAAAAuABMAAQASAA0AAAAvABEAAQATAAsAAAAvABIAAQATAAwAAAAvABMAAQATAA0AAAAwABEAAQAUAAsAAAAwABIAAQAUAAwAAAAwABMAAQAUAA0AAAAyABEAAQASAAsAAAAyABIAAQASAAwAAAAyABMAAQASAA0AAAAzABEAAQATAAsAAAAzABIAAQATAAwAAAAzABMAAQATAA0AAAA0ABEAAQAUAAsAAAA0ABIAAQAUAAwAAAA0ABMAAQAUAA0AAAA1ABEAAQASAAgAAAA1ABIAAQASAAkAAAA1ABMAAQASAAoAAAA2ABEAAQATAAgAAAA2ABIAAQATAAkAAAA2ABMAAQATAAoAAAA3ABEAAQAUAAgAAAA3ABIAAQAUAAkAAAA3ABMAAQAUAAoAAAA4ABEAAQASAAgAAAA4ABIAAQASAAkAAAA4ABMAAQASAAoAAAA5ABEAAQATAAgAAAA5ABIAAQATAAkAAAA5ABMAAQATAAoAAAA6ABEAAQAUAAgAAAA6ABIAAQAUAAkAAAA6ABMAAQAUAAoAAAA8ABEAAQASAAsAAAA8ABIAAQASAAwAAAA8ABMAAQASAA0AAAA9ABEAAQATAAsAAAA9ABIAAQATAAwAAAA9ABMAAQATAA0AAAA+ABEAAQAUAAsAAAA+ABIAAQAUAAwAAAA+ABMAAQAUAA0AAAA/ABEAAQASAAsAAAA/ABIAAQASAAwAAAA/ABMAAQASAA0AAABAABEAAQATAAsAAABAABIAAQATAAwAAABAABMAAQATAA0AAABBABEAAQAUAAsAAABBABIAAQAUAAwAAABBABMAAQAUAA0AAABCABEAAQASAAsAAABCABIAAQASAAwAAABCABMAAQASAA0AAABDABEAAQATAAsAAABDABIAAQATAAwAAABDABMAAQATAA0AAABEABEAAQAUAAsAAABEABIAAQAUAAwAAABEABMAAQAUAA0AAABFABEAAQASAAsAAABFABIAAQASAAwAAABFABMAAQASAA0AAABGABEAAQATAAsAAABGABIAAQATAAwAAABGABMAAQATAA0AAABHABEAAQAUAAsAAABHABIAAQAUAAwAAABHABMAAQAUAA0AAABJABIAAQAQAAsAAABJABMAAQAQAAwAAABLABIAAQAQAAsAAABLABMAAQAQAAwAAABLABQAAQAQAAsAAABLABUAAQAQAAwAAABLABYAAQAQAAsAAABLABcAAQAQAAwAAABKABcAAQAQAAsAAABKABgAAQAQAAwAAABKABkAAQAQAAsAAABKABoAAQAQAAwAAABJABoAAQAQAAsAAABJABsAAQAQAAwAAABGAB4AAQAQAAsAAABGAB8AAQAQAAwAAABEAB4AAQAQAAsAAABEAB8AAQAQAAwAAABDAB8AAQAQAAsAAABDACAAAQAQAAwAAABBAB4AAQAQAAsAAABBAB8AAQAQAAwAAAA4AB4AAQAQAAgAAAA4AB8AAQAQAAkAAAA3AB4AAQAQAAgAAAA3AB8AAQAQAAkAAAA2AB8AAQAQAAgAAAA2ACAAAQAQAAkAAAA1AB8AAQAQAAgAAAA1ACAAAQAQAAkAAAAoAB4AAQAQAAgAAAAoAB8AAQAQAAkAAAApAB4AAQAQAAgAAAApAB8AAQAQAAgAAAApACAAAQAQAAkAAAAqAB8AAQAQAAgAAAAqACAAAQAQAAkAAAArAB4AAQAQAAgAAAArAB8AAQAQAAkAAAA=")
 tile_set = SubResource("TileSet_r0c5p")
 
-[node name="Checkpoints" type="Node2D" parent="."]
-y_sort_enabled = true
-position = Vector2(3760, 0)
-
-[node name="Checkpoint" parent="Checkpoints" instance=ExtResource("9_kx224")]
-position = Vector2(1704, 451)
-dialogue = ExtResource("10_th56i")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint"]
-position = Vector2(1, -2)
-shape = SubResource("RectangleShape2D_a4nrt")
-debug_color = Color(0, 0, 0, 0.42)
+[node name="Cinematic" type="Node2D" parent="."]
+script = ExtResource("10_tgdsa")
+dialogue = ExtResource("11_kx224")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("10_5bldn")
+stream = ExtResource("11_p5nme")
 autoplay = true
