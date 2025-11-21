@@ -1,9 +1,10 @@
-[gd_scene load_steps=24 format=4 uid="uid://d15xklrco2pp6"]
+[gd_scene load_steps=29 format=4 uid="uid://d15xklrco2pp6"]
 
 [ext_resource type="TileSet" uid="uid://btphyrb3v3gie" path="res://scenes/quests/story_quests/amaru_creative_games/amaru_creative_games.tres" id="1_53314"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_lpw6w"]
 [ext_resource type="SpriteFrames" uid="uid://c600nytcemwcy" path="res://scenes/quests/story_quests/amaru_creative_games/player_components/amaru_creative_games_player.tres" id="3_ls42m"]
 [ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="4_4xk1f"]
+[ext_resource type="PackedScene" uid="uid://p6q2uo2us0il" path="res://scenes/quests/story_quests/shjourney/light.tscn" id="4_tjy4e"]
 [ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/game_elements/props/sequence_puzzle_object/sequence_puzzle_object.tscn" id="5_tjy4e"]
 [ext_resource type="SpriteFrames" uid="uid://snq6gxi3bulq" path="res://scenes/quests/story_quests/amaru_creative_games/3_sequence_puzzle/amaru_creative_games_object.tres" id="6_408vg"]
 [ext_resource type="AudioStream" uid="uid://cg57q82pb243w" path="res://assets/third_party/nepalese_hand_bells/handBells-c4.ogg" id="7_uc5wy"]
@@ -22,6 +23,10 @@
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="20_ee07k"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="21_kynb6"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="22_6fjfq"]
+[ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="23_4xk1f"]
+[ext_resource type="Resource" uid="uid://d22lgxk0hwoji" path="res://scenes/quests/story_quests/amaru_creative_games/1_stealth/stealth_components/amaru_creative_games_guia.dialogue" id="24_tjy4e"]
+[ext_resource type="SpriteFrames" uid="uid://qovw78hhqj3j" path="res://scenes/quests/story_quests/amaru_creative_games/1_stealth/stealth_components/amaru_creative_games_talker.tres" id="25_408vg"]
+[ext_resource type="AudioStream" uid="uid://su5beq7duncy" path="res://scenes/quests/story_quests/amaru_creative_games/3_sequence_puzzle/Music/amaru_creative_games_sequence_puzzle.mp3" id="27_408vg"]
 
 [sub_resource type="Resource" id="Resource_ppiwm"]
 script = ExtResource("18_btegb")
@@ -29,6 +34,9 @@ type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="SequencePuzzleTemplate" type="Node2D"]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.3879719, 0.44803053, 0.533844, 1)
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -47,7 +55,7 @@ tile_set = ExtResource("1_53314")
 [node name="Rock" type="TileMapLayer" parent="TileMapLayers"]
 modulate = Color(0.41960785, 0.5411765, 0.5803922, 1)
 self_modulate = Color(0.32156864, 0.41568628, 0.44705883, 1)
-tile_map_data = PackedByteArray("AAAAAAMABAABAAMAAAAAAAQABAABAAMAAAAAAAUABAABAAMAAAAAAAYABAABAAMAAAAAAAcABAABAAMAAAAAAAgABAABAAMAAAAAAAkABAABAAMAAAAHAAMABAABAAMAAAAHAAQABAABAAMAAAAHAAgABAABAAMAAAAAAAoABAABAAMAAAAAAAsABAAAAAMAAAABAAIABAABAAMAAAABAAsABAABAAMAAAACAAIABAABAAMAAAACAAsABAABAAMAAAADAAIABAABAAMAAAADAAsABAABAAMAAAAEAAIABAABAAMAAAAEAAsABAABAAMAAAAFAAIABAABAAMAAAAFAAsABAACAAMAAAAGAAIABAABAAMAAAAHAAkABAABAAMAAAAGAAoABAABAAMAAAAFAAkABAABAAMAAAAHAAoABAACAAMAAAABAAMABAABAAMAAAACAAMABAABAAMAAAADAAMABAABAAMAAAAEAAMABAABAAMAAAAFAAMABAABAAMAAAAGAAMABAABAAMAAAAHAAcABAABAAMAAAAMAAMABAABAAMAAAAMAAQABAABAAMAAAAMAAcABAABAAMAAAAMAAgABAABAAMAAAAMAAkABAABAAMAAAANAAIABAABAAMAAAANAAMABAABAAMAAAAOAAIABAABAAMAAAAOAAMABAABAAMAAAAOAAsABAABAAMAAAAPAAIABAABAAMAAAAPAAMABAABAAMAAAAPAAsABAABAAMAAAAQAAIABAABAAMAAAAQAAMABAABAAMAAAAQAAsABAABAAMAAAARAAIABAABAAMAAAARAAMABAABAAMAAAARAAsABAACAAMAAAASAAIABAABAAMAAAASAAMABAABAAMAAAASAAoABAABAAMAAAATAAMABAABAAMAAAATAAQABAABAAMAAAATAAcABAABAAMAAAATAAgABAABAAMAAAATAAkABAABAAMAAAATAAoABAACAAMAAAASAAsABAABAAMAAAATAAsABAABAAMAAAATAAYABAABAAMAAAAMAAUABAADAAMAAAANAAkABAABAAMAAAAOAAkABAABAAMAAAAMAAoABAABAAMAAAANAAoABAABAAMAAAAHAAYAAwAAAAAAAAAIAAYAAwABAAAAAAAJAAYAAwABAAAAAAAKAAYAAwABAAAAAAALAAYAAwABAAAAAAA=")
+tile_map_data = PackedByteArray("AAAAAAMABAABAAMAAAAAAAQABAABAAMAAAAAAAUABAABAAMAAAAAAAYABAABAAMAAAAAAAcABAABAAMAAAAAAAgABAABAAMAAAAAAAkABAABAAMAAAAHAAMABAABAAMAAAAHAAQABAABAAMAAAAHAAgABAABAAMAAAAAAAoABAABAAMAAAAAAAsABAAAAAMAAAABAAIABAABAAMAAAABAAsABAABAAMAAAACAAIABAABAAMAAAACAAsABAABAAMAAAADAAIABAABAAMAAAADAAsABAABAAMAAAAEAAIABAABAAMAAAAEAAsABAABAAMAAAAFAAIABAABAAMAAAAFAAsABAABAAMAAAAGAAIABAABAAMAAAAHAAkABAABAAMAAAAGAAoABAABAAMAAAAFAAkABAABAAMAAAAHAAoABAACAAMAAAABAAMABAABAAMAAAACAAMABAABAAMAAAADAAMABAABAAMAAAAEAAMABAABAAMAAAAFAAMABAABAAMAAAAGAAMABAABAAMAAAAHAAcABAABAAMAAAAMAAMABAABAAMAAAAMAAQABAABAAMAAAAMAAcABAABAAMAAAAMAAgABAABAAMAAAAMAAkABAABAAMAAAANAAIABAABAAMAAAANAAMABAABAAMAAAAOAAIABAABAAMAAAAOAAMABAABAAMAAAAOAAsABAABAAMAAAAPAAIABAABAAMAAAAPAAMABAABAAMAAAAPAAsABAABAAMAAAAQAAIABAABAAMAAAAQAAMABAABAAMAAAAQAAsABAABAAMAAAARAAIABAABAAMAAAARAAMABAABAAMAAAARAAsABAABAAMAAAASAAIABAABAAMAAAASAAMABAABAAMAAAASAAoABAABAAMAAAATAAMABAABAAMAAAATAAQABAABAAMAAAATAAcABAABAAMAAAATAAgABAABAAMAAAATAAkABAABAAMAAAATAAoABAABAAMAAAASAAsABAABAAMAAAATAAsABAABAAMAAAATAAYABAABAAMAAAAMAAUABAADAAMAAAANAAkABAABAAMAAAAOAAkABAABAAMAAAAMAAoABAABAAMAAAANAAoABAABAAMAAAAHAAYAAwAAAAAAAAAIAAYAAwABAAAAAAAJAAYAAwABAAAAAAAKAAYAAwABAAAAAAALAAYAAwABAAAAAAACAAgABwAAAAEAAAAOAAoABAABAAMAAAAPAAoABAABAAMAAAAQAAoABAABAAMAAAARAAoABAABAAMAAAACAAoABAABAAMAAAADAAoABAABAAMAAAAEAAoABAABAAMAAAAFAAoABAABAAMAAAABAAoABAABAAMAAAAGAAkABAABAAMAAAA=")
 tile_set = ExtResource("1_53314")
 
 [node name="Rock2" type="TileMapLayer" parent="TileMapLayers"]
@@ -65,11 +73,18 @@ tile_set = ExtResource("1_53314")
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("2_lpw6w")]
-position = Vector2(210, 458)
+position = Vector2(192, 599)
+player_name = "Wayra"
 sprite_frames = ExtResource("3_ls42m")
 
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
+[node name="Node2D" parent="OnTheGround/Player" instance=ExtResource("4_tjy4e")]
+modulate = Color(1, 0.8745098, 0.627451, 1)
+self_modulate = Color(0.12156863, 0.14901961, 0.1882353, 1)
+position = Vector2(-1, -18)
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround"]
 process_mode = 3
+position = Vector2(210, 458)
 limit_left = 0
 limit_top = 0
 position_smoothing_enabled = true
@@ -125,11 +140,11 @@ audio_stream = ExtResource("12_h1m1h")
 y_sort_enabled = true
 
 [node name="HintSign1" parent="OnTheGround/SequencePuzzle/Signs" instance=ExtResource("13_nu8r2")]
-position = Vector2(1094, 400)
+position = Vector2(1158, 410)
 sprite_frames = ExtResource("14_xevi6")
 
 [node name="HintSign2" parent="OnTheGround/SequencePuzzle/Signs" instance=ExtResource("13_nu8r2")]
-position = Vector2(1094, 464)
+position = Vector2(1158, 458)
 sprite_frames = ExtResource("15_sb6e8")
 
 [node name="Steps" type="Node2D" parent="OnTheGround/SequencePuzzle"]
@@ -145,7 +160,7 @@ sequence = [NodePath("../../Objects/Blue"), NodePath("../../Objects/Green"), Nod
 hint_sign = NodePath("../../Signs/HintSign2")
 
 [node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("17_hbs6b")]
-position = Vector2(1088, 426)
+position = Vector2(1002, 427)
 revealed = false
 next_scene = "uid://c74umikah4l4u"
 item = SubResource("Resource_ppiwm")
@@ -153,9 +168,9 @@ collected_dialogue = ExtResource("19_pxt4u")
 dialogue_title = &"well_done"
 
 [node name="Sign" parent="OnTheGround" instance=ExtResource("20_ee07k")]
-position = Vector2(404, 384)
+position = Vector2(401, 362)
 direction = 1
-text = "First melody: yellow, green, blue."
+text = "Sigue el latido de la montaña"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
@@ -165,5 +180,17 @@ text = "First melody: yellow, green, blue."
 script = ExtResource("22_6fjfq")
 dialogue = ExtResource("19_pxt4u")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="Guia" parent="." instance=ExtResource("23_4xk1f")]
+position = Vector2(392, 560)
+dialogue = ExtResource("24_tjy4e")
+npc_name = "Mamakuna"
+look_at_side = 1
+sprite_frames = ExtResource("25_408vg")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("27_408vg")
+volume_db = -2.213
+autoplay = true
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]
