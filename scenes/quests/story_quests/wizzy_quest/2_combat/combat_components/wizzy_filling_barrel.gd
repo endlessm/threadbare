@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2025 Game-Lab-5-0-UTP-Group-1-Team-1 Contributors
+# SPDX-License-Identifier: MPL-2.0
+
 extends FillingBarrel
 ## Inverted barrel mechanic for Wizzy Quest combat puzzle
 ##
