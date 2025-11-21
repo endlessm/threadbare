@@ -1,11 +1,26 @@
 extends Node2D
 
-func _on_salida_escena_area_entered(area: Area2D) -> void:
-	print("Área de salida detectó un ÁREA.")
-	if area.is_in_group("player"):
-		print("¡Es el jugador! Cambiando de escena...")
-		var error: Error = get_tree().change_scene_to_file("res://scenes/quests/story_quests/la_leyenda_de_quispe/1_fase/Main/Main.tscn")
-		if error != OK:
-			print("ERROR: No se pudo cargar la escena.")
+@export var dialogue_resource: DialogueResource
+@onready var animation_player: AnimationPlayer = $OnTheGround/AnimationPlayer
+@onready var animated_sprite: AnimatedSprite2D = $OnTheGround/Personajes
+
+func _ready() -> void:
+	DatosGlobales.cinematica_actual = self
+	DatosGlobales.anim_player_intro = animation_player
+	await get_tree().process_frame
+	start_intro()
+
+func start_intro() -> void:
+	DialogueManager.show_dialogue_balloon(dialogue_resource, "start")
+
+func cambiar_sprite(nombre_anim: String) -> void:
+	if animated_sprite.sprite_frames.has_animation(nombre_anim):
+		animated_sprite.play(nombre_anim)
 	else:
-		print("Un área entró, pero NO era el jugador.")
+		print("⚠️ Error: No existe la animación de sprite: ", nombre_anim)
+
+func mover_personaje(nombre_anim: String) -> void:
+	if animation_player.has_animation(nombre_anim):
+		animation_player.play(nombre_anim)
+	else:
+		print("⚠️ Error: No existe la animación de movimiento: ", nombre_anim)

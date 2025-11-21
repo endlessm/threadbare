@@ -2,20 +2,15 @@ extends Area2D
 
 @export var speed: float = 300.0
 @export var damage: int = 50
+@onready var audio_disparo: AudioStreamPlayer2D = $AudioStreamPlayer2D
 var direction: Vector2 = Vector2.RIGHT
 var active: bool = false
 var owner_type: String = "player" 
 
 func _ready() -> void:
-	var sprite_node: CanvasItem = null
-	if has_node("AnimatedSprite2D"):
-		sprite_node = $AnimatedSprite2D
-	elif has_node("Sprite2D"):
-		sprite_node = $Sprite2D
-	if sprite_node:
-		sprite_node.modulate = Color("#3b2d4d")
-	else:
-		print("ADVERTENCIA: No se encontró Sprite2D o AnimatedSprite2D en la bala.")
+	if audio_disparo:
+		audio_disparo.pitch_scale = randf_range(0.9, 1.1)
+		audio_disparo.play()
 	await get_tree().create_timer(0.1).timeout
 	active = true
 	if not is_connected("area_entered", Callable(self, "_on_hit")):
@@ -44,6 +39,6 @@ func _on_body_hit(body: Node) -> void:
 		queue_free()
 		return
 	queue_free()
-	
+
 func _on_visible_on_screen_exited() -> void:
 	queue_free()

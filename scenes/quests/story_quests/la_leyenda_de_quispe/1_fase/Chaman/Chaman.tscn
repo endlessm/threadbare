@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bvcu6b1y70ded"]
+[gd_scene load_steps=6 format=3 uid="uid://bvcu6b1y70ded"]
 
 [ext_resource type="Script" uid="uid://ogt4gx1f1mc5" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/1_fase/Chaman/chaman.gd" id="1_fkqom"]
 [ext_resource type="Resource" uid="uid://du60u88dasa3t" path="res://scenes/quests/story_quests/la_leyenda_de_quispe/1_fase/Chaman/chaman.dialogue" id="2_6gxm1"]
 [ext_resource type="SpriteFrames" uid="uid://cqe47tmqq3mu4" path="res://scenes/game_elements/characters/components/sprite_frames/elder2.tres" id="3_8j5en"]
+[ext_resource type="AudioStream" uid="uid://dxbxx6x5h7d8p" path="res://assets/third_party/sounds/characters/npcs/elder/BookPage.ogg" id="4_4hxkf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_acegg"]
 size = Vector2(200, 200)
@@ -19,6 +20,10 @@ animation = &"idle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 z_index = 1
 shape = SubResource("RectangleShape2D_acegg")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_4hxkf")
+max_distance = 350.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
