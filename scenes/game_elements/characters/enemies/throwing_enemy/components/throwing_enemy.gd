@@ -32,7 +32,11 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 
 ## The period of time between throwing projectiles.
 ## Note: Currently this is limited by the length of the AnimationPlayer animation "attack".
-@export_range(0.1, 10., 0.1, "or_greater", "suffix:s") var throwing_period: float = 5.0
+@export_range(0.1, 10., 0.1, "or_greater", "suffix:s") var throwing_period: float = 5.0:
+	set(value):
+		throwing_period = value
+		if timer:
+			timer.wait_time = throwing_period
 
 ## Use this to have 2 enemies throwing projectiles alternatively and at the same pace
 ## (same [member throwing_period]).

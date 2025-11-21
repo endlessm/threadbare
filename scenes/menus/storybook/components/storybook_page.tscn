@@ -237,12 +237,12 @@ region = Rect2(0, 0, 192, 192)
 
 [node name="StorybookPage" type="MarginContainer"]
 anchors_preset = -1
-anchor_top = -0.037
-anchor_right = 0.294
+anchor_top = -0.048
+anchor_right = 0.61700004
 anchor_bottom = 0.674
-offset_top = -0.360001
-offset_right = 0.320007
-offset_bottom = -0.280029
+offset_top = 0.060001373
+offset_right = 0.2399292
+offset_bottom = 7.2199707
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -253,68 +253,75 @@ theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 script = ExtResource("1_jl23h")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-theme_override_constants/separation = 15
+theme_override_constants/separation = 45
 
-[node name="TitleBox" type="PanelContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 64)
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="TitleBox" type="PanelContainer" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(370, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_type_variation = &"PlayerRibbon"
 
-[node name="Title" type="Label" parent="VBoxContainer/TitleBox"]
+[node name="Title" type="Label" parent="HBoxContainer/VBoxContainer/TitleBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Title of the Quest"
+horizontal_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(360, 180)
-layout_mode = 2
-size_flags_horizontal = 4
-theme = SubResource("Theme_rf3dg")
-horizontal_scroll_mode = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/separation = 5
-
-[node name="Description" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+[node name="Animation" type="TextureRect" parent="HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam pulvinar, erat non consectetur cursus, erat erat lobortis massa, quis mattis purus dolor ac lorem. In hac habitasse platea dictumst. Suspendisse vulputate felis purus, ac scelerisque mauris tristique sit amet. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-autowrap_mode = 3
-
-[node name="Authors" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 8
-text = "by Jane Bloggs, Erika Mustermann and Jóna Jónsdóttir"
-autowrap_mode = 2
-
-[node name="Animation" type="TextureRect" parent="VBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(180, 180)
+custom_minimum_size = Vector2(140, 300)
 layout_direction = 1
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 6
 texture = SubResource("AtlasTexture_1tfpy")
 expand_mode = 1
 stretch_mode = 5
 script = ExtResource("3_rxv6h")
 sprite_frames = ExtResource("4_0inj8")
 
-[node name="PlayButton" type="Button" parent="VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(370, 80)
+layout_mode = 2
+size_flags_vertical = 4
+horizontal_scroll_mode = 0
+
+[node name="Authors" type="Label" parent="HBoxContainer/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(370, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "by Jane Bloggs, Erika Mustermann and Jóna Jónsdóttir"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(360, 430)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = SubResource("Theme_rf3dg")
+horizontal_scroll_mode = 0
+
+[node name="Description" type="Label" parent="HBoxContainer/VBoxContainer2/ScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam pulvinar, erat non consectetur cursus, erat erat lobortis massa, quis mattis purus dolor ac lorem. In hac habitasse platea dictumst. Suspendisse vulputate felis purus, ac scelerisque mauris tristique sit amet. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+autowrap_mode = 3
+
+[node name="PlayButton" type="Button" parent="HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
@@ -323,5 +330,3 @@ focus_neighbor_bottom = NodePath(".")
 focus_previous = NodePath("../../../LeftPage/VBoxContainer/BackButton")
 theme_type_variation = &"FlatButton"
 text = "Play"
-
-[connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
