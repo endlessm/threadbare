@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://co4mogwvmwf82"]
+
+[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="1_ab25j"]
+[ext_resource type="SpriteFrames" uid="uid://ch0p31t4upx7w" path="res://scenes/quests/lore_quests/quest_003/2_ink_drinker_levels/components/barrel_cracks/barrel_cracks.tres" id="2_g6wko"]
+[ext_resource type="Script" uid="uid://dnon02l02aw6o" path="res://scenes/quests/lore_quests/quest_003/2_ink_drinker_levels/components/fragile_vase.gd" id="2_wal8y"]
+
+[node name="FragileVase" node_paths=PackedStringArray("crack_overlay_node") instance=ExtResource("1_ab25j")]
+script = ExtResource("2_wal8y")
+max_health = 4
+crack_overlay_node = NodePath("CrackOverlay")
+
+[node name="CrackOverlay" type="AnimatedSprite2D" parent="." index="1"]
+visible = false
+position = Vector2(0, -21)
+sprite_frames = ExtResource("2_g6wko")
