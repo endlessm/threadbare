@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://cwiqq2nr32eol"]
+[gd_scene load_steps=43 format=4 uid="uid://cwiqq2nr32eol"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_llsdj"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_llsdj"]
@@ -6,7 +6,6 @@
 [ext_resource type="SpriteFrames" uid="uid://djb67011ikqs7" path="res://scenes/quests/story_quests/laberinto_del_fauno/player_components/laberinto_del_fauno_player.tres" id="5_14vou"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="9_us7ii"]
 [ext_resource type="Resource" uid="uid://bk7pv8t0f8qmb" path="res://scenes/quests/story_quests/laberinto_del_fauno/1_stealth/stealth_components/laberinto_del_fauno_stealth.dialogue" id="10_lvqn8"]
-[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="10_ynca5"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="11_tkua4"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="13_yfc30"]
 [ext_resource type="Script" uid="uid://diqvw3jqhv2j0" path="res://scenes/quests/story_quests/laberinto_del_fauno/1_stealth/stealth_components/SceneComponent/luciernaga.gd" id="14_14vou"]
@@ -17,8 +16,11 @@
 [ext_resource type="SpriteFrames" uid="uid://ddgsxfgsspife" path="res://scenes/quests/story_quests/laberinto_del_fauno/1_stealth/stealth_components/EnemyComponent/laberinto_del_fauno_JefeSapo.tres" id="16_lvqn8"]
 [ext_resource type="SpriteFrames" uid="uid://unuq76r52a7q" path="res://scenes/quests/story_quests/laberinto_del_fauno/1_stealth/stealth_components/EnemyComponent/laberinto_del_fauno_SapoRed_enemy.tres" id="17_4kpwn"]
 [ext_resource type="Texture2D" uid="uid://dgoycpqxoxek8" path="res://scenes/quests/story_quests/laberinto_del_fauno/1_stealth/stealth_components/SceneComponent/LLave_Fotograma1-1.png.png" id="17_e34iv"]
+[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="17_us7ii"]
+[ext_resource type="AudioStream" uid="uid://bhgpds38q0j4r" path="res://assets/third_party/sounds/collectibles/MemoryCollectable.ogg" id="18_4m40j"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="18_e34iv"]
 [ext_resource type="Resource" uid="uid://dsxo1k4jh8ntc" path="res://scenes/quests/story_quests/laberinto_del_fauno/1_stealth/stealth_components/laberinto_del_fauno_JefeSapo.dialogue" id="19_4kpwn"]
+[ext_resource type="AudioStream" uid="uid://38xwdjm46478" path="res://assets/third_party/sounds/collectibles/CollectibleAppear.ogg" id="19_ynca5"]
 
 [sub_resource type="Gradient" id="Gradient_211l4"]
 offsets = PackedFloat32Array(0, 0.6861538)
@@ -50,7 +52,7 @@ size = Vector2(161, 192)
 
 [sub_resource type="GDScript" id="GDScript_vo4gh"]
 script/source = "extends Node2D
-var temp: bool = false
+@export var temp: bool = false
 var dentro: bool = false
 const LABERINTO_DEL_FAUNO_JEFE_SAPO = preload(\"uid://dsxo1k4jh8ntc\")
 
@@ -80,9 +82,291 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 [sub_resource type="CircleShape2D" id="CircleShape2D_e34iv"]
 radius = 167.87198
 
-[sub_resource type="Resource" id="Resource_idy4y"]
+[sub_resource type="GDScript" id="GDScript_14vou"]
+script/source = "@tool
+extends CollectibleItem
+
+@export var texture: Texture
+
+func _process(_delta: float) -> void:
+	if $\"..\".temp == false:
+		$\".\".position = Vector2(1714.0,2792.0)
+	$Sprite2D.scale = Vector2(0.2,0.2)
+	$Sprite2D.texture = texture
+"
+
+[sub_resource type="Resource" id="Resource_e34iv"]
 script = ExtResource("11_tkua4")
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ghwae"]
+radius = 20.0
+
+[sub_resource type="Animation" id="Animation_i0615"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CollectedSound:volume_db")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_7ff3m"]
+resource_name = "collected"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.366667, 0.6),
+"transitions": PackedFloat32Array(-2, -2, -2, -2),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 0.9), Vector2(0.95, 1.05), Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.566667, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.5, 1.5)]
+}
+tracks/6/type = "audio"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CollectedSound")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"clips": [{
+"end_offset": 1.23,
+"start_offset": 0.0,
+"stream": ExtResource("18_4m40j")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/6/use_blend = false
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("CollectedSound:volume_db")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.933333, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, -12.0]
+}
+
+[sub_resource type="Animation" id="Animation_qy0vu"]
+resource_name = "reveal"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(0.8, 0.8), Vector2(1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.5),
+"transitions": PackedFloat32Array(-2, -2, -2, -2, -2),
+"update": 0,
+"values": [0.0, -0.122173, 0.122173, -0.0523599, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8dm1m"]
+_data = {
+&"RESET": SubResource("Animation_i0615"),
+&"collected": SubResource("Animation_7ff3m"),
+&"reveal": SubResource("Animation_qy0vu")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hhgm5"]
+radius = 9.0
+height = 28.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_us7ii"]
 size = Vector2(406, 418)
@@ -253,7 +537,6 @@ tracks/8/keys = {
 
 [sub_resource type="Animation" id="Animation_lvqn8"]
 resource_name = "Vendicion"
-length = 0.5
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -261,9 +544,9 @@ tracks/0/path = NodePath("Player:modulate:r")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.53989327, -0.08166667, 0.07668446, 0, 0, 1, -0.085, -0.07668445, 0, 0, 0.53989327, -0.08166667, 0.07668446, 0, 0, 1, -0.085, -0.07668445, 0, 0),
-"times": PackedFloat32Array(0, 0.1, 0.23333333, 0.33333334, 0.5)
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.53989327, -0.08166667, 0.07668446, 0, 0, 1, -0.085, -0.07668445, 0, 0, 0.53989327, -0.08166667, 0.07668446, 0, 0, 1, -0.085, -0.07668445, 0, 0, 1, -0.25, 0, 0.25, 0, 0.53989327, -0.08166667, 0.07668446, 0, 0, 1, -0.085, -0.07668445, 0, 0, 0.53989327, -0.08166667, 0.07668446, 0, 0, 1, -0.085, -0.07668445, 0, 0),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
 }
 tracks/1/type = "bezier"
 tracks/1/imported = false
@@ -272,9 +555,9 @@ tracks/1/path = NodePath("Player:modulate:g")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.9966304, -0.08166667, 0.0005616049, 0, 0, 1, -0.085, -0.0005616049, 0, 0, 0.9966304, -0.08166667, 0.0005616049, 0, 0, 1, -0.085, -0.0005616049, 0, 0),
-"times": PackedFloat32Array(0, 0.1, 0.23333333, 0.33333334, 0.5)
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.9966304, -0.08166667, 0.0005616049, 0, 0, 1, -0.085, -0.0005616049, 0, 0, 0.9966304, -0.08166667, 0.0005616049, 0, 0, 1, -0.085, -0.0005616049, 0, 0, 1, -0.25, 0, 0.25, 0, 0.9966304, -0.08166667, 0.0005616049, 0, 0, 1, -0.085, -0.0005616049, 0, 0, 0.9966304, -0.08166667, 0.0005616049, 0, 0, 1, -0.085, -0.0005616049, 0, 0),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
 }
 tracks/2/type = "bezier"
 tracks/2/imported = false
@@ -283,9 +566,9 @@ tracks/2/path = NodePath("Player:modulate:b")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.99999994, -0.08166667, 9.934108e-09, 0, 0, 1, -0.085, -9.934108e-09, 0, 0, 0.99999994, -0.08166667, 9.934108e-09, 0, 0, 1, -0.085, -9.934108e-09, 0, 0),
-"times": PackedFloat32Array(0, 0.1, 0.23333333, 0.33333334, 0.5)
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.99999994, -0.08166667, 9.934108e-09, 0, 0, 1, -0.085, -9.934108e-09, 0, 0, 0.99999994, -0.08166667, 9.934108e-09, 0, 0, 1, -0.085, -9.934108e-09, 0, 0, 1, -0.25, 0, 0.25, 0, 0.99999994, -0.08166667, 9.934108e-09, 0, 0, 1, -0.085, -9.934108e-09, 0, 0, 0.99999994, -0.08166667, 9.934108e-09, 0, 0, 1, -0.085, -9.934108e-09, 0, 0),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
 }
 tracks/3/type = "bezier"
 tracks/3/imported = false
@@ -294,9 +577,9 @@ tracks/3/path = NodePath("Player:modulate:a")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.08166667, 0, 0, 0, 1, -0.085, 0, 0, 0, 1, -0.08166667, 0, 0, 0, 1, -0.085, 0, 0, 0),
-"times": PackedFloat32Array(0, 0.1, 0.23333333, 0.33333334, 0.5)
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.08166667, 0, 0, 0, 1, -0.085, 0, 0, 0, 1, -0.08166667, 0, 0, 0, 1, -0.085, 0, 0, 0, 1, -0.25, 0, 0.25, 0, 1, -0.08166667, 0, 0, 0, 1, -0.085, 0, 0, 0, 1, -0.08166667, 0, 0, 0, 1, -0.085, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vo4gh"]
@@ -337,7 +620,7 @@ metadata/_edit_lock_ = true
 
 [node name="Player" parent="." instance=ExtResource("3_llsdj")]
 z_index = 1
-position = Vector2(86, 473)
+position = Vector2(1160, 2872)
 script = ExtResource("4_lvqn8")
 player_name = "Ofelia"
 sprite_frames = ExtResource("5_14vou")
@@ -471,18 +754,50 @@ animation = &"Drop"
 position = Vector2(1714, 2846)
 shape = SubResource("CircleShape2D_e34iv")
 
-[node name="CollectibleItem" parent="GranJefe" instance=ExtResource("10_ynca5")]
+[node name="CollectibleItem" type="Node2D" parent="GranJefe"]
 visible = false
 position = Vector2(1482, 2710)
-next_scene = "uid://thwcu5akkqp5"
-item = SubResource("Resource_idy4y")
+script = SubResource("GDScript_14vou")
+texture = ExtResource("17_e34iv")
+next_scene = "uid://bg3p1vg1bbnvp"
+item = SubResource("Resource_e34iv")
 collected_dialogue = ExtResource("16_4kpwn")
 
-[node name="InteractArea" parent="GranJefe/CollectibleItem" index="0"]
+[node name="InteractArea" parent="GranJefe/CollectibleItem" instance=ExtResource("17_us7ii")]
+interact_label_position = Vector2(0, -71)
 action = "Collect Memory"
 
-[node name="Sprite2D" parent="GranJefe/CollectibleItem" index="2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GranJefe/CollectibleItem/InteractArea"]
+shape = SubResource("CircleShape2D_ghwae")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GranJefe/CollectibleItem"]
+libraries = {
+&"": SubResource("AnimationLibrary_8dm1m")
+}
+
+[node name="Sprite2D" type="Sprite2D" parent="GranJefe/CollectibleItem"]
+visible = false
+modulate = Color(1, 1, 1, 0)
 texture = ExtResource("17_e34iv")
+
+[node name="CollectedSound" type="AudioStreamPlayer" parent="GranJefe/CollectibleItem"]
+unique_name_in_owner = true
+bus = &"SFX"
+
+[node name="AppearSound" type="AudioStreamPlayer" parent="GranJefe/CollectibleItem"]
+unique_name_in_owner = true
+stream = ExtResource("19_ynca5")
+bus = &"SFX"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="GranJefe/CollectibleItem"]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GranJefe/CollectibleItem/StaticBody2D"]
+position = Vector2(1, 14)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_hhgm5")
+debug_color = Color(0.976711, 0, 0.409753, 0.42)
 
 [node name="Checkpoint2" parent="GranJefe" instance=ExtResource("18_e34iv")]
 position = Vector2(1701, 2778)
@@ -509,16 +824,15 @@ libraries = {
 
 [connection signal="body_entered" from="Zone/Zone1" to="Zone" method="Zone1Attack"]
 [connection signal="body_entered" from="Zone/Zone1" to="Zone" method="Zone_entered"]
-[connection signal="body_exited" from="Zone/Zone1" to="Zone" method="Zone1Stopt"]
 [connection signal="body_exited" from="Zone/Zone1" to="Zone" method="Zone_exited"]
+[connection signal="body_exited" from="Zone/Zone1" to="Zone" method="Zone1Stopt"]
 [connection signal="body_entered" from="Zone/Zone2" to="Zone" method="Zone2Attack"]
 [connection signal="body_entered" from="Zone/Zone2" to="Zone" method="Zone_entered"]
-[connection signal="body_exited" from="Zone/Zone2" to="Zone" method="Zone2Stopt"]
 [connection signal="body_exited" from="Zone/Zone2" to="Zone" method="Zone_exited"]
+[connection signal="body_exited" from="Zone/Zone2" to="Zone" method="Zone2Stopt"]
 [connection signal="body_entered" from="Checkpoint/Area2D" to="Zone" method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="GranJefe/Checkpoint2" to="GranJefe" method="_on_area_2d_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="GranJefe" method="_on_animation_player_animation_finished"]
 
 [editable path="Player"]
-[editable path="GranJefe/CollectibleItem"]
 [editable path="GranJefe/Checkpoint2"]

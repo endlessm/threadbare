@@ -1,13 +1,28 @@
-[gd_scene load_steps=11 format=4 uid="uid://b263edfnkyio3"]
+[gd_scene load_steps=20 format=3 uid="uid://dbbpemyglt51o"]
 
-[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_hkbnh"]
-[ext_resource type="Texture2D" uid="uid://bh4hhbx3h6k1r" path="res://scenes/quests/story_quests/laberinto_del_fauno/0_intro/intro_components/laberinto_del_fauno_intro_image.png" id="2_r5bf7"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="2_no50m"]
 [ext_resource type="SpriteFrames" uid="uid://djb67011ikqs7" path="res://scenes/quests/story_quests/laberinto_del_fauno/player_components/laberinto_del_fauno_player.tres" id="3_2n7cd"]
-[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_m0tp6"]
-[ext_resource type="Resource" uid="uid://hiqdq4qv63xd" path="res://scenes/quests/story_quests/laberinto_del_fauno/0_intro/intro_components/laberinto_del_fauno_intro.dialogue" id="5_k181c"]
-[ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_fgw0d"]
+[ext_resource type="Resource" uid="uid://dgm6axxulwi3a" path="res://scenes/quests/story_quests/laberinto_del_fauno/0_intro/intro_components/laberinto_del_fauno_intro.dialogue" id="5_k181c"]
+[ext_resource type="Texture2D" uid="uid://cg7vonk4o3ae1" path="res://scenes/quests/story_quests/laberinto_del_fauno/0_intro/intro_components/casxa (2).png" id="5_nwf0a"]
 
-[sub_resource type="Animation" id="Animation_exfxs"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_q005p"]
+
+[sub_resource type="Animation" id="Animation_m2nok"]
+resource_name = "Faded_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.966667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ld06i"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -31,10 +46,91 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(400, 349)]
+"values": [Vector2(-30, -30)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/AnimatedSprite2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1100.4, 290.865)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("OnTheGround/Character:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("OnTheGround/ColorRect:color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_fy17j"]
+[sub_resource type="Animation" id="Animation_lajt0"]
+resource_name = "VACIO"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-50, -50)]
+}
+
+[sub_resource type="Animation" id="Animation_012ev"]
+resource_name = "walk_fausto_off"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/AnimatedSprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(700, 306.03), Vector2(1200, 306.03)]
+}
+
+[sub_resource type="Animation" id="Animation_no50m"]
+resource_name = "walk_fausto_on"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/AnimatedSprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1200, 290.865), Vector2(650.57, 306.03)]
+}
+
+[sub_resource type="Animation" id="Animation_7swpb"]
 resource_name = "walk_off"
 length = 2.0
 tracks/0/type = "value"
@@ -59,10 +155,10 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(495, 478), Vector2(1010, 478)]
+"values": [Vector2(400, 478), Vector2(1010, 478)]
 }
 
-[sub_resource type="Animation" id="Animation_4y75u"]
+[sub_resource type="Animation" id="Animation_blo5s"]
 resource_name = "walk_on"
 length = 2.0
 tracks/0/type = "value"
@@ -84,36 +180,82 @@ tracks/1/path = NodePath("OnTheGround/Character:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 2),
+"times": PackedFloat32Array(0, 1.36667, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(500.96, 280), Vector2(156.195, 500.992), Vector2(400, 478)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Character:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.36667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-50, 478), Vector2(495, 478)]
+"values": [Vector2(0.17, 0.17), Vector2(1, 1)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_5erbf"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qdpvj"]
 _data = {
-&"RESET": SubResource("Animation_exfxs"),
-&"walk_off": SubResource("Animation_fy17j"),
-&"walk_on": SubResource("Animation_4y75u")
+&"Faded_in": SubResource("Animation_m2nok"),
+&"RESET": SubResource("Animation_ld06i"),
+&"VACIO": SubResource("Animation_lajt0"),
+&"walk_fausto_off": SubResource("Animation_012ev"),
+&"walk_fausto_on": SubResource("Animation_no50m"),
+&"walk_off": SubResource("Animation_7swpb"),
+&"walk_on": SubResource("Animation_blo5s")
 }
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_j76wf"]
+load_path = "res://.godot/imported/fausto_1 (2) - copia.png-2df949ff75ba987eecf259300e18833a.ctex"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hkbnh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("CompressedTexture2D_j76wf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Shader" id="Shader_prmcf"]
+code = "shader_type canvas_item;
+
+uniform sampler2D screen_texture : hint_screen_texture, filter_nearest;
+uniform sampler2D noise_texture  : repeat_enable;
+
+uniform float noise_speed = 25.0;
+uniform float distortion_amount = 0.015;
+
+void fragment() {
+    vec3 noise = texture(noise_texture, SCREEN_UV + vec2(TIME / (noise_speed * 3.0))).rgb;
+
+    vec2 distortion = (noise.rg - 0.5) * distortion_amount;
+
+    vec3 color = texture(screen_texture, SCREEN_UV + distortion).rgb;
+
+    COLOR.rgb = color;
+}
+"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1snmb"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vehuh"]
+noise = SubResource("FastNoiseLite_1snmb")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_no50m"]
+shader = SubResource("Shader_prmcf")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_vehuh")
+shader_parameter/noise_speed = 12.0
+shader_parameter/distortion_amount = 0.015
 
 [node name="Intro" type="Node2D"]
-
-[node name="TileMapLayers" type="Node2D" parent="."]
-
-[node name="Ground" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAAAAUAAQAAAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAEAAAAFAAUAAQABAAEAAAAGAAUAAQABAAEAAAAHAAUAAQABAAEAAAAIAAUAAQABAAEAAAAJAAUAAQABAAEAAAAKAAUAAQABAAEAAAALAAUAAQABAAEAAAAMAAUAAQABAAEAAAANAAUAAQABAAEAAAAOAAUAAQACAAEAAAAAAAYAAQAAAAEAAAAAAAcAAQAAAAEAAAAAAAgAAQAAAAEAAAABAAYAAQABAAEAAAABAAcAAQABAAEAAAABAAgAAQABAAEAAAACAAYAAQABAAEAAAACAAcAAQABAAEAAAACAAgAAQABAAEAAAADAAYAAQABAAEAAAADAAcAAQABAAEAAAADAAgAAQABAAEAAAAEAAYAAQABAAEAAAAEAAcAAQABAAEAAAAEAAgAAQABAAEAAAAFAAYAAQABAAEAAAAFAAcAAQABAAEAAAAFAAgAAQABAAEAAAAGAAYAAQABAAEAAAAGAAcAAQABAAEAAAAGAAgAAQABAAEAAAAHAAYAAQABAAEAAAAHAAcAAQABAAEAAAAHAAgAAQABAAEAAAAIAAYAAQABAAEAAAAIAAcAAQABAAEAAAAIAAgAAQABAAEAAAAJAAYAAQABAAEAAAAJAAcAAQABAAEAAAAJAAgAAQABAAEAAAAKAAYAAQABAAEAAAAKAAcAAQABAAEAAAAKAAgAAQABAAEAAAALAAYAAQABAAEAAAALAAcAAQABAAEAAAALAAgAAQABAAEAAAAMAAYAAQABAAEAAAAMAAcAAQABAAEAAAAMAAgAAQABAAEAAAANAAYAAQABAAEAAAANAAcAAQABAAEAAAANAAgAAQABAAEAAAAOAAYAAQACAAEAAAAOAAcAAQACAAEAAAAOAAgAAQACAAEAAAAAAAAAAQAAAAAAAAAAAAEAAQAAAAEAAAABAAEAAQABAAEAAAACAAEAAQABAAEAAAACAAIAAQABAAEAAAADAAIAAQABAAEAAAAEAAIAAQABAAEAAAAFAAIAAQABAAEAAAAFAAMAAQABAAEAAAAGAAMAAQABAAEAAAAHAAQAAQABAAEAAAAIAAQAAQABAAEAAAAOAAQAAQACAAEAAAAOAAMAAQACAAEAAAAOAAIAAQACAAEAAAAOAAEAAQACAAEAAAAOAAAAAQACAAAAAAANAAQAAQABAAEAAAANAAMAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAANAAAAAQABAAAAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAEAAAAMAAAAAQABAAAAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAEAAAALAAAAAQABAAAAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAKAAEAAQABAAEAAAAKAAAAAQABAAAAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAJAAEAAQABAAEAAAAJAAAAAQABAAAAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAIAAEAAQABAAEAAAAIAAAAAQABAAAAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAEAAAAHAAAAAQABAAAAAAAGAAQAAQABAAEAAAAGAAIAAQABAAEAAAAGAAEAAQABAAEAAAAGAAAAAQABAAAAAAAFAAQAAQABAAEAAAAFAAEAAQABAAEAAAAFAAAAAQABAAAAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAEAAQABAAEAAAAEAAAAAQABAAAAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAEAAQABAAEAAAADAAAAAQABAAAAAAACAAQAAQABAAEAAAACAAMAAQABAAEAAAACAAAAAQABAAAAAAABAAQAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAABAAAAAQABAAAAAAAAAAQAAQAAAAEAAAAAAAMAAQAAAAEAAAAAAAIAAQAAAAEAAAA=")
-tile_set = ExtResource("1_hkbnh")
-metadata/_edit_lock_ = true
-
-[node name="IntroImage" type="Sprite2D" parent="TileMapLayers"]
-position = Vector2(770, 227)
-scale = Vector2(0.802083, 0.802083)
-texture = ExtResource("2_r5bf7")
-
-[node name="Sand" type="TileMapLayer" parent="TileMapLayers"]
-tile_map_data = PackedByteArray("AAAKAAEABgAAAAAAAAAKAAIABgADAAEAAAAKAAMABgADAAEAAAAKAAQABgADAAEAAAANAAEABgACAAAAAAANAAIABgADAAEAAAANAAMABgADAAEAAAANAAQABgADAAEAAAAKAAUABgAAAAIAAAALAAEABgABAAMAAAALAAUABgABAAMAAAAMAAEABgABAAMAAAAMAAUABgABAAMAAAANAAUABgACAAIAAAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAA=")
-tile_set = ExtResource("1_hkbnh")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(153, 366)
@@ -129,25 +271,69 @@ editor_draw_limits = true
 y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
-position = Vector2(400, 349)
-sprite_frames = ExtResource("3_2n7cd")
+z_index = 1
+position = Vector2(-30, -30)
+sprite_frames = SubResource("SpriteFrames_q005p")
 animation = &"idle"
-autoplay = "idle"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/Character"]
+position = Vector2(0, -20)
+scale = Vector2(0.2, 0.2)
+sprite_frames = ExtResource("3_2n7cd")
+animation = &"attack_01"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround"]
 root_node = NodePath("../..")
 libraries = {
-&"": SubResource("AnimationLibrary_5erbf")
+&"": SubResource("AnimationLibrary_qdpvj")
 }
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround"]
+light_mask = 512
+z_index = 1
+position = Vector2(1100.4, 290.865)
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_hkbnh")
+
+[node name="ColorRect" type="ColorRect" parent="OnTheGround"]
+z_index = 2
+offset_left = -31.0
+offset_top = -11.0
+offset_right = 1047.0
+offset_bottom = 644.0
+color = Color(0, 0, 0, 1)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
-script = ExtResource("4_m0tp6")
+script = ExtResource("2_no50m")
 dialogue = ExtResource("5_k181c")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
 next_scene = "uid://cwiqq2nr32eol"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
-[node name="Rock" parent="." instance=ExtResource("6_fgw0d")]
-position = Vector2(125, 403)
+[node name="Casxa(2)" type="Sprite2D" parent="."]
+position = Vector2(486, 307.096)
+scale = Vector2(0.475, 0.296781)
+texture = ExtResource("5_nwf0a")
+
+[node name="Cambio de Vista" type="CanvasLayer" parent="Casxa(2)"]
+layer = 0
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="Casxa(2)/Cambio de Vista"]
+visible = false
+material = SubResource("ShaderMaterial_no50m")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="OnTheGround2" type="Node2D" parent="."]
+y_sort_enabled = true
