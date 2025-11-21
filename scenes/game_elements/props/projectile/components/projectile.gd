@@ -157,8 +157,20 @@ func add_small_fx() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	add_small_fx()
 	duration_timer.start()
-	if body.owner is FillingBarrel:
-		var filling_barrel: FillingBarrel = body.owner as FillingBarrel
+
+	# Retrieve the actual object. If we hit a HitBox, we want its owner.
+	var target_object: Node = body.owner if body.owner else body
+
+	# Logic for Fragile Vase
+	# Delegate hit handling if the object supports it
+	if target_object.has_method("hit_by_droplet"):
+		target_object.hit_by_droplet(label)
+		queue_free()
+		return
+
+	# Standard Logic for FillingBarrel
+	if target_object is FillingBarrel:
+		var filling_barrel: FillingBarrel = target_object as FillingBarrel
 		if filling_barrel.label == label:
 			filling_barrel.increment()
 			queue_free()
