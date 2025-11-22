@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://6s70kur03rjk"]
+[gd_scene load_steps=17 format=3 uid="uid://6s70kur03rjk"]
 
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_gmidg"]
 [ext_resource type="Script" uid="uid://be1hcrmr5qtdu" path="res://scenes/menus/title/components/credits.gd" id="2_3tvx1"]
@@ -8,6 +8,10 @@
 [ext_resource type="Texture2D" uid="uid://0q44uwql6evw" path="res://assets/first_party/intro/sketch_04.png" id="7_rcvat"]
 [ext_resource type="Texture2D" uid="uid://b38btb8y8bsx3" path="res://assets/first_party/intro/sketch_05.png" id="8_1fvwr"]
 [ext_resource type="Texture2D" uid="uid://bay28tg4l1p1h" path="res://assets/third_party/endless/logo.png" id="8_k2wji"]
+[ext_resource type="Texture2D" uid="uid://b400qoqe8k15f" path="res://scenes/menus/title/components/logos/godot.png" id="8_ytlm2"]
+[ext_resource type="Texture2D" uid="uid://c0exirlcfw8ds" path="res://scenes/menus/title/components/logos/fannypack_logo.png" id="10_rcvat"]
+[ext_resource type="Texture2D" uid="uid://cietkct2irjp3" path="res://scenes/menus/title/components/logos/Utplogo.png" id="11_1fvwr"]
+[ext_resource type="Texture2D" uid="uid://dsl034i686htv" path="res://scenes/menus/title/components/logos/Endless.png" id="12_3srqy"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3srqy"]
 
@@ -368,22 +372,22 @@ anchor_bottom = 1.0
 offset_left = -325.0
 offset_top = -715.0
 offset_right = 325.0
-offset_bottom = -39.0
+offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="CreditsContainer" type="MarginContainer" parent="PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 7
 theme_override_constants/margin_bottom = 0
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/CreditsContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 3
 
-[node name="ScrollContent" type="VBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer"]
+[node name="ScrollContent" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer"]
 unique_name_in_owner = true
 clip_contents = true
 layout_mode = 2
@@ -391,92 +395,262 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent"]
+[node name="EndlessAccessSection" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent"]
 custom_minimum_size = Vector2(429.47, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="TitlePanel" type="PanelContainer" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent/VBoxContainer"]
-custom_minimum_size = Vector2(0, 64)
+[node name="EndlessTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection"]
+custom_minimum_size = Vector2(400, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_type_variation = &"PlayerRibbon"
 
-[node name="Title" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent/VBoxContainer/TitlePanel"]
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/EndlessTitle"]
 layout_mode = 2
 mouse_filter = 1
-text = "Authors"
+text = "Endless Access"
 horizontal_alignment = 1
 
-[node name="Body" type="RichTextLabel" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-size_flags_vertical = 3
-bbcode_enabled = true
-text = "Andrea Victoria Pavón
-Cassidy James Blaede
-Heather Drolet
-Joana Filizola
-Juan Manuel Fernandes dos Santos
-Justin Bourque
-Laura Foglia
-Manuel Quiñones
-Pablo de Haro
-Phoenix Stroh
-Rita Brederson
-Stephen Reid
-Tobías Romero
-Will Thompson"
-fit_content = true
-horizontal_alignment = 1
+texture = ExtResource("8_k2wji")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent"]
+[node name="GameTeamContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection"]
 custom_minimum_size = Vector2(429.47, 0)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="ArtTitlePanel" type="PanelContainer" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent/VBoxContainer2"]
+[node name="GameTeamTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/GameTeamContainer"]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_type_variation = &"NPCRibbon"
 
-[node name="Title" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent/VBoxContainer2/ArtTitlePanel"]
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/GameTeamContainer/GameTeamTitle"]
 layout_mode = 2
 mouse_filter = 1
-text = "Art and Music"
+text = "Game Team"
 horizontal_alignment = 1
 
-[node name="ArtBody" type="RichTextLabel" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent/VBoxContainer2"]
+[node name="GameTeamBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/GameTeamContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
-text = "Additional original art by [url=https://pixelfrog-assets.itch.io/]Pixel Frog[/url]
-Original music by John Wright"
+text = "Stephen Reid – Creative Director
+Sarah Spiers
+Manuel Quiñones
+Will Thompson"
 fit_content = true
 horizontal_alignment = 1
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent"]
+[node name="LearningTeamContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection"]
 custom_minimum_size = Vector2(429.47, 0)
 layout_mode = 2
 
-[node name="ThirdPartyTitlePanel" type="PanelContainer" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent/VBoxContainer3"]
+[node name="LearnigTeamTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/LearningTeamContainer"]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_type_variation = &"NPCRibbon"
 
-[node name="Title" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent/VBoxContainer3/ThirdPartyTitlePanel"]
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/LearningTeamContainer/LearnigTeamTitle"]
 layout_mode = 2
 mouse_filter = 1
-text = "Third-Party Components"
+text = "Learning Team"
 horizontal_alignment = 1
 
-[node name="ThirdPartyBody" type="RichTextLabel" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent/VBoxContainer3"]
+[node name="LearningTeamBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/LearningTeamContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
+bbcode_enabled = true
+text = "Heather Drolet"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="MarketingContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+
+[node name="MarketingTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/MarketingContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"NPCRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/MarketingContainer/MarketingTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "Marketing"
+horizontal_alignment = 1
+
+[node name="MarketingBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/MarketingContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Rodrigo Sanchez "
+fit_content = true
+horizontal_alignment = 1
+
+[node name="PlatformContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+
+[node name="PlatformTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/PlatformContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"NPCRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/PlatformContainer/PlatformTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "Platform"
+horizontal_alignment = 1
+
+[node name="PlatformBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/PlatformContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Daniel Drake"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="PlayTestingContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+
+[node name="PlayTestinfTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/PlayTestingContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"NPCRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/PlayTestingContainer/PlayTestinfTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "Playtesting"
+horizontal_alignment = 1
+
+[node name="PlaytestingBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/PlayTestingContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Jose Carlos"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="InternsContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+
+[node name="InternsTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/InternsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"NPCRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/InternsContainer/InternsTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "Interns"
+horizontal_alignment = 1
+
+[node name="InternsBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/InternsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Alexandra Alarcon Vivanco
+Omar Franco Mendez Contrera
+Carlos Juniors Chiroque Silva
+Diego Alonso Miñano Lavado"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="OperationsContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+
+[node name="OperationsTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/OperationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"NPCRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/OperationsContainer/OperationsTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "Operations"
+horizontal_alignment = 1
+
+[node name="OperationsBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/EndlessAccessSection/OperationsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Robert McQueen
+JJ Reeder"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="ThirdPartyComponentsSection" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ThirdPartyTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/ThirdPartyComponentsSection"]
+custom_minimum_size = Vector2(400, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"PlayerRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/ThirdPartyComponentsSection/ThirdPartyTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "Third Party Components"
+horizontal_alignment = 1
+
+[node name="GodotContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/ThirdPartyComponentsSection"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+
+[node name="GodotTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/ThirdPartyComponentsSection/GodotContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"NPCRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/ThirdPartyComponentsSection/GodotContainer/GodotTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "Godot Engine"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/ThirdPartyComponentsSection/GodotContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+texture = ExtResource("8_ytlm2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GodotBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/ThirdPartyComponentsSection/GodotContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 bbcode_enabled = true
 text = "Built with [url=https://godotengine.org/]Godot Engine[/url] ([url=https://godotengine.org/license/]MIT license[/url])
 Uses [url=https://dialogue.nathanhoad.net/]Godot Dialogue Manager[/url] by Nathan Hoad ([url=https://github.com/nathanhoad/godot_dialogue_manager/blob/main/LICENSE]MIT license[/url])
@@ -485,13 +659,242 @@ Uses [url=https://github.com/scfried/soft-type-jersey]Jersey[/url] by Sarah Cadi
 fit_content = true
 horizontal_alignment = 1
 
-[node name="VBoxContainer4" type="VBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent"]
+[node name="NathanHoadContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/ThirdPartyComponentsSection"]
+custom_minimum_size = Vector2(429.47, 0)
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/ScrollContainer/ScrollContent/VBoxContainer4"]
+[node name="NathanTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/ThirdPartyComponentsSection/NathanHoadContainer"]
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
-texture = ExtResource("8_k2wji")
-expand_mode = 5
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"NPCRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/ThirdPartyComponentsSection/NathanHoadContainer/NathanTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "Nathan Hoad"
+horizontal_alignment = 1
+
+[node name="NathanBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/ThirdPartyComponentsSection/NathanHoadContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Uses [url=https://nathanhoad.net/]Nathan Hoad[/url] resources
+ [url=https://dialogue.nathanhoad.net/]Godot Dialogue Manager[/url] by Nathan Hoad ([url=https://github.com/nathanhoad/godot_dialogue_manager/blob/main/LICENSE]MIT license[/url])
+[url=https://github.com/nathanhoad/godot_input_helper]Input Helper[/url] by Nathan Hoad ([url=https://github.com/nathanhoad/godot_input_helper/blob/main/LICENSE]MIT license[/url])
+"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="FannyPackContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="FannyPackTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/FannyPackContainer"]
+custom_minimum_size = Vector2(400, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"PlayerRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/FannyPackContainer/FannyPackTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "Fanny Pack Studios"
+horizontal_alignment = 1
+
+[node name="FannyPackBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/FannyPackContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Juan Manuel Fernandes dos Santos
+...
+"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/FannyPackContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+texture = ExtResource("10_rcvat")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PixelFrogContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="PixelFrogTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/PixelFrogContainer"]
+custom_minimum_size = Vector2(300, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"PlayerRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/PixelFrogContainer/PixelFrogTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "Pixel Frog"
+horizontal_alignment = 1
+
+[node name="PixelFrogBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/PixelFrogContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Additional original art by [url=https://pixelfrog-assets.itch.io/]Pixel Frog[/url]
+"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="JohnWrightContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="JohnWrightTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/JohnWrightContainer"]
+custom_minimum_size = Vector2(300, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"PlayerRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/JohnWrightContainer/JohnWrightTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "John Wright - Music"
+horizontal_alignment = 1
+
+[node name="JohnWrightBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/JohnWrightContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Original music by John Wright
+"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="CommunityContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="CommunityTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CommunityContainer"]
+custom_minimum_size = Vector2(400, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"PlayerRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CommunityContainer/CommunityTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "Community"
+horizontal_alignment = 1
+
+[node name="CommunityBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CommunityContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Community names
+...."
+fit_content = true
+horizontal_alignment = 1
+
+[node name="MentorshipContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CommunityContainer"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+
+[node name="MentorshipTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CommunityContainer/MentorshipContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"NPCRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CommunityContainer/MentorshipContainer/MentorshipTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "Mentors"
+horizontal_alignment = 1
+
+[node name="MentorshipBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CommunityContainer/MentorshipContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Mentors names
+..."
+fit_content = true
+horizontal_alignment = 1
+
+[node name="SpecialThanksContainer" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="SpecialThanksTitle" type="PanelContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/SpecialThanksContainer"]
+custom_minimum_size = Vector2(400, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"PlayerRibbon"
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/SpecialThanksContainer/SpecialThanksTitle"]
+layout_mode = 2
+mouse_filter = 1
+text = "Special Thanks"
+horizontal_alignment = 1
+
+[node name="SpecialThanksBody" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/SpecialThanksContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Universidad Tecnológica del Perú"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/SpecialThanksContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+texture = ExtResource("11_1fvwr")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CreditsFooter" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent"]
+custom_minimum_size = Vector2(429.47, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CreditsFooter"]
+layout_mode = 2
+mouse_filter = 1
+text = "Thanks for Playing!"
+horizontal_alignment = 1
+
+[node name="Footer" type="RichTextLabel" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CreditsFooter"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Universidad Tecnológica del Perú"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CreditsFooter"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("12_3srqy")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="BackButton" type="Button" parent="."]
 unique_name_in_owner = true
@@ -518,115 +921,4 @@ libraries = {
 }
 speed_scale = 0.5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-alignment = 1
-
-[node name="Authors" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/Authors"]
-layout_mode = 2
-
-[node name="TitlePanel" type="PanelContainer" parent="VBoxContainer/HBoxContainer/Authors/VBoxContainer"]
-custom_minimum_size = Vector2(0, 64)
-layout_mode = 2
-size_flags_horizontal = 0
-theme_type_variation = &"PlayerRibbon"
-
-[node name="Title" type="Label" parent="VBoxContainer/HBoxContainer/Authors/VBoxContainer/TitlePanel"]
-layout_mode = 2
-mouse_filter = 1
-text = "Authors"
-horizontal_alignment = 1
-
-[node name="Body" type="RichTextLabel" parent="VBoxContainer/HBoxContainer/Authors/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-bbcode_enabled = true
-text = "Andrea Victoria Pavón
-Cassidy James Blaede
-Heather Drolet
-Joana Filizola
-Juan Manuel Fernandes dos Santos
-Justin Bourque
-Laura Foglia
-Manuel Quiñones
-Pablo de Haro
-Phoenix Stroh
-Rita Brederson
-Stephen Reid
-Tobías Romero
-Will Thompson"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Art" type="PanelContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.72
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art"]
-layout_mode = 2
-
-[node name="ArtTitlePanel" type="PanelContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer"]
-custom_minimum_size = Vector2(0, 64)
-layout_mode = 2
-size_flags_horizontal = 0
-theme_type_variation = &"NPCRibbon"
-
-[node name="Title" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/ArtTitlePanel"]
-layout_mode = 2
-mouse_filter = 1
-text = "Art and Music"
-horizontal_alignment = 1
-
-[node name="ArtBody" type="RichTextLabel" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-bbcode_enabled = true
-text = "Additional original art by [url=https://pixelfrog-assets.itch.io/]Pixel Frog[/url]
-Original music by John Wright"
-
-[node name="ThirdPartyTitlePanel" type="PanelContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer"]
-custom_minimum_size = Vector2(0, 64)
-layout_mode = 2
-size_flags_horizontal = 0
-theme_type_variation = &"NPCRibbon"
-
-[node name="Title" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/ThirdPartyTitlePanel"]
-layout_mode = 2
-mouse_filter = 1
-text = "Third-Party Components"
-horizontal_alignment = 1
-
-[node name="ThirdPartyBody" type="RichTextLabel" parent="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
-bbcode_enabled = true
-text = "Built with [url=https://godotengine.org/]Godot Engine[/url] ([url=https://godotengine.org/license/]MIT license[/url])
-Uses [url=https://dialogue.nathanhoad.net/]Godot Dialogue Manager[/url] by Nathan Hoad ([url=https://github.com/nathanhoad/godot_dialogue_manager/blob/main/LICENSE]MIT license[/url])
-Uses [url=https://dialogue.nathanhoad.net/]Godot Git Describe[/url] by Joseph Michael Ware ([url=https://github.com/zibetnu/godot-git-describe/blob/main/LICENSE]MIT license[/url])
-Uses [url=https://github.com/scfried/soft-type-jersey]Jersey[/url] by Sarah Cadigan-Fried and The Soft Type Project Authors ([url=https://github.com/scfried/soft-type-jersey?tab=OFL-1.1-1-ov-file]OFL-1.1 license[/url])"
-
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="meta_clicked" from="VBoxContainer/HBoxContainer/Authors/VBoxContainer/Body" to="." method="_on_rich_text_label_meta_clicked"]
-[connection signal="meta_clicked" from="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/ArtBody" to="." method="_on_rich_text_label_meta_clicked"]
-[connection signal="visibility_changed" from="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/ArtBody" to="." method="_on_visibility_changed"]
-[connection signal="meta_clicked" from="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/ThirdPartyBody" to="." method="_on_rich_text_label_meta_clicked"]
-[connection signal="visibility_changed" from="VBoxContainer/HBoxContainer/VBoxContainer/Art/VBoxContainer/ThirdPartyBody" to="." method="_on_visibility_changed"]
