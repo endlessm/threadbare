@@ -5,9 +5,12 @@ extends Node2D
 
 ## Name of the group to monitor. If all nodes in this group are destroyed, Game Over triggers.
 @export var target_group_name: String = "Vases"
+## Time to wait before starting the transition (allows seeing the last breakage).
+@export var pre_fade_delay: float = 1.5
 
 var total_targets: int = 0
 var destroyed_count: int = 0
+var is_game_over: bool = false
 
 
 func _ready() -> void:
@@ -44,8 +47,11 @@ func _ready() -> void:
 
 
 func _on_target_destroyed(_target_ref: Node) -> void:
+	if is_game_over:
+		return
+
 	destroyed_count += 1
-	print("Object destroyed. Progress: %d/%d" % [destroyed_count, total_targets])
+	# print("Object destroyed. Progress: %d/%d" % [destroyed_count, total_targets])
 	check_loss_condition()
 
 
@@ -55,5 +61,16 @@ func check_loss_condition() -> void:
 
 
 func trigger_game_over() -> void:
-	print("GAME OVER - All targets in group '%s' destroyed." % target_group_name)
-	get_tree().reload_current_scene()
+	is_game_over = true
+	print("GAME OVER - All targets in group '%s' destroyed. Restarting..." % target_group_name)
+
+	await get_tree().create_timer(pre_fade_delay).timeout
+
+	var current_scene_path: String = get_tree().current_scene.scene_file_path
+
+	SceneSwitcher.change_to_file_with_transition.call_deferred(
+		current_scene_path,
+		^"",
+		Transition.Effect.LEFT_TO_RIGHT_WIPE,
+		Transition.Effect.RIGHT_TO_LEFT_WIPE
+	)
