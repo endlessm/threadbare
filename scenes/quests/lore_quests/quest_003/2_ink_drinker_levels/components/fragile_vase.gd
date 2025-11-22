@@ -65,9 +65,6 @@ func break_vase() -> void:
 	if crack_overlay_node:
 		crack_overlay_node.visible = false
 
-	if has_method("_disable_collisions"):
-		_disable_collisions.call_deferred()
-
 	# Play destruction animation
 	# Usamos el acceso directo para evitar variables temporales sin tipo
 	if animated_sprite_2d and animated_sprite_2d.sprite_frames.has_animation("shatter"):
@@ -75,4 +72,3 @@ func break_vase() -> void:
 		await animated_sprite_2d.animation_finished
 
 	vase_destroyed.emit(self)
-	queue_free()
