@@ -37,20 +37,16 @@ func _process(delta: float) -> void:
 	if not scroll_container:
 		return
 
-	# Detect manual input (arrows / joystick / WASD)
 	var input_axis: float = Input.get_axis("move_up", "move_down")
 	if is_zero_approx(input_axis):
 		input_axis = Input.get_axis("ui_up", "ui_down")
 
 	if not is_zero_approx(input_axis):
-		# Manual input detected: cancel auto-scroll and move
 		_is_auto_scrolling = false
 		_current_scroll_pos += input_axis * manual_scroll_speed * delta
 	elif _is_auto_scrolling:
-		# Auto-scroll active
 		_current_scroll_pos += auto_scroll_speed * delta
 
-	# Apply movement
 	scroll_container.scroll_vertical = int(_current_scroll_pos)
 
 	if _current_scroll_pos >= scroll_content.size.y:
@@ -85,15 +81,11 @@ func start_credits_sequence() -> void:
 	if scroll_container:
 		_current_scroll_pos = 0.0
 		scroll_container.scroll_vertical = 0
-
-		# Don't activate scroll immediately
 		_is_auto_scrolling = false
 		set_process(true)
 
-		# Wait for the defined start delay
 		await get_tree().create_timer(start_delay).timeout
 
-		# Check if still visible in case user exited while waiting
 		if visible and scroll_container.scroll_vertical == 0:
 			_is_auto_scrolling = true
 
@@ -120,7 +112,3 @@ func _stop_credits_sequence() -> void:
 	set_process(false)
 	if background_anim_player:
 		background_anim_player.stop()
-
-
-func _on_credits_finished() -> void:
-	print("Credits finished")
