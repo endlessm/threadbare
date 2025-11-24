@@ -28,7 +28,6 @@ func _ready() -> void:
 	_up_down_animation.seek(_up_down_animation.current_animation_length * t)
 
 
-
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	# TODO: This is not added to an inventory or anything, is just cosmetic.
 	if area.owner.is_in_group(&"player"):

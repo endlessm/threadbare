@@ -80,6 +80,7 @@ var input_vector: Vector2
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
+
 func _set_mode(new_mode: Mode) -> void:
 	var previous_mode: Mode = mode
 	mode = new_mode
