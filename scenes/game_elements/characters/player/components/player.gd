@@ -226,19 +226,56 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 
 
 ## Sets the player's [member mode] to [constant DEFEATED], if it is
-## not already. Reloads the current scene after a short interval.
+## not already. Handles respawn logic based on remaining lives.
 ## [br][br]
 ## If [param falling] is [code]true[/code], scale the player to zero, as if they
 ## are falling into the screen as they unravel.
 func defeat(falling: bool = false) -> void:
+	# Prevent multiple defeat calls
 	if mode == Player.Mode.DEFEATED:
 		return
 
 	mode = Player.Mode.DEFEATED
+
+	# Decrement lives and save the new count
+	GameState.decrement_lives()
+	print("[PLAYER LIVES DEBUG] Player defeated! Lives remaining: ", GameState.current_lives)
 
 	if falling:
 		var tween := create_tween()
 		tween.tween_property(self, "scale", Vector2.ZERO, 2.0)
 
 	await get_tree().create_timer(2.0).timeout
-	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+
+	# Check if player has lives remaining
+	if GameState.current_lives > 0:
+		# Still have lives - reload current scene/checkpoint
+		print("[PLAYER LIVES DEBUG] Reloading scene with ", GameState.current_lives, " lives")
+		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+	else:
+		# Game over - restart from challenge start
+		print("[PLAYER LIVES DEBUG] GAME OVER - Restarting challenge")
+		_handle_game_over()
+
+
+## Handles game over logic: restarts from the beginning of the current challenge
+## with lives reset to 3.
+func _handle_game_over() -> void:
+	# Reset lives to 3
+	GameState.reset_lives()
+	print("[PLAYER LIVES DEBUG] Lives reset to: ", GameState.current_lives)
+
+	# Get the start of the current challenge
+	var challenge_start_scene: String = GameState.get_challenge_start_scene()
+
+	if challenge_start_scene.is_empty():
+		# Fallback: reload current scene if no challenge start is defined
+		print("[PLAYER LIVES DEBUG] No challenge start found, reloading current scene")
+		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+	else:
+		# Clear spawn point to start from the beginning
+		GameState.set_current_spawn_point(^"")
+		print("[PLAYER LIVES DEBUG] Restarting challenge from: ", challenge_start_scene)
+		SceneSwitcher.change_to_file_with_transition(
+			challenge_start_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		)
