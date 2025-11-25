@@ -32,8 +32,6 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	# TODO: This is not added to an inventory or anything, is just cosmetic.
 	if area.owner.is_in_group(&"player"):
 		collected.emit()
-		# Directly activates the player's particle node
-		var shine_particles: Node = area.owner.get_node_or_null("PlayerShineParticles")
-		if shine_particles and shine_particles.has_method("activate"):
-			shine_particles.activate()
+		# Directly activates Sparks_sprite.png
+		get_tree().call_group("player", "item_collected", global_position)
 		queue_free()

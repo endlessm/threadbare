@@ -155,7 +155,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 func _ready() -> void:
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
-
+	add_to_group("player")
 
 func _unhandled_input(_event: InputEvent) -> void:
 	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
@@ -242,3 +242,10 @@ func defeat(falling: bool = false) -> void:
 
 	await get_tree().create_timer(2.0).timeout
 	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+
+
+func item_collected(global_pos: Vector2) -> void:
+	var shine: GPUParticles2D = preload("res://scenes/game_elements/characters/player/components/PlayerShineParticles.tscn").instantiate()
+	shine.global_position = global_pos
+	get_tree().current_scene.add_child(shine)
+	shine.activate()
