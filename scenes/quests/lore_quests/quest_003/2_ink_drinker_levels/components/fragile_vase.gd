@@ -8,7 +8,7 @@ extends FillingBarrel
 signal vase_destroyed(vase_instance: FragileVase)
 
 @export_group("Fragility")
-@export var max_health: int = 4
+@export_range(3, 5) var max_health: int = 4
 ## Reference to the AnimatedSprite2D containing the crack frames.
 @export var crack_overlay_node: AnimatedSprite2D
 
