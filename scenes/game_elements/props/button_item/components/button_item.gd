@@ -33,5 +33,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.owner.is_in_group(&"player"):
 		collected.emit()
 		# Directly activates Sparks_sprite.png
-		get_tree().call_group("player", "item_collected", global_position)
+		get_tree().call_group(
+			"player", "item_collected", to_global($Area2D/CollisionShape2D.position)
+		)
 		queue_free()
