@@ -30,7 +30,7 @@ func _resource_for_device(device: String) -> JoypadButtonTexturesAim:
 		return ResourceLoader.load(GENERIC_RESOURCE) as JoypadButtonTexturesAim
 
 	var d := device.to_lower()
-	for key in DEVICE_MAP.keys():
+	for key: String in DEVICE_MAP.keys():
 		if key in d:
 			return ResourceLoader.load(DEVICE_MAP[key]) as JoypadButtonTexturesAim
 
