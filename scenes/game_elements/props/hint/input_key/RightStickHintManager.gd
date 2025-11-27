@@ -6,21 +6,20 @@ extends Node
 # Device keyword → resource path
 const DEVICE_MAP := {
 	"keyboard": "res://scenes/game_elements/props/hint/resources/stickmovements/Aim_keyboard.tres",
-	"xbox": "res://scenes/game_elements/props/hint/resources/stickmovements/stick_xbox.tres",
+	"xbox": "res://scenes/game_elements/props/hint/resources/stickmovements/Aim_xbox.tres",
 	"playstation":
-	"res://scenes/game_elements/props/hint/resources/stickmovements/stick_playstation.tres",
-	"ps": "res://scenes/game_elements/props/hint/resources/stickmovements/stick_playstation.tres",
-	"play": "res://scenes/game_elements/props/hint/resources/stickmovements/stick_playstation.tres",
-	"switch": "res://scenes/game_elements/props/hint/resources/stickmovements/stick_switch.tres",
-	"nintendo": "res://scenes/game_elements/props/hint/resources/stickmovements/stick_switch.tres",
-	"steam": "res://scenes/game_elements/props/hint/resources/stickmovements/stick_steamdeck.tres",
-	"steamdeck":
-	"res://scenes/game_elements/props/hint/resources/stickmovements/stick_steamdeck.tres"
+	"res://scenes/game_elements/props/hint/resources/stickmovements/Aim_playsation.tres",
+	"ps": "res://scenes/game_elements/props/hint/resources/stickmovements/Aim_playsation.tres",
+	"play": "res://scenes/game_elements/props/hint/resources/stickmovements/Aim_playsation.tres",
+	"switch": "res://scenes/game_elements/props/hint/resources/stickmovements/Aim_switch.tres",
+	"nintendo": "res://scenes/game_elements/props/hint/resources/stickmovements/Aim_switch.tres",
+	"steam": "res://scenes/game_elements/props/hint/resources/stickmovements/Aim_steamdeck.tres",
+	"steamdeck": "res://scenes/game_elements/props/hint/resources/stickmovements/Aim_steamdeck.tres"
 }
 
 # Fallback genérico
 const GENERIC_RESOURCE := (
-	"res://scenes/game_elements/props/hint/resources/" + "stickmovements/stick_xbox.tres"
+	"res://scenes/game_elements/props/hint/resources/" + "stickmovements/Aim_xbox.tres"
 )
 
 
