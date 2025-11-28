@@ -4,28 +4,24 @@
 class_name FragileVase
 extends FillingBarrel
 
-# Signal emitted when the vase is destroyed
+## Emitted when [member current_health] reaches 0.
 signal vase_destroyed(vase_instance: FragileVase)
 
-@export_group("Fragility")
-@export_range(3, 5) var max_health: int = 4
-## Reference to the AnimatedSprite2D containing the crack frames.
-@export var crack_overlay_node: AnimatedSprite2D
+## Maximum hits the vase can take before breaking.
+@export_range(1, 100) var max_health: int = 4
 
 var current_health: int
+
+@onready var crack_overlay_node: AnimatedSprite2D = %CrackOverlay
 
 
 func _ready() -> void:
 	super._ready()
 	current_health = max_health
 
-	if crack_overlay_node:
-		crack_overlay_node.visible = false
-		crack_overlay_node.stop()
-		crack_overlay_node.frame = 0
-	else:
-		if not Engine.is_editor_hint():
-			push_warning("FragileVase: 'Crack Overlay Node' is not assigned in %s" % name)
+	crack_overlay_node.visible = false
+	crack_overlay_node.stop()
+	crack_overlay_node.frame = 0
 
 
 # Logic called by Projectile when it hits this object
@@ -50,25 +46,27 @@ func take_damage() -> void:
 
 
 func update_cracks() -> void:
-	if not crack_overlay_node:
-		return
-
 	var damage_taken: int = max_health - current_health
 
+	# IMPROVEMENT: Calculate frame index proportionally based on damage percentage.
+	# This ensures cracks are distributed evenly regardless of max_health.
+	var total_frames: int = crack_overlay_node.sprite_frames.get_frame_count("default")
+	# Using float conversion to get a percentage (0.0 to 1.0) of damage taken relative to max health
+	# We cast the result to int to satisfy static typing requirements
+	var frame_index: int = int(floor((float(damage_taken) / max_health) * total_frames))
+
+	# Clamp to ensure we don't exceed available frames (0-based index)
+	frame_index = clamp(frame_index, 0, total_frames - 1)
+
 	crack_overlay_node.visible = true
-	if damage_taken > 0:
-		# Frame 0 = 1 damage, Frame 1 = 2 damage, etc.
-		crack_overlay_node.frame = damage_taken - 1
+	crack_overlay_node.frame = frame_index
 
 
 func break_vase() -> void:
-	if crack_overlay_node:
-		crack_overlay_node.visible = false
+	crack_overlay_node.visible = false
 
-	# Play destruction animation
-	# Usamos el acceso directo para evitar variables temporales sin tipo
-	if animated_sprite_2d and animated_sprite_2d.sprite_frames.has_animation("shatter"):
-		animated_sprite_2d.play("shatter")
-		await animated_sprite_2d.animation_finished
+	# Play destruction animation directly
+	animated_sprite_2d.play("shatter")
+	await animated_sprite_2d.animation_finished
 
 	vase_destroyed.emit(self)
