@@ -30,7 +30,7 @@ const GLOBAL_INCORPORATING_THREADS_KEY := "incorporating_threads"
 const COMPLETED_QUESTS_KEY := "completed_quests"
 const LIVES_KEY := "current_lives"
 const MAX_LIVES := 3
-const DEBUG_LIVES := true
+const DEBUG_LIVES := false
 
 ## Scenes to skip from saving.
 const TRANSIENT_SCENES := [
@@ -165,8 +165,7 @@ func mark_quest_completed() -> void:
 			_state.set_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, completed_quests)
 
 		current_quest = null
-		_clear_quest_state()  # ← Usa la función helper
-		reset_lives()
+		_clear_quest_state()
 		_save()
 
 
@@ -196,9 +195,6 @@ func abandon_quest() -> void:
 	_clear_quest_state()
 	current_quest = null
 	clear_inventory()
-
-	# Reset lives when abandoning quest
-	reset_lives()
 
 
 ## Remove all [InventoryItem] from the [member inventory].
