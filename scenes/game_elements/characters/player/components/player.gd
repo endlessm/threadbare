@@ -263,19 +263,17 @@ func defeat(falling: bool = false) -> void:
 func _handle_game_over() -> void:
 	# Reset lives to 3
 	GameState.reset_lives()
-	print("[PLAYER LIVES DEBUG] Lives reset to: ", GameState.current_lives)
 
 	# Get the start of the current challenge
 	var challenge_start_scene: String = GameState.get_challenge_start_scene()
 
 	if challenge_start_scene.is_empty():
 		# Fallback: reload current scene if no challenge start is defined
-		print("[PLAYER LIVES DEBUG] No challenge start found, reloading current scene")
+		# Clear spawn point to start from the beginning of the current scene
+		GameState.set_current_spawn_point(^"")
 		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
 	else:
-		# Clear spawn point to start from the beginning
-		GameState.set_current_spawn_point(^"")
-		print("[PLAYER LIVES DEBUG] Restarting challenge from: ", challenge_start_scene)
+		# Restart from the challenge start scene
 		SceneSwitcher.change_to_file_with_transition(
 			challenge_start_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 		)
