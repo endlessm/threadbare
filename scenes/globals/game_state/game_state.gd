@@ -80,7 +80,7 @@ func _ready() -> void:
 	if err != OK and err != ERR_FILE_NOT_FOUND:
 		push_error("Failed to load %s: %s" % [GAME_STATE_PATH, err])
 
-	print("[LIVES DEBUG] GameState initialized with ", current_lives, " lives")
+	prints("[LIVES DEBUG] GameState initialized with ", current_lives, " lives")
 
 
 ## Set the [member incorporating_threads] flag.
@@ -104,7 +104,7 @@ func start_quest(quest: Quest) -> void:
 
 	# Reset lives when starting a new quest
 	reset_lives()
-	print("[LIVES DEBUG] Quest started. Lives reset to: ", current_lives)
+	prints("[LIVES DEBUG] Quest started. Lives reset to: ", current_lives)
 
 	_save()
 
@@ -117,7 +117,7 @@ func set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
 	# Check if returning to Fray's End
 	if "fray" in scene_path.to_lower() and "end" in scene_path.to_lower():
 		reset_lives()
-		print("[LIVES DEBUG] Returned to Fray's End. Lives restored to: ", current_lives)
+		prints("[LIVES DEBUG] Returned to Fray's End. Lives restored to: ", current_lives)
 
 	_do_set_scene(scene_path, spawn_point)
 	_save()
@@ -134,7 +134,7 @@ func set_current_spawn_point(spawn_point: NodePath = ^"") -> void:
 ## when they run out of lives.
 func set_challenge_start_scene(scene_path: String) -> void:
 	_state.set_value(QUEST_SECTION, QUEST_CHALLENGE_START_KEY, scene_path)
-	print("[LIVES DEBUG] Challenge start set to: ", scene_path)
+	prints("[LIVES DEBUG] Challenge start set to: ", scene_path)
 	_save()
 
 
@@ -145,7 +145,7 @@ func get_challenge_start_scene() -> String:
 
 	if challenge_start.is_empty() and current_quest:
 		challenge_start = current_quest.first_scene
-		print("[LIVES DEBUG] No challenge start set, using quest first scene: ", challenge_start)
+		prints("[LIVES DEBUG] No challenge start set, using quest first scene: ", challenge_start)
 
 	return challenge_start
 
@@ -173,7 +173,7 @@ func mark_quest_completed() -> void:
 
 		# Reset lives when quest is completed
 		reset_lives()
-		print("[LIVES DEBUG] Quest completed. Lives reset to: ", current_lives)
+		prints("[LIVES DEBUG] Quest completed. Lives reset to: ", current_lives)
 
 		_save()
 
@@ -210,7 +210,7 @@ func abandon_quest() -> void:
 
 	# Reset lives when abandoning quest
 	reset_lives()
-	print("[LIVES DEBUG] Quest abandoned. Lives reset to: ", current_lives)
+	prints("[LIVES DEBUG] Quest abandoned. Lives reset to: ", current_lives)
 
 
 ## Remove all [InventoryItem] from the [member inventory].
@@ -246,7 +246,7 @@ func decrement_lives() -> void:
 	_save()
 	lives_changed.emit(current_lives)
 	if DEBUG_LIVES:
-		print("[LIVES DEBUG] Lives decremented to: ", current_lives)
+		prints("[LIVES DEBUG] Lives decremented to: ", current_lives)
 
 
 ## Reset the player's lives to maximum (3).
@@ -256,7 +256,7 @@ func reset_lives() -> void:
 	_state.set_value(GLOBAL_SECTION, LIVES_KEY, current_lives)
 	_save()
 	lives_changed.emit(current_lives)
-	print("[LIVES DEBUG] Lives reset to: ", current_lives)
+	prints("[LIVES DEBUG] Lives reset to: ", current_lives)
 
 
 ## Add one life to the player, up to the maximum.
@@ -267,7 +267,7 @@ func add_life() -> void:
 		_state.set_value(GLOBAL_SECTION, LIVES_KEY, current_lives)
 		_save()
 		lives_changed.emit(current_lives)
-		print("[LIVES DEBUG] Life added. Lives now: ", current_lives)
+		prints("[LIVES DEBUG] Life added. Lives now: ", current_lives)
 
 
 ## Clear the persisted state.
@@ -275,7 +275,7 @@ func clear() -> void:
 	_state.clear()
 	completed_quests = []
 	current_lives = MAX_LIVES
-	print("[LIVES DEBUG] State cleared. Lives reset to: ", current_lives)
+	prints("[LIVES DEBUG] State cleared. Lives reset to: ", current_lives)
 	_save()
 
 
@@ -310,7 +310,7 @@ func restore() -> Dictionary:
 
 	# Restore lives from saved state, default to MAX_LIVES if not found
 	current_lives = _state.get_value(GLOBAL_SECTION, LIVES_KEY, MAX_LIVES)
-	print("[LIVES DEBUG] State restored. Lives: ", current_lives)
+	prints("[LIVES DEBUG] State restored. Lives: ", current_lives)
 
 	return {"scene_path": scene_path, "spawn_point": current_spawn_point}
 
