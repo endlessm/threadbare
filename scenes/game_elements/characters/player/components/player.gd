@@ -239,7 +239,6 @@ func defeat(falling: bool = false) -> void:
 
 	# Decrement lives and save the new count
 	GameState.decrement_lives()
-	print("[PLAYER LIVES DEBUG] Player defeated! Lives remaining: ", GameState.current_lives)
 
 	if falling:
 		var tween := create_tween()
@@ -250,11 +249,9 @@ func defeat(falling: bool = false) -> void:
 	# Check if player has lives remaining
 	if GameState.current_lives > 0:
 		# Still have lives - reload current scene/checkpoint
-		print("[PLAYER LIVES DEBUG] Reloading scene with ", GameState.current_lives, " lives")
 		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
 	else:
 		# Game over - restart from challenge start
-		print("[PLAYER LIVES DEBUG] GAME OVER - Restarting challenge")
 		_handle_game_over()
 
 

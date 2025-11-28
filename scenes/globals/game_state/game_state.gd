@@ -29,9 +29,8 @@ const GLOBAL_SECTION := "global"
 const GLOBAL_INCORPORATING_THREADS_KEY := "incorporating_threads"
 const COMPLETED_QUESTS_KEY := "completed_quests"
 const LIVES_KEY := "current_lives"
-
-## Maximum number of lives the player can have.
 const MAX_LIVES := 3
+const DEBUG_LIVES := false
 
 ## Scenes to skip from saving.
 const TRANSIENT_SCENES := [
@@ -246,7 +245,8 @@ func decrement_lives() -> void:
 	_state.set_value(GLOBAL_SECTION, LIVES_KEY, current_lives)
 	_save()
 	lives_changed.emit(current_lives)
-	print("[LIVES DEBUG] Lives decremented to: ", current_lives)
+	if DEBUG_LIVES:
+		print("[LIVES DEBUG] Lives decremented to: ", current_lives)
 
 
 ## Reset the player's lives to maximum (3).
