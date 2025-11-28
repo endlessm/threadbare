@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://dm2tlhvjut08q"]
+
+[ext_resource type="Texture2D" uid="uid://ci1jhoa204fyw" path="res://scenes/game_elements/fx/shine_particles/components/sparks.png" id="1_ver2c"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_tnibl"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 4
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_8jhju"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1e-05, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.71104, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_tnibl"]
+curve = SubResource("Curve_8jhju")
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_8jhju"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5lbww"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(0, 0, 0)
+emission_shape = 1
+emission_sphere_radius = 0.01
+spread = 0.0
+directional_velocity_min = 1.0
+directional_velocity_max = 1.0
+directional_velocity_curve = SubResource("CurveXYZTexture_8jhju")
+gravity = Vector3(0, 0, 0)
+scale_max = 1.5
+alpha_curve = SubResource("CurveTexture_tnibl")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[node name="ShineParticles" type="GPUParticles2D"]
+modulate = Color(1, 1, 0, 1)
+material = SubResource("CanvasItemMaterial_tnibl")
+emitting = false
+amount = 1
+texture = ExtResource("1_ver2c")
+lifetime = 0.5
+one_shot = true
+randomness = 0.38
+fixed_fps = 10
+process_material = SubResource("ParticleProcessMaterial_5lbww")
