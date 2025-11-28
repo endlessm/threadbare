@@ -251,7 +251,7 @@ func reset_lives() -> void:
 ## This is for future "extra life" pickups.
 func add_life() -> void:
 	if current_lives < MAX_LIVES:
-		current_lives = min(MAX_LIVES, current_lives + 1)
+		current_lives += 1
 		_state.set_value(GLOBAL_SECTION, LIVES_KEY, current_lives)
 		_save()
 		lives_changed.emit(current_lives)
