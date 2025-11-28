@@ -114,11 +114,6 @@ func set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
 	if scene_path in TRANSIENT_SCENES:
 		return
 
-	# Check if returning to Fray's End
-	if "fray" in scene_path.to_lower() and "end" in scene_path.to_lower():
-		reset_lives()
-		prints("[LIVES DEBUG] Returned to Fray's End. Lives restored to: ", current_lives)
-
 	_do_set_scene(scene_path, spawn_point)
 	_save()
 
