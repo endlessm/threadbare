@@ -30,7 +30,7 @@ const GLOBAL_INCORPORATING_THREADS_KEY := "incorporating_threads"
 const COMPLETED_QUESTS_KEY := "completed_quests"
 const LIVES_KEY := "current_lives"
 const MAX_LIVES := 3
-const DEBUG_LIVES := false
+const DEBUG_LIVES := true
 
 ## Scenes to skip from saving.
 const TRANSIENT_SCENES := [
@@ -104,8 +104,6 @@ func start_quest(quest: Quest) -> void:
 
 	# Reset lives when starting a new quest
 	reset_lives()
-	prints("[LIVES DEBUG] Quest started. Lives reset to: ", current_lives)
-
 	_save()
 
 
@@ -151,6 +149,12 @@ func is_on_quest() -> bool:
 	return current_quest != null
 
 
+## Clear all quest-related state from the config file.
+func _clear_quest_state() -> void:
+	if _state.has_section(QUEST_SECTION):
+		_state.erase_section(QUEST_SECTION)
+
+
 ## If [member current_quest] is set, record this quest as having been completed,
 ## and unset it. Also resets lives to maximum.
 func mark_quest_completed() -> void:
@@ -161,15 +165,8 @@ func mark_quest_completed() -> void:
 			_state.set_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, completed_quests)
 
 		current_quest = null
-		if _state.has_section_key(QUEST_SECTION, QUEST_PATH_KEY):
-			_state.erase_section_key(QUEST_SECTION, QUEST_PATH_KEY)
-		if _state.has_section_key(QUEST_SECTION, QUEST_CHALLENGE_START_KEY):
-			_state.erase_section_key(QUEST_SECTION, QUEST_CHALLENGE_START_KEY)
-
-		# Reset lives when quest is completed
+		_clear_quest_state()  # ← Usa la función helper
 		reset_lives()
-		prints("[LIVES DEBUG] Quest completed. Lives reset to: ", current_lives)
-
 		_save()
 
 
@@ -196,16 +193,12 @@ func add_collected_item(item: InventoryItem) -> void:
 ## having been completed. Also resets lives to maximum.
 func abandon_quest() -> void:
 	set_incorporating_threads(false)
-	if _state.has_section_key(QUEST_SECTION, QUEST_PATH_KEY):
-		_state.erase_section_key(QUEST_SECTION, QUEST_PATH_KEY)
-	if _state.has_section_key(QUEST_SECTION, QUEST_CHALLENGE_START_KEY):
-		_state.erase_section_key(QUEST_SECTION, QUEST_CHALLENGE_START_KEY)
+	_clear_quest_state()
 	current_quest = null
 	clear_inventory()
 
 	# Reset lives when abandoning quest
 	reset_lives()
-	prints("[LIVES DEBUG] Quest abandoned. Lives reset to: ", current_lives)
 
 
 ## Remove all [InventoryItem] from the [member inventory].
