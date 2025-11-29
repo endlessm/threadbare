@@ -32,3 +32,4 @@ func _refresh() -> void:
 func _on_value_changed(new_value: float) -> void:
 	if bus_name:
 		Settings.set_volume(bus_name, new_value)
+		AudioManager.play_ui_click_toggle()
