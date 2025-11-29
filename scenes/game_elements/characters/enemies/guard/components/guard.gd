@@ -10,7 +10,11 @@ signal player_detected(player: Player)
 enum State {
 	## Going along the path.
 	PATROLLING,
-	## Player is in sight, it takes some time until the player is detected.
+	## Waiting in path corners.
+	WAITING,
+	## Player is in sight.
+	## If player stays in sight, after some time it will become alerted.
+	## If player gets out of sight, the guard goes to investigate where the player was last seen.
 	DETECTING,
 	## Player was detected.
 	ALERTED,
@@ -43,9 +47,7 @@ const DEFAULT_SPRITE_FRAMES = preload("uid://ovu5wqo15s5g")
 @warning_ignore("unused_private_class_variable")
 @export_tool_button("Add/Edit Patrol Path") var _edit_patrol_path: Callable = edit_patrol_path
 ## The path the guard follows while patrolling.
-@export var patrol_path: Path2D:
-	set(new_value):
-		patrol_path = new_value
+@export var patrol_path: Path2D
 
 ## The wait time at each patrol point.
 @export_range(0, 5, 0.1, "or_greater", "suffix:s") var wait_time: float = 1.0
@@ -65,27 +67,29 @@ const DEFAULT_SPRITE_FRAMES = preload("uid://ovu5wqo15s5g")
 			detection_area.scale = Vector2.ONE * detection_area_scale
 
 @export_category("Debug")
-## Enables movement in the editor for debugging.
-@export var move_while_in_editor: bool = false
+
 ## Toggles visibility of debug info.
 @export var show_debug_info: bool = false
 
-## Index of the previous patrol point, -1 means that there isn't a previous
-## point yet.
-var previous_patrol_point_idx: int = -1
-## Index of the current patrol point.
-var current_patrol_point_idx: int = 0
-## Last position in which the player was seen.
-var last_seen_position: Vector2
 ## Breadcrumbs for tracking guards position while investigating, before
 ## returning to patrol, the guard walks through all these positions.
 var breadcrumbs: Array[Vector2] = []
 ## Current state of the guard.
-var state: State = State.PATROLLING:
+var state: State:
 	set = _set_state
+
+var _state_after_waiting: State
 
 # The player that's being detected.
 var _player: Player
+
+# While this time is greater than 0, the guard won't move.
+var _waiting_time_left: float
+
+# Mark the global position in which the player was last seen.
+var _last_seen: Marker2D
+
+var _returning_path: Path2D
 
 ## Area that represents the sight of the guard. If a player is in this area
 ## and there are no walls in between detected by [member sight_ray_cast], it
@@ -98,6 +102,12 @@ var _player: Player
 @onready var sight_ray_cast: RayCast2D = %SightRayCast
 ## Control to hold debug info that can be toggled on or off.
 @onready var debug_info: Label = %DebugInfo
+## Behavior to walk along a path.
+@onready var patrolling_behavior: PathWalkBehavior = %PatrollingBehavior
+## TODO document
+@onready var investigating_behavior: FollowWalkBehavior = %InvestigatingBehavior
+## TODO document
+@onready var returning_behavior: PathWalkBehavior = %ReturningBehavior
 
 ## Reference to the node controlling the AnimationPlayer for walking / being idle,
 ## so it can be disabled to play the alerted animation.
@@ -105,8 +115,6 @@ var _player: Player
 # gdlint:ignore = max-line-length
 var character_animation_player_behavior: CharacterAnimationPlayerBehavior = %CharacterAnimationPlayerBehavior
 
-## Handles the velocity and movement of the guard.
-@onready var guard_movement: GuardMovement = %GuardMovement
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var _alert_sound: AudioStreamPlayer = %AlertSound
@@ -137,55 +145,55 @@ func _ready() -> void:
 			player_awareness.max_value = time_to_detect_player
 			player_awareness.value = 0.0
 
+		# Dynamically add a node to mark the global position in which the player was last seen.
+		_last_seen = Marker2D.new()
+		add_sibling.call_deferred(_last_seen)
+		tree_exiting.connect(func() -> void: _last_seen.queue_free())
+
+		# Dynamically add a path for returning.
+		_returning_path = Path2D.new()
+		add_sibling.call_deferred(_returning_path)
+		tree_exiting.connect(func() -> void: _returning_path.queue_free())
+
+		investigating_behavior.speeds.walk_speed = move_speed
+		investigating_behavior.target = _last_seen
+		returning_behavior.speeds.walk_speed = move_speed
+		if patrol_path:
+			patrolling_behavior.speeds.walk_speed = move_speed
+			patrolling_behavior.walking_path = patrol_path
+		else:
+			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+
+		#if wait_time:
+		#_waiting_time_left = wait_time
+		#state = State.WAITING
+		#else:
+		#state = State.PATROLLING
+		state = State.PATROLLING
+
 	_set_sprite_frames(sprite_frames)
 
 	if detection_area:
 		detection_area.scale = Vector2.ONE * detection_area_scale
 
-	# When the level starts, the guard is placed at the beginning of the
-	# patrol path.
-	if patrol_path:
-		global_position = _patrol_point_position(0)
-
-	guard_movement.destination_reached.connect(self._on_destination_reached)
-	guard_movement.still_time_finished.connect(self._on_still_time_finished)
-	guard_movement.path_blocked.connect(self._on_path_blocked)
-
 
 func _process(delta: float) -> void:
-	_update_debug_info()
-
-	if Engine.is_editor_hint() and not move_while_in_editor:
+	if Engine.is_editor_hint():
 		return
 
-	_process_state()
-	guard_movement.move()
+	_update_debug_info()
 
 	if state != State.ALERTED:
 		_update_player_awareness(delta)
 
-	_update_animation()
-
-
-## Updates the guard's movement behavior based on its current state.
-func _process_state() -> void:
 	match state:
-		State.PATROLLING:
-			if patrol_path:
-				var target_position: Vector2 = _patrol_point_position(current_patrol_point_idx)
-				guard_movement.set_destination(target_position)
+		State.WAITING:
+			# TODO: what is setting this?
+			velocity = Vector2.ZERO
+			if _waiting_time_left <= 0.0:
+				state = _state_after_waiting
 			else:
-				guard_movement.stop_moving()
-		State.INVESTIGATING:
-			guard_movement.set_destination(last_seen_position)
-		State.RETURNING:
-			if not breadcrumbs.is_empty():
-				var target_position: Vector2 = breadcrumbs.back()
-				guard_movement.set_destination(target_position)
-			else:
-				state = State.PATROLLING
-		State.ALERTED:
-			guard_movement.stop_moving()
+				_waiting_time_left -= delta
 
 
 ## Changes how PlayerAwareness looks to reflect how close is the player to
@@ -204,78 +212,76 @@ func _update_player_awareness(delta: float) -> void:
 		player_detected.emit(_player)
 
 
-func _update_animation() -> void:
-	if state == State.ALERTED:
-		return
-
-	if velocity.is_zero_approx():
-		animation_player.play(&"idle")
-	else:
-		animation_player.play(&"walk")
-
-
 func _update_debug_info() -> void:
 	debug_info.visible = show_debug_info
 	if not debug_info.visible:
 		return
-	debug_info.text = ""
-	debug_property("position")
-	debug_value("state", State.keys()[state])
-	debug_property("previous_patrol_point_idx")
-	debug_property("current_patrol_point_idx")
-	debug_value("time left", "%.2f" % guard_movement.still_time_left_in_seconds)
-	debug_value("target point", guard_movement.destination)
-
-
-## What happens when the guard reached the point it was walking towards
-func _on_destination_reached() -> void:
+	debug_info.text = "state: %s\n" % State.keys()[state]
 	match state:
 		State.PATROLLING:
-			guard_movement.wait_seconds(wait_time)
-			_advance_target_patrol_point()
+			var offset := patrolling_behavior.get_closest_offset_to_character()
+			debug_info.text += "offset: %.2f\n" % offset
+		State.WAITING:
+			debug_info.text += "time left: %.2f\n" % _waiting_time_left
+		State.DETECTING:
+			var time_left := player_awareness.max_value - player_awareness.value
+			debug_info.text += "time left: %.2f\n" % time_left
 		State.INVESTIGATING:
-			guard_movement.wait_seconds(wait_time)
+			var distance := global_position.distance_to(
+				investigating_behavior.target.global_position
+			)
+			debug_info.text += "distance: %.2f\n" % distance
 		State.RETURNING:
-			breadcrumbs.pop_back()
+			var distance := (
+				_returning_path.curve.get_baked_length()
+				- _returning_path.curve.get_closest_offset(global_position)
+			)
+			debug_info.text += "distance: %.2f\n" % distance
 
 
-## What happens when the guard finished waiting on a point.
-func _on_still_time_finished() -> void:
-	match state:
-		State.INVESTIGATING:
-			state = State.RETURNING
-
-
-## What happens if the guard cannot reach their destination because it got
-## stuck with a collider.
-func _on_path_blocked() -> void:
-	match state:
-		State.PATROLLING:
-			guard_movement.wait_seconds(wait_time)
-			# This check makes sure that if the guard is blocked on start,
-			# they won't try to set an invalid patrol point as destination.
-			if previous_patrol_point_idx > -1:
-				var new_patrol_point: int = previous_patrol_point_idx
-				previous_patrol_point_idx = current_patrol_point_idx
-				current_patrol_point_idx = new_patrol_point
-		State.INVESTIGATING:
-			state = State.RETURNING
-		State.RETURNING:
-			if not breadcrumbs.is_empty():
-				breadcrumbs.pop_back()
+func _consume_breadcrumbs() -> Array[Vector2]:
+	var new_breadcrumbs: Array[Vector2] = []
+	var closest_offset := _returning_path.curve.get_closest_offset(global_position)
+	for idx in range(_returning_path.curve.point_count):
+		var point_position := _returning_path.curve.get_point_position(idx)
+		if _returning_path.curve.get_closest_offset(point_position) < closest_offset:
+			continue
+		new_breadcrumbs.push_back(point_position)
+	return new_breadcrumbs
 
 
 func _set_state(new_state: State) -> void:
 	if state == new_state:
 		return
 
-	state = new_state
-
 	match state:
+		State.RETURNING:
+			breadcrumbs = _consume_breadcrumbs()
+
+	match new_state:
+		State.PATROLLING:
+			patrolling_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+			investigating_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			breadcrumbs.clear()
+		State.WAITING:
+			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			investigating_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			# TODO needed?
+			velocity = Vector2.ZERO
 		State.DETECTING:
+			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			investigating_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			# TODO needed?
+			velocity = Vector2.ZERO
 			if not _alert_sound.playing:
 				_alert_sound.play()
 		State.ALERTED:
+			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			investigating_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			character_animation_player_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			if not _alert_sound.playing:
 				_alert_sound.play()
@@ -284,53 +290,23 @@ func _set_state(new_state: State) -> void:
 			player_awareness.tint_progress = Color.RED
 			player_awareness.visible = true
 		State.INVESTIGATING:
-			guard_movement.start_moving_now()
-			breadcrumbs.push_back(global_position)
+			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			investigating_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+		State.RETURNING:
+			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			investigating_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			returning_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+			_returning_path.curve = Curve2D.new()
+			breadcrumbs.push_front(global_position)
+			for b in breadcrumbs:
+				_returning_path.curve.add_point(b)
+			returning_behavior.walking_path = _returning_path
 
-
-## Pass a property name as a parameter and it shows its name and its value
-func debug_property(property_name: String) -> void:
-	debug_value(property_name, get(property_name))
-
-
-## Pass a value name and its value and it shows it on DebugInfo
-func debug_value(value_name: String, value: Variant) -> void:
-	debug_info.text += "%s: %s\n" % [value_name, value]
-
-
-## Calculate and set the next point in the patrol path.
-## The guard would circle back if the path is open, and go in rounds if the
-## path is closed.
-func _advance_target_patrol_point() -> void:
-	if not patrol_path or not patrol_path.curve or _amount_of_patrol_points() < 2:
-		return
-
-	var new_patrol_point_idx: int
-
-	if _is_patrol_path_closed():
-		# amount of points - 1 is used here because in a closed path, the
-		# last and first patrol points are the same. So, this lets us skip
-		# that repeated point and go for the first one that is different
-		new_patrol_point_idx = (current_patrol_point_idx + 1) % (_amount_of_patrol_points() - 1)
-	else:
-		var at_last_point: bool = current_patrol_point_idx == (_amount_of_patrol_points() - 1)
-		var at_first_point: bool = current_patrol_point_idx == 0
-		var going_backwards_in_path: bool = previous_patrol_point_idx > current_patrol_point_idx
-		if at_last_point:
-			# When reaching the end of the path, it starts walking back
-			new_patrol_point_idx = current_patrol_point_idx - 1
-		elif at_first_point:
-			# If it's at first point is either because it was walking back
-			# or because it's the first time it will move, in any case, it moves
-			# forward
-			new_patrol_point_idx = current_patrol_point_idx + 1
-		elif going_backwards_in_path:
-			new_patrol_point_idx = current_patrol_point_idx - 1
-		else:
-			new_patrol_point_idx = current_patrol_point_idx + 1
-
-	previous_patrol_point_idx = current_patrol_point_idx
-	current_patrol_point_idx = new_patrol_point_idx
+	# Uncomment to debug the state transitions:
+	if name == "Guard2-GoingInCircles":
+		print("%-15s → %-15s" % [State.keys()[state], State.keys()[new_state]])
+	state = new_state
 
 
 ## Checks if a straight line can be traced from the Guard to a certain point.
@@ -341,49 +317,6 @@ func _is_sight_to_point_blocked(point_position: Vector2) -> bool:
 	sight_ray_cast.target_position = sight_ray_cast.to_local(point_position)
 	sight_ray_cast.force_raycast_update()
 	return sight_ray_cast.is_colliding()
-
-
-## Patrol point index to global position
-func _patrol_point_position(point_idx: int) -> Vector2:
-	var local_point_position: Vector2 = patrol_path.curve.get_point_position(point_idx)
-	return patrol_path.to_global(local_point_position)
-
-
-func _amount_of_patrol_points() -> int:
-	return patrol_path.curve.point_count
-
-
-## Returns true if the end of the patrol path is the same point as the beginning
-func _is_patrol_path_closed() -> bool:
-	if not patrol_path:
-		return false
-
-	var curve: Curve2D = patrol_path.curve
-	if curve.point_count < 3:
-		return false
-
-	var first_point_position: Vector2 = curve.get_point_position(0)
-	var last_point_position: Vector2 = curve.get_point_position(curve.point_count - 1)
-
-	return first_point_position.is_equal_approx(last_point_position)
-
-
-## Resets the guard to its initial values and placement on screen so it starts
-## patrolling again as if the level just started.
-func _reset() -> void:
-	previous_patrol_point_idx = -1
-	current_patrol_point_idx = 0
-	velocity = Vector2.ZERO
-	if patrol_path:
-		global_position = _patrol_point_position(0)
-
-
-## When the scene is saved, resets the Guard's position to the beginning of
-## the patrol path.
-func _notification(what: int) -> void:
-	match what:
-		NOTIFICATION_EDITOR_PRE_SAVE:
-			_reset()
 
 
 static func _editor_interface() -> Object:
@@ -470,14 +403,57 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 		state = State.ALERTED
 		player_detected.emit(_player)
 	else:
-		state = State.DETECTING
+		if state == State.INVESTIGATING:
+			breadcrumbs.push_front(global_position)
+		else:
+			state = State.DETECTING
 
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
 	if not body is Player:
 		return
 	_player = null
-	last_seen_position = body.global_position
+	# if not _is_sight_to_point_blocked(body.global_position):
+	_last_seen.global_position = body.global_position
+	investigating_behavior.target = _last_seen
 	if state == State.DETECTING:
-		guard_movement.stop_moving()
 		state = State.INVESTIGATING
+
+
+func _wait_patrolling() -> void:
+	_waiting_time_left = wait_time
+	_state_after_waiting = State.PATROLLING
+	state = State.WAITING
+
+
+func _on_patrolling_behavior_pointy_path_reached() -> void:
+	if wait_time:
+		_wait_patrolling()
+
+
+func _on_patrolling_behavior_got_stuck() -> void:
+	if wait_time:
+		_wait_patrolling()
+
+
+func _on_investigating_behavior_target_reached_changed(is_reached: bool) -> void:
+	if not is_reached:
+		return
+	if breadcrumbs.is_empty():
+		_state_after_waiting = State.PATROLLING
+	else:
+		_state_after_waiting = State.RETURNING
+	_waiting_time_left = wait_time
+	state = State.WAITING
+
+
+func _on_returning_behavior_ending_reached() -> void:
+	state = State.PATROLLING
+
+
+func _on_returning_behavior_pointy_path_reached() -> void:
+	breadcrumbs = _consume_breadcrumbs()
+
+
+func _on_investigating_behavior_got_stuck() -> void:
+	state = State.RETURNING

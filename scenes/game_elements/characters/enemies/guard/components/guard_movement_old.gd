@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name GuardMovement
+class_name GuardMovementOld
 extends Node2D
 
 ## Emitted when [member still_time_left] reaches 0
@@ -17,7 +17,7 @@ var _destination_reached: bool = true
 
 ## Target position into which the guard will move, in absolute coordinates
 @onready var destination: Vector2 = Vector2.ZERO
-@onready var guard: Guard = owner
+@onready var guard: GuardOld = owner
 
 
 func _process(delta: float) -> void:
