@@ -51,12 +51,12 @@ func _ready() -> void:
 		return
 
 	for target in targets:
-		if target.has_signal("vase_destroyed"):
-			target.vase_destroyed.connect(_on_target_destroyed)
+		if target.has_signal("barrel_destroyed"):
+			target.barrel_destroyed.connect(_on_target_destroyed)
 		else:
 			push_error(
 				(
-					"Object %s in group %s is missing 'vase_destroyed' signal."
+					"Object %s in group %s is missing 'barrel_destroyed' signal."
 					% [target.name, target_group_name]
 				)
 			)
