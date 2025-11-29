@@ -159,11 +159,12 @@ func _on_body_entered(body: Node2D) -> void:
 	duration_timer.start()
 
 	# Retrieve the actual object. If we hit a HitBox, we want its owner.
+	# Usually the root node of the scene.
 	var target_object: Node = body.owner if body.owner else body
 
-	# Logic for Fragile Vase
-	# Delegate hit handling if the object supports it
-	if target_object.has_method("hit_by_droplet"):
+	# Logic for Fragile Barrel
+	# We must check for the specific subclass first because it inherits from FillingBarrel
+	if target_object is FragileBarrel:
 		target_object.hit_by_droplet(label)
 		queue_free()
 		return
