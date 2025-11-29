@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://biol5kpjb22s"]
+[gd_scene load_steps=27 format=4 uid="uid://biol5kpjb22s"]
 
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="1_ine85"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_n5amm"]
@@ -6,7 +6,6 @@
 [ext_resource type="TileSet" uid="uid://4ewcvb1sibsf" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/2_cinematicacombate/tile/tilestaller.tres" id="4_05iye"]
 [ext_resource type="Script" uid="uid://db4o0p7nc3svv" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/scripts/charlie_fighting.gd" id="4_kiv56"]
 [ext_resource type="SpriteFrames" uid="uid://wdv3k3hudj1h" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/charliegato.tres" id="4_uft25"]
-[ext_resource type="Script" uid="uid://cbdpavu7jxgjl" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/scripts/bryan_fighting.gd" id="6_72wtm"]
 [ext_resource type="SpriteFrames" uid="uid://x5dyax1ulw8f" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/boss.tres" id="7_f4d1w"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="8_tmljt"]
 [ext_resource type="Resource" uid="uid://cblaldkf38re3" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/dialogocomienzo.dialogue" id="10_ilkny"]
@@ -20,13 +19,27 @@
 [ext_resource type="SpriteFrames" uid="uid://k5tiiho1vva0" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/bryanpalo.tres" id="16_ilkny"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="18_epny2"]
 [ext_resource type="Script" uid="uid://chpgq8d41toca" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/scripts/scriptsthreadbare/bosshealth.gd" id="18_fq20r"]
-[ext_resource type="Texture2D" uid="uid://cw8xowg5jjux7" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/combat_components/Señal.png" id="19_eitnp"]
+[ext_resource type="Texture2D" uid="uid://cw8xowg5jjux7" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/Señal.png" id="19_eitnp"]
 [ext_resource type="AudioStream" uid="uid://cbw5v5wpkbff" path="res://scenes/quests/story_quests/after_the_tremor/music/minijuego3.wav" id="20_eitnp"]
 [ext_resource type="AudioStream" uid="uid://bnnmm5oppg6nr" path="res://scenes/quests/story_quests/after_the_tremor/music/sounds/defeat.wav" id="23_ilkny"]
 
 [sub_resource type="Resource" id="Resource_ilkny"]
 script = ExtResource("16_epny2")
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fq20r"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilkny"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_fq20r"]
+subpixel_positioning = 0
 
 [node name="Combat" type="Node2D"]
 y_sort_enabled = true
@@ -61,6 +74,9 @@ visible = true
 script = ExtResource("4_kiv56")
 input_action = "move_left"
 
+[node name="AudioStreamPlayer2D" parent="PlayersContainer/charlie/PlayerFighting/AirStream" index="2"]
+bus = &"SFX"
+
 [node name="bryan" parent="PlayersContainer" instance=ExtResource("1_n5amm")]
 z_index = 1
 position = Vector2(920, 638)
@@ -85,8 +101,11 @@ offset_right = 32.0
 [node name="PlayerFighting" parent="PlayersContainer/bryan" index="5"]
 process_mode = 0
 visible = true
-script = ExtResource("6_72wtm")
+script = ExtResource("4_kiv56")
 input_action = "move_right"
+
+[node name="AudioStreamPlayer2D" parent="PlayersContainer/bryan/PlayerFighting/AirStream" index="2"]
+bus = &"SFX"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
@@ -192,17 +211,16 @@ position = Vector2(1, -7)
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="BossHealth"]
 stream = ExtResource("12_eitnp")
 volume_db = -11.345
+bus = &"SFX"
 
 [node name="Sign" parent="." instance=ExtResource("18_epny2")]
 position = Vector2(745, 316)
-direction = 1
 text = "..."
 
 [node name="Appearance" parent="Sign" index="0"]
 position = Vector2(-8, -1)
 scale = Vector2(1.41, 1.41)
 texture = ExtResource("19_eitnp")
-flip_h = true
 
 [node name="Label" parent="Sign/LabelContainer/PanelContainer/MarginContainer" index="0"]
 text = "..."
@@ -211,9 +229,47 @@ text = "..."
 stream = ExtResource("20_eitnp")
 volume_db = -5.972
 autoplay = true
+bus = &"Music"
 
 [node name="WinSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("23_ilkny")
+bus = &"SFX"
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="BossInfo" type="VBoxContainer" parent="UI"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -217.0
+offset_top = -44.0
+offset_right = -128.0
+offset_bottom = 203.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="BossBar" type="ProgressBar" parent="UI/BossInfo"]
+custom_minimum_size = Vector2(30, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_styles/background = SubResource("StyleBoxFlat_fq20r")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ilkny")
+value = 100.0
+fill_mode = 3
+show_percentage = false
+
+[node name="BossName" type="Label" parent="UI/BossInfo"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_fonts/font = SubResource("SystemFont_fq20r")
+theme_override_font_sizes/font_size = 14
+text = " OSCURIDAD 
+INMENSA"
+horizontal_alignment = 1
 
 [editable path="PlayersContainer/charlie"]
 [editable path="PlayersContainer/bryan"]

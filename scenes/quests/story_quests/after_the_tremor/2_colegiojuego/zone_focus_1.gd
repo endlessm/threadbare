@@ -6,7 +6,7 @@ extends Area2D
 @export var fallback_camera: NodePath
 
 func _ready() -> void:
-	# conectar señales solo si no están conectadas
+
 	if not is_connected("body_entered", Callable(self, "_on_body_entered")):
 		connect("body_entered", Callable(self, "_on_body_entered"))
 	if not is_connected("body_exited", Callable(self, "_on_body_exited")):

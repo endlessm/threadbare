@@ -10,7 +10,7 @@ func turn_on() -> void:
 	$Sprite2D.self_modulate = Color(3, 3, 3)
 
 
-# opcional: método para apagar
+
 func turn_off() -> void:
 	if not is_on:
 		return
