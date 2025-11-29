@@ -5,13 +5,13 @@ extends Control
 signal back
 
 ## Auto-scroll speed.
-@export var auto_scroll_speed: float = 50.0
+var _auto_scroll_speed: float = 50.0
 ## Manual scroll speed (arrows/joystick).
-@export var manual_scroll_speed: float = 500.0
+var _manual_scroll_speed: float = 300.0
 ## Delay before starting auto-scroll (in seconds).
-@export var start_delay: float = 1.0
+var _start_delay: float = 1.0
 ## Background animation name.
-@export var animation_name: String = "sketches"
+var _animation_name: String = "sketches"
 
 var _is_auto_scrolling: bool = false
 var _current_scroll_pos: float = 0.0
@@ -26,31 +26,39 @@ func _ready() -> void:
 	if not visibility_changed.is_connected(_on_visibility_changed):
 		visibility_changed.connect(_on_visibility_changed)
 
-	if scroll_container:
-		scroll_container.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	scroll_container.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 
 	set_process(false)
 	_on_visibility_changed()
 
 
 func _process(delta: float) -> void:
-	if not scroll_container:
-		return
-
 	var input_axis: float = Input.get_axis("move_up", "move_down")
 	if is_zero_approx(input_axis):
 		input_axis = Input.get_axis("ui_up", "ui_down")
 
 	if not is_zero_approx(input_axis):
 		_is_auto_scrolling = false
-		_current_scroll_pos += input_axis * manual_scroll_speed * delta
+		_current_scroll_pos += input_axis * _manual_scroll_speed * delta
+		_current_scroll_pos = clampf(_current_scroll_pos, 0.0, scroll_content.size.y)
 	elif _is_auto_scrolling:
-		_current_scroll_pos += auto_scroll_speed * delta
+		_current_scroll_pos += _auto_scroll_speed * delta
+		_current_scroll_pos = clampf(_current_scroll_pos, 0.0, scroll_content.size.y)
 
 	scroll_container.scroll_vertical = int(_current_scroll_pos)
 
-	if _current_scroll_pos >= scroll_content.size.y:
-		pass
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not visible:
+		return
+
+	if (
+		event.is_action_pressed("ui_up")
+		or event.is_action_pressed("ui_down")
+		or event.is_action_pressed("move_up")
+		or event.is_action_pressed("move_down")
+	):
+		get_viewport().set_input_as_handled()
 
 
 func _input(event: InputEvent) -> void:
@@ -65,29 +73,21 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 			_is_auto_scrolling = false
-			if scroll_container:
-				_current_scroll_pos = scroll_container.scroll_vertical
-
-	if event.is_action_pressed("ui_up") or event.is_action_pressed("ui_down"):
-		get_viewport().set_input_as_handled()
+			_current_scroll_pos = scroll_container.scroll_vertical
 
 
 func start_credits_sequence() -> void:
-	if background_anim_player and background_anim_player.has_animation(animation_name):
-		background_anim_player.play(animation_name)
-	elif background_anim_player:
-		push_warning("Animation not found: " + animation_name)
+	background_anim_player.play(_animation_name)
 
-	if scroll_container:
-		_current_scroll_pos = 0.0
-		scroll_container.scroll_vertical = 0
-		_is_auto_scrolling = false
-		set_process(true)
+	_current_scroll_pos = 0.0
+	scroll_container.scroll_vertical = 0
+	_is_auto_scrolling = false
+	set_process(true)
 
-		await get_tree().create_timer(start_delay).timeout
+	await get_tree().create_timer(_start_delay).timeout
 
-		if visible and scroll_container.scroll_vertical == 0:
-			_is_auto_scrolling = true
+	if visible and scroll_container.scroll_vertical == 0:
+		_is_auto_scrolling = true
 
 
 func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
@@ -96,8 +96,7 @@ func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
 
 func _on_visibility_changed() -> void:
 	if visible:
-		if back_button:
-			back_button.grab_focus()
+		back_button.grab_focus()
 		start_credits_sequence()
 	else:
 		_stop_credits_sequence()
@@ -110,5 +109,4 @@ func _on_back_button_pressed() -> void:
 func _stop_credits_sequence() -> void:
 	_is_auto_scrolling = false
 	set_process(false)
-	if background_anim_player:
-		background_anim_player.stop()
+	background_anim_player.stop()
