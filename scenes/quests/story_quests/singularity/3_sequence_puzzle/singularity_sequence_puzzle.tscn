@@ -1,0 +1,74 @@
+[gd_scene load_steps=14 format=4 uid="uid://r17go4bsu5w"]
+
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_vp6t8"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_sjo1q"]
+[ext_resource type="SpriteFrames" uid="uid://bdhve3tx6eapx" path="res://scenes/quests/story_quests/singularity/player_components/singularity_player.tres" id="3_dhrpi"]
+[ext_resource type="Script" uid="uid://djrwsu4fyfec1" path="res://scenes/quests/story_quests/singularity/3_sequence_puzzle/talker_admin.gd" id="3_ufwro"]
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="17_xiiba"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="18_wxot4"]
+[ext_resource type="Resource" uid="uid://dmpgja5xymy4x" path="res://scenes/quests/story_quests/singularity/3_sequence_puzzle/singularity_sequence_puzzle.dialogue" id="19_ogcrj"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="21_4x3fg"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="22_kuwse"]
+[ext_resource type="PackedScene" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="23_sjo1q"]
+[ext_resource type="Resource" uid="uid://dj5dvaemxqsk5" path="res://scenes/quests/story_quests/singularity/3_sequence_puzzle/admin.dialogue" id="24_3ui8h"]
+[ext_resource type="SpriteFrames" uid="uid://b0ltb4s4you40" path="res://scenes/quests/story_quests/singularity/npcs/talker/admin.tres" id="24_dhrpi"]
+
+[sub_resource type="Resource" id="Resource_3w7xg"]
+script = ExtResource("18_wxot4")
+type = 2
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[node name="SequencePuzzleTemplate" type="Node2D"]
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="TileMapLayers"]
+offset_right = 997.0
+offset_bottom = 580.0
+color = Color(0.023529412, 0.34901962, 0.49019608, 1)
+
+[node name="Grass" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAPAAMAEAAGAAQAAAAPAAIAEAAAAAUAAAAPAAEAEAAEAAUAAAAOAAkAEAADAAIAAAAAAAkAEAADAAUAAAD//wEAEAAEAAUAAAD/////EAAGAAAAAAD//wAAEAAGAAEAAAD8/wEAEAAEAAUAAAD9/wEAEAAEAAUAAAD+/wEAEAAEAAUAAAAQAAEAEAAEAAUAAAARAAEAEAAEAAUAAAAAAAoAEAADAAUAAAAFAAUAEAABAAQAAAAFAAYAEAABAAQAAAAFAAcAEAABAAQAAAAGAAUAEAABAAQAAAAGAAYAEAABAAQAAAAHAAUAEAABAAQAAAAHAAYAEAABAAQAAAAHAAcAEAABAAQAAAAIAAQAEAAGAAIAAAAIAAUAEAAGAAMAAAAIAAYAEAABAAQAAAAIAAcAEAABAAQAAAAJAAQAEAAEAAUAAAAJAAUAEAAGAAIAAAAJAAYAEAAGAAMAAAAJAAcAEAABAAQAAAAKAAQAEAAEAAUAAAAKAAUAEAAEAAUAAAAKAAcAEAABAAQAAAALAAQAEAABAAEAAAALAAUAEAAEAAUAAAALAAcAEAABAAQAAAAMAAQAEAAHAAMAAAAMAAUAEAAHAAIAAAAMAAYAEAAHAAMAAAAMAAcAEAAIAAIAAAANAAQAEAACAAQAAAANAAYAEAACAAQAAAAOAAQAEAADAAUAAAAOAAUAEAADAAUAAAAOAAgAEAADAAUAAAAAAAAAEAAEAAQAAAAAAAEAEAACAAEAAAAAAAIAEAAAAAIAAAAAAAMAEAADAAQAAAAAAAQAEAADAAQAAAAAAAUAEAADAAQAAAAAAAYAEAADAAQAAAAAAAcAEAACAAIAAAAAAAgAEAADAAUAAAABAAAAEAAEAAQAAAABAAEAEAAEAAQAAAABAAIAEAAAAAQAAAABAAQAEAAAAAAAAAABAAYAEAAAAAQAAAABAAcAEAAAAAEAAAACAAAAEAAEAAQAAAACAAEAEAAEAAQAAAACAAIAEAABAAQAAAACAAMAEAAHAAAAAAACAAQAEAAHAAEAAAACAAUAEAAAAAQAAAACAAYAEAABAAQAAAACAAcAEAAEAAEAAAADAAAAEAAEAAQAAAADAAEAEAAEAAQAAAADAAIAEAABAAQAAAADAAMAEAABAAQAAAADAAUAEAABAAQAAAADAAYAEAABAAQAAAADAAcAEAABAAQAAAAEAAAAEAAEAAQAAAAEAAEAEAAEAAQAAAAEAAIAEAABAAQAAAAEAAMAEAABAAQAAAAEAAUAEAABAAQAAAAEAAYAEAABAAQAAAAEAAcAEAABAAQAAAAFAAAAEAAEAAAAAAAFAAEAEAAEAAQAAAAFAAIAEAABAAQAAAAFAAMAEAABAAQAAAAGAAAAEAABAAQAAAAGAAEAEAAEAAQAAAAGAAIAEAABAAQAAAAGAAMAEAABAAQAAAAGAAcAEAABAAQAAAAHAAAAEAABAAQAAAAHAAEAEAAEAAQAAAAHAAIAEAABAAQAAAAHAAMAEAABAAQAAAAIAAAAEAABAAQAAAAIAAEAEAAEAAQAAAAIAAIAEAABAAQAAAAIAAMAEAAFAAEAAAAJAAAAEAABAAQAAAAJAAEAEAAEAAQAAAAJAAIAEAAFAAEAAAAJAAMAEAAEAAUAAAAKAAAAEAABAAQAAAAKAAEAEAAEAAQAAAAKAAIAEAAEAAUAAAAKAAMAEAAEAAUAAAALAAAAEAABAAQAAAALAAEAEAADAAEAAAALAAIAEAAEAAUAAAALAAMAEAAEAAUAAAAMAAAAEAABAAQAAAAMAAEAEAAEAAUAAAAMAAIAEAAEAAUAAAAMAAMAEAAHAAIAAAAMAAgAEAACAAUAAAANAAAAEAABAAQAAAANAAEAEAAEAAUAAAANAAIAEAAEAAUAAAAOAAAAEAACAAQAAAAOAAEAEAAEAAUAAAAOAAIAEAABAAEAAAAOAAMAEAAFAAQAAAAOAAYAEAADAAUAAAAOAAcAEAADAAUAAAA=")
+tile_set = ExtResource("1_vp6t8")
+
+[node name="Walls" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAAAAgADwABAAAAAAABAAgADwABAAAAAAACAAgADwABAAAAAAADAAgADwABAAAAAAAEAAgADwABAAAAAAAFAAgADwABAAAAAAAGAAgADwABAAAAAAAHAAgADwABAAAAAAAIAAgADwABAAAAAAAJAAgADwABAAAAAAAKAAgADwABAAAAAAALAAgADwABAAAAAAAMAAgADwABAAAAAAANAAgADwABAAAAAAAOAAgADwABAAAAAAAPAAAADwAAAAEAAAAPAAEADwAAAAEAAAAPAAIADwAAAAEAAAAPAAMADwAAAAEAAAAPAAQADwAAAAEAAAAPAAUADwAAAAEAAAAPAAYADwAAAAEAAAAPAAcADwAAAAEAAAD//wAADwACAAEAAAD//wEADwACAAEAAAD//wIADwACAAEAAAD//wMADwACAAEAAAD//wQADwACAAEAAAD//wUADwACAAEAAAD//wYADwACAAEAAAD//wcADwACAAEAAAAAAP7/DwABAAIAAAAAAP//DwABAAMAAAABAP7/DwABAAIAAAABAP//DwABAAMAAAACAP7/DwABAAIAAAACAP//DwABAAMAAAADAP7/DwABAAIAAAADAP//DwABAAMAAAAEAP7/DwABAAIAAAAEAP//DwABAAMAAAAFAP7/DwABAAIAAAAFAP//DwABAAMAAAAGAP7/DwABAAIAAAAGAP//DwABAAMAAAAHAP7/DwABAAIAAAAHAP//DwABAAMAAAAIAP7/DwABAAIAAAAIAP//DwABAAMAAAAJAP7/DwABAAIAAAAJAP//DwABAAMAAAAKAP7/DwABAAIAAAAKAP//DwABAAMAAAALAP7/DwABAAIAAAALAP//DwABAAMAAAAMAP7/DwABAAIAAAAMAP//DwABAAMAAAANAP7/DwABAAIAAAANAP//DwABAAMAAAAOAP7/DwABAAIAAAAOAP//DwABAAMAAAAPAP7/DwABAAIAAAAPAP//DwABAAMAAAA=")
+tile_set = ExtResource("1_vp6t8")
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Talker" parent="OnTheGround" instance=ExtResource("23_sjo1q")]
+position = Vector2(477, 208)
+script = ExtResource("3_ufwro")
+dialogue = ExtResource("24_3ui8h")
+npc_name = "Administrador"
+sprite_frames = ExtResource("24_dhrpi")
+
+[node name="Player" parent="OnTheGround" instance=ExtResource("2_sjo1q")]
+position = Vector2(379, 336)
+sprite_frames = ExtResource("3_dhrpi")
+
+[node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("17_xiiba")]
+position = Vector2(861, 282)
+revealed = false
+next_scene = "uid://b6i71eve1161h"
+item = SubResource("Resource_3w7xg")
+collected_dialogue = ExtResource("19_ogcrj")
+dialogue_title = &"well_done"
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="." instance=ExtResource("21_4x3fg")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(1.333, 1.333)
+position_smoothing_enabled = true
+
+[node name="Cinematic" type="Node2D" parent="."]
+script = ExtResource("22_kuwse")
+dialogue = ExtResource("19_ogcrj")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[connection signal="ended" from="OnTheGround/Talker" to="OnTheGround/CollectibleItem" method="reveal"]
