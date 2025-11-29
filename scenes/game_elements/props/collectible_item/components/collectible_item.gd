@@ -9,6 +9,9 @@ class_name CollectibleItem extends Node2D
 ## Wether the collectible can be seen or collected. This allows the collectible
 ## to be placed in the scene even when some condition has to be met for it to
 ## appear.
+@onready var switchScene = true
+@onready var collected = false
+
 @export var revealed: bool = true:
 	set(new_value):
 		revealed = new_value
@@ -86,21 +89,25 @@ func reveal() -> void:
 ## and when that finishes, a new [InventoryItem] will be added to the
 ## [GameState] and the interaction will have ended.
 func _on_interacted(player: Player, _from_right: bool) -> void:
+	
 	z_index += 1
 	animation_player.play("collected")
 	await animation_player.animation_finished
+	collected = true
 
 	GameState.add_collected_item(item)
 
-	if collected_dialogue:
-		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])
-		await DialogueManager.dialogue_ended
-
+	
+	
 	interact_area.end_interaction()
-	queue_free()
-
-	if next_scene:
-		SceneSwitcher.change_to_file_with_transition(next_scene)
+	
+	if(_checkAllCollectables()):
+		if collected_dialogue:
+			DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])
+			await DialogueManager.dialogue_ended
+		if next_scene:
+			SceneSwitcher.change_to_file_with_transition(next_scene)
+	queue_free()		
 
 
 func _update_based_on_revealed() -> void:
@@ -110,3 +117,11 @@ func _update_based_on_revealed() -> void:
 		sprite_2d.visible = revealed
 	if physical_collider:
 		physical_collider.disabled = not revealed
+				
+
+func _checkAllCollectables()-> bool:
+	for item: CollectibleItem in get_tree().get_nodes_in_group(&"item_collectable"):
+		var isCollected = item.collected
+		if(!isCollected):
+			return false		
+	return true				
