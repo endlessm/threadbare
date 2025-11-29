@@ -2,29 +2,29 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node
 
-@export var zone_nodes: Array[NodePath] = []        # Paths a cada AllHooked (3 elementos)
-@export var timer_node: NodePath                    # Path al Timer
-@export var timer_seconds: int = 180                # 3 minutos por defecto
-@export var timer_label: NodePath = NodePath("")    # Label opcional para el tiempo
+@export var zone_nodes: Array[NodePath] = []        
+@export var timer_node: NodePath                    
+@export var timer_seconds: int = 180                
+@export var timer_label: NodePath = NodePath("")    
 @export var auto_start_on_first_zone: bool = true
 @export var final_collectible: NodePath
 @export var final_dialogue: DialogueResource
 @export var start_on_ready: bool = true
 @export var player_node: NodePath = NodePath("")
 
-# Opcional: si marcas cables con este grupo, los detecta también
+
 @export var cable_group_name: String = "hookable_cable"
 
 signal puzzle_succeeded
 signal puzzle_failed
 
-var _zones_done: Dictionary = {}   # key: Node -> bool
+var _zones_done: Dictionary = {}   
 var _timer: Timer = null
 var _running: bool = false
 
 
 func _ready() -> void:
-	# Conectar zonas AllHooked
+
 	for p in zone_nodes:
 		var n := get_node_or_null(p)
 		if n:
@@ -33,7 +33,7 @@ func _ready() -> void:
 				n.connect("all_hooked", cb)
 			_zones_done[n] = false
 
-	# Timer
+
 	_timer = get_node_or_null(timer_node) as Timer
 	if _timer:
 		_timer.wait_time = timer_seconds
@@ -42,7 +42,7 @@ func _ready() -> void:
 		if not _timer.is_connected("timeout", cbt):
 			_timer.connect("timeout", cbt)
 
-	# Label
+
 	if timer_label != NodePath(""):
 		var lab := get_node_or_null(timer_label) as Label
 		if lab:
@@ -57,7 +57,7 @@ func start_puzzle(_body: Node = null) -> void:
 		return
 	_running = true
 
-	# Resetear zonas terminadas
+
 	for k in _zones_done.keys():
 		_zones_done[k] = false
 
@@ -68,7 +68,7 @@ func start_puzzle(_body: Node = null) -> void:
 
 
 func _on_zone_all_hooked(zone_node: Node) -> void:
-	# called via Callable bound to the zone (the bind passes zone_node)
+
 	if not _running:
 		if auto_start_on_first_zone:
 			start_puzzle()
@@ -77,7 +77,7 @@ func _on_zone_all_hooked(zone_node: Node) -> void:
 
 	_zones_done[zone_node] = true
 
-	# --> ENCENDER cables SOLO de esta zona
+
 	_light_up_cables(zone_node)
 
 	_check_success_condition()
@@ -100,10 +100,10 @@ func _success() -> void:
 		DialogueManager.show_dialogue_balloon(final_dialogue, "", [])
 		await DialogueManager.dialogue_ended
 
-	# Modo cozy
+
 	_set_player_mode_to_cozy()
 
-	# Revelar collectible final
+
 	if final_collectible != NodePath(""):
 		var col := get_node_or_null(final_collectible)
 		if col and col.has_method("reveal"):
@@ -111,7 +111,7 @@ func _success() -> void:
 
 	emit_signal("puzzle_succeeded")
 
-	# UI
+
 	if timer_label != NodePath(""):
 		var lab := get_node_or_null(timer_label) as Label
 		if lab:
@@ -126,7 +126,7 @@ func _on_timer_timeout() -> void:
 
 	_reset_zones_state()
 
-	# Ocultar collectible si existe
+
 	if final_collectible != NodePath(""):
 		var col := get_node_or_null(final_collectible)
 		if col:
@@ -147,19 +147,18 @@ func _reset_zones_state() -> void:
 		if not n:
 			continue
 
-		# apagar cables de esta zona si hay
+
 		_reset_cables(n)
 
 		var areas: Array = []
 
-		# Intentamos obtener la propiedad de forma segura usando get().
-		# Si la propiedad no existe, temp será null y no fallará.
+
 		var temp = null
 		if n and n.has_method("get"):
-			# 'get' devuelve null si la propiedad no existe
+
 			temp = n.get("areas_to_hook")
 		else:
-			# Fallback: intentar igualmente (por seguridad)
+
 			temp = n.get("areas_to_hook")
 
 		if temp is Array:
@@ -167,10 +166,10 @@ func _reset_zones_state() -> void:
 
 		for area in areas:
 			if area and n.has_method("released"):
-				# Llamamos released(area) para resetear el AllHooked
+
 				n.released(area)
 
-		# Reset tracking local siempre (la key 'n' existe porque la inicializamos en _ready)
+
 		_zones_done[n] = false
 
 
@@ -213,25 +212,22 @@ func _zero(n: int) -> String:
 	return str(n) if n >= 10 else "0" + str(n)
 
 
-# -------------------- BUSCA E ILUMINA CABLES --------------------
 
-# Recorre la jerarquía de node y añade nodos candidatos a 'out_array'
 func _collect_cables_recursive(node: Node, out_array: Array) -> void:
 	for child in node.get_children():
-		# prioridad: si tiene método 'turn_on' ya es candidato
+
 		if child.has_method("turn_on"):
 			out_array.append(child)
-		# si está en grupo configurado, también candidato
 		elif cable_group_name != "" and child.is_in_group(cable_group_name):
 			out_array.append(child)
-		# fallback visual: StaticBody2D con Sprite2D hijo
+
 		elif child is StaticBody2D and child.has_node("Sprite2D"):
 			out_array.append(child)
 		# recursión
 		_collect_cables_recursive(child, out_array)
 
 
-# Enciende los cables de la zona pasada (zone_node puede ser el AllHooked o cualquier nodo de zona)
+
 func _light_up_cables(zone_node: Node) -> void:
 	if not zone_node:
 		return
@@ -239,7 +235,7 @@ func _light_up_cables(zone_node: Node) -> void:
 	var cables: Array = []
 	_collect_cables_recursive(zone_node, cables)
 
-	# dedupe (evita llamar dos veces al mismo nodo)
+
 	var seen := {}
 	for c in cables:
 		if not c:
@@ -248,11 +244,11 @@ func _light_up_cables(zone_node: Node) -> void:
 			continue
 		seen[c] = true
 
-		# Preferencia: llamar turn_on() si existe
+
 		if c.has_method("turn_on"):
 			c.turn_on()
 			print("PuzzleManager: encendiendo cable -> ", c.get_path())
-		# si está en grupo o solo es visual fallback, intenta setear modulate en su Sprite2D
+
 		elif c.has_node("Sprite2D"):
 			var spr = c.get_node("Sprite2D") as CanvasItem
 			if spr:
