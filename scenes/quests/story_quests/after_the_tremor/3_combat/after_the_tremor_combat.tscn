@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=4 uid="uid://biol5kpjb22s"]
+[gd_scene load_steps=28 format=4 uid="uid://biol5kpjb22s"]
 
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="1_ine85"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_n5amm"]
@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://chpgq8d41toca" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/scripts/scriptsthreadbare/bosshealth.gd" id="18_fq20r"]
 [ext_resource type="Texture2D" uid="uid://cw8xowg5jjux7" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/Señal.png" id="19_eitnp"]
 [ext_resource type="AudioStream" uid="uid://cbw5v5wpkbff" path="res://scenes/quests/story_quests/after_the_tremor/music/minijuego3.wav" id="20_eitnp"]
+[ext_resource type="Script" uid="uid://d31cxd03praji" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/scripts/MusicFix.gd" id="22_ilkny"]
 [ext_resource type="AudioStream" uid="uid://bnnmm5oppg6nr" path="res://scenes/quests/story_quests/after_the_tremor/music/sounds/defeat.wav" id="23_ilkny"]
 
 [sub_resource type="Resource" id="Resource_ilkny"]
@@ -226,10 +227,12 @@ texture = ExtResource("19_eitnp")
 text = "..."
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("20_eitnp")
 volume_db = 7.33
 autoplay = true
 bus = &"Music"
+script = ExtResource("22_ilkny")
 
 [node name="WinSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("23_ilkny")
