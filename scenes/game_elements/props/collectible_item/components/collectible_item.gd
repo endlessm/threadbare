@@ -100,6 +100,7 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	queue_free()
 
 	if next_scene:
+		GameState.set_challenge_start_scene(next_scene)
 		SceneSwitcher.change_to_file_with_transition(next_scene)
 
 
