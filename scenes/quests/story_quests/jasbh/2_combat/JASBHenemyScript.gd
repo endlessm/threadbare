@@ -283,7 +283,7 @@ func shoot_projectile() -> void:
 	if rank >= rank_level_up && rank_level_up < 80:
 		bullet_count = bullet_count + 2
 		projectile_speed = projectile_speed + 5
-		throwing_period = throwing_period - 0.25
+		throwing_period = throwing_period - 0.5
 		rank_level_up = rank_level_up + 10
 	if bullet_change:
 		bullet_count_copy = bullet_count - 2

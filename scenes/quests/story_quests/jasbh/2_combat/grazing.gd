@@ -10,7 +10,7 @@ func _on_body_entered(body: Node2D) -> void:
 			if enemy.rank < enemy.rank_level_up && enemy.rank_level_up > 10:
 				enemy.bullet_count = enemy.bullet_count - 2
 				enemy.projectile_speed = enemy.projectile_speed - 5
-				enemy.throwing_period = enemy.throwing_period + 0.25
+				enemy.throwing_period = enemy.throwing_period + 0.5
 				enemy.rank_level_up = enemy.rank_level_up - 10
 		grazingParticles.set_emitting(true)
 
