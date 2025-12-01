@@ -12,7 +12,6 @@ func _ready() -> void:
 
 	# Restore lives to maximum when entering Fray's End
 	GameState.reset_lives()
-	print("[LIVES DEBUG] Entered Fray's End. Lives restored to: ", GameState.current_lives)
 
 
 func _update_story_quest_progress_visibility(_new_items: Array[InventoryItem] = []) -> void:
