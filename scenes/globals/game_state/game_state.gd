@@ -80,7 +80,8 @@ func _ready() -> void:
 	if err != OK and err != ERR_FILE_NOT_FOUND:
 		push_error("Failed to load %s: %s" % [GAME_STATE_PATH, err])
 
-	prints("[LIVES DEBUG] GameState initialized with", current_lives, "lives")
+	if DEBUG_LIVES:
+		prints("[LIVES DEBUG] GameState initialized with", current_lives, "lives")
 
 
 ## Set the [member incorporating_threads] flag.
@@ -127,7 +128,10 @@ func set_current_spawn_point(spawn_point: NodePath = ^"") -> void:
 ## when they run out of lives.
 func set_challenge_start_scene(scene_path: String) -> void:
 	_state.set_value(QUEST_SECTION, QUEST_CHALLENGE_START_KEY, scene_path)
-	prints("[LIVES DEBUG] Challenge start set to:", scene_path)
+
+	if DEBUG_LIVES:
+		prints("[LIVES DEBUG] Challenge start set to:", scene_path)
+
 	_save()
 
 
@@ -138,7 +142,11 @@ func get_challenge_start_scene() -> String:
 
 	if challenge_start.is_empty() and current_quest:
 		challenge_start = current_quest.first_scene
-		prints("[LIVES DEBUG] No challenge start set, using quest first scene:", challenge_start)
+
+		if DEBUG_LIVES:
+			prints(
+				"[LIVES DEBUG] No challenge start set, using quest first scene:", challenge_start
+			)
 
 	return challenge_start
 
@@ -240,7 +248,8 @@ func reset_lives() -> void:
 	_state.set_value(GLOBAL_SECTION, LIVES_KEY, current_lives)
 	_save()
 	lives_changed.emit(current_lives)
-	prints("[LIVES DEBUG] Lives reset to:", current_lives)
+	if DEBUG_LIVES:
+		prints("[LIVES DEBUG] Lives reset to:", current_lives)
 
 
 ## Add one life to the player, up to the maximum.
@@ -251,7 +260,8 @@ func add_life() -> void:
 		_state.set_value(GLOBAL_SECTION, LIVES_KEY, current_lives)
 		_save()
 		lives_changed.emit(current_lives)
-		prints("[LIVES DEBUG] Life added. Lives now:", current_lives)
+		if DEBUG_LIVES:
+			prints("[LIVES DEBUG] Life added. Lives now:", current_lives)
 
 
 ## Clear the persisted state.
@@ -259,7 +269,8 @@ func clear() -> void:
 	_state.clear()
 	completed_quests = []
 	current_lives = MAX_LIVES
-	prints("[LIVES DEBUG] State cleared. Lives reset to:", current_lives)
+	if DEBUG_LIVES:
+		prints("[LIVES DEBUG] State cleared. Lives reset to:", current_lives)
 	_save()
 
 
@@ -294,7 +305,8 @@ func restore() -> Dictionary:
 
 	# Restore lives from saved state, default to MAX_LIVES if not found
 	current_lives = _state.get_value(GLOBAL_SECTION, LIVES_KEY, MAX_LIVES)
-	prints("[LIVES DEBUG] State restored. Lives:", current_lives)
+	if DEBUG_LIVES:
+		prints("[LIVES DEBUG] State restored. Lives:", current_lives)
 
 	return {"scene_path": scene_path, "spawn_point": current_spawn_point}
 
