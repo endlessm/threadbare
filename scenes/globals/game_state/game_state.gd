@@ -6,7 +6,7 @@ extends Node
 ## inventory due to it being already there.
 signal item_collected(item: InventoryItem)
 
-## Emitted when a item is consumed, causing it to be removed from the
+## Emitted when an item is consumed, causing it to be removed from the
 ## [member inventory].
 signal item_consumed(item: InventoryItem)
 
@@ -55,6 +55,10 @@ var current_quest: Quest
 var persist_progress: bool
 var _state := ConfigFile.new()
 
+## Internal flag used to delay inventory persistence until the scene changes.
+## This ensures items are not saved the moment they are collected.
+var _pending_inventory_save := false
+
 
 func _ready() -> void:
 	var initial_scene_uid := ResourceLoader.get_resource_uid(
@@ -63,9 +67,11 @@ func _ready() -> void:
 	var main_scene_uid := ResourceLoader.get_resource_uid(
 		ProjectSettings.get_setting("application/run/main_scene")
 	)
+
 	persist_progress = initial_scene_uid == main_scene_uid
 	if not persist_progress:
 		return
+
 	var err := _state.load(GAME_STATE_PATH)
 	if err != OK and err != ERR_FILE_NOT_FOUND:
 		push_error("Failed to load %s: %s" % [GAME_STATE_PATH, err])
@@ -81,7 +87,7 @@ func set_incorporating_threads(new_incorporating_threads: bool) -> void:
 ## Set [member current_quest] and clear the [member inventory].
 func start_quest(quest: Quest) -> void:
 	_do_clear_inventory()
-	_update_inventory_state()
+	_mark_inventory_dirty()  # Deferred saving
 	current_quest = quest
 	_state.set_value(QUEST_SECTION, QUEST_PATH_KEY, quest.resource_path)
 	_do_set_scene(quest.first_scene, ^"")
@@ -92,7 +98,14 @@ func start_quest(quest: Quest) -> void:
 func set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
 	if scene_path in TRANSIENT_SCENES:
 		return
+
 	_do_set_scene(scene_path, spawn_point)
+
+	# If inventory changes were pending, write them now.
+	if _pending_inventory_save:
+		_write_inventory_to_state()
+		_pending_inventory_save = false
+
 	_save()
 
 
@@ -103,14 +116,12 @@ func set_current_spawn_point(spawn_point: NodePath = ^"") -> void:
 	_save()
 
 
-## Returns [code]true[/code] if the player is currently on a quest; i.e. if
-## [member current_quest] is not [code]null[/code].
+## Returns [code]true[/code] if the player is currently on a quest.
 func is_on_quest() -> bool:
 	return current_quest != null
 
 
-## If [member current_quest] is set, record this quest as having been completed,
-## and unset it.
+## If [member current_quest] is set, record this quest as completed and unset it.
 func mark_quest_completed() -> void:
 	if current_quest:
 		var quest_name := current_quest.resource_path
@@ -134,16 +145,16 @@ func _do_set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
 
 
 ## Add the [InventoryItem] to the [member inventory].
+## Inventory persistence is deferred until the next scene change.
 func add_collected_item(item: InventoryItem) -> void:
 	inventory.append(item)
 	item_collected.emit(item)
 	collected_items_changed.emit(items_collected())
-	_update_inventory_state()
-	_save()
+
+	_mark_inventory_dirty()  # Defer writing to disk
 
 
-## If [member current_quest] is set, unset it, without recording the quest as
-## having been completed.
+## If [member current_quest] is set, unset it without marking it as completed.
 func abandon_quest() -> void:
 	set_incorporating_threads(false)
 	_state.erase_section_key(QUEST_SECTION, QUEST_PATH_KEY)
@@ -154,32 +165,39 @@ func abandon_quest() -> void:
 ## Remove all [InventoryItem] from the [member inventory].
 func clear_inventory() -> void:
 	_do_clear_inventory()
-	_update_inventory_state()
-	_save()
+	_mark_inventory_dirty()  # Defer saving
 
 
-## Remove all [InventoryItem] from the [member inventory] without triggering a save.
+## Remove all [InventoryItem] from the inventory without triggering a save.
 func _do_clear_inventory() -> void:
 	for item: InventoryItem in inventory.duplicate():
 		inventory.erase(item)
 		item_consumed.emit(item)
+
 	collected_items_changed.emit(items_collected())
 
 
-## Return all the items collected so far in the [member inventory].
+## Return all items collected so far.
 func items_collected() -> Array[InventoryItem]:
 	return inventory.duplicate()
 
 
-func _update_inventory_state() -> void:
+## Mark that inventory persistence should be delayed.
+func _mark_inventory_dirty() -> void:
+	_pending_inventory_save = true
+
+
+## Write the inventory contents into the state file.
+func _write_inventory_to_state() -> void:
 	var amount: int = clamp(inventory.size(), 0, InventoryItem.ItemType.size())
 	_state.set_value(INVENTORY_SECTION, INVENTORY_ITEMS_AMOUNT_KEY, amount)
 
 
-## Clear the persisted state.
+## Clear all persisted state.
 func clear() -> void:
 	_state.clear()
 	completed_quests = []
+	_pending_inventory_save = false
 	_save()
 
 
@@ -197,6 +215,7 @@ func get_scene_to_restore() -> String:
 func restore() -> Dictionary:
 	var amount_in_state: int = _state.get_value(INVENTORY_SECTION, INVENTORY_ITEMS_AMOUNT_KEY, 0)
 	var amount: int = clamp(amount_in_state, 0, InventoryItem.ItemType.size())
+
 	inventory.clear()
 	for index in range(amount):
 		var item := InventoryItem.with_type(index)
@@ -207,16 +226,16 @@ func restore() -> Dictionary:
 
 	var scene_path: String = _state.get_value(QUEST_SECTION, QUEST_CURRENTSCENE_KEY, "")
 	current_spawn_point = _state.get_value(QUEST_SECTION, QUEST_SPAWNPOINT_KEY, ^"")
-	incorporating_threads = _state.get_value(
-		GLOBAL_SECTION, GLOBAL_INCORPORATING_THREADS_KEY, false
-	)
+	incorporating_threads = _state.get_value(GLOBAL_SECTION, GLOBAL_INCORPORATING_THREADS_KEY, false)
 	completed_quests = _state.get_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, [] as Array[String])
+
 	return {"scene_path": scene_path, "spawn_point": current_spawn_point}
 
 
 func _save() -> void:
 	if not persist_progress:
 		return
+
 	var err := _state.save(GAME_STATE_PATH)
 	if err != OK:
 		push_error("Failed to save settings to %s: %s" % [GAME_STATE_PATH, err])
