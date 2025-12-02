@@ -13,12 +13,13 @@ signal barrel_destroyed(barrel_instance: FragileBarrel)
 var current_health: int
 
 @onready var crack_overlay_node: AnimatedSprite2D = %CrackOverlay
+@onready var crack_sound: AudioStreamPlayer2D = %CrackSound
+@onready var shatter_sound: AudioStreamPlayer2D = %ShatterSound
 
 
 func _ready() -> void:
 	super._ready()
 	current_health = max_health
-
 	crack_overlay_node.visible = false
 	# Redundant stop() and frame reset removed as per code review
 
@@ -41,6 +42,8 @@ func take_damage() -> void:
 	if current_health <= 0:
 		break_barrel()
 	else:
+		if crack_sound:
+			crack_sound.play()
 		update_cracks()
 
 
@@ -60,6 +63,9 @@ func update_cracks() -> void:
 
 func break_barrel() -> void:
 	crack_overlay_node.visible = false
+
+	if shatter_sound:
+		shatter_sound.play()
 
 	# Play destruction animation directly
 	animated_sprite_2d.play("shatter")
