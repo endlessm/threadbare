@@ -21,7 +21,6 @@ func _ready() -> void:
 	super._ready()
 	current_health = max_health
 	crack_overlay_node.visible = false
-	# Redundant stop() and frame reset removed as per code review
 
 
 # Logic called by Projectile when it hits this object
