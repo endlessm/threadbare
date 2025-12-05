@@ -41,8 +41,7 @@ func take_damage() -> void:
 	if current_health <= 0:
 		break_barrel()
 	else:
-		if crack_sound:
-			crack_sound.play()
+		crack_sound.play()
 		update_cracks()
 
 
