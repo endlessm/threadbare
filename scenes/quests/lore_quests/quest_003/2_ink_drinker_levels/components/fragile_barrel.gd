@@ -62,8 +62,7 @@ func update_cracks() -> void:
 func break_barrel() -> void:
 	crack_overlay_node.visible = false
 
-	if shatter_sound:
-		shatter_sound.play()
+	shatter_sound.play()
 
 	# Play destruction animation directly
 	animated_sprite_2d.play("shatter")
