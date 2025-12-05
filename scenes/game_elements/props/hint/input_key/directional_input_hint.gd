@@ -11,30 +11,18 @@ extends TextureRect
 @export var devices: InputHintManager = preload("uid://c1beocky1qjxi")
 
 # Runtime state variables
-var current_device: String = ""
 var is_keyboard_mode: bool = true
 
 
 func _ready() -> void:
-	# Try to connect to device change signals from InputHelper (if available)
-	if Engine.has_singleton("InputHelper"):
-		InputHelper.device_changed.connect(_on_input_device_changed)
-		# Initialize with the current device reported by InputHelper
-		_on_input_device_changed(InputHelper.device, InputHelper.device_index)
-	else:
-		# Fallback to keyboard if InputHelper is not available
-		_on_input_device_changed("keyboard", -1)
+	InputHelper.device_changed.connect(_on_input_device_changed)
+	# Initialize with the current device reported by InputHelper
+	_on_input_device_changed(InputHelper.device, InputHelper.device_index)
 
 
-func _on_input_device_changed(device: String, _device_index: int) -> void:
-	# Update current input device
-	current_device = device
-
+func _on_input_device_changed(_device: String, _device_index: int) -> void:
 	# Determine whether current device is a keyboard
-	if Engine.has_singleton("InputHelper"):
-		is_keyboard_mode = (device == InputHelper.DEVICE_KEYBOARD)
-	else:
-		is_keyboard_mode = device.to_lower() == "keyboard"
+	is_keyboard_mode = (device == InputHelper.DEVICE_KEYBOARD)
 
 	# Refresh the displayed texture based on the device type
 	_update_texture()
@@ -84,11 +72,11 @@ func _physics_process(_delta: float) -> void:
 
 
 func _update_texture() -> void:
-	var tex: Texture2D = devices.get_texture_for(current_device, action_name)
+	var tex: Texture2D = devices.get_texture_for(InputHelper.device, action_name)
 
 	# Fallback: if there is no specific texture, use "move_unpressed"
 	if tex == null and action_name != "move_unpressed":
-		tex = devices.get_texture_for(current_device, "move_unpressed")
+		tex = devices.get_texture_for(InputHelper.device, "move_unpressed")
 
 	if tex:
 		texture = tex
