@@ -8,6 +8,8 @@ extends TextureRect
 # If true, shows controller icons instead of keyboard icons
 @export var is_controller_main_display: bool = true
 
+@export var devices: InputHintManager = preload("uid://c1beocky1qjxi")
+
 # Runtime state variables
 var current_device: String = ""
 var is_keyboard_mode: bool = true
@@ -82,12 +84,11 @@ func _physics_process(_delta: float) -> void:
 
 
 func _update_texture() -> void:
-	# Obtain the texture from the InputGlobal autoload
-	var tex: Texture2D = InputGlobal.get_texture_for(current_device, action_name)
+	var tex: Texture2D = devices.get_texture_for(current_device, action_name)
 
 	# Fallback: if there is no specific texture, use "move_unpressed"
 	if tex == null and action_name != "move_unpressed":
-		tex = InputGlobal.get_texture_for(current_device, "move_unpressed")
+		tex = devices.get_texture_for(current_device, "move_unpressed")
 
 	if tex:
 		texture = tex
