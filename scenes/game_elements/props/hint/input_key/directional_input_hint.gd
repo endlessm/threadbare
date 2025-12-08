@@ -5,13 +5,7 @@ extends TextureRect
 # The input action this icon represents (e.g., "move_up", "move_left", etc.)
 @export var action_name: StringName = ""
 
-# If true, shows controller icons instead of keyboard icons
-@export var is_controller_main_display: bool = true
-
 @export var devices: InputHintManager = preload("uid://c1beocky1qjxi")
-
-# Runtime state variables
-var is_keyboard_mode: bool = true
 
 
 func _ready() -> void:
@@ -21,9 +15,6 @@ func _ready() -> void:
 
 
 func _on_input_device_changed(_device: String, _device_index: int) -> void:
-	# Determine whether current device is a keyboard
-	is_keyboard_mode = (device == InputHelper.DEVICE_KEYBOARD)
-
 	# Refresh the displayed texture based on the device type
 	_update_texture()
 
