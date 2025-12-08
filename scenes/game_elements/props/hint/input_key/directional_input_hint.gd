@@ -2,10 +2,13 @@
 # SPDX-License-Identifier: MPL-2.0
 extends TextureRect
 
-# The input action this icon represents (e.g., "move_up", "move_left", etc.)
-@export var action_name: StringName = ""
-
 @export var devices: InputHintManager = preload("uid://c1beocky1qjxi")
+
+var _unpressed: Texture2D
+var _up: Texture2D
+var _down: Texture2D
+var _left: Texture2D
+var _right: Texture2D
 
 
 func _ready() -> void:
@@ -16,61 +19,23 @@ func _ready() -> void:
 
 func _on_input_device_changed(_device: String, _device_index: int) -> void:
 	# Refresh the displayed texture based on the device type
-	_update_texture()
+	_unpressed = devices.get_texture_for(InputHelper.device, "move_unpressed")
+	_up = devices.get_texture_for(InputHelper.device, "move_up")
+	_down = devices.get_texture_for(InputHelper.device, "move_down")
+	_left = devices.get_texture_for(InputHelper.device, "move_left")
+	_right = devices.get_texture_for(InputHelper.device, "move_right")
 
 
-func _physics_process(_delta: float) -> void:
-	# Check which movement direction (if any) is currently pressed
-	var pressed_dir := ""
+func _process(_delta: float) -> void:
+	# Show the texture corresponding to the currently-pressed movement direction
 	if Input.is_action_pressed("move_up"):
-		pressed_dir = "move_up"
+		texture = _up
 	elif Input.is_action_pressed("move_down"):
-		pressed_dir = "move_down"
+		texture = _down
 	elif Input.is_action_pressed("move_left"):
-		pressed_dir = "move_left"
+		texture = _left
 	elif Input.is_action_pressed("move_right"):
-		pressed_dir = "move_right"
-
-	# If nothing is pressed -> show the idle hint (move_unpressed)
-	if pressed_dir == "":
-		# If this node is the idle node, ensure it's visible and has its texture
-		if String(action_name) == "move_unpressed":
-			_update_texture()
-			if texture:
-				visible = true
-			else:
-				visible = false
-		else:
-			# Not the idle node: hide
-			visible = false
+		texture = _right
 	else:
-		# There is a direction pressed: only the corresponding node should be visible
-		if pressed_dir == action_name:
-			_update_texture()
-			if texture:
-				visible = true
-			else:
-				visible = false
-		else:
-			visible = false
-
-	# Visual feedback when the actual action (e.g., move_up) is pressed
-	if action_name != "move_unpressed" and Input.is_action_pressed(action_name):
-		# subtle pressed look
-		modulate = Color(0.994, 0.99, 0.992, 1.0)
-	else:
-		modulate = Color.WHITE
-
-
-func _update_texture() -> void:
-	var tex: Texture2D = devices.get_texture_for(InputHelper.device, action_name)
-
-	# Fallback: if there is no specific texture, use "move_unpressed"
-	if tex == null and action_name != "move_unpressed":
-		tex = devices.get_texture_for(InputHelper.device, "move_unpressed")
-
-	if tex:
-		texture = tex
-		visible = true
-	else:
-		visible = false
+		# If no direction is pressed, show the unpressed
+		texture = _unpressed
