@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=4 uid="uid://cwiqq2nr32eol"]
+[gd_scene load_steps=47 format=4 uid="uid://cwiqq2nr32eol"]
 
 [ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="2_llsdj"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_llsdj"]
@@ -18,16 +18,19 @@
 [ext_resource type="Texture2D" uid="uid://dgoycpqxoxek8" path="res://scenes/quests/story_quests/laberinto_del_fauno/1_stealth/stealth_components/SceneComponent/LLave_Fotograma1-1.png.png" id="17_e34iv"]
 [ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="17_us7ii"]
 [ext_resource type="AudioStream" uid="uid://bhgpds38q0j4r" path="res://assets/third_party/sounds/collectibles/MemoryCollectable.ogg" id="18_4m40j"]
-[ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="18_e34iv"]
 [ext_resource type="Resource" uid="uid://dsxo1k4jh8ntc" path="res://scenes/quests/story_quests/laberinto_del_fauno/1_stealth/stealth_components/laberinto_del_fauno_JefeSapo.dialogue" id="19_4kpwn"]
 [ext_resource type="AudioStream" uid="uid://38xwdjm46478" path="res://assets/third_party/sounds/collectibles/CollectibleAppear.ogg" id="19_ynca5"]
+[ext_resource type="Script" uid="uid://bk5ri1yoakaqp" path="res://scenes/game_elements/props/checkpoint/components/checkpoint.gd" id="20_tkua4"]
+[ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="22_x7446"]
+[ext_resource type="SpriteFrames" uid="uid://dmg1egdoye3ns" path="res://scenes/game_elements/props/checkpoint/components/knitwitch_frames_purple.tres" id="23_yfc30"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="24_261jc"]
 
-[sub_resource type="Gradient" id="Gradient_211l4"]
+[sub_resource type="Gradient" id="Gradient_tkua4"]
 offsets = PackedFloat32Array(0, 0.6861538)
 colors = PackedColorArray(0.8545453, 0.8545453, 0.8545453, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_6aote"]
-gradient = SubResource("Gradient_211l4")
+gradient = SubResource("Gradient_tkua4")
 width = 100
 height = 100
 use_hdr = true
@@ -38,12 +41,12 @@ fill_from = Vector2(0.5, 0.5)
 blend_mode = 1
 light_mode = 2
 
-[sub_resource type="Gradient" id="Gradient_sm7ks"]
+[sub_resource type="Gradient" id="Gradient_x7446"]
 offsets = PackedFloat32Array(0, 0.7476923)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_lvqn8"]
-gradient = SubResource("Gradient_sm7ks")
+gradient = SubResource("Gradient_x7446")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
@@ -368,6 +371,9 @@ _data = {
 radius = 9.0
 height = 28.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_dmqmp"]
+radius = 241.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_us7ii"]
 size = Vector2(406, 418)
 
@@ -620,7 +626,7 @@ metadata/_edit_lock_ = true
 
 [node name="Player" parent="." instance=ExtResource("3_llsdj")]
 z_index = 1
-position = Vector2(1160, 2872)
+position = Vector2(83, 467)
 script = ExtResource("4_lvqn8")
 player_name = "Ofelia"
 sprite_frames = ExtResource("5_14vou")
@@ -728,7 +734,7 @@ player = NodePath("../../../Player")
 [node name="Checkpoint" type="Node2D" parent="."]
 
 [node name="Zona1" type="Marker2D" parent="Checkpoint"]
-position = Vector2(133, 458)
+position = Vector2(107, 447)
 
 [node name="Zona2" type="Marker2D" parent="Checkpoint"]
 position = Vector2(1821, 1721)
@@ -759,7 +765,7 @@ visible = false
 position = Vector2(1482, 2710)
 script = SubResource("GDScript_14vou")
 texture = ExtResource("17_e34iv")
-next_scene = "uid://bg3p1vg1bbnvp"
+next_scene = "uid://bqhll1hv5k2td"
 item = SubResource("Resource_e34iv")
 collected_dialogue = ExtResource("16_4kpwn")
 
@@ -799,18 +805,41 @@ rotation = 1.5708
 shape = SubResource("CapsuleShape2D_hhgm5")
 debug_color = Color(0.976711, 0, 0.409753, 0.42)
 
-[node name="Checkpoint2" parent="GranJefe" instance=ExtResource("18_e34iv")]
+[node name="Checkpoint2" type="Area2D" parent="GranJefe"]
 position = Vector2(1701, 2778)
+collision_layer = 0
+script = ExtResource("20_tkua4")
 dialogue = ExtResource("19_4kpwn")
 
-[node name="Sprite" parent="GranJefe/Checkpoint2" index="1"]
-visible = false
+[node name="SpawnPoint" type="Marker2D" parent="GranJefe/Checkpoint2" groups=["spawn_point"]]
+unique_name_in_owner = true
+script = ExtResource("22_x7446")
 
-[node name="InteractArea" parent="GranJefe/Checkpoint2" index="2"]
+[node name="Sprite" type="AnimatedSprite2D" parent="GranJefe/Checkpoint2"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -40)
+sprite_frames = ExtResource("23_yfc30")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="InteractArea" parent="GranJefe/Checkpoint2" instance=ExtResource("17_us7ii")]
+unique_name_in_owner = true
+collision_layer = 0
+interact_label_position = Vector2(0, -128)
+disabled = true
 action = "Jefe Sapo"
 
-[node name="CollisionShape" parent="GranJefe/Checkpoint2/InteractArea" index="0"]
+[node name="CollisionShape" type="CollisionShape2D" parent="GranJefe/Checkpoint2/InteractArea"]
 position = Vector2(6, 43)
+shape = SubResource("CircleShape2D_dmqmp")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="GranJefe/Checkpoint2" node_paths=PackedStringArray("interact_area")]
+unique_name_in_owner = true
+script = ExtResource("24_261jc")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GranJefe/Checkpoint2"]
 position = Vector2(6, 54)
@@ -822,12 +851,12 @@ libraries = {
 &"": SubResource("AnimationLibrary_vo4gh")
 }
 
-[connection signal="body_entered" from="Zone/Zone1" to="Zone" method="Zone1Attack"]
 [connection signal="body_entered" from="Zone/Zone1" to="Zone" method="Zone_entered"]
+[connection signal="body_entered" from="Zone/Zone1" to="Zone" method="Zone1Attack"]
 [connection signal="body_exited" from="Zone/Zone1" to="Zone" method="Zone_exited"]
 [connection signal="body_exited" from="Zone/Zone1" to="Zone" method="Zone1Stopt"]
-[connection signal="body_entered" from="Zone/Zone2" to="Zone" method="Zone2Attack"]
 [connection signal="body_entered" from="Zone/Zone2" to="Zone" method="Zone_entered"]
+[connection signal="body_entered" from="Zone/Zone2" to="Zone" method="Zone2Attack"]
 [connection signal="body_exited" from="Zone/Zone2" to="Zone" method="Zone_exited"]
 [connection signal="body_exited" from="Zone/Zone2" to="Zone" method="Zone2Stopt"]
 [connection signal="body_entered" from="Checkpoint/Area2D" to="Zone" method="_on_area_2d_body_entered"]
@@ -835,4 +864,3 @@ libraries = {
 [connection signal="animation_finished" from="AnimationPlayer" to="GranJefe" method="_on_animation_player_animation_finished"]
 
 [editable path="Player"]
-[editable path="GranJefe/Checkpoint2"]

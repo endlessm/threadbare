@@ -5,12 +5,15 @@ var life: int= 3
 const LERP_SPEED: float = 0.15
 const ESCALA_NORMAL: float = 6.5
 const ESCALA_CORRER: float = 3.5
-@onready var pos: Vector2 = $"../Checkpoint/Zona1".global_position
+var pos: Vector2 
 @onready var light_texture: Light2D = $Light/Light
 
 var knockback:Vector2 = Vector2.ZERO
 var knockback_timer: float = 0.0
-
+func _ready() -> void:
+	if  $"../Checkpoint/Zona1" != null:
+		pos = $"../Checkpoint/Zona1".global_position
+		
 func _process(delta: float) -> void:
 	super._process(delta)
 	if knockback_timer > 0.0:
