@@ -13,17 +13,6 @@
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="10_mu0y5"]
 [ext_resource type="Resource" uid="uid://cxul6njatouxq" path="res://scenes/quests/story_quests/laberinto_del_fauno/4_outro/outro_components/laberinto_del_fauno_outro.dialogue" id="12_qujkm"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_6jjxd"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("6_qujkm")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
 [sub_resource type="Animation" id="Animation_gyhjf"]
 length = 0.001
 tracks/0/type = "value"
@@ -150,6 +139,17 @@ _data = {
 &"walk_off_scene": SubResource("Animation_jx4g6")
 }
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_6jjxd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_qujkm")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [sub_resource type="Shader" id="Shader_prmcf"]
 code = "shader_type canvas_item;
 
@@ -183,6 +183,19 @@ shader_parameter/noise_speed = 12.0
 shader_parameter/distortion_amount = 0.015
 
 [node name="ClosingTransition" type="Node2D"]
+
+[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
+script = ExtResource("10_mu0y5")
+dialogue = ExtResource("12_qujkm")
+animation_player = NodePath("AnimationPlayer")
+next_scene = "uid://cufkthb25mpxy"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Cinematic"]
+root_node = NodePath("")
+libraries = {
+&"": SubResource("AnimationLibrary_gyhjf")
+}
 
 [node name="BackgroundMusic" parent="." instance=ExtResource("1_a33ia")]
 stream = ExtResource("2_qujkm")
@@ -381,17 +394,6 @@ scale = Vector2(0.2, 0.2)
 sprite_frames = ExtResource("3_16txt")
 animation = &"idle"
 autoplay = "idle"
-
-[node name="ClosingTransitionCinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
-script = ExtResource("10_mu0y5")
-dialogue = ExtResource("12_qujkm")
-animation_player = NodePath("AnimationPlayer")
-next_scene = "uid://cufkthb25mpxy"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="ClosingTransitionCinematic"]
-libraries = {
-&"": SubResource("AnimationLibrary_gyhjf")
-}
 
 [node name="Cambio de Vista" type="CanvasLayer" parent="."]
 layer = 0
