@@ -17,7 +17,7 @@ const SHEETS := [
 ]
 
 # Whether to import new assets, or just refresh existing ones
-const IMPORT_NEW := false
+const IMPORT_NEW := true
 
 
 func import(spritesheet_xml_file: String) -> void:
