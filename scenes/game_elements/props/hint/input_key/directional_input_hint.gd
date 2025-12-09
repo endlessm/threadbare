@@ -2,95 +2,65 @@
 # SPDX-License-Identifier: MPL-2.0
 extends TextureRect
 
-# The input action this icon represents (e.g., "move_up", "move_left", etc.)
-@export var action_name: StringName = ""
+@export var action_prefix := &"move":
+	set = _set_action_prefix
 
-# If true, shows controller icons instead of keyboard icons
-@export var is_controller_main_display: bool = true
+@export var devices: InputHintManager = preload("uid://c1beocky1qjxi")
 
-# Runtime state variables
-var current_device: String = ""
-var is_keyboard_mode: bool = true
+var _unpressed_action: StringName
+var _up_action: StringName
+var _down_action: StringName
+var _left_action: StringName
+var _right_action: StringName
+
+var _unpressed: Texture2D
+var _up: Texture2D
+var _down: Texture2D
+var _left: Texture2D
+var _right: Texture2D
 
 
 func _ready() -> void:
-	# Try to connect to device change signals from InputHelper (if available)
-	if Engine.has_singleton("InputHelper"):
-		InputHelper.device_changed.connect(_on_input_device_changed)
-		# Initialize with the current device reported by InputHelper
-		_on_input_device_changed(InputHelper.device, InputHelper.device_index)
+	action_prefix = action_prefix
+
+	InputHelper.device_changed.connect(_on_input_device_changed)
+
+
+func _on_input_device_changed(_device: String, _device_index: int) -> void:
+	_refresh_textures()
+
+
+func _set_action_prefix(new_prefix: StringName) -> void:
+	action_prefix = new_prefix
+	_unpressed_action = action_prefix + "_unpressed"
+	_up_action = action_prefix + "_up"
+	_down_action = action_prefix + "_down"
+	_left_action = action_prefix + "_left"
+	_right_action = action_prefix + "_right"
+
+	if not is_node_ready():
+		return
+
+	_refresh_textures()
+
+
+func _refresh_textures() -> void:
+	var textures := devices.device_map[InputHelper.device]
+	_unpressed = textures.get_direction(action_prefix, &"unpressed")
+	_up = textures.get_direction(action_prefix, &"up")
+	_down = textures.get_direction(action_prefix, &"down")
+	_left = textures.get_direction(action_prefix, &"left")
+	_right = textures.get_direction(action_prefix, &"right")
+
+
+func _process(_delta: float) -> void:
+	if Input.is_action_pressed(_up_action):
+		texture = _up
+	elif Input.is_action_pressed(_down_action):
+		texture = _down
+	elif Input.is_action_pressed(_left_action):
+		texture = _left
+	elif Input.is_action_pressed(_right_action):
+		texture = _right
 	else:
-		# Fallback to keyboard if InputHelper is not available
-		_on_input_device_changed("keyboard", -1)
-
-
-func _on_input_device_changed(device: String, _device_index: int) -> void:
-	# Update current input device
-	current_device = device
-
-	# Determine whether current device is a keyboard
-	if Engine.has_singleton("InputHelper"):
-		is_keyboard_mode = (device == InputHelper.DEVICE_KEYBOARD)
-	else:
-		is_keyboard_mode = device.to_lower() == "keyboard"
-
-	# Refresh the displayed texture based on the device type
-	_update_texture()
-
-
-func _physics_process(_delta: float) -> void:
-	# Check which movement direction (if any) is currently pressed
-	var pressed_dir := ""
-	if Input.is_action_pressed("move_up"):
-		pressed_dir = "move_up"
-	elif Input.is_action_pressed("move_down"):
-		pressed_dir = "move_down"
-	elif Input.is_action_pressed("move_left"):
-		pressed_dir = "move_left"
-	elif Input.is_action_pressed("move_right"):
-		pressed_dir = "move_right"
-
-	# If nothing is pressed -> show the idle hint (move_unpressed)
-	if pressed_dir == "":
-		# If this node is the idle node, ensure it's visible and has its texture
-		if String(action_name) == "move_unpressed":
-			_update_texture()
-			if texture:
-				visible = true
-			else:
-				visible = false
-		else:
-			# Not the idle node: hide
-			visible = false
-	else:
-		# There is a direction pressed: only the corresponding node should be visible
-		if pressed_dir == action_name:
-			_update_texture()
-			if texture:
-				visible = true
-			else:
-				visible = false
-		else:
-			visible = false
-
-	# Visual feedback when the actual action (e.g., move_up) is pressed
-	if action_name != "move_unpressed" and Input.is_action_pressed(action_name):
-		# subtle pressed look
-		modulate = Color(0.994, 0.99, 0.992, 1.0)
-	else:
-		modulate = Color.WHITE
-
-
-func _update_texture() -> void:
-	# Obtain the texture from the InputGlobal autoload
-	var tex: Texture2D = InputGlobal.get_texture_for(current_device, action_name)
-
-	# Fallback: if there is no specific texture, use "move_unpressed"
-	if tex == null and action_name != "move_unpressed":
-		tex = InputGlobal.get_texture_for(current_device, "move_unpressed")
-
-	if tex:
-		texture = tex
-		visible = true
-	else:
-		visible = false
+		texture = _unpressed

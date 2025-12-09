@@ -2,28 +2,23 @@
 # SPDX-License-Identifier: MPL-2.0
 class_name JoypadButtonTextures
 extends Resource
+## Holds the textures for different actions on a particular type of joypad (or keyboard).
 
-# Exported textures for each action. Set these in the editor for each platform resource.
-@export var move_unpressed: Texture2D
-@export var move_up: Texture2D
-@export var move_down: Texture2D
-@export var move_left: Texture2D
-@export var move_right: Texture2D
+## Textures for the [code]move_*[/code] actions
+@export var move: DirectionalInputTextures
+
+## Textures for the [code]aim_*[/code] actions
+@export var aim: DirectionalInputTextures
 
 
-# Add more actions here as your project requires.
-func get_texture_for_action(action_name: String) -> Texture2D:
-	# Match the action name and return the associated exported texture.
-	match action_name:
-		"move_unpressed":
-			return move_unpressed
-		"move_up":
-			return move_up
-		"move_down":
-			return move_down
-		"move_left":
-			return move_left
-		"move_right":
-			return move_right
-		_:
-			return move_unpressed
+## Returns the texture for a directional action. For instance, to get the
+## correct texture for the [code]aim_left[/code] action, use:
+## [codeblock]get_direction(&"aim", &"left")[/codeblock]
+## For the texture when no direction is pressed for that action, pass
+## [code]&"unpressed"[/code] for [param direction].
+func get_direction(prefix: StringName, direction: StringName) -> Texture2D:
+	var textures: DirectionalInputTextures = get(prefix)
+	var texture: Texture2D
+	if textures:
+		texture = textures.get(direction)
+	return texture
