@@ -1,0 +1,191 @@
+[gd_scene load_steps=11 format=4 uid="uid://rgy4lqdylwyj"]
+
+[ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="3_16rk4"]
+[ext_resource type="Material" uid="uid://b7kf0suo0sc7k" path="res://scenes/game_elements/components/cel_shading_recolor_material.tres" id="5_sygj5"]
+[ext_resource type="Texture2D" uid="uid://8x2wkfw4cgnf" path="res://scenes/game_elements/characters/npcs/components/skin_tones_test.png" id="6_sygj5"]
+[ext_resource type="Script" uid="uid://c0a7xf5qx8p4y" path="res://scenes/game_elements/components/cel_shading_recolor.gd" id="7_jhyvc"]
+[ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_elements/props/decoration/random_frame_animated_sprite.gd" id="7_sygj5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_84243"]
+atlas = ExtResource("6_sygj5")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8j4t"]
+atlas = ExtResource("6_sygj5")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lxulk"]
+atlas = ExtResource("6_sygj5")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mvu25"]
+atlas = ExtResource("6_sygj5")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5p6wf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_84243")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_84243")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_84243")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_84243")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_84243")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8j4t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lxulk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lxulk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lxulk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mvu25")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[node name="SkinTonesTest" type="Node2D"]
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+
+[node name="TileMapLayerGrass" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAAAP7/AQABAAEAAAAAAP//AQABAAEAAAAAAAAAAQABAAEAAAAAAAEAAQABAAEAAAAAAAIAAQABAAEAAAAAAAMAAQABAAEAAAAAAAQAAQABAAEAAAAAAAUAAQABAAEAAAAAAAYAAQABAAEAAAAAAAcAAQABAAEAAAAAAAgAAQABAAEAAAAAAAkAAQABAAIAAAABAP7/AQABAAEAAAABAP//AQABAAEAAAABAAAAAQABAAEAAAABAAEAAQABAAEAAAABAAIAAQABAAEAAAABAAMAAQABAAEAAAABAAQAAQABAAEAAAABAAUAAQABAAEAAAABAAYAAQABAAEAAAABAAcAAQABAAEAAAABAAgAAQABAAEAAAABAAkAAQABAAIAAAACAP7/AQABAAEAAAACAP//AQABAAEAAAACAAAAAQABAAEAAAACAAEAAQABAAEAAAACAAIAAQABAAEAAAACAAMAAQABAAEAAAACAAQAAQABAAEAAAACAAUAAQABAAEAAAACAAYAAQABAAEAAAACAAcAAQABAAEAAAACAAgAAQABAAEAAAACAAkAAQABAAIAAAADAP7/AQABAAEAAAADAP//AQABAAEAAAADAAAAAQABAAEAAAADAAEAAQABAAEAAAADAAIAAQABAAEAAAADAAMAAQABAAEAAAADAAQAAQABAAEAAAADAAUAAQABAAEAAAADAAYAAQABAAEAAAADAAcAAQABAAEAAAADAAgAAQABAAEAAAADAAkAAQABAAIAAAAEAP7/AQABAAEAAAAEAP//AQABAAEAAAAEAAAAAQABAAEAAAAEAAEAAQABAAEAAAAEAAIAAQABAAEAAAAEAAMAAQABAAEAAAAEAAQAAQABAAEAAAAEAAUAAQABAAEAAAAEAAYAAQABAAEAAAAEAAcAAQABAAEAAAAEAAgAAQABAAEAAAAEAAkAAQABAAIAAAAFAP7/AQABAAEAAAAFAP//AQABAAEAAAAFAAAAAQABAAEAAAAFAAEAAQABAAEAAAAFAAIAAQABAAEAAAAFAAMAAQABAAEAAAAFAAQAAQABAAEAAAAFAAUAAQABAAEAAAAFAAYAAQABAAEAAAAFAAcAAQABAAEAAAAFAAgAAQABAAEAAAAFAAkAAQABAAIAAAAGAP7/AQABAAEAAAAGAP//AQABAAEAAAAGAAAAAQABAAEAAAAGAAEAAQABAAEAAAAGAAIAAQABAAEAAAAGAAMAAQABAAEAAAAGAAQAAQABAAEAAAAGAAUAAQABAAEAAAAGAAYAAQABAAEAAAAGAAcAAQABAAEAAAAGAAgAAQABAAEAAAAGAAkAAQABAAIAAAAHAP7/AQABAAEAAAAHAP//AQABAAEAAAAHAAAAAQABAAEAAAAHAAEAAQABAAEAAAAHAAIAAQABAAEAAAAHAAMAAQABAAEAAAAHAAQAAQABAAEAAAAHAAUAAQABAAEAAAAHAAYAAQABAAEAAAAHAAcAAQABAAEAAAAHAAgAAQABAAEAAAAHAAkAAQABAAIAAAAIAP7/AQABAAEAAAAIAP//AQABAAEAAAAIAAAAAQABAAEAAAAIAAEAAQABAAEAAAAIAAIAAQABAAEAAAAIAAMAAQABAAEAAAAIAAQAAQABAAEAAAAIAAUAAQABAAEAAAAIAAYAAQABAAEAAAAIAAcAAQABAAEAAAAIAAgAAQABAAEAAAAIAAkAAQABAAIAAAAJAP7/AQABAAEAAAAJAP//AQABAAEAAAAJAAAAAQABAAEAAAAJAAEAAQABAAEAAAAJAAIAAQABAAEAAAAJAAMAAQABAAEAAAAJAAQAAQABAAEAAAAJAAUAAQABAAEAAAAJAAYAAQABAAEAAAAJAAcAAQABAAEAAAAJAAgAAQABAAEAAAAJAAkAAQABAAIAAAAKAP7/AQABAAEAAAAKAP//AQABAAEAAAAKAAAAAQABAAEAAAAKAAEAAQABAAEAAAAKAAIAAQABAAEAAAAKAAMAAQABAAEAAAAKAAQAAQABAAEAAAAKAAUAAQABAAEAAAAKAAYAAQABAAEAAAAKAAcAAQABAAEAAAAKAAgAAQABAAEAAAAKAAkAAQABAAIAAAALAP7/AQABAAEAAAALAP//AQABAAEAAAALAAAAAQABAAEAAAALAAEAAQABAAEAAAALAAIAAQABAAEAAAALAAMAAQABAAEAAAALAAQAAQABAAEAAAALAAUAAQABAAEAAAALAAYAAQABAAEAAAALAAcAAQABAAEAAAALAAgAAQABAAEAAAALAAkAAQABAAIAAAAMAP7/AQABAAEAAAAMAP//AQABAAEAAAAMAAAAAQABAAEAAAAMAAEAAQABAAEAAAAMAAIAAQABAAEAAAAMAAMAAQABAAEAAAAMAAQAAQABAAEAAAAMAAUAAQABAAEAAAAMAAYAAQABAAEAAAAMAAcAAQABAAEAAAAMAAgAAQABAAEAAAAMAAkAAQABAAIAAAANAP7/AQABAAEAAAANAP//AQABAAEAAAANAAAAAQABAAEAAAANAAEAAQABAAEAAAANAAIAAQABAAEAAAANAAMAAQABAAEAAAANAAQAAQABAAEAAAANAAUAAQABAAEAAAANAAYAAQABAAEAAAANAAcAAQABAAEAAAANAAgAAQABAAEAAAANAAkAAQABAAIAAAAOAP7/AQABAAEAAAAOAP//AQABAAEAAAAOAAAAAQABAAEAAAAOAAEAAQABAAEAAAAOAAIAAQABAAEAAAAOAAMAAQABAAEAAAAOAAQAAQABAAEAAAAOAAUAAQABAAEAAAAOAAYAAQABAAEAAAAOAAcAAQABAAEAAAAOAAgAAQABAAEAAAAOAAkAAQABAAIAAAAPAP7/AQABAAEAAAAPAP//AQABAAEAAAAPAAAAAQABAAEAAAAPAAEAAQABAAEAAAAPAAIAAQABAAEAAAAPAAMAAQABAAEAAAAPAAQAAQABAAEAAAAPAAUAAQABAAEAAAAPAAYAAQABAAEAAAAPAAcAAQABAAEAAAAPAAgAAQABAAEAAAAPAAkAAQABAAIAAAAQAP7/AQACAAEAAAAQAP//AQACAAEAAAAQAAAAAQACAAEAAAAQAAEAAQACAAEAAAAQAAIAAQACAAEAAAAQAAMAAQACAAEAAAAQAAQAAQACAAEAAAAQAAUAAQACAAEAAAAQAAYAAQACAAEAAAAQAAcAAQACAAEAAAAQAAgAAQACAAEAAAAQAAkAAQACAAIAAAD5//r/AQAAAAAAAAD5//v/AQAAAAEAAAD5//z/AQAAAAEAAAD5//3/AQAAAAEAAAD5//7/AQAAAAEAAAD5////AQAAAAEAAAD5/wAAAQAAAAEAAAD5/wEAAQAAAAEAAAD5/wIAAQAAAAEAAAD5/wMAAQAAAAEAAAD5/wQAAQAAAAEAAAD5/wUAAQAAAAEAAAD5/wYAAQAAAAEAAAD5/wcAAQAAAAEAAAD5/wgAAQAAAAEAAAD5/wkAAQAAAAIAAAD6//r/AQABAAAAAAD6//v/AQABAAEAAAD6//z/AQABAAEAAAD6//3/AQABAAEAAAD6//7/AQABAAEAAAD6////AQABAAEAAAD6/wAAAQABAAEAAAD6/wEAAQABAAEAAAD6/wIAAQABAAEAAAD6/wMAAQABAAEAAAD6/wQAAQABAAEAAAD6/wUAAQABAAEAAAD6/wYAAQABAAEAAAD6/wcAAQABAAEAAAD6/wgAAQABAAEAAAD6/wkAAQABAAIAAAD7//r/AQABAAAAAAD7//v/AQABAAEAAAD7//z/AQABAAEAAAD7//3/AQABAAEAAAD7//7/AQABAAEAAAD7////AQABAAEAAAD7/wAAAQABAAEAAAD7/wEAAQABAAEAAAD7/wIAAQABAAEAAAD7/wMAAQABAAEAAAD7/wQAAQABAAEAAAD7/wUAAQABAAEAAAD7/wYAAQABAAEAAAD7/wcAAQABAAEAAAD7/wgAAQABAAEAAAD7/wkAAQABAAIAAAD8//r/AQABAAAAAAD8//v/AQABAAEAAAD8//z/AQABAAEAAAD8//3/AQABAAEAAAD8//7/AQABAAEAAAD8////AQABAAEAAAD8/wAAAQABAAEAAAD8/wEAAQABAAEAAAD8/wIAAQABAAEAAAD8/wMAAQABAAEAAAD8/wQAAQABAAEAAAD8/wUAAQABAAEAAAD8/wYAAQABAAEAAAD8/wcAAQABAAEAAAD8/wgAAQABAAEAAAD8/wkAAQABAAIAAAD9//r/AQABAAAAAAD9//v/AQABAAEAAAD9//z/AQABAAEAAAD9//3/AQABAAEAAAD9//7/AQABAAEAAAD9////AQABAAEAAAD9/wAAAQABAAEAAAD9/wEAAQABAAEAAAD9/wIAAQABAAEAAAD9/wMAAQABAAEAAAD9/wQAAQABAAEAAAD9/wUAAQABAAEAAAD9/wYAAQABAAEAAAD9/wcAAQABAAEAAAD9/wgAAQABAAEAAAD9/wkAAQABAAIAAAD+//r/AQABAAAAAAD+//v/AQABAAEAAAD+//z/AQABAAEAAAD+//3/AQABAAEAAAD+//7/AQABAAEAAAD+////AQABAAEAAAD+/wAAAQABAAEAAAD+/wEAAQABAAEAAAD+/wIAAQABAAEAAAD+/wMAAQABAAEAAAD+/wQAAQABAAEAAAD+/wUAAQABAAEAAAD+/wYAAQABAAEAAAD+/wcAAQABAAEAAAD+/wgAAQABAAEAAAD+/wkAAQABAAIAAAD///r/AQABAAAAAAD///v/AQABAAEAAAD///z/AQABAAEAAAD///3/AQABAAEAAAD///7/AQABAAEAAAD/////AQABAAEAAAD//wAAAQABAAEAAAD//wEAAQABAAEAAAD//wIAAQABAAEAAAD//wMAAQABAAEAAAD//wQAAQABAAEAAAD//wUAAQABAAEAAAD//wYAAQABAAEAAAD//wcAAQABAAEAAAD//wgAAQABAAEAAAD//wkAAQABAAIAAAAAAPr/AQABAAAAAAAAAPv/AQABAAEAAAAAAPz/AQABAAEAAAAAAP3/AQABAAEAAAABAPr/AQABAAAAAAABAPv/AQABAAEAAAABAPz/AQABAAEAAAABAP3/AQABAAEAAAACAPr/AQABAAAAAAACAPv/AQABAAEAAAACAPz/AQABAAEAAAACAP3/AQABAAEAAAADAPr/AQABAAAAAAADAPv/AQABAAEAAAADAPz/AQABAAEAAAADAP3/AQABAAEAAAAEAPr/AQABAAAAAAAEAPv/AQABAAEAAAAEAPz/AQABAAEAAAAEAP3/AQABAAEAAAAFAPr/AQABAAAAAAAFAPv/AQABAAEAAAAFAPz/AQABAAEAAAAFAP3/AQABAAEAAAAGAPr/AQABAAAAAAAGAPv/AQABAAEAAAAGAPz/AQABAAEAAAAGAP3/AQABAAEAAAAHAPr/AQABAAAAAAAHAPv/AQABAAEAAAAHAPz/AQABAAEAAAAHAP3/AQABAAEAAAAIAPr/AQABAAAAAAAIAPv/AQABAAEAAAAIAPz/AQABAAEAAAAIAP3/AQABAAEAAAAJAPr/AQABAAAAAAAJAPv/AQABAAEAAAAJAPz/AQABAAEAAAAJAP3/AQABAAEAAAAKAPr/AQABAAAAAAAKAPv/AQABAAEAAAAKAPz/AQABAAEAAAAKAP3/AQABAAEAAAALAPr/AQABAAAAAAALAPv/AQABAAEAAAALAPz/AQABAAEAAAALAP3/AQABAAEAAAAMAPr/AQABAAAAAAAMAPv/AQABAAEAAAAMAPz/AQABAAEAAAAMAP3/AQABAAEAAAANAPr/AQABAAAAAAANAPv/AQABAAEAAAANAPz/AQABAAEAAAANAP3/AQABAAEAAAAOAPr/AQABAAAAAAAOAPv/AQABAAEAAAAOAPz/AQABAAEAAAAOAP3/AQABAAEAAAAPAPr/AQABAAAAAAAPAPv/AQABAAEAAAAPAPz/AQABAAEAAAAPAP3/AQABAAEAAAAQAPr/AQACAAAAAAAQAPv/AQACAAEAAAAQAPz/AQACAAEAAAAQAP3/AQACAAEAAAA=")
+tile_set = ExtResource("3_16rk4")
+
+[node name="TileMapLayerSand" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAADAAIAAQAFAAAAAAADAAMAAQAFAAIAAAAEAAIAAQAGAAAAAAAEAAMAAQAGAAIAAAAFAAIAAQAGAAAAAAAFAAMAAQAGAAIAAAAGAAIAAQAHAAAAAAAGAAMAAQAHAAIAAAA=")
+tile_set = ExtResource("3_16rk4")
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround"]
+editor_description = "This node has a material with a shader applied.
+
+The shader allows to remap 3 key colors, which are shades of green, to any color."
+material = ExtResource("5_sygj5")
+instance_shader_parameters/shade_high_new = Color(0.91999996, 0.91999996, 0.2, 1)
+instance_shader_parameters/shade_low_new = Color(0.71999997, 0.71999997, 0, 1)
+instance_shader_parameters/shade_medium_new = Color(0.9, 0.9, 0, 1)
+position = Vector2(311, 205)
+sprite_frames = SubResource("SpriteFrames_5p6wf")
+animation = &"idle"
+autoplay = "idle"
+frame = 1
+script = ExtResource("7_sygj5")
+
+[node name="CelShadingRecolor" type="Node" parent="OnTheGround/AnimatedSprite2D" node_paths=PackedStringArray("node_to_recolor")]
+editor_description = "This behavior node adds a bit of logic to the shader:
+
+It can derive the high and low colors automatically.
+
+And it knows a list of skin colors. It provides a button to pick a skin color randomly."
+script = ExtResource("7_jhyvc")
+node_to_recolor = NodePath("..")
+high_color = Color(0.91999996, 0.91999996, 0.2, 1)
+low_color = Color(0.71999997, 0.71999997, 0, 1)
+metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="OnTheGround"]
+material = ExtResource("5_sygj5")
+instance_shader_parameters/shade_high_new = Color(0.9056, 0.7616, 0.7928, 1)
+instance_shader_parameters/shade_low_new = Color(0.7056, 0.5616, 0.5928, 1)
+instance_shader_parameters/shade_medium_new = Color(0.882, 0.702, 0.741, 1)
+position = Vector2(318, 137)
+sprite_frames = SubResource("SpriteFrames_5p6wf")
+animation = &"idle"
+autoplay = "idle"
+frame = 7
+script = ExtResource("7_sygj5")
+
+[node name="CelShadingRecolor" type="Node" parent="OnTheGround/AnimatedSprite2D2" node_paths=PackedStringArray("node_to_recolor")]
+script = ExtResource("7_jhyvc")
+node_to_recolor = NodePath("..")
+medium_color = Color(0.882, 0.702, 0.741, 1)
+high_color = Color(0.9056, 0.7616, 0.7928, 1)
+low_color = Color(0.7056, 0.5616, 0.5928, 1)
+metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
+
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="OnTheGround"]
+material = ExtResource("5_sygj5")
+instance_shader_parameters/shade_high_new = Color(0.7488, 0.64239997, 0.49839997, 1)
+instance_shader_parameters/shade_low_new = Color(0.5488, 0.44239998, 0.2984, 1)
+instance_shader_parameters/shade_medium_new = Color(0.686, 0.553, 0.373, 1)
+position = Vector2(371, 147)
+sprite_frames = SubResource("SpriteFrames_5p6wf")
+animation = &"idle"
+autoplay = "idle"
+frame = 8
+flip_h = true
+script = ExtResource("7_sygj5")
+
+[node name="CelShadingRecolor" type="Node" parent="OnTheGround/AnimatedSprite2D3" node_paths=PackedStringArray("node_to_recolor")]
+script = ExtResource("7_jhyvc")
+node_to_recolor = NodePath("..")
+medium_color = Color(0.686, 0.553, 0.373, 1)
+high_color = Color(0.7488, 0.64239997, 0.49839997, 1)
+low_color = Color(0.5488, 0.44239998, 0.2984, 1)
+metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
+
+[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="OnTheGround"]
+material = ExtResource("5_sygj5")
+instance_shader_parameters/shade_high_new = Color(0.8776, 0.72080004, 0.6112, 1)
+instance_shader_parameters/shade_low_new = Color(0.6776, 0.52080005, 0.41120002, 1)
+instance_shader_parameters/shade_medium_new = Color(0.847, 0.651, 0.514, 1)
+position = Vector2(390, 176)
+sprite_frames = SubResource("SpriteFrames_5p6wf")
+animation = &"idle"
+autoplay = "idle"
+frame = 3
+flip_h = true
+script = ExtResource("7_sygj5")
+
+[node name="CelShadingRecolor" type="Node" parent="OnTheGround/AnimatedSprite2D4" node_paths=PackedStringArray("node_to_recolor")]
+script = ExtResource("7_jhyvc")
+node_to_recolor = NodePath("..")
+medium_color = Color(0.847, 0.651, 0.514, 1)
+high_color = Color(0.8776, 0.72080004, 0.6112, 1)
+low_color = Color(0.6776, 0.52080005, 0.41120002, 1)
+metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
+
+[node name="AnimatedSprite2D5" type="AnimatedSprite2D" parent="."]
+material = ExtResource("5_sygj5")
+instance_shader_parameters/shade_high_new = Color(0.5104, 0.3408, 0.4256, 1)
+instance_shader_parameters/shade_low_new = Color(0.3104, 0.1408, 0.2256, 1)
+instance_shader_parameters/shade_medium_new = Color(0.388, 0.176, 0.282, 1)
+position = Vector2(268, 149)
+sprite_frames = SubResource("SpriteFrames_5p6wf")
+animation = &"idle"
+autoplay = "idle"
+frame = 4
+script = ExtResource("7_sygj5")
+
+[node name="CelShadingRecolor" type="Node" parent="AnimatedSprite2D5" node_paths=PackedStringArray("node_to_recolor")]
+script = ExtResource("7_jhyvc")
+node_to_recolor = NodePath("..")
+medium_color = Color(0.388, 0.176, 0.282, 1)
+high_color = Color(0.5104, 0.3408, 0.4256, 1)
+low_color = Color(0.3104, 0.1408, 0.2256, 1)
+metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(2, 2)
