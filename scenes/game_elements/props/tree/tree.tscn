@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b0b2y72gvp50f" path="res://scenes/game_elements/props/tree/components/tree.gd" id="1_7ot8u"]
 [ext_resource type="Material" uid="uid://bmwe2wu7hxepf" path="res://scenes/game_elements/props/tree/components/wind_affected_material.tres" id="2_f0x1c"]
 [ext_resource type="SpriteFrames" uid="uid://d36eq8tqdaxdy" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_green.tres" id="3_f0x1c"]
-[ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_elements/props/decoration/random_frame_animated_sprite.gd" id="4_ym1v0"]
+[ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_logic/sprite_behaviors/random_frame_sprite_behavior.gd" id="4_ym1v0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d888c"]
 radius = 16.0312
@@ -17,7 +17,12 @@ material = ExtResource("2_f0x1c")
 position = Vector2(0, -79.7941)
 sprite_frames = ExtResource("3_f0x1c")
 autoplay = "default"
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" node_paths=PackedStringArray("sprite")]
+position = Vector2(0, 79.7941)
 script = ExtResource("4_ym1v0")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 16
