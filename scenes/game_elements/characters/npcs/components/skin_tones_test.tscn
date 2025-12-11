@@ -4,7 +4,7 @@
 [ext_resource type="Material" uid="uid://b7kf0suo0sc7k" path="res://scenes/game_elements/components/cel_shading_recolor_material.tres" id="5_sygj5"]
 [ext_resource type="Texture2D" uid="uid://8x2wkfw4cgnf" path="res://scenes/game_elements/characters/npcs/components/skin_tones_test.png" id="6_sygj5"]
 [ext_resource type="Script" uid="uid://c0a7xf5qx8p4y" path="res://scenes/game_elements/components/cel_shading_recolor.gd" id="7_jhyvc"]
-[ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_elements/props/decoration/random_frame_animated_sprite.gd" id="7_sygj5"]
+[ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_logic/sprite_behaviors/random_frame_sprite_behavior.gd" id="7_sygj5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_84243"]
 atlas = ExtResource("6_sygj5")
@@ -88,7 +88,6 @@ sprite_frames = SubResource("SpriteFrames_5p6wf")
 animation = &"idle"
 autoplay = "idle"
 frame = 1
-script = ExtResource("7_sygj5")
 
 [node name="CelShadingRecolor" type="Node" parent="OnTheGround/AnimatedSprite2D" node_paths=PackedStringArray("node_to_recolor")]
 editor_description = "This behavior node adds a bit of logic to the shader:
@@ -102,6 +101,12 @@ high_color = Color(0.91999996, 0.91999996, 0.2, 1)
 low_color = Color(0.71999997, 0.71999997, 0, 1)
 metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
 
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/AnimatedSprite2D" node_paths=PackedStringArray("sprite")]
+position = Vector2(-311, -205)
+script = ExtResource("7_sygj5")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="OnTheGround"]
 material = ExtResource("5_sygj5")
 instance_shader_parameters/shade_high_new = Color(0.9056, 0.7616, 0.7928, 1)
@@ -111,8 +116,7 @@ position = Vector2(318, 137)
 sprite_frames = SubResource("SpriteFrames_5p6wf")
 animation = &"idle"
 autoplay = "idle"
-frame = 7
-script = ExtResource("7_sygj5")
+frame = 3
 
 [node name="CelShadingRecolor" type="Node" parent="OnTheGround/AnimatedSprite2D2" node_paths=PackedStringArray("node_to_recolor")]
 script = ExtResource("7_jhyvc")
@@ -121,6 +125,12 @@ medium_color = Color(0.882, 0.702, 0.741, 1)
 high_color = Color(0.9056, 0.7616, 0.7928, 1)
 low_color = Color(0.7056, 0.5616, 0.5928, 1)
 metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/AnimatedSprite2D2" node_paths=PackedStringArray("sprite")]
+position = Vector2(-318, -137)
+script = ExtResource("7_sygj5")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
 
 [node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="OnTheGround"]
 material = ExtResource("5_sygj5")
@@ -133,7 +143,6 @@ animation = &"idle"
 autoplay = "idle"
 frame = 8
 flip_h = true
-script = ExtResource("7_sygj5")
 
 [node name="CelShadingRecolor" type="Node" parent="OnTheGround/AnimatedSprite2D3" node_paths=PackedStringArray("node_to_recolor")]
 script = ExtResource("7_jhyvc")
@@ -142,6 +151,12 @@ medium_color = Color(0.686, 0.553, 0.373, 1)
 high_color = Color(0.7488, 0.64239997, 0.49839997, 1)
 low_color = Color(0.5488, 0.44239998, 0.2984, 1)
 metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/AnimatedSprite2D3" node_paths=PackedStringArray("sprite")]
+position = Vector2(-318, -137)
+script = ExtResource("7_sygj5")
+sprite = NodePath("../../AnimatedSprite2D2")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
 
 [node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="OnTheGround"]
 material = ExtResource("5_sygj5")
@@ -154,7 +169,6 @@ animation = &"idle"
 autoplay = "idle"
 frame = 3
 flip_h = true
-script = ExtResource("7_sygj5")
 
 [node name="CelShadingRecolor" type="Node" parent="OnTheGround/AnimatedSprite2D4" node_paths=PackedStringArray("node_to_recolor")]
 script = ExtResource("7_jhyvc")
@@ -163,6 +177,12 @@ medium_color = Color(0.847, 0.651, 0.514, 1)
 high_color = Color(0.8776, 0.72080004, 0.6112, 1)
 low_color = Color(0.6776, 0.52080005, 0.41120002, 1)
 metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/AnimatedSprite2D4" node_paths=PackedStringArray("sprite")]
+position = Vector2(-318, -137)
+script = ExtResource("7_sygj5")
+sprite = NodePath("../../AnimatedSprite2D2")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
 
 [node name="AnimatedSprite2D5" type="AnimatedSprite2D" parent="."]
 material = ExtResource("5_sygj5")
@@ -174,7 +194,6 @@ sprite_frames = SubResource("SpriteFrames_5p6wf")
 animation = &"idle"
 autoplay = "idle"
 frame = 4
-script = ExtResource("7_sygj5")
 
 [node name="CelShadingRecolor" type="Node" parent="AnimatedSprite2D5" node_paths=PackedStringArray("node_to_recolor")]
 script = ExtResource("7_jhyvc")
@@ -183,6 +202,12 @@ medium_color = Color(0.388, 0.176, 0.282, 1)
 high_color = Color(0.5104, 0.3408, 0.4256, 1)
 low_color = Color(0.3104, 0.1408, 0.2256, 1)
 metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="AnimatedSprite2D5" node_paths=PackedStringArray("sprite")]
+position = Vector2(-318, -137)
+script = ExtResource("7_sygj5")
+sprite = NodePath("../../OnTheGround/AnimatedSprite2D2")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
