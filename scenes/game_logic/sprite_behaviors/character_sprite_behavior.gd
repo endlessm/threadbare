@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 @tool
 class_name CharacterSpriteBehavior
-extends Node2D
+extends BaseSpriteBehavior
 ## @experimental
 ##
 ## Flip horizontally and/or play animations in [member sprite] according
@@ -19,33 +19,13 @@ extends Node2D
 ## Use this when using more advanced animation through an AnimationPlayer node.
 @export var play_animations: bool = true
 
-## The controlled sprite.
-## [br][br]
-## [b]Note:[/b] If the parent node is a AnimatedSprite2D and this isn't set,
-## the parent node will be automatically assigned to this variable.
-@export var sprite: AnimatedSprite2D:
-	set = _set_sprite
-
 var _is_character_running: bool = false
 
 
 func _enter_tree() -> void:
-	if not sprite and get_parent() is AnimatedSprite2D:
-		sprite = get_parent()
+	super._enter_tree()
 	if not character and get_parent() and get_parent().get_parent() is CharacterBody2D:
 		character = get_parent().get_parent()
-
-
-func _set_sprite(new_sprite: AnimatedSprite2D) -> void:
-	sprite = new_sprite
-	update_configuration_warnings()
-
-
-func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray
-	if sprite is not AnimatedSprite2D:
-		warnings.append("Sprite must be set.")
-	return warnings
 
 
 func _ready() -> void:
