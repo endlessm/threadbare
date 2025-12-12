@@ -73,17 +73,6 @@ func _ready() -> void:
 	_set_alert_sound_stream(alert_sound_stream)
 	_initial_position = global_position
 
-	if not detection_area.body_entered.is_connected(_on_detection_area_body_entered):
-		detection_area.body_entered.connect(_on_detection_area_body_entered)
-	if not detection_area.body_exited.is_connected(_on_detection_area_body_exited):
-		detection_area.body_exited.connect(_on_detection_area_body_exited)
-	if not behavior_timer.timeout.is_connected(_on_BehaviorTimer_timeout):
-		behavior_timer.timeout.connect(_on_BehaviorTimer_timeout)
-	if not attack_radius.body_entered.is_connected(_on_attack_radius_body_entered):
-		attack_radius.body_entered.connect(_on_attack_radius_body_entered)
-	if not animated_sprite.animation_finished.is_connected(_on_animated_sprite_animation_finished):
-		animated_sprite.animation_finished.connect(_on_animated_sprite_animation_finished)
-
 	state = State.IDLE
 
 
