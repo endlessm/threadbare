@@ -54,7 +54,7 @@ var _previous_non_detecting_state: State = State.IDLE
 
 @onready var detection_area: Area2D = $Area2D
 @onready var awareness_bar: TextureProgressBar = $PlayerAwareness
-@onready var erratic_walk_behavior: Node = %ErraticWalkBehavior
+@onready var erratic_walk_behavior: ErraticWalkBehavior = %ErraticWalkBehavior
 @onready var behavior_timer: Timer = %BehaviorTimer
 @onready var debug_label: Label = %DebugInfo
 @onready var attack_radius: Area2D = $AttackRadius
@@ -121,7 +121,7 @@ func _physics_process(delta: float) -> void:
 func _process_movement(delta: float) -> void:
 	var walk_speed: float = 0.0
 	if erratic_walk_behavior.get("speeds"):
-		walk_speed = (erratic_walk_behavior as ErraticWalkBehavior).speeds.walk_speed
+		walk_speed = erratic_walk_behavior.speeds.walk_speed
 
 	match state:
 		State.IDLE:
@@ -131,10 +131,8 @@ func _process_movement(delta: float) -> void:
 
 		State.WANDERING:
 			erratic_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
-			(erratic_walk_behavior as ErraticWalkBehavior)._physics_process(delta)
-			velocity = velocity.lerp(
-				(erratic_walk_behavior as ErraticWalkBehavior).direction * walk_speed, 0.1
-			)
+			erratic_walk_behavior._physics_process(delta)
+			velocity = velocity.lerp(erratic_walk_behavior.direction * walk_speed, 0.1)
 			_reached_max_speed = false
 
 		State.RETURNING:
@@ -254,7 +252,7 @@ func _set_state(new_state: State) -> void:
 
 		State.WANDERING:
 			behavior_timer.start(wandering_duration)
-			(erratic_walk_behavior as ErraticWalkBehavior)._update_direction()
+			erratic_walk_behavior._update_direction()
 			_reached_max_speed = false
 			_can_burst = false
 
@@ -395,7 +393,7 @@ func _update_debug_info() -> void:
 
 	elif state == State.WANDERING or state == State.RETURNING:
 		if erratic_walk_behavior.get("speeds"):
-			target_speed = (erratic_walk_behavior as ErraticWalkBehavior).speeds.walk_speed
+			target_speed = erratic_walk_behavior.speeds.walk_speed
 			speed_label = "walk"
 		debug_text += "current speed: %d\n" % current_speed
 		debug_text += "target speed: %d (%s)" % [target_speed, speed_label]
