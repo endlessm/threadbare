@@ -52,16 +52,15 @@ var _current_chase_speed: float = 0.0
 var _can_burst: bool = false
 var _previous_non_detecting_state: State = State.IDLE
 
-@onready var detection_area: Area2D = $Area2D
-@onready var awareness_bar: TextureProgressBar = $PlayerAwareness
+@onready var detection_area: Area2D = %DetectionArea
+@onready var awareness_bar: TextureProgressBar = %PlayerAwareness
 @onready var erratic_walk_behavior: ErraticWalkBehavior = %ErraticWalkBehavior
 @onready var behavior_timer: Timer = %BehaviorTimer
 @onready var debug_label: Label = %DebugInfo
-@onready var attack_radius: Area2D = $AttackRadius
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready
-var char_sprite_behavior: CharacterSpriteBehavior = $AnimatedSprite2D/CharacterSpriteBehavior
-@onready var _alert_sound: AudioStreamPlayer = $Sounds/AlertSound
+@onready var attack_radius: Area2D = %AttackRadius
+@onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
+@onready var char_sprite_behavior: CharacterSpriteBehavior = %CharacterSpriteBehavior
+@onready var _alert_sound: AudioStreamPlayer = %AlertSound
 
 
 func _ready() -> void:

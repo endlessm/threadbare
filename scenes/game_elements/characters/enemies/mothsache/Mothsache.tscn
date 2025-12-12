@@ -43,9 +43,10 @@ rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_0607a")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
 position = Vector2(0, -37)
 sprite_frames = ExtResource("1_tm0nn")
-animation = &"idle"
+animation = &"attack_anticipation"
 
 [node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" node_paths=PackedStringArray("character", "sprite")]
 unique_name_in_owner = true
@@ -110,9 +111,10 @@ scale = Vector2(1.075, 1.075)
 shape = SubResource("CircleShape2D_e2qj4")
 debug_color = Color(1.540184e-06, 0.5658079, 0.8595374, 0.41960785)
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="DetectionArea" type="Area2D" parent="."]
+unique_name_in_owner = true
 
-[node name="DetectionRadius" type="CollisionShape2D" parent="Area2D"]
+[node name="DetectionRadius" type="CollisionShape2D" parent="DetectionArea"]
 unique_name_in_owner = true
 position = Vector2(0, -48)
 scale = Vector2(4.5, 4.5)
@@ -151,5 +153,5 @@ bus = &"SFX"
 
 [connection signal="timeout" from="BehaviorTimer" to="." method="_on_BehaviorTimer_timeout"]
 [connection signal="body_entered" from="AttackRadius" to="." method="_on_attack_radius_body_entered"]
-[connection signal="body_entered" from="Area2D" to="." method="_on_detection_area_body_entered"]
-[connection signal="body_exited" from="Area2D" to="." method="_on_detection_area_body_exited"]
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
