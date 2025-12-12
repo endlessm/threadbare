@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dy8ohrl7j24qy"]
+[gd_scene load_steps=14 format=3 uid="uid://dy8ohrl7j24qy"]
 
 [ext_resource type="Script" uid="uid://dg7jodlol6iao" path="res://scenes/game_elements/characters/enemies/mothsache/mothsache.gd" id="1_f7683"]
 [ext_resource type="SpriteFrames" uid="uid://b0nyiuolbvnl0" path="res://scenes/game_elements/characters/enemies/mothsache/components/mothsache_frames.tres" id="1_tm0nn"]
@@ -29,13 +29,6 @@ shadow_color = Color(0, 0, 0, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e2qj4"]
 radius = 48.0
-
-[sub_resource type="GDScript" id="GDScript_8q7cb"]
-script/source = "extends Area2D
-
-func _on_body_entered(body: Node2D) -> void:
-		body.queue_free()
-"
 
 [node name="Mothsache" type="CharacterBody2D"]
 collision_layer = 2
@@ -118,7 +111,6 @@ shape = SubResource("CircleShape2D_e2qj4")
 debug_color = Color(1.540184e-06, 0.5658079, 0.8595374, 0.41960785)
 
 [node name="Area2D" type="Area2D" parent="."]
-script = SubResource("GDScript_8q7cb")
 
 [node name="DetectionRadius" type="CollisionShape2D" parent="Area2D"]
 unique_name_in_owner = true
