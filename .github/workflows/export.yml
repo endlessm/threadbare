@@ -95,6 +95,16 @@ jobs:
           # templates here instead of in ~/.local/share/godot/
           touch ._sc_
 
+      - name: Restore Godot import cache
+        uses: actions/cache/restore@v4
+        if: ${{ github.event_name != 'release' }}
+        with:
+          path: |
+            .godot
+          key: ${{ runner.os }}-dotgodot-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-dotgodot
+
       - name: Export web release
         run: |
           mkdir -v -p build/web && cd build
@@ -122,6 +132,13 @@ jobs:
         with:
           name: pck
           path: build/${{ env.PCK_NAME }}.pck
+
+      - name: Save Godot import cache
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            .godot
+          key: ${{ runner.os }}-dotgodot-${{ github.sha }}
 
   flatpak:
     name: Build Flatpak
