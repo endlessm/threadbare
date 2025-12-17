@@ -80,6 +80,7 @@ func reveal() -> void:
 	revealed = true
 	appear_sound.play()
 	animation_player.play("reveal")
+	await animation_player.animation_finished
 
 
 ## When interacted with, the collectible will display a brief animation
