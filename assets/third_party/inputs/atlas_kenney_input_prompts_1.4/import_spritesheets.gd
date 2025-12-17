@@ -1,5 +1,5 @@
 # Copyright 2024 iseesharp83
-# Copyright 2025 Endless Access LLC
+# Copyright 2025 The Threadbare Authors
 # SPDX-License-Identifier: MIT
 #
 # Derived from
