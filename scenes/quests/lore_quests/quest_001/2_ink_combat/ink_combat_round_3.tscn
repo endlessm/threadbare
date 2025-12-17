@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="2_je2ou"]
 [ext_resource type="AudioStream" uid="uid://dkgtyb0x1i0m2" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/combat_music.tres" id="2_t7m4v"]
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="3_4iw8v"]
+[ext_resource type="Script" uid="uid://c2lx7gvkonxaa" path="res://scenes/game_elements/props/background_music/components/clip_switcher.gd" id="3_7kldn"]
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="4_fgs83"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="4_t7m4v"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="5_1nd14"]
@@ -54,6 +55,11 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="BackgroundMusic" parent="." unique_id=1639553787 instance=ExtResource("2_je2ou")]
 stream = ExtResource("2_t7m4v")
+
+[node name="ClipSwitcher" type="Node" parent="BackgroundMusic" unique_id=1792251959]
+script = ExtResource("3_7kldn")
+clip = &"cozy"
+metadata/_custom_type_script = "uid://c2lx7gvkonxaa"
 
 [node name="FillGameLogic" type="Node" parent="." unique_id=884862045]
 script = ExtResource("3_4iw8v")
@@ -179,5 +185,5 @@ limit_bottom = 704
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[connection signal="goal_reached" from="FillGameLogic" to="BackgroundMusic" method="switch_to_clip" binds= [&"cozy"]]
+[connection signal="goal_reached" from="FillGameLogic" to="BackgroundMusic/ClipSwitcher" method="switch"]
 [connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]
