@@ -51,19 +51,6 @@ func _process(delta: float) -> void:
 	scroll_container.scroll_vertical = int(_current_scroll_pos)
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if not visible:
-		return
-
-	if (
-		event.is_action_pressed("ui_up")
-		or event.is_action_pressed("ui_down")
-		or event.is_action_pressed("move_up")
-		or event.is_action_pressed("move_down")
-	):
-		get_viewport().set_input_as_handled()
-
-
 func _input(event: InputEvent) -> void:
 	if not visible:
 		return
