@@ -52,9 +52,6 @@ func _process(delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not visible:
-		return
-
 	if event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
 		_on_back_button_pressed()
@@ -85,6 +82,7 @@ func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
 
 
 func _on_visibility_changed() -> void:
+	set_process_input(visible)
 	if visible:
 		back_button.grab_focus()
 		start_credits_sequence()
