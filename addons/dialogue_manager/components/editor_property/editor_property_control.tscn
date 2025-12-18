@@ -1,42 +1,47 @@
-[gd_scene load_steps=4 format=3 uid="uid://ycn6uaj7dsrh"]
+[gd_scene format=3 uid="uid://ycn6uaj7dsrh"]
 
 [ext_resource type="Script" uid="uid://dooe2pflnqtve" path="res://addons/dialogue_manager/components/editor_property/editor_property_control.gd" id="1_het12"]
 [ext_resource type="PackedScene" uid="uid://b16uuqjuof3n5" path="res://addons/dialogue_manager/components/editor_property/resource_button.tscn" id="2_hh3d4"]
 [ext_resource type="PackedScene" uid="uid://dnufpcdrreva3" path="res://addons/dialogue_manager/components/files_list.tscn" id="3_l8fp6"]
 
-[node name="PropertyEditorButton" type="HBoxContainer"]
+[sub_resource type="DPITexture" id="DPITexture_w0gko"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
+"
+
+[node name="PropertyEditorButton" type="HBoxContainer" unique_id=2019397648]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 script = ExtResource("1_het12")
 
-[node name="ResourceButton" parent="." instance=ExtResource("2_hh3d4")]
+[node name="ResourceButton" parent="." unique_id=1970715732 instance=ExtResource("2_hh3d4")]
 layout_mode = 2
 text = "<empty>"
 text_overrun_behavior = 3
 clip_text = true
 
-[node name="MenuButton" type="Button" parent="."]
+[node name="MenuButton" type="Button" parent="." unique_id=943022871]
 layout_mode = 2
+icon = SubResource("DPITexture_w0gko")
 
-[node name="Menu" type="PopupMenu" parent="."]
+[node name="Menu" type="PopupMenu" parent="." unique_id=192892899]
 
-[node name="QuickOpenDialog" type="ConfirmationDialog" parent="."]
+[node name="QuickOpenDialog" type="ConfirmationDialog" parent="." unique_id=389752738]
 title = "Find Dialogue Resource"
 size = Vector2i(400, 600)
 min_size = Vector2i(400, 600)
 ok_button_text = "Open"
 
-[node name="FilesList" parent="QuickOpenDialog" instance=ExtResource("3_l8fp6")]
+[node name="FilesList" parent="QuickOpenDialog" unique_id=1062719228 instance=ExtResource("3_l8fp6")]
 
-[node name="NewDialog" type="FileDialog" parent="."]
+[node name="NewDialog" type="FileDialog" parent="." unique_id=240833586]
 size = Vector2i(900, 750)
 min_size = Vector2i(900, 750)
 dialog_hide_on_ok = true
 filters = PackedStringArray("*.dialogue ; Dialogue")
 
-[node name="OpenDialog" type="FileDialog" parent="."]
+[node name="OpenDialog" type="FileDialog" parent="." unique_id=1031460832]
 title = "Open a File"
 size = Vector2i(900, 750)
 min_size = Vector2i(900, 750)
