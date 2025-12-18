@@ -20,7 +20,7 @@ func _ready() -> void:
 
 	continue_button.visible = GameState.can_restore()
 	if GameState.can_restore():
-		start_button.text = "Restart"
+		start_button.text = tr("Restart")
 
 	# Wait for fade-in transition to finish before grabbing focus, so that the
 	# start button does not appear interactive while input is blocked.
