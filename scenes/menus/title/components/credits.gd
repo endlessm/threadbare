@@ -13,6 +13,7 @@ var _start_delay: float = 1.0
 ## Background animation name.
 var _animation_name: String = "sketches"
 
+var _input_axis: float
 var _is_auto_scrolling: bool = false
 var _current_scroll_pos: float = 0.0
 
@@ -36,17 +37,12 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	var input_axis: float = Input.get_axis("move_up", "move_down")
-	if is_zero_approx(input_axis):
-		input_axis = Input.get_axis("ui_up", "ui_down")
-
-	if not is_zero_approx(input_axis):
-		_is_auto_scrolling = false
-		_current_scroll_pos += input_axis * _manual_scroll_speed * delta
-		_current_scroll_pos = clampf(_current_scroll_pos, 0.0, scroll_content.size.y)
-	elif _is_auto_scrolling:
-		_current_scroll_pos += _auto_scroll_speed * delta
-		_current_scroll_pos = clampf(_current_scroll_pos, 0.0, scroll_content.size.y)
+	var new_scroll_pos: float = 0
+	if _is_auto_scrolling:
+		new_scroll_pos = _current_scroll_pos + _auto_scroll_speed * delta
+	else:
+		new_scroll_pos = _current_scroll_pos + _input_axis * _manual_scroll_speed * delta
+	_current_scroll_pos = clampf(new_scroll_pos, 0.0, scroll_content.size.y)
 
 	scroll_container.scroll_vertical = int(_current_scroll_pos)
 
@@ -61,6 +57,14 @@ func _input(event: InputEvent) -> void:
 		if event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 			_is_auto_scrolling = false
 			_current_scroll_pos = scroll_container.scroll_vertical
+			return
+
+	_input_axis = Input.get_axis("move_up", "move_down")
+	if is_zero_approx(_input_axis):
+		_input_axis = Input.get_axis("ui_up", "ui_down")
+
+	if _is_auto_scrolling and not is_zero_approx(_input_axis):
+		_is_auto_scrolling = false
 
 
 func start_credits_sequence() -> void:
