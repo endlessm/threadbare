@@ -91,18 +91,22 @@ func _set_mode(new_mode: Mode) -> void:
 			_toggle_player_behavior(player_interaction, true)
 			_toggle_player_behavior(player_fighting, false)
 			_toggle_player_behavior(player_hook, false)
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		Mode.FIGHTING:
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_fighting, true)
 			_toggle_player_behavior(player_hook, false)
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		Mode.HOOKING:
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_fighting, false)
 			_toggle_player_behavior(player_hook, true)
+			Input.set_default_cursor_shape(Input.CURSOR_CROSS)
 		Mode.DEFEATED:
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_fighting, false)
 			_toggle_player_behavior(player_hook, false)
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 	if mode != previous_mode:
 		mode_changed.emit(mode)
 
