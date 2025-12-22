@@ -148,7 +148,9 @@ func consume(coord: Vector2i, immediate: bool = false) -> void:
 			node.modulate.a = 0.0
 	else:
 		var tween := create_tween().set_parallel(true)
-		for node: Node2D in nodes:
+		for node: Node2D in nodes.filter(
+			func(node: Node2D) -> bool: return is_instance_valid(node)
+		):
 			tween.tween_property(node, "modulate:a", 0.0, _DURATION).set_ease(Tween.EASE_OUT)
 		await tween.finished
 
