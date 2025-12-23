@@ -99,7 +99,14 @@ func _enter_tree() -> void:
 
 func _set_character(new_character: CharacterBody2D) -> void:
 	character = new_character
+	if character is Player:
+		(character as Player).mode_changed.connect(_on_player_mode_changed)
 	update_configuration_warnings()
+
+
+func _on_player_mode_changed(mode: Player.Mode) -> void:
+	if mode == Player.Mode.DEFEATED:
+		shatter_string()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -176,9 +183,6 @@ func hit_air(air_point: Vector2) -> void:
 
 ## Remove the [member hook_string].
 func remove_string() -> void:
-	if pulling:
-		return
-
 	if hook_string:
 		hook_string.queue_free()
 
