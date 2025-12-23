@@ -56,6 +56,10 @@ signal string_thrown
 ## Repeatable texture to dress the line. It should wrap horizontally.
 @export var hook_string_texture: Texture2D = preload("uid://q3c2qavtccvu")
 
+## Scene containing a particle effect to display along the line,
+## when the string is removed.
+@export var hook_string_fx: PackedScene = preload("uid://boh6na4fuj0mv")
+
 ## All the areas that have been hooked and through which anchor points
 ## the [member hook_string] passes.
 ## [br][br]
@@ -199,6 +203,30 @@ func remove_string() -> void:
 	hook_ending.global_position = global_position
 
 
+## Return points distributed evenly along the string
+func tessellate_string(tolerance_length: int = 20) -> PackedVector2Array:
+	var curve: Curve2D = Curve2D.new()
+	for p in hook_string.points:
+		curve.add_point(p)
+	return curve.tessellate_even_length(5, tolerance_length)
+
+
+## Remove the string adding a shatter FX to it.
+func shatter_string() -> void:
+	var points: PackedVector2Array = tessellate_string(30)
+	# It is a bit odd to emit particles in several points.
+	# Ideally the particle system should provide a line shape emission.
+	# The closest is to use "Points" as emission shape, and provide a texture.
+	# But that seems more complex than tessellating the line.
+	for p in points:
+		var fx: GPUParticles2D = hook_string_fx.instantiate()
+		add_sibling(fx)
+		fx.global_position = p
+		fx.emitting = true
+		fx.finished.connect(fx.queue_free)
+	remove_string()
+
+
 ## Start pulling.
 ## [br][br]
 ## While pulling, the player is allowed to go through non-walkable floor.
@@ -280,9 +308,10 @@ func _process_hook_string(delta: float) -> void:
 			remove_string()
 
 	if not pulling:
+		# Remove the string (shatter it) when the line exceeds the max length.
 		var v: Vector2 = hook_string.points[-1] - hook_string.points[-2]
 		if v.length_squared() > string_max_length * string_max_length:
-			remove_string()
+			shatter_string()
 
 
 func _process_pulling(_delta: float) -> void:
