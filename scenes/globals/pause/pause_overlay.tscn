@@ -1,13 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bo2gd4sehdugm"]
+[gd_scene load_steps=6 format=3 uid="uid://bo2gd4sehdugm"]
 
 [ext_resource type="Script" uid="uid://y88qplkioj1q" path="res://scenes/globals/pause/pause_overlay.gd" id="1_lf64b"]
-[ext_resource type="Texture2D" uid="uid://bvlx57seuur65" path="res://assets/first_party/intro/background.png" id="2_1tcw0"]
+[ext_resource type="Texture2D" uid="uid://lg5dl13njsg3" path="res://assets/first_party/tiles/Grass_And_Sand_Tiles.png" id="2_1tcw0"]
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="2_sd5t1"]
 [ext_resource type="PackedScene" uid="uid://dkeb0yjgcfi86" path="res://scenes/menus/options/options.tscn" id="3_sd5t1"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ai8ue"]
-texture = ExtResource("2_1tcw0")
-modulate_color = Color(1, 1, 1, 0.498039)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1tcw0"]
 
@@ -16,13 +12,17 @@ process_mode = 3
 layer = 2
 script = ExtResource("1_lf64b")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="FabricBackground" type="NinePatchRect" parent="."]
+modulate = Color(1, 1, 1, 0.498039)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_ai8ue")
+texture = ExtResource("2_1tcw0")
+region_rect = Rect2(384, 64, 64, 64)
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
 [node name="TabContainer" type="TabContainer" parent="."]
 anchors_preset = 8

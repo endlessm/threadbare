@@ -157,6 +157,15 @@ func add_small_fx() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	add_small_fx()
 	duration_timer.start()
+
+	# Logic for Fragile Barrel
+	# We must check for the specific subclass first because it inherits from FillingBarrel
+	if body.owner is FragileBarrel:
+		body.owner.hit_by_droplet(label)
+		queue_free()
+		return
+
+	# Standard Logic for FillingBarrel
 	if body.owner is FillingBarrel:
 		var filling_barrel: FillingBarrel = body.owner as FillingBarrel
 		if filling_barrel.label == label:

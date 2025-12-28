@@ -178,7 +178,7 @@ func _check_goal() -> void:
 
 	if result:
 		goals_reached.emit()
-
+		directional_input.enabled = false
 		if next_scene:
 			SceneSwitcher.change_to_file_with_transition(next_scene)
 

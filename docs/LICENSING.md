@@ -78,21 +78,9 @@ Assets under the following licenses cannot be used in Threadbare:
 
   Such content **can** be used in Threadbare.
 
-* The current license for [Tiny Swords][], which states (emphasis ours):
-
-  > You can share these assets as part of tutorials or educational content, as
-  > long as you provide a link to Tiny Swords project page. However, **you may
-  > not redistribute**, resell, or repackage the assets, even if the files are
-  > modified.
-
-  This is an unusual case because an earlier version of Tiny Swords was
-  published under the [CC0-1.0][] license. This older version of Tiny Swords is
-  included in the game, in the `assets/third_party/tiny-swords` folder.
-
 [Pixabay Content License]: https://pixabay.com/service/license-summary/
 [Pixabay Terms of Service]: https://pixabay.com/service/terms/
 [CC-BY-NC-SA-4.0]: https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en
-[Tiny Swords]: https://pixelfrog-assets.itch.io/tiny-swords
 
 ## Code Licensing
 

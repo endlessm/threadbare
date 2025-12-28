@@ -80,6 +80,7 @@ func reveal() -> void:
 	revealed = true
 	appear_sound.play()
 	animation_player.play("reveal")
+	await animation_player.animation_finished
 
 
 ## When interacted with, the collectible will display a brief animation
@@ -100,6 +101,7 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	queue_free()
 
 	if next_scene:
+		GameState.set_challenge_start_scene(next_scene)
 		SceneSwitcher.change_to_file_with_transition(next_scene)
 
 

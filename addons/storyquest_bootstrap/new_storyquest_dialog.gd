@@ -99,8 +99,12 @@ func _revalidate() -> void:
 			errors.append("⚠ ‘%s’ is not allowed in the folder name" % match.get_string(0))
 	if _filename.to_lower() != _filename:
 		errors.append("⚠ Folder name must be lower-case")
+	if "story" in _filename and "quest" in _filename:
+		errors.append('⚠ Folder name cannot include "story" and "quest" words')
 	if _title:
 		errors.append_array(validate_filename.call(_filename))
+		if "story" in _title.to_lower() and "quest" in _title.to_lower():
+			errors.append('⚠ Title cannot include "story" and "quest" words')
 
 	errors_label.text = "\n".join(errors)
 	create_button.disabled = errors.size() > 0

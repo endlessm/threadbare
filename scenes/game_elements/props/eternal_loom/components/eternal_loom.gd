@@ -13,6 +13,8 @@ const SOKOBANS := [
 	"uid://b64uft76tbblp",
 ]
 
+var elders: Array[Elder]
+
 var _have_threads := is_item_offering_possible()
 
 @onready var interact_area: InteractArea = %InteractArea
@@ -29,12 +31,28 @@ func _ready() -> void:
 		if Transitions.is_running():
 			await Transitions.finished
 
-		DialogueManager.show_dialogue_balloon(
-			ETERNAL_LOOM_INTERACTION, "threads_incorporated", [self]
-		)
-		await DialogueManager.dialogue_ended
+		var elder: Elder
+		if GameState.current_quest:
+			elder = _find_elder(GameState.current_quest)
+		elif elders:
+			# If the game was started from a specific scene (in the editor or
+			# via the #fragment in the web build), rather than by picking a
+			# quest from an elder, GameState.current_quest will be null.
+			# Pick any elder.
+			elder = elders[0]
+		if elder:
+			await elder.congratulate_player()
+
 		GameState.set_incorporating_threads(false)
 		GameState.mark_quest_completed()
+
+
+func _find_elder(quest: Quest) -> Elder:
+	for elder in elders:
+		if quest.resource_path.begins_with(elder.quest_directory):
+			return elder
+
+	return null
 
 
 func _on_interaction_ended() -> void:
