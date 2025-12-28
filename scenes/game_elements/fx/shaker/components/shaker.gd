@@ -63,7 +63,7 @@ func _ready() -> void:
 func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 	noise.seed = randi()
 	started.emit()
-	if Engine.has_singleton("InputHelper") and InputHelper.device_index >= 0:
+	if InputHelper.device_index >= 0:
 		Input.start_joy_vibration(InputHelper.device_index, 0.5, 0.5, time)
 
 	var shaking_already_in_progress: bool = shake_tween and shake_tween.is_valid()

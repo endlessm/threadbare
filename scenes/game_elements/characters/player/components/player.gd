@@ -91,18 +91,22 @@ func _set_mode(new_mode: Mode) -> void:
 			_toggle_player_behavior(player_interaction, true)
 			_toggle_player_behavior(player_fighting, false)
 			_toggle_player_behavior(player_hook, false)
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		Mode.FIGHTING:
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_fighting, true)
 			_toggle_player_behavior(player_hook, false)
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		Mode.HOOKING:
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_fighting, false)
 			_toggle_player_behavior(player_hook, true)
+			Input.set_default_cursor_shape(Input.CURSOR_CROSS)
 		Mode.DEFEATED:
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_fighting, false)
 			_toggle_player_behavior(player_hook, false)
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 	if mode != previous_mode:
 		mode_changed.emit(mode)
 
@@ -223,3 +227,54 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	if not is_node_ready():
 		await ready
 	_walk_sound.stream = walk_sound_stream
+
+
+## Sets the player's [member mode] to [constant DEFEATED], if it is
+## not already. Handles respawn logic based on remaining lives.
+## [br][br]
+## If [param falling] is [code]true[/code], scale the player to zero, as if they
+## are falling into the screen as they unravel.
+func defeat(falling: bool = false) -> void:
+	# Prevent multiple defeat calls
+	if mode == Player.Mode.DEFEATED:
+		return
+
+	mode = Player.Mode.DEFEATED
+
+	# Decrement lives and save the new count
+	GameState.decrement_lives()
+
+	if falling:
+		var tween := create_tween()
+		tween.tween_property(self, "scale", Vector2.ZERO, 2.0)
+
+	await get_tree().create_timer(2.0).timeout
+
+	# Check if player has lives remaining
+	if GameState.current_lives > 0:
+		# Still have lives - reload current scene/checkpoint
+		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+	else:
+		# Game over - restart from challenge start
+		_handle_game_over()
+
+
+## Handles game over logic: restarts from the beginning of the current challenge
+## with lives reset to 3.
+func _handle_game_over() -> void:
+	# Reset lives to 3
+	GameState.reset_lives()
+
+	# Get the start of the current challenge
+	var challenge_start_scene: String = GameState.get_challenge_start_scene()
+
+	if challenge_start_scene.is_empty():
+		# Fallback: reload current scene if no challenge start is defined
+		# Clear spawn point to start from the beginning of the current scene
+		GameState.set_current_spawn_point(^"")
+		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+	else:
+		# Restart from the challenge start scene
+		SceneSwitcher.change_to_file_with_transition(
+			challenge_start_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		)
