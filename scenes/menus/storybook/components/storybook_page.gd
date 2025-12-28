@@ -54,6 +54,7 @@ func _set_quest(new_quest: Quest) -> void:
 
 func _ready() -> void:
 	_set_quest(quest)
+	play_button.pressed.connect(_on_play_button_pressed)
 
 
 func _on_play_button_pressed() -> void:

@@ -18,7 +18,10 @@ extends Node2D
 ## Emitted when the button touches the player hitbox.
 signal collected
 
+var shine_particles: PackedScene = preload("uid://dm2tlhvjut08q")
+
 @onready var _up_down_animation: AnimationPlayer = %UpDownAnimation
+@onready var _collision_shape_2d: CollisionShape2D = %CollisionShape2D
 
 
 func _ready() -> void:
@@ -28,8 +31,16 @@ func _ready() -> void:
 	_up_down_animation.seek(_up_down_animation.current_animation_length * t)
 
 
+func _emit_shine_particles() -> void:
+	var shine: GPUParticles2D = shine_particles.instantiate()
+	shine.global_position = to_global(_collision_shape_2d.position)
+	get_tree().current_scene.add_child(shine)
+	shine.emitting = true
+
+
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	# TODO: This is not added to an inventory or anything, is just cosmetic.
 	if area.owner.is_in_group(&"player"):
 		collected.emit()
+		_emit_shine_particles()
 		queue_free()

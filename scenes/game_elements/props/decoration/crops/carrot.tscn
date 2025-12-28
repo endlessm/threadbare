@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://jllabtpjc46i" path="res://scenes/game_elements/props/decoration/animated_decoration.gd" id="1_cnemb"]
 [ext_resource type="SpriteFrames" uid="uid://bg5lo6fu776x2" path="res://scenes/game_elements/props/decoration/crops/components/carrot_spriteframes.tres" id="2_tmcen"]
-[ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_elements/props/decoration/random_frame_animated_sprite.gd" id="3_tmcen"]
+[ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_logic/sprite_behaviors/random_frame_sprite_behavior.gd" id="3_tmcen"]
 
 [node name="Carrot" type="Node2D"]
 scale = Vector2(0.5, 0.5)
@@ -14,4 +14,9 @@ unique_name_in_owner = true
 position = Vector2(0, -22)
 sprite_frames = ExtResource("2_tmcen")
 autoplay = "default"
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" node_paths=PackedStringArray("sprite")]
+position = Vector2(0, 22)
 script = ExtResource("3_tmcen")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
