@@ -42,10 +42,11 @@ static func replace_texture(
 			var texture: Texture2D = sprite_frames.get_frame_texture(
 				animation_name, sprite_frame_idx
 			)
-			if old_base_texture == _get_base_texture(sprite_frames, texture):
-				_replace_base_texture(
-					sprite_frames, animation_name, sprite_frame_idx, texture, new_texture
-				)
+			if old_base_texture and old_base_texture != _get_base_texture(sprite_frames, texture):
+				continue
+			_replace_base_texture(
+				sprite_frames, animation_name, sprite_frame_idx, texture, new_texture
+			)
 
 
 static func _replace_base_texture(
