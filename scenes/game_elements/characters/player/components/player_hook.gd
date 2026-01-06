@@ -106,7 +106,8 @@ func _set_character(new_character: CharacterBody2D) -> void:
 
 func _on_player_mode_changed(mode: Player.Mode) -> void:
 	if mode == Player.Mode.DEFEATED:
-		shatter_string()
+		if hook_string:
+			shatter_string()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
