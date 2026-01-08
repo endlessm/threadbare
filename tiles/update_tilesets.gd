@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
+class_name UpdateTilesets
 extends EditorScript
 ## Updates all scenes in the project tree that use the old unified tileset.
 ##
