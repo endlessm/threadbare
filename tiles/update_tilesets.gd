@@ -39,7 +39,7 @@ const EMPTY_LAYER_MAPPINGS := {
 
 
 func is_subset(a: Array, b: Array) -> bool:
-	for x in a:
+	for x: Variant in a:
 		if x not in b:
 			return false
 
@@ -57,7 +57,7 @@ func find_scenes() -> Array[PackedScene]:
 		var current_dir: String = dirs.pop_back()
 		var dir := DirAccess.open(current_dir)
 		if not dir:
-			err = dir.get_open_error()
+			err = DirAccess.get_open_error()
 			push_error("Failed to open", dir, ":", error_string(err))
 			continue
 
@@ -66,15 +66,15 @@ func find_scenes() -> Array[PackedScene]:
 			push_error("Failed to list directory", dir, ":", error_string(err))
 			continue
 
-		var file_name = dir.get_next()
+		var file_name := dir.get_next()
 		while file_name != "":
-			var path = current_dir.path_join(file_name)
+			var path := current_dir.path_join(file_name)
 			if dir.current_is_dir():
 				dirs.push_back(path)
 			elif file_name.ends_with(".tscn"):
 				for dep: String in ResourceLoader.get_dependencies(path):
 					if OLD_TILESET.resource_path in dep or old_tileset_uid in dep:
-						var scene = load(path)
+						var scene := load(path) as PackedScene
 						if scene:
 							packed_scenes.push_back(scene)
 						break
