@@ -12,9 +12,12 @@ extends EditorScript
 
 const OLD_TILESET := preload("res://scenes/tileset.tres")
 
+# There is no direct mapping to the current foam tileset
+# (res://tiles/foam_2.tres) because it has a different layout: a single
+# over-size tile rather than five tiles.
+
 const WATER := preload("res://tiles/water.tres")
 const EXTERIOR_FLOORS := preload("res://tiles/exterior_floors.tres")
-const FOAM := preload("res://tiles/foam.tres")
 const BRIDGES := preload("res://tiles/bridges.tres")
 const ELEVATION := preload("res://tiles/elevation.tres")
 const VOID := preload("res://tiles/void_chromakey.tres")
@@ -22,7 +25,6 @@ const VOID := preload("res://tiles/void_chromakey.tres")
 const NEW_TILESETS := {
 	[0]: WATER,
 	[1, 5, 6]: EXTERIOR_FLOORS,
-	[2]: FOAM,
 	[3]: BRIDGES,
 	[4, 7]: ELEVATION,
 	[13]: VOID,
@@ -33,7 +35,6 @@ const EMPTY_LAYER_MAPPINGS := {
 	"Stone": ELEVATION,
 	"Cliffs": ELEVATION,
 	"Grass": EXTERIOR_FLOORS,
-	"Foam": FOAM,
 	"Bridges": BRIDGES,
 }
 
