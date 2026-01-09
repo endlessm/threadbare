@@ -98,7 +98,7 @@ const SKIN_COLORS: Dictionary[String, Color] = {
 
 ## Click this button to pick a random color from a list of known skin colors
 @export_tool_button("Random Skin Color")
-var random_skin_color_button: Callable = _set_random_skin_color
+var random_skin_color_button: Callable = set_random_skin_color
 
 
 func _enter_tree() -> void:
@@ -158,7 +158,8 @@ func colorize() -> void:
 	node_to_recolor.set_instance_shader_parameter("shade_low_new", low_color)
 
 
-func _set_random_skin_color() -> void:
+## Pick a random color from [constant SKIN_COLORS] and automatically set all shades from it.
+func set_random_skin_color() -> void:
 	automatic_shades = true
 	medium_color = SKIN_COLORS.values().pick_random()
 
