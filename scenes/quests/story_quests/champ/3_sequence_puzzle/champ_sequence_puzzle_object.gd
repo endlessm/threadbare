@@ -7,21 +7,20 @@ extends SequencePuzzleObject
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var rock: AnimatedSprite2D = %AnimatedSprite2D
 
+var _idle_animation := &"default"
 
-func _ready() -> void:
-	super._ready()
-	if not Engine.is_editor_hint():
-		sprite_frames = sprite_frames.duplicate()
-
-## Function to change sprite frames from the submerged rock to dry rock
+## Makes the rock passable, and displays a dry idle state.
 func dry_off() -> void:
-	# Current implementation changes file path of "default" animation, since `_stop` in parent sequence puzzle script plays "default" sprite frames 
-	rock.sprite_frames.set_frame("default", 0, preload("res://scenes/quests/story_quests/champ/3_sequence_puzzle/champ_dry_rock.png"), 1)
-	if collision:
-		collision.disabled = true
+	_idle_animation = &"dry"
+	collision.disabled = true
 
-## Function to change object to default animation with waves, frees interactive node
+# Overrides superclass to make idle animation dynamic
+func _stop() -> void:
+	if animated_sprite.is_playing() and animated_sprite.animation == "struck":
+		await animated_sprite.animation_looped
+		animated_sprite.play(_idle_animation)
+
+## Submerges the rock and prevents further interactions with it.
 func submerge() -> void:
-	rock.play("default")
-	if interact_area:
-		interact_area.queue_free()
+	rock.play(&"default")
+	interact_area.disabled = true

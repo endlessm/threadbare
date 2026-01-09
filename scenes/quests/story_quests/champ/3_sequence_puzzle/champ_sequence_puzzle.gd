@@ -159,7 +159,7 @@ func reset_all() -> void:
 	# sprite frames, I can't just wipe everything
 	for obj in objs:
 		if sequences[0].sequence.has(obj) or sequences[1].sequence.has(obj):
-			obj.rock.play("default")
+			obj.rock.play(obj._idle_animation)
 
 ## Function to move camera position so entire sequence is shown (for second sequence)
 func _on_hint_sign_2_demonstrate_sequence() -> void:
