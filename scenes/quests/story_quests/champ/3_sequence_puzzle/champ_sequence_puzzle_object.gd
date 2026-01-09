@@ -7,15 +7,11 @@ extends SequencePuzzleObject
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var rock: AnimatedSprite2D = %AnimatedSprite2D
 
-var new_col: RectangleShape2D = RectangleShape2D.new()
-const COLLISION_SCALE : Vector2 = Vector2(60,50)
 
 func _ready() -> void:
-	# Manually setting collision shape to block character from
-	# moving before selecting the correct sequence object
-	new_col.size = COLLISION_SCALE
-	collision.shape = new_col
 	super._ready()
+	if not Engine.is_editor_hint():
+		sprite_frames = sprite_frames.duplicate()
 
 ## Function to change sprite frames from the submerged rock to dry rock
 func dry_off() -> void:
