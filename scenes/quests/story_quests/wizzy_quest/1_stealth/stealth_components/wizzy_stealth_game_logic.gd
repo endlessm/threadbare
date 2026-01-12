@@ -18,7 +18,8 @@ const SHARK_SPRITE_IDENTIFIER := "shark"
 const DEFEAT_RELOAD_DELAY := 2.0
 
 
-func _on_player_detected(player: Player) -> void:
+func _on_player_detected(player: Node2D) -> void:
+	assert(player is Player)
 	var alerted_guard := _get_alerted_guard()
 	var is_shark_enemy := _is_shark_guard(alerted_guard)
 	
