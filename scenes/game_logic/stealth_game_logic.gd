@@ -12,5 +12,6 @@ func _ready() -> void:
 		guard.player_detected.connect(self._on_player_detected)
 
 
-func _on_player_detected(player: Player) -> void:
-	player.defeat()
+func _on_player_detected(player: Node2D) -> void:
+	if player.has_method("defeat"):
+		player.defeat()
