@@ -1,6 +1,7 @@
-[gd_scene load_steps=19 format=4 uid="uid://cfi1hvtuesjjk"]
+[gd_scene load_steps=20 format=4 uid="uid://cfi1hvtuesjjk"]
 
 [ext_resource type="Script" uid="uid://h0vulwxku6p" path="res://scenes/quests/story_quests/wizzy_quest/2_combat/combat_components/wizzy_fill_game_logic.gd" id="1_wub6u"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="1_ylc4e"]
 [ext_resource type="Resource" uid="uid://dl7tk62id5pox" path="res://scenes/quests/story_quests/wizzy_quest/2_combat/combat_components/wizzy_quest_combat.dialogue" id="2_evre0"]
 [ext_resource type="TileSet" uid="uid://kfeh06bf30lu" path="res://scenes/quests/story_quests/wizzy_quest/wizzy_main_tileset.tres" id="3_dsveo"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_flf2v"]
@@ -26,9 +27,13 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 [node name="Combat" type="Node2D"]
 y_sort_enabled = true
 
+[node name="Cinematic" type="Node2D" parent="."]
+script = ExtResource("1_ylc4e")
+dialogue = ExtResource("2_evre0")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
 [node name="FillGameLogic" type="Node" parent="."]
 script = ExtResource("1_wub6u")
-intro_dialogue = ExtResource("2_evre0")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="."]
@@ -48,6 +53,7 @@ y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" instance=ExtResource("4_flf2v")]
 position = Vector2(122, 310)
+mode = 1
 sprite_frames = ExtResource("5_flf2v")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
@@ -114,4 +120,5 @@ dialogue_title = &"well_done"
 [node name="BackgroundMusic" parent="." instance=ExtResource("16_as4dr")]
 stream = ExtResource("17_as4dr")
 
+[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
