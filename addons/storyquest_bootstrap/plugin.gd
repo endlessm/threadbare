@@ -9,6 +9,7 @@ const NEW_STORYQUEST_DIALOG = preload(
 const Copier = preload("./copier.gd")
 
 const TOOL_MENU_LABEL := "Create StoryQuest from template..."
+const COMMAND_PALETTE_KEY := "plugins/storyquest_bootstrap/blahblah"
 
 const MIN_TITLE_LENGTH := 4
 
@@ -17,10 +18,14 @@ var _new_storyquest_dialog: Window
 
 func _enter_tree() -> void:
 	add_tool_menu_item(TOOL_MENU_LABEL, _open_new_storyquest_dialog)
+	EditorInterface.get_command_palette().add_command(
+		TOOL_MENU_LABEL, COMMAND_PALETTE_KEY, _open_new_storyquest_dialog
+	)
 
 
 func _exit_tree() -> void:
 	remove_tool_menu_item(TOOL_MENU_LABEL)
+	EditorInterface.get_command_palette().remove_command(COMMAND_PALETTE_KEY)
 
 
 func _open_new_storyquest_dialog() -> void:
