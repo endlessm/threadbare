@@ -15,3 +15,5 @@ func _ready() -> void:
 func _on_player_detected(player: Node2D) -> void:
 	if player.has_method("defeat"):
 		player.defeat()
+	else:
+		push_warning("Detected node does not have defeat() method", player)
