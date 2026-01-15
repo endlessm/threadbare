@@ -29,7 +29,12 @@ func _ready() -> void:
 
 	scroll_container.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 
-	for child: RichTextLabel in find_children("*", "RichTextLabel"):
+	for child: RichTextLabel in find_children(
+		"*",
+		"RichTextLabel",
+		true,  # recursive
+		false,  # include unowned children - necessary because the labels are added dynamically
+	):
 		child.meta_clicked.connect(_on_rich_text_label_meta_clicked)
 
 	set_process(false)
