@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MPL-2.0
 extends CanvasLayer
 
-const TITLE_SCENE: PackedScene = preload("uid://stdqc6ttomff")
-const FRAYS_END := "uid://cufkthb25mpxy"
+@export_file("*.tscn") var title_scene: String
+@export_file("*.tscn") var frays_end: String
 
 @onready var pause_menu: Control = %PauseMenu
 @onready var resume_button: Button = %ResumeButton
@@ -36,7 +36,7 @@ func _on_abandon_quest_pressed() -> void:
 	toggle_pause()
 	GameState.abandon_quest()
 	SceneSwitcher.change_to_file_with_transition(
-		FRAYS_END, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		frays_end, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 	)
 
 
@@ -55,6 +55,6 @@ func _on_resume_button_pressed() -> void:
 
 func _on_title_screen_button_pressed() -> void:
 	toggle_pause()
-	SceneSwitcher.change_to_packed_with_transition(
-		TITLE_SCENE, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+	SceneSwitcher.change_to_file_with_transition(
+		title_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 	)
