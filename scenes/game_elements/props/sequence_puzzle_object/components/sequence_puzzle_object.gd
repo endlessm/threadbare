@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 @tool
 class_name SequencePuzzleObject
-extends StaticBody2D
+extends Node2D
 
 ## Emitted when the object is kicked by the player.
 signal kicked
