@@ -67,8 +67,9 @@ var _state := ConfigFile.new()
 
 
 func _ready() -> void:
-	var initial_scene_uid := ResourceLoader.get_resource_uid(
-		get_tree().current_scene.scene_file_path
+	var current_scene := get_tree().current_scene
+	var initial_scene_uid := (
+		ResourceLoader.get_resource_uid(current_scene.scene_file_path) if current_scene else -1
 	)
 	var main_scene_uid := ResourceLoader.get_resource_uid(
 		ProjectSettings.get_setting("application/run/main_scene")
