@@ -108,6 +108,8 @@ func copy_packed_scene(packed_scene: PackedScene, copy_path: String) -> Resource
 	result = ResourceSaver.save(copied)
 	assert(result == OK, error_string(result))
 
+	scene.free()
+
 	return copied
 
 
