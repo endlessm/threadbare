@@ -11,6 +11,7 @@ title = "Create StoryQuest"
 initial_position = 1
 size = Vector2i(600, 400)
 transient = true
+exclusive = true
 script = ExtResource("1_1ir5d")
 
 [node name="Panel" type="Panel" parent="."]
@@ -103,6 +104,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "This quest is about..."
 wrap_mode = 1
+tab_input_mode = false
 
 [node name="ProgressBar" type="ProgressBar" parent="PanelContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -124,6 +126,8 @@ text = "Create"
 
 [connection signal="close_requested" from="." to="." method="_on_close_requested"]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/GridContainer/TitleEdit" to="." method="_on_title_edit_text_changed"]
+[connection signal="text_submitted" from="PanelContainer/VBoxContainer/GridContainer/TitleEdit" to="." method="submit" unbinds=1]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/GridContainer/FolderEdit" to="." method="_on_folder_edit_text_changed"]
-[connection signal="text_changed" from="PanelContainer/VBoxContainer/DescriptionEdit" to="." method="_on_description_edit_text_changed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer2/CreateButton" to="." method="_on_create_button_pressed"]
+[connection signal="text_submitted" from="PanelContainer/VBoxContainer/GridContainer/FolderEdit" to="." method="submit" unbinds=1]
+[connection signal="gui_input" from="PanelContainer/VBoxContainer/DescriptionEdit" to="." method="_on_description_edit_gui_input"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer2/CreateButton" to="." method="submit"]
