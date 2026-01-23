@@ -70,4 +70,8 @@ func on_offering_succeeded() -> void:
 
 
 func is_item_offering_possible() -> bool:
-	return GameState.items_collected().size() >= InventoryItem.ItemType.size()
+	return (
+		GameState.current_quest
+		and GameState.current_quest.threads_to_collect > 0
+		and GameState.items_collected().size() >= GameState.current_quest.threads_to_collect
+	)
