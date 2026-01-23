@@ -19,7 +19,7 @@ signal lives_changed(new_lives: int)
 
 const GAME_STATE_PATH := "user://game_state.cfg"
 const INVENTORY_SECTION := "inventory"
-const INVENTORY_ITEMS_AMOUNT_KEY := "amount_of_items_collected"
+const INVENTORY_ITEMS_KEY := "items_collected"
 const QUEST_SECTION := "quest"
 const QUEST_PATH_KEY := "resource_path"
 const QUEST_CURRENTSCENE_KEY := "current_scene"
@@ -251,8 +251,11 @@ func items_collected() -> Array[InventoryItem]:
 
 
 func _update_inventory_state() -> void:
-	var amount: int = clamp(inventory.size(), 0, InventoryItem.ItemType.size())
-	_state.set_value(INVENTORY_SECTION, INVENTORY_ITEMS_AMOUNT_KEY, amount)
+	_state.set_value(
+		INVENTORY_SECTION,
+		INVENTORY_ITEMS_KEY,
+		inventory.map(func(i: InventoryItem) -> InventoryItem.ItemType: return i.type)
+	)
 
 
 ## Decrement the player's lives by 1. Does not go below 0.
@@ -311,11 +314,11 @@ func get_scene_to_restore() -> String:
 
 ## Restore the persisted state.
 func restore() -> Dictionary:
-	var amount_in_state: int = _state.get_value(INVENTORY_SECTION, INVENTORY_ITEMS_AMOUNT_KEY, 0)
-	var amount: int = clamp(amount_in_state, 0, InventoryItem.ItemType.size())
 	inventory.clear()
-	for index in range(amount):
-		var item := InventoryItem.with_type(index)
+	for item_type: InventoryItem.ItemType in _state.get_value(
+		INVENTORY_SECTION, INVENTORY_ITEMS_KEY, []
+	):
+		var item := InventoryItem.with_type(item_type)
 		inventory.append(item)
 
 	if _state.has_section_key(QUEST_SECTION, QUEST_PATH_KEY):
