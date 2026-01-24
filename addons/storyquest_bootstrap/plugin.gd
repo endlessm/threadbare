@@ -35,7 +35,8 @@ func _open_new_storyquest_dialog() -> void:
 	_new_storyquest_dialog.validate_filename = validate_filename
 	_new_storyquest_dialog.create_storyquest.connect(_on_create_storyquest)
 	_new_storyquest_dialog.cancel.connect(_close_dialog)
-	EditorInterface.popup_dialog(_new_storyquest_dialog)
+	_new_storyquest_dialog.size *= EditorInterface.get_editor_scale()
+	EditorInterface.popup_dialog_centered(_new_storyquest_dialog)
 
 
 func _close_dialog() -> void:
