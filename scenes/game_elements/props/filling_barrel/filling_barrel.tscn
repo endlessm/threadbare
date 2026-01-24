@@ -1,9 +1,81 @@
-[gd_scene load_steps=11 format=3 uid="uid://y8ha8abfyap2"]
+[gd_scene load_steps=22 format=3 uid="uid://y8ha8abfyap2"]
 
 [ext_resource type="Script" uid="uid://be17wk85qlu28" path="res://scenes/game_elements/props/filling_barrel/components/filling_barrel.gd" id="1_md0e3"]
+[ext_resource type="Texture2D" uid="uid://brranfy51i56n" path="res://scenes/quests/lore_quests/quest_003/2_ink_drinker_levels/components/barrel_glow/barrel_glow.png" id="3_8hqam"]
 [ext_resource type="SpriteFrames" uid="uid://dlsq0ke41s1yh" path="res://scenes/game_elements/props/filling_barrel/components/filling_barrel_sprite_frames.tres" id="3_o1oxn"]
 [ext_resource type="AudioStream" uid="uid://6tgopt072bfq" path="res://scenes/game_elements/props/filling_barrel/components/fill.wav" id="4_6inx0"]
 [ext_resource type="AudioStream" uid="uid://s7ne07cx0j72" path="res://scenes/game_elements/props/filling_barrel/components/complete.wav" id="5_3gtj0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ho6qg"]
+atlas = ExtResource("3_8hqam")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ig56r"]
+atlas = ExtResource("3_8hqam")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ompl8"]
+atlas = ExtResource("3_8hqam")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0a20k"]
+atlas = ExtResource("3_8hqam")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2evyj"]
+atlas = ExtResource("3_8hqam")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i2u8c"]
+atlas = ExtResource("3_8hqam")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fc6b6"]
+atlas = ExtResource("3_8hqam")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_haw5m"]
+atlas = ExtResource("3_8hqam")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j04m1"]
+atlas = ExtResource("3_8hqam")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ftrfy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ho6qg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ig56r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ompl8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0a20k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2evyj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i2u8c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fc6b6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_haw5m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j04m1")
+}],
+"loop": true,
+"name": &"glowing",
+"speed": 10.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8tegq"]
 size = Vector2(52, 52)
@@ -165,6 +237,12 @@ unique_name_in_owner = true
 position = Vector2(0, -21)
 sprite_frames = ExtResource("3_o1oxn")
 animation = &"filling"
+
+[node name="BarrelGlow" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ftrfy")
+animation = &"glowing"
+frame_progress = 0.41853628
+offset = Vector2(0, -21)
 
 [node name="HitBox" type="StaticBody2D" parent="."]
 unique_name_in_owner = true
