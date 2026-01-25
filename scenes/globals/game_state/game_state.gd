@@ -76,7 +76,10 @@ func _ready() -> void:
 	)
 	persist_progress = initial_scene_uid == main_scene_uid
 	if not persist_progress:
+		if current_scene:
+			guess_quest(current_scene.scene_file_path)
 		return
+
 	var err := _state.load(GAME_STATE_PATH)
 	if err != OK and err != ERR_FILE_NOT_FOUND:
 		push_error("Failed to load %s: %s" % [GAME_STATE_PATH, err])
@@ -107,6 +110,27 @@ func start_quest(quest: Quest) -> void:
 	# Reset lives when starting a new quest
 	reset_lives()
 	_save()
+
+
+## Guess which quest the given scene is part of, and set [member current_quest]
+## accordingly. If the quest cannot be determined, unset [member current_quest].
+## [br][br]
+## This is for use when jumping to a particular scene during development (e.g.
+## with F6 in the editor, the URL hash in the browser, or in future if we add a
+## level selector). During normal gameplay it should not be used.
+func guess_quest(scene_path_or_uid: String) -> void:
+	var scene_path := ResourceUID.ensure_path(scene_path_or_uid)
+	var dir_path := scene_path.get_base_dir()
+	while dir_path != "res://":
+		var quest_path := dir_path.path_join("quest.tres")
+		if ResourceLoader.exists(quest_path, "Resource"):
+			current_quest = ResourceLoader.load(quest_path) as Quest
+			prints("Guessed quest", current_quest.resource_path, "from scene", scene_path)
+			return
+
+		dir_path = dir_path.get_base_dir()
+
+	current_quest = null
 
 
 ## Set the scene path and [member current_spawn_point].
