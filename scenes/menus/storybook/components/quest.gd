@@ -34,6 +34,11 @@ enum Status {
 ## The path to the first scene of the quest.
 @export_file("*.tscn") var first_scene: String
 
+## The number of threads that the player collects in this quest - typically one
+## at the end of each mini-game/challenge. This should match the number of
+## [CollectibleItem]s in the quest.
+@export_range(0, 6, 1, "suffix:threads") var threads_to_collect: int = 3
+
 @export_group("Animation")
 
 ## An optional sprite frame library to show in the storybook page for this quest.
