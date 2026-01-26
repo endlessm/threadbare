@@ -1,6 +1,7 @@
-[gd_scene load_steps=47 format=4 uid="uid://dhmhn56wqv5ej"]
+[gd_scene load_steps=48 format=4 uid="uid://dhmhn56wqv5ej"]
 
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="1_1fuoe"]
+[ext_resource type="AudioStream" uid="uid://df7ldbesilfry" path="res://assets/first_party/music/Threadbare Loop_Main_Bridge_02.ogg" id="1_a16ge"]
 [ext_resource type="Resource" uid="uid://cvuitsm15yyaw" path="res://scenes/quests/story_quests/champ/2_combat/combat_components/champ_combat.dialogue" id="2_sm7tj"]
 [ext_resource type="TileSet" uid="uid://djck8217try86" path="res://scenes/quests/story_quests/champ/tiles/champ_elevation.tres" id="5_sv8bg"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="6_r6jc5"]
@@ -37,6 +38,21 @@ extends FillGameLogic
 		#enemy.color_per_label = color_per_label
 "
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_a16ge"]
+atlas = ExtResource("12_yidpm")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p0sed"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a16ge")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_yidpm"]
 atlas = ExtResource("9_utai8")
 region = Rect2(0, 0, 64, 64)
@@ -61,21 +77,6 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hv7kx")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_a16ge"]
-atlas = ExtResource("12_yidpm")
-region = Rect2(0, 0, 64, 64)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_p0sed"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_a16ge")
 }],
 "loop": true,
 "name": &"default",
@@ -277,6 +278,10 @@ animations = [{
 [node name="Combat" type="Node2D"]
 y_sort_enabled = true
 
+[node name="Background Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("1_a16ge")
+autoplay = true
+
 [node name="Cinematic" type="Node2D" parent="."]
 script = ExtResource("1_1fuoe")
 dialogue = ExtResource("2_sm7tj")
@@ -373,17 +378,17 @@ sprite_frames = ExtResource("12_x632n")
 label = "c"
 color = Color(1, 1, 1, 1)
 
-[node name="Buoys" type="Node2D" parent="OnTheGround"]
+[node name="Objects" type="Node2D" parent="OnTheGround"]
 
-[node name="Buoy" parent="OnTheGround/Buoys" instance=ExtResource("15_sm7tj")]
+[node name="Object1" parent="OnTheGround/Objects" instance=ExtResource("15_sm7tj")]
 position = Vector2(824, 488)
 scale = Vector2(1.5, 1.5)
 
-[node name="Buoy2" parent="OnTheGround/Buoys" instance=ExtResource("15_sm7tj")]
+[node name="Object2" parent="OnTheGround/Objects" instance=ExtResource("15_sm7tj")]
 position = Vector2(477, 387)
 scale = Vector2(1.5, 1.5)
 
-[node name="Buoy3" parent="OnTheGround/Buoys" instance=ExtResource("15_sm7tj")]
+[node name="Object3" parent="OnTheGround/Objects" instance=ExtResource("15_sm7tj")]
 position = Vector2(1196, 355.00003)
 scale = Vector2(1.5, 1.5)
 
@@ -481,3 +486,7 @@ frame_progress = 0.7079184
 
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
+
+[editable path="OnTheGround/Objects/Object1"]
+[editable path="OnTheGround/Objects/Object2"]
+[editable path="OnTheGround/Objects/Object3"]
