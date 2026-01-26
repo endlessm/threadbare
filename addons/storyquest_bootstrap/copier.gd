@@ -89,6 +89,46 @@ func maybe_copy_properties(
 			node.set(name, value_copy)
 
 
+func _copy_instanced_scene(
+	scene_state: SceneState,
+	node_idx: int,
+	node_instance: PackedScene,
+	node: Node,
+) -> Node:
+	# We have found a node that is an instance of another scene in the template.
+	# Duplicate that other scene:
+	var replacement: PackedScene = await copy_resource(node_instance)
+
+	# Create an instance of the replacement scene, and swap it in for
+	# the original node in the scene we copying:
+	var replacement_node := replacement.instantiate(
+		PackedScene.GenEditState.GEN_EDIT_STATE_INSTANCE
+	)
+	node.replace_by(replacement_node)
+
+	# x.replace_by(y) does not preserve the name of x. Without this
+	# line, as well as the resulting scene being incorrect, saving it
+	# would crash the engine!
+	replacement_node.name = node.name
+
+	# x.replace_by(y) copies x.scene_file_path to y.scene_file_path
+	# which is exactly what we are trying to avoid!
+	# https://github.com/godotengine/godot/issues/86314
+	replacement_node.scene_file_path = replacement.resource_path
+
+	# Override any properties on the replacement node that were
+	# overridden on its precursor
+	for property_idx: int in scene_state.get_node_property_count(node_idx):
+		var property_name := scene_state.get_node_property_name(node_idx, property_idx)
+		var property_value: Variant = scene_state.get_node_property_value(node_idx, property_idx)
+		replacement_node.set(property_name, property_value)
+
+	# Finally, free the original node, and continue to duplicate any
+	# properties that reference the template.
+	node.free()
+	return replacement_node
+
+
 func copy_packed_scene(packed_scene: PackedScene, copy_path: String) -> Resource:
 	var copied: PackedScene = packed_scene.duplicate(true)
 	var scene := copied.instantiate(PackedScene.GenEditState.GEN_EDIT_STATE_INSTANCE)
@@ -96,7 +136,11 @@ func copy_packed_scene(packed_scene: PackedScene, copy_path: String) -> Resource
 
 	for node_idx: int in scene_state.get_node_count():
 		var path := scene_state.get_node_path(node_idx)
+		var node_instance: PackedScene = scene_state.get_node_instance(node_idx)
 		var node := scene.get_node(path)
+
+		if node_instance and is_template_resource(node_instance):
+			node = await _copy_instanced_scene(scene_state, node_idx, node_instance, node)
 
 		await maybe_copy_properties(node, path)
 
