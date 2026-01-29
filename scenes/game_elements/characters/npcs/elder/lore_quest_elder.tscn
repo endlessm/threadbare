@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bytkm0r5fe5xb"]
+[gd_scene format=3 uid="uid://bytkm0r5fe5xb"]
 
 [ext_resource type="Script" uid="uid://dedhjloxblho6" path="res://scenes/game_elements/characters/npcs/elder/components/elder.gd" id="1_jlpjw"]
 [ext_resource type="Resource" uid="uid://c1baepfbbcd4s" path="res://scenes/game_elements/characters/npcs/elder/components/lore_quest_starter.dialogue" id="2_4dt43"]
@@ -18,30 +18,30 @@ height = 24.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3eksq"]
 size = Vector2(67, 72)
 
-[node name="LoreQuestElder" type="CharacterBody2D"]
+[node name="LoreQuestElder" type="CharacterBody2D" unique_id=1788443040]
 collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_jlpjw")
 quest_directory = "res://scenes/quests/lore_quests/"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1042436281]
 unique_name_in_owner = true
 position = Vector2(0, -40)
 sprite_frames = ExtResource("3_ak236")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="BodyShape" type="CollisionShape2D" parent="."]
+[node name="BodyShape" type="CollisionShape2D" parent="." unique_id=156281937]
 position = Vector2(1, 0)
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_3vyb7")
 
-[node name="StaffShape" type="CollisionShape2D" parent="."]
+[node name="StaffShape" type="CollisionShape2D" parent="." unique_id=459404082]
 position = Vector2(49, 15)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_ak236")
 
-[node name="InteractArea" type="Area2D" parent="."]
+[node name="InteractArea" type="Area2D" parent="." unique_id=781057709]
 unique_name_in_owner = true
 collision_layer = 32
 collision_mask = 0
@@ -49,21 +49,21 @@ script = ExtResource("4_81yrg")
 action = "Talk to LoreQuest Elder"
 metadata/_custom_type_script = "uid://du8wfijr35r35"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=643676121]
 position = Vector2(7.5, -40)
 shape = SubResource("RectangleShape2D_3eksq")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
-[node name="TalkBehavior" type="Node" parent="." node_paths=PackedStringArray("interact_area")]
+[node name="TalkBehavior" type="Node" parent="." unique_id=207713361 node_paths=PackedStringArray("interact_area")]
 unique_name_in_owner = true
 script = ExtResource("5_ak236")
 dialogue = ExtResource("2_4dt43")
 interact_area = NodePath("../InteractArea")
 metadata/_custom_type_script = "uid://edcifob4jc4s"
 
-[node name="Sounds" type="Node2D" parent="."]
+[node name="Sounds" type="Node2D" parent="." unique_id=232466974]
 
-[node name="BookSound" type="AudioStreamPlayer2D" parent="Sounds"]
+[node name="BookSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=1654280773]
 unique_name_in_owner = true
 stream = ExtResource("5_kqtes")
 volume_db = -6.0
@@ -72,5 +72,5 @@ max_distance = 1500.0
 attenuation = 3.0
 bus = &"SFX"
 
-[node name="StorybookLayer" type="CanvasLayer" parent="."]
+[node name="StorybookLayer" type="CanvasLayer" parent="." unique_id=1804480974]
 unique_name_in_owner = true

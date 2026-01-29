@@ -1,7 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://fuhl3l6gxq5k"]
+[gd_scene format=3 uid="uid://fuhl3l6gxq5k"]
 
 [ext_resource type="Script" uid="uid://be7lr8ty24cix" path="res://scenes/game_elements/props/collectible_item/components/collectible_item.gd" id="1_7ff3m"]
-[ext_resource type="Texture2D" uid="uid://6bf8rum68wq3" path="res://assets/first_party/collectibles/world_imagination.png" id="3_p8e5a"]
 [ext_resource type="AudioStream" uid="uid://bhgpds38q0j4r" path="res://assets/third_party/sounds/collectibles/MemoryCollectable.ogg" id="5_hhgm5"]
 [ext_resource type="AudioStream" uid="uid://38xwdjm46478" path="res://assets/third_party/sounds/collectibles/CollectibleAppear.ogg" id="5_oh62b"]
 [ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="6_j0enh"]
@@ -275,40 +274,37 @@ _data = {
 radius = 9.0
 height = 28.0
 
-[node name="CollectibleItem" type="Node2D"]
+[node name="CollectibleItem" type="Node2D" unique_id=327991066]
 script = ExtResource("1_7ff3m")
 
-[node name="InteractArea" parent="." instance=ExtResource("6_j0enh")]
+[node name="InteractArea" parent="." unique_id=1327503985 instance=ExtResource("6_j0enh")]
 interact_label_position = Vector2(0, -71)
 action = "Collect"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1121983883]
 shape = SubResource("CircleShape2D_ghwae")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_8dm1m")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1869284545]
+libraries/ = SubResource("AnimationLibrary_8dm1m")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1620327010]
 visible = false
 modulate = Color(1, 1, 1, 0)
-texture = ExtResource("3_p8e5a")
 
-[node name="CollectedSound" type="AudioStreamPlayer" parent="."]
+[node name="CollectedSound" type="AudioStreamPlayer" parent="." unique_id=420528907]
 unique_name_in_owner = true
 bus = &"SFX"
 
-[node name="AppearSound" type="AudioStreamPlayer" parent="."]
+[node name="AppearSound" type="AudioStreamPlayer" parent="." unique_id=1905717027]
 unique_name_in_owner = true
 stream = ExtResource("5_oh62b")
 bus = &"SFX"
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=9475262]
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1204681631]
 position = Vector2(1, 14)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_hhgm5")

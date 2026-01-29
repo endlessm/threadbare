@@ -1,9 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://c6hnrmigaj2q0"]
+[gd_scene format=3 uid="uid://c6hnrmigaj2q0"]
 
 [ext_resource type="Script" uid="uid://be7lr8ty24cix" path="res://scenes/game_elements/props/collectible_item/components/collectible_item.gd" id="1_7vpni"]
 [ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="2_ts8dp"]
 [ext_resource type="AudioStream" uid="uid://bhgpds38q0j4r" path="res://assets/third_party/sounds/collectibles/MemoryCollectable.ogg" id="3_m83vn"]
-[ext_resource type="Texture2D" uid="uid://bdkarkg1gffou" path="res://scenes/quests/story_quests/shjourney/5_shjourney_sequence_puzzle/shjourney_sequence_components/shjourney_Door.png" id="4_ts8dp"]
 [ext_resource type="AudioStream" uid="uid://38xwdjm46478" path="res://assets/third_party/sounds/collectibles/CollectibleAppear.ogg" id="4_vo6kd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ghwae"]
@@ -271,33 +270,30 @@ _data = {
 &"reveal": SubResource("Animation_qy0vu")
 }
 
-[node name="Portal" type="Node2D"]
+[node name="Portal" type="Node2D" unique_id=523344057]
 z_index = 1
 script = ExtResource("1_7vpni")
 
-[node name="InteractArea" parent="." instance=ExtResource("2_ts8dp")]
+[node name="InteractArea" parent="." unique_id=4305944 instance=ExtResource("2_ts8dp")]
 interact_label_position = Vector2(0, -71)
 action = "Collect"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=2085044314]
 shape = SubResource("CircleShape2D_ghwae")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_8dm1m")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=259186385]
+libraries/ = SubResource("AnimationLibrary_8dm1m")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1287739376]
 visible = false
 modulate = Color(1, 1, 1, 0)
 texture_filter = 1
-texture = ExtResource("4_ts8dp")
 
-[node name="CollectedSound" type="AudioStreamPlayer" parent="."]
+[node name="CollectedSound" type="AudioStreamPlayer" parent="." unique_id=37564226]
 unique_name_in_owner = true
 bus = &"SFX"
 
-[node name="AppearSound" type="AudioStreamPlayer" parent="."]
+[node name="AppearSound" type="AudioStreamPlayer" parent="." unique_id=1699891504]
 unique_name_in_owner = true
 stream = ExtResource("4_vo6kd")
 bus = &"SFX"

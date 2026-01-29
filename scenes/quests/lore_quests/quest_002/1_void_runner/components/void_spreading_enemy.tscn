@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cokul8w425pja"]
+[gd_scene format=3 uid="uid://cokul8w425pja"]
 
 [ext_resource type="Script" uid="uid://dil8mgaf03bei" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_spreading_enemy.gd" id="1_304le"]
 [ext_resource type="Script" uid="uid://r1kriwyodjlt" path="res://scenes/game_logic/walk_behaviors/navigation_follow_walk_behavior.gd" id="2_31awk"]
@@ -22,6 +22,33 @@ metadata/_custom_type_script = "uid://csev4hv57utxv"
 script = ExtResource("3_45we0")
 walk_speed = 270.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
+
+[sub_resource type="Animation" id="Animation_o4sxw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AlertSymbol:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AlertSymbol:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_pumxu"]
 resource_name = "alert"
@@ -66,67 +93,40 @@ tracks/2/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_o4sxw"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AlertSymbol:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AlertSymbol:self_modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gwqur"]
 _data = {
 &"RESET": SubResource("Animation_o4sxw"),
 &"alert": SubResource("Animation_pumxu")
 }
 
-[node name="VoidSpreadingEnemy" type="CharacterBody2D"]
+[node name="VoidSpreadingEnemy" type="CharacterBody2D" unique_id=1007896559]
 collision_layer = 0
 collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_304le")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1857084231]
 position = Vector2(5, 0)
 shape = SubResource("RectangleShape2D_8g3pn")
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=387564582]
 unique_name_in_owner = true
 
-[node name="PlayerCaptureArea" type="Area2D" parent="."]
+[node name="PlayerCaptureArea" type="Area2D" parent="." unique_id=671456187]
 collision_layer = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCaptureArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCaptureArea" unique_id=1513769273]
 shape = SubResource("CircleShape2D_8l6e1")
 debug_color = Color(0.911153, 9.95344e-05, 0.727585, 0.42)
 
-[node name="PathWalkBehavior" type="Node2D" parent="." node_paths=PackedStringArray("character")]
+[node name="PathWalkBehavior" type="Node2D" parent="." unique_id=1511224206 node_paths=PackedStringArray("character")]
 unique_name_in_owner = true
 script = ExtResource("2_304le")
 speeds = SubResource("Resource_2dnul")
 character = NodePath("..")
 metadata/_custom_type_script = "uid://id28maao3vdy"
 
-[node name="NavigationFollowWalkBehavior" type="Node2D" parent="." node_paths=PackedStringArray("agent", "character")]
+[node name="NavigationFollowWalkBehavior" type="Node2D" parent="." unique_id=804245903 node_paths=PackedStringArray("agent", "character")]
 unique_name_in_owner = true
 script = ExtResource("2_31awk")
 speeds = SubResource("Resource_pumxu")
@@ -134,11 +134,11 @@ agent = NodePath("../NavigationAgent2D")
 character = NodePath("..")
 metadata/_custom_type_script = "uid://r1kriwyodjlt"
 
-[node name="AlertSound" type="AudioStreamPlayer" parent="."]
+[node name="AlertSound" type="AudioStreamPlayer" parent="." unique_id=795802402]
 volume_db = -5.0
 bus = &"SFX"
 
-[node name="AlertSymbol" type="TextureRect" parent="."]
+[node name="AlertSymbol" type="TextureRect" parent="." unique_id=270291082]
 visible = false
 modulate = Color(1, 0, 0, 1)
 self_modulate = Color(1, 1, 1, 0)
@@ -155,10 +155,8 @@ grow_horizontal = 2
 grow_vertical = 0
 texture = ExtResource("6_pumxu")
 
-[node name="AlertAnimation" type="AnimationPlayer" parent="."]
+[node name="AlertAnimation" type="AnimationPlayer" parent="." unique_id=76419508]
 unique_name_in_owner = true
-libraries = {
-&"": SubResource("AnimationLibrary_gwqur")
-}
+libraries/ = SubResource("AnimationLibrary_gwqur")
 
 [connection signal="body_entered" from="PlayerCaptureArea" to="." method="_on_player_capture_area_body_entered"]

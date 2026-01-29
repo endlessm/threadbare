@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://462n67vv3yea"]
+[gd_scene format=4 uid="uid://462n67vv3yea"]
 
 [ext_resource type="TileSet" uid="uid://4ewcvb1sibsf" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/2_cinematicacombate/tile/tilestaller.tres" id="1_kfauu"]
 [ext_resource type="Texture2D" uid="uid://f7wuktrhbbca" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/Imagenes/bed-free.png" id="2_kfauu"]
@@ -44,33 +44,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
-}
-
-[sub_resource type="Animation" id="Animation_kfauu"]
-resource_name = "walk_on"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Bryan:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(418, 115), Vector2(620, 238.85)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Bryan:animation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [&"walk", &"idle"]
 }
 
 [sub_resource type="Animation" id="Animation_pf4rr"]
@@ -153,6 +126,33 @@ tracks/2/keys = {
 "values": [true]
 }
 
+[sub_resource type="Animation" id="Animation_kfauu"]
+resource_name = "walk_on"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Bryan:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(418, 115), Vector2(620, 238.85)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Bryan:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_pf4rr"]
 _data = {
 &"RESET": SubResource("Animation_cc8ll"),
@@ -161,29 +161,29 @@ _data = {
 &"walk_on": SubResource("Animation_kfauu")
 }
 
-[node name="Intro" type="Node2D"]
+[node name="Intro" type="Node2D" unique_id=1481228810]
 
-[node name="TileMapLayers" type="Node2D" parent="."]
+[node name="TileMapLayers" type="Node2D" parent="." unique_id=1569671993]
 
-[node name="Ground" type="TileMapLayer" parent="TileMapLayers"]
+[node name="Ground" type="TileMapLayer" parent="TileMapLayers" unique_id=1616776654]
 tile_map_data = PackedByteArray("AAAAAAUAEQAAAAQAAAABAAUAEQABAAMAAAACAAUAEQABAAQAAAADAAUAEQABAAQAAAAEAAUAEQAAAAMAAAAFAAUAEQAAAAMAAAAGAAUAEQABAAQAAAAHAAUAEQABAAMAAAAIAAUAEQABAAMAAAAJAAUAEQAAAAQAAAAKAAUAEQAAAAMAAAALAAUAEQAAAAQAAAAMAAUAEQABAAQAAAANAAUAEQAAAAMAAAAOAAUAEQABAAQAAAAAAAYAEQAAAAMAAAAAAAcAEQAAAAQAAAAAAAgAEQABAAQAAAABAAYAEQABAAMAAAABAAcAEQAAAAQAAAABAAgAEQABAAMAAAACAAYAEQAAAAMAAAACAAcAEQABAAQAAAACAAgAEQABAAMAAAADAAYAEQABAAMAAAADAAcAEQABAAMAAAADAAgAEQABAAQAAAAEAAYAEQABAAMAAAAEAAcAEQABAAQAAAAEAAgAEQABAAMAAAAFAAYAEQABAAMAAAAFAAcAEQAAAAMAAAAFAAgAEQAAAAMAAAAGAAYAEQAAAAMAAAAGAAcAEQABAAQAAAAGAAgAEQAAAAQAAAAHAAYAEQAAAAQAAAAHAAcAEQAAAAMAAAAHAAgAEQABAAQAAAAIAAYAEQABAAQAAAAIAAcAEQAAAAQAAAAIAAgAEQAAAAMAAAAJAAYAEQAAAAMAAAAJAAcAEQAAAAMAAAAJAAgAEQAAAAMAAAAKAAYAEQAAAAMAAAAKAAcAEQABAAMAAAAKAAgAEQABAAMAAAALAAYAEQAAAAMAAAALAAcAEQAAAAQAAAALAAgAEQAAAAMAAAAMAAYAEQABAAMAAAAMAAcAEQABAAQAAAAMAAgAEQABAAMAAAANAAYAEQABAAMAAAANAAcAEQABAAMAAAANAAgAEQABAAQAAAAOAAYAEQABAAMAAAAOAAcAEQABAAMAAAAOAAgAEQAAAAMAAAAAAAAADwAAAAAAAAAAAAEAEQAAAAMAAAABAAEAEQAAAAMAAAACAAEAEQAAAAMAAAACAAIAEQABAAQAAAADAAIAEQAAAAQAAAAEAAIAEQAAAAQAAAAFAAIAEQABAAQAAAAFAAMAEQABAAQAAAAGAAMAEQABAAQAAAAHAAQAEQAAAAMAAAAIAAQAEQABAAQAAAAOAAQAEQAAAAMAAAAOAAMAEQABAAQAAAAOAAIAEQABAAMAAAAOAAEAEQABAAMAAAAOAAAADwACAAAAAAANAAQAEQABAAQAAAANAAMAEQABAAQAAAANAAIAEQAAAAMAAAANAAEAEQABAAQAAAAMAAQAEQABAAQAAAAMAAMAEQABAAQAAAAMAAIAEQAAAAQAAAAMAAEAEQAAAAQAAAAMAAAADwABAAAAAAALAAMAEQAAAAMAAAALAAIAEQAAAAQAAAALAAEAEQAAAAMAAAALAAAADwABAAAAAAAKAAQAEQAAAAQAAAAKAAMAEQABAAQAAAAKAAIAEQAAAAMAAAAKAAEAEQAAAAQAAAAKAAAADwABAAAAAAAJAAQAEQAAAAQAAAAJAAMAEQABAAMAAAAJAAIAEQABAAQAAAAJAAEAEQAAAAQAAAAJAAAADwABAAAAAAAIAAMAEQAAAAMAAAAIAAIAEQABAAQAAAAIAAEAEQABAAQAAAAHAAMAEQAAAAMAAAAHAAIAEQABAAQAAAAHAAEAEQABAAMAAAAHAAAADwABAAAAAAAGAAQAEQAAAAMAAAAGAAEAEQAAAAMAAAAGAAAADwABAAAAAAAFAAQAEQAAAAQAAAAFAAEAEQABAAMAAAAFAAAADwABAAAAAAAEAAQAEQAAAAMAAAAEAAMAEQAAAAMAAAAEAAEAEQABAAQAAAAEAAAADwAAAAAAAAADAAQAEQAAAAQAAAADAAMAEQAAAAMAAAADAAEAEQABAAQAAAADAAAADwAAAAAAAAACAAQAEQABAAMAAAACAAMAEQAAAAMAAAACAAAADwAAAAAAAAABAAQAEQABAAMAAAABAAMAEQABAAMAAAABAAIAEQAAAAQAAAABAAAADwAAAAAAAAAAAAQAEQABAAQAAAAAAAMAEQABAAMAAAAAAAIAEQAAAAMAAAAGAAIAEQABAAQAAAALAAQAEQABAAMAAAANAAAADwABAAAAAAAIAAAADwABAAAAAAA=")
 tile_set = ExtResource("1_kfauu")
 
-[node name="Sand" type="TileMapLayer" parent="TileMapLayers"]
+[node name="Sand" type="TileMapLayer" parent="TileMapLayers" unique_id=1892536125]
 tile_map_data = PackedByteArray("AAAAAAEADwAAAAEAAAAAAAIADwAAAAEAAAAAAAMADwAAAAEAAAAAAAQADwAAAAEAAAAAAAUADwAAAAEAAAAAAAYADwAAAAEAAAAAAAcADwAAAAEAAAAAAAgADwAAAAEAAAAOAAEADwACAAEAAAAOAAIADwACAAEAAAAOAAMADwACAAEAAAAOAAQADwACAAEAAAAOAAUADwACAAEAAAAOAAYADwACAAEAAAAOAAcADwACAAEAAAAOAAgADwACAAEAAAABAAAADwABAAAAAAACAAAADwABAAAAAAADAAAADwABAAAAAAAEAAAADwABAAAAAAAFAAAADwABAAAAAAAGAAAADwABAAAAAAAHAAAADwABAAAAAAAIAAAADwABAAAAAAAJAAAADwABAAAAAAAKAAAADwABAAAAAAALAAAADwABAAAAAAAMAAAADwABAAAAAAAAAAAADwAAAAAAAAAOAAAADwACAAAAAAANAAAAEQAAAAAAAAANAAUAEQAFAAIAAAALAAUAEQABAAAAAAAJAAUAEQAEAAIAAAANAAEAEQAAAAEAAAAKAAEAEQAEAAAAAAALAAEAEQAFAAAAAAAMAAEAEQAGAAAAAAADAAYAEQABAAEAAAA=")
 tile_set = ExtResource("1_kfauu")
 
-[node name="BedFree2" type="Sprite2D" parent="TileMapLayers"]
+[node name="BedFree2" type="Sprite2D" parent="TileMapLayers" unique_id=1467546603]
 position = Vector2(335, 160)
 scale = Vector2(2.1531055, 1.51925)
 texture = ExtResource("2_kfauu")
 
-[node name="BedFree" type="Sprite2D" parent="TileMapLayers"]
+[node name="BedFree" type="Sprite2D" parent="TileMapLayers" unique_id=1751388497]
 position = Vector2(87.99999, 151)
 scale = Vector2(2.2, 1.475)
 texture = ExtResource("2_kfauu")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1013520747]
 position = Vector2(-3, -2)
 anchor_mode = 0
 zoom = Vector2(1.33, 1.33)
@@ -195,17 +195,17 @@ limit_bottom = 363
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="OnTheGround" type="Node2D" parent="."]
+[node name="OnTheGround" type="Node2D" parent="." unique_id=90346352]
 z_as_relative = false
 
-[node name="Bryan" type="AnimatedSprite2D" parent="OnTheGround"]
+[node name="Bryan" type="AnimatedSprite2D" parent="OnTheGround" unique_id=1266783175]
 position = Vector2(418, 115)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("3_cc8ll")
 animation = &"walk"
 autoplay = "idle"
 
-[node name="Mom" type="AnimatedSprite2D" parent="OnTheGround"]
+[node name="Mom" type="AnimatedSprite2D" parent="OnTheGround" unique_id=2050596151]
 position = Vector2(704, 234)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("4_5xl1w")
@@ -213,16 +213,14 @@ animation = &"idle"
 autoplay = "idle"
 flip_h = true
 
-[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=124483685]
 
-[node name="Cinematic" type="Node2D" parent="." node_paths=PackedStringArray("animation_player")]
+[node name="Cinematic" type="Node2D" parent="." unique_id=1120500059 node_paths=PackedStringArray("animation_player")]
 script = ExtResource("5_fab8y")
 dialogue = ExtResource("6_yyrcu")
 animation_player = NodePath("../AnimationPlayer")
 next_scene = "uid://cyuxrp5u2bbwg"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_pf4rr")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1116702070]
+libraries/ = SubResource("AnimationLibrary_pf4rr")
