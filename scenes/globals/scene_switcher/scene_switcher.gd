@@ -66,6 +66,7 @@ func _restore_from_hash() -> void:
 				GameState.persist_progress = false
 				GameState.clear()
 				GameState.guess_quest(path)
+				GameState.set_challenge_start_scene(path)
 
 			# In theory, we might like to avoid switching scene if the specified
 			# scene is the default scene. In practice, that will not happen, and
