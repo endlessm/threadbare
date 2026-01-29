@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dn0mwsgc1mevf"]
+[gd_scene format=3 uid="uid://dn0mwsgc1mevf"]
 
 [ext_resource type="Script" uid="uid://cf2qq4u0k3mdg" path="res://scenes/quests/story_quests/wizzy_quest/2_combat/combat_components/wizzy_throwing_enemy.gd" id="1_078bi"]
 [ext_resource type="SpriteFrames" uid="uid://deosvk5k4su5f" path="res://scenes/quests/template_quests/NO_EDIT/2_NO_EDIT_combat/NO_EDIT_combat_components/NO_EDIT_throwing_enemy.tres" id="2_ebctp"]
@@ -239,13 +239,13 @@ _data = {
 &"remove": SubResource("Animation_lx56l")
 }
 
-[node name="ThrowingEnemy" type="CharacterBody2D" groups=["throwing_enemy"]]
+[node name="ThrowingEnemy" type="CharacterBody2D" unique_id=1533088104 groups=["throwing_enemy"]]
 collision_layer = 2
 collision_mask = 17
 motion_mode = 1
 script = ExtResource("1_078bi")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=314637496]
 unique_name_in_owner = true
 position = Vector2(10, -83)
 sprite_frames = ExtResource("2_ebctp")
@@ -253,45 +253,43 @@ animation = &"walk"
 autoplay = "idle"
 flip_h = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=368892606]
 position = Vector2(5, -24)
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_3vyb7")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=1580364307]
 unique_name_in_owner = true
 process_callback = 0
 wait_time = 5.0
 
-[node name="ProjectileMarker" type="Marker2D" parent="."]
+[node name="ProjectileMarker" type="Marker2D" parent="." unique_id=294463985]
 unique_name_in_owner = true
 position = Vector2(-35, -31)
 
-[node name="HitBox" type="Area2D" parent="."]
+[node name="HitBox" type="Area2D" parent="." unique_id=109913539]
 unique_name_in_owner = true
 collision_layer = 128
 collision_mask = 256
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=2136144776]
 position = Vector2(7.5, -58)
 shape = SubResource("RectangleShape2D_ffq0m")
 debug_color = Color(0.990065, 0, 0.28292, 0.42)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1355959834]
 unique_name_in_owner = true
-libraries = {
-&"": SubResource("AnimationLibrary_fbb2g")
-}
+libraries/ = SubResource("AnimationLibrary_fbb2g")
 
-[node name="Sounds" type="Node2D" parent="."]
+[node name="Sounds" type="Node2D" parent="." unique_id=1760547825]
 
-[node name="IdleSound" type="AudioStreamPlayer2D" parent="Sounds"]
+[node name="IdleSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=205072452]
 unique_name_in_owner = true
 volume_db = 5.0
 max_distance = 1000.0
 bus = &"SFX"
 
-[node name="AttackSound" type="AudioStreamPlayer2D" parent="Sounds"]
+[node name="AttackSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=1600825838]
 unique_name_in_owner = true
 volume_db = 5.0
 max_distance = 1000.0

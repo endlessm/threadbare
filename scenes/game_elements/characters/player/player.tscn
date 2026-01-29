@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://iu2q66clupc6"]
+[gd_scene format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/game_elements/characters/player/components/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/template_quests/NO_EDIT/NO_EDIT_player_components/NO_EDIT_player.tres" id="2_blfj0"]
@@ -33,7 +33,22 @@ point_count = 3
 [sub_resource type="CurveTexture" id="CurveTexture_j0tly"]
 curve = SubResource("Curve_3in67")
 
+[sub_resource type="Curve" id="Curve_4nivu"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_ecbbk"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_tnibl"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="CurveXYZTexture" id="CurveXYZTexture_3in67"]
+curve_x = SubResource("Curve_4nivu")
+curve_y = SubResource("Curve_ecbbk")
+curve_z = SubResource("Curve_tnibl")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nrnyj"]
 particle_flag_disable_z = true
@@ -503,24 +518,24 @@ _data = {
 &"walk": SubResource("Animation_qek5x")
 }
 
-[node name="Player" type="CharacterBody2D" groups=["player"]]
+[node name="Player" type="CharacterBody2D" unique_id=296354958 groups=["player"]]
 collision_mask = 531
 motion_mode = 1
 wall_min_slide_angle = 0.017453292
 safe_margin = 1.0
 script = ExtResource("1_g2els")
 
-[node name="HitBox" type="Area2D" parent="."]
+[node name="HitBox" type="Area2D" parent="." unique_id=1910507610]
 unique_name_in_owner = true
 collision_layer = 64
 collision_mask = 256
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=1807630823]
 position = Vector2(0, -28.5)
 shape = SubResource("RectangleShape2D_je7p5")
 debug_color = Color(0.94902, 0.231373, 0, 0.419608)
 
-[node name="PlayerDustParticles" type="GPUParticles2D" parent="."]
+[node name="PlayerDustParticles" type="GPUParticles2D" parent="." unique_id=785276606]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.498039)
 material = SubResource("CanvasItemMaterial_j0tly")
@@ -533,7 +548,7 @@ fixed_fps = 10
 process_material = SubResource("ParticleProcessMaterial_nrnyj")
 script = ExtResource("3_j0tly")
 
-[node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
+[node name="PlayerSprite" type="AnimatedSprite2D" parent="." unique_id=1785485617]
 unique_name_in_owner = true
 position = Vector2(0, -17)
 sprite_frames = ExtResource("2_blfj0")
@@ -541,31 +556,31 @@ animation = &"idle"
 autoplay = "idle"
 script = ExtResource("3_qlg0r")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=874691694]
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_3vyb7")
 
-[node name="PlayerInteraction" type="Node2D" parent="."]
+[node name="PlayerInteraction" type="Node2D" parent="." unique_id=1260226520]
 unique_name_in_owner = true
 script = ExtResource("3_dqkch")
 
-[node name="InteractZone" type="Area2D" parent="PlayerInteraction" node_paths=PackedStringArray("character")]
+[node name="InteractZone" type="Area2D" parent="PlayerInteraction" unique_id=888605377 node_paths=PackedStringArray("character")]
 unique_name_in_owner = true
 collision_layer = 0
 collision_mask = 32
 script = ExtResource("6_3in67")
 character = NodePath("../..")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerInteraction/InteractZone"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerInteraction/InteractZone" unique_id=255765935]
 position = Vector2(47, -30)
 shape = SubResource("RectangleShape2D_blfj0")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
-[node name="InteractMarker" type="Marker2D" parent="PlayerInteraction"]
+[node name="InteractMarker" type="Marker2D" parent="PlayerInteraction" unique_id=439387414]
 unique_name_in_owner = true
 position = Vector2(-1, -116)
 
-[node name="InteractLabel" parent="PlayerInteraction/InteractMarker" instance=ExtResource("6_h17s1")]
+[node name="InteractLabel" parent="PlayerInteraction/InteractMarker" unique_id=554498577 instance=ExtResource("6_h17s1")]
 unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -577,62 +592,58 @@ offset_bottom = 11.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PlayerFighting" type="Node2D" parent="."]
+[node name="PlayerFighting" type="Node2D" parent="." unique_id=1745412343]
 unique_name_in_owner = true
 process_mode = 4
 visible = false
 script = ExtResource("7_5gtgg")
 
-[node name="AirStream" type="Area2D" parent="PlayerFighting"]
+[node name="AirStream" type="Area2D" parent="PlayerFighting" unique_id=642627191]
 unique_name_in_owner = true
 position = Vector2(0, -24)
 collision_layer = 0
 collision_mask = 256
 
-[node name="AirStreamCollision" type="CollisionShape2D" parent="PlayerFighting/AirStream"]
+[node name="AirStreamCollision" type="CollisionShape2D" parent="PlayerFighting/AirStream" unique_id=2073501549]
 unique_name_in_owner = true
 shape = SubResource("CircleShape2D_h17s1")
 disabled = true
 
-[node name="Sprite2D" type="Sprite2D" parent="PlayerFighting/AirStream"]
+[node name="Sprite2D" type="Sprite2D" parent="PlayerFighting/AirStream" unique_id=2035148168]
 visible = false
 material = SubResource("CanvasItemMaterial_je7p5")
 scale = Vector2(0.12577, 0.12577)
 texture = ExtResource("9_je7p5")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PlayerFighting/AirStream"]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PlayerFighting/AirStream" unique_id=25920746]
 
-[node name="GotHitAnimation" type="AnimationPlayer" parent="PlayerFighting"]
+[node name="GotHitAnimation" type="AnimationPlayer" parent="PlayerFighting" unique_id=1067804411]
 unique_name_in_owner = true
-libraries = {
-&"": SubResource("AnimationLibrary_1n58k")
-}
+libraries/ = SubResource("AnimationLibrary_1n58k")
 
-[node name="PlayerHook" type="Node2D" parent="." groups=["hook_listener"]]
+[node name="PlayerHook" type="Node2D" parent="." unique_id=1215042910 groups=["hook_listener"]]
 unique_name_in_owner = true
 process_mode = 4
 visible = false
 position = Vector2(0, -20)
 script = ExtResource("11_nrnyj")
 
-[node name="HookControl" parent="PlayerHook" instance=ExtResource("13_ecbbk")]
+[node name="HookControl" parent="PlayerHook" unique_id=1395550080 instance=ExtResource("13_ecbbk")]
 state = 1
 
-[node name="HookEnding" type="Marker2D" parent="PlayerHook"]
+[node name="HookEnding" type="Marker2D" parent="PlayerHook" unique_id=94764927]
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=747608118]
 visible = false
 occluder = SubResource("OccluderPolygon2D_75vfm")
 sdf_collision = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=683750023]
 unique_name_in_owner = true
-libraries = {
-&"": SubResource("AnimationLibrary_qek5x")
-}
+libraries/ = SubResource("AnimationLibrary_qek5x")
 script = ExtResource("7_0owmy")
 
-[node name="WalkSound" type="AudioStreamPlayer2D" parent="."]
+[node name="WalkSound" type="AudioStreamPlayer2D" parent="." unique_id=1454454549]
 unique_name_in_owner = true
 stream = ExtResource("11_blfj0")
 volume_db = -5.0

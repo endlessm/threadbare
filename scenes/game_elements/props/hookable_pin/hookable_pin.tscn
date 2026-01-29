@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://evb46lm6ssu2"]
+[gd_scene format=3 uid="uid://evb46lm6ssu2"]
 
 [ext_resource type="Texture2D" uid="uid://bgxnqey15x485" path="res://scenes/game_elements/props/hookable_pin/components/pin.png" id="1_gcph1"]
 [ext_resource type="Script" uid="uid://dabvr3pqmyya4" path="res://scenes/game_elements/props/hookable_area/components/hookable_area.gd" id="2_bfd1i"]
@@ -8,29 +8,30 @@ size = Vector2(50, 76)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gcph1"]
 
-[node name="HookablePin" type="StaticBody2D"]
+[node name="HookablePin" type="StaticBody2D" unique_id=2071223292]
 collision_layer = 16
 collision_mask = 0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1242315016]
 position = Vector2(0, -32)
 texture = ExtResource("1_gcph1")
 
-[node name="HookableArea" type="Area2D" parent="." node_paths=PackedStringArray("anchor_point")]
+[node name="HookableArea" type="Area2D" parent="." unique_id=2025257493 node_paths=PackedStringArray("controlled_entity", "anchor_point")]
 collision_layer = 4096
 collision_mask = 0
 script = ExtResource("2_bfd1i")
+controlled_entity = NodePath("..")
 anchor_point = NodePath("Marker2D")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea" unique_id=1548966519]
 position = Vector2(0, -28)
 shape = SubResource("RectangleShape2D_bfd1i")
 debug_color = Color(0.689707, 0.288376, 1, 0.42)
 
-[node name="Marker2D" type="Marker2D" parent="HookableArea"]
+[node name="Marker2D" type="Marker2D" parent="HookableArea" unique_id=286043670]
 position = Vector2(0, -36)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1010643876]
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_gcph1")
 disabled = true

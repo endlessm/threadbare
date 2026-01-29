@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://712saqgof3kf"]
+[gd_scene format=3 uid="uid://712saqgof3kf"]
 
 [ext_resource type="Script" uid="uid://dj5shb75ckk2a" path="res://scenes/game_elements/props/eternal_loom/components/eternal_loom.gd" id="1_0f752"]
 [ext_resource type="Texture2D" uid="uid://cj62bpasgf643" path="res://scenes/game_elements/props/eternal_loom/components/eternal_loom_blue.png" id="2_dj2yp"]
@@ -518,74 +518,70 @@ _data = {
 &"loom_offering": SubResource("Animation_ytadt")
 }
 
-[node name="EternalLoom" type="Node2D"]
+[node name="EternalLoom" type="Node2D" unique_id=630179356]
 script = ExtResource("1_0f752")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1111466197]
 scale = Vector2(1.5, 1.43)
 sprite_frames = SubResource("SpriteFrames_1jart")
 autoplay = "default"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_ojp30")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1689473314]
+libraries/ = SubResource("AnimationLibrary_ojp30")
 speed_scale = 0.3
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=674824664]
 visible = false
 collision_layer = 16
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=699367124]
 position = Vector2(-1.5, 32)
 shape = SubResource("RectangleShape2D_uojly")
 debug_color = Color(0, 0.588235, 0.698039, 0.419608)
 
-[node name="InteractArea" parent="." instance=ExtResource("3_kyhkd")]
+[node name="InteractArea" parent="." unique_id=1735004807 instance=ExtResource("3_kyhkd")]
 unique_name_in_owner = true
 visible = false
 position = Vector2(0, 55)
 interact_label_position = Vector2(0, 45)
 action = "Use Eternal Loom"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1537085446]
 position = Vector2(0, 120)
 shape = SubResource("RectangleShape2D_uhynt")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
-[node name="TalkBehavior" type="Node" parent="." node_paths=PackedStringArray("interact_area")]
+[node name="TalkBehavior" type="Node" parent="." unique_id=562216088 node_paths=PackedStringArray("interact_area")]
 unique_name_in_owner = true
 script = ExtResource("4_eq7jh")
 interact_area = NodePath("../InteractArea")
 metadata/_custom_type_script = "uid://edcifob4jc4s"
 
-[node name="LoomOfferingAnimation" type="Node2D" parent="."]
+[node name="LoomOfferingAnimation" type="Node2D" parent="." unique_id=515569025]
 z_index = 1
 position = Vector2(0, 135)
 
-[node name="LoomOfferingAnimationPlayer" type="AnimationPlayer" parent="LoomOfferingAnimation"]
+[node name="LoomOfferingAnimationPlayer" type="AnimationPlayer" parent="LoomOfferingAnimation" unique_id=1836718462]
 unique_name_in_owner = true
 root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_x4prg")
-}
+libraries/ = SubResource("AnimationLibrary_x4prg")
 
-[node name="Memory" type="Sprite2D" parent="LoomOfferingAnimation"]
+[node name="Memory" type="Sprite2D" parent="LoomOfferingAnimation" unique_id=480436827]
 visible = false
 position = Vector2(1, -34)
 texture = ExtResource("4_12bvc")
 
-[node name="Imagination" type="Sprite2D" parent="LoomOfferingAnimation"]
+[node name="Imagination" type="Sprite2D" parent="LoomOfferingAnimation" unique_id=1315423320]
 visible = false
 position = Vector2(50, 33)
 texture = ExtResource("5_eq7jh")
 
-[node name="Spirit" type="Sprite2D" parent="LoomOfferingAnimation"]
+[node name="Spirit" type="Sprite2D" parent="LoomOfferingAnimation" unique_id=1417706099]
 visible = false
 position = Vector2(-48, 33)
 texture = ExtResource("6_hfqem")
 
-[node name="LoomOfferingSound" type="AudioStreamPlayer2D" parent="LoomOfferingAnimation"]
+[node name="LoomOfferingSound" type="AudioStreamPlayer2D" parent="LoomOfferingAnimation" unique_id=1851096463]
 stream = ExtResource("7_12bvc")
 bus = &"SFX"
