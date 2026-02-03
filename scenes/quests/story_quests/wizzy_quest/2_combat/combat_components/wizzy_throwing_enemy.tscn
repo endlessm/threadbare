@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://dn0mwsgc1mevf"]
 
 [ext_resource type="Script" uid="uid://cf2qq4u0k3mdg" path="res://scenes/quests/story_quests/wizzy_quest/2_combat/combat_components/wizzy_throwing_enemy.gd" id="1_078bi"]
-[ext_resource type="SpriteFrames" uid="uid://deosvk5k4su5f" path="res://scenes/quests/template_quests/NO_EDIT/2_NO_EDIT_combat/NO_EDIT_combat_components/NO_EDIT_throwing_enemy.tres" id="2_ebctp"]
+[ext_resource type="SpriteFrames" uid="uid://bdop8df62qlht" path="res://scenes/quests/story_quests/wizzy_quest/2_combat/combat_components/wizzy_quest_throwing_enemy.tres" id="2_0f22l"]
+[ext_resource type="PackedScene" uid="uid://j8mqjkg0rvai" path="res://scenes/quests/template_quests/NO_EDIT/2_NO_EDIT_combat/NO_EDIT_combat_components/NO_EDIT_projectile.tscn" id="3_ebctp"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
 radius = 29.999989
@@ -239,16 +240,23 @@ _data = {
 &"remove": SubResource("Animation_lx56l")
 }
 
-[node name="ThrowingEnemy" type="CharacterBody2D" unique_id=1533088104 groups=["throwing_enemy"]]
+[node name="WizzyThrowingEnemy" type="CharacterBody2D" unique_id=1533088104 groups=["throwing_enemy"]]
 collision_layer = 2
 collision_mask = 17
 motion_mode = 1
 script = ExtResource("1_078bi")
+throwing_period = 3.0
+sprite_frames = ExtResource("2_0f22l")
+projectile_scene = ExtResource("3_ebctp")
+projectile_speed = 50.0
+walking_time = Vector2(0, 0)
+walking_range = Vector2(0, 0)
+walking_speed = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=314637496]
 unique_name_in_owner = true
 position = Vector2(10, -83)
-sprite_frames = ExtResource("2_ebctp")
+sprite_frames = ExtResource("2_0f22l")
 animation = &"walk"
 autoplay = "idle"
 flip_h = true
