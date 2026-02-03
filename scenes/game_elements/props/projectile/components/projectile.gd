@@ -99,7 +99,7 @@ func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 func _set_hit_sound_stream(new_hit_sound_stream: AudioStream) -> void:
 	hit_sound_stream = new_hit_sound_stream
 	if not is_node_ready():
-		await ready
+		return
 	hit_sound.stream = hit_sound_stream
 
 
@@ -127,6 +127,8 @@ func _ready() -> void:
 
 	_set_color(color)
 	_set_sprite_frames(sprite_frames)
+	_set_hit_sound_stream(hit_sound_stream)
+
 	duration_timer.wait_time = duration
 	duration_timer.start()
 	var impulse: Vector2 = direction * speed
