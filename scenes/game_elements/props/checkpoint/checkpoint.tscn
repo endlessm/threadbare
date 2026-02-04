@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dua6mynlw2ptw"]
+[gd_scene format=3 uid="uid://dua6mynlw2ptw"]
 
 [ext_resource type="Script" uid="uid://bk5ri1yoakaqp" path="res://scenes/game_elements/props/checkpoint/components/checkpoint.gd" id="1_kkoqv"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="2_s5d1s"]
@@ -9,34 +9,34 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_3xcwf"]
 radius = 48.0
 
-[node name="Checkpoint" type="Area2D"]
+[node name="Checkpoint" type="Area2D" unique_id=1789892556]
 collision_layer = 0
 script = ExtResource("1_kkoqv")
 
-[node name="SpawnPoint" type="Marker2D" parent="." groups=["spawn_point"]]
+[node name="SpawnPoint" type="Marker2D" parent="." unique_id=118546798 groups=["spawn_point"]]
 unique_name_in_owner = true
 script = ExtResource("2_s5d1s")
 
-[node name="Sprite" type="AnimatedSprite2D" parent="."]
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=422090831]
 unique_name_in_owner = true
 position = Vector2(0, -40)
 sprite_frames = ExtResource("4_3xcwf")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="InteractArea" parent="." instance=ExtResource("4_cukws")]
+[node name="InteractArea" parent="." unique_id=2037902510 instance=ExtResource("4_cukws")]
 unique_name_in_owner = true
 collision_layer = 0
 interact_label_position = Vector2(0, -128)
 disabled = true
 action = "Admire"
 
-[node name="CollisionShape" type="CollisionShape2D" parent="InteractArea"]
+[node name="CollisionShape" type="CollisionShape2D" parent="InteractArea" unique_id=317026295]
 position = Vector2(1, -4)
 shape = SubResource("CircleShape2D_3xcwf")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
-[node name="TalkBehavior" type="Node" parent="." node_paths=PackedStringArray("interact_area")]
+[node name="TalkBehavior" type="Node" parent="." unique_id=487856562 node_paths=PackedStringArray("interact_area")]
 unique_name_in_owner = true
 script = ExtResource("5_3xcwf")
 interact_area = NodePath("../InteractArea")

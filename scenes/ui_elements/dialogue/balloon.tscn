@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dhydhpp43urah"]
+[gd_scene format=3 uid="uid://dhydhpp43urah"]
 
 [ext_resource type="Script" uid="uid://n1guv6m28qbw" path="res://scenes/ui_elements/dialogue/components/balloon.gd" id="1_36de5"]
 [ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="2_a8ve6"]
@@ -7,47 +7,47 @@
 [ext_resource type="Texture2D" uid="uid://ctvutcaoqvftf" path="res://assets/first_party/icons/right_arrow.png" id="4_qmeow"]
 [ext_resource type="AudioStream" uid="uid://cs1bx2odpj6vm" path="res://scenes/ui_elements/dialogue/components/sounds/pencil.ogg" id="5_dbsi0"]
 
-[node name="DialogueBalloon" type="CanvasLayer"]
+[node name="DialogueBalloon" type="CanvasLayer" unique_id=308207015]
 layer = 100
 script = ExtResource("1_36de5")
 
-[node name="Balloon" type="Control" parent="."]
+[node name="Balloon" type="Control" parent="." unique_id=2032365240]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
 theme = ExtResource("2_pfnde")
 
-[node name="PanelContainer" type="PanelContainer" parent="Balloon"]
+[node name="PanelContainer" type="PanelContainer" parent="Balloon" unique_id=58550594]
 layout_mode = 0
 offset_right = 480.0
 offset_bottom = 359.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Balloon/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Balloon/PanelContainer" unique_id=412895659]
 custom_minimum_size = Vector2(352, 128)
 layout_mode = 2
 
-[node name="CharacterPanel" type="PanelContainer" parent="Balloon/PanelContainer/VBoxContainer"]
+[node name="CharacterPanel" type="PanelContainer" parent="Balloon/PanelContainer/VBoxContainer" unique_id=383126775]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_type_variation = &"NPCRibbon"
 
-[node name="CharacterLabel" type="Label" parent="Balloon/PanelContainer/VBoxContainer/CharacterPanel"]
+[node name="CharacterLabel" type="Label" parent="Balloon/PanelContainer/VBoxContainer/CharacterPanel" unique_id=172265592]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 text = "Musician"
 horizontal_alignment = 1
 
-[node name="DialogueLabel" parent="Balloon/PanelContainer/VBoxContainer" instance=ExtResource("2_a8ve6")]
+[node name="DialogueLabel" parent="Balloon/PanelContainer/VBoxContainer" unique_id=728821532 instance=ExtResource("2_a8ve6")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 text = "¡Ah! ¿Another wanderer? It’s been a while siñce aňyone çame löõkiŋ for  instead of «treaßure»."
 skip_action = &"dialogue_skip"
 
-[node name="NextButton" type="Button" parent="Balloon/PanelContainer/VBoxContainer"]
+[node name="NextButton" type="Button" parent="Balloon/PanelContainer/VBoxContainer" unique_id=110419078]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -56,7 +56,7 @@ text = "next"
 icon = ExtResource("4_qmeow")
 icon_alignment = 2
 
-[node name="ResponsesMenu" type="VBoxContainer" parent="Balloon/PanelContainer/VBoxContainer" node_paths=PackedStringArray("response_template")]
+[node name="ResponsesMenu" type="VBoxContainer" parent="Balloon/PanelContainer/VBoxContainer" unique_id=938619174 node_paths=PackedStringArray("response_template")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -65,12 +65,12 @@ theme_override_constants/separation = 2
 script = ExtResource("3_72ixx")
 response_template = NodePath("ResponseExample")
 
-[node name="ResponseExample" type="Button" parent="Balloon/PanelContainer/VBoxContainer/ResponsesMenu"]
+[node name="ResponseExample" type="Button" parent="Balloon/PanelContainer/VBoxContainer/ResponsesMenu" unique_id=957333658]
 layout_mode = 2
 theme_type_variation = &"FlatButton"
 text = "Response example"
 
-[node name="TalkSoundPlayer" type="AudioStreamPlayer" parent="."]
+[node name="TalkSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1778551533]
 stream = ExtResource("5_dbsi0")
 volume_db = 2.0
 bus = &"SFX"

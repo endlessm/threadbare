@@ -10,6 +10,8 @@ extends EditorScript
 ## a message is logged and that layer is skipped. Similarly, for empty layers a
 ## message is logged. A human can assign the correct TileSet.
 
+const Util = preload("./util.gd")
+
 const OLD_TILESET := preload("res://scenes/tileset.tres")
 
 # There is no direct mapping to the current foam tileset
@@ -47,46 +49,22 @@ func is_subset(a: Array, b: Array) -> bool:
 	return true
 
 
-## Find all scenes in the project tree that use OLD_TILESET.
-func find_scenes() -> Array[PackedScene]:
-	var packed_scenes: Array[PackedScene] = []
+func _uses_old_tileset(scene_path: String) -> bool:
 	var old_tileset_uid := ResourceUID.path_to_uid(OLD_TILESET.resource_path)
-	var err: Error
 
-	var dirs: Array[String] = ["res://"]
-	while not dirs.is_empty():
-		var current_dir: String = dirs.pop_back()
-		var dir := DirAccess.open(current_dir)
-		if not dir:
-			err = DirAccess.get_open_error()
-			push_error("Failed to open", dir, ":", error_string(err))
-			continue
+	for dep: String in ResourceLoader.get_dependencies(scene_path):
+		if OLD_TILESET.resource_path in dep or old_tileset_uid in dep:
+			return true
+	return false
 
-		err = dir.list_dir_begin()
-		if err != OK:
-			push_error("Failed to list directory", dir, ":", error_string(err))
-			continue
 
-		var file_name := dir.get_next()
-		while file_name != "":
-			var path := current_dir.path_join(file_name)
-			if dir.current_is_dir():
-				dirs.push_back(path)
-			elif file_name.ends_with(".tscn"):
-				for dep: String in ResourceLoader.get_dependencies(path):
-					if OLD_TILESET.resource_path in dep or old_tileset_uid in dep:
-						var scene := load(path) as PackedScene
-						if scene:
-							packed_scenes.push_back(scene)
-						break
-			file_name = dir.get_next()
-		dir.list_dir_end()
-
-	return packed_scenes
+## Find all scenes in the project tree that use OLD_TILESET.
+func find_old_tileset_scenes() -> Array[PackedScene]:
+	return Util.find_scenes("res://", _uses_old_tileset)
 
 
 func _run() -> void:
-	for packed_scene: PackedScene in find_scenes():
+	for packed_scene: PackedScene in find_old_tileset_scenes():
 		process_scene(packed_scene)
 
 

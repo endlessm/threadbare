@@ -19,7 +19,7 @@ signal lives_changed(new_lives: int)
 
 const GAME_STATE_PATH := "user://game_state.cfg"
 const INVENTORY_SECTION := "inventory"
-const INVENTORY_ITEMS_AMOUNT_KEY := "amount_of_items_collected"
+const INVENTORY_ITEMS_KEY := "items_collected"
 const QUEST_SECTION := "quest"
 const QUEST_PATH_KEY := "resource_path"
 const QUEST_CURRENTSCENE_KEY := "current_scene"
@@ -67,15 +67,19 @@ var _state := ConfigFile.new()
 
 
 func _ready() -> void:
-	var initial_scene_uid := ResourceLoader.get_resource_uid(
-		get_tree().current_scene.scene_file_path
+	var current_scene := get_tree().current_scene
+	var initial_scene_uid := (
+		ResourceLoader.get_resource_uid(current_scene.scene_file_path) if current_scene else -1
 	)
 	var main_scene_uid := ResourceLoader.get_resource_uid(
 		ProjectSettings.get_setting("application/run/main_scene")
 	)
 	persist_progress = initial_scene_uid == main_scene_uid
 	if not persist_progress:
+		if current_scene:
+			guess_quest(current_scene.scene_file_path)
 		return
+
 	var err := _state.load(GAME_STATE_PATH)
 	if err != OK and err != ERR_FILE_NOT_FOUND:
 		push_error("Failed to load %s: %s" % [GAME_STATE_PATH, err])
@@ -106,6 +110,27 @@ func start_quest(quest: Quest) -> void:
 	# Reset lives when starting a new quest
 	reset_lives()
 	_save()
+
+
+## Guess which quest the given scene is part of, and set [member current_quest]
+## accordingly. If the quest cannot be determined, unset [member current_quest].
+## [br][br]
+## This is for use when jumping to a particular scene during development (e.g.
+## with F6 in the editor, the URL hash in the browser, or in future if we add a
+## level selector). During normal gameplay it should not be used.
+func guess_quest(scene_path_or_uid: String) -> void:
+	var scene_path := ResourceUID.ensure_path(scene_path_or_uid)
+	var dir_path := scene_path.get_base_dir()
+	while dir_path != "res://":
+		var quest_path := dir_path.path_join("quest.tres")
+		if ResourceLoader.exists(quest_path, "Resource"):
+			current_quest = ResourceLoader.load(quest_path) as Quest
+			prints("Guessed quest", current_quest.resource_path, "from scene", scene_path)
+			return
+
+		dir_path = dir_path.get_base_dir()
+
+	current_quest = null
 
 
 ## Set the scene path and [member current_spawn_point].
@@ -226,8 +251,11 @@ func items_collected() -> Array[InventoryItem]:
 
 
 func _update_inventory_state() -> void:
-	var amount: int = clamp(inventory.size(), 0, InventoryItem.ItemType.size())
-	_state.set_value(INVENTORY_SECTION, INVENTORY_ITEMS_AMOUNT_KEY, amount)
+	_state.set_value(
+		INVENTORY_SECTION,
+		INVENTORY_ITEMS_KEY,
+		inventory.map(func(i: InventoryItem) -> InventoryItem.ItemType: return i.type)
+	)
 
 
 ## Decrement the player's lives by 1. Does not go below 0.
@@ -286,11 +314,11 @@ func get_scene_to_restore() -> String:
 
 ## Restore the persisted state.
 func restore() -> Dictionary:
-	var amount_in_state: int = _state.get_value(INVENTORY_SECTION, INVENTORY_ITEMS_AMOUNT_KEY, 0)
-	var amount: int = clamp(amount_in_state, 0, InventoryItem.ItemType.size())
 	inventory.clear()
-	for index in range(amount):
-		var item := InventoryItem.with_type(index)
+	for item_type: InventoryItem.ItemType in _state.get_value(
+		INVENTORY_SECTION, INVENTORY_ITEMS_KEY, []
+	):
+		var item := InventoryItem.with_type(item_type)
 		inventory.append(item)
 
 	if _state.has_section_key(QUEST_SECTION, QUEST_PATH_KEY):
