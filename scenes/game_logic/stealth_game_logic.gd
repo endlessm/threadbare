@@ -8,7 +8,7 @@ extends Node
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
-	for guard: Guard in get_tree().get_nodes_in_group(&"guard_enemy"):
+	for guard: Node2D in get_tree().get_nodes_in_group(&"guard_enemy"):
 		guard.player_detected.connect(self._on_player_detected)
 
 
