@@ -5,12 +5,20 @@
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="3_2wo0h"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="4_8g08d"]
 [ext_resource type="Resource" uid="uid://cx8jmresqdqak" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/monk.dialogue" id="5_2wo0h"]
+[ext_resource type="Script" uid="uid://r1kriwyodjlt" path="res://scenes/game_logic/walk_behaviors/navigation_follow_walk_behavior.gd" id="6_2jb14"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="7_0nhq5"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lutqc"]
 height = 73.6055
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bqjp5"]
 size = Vector2(52, 50)
+
+[sub_resource type="Resource" id="Resource_cbt6j"]
+script = ExtResource("7_0nhq5")
+walk_speed = 150.0
+run_speed = 150.0
+metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [node name="Monk" type="CharacterBody2D" unique_id=2026075861]
 motion_mode = 1
@@ -45,3 +53,20 @@ debug_color = Color(0.600391, 0.54335, 0, 0.42)
 script = ExtResource("4_8g08d")
 dialogue = ExtResource("5_2wo0h")
 interact_area = NodePath("../InteractArea")
+
+[node name="NavigationFollowWalkBehavior" type="Node2D" parent="." unique_id=1833684333 node_paths=PackedStringArray("agent", "character")]
+process_mode = 4
+script = ExtResource("6_2jb14")
+speeds = SubResource("Resource_cbt6j")
+agent = NodePath("../NavigationAgent2D")
+character = NodePath("..")
+metadata/_custom_type_script = "uid://r1kriwyodjlt"
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=175971692]
+target_desired_distance = 64.0
+navigation_layers = 2
+path_postprocessing = 1
+debug_enabled = true
+
+[connection signal="interaction_ended" from="InteractArea" to="." method="_on_interact_area_interaction_ended"]
+[connection signal="interaction_started" from="InteractArea" to="." method="_on_interact_area_interaction_started"]
