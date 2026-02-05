@@ -8,7 +8,7 @@ extends Node2D
 @export var submerged: bool = true:
 	set = set_submerged
 
-## Signal indicating the player is standing on a submerged rock (indicating an incorrect response)
+## Signal indicating the player is standing on a submerged rock (indicating an incorrect response).
 signal water_entered
 
 func set_submerged(is_submerged: bool) -> void:
