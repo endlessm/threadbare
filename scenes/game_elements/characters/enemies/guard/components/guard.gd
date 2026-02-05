@@ -177,14 +177,7 @@ func _process(delta: float) -> void:
 			else:
 				guard_movement.stop_moving()
 			guard_movement.move()
-		State.WAITING, State.DETECTING, State.INVESTIGATING:
-			guard_movement.move()
-		State.RETURNING:
-			if breadcrumbs:
-				var target_position: Vector2 = breadcrumbs.back()
-				guard_movement.set_destination(target_position)
-			else:
-				state = State.PATROLLING
+		State.WAITING, State.DETECTING, State.INVESTIGATING, State.RETURNING:
 			guard_movement.move()
 
 	if state != State.ALERTED:
@@ -229,6 +222,8 @@ func _update_debug_info() -> void:
 	match state:
 		State.WAITING:
 			debug_info.text += "%s: %.2f\n" % ["time left", waiting_timer.time_left]
+		State.DETECTING, State.INVESTIGATING, State.RETURNING:
+			debug_info.text += "%s: %s\n" % ["breadcrumbs", breadcrumbs.size()]
 		_:
 			debug_info.text += "%s: %s\n" % ["previous_patrol_point_idx", previous_patrol_point_idx]
 			debug_info.text += "%s: %s\n" % ["current_patrol_point_idx", current_patrol_point_idx]
@@ -244,6 +239,11 @@ func _on_destination_reached() -> void:
 			state = State.WAITING
 		State.RETURNING:
 			breadcrumbs.pop_back()
+			if breadcrumbs:
+				var target_position: Vector2 = breadcrumbs.back()
+				guard_movement.set_destination(target_position)
+			else:
+				state = State.PATROLLING
 
 
 ## What happens if the guard cannot reach their destination because it got
@@ -262,7 +262,10 @@ func _on_path_blocked() -> void:
 			state = State.RETURNING
 		State.RETURNING:
 			if breadcrumbs:
-				breadcrumbs.pop_back()
+				var target_position: Vector2 = breadcrumbs.back()
+				guard_movement.set_destination(target_position)
+			else:
+				state = State.PATROLLING
 
 
 func _set_state(new_state: State) -> void:
