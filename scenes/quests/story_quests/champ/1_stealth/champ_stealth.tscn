@@ -23,6 +23,8 @@
 [ext_resource type="SpriteFrames" uid="uid://h85time5ateg" path="res://scenes/quests/story_quests/champ/3_sequence_puzzle/learner_edits/champ_default_npc.tres" id="17_ol5cv"]
 [ext_resource type="PackedScene" uid="uid://yfpfno276rol" path="res://scenes/game_elements/props/fixed_size_label/fixed_size_label.tscn" id="17_saf7v"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="23_g11k1"]
+[ext_resource type="Texture2D" uid="uid://dx5j8vyhh6ynp" path="res://scenes/quests/story_quests/champ/1_stealth/RockWater_Idle.png" id="23_sfcyb"]
+[ext_resource type="Script" uid="uid://dp2jseqq3si1r" path="res://scenes/quests/story_quests/champ/1_stealth/water_rock.gd" id="24_2hewv"]
 [ext_resource type="Texture2D" uid="uid://s57e12850k6e" path="res://assets/third_party/tiny-swords-non-cc0/Terrain/Decorations/Rocks/Rock4.png" id="24_oswsn"]
 [ext_resource type="Texture2D" uid="uid://dcxp0tlkdiy0x" path="res://assets/third_party/tiny-swords-non-cc0/Terrain/Decorations/Rocks/Rock1.png" id="25_fqjr6"]
 [ext_resource type="Texture2D" uid="uid://uh0cgd0o5kha" path="res://assets/third_party/tiny-swords-non-cc0/Terrain/Decorations/Rocks/Rock3.png" id="26_sfcyb"]
@@ -59,7 +61,7 @@ size = Vector2(110, 80)
 radius = 61.72
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_epx14"]
-radius = 24.083189
+radius = 25.179358
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oswsn"]
 radius = 28.160255
@@ -69,6 +71,73 @@ radius = 19.026299
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sfcyb"]
 radius = 19.104973
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hewv"]
+atlas = ExtResource("23_sfcyb")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wt0c6"]
+atlas = ExtResource("23_sfcyb")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ka8oq"]
+atlas = ExtResource("23_sfcyb")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x1dad"]
+atlas = ExtResource("23_sfcyb")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g76pt"]
+atlas = ExtResource("23_sfcyb")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_immbe"]
+atlas = ExtResource("23_sfcyb")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rik0t"]
+atlas = ExtResource("23_sfcyb")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w5qog"]
+atlas = ExtResource("23_sfcyb")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3yknd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hewv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wt0c6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ka8oq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x1dad")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g76pt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_immbe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rik0t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w5qog")
+}],
+"loop": true,
+"name": &"water_rock",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2hewv"]
+radius = 18.110771
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3eksq"]
 size = Vector2(52, 50)
@@ -80,9 +149,9 @@ y_sort_enabled = true
 script = ExtResource("1_38fcx")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=230191739]
+visible = false
 y_sort_enabled = true
 color = Color(0.481789, 0.48179, 0.481789, 1)
-metadata/_edit_lock_ = true
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1370239493]
 z_index = -1
@@ -100,7 +169,7 @@ tile_set = ExtResource("2_38fcx")
 y_sort_enabled = true
 
 [node name="Guard1-GoingBackAndForth" parent="EnemyGuards" unique_id=1695092508 instance=ExtResource("6_y1f5j")]
-position = Vector2(513.9997, 248.18204)
+position = Vector2(588, 308)
 sprite_frames = ExtResource("7_354bm")
 move_speed = 200.0
 
@@ -139,6 +208,12 @@ debug_color = Color(0, 0, 0, 0.42)
 [node name="HUD" parent="." unique_id=1199859337 instance=ExtResource("10_saf7v")]
 
 [node name="CollectibleItem" parent="." unique_id=1250372978 instance=ExtResource("11_680ig")]
+position = Vector2(892, -2934)
+next_scene = "uid://dhmhn56wqv5ej"
+item = SubResource("Resource_x1dad")
+collected_dialogue = ExtResource("13_oswsn")
+
+[node name="CollectibleItem2" parent="." unique_id=327991066 instance=ExtResource("11_680ig")]
 position = Vector2(2510, 513)
 next_scene = "uid://dhmhn56wqv5ej"
 item = SubResource("Resource_x1dad")
@@ -264,6 +339,78 @@ texture = ExtResource("26_sfcyb")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Decorations/Rock3/StaticBody2D" unique_id=2072828217]
 position = Vector2(0, 11)
 shape = SubResource("CircleShape2D_sfcyb")
+
+[node name="WaterRock" type="StaticBody2D" parent="Decorations" unique_id=700456425]
+position = Vector2(367, -167)
+
+[node name="WaterRock" type="AnimatedSprite2D" parent="Decorations/WaterRock" unique_id=1311897257]
+sprite_frames = SubResource("SpriteFrames_3yknd")
+animation = &"water_rock"
+frame_progress = 0.12027371
+script = ExtResource("24_2hewv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Decorations/WaterRock" unique_id=1652853437]
+shape = SubResource("CircleShape2D_2hewv")
+
+[node name="WaterRock2" type="StaticBody2D" parent="Decorations" unique_id=1882453087]
+position = Vector2(1091, -816)
+
+[node name="WaterRock" type="AnimatedSprite2D" parent="Decorations/WaterRock2" unique_id=894927194]
+sprite_frames = SubResource("SpriteFrames_3yknd")
+animation = &"water_rock"
+frame_progress = 0.86016285
+script = ExtResource("24_2hewv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Decorations/WaterRock2" unique_id=671743132]
+shape = SubResource("CircleShape2D_2hewv")
+
+[node name="WaterRock3" type="StaticBody2D" parent="Decorations" unique_id=387282282]
+position = Vector2(398, -1378)
+
+[node name="WaterRock" type="AnimatedSprite2D" parent="Decorations/WaterRock3" unique_id=410393322]
+sprite_frames = SubResource("SpriteFrames_3yknd")
+animation = &"water_rock"
+frame_progress = 0.86016285
+script = ExtResource("24_2hewv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Decorations/WaterRock3" unique_id=1002505396]
+shape = SubResource("CircleShape2D_2hewv")
+
+[node name="WaterRock4" type="StaticBody2D" parent="Decorations" unique_id=1644894652]
+position = Vector2(426, -1316)
+
+[node name="WaterRock" type="AnimatedSprite2D" parent="Decorations/WaterRock4" unique_id=230324988]
+sprite_frames = SubResource("SpriteFrames_3yknd")
+animation = &"water_rock"
+frame_progress = 0.86016285
+script = ExtResource("24_2hewv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Decorations/WaterRock4" unique_id=1953932481]
+shape = SubResource("CircleShape2D_2hewv")
+
+[node name="WaterRock5" type="StaticBody2D" parent="Decorations" unique_id=1731800916]
+position = Vector2(1256, -2137)
+
+[node name="WaterRock" type="AnimatedSprite2D" parent="Decorations/WaterRock5" unique_id=1665186664]
+sprite_frames = SubResource("SpriteFrames_3yknd")
+animation = &"water_rock"
+frame_progress = 0.86016285
+script = ExtResource("24_2hewv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Decorations/WaterRock5" unique_id=836422399]
+shape = SubResource("CircleShape2D_2hewv")
+
+[node name="WaterRock6" type="StaticBody2D" parent="Decorations" unique_id=384468128]
+position = Vector2(2054, 713)
+
+[node name="WaterRock" type="AnimatedSprite2D" parent="Decorations/WaterRock6" unique_id=1991824079]
+sprite_frames = SubResource("SpriteFrames_3yknd")
+animation = &"water_rock"
+frame_progress = 0.86016285
+script = ExtResource("24_2hewv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Decorations/WaterRock6" unique_id=1463168748]
+shape = SubResource("CircleShape2D_2hewv")
 
 [node name="Hints" type="Node2D" parent="." unique_id=723270325]
 
