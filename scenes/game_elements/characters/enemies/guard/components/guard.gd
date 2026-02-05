@@ -224,12 +224,12 @@ func _update_debug_info() -> void:
 	if not debug_info.visible:
 		return
 	debug_info.text = ""
-	debug_property("position")
-	debug_value("state", State.keys()[state])
-	debug_property("previous_patrol_point_idx")
-	debug_property("current_patrol_point_idx")
-	debug_value("time left", "%.2f" % guard_movement.still_time_left_in_seconds)
-	debug_value("target point", guard_movement.destination)
+	debug_info.text += "%s: %s\n" % ["position", position]
+	debug_info.text += "%s: %s\n" % ["state", State.keys()[state]]
+	debug_info.text += "%s: %s\n" % ["previous_patrol_point_idx", previous_patrol_point_idx]
+	debug_info.text += "%s: %s\n" % ["current_patrol_point_idx", current_patrol_point_idx]
+	debug_info.text += "%s: %.2f\n" % ["time left", guard_movement.still_time_left_in_seconds]
+	debug_info.text += "%s: %s\n" % ["target point", guard_movement.destination]
 
 
 ## What happens when the guard reached the point it was walking towards
@@ -291,16 +291,6 @@ func _set_state(new_state: State) -> void:
 		State.INVESTIGATING:
 			guard_movement.start_moving_now()
 			breadcrumbs.push_back(global_position)
-
-
-## Pass a property name as a parameter and it shows its name and its value
-func debug_property(property_name: String) -> void:
-	debug_value(property_name, get(property_name))
-
-
-## Pass a value name and its value and it shows it on DebugInfo
-func debug_value(value_name: String, value: Variant) -> void:
-	debug_info.text += "%s: %s\n" % [value_name, value]
 
 
 ## Calculate and set the next point in the patrol path.
