@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bs6vm2sdawbhh"]
+[gd_scene format=3 uid="uid://bs6vm2sdawbhh"]
 
 [ext_resource type="Script" uid="uid://cd2b16s3p2ngm" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/townie.gd" id="1_5lbvk"]
 [ext_resource type="SpriteFrames" uid="uid://cpm5o35ede3qs" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_purple.tres" id="2_c4h1d"]
@@ -12,38 +12,37 @@ height = 42.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3eksq"]
 size = Vector2(52, 50)
 
-[node name="Townie" type="CharacterBody2D"]
+[node name="Townie" type="CharacterBody2D" unique_id=1057054702]
 collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_5lbvk")
 npc_name = "Mirabel"
 look_at_side = 0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1089060519]
 unique_name_in_owner = true
 position = Vector2(0, -30)
 sprite_frames = ExtResource("2_c4h1d")
 animation = &"idle"
 autoplay = "idle"
-flip_h = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1208981314]
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_3vyb7")
 
-[node name="InteractArea" type="Area2D" parent="."]
+[node name="InteractArea" type="Area2D" parent="." unique_id=1337421199]
 unique_name_in_owner = true
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("3_q6d64")
 interact_label_position = Vector2(0, -100)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=2031162428]
 position = Vector2(0, -29)
 shape = SubResource("RectangleShape2D_3eksq")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
-[node name="TalkBehavior" type="Node" parent="." node_paths=PackedStringArray("interact_area")]
+[node name="TalkBehavior" type="Node" parent="." unique_id=303476402 node_paths=PackedStringArray("interact_area")]
 unique_name_in_owner = true
 script = ExtResource("4_xq2tg")
 dialogue = ExtResource("5_c4h1d")

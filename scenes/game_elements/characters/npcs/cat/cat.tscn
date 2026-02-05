@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cr65lmm5b0ueo"]
+[gd_scene format=3 uid="uid://cr65lmm5b0ueo"]
 
 [ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_logic/sprite_behaviors/random_frame_sprite_behavior.gd" id="2_t04tf"]
 [ext_resource type="SpriteFrames" uid="uid://caou2u7vffhei" path="res://scenes/game_elements/characters/npcs/cat/components/cat.tres" id="3_qosq0"]
@@ -17,45 +17,44 @@ random_pitch = 1.15
 streams_count = 1
 stream_0/stream = ExtResource("5_t04tf")
 
-[node name="Cat" type="CharacterBody2D"]
+[node name="Cat" type="CharacterBody2D" unique_id=1950923165]
 collision_layer = 2
 motion_mode = 1
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=556665806]
 unique_name_in_owner = true
 position = Vector2(0, -30)
 sprite_frames = ExtResource("3_qosq0")
 animation = &"idle"
 autoplay = "idle"
-frame = 3
 
-[node name="RandomFrameSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" node_paths=PackedStringArray("sprite")]
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=1044391226 node_paths=PackedStringArray("sprite")]
 position = Vector2(0, 30)
 script = ExtResource("2_t04tf")
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=557938036]
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_3vyb7")
 
-[node name="InteractArea" type="Area2D" parent="."]
+[node name="InteractArea" type="Area2D" parent="." unique_id=1432241865]
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("4_8kxh7")
 action = "Pet the cat"
 metadata/_custom_type_script = "uid://du8wfijr35r35"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1720455095]
 position = Vector2(5, -28)
 shape = SubResource("RectangleShape2D_t04tf")
 debug_color = Color(0.6290859, 0.52632225, 0.15803415, 0.41960785)
 
-[node name="PetInteraction" type="Node" parent="." node_paths=PackedStringArray("interact_area", "miaow_player")]
+[node name="PetInteraction" type="Node" parent="." unique_id=929067504 node_paths=PackedStringArray("interact_area", "miaow_player")]
 script = ExtResource("4_t04tf")
 interact_area = NodePath("../InteractArea")
 miaow_player = NodePath("AudioStreamPlayer2D")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PetInteraction"]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PetInteraction" unique_id=1698132789]
 stream = SubResource("AudioStreamRandomizer_8kxh7")
 bus = &"SFX"

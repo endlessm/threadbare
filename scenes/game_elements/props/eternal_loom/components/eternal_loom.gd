@@ -34,12 +34,11 @@ func _ready() -> void:
 		var elder: Elder
 		if GameState.current_quest:
 			elder = _find_elder(GameState.current_quest)
-		elif elders:
-			# If the game was started from a specific scene (in the editor or
-			# via the #fragment in the web build), rather than by picking a
-			# quest from an elder, GameState.current_quest will be null.
-			# Pick any elder.
-			elder = elders[0]
+		else:
+			push_warning("incorporating_threads was set, but current_quest was null")
+			if elders:
+				# Pick any elder.
+				elder = elders.pick_random()
 		if elder:
 			await elder.congratulate_player()
 
@@ -71,4 +70,8 @@ func on_offering_succeeded() -> void:
 
 
 func is_item_offering_possible() -> bool:
-	return GameState.items_collected().size() >= InventoryItem.ItemType.size()
+	return (
+		GameState.current_quest
+		and GameState.current_quest.threads_to_collect > 0
+		and GameState.items_collected().size() >= GameState.current_quest.threads_to_collect
+	)

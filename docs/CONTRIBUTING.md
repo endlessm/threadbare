@@ -25,7 +25,7 @@ for translation into other languages. Text and dialogue in StoryQuests may
 be written in another language if preferred.
 
 Prefer US English spellings for in-game text and dialogue, as well as source
-code, comments, and commit messages:
+code, comments, and pull request descriptions:
 
 - “Color”, not “colour”
 - “Traveler”, not “traveller”
@@ -79,49 +79,44 @@ Now, coding style checks will be enforced when you run `git commit`.
 [pre-commit]: https://pre-commit.com/
 [uv]: https://docs.astral.sh/uv/
 
-## Git commit messages and pull request descriptions
+## Pull request descriptions
 
-Commit messages should have:
+Pull requests should have:
 
 - A short title describing the intent of the change. The title should be in the
   [imperative mood][] and formatted in sentence case (i.e. with a leading
   capital letter) but no trailing full stop or other punctuation mark. If
   appropriate, prefix the title with the component being modified.
+
 - One or more paragraphs explaining the change in more detail.
-- If the commit resolves an issue, include a link to the issue on a line by
-  itself at the end of the message, in the form `Fixes
-  https://github.com/endlessm/threadbare/issues/XYZ`. If the commit
-  relates to an issue, include the issue link but not the `Fixes` tag.
+
+- If the pull request resolves an issue, [link the pull request to the
+  issue][link-to-issue] with a line like this at the end of the description:
+
+  > Resolves https://github.com/endlessm/threadbare/issues/XYZ
+
+  If the pull request relates to an issue without resolving it, include the
+  issue link but not the `Resolves` keyword.
 
 [imperative mood]: https://en.wikipedia.org/wiki/Imperative_mood
+[link-to-issue]: https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword
 
 Here is an example:
 
-```
-Ink combat: Add ink follow player feature
+> **Ink combat: Add ink follow player feature**
+>
+> The ink can now have a Node2D to follow. A constant force in that node
+> direction will be set every frame.
+>
+> The enemy has a boolean export to throw ink that follows the player node
+> (the first and only node that should be in the "player" group).
+>
+> Resolves https://github.com/endlessm/threadbare/issues/71
 
-The ink can now have a Node2D to follow. A constant force in that node
-direction will be set every frame.
-
-The enemy has a boolean export to throw ink that follows the player node
-(the first and only node that should be in the "player" group).
-
-Fixes https://github.com/endlessm/threadbare/issues/71
-```
-
-If you open a pull request from a branch that contains only a single new commit,
-the commit message will be used as the pull request title & description. If
-your branch has 2 or more commits, the pull request title & description should
-follow the same style guidelines above.
-
-Pull requests should contain one commit per self-contained, logical change.
-This is subjective so use your judgement!
-
-If you are not a Git expert, you may prefer to submit pull requests without a
-clean commit history. In this case, the maintainers will squash your changes
-into a single commit when the pull request is merged. The title and description
-of your pull request should still follow the guidelines above in this case. The
-Threadbare maintainers will be happy to help if you're not sure how to do this.
+Your pull request will be squashed into a single commit when it is merged, and
+the title and description of the pull request will be used as the commit
+message. If you want to make several separate changes, open a separate pull
+request for each one. This is subjective, so use your judgement!
 
 These articles and presentations give more background on how and why to craft a
 good commit message:
@@ -138,8 +133,8 @@ If multiple people have contributed to a single change, special care must be
 taken to make sure they each receive credit for their work. If a pull request is
 made up of several commits, with different authors, this is sufficient. But if
 all commits on a pull request are made by the same person, the other
-contributors must be identified with a specially-formatted tag in the commit
-message or pull request description, as described in GitHub's
+contributors must be identified with a specially-formatted tag in the
+pull request description, as described in GitHub's
 [Creating a commit with multiple authors][co-authored-by] guide. In brief, if
 Jane Doe submits a pull request to add a new enemy, with original art created by
 Alice Jones, the pull request description should end with:

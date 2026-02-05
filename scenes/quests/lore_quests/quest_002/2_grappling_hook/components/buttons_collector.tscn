@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://mruqy04d0vl8"]
+[gd_scene format=3 uid="uid://mruqy04d0vl8"]
 
 [ext_resource type="Script" uid="uid://0bdnfcarw8b0" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/buttons_collector.gd" id="1_t7odl"]
 [ext_resource type="SpriteFrames" uid="uid://qwlhm21ndgn2" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_orange.tres" id="2_vnm58"]
@@ -12,33 +12,33 @@ height = 73.6055
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vnm58"]
 size = Vector2(52, 50)
 
-[node name="ButtonsCollector" type="CharacterBody2D"]
+[node name="ButtonsCollector" type="CharacterBody2D" unique_id=1565485690]
 collision_layer = 2
 script = ExtResource("1_t7odl")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1493156351]
 unique_name_in_owner = true
 position = Vector2(0, -29)
 sprite_frames = ExtResource("2_vnm58")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1701488024]
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_vnm58")
 
-[node name="InteractArea" type="Area2D" parent="."]
+[node name="InteractArea" type="Area2D" parent="." unique_id=1488513282]
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("3_bpxq8")
 interact_label_position = Vector2(0, -128)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1253932590]
 position = Vector2(0, -29)
 shape = SubResource("RectangleShape2D_vnm58")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
-[node name="TalkBehavior" type="Node" parent="." node_paths=PackedStringArray("interact_area")]
+[node name="TalkBehavior" type="Node" parent="." unique_id=1124185946 node_paths=PackedStringArray("interact_area")]
 script = ExtResource("4_tv1as")
 dialogue = ExtResource("5_vnm58")
 interact_area = NodePath("../InteractArea")
