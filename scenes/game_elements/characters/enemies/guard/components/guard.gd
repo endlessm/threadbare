@@ -15,6 +15,8 @@ signal player_detected(player: Node2D)
 enum State {
 	## Going along the path.
 	PATROLLING,
+	## Waiting idle at a path end, or after losing track of player, before returning.
+	WAITING,
 	## Player is in sight, it takes some time until the player is detected.
 	DETECTING,
 	## Player was detected.
@@ -53,7 +55,9 @@ const DEFAULT_SPRITE_FRAMES = preload("uid://ovu5wqo15s5g")
 		patrol_path = new_value
 
 ## The wait time at each patrol point.
-@export_range(0, 5, 0.1, "or_greater", "suffix:s") var wait_time: float = 1.0
+@export_range(0, 5, 0.1, "or_greater", "suffix:s") var wait_time: float = 1.0:
+	set = _set_wait_time
+
 ## The speed at which the guard moves.
 @export_range(20, 300, 5, "or_greater", "or_less", "suffix:m/s") var move_speed: float = 100.0
 
@@ -89,6 +93,8 @@ var breadcrumbs: Array[Vector2] = []
 var state: State = State.PATROLLING:
 	set = _set_state
 
+var _previous_state: State
+
 # The player that's being detected.
 var _player: Node2D
 
@@ -109,6 +115,9 @@ var _player: Node2D
 @onready
 # gdlint:ignore = max-line-length
 var character_animation_player_behavior: CharacterAnimationPlayerBehavior = %CharacterAnimationPlayerBehavior
+
+## Timer for the waiting state.
+@onready var waiting_timer: Timer = %WaitingTimer
 
 ## Handles the velocity and movement of the guard.
 @onready var guard_movement: GuardMovement = %GuardMovement
@@ -153,7 +162,6 @@ func _ready() -> void:
 		global_position = _patrol_point_position(0)
 
 	guard_movement.destination_reached.connect(self._on_destination_reached)
-	guard_movement.still_time_finished.connect(self._on_still_time_finished)
 	guard_movement.path_blocked.connect(self._on_path_blocked)
 
 
@@ -228,7 +236,7 @@ func _update_debug_info() -> void:
 	debug_info.text += "%s: %s\n" % ["state", State.keys()[state]]
 	debug_info.text += "%s: %s\n" % ["previous_patrol_point_idx", previous_patrol_point_idx]
 	debug_info.text += "%s: %s\n" % ["current_patrol_point_idx", current_patrol_point_idx]
-	debug_info.text += "%s: %.2f\n" % ["time left", guard_movement.still_time_left_in_seconds]
+	debug_info.text += "%s: %.2f\n" % ["time left", waiting_timer.time_left]
 	debug_info.text += "%s: %s\n" % ["target point", guard_movement.destination]
 
 
@@ -236,19 +244,12 @@ func _update_debug_info() -> void:
 func _on_destination_reached() -> void:
 	match state:
 		State.PATROLLING:
-			guard_movement.wait_seconds(wait_time)
+			state = State.WAITING
 			_advance_target_patrol_point()
 		State.INVESTIGATING:
-			guard_movement.wait_seconds(wait_time)
+			state = State.WAITING
 		State.RETURNING:
 			breadcrumbs.pop_back()
-
-
-## What happens when the guard finished waiting on a point.
-func _on_still_time_finished() -> void:
-	match state:
-		State.INVESTIGATING:
-			state = State.RETURNING
 
 
 ## What happens if the guard cannot reach their destination because it got
@@ -256,7 +257,7 @@ func _on_still_time_finished() -> void:
 func _on_path_blocked() -> void:
 	match state:
 		State.PATROLLING:
-			guard_movement.wait_seconds(wait_time)
+			state = State.WAITING
 			# This check makes sure that if the guard is blocked on start,
 			# they won't try to set an invalid patrol point as destination.
 			if previous_patrol_point_idx > -1:
@@ -274,6 +275,7 @@ func _set_state(new_state: State) -> void:
 	if state == new_state:
 		return
 
+	_previous_state = state
 	state = new_state
 
 	match state:
@@ -289,8 +291,9 @@ func _set_state(new_state: State) -> void:
 			player_awareness.tint_progress = Color.RED
 			player_awareness.visible = true
 		State.INVESTIGATING:
-			guard_movement.start_moving_now()
 			breadcrumbs.push_back(global_position)
+		State.WAITING:
+			waiting_timer.start()
 
 
 ## Calculate and set the next point in the patrol path.
@@ -448,6 +451,11 @@ func _set_alert_other_sound_stream(new_value: AudioStream) -> void:
 	_torch_hit_sound.stream = new_value
 
 
+func _set_wait_time(new_wait_time: float) -> void:
+	wait_time = new_wait_time
+	waiting_timer.wait_time = wait_time
+
+
 func _on_instant_detection_area_body_entered(body: Node2D) -> void:
 	state = State.ALERTED
 	player_detected.emit(body)
@@ -470,3 +478,11 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
 	if state == State.DETECTING:
 		guard_movement.stop_moving()
 		state = State.INVESTIGATING
+
+
+func _on_waiting_timer_timeout() -> void:
+	match _previous_state:
+		State.PATROLLING:
+			state = State.PATROLLING
+		State.INVESTIGATING:
+			state = State.RETURNING
