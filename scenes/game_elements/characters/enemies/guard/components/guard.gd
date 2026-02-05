@@ -171,17 +171,6 @@ func _process(delta: float) -> void:
 	if Engine.is_editor_hint() and not move_while_in_editor:
 		return
 
-	_process_state()
-	guard_movement.move()
-
-	if state != State.ALERTED:
-		_update_player_awareness(delta)
-
-	_update_animation()
-
-
-## Updates the guard's movement behavior based on its current state.
-func _process_state() -> void:
 	match state:
 		State.PATROLLING:
 			if patrol_path:
@@ -199,6 +188,13 @@ func _process_state() -> void:
 				state = State.PATROLLING
 		State.ALERTED:
 			guard_movement.stop_moving()
+
+	guard_movement.move()
+
+	if state != State.ALERTED:
+		_update_player_awareness(delta)
+
+	_update_animation()
 
 
 ## Changes how PlayerAwareness looks to reflect how close is the player to
