@@ -231,13 +231,15 @@ func _update_debug_info() -> void:
 	debug_info.visible = show_debug_info
 	if not debug_info.visible:
 		return
-	debug_info.text = ""
-	debug_info.text += "%s: %s\n" % ["position", position]
-	debug_info.text += "%s: %s\n" % ["state", State.keys()[state]]
-	debug_info.text += "%s: %s\n" % ["previous_patrol_point_idx", previous_patrol_point_idx]
-	debug_info.text += "%s: %s\n" % ["current_patrol_point_idx", current_patrol_point_idx]
-	debug_info.text += "%s: %.2f\n" % ["time left", waiting_timer.time_left]
-	debug_info.text += "%s: %s\n" % ["target point", guard_movement.destination]
+
+	debug_info.text = "%s: %s\n" % ["state", State.keys()[state]]
+
+	match state:
+		State.WAITING:
+			debug_info.text += "%s: %.2f\n" % ["time left", waiting_timer.time_left]
+		_:
+			debug_info.text += "%s: %s\n" % ["previous_patrol_point_idx", previous_patrol_point_idx]
+			debug_info.text += "%s: %s\n" % ["current_patrol_point_idx", current_patrol_point_idx]
 
 
 ## What happens when the guard reached the point it was walking towards
