@@ -6,5 +6,5 @@ extends AnimatedSprite2D
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# pick random animation for variance
-	var animations = ["1","2","3"]
+	var animations: Array[String] = ["1","2","3"]
 	play(animations.pick_random())
