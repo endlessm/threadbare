@@ -84,8 +84,6 @@ const DEFAULT_SPRITE_FRAMES = preload("uid://ovu5wqo15s5g")
 var previous_patrol_point_idx: int = -1
 ## Index of the current patrol point.
 var current_patrol_point_idx: int = 0
-## Last position in which the player was seen.
-var last_seen_position: Vector2
 ## Breadcrumbs for tracking guards position while investigating, before
 ## returning to patrol, the guard walks through all these positions.
 var breadcrumbs: Array[Vector2] = []
@@ -179,12 +177,7 @@ func _process(delta: float) -> void:
 			else:
 				guard_movement.stop_moving()
 			guard_movement.move()
-		State.WAITING:
-			guard_movement.move()
-		State.DETECTING:
-			guard_movement.move()
-		State.INVESTIGATING:
-			guard_movement.set_destination(last_seen_position)
+		State.WAITING, State.DETECTING, State.INVESTIGATING:
 			guard_movement.move()
 		State.RETURNING:
 			if breadcrumbs:
@@ -476,10 +469,12 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
 	_player = null
-	last_seen_position = body.global_position
 	if state == State.DETECTING:
 		guard_movement.stop_moving()
 		state = State.INVESTIGATING
+		guard_movement.set_destination(body.global_position)
+	elif state == State.INVESTIGATING:
+		guard_movement.set_destination(body.global_position)
 
 
 func _on_waiting_timer_timeout() -> void:
