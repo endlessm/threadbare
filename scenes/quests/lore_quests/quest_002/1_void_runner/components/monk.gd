@@ -11,6 +11,8 @@ extends NPC
 
 var _repelled := false
 
+@onready var _follow: NavigationFollowWalkBehavior = $NavigationFollowWalkBehavior
+
 
 func repel_void() -> void:
 	enemy.queue_free()
@@ -28,3 +30,12 @@ func repel_void() -> void:
 	await tween.finished
 
 	_repelled = true
+
+
+func _on_interact_area_interaction_started(player: Player, _from_right: bool) -> void:
+	_follow.process_mode = Node.PROCESS_MODE_DISABLED
+	_follow.target = player
+
+
+func _on_interact_area_interaction_ended() -> void:
+	_follow.process_mode = Node.PROCESS_MODE_INHERIT
