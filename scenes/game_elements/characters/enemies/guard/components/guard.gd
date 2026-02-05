@@ -178,18 +178,21 @@ func _process(delta: float) -> void:
 				guard_movement.set_destination(target_position)
 			else:
 				guard_movement.stop_moving()
+			guard_movement.move()
+		State.WAITING:
+			guard_movement.move()
+		State.DETECTING:
+			guard_movement.move()
 		State.INVESTIGATING:
 			guard_movement.set_destination(last_seen_position)
+			guard_movement.move()
 		State.RETURNING:
 			if breadcrumbs:
 				var target_position: Vector2 = breadcrumbs.back()
 				guard_movement.set_destination(target_position)
 			else:
 				state = State.PATROLLING
-		State.ALERTED:
-			guard_movement.stop_moving()
-
-	guard_movement.move()
+			guard_movement.move()
 
 	if state != State.ALERTED:
 		_update_player_awareness(delta)
@@ -288,6 +291,7 @@ func _set_state(new_state: State) -> void:
 			player_awareness.ratio = 1.0
 			player_awareness.tint_progress = Color.RED
 			player_awareness.visible = true
+			guard_movement.stop_moving()
 		State.INVESTIGATING:
 			breadcrumbs.push_back(global_position)
 		State.WAITING:
