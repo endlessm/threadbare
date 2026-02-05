@@ -184,7 +184,7 @@ func _process_state() -> void:
 		State.INVESTIGATING:
 			guard_movement.set_destination(last_seen_position)
 		State.RETURNING:
-			if not breadcrumbs.is_empty():
+			if breadcrumbs:
 				var target_position: Vector2 = breadcrumbs.back()
 				guard_movement.set_destination(target_position)
 			else:
@@ -266,7 +266,7 @@ func _on_path_blocked() -> void:
 		State.INVESTIGATING:
 			state = State.RETURNING
 		State.RETURNING:
-			if not breadcrumbs.is_empty():
+			if breadcrumbs:
 				breadcrumbs.pop_back()
 
 
