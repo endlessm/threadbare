@@ -51,8 +51,7 @@ const DEFAULT_SPRITE_FRAMES = preload("uid://ovu5wqo15s5g")
 @export_tool_button("Add/Edit Patrol Path") var _edit_patrol_path: Callable = edit_patrol_path
 ## The path the guard follows while patrolling.
 @export var patrol_path: Path2D:
-	set(new_value):
-		patrol_path = new_value
+	set = _set_patrol_path
 
 ## The wait time at each patrol point.
 @export_range(0, 5, 0.1, "or_greater", "suffix:s") var wait_time: float = 1.0:
@@ -108,6 +107,9 @@ var _player: Node2D
 ## Control to hold debug info that can be toggled on or off.
 @onready var debug_info: Label = %DebugInfo
 
+## Behavior to use when patrolling.
+@onready var patrolling_behavior: PointsWalkBehavior = %PatrollingBehavior
+
 ## Reference to the node controlling the AnimationPlayer for walking / being idle,
 ## so it can be disabled to play the alerted animation.
 @onready
@@ -149,6 +151,8 @@ func _ready() -> void:
 			player_awareness.max_value = time_to_detect_player
 			player_awareness.value = 0.0
 
+	patrolling_behavior.speeds.walk_speed = move_speed
+	_set_patrol_path(patrol_path)
 	_set_sprite_frames(sprite_frames)
 
 	if detection_area:
@@ -163,8 +167,9 @@ func _ready() -> void:
 	guard_movement.path_blocked.connect(self._on_path_blocked)
 
 	# Wait 2 frames before starting to match backwards compatibility.
-	await get_tree().process_frame
-	await get_tree().process_frame
+	if not Engine.is_editor_hint():
+		await get_tree().process_frame
+		await get_tree().process_frame
 
 	_advance_target_patrol_point()
 	state = State.WAITING
@@ -177,8 +182,11 @@ func _process(delta: float) -> void:
 		return
 
 	match state:
-		State.PATROLLING, State.WAITING, State.DETECTING, State.INVESTIGATING, State.RETURNING:
+		State.WAITING, State.INVESTIGATING, State.RETURNING:
 			guard_movement.move()
+		State.DETECTING:
+			if _previous_state != State.PATROLLING:
+				guard_movement.move()
 
 	if state != State.ALERTED:
 		_update_player_awareness(delta)
@@ -224,6 +232,13 @@ func _update_debug_info() -> void:
 			debug_info.text += "%s: %.2f\n" % ["time left", waiting_timer.time_left]
 		State.DETECTING, State.INVESTIGATING, State.RETURNING:
 			debug_info.text += "%s: %s\n" % ["breadcrumbs", breadcrumbs.size()]
+		State.PATROLLING:
+			debug_info.text += (
+				"%s: %s\n" % ["previous_patrol_point_idx", patrolling_behavior.previous_point_index]
+			)
+			debug_info.text += (
+				"%s: %s\n" % ["current_patrol_point_idx", patrolling_behavior.current_point_index]
+			)
 		_:
 			debug_info.text += "%s: %s\n" % ["previous_patrol_point_idx", previous_patrol_point_idx]
 			debug_info.text += "%s: %s\n" % ["current_patrol_point_idx", current_patrol_point_idx]
@@ -232,9 +247,6 @@ func _update_debug_info() -> void:
 ## What happens when the guard reached the point it was walking towards
 func _on_destination_reached() -> void:
 	match state:
-		State.PATROLLING:
-			state = State.WAITING
-			_advance_target_patrol_point()
 		State.INVESTIGATING:
 			state = State.WAITING
 		State.RETURNING:
@@ -250,14 +262,6 @@ func _on_destination_reached() -> void:
 ## stuck with a collider.
 func _on_path_blocked() -> void:
 	match state:
-		State.PATROLLING:
-			state = State.WAITING
-			# This check makes sure that if the guard is blocked on start,
-			# they won't try to set an invalid patrol point as destination.
-			if previous_patrol_point_idx > -1:
-				var new_patrol_point: int = previous_patrol_point_idx
-				previous_patrol_point_idx = current_patrol_point_idx
-				current_patrol_point_idx = new_patrol_point
 		State.INVESTIGATING:
 			state = State.RETURNING
 		State.RETURNING:
@@ -277,12 +281,14 @@ func _set_state(new_state: State) -> void:
 
 	match state:
 		State.PATROLLING:
-			var target_position: Vector2 = _patrol_point_position(current_patrol_point_idx)
-			guard_movement.set_destination(target_position)
+			patrolling_behavior.process_mode = Node.PROCESS_MODE_INHERIT
 		State.DETECTING:
+			if _previous_state != State.PATROLLING:
+				patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			if not _alert_sound.playing:
 				_alert_sound.play()
 		State.ALERTED:
+			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			character_animation_player_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			if not _alert_sound.playing:
 				_alert_sound.play()
@@ -292,9 +298,13 @@ func _set_state(new_state: State) -> void:
 			player_awareness.visible = true
 			guard_movement.stop_moving()
 		State.INVESTIGATING:
+			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			breadcrumbs.push_back(global_position)
 		State.WAITING:
+			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			waiting_timer.start()
+		State.RETURNING:
+			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 
 
 ## Calculate and set the next point in the patrol path.
@@ -452,6 +462,12 @@ func _set_alert_other_sound_stream(new_value: AudioStream) -> void:
 	_torch_hit_sound.stream = new_value
 
 
+func _set_patrol_path(new_patrol_path: Path2D) -> void:
+	patrol_path = new_patrol_path
+	if patrolling_behavior:
+		patrolling_behavior.walking_path = patrol_path
+
+
 func _set_wait_time(new_wait_time: float) -> void:
 	wait_time = new_wait_time
 	waiting_timer.wait_time = wait_time
@@ -489,3 +505,11 @@ func _on_waiting_timer_timeout() -> void:
 			state = State.PATROLLING
 		State.INVESTIGATING:
 			state = State.RETURNING
+
+
+func _on_patrolling_behavior_point_reached() -> void:
+	state = State.WAITING
+
+
+func _on_patrolling_behavior_got_stuck() -> void:
+	state = State.WAITING
