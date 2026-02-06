@@ -88,7 +88,7 @@ var current_patrol_point_idx: int = 0
 ## returning to patrol, the guard walks through all these positions.
 var breadcrumbs: Array[Vector2] = []
 ## Current state of the guard.
-var state: State = State.PATROLLING:
+var state: State:
 	set = _set_state
 
 var _previous_state: State
@@ -162,6 +162,13 @@ func _ready() -> void:
 	guard_movement.destination_reached.connect(self._on_destination_reached)
 	guard_movement.path_blocked.connect(self._on_path_blocked)
 
+	# Wait 2 frames before starting to match backwards compatibility.
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	_advance_target_patrol_point()
+	state = State.WAITING
+
 
 func _process(delta: float) -> void:
 	_update_debug_info()
@@ -170,14 +177,7 @@ func _process(delta: float) -> void:
 		return
 
 	match state:
-		State.PATROLLING:
-			if patrol_path:
-				var target_position: Vector2 = _patrol_point_position(current_patrol_point_idx)
-				guard_movement.set_destination(target_position)
-			else:
-				guard_movement.stop_moving()
-			guard_movement.move()
-		State.WAITING, State.DETECTING, State.INVESTIGATING, State.RETURNING:
+		State.PATROLLING, State.WAITING, State.DETECTING, State.INVESTIGATING, State.RETURNING:
 			guard_movement.move()
 
 	if state != State.ALERTED:
@@ -276,6 +276,9 @@ func _set_state(new_state: State) -> void:
 	state = new_state
 
 	match state:
+		State.PATROLLING:
+			var target_position: Vector2 = _patrol_point_position(current_patrol_point_idx)
+			guard_movement.set_destination(target_position)
 		State.DETECTING:
 			if not _alert_sound.playing:
 				_alert_sound.play()
