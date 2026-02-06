@@ -137,9 +137,8 @@ func _on_champ_long_rock_water_entered() -> void:
 ## Signal from hint sign to reset camera view and sequence
 func _on_hint_sign_hint_sequence_finished() -> void:
 	await get_tree().create_timer(RESPAWN_DELAY).timeout
-	#if _current_step == 1:
 	camera.global_position = player.global_position
-	player._set_mode(player.Mode.COZY)
+	player._toggle_player_behavior(player.player_interaction, true)
 	reset_all()
 
 ## Function to rest all sequence objets after displaying via hint sequence
@@ -160,10 +159,10 @@ func reset_all() -> void:
 
 ## Function to move camera position so entire sequence is shown (for second sequence)
 func _on_hint_sign_2_demonstrate_sequence() -> void:
-	player._set_mode(player.Mode.DEFEATED)
+	player._toggle_player_behavior(player.player_interaction, false)
 	camera.global_position = $Objects/Middle8.global_position
 
 
 func _on_hint_sign_1_demonstrate_sequence() -> void:
-	player._set_mode(player.Mode.DEFEATED)
+	player._toggle_player_behavior(player.player_interaction, false)
 	camera.global_position = $Objects/Middle3.global_position
