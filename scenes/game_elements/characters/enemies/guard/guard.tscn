@@ -5,11 +5,20 @@
 [ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="3_0hjcv"]
 [ext_resource type="Script" uid="uid://cu7ujf83r7yh2" path="res://scenes/game_logic/walk_behaviors/points_walk_behavior.gd" id="3_mswbt"]
 [ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="3_pnkgp"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="4_innil"]
 [ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="4_lptvm"]
 [ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="4_mswbt"]
 [ext_resource type="SpriteFrames" uid="uid://ovu5wqo15s5g" path="res://scenes/quests/template_quests/NO_EDIT/1_NO_EDIT_stealth/NO_EDIT_stealth_components/NO_EDIT_guard_enemy.tres" id="5_mswbt"]
 [ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="7_klpct"]
 [ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="9_8vt0k"]
+
+[sub_resource type="Resource" id="Resource_2e3xr"]
+script = ExtResource("4_innil")
+walk_speed = 200.0
+metadata/_custom_type_script = "uid://csev4hv57utxv"
+
+[sub_resource type="Resource" id="Resource_innil"]
+script = ExtResource("4_innil")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g173s"]
 radius = 35.0
@@ -219,6 +228,7 @@ one_shot = true
 unique_name_in_owner = true
 process_mode = 4
 script = ExtResource("3_mswbt")
+speeds = SubResource("Resource_2e3xr")
 character = NodePath("..")
 metadata/_custom_type_script = "uid://cu7ujf83r7yh2"
 
@@ -226,6 +236,7 @@ metadata/_custom_type_script = "uid://cu7ujf83r7yh2"
 unique_name_in_owner = true
 process_mode = 4
 script = ExtResource("3_mswbt")
+speeds = SubResource("Resource_innil")
 character = NodePath("..")
 metadata/_custom_type_script = "uid://cu7ujf83r7yh2"
 
@@ -356,6 +367,8 @@ max_distance = 500.0
 bus = &"SFX"
 
 [connection signal="timeout" from="WaitingTimer" to="." method="_on_waiting_timer_timeout"]
+[connection signal="got_stuck" from="PatrollingBehavior" to="." method="_on_patrolling_behavior_got_stuck"]
+[connection signal="point_reached" from="PatrollingBehavior" to="." method="_on_patrolling_behavior_point_reached"]
 [connection signal="body_entered" from="InstantDetectionArea" to="." method="_on_instant_detection_area_body_entered"]
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
