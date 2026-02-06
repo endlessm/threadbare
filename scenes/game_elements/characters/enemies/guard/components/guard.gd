@@ -78,11 +78,6 @@ const DEFAULT_SPRITE_FRAMES = preload("uid://ovu5wqo15s5g")
 ## Toggles visibility of debug info.
 @export var show_debug_info: bool = false
 
-## Index of the previous patrol point, -1 means that there isn't a previous
-## point yet.
-var previous_patrol_point_idx: int = -1
-## Index of the current patrol point.
-var current_patrol_point_idx: int = 0
 ## Breadcrumbs for tracking guards position while investigating, before
 ## returning to patrol, the guard walks through all these positions.
 var breadcrumbs: Array[Vector2] = []
@@ -158,11 +153,6 @@ func _ready() -> void:
 	if detection_area:
 		detection_area.scale = Vector2.ONE * detection_area_scale
 
-	# When the level starts, the guard is placed at the beginning of the
-	# patrol path.
-	if patrol_path:
-		global_position = _patrol_point_position(0)
-
 	guard_movement.destination_reached.connect(self._on_destination_reached)
 	guard_movement.path_blocked.connect(self._on_path_blocked)
 
@@ -171,7 +161,6 @@ func _ready() -> void:
 		await get_tree().process_frame
 		await get_tree().process_frame
 
-	_advance_target_patrol_point()
 	state = State.WAITING
 
 
@@ -234,14 +223,11 @@ func _update_debug_info() -> void:
 			debug_info.text += "%s: %s\n" % ["breadcrumbs", breadcrumbs.size()]
 		State.PATROLLING:
 			debug_info.text += (
-				"%s: %s\n" % ["previous_patrol_point_idx", patrolling_behavior.previous_point_index]
+				"%s: %s\n" % ["previous_point_index", patrolling_behavior.previous_point_index]
 			)
 			debug_info.text += (
-				"%s: %s\n" % ["current_patrol_point_idx", patrolling_behavior.current_point_index]
+				"%s: %s\n" % ["current_point_index", patrolling_behavior.current_point_index]
 			)
-		_:
-			debug_info.text += "%s: %s\n" % ["previous_patrol_point_idx", previous_patrol_point_idx]
-			debug_info.text += "%s: %s\n" % ["current_patrol_point_idx", current_patrol_point_idx]
 
 
 ## What happens when the guard reached the point it was walking towards
@@ -307,41 +293,6 @@ func _set_state(new_state: State) -> void:
 			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 
 
-## Calculate and set the next point in the patrol path.
-## The guard would circle back if the path is open, and go in rounds if the
-## path is closed.
-func _advance_target_patrol_point() -> void:
-	if not patrol_path or not patrol_path.curve or _amount_of_patrol_points() < 2:
-		return
-
-	var new_patrol_point_idx: int
-
-	if _is_patrol_path_closed():
-		# amount of points - 1 is used here because in a closed path, the
-		# last and first patrol points are the same. So, this lets us skip
-		# that repeated point and go for the first one that is different
-		new_patrol_point_idx = (current_patrol_point_idx + 1) % (_amount_of_patrol_points() - 1)
-	else:
-		var at_last_point: bool = current_patrol_point_idx == (_amount_of_patrol_points() - 1)
-		var at_first_point: bool = current_patrol_point_idx == 0
-		var going_backwards_in_path: bool = previous_patrol_point_idx > current_patrol_point_idx
-		if at_last_point:
-			# When reaching the end of the path, it starts walking back
-			new_patrol_point_idx = current_patrol_point_idx - 1
-		elif at_first_point:
-			# If it's at first point is either because it was walking back
-			# or because it's the first time it will move, in any case, it moves
-			# forward
-			new_patrol_point_idx = current_patrol_point_idx + 1
-		elif going_backwards_in_path:
-			new_patrol_point_idx = current_patrol_point_idx - 1
-		else:
-			new_patrol_point_idx = current_patrol_point_idx + 1
-
-	previous_patrol_point_idx = current_patrol_point_idx
-	current_patrol_point_idx = new_patrol_point_idx
-
-
 ## Checks if a straight line can be traced from the Guard to a certain point.
 ## It returns true if the path to the point is free of walls.
 ## Note: it only detects sight_occluders collisions, not wall collisions, this
@@ -352,39 +303,13 @@ func _is_sight_to_point_blocked(point_position: Vector2) -> bool:
 	return sight_ray_cast.is_colliding()
 
 
-## Patrol point index to global position
-func _patrol_point_position(point_idx: int) -> Vector2:
-	var local_point_position: Vector2 = patrol_path.curve.get_point_position(point_idx)
-	return patrol_path.to_global(local_point_position)
-
-
-func _amount_of_patrol_points() -> int:
-	return patrol_path.curve.point_count
-
-
-## Returns true if the end of the patrol path is the same point as the beginning
-func _is_patrol_path_closed() -> bool:
-	if not patrol_path:
-		return false
-
-	var curve: Curve2D = patrol_path.curve
-	if curve.point_count < 3:
-		return false
-
-	var first_point_position: Vector2 = curve.get_point_position(0)
-	var last_point_position: Vector2 = curve.get_point_position(curve.point_count - 1)
-
-	return first_point_position.is_equal_approx(last_point_position)
-
-
 ## Resets the guard to its initial values and placement on screen so it starts
 ## patrolling again as if the level just started.
 func _reset() -> void:
-	previous_patrol_point_idx = -1
-	current_patrol_point_idx = 0
 	velocity = Vector2.ZERO
 	if patrol_path:
-		global_position = _patrol_point_position(0)
+		var local_point_position: Vector2 = patrol_path.curve.get_point_position(0)
+		global_position = patrol_path.to_global(local_point_position)
 
 
 ## When the scene is saved, resets the Guard's position to the beginning of
