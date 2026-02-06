@@ -2,10 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends CharacterBody2D
 
-#const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
-
 const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
 var input_vector: Vector2
 
 
@@ -18,6 +15,7 @@ enum Mode {
 	DEFEATED,
 }
 var mode: Mode = Mode.COZY
+
 ## How fast does the player transition from walking/running to stopped.
 ## A low value will make the character look as slipping on ice.
 ## A high value will stop the character immediately.
@@ -27,9 +25,7 @@ var mode: Mode = Mode.COZY
 @export_range(10, 100000, 10) var moving_step: float = 4000.0
 
 
-#func _ready() -> void:
-	#self.sprite_frames = DEFAULT_SPRITE_FRAME
-
+## Function that is called every "tick" that is constantly listening
 func _physics_process(delta: float) -> void:
 	# Don't let player move once defeated
 	if mode == Mode.DEFEATED:
@@ -44,20 +40,20 @@ func _physics_process(delta: float) -> void:
 	# Change speed of player
 	velocity = velocity.move_toward(input_vector, step * delta)
 	move_and_slide()
-	
+
+## Function to listen for user input, each key press corresponding to movement is handled here
 func _unhandled_input(_event: InputEvent) -> void:
 	# Set movement inputs (more options can be found in the Input Map in Project Settings)
-	# Question: how can we make diagonal speed the same as walking in a straight line?
+	var axis: Vector2 = Vector2(0,0)
+	if(Input.is_action_pressed(&"move_left")):
+		axis.x = -1
+	if(Input.is_action_pressed(&"move_right")):
+		axis.x = 1
 	
-	# Something like this will be used for learners (limiting movement)
-	#var axis: Vector2 = Vector2(0,0)
-	#if(Input.is_action_pressed(&"move_left")):
-		#axis.x = -1
-	#if(Input.is_action_pressed(&"move_right")):
-		#axis.x = 1
-		
-	# This is only for debugging
-	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	#TODO: Question: how can we make diagonal speed the same as walking in a straight line?
+
+	# TODO: Full movement for debugging (remove before the script is finalized)
+	#var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 
 	input_vector = axis * SPEED
 	
