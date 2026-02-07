@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="1_1fuoe"]
 [ext_resource type="AudioStream" uid="uid://df7ldbesilfry" path="res://assets/first_party/music/Threadbare Loop_Main_Bridge_02.ogg" id="1_a16ge"]
+[ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_p0sed"]
 [ext_resource type="Resource" uid="uid://cvuitsm15yyaw" path="res://scenes/quests/story_quests/champ/2_combat/combat_components/champ_combat.dialogue" id="2_sm7tj"]
 [ext_resource type="TileSet" uid="uid://djck8217try86" path="res://scenes/quests/story_quests/champ/tiles/champ_elevation.tres" id="5_sv8bg"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="6_r6jc5"]
@@ -278,9 +279,8 @@ animations = [{
 [node name="Combat" type="Node2D" unique_id=603310857]
 y_sort_enabled = true
 
-[node name="Background Music" type="AudioStreamPlayer2D" parent="."]
+[node name="BackgroundMusic" parent="." unique_id=1461759951 instance=ExtResource("1_p0sed")]
 stream = ExtResource("1_a16ge")
-autoplay = true
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1241283789]
 script = ExtResource("1_1fuoe")
@@ -377,7 +377,6 @@ scale = Vector2(2, 2)
 sprite_frames = ExtResource("12_x632n")
 label = "c"
 color = Color(1, 1, 1, 1)
-
 
 [node name="Buoys" type="Node2D" parent="OnTheGround" unique_id=1466301692]
 
@@ -487,7 +486,3 @@ frame_progress = 0.7079184
 
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
-
-[editable path="OnTheGround/Objects/Object1"]
-[editable path="OnTheGround/Objects/Object2"]
-[editable path="OnTheGround/Objects/Object3"]
