@@ -65,14 +65,15 @@ func _restore_from_hash() -> void:
 				# for testing or debugging.
 				GameState.persist_progress = false
 				GameState.clear()
-				# TODO: Try to look up the quest that the scene corresponds to
+				GameState.guess_quest(path)
+				GameState.set_challenge_start_scene(path)
 
 			# In theory, we might like to avoid switching scene if the specified
 			# scene is the default scene. In practice, that will not happen, and
 			# if it does, it's harmless enough.
 			change_to_file(path)
 		else:
-			print("Path ", path, " from URL hash ", url_hash, " is not a scene; ignoring")
+			prints("Path", path, "from URL hash", url_hash, "is not a scene; ignoring")
 
 
 ## On the web, update or clear the URL hash to indicate the current world.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://b64uft76tbblp"]
+[gd_scene format=4 uid="uid://b64uft76tbblp"]
 
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="1_5r6en"]
 [ext_resource type="Resource" uid="uid://b1eriy1gdfdkd" path="res://scenes/eternal_loom_sokoban/sokoban.dialogue" id="2_20ol2"]
@@ -10,9 +10,9 @@
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="8_20ol2"]
 [ext_resource type="AudioStream" uid="uid://bbamdm6wtjjcn" path="res://assets/first_party/music/Threadbare_Bed.ogg" id="9_wwulk"]
 
-[node name="SokobanLevel3a" type="Node2D"]
+[node name="SokobanLevel3a" type="Node2D" unique_id=557135403]
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=713637633]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -26,43 +26,43 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0740935, 0.0496062, 0.0467346, 1)
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1165485092]
 
-[node name="Cinematic" type="Node2D" parent="."]
+[node name="Cinematic" type="Node2D" parent="." unique_id=444108065]
 script = ExtResource("1_5r6en")
 dialogue = ExtResource("2_20ol2")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
-[node name="Board2D" type="Node2D" parent="."]
+[node name="Board2D" type="Node2D" parent="." unique_id=1802123134]
 script = ExtResource("5_x0rcl")
 metadata/_custom_type_script = "uid://dppvw2f8yh4vu"
 
-[node name="Floor" type="TileMapLayer" parent="Board2D"]
+[node name="Floor" type="TileMapLayer" parent="Board2D" unique_id=1146952139]
 material = ExtResource("4_20ol2")
 tile_map_data = PackedByteArray("AAAAAP7/AgABAAAAAAAAAP//AgABAAAAAAAAAAAAAgABAAAAAAD///3/AgAAAAAAAAAAAP3/AgABAAAAAAD///z/AgAAAAAAAAAAAPz/AgABAAAAAAD///v/AgAAAAAAAAAAAPv/AgABAAAAAAD//wIAAgAAAAAAAAD//wMAAgAAAAAAAAD//wQAAgACAAAAAAAAAAIAAgABAAAAAAAAAAMAAgABAAAAAAAAAAQAAgABAAAAAAD//wEAAgAAAAAAAAAAAAEAAgABAAAAAAA=")
 tile_set = ExtResource("6_nr7ak")
 
-[node name="BackgroundThread" type="TileMapLayer" parent="Board2D"]
+[node name="BackgroundThread" type="TileMapLayer" parent="Board2D" unique_id=508973865]
 tile_map_data = PackedByteArray("AAAAAP//BQAAAAAAAAAAAP3/BQAAAAAAAAAAAPz/BQAAAAAAAAAAAPv/BQAAAAAAAAAAAAAABQAAAAAAAAAAAAEABQAAAAAAAAAAAAIABQAAAAAAAAAAAAMABQAAAAAAAAAAAAQABQAAAAAAAAA=")
 tile_set = ExtResource("6_nr7ak")
 
-[node name="TargetThread" type="TileMapLayer" parent="Board2D"]
+[node name="TargetThread" type="TileMapLayer" parent="Board2D" unique_id=515933535]
 tile_map_data = PackedByteArray("AAAAAP7/AAAAAAAADQA=")
 tile_set = ExtResource("6_nr7ak")
 
-[node name="Foreground" type="TileMapLayer" parent="Board2D"]
+[node name="Foreground" type="TileMapLayer" parent="Board2D" unique_id=164399575]
 tile_map_data = PackedByteArray("AAD///r/AAAAAAAABwAAAPr/AAAAAAAABwABAPr/AAAAAAAABwABAP7/AAAAAAAAAQD+//r/AAAAAAAAAQD+//v/AAAAAAAABwD+//z/AAAAAAAAAQD+//3/AAAAAAAABwD+//7/AAAAAAAABwD/////AAAAAAAABwD//wAAAAAAAAAABwABAP//AAAAAAAABwABAAAAAAAAAAAABwD///7/AAAAAAAAAQAAAPv/BgAAAAAAAQABAPv/AAAAAAAABwABAPz/AAAAAAAAAQABAP3/AAAAAAAABwD///3/AAAAAAAABgD+/wEAAAAAAAAAAQD+/wIAAAAAAAAABwD+/wMAAAAAAAAABwD+/wQAAAAAAAAABwD+/wUAAAAAAAAABwAAAAUAAAAAAAAABwABAAEAAAAAAAAABwABAAIAAAAAAAAAAQABAAMAAAAAAAAABwABAAQAAAAAAAAABwABAAUAAAAAAAAABwD+/wAAAAAAAAAABwD//wUAAAAAAAAAAQAAAAAAAAAAAAAACQAAAAQABgAAAAAAAgA=")
 tile_set = ExtResource("6_nr7ak")
 
-[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1713440731]
 
-[node name="SokobanHUD" parent="ScreenOverlay" instance=ExtResource("6_qga2c")]
+[node name="SokobanHUD" parent="ScreenOverlay" unique_id=1880330019 instance=ExtResource("6_qga2c")]
 
-[node name="RuleEngine" parent="." node_paths=PackedStringArray("board") instance=ExtResource("7_qga2c")]
+[node name="RuleEngine" parent="." unique_id=865867186 node_paths=PackedStringArray("board") instance=ExtResource("7_qga2c")]
 board = NodePath("../Board2D")
 next_scene = "uid://ughhyyuc83kk"
 
-[node name="BackgroundMusic" parent="." instance=ExtResource("8_20ol2")]
+[node name="BackgroundMusic" parent="." unique_id=350956816 instance=ExtResource("8_20ol2")]
 stream = ExtResource("9_wwulk")
 
 [connection signal="skip_enabled" from="RuleEngine" to="ScreenOverlay/SokobanHUD" method="display_skip"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dy8ohrl7j24qy"]
+[gd_scene format=3 uid="uid://dy8ohrl7j24qy"]
 
 [ext_resource type="Script" uid="uid://dg7jodlol6iao" path="res://scenes/game_elements/characters/enemies/mothsache/mothsache.gd" id="1_f7683"]
 [ext_resource type="SpriteFrames" uid="uid://b0nyiuolbvnl0" path="res://scenes/game_elements/characters/enemies/mothsache/components/mothsache_frames.tres" id="1_tm0nn"]
@@ -30,7 +30,7 @@ shadow_color = Color(0, 0, 0, 1)
 [sub_resource type="CircleShape2D" id="CircleShape2D_e2qj4"]
 radius = 48.0
 
-[node name="Mothsache" type="CharacterBody2D"]
+[node name="Mothsache" type="CharacterBody2D" unique_id=1647526252]
 collision_layer = 2
 collision_mask = 531
 motion_mode = 1
@@ -38,36 +38,36 @@ script = ExtResource("1_f7683")
 chase_speed = 200.0
 alert_sound_stream = ExtResource("2_8q7cb")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2128243933]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_0607a")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=13738919]
 unique_name_in_owner = true
 position = Vector2(0, -37)
 sprite_frames = ExtResource("1_tm0nn")
 animation = &"attack_anticipation"
 
-[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" node_paths=PackedStringArray("character", "sprite")]
+[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=1787939622 node_paths=PackedStringArray("character", "sprite")]
 unique_name_in_owner = true
 script = ExtResource("3_fmv22")
 character = NodePath("../..")
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
-[node name="ErraticWalkBehavior" type="Node2D" parent="." node_paths=PackedStringArray("character")]
+[node name="ErraticWalkBehavior" type="Node2D" parent="." unique_id=222442371 node_paths=PackedStringArray("character")]
 unique_name_in_owner = true
 script = ExtResource("3_xxd2s")
 speeds = SubResource("Resource_fmv22")
 travel_distance = 100.0
 character = NodePath("..")
 
-[node name="BehaviorTimer" type="Timer" parent="."]
+[node name="BehaviorTimer" type="Timer" parent="." unique_id=688801979]
 unique_name_in_owner = true
 one_shot = true
 autostart = true
 
-[node name="PlayerAwareness" type="TextureProgressBar" parent="."]
+[node name="PlayerAwareness" type="TextureProgressBar" parent="." unique_id=71529418]
 unique_name_in_owner = true
 visible = false
 modulate = Color(1, 1, 1, 0)
@@ -86,7 +86,7 @@ texture_progress = ExtResource("7_8q7cb")
 tint_under = Color(1, 1, 1, 0.392157)
 tint_progress = Color(1, 1, 0, 1)
 
-[node name="DebugInfo" type="Label" parent="."]
+[node name="DebugInfo" type="Label" parent="." unique_id=2147229547]
 unique_name_in_owner = true
 visible = false
 z_index = 100
@@ -101,41 +101,41 @@ Current Speed: X
 Target Speed: Y "
 label_settings = SubResource("LabelSettings_uv1ho")
 
-[node name="AttackRadius" type="Area2D" parent="."]
+[node name="AttackRadius" type="Area2D" parent="." unique_id=921570844]
 unique_name_in_owner = true
 
-[node name="Radius" type="CollisionShape2D" parent="AttackRadius"]
+[node name="Radius" type="CollisionShape2D" parent="AttackRadius" unique_id=1505282690]
 unique_name_in_owner = true
 position = Vector2(0, -29.865)
 scale = Vector2(1.075, 1.075)
 shape = SubResource("CircleShape2D_e2qj4")
 debug_color = Color(1.540184e-06, 0.5658079, 0.8595374, 0.41960785)
 
-[node name="DetectionArea" type="Area2D" parent="."]
+[node name="DetectionArea" type="Area2D" parent="." unique_id=1613936682]
 unique_name_in_owner = true
 
-[node name="DetectionRadius" type="CollisionShape2D" parent="DetectionArea"]
+[node name="DetectionRadius" type="CollisionShape2D" parent="DetectionArea" unique_id=1183229414]
 unique_name_in_owner = true
 position = Vector2(0, -48)
 scale = Vector2(4.5, 4.5)
 shape = SubResource("CircleShape2D_e2qj4")
 debug_color = Color(1, 0, 0, 0.41960785)
 
-[node name="Sounds" type="Node2D" parent="."]
+[node name="Sounds" type="Node2D" parent="." unique_id=2043584116]
 
-[node name="AlertSound" type="AudioStreamPlayer" parent="Sounds"]
+[node name="AlertSound" type="AudioStreamPlayer" parent="Sounds" unique_id=1871241841]
 unique_name_in_owner = true
 volume_db = -5.0
 bus = &"SFX"
 
-[node name="FootSound" type="AudioStreamPlayer2D" parent="Sounds"]
+[node name="FootSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=1997360340]
 unique_name_in_owner = true
 visible = false
 volume_db = -2.0
 max_distance = 350.0
 bus = &"SFX"
 
-[node name="FireSound" type="AudioStreamPlayer2D" parent="Sounds"]
+[node name="FireSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=606219321]
 unique_name_in_owner = true
 visible = false
 volume_db = -2.0
@@ -144,7 +144,7 @@ max_distance = 500.0
 attenuation = 2.0
 bus = &"SFX"
 
-[node name="TorchHitSound" type="AudioStreamPlayer2D" parent="Sounds"]
+[node name="TorchHitSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=18838760]
 unique_name_in_owner = true
 visible = false
 volume_db = -2.0

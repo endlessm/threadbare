@@ -27,8 +27,9 @@ const WALK_TARGET_SKIP_ANGLE: float = PI / 4.
 ## circle is this proportion of the [member walking_range].
 const WALK_TARGET_SKIP_RANGE: float = 0.25
 
-## The projectile scene to instantiate when spawning a projectile.
-@export var projectile_scene: PackedScene = preload("uid://j8mqjkg0rvai")
+## The projectile will be instantiated at this distance from the [member projectile_marker] node,
+## in the direction of the player.
+@export_range(0., 100., 1., "or_greater", "suffix:m") var distance: float = 20.0
 
 ## The period of time between throwing projectiles.
 ## Note: Currently this is limited by the length of the AnimationPlayer animation "attack".
@@ -64,9 +65,8 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 
 @export_group("Projectile", "projectile")
 
-## The projectile will be instantiated at this distance from the [member projectile_marker] node,
-## in the direction of the player.
-@export_range(0., 100., 1., "or_greater", "suffix:m") var distance: float = 20.0
+## The projectile scene to instantiate when spawning a projectile.
+@export var projectile_scene: PackedScene = preload("uid://j8mqjkg0rvai")
 
 ## The speed of the projectile initial impulse and the projectile bouncing impulse.
 @export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s")

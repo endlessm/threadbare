@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b82nsrh332syj"]
+[gd_scene format=3 uid="uid://b82nsrh332syj"]
 
 [ext_resource type="Script" uid="uid://dfj3625owet5p" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/throwing_enemy.gd" id="1_ffq0m"]
 [ext_resource type="SpriteFrames" uid="uid://deosvk5k4su5f" path="res://scenes/quests/template_quests/NO_EDIT/2_NO_EDIT_combat/NO_EDIT_combat_components/NO_EDIT_throwing_enemy.tres" id="2_cvpou"]
@@ -238,13 +238,13 @@ _data = {
 &"remove": SubResource("Animation_lx56l")
 }
 
-[node name="ThrowingEnemy" type="CharacterBody2D" groups=["throwing_enemy"]]
+[node name="ThrowingEnemy" type="CharacterBody2D" unique_id=1243855514 groups=["throwing_enemy"]]
 collision_layer = 2
 collision_mask = 17
 motion_mode = 1
 script = ExtResource("1_ffq0m")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1865971466]
 unique_name_in_owner = true
 position = Vector2(0, -30)
 sprite_frames = ExtResource("2_cvpou")
@@ -252,44 +252,42 @@ animation = &"walk"
 autoplay = "idle"
 flip_h = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1703300754]
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_3vyb7")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=2084913349]
 unique_name_in_owner = true
 process_callback = 0
 wait_time = 5.0
 
-[node name="ProjectileMarker" type="Marker2D" parent="."]
+[node name="ProjectileMarker" type="Marker2D" parent="." unique_id=60650531]
 unique_name_in_owner = true
 position = Vector2(-35, -31)
 
-[node name="HitBox" type="Area2D" parent="."]
+[node name="HitBox" type="Area2D" parent="." unique_id=1709759726]
 unique_name_in_owner = true
 collision_layer = 128
 collision_mask = 256
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=1491090207]
 position = Vector2(0, -31.5)
 shape = SubResource("RectangleShape2D_ffq0m")
 debug_color = Color(0.990065, 0, 0.28292, 0.42)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1704141465]
 unique_name_in_owner = true
-libraries = {
-&"": SubResource("AnimationLibrary_fbb2g")
-}
+libraries/ = SubResource("AnimationLibrary_fbb2g")
 
-[node name="Sounds" type="Node2D" parent="."]
+[node name="Sounds" type="Node2D" parent="." unique_id=739419849]
 
-[node name="IdleSound" type="AudioStreamPlayer2D" parent="Sounds"]
+[node name="IdleSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=1129610834]
 unique_name_in_owner = true
 volume_db = 5.0
 max_distance = 1000.0
 bus = &"SFX"
 
-[node name="AttackSound" type="AudioStreamPlayer2D" parent="Sounds"]
+[node name="AttackSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=2061108644]
 unique_name_in_owner = true
 volume_db = 5.0
 max_distance = 1000.0

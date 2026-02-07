@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bqrl8yghaljxh"]
+[gd_scene format=3 uid="uid://bqrl8yghaljxh"]
 
 [ext_resource type="Script" uid="uid://dmf866kgfnp3c" path="res://scenes/game_elements/characters/enemies/guard/components/guard.gd" id="1_723gi"]
 [ext_resource type="Script" uid="uid://c477jgx4lwr86" path="res://scenes/game_elements/characters/enemies/guard/components/guard_movement.gd" id="2_xqer3"]
@@ -168,35 +168,35 @@ _data = {
 &"walk": SubResource("Animation_8vt0k")
 }
 
-[node name="Guardian_SueñosNocturnos" type="CharacterBody2D" groups=["guard_enemy"]]
+[node name="Guardian_SueñosNocturnos" type="CharacterBody2D" unique_id=961707953 groups=["guard_enemy"]]
 collision_layer = 0
 collision_mask = 528
 motion_mode = 1
 script = ExtResource("1_723gi")
 
-[node name="GuardMovement" type="Node2D" parent="."]
+[node name="GuardMovement" type="Node2D" parent="." unique_id=564593044]
 unique_name_in_owner = true
 script = ExtResource("2_xqer3")
 
-[node name="SightRayCast" type="RayCast2D" parent="."]
+[node name="SightRayCast" type="RayCast2D" parent="." unique_id=831893725]
 unique_name_in_owner = true
 collision_mask = 8
 hit_from_inside = true
 collide_with_areas = true
 
-[node name="InstantDetectionArea" type="Area2D" parent="."]
+[node name="InstantDetectionArea" type="Area2D" parent="." unique_id=687393710]
 unique_name_in_owner = true
 collision_layer = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InstantDetectionArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InstantDetectionArea" unique_id=1814385709]
 shape = SubResource("CircleShape2D_g173s")
 
-[node name="DetectionArea" type="Area2D" parent="."]
+[node name="DetectionArea" type="Area2D" parent="." unique_id=652561436]
 unique_name_in_owner = true
 position = Vector2(0, -19)
 collision_layer = 0
 
-[node name="Light" type="PointLight2D" parent="DetectionArea"]
+[node name="Light" type="PointLight2D" parent="DetectionArea" unique_id=1683969665]
 position = Vector2(37.3333, 1.33333)
 scale = Vector2(0.340496, 0.340496)
 color = Color(1, 1, 0.796078, 1)
@@ -208,11 +208,11 @@ texture = ExtResource("3_aeg22")
 offset = Vector2(377.88, 10.7686)
 script = ExtResource("4_1aufm")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea" unique_id=103198036]
 position = Vector2(-29.3333, -132)
 polygon = PackedVector2Array(302, 48, 283, 52, 279, 52, 101, 114, 98, 114, 79, 124, 77, 124, 72, 131, 71, 131, 71, 138, 78, 145, 78, 146, 95, 154, 95, 155, 275, 226, 275, 227, 292, 231, 292, 232, 312, 230, 316, 230, 330, 222, 332, 222, 340, 214, 341, 214, 346, 205, 347, 205, 351, 185, 351, 100, 347, 82, 347, 79, 338, 67, 338, 65, 325, 55, 325, 54, 302, 47)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1613457590]
 unique_name_in_owner = true
 position = Vector2(0, -16)
 scale = Vector2(2, 2)
@@ -221,10 +221,10 @@ animation = &"idle"
 autoplay = "alerted"
 frame = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=238146738]
 shape = SubResource("CircleShape2D_nv25s")
 
-[node name="PlayerAwareness" type="TextureProgressBar" parent="."]
+[node name="PlayerAwareness" type="TextureProgressBar" parent="." unique_id=107349771]
 unique_name_in_owner = true
 visible = false
 modulate = Color(1, 1, 1, 0)
@@ -243,7 +243,7 @@ texture_progress = ExtResource("6_5j7ww")
 tint_under = Color(1, 1, 1, 0.392157)
 tint_progress = Color(1, 1, 0, 1)
 
-[node name="DebugInfo" type="Label" parent="."]
+[node name="DebugInfo" type="Label" parent="." unique_id=1863279041]
 unique_name_in_owner = true
 visible = false
 z_index = 100
@@ -261,26 +261,24 @@ target point: (0.0, 0.0)
 "
 label_settings = SubResource("LabelSettings_nv25s")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_innil")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1111400263]
+libraries/ = SubResource("AnimationLibrary_innil")
 
-[node name="Sounds" type="Node2D" parent="."]
+[node name="Sounds" type="Node2D" parent="." unique_id=1123602569]
 
-[node name="AlertSound" type="AudioStreamPlayer" parent="Sounds"]
+[node name="AlertSound" type="AudioStreamPlayer" parent="Sounds" unique_id=1914726663]
 unique_name_in_owner = true
 stream = ExtResource("7_s7mok")
 volume_db = -5.0
 bus = &"SFX"
 
-[node name="FootSound" type="AudioStreamPlayer2D" parent="Sounds"]
+[node name="FootSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=2126024521]
 unique_name_in_owner = true
 volume_db = -2.0
 max_distance = 350.0
 bus = &"SFX"
 
-[node name="FireSound" type="AudioStreamPlayer2D" parent="Sounds"]
+[node name="FireSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=256339970]
 unique_name_in_owner = true
 volume_db = -2.0
 autoplay = true
@@ -288,7 +286,7 @@ max_distance = 500.0
 attenuation = 2.0
 bus = &"SFX"
 
-[node name="TorchHitSound" type="AudioStreamPlayer2D" parent="Sounds"]
+[node name="TorchHitSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=1963705540]
 unique_name_in_owner = true
 volume_db = -2.0
 max_distance = 500.0

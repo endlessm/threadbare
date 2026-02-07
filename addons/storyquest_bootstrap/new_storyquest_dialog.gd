@@ -14,6 +14,7 @@ var _title: String
 var _description: String
 var _filename: String
 var _invalid_char_regex: RegEx
+var _valid := false
 
 @onready var create_button: Button = %CreateButton
 @onready var panel: Panel = %Panel
@@ -39,7 +40,16 @@ func _ready() -> void:
 	assert(error == OK, error_string(error))
 
 
-func _on_create_button_pressed() -> void:
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"ui_cancel"):
+		close_requested.emit()
+		set_input_as_handled()
+
+
+func submit() -> void:
+	if not _valid:
+		return
+
 	title_edit.editable = false
 	description_edit.editable = false
 	create_button.disabled = true
@@ -107,4 +117,5 @@ func _revalidate() -> void:
 			errors.append('⚠ Title cannot include "story" and "quest" words')
 
 	errors_label.text = "\n".join(errors)
-	create_button.disabled = errors.size() > 0
+	_valid = errors.size() == 0
+	create_button.disabled = not _valid
