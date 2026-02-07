@@ -3,12 +3,7 @@
 extends Node2D
 @onready var rock: AnimatedSprite2D = $AnimatedSprite2D
 @onready var area_2d: Area2D = $AnimatedSprite2D/Area2D
-
-## Audio Stream Player for rock sound effects
-@export var audio_player: AudioStreamPlayer2D
-
-## Sound effect for rock splash
-@export var splash_sound: AudioStream 
+@onready var audio_player: AudioStreamPlayer2D = $"Audio Player"
 
 ## Boolean value representing if the rock is under water
 @export var submerged: bool = true:
@@ -29,15 +24,6 @@ func set_submerged(is_submerged: bool) -> void:
 
 
 func _ready() -> void:
-	if not audio_player:
-		audio_player = AudioStreamPlayer2D.new()
-	if not splash_sound:
-		print("Defauklt")
-		audio_player.stream = preload("res://assets/third_party/sounds/collectibles/MemoryCollectable.ogg")
-	else:
-		print("CUSTOM")
-		audio_player.stream = splash_sound
-	add_child(audio_player)
 	set_submerged(submerged)
 
 
