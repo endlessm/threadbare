@@ -44,7 +44,11 @@ func _physics_process(delta: float) -> void:
 ## Function to listen for user input, each key press corresponding to movement is handled here
 func _unhandled_input(_event: InputEvent) -> void:
 	# Set movement inputs (more options can be found in the Input Map in Project Settings)
-	var axis: Vector2 = Vector2(0,0)
+	# var axis: Vector2 = Vector2(0,0)
+	
+	# TODO: Full movement for debugging (remove before the script is finalized)
+	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	
 	if(Input.is_action_pressed(&"move_left")):
 		axis.x = -1
 	if(Input.is_action_pressed(&"move_right")):
@@ -52,8 +56,6 @@ func _unhandled_input(_event: InputEvent) -> void:
 	
 	#TODO: Question: how can we make diagonal speed the same as walking in a straight line?
 
-	# TODO: Full movement for debugging (remove before the script is finalized)
-	#var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 
 	input_vector = axis * SPEED
 	
