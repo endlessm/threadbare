@@ -395,7 +395,8 @@ func _set_patrol_path(new_patrol_path: Path2D) -> void:
 
 func _set_wait_time(new_wait_time: float) -> void:
 	wait_time = new_wait_time
-	waiting_timer.wait_time = wait_time
+	if waiting_timer:
+		waiting_timer.wait_time = wait_time
 
 
 func _on_instant_detection_area_body_entered(body: Node2D) -> void:
