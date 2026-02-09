@@ -55,13 +55,11 @@ func _pause_resume() -> void:
 
 
 func _fade_in() -> void:
-	create_tween().tween_property(audio_stream_player, "volume_db", linear_to_db(1.0), 1.0)
+	create_tween().tween_property(audio_stream_player, "volume_linear", 1.0, 1.0)
 
 
 func _fade_out() -> void:
-	# If we use linear_to_db(0.0) as final value, the audio stream player
-	# is muted instantly because it goes from 0.0db to -infdb.
-	create_tween().tween_property(audio_stream_player, "volume_db", linear_to_db(0.00001), 1.0)
+	create_tween().tween_property(audio_stream_player, "volume_linear", 0.0, 1.0)
 
 
 func _exit_tree() -> void:
