@@ -41,18 +41,45 @@ func _physics_process(delta: float) -> void:
 	velocity = velocity.move_toward(input_vector, step * delta)
 	move_and_slide()
 
+
+# TODO: Make this blink fn more readable and redact some parts of it so the player can write their own.
+# Blink ability
+@export_range(64, 32*64) var blink_distance_pixels = 192
+func _apply_blink():
+
+# Step 1: Decide how far you want to blink.
+#         Hint: you might want a variable like blink_distance.
+	
+# Step 2: Figure out which direction to blink in.
+	var direction: Vector2 = Vector2(input_vector.x,input_vector.y).normalized()
+
+# Step 3: Move the player in that direction instantly
+	position = Vector2(position.x+(direction.x*blink_distance_pixels), position.y+(direction.y*blink_distance_pixels));
+
+# Step 4: (Optional) Add a cooldown so you can’t blink every frame.
+#         - Start a timer or use a variable that counts down.
+
+# Step 5: (Optional) Add a small visual change when blinking
+#         such as a brief color change or flash.
+	pass
+
 ## Function to listen for user input, each key press corresponding to movement is handled here
 func _unhandled_input(_event: InputEvent) -> void:
 	# Set movement inputs (more options can be found in the Input Map in Project Settings)
-	# var axis: Vector2 = Vector2(0,0)
 	
 	# TODO: Full movement for debugging (remove before the script is finalized)
 	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	# Left and right movement
+	# var axis: Vector2 = Vector2(0,0)
 	
-	if(Input.is_action_pressed(&"move_left")):
-		axis.x = -1
-	if(Input.is_action_pressed(&"move_right")):
-		axis.x = 1
+	#if(Input.is_action_pressed(&"move_left")):
+		#axis.x = -1
+	#if(Input.is_action_pressed(&"move_right")):
+		#axis.x = 1
+	
+	# Blink ability
+	if(Input.is_action_just_pressed(&"champ-blink")):
+		_apply_blink()
 	
 	#TODO: Question: how can we make diagonal speed the same as walking in a straight line?
 
