@@ -12,6 +12,9 @@ extends BaseCharacterBehavior
 ## [br][br]
 ## If the character gets stuck while walking the path, they turn around.
 
+## Emitted when [member character] reaches the ending of the path.
+signal ending_reached
+
 ## Emitted when a point of the path is reached.
 ## This could be used to wait standing for a bit in these points.
 signal point_reached
@@ -92,6 +95,11 @@ func _physics_process(delta: float) -> void:
 		)
 		and walking_path
 	):
+		if (
+			(current_point_index == walking_path.curve.point_count - 1)
+			or (current_point_index == 0)
+		):
+			ending_reached.emit()
 		_advance_target_patrol_point()
 		var local_point_position: Vector2 = walking_path.curve.get_point_position(
 			current_point_index
