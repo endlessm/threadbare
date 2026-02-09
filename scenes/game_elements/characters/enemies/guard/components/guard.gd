@@ -90,6 +90,9 @@ var _previous_state: State
 # The player that's being detected.
 var _player: Node2D
 
+# A marker to the player's last seen position.
+var _investigating_target: Node2D
+
 ## Area that represents the sight of the guard. If a player is in this area
 ## and there are no walls in between detected by [member sight_ray_cast], it
 ## means the player is in sight.
@@ -108,6 +111,9 @@ var _player: Node2D
 ## Behavior to use when returning.
 @onready var returning_behavior: PointsWalkBehavior = %ReturningBehavior
 
+## Behavior to use when investigating.
+@onready var investigating_behavior: FollowWalkBehavior = %InvestigatingBehavior
+
 ## Reference to the node controlling the AnimationPlayer for walking / being idle,
 ## so it can be disabled to play the alerted animation.
 @onready
@@ -117,8 +123,6 @@ var character_animation_player_behavior: CharacterAnimationPlayerBehavior = %Cha
 ## Timer for the waiting state.
 @onready var waiting_timer: Timer = %WaitingTimer
 
-## Handles the velocity and movement of the guard.
-@onready var guard_movement: GuardMovement = %GuardMovement
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var _alert_sound: AudioStreamPlayer = %AlertSound
@@ -151,15 +155,15 @@ func _ready() -> void:
 
 	patrolling_behavior.speeds.walk_speed = move_speed
 	returning_behavior.speeds.walk_speed = move_speed
+	investigating_behavior.speeds.walk_speed = move_speed
+
+	_investigating_target = Node2D.new()
 
 	_set_patrol_path(patrol_path)
 	_set_sprite_frames(sprite_frames)
 
 	if detection_area:
 		detection_area.scale = Vector2.ONE * detection_area_scale
-
-	guard_movement.destination_reached.connect(self._on_destination_reached)
-	guard_movement.path_blocked.connect(self._on_path_blocked)
 
 	# Wait 2 frames before starting to match backwards compatibility.
 	if not Engine.is_editor_hint():
@@ -174,13 +178,6 @@ func _process(delta: float) -> void:
 
 	if Engine.is_editor_hint() and not move_while_in_editor:
 		return
-
-	match state:
-		State.WAITING, State.INVESTIGATING:
-			guard_movement.move()
-		State.DETECTING:
-			if _previous_state != State.PATROLLING:
-				guard_movement.move()
 
 	if state != State.ALERTED:
 		_update_player_awareness(delta)
@@ -235,21 +232,6 @@ func _update_debug_info() -> void:
 			)
 
 
-## What happens when the guard reached the point it was walking towards
-func _on_destination_reached() -> void:
-	match state:
-		State.INVESTIGATING:
-			state = State.WAITING
-
-
-## What happens if the guard cannot reach their destination because it got
-## stuck with a collider.
-func _on_path_blocked() -> void:
-	match state:
-		State.INVESTIGATING:
-			state = State.RETURNING
-
-
 func _set_state(new_state: State) -> void:
 	if state == new_state:
 		return
@@ -261,15 +243,20 @@ func _set_state(new_state: State) -> void:
 		State.PATROLLING:
 			patrolling_behavior.process_mode = Node.PROCESS_MODE_INHERIT
 			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			investigating_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 		State.DETECTING:
 			if _previous_state != State.PATROLLING:
 				patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+				investigating_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+			else:
+				investigating_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			if not _alert_sound.playing:
 				_alert_sound.play()
 		State.ALERTED:
 			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			investigating_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			character_animation_player_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			if not _alert_sound.playing:
 				_alert_sound.play()
@@ -277,16 +264,17 @@ func _set_state(new_state: State) -> void:
 			player_awareness.ratio = 1.0
 			player_awareness.tint_progress = Color.RED
 			player_awareness.visible = true
-			guard_movement.stop_moving()
 		State.INVESTIGATING:
 			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			investigating_behavior.process_mode = Node.PROCESS_MODE_INHERIT
 			breadcrumbs.push_back(global_position)
 		State.WAITING:
 			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			investigating_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			waiting_timer.start()
-			guard_movement.stop_moving()
+			velocity = Vector2.ZERO
 		State.RETURNING:
 			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			var returning_path := Path2D.new()
@@ -297,8 +285,8 @@ func _set_state(new_state: State) -> void:
 				returning_path.curve.add_point(point)
 			returning_behavior.walking_path = returning_path
 			returning_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+			investigating_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			breadcrumbs = []
-			guard_movement.stop_moving()
 
 
 ## Checks if a straight line can be traced from the Guard to a certain point.
@@ -426,11 +414,12 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 func _on_detection_area_body_exited(body: Node2D) -> void:
 	_player = null
 	if state == State.DETECTING:
-		guard_movement.stop_moving()
+		_investigating_target.global_position = body.global_position
+		investigating_behavior.target = _investigating_target
 		state = State.INVESTIGATING
-		guard_movement.set_destination(body.global_position)
 	elif state == State.INVESTIGATING:
-		guard_movement.set_destination(body.global_position)
+		_investigating_target.global_position = body.global_position
+		investigating_behavior.target = _investigating_target
 
 
 func _on_waiting_timer_timeout() -> void:
@@ -451,3 +440,12 @@ func _on_patrolling_behavior_got_stuck() -> void:
 
 func _on_returning_behavior_ending_reached() -> void:
 	state = State.PATROLLING
+
+
+func _on_investigating_behavior_target_reached_changed(is_reached: bool) -> void:
+	if is_reached:
+		state = State.WAITING
+
+
+func _on_investigating_behavior_got_stuck() -> void:
+	state = State.RETURNING

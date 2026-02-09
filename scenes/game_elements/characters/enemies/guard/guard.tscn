@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="4_innil"]
 [ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="4_lptvm"]
 [ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="4_mswbt"]
+[ext_resource type="Script" uid="uid://cwoclmik3db2" path="res://scenes/game_logic/walk_behaviors/follow_walk_behavior.gd" id="5_2e3xr"]
 [ext_resource type="SpriteFrames" uid="uid://ovu5wqo15s5g" path="res://scenes/quests/template_quests/NO_EDIT/1_NO_EDIT_stealth/NO_EDIT_stealth_components/NO_EDIT_guard_enemy.tres" id="5_mswbt"]
 [ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="7_klpct"]
 [ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="9_8vt0k"]
@@ -240,6 +241,14 @@ speeds = SubResource("Resource_innil")
 character = NodePath("..")
 metadata/_custom_type_script = "uid://cu7ujf83r7yh2"
 
+[node name="InvestigatingBehavior" type="Node2D" parent="." unique_id=1943355478 node_paths=PackedStringArray("character")]
+unique_name_in_owner = true
+process_mode = 4
+script = ExtResource("5_2e3xr")
+target_reached_distance = 0.0
+character = NodePath("..")
+metadata/_custom_type_script = "uid://cwoclmik3db2"
+
 [node name="SightRayCast" type="RayCast2D" parent="." unique_id=1964699795]
 unique_name_in_owner = true
 collision_mask = 8
@@ -370,6 +379,8 @@ bus = &"SFX"
 [connection signal="got_stuck" from="PatrollingBehavior" to="." method="_on_patrolling_behavior_got_stuck"]
 [connection signal="point_reached" from="PatrollingBehavior" to="." method="_on_patrolling_behavior_point_reached"]
 [connection signal="ending_reached" from="ReturningBehavior" to="." method="_on_returning_behavior_ending_reached"]
+[connection signal="got_stuck" from="InvestigatingBehavior" to="." method="_on_investigating_behavior_got_stuck"]
+[connection signal="target_reached_changed" from="InvestigatingBehavior" to="." method="_on_investigating_behavior_target_reached_changed"]
 [connection signal="body_entered" from="InstantDetectionArea" to="." method="_on_instant_detection_area_body_entered"]
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
