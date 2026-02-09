@@ -105,6 +105,9 @@ var _player: Node2D
 ## Behavior to use when patrolling.
 @onready var patrolling_behavior: PointsWalkBehavior = %PatrollingBehavior
 
+## Behavior to use when returning.
+@onready var returning_behavior: PointsWalkBehavior = %ReturningBehavior
+
 ## Reference to the node controlling the AnimationPlayer for walking / being idle,
 ## so it can be disabled to play the alerted animation.
 @onready
@@ -147,6 +150,8 @@ func _ready() -> void:
 			player_awareness.value = 0.0
 
 	patrolling_behavior.speeds.walk_speed = move_speed
+	returning_behavior.speeds.walk_speed = move_speed
+
 	_set_patrol_path(patrol_path)
 	_set_sprite_frames(sprite_frames)
 
@@ -171,7 +176,7 @@ func _process(delta: float) -> void:
 		return
 
 	match state:
-		State.WAITING, State.INVESTIGATING, State.RETURNING:
+		State.WAITING, State.INVESTIGATING:
 			guard_movement.move()
 		State.DETECTING:
 			if _previous_state != State.PATROLLING:
@@ -219,7 +224,7 @@ func _update_debug_info() -> void:
 	match state:
 		State.WAITING:
 			debug_info.text += "%s: %.2f\n" % ["time left", waiting_timer.time_left]
-		State.DETECTING, State.INVESTIGATING, State.RETURNING:
+		State.DETECTING, State.INVESTIGATING:
 			debug_info.text += "%s: %s\n" % ["breadcrumbs", breadcrumbs.size()]
 		State.PATROLLING:
 			debug_info.text += (
@@ -235,13 +240,6 @@ func _on_destination_reached() -> void:
 	match state:
 		State.INVESTIGATING:
 			state = State.WAITING
-		State.RETURNING:
-			breadcrumbs.pop_back()
-			if breadcrumbs:
-				var target_position: Vector2 = breadcrumbs.back()
-				guard_movement.set_destination(target_position)
-			else:
-				state = State.PATROLLING
 
 
 ## What happens if the guard cannot reach their destination because it got
@@ -250,12 +248,6 @@ func _on_path_blocked() -> void:
 	match state:
 		State.INVESTIGATING:
 			state = State.RETURNING
-		State.RETURNING:
-			if breadcrumbs:
-				var target_position: Vector2 = breadcrumbs.back()
-				guard_movement.set_destination(target_position)
-			else:
-				state = State.PATROLLING
 
 
 func _set_state(new_state: State) -> void:
@@ -268,13 +260,16 @@ func _set_state(new_state: State) -> void:
 	match state:
 		State.PATROLLING:
 			patrolling_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 		State.DETECTING:
 			if _previous_state != State.PATROLLING:
 				patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			if not _alert_sound.playing:
 				_alert_sound.play()
 		State.ALERTED:
 			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			character_animation_player_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			if not _alert_sound.playing:
 				_alert_sound.play()
@@ -285,12 +280,25 @@ func _set_state(new_state: State) -> void:
 			guard_movement.stop_moving()
 		State.INVESTIGATING:
 			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			breadcrumbs.push_back(global_position)
 		State.WAITING:
 			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			returning_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			waiting_timer.start()
+			guard_movement.stop_moving()
 		State.RETURNING:
 			patrolling_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			var returning_path := Path2D.new()
+			returning_path.curve = Curve2D.new()
+			breadcrumbs.push_back(global_position)
+			breadcrumbs.reverse()
+			for point: Vector2 in breadcrumbs:
+				returning_path.curve.add_point(point)
+			returning_behavior.walking_path = returning_path
+			returning_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+			breadcrumbs = []
+			guard_movement.stop_moving()
 
 
 ## Checks if a straight line can be traced from the Guard to a certain point.
@@ -439,3 +447,7 @@ func _on_patrolling_behavior_point_reached() -> void:
 
 func _on_patrolling_behavior_got_stuck() -> void:
 	state = State.WAITING
+
+
+func _on_returning_behavior_ending_reached() -> void:
+	state = State.PATROLLING
