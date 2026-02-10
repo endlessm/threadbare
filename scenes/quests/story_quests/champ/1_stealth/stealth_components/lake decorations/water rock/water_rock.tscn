@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://b0v2xpc74jyvv"]
+
+[ext_resource type="Texture2D" uid="uid://dx5j8vyhh6ynp" path="res://scenes/quests/story_quests/champ/1_stealth/stealth_components/lake decorations/water rock/RockWater_Idle.png" id="1_yl205"]
+[ext_resource type="Script" uid="uid://dp2jseqq3si1r" path="res://scenes/quests/story_quests/champ/1_stealth/stealth_components/lake decorations/water rock/water_rock.gd" id="2_pts4l"]
+[ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_logic/sprite_behaviors/random_frame_sprite_behavior.gd" id="3_m7yl1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bj6wg"]
+atlas = ExtResource("1_yl205")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e6y6p"]
+atlas = ExtResource("1_yl205")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jiym7"]
+atlas = ExtResource("1_yl205")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b7t4m"]
+atlas = ExtResource("1_yl205")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eicoe"]
+atlas = ExtResource("1_yl205")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tseho"]
+atlas = ExtResource("1_yl205")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8c57f"]
+atlas = ExtResource("1_yl205")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6g3hf"]
+atlas = ExtResource("1_yl205")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_a4car"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bj6wg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e6y6p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jiym7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b7t4m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eicoe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tseho")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8c57f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6g3hf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yl205"]
+radius = 20.09975
+
+[node name="WaterRock" type="Node2D" unique_id=1195851072]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=287983431]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StaticBody2D" unique_id=1103940277]
+sprite_frames = SubResource("SpriteFrames_a4car")
+script = ExtResource("2_pts4l")
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="StaticBody2D/AnimatedSprite2D" unique_id=807464301 node_paths=PackedStringArray("sprite")]
+script = ExtResource("3_m7yl1")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1204871642]
+shape = SubResource("CircleShape2D_yl205")
