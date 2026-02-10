@@ -3,10 +3,6 @@
 class_name ChampSequencePuzzle
 extends SequencePuzzle
 
-const CAMERA_MAX_OFFSET_Y: int = 475
-const CAMERA_OFFSET_Y: int = 25
-const CAMERA_TIMEOUT_INTERVAL: float = 0.03
-const CAMERA_ZOOM_SCALAR: float = 0.005
 const CHECKPOINT_POS: Vector2 = Vector2(1400,180)
 const RESPAWN_DELAY: float = 1.5
 const ROCK_WIDTH: int = 3
@@ -29,6 +25,7 @@ var solve_progress: int = 0
 @onready var puzzle_steps: Node2D = $Steps
 
 func _ready() -> void:
+	camera.global_position = player.global_position
 	sequences = puzzle_steps.get_children()
 	platforms = Array(long_rocks.get_children())
 	objs = Array(objects.get_children())
@@ -136,13 +133,8 @@ func _on_champ_long_rock_water_entered() -> void:
 ## Signal from hint sign to reset camera view and sequence
 func _on_hint_sign_hint_sequence_finished() -> void:
 	await get_tree().create_timer(RESPAWN_DELAY).timeout
-	if _current_step == 1:
-		var goal: float = camera.offset.y + CAMERA_MAX_OFFSET_Y
-		while camera.offset.y < goal:
-			await get_tree().create_timer(CAMERA_TIMEOUT_INTERVAL).timeout
-			camera.offset.y = camera.offset.y + CAMERA_OFFSET_Y
-			camera.zoom.y = camera.zoom.y + CAMERA_ZOOM_SCALAR
-			camera.zoom.x = camera.zoom.x + CAMERA_ZOOM_SCALAR
+	camera.global_position = player.global_position
+	player._toggle_player_behavior(player.player_interaction, true)
 	reset_all()
 
 ## Function to rest all sequence objets after displaying via hint sequence
@@ -163,9 +155,10 @@ func reset_all() -> void:
 
 ## Function to move camera position so entire sequence is shown (for second sequence)
 func _on_hint_sign_2_demonstrate_sequence() -> void:
-	var goal: float = camera.offset.y - CAMERA_MAX_OFFSET_Y
-	while camera.offset.y > goal:
-		await get_tree().create_timer(CAMERA_TIMEOUT_INTERVAL).timeout
-		camera.offset.y = camera.offset.y - CAMERA_OFFSET_Y
-		camera.zoom.y = camera.zoom.y - CAMERA_ZOOM_SCALAR
-		camera.zoom.x = camera.zoom.x - CAMERA_ZOOM_SCALAR
+	player._toggle_player_behavior(player.player_interaction, false)
+	camera.global_position = $Objects/Middle8.global_position
+
+
+func _on_hint_sign_1_demonstrate_sequence() -> void:
+	player._toggle_player_behavior(player.player_interaction, false)
+	camera.global_position = $Objects/Middle3.global_position
