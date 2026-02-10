@@ -3,10 +3,6 @@
 class_name ChampSequencePuzzle
 extends SequencePuzzle
 
-const CAMERA_MAX_OFFSET_Y: int = 475
-const CAMERA_OFFSET_Y: int = 25
-const CAMERA_TIMEOUT_INTERVAL: float = 0.03
-const CAMERA_ZOOM_SCALAR: float = 0.005
 const CHECKPOINT_POS: Vector2 = Vector2(1400,180)
 const RESPAWN_DELAY: float = 1.5
 const ROCK_WIDTH: int = 3
