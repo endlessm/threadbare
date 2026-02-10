@@ -40,21 +40,28 @@ func _physics_process(delta: float) -> void:
 	# Change speed of player
 	velocity = velocity.move_toward(input_vector, step * delta)
 	move_and_slide()
-
+func _walk_on_water():
+	$"../TileMapLayers/Water_border".enabled = false
+	#TODO do you think having the border permanently in that state is a good idea?
+	#TODO you can try to come up with a way to ensure it get enabled again after a while
+	
 ## Function to listen for user input, each key press corresponding to movement is handled here
 func _unhandled_input(_event: InputEvent) -> void:
 	# Set movement inputs (more options can be found in the Input Map in Project Settings)
-	var axis: Vector2 = Vector2(0,0)
-	if(Input.is_action_pressed(&"move_left")):
-		axis.x = -1
-	if(Input.is_action_pressed(&"move_right")):
-		axis.x = 1
+	#var axis: Vector2 = Vector2(0,0)
+	#if(Input.is_action_pressed(&"move_left")):
+		#axis.x = -1
+	#if(Input.is_action_pressed(&"move_right")):
+		#axis.x = 1
 	
 	#TODO: Question: how can we make diagonal speed the same as walking in a straight line?
 
 	# TODO: Full movement for debugging (remove before the script is finalized)
-	#var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
-
+	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	
+	if(Input.is_action_pressed(&"walk_on_water")):
+		_walk_on_water()
+		
 	input_vector = axis * SPEED
 	
 func defeat() -> void:
