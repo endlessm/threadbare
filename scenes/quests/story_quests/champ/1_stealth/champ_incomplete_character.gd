@@ -78,7 +78,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 		#axis.x = 1
 	
 	# Blink ability
-	if(Input.is_action_just_pressed(&"champ-blink")):
+	if(Input.is_action_just_pressed(&"champ_blink")):
 		_apply_blink()
 	
 	#TODO: Question: how can we make diagonal speed the same as walking in a straight line?
