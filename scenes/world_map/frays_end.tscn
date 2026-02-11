@@ -54,11 +54,287 @@
 [ext_resource type="PackedScene" uid="uid://cr65lmm5b0ueo" path="res://scenes/game_elements/characters/npcs/cat/cat.tscn" id="52_ppslc"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="55_wymun"]
 
+[sub_resource type="Gradient" id="Gradient_5j6h7"]
+interpolation_mode = 2
+interpolation_color_space = 2
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_duxxr"]
+gradient = SubResource("Gradient_5j6h7")
+width = 1024
+height = 768
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_r1ek1"]
+interpolation_mode = 2
+interpolation_color_space = 2
+colors = PackedColorArray(1, 0.98333335, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ns5r3"]
+gradient = SubResource("Gradient_r1ek1")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="GDScript" id="GDScript_ns5r3"]
+script/source = "# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends Label
+
+@onready var animation_player: AnimationPlayer = $\"../../TimeAndWeather/AnimationPlayer\"
+
+
+func _process(_delta: float) -> void:
+	text = \"%.1f\" % animation_player.current_animation_position
+"
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h30yx"]
 size = Vector2(2070, 585)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_djq26"]
 size = Vector2(161, 95)
+
+[sub_resource type="GDScript" id="GDScript_r1ek1"]
+script/source = "# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends Node2D
+
+## - 1: One day in game matches one day in reality. Don't do this!
+## - 60: One hour in game matches one day in reality.
+## - 1440: One minute in game matches one day in reality.
+## - 3600: 24 seconds in game matches one day in reality.
+@export_range(1.0, 3600.0, 1.0) var time_scale: float = 1440.0
+
+## - 0: Midnight.
+## - 4: 4 AM.
+## - 12: Noon.
+## - 16: 4 PM.
+@export var current_time: float = 10.0:
+	set = _set_current_time
+
+@export var night_lights_enabled: bool = false:
+	set = _set_night_lights_enabled
+
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var world_environment: WorldEnvironment = $WorldEnvironment
+
+
+func _ready() -> void:
+	for light: Light2D in get_tree().get_nodes_in_group(\"night-lights\"):
+		light.set_meta(\"initial_energy\", light.energy)
+
+	# The day-night cycle is a 24 seconds loop, corresponding to the 24 hours of one day.
+	var day_night_scale := 60 * 60
+	animation_player.speed_scale = time_scale / day_night_scale
+	_set_current_time(current_time)
+
+
+func _process(_delta: float) -> void:
+	get_tree().call_group(\"reflecting-surfaces\", \"set_modulate\", world_environment.environment.background_color)
+
+
+func _set_current_time(new_current_time: float) -> void:
+	current_time = new_current_time
+	if not animation_player:
+		return
+	animation_player.seek(current_time)
+	var enabled := current_time < 5.0 or current_time >= 19.0
+	get_tree().call_group(\"night-lights\", \"set_enabled\", enabled)
+
+
+func _set_night_lights_enabled(new_night_lights_enabled: bool) -> void:
+	if new_night_lights_enabled == night_lights_enabled:
+		return
+	night_lights_enabled = new_night_lights_enabled
+	if not is_inside_tree():
+		return
+	for light: Light2D in get_tree().get_nodes_in_group(\"night-lights\"):
+		var tween: Tween = create_tween()
+		if night_lights_enabled:
+			light.enabled = night_lights_enabled
+			light.energy = 0
+			tween.tween_property(light, \"energy\", light.get_meta(\"initial_energy\"), 1.0)
+		else:
+			light.energy = light.get_meta(\"initial_energy\")
+			tween.tween_property(light, \"energy\", 0.0, 1.0)
+			tween.tween_property(light, \"enabled\", night_lights_enabled, 0.0)
+"
+
+[sub_resource type="Gradient" id="Gradient_ns5r3"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5j6h7"]
+gradient = SubResource("Gradient_ns5r3")
+
+[sub_resource type="Environment" id="Environment_r1ek1"]
+background_mode = 3
+ambient_light_source = 2
+adjustment_enabled = true
+adjustment_color_correction = SubResource("GradientTexture1D_5j6h7")
+
+[sub_resource type="Animation" id="Animation_r1ek1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasModulate:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WorldEnvironment:environment:adjustment_contrast")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WorldEnvironment:environment:adjustment_saturation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:night_lights_enabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("WorldEnvironment:environment:adjustment_brightness")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("WorldEnvironment:environment:background_color")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ns5r3"]
+resource_name = "day-night"
+length = 24.0
+loop_mode = 1
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasModulate:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4, 6, 7, 9.990001, 14, 17, 18, 20, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.28800002, 0.36479995, 0.48, 1), Color(0.28800002, 0.36479995, 0.48, 1), Color(0.68226564, 0.84817696, 0.92506266, 1), Color(0.88227075, 0.9292479, 0.8883446, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0.92, 0.83628, 0.6808, 1), Color(0.92, 0.7482667, 0.55200005, 1), Color(0.28800002, 0.36479995, 0.48, 1), Color(0.28800002, 0.36479995, 0.48, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WorldEnvironment:environment:adjustment_contrast")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4, 10, 14, 20, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.2, 1.2, 1.0, 1.0, 1.2, 1.2]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WorldEnvironment:environment:adjustment_saturation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 10, 12, 14, 18, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 0.9, 1.0, 1.2, 1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:night_lights_enabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 5, 19, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("WorldEnvironment:environment:adjustment_brightness")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 10, 12, 14, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 1.1, 1.0, 1.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("WorldEnvironment:environment:background_color")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 4, 6, 10, 14, 18, 20, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.09333344, 0, 0.4, 1), Color(0.48, 0.48, 0.48, 1), Color(0.9, 0.9, 0.9, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0.48, 0.48, 0.48, 1), Color(0.09333344, 0, 0.4, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5j6h7"]
+_data = {
+&"RESET": SubResource("Animation_r1ek1"),
+&"day-night": SubResource("Animation_ns5r3")
+}
 
 [node name="FraysEnd" type="Node2D" unique_id=1849947277]
 y_sort_enabled = true
@@ -71,7 +347,8 @@ stream = ExtResource("2_epsnn")
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1722660259]
 position = Vector2(0, 8)
 
-[node name="Water" type="TileMapLayer" parent="TileMapLayers" unique_id=1840175252]
+[node name="Water" type="TileMapLayer" parent="TileMapLayers" unique_id=1840175252 groups=["reflecting-surfaces"]]
+modulate = Color(0.9167905, 0.37542477, 0, 1)
 tile_map_data = PackedByteArray("AAABABcAAAAAAAAAAAABABYAAAAAAAAAAAACABcAAAAAAAAAAAACABYAAAAAAAAAAAACABUAAAAAAAAAAAADABUAAAAAAAAAAAAEABUAAAAAAAAAAAADABYAAAAAAAAAAAAEABYAAAAAAAAAAAAFABYAAAAAAAAAAAAFABUAAAAAAAAAAAAGABYAAAAAAAAAAAAGABUAAAAAAAAAAAAHABUAAAAAAAAAAAAHABYAAAAAAAAAAAAIABUAAAAAAAAAAAAIABQAAAAAAAAAAAAJABQAAAAAAAAAAAAKABQAAAAAAAAAAAAKABUAAAAAAAAAAAAJABUAAAAAAAAAAAALABUAAAAAAAAAAAAMABUAAAAAAAAAAAANABUAAAAAAAAAAAANABQAAAAAAAAAAAAMABQAAAAAAAAAAAALABQAAAAAAAAAAAAOABQAAAAAAAAAAAAOABUAAAAAAAAAAAAQABUAAAAAAAAAAAARABUAAAAAAAAAAAARABQAAAAAAAAAAAAQABQAAAAAAAAAAAASABQAAAAAAAAAAAATABQAAAAAAAAAAAAUABQAAAAAAAAAAAAVABQAAAAAAAAAAAAWABQAAAAAAAAAAAAXABQAAAAAAAAAAAAYABQAAAAAAAAAAAAZABQAAAAAAAAAAAAaABQAAAAAAAAAAAAaABUAAAAAAAAAAAAZABUAAAAAAAAAAAAYABUAAAAAAAAAAAAXABUAAAAAAAAAAAAWABUAAAAAAAAAAAAVABUAAAAAAAAAAAAUABUAAAAAAAAAAAATABUAAAAAAAAAAAASABUAAAAAAAAAAAAZABYAAAAAAAAAAAAaABYAAAAAAAAAAAAaABcAAAAAAAAAAAAbABcAAAAAAAAAAAAcABcAAAAAAAAAAAAbABgAAAAAAAAAAAAcABgAAAAAAAAAAAAdABgAAAAAAAAAAAAcABkAAAAAAAAAAAAdABkAAAAAAAAAAAAeABkAAAAAAAAAAAAfABkAAAAAAAAAAAAdABoAAAAAAAAAAAAeABoAAAAAAAAAAAAfABoAAAAAAAAAAAADABcAAAAAAAAAAAAEABcAAAAAAAAAAAAFABcAAAAAAAAAAAAGABcAAAAAAAAAAAAHABcAAAAAAAAAAAAIABYAAAAAAAAAAAAJABYAAAAAAAAAAAAKABYAAAAAAAAAAAALABYAAAAAAAAAAAAMABYAAAAAAAAAAAANABYAAAAAAAAAAAAOABYAAAAAAAAAAAAQABYAAAAAAAAAAAARABYAAAAAAAAAAAASABYAAAAAAAAAAAATABYAAAAAAAAAAAAUABYAAAAAAAAAAAAVABYAAAAAAAAAAAAWABYAAAAAAAAAAAAXABYAAAAAAAAAAAAYABYAAAAAAAAAAAAZABcAAAAAAAAAAAAaABgAAAAAAAAAAAAaABkAAAAAAAAAAAAbABkAAAAAAAAAAAAbABoAAAAAAAAAAAAcABoAAAAAAAAAAAAcABQAAAAAAAAAAAAdABQAAAAAAAAAAAAcABUAAAAAAAAAAAAdABUAAAAAAAAAAAAeABUAAAAAAAAAAAAfABUAAAAAAAAAAAAfABYAAAAAAAAAAAAeABYAAAAAAAAAAAAdABYAAAAAAAAAAAAcABYAAAAAAAAAAAAdABcAAAAAAAAAAAAeABcAAAAAAAAAAAAfABcAAAAAAAAAAAAeABgAAAAAAAAAAAAfABgAAAAAAAAAAAAWABcAAAAAAAAAAAAWABgAAAAAAAAAAAAXABgAAAAAAAAAAAAYABgAAAAAAAAAAAAYABcAAAAAAAAAAAAXABcAAAAAAAAAAAAYABkAAAAAAAAAAAAXABkAAAAAAAAAAAAYABoAAAAAAAAAAAAZABkAAAAAAAAAAAAZABgAAAAAAAAAAAAZABoAAAAAAAAAAAAaABoAAAAAAAAAAAAXABoAAAAAAAAAAAAYABsAAAAAAAAAAAAZABsAAAAAAAAAAAAaABsAAAAAAAAAAAAbABsAAAAAAAAAAAAcABsAAAAAAAAAAAAdABsAAAAAAAAAAQAeABsAAAAAAAAAAQAfABsAAAAAAAAAAQAdABwAAAAAAAAAAQAeABwAAAAAAAAAAAAfABwAAAAAAAAAAAAAABYAAAAAAAAAAAAAABcAAAAAAAAAAAABABUAAAAAAAAAAgAAABUAAAAAAAAAAgAbABYAAAAAAAAAAgD//xcAAAAAAAAAAAD//xgAAAAAAAAAAAD//xkAAAAAAAAAAAD//xoAAAAAAAAAAAD//xsAAAAAAAAAAAD//xwAAAAAAAAAAAAPABQAAAAAAAAAAQAPABUAAAAAAAAAAQAPABYAAAAAAAAAAQAbABQAAAAAAAAAAQAbABUAAAAAAAAAAQAAABgAAAAAAAAAAQABABgAAAAAAAAAAQACABgAAAAAAAAAAQADABgAAAAAAAAAAQAEABgAAAAAAAAAAQAFABgAAAAAAAAAAQAGABgAAAAAAAAAAQAHABgAAAAAAAAAAQAIABcAAAAAAAAAAQAJABcAAAAAAAAAAQAKABcAAAAAAAAAAQALABcAAAAAAAAAAQAMABcAAAAAAAAAAQANABcAAAAAAAAAAQAOABcAAAAAAAAAAQAPABcAAAAAAAAAAQAQABcAAAAAAAAAAQARABcAAAAAAAAAAQASABcAAAAAAAAAAQATABcAAAAAAAAAAQAUABcAAAAAAAAAAQAVABcAAAAAAAAAAQAVABgAAAAAAAAAAQAWABkAAAAAAAAAAQAWABoAAAAAAAAAAQAXABsAAAAAAAAAAQAXABwAAAAAAAAAAQAYABwAAAAAAAAAAQAZABwAAAAAAAAAAQAaABwAAAAAAAAAAQAbABwAAAAAAAAAAQAcABwAAAAAAAAAAQA=")
 tile_set = ExtResource("4_6ss6a")
 
@@ -143,6 +420,13 @@ limit_right = 2048
 limit_bottom = 1950
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="PointLight2D" type="PointLight2D" parent="Player" unique_id=1928787581 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, -28)
+enabled = false
+energy = 0.5
+texture = SubResource("GradientTexture2D_duxxr")
 
 [node name="Props" type="Node2D" parent="." unique_id=1456259135]
 y_sort_enabled = true
@@ -274,16 +558,40 @@ y_sort_enabled = true
 position = Vector2(1600, 815)
 texture = ExtResource("5_uhynt")
 
+[node name="PointLight2D" type="PointLight2D" parent="Buildings/House_1" unique_id=1823602379 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(-2, -10)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
+
 [node name="House_2" parent="Buildings" unique_id=821648560 instance=ExtResource("15_uhynt")]
 position = Vector2(1760, 810)
 texture = ExtResource("5_uojly")
 
+[node name="PointLight2D" type="PointLight2D" parent="Buildings/House_2" unique_id=812318709 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, -53)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
+
 [node name="House_3" parent="Buildings" unique_id=2108055439 instance=ExtResource("5_5jg1p")]
 position = Vector2(316, 1043)
+
+[node name="PointLight2D" type="PointLight2D" parent="Buildings/House_3" unique_id=42392129 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, -53)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
 
 [node name="House_4" parent="Buildings" unique_id=1336347029 instance=ExtResource("15_uhynt")]
 position = Vector2(352, 673)
 texture = ExtResource("6_uhynt")
+
+[node name="PointLight2D" type="PointLight2D" parent="Buildings/House_4" unique_id=1997122347 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, -28)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
 
 [node name="House_5" parent="Buildings" unique_id=32389067 instance=ExtResource("5_5jg1p")]
 position = Vector2(176, 626)
@@ -294,7 +602,14 @@ position = Vector2(227, 832)
 texture = ExtResource("5_uhynt")
 
 [node name="House_7" parent="Buildings" unique_id=2109293750 instance=ExtResource("5_5jg1p")]
+visibility_layer = 2
 position = Vector2(1565, 1110)
+
+[node name="PointLight2D" type="PointLight2D" parent="Buildings/House_7" unique_id=1117120932 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, -55)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
 
 [node name="House_8" parent="Buildings" unique_id=2122984790 instance=ExtResource("15_uhynt")]
 position = Vector2(480, 1043)
@@ -303,9 +618,22 @@ position = Vector2(480, 1043)
 position = Vector2(781, 1095)
 texture = ExtResource("5_uhynt")
 
+[node name="PointLight2D" type="PointLight2D" parent="Buildings/House_9" unique_id=1627110709 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, -55)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
+
 [node name="House_10" parent="Buildings" unique_id=1796299989 instance=ExtResource("5_5jg1p")]
 position = Vector2(1758, 1185)
 texture = ExtResource("5_uhynt")
+
+[node name="PointLight2D" type="PointLight2D" parent="Buildings" unique_id=675622931 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(995.5, 554)
+scale = Vector2(3.0585938, 1.21875)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
 
 [node name="NPCs" type="Node2D" parent="." unique_id=1415886134]
 y_sort_enabled = true
@@ -397,6 +725,12 @@ offset_bottom = 44.0
 theme = ExtResource("35_ljovl")
 theme_type_variation = &"HintLabel"
 text = "Interact"
+
+[node name="Label" type="Label" parent="ScreenOverlay" unique_id=586292071]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "HOLA"
+script = SubResource("GDScript_ns5r3")
 
 [node name="HUD" parent="." unique_id=1876437396 instance=ExtResource("27_aj6tp")]
 unique_name_in_owner = true
@@ -1059,3 +1393,16 @@ shape = SubResource("RectangleShape2D_djq26")
 
 [node name="SpawnPointAfterIntro" parent="." unique_id=69976262 instance=ExtResource("37_thm8h")]
 position = Vector2(62, 1747)
+
+[node name="TimeAndWeather" type="Node2D" parent="." unique_id=608719359]
+script = SubResource("GDScript_r1ek1")
+night_lights_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="TimeAndWeather" unique_id=29765118]
+environment = SubResource("Environment_r1ek1")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="TimeAndWeather" unique_id=372329208]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TimeAndWeather" unique_id=1439642237]
+libraries/ = SubResource("AnimationLibrary_5j6h7")
+autoplay = &"day-night"
