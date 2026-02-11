@@ -9,11 +9,16 @@ extends CharacterBody2D
 ##
 ## This is a piece of the fill-matching mechanic.
 ## [br][br]
-## When throwing, the label/color of the projectile is picked from
-## [member allowed_labels] and [member color_per_label].
+## When throwing, the label/color of the [member projectile_scene] that is
+## thrown are picked from [member allowed_labels] and [member color_per_label].
+## These are typically updated by a [FillGameLogic] node in the scene.
+## [br][br]
+## If you want to throw different scenes depending on the target label, use
+## [member projectile_scene_for_label].
 
 enum State { IDLE, WALKING, ATTACKING, DEFEATED }
 
+## Animations that [member sprite_frames] is expected to have.
 const REQUIRED_ANIMATIONS: Array[StringName] = [
 	&"idle", &"walk", &"attack", &"attack anticipation", &"defeated"
 ]
@@ -50,7 +55,7 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 @export_group("Visuals")
 
 ## The SpriteFrames must have specific animations.
-## See [member REQUIRED_ANIMATIONS].
+## See [constant REQUIRED_ANIMATIONS].
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
 
@@ -65,8 +70,25 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 
 @export_group("Projectile", "projectile")
 
-## The projectile scene to instantiate when spawning a projectile.
-@export var projectile_scene: PackedScene = preload("uid://j8mqjkg0rvai")
+## The scene to instantiate when spawning a projectile. The scene's root node
+## should be a [Projectile].
+## [br][br]
+## If this is not set, then [member projectile_scene_for_label] must contain a
+## scene for every possible label.
+@export var projectile_scene: PackedScene:
+	set(new_value):
+		projectile_scene = new_value
+		update_configuration_warnings()
+
+## Alternative projectile scenes to spawn based on the target label.
+## [br][br]
+## When launching a projectile, if the chosen label is found in this dictionary,
+## the associated scene will be used. If not, the default [member projectile_scene]
+## will be used.
+@export var projectile_scene_for_label: Dictionary[String, PackedScene]:
+	set(new_value):
+		projectile_scene_for_label = new_value
+		update_configuration_warnings()
 
 ## The speed of the projectile initial impulse and the projectile bouncing impulse.
 @export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s")
@@ -77,22 +99,6 @@ var projectile_speed: float = 30.0
 
 ## If true, the projectile will constantly adjust itself to target the player.
 @export var projectile_follows_player: bool = false
-
-## The projectile SpriteFrames. It should have a looping animation in autoplay.
-@export var projectile_sprite_frames: SpriteFrames = preload("uid://b00dcfe4dtvkh")
-
-## Sound that plays when the projectile hits something.
-@export var projectile_hit_sound_stream: AudioStream
-
-## A small visual effect used when the projectile collides with things.
-@export var projectile_small_fx_scene: PackedScene
-
-## A big visual effect used when the projectile explodes.
-@export var projectile_big_fx_scene: PackedScene
-
-## A scene with a trail particles visual effect. It should contain a [class GPUParticles2D] as
-## root node. When the projectile gets hit, the [member GPUParticles2D.amount_ratio] is set to 1.
-@export var projectile_trail_fx_scene: PackedScene
 
 @export_group("Walking", "walking")
 
@@ -153,6 +159,10 @@ func _get_configuration_warnings() -> PackedStringArray:
 	for animation in REQUIRED_ANIMATIONS:
 		if not sprite_frames.has_animation(animation):
 			warnings.append("sprite_frames is missing the following animation: %s" % animation)
+	if not projectile_scene and not projectile_scene_for_label:
+		warnings.append(
+			"At least one of projectile_scene and projectile_scene_for_label must be set"
+		)
 	return warnings
 
 
@@ -261,30 +271,51 @@ func _on_timeout() -> void:
 
 func shoot_projectile() -> void:
 	var player: Player = get_tree().get_first_node_in_group("player")
-	if not is_instance_valid(player):
-		return
 	if not allowed_labels:
 		_is_attacking = false
 		return
-	var projectile: Projectile = projectile_scene.instantiate()
-	projectile.direction = projectile_marker.global_position.direction_to(player.global_position)
-	scale.x = 1 if projectile.direction.x < 0 else -1
-	projectile.label = allowed_labels.pick_random()
-	if projectile.label in color_per_label:
-		projectile.color = color_per_label[projectile.label]
+
+	if shoot_projectile_at(player):
+		_set_target_position()
+		_is_attacking = false
+
+
+func shoot_projectile_at(target: Node2D) -> bool:
+	if not is_instance_valid(target):
+		return false
+
+	var target_label: String = allowed_labels.pick_random()
+	var projectile := _spawn_projectile(target_label)
+	if projectile == null:
+		return false
+
+	projectile.direction = projectile_marker.global_position.direction_to(target.global_position)
 	projectile.global_position = projectile_marker.global_position + projectile.direction * distance
+	scale.x = 1 if projectile.direction.x < 0 else -1
+
 	if projectile_follows_player:
-		projectile.node_to_follow = player
-	projectile.sprite_frames = projectile_sprite_frames
-	projectile.hit_sound_stream = projectile_hit_sound_stream
-	projectile.small_fx_scene = projectile_small_fx_scene
-	projectile.big_fx_scene = projectile_big_fx_scene
-	projectile.trail_fx_scene = projectile_trail_fx_scene
+		projectile.node_to_follow = target
+
 	projectile.speed = projectile_speed
 	projectile.duration = projectile_duration
+
 	get_tree().current_scene.add_child(projectile)
-	_set_target_position()
-	_is_attacking = false
+	return true
+
+
+func _spawn_projectile(target_label: String) -> Projectile:
+	var scene: PackedScene = self.projectile_scene_for_label.get(target_label, projectile_scene)
+	if scene == null:
+		push_warning(self, " has null projectile scene for label ", target_label)
+		return null
+
+	var projectile: Projectile = scene.instantiate()
+
+	projectile.label = target_label
+	if projectile.label in color_per_label:
+		projectile.color = color_per_label[projectile.label]
+
+	return projectile
 
 
 func _on_got_hit(body: Node2D) -> void:
