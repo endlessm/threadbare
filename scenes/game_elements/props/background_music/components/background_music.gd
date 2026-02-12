@@ -80,5 +80,8 @@ func switch_to_clip(clip_name: StringName) -> void:
 		push_warning("Switching clips is only supported with AudioStreamInteractive")
 		return
 
+	var asi := audio_stream_player.stream as AudioStreamInteractive
 	var playback := audio_stream_player.get_stream_playback() as AudioStreamPlaybackInteractive
-	playback.switch_to_clip_by_name(clip_name)
+	var playing_clip_name := asi.get_clip_name(playback.get_current_clip_index())
+	if playing_clip_name != clip_name:
+		playback.switch_to_clip_by_name(clip_name)

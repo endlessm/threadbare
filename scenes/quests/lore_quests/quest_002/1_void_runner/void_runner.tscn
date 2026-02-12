@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://bm4ewr8p48x0i"]
 
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_g2rto"]
-[ext_resource type="AudioStream" uid="uid://qnqpd21qyfnc" path="res://assets/first_party/music/Threadbare_Stealth.ogg" id="2_g2rto"]
+[ext_resource type="AudioStream" uid="uid://b23uiijpcle7i" path="res://void_audio.tres" id="2_kgem8"]
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="2_ljnmn"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="3_7u86q"]
 [ext_resource type="Script" uid="uid://d1ly6uhh500xu" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/tile_map_cover.gd" id="3_g2rto"]
@@ -46,6 +46,9 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-1088, 1423, 2938, 1439
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lutqc"]
 size = Vector2(72, 351)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kgem8"]
+size = Vector2(108, 117)
+
 [sub_resource type="Curve2D" id="Curve2D_wy2h8"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 726, 3145, 30.2699, 20.711, -30.2699, -20.711, 698, 3104, 34.7308, -1.27452, -34.7308, 1.27452, 625, 3138, 22.9414, -0.318631, -22.9414, 0.318631, 553, 3097, 0, 0, 0, 0, 490, 3146, 0, 0, 0, 0, 420, 3094, 0, 0, 0, 0, 356, 3147, 0, 0, 0, 0, 269, 3091, 0, 0, 0, 0, 198, 3154, 0, 0, 0, 0, 132, 3097, 0, 0, 0, 0, 49, 3146, 0, 0, 0, 0, -39, 3095, 0, 0, 0, 0, -100, 3141, 0, 0, 0, 0, -157, 3099, 0, 0, 0, 0, -203, 3140, 0, 0, 0, 0, -258, 3093, 0, 0, 0, 0, -303, 3141)
@@ -61,7 +64,7 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 metadata/_edit_lock_ = true
 
 [node name="BackgroundMusic" parent="." unique_id=649811497 instance=ExtResource("1_g2rto")]
-stream = ExtResource("2_g2rto")
+stream = ExtResource("2_kgem8")
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=329261217]
 metadata/_edit_lock_ = true
@@ -121,6 +124,15 @@ collision_layer = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyTrigger" unique_id=81474364]
 position = Vector2(56, 7)
 shape = SubResource("RectangleShape2D_lutqc")
+
+[node name="GoalReachedTrigger" type="Area2D" parent="." unique_id=724022793]
+editor_description = "Entering this area starts the enemy."
+position = Vector2(1128, 2966)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalReachedTrigger" unique_id=1393979645]
+position = Vector2(2463, -1139)
+shape = SubResource("RectangleShape2D_kgem8")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=705126784]
 y_sort_enabled = true
@@ -1150,3 +1162,6 @@ position = Vector2(2461, 2732)
 [node name="HUD" parent="." unique_id=1953354605 instance=ExtResource("29_gbo6l")]
 
 [connection signal="body_entered" from="EnemyTrigger" to="OnTheGround/VoidSpreadingEnemy" method="start"]
+[connection signal="body_entered" from="EnemyTrigger" to="BackgroundMusic" method="switch_to_clip" unbinds=1 binds= ["bloom"]]
+[connection signal="body_entered" from="GoalReachedTrigger" to="OnTheGround/VoidSpreadingEnemy" method="defeat" flags=6 unbinds=1]
+[connection signal="body_entered" from="GoalReachedTrigger" to="BackgroundMusic" method="switch_to_clip" flags=6 unbinds=1 binds= ["still"]]

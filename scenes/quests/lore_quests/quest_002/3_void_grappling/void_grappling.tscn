@@ -5,7 +5,7 @@
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="1_kijyv"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_lmfic"]
 [ext_resource type="Script" uid="uid://d1ly6uhh500xu" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/tile_map_cover.gd" id="1_wd35e"]
-[ext_resource type="AudioStream" uid="uid://dgwihwibc8ah6" path="res://assets/first_party/music/Threadbare_Combat.ogg" id="2_ayr6d"]
+[ext_resource type="AudioStream" uid="uid://b23uiijpcle7i" path="res://void_audio.tres" id="2_bcye7"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="2_kmyoj"]
 [ext_resource type="Script" uid="uid://dagrhfrj0f33i" path="res://scenes/game_logic/camera_behaviors/frame_camera_behavior.gd" id="3_jrfsf"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="3_yxlsu"]
@@ -77,7 +77,7 @@ size = Vector2(128, 320)
 metadata/_edit_lock_ = true
 
 [node name="BackgroundMusic" parent="." unique_id=268347884 instance=ExtResource("1_grfk2")]
-stream = ExtResource("2_ayr6d")
+stream = ExtResource("2_bcye7")
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=2025924955]
 script = ExtResource("3_yxlsu")
@@ -672,6 +672,7 @@ position = Vector2(0, 23)
 shape = SubResource("RectangleShape2D_rk3po")
 
 [connection signal="body_entered" from="EnemyChaseTrigger" to="OnTheGround/VoidChasing" method="start"]
+[connection signal="body_entered" from="EnemyChaseTrigger" to="BackgroundMusic" method="switch_to_clip" unbinds=1 binds= ["bloom"]]
 [connection signal="body_entered" from="EnemyDefeatTrigger" to="OnTheGround/VoidChasing" method="defeat" unbinds=1]
 
 [editable path="OnTheGround/VoidPatrolling"]
