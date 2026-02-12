@@ -30,7 +30,7 @@
 [ext_resource type="Texture2D" uid="uid://uh0cgd0o5kha" path="res://assets/third_party/tiny-swords-non-cc0/Terrain/Decorations/Rocks/Rock3.png" id="26_sfcyb"]
 [ext_resource type="Resource" uid="uid://b7ln3pvi43t77" path="res://scenes/quests/story_quests/champ/1_stealth/stealth_components/champ_incomplete_stealth_decorations_hint.dialogue" id="27_oswsn"]
 [ext_resource type="Resource" uid="uid://dl6n1ifa5ktnp" path="res://scenes/quests/story_quests/champ/1_stealth/stealth_components/champ_incomplete_stealth_movement_hint.dialogue" id="28_fqjr6"]
-[ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="29_rik0t"]
+[ext_resource type="PackedScene" uid="uid://drew54gcfpekn" path="res://scenes/quests/story_quests/champ/1_stealth/stealth_components/champ_water_rock/champ_water_rock.tscn" id="29_rik0t"]
 [ext_resource type="Resource" uid="uid://bmharix12w26t" path="res://scenes/quests/story_quests/champ/1_stealth/stealth_components/champ_blink.dialogue" id="34_g76pt"]
 
 [sub_resource type="Curve2D" id="Curve2D_2hewv"]
@@ -63,16 +63,16 @@ size = Vector2(110, 80)
 radius = 61.72
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_epx14"]
-radius = 25.179358
+radius = 14.035668
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oswsn"]
-radius = 28.160255
+radius = 14.035668
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fqjr6"]
-radius = 19.026299
+radius = 9.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sfcyb"]
-radius = 19.104973
+radius = 12.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3eksq"]
 size = Vector2(52, 50)
@@ -84,6 +84,7 @@ y_sort_enabled = true
 script = ExtResource("1_38fcx")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=230191739]
+visible = false
 y_sort_enabled = true
 color = Color(0.481789, 0.48179, 0.481789, 1)
 metadata/_edit_lock_ = true
@@ -234,6 +235,7 @@ next_scene = "uid://bbjh0yoqbchuo"
 shape = SubResource("CircleShape2D_24qmm")
 
 [node name="Decorations" type="Node2D" parent="." unique_id=93016156]
+y_sort_enabled = true
 
 [node name="Rock4" type="Sprite2D" parent="Decorations" unique_id=655576137]
 position = Vector2(640, -19)
@@ -241,29 +243,31 @@ texture = ExtResource("24_oswsn")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Decorations/Rock4" unique_id=1418762075]
 position = Vector2(-640, 19)
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Decorations/Rock4/StaticBody2D" unique_id=9447058]
-position = Vector2(646, -8)
+position = Vector2(641, -12)
 shape = SubResource("CircleShape2D_epx14")
 
 [node name="Rock6" type="Sprite2D" parent="Decorations" unique_id=73957503]
-position = Vector2(149, -53)
+position = Vector2(161, -39)
 texture = ExtResource("24_oswsn")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Decorations/Rock6" unique_id=1515367233]
 position = Vector2(-640, 19)
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Decorations/Rock6/StaticBody2D" unique_id=78729332]
-position = Vector2(646, -8)
+position = Vector2(639, -13)
 shape = SubResource("CircleShape2D_epx14")
 
 [node name="Rock2" type="Sprite2D" parent="Decorations" unique_id=1735051878]
-z_index = 1
 position = Vector2(609, -7)
 texture = ExtResource("3_epx14")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="Decorations/Rock2" unique_id=1143699333]
 position = Vector2(-609, 7)
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Decorations/Rock2/StaticBody2D2" unique_id=1510499222]
 position = Vector2(607, 3)
@@ -274,6 +278,7 @@ position = Vector2(945, 31)
 texture = ExtResource("24_oswsn")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Decorations/Rock5" unique_id=926851254]
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Decorations/Rock5/StaticBody2D" unique_id=1985672181]
 shape = SubResource("CircleShape2D_oswsn")
@@ -283,6 +288,7 @@ position = Vector2(948, 50)
 texture = ExtResource("25_fqjr6")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Decorations/Rock1" unique_id=1344487767]
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Decorations/Rock1/StaticBody2D" unique_id=1959218448]
 position = Vector2(0, 4)
@@ -293,12 +299,14 @@ position = Vector2(1013, 65)
 texture = ExtResource("26_sfcyb")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Decorations/Rock3" unique_id=245094250]
+collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Decorations/Rock3/StaticBody2D" unique_id=2072828217]
-position = Vector2(0, 11)
+position = Vector2(0, 8)
 shape = SubResource("CircleShape2D_sfcyb")
 
 [node name="Lake" type="Node2D" parent="Decorations" unique_id=1860346168]
+y_sort_enabled = true
 position = Vector2(367, -167)
 
 [node name="Ripples" type="Node2D" parent="Decorations/Lake" unique_id=1437948266]
@@ -350,6 +358,7 @@ position = Vector2(798, -134)
 position = Vector2(1445, 768)
 
 [node name="Water Rocks" type="Node2D" parent="Decorations/Lake" unique_id=1703523993]
+y_sort_enabled = true
 
 [node name="WaterRock" parent="Decorations/Lake/Water Rocks" unique_id=200189883 instance=ExtResource("29_rik0t")]
 position = Vector2(36, -8)
