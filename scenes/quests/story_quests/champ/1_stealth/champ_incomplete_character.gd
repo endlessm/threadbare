@@ -25,7 +25,7 @@ var mode: Mode = Mode.COZY
 @export_range(10, 100000, 10) var moving_step: float = 4000.0
 
 ## How many 64px tiles the player should teleport when the blink key (c) is pressed.
-@export_range(0,24,0.5,"prefer_slider") var blink_distance_tiles = 3
+@export_range(0,24,0.5) var blink_distance_tiles = 3.0
 
 
 ## Function that is called every "tick" that is constantly listening
@@ -55,18 +55,22 @@ func _apply_blink():
 	var blink_distance_pixels = blink_distance_tiles*64;
 # Figure out which direction to blink
 	var direction := input_vector.normalized()
+# Calculate new coordinates
+	var target_coordinates: Vector2 = position + (direction * blink_distance_pixels)	
+# Move dummy to coordinates and see if its safe to go
+	$BlinkCheck.position = target_coordinates;
+	# Force physics
+	$BlinkCheck.force_update_transform()
+	# If there are no collisions, move the player there.
+	if ($BlinkCheck.get_overlapping_bodies().size() == 0):
+		position = target_coordinates;
 
-# Move dummy there and see if its safe to go
 
-
-# Move the player in that direction instantly
-	position = position + (direction * blink_distance_pixels)	
 # (Optional) Add a cooldown so you can’t blink every frame.
 # Start a timer or use a variable that counts down.
 
 # (Optional) Add a small visual change when blinking,
 # such as a brief color change or flash.
-	pass
 
 ## Function to listen for user input, each key press corresponding to movement is handled here
 func _unhandled_input(_event: InputEvent) -> void:
