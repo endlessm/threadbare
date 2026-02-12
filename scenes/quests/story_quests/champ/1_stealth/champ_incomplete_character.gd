@@ -24,6 +24,9 @@ var mode: Mode = Mode.COZY
 ## How fast does the player transition from stopped to walking/running.
 @export_range(10, 100000, 10) var moving_step: float = 4000.0
 
+## How many 64px tiles the player should teleport when the blink key (c) is pressed.
+@export_range(0,24,0.5,"prefer_slider") var blink_distance_tiles = 3
+
 
 ## Function that is called every "tick" that is constantly listening
 func _physics_process(delta: float) -> void:
@@ -44,23 +47,25 @@ func _physics_process(delta: float) -> void:
 
 # TODO: Make this blink fn more readable and redact some parts of it so the player can write their own.
 # Blink ability
-@export_range(64, 32*64) var blink_distance_pixels = 192
+
+
 func _apply_blink():
 
-# Step 1: Decide how far you want to blink.
-#         Hint: you might want a variable like blink_distance.
-	
-# Step 2: Figure out which direction to blink in.
+# Convert tiles to pixels for blink distance.
+	var blink_distance_pixels = blink_distance_tiles*64;
+# Figure out which direction to blink
 	var direction := input_vector.normalized()
 
-# Step 3: Move the player in that direction instantly
-	position = position + (direction * blink_distance_pixels)
+# Move dummy there and see if its safe to go
 
-# Step 4: (Optional) Add a cooldown so you can’t blink every frame.
-#         - Start a timer or use a variable that counts down.
 
-# Step 5: (Optional) Add a small visual change when blinking
-#         such as a brief color change or flash.
+# Move the player in that direction instantly
+	position = position + (direction * blink_distance_pixels)	
+# (Optional) Add a cooldown so you can’t blink every frame.
+# Start a timer or use a variable that counts down.
+
+# (Optional) Add a small visual change when blinking,
+# such as a brief color change or flash.
 	pass
 
 ## Function to listen for user input, each key press corresponding to movement is handled here
