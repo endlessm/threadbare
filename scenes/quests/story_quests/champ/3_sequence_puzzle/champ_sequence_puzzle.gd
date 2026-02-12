@@ -142,7 +142,6 @@ func _on_hint_sign_hint_sequence_finished() -> void:
 	await get_tree().create_timer(RESPAWN_DELAY).timeout
 	camera.global_position = player.global_position
 	player._toggle_player_behavior(player.player_interaction, true)
-	reset_all()
 
 ## Function to rest all sequence objets after displaying via hint sequence
 func reset_all() -> void:
