@@ -54,7 +54,7 @@ func _apply_blink():
 	var direction := input_vector.normalized()
 
 # Step 3: Move the player in that direction instantly
-	position = Vector2(position.x+(direction.x*blink_distance_pixels), position.y+(direction.y*blink_distance_pixels));
+	position = position + (direction * blink_distance_pixels)
 
 # Step 4: (Optional) Add a cooldown so you can’t blink every frame.
 #         - Start a timer or use a variable that counts down.
