@@ -63,13 +63,13 @@ func _apply_blink():
 	if not $BlinkCheck.has_overlapping_bodies():
 		position = target_coordinates
 
+	# (Optional) Add a cooldown so you can’t blink every frame.
+	# Start a timer or use a variable that counts down.
 
-# (Optional) Add a cooldown so you can’t blink every frame.
-# Start a timer or use a variable that counts down.
+	# (Optional) Add a small visual change when blinking,
+	# such as a brief color change or flash.
 
-# (Optional) Add a small visual change when blinking,
-# such as a brief color change or flash.
-
+## Function to remove collisions, allowing the player to walk on water tiles
 func _walk_on_water():
 	$"../TileMapLayers/Water_border".enabled = false
 	#TODO do you think having the border permanently in that state is a good idea?
@@ -79,24 +79,24 @@ func _walk_on_water():
 ## Function to listen for user input, each key press corresponding to movement is handled here
 func _unhandled_input(_event: InputEvent) -> void:
 	# Set movement inputs (more options can be found in the Input Map in Project Settings)
-	
-	# TODO: Full movement for debugging (remove before the script is finalized)
-	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 	# Left and right movement
 	# var axis: Vector2 = Vector2(0,0)
-	
 	#if(Input.is_action_pressed(&"move_left")):
 		#axis.x = -1
 	#if(Input.is_action_pressed(&"move_right")):
 		#axis.x = 1
-	
+ 	#TODO: Question: how can we make diagonal speed the same as walking in a straight line?
+
 	# Blink ability
 	if(Input.is_action_just_pressed(&"champ_blink")):
 		_apply_blink()
+		
+	# Walk on water ability
 	if(Input.is_action_pressed(&"champ_walk_on_water")):
 		_walk_on_water()
-	#TODO: Question: how can we make diagonal speed the same as walking in a straight line?
-
+	
+	# TODO: Full movement for debugging (remove before the script is finalized)
+	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 
 	input_vector = axis * SPEED
 	
