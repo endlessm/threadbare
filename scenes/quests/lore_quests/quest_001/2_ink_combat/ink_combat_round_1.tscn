@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="6_v7ikp"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="8_4e5be"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="8_k65js"]
+[ext_resource type="TileSet" uid="uid://bdc7ucso7bx0s" path="res://tiles/shadows.tres" id="9_k65js"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="9_na0be"]
 [ext_resource type="TileSet" uid="uid://dfp36ffpanjq2" path="res://tiles/elevation.tres" id="9_ypq02"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="10_hlahk"]
@@ -21,11 +22,7 @@
 [ext_resource type="AudioStream" uid="uid://qf2d38rabx8o" path="res://assets/third_party/sounds/characters/enemies/throwing_enemy/Wings.ogg" id="13_gn6oy"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="13_hlahk"]
 [ext_resource type="AudioStream" uid="uid://fcmjf1srys7n" path="res://assets/third_party/sounds/characters/enemies/throwing_enemy/Spit.ogg" id="14_7ekah"]
-[ext_resource type="SpriteFrames" uid="uid://bhamin2pby7tq" path="res://scenes/game_elements/props/projectile/components/inkblob_spriteframes.tres" id="15_4xy6f"]
-[ext_resource type="AudioStream" uid="uid://7jlv4wqpihl7" path="res://scenes/game_elements/props/projectile/components/blob_hit.wav" id="15_64i88"]
-[ext_resource type="PackedScene" uid="uid://clgisducnnh0a" path="res://scenes/game_elements/fx/liquid_small_splat/liquid_small_splat.tscn" id="15_q60ju"]
-[ext_resource type="PackedScene" uid="uid://b4qu6wml5gd7a" path="res://scenes/game_elements/fx/liquid_big_splat/liquid_big_splat.tscn" id="16_vkiqy"]
-[ext_resource type="PackedScene" uid="uid://bgce3qns72g3m" path="res://scenes/game_elements/fx/liquid_trail.tscn" id="17_tqepj"]
+[ext_resource type="PackedScene" uid="uid://c5jedlvvnnbi0" path="res://scenes/game_elements/props/projectile/ink_blob_projectile.tscn" id="16_k65js"]
 [ext_resource type="PackedScene" uid="uid://dkx3dgc1br3b4" path="res://scenes/ui_elements/input_hints/repel_hint.tscn" id="22_8me22"]
 
 [sub_resource type="Animation" id="Animation_nlryc"]
@@ -92,6 +89,10 @@ tile_set = ExtResource("8_4e5be")
 tile_map_data = PackedByteArray("AAAAAAgAAQAIAAEAAAAAAAcAAQAIAAEAAAAAAAYAAQAIAAEAAAAAAAUAAQAIAAEAAAAAAAQAAQAFAAAAAAABAAQAAQAGAAMAAAACAAQAAQAHAAMAAAAGAAAAAQAIAAEAAAAGAAEAAQAIAAIAAAAGAP//AQAIAAAAAAA=")
 tile_set = ExtResource("8_4e5be")
 
+[node name="Shadows" type="TileMapLayer" parent="TileMapLayers" unique_id=22087381]
+tile_map_data = PackedByteArray("AAAMAAEAAAAAAAAAAAALAAEAAAAAAAAAAAAKAAEAAAAAAAAAAAAJAAEAAAAAAAAAAAAIAAEAAAAAAAAAAAAHAAEAAAAAAAAAAAAFAAEAAAAAAAAAAAAEAAEAAAAAAAAAAAADAAEAAAAAAAAAAAACAAMAAAAAAAAAAAABAAMAAAAAAAAAAAAAAAMAAAAAAAAAAAANAAMAAAAAAAAAAAANAAIAAAAAAAAAAAACAAIAAAAAAAAAAAACAAYAAAAAAAAAAAANAAcAAAAAAAAAAAAOAAUAAAAAAAAAAAAOAAQAAAAAAAAAAAABAAYAAAAAAAAAAAABAAcAAAAAAAAAAAABAAgAAAAAAAAAAAACAAgAAAAAAAAAAAADAAgAAAAAAAAAAAAEAAgAAAAAAAAAAAAFAAgAAAAAAAAAAAAGAAkAAAAAAAAAAAAHAAkAAAAAAAAAAAAIAAkAAAAAAAAAAAAJAAkAAAAAAAAAAAAKAAkAAAAAAAAAAAALAAkAAAAAAAAAAAAMAAkAAAAAAAAAAAANAAkAAAAAAAAAAAAOAAkAAAAAAAAAAAAPAAkAAAAAAAAAAAA=")
+tile_set = ExtResource("9_k65js")
+
 [node name="Stones" type="TileMapLayer" parent="TileMapLayers" unique_id=409780427]
 tile_map_data = PackedByteArray("AAACAAgABAABAAMAAAADAAgABAABAAMAAAAEAAgABAABAAUAAAAFAAgABAABAAMAAAAGAAkABAABAAMAAAAHAAkABAABAAMAAAAIAAkABAABAAUAAAAJAAkABAABAAUAAAAKAAkABAABAAMAAAALAAkABAABAAMAAAAMAAkABAABAAMAAAANAAkABAABAAUAAAAOAAkABAABAAMAAAACAAcABAABAAQAAAADAAcABAABAAQAAAAEAAcABAABAAAAAAAFAAcABAABAAQAAAAGAAgABAAAAAIAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAABAAEAAAAOAAgABAABAAIAAAAPAAcABAACAAEAAAAPAAgABAACAAIAAAAPAAkABAACAAMAAAACAAUABAACAAQAAAACAAYABAACAAEAAAABAAMABAABAAMAAAACAAMABAACAAMAAAACAAIABAACAAIAAAABAAIABAABAAEAAAAAAAMABAABAAUAAAAAAAIABAABAAEAAAAAAAEABAABAAEAAAABAAEABAABAAAAAAACAAEABAABAAMAAAACAAAABAABAAQAAAABAAAABAABAAIAAAAAAAAABAABAAEAAAADAAAABAABAAIAAAAFAAAABAACAAIAAAAEAAAABAABAAEAAAABAAUABAAAAAAAAAABAAYABAAAAAEAAAABAAcABAAAAAIAAAD//wMABAAAAAEAAAD//wQABAADAAEAAAD//wUABAADAAEAAAD//wYABAADAAEAAAD//wcABAADAAIAAAD//wAABAAAAAAAAAD//wEABAAAAAEAAAD//wIABAAAAAEAAAD//wgABAABAAMAAAABAAgABAABAAMAAAAEAAEABAABAAMAAAAFAAEABAACAAMAAAADAAEABAABAAUAAAAOAAcABAABAAEAAAAOAAYABAABAAIAAAAPAAYABAABAAEAAAAPAAUABAACAAEAAAAOAAUABAAAAAEAAAAOAAMABAABAAEAAAAOAAIABAABAAEAAAANAAEABAAAAAEAAAANAAAABAABAAAAAAAOAAAABAABAAAAAAAPAAAABAACAAAAAAAPAAEABAABAAAAAAAPAAIABAACAAEAAAAOAAEABAABAAEAAAAOAAQABAAAAAEAAAAPAAQABAABAAEAAAAPAAMABAACAAEAAAAMAAAABAABAAAAAAALAAAABAABAAAAAAAKAAAABAABAAAAAAAJAAAABAABAAAAAAAIAAAABAABAAAAAAAHAAAABAAAAAEAAAANAAIABAABAAIAAAANAAMABAAAAAMAAAAHAAEABAAAAAMAAAAIAAEABAABAAUAAAAKAAEABAABAAUAAAALAAEABAABAAUAAAAJAAEABAABAAMAAAAMAAEABAABAAMAAAAGAAcABAACAAQAAAANAAYABAAAAAAAAAANAAcABAAAAAEAAAA=")
 tile_set = ExtResource("9_ypq02")
@@ -99,6 +100,10 @@ tile_set = ExtResource("9_ypq02")
 [node name="Grass Level 2" type="TileMapLayer" parent="TileMapLayers" unique_id=1052337885]
 tile_map_data = PackedByteArray("AAAAAAIAAQABAAIAAAABAAIAAQABAAIAAAACAAIAAQACAAIAAAACAAEAAQACAAEAAAADAAAAAQABAAIAAAAEAAAAAQABAAIAAAAFAAAAAQACAAIAAAADAP//AQABAAAAAAAEAP//AQABAAAAAAAFAP//AQACAAAAAAD//wcAAQACAAIAAAD//wYAAQACAAEAAAD//wUAAQACAAEAAAD//wQAAQACAAEAAAD//wMAAQACAAEAAAD+/wcAAQAAAAIAAAD+/wYAAQAAAAEAAAD+/wUAAQAAAAEAAAD+/wQAAQAAAAEAAAD+/wMAAQAAAAEAAAD//wIAAQABAAEAAAD+/wIAAQAAAAEAAAD+/wEAAQAAAAEAAAD//wEAAQABAAEAAAAAAAEAAQABAAEAAAABAAEAAQABAAEAAAACAAAAAQABAAEAAAABAAAAAQABAAEAAAAAAAAAAQABAAEAAAD//wAAAQABAAEAAAD+/wAAAQAAAAEAAAACAP//AQABAAAAAAABAP//AQABAAAAAAAAAP//AQABAAAAAAD/////AQABAAAAAAD+////AQAAAAAAAAAHAAAAAQAAAAIAAAAIAAAAAQACAAIAAAAHAP//AQAAAAAAAAAIAP//AQACAAAAAAAKAAAAAQADAAMAAAAKAP//AQADAAMAAAA=")
 tile_set = ExtResource("8_4e5be")
+
+[node name="Shadows Level 2" type="TileMapLayer" parent="TileMapLayers" unique_id=702218707]
+tile_map_data = PackedByteArray("AAD//wIAAAAAAAAAAAAAAAEAAAAAAAAAAAABAAEAAAAAAAAAAAA=")
+tile_set = ExtResource("9_k65js")
 
 [node name="Stone Level 2" type="TileMapLayer" parent="TileMapLayers" unique_id=73920338]
 tile_map_data = PackedByteArray("AAD//wAABAABAAEAAAD//wEABAADAAEAAAAAAAAABAABAAQAAAD//wIABAADAAUAAAAAAAEABAABAAUAAAABAAEABAACAAUAAAACAAAABAACAAMAAAABAAAABAACAAQAAAA=")
@@ -165,11 +170,7 @@ position = Vector2(857, 300)
 sprite_frames = ExtResource("12_h7w4n")
 idle_sound_stream = ExtResource("13_gn6oy")
 attack_sound_stream = ExtResource("14_7ekah")
-projectile_sprite_frames = ExtResource("15_4xy6f")
-projectile_hit_sound_stream = ExtResource("15_64i88")
-projectile_small_fx_scene = ExtResource("15_q60ju")
-projectile_big_fx_scene = ExtResource("16_vkiqy")
-projectile_trail_fx_scene = ExtResource("17_tqepj")
+projectile_scene = ExtResource("16_k65js")
 
 [node name="FillingBarrel" parent="OnTheGround" unique_id=1115630414 instance=ExtResource("6_v7ikp")]
 position = Vector2(528, 164)

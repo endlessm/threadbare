@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends CharacterBody2D
 
-@onready var champ_animation: AnimatedSprite2D = $AnimatedSprite2D
+@onready var champ_animation: AnimatedSprite2D = $"Champ Animation"
 
 var swim_speed: int = 100
 
