@@ -62,7 +62,7 @@ func _apply_blink():
 	# Force physics
 	$BlinkCheck.force_update_transform()
 	# If there are no collisions, move the player there.
-	if ($BlinkCheck.get_overlapping_bodies().size() == 0):
+	if not $BlinkCheck.has_overlapping_bodies():
 		position = target_coordinates;
 
 
