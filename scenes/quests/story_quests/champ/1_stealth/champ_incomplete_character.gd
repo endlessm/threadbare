@@ -70,6 +70,12 @@ func _apply_blink():
 # (Optional) Add a small visual change when blinking,
 # such as a brief color change or flash.
 
+func _walk_on_water():
+	$"../TileMapLayers/Water_border".enabled = false
+	#TODO do you think having the border permanently in that state is a good idea?
+	#TODO you can try to come up with a way to ensure it get enabled again after a while
+
+
 ## Function to listen for user input, each key press corresponding to movement is handled here
 func _unhandled_input(_event: InputEvent) -> void:
 	# Set movement inputs (more options can be found in the Input Map in Project Settings)
@@ -87,7 +93,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 	# Blink ability
 	if(Input.is_action_just_pressed(&"champ_blink")):
 		_apply_blink()
-	
+	if(Input.is_action_pressed(&"champ_walk_on_water")):
+		_walk_on_water()
 	#TODO: Question: how can we make diagonal speed the same as walking in a straight line?
 
 
