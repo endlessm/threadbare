@@ -6,16 +6,21 @@
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="4_a535v"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_kirjo"]
 [ext_resource type="TileSet" uid="uid://d4j34duoykgu1" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stone_stair_tiles.tres" id="4_ndyje"]
-[ext_resource type="PackedScene" uid="uid://b3s10h8ewmnm8" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_throwing_enemy.tscn" id="5_1o8f3"]
+[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="5_1o8f3"]
 [ext_resource type="SpriteFrames" uid="uid://dn0ivusgamrg3" path="res://scenes/quests/story_quests/stella/stella_player_components/stella_player.tres" id="5_e46so"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="6_a535v"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="6_vbrx3"]
+[ext_resource type="SpriteFrames" uid="uid://b1eumg5kx32g1" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_throwing_enemy.tres" id="7_awu4o"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="7_fttab"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="8_2svos"]
 [ext_resource type="TileSet" uid="uid://dfp36ffpanjq2" path="res://tiles/elevation.tres" id="8_gsim2"]
+[ext_resource type="SpriteFrames" uid="uid://bj1ic15slii3s" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_projectile_starfish_spriteframes.tres" id="8_tbbw3"]
+[ext_resource type="SpriteFrames" uid="uid://vpduogia2wr0" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_projectile2_spriteframes.tres" id="9_asncp"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="9_chxci"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="9_ky4po"]
+[ext_resource type="SpriteFrames" uid="uid://ckl2gxpkr57gx" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_projectile3_spriteframes.tres" id="10_mi6gk"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="10_xeai8"]
+[ext_resource type="SpriteFrames" uid="uid://dvoy614vtess8" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_projectile4_spriteframes.tres" id="11_ndyje"]
 [ext_resource type="Texture2D" uid="uid://cpqvaoatvjc2d" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_target.png" id="13_ndyje"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="14_asncp"]
 [ext_resource type="SpriteFrames" uid="uid://b8ib21ye5xvwb" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_fisherman.tres" id="14_e46so"]
@@ -126,25 +131,48 @@ sprite_frames = ExtResource("5_e46so")
 
 [node name="ThrowingNPC" parent="OnTheGround" unique_id=1111990181 instance=ExtResource("5_1o8f3")]
 position = Vector2(1286, 652)
-throwing_period = 5.0
+sprite_frames = ExtResource("7_awu4o")
+projectile_duration = 6.0
+projectile_sprite_frames = ExtResource("8_tbbw3")
+walking_time = 5.0
 
 [node name="ThrowingNPC2" parent="OnTheGround" unique_id=1979551085 instance=ExtResource("5_1o8f3")]
 position = Vector2(1010, 523)
+collision_layer = 4
+collision_mask = 128
+throwing_period = 7.5
 odd_shoot = true
+sprite_frames = ExtResource("7_awu4o")
+projectile_duration = 6.0
+projectile_sprite_frames = ExtResource("9_asncp")
+walking_time = 5.0
 
 [node name="ThrowingNPC3" parent="OnTheGround" unique_id=1435167396 instance=ExtResource("5_1o8f3")]
 position = Vector2(1230, 498)
+collision_layer = 4
+collision_mask = 128
+throwing_period = 7.5
 odd_shoot = true
+sprite_frames = ExtResource("7_awu4o")
+projectile_duration = 6.0
+projectile_sprite_frames = ExtResource("10_mi6gk")
+walking_time = 5.0
 
 [node name="ThrowingNPC4" parent="OnTheGround" unique_id=2004289225 instance=ExtResource("5_1o8f3")]
 position = Vector2(838, 724)
+collision_layer = 4
+collision_mask = 128
+throwing_period = 7.5
 odd_shoot = true
+sprite_frames = ExtResource("7_awu4o")
+projectile_duration = 6.0
+projectile_sprite_frames = ExtResource("11_ndyje")
+walking_time = 5.0
 
 [node name="Target" parent="OnTheGround" unique_id=1531485674 instance=ExtResource("6_vbrx3")]
 position = Vector2(241, 370)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_qmfr1")
-label = "starfish"
 
 [node name="AnimatedSprite2D" parent="OnTheGround/Target" index="0" unique_id=1489807708]
 sprite_frames = SubResource("SpriteFrames_qmfr1")
@@ -161,20 +189,6 @@ next_scene = "uid://b7j5em2h1m2j7"
 item = SubResource("Resource_a51xm")
 collected_dialogue = ExtResource("2_awu4o")
 dialogue_title = &"well_done"
-
-[node name="DummyTargets" type="Node2D" parent="OnTheGround" unique_id=1775804536]
-process_mode = 4
-editor_description = "Fake targets so that the NPCs throw the unwanted fish as well as the desired starfish."
-position = Vector2(776, -374)
-
-[node name="FillingBarrel2" parent="OnTheGround/DummyTargets" unique_id=1861594411 instance=ExtResource("6_vbrx3")]
-label = "fish2"
-
-[node name="FillingBarrel3" parent="OnTheGround/DummyTargets" unique_id=1619120150 instance=ExtResource("6_vbrx3")]
-label = "fish3"
-
-[node name="FillingBarrel4" parent="OnTheGround/DummyTargets" unique_id=528753013 instance=ExtResource("6_vbrx3")]
-label = "fish4"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=634364509]
 

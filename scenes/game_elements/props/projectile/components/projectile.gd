@@ -9,7 +9,7 @@ extends RigidBody2D
 ## This is a piece of the fill-matching mechanic.
 ## [br][br]
 ## The projectile has a [member label] and optionally a [member color]
-## to tint it. These are assigned by the [ThrowingEnemy] when it fires a projectile.
+## to tint it.
 ## When the projectile collides with a [FillingBarrel] and both labels match,
 ## it calls [member FillingBarrel.increment()] and is removed.
 ## [br][br]
@@ -23,6 +23,14 @@ extends RigidBody2D
 ## Optional color. Use it together with the label to make a color-matching game.
 @export var color: Color:
 	set = _set_color
+
+## The projectile SpriteFrames. It should have a looping animation in autoplay.
+@export var sprite_frames: SpriteFrames = preload("uid://b00dcfe4dtvkh"):
+	set = _set_sprite_frames
+
+## Sound that plays when the projectile hits something.
+@export var hit_sound_stream: AudioStream:
+	set = _set_hit_sound_stream
 
 ## Whether this projectile hits the player.
 @export var can_hit_player: bool = true:
@@ -80,6 +88,21 @@ func _set_color(new_color: Color) -> void:
 	modulate = color if color else Color.WHITE
 
 
+func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
+	sprite_frames = new_sprite_frames
+	if not is_node_ready():
+		return
+	animated_sprite_2d.sprite_frames = sprite_frames
+	animated_sprite_2d.play(animated_sprite_2d.animation)
+
+
+func _set_hit_sound_stream(new_hit_sound_stream: AudioStream) -> void:
+	hit_sound_stream = new_hit_sound_stream
+	if not is_node_ready():
+		await ready
+	hit_sound.stream = hit_sound_stream
+
+
 func _set_direction(new_direction: Vector2) -> void:
 	if not new_direction.is_normalized():
 		direction = new_direction.normalized()
@@ -103,7 +126,7 @@ func _ready() -> void:
 		trail_fx_marker.add_child(_trail_particles)
 
 	_set_color(color)
-
+	_set_sprite_frames(sprite_frames)
 	duration_timer.wait_time = duration
 	duration_timer.start()
 	var impulse: Vector2 = direction * speed

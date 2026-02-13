@@ -6,6 +6,7 @@ extends SequencePuzzle
 const CHECKPOINT_POS: Vector2 = Vector2(1400,180)
 const RESPAWN_DELAY: float = 1.5
 const ROCK_WIDTH: int = 3
+const SECOND_SEQ_BOUND: float = 1170
 const STARTING_POS: Vector2 = Vector2(350,350)
 
 var first_seq_solve_index: int = 0
@@ -32,6 +33,11 @@ func _ready() -> void:
 		first_seq_solve_index = sequences[0].sequence.size() - 1
 	super._ready()
 	
+func  _physics_process(delta: float) -> void:
+	if player.position.x > SECOND_SEQ_BOUND:
+		for i in range(ROCK_WIDTH * first_seq_solve_index, ROCK_WIDTH * (first_seq_solve_index + 1)):
+			objs[i].collision.disabled = false
+
 ## Function that handles kicking object edge cases, including the last object in the sequence or bad guesses resulting in flooding the rocks
 func _on_kicked(object: SequencePuzzleObject) -> void:
 	var second_seq_solve_index: int = 0
@@ -69,7 +75,6 @@ func _on_kicked(object: SequencePuzzleObject) -> void:
 			else:
 				solve_progress = 0
 	elif _position > prev_pos:
-		object.interact_area.disabled = true
 		# Making progress towards solving sequence
 		solve_progress = solve_progress + 1
 		if platforms[solve_progress].submerged:
@@ -95,8 +100,6 @@ func _on_step_solved(step_index: int) -> void:
 	
 ## Function to change player position to previous checkpoint based on puzzle solve progress (this version saves progress when moving player)
 func _on_champ_long_rock_water_entered() -> void:
-	player.mode = Player.Mode.DEFEATED
-	await get_tree().create_timer(RESPAWN_DELAY).timeout
 	if (_current_step == 1):
 		var solve_length : int = first_seq_solve_index + 1
 		if platforms[solve_length].submerged:
@@ -109,8 +112,6 @@ func _on_champ_long_rock_water_entered() -> void:
 		# Reset collisions so steps can't be skipped
 		for i in range(offset, objs.size()):
 			objs[i].collision.disabled = false
-			if sequences[0].sequence.has(objs[i]) or sequences[1].sequence.has(objs[i]):
-				objs[i].interact_area.disabled = false
 		solve_progress = solve_length
 
 	# Player is on first sequence
@@ -127,21 +128,14 @@ func _on_champ_long_rock_water_entered() -> void:
 		# Reset collisions so steps can't be skipped
 		for i in range(0, objs.size()):
 			objs[i].collision.disabled = false
-			if sequences[0].sequence.has(objs[i]) or sequences[1].sequence.has(objs[i]):
-				objs[i].interact_area.disabled = false
 		solve_progress = 0 # redundant?
-	player.mode = Player.Mode.COZY
-
-## Overrides the parent function so we can continue to do logic after sequence ends
-func _on_demonstrate_sequence(step: SequencePuzzleStep) -> void:
-	await super._on_demonstrate_sequence(step)
-	_on_hint_sign_hint_sequence_finished()
 
 ## Signal from hint sign to reset camera view and sequence
 func _on_hint_sign_hint_sequence_finished() -> void:
 	await get_tree().create_timer(RESPAWN_DELAY).timeout
 	camera.global_position = player.global_position
 	player._toggle_player_behavior(player.player_interaction, true)
+	reset_all()
 
 ## Function to rest all sequence objets after displaying via hint sequence
 func reset_all() -> void:

@@ -5,7 +5,6 @@ extends RefCounted
 
 const STORYQUESTS_PATH := "res://scenes/quests/story_quests/"
 const TEMPLATE_PREFIX := "NO_EDIT"
-const TEMPLATE_ROOT_NODE_PREFIX := "NoEdit"
 const TEMPLATE_PATH := "res://scenes/quests/template_quests/" + TEMPLATE_PREFIX + "/"
 const QUEST_FILENAME := "quest.tres"
 const TILES_PATH := "res://tiles/"
@@ -100,11 +99,6 @@ func copy_packed_scene(packed_scene: PackedScene, copy_path: String) -> Resource
 		var node := scene.get_node(path)
 
 		await maybe_copy_properties(node, path)
-
-	if scene.name.begins_with(TEMPLATE_ROOT_NODE_PREFIX):
-		var suffix := scene.name.substr(TEMPLATE_ROOT_NODE_PREFIX.length())
-		var pascal_case_name := quest_name.capitalize().replace(" ", "")
-		scene.name = pascal_case_name + suffix
 
 	copied.resource_path = copy_path
 

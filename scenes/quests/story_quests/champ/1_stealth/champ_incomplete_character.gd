@@ -24,9 +24,6 @@ var mode: Mode = Mode.COZY
 ## How fast does the player transition from stopped to walking/running.
 @export_range(10, 100000, 10) var moving_step: float = 4000.0
 
-## How many 64px tiles the player should teleport when the blink key (c) is pressed.
-@export_range(0,24,0.5,"suffix:tiles") var blink_distance = 3.0
-
 
 ## Function that is called every "tick" that is constantly listening
 func _physics_process(delta: float) -> void:
@@ -52,42 +49,6 @@ func _walk_on_water():
 func _unhandled_input(_event: InputEvent) -> void:
 	# Set movement inputs (more options can be found in the Input Map in Project Settings)
 	#var axis: Vector2 = Vector2(0,0)
-
-
-# TODO:Redact parts of the blink ability so the learners can write their own.
-# Blink ability
-
-func _apply_blink():
-# Convert tiles to pixels for blink distance.
-	var blink_distance_pixels = blink_distance*64
-# Figure out which direction to blink
-	var direction := input_vector.normalized()
-# Calculate new coordinates
-	var target_coordinates: Vector2 = position + (direction * blink_distance_pixels)	
-# Move dummy to coordinates and see if its safe to go
-	$BlinkCheck.position = target_coordinates
-	# Force physics
-	$BlinkCheck.force_update_transform()
-	# If there are no collisions, move the player to the new position.
-	if not $BlinkCheck.has_overlapping_bodies():
-		position = target_coordinates
-
-
-# (Optional) Add a cooldown so you can’t blink every frame.
-# Start a timer or use a variable that counts down.
-
-# (Optional) Add a small visual change when blinking,
-# such as a brief color change or flash.
-
-## Function to listen for user input, each key press corresponding to movement is handled here
-func _unhandled_input(_event: InputEvent) -> void:
-	# Set movement inputs (more options can be found in the Input Map in Project Settings)
-	
-	# TODO: Full movement for debugging (remove before the script is finalized)
-	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
-	# Left and right movement
-	# var axis: Vector2 = Vector2(0,0)
-	
 	#if(Input.is_action_pressed(&"move_left")):
 		#axis.x = -1
 	#if(Input.is_action_pressed(&"move_right")):
@@ -101,14 +62,6 @@ func _unhandled_input(_event: InputEvent) -> void:
 	if(Input.is_action_pressed(&"champ_walk_on_water")):
 		_walk_on_water()
 		
-	
-	# Blink ability
-	if(Input.is_action_just_pressed(&"champ_blink")):
-		_apply_blink()
-	
-	#TODO: Question: how can we make diagonal speed the same as walking in a straight line?
-
-
 	input_vector = axis * SPEED
 	
 func defeat() -> void:

@@ -19,8 +19,12 @@
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter/components/teleporter.gd" id="11_0kd4s"]
 [ext_resource type="SpriteFrames" uid="uid://dnq8cw1cio2we" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_green.tres" id="11_bk6nl"]
 [ext_resource type="AudioStream" uid="uid://qf2d38rabx8o" path="res://assets/third_party/sounds/characters/enemies/throwing_enemy/Wings.ogg" id="12_btlpg"]
+[ext_resource type="SpriteFrames" uid="uid://bhamin2pby7tq" path="res://scenes/game_elements/props/projectile/components/inkblob_spriteframes.tres" id="12_e81yh"]
 [ext_resource type="AudioStream" uid="uid://fcmjf1srys7n" path="res://assets/third_party/sounds/characters/enemies/throwing_enemy/Spit.ogg" id="13_i2l34"]
-[ext_resource type="PackedScene" uid="uid://c5jedlvvnnbi0" path="res://scenes/game_elements/props/projectile/ink_blob_projectile.tscn" id="14_oigmj"]
+[ext_resource type="AudioStream" uid="uid://7jlv4wqpihl7" path="res://scenes/game_elements/props/projectile/components/blob_hit.wav" id="15_k0tjm"]
+[ext_resource type="PackedScene" uid="uid://clgisducnnh0a" path="res://scenes/game_elements/fx/liquid_small_splat/liquid_small_splat.tscn" id="16_muw2v"]
+[ext_resource type="PackedScene" uid="uid://b4qu6wml5gd7a" path="res://scenes/game_elements/fx/liquid_big_splat/liquid_big_splat.tscn" id="17_nicfu"]
+[ext_resource type="PackedScene" uid="uid://bgce3qns72g3m" path="res://scenes/game_elements/fx/liquid_trail.tscn" id="18_yyk6l"]
 
 [sub_resource type="Animation" id="Animation_nlryc"]
 resource_name = "goal_completed"
@@ -136,7 +140,11 @@ autostart = true
 sprite_frames = ExtResource("10_0kd4s")
 idle_sound_stream = ExtResource("12_btlpg")
 attack_sound_stream = ExtResource("13_i2l34")
-projectile_scene = ExtResource("14_oigmj")
+projectile_sprite_frames = ExtResource("12_e81yh")
+projectile_hit_sound_stream = ExtResource("15_k0tjm")
+projectile_small_fx_scene = ExtResource("16_muw2v")
+projectile_big_fx_scene = ExtResource("17_nicfu")
+projectile_trail_fx_scene = ExtResource("18_yyk6l")
 
 [node name="ThrowingEnemy2" parent="OnTheGround" unique_id=1156522586 instance=ExtResource("6_e81yh")]
 position = Vector2(62, 410)
@@ -144,7 +152,11 @@ autostart = true
 sprite_frames = ExtResource("11_bk6nl")
 idle_sound_stream = ExtResource("12_btlpg")
 attack_sound_stream = ExtResource("13_i2l34")
-projectile_scene = ExtResource("14_oigmj")
+projectile_sprite_frames = ExtResource("12_e81yh")
+projectile_hit_sound_stream = ExtResource("15_k0tjm")
+projectile_small_fx_scene = ExtResource("16_muw2v")
+projectile_big_fx_scene = ExtResource("17_nicfu")
+projectile_trail_fx_scene = ExtResource("18_yyk6l")
 
 [node name="FillingBarrel" parent="OnTheGround" unique_id=1769402278 instance=ExtResource("7_btlpg")]
 position = Vector2(839, 248)

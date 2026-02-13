@@ -12,6 +12,9 @@ extends Projectile
 ## - Walk into projectile: Slow push (100 speed)
 ## - Attack near projectile: Fast push (300 speed)
 
+## Visual appearance when projectile is disabled
+@export var disabled_sprite_frames: SpriteFrames
+
 ## Speed when player walks into disabled projectile
 @export var walk_push_speed: float = 100.0
 
@@ -113,7 +116,11 @@ func _stop_projectile_motion() -> void:
 
 ## Changes sprite to disabled appearance
 func _apply_disabled_visual() -> void:
-	animated_sprite_2d.play(&"disabled")
+	if disabled_sprite_frames:
+		animated_sprite_2d.sprite_frames = disabled_sprite_frames
+		animated_sprite_2d.play(&"disabled")
+	else:
+		modulate = DISABLED_TINT
 
 
 ## Configures collision layers for disabled state
