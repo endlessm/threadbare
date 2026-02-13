@@ -4,18 +4,14 @@
 [ext_resource type="AudioStream" uid="uid://df7ldbesilfry" path="res://assets/first_party/music/Threadbare Loop_Main_Bridge_02.ogg" id="1_a16ge"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_p0sed"]
 [ext_resource type="Resource" uid="uid://cvuitsm15yyaw" path="res://scenes/quests/story_quests/champ/2_combat/combat_components/champ_combat.dialogue" id="2_sm7tj"]
+[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="3_sv8bg"]
 [ext_resource type="TileSet" uid="uid://djck8217try86" path="res://scenes/quests/story_quests/champ/tiles/champ_elevation.tres" id="5_sv8bg"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="6_r6jc5"]
 [ext_resource type="TileSet" uid="uid://bo4jyvl3lcww1" path="res://scenes/quests/story_quests/champ/champ_tileset.tres" id="6_sm7tj"]
 [ext_resource type="SpriteFrames" uid="uid://ctjbkxw0r2f2i" path="res://scenes/quests/story_quests/champ/player_components/champ_player.tres" id="7_utai8"]
-[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="8_yidpm"]
-[ext_resource type="SpriteFrames" uid="uid://b00dcfe4dtvkh" path="res://scenes/quests/template_quests/NO_EDIT/2_NO_EDIT_combat/NO_EDIT_combat_components/NO_EDIT_projectile_spriteframes.tres" id="9_1fuoe"]
-[ext_resource type="Script" uid="uid://drc8jqj5jrv36" path="res://scenes/quests/story_quests/champ/2_combat/combat_components/champ_throwing_enemy.gd" id="9_jqo5j"]
-[ext_resource type="Texture2D" uid="uid://cayqkmu2ruwq8" path="res://scenes/quests/story_quests/champ/2_combat/combat_components/champ_bait_projectile_3.png" id="9_utai8"]
-[ext_resource type="Texture2D" uid="uid://xioplli70d2n" path="res://scenes/quests/story_quests/champ/2_combat/combat_components/champ_bait_projectile_2.png" id="10_utai8"]
+[ext_resource type="PackedScene" uid="uid://c481vrtlq627b" path="res://scenes/quests/story_quests/champ/2_combat/combat_components/champ_throwing_enemy.tscn" id="8_yidpm"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="11_p0sed"]
 [ext_resource type="SpriteFrames" uid="uid://0kjkk0ekjgcd" path="res://scenes/quests/story_quests/champ/2_combat/combat_components/champ_target_spriteframes.tres" id="12_x632n"]
-[ext_resource type="Texture2D" uid="uid://ckjior4vavgpy" path="res://scenes/quests/story_quests/champ/2_combat/combat_components/champ_bait_projectile_1.png" id="12_yidpm"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="13_45tp4"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="14_bn425"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="15_qewm5"]
@@ -25,79 +21,6 @@
 [ext_resource type="Texture2D" uid="uid://e8g4e5k3mjyq" path="res://scenes/quests/story_quests/champ/2_combat/combat_components/placeholder_bait_sign_3.png" id="19_yidpm"]
 [ext_resource type="Texture2D" uid="uid://b8bo7js8fgtvq" path="res://scenes/quests/story_quests/champ/2_combat/combat_components/circular_ripples.png" id="21_yidpm"]
 [ext_resource type="Texture2D" uid="uid://bopnrtenvp4sm" path="res://scenes/quests/story_quests/champ/tiles/assets/water_ripples.png" id="22_hv7kx"]
-
-[sub_resource type="GDScript" id="GDScript_sm7tj"]
-script/source = "class_name ChampFillGameLogic
-extends FillGameLogic
-#
-#@export var lab: String = \"\"
-#
-#func _ready() -> void:
-	#var color_per_label = {\"a\": Color(.3,.5,6), \"b\": Color(.9,.1,6),\"c\": Color(.1,.8,.2)}
-	#for enemy: ThrowingEnemy in get_tree().get_nodes_in_group(\"throwing_enemy\"):
-		#enemy.allowed_labels = allowed_labels
-		#enemy.color_per_label = color_per_label
-"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_a16ge"]
-atlas = ExtResource("12_yidpm")
-region = Rect2(0, 0, 64, 64)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_p0sed"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_a16ge")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_yidpm"]
-atlas = ExtResource("9_utai8")
-region = Rect2(0, 0, 64, 64)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_jqo5j"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_yidpm")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hv7kx"]
-atlas = ExtResource("10_utai8")
-region = Rect2(0, 0, 64, 64)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_hb4tj"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hv7kx")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_utai8"]
-atlas = ExtResource("12_yidpm")
-region = Rect2(0, 0, 64, 64)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_yidpm"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_utai8")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
 
 [sub_resource type="Resource" id="Resource_no6r0"]
 script = ExtResource("14_bn425")
@@ -288,7 +211,7 @@ dialogue = ExtResource("2_sm7tj")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="FillGameLogic" type="Node" parent="." unique_id=1075941628]
-script = SubResource("GDScript_sm7tj")
+script = ExtResource("3_sv8bg")
 barrels_to_win = 2
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
@@ -321,36 +244,13 @@ position_smoothing_enabled = true
 editor_draw_limits = true
 
 [node name="ThrowingEnemies" type="Node2D" parent="OnTheGround" unique_id=1014610845]
-visible = false
 
 [node name="ThrowingNPC2" parent="OnTheGround/ThrowingEnemies" unique_id=481399762 instance=ExtResource("8_yidpm")]
 position = Vector2(1537, 673)
-collision_layer = 4
-collision_mask = 128
-script = ExtResource("9_jqo5j")
-project_sprite_frames = Dictionary[String, SpriteFrames]({
-"a": SubResource("SpriteFrames_p0sed"),
-"b": SubResource("SpriteFrames_jqo5j"),
-"c": SubResource("SpriteFrames_hb4tj"),
-"label_name": ExtResource("9_1fuoe")
-})
-throwing_period = 6.0
 odd_shoot = true
-projectile_duration = 7.0
 
 [node name="ThrowingNPC4" parent="OnTheGround/ThrowingEnemies" unique_id=774333023 instance=ExtResource("8_yidpm")]
 position = Vector2(414, 695)
-collision_layer = 4
-collision_mask = 128
-script = ExtResource("9_jqo5j")
-project_sprite_frames = Dictionary[String, SpriteFrames]({
-"a": SubResource("SpriteFrames_yidpm"),
-"b": SubResource("SpriteFrames_jqo5j"),
-"c": SubResource("SpriteFrames_hb4tj"),
-"label_name": ExtResource("9_1fuoe")
-})
-throwing_period = 6.0
-projectile_duration = 7.0
 
 [node name="Targets" type="Node2D" parent="OnTheGround" unique_id=60590667]
 

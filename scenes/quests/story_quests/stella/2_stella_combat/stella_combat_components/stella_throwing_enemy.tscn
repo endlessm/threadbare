@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://b3s10h8ewmnm8"]
+
+[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="1_7cxet"]
+[ext_resource type="SpriteFrames" uid="uid://b1eumg5kx32g1" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_throwing_enemy.tres" id="2_kpr3h"]
+[ext_resource type="PackedScene" uid="uid://bp0fl40jqivo0" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_projectile_starfish.tscn" id="3_ideen"]
+[ext_resource type="PackedScene" uid="uid://bvk7ngwab4lgc" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_projectile2.tscn" id="4_3u6a4"]
+[ext_resource type="PackedScene" uid="uid://dneevley8wsca" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_projectile3.tscn" id="5_1rqoh"]
+[ext_resource type="PackedScene" uid="uid://de2ap4t0tn00l" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_projectile4.tscn" id="6_w4iys"]
+
+[node name="StellaThrowingEnemy" unique_id=1243855514 instance=ExtResource("1_7cxet")]
+collision_layer = 4
+collision_mask = 128
+throwing_period = 7.5
+sprite_frames = ExtResource("2_kpr3h")
+projectile_scene = ExtResource("3_ideen")
+projectile_scene_for_label = Dictionary[String, PackedScene]({
+"fish2": ExtResource("4_3u6a4"),
+"fish3": ExtResource("5_1rqoh"),
+"fish4": ExtResource("6_w4iys")
+})
+projectile_duration = 6.0
+walking_time = 5.0
+
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=1865971466]
+sprite_frames = ExtResource("2_kpr3h")
+
+[node name="Timer" parent="." index="2" unique_id=2084913349]
+wait_time = 7.5
