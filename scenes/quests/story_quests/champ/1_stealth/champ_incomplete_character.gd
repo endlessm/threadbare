@@ -25,7 +25,7 @@ var mode: Mode = Mode.COZY
 @export_range(10, 100000, 10) var moving_step: float = 4000.0
 
 ## How many 64px tiles the player should teleport when the blink key (c) is pressed.
-@export_range(0,24,0.5) var blink_distance_tiles = 3.0
+@export_range(0,24,0.5,"suffix:tiles") var blink_distance = 3.0
 
 
 ## Function that is called every "tick" that is constantly listening
@@ -45,25 +45,23 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-# TODO: Make this blink fn more readable and redact some parts of it so the player can write their own.
+# TODO:Redact parts of the blink ability so the learners can write their own.
 # Blink ability
 
-
 func _apply_blink():
-
 # Convert tiles to pixels for blink distance.
-	var blink_distance_pixels = blink_distance_tiles*64;
+	var blink_distance_pixels = blink_distance*64
 # Figure out which direction to blink
 	var direction := input_vector.normalized()
 # Calculate new coordinates
 	var target_coordinates: Vector2 = position + (direction * blink_distance_pixels)	
 # Move dummy to coordinates and see if its safe to go
-	$BlinkCheck.position = target_coordinates;
+	$BlinkCheck.position = target_coordinates
 	# Force physics
 	$BlinkCheck.force_update_transform()
-	# If there are no collisions, move the player there.
+	# If there are no collisions, move the player to the new position.
 	if not $BlinkCheck.has_overlapping_bodies():
-		position = target_coordinates;
+		position = target_coordinates
 
 
 # (Optional) Add a cooldown so you can’t blink every frame.
