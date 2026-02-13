@@ -52,13 +52,484 @@
 [ext_resource type="PackedScene" uid="uid://vb5o7hh5an8j" path="res://scenes/game_elements/characters/npcs/elder/template_elder.tscn" id="43_ppslc"]
 [ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="45_cjmkx"]
 [ext_resource type="PackedScene" uid="uid://cr65lmm5b0ueo" path="res://scenes/game_elements/characters/npcs/cat/cat.tscn" id="52_ppslc"]
+[ext_resource type="PackedScene" uid="uid://c0374lgarm8gj" path="res://scenes/game_elements/fx/clouds_shadow/clouds_shadow.tscn" id="54_ns5r3"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="55_wymun"]
+
+[sub_resource type="Gradient" id="Gradient_5j6h7"]
+interpolation_mode = 2
+interpolation_color_space = 2
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_duxxr"]
+gradient = SubResource("Gradient_5j6h7")
+width = 1024
+height = 768
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_r1ek1"]
+interpolation_mode = 2
+interpolation_color_space = 2
+colors = PackedColorArray(1, 0.98333335, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ns5r3"]
+gradient = SubResource("Gradient_r1ek1")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="GDScript" id="GDScript_ns5r3"]
+script/source = "# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends Label
+
+@onready var animation_player: AnimationPlayer = $\"../../TimeAndWeather/AnimationPlayer\"
+
+
+func _process(_delta: float) -> void:
+	text = \"%.1f\" % animation_player.current_animation_position
+"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h30yx"]
 size = Vector2(2070, 585)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_djq26"]
 size = Vector2(161, 95)
+
+[sub_resource type="GDScript" id="GDScript_r1ek1"]
+script/source = "# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends Node2D
+
+## - 1: One day in game matches one day in reality. Don't do this!
+## - 60: One hour in game matches one day in reality.
+## - 1440: One minute in game matches one day in reality.
+## - 3600: 24 seconds in game matches one day in reality.
+@export_range(1.0, 3600.0, 1.0) var time_scale: float = 1440.0
+
+## - 0: Midnight.
+## - 4: 4 AM.
+## - 12: Noon.
+## - 16: 4 PM.
+@export var current_time: float = 10.0:
+	set = _set_current_time
+
+@export var night_lights_enabled: bool = false:
+	set = _set_night_lights_enabled
+
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var world_environment: WorldEnvironment = $WorldEnvironment
+
+@onready var random_event_timer: Timer = $RandomEventTimer
+@onready var fog: ColorRect = $Parallax2D/Fog
+@onready var clouds_shadow: Parallax2D = $CloudsShadow
+@onready var rain_particles: GPUParticles2D = $CanvasLayer/RainParticles
+
+var random_event_ongoing: bool = false
+
+func _ready() -> void:
+	for light: Light2D in get_tree().get_nodes_in_group(\"night-lights\"):
+		light.set_meta(\"initial_energy\", light.energy)
+
+	# The day-night cycle is a 24 seconds loop, corresponding to the 24 hours of one day.
+	var day_night_scale := 60 * 60
+	animation_player.speed_scale = time_scale / day_night_scale
+	_set_current_time(current_time)
+
+	fog.visible = false
+	clouds_shadow.visible = false
+	_start_random_event_timer()
+
+
+func _process(_delta: float) -> void:
+	get_tree().call_group(\"reflecting-surfaces\", \"set_modulate\", world_environment.environment.background_color)
+
+
+func _set_current_time(new_current_time: float) -> void:
+	current_time = new_current_time
+	if not animation_player:
+		return
+	animation_player.seek(current_time)
+	var enabled := current_time < 5.0 or current_time >= 19.0
+	get_tree().call_group(\"night-lights\", \"set_enabled\", enabled)
+
+
+func _set_night_lights_enabled(new_night_lights_enabled: bool) -> void:
+	if new_night_lights_enabled == night_lights_enabled:
+		return
+	night_lights_enabled = new_night_lights_enabled
+	if not is_inside_tree():
+		return
+	for light: Light2D in get_tree().get_nodes_in_group(\"night-lights\"):
+		var tween: Tween = create_tween()
+		if night_lights_enabled:
+			light.enabled = night_lights_enabled
+			light.energy = 0
+			tween.tween_property(light, \"energy\", light.get_meta(\"initial_energy\"), 1.0)
+		else:
+			light.energy = light.get_meta(\"initial_energy\")
+			tween.tween_property(light, \"energy\", 0.0, 1.0)
+			tween.tween_property(light, \"enabled\", night_lights_enabled, 0.0)
+
+
+func _fade_in_out(item: CanvasItem, duration: float=5, in_time: float=1, out_time: float=1) -> void:
+	item.modulate = Color.BLACK
+	item.visible = true
+	var tween: Tween = create_tween()
+	tween.tween_property(item, \"modulate\", Color.WHITE, in_time)
+	tween.tween_property(item, \"modulate\", Color.WHITE, duration)
+	tween.tween_property(item, \"modulate\", Color.BLACK, out_time)
+	await tween.finished
+	item.visible = false
+
+
+func _add_fog() -> void:
+	random_event_ongoing = true
+	await fog.randomize()
+	await _fade_in_out(fog, randf_range(5.0, 10.0))
+	random_event_ongoing = false
+
+
+func _add_clouds_shadow() -> void:
+	random_event_ongoing = true
+	await clouds_shadow.randomize()
+	await _fade_in_out(clouds_shadow, randf_range(5.0, 10.0))
+	random_event_ongoing = false
+
+
+func _add_rain() -> void:
+	random_event_ongoing = true
+	rain_particles.randomize()
+	rain_particles.emitting = true
+	var duration := randf_range(5.0, 10.0)
+	await get_tree().create_timer(duration).timeout
+	rain_particles.emitting = false
+	random_event_ongoing = false
+
+
+
+func _on_random_event_timer_timeout() -> void:
+	if random_event_ongoing:
+		_start_random_event_timer()
+		return
+
+	var possible_events: Array[String] = [\"nothing\"]
+	var weights: PackedFloat32Array = PackedFloat32Array([0.0])
+
+	var actual_time := animation_player.current_animation_position
+
+	# Fog more likely during late night or early in the morning:
+	if actual_time < 7.0 or actual_time > 22.0:
+		possible_events.append(\"fog\")
+		weights.append(1)
+
+	# Cloud shadows only possible during the day:
+	if actual_time > 6 and actual_time < 17:
+		possible_events.append(\"cloudy\")
+		weights.append(1)
+
+	possible_events.append(\"rain\")
+	weights.append(1)
+
+	var rng := RandomNumberGenerator.new()
+	var event: String = possible_events[rng.rand_weighted(weights)]
+	print(event + \" %.1f\" % actual_time)
+
+	match event:
+		\"fog\":
+			_add_fog()
+		\"cloudy\":
+			_add_clouds_shadow()
+		\"rain\":
+			_add_rain()
+
+	_start_random_event_timer()
+
+
+func _start_random_event_timer() -> void:
+	# TODO: change values, and make them depend on the time scale
+	random_event_timer.wait_time = randf_range(1.0, 2.0)
+	random_event_timer.start()
+"
+
+[sub_resource type="Gradient" id="Gradient_ns5r3"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5j6h7"]
+gradient = SubResource("Gradient_ns5r3")
+
+[sub_resource type="Environment" id="Environment_r1ek1"]
+background_mode = 3
+ambient_light_source = 2
+adjustment_enabled = true
+adjustment_color_correction = SubResource("GradientTexture1D_5j6h7")
+
+[sub_resource type="Animation" id="Animation_r1ek1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasModulate:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WorldEnvironment:environment:adjustment_contrast")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WorldEnvironment:environment:adjustment_saturation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:night_lights_enabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("WorldEnvironment:environment:adjustment_brightness")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("WorldEnvironment:environment:background_color")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ns5r3"]
+resource_name = "day-night"
+length = 24.0
+loop_mode = 1
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasModulate:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4, 6, 7, 9.990001, 14, 17, 18, 20, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.28800002, 0.36479995, 0.48, 1), Color(0.28800002, 0.36479995, 0.48, 1), Color(0.68226564, 0.84817696, 0.92506266, 1), Color(0.88227075, 0.9292479, 0.8883446, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0.92, 0.83628, 0.6808, 1), Color(0.92, 0.7482667, 0.55200005, 1), Color(0.28800002, 0.36479995, 0.48, 1), Color(0.28800002, 0.36479995, 0.48, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WorldEnvironment:environment:adjustment_contrast")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4, 10, 14, 20, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.2, 1.2, 1.0, 1.0, 1.2, 1.2]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WorldEnvironment:environment:adjustment_saturation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 10, 12, 14, 18, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 0.9, 1.0, 1.2, 1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:night_lights_enabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 5, 19, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("WorldEnvironment:environment:adjustment_brightness")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 10, 12, 14, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 1.1, 1.0, 1.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("WorldEnvironment:environment:background_color")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 4, 6, 10, 14, 18, 20, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.09333344, 0, 0.4, 1), Color(0.48, 0.48, 0.48, 1), Color(0.9, 0.9, 0.9, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0.48, 0.48, 0.48, 1), Color(0.09333344, 0, 0.4, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5j6h7"]
+_data = {
+&"RESET": SubResource("Animation_r1ek1"),
+&"day-night": SubResource("Animation_ns5r3")
+}
+
+[sub_resource type="Shader" id="Shader_r1ek1"]
+code = "shader_type canvas_item;
+render_mode blend_add;
+
+uniform sampler2D fog_texture: repeat_enable, filter_nearest;
+uniform vec2 speed = vec2(0.02,0.01);
+uniform float intensity: hint_range(0.0, 1.0) = 0.2;
+uniform float density: hint_range(0.0, 10.0) = 1.0;
+
+void fragment() {
+	vec2 uv = UV + speed * TIME;
+	float fog = texture(fog_texture, uv).r;
+	fog = clamp(fog * density - density / 2.0, 0.0, intensity);
+	COLOR.a *= fog;
+}
+"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jw523"]
+frequency = 0.0075
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ys0ab"]
+width = 256
+height = 256
+noise = SubResource("FastNoiseLite_jw523")
+seamless = true
+seamless_blend_skirt = 0.8
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ns5r3"]
+shader = SubResource("Shader_r1ek1")
+shader_parameter/fog_texture = SubResource("NoiseTexture2D_ys0ab")
+shader_parameter/speed = Vector2(0, 0.01)
+shader_parameter/intensity = 1.0
+shader_parameter/density = 0.71600003401
+
+[sub_resource type="GDScript" id="GDScript_5j6h7"]
+script/source = "# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends ColorRect
+
+var fog_texture: NoiseTexture2D
+var noise: FastNoiseLite
+
+
+func _ready() -> void:
+	fog_texture = (material as ShaderMaterial).get_shader_parameter(\"fog_texture\")
+	noise = fog_texture.noise
+
+
+func randomize() -> void:
+	noise.seed = randi()
+	await fog_texture.changed
+"
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_r1ek1"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_duxxr"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2vvub"]
+gradient = SubResource("Gradient_duxxr")
+width = 1
+height = 10
+fill_to = Vector2(0.042735044, 1)
+
+[sub_resource type="Curve" id="Curve_r1ek1"]
+_data = [Vector2(0, 0.23757458), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ns5r3"]
+curve = SubResource("Curve_r1ek1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r1ek1"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(1280, 0, 0)
+emission_shape = 3
+emission_box_extents = Vector3(1280, 1, 1)
+direction = Vector3(0, 1, 0)
+spread = 0.0
+initial_velocity_min = 100.0
+initial_velocity_max = 1000.0
+gravity = Vector3(0, 98, 0)
+scale_max = 5.0
+scale_over_velocity_max = 1000.0
+scale_over_velocity_curve = SubResource("CurveTexture_ns5r3")
+
+[sub_resource type="GDScript" id="GDScript_2vvub"]
+script/source = "# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends GPUParticles2D
+
+
+func randomize() -> void:
+	var rain_type := randf()
+	if rain_type < 0.25:
+		# 25% chances of having a drizzle.
+		amount_ratio = randf_range(0, 0.1)
+	elif rain_type >= 0.75:
+		# 25% chances of having a steady rain.
+		amount_ratio = randf_range(0.8, 1)
+	else:
+		# 50% chances of having something in between.
+		amount_ratio = randf_range(0.1, 0.8)
+"
 
 [node name="FraysEnd" type="Node2D" unique_id=1849947277]
 y_sort_enabled = true
@@ -71,7 +542,7 @@ stream = ExtResource("2_epsnn")
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1722660259]
 position = Vector2(0, 8)
 
-[node name="Water" type="TileMapLayer" parent="TileMapLayers" unique_id=1840175252]
+[node name="Water" type="TileMapLayer" parent="TileMapLayers" unique_id=1840175252 groups=["reflecting-surfaces"]]
 tile_map_data = PackedByteArray("AAABABcAAAAAAAAAAAABABYAAAAAAAAAAAACABcAAAAAAAAAAAACABYAAAAAAAAAAAACABUAAAAAAAAAAAADABUAAAAAAAAAAAAEABUAAAAAAAAAAAADABYAAAAAAAAAAAAEABYAAAAAAAAAAAAFABYAAAAAAAAAAAAFABUAAAAAAAAAAAAGABYAAAAAAAAAAAAGABUAAAAAAAAAAAAHABUAAAAAAAAAAAAHABYAAAAAAAAAAAAIABUAAAAAAAAAAAAIABQAAAAAAAAAAAAJABQAAAAAAAAAAAAKABQAAAAAAAAAAAAKABUAAAAAAAAAAAAJABUAAAAAAAAAAAALABUAAAAAAAAAAAAMABUAAAAAAAAAAAANABUAAAAAAAAAAAANABQAAAAAAAAAAAAMABQAAAAAAAAAAAALABQAAAAAAAAAAAAOABQAAAAAAAAAAAAOABUAAAAAAAAAAAAQABUAAAAAAAAAAAARABUAAAAAAAAAAAARABQAAAAAAAAAAAAQABQAAAAAAAAAAAASABQAAAAAAAAAAAATABQAAAAAAAAAAAAUABQAAAAAAAAAAAAVABQAAAAAAAAAAAAWABQAAAAAAAAAAAAXABQAAAAAAAAAAAAYABQAAAAAAAAAAAAZABQAAAAAAAAAAAAaABQAAAAAAAAAAAAaABUAAAAAAAAAAAAZABUAAAAAAAAAAAAYABUAAAAAAAAAAAAXABUAAAAAAAAAAAAWABUAAAAAAAAAAAAVABUAAAAAAAAAAAAUABUAAAAAAAAAAAATABUAAAAAAAAAAAASABUAAAAAAAAAAAAZABYAAAAAAAAAAAAaABYAAAAAAAAAAAAaABcAAAAAAAAAAAAbABcAAAAAAAAAAAAcABcAAAAAAAAAAAAbABgAAAAAAAAAAAAcABgAAAAAAAAAAAAdABgAAAAAAAAAAAAcABkAAAAAAAAAAAAdABkAAAAAAAAAAAAeABkAAAAAAAAAAAAfABkAAAAAAAAAAAAdABoAAAAAAAAAAAAeABoAAAAAAAAAAAAfABoAAAAAAAAAAAADABcAAAAAAAAAAAAEABcAAAAAAAAAAAAFABcAAAAAAAAAAAAGABcAAAAAAAAAAAAHABcAAAAAAAAAAAAIABYAAAAAAAAAAAAJABYAAAAAAAAAAAAKABYAAAAAAAAAAAALABYAAAAAAAAAAAAMABYAAAAAAAAAAAANABYAAAAAAAAAAAAOABYAAAAAAAAAAAAQABYAAAAAAAAAAAARABYAAAAAAAAAAAASABYAAAAAAAAAAAATABYAAAAAAAAAAAAUABYAAAAAAAAAAAAVABYAAAAAAAAAAAAWABYAAAAAAAAAAAAXABYAAAAAAAAAAAAYABYAAAAAAAAAAAAZABcAAAAAAAAAAAAaABgAAAAAAAAAAAAaABkAAAAAAAAAAAAbABkAAAAAAAAAAAAbABoAAAAAAAAAAAAcABoAAAAAAAAAAAAcABQAAAAAAAAAAAAdABQAAAAAAAAAAAAcABUAAAAAAAAAAAAdABUAAAAAAAAAAAAeABUAAAAAAAAAAAAfABUAAAAAAAAAAAAfABYAAAAAAAAAAAAeABYAAAAAAAAAAAAdABYAAAAAAAAAAAAcABYAAAAAAAAAAAAdABcAAAAAAAAAAAAeABcAAAAAAAAAAAAfABcAAAAAAAAAAAAeABgAAAAAAAAAAAAfABgAAAAAAAAAAAAWABcAAAAAAAAAAAAWABgAAAAAAAAAAAAXABgAAAAAAAAAAAAYABgAAAAAAAAAAAAYABcAAAAAAAAAAAAXABcAAAAAAAAAAAAYABkAAAAAAAAAAAAXABkAAAAAAAAAAAAYABoAAAAAAAAAAAAZABkAAAAAAAAAAAAZABgAAAAAAAAAAAAZABoAAAAAAAAAAAAaABoAAAAAAAAAAAAXABoAAAAAAAAAAAAYABsAAAAAAAAAAAAZABsAAAAAAAAAAAAaABsAAAAAAAAAAAAbABsAAAAAAAAAAAAcABsAAAAAAAAAAAAdABsAAAAAAAAAAQAeABsAAAAAAAAAAQAfABsAAAAAAAAAAQAdABwAAAAAAAAAAQAeABwAAAAAAAAAAAAfABwAAAAAAAAAAAAAABYAAAAAAAAAAAAAABcAAAAAAAAAAAABABUAAAAAAAAAAgAAABUAAAAAAAAAAgAbABYAAAAAAAAAAgD//xcAAAAAAAAAAAD//xgAAAAAAAAAAAD//xkAAAAAAAAAAAD//xoAAAAAAAAAAAD//xsAAAAAAAAAAAD//xwAAAAAAAAAAAAPABQAAAAAAAAAAQAPABUAAAAAAAAAAQAPABYAAAAAAAAAAQAbABQAAAAAAAAAAQAbABUAAAAAAAAAAQAAABgAAAAAAAAAAQABABgAAAAAAAAAAQACABgAAAAAAAAAAQADABgAAAAAAAAAAQAEABgAAAAAAAAAAQAFABgAAAAAAAAAAQAGABgAAAAAAAAAAQAHABgAAAAAAAAAAQAIABcAAAAAAAAAAQAJABcAAAAAAAAAAQAKABcAAAAAAAAAAQALABcAAAAAAAAAAQAMABcAAAAAAAAAAQANABcAAAAAAAAAAQAOABcAAAAAAAAAAQAPABcAAAAAAAAAAQAQABcAAAAAAAAAAQARABcAAAAAAAAAAQASABcAAAAAAAAAAQATABcAAAAAAAAAAQAUABcAAAAAAAAAAQAVABcAAAAAAAAAAQAVABgAAAAAAAAAAQAWABkAAAAAAAAAAQAWABoAAAAAAAAAAQAXABsAAAAAAAAAAQAXABwAAAAAAAAAAQAYABwAAAAAAAAAAQAZABwAAAAAAAAAAQAaABwAAAAAAAAAAQAbABwAAAAAAAAAAQAcABwAAAAAAAAAAQA=")
 tile_set = ExtResource("4_6ss6a")
 
@@ -143,6 +614,13 @@ limit_right = 2048
 limit_bottom = 1950
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="PointLight2D" type="PointLight2D" parent="Player" unique_id=1928787581 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, -28)
+enabled = false
+energy = 0.5
+texture = SubResource("GradientTexture2D_duxxr")
 
 [node name="Props" type="Node2D" parent="." unique_id=1456259135]
 y_sort_enabled = true
@@ -274,16 +752,40 @@ y_sort_enabled = true
 position = Vector2(1600, 815)
 texture = ExtResource("5_uhynt")
 
+[node name="PointLight2D" type="PointLight2D" parent="Buildings/House_1" unique_id=1823602379 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(-2, -10)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
+
 [node name="House_2" parent="Buildings" unique_id=821648560 instance=ExtResource("15_uhynt")]
 position = Vector2(1760, 810)
 texture = ExtResource("5_uojly")
 
+[node name="PointLight2D" type="PointLight2D" parent="Buildings/House_2" unique_id=812318709 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, -53)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
+
 [node name="House_3" parent="Buildings" unique_id=2108055439 instance=ExtResource("5_5jg1p")]
 position = Vector2(316, 1043)
+
+[node name="PointLight2D" type="PointLight2D" parent="Buildings/House_3" unique_id=42392129 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, -53)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
 
 [node name="House_4" parent="Buildings" unique_id=1336347029 instance=ExtResource("15_uhynt")]
 position = Vector2(352, 673)
 texture = ExtResource("6_uhynt")
+
+[node name="PointLight2D" type="PointLight2D" parent="Buildings/House_4" unique_id=1997122347 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, -28)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
 
 [node name="House_5" parent="Buildings" unique_id=32389067 instance=ExtResource("5_5jg1p")]
 position = Vector2(176, 626)
@@ -294,7 +796,14 @@ position = Vector2(227, 832)
 texture = ExtResource("5_uhynt")
 
 [node name="House_7" parent="Buildings" unique_id=2109293750 instance=ExtResource("5_5jg1p")]
+visibility_layer = 2
 position = Vector2(1565, 1110)
+
+[node name="PointLight2D" type="PointLight2D" parent="Buildings/House_7" unique_id=1117120932 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, -55)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
 
 [node name="House_8" parent="Buildings" unique_id=2122984790 instance=ExtResource("15_uhynt")]
 position = Vector2(480, 1043)
@@ -303,9 +812,22 @@ position = Vector2(480, 1043)
 position = Vector2(781, 1095)
 texture = ExtResource("5_uhynt")
 
+[node name="PointLight2D" type="PointLight2D" parent="Buildings/House_9" unique_id=1627110709 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, -55)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
+
 [node name="House_10" parent="Buildings" unique_id=1796299989 instance=ExtResource("5_5jg1p")]
 position = Vector2(1758, 1185)
 texture = ExtResource("5_uhynt")
+
+[node name="PointLight2D" type="PointLight2D" parent="Buildings" unique_id=675622931 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(995.5, 554)
+scale = Vector2(3.0585938, 1.21875)
+enabled = false
+texture = SubResource("GradientTexture2D_ns5r3")
 
 [node name="NPCs" type="Node2D" parent="." unique_id=1415886134]
 y_sort_enabled = true
@@ -397,6 +919,12 @@ offset_bottom = 44.0
 theme = ExtResource("35_ljovl")
 theme_type_variation = &"HintLabel"
 text = "Interact"
+
+[node name="Label" type="Label" parent="ScreenOverlay" unique_id=586292071]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "HOLA"
+script = SubResource("GDScript_ns5r3")
 
 [node name="HUD" parent="." unique_id=1876437396 instance=ExtResource("27_aj6tp")]
 unique_name_in_owner = true
@@ -1059,3 +1587,55 @@ shape = SubResource("RectangleShape2D_djq26")
 
 [node name="SpawnPointAfterIntro" parent="." unique_id=69976262 instance=ExtResource("37_thm8h")]
 position = Vector2(62, 1747)
+
+[node name="TimeAndWeather" type="Node2D" parent="." unique_id=608719359]
+script = SubResource("GDScript_r1ek1")
+night_lights_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="TimeAndWeather" unique_id=29765118]
+environment = SubResource("Environment_r1ek1")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="TimeAndWeather" unique_id=372329208]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TimeAndWeather" unique_id=1439642237]
+libraries/ = SubResource("AnimationLibrary_5j6h7")
+autoplay = &"day-night"
+
+[node name="RandomEventTimer" type="Timer" parent="TimeAndWeather" unique_id=194018303]
+one_shot = true
+
+[node name="Parallax2D" type="Parallax2D" parent="TimeAndWeather" unique_id=1181118827]
+top_level = true
+scroll_scale = Vector2(1.09, 1.03)
+repeat_size = Vector2(1024, 1024)
+repeat_times = 3
+
+[node name="Fog" type="ColorRect" parent="TimeAndWeather/Parallax2D" unique_id=1340717936]
+visible = false
+material = SubResource("ShaderMaterial_ns5r3")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1024.0
+offset_bottom = 1024.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_5j6h7")
+
+[node name="CloudsShadow" parent="TimeAndWeather" unique_id=1515275591 instance=ExtResource("54_ns5r3")]
+visible = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="TimeAndWeather" unique_id=1214299979]
+
+[node name="RainParticles" type="GPUParticles2D" parent="TimeAndWeather/CanvasLayer" unique_id=1073446993]
+modulate = Color(0.3575, 0.44733334, 0.55, 1)
+material = SubResource("CanvasItemMaterial_r1ek1")
+emitting = false
+amount = 500
+texture = SubResource("GradientTexture2D_2vvub")
+lifetime = 0.81
+speed_scale = 2.0
+process_material = SubResource("ParticleProcessMaterial_r1ek1")
+script = SubResource("GDScript_2vvub")
+
+[connection signal="timeout" from="TimeAndWeather/RandomEventTimer" to="TimeAndWeather" method="_on_random_event_timer_timeout"]
