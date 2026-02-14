@@ -1,25 +1,14 @@
-[gd_scene format=3 uid="uid://d37mebu7atru7"]
+[gd_scene format=3 uid="uid://877o14cjju6m"]
 
-[ext_resource type="Script" uid="uid://dmf866kgfnp3c" path="res://scenes/game_elements/characters/enemies/guard/components/guard.gd" id="1_g173s"]
-[ext_resource type="Script" uid="uid://c477jgx4lwr86" path="res://scenes/game_elements/characters/enemies/guard/components/guard_movement.gd" id="2_0hjcv"]
-[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="3_0hjcv"]
-[ext_resource type="Script" uid="uid://cu7ujf83r7yh2" path="res://scenes/game_logic/walk_behaviors/points_walk_behavior.gd" id="3_mswbt"]
-[ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="3_pnkgp"]
-[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="4_innil"]
-[ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="4_lptvm"]
-[ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="4_mswbt"]
-[ext_resource type="Script" uid="uid://cwoclmik3db2" path="res://scenes/game_logic/walk_behaviors/follow_walk_behavior.gd" id="5_2e3xr"]
-[ext_resource type="SpriteFrames" uid="uid://ovu5wqo15s5g" path="res://scenes/quests/template_quests/NO_EDIT/1_NO_EDIT_stealth/NO_EDIT_stealth_components/NO_EDIT_guard_enemy.tres" id="5_mswbt"]
-[ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="7_klpct"]
-[ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="9_8vt0k"]
-
-[sub_resource type="Resource" id="Resource_2e3xr"]
-script = ExtResource("4_innil")
-walk_speed = 200.0
-metadata/_custom_type_script = "uid://csev4hv57utxv"
-
-[sub_resource type="Resource" id="Resource_innil"]
-script = ExtResource("4_innil")
+[ext_resource type="Script" uid="uid://dox2uqh8s6vb5" path="res://scenes/game_elements/characters/enemies/guard_old/components/guard_old.gd" id="1_7mvk1"]
+[ext_resource type="Script" uid="uid://d4b07dhpe64fx" path="res://scenes/game_elements/characters/enemies/guard_old/components/guard_old_movement.gd" id="2_1l37j"]
+[ext_resource type="Script" uid="uid://ddqfvux1l2ivu" path="res://scenes/game_elements/characters/enemies/guard_old/components/detection_area.gd" id="3_v4q7l"]
+[ext_resource type="Texture2D" uid="uid://cghhmc4v56gcy" path="res://scenes/game_elements/characters/enemies/guard_old/components/field_of_view.png" id="4_le7de"]
+[ext_resource type="Script" uid="uid://dw2jehlpe0ins" path="res://scenes/game_elements/characters/enemies/guard_old/components/light.gd" id="5_r2kh5"]
+[ext_resource type="SpriteFrames" uid="uid://ovu5wqo15s5g" path="res://scenes/quests/template_quests/NO_EDIT/1_NO_EDIT_stealth/NO_EDIT_stealth_components/NO_EDIT_guard_enemy.tres" id="6_0pqqx"]
+[ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="7_jd3vu"]
+[ext_resource type="Texture2D" uid="uid://b038o41bnypch" path="res://scenes/game_elements/characters/enemies/guard_old/components/exclamation_mark.png" id="8_ypbyn"]
+[ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="9_13yxi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g173s"]
 radius = 35.0
@@ -211,43 +200,15 @@ _data = {
 &"walk": SubResource("Animation_8vt0k")
 }
 
-[node name="Guard" type="CharacterBody2D" unique_id=689832587 groups=["guard_enemy"]]
+[node name="GuardOld" type="CharacterBody2D" unique_id=689832587 groups=["guard_enemy"]]
 collision_layer = 0
 collision_mask = 528
 motion_mode = 1
-script = ExtResource("1_g173s")
+script = ExtResource("1_7mvk1")
 
 [node name="GuardMovement" type="Node2D" parent="." unique_id=1116278916]
 unique_name_in_owner = true
-script = ExtResource("2_0hjcv")
-
-[node name="WaitingTimer" type="Timer" parent="." unique_id=592808351]
-unique_name_in_owner = true
-one_shot = true
-
-[node name="PatrollingBehavior" type="Node2D" parent="." unique_id=803113417 node_paths=PackedStringArray("character")]
-unique_name_in_owner = true
-process_mode = 4
-script = ExtResource("3_mswbt")
-speeds = SubResource("Resource_2e3xr")
-character = NodePath("..")
-metadata/_custom_type_script = "uid://cu7ujf83r7yh2"
-
-[node name="ReturningBehavior" type="Node2D" parent="." unique_id=641161332 node_paths=PackedStringArray("character")]
-unique_name_in_owner = true
-process_mode = 4
-script = ExtResource("3_mswbt")
-speeds = SubResource("Resource_innil")
-character = NodePath("..")
-metadata/_custom_type_script = "uid://cu7ujf83r7yh2"
-
-[node name="InvestigatingBehavior" type="Node2D" parent="." unique_id=1943355478 node_paths=PackedStringArray("character")]
-unique_name_in_owner = true
-process_mode = 4
-script = ExtResource("5_2e3xr")
-target_reached_distance = 0.0
-character = NodePath("..")
-metadata/_custom_type_script = "uid://cwoclmik3db2"
+script = ExtResource("2_1l37j")
 
 [node name="SightRayCast" type="RayCast2D" parent="." unique_id=1964699795]
 unique_name_in_owner = true
@@ -266,7 +227,7 @@ shape = SubResource("CircleShape2D_g173s")
 unique_name_in_owner = true
 position = Vector2(0, -19)
 collision_layer = 0
-script = ExtResource("4_mswbt")
+script = ExtResource("3_v4q7l")
 
 [node name="Light" type="PointLight2D" parent="DetectionArea" unique_id=366085581]
 position = Vector2(37.3333, 1.33333)
@@ -276,9 +237,9 @@ blend_mode = 2
 shadow_enabled = true
 shadow_filter = 1
 shadow_filter_smooth = 0.5
-texture = ExtResource("3_0hjcv")
+texture = ExtResource("4_le7de")
 offset = Vector2(377.88, 10.7686)
-script = ExtResource("4_lptvm")
+script = ExtResource("5_r2kh5")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea" unique_id=1176393945]
 position = Vector2(-29.3333, -132)
@@ -287,12 +248,12 @@ polygon = PackedVector2Array(302, 48, 283, 52, 279, 52, 101, 114, 98, 114, 79, 1
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=616054452]
 unique_name_in_owner = true
 position = Vector2(0, -16)
-sprite_frames = ExtResource("5_mswbt")
+sprite_frames = ExtResource("6_0pqqx")
 animation = &"walk"
 autoplay = "idle"
 
 [node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=971917766 node_paths=PackedStringArray("character", "sprite")]
-script = ExtResource("7_klpct")
+script = ExtResource("7_jd3vu")
 character = NodePath("../..")
 play_animations = false
 sprite = NodePath("..")
@@ -315,8 +276,8 @@ pivot_offset = Vector2(62, 102)
 step = 0.01
 fill_mode = 3
 nine_patch_stretch = true
-texture_under = ExtResource("3_pnkgp")
-texture_progress = ExtResource("3_pnkgp")
+texture_under = ExtResource("8_ypbyn")
+texture_progress = ExtResource("8_ypbyn")
 tint_under = Color(1, 1, 1, 0.392157)
 tint_progress = Color(1, 1, 0, 1)
 
@@ -343,7 +304,7 @@ libraries/ = SubResource("AnimationLibrary_innil")
 
 [node name="CharacterAnimationPlayerBehavior" type="Node2D" parent="AnimationPlayer" unique_id=1596266876 node_paths=PackedStringArray("character", "animation_player")]
 unique_name_in_owner = true
-script = ExtResource("9_8vt0k")
+script = ExtResource("9_13yxi")
 character = NodePath("../..")
 animation_player = NodePath("..")
 metadata/_custom_type_script = "uid://b3hx1n2yl88qr"
@@ -375,12 +336,6 @@ volume_db = -2.0
 max_distance = 500.0
 bus = &"SFX"
 
-[connection signal="timeout" from="WaitingTimer" to="." method="_on_waiting_timer_timeout"]
-[connection signal="got_stuck" from="PatrollingBehavior" to="." method="_on_patrolling_behavior_got_stuck"]
-[connection signal="point_reached" from="PatrollingBehavior" to="." method="_on_patrolling_behavior_point_reached"]
-[connection signal="ending_reached" from="ReturningBehavior" to="." method="_on_returning_behavior_ending_reached"]
-[connection signal="got_stuck" from="InvestigatingBehavior" to="." method="_on_investigating_behavior_got_stuck"]
-[connection signal="target_reached_changed" from="InvestigatingBehavior" to="." method="_on_investigating_behavior_target_reached_changed"]
 [connection signal="body_entered" from="InstantDetectionArea" to="." method="_on_instant_detection_area_body_entered"]
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
