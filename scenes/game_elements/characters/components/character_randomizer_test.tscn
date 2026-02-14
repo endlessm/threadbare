@@ -1,0 +1,307 @@
+[gd_scene load_steps=31 format=4 uid="uid://4yh765kft25"]
+
+[ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="1_ea78s"]
+[ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="2_2g5xe"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="3_p47ir"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="4_qr3fq"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_jsubs"]
+[ext_resource type="Texture2D" uid="uid://daymgmvarx2ew" path="res://scenes/game_elements/characters/npcs/components/townie-legs_003.dy_-12.png" id="6_bonk8"]
+[ext_resource type="SpriteFrames" uid="uid://07di3updrwh0" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_purple.tres" id="6_hfrhi"]
+[ext_resource type="Texture2D" uid="uid://0t1eptqlcb8t" path="res://scenes/game_elements/characters/npcs/components/townie-body_001.png" id="6_p47ir"]
+[ext_resource type="Texture2D" uid="uid://csxn66qqmfcqu" path="res://scenes/game_elements/characters/npcs/components/townie-head_004.png" id="8_22pcm"]
+[ext_resource type="Resource" uid="uid://n5gf3o4mmxlu" path="res://scenes/game_elements/characters/components/character_randomizer_test.dialogue" id="8_qr3fq"]
+[ext_resource type="Texture2D" uid="uid://bjmcvluico8dg" path="res://scenes/game_elements/characters/npcs/components/townie-hair_005.png" id="9_bonk8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_22pcm"]
+size = Vector2(52, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bonk8"]
+atlas = ExtResource("6_bonk8")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_22pcm"]
+atlas = ExtResource("6_bonk8")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tokus"]
+atlas = ExtResource("6_bonk8")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kpq1x"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bonk8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_22pcm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tokus")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_htwo5"]
+atlas = ExtResource("6_p47ir")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jsa2b"]
+atlas = ExtResource("6_p47ir")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kpq1x"]
+atlas = ExtResource("6_p47ir")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y666u"]
+atlas = ExtResource("6_p47ir")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_htwo5"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 10.0,
+"texture": SubResource("AtlasTexture_htwo5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jsa2b")
+}, {
+"duration": 8.0,
+"texture": SubResource("AtlasTexture_kpq1x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y666u")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l7t43"]
+atlas = ExtResource("8_22pcm")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n7dtb"]
+atlas = ExtResource("8_22pcm")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ny4dp"]
+atlas = ExtResource("8_22pcm")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e0ffc"]
+atlas = ExtResource("8_22pcm")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n7dtb"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 10.0,
+"texture": SubResource("AtlasTexture_l7t43")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n7dtb")
+}, {
+"duration": 8.0,
+"texture": SubResource("AtlasTexture_ny4dp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e0ffc")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_04pia"]
+atlas = ExtResource("9_bonk8")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1uba5"]
+atlas = ExtResource("9_bonk8")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n5uef"]
+atlas = ExtResource("9_bonk8")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ahibj"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_04pia")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1uba5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n5uef")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[node name="CharacterRandomizerTest" type="Node2D"]
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+
+[node name="TileMapLayerGrass" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAAAP7/AQABAAEAAAAAAP//AQABAAEAAAAAAAAAAQABAAEAAAAAAAEAAQABAAEAAAAAAAIAAQABAAEAAAAAAAMAAQABAAEAAAAAAAQAAQABAAEAAAAAAAUAAQABAAEAAAAAAAYAAQABAAEAAAAAAAcAAQABAAEAAAAAAAgAAQABAAEAAAAAAAkAAQABAAIAAAABAP7/AQABAAEAAAABAP//AQABAAEAAAABAAAAAQABAAEAAAABAAEAAQABAAEAAAABAAIAAQABAAEAAAABAAMAAQABAAEAAAABAAQAAQABAAEAAAABAAUAAQABAAEAAAABAAYAAQABAAEAAAABAAcAAQABAAEAAAABAAgAAQABAAEAAAABAAkAAQABAAIAAAACAP7/AQABAAEAAAACAP//AQABAAEAAAACAAAAAQABAAEAAAACAAEAAQABAAEAAAACAAIAAQABAAEAAAACAAMAAQABAAEAAAACAAQAAQABAAEAAAACAAUAAQABAAEAAAACAAYAAQABAAEAAAACAAcAAQABAAEAAAACAAgAAQABAAEAAAACAAkAAQABAAIAAAADAP7/AQABAAEAAAADAP//AQABAAEAAAADAAAAAQABAAEAAAADAAEAAQABAAEAAAADAAIAAQABAAEAAAADAAMAAQABAAEAAAADAAQAAQABAAEAAAADAAUAAQABAAEAAAADAAYAAQABAAEAAAADAAcAAQABAAEAAAADAAgAAQABAAEAAAADAAkAAQABAAIAAAAEAP7/AQABAAEAAAAEAP//AQABAAEAAAAEAAAAAQABAAEAAAAEAAEAAQABAAEAAAAEAAIAAQABAAEAAAAEAAMAAQABAAEAAAAEAAQAAQABAAEAAAAEAAUAAQABAAEAAAAEAAYAAQABAAEAAAAEAAcAAQABAAEAAAAEAAgAAQABAAEAAAAEAAkAAQABAAIAAAAFAP7/AQABAAEAAAAFAP//AQABAAEAAAAFAAAAAQABAAEAAAAFAAEAAQABAAEAAAAFAAIAAQABAAEAAAAFAAMAAQABAAEAAAAFAAQAAQABAAEAAAAFAAUAAQABAAEAAAAFAAYAAQABAAEAAAAFAAcAAQABAAEAAAAFAAgAAQABAAEAAAAFAAkAAQABAAIAAAAGAP7/AQABAAEAAAAGAP//AQABAAEAAAAGAAAAAQABAAEAAAAGAAEAAQABAAEAAAAGAAIAAQABAAEAAAAGAAMAAQABAAEAAAAGAAQAAQABAAEAAAAGAAUAAQABAAEAAAAGAAYAAQABAAEAAAAGAAcAAQABAAEAAAAGAAgAAQABAAEAAAAGAAkAAQABAAIAAAAHAP7/AQABAAEAAAAHAP//AQABAAEAAAAHAAAAAQABAAEAAAAHAAEAAQABAAEAAAAHAAIAAQABAAEAAAAHAAMAAQABAAEAAAAHAAQAAQABAAEAAAAHAAUAAQABAAEAAAAHAAYAAQABAAEAAAAHAAcAAQABAAEAAAAHAAgAAQABAAEAAAAHAAkAAQABAAIAAAAIAP7/AQABAAEAAAAIAP//AQABAAEAAAAIAAAAAQABAAEAAAAIAAEAAQABAAEAAAAIAAIAAQABAAEAAAAIAAMAAQABAAEAAAAIAAQAAQABAAEAAAAIAAUAAQABAAEAAAAIAAYAAQABAAEAAAAIAAcAAQABAAEAAAAIAAgAAQABAAEAAAAIAAkAAQABAAIAAAAJAP7/AQABAAEAAAAJAP//AQABAAEAAAAJAAAAAQABAAEAAAAJAAEAAQABAAEAAAAJAAIAAQABAAEAAAAJAAMAAQABAAEAAAAJAAQAAQABAAEAAAAJAAUAAQABAAEAAAAJAAYAAQABAAEAAAAJAAcAAQABAAEAAAAJAAgAAQABAAEAAAAJAAkAAQABAAIAAAAKAP7/AQABAAEAAAAKAP//AQABAAEAAAAKAAAAAQABAAEAAAAKAAEAAQABAAEAAAAKAAIAAQABAAEAAAAKAAMAAQABAAEAAAAKAAQAAQABAAEAAAAKAAUAAQABAAEAAAAKAAYAAQABAAEAAAAKAAcAAQABAAEAAAAKAAgAAQABAAEAAAAKAAkAAQABAAIAAAALAP7/AQABAAEAAAALAP//AQABAAEAAAALAAAAAQABAAEAAAALAAEAAQABAAEAAAALAAIAAQABAAEAAAALAAMAAQABAAEAAAALAAQAAQABAAEAAAALAAUAAQABAAEAAAALAAYAAQABAAEAAAALAAcAAQABAAEAAAALAAgAAQABAAEAAAALAAkAAQABAAIAAAAMAP7/AQABAAEAAAAMAP//AQABAAEAAAAMAAAAAQABAAEAAAAMAAEAAQABAAEAAAAMAAIAAQABAAEAAAAMAAMAAQABAAEAAAAMAAQAAQABAAEAAAAMAAUAAQABAAEAAAAMAAYAAQABAAEAAAAMAAcAAQABAAEAAAAMAAgAAQABAAEAAAAMAAkAAQABAAIAAAANAP7/AQABAAEAAAANAP//AQABAAEAAAANAAAAAQABAAEAAAANAAEAAQABAAEAAAANAAIAAQABAAEAAAANAAMAAQABAAEAAAANAAQAAQABAAEAAAANAAUAAQABAAEAAAANAAYAAQABAAEAAAANAAcAAQABAAEAAAANAAgAAQABAAEAAAANAAkAAQABAAIAAAAOAP7/AQABAAEAAAAOAP//AQABAAEAAAAOAAAAAQABAAEAAAAOAAEAAQABAAEAAAAOAAIAAQABAAEAAAAOAAMAAQABAAEAAAAOAAQAAQABAAEAAAAOAAUAAQABAAEAAAAOAAYAAQABAAEAAAAOAAcAAQABAAEAAAAOAAgAAQABAAEAAAAOAAkAAQABAAIAAAAPAP7/AQABAAEAAAAPAP//AQABAAEAAAAPAAAAAQABAAEAAAAPAAEAAQABAAEAAAAPAAIAAQABAAEAAAAPAAMAAQABAAEAAAAPAAQAAQABAAEAAAAPAAUAAQABAAEAAAAPAAYAAQABAAEAAAAPAAcAAQABAAEAAAAPAAgAAQABAAEAAAAPAAkAAQABAAIAAAAQAP7/AQACAAEAAAAQAP//AQACAAEAAAAQAAAAAQACAAEAAAAQAAEAAQACAAEAAAAQAAIAAQACAAEAAAAQAAMAAQACAAEAAAAQAAQAAQACAAEAAAAQAAUAAQACAAEAAAAQAAYAAQACAAEAAAAQAAcAAQACAAEAAAAQAAgAAQACAAEAAAAQAAkAAQACAAIAAAD5//r/AQAAAAAAAAD5//v/AQAAAAEAAAD5//z/AQAAAAEAAAD5//3/AQAAAAEAAAD5//7/AQAAAAEAAAD5////AQAAAAEAAAD5/wAAAQAAAAEAAAD5/wEAAQAAAAEAAAD5/wIAAQAAAAEAAAD5/wMAAQAAAAEAAAD5/wQAAQAAAAEAAAD5/wUAAQAAAAEAAAD5/wYAAQAAAAEAAAD5/wcAAQAAAAEAAAD5/wgAAQAAAAEAAAD5/wkAAQAAAAIAAAD6//r/AQABAAAAAAD6//v/AQABAAEAAAD6//z/AQABAAEAAAD6//3/AQABAAEAAAD6//7/AQABAAEAAAD6////AQABAAEAAAD6/wAAAQABAAEAAAD6/wEAAQABAAEAAAD6/wIAAQABAAEAAAD6/wMAAQABAAEAAAD6/wQAAQABAAEAAAD6/wUAAQABAAEAAAD6/wYAAQABAAEAAAD6/wcAAQABAAEAAAD6/wgAAQABAAEAAAD6/wkAAQABAAIAAAD7//r/AQABAAAAAAD7//v/AQABAAEAAAD7//z/AQABAAEAAAD7//3/AQABAAEAAAD7//7/AQABAAEAAAD7////AQABAAEAAAD7/wAAAQABAAEAAAD7/wEAAQABAAEAAAD7/wIAAQABAAEAAAD7/wMAAQABAAEAAAD7/wQAAQABAAEAAAD7/wUAAQABAAEAAAD7/wYAAQABAAEAAAD7/wcAAQABAAEAAAD7/wgAAQABAAEAAAD7/wkAAQABAAIAAAD8//r/AQABAAAAAAD8//v/AQABAAEAAAD8//z/AQABAAEAAAD8//3/AQABAAEAAAD8//7/AQABAAEAAAD8////AQABAAEAAAD8/wAAAQABAAEAAAD8/wEAAQABAAEAAAD8/wIAAQABAAEAAAD8/wMAAQABAAEAAAD8/wQAAQABAAEAAAD8/wUAAQABAAEAAAD8/wYAAQABAAEAAAD8/wcAAQABAAEAAAD8/wgAAQABAAEAAAD8/wkAAQABAAIAAAD9//r/AQABAAAAAAD9//v/AQABAAEAAAD9//z/AQABAAEAAAD9//3/AQABAAEAAAD9//7/AQABAAEAAAD9////AQABAAEAAAD9/wAAAQABAAEAAAD9/wEAAQABAAEAAAD9/wIAAQABAAEAAAD9/wMAAQABAAEAAAD9/wQAAQABAAEAAAD9/wUAAQABAAEAAAD9/wYAAQABAAEAAAD9/wcAAQABAAEAAAD9/wgAAQABAAEAAAD9/wkAAQABAAIAAAD+//r/AQABAAAAAAD+//v/AQABAAEAAAD+//z/AQABAAEAAAD+//3/AQABAAEAAAD+//7/AQABAAEAAAD+////AQABAAEAAAD+/wAAAQABAAEAAAD+/wEAAQABAAEAAAD+/wIAAQABAAEAAAD+/wMAAQABAAEAAAD+/wQAAQABAAEAAAD+/wUAAQABAAEAAAD+/wYAAQABAAEAAAD+/wcAAQABAAEAAAD+/wgAAQABAAEAAAD+/wkAAQABAAIAAAD///r/AQABAAAAAAD///v/AQABAAEAAAD///z/AQABAAEAAAD///3/AQABAAEAAAD///7/AQABAAEAAAD/////AQABAAEAAAD//wAAAQABAAEAAAD//wEAAQABAAEAAAD//wIAAQABAAEAAAD//wMAAQABAAEAAAD//wQAAQABAAEAAAD//wUAAQABAAEAAAD//wYAAQABAAEAAAD//wcAAQABAAEAAAD//wgAAQABAAEAAAD//wkAAQABAAIAAAAAAPr/AQABAAAAAAAAAPv/AQABAAEAAAAAAPz/AQABAAEAAAAAAP3/AQABAAEAAAABAPr/AQABAAAAAAABAPv/AQABAAEAAAABAPz/AQABAAEAAAABAP3/AQABAAEAAAACAPr/AQABAAAAAAACAPv/AQABAAEAAAACAPz/AQABAAEAAAACAP3/AQABAAEAAAADAPr/AQABAAAAAAADAPv/AQABAAEAAAADAPz/AQABAAEAAAADAP3/AQABAAEAAAAEAPr/AQABAAAAAAAEAPv/AQABAAEAAAAEAPz/AQABAAEAAAAEAP3/AQABAAEAAAAFAPr/AQABAAAAAAAFAPv/AQABAAEAAAAFAPz/AQABAAEAAAAFAP3/AQABAAEAAAAGAPr/AQABAAAAAAAGAPv/AQABAAEAAAAGAPz/AQABAAEAAAAGAP3/AQABAAEAAAAHAPr/AQABAAAAAAAHAPv/AQABAAEAAAAHAPz/AQABAAEAAAAHAP3/AQABAAEAAAAIAPr/AQABAAAAAAAIAPv/AQABAAEAAAAIAPz/AQABAAEAAAAIAP3/AQABAAEAAAAJAPr/AQABAAAAAAAJAPv/AQABAAEAAAAJAPz/AQABAAEAAAAJAP3/AQABAAEAAAAKAPr/AQABAAAAAAAKAPv/AQABAAEAAAAKAPz/AQABAAEAAAAKAP3/AQABAAEAAAALAPr/AQABAAAAAAALAPv/AQABAAEAAAALAPz/AQABAAEAAAALAP3/AQABAAEAAAAMAPr/AQABAAAAAAAMAPv/AQABAAEAAAAMAPz/AQABAAEAAAAMAP3/AQABAAEAAAANAPr/AQABAAAAAAANAPv/AQABAAEAAAANAPz/AQABAAEAAAANAP3/AQABAAEAAAAOAPr/AQABAAAAAAAOAPv/AQABAAEAAAAOAPz/AQABAAEAAAAOAP3/AQABAAEAAAAPAPr/AQABAAAAAAAPAPv/AQABAAEAAAAPAPz/AQABAAEAAAAPAP3/AQABAAEAAAAQAPr/AQACAAAAAAAQAPv/AQACAAEAAAAQAPz/AQACAAEAAAAQAP3/AQACAAEAAAA=")
+tile_set = ExtResource("1_ea78s")
+
+[node name="TileMapLayerSand" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAADAAIAAQAFAAAAAAADAAMAAQAFAAIAAAAEAAIAAQAGAAAAAAAEAAMAAQAGAAIAAAAFAAIAAQAGAAAAAAAFAAMAAQAGAAIAAAAGAAIAAQAHAAAAAAAGAAMAAQAHAAIAAAA=")
+tile_set = ExtResource("1_ea78s")
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Townie" parent="OnTheGround" instance=ExtResource("2_2g5xe")]
+position = Vector2(225, 152)
+character_seed = 138976455
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Townie"]
+visible = false
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_p47ir")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Townie/InteractArea"]
+position = Vector2(0, -29)
+shape = SubResource("RectangleShape2D_22pcm")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="OnTheGround/Townie" node_paths=PackedStringArray("interact_area")]
+script = ExtResource("4_qr3fq")
+dialogue = ExtResource("8_qr3fq")
+title = "townie_1"
+interact_area = NodePath("../InteractArea")
+
+[node name="Timer" type="Timer" parent="OnTheGround/Townie"]
+autostart = true
+
+[node name="Townie2" parent="OnTheGround" instance=ExtResource("2_2g5xe")]
+position = Vector2(415, 233)
+
+[node name="AnimatedSprite2DLegs" parent="OnTheGround/Townie2" index="1"]
+sprite_frames = SubResource("SpriteFrames_kpq1x")
+
+[node name="AnimatedSprite2DBody" parent="OnTheGround/Townie2/AnimatedSprite2DLegs" index="1"]
+instance_shader_parameters/shade_high_new = Color(0.58930516, 0.8525734, 0.9860394, 1)
+instance_shader_parameters/shade_low_new = Color(0.38930517, 0.6525734, 0.7860394, 1)
+instance_shader_parameters/shade_medium_new = Color(0.48663145, 0.81571674, 0.98254925, 1)
+position = Vector2(0, -12)
+sprite_frames = SubResource("SpriteFrames_htwo5")
+
+[node name="CelShadingRecolor" parent="OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody" index="0"]
+medium_color = Color(0.48663145, 0.81571674, 0.98254925, 1)
+high_color = Color(0.58930516, 0.8525734, 0.9860394, 1)
+low_color = Color(0.38930517, 0.6525734, 0.7860394, 1)
+
+[node name="AnimatedSprite2DHead" parent="OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody" index="2"]
+instance_shader_parameters/shade_high_new = Color(0.58930516, 0.8525734, 0.9860394, 1)
+instance_shader_parameters/shade_low_new = Color(0.38930517, 0.6525734, 0.7860394, 1)
+instance_shader_parameters/shade_medium_new = Color(0.48663145, 0.81571674, 0.98254925, 1)
+sprite_frames = SubResource("SpriteFrames_n7dtb")
+
+[node name="CelShadingRecolor" parent="OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" index="0"]
+medium_color = Color(0.48663145, 0.81571674, 0.98254925, 1)
+high_color = Color(0.58930516, 0.8525734, 0.9860394, 1)
+low_color = Color(0.38930517, 0.6525734, 0.7860394, 1)
+
+[node name="AnimatedSprite2DHair" parent="OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" index="2"]
+sprite_frames = SubResource("SpriteFrames_ahibj")
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Townie2"]
+visible = false
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_p47ir")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Townie2/InteractArea"]
+position = Vector2(0, -29)
+shape = SubResource("RectangleShape2D_22pcm")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="OnTheGround/Townie2" node_paths=PackedStringArray("interact_area")]
+script = ExtResource("4_qr3fq")
+dialogue = ExtResource("8_qr3fq")
+title = "townie_2"
+interact_area = NodePath("../InteractArea")
+
+[node name="Townie3" parent="OnTheGround" instance=ExtResource("2_2g5xe")]
+position = Vector2(481, 101)
+scale = Vector2(-1, 1)
+character_seed = 132923783
+look_at_side = 1
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Townie3"]
+visible = false
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_p47ir")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Townie3/InteractArea"]
+position = Vector2(0, -29)
+shape = SubResource("RectangleShape2D_22pcm")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="OnTheGround/Townie3" node_paths=PackedStringArray("interact_area")]
+script = ExtResource("4_qr3fq")
+dialogue = ExtResource("8_qr3fq")
+title = "townie_3"
+interact_area = NodePath("../InteractArea")
+
+[node name="Townie4" parent="OnTheGround" instance=ExtResource("2_2g5xe")]
+position = Vector2(523, 130)
+scale = Vector2(-1, 1)
+character_seed = 1738644387
+look_at_side = 1
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Townie4"]
+visible = false
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_p47ir")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Townie4/InteractArea"]
+position = Vector2(0, -29)
+shape = SubResource("RectangleShape2D_22pcm")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="OnTheGround/Townie4" node_paths=PackedStringArray("interact_area")]
+script = ExtResource("4_qr3fq")
+dialogue = ExtResource("8_qr3fq")
+title = "townie_4"
+interact_area = NodePath("../InteractArea")
+
+[node name="Player" parent="OnTheGround" instance=ExtResource("5_jsubs")]
+position = Vector2(337, 161)
+player_name = "StoryWeaver"
+sprite_frames = ExtResource("6_hfrhi")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player"]
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[connection signal="interaction_ended" from="OnTheGround/Townie/InteractArea" to="OnTheGround/Townie" method="_on_interact_area_interaction_ended"]
+[connection signal="interaction_started" from="OnTheGround/Townie/InteractArea" to="OnTheGround/Townie" method="_on_interact_area_interaction_started"]
+[connection signal="timeout" from="OnTheGround/Townie/Timer" to="OnTheGround/Townie" method="randomize_character"]
+[connection signal="interaction_ended" from="OnTheGround/Townie2/InteractArea" to="OnTheGround/Townie2" method="_on_interact_area_interaction_ended"]
+[connection signal="interaction_started" from="OnTheGround/Townie2/InteractArea" to="OnTheGround/Townie2" method="_on_interact_area_interaction_started"]
+[connection signal="interaction_ended" from="OnTheGround/Townie3/InteractArea" to="OnTheGround/Townie3" method="_on_interact_area_interaction_ended"]
+[connection signal="interaction_started" from="OnTheGround/Townie3/InteractArea" to="OnTheGround/Townie3" method="_on_interact_area_interaction_started"]
+[connection signal="interaction_ended" from="OnTheGround/Townie4/InteractArea" to="OnTheGround/Townie4" method="_on_interact_area_interaction_ended"]
+[connection signal="interaction_started" from="OnTheGround/Townie4/InteractArea" to="OnTheGround/Townie4" method="_on_interact_area_interaction_started"]
+
+[editable path="OnTheGround/Townie2"]
