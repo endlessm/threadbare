@@ -48,7 +48,7 @@ func _physics_process(delta: float) -> void:
 # TODO:Redact parts of the blink ability so the learners can write their own.
 # Blink ability
 
-func _apply_blink():
+func _apply_blink() -> void:
 # Convert tiles to pixels for blink distance.
 	var blink_distance_pixels = blink_distance*64
 # Figure out which direction to blink
@@ -70,7 +70,7 @@ func _apply_blink():
 	# such as a brief color change or flash.
 
 ## Function to remove collisions, allowing the player to walk on water tiles
-func _walk_on_water():
+func _walk_on_water() -> void:
 	$"../TileMapLayers/Water_border".enabled = false
 	#TODO do you think having the border permanently in that state is a good idea?
 	#TODO you can try to come up with a way to ensure it get enabled again after a while
