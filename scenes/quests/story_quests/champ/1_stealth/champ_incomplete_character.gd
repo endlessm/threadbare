@@ -78,9 +78,12 @@ func _walk_on_water() -> void:
 
 ## Function to listen for user input, each key press corresponding to movement is handled here
 func _unhandled_input(_event: InputEvent) -> void:
+	# TODO: Full movement for debugging (remove before the script is finalized)
+	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	
 	# Set movement inputs (more options can be found in the Input Map in Project Settings)
 	# Left and right movement
-	var axis: Vector2 = Vector2(0,0)
+	#var axis: Vector2 = Vector2(0,0)
 	if(Input.is_action_pressed(&"move_left")):
 		axis.x = -1
 	if(Input.is_action_pressed(&"move_right")):
