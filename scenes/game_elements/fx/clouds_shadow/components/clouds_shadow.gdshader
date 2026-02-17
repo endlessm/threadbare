@@ -5,7 +5,7 @@
 shader_type canvas_item;
 
 /**
- * The shader is set to substract because it's a shadow.
+ * The shader is set to subtract because it's a shadow.
  */
 render_mode blend_sub;
 
