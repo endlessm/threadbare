@@ -46,11 +46,11 @@ void fragment() {
 	float shadow = texture(shadow_texture, uv).r;
 
 	// Add amount value.
-	shadow = amount + 0.5 - shadow;
+	shadow = amount - shadow;
 
 	// Apply contrast to define the shadow silhouette.
 	// The result may be outside of the 0-1 range.
-	shadow = (shadow - 0.5) * contrast + 0.5;
+	shadow = shadow * contrast + 0.5;
 
 	// Normalize the values to land between 0 and 1 again
 	// after applying contrast.
