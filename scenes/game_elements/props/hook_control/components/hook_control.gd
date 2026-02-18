@@ -69,6 +69,9 @@ var pressing_throw_action: bool = false
 ## True if during a long press of the throw action, a throw went to the air or wall.
 var throw_failed_while_pressing: bool = false
 
+var walls_count: int
+var walls_info: String
+
 # This boolean is needed because we can't distinguish between a _hook_angle that is
 # initially 0.0 from a _hook_angle set to 0.0 by user input.
 var _hook_angle_set: bool = false
@@ -82,6 +85,9 @@ var _hook_angle: float
 
 ## The ray cast to handle collisions with hookable areas.
 @onready var ray_cast_2d: RayCast2D = %RayCast2D
+
+## This is used to detect collisions with walls.
+@onready var shape_cast_2d: ShapeCast2D = %ShapeCast2D
 
 ## Timer to let a directional pad continue aiming in
 ## diagonal directions when releasing the input actions.
@@ -143,8 +149,9 @@ func _get_hook_angle() -> float:
 
 func _throw() -> void:
 	if ray_cast_2d.is_colliding():
-		if _can_connect():
-			hooked_to = ray_cast_2d.get_collider() as HookableArea
+		var target_area := _get_target_area()
+		if target_area:
+			hooked_to = target_area
 			var is_loop := false
 			if hooked_to.hook_control:
 				is_loop = is_instance_valid(hooked_to.hook_control.hooked_to)
@@ -178,13 +185,13 @@ func release() -> void:
 		hooked_to = null
 
 
-func _can_connect() -> bool:
+func _get_target_area() -> HookableArea:
 	if not ray_cast_2d.is_colliding():
-		return false
+		return null
 	var area := ray_cast_2d.get_collider() as HookableArea
-	if not area:
-		return false
-	return area not in exclude_areas
+	if area in exclude_areas:
+		return null
+	return area
 
 
 func _set_state(new_state: State) -> void:
@@ -209,8 +216,12 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if state == State.DISABLED:
 		return
+	walls_count = shape_cast_2d.get_collision_count()
+	walls_info = ""
+	for i in range(walls_count):
+		walls_info += "%s\n" % shape_cast_2d.get_collider(i)
 	rotation = _get_hook_angle()
-	sprite_2d.modulate = Color.WHITE if _can_connect() else Color(Color.WHITE, 0.5)
+	sprite_2d.modulate = Color.WHITE if _get_target_area() else Color(Color.WHITE, 0.5)
 	if hooked_to:
 		# Currently the control can be hooked to a single area.
 		return
