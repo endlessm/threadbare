@@ -1,37 +1,45 @@
-[gd_scene format=3 uid="uid://ci42ypvn5v8jr"]
+[gd_scene format=3 uid="uid://c0374lgarm8gj"]
 
-[ext_resource type="Shader" uid="uid://chgaevc31p1mn" path="res://scenes/game_elements/props/clouds_overlay/components/clouds_shadows.gdshader" id="1_l5uri"]
-[ext_resource type="Script" uid="uid://bw0lg5yx4pxs2" path="res://scenes/game_elements/props/clouds_overlay/components/clouds_overlay.gd" id="2_gw00f"]
+[ext_resource type="Shader" uid="uid://blck4l5cl837d" path="res://scenes/game_elements/fx/clouds_shadow/components/clouds_shadow.gdshader" id="1_02eyt"]
+[ext_resource type="Script" uid="uid://8ayl2vtjam10" path="res://scenes/game_elements/fx/clouds_shadow/components/clouds_shadow.gd" id="1_vhj68"]
 
-[sub_resource type="Gradient" id="Gradient_l5uri"]
-interpolation_mode = 1
-offsets = PackedFloat32Array(0, 0.74, 0.8, 1)
-colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.075, 0, 0, 0, 0.15, 0, 0, 0, 0.15)
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jw523"]
+frequency = 0.0075
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_shbkg"]
-fractal_lacunarity = 0.2
-fractal_gain = 0.0
-domain_warp_enabled = true
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xa65i"]
-resource_local_to_scene = true
-width = 1920
-height = 1080
-noise = SubResource("FastNoiseLite_shbkg")
-color_ramp = SubResource("Gradient_l5uri")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_02eyt"]
+width = 168
+height = 256
+noise = SubResource("FastNoiseLite_jw523")
 seamless = true
+seamless_blend_skirt = 0.8
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_shbkg"]
-resource_local_to_scene = true
-shader = ExtResource("1_l5uri")
-shader_parameter/cloud_texture = SubResource("NoiseTexture2D_xa65i")
-shader_parameter/offset = Vector2(0, 0)
-shader_parameter/scale = 0.2
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2vvub"]
+shader = ExtResource("1_02eyt")
+shader_parameter/shadow_texture = SubResource("NoiseTexture2D_02eyt")
+shader_parameter/amount = 0.35
+shader_parameter/contrast = 25.0
+shader_parameter/speed = Vector2(0.015, 0.01)
+shader_parameter/alpha = 0.1
 
-[node name="CloudsOverlay" type="ColorRect" unique_id=1716329843]
-z_index = 10
-z_as_relative = false
-material = SubResource("ShaderMaterial_shbkg")
-offset_right = 1920.0
-offset_bottom = 1080.0
-script = ExtResource("2_gw00f")
+[node name="CloudsShadow" type="Parallax2D" unique_id=1515275591]
+editor_description = "This Parallax2D node is used to repeat the texture so it's bigger than the viewport size. And to scroll it with the camera.
+"
+top_level = true
+repeat_size = Vector2(1024, 1024)
+repeat_times = 3
+script = ExtResource("1_vhj68")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1045851952]
+unique_name_in_owner = true
+editor_description = "Start with a small noise texture that is then upscaled to a square. The size of this ColorRect.
+
+The texture width is about 2/3 of its height to look flattened, matching the game perspective. This way the shadow seems to be projected on the ground.
+"
+material = SubResource("ShaderMaterial_2vvub")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1024.0
+offset_bottom = 1024.0
+grow_horizontal = 2
+grow_vertical = 2

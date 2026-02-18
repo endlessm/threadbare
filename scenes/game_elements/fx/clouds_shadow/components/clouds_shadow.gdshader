@@ -1,26 +1,61 @@
-// SPDX-FileCopyrightText: The Threadbare Authors
-// SPDX-License-Identifier: MPL-2.0
+/**
+ * SPDX-FileCopyrightText: The Threadbare Authors
+ * SPDX-License-Identifier: MPL-2.0
+ */
 shader_type canvas_item;
 
-uniform sampler2D cloud_texture;
-uniform sampler2D density_texture;
+/**
+ * The shader is set to subtract because it's a shadow.
+ */
+render_mode blend_sub;
 
-uniform vec2 offset;
+/**
+ * Use a Simplex noise for a dynamic texture. Or provide your own grayscale tileable texture!
+ */
+uniform sampler2D shadow_texture: filter_nearest, repeat_enable;
 
-uniform float scale: hint_range(0.1, 10.0, 0.1) = 1.0;
+/**
+ * How much covered by clouds is the sky.
+ * - 0: Zero shadows.
+ * - 1: All dark.
+ * This parameter could be animated!
+ */
+uniform float amount: hint_range(0.0, 1.0) = 0.35;
 
-varying vec2 world_pos;
+/**
+ * How much contrast. Or how much defined is the shadow silhouette.
+ */
+uniform float contrast: hint_range(0.0, 50.0) = 25.0;
 
-void vertex() {
-	// Transform it into world coordinates
-	world_pos = (MODEL_MATRIX * vec4(1.0, 1.0, 0.0, 1.0)).xy;
-}
+/**
+ * Animate the clouds.
+ * A 2/3 velocity emphasizes the world perspective.
+ */
+uniform vec2 speed = vec2(0.015,0.01);
 
-vec2 to_uv_coordinates(vec2 position, sampler2D tex) {
-	ivec2 tex_size = textureSize(tex, 0);
-	return vec2(position.x / float(tex_size.x), position.y / float(tex_size.y));
-}
+/**
+ * How much alpha. Keep this subtle.
+ */
+uniform float alpha: hint_range(0.0, 1.0) = 0.1;
+
 
 void fragment() {
-	COLOR = texture(cloud_texture, fract((UV + to_uv_coordinates(world_pos, cloud_texture) + to_uv_coordinates(offset, cloud_texture)) * scale));
+	// Displace the UV to animate the shadow.
+	vec2 uv = UV + speed * TIME;
+
+	float shadow = texture(shadow_texture, uv).r;
+
+	// Add amount value.
+	shadow = amount - shadow;
+
+	// Apply contrast to define the shadow silhouette.
+	// The result may be outside of the 0-1 range.
+	shadow = shadow * contrast + 0.5;
+
+	// Normalize the values to land between 0 and 1 again
+	// after applying contrast.
+	shadow = clamp(shadow, 0.0, 1.0);
+
+	// Apply alpha.
+	COLOR.a = alpha * shadow;
 }

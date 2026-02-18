@@ -1,52 +1,31 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-extends ColorRect
+extends Parallax2D
 
-@export var wind_direction: Vector2 = Vector2(1.0, 0.5)
-@export_range(0, 50, 0.1) var wind_speed: float = 10
+@export_tool_button("Random Clouds") var randomize_button: Callable = randomize
 
-@export_range(0, 1, 0.01) var cloud_density: float = 0.2:
-	set(val):
-		cloud_density = val
-		update_noise_color_ramp()
-@export_range(0, 1, 0.01) var cloud_fluffyness: float = 0.3:
-	set(val):
-		cloud_fluffyness = val
-		update_noise_color_ramp()
-@export_range(0, 1, 0.01) var cloud_opacity: float = 0.15:
-	set(val):
-		cloud_opacity = val
-		update_noise_color_ramp()
+@export var _seed: int:
+	set = _set_seed
 
-var current_offset: Vector2 = Vector2.ZERO
+var texture: NoiseTexture2D
+var noise: FastNoiseLite
+
+@onready var color_rect: ColorRect = %ColorRect
 
 
-func _process(delta: float) -> void:
-	if not Engine.is_editor_hint():
-		global_position = get_viewport().get_camera_2d().get_screen_center_position() - size / 2
-	current_offset += wind_direction.normalized() * wind_speed * delta
-	material.set_shader_parameter("offset", current_offset)
+func _set_seed(new_seed: int) -> void:
+	_seed = new_seed
+	if noise:
+		noise.seed = _seed
+		await texture.changed
 
 
-func update_noise_color_ramp() -> void:
-	var new_color_ramp: Gradient = Gradient.new()
-	new_color_ramp.interpolation_mode = Gradient.GRADIENT_INTERPOLATE_CONSTANT
-
-	new_color_ramp.set_color(0, Color(0, 0, 0, 0))
-	new_color_ramp.set_color(1, Color(0, 0, 0, cloud_opacity))
-
-	var cloud_start_point = 1 - cloud_density
-	var cloud_end_point = cloud_start_point - cloud_fluffyness * (1 - cloud_start_point)
-
-	new_color_ramp.add_point(cloud_start_point, Color(0, 0, 0, cloud_opacity))
-	new_color_ramp.add_point(cloud_end_point, Color(0, 0, 0, cloud_opacity / 2))
-
-	var noise_texture: NoiseTexture2D = material.get_shader_parameter("cloud_texture")
-	noise_texture.color_ramp = new_color_ramp
+func _ready() -> void:
+	texture = (color_rect.material as ShaderMaterial).get_shader_parameter("shadow_texture")
+	noise = texture.noise
+	_set_seed(_seed)
 
 
-func _notification(what: int) -> void:
-	match what:
-		NOTIFICATION_EDITOR_PRE_SAVE:
-			material.set_shader_parameter("offset", 0.0)
+func randomize() -> void:
+	await _set_seed(randi())
