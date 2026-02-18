@@ -46,6 +46,9 @@ func _physics_process(delta: float) -> void:
 
 # Blink ability
 func _apply_blink() -> void:
+	# If player is defeated, do nothing.
+	if mode == Mode.DEFEATED:
+		return
 # Convert tiles to pixels for blink distance
 	var blink_distance_pixels = blink_distance*64
 # Figure out where to blink
@@ -77,6 +80,9 @@ func _apply_blink() -> void:
 
 # TODO: Remove this dev ability before release.
 func _dev_apply_blink() -> void:
+	# If player is defeated, do nothing.
+	if mode == Mode.DEFEATED:
+		return
 # Convert tiles to pixels for blink distance
 	var blink_distance_pixels = blink_distance*64
 # Figure out where to blink
@@ -95,7 +101,6 @@ func _dev_apply_blink() -> void:
 	# If there are no collisions, move the player to the new position.
 		if not dummy.has_overlapping_bodies():
 			global_position = target_coordinates
-			
 	# Reset dummy
 	dummy.global_position = global_position
 	$BlinkCheck/Sprite2D.hide()
@@ -110,15 +115,16 @@ func _walk_on_water() -> void:
 func _unhandled_input(_event: InputEvent) -> void:
 	# Set movement inputs (more options can be found in the Input Map in Project Settings)
 	# Left and right movement
-	var axis: Vector2 = Vector2(0,0)
+	# var axis: Vector2 = Vector2(0,0)
+	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 	if(Input.is_action_pressed(&"move_left")):
 		axis.x = -1
 	if(Input.is_action_pressed(&"move_right")):
 		axis.x = 1
 	input_vector = axis * SPEED
-
+	
  	# TODO: Question: how can we make diagonal speed the same as walking in a straight line?
-
+	
 	# Blink ability
 	if(Input.is_action_just_pressed(&"champ_blink")):
 		# TODO: Remove _dev_apply_blink() and uncomment _apply_blink() before release
@@ -134,6 +140,7 @@ func defeat() -> void:
 		return
 	
 	mode = Mode.DEFEATED
+	
 	
 	# Delay the respawn (If you have a defeat animation for your player, this would be how long it happens for)
 	await get_tree().create_timer(2.0).timeout
