@@ -4,7 +4,7 @@ extends CharacterBody2D
 
 @onready var champ_animation: AnimatedSprite2D = $"Champ Animation"
 
-@export var swim_speed: int = 100
+var swim_speed: int = 100
 
 func _ready() -> void:
 	# Give champ a starting swim speed
