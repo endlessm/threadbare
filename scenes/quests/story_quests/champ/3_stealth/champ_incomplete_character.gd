@@ -78,32 +78,6 @@ func _apply_blink() -> void:
 	# TODO: (Optional) Add a small visual change when blinking,
 	# such as a brief color change or flash.
 
-# TODO: Remove this dev ability before release.
-func _dev_apply_blink() -> void:
-	# If player is defeated, do nothing.
-	if mode == Mode.DEFEATED:
-		return
-# Convert tiles to pixels for blink distance
-	var blink_distance_pixels = blink_distance*64
-# Figure out where to blink
-	var blink_direction := input_vector.normalized()
-	var target_coordinates: Vector2 = global_position + (blink_direction * blink_distance_pixels)	
-# Move dummy to coordinates and force physics update
-	var dummy := $BlinkCheck
-	dummy.global_position = target_coordinates
-	dummy.force_update_transform()
-# Show visual
-	$BlinkCheck/Sprite2D.show()
-# Delay is for visuals and to allow time for physics to update
-	await get_tree().create_timer(0.1).timeout
-# Ensure dummy is within bounds
-	if $"../Bounds/Blink Bounds".overlaps_area(dummy):
-	# If there are no collisions, move the player to the new position.
-		if not dummy.has_overlapping_bodies():
-			global_position = target_coordinates
-	# Reset dummy
-	dummy.global_position = global_position
-	$BlinkCheck/Sprite2D.hide()
 
 ## Function to remove collisions, allowing the player to walk on water tiles
 func _walk_on_water() -> void:
@@ -127,9 +101,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 	
 	# Blink ability
 	if(Input.is_action_just_pressed(&"champ_blink")):
-		# TODO: Remove _dev_apply_blink() and uncomment _apply_blink() before release
-		_dev_apply_blink()
-		# _apply_blink()
+		_apply_blink()
 	# Walk on water ability
 	if(Input.is_action_pressed(&"champ_walk_on_water")):
 		_walk_on_water()
