@@ -82,9 +82,11 @@ func _apply_blink() -> void:
 
 ## Function to remove collisions, allowing the player to walk on water tiles
 func _walk_on_water() -> void:
+	#remove the collision of the Water_border, allowing player to "walk" on "water"
 	$"../TileMapLayers/Water_border".enabled = false
 	# TODO do you think having the border permanently in that state is a good idea?
 	# TODO you can try to come up with a way to ensure it get enabled again after a while
+	# TODO (Optional) add a visual indicator that the function was activated
 
 ## Function to listen for user input, each key press corresponding to movement is handled here
 func _unhandled_input(_event: InputEvent) -> void:
