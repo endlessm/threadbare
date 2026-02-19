@@ -10,9 +10,12 @@
 [ext_resource type="TileSet" uid="uid://bo4jyvl3lcww1" path="res://scenes/quests/story_quests/champ/champ_tileset.tres" id="6_sm7tj"]
 [ext_resource type="SpriteFrames" uid="uid://ctjbkxw0r2f2i" path="res://scenes/quests/story_quests/champ/player_components/champ_player.tres" id="7_utai8"]
 [ext_resource type="PackedScene" uid="uid://c481vrtlq627b" path="res://scenes/quests/story_quests/champ/1_combat/combat_components/champ_throwing_enemy.tscn" id="8_yidpm"]
+[ext_resource type="PackedScene" uid="uid://dcm505t3resui" path="res://scenes/quests/story_quests/champ/1_combat/combat_components/champ_projectile_1.tscn" id="11_j60m7"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="11_p0sed"]
+[ext_resource type="PackedScene" uid="uid://c5k6fap2ic04l" path="res://scenes/quests/story_quests/champ/1_combat/combat_components/champ_projectile_2.tscn" id="12_8ja4x"]
 [ext_resource type="SpriteFrames" uid="uid://0kjkk0ekjgcd" path="res://scenes/quests/story_quests/champ/1_combat/combat_components/champ_target_spriteframes.tres" id="12_x632n"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="13_45tp4"]
+[ext_resource type="PackedScene" uid="uid://driu5llb873ns" path="res://scenes/quests/story_quests/champ/1_combat/combat_components/champ_projectile_3.tscn" id="13_418m7"]
 [ext_resource type="Texture2D" uid="uid://dyyu8w3qtm6q5" path="res://scenes/quests/story_quests/champ/1_combat/combat_components/champ_combat_bait_sign.png" id="14_1o4lf"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="14_bn425"]
 [ext_resource type="Texture2D" uid="uid://ckjior4vavgpy" path="res://scenes/quests/story_quests/champ/1_combat/combat_components/champ_bait_projectile_1.png" id="15_nn4ti"]
@@ -249,13 +252,23 @@ editor_draw_limits = true
 [node name="ThrowingNPC2" parent="OnTheGround/ThrowingEnemies" unique_id=481399762 instance=ExtResource("8_yidpm")]
 position = Vector2(1537, 673)
 odd_shoot = true
+projectile_scene_for_label = Dictionary[String, PackedScene]({
+"a": ExtResource("11_j60m7"),
+"b": ExtResource("12_8ja4x"),
+"c": ExtResource("13_418m7")
+})
 
 [node name="ThrowingNPC4" parent="OnTheGround/ThrowingEnemies" unique_id=774333023 instance=ExtResource("8_yidpm")]
 position = Vector2(414, 695)
+projectile_scene_for_label = Dictionary[String, PackedScene]({
+"a": ExtResource("11_j60m7"),
+"b": ExtResource("12_8ja4x"),
+"c": ExtResource("13_418m7")
+})
 
 [node name="Targets" type="Node2D" parent="OnTheGround" unique_id=60590667]
 
-[node name="Target" parent="OnTheGround/Targets" unique_id=510399694 instance=ExtResource("11_p0sed")]
+[node name="Target1" parent="OnTheGround/Targets" unique_id=510399694 instance=ExtResource("11_p0sed")]
 z_index = 1
 position = Vector2(233, 518)
 scale = Vector2(2, 2)
@@ -303,19 +316,19 @@ texture = ExtResource("14_1o4lf")
 texture = ExtResource("15_nn4ti")
 offset = Vector2(-1, -10)
 
-[node name="PlaceholderBaitSign2" type="Sprite2D" parent="OnTheGround/Signs" unique_id=1334877674]
-position = Vector2(1541, 695)
-texture = ExtResource("14_1o4lf")
-
-[node name="BaitSprite2" type="Sprite2D" parent="OnTheGround/Signs/PlaceholderBaitSign2" unique_id=1249786011]
-texture = ExtResource("16_wkm6s")
-offset = Vector2(-1, -10)
-
-[node name="PlaceholderBaitSign3" type="Sprite2D" parent="OnTheGround/Signs" unique_id=715278387]
+[node name="PlaceholderBaitSign2" type="Sprite2D" parent="OnTheGround/Signs" unique_id=715278387]
 position = Vector2(773, 688)
 texture = ExtResource("14_1o4lf")
 
-[node name="BaitSprite3" type="Sprite2D" parent="OnTheGround/Signs/PlaceholderBaitSign3" unique_id=1687502515]
+[node name="BaitSprite2" type="Sprite2D" parent="OnTheGround/Signs/PlaceholderBaitSign2" unique_id=1687502515]
+texture = ExtResource("16_wkm6s")
+offset = Vector2(-1, -10)
+
+[node name="PlaceholderBaitSign3" type="Sprite2D" parent="OnTheGround/Signs" unique_id=1334877674]
+position = Vector2(1541, 695)
+texture = ExtResource("14_1o4lf")
+
+[node name="BaitSprite3" type="Sprite2D" parent="OnTheGround/Signs/PlaceholderBaitSign3" unique_id=1249786011]
 texture = ExtResource("17_j60m7")
 offset = Vector2(-1, -10)
 
