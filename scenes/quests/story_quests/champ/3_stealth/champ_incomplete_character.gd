@@ -72,10 +72,10 @@ func _apply_blink() -> void:
 	$BlinkCheck.global_position = global_position
 	$BlinkCheck/Sprite2D.hide()
 
-	# (Optional) Add a cooldown so you can’t blink every frame.
+	# TODO: (Optional) Add a cooldown so you can’t blink every frame.
 	# Start a timer or use a variable that counts down.
 
-	# (Optional) Add a small visual change when blinking,
+	# TODO: (Optional) Add a small visual change when blinking,
 	# such as a brief color change or flash.
 
 # TODO: Remove this dev ability before release.
@@ -108,8 +108,8 @@ func _dev_apply_blink() -> void:
 ## Function to remove collisions, allowing the player to walk on water tiles
 func _walk_on_water() -> void:
 	$"../TileMapLayers/Water_border".enabled = false
-	#TODO do you think having the border permanently in that state is a good idea?
-	#TODO you can try to come up with a way to ensure it get enabled again after a while
+	# TODO do you think having the border permanently in that state is a good idea?
+	# TODO you can try to come up with a way to ensure it get enabled again after a while
 
 ## Function to listen for user input, each key press corresponding to movement is handled here
 func _unhandled_input(_event: InputEvent) -> void:
@@ -122,8 +122,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 	if(Input.is_action_pressed(&"move_right")):
 		axis.x = 1
 	input_vector = axis * SPEED
-	
- 	# TODO: Question: how can we make diagonal speed the same as walking in a straight line?
+	# TODO: how can we make the character walk up and down?
+ 	# TODO:  how can we make diagonal speed the same as walking in a straight line?
 	
 	# Blink ability
 	if(Input.is_action_just_pressed(&"champ_blink")):
