@@ -23,7 +23,6 @@
 [ext_resource type="Script" uid="uid://oqeuyuce1egi" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/quest_arbol_2.gd" id="17_3urrv"]
 [ext_resource type="Script" uid="uid://drecic7tl7efg" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/ArbolFantasma3.gd" id="17_v1avb"]
 [ext_resource type="Resource" uid="uid://bxxikn23qbirm" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/Dialogos/frag3.dialogue" id="18_h42gs"]
-[ext_resource type="Script" uid="uid://cm5hbvvpkiw7u" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/Music/music.gd" id="20_h42gs"]
 [ext_resource type="Script" uid="uid://bycmduf7yv7ux" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/quest_arbol_3.gd" id="20_rdjet"]
 [ext_resource type="Script" uid="uid://g32um0mltv5d" path="res://addons/dialogue_manager/dialogue_label.gd" id="21_2i2nx"]
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="23_a1kpq"]
@@ -353,13 +352,12 @@ shape = SubResource("CapsuleShape2D_tribl")
 [node name="Ambiente" type="AudioStreamPlayer" parent="Sounds" unique_id=1160969507]
 stream = ExtResource("24_rdjet")
 volume_db = -19.676
-script = ExtResource("20_h42gs")
+autoplay = true
 
 [node name="Musica" type="AudioStreamPlayer" parent="Sounds" unique_id=902503319]
 stream = ExtResource("26_3urrv")
 autoplay = true
 parameters/looping = true
-script = ExtResource("20_h42gs")
 
 [node name="Cinematic_siguiente" type="Node2D" parent="." unique_id=2011816888]
 position = Vector2(1666, 1249)
@@ -485,11 +483,11 @@ position = Vector2(1431, 1314)
 [node name="FireFly26" parent="." unique_id=1657380025 instance=ExtResource("9_v1avb")]
 position = Vector2(963, 2556)
 
+[connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="reportar_arbol_contactado"]
 [connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="_on_arbol_fantasma_1_dialogo_terminado"]
 [connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="_on_arbol_dialogo_terminado"]
-[connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="reportar_arbol_contactado"]
-[connection signal="dialogo_terminado2" from="quest_arbol2/ArbolFantasma2" to="quest_arbol2" method="reportar_arbol_contactado2"]
 [connection signal="dialogo_terminado2" from="quest_arbol2/ArbolFantasma2" to="quest_arbol2" method="_on_arbol_fantasma_2_dialogo_terminado_2"]
+[connection signal="dialogo_terminado2" from="quest_arbol2/ArbolFantasma2" to="quest_arbol2" method="reportar_arbol_contactado2"]
 [connection signal="dialogo_terminado3" from="quest_arbol3/ArbolFantasma3" to="quest_arbol3" method="reportar_arbol_contactado3"]
 [connection signal="dialogo_terminado3" from="quest_arbol3/ArbolFantasma3" to="quest_arbol3" method="_on_arbol_fantasma_3_dialogo_terminado_3"]
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]

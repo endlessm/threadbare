@@ -10,7 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://bmih4w66b6t36" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/Personajes/elfo_del_bosque_ojos_iluminados.tscn" id="6_iu8xy"]
 [ext_resource type="Resource" uid="uid://c5d8ip4lqme83" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/Dialogo/template_intro02.dialogue" id="7_1kvnf"]
 [ext_resource type="SpriteFrames" uid="uid://vrthlt7kah8w" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/tim_sprite_frames.tres" id="8_aeas8"]
-[ext_resource type="Script" uid="uid://hs14yse0u0uh" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/music.gd" id="11_ecyos"]
 [ext_resource type="AudioStream" uid="uid://bvq56m78f2v7g" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/musicas/2 The Veil of Night Loop 1 Start .ogg" id="12_1kvnf"]
 [ext_resource type="PackedScene" uid="uid://bdtis4ye3hah2" path="res://scenes/quests/story_quests/shjourney/9_shjourney_outro_2/neblina.tscn" id="12_6jtbm"]
 [ext_resource type="AudioStream" uid="uid://dbwjolg3xlntq" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/template_intro_components/EffectSounds/amazon-rainforest.ogg" id="12_aeas8"]
@@ -214,17 +213,6 @@ _data = {
 &"walk_on": SubResource("Animation_blo5s")
 }
 
-[sub_resource type="GDScript" id="GDScript_aeas8"]
-script/source = "extends AudioStreamPlayer2D
-
-func _ready() -> void:
-	play()
-	finished.connect(_on_audio_finished)
-
-func _on_audio_finished():
-	play()
-"
-
 [node name="Intro" type="Node2D" unique_id=306538971]
 texture_filter = 1
 
@@ -409,11 +397,11 @@ scale = Vector2(1.97, 1.97)
 [node name="Ambient" type="AudioStreamPlayer2D" parent="SoundEffects" unique_id=1954608718]
 stream = ExtResource("12_aeas8")
 volume_db = -9.905
-script = SubResource("GDScript_aeas8")
+autoplay = true
 
 [node name="Music" type="AudioStreamPlayer2D" parent="SoundEffects" unique_id=1020947435]
 stream = ExtResource("12_1kvnf")
-script = ExtResource("11_ecyos")
+autoplay = true
 
 [node name="ParallaxBackground" parent="." unique_id=1408395700 instance=ExtResource("12_6jtbm")]
 scale = Vector2(3.7, 3.7)
