@@ -33,8 +33,8 @@
 [ext_resource type="SpriteFrames" uid="uid://bkg2yqajvfipw" path="res://scenes/quests/story_quests/shjourney/5_shjourney_sequence_puzzle/shjourney_sequence_components/shjourney_guardian.tres" id="29_hvqie"]
 [ext_resource type="Resource" uid="uid://m3wugmcg8r6m" path="res://scenes/quests/story_quests/shjourney/5_shjourney_sequence_puzzle/shjourney_sequence_components/shjourney_sequence_puzzle.dialogue" id="32_1fi4m"]
 [ext_resource type="AudioStream" uid="uid://wh36l3rfb7xa" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/musicas/Mind's Eye Full.ogg" id="33_at0ry"]
-[ext_resource type="PackedScene" uid="uid://bdtis4ye3hah2" path="res://scenes/quests/story_quests/shjourney/9_shjourney_outro_2/neblina.tscn" id="34_6073y"]
 [ext_resource type="Script" uid="uid://cm5hbvvpkiw7u" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/Music/music.gd" id="34_at0ry"]
+[ext_resource type="PackedScene" uid="uid://dpbsi065gmh8a" path="res://scenes/game_elements/fx/fog/fog.tscn" id="35_at0ry"]
 
 [sub_resource type="Resource" id="Resource_u8qfb"]
 script = ExtResource("15_daurq")
@@ -72,7 +72,6 @@ tile_set = ExtResource("1_3wc2e")
 
 [node name="Dragon" parent="TileMapLayers" unique_id=1583637802 instance=ExtResource("2_0x02o")]
 modulate = Color(0.601223, 0.601223, 0.601223, 1)
-z_index = 2
 texture_filter = 1
 position = Vector2(773, 178)
 scale = Vector2(4.5, 4.5)
@@ -352,8 +351,6 @@ stream = ExtResource("33_at0ry")
 autoplay = true
 script = ExtResource("34_at0ry")
 
-[node name="ParallaxBackground" parent="." unique_id=2035834243 instance=ExtResource("34_6073y")]
-scale = Vector2(3.7, 3.7)
-transform = Transform2D(3.7, 0, 0, 3.7, 0, 0)
+[node name="Fog" parent="." unique_id=953933321 instance=ExtResource("35_at0ry")]
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]
