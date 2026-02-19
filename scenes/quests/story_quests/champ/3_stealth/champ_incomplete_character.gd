@@ -66,7 +66,8 @@ func _apply_blink() -> void:
 	if $"../Bounds/Blink Bounds".overlaps_area(dummy):
 	# If there are no collisions, move the player to the new position.
 		if not dummy.has_overlapping_bodies():
-			global_position = target_coordinates
+			#TODO: Teleport the player instantly to the desired location
+			return
 			
 	# Reset dummy
 	$BlinkCheck.global_position = global_position
