@@ -234,18 +234,20 @@ func shatter_string() -> void:
 
 ## Start pulling.
 ## [br][br]
-## While pulling, the player is allowed to go through non-walkable floor.
+## While pulling, the player is allowed to go through non-walkable floor or walls.
 func pull_string() -> void:
 	pulling = true
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, false)
+	character.set_collision_mask_value(Enums.CollisionLayers.WALLS, false)
 
 
 ## Stop pulling and remove the [member hook_string].
 ## [br][br]
 ## After pulling, the player is back to normal and not able to go through
-## non-walkable floor.
+## non-walkable floor or walls.
 func stop_pulling() -> void:
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, true)
+	character.set_collision_mask_value(Enums.CollisionLayers.WALLS, true)
 	pulling = false
 	remove_string()
 
