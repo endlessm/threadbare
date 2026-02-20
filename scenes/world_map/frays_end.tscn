@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://8div00rgvsds" path="res://scenes/world_map/components/frays_end.gd" id="1_4gse6"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_ovkdi"]
 [ext_resource type="AudioStream" uid="uid://bbamdm6wtjjcn" path="res://assets/first_party/music/Threadbare_Bed.ogg" id="2_epsnn"]
-[ext_resource type="SpriteFrames" uid="uid://cntyc07xhpu0k" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_blue.tres" id="3_rti58"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_tp7qs"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="4_6ss6a"]
 [ext_resource type="PackedScene" uid="uid://lfvn4u30s4yf" path="res://scenes/game_elements/props/buildings/house/house_1.tscn" id="5_5jg1p"]
@@ -20,7 +19,6 @@
 [ext_resource type="TileSet" uid="uid://bdc7ucso7bx0s" path="res://tiles/shadows.tres" id="8_r1ek1"]
 [ext_resource type="TileSet" uid="uid://cxw7t41wfur2m" path="res://tiles/decoration.tres" id="9_duxxr"]
 [ext_resource type="PackedScene" uid="uid://bbsc3wssndtfe" path="res://scenes/game_elements/props/decoration/hiding_mushroom/hiding_mushroom.tscn" id="11_jqkod"]
-[ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="11_mr2ek"]
 [ext_resource type="PackedScene" uid="uid://ccp4ayow34e7g" path="res://scenes/game_elements/props/decoration/books/books.tscn" id="12_06x6x"]
 [ext_resource type="Texture2D" uid="uid://cyvi71ryavsld" path="res://scenes/game_elements/props/decoration/books/components/Books_2.png" id="13_xt3dw"]
 [ext_resource type="PackedScene" uid="uid://bp20cjimwi8l0" path="res://scenes/game_elements/props/buildings/house/house_2.tscn" id="15_uhynt"]
@@ -30,7 +28,6 @@
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="18_yntpr"]
 [ext_resource type="PackedScene" uid="uid://n8dhed3nvf50" path="res://scenes/game_elements/characters/npcs/npc_prop/fray_hammerman.tscn" id="19_yntpr"]
 [ext_resource type="PackedScene" uid="uid://v2uakefmp67y" path="res://scenes/game_elements/characters/npcs/elder/story_quest_elder.tscn" id="20_jqkod"]
-[ext_resource type="PackedScene" uid="uid://6tkhqe1nvwop" path="res://scenes/game_elements/characters/npcs/npc_prop/fray_idle.tscn" id="20_xa7wa"]
 [ext_resource type="PackedScene" uid="uid://bytkm0r5fe5xb" path="res://scenes/game_elements/characters/npcs/elder/lore_quest_elder.tscn" id="20_xt3dw"]
 [ext_resource type="Resource" uid="uid://qva3nnhkgirm" path="res://scenes/world_map/components/farmer_npc.dialogue" id="25_6r0j2"]
 [ext_resource type="PackedScene" uid="uid://hafqgtdg2nvp" path="res://scenes/game_elements/props/hint/hint.tscn" id="26_w8iew"]
@@ -53,14 +50,23 @@
 [ext_resource type="PackedScene" uid="uid://vb5o7hh5an8j" path="res://scenes/game_elements/characters/npcs/elder/template_elder.tscn" id="43_ppslc"]
 [ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="45_cjmkx"]
 [ext_resource type="PackedScene" uid="uid://cr65lmm5b0ueo" path="res://scenes/game_elements/characters/npcs/cat/cat.tscn" id="52_ppslc"]
+[ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="54_duxxr"]
 [ext_resource type="PackedScene" uid="uid://c0374lgarm8gj" path="res://scenes/game_elements/fx/clouds_shadow/clouds_shadow.tscn" id="54_ns5r3"]
+[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="55_2vvub"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="55_wymun"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="56_ojao8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_duxxr"]
+size = Vector2(52, 61)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h30yx"]
 size = Vector2(2070, 585)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_djq26"]
 size = Vector2(161, 95)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2vvub"]
+size = Vector2(52, 61)
 
 [node name="FraysEnd" type="Node2D" unique_id=1849947277]
 y_sort_enabled = true
@@ -338,21 +344,42 @@ position = Vector2(1506, 1263)
 [node name="Hammerman" parent="NPCs" unique_id=1228849708 instance=ExtResource("19_yntpr")]
 position = Vector2(1663, 1102)
 
-[node name="Farmer" parent="NPCs" unique_id=1873595250 instance=ExtResource("11_mr2ek")]
+[node name="Farmer" parent="NPCs" unique_id=1098678013 instance=ExtResource("54_duxxr")]
 position = Vector2(1625, 625)
-dialogue = ExtResource("25_6r0j2")
-npc_name = "Farmer"
-
-[node name="FarmersPartner" parent="NPCs" unique_id=1964501787 instance=ExtResource("20_xa7wa")]
-position = Vector2(1638, 841)
-
-[node name="GardenerA" parent="NPCs" unique_id=761275697 instance=ExtResource("20_xa7wa")]
-position = Vector2(199, 899)
+scale = Vector2(-1, 1)
+character_seed = 3442244821
 look_at_side = 1
 
-[node name="GardenerB" parent="NPCs" unique_id=1539709057 instance=ExtResource("20_xa7wa")]
+[node name="TalkBehavior" type="Node" parent="NPCs/Farmer" unique_id=732454003 node_paths=PackedStringArray("interact_area")]
+script = ExtResource("56_ojao8")
+dialogue = ExtResource("25_6r0j2")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
+
+[node name="InteractArea" parent="NPCs/Farmer" unique_id=248145530 instance=ExtResource("55_2vvub")]
+visible = false
+interact_label_position = Vector2(0, -100)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPCs/Farmer/InteractArea" unique_id=1727136394]
+position = Vector2(0, -23.5)
+shape = SubResource("RectangleShape2D_duxxr")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="FarmersPartner" parent="NPCs" unique_id=1246028381 instance=ExtResource("54_duxxr")]
+position = Vector2(1638, 841)
+scale = Vector2(-1, 1)
+character_seed = 3260235337
+look_at_side = 1
+
+[node name="GardenerA" parent="NPCs" unique_id=1887606289 instance=ExtResource("54_duxxr")]
+position = Vector2(199, 899)
+character_seed = 2422434786
+
+[node name="GardenerB" parent="NPCs" unique_id=514890698 instance=ExtResource("54_duxxr")]
 position = Vector2(268, 894)
-sprite_frames = ExtResource("3_rti58")
+scale = Vector2(-1, 1)
+character_seed = 3363471871
+look_at_side = 1
 
 [node name="Cat" parent="NPCs" unique_id=1091997689 instance=ExtResource("52_ppslc")]
 position = Vector2(267, 650)
@@ -1056,18 +1083,41 @@ visible = false
 position = Vector2(552, 112.5)
 shape = SubResource("RectangleShape2D_h30yx")
 
-[node name="Talker" parent="Tutorial" unique_id=196972274 instance=ExtResource("11_mr2ek")]
-position = Vector2(514, 1613)
-dialogue = ExtResource("32_djq26")
-
-[node name="InteractInputHint" parent="Tutorial/Talker" unique_id=1614272832 node_paths=PackedStringArray("hint_node") instance=ExtResource("26_w8iew")]
+[node name="InteractInputHint" parent="Tutorial/MovementInputHint" unique_id=1614272832 node_paths=PackedStringArray("hint_node") instance=ExtResource("26_w8iew")]
+position = Vector2(40, -45)
 hint_node = NodePath("../../../ScreenOverlay/HBoxContainer/Repel_hint/InteractionInputHints")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/Talker/InteractInputHint" unique_id=9243216]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/MovementInputHint/InteractInputHint" unique_id=9243216]
 position = Vector2(0.5, -8.5)
 shape = SubResource("RectangleShape2D_djq26")
+
+[node name="TutorialGuy" parent="Tutorial" unique_id=618221375 instance=ExtResource("54_duxxr")]
+position = Vector2(514, 1613)
+scale = Vector2(-1, 1)
+character_seed = 2433932515
+look_at_side = 1
+
+[node name="InteractArea" parent="Tutorial/TutorialGuy" unique_id=226800588 instance=ExtResource("55_2vvub")]
+visible = false
+interact_label_position = Vector2(0, -100)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/TutorialGuy/InteractArea" unique_id=1652917244]
+position = Vector2(0, -23.5)
+shape = SubResource("RectangleShape2D_2vvub")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="Tutorial/TutorialGuy" unique_id=283277394 node_paths=PackedStringArray("interact_area")]
+script = ExtResource("56_ojao8")
+dialogue = ExtResource("32_djq26")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
 
 [node name="SpawnPointAfterIntro" parent="." unique_id=69976262 instance=ExtResource("37_thm8h")]
 position = Vector2(62, 1747)
 
 [node name="CloudsShadow" parent="." unique_id=1515275591 instance=ExtResource("54_ns5r3")]
+
+[connection signal="interaction_ended" from="NPCs/Farmer/InteractArea" to="NPCs/Farmer" method="_on_interact_area_interaction_ended"]
+[connection signal="interaction_started" from="NPCs/Farmer/InteractArea" to="NPCs/Farmer" method="_on_interact_area_interaction_started"]
+[connection signal="interaction_ended" from="Tutorial/TutorialGuy/InteractArea" to="Tutorial/TutorialGuy" method="_on_interact_area_interaction_ended"]
+[connection signal="interaction_started" from="Tutorial/TutorialGuy/InteractArea" to="Tutorial/TutorialGuy" method="_on_interact_area_interaction_started"]
