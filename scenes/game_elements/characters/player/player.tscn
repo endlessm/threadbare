@@ -15,6 +15,9 @@
 [ext_resource type="Script" uid="uid://b7704hdflt5t8" path="res://scenes/game_elements/characters/player/components/player_hook.gd" id="11_nrnyj"]
 [ext_resource type="Texture2D" uid="uid://dxaq5piwxqnht" path="res://scenes/game_elements/characters/player/components/dust.png" id="12_3in67"]
 [ext_resource type="PackedScene" uid="uid://b0dehcnfo68j1" path="res://scenes/game_elements/props/hook_control/hook_control.tscn" id="13_ecbbk"]
+[ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="16_8jhju"]
+[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="17_5lbww"]
+[ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="18_cvb4d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_je7p5"]
 size = Vector2(32, 47)
@@ -70,7 +73,7 @@ anim_speed_max = 1.0
 height = 42.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_blfj0"]
-size = Vector2(110, 80)
+size = Vector2(52, 79)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h17s1"]
 radius = 20.0
@@ -572,7 +575,7 @@ script = ExtResource("6_3in67")
 character = NodePath("../..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerInteraction/InteractZone" unique_id=255765935]
-position = Vector2(47, -30)
+position = Vector2(18, -30.5)
 shape = SubResource("RectangleShape2D_blfj0")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
@@ -646,7 +649,31 @@ script = ExtResource("7_0owmy")
 
 [node name="WalkSound" type="AudioStreamPlayer2D" parent="." unique_id=1454454549]
 unique_name_in_owner = true
+position = Vector2(11, 1)
 stream = ExtResource("11_blfj0")
 volume_db = -5.0
 pitch_scale = 7.0
 bus = &"SFX"
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=210032727]
+unique_name_in_owner = true
+position = Vector2(5, -23)
+collision_layer = 0
+script = ExtResource("16_8jhju")
+
+[node name="Light" type="PointLight2D" parent="DetectionArea" unique_id=379385401]
+position = Vector2(0, 5)
+scale = Vector2(0.340496, 0.340496)
+color = Color(1, 1, 0.796078, 1)
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("17_5lbww")
+offset = Vector2(377.88, 10.7686)
+script = ExtResource("18_cvb4d")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea" unique_id=1863178805]
+position = Vector2(-51, -127)
+scale = Vector2(0.781994, 1)
+polygon = PackedVector2Array(302, 48, 283, 52, 279, 52, 101, 114, 98, 114, 79, 124, 77, 124, 72, 131, 71, 131, 71, 138, 78, 145, 78, 146, 95, 154, 95, 155, 275, 226, 275, 227, 292, 231, 292, 232, 312, 230, 316, 230, 330, 222, 332, 222, 340, 214, 341, 214, 346, 205, 347, 205, 347.8288, 194, 351, 185, 351, 100, 347, 82, 347, 79, 338, 67, 338, 65, 325, 55, 325, 54, 302, 47)
