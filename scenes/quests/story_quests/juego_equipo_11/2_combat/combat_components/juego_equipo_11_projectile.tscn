@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://mkemi1d18fkl"]
+
+[ext_resource type="Script" uid="uid://bofv3bcwj3rx2" path="res://scenes/game_elements/props/projectile/components/projectile.gd" id="1_f5637"]
+[ext_resource type="SpriteFrames" uid="uid://ugywcs57hcc2" path="res://scenes/quests/story_quests/juego_equipo_11/2_combat/combat_components/juego_equipo_11_projectile_spriteframes.tres" id="2_p664n"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0ai14"]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbkea"]
+size = Vector2(44, 44)
+
+[node name="JuegoEquipo11Projectile" type="RigidBody2D" unique_id=1611529190 groups=["projectiles"]]
+collision_layer = 256
+collision_mask = 80
+mass = 0.3
+physics_material_override = SubResource("PhysicsMaterial_0ai14")
+gravity_scale = 0.0
+lock_rotation = true
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_f5637")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1499726276]
+shape = SubResource("RectangleShape2D_lbkea")
+
+[node name="VisibleThings" type="Node2D" parent="." unique_id=1129773837]
+unique_name_in_owner = true
+position = Vector2(-3, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VisibleThings" unique_id=1816818143]
+unique_name_in_owner = true
+sprite_frames = ExtResource("2_p664n")
+autoplay = "default"
+
+[node name="TrailFXMarker" type="Marker2D" parent="VisibleThings" unique_id=771420475]
+unique_name_in_owner = true
+position = Vector2(-40, 0)
+
+[node name="DurationTimer" type="Timer" parent="." unique_id=259732970]
+unique_name_in_owner = true
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=1862098516]
+unique_name_in_owner = true
+bus = &"SFX"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="DurationTimer" to="." method="_on_duration_timer_timeout"]
