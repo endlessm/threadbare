@@ -37,8 +37,11 @@ const FILLING_NAME_ANIMATION: StringName = &"filling"
 @export var color: Color:
 	set = _set_color
 
+var is_locked: bool = false
+
 var _amount: int = 0
 
+@onready var barrel_glow: AnimatedSprite2D = $BarrelGlow
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var collision_shape_2d: CollisionShape2D = %CollisionShape2D
@@ -70,10 +73,29 @@ func _ready() -> void:
 	animated_sprite_2d.animation = FILLING_NAME_ANIMATION
 	animated_sprite_2d.frame = 0
 
+	if barrel_glow:
+		barrel_glow.visible = false
+
+
+func set_locked_state(locked: bool) -> void:
+	is_locked = locked
+
+	if is_locked:
+		modulate = Color(0.5, 0.5, 0.5, 1)
+		if barrel_glow:
+			barrel_glow.visible = false
+	else:
+		modulate = Color(1, 1, 1, 1)
+		if barrel_glow:
+			barrel_glow.visible = true
+			barrel_glow.play("glowing")
+
 
 ## Increment the amount and play an animation. If completed, also play the completed
 ## animation and remove this barrel from the current scene.
 func increment(by: int = 1) -> void:
+	if is_locked:
+		return
 	if _amount >= needed_amount:
 		return
 	animation_player.play(&"increment")
