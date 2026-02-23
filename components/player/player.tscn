@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://8st4scqt06l8"]
+
+[ext_resource type="Script" uid="uid://umb21eb2y1oj" path="res://scripts/player.gd" id="1_w3ms2"]
+[ext_resource type="SpriteFrames" uid="uid://c2wpvtw1stuyq" path="res://components/player/spriteframes-inkdrinker-red.tres" id="2_msaml"]
+[ext_resource type="AudioStream" uid="uid://dmx2rtf2vy1" path="res://assets/sounds/244654__dsg__pop-2.ogg" id="3_ph1f6"]
+[ext_resource type="AudioStream" uid="uid://bx1joarpc14j5" path="res://assets/sounds/538066__stevielematt__boing.ogg" id="3_wa6cj"]
+[ext_resource type="AudioStream" uid="uid://p0b3e0t7h8j3" path="res://assets/sounds/596541__tothrec2__large-wings-flapping-foley.ogg" id="4_mpawu"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7x5a4"]
+radius = 31.0
+height = 92.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_mpawu"]
+random_pitch = 1.1
+streams_count = 1
+stream_0/stream = ExtResource("3_wa6cj")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ph1f6"]
+random_pitch = 1.2
+streams_count = 1
+stream_0/stream = ExtResource("3_ph1f6")
+
+[node name="Player" type="CharacterBody2D" unique_id=1041196418 groups=["players"]]
+collision_layer = 3
+collision_mask = 5
+floor_constant_speed = true
+floor_snap_length = 32.0
+script = ExtResource("1_w3ms2")
+
+[node name="DoubleJumpParticles" type="CPUParticles2D" parent="." unique_id=1486600990]
+unique_name_in_owner = true
+emitting = false
+amount = 60
+lifetime = 0.2
+one_shot = true
+explosiveness = 0.54
+randomness = 0.25
+emission_shape = 1
+emission_sphere_radius = 36.72
+particle_flag_align_y = true
+gravity = Vector2(0, 1)
+scale_amount_max = 5.0
+color = Color(1, 1, 0, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=16241589]
+unique_name_in_owner = true
+position = Vector2(0, -64)
+sprite_frames = ExtResource("2_msaml")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1239802489]
+position = Vector2(0, -46)
+shape = SubResource("CapsuleShape2D_7x5a4")
+one_way_collision = true
+
+[node name="SoundEffects" type="Node" parent="." unique_id=971926404]
+
+[node name="JumpSFX" type="AudioStreamPlayer" parent="SoundEffects" unique_id=1297022897]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamRandomizer_mpawu")
+
+[node name="GlideSFX" type="AudioStreamPlayer" parent="SoundEffects" unique_id=1346432575]
+unique_name_in_owner = true
+stream = ExtResource("4_mpawu")
+
+[node name="TeleportSFX" type="AudioStreamPlayer" parent="SoundEffects" unique_id=1064972734]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamRandomizer_ph1f6")
+volume_db = -10.0

@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://dk0xon0k7ga23"]
+
+[ext_resource type="Texture2D" uid="uid://dwhi5vmkbnyk4" path="res://assets/enemy.png" id="1_57cf6"]
+[ext_resource type="Script" uid="uid://d003tgo4vrak8" path="res://components/enemy/enemy.gd" id="1_urf0o"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5r7qd"]
+atlas = ExtResource("1_57cf6")
+region = Rect2(444, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_77x52"]
+atlas = ExtResource("1_57cf6")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_emkhg"]
+atlas = ExtResource("1_57cf6")
+region = Rect2(148, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ltgan"]
+atlas = ExtResource("1_57cf6")
+region = Rect2(296, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2xpc5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5r7qd")
+}],
+"loop": true,
+"name": &"hit",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_77x52")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_emkhg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ltgan")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kii40"]
+size = Vector2(48, 78)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cepcq"]
+size = Vector2(82, 83)
+
+[node name="Enemy" type="CharacterBody2D" unique_id=122144772]
+collision_layer = 8
+collision_mask = 4
+floor_constant_speed = true
+floor_snap_length = 32.0
+script = ExtResource("1_urf0o")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1744919418]
+unique_name_in_owner = true
+position = Vector2(0, -64)
+sprite_frames = SubResource("SpriteFrames_2xpc5")
+animation = &"walk"
+autoplay = "walk"
+
+[node name="LeftRay" type="RayCast2D" parent="." unique_id=1512396515]
+unique_name_in_owner = true
+position = Vector2(-37, -3)
+collision_mask = 5
+
+[node name="RightRay" type="RayCast2D" parent="." unique_id=1098861236]
+unique_name_in_owner = true
+position = Vector2(37, -3)
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=975111494]
+position = Vector2(0, -39)
+shape = SubResource("RectangleShape2D_kii40")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=72985585]
+position = Vector2(0, -106)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=349674681]
+position = Vector2(0, 58.5)
+shape = SubResource("RectangleShape2D_cepcq")
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

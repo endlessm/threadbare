@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://beuisy5yrw0bq"]
+
+[ext_resource type="Script" uid="uid://ctlotfccvl4jn" path="res://scripts/flag.gd" id="1_ic1xn"]
+[ext_resource type="SpriteFrames" uid="uid://b3orjhfv6eeud" path="res://components/flag/flag-spriteframes-green.tres" id="2_l6hhd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3dfps"]
+size = Vector2(64, 128)
+
+[node name="Flag" type="Area2D" unique_id=1350700916]
+collision_layer = 2
+script = ExtResource("1_ic1xn")
+sprite_frames = ExtResource("2_l6hhd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=543734427]
+unique_name_in_owner = true
+sprite_frames = ExtResource("2_l6hhd")
+animation = &"down"
+frame_progress = 0.40993667
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1849572681]
+position = Vector2(-32, 0)
+shape = SubResource("RectangleShape2D_3dfps")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

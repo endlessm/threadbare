@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://4tnolf5qjb55"]
+
+[ext_resource type="Script" uid="uid://b4j8f10agdcvu" path="res://scripts/coin.gd" id="1_68uat"]
+[ext_resource type="Texture2D" uid="uid://84t7yee808cn" path="res://assets/items/button.png" id="2_80pk3"]
+[ext_resource type="AudioStream" uid="uid://brp8t8y6k0n5r" path="res://assets/sounds/545857__ezzin__coin-flip.ogg" id="3_80pk3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5w0o8"]
+radius = 46.72
+
+[node name="SpecialCoin" type="Area2D" unique_id=954465737]
+editor_description = "Special coins are ignored when calculating the total number of coins that must be collected to win, though collecting one still counts towards that goal.
+
+The only difference compared to coin.tscn is that special_coin.tscn is not in the \"coins\" group.
+
+Use this scene for optional coins to the level, such as coins which can only be accessed by enabling new player abilitiies."
+collision_layer = 2
+script = ExtResource("1_68uat")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1075619415]
+unique_name_in_owner = true
+texture = ExtResource("2_80pk3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1579108019]
+shape = SubResource("CircleShape2D_5w0o8")
+
+[node name="CollectSoundPlayer" type="AudioStreamPlayer2D" parent="." unique_id=2072175774]
+unique_name_in_owner = true
+stream = ExtResource("3_80pk3")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

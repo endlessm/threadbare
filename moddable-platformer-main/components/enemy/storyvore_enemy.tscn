@@ -1,0 +1,98 @@
+[gd_scene format=3 uid="uid://dbaal2g7b8ub0"]
+
+[ext_resource type="Script" uid="uid://d003tgo4vrak8" path="res://components/enemy/enemy.gd" id="1_6mw0c"]
+[ext_resource type="Texture2D" uid="uid://dye0f3r8n3yci" path="res://assets/storyvore_move_green.png" id="2_riih7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mdji8"]
+atlas = ExtResource("2_riih7")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xlq87"]
+atlas = ExtResource("2_riih7")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5eic1"]
+atlas = ExtResource("2_riih7")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_43fgs"]
+atlas = ExtResource("2_riih7")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k83e4"]
+atlas = ExtResource("2_riih7")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3igal"]
+atlas = ExtResource("2_riih7")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xxtfg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mdji8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xlq87")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5eic1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_43fgs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k83e4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3igal")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kii40"]
+size = Vector2(48, 78)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cepcq"]
+size = Vector2(82, 83)
+
+[node name="StoryvoreEnemy" type="CharacterBody2D" unique_id=834529607]
+collision_layer = 8
+collision_mask = 4
+floor_constant_speed = true
+floor_snap_length = 32.0
+script = ExtResource("1_6mw0c")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=135039845]
+unique_name_in_owner = true
+position = Vector2(0, -59)
+sprite_frames = SubResource("SpriteFrames_xxtfg")
+animation = &"walk"
+autoplay = "walk"
+frame_progress = 0.106469
+
+[node name="LeftRay" type="RayCast2D" parent="." unique_id=662956966]
+unique_name_in_owner = true
+position = Vector2(-37, -3)
+collision_mask = 5
+
+[node name="RightRay" type="RayCast2D" parent="." unique_id=1046947928]
+unique_name_in_owner = true
+position = Vector2(37, -3)
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=345687420]
+position = Vector2(0, -39)
+shape = SubResource("RectangleShape2D_kii40")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1154744414]
+position = Vector2(0, -106)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1302236694]
+position = Vector2(0, 58.5)
+shape = SubResource("RectangleShape2D_cepcq")
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

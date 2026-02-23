@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://daf24t18h3n5e"]
+
+[ext_resource type="Script" uid="uid://b4j8f10agdcvu" path="res://scripts/coin.gd" id="1_4bks0"]
+[ext_resource type="Texture2D" uid="uid://84t7yee808cn" path="res://assets/items/button.png" id="2_u2mam"]
+[ext_resource type="AudioStream" uid="uid://brp8t8y6k0n5r" path="res://assets/sounds/545857__ezzin__coin-flip.ogg" id="3_khs0j"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5w0o8"]
+radius = 46.72
+
+[node name="Coin" type="Area2D" unique_id=1095254317 groups=["coins"]]
+collision_layer = 2
+script = ExtResource("1_4bks0")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=494313994]
+unique_name_in_owner = true
+texture = ExtResource("2_u2mam")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=450096059]
+shape = SubResource("CircleShape2D_5w0o8")
+
+[node name="CollectSoundPlayer" type="AudioStreamPlayer2D" parent="." unique_id=2106882871]
+unique_name_in_owner = true
+stream = ExtResource("3_khs0j")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

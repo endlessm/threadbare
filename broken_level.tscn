@@ -1,0 +1,454 @@
+[gd_scene format=4 uid="uid://b70davfipkjyr"]
+
+[ext_resource type="PackedScene" uid="uid://cswheshouik14" path="res://rules_goals/game_logic.tscn" id="1_wr7vp"]
+[ext_resource type="PackedScene" uid="uid://jnrusvm3gric" path="res://spaces/background.tscn" id="2_3dg71"]
+[ext_resource type="PackedScene" uid="uid://dthyncc3spfks" path="res://spaces/dangerzone.tscn" id="3_bunc4"]
+[ext_resource type="PackedScene" uid="uid://danlrmsfmsros" path="res://spaces/tilemap.tscn" id="4_4iygp"]
+[ext_resource type="PackedScene" uid="uid://daf24t18h3n5e" path="res://components/coin/coin.tscn" id="5_ufbke"]
+[ext_resource type="Texture2D" uid="uid://84t7yee808cn" path="res://assets/items/button.png" id="6_afvof"]
+[ext_resource type="PackedScene" uid="uid://4tnolf5qjb55" path="res://components/coin/special_coin.tscn" id="7_anfrv"]
+[ext_resource type="PackedScene" uid="uid://coq6d3u6wnvs2" path="res://components/platform/platform.tscn" id="8_baijo"]
+[ext_resource type="PackedScene" uid="uid://cugv3o2f6ug6e" path="res://components/sign/sign.tscn" id="9_flc0k"]
+[ext_resource type="PackedScene" uid="uid://8st4scqt06l8" path="res://components/player/player.tscn" id="10_tb02s"]
+[ext_resource type="SpriteFrames" uid="uid://c2wpvtw1stuyq" path="res://components/player/spriteframes-inkdrinker-red.tres" id="11_lh1sx"]
+[ext_resource type="PackedScene" uid="uid://jt80gv02u4f2" path="res://hud.tscn" id="12_ixmx3"]
+[ext_resource type="PackedScene" uid="uid://dbaal2g7b8ub0" path="res://components/enemy/storyvore_enemy.tscn" id="13_3rps0"]
+[ext_resource type="PackedScene" uid="uid://beuisy5yrw0bq" path="res://components/flag/flag.tscn" id="14_dw26e"]
+[ext_resource type="Script" uid="uid://boqbxvbja884q" path="res://scripts/multiplayer_camera.gd" id="15_ek0ox"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3dg71"]
+resource_local_to_scene = true
+size = Vector2(256, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bunc4"]
+resource_local_to_scene = true
+size = Vector2(256, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wr7vp"]
+size = Vector2(48, 78)
+
+[node name="Main" type="Node2D" unique_id=1206432403]
+
+[node name="GameLogic" parent="." unique_id=712863150 instance=ExtResource("1_wr7vp")]
+win_by_collecting_coins = true
+win_by_reaching_flag = true
+
+[node name="Background" parent="." unique_id=735976399 instance=ExtResource("2_3dg71")]
+follow_viewport_enabled = false
+tint = Color(0.569993, 0.558956, 0.878091, 1)
+
+[node name="Dangerzone" parent="." unique_id=304085475 instance=ExtResource("3_bunc4")]
+position = Vector2(3072, 1216)
+
+[node name="TileMap" parent="." unique_id=839547152 instance=ExtResource("4_4iygp")]
+tile_map_data = PackedByteArray("AAAAAAUAAAACAAAAAAABAAUAAAACAAAAAAACAAUAAAACAAAAAAADAAUAAAACAAAAAAAEAAUAAAACAAAAAAAFAAUAAAACAAAAAAAGAAUAAAACAAAAAAAHAAUAAAACAAAAAAAIAAUAAAACAAAAAAAJAAUAAAACAAAAAAAKAAUAAAADAAAAAAAKAAYAAAAGAAEAAAAJAAYAAAAAAAAAAAAIAAYAAAAAAAAAAAAHAAYAAAAAAAAAAAAGAAYAAAAAAAAAAAAFAAYAAAAAAAAAAAAEAAYAAAAAAAAAAAADAAYAAAAAAAAAAAACAAYAAAAAAAAAAAABAAYAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAcAAAAAAAAAAAABAAcAAAAAAAAAAAACAAcAAAAAAAAAAAADAAcAAAAAAAAAAAAEAAcAAAAAAAAAAAAFAAcAAAAAAAAAAAAGAAcAAAAAAAAAAAAHAAcAAAAAAAAAAAAIAAcAAAAAAAAAAAAJAAcAAAAAAAAAAAAKAAcAAAAAAAAAAAAIAAgAAAAKAAEAAAAHAAgAAAAKAAEAAAAGAAgAAAAKAAEAAAAFAAgAAAAKAAEAAAAEAAgAAAAKAAEAAAABAAgAAAAAAAAAAAAAAAgAAAAKAAEAAAACAAQAAAAAAAAAAAACAAMAAAAAAAAAAAABAAIAAAAHAAIAAAADAAIAAAAIAAIAAAACAAIAAAACAAAAAAALAAcAAAAAAAAAAAAMAAcAAAAAAAAAAAANAAcAAAAAAAAAAAAOAAcAAAAAAAAAAAAOAAYAAAAFAAEAAAAOAAUAAAABAAAAAAAPAAUAAAACAAAAAAAQAAUAAAACAAAAAAARAAUAAAACAAAAAAASAAUAAAACAAAAAAATAAUAAAACAAAAAAAUAAUAAAADAAAAAAAPAAYAAAAAAAAAAAAQAAYAAAAAAAAAAAARAAYAAAAAAAAAAAASAAYAAAAAAAAAAAATAAYAAAAAAAAAAAAUAAYAAAAAAAAAAAAUAAcAAAAAAAAAAAATAAcAAAAAAAAAAAASAAcAAAAAAAAAAAARAAcAAAAAAAAAAAAQAAcAAAAAAAAAAAAPAAcAAAAAAAAAAAAQAAgAAAAKAAEAAAARAAgAAAAKAAEAAAASAAgAAAAKAAEAAAATAAgAAAAKAAEAAAAUAAgAAAAKAAEAAAAFAAQAAAAJAAAA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AAAnAAQAAAAIAAEAAAAnAAUAAAAKAAEAAAAkAAQAAAAAAAAAAAAlAAUAAAAKAAEAAAAlAAQAAAAAAAAAAAAkAAUAAAAKAAEAAAAkAAYAAAAKAAEAAAAkAAcAAAAKAAEAAAAlAAcAAAAKAAEAAAAlAAYAAAAKAAEAAAAmAAUAAAAKAAEAAAAnAAYAAAAKAAEAAAAmAAYAAAAKAAEAAAA7AAcAAAAKAAEAAAA/AAcAAAAKAAEAAAAxAAYAAAAKAAEAAAAyAAYAAAAKAAEAAAApAAYAAAAKAAEAAAAoAAYAAAAKAAEAAAAzAAgAAAAKAAEAAAA0AAgAAAAKAAEAAAA4AAgAAAAKAAEAAAA3AAgAAAAKAAEAAAAoAAUAAAAKAAEAAAApAAUAAAAKAAEAAAAqAAYAAAAKAAEAAAArAAYAAAAKAAEAAAAsAAYAAAAKAAEAAAAtAAYAAAAKAAEAAAAuAAYAAAAKAAEAAAAwAAYAAAAKAAEAAAAvAAYAAAAKAAEAAAAyAAUAAAAKAAEAAAAxAAUAAAAKAAEAAAA4AAUAAAAKAAEAAAA5AAUAAAAKAAEAAAA6AAUAAAAKAAEAAAA7AAUAAAAKAAEAAAA5AAcAAAAKAAEAAAA6AAcAAAAKAAEAAAA/AAUAAAAKAAEAAAA/AAYAAAAKAAEAAAA5APX/AAAKAAEAAAA5APb/AAAKAAEAAAA5APf/AAAKAAEAAAA5APj/AAAKAAEAAAA5APn/AAAKAAEAAAA5APr/AAAKAAEAAAA5APv/AAAKAAEAAAA5APz/AAAKAAEAAAA5AP3/AAAKAAEAAAA5AP7/AAAKAAEAAAA5AAIAAAAKAAEAAAA5AAMAAAAKAAEAAAA5AAQAAAAKAAEAAAA6APX/AAAKAAEAAAA6APb/AAAKAAEAAAA6APf/AAAKAAEAAAA6APj/AAAKAAEAAAA6APn/AAAKAAEAAAA6APr/AAAKAAEAAAA6APv/AAAKAAEAAAA6APz/AAAKAAEAAAA6AP3/AAAKAAEAAAA6AP7/AAAKAAEAAAA6AAIAAAAKAAEAAAA6AAMAAAAKAAEAAAA6AAQAAAAKAAEAAAA7APX/AAAKAAEAAAA7APb/AAAKAAEAAAA7APf/AAAKAAEAAAA7APj/AAAKAAEAAAA7APn/AAAKAAEAAAA7APr/AAAKAAEAAAA7APv/AAAKAAEAAAA7APz/AAAKAAEAAAA7AP3/AAAKAAEAAAA7AP7/AAAKAAEAAAA7AAIAAAAKAAEAAAA7AAMAAAAKAAEAAAA7AAQAAAAKAAEAAAA8APX/AAAAAAAAAAA8APb/AAAAAAAAAAA8APf/AAAAAAAAAAA8APj/AAAAAAAAAAA8APn/AAAAAAAAAAA8APr/AAAAAAAAAAA8APv/AAAAAAAAAAA8APz/AAAAAAAAAAA8AP3/AAAAAAAAAAA8AP7/AAAAAAAAAAA8AAIAAAAAAAAAAAA8AAMAAAAAAAAAAAA8AAQAAAAAAAAAAAA9APX/AAAAAAAAAAA9APb/AAAAAAAAAAA9APf/AAAAAAAAAAA9APj/AAAAAAAAAAA9APn/AAAAAAAAAAA9APr/AAAAAAAAAAA9APv/AAAAAAAAAAA9APz/AAAAAAAAAAA9AP3/AAAAAAAAAAA9AP7/AAAAAAAAAAA9AAIAAAAAAAAAAAA9AAMAAAAAAAAAAAA9AAQAAAAAAAAAAAA+APX/AAAAAAAAAAA+APb/AAAAAAAAAAA+APf/AAAAAAAAAAA+APj/AAAAAAAAAAA+APn/AAAAAAAAAAA+APr/AAAAAAAAAAA+APv/AAAAAAAAAAA+APz/AAAAAAAAAAA+AP3/AAAAAAAAAAA+AP7/AAAAAAAAAAA+AAIAAAAAAAAAAAA+AAMAAAAAAAAAAAA+AAQAAAAAAAAAAAA/APX/AAAAAAAAAAA/APb/AAAAAAAAAAA/APf/AAAAAAAAAAA/APj/AAAAAAAAAAA/APn/AAAAAAAAAAA/APr/AAAAAAAAAAA/APv/AAAAAAAAAAA/APz/AAAAAAAAAAA/AP3/AAAAAAAAAAA/AP7/AAAAAAAAAAA/AAIAAAAAAAAAAAA/AAMAAAAAAAAAAAA/AAQAAAAAAAAAAAA4AAQAAAAKAAEAAAA4APX/AAAKAAEAAAA4APb/AAAKAAEAAAA4APf/AAAKAAEAAAA4APj/AAAKAAEAAAA4APn/AAAKAAEAAAA4APr/AAAKAAEAAAA4APv/AAAKAAEAAAA4APz/AAAKAAEAAAA4AP3/AAAKAAEAAAA4AP7/AAAKAAEAAAA4AAIAAAAKAAEAAAA4AAMAAAAKAAEAAAA3AAUAAAAKAAEAAAAvAAUAAAAKAAEAAAAwAAUAAAAKAAEAAAA3AAYAAAAKAAEAAAA2AAYAAAAKAAEAAAA2AAUAAAAKAAEAAAA1AAUAAAAKAAEAAAA1AAYAAAAKAAEAAAAzAAUAAAAKAAEAAAAzAAYAAAAKAAEAAAAmAAcAAAAKAAEAAAAnAAcAAAAKAAEAAAAoAAcAAAAKAAEAAAApAAcAAAAKAAEAAAAqAAcAAAAKAAEAAAArAAcAAAAKAAEAAAAsAAcAAAAKAAEAAAAtAAcAAAAKAAEAAAAuAAcAAAAKAAEAAAAvAAcAAAAKAAEAAAAwAAcAAAAKAAEAAAAxAAcAAAAKAAEAAAAyAAcAAAAKAAEAAAAzAAcAAAAKAAEAAAA7AAYAAAAKAAEAAAAzAAQAAAAEAAEAAAAyAAMAAAAEAAEAAAAyAAQAAAAEAAIAAAAxAAQAAAAAAAAAAAAwAAQAAAAAAAAAAAAvAAQAAAAAAAAAAAAuAAQAAAAAAAAAAAAtAAQAAAAAAAAAAAAsAAQAAAADAAIAAAAxAAMAAAACAAAAAAAwAAMAAAACAAAAAAAvAAMAAAACAAAAAAAuAAMAAAACAAAAAAAtAAMAAAACAAAAAAArAAQAAAAHAAIAAAAsAAMAAAADAAEAAAAvAAIAAAAJAAAAAAArAAMAAAAKAAAAAAAkAAIAAAALAAEAAAAtAAIAAAAJAAIAAAAjAAIAAAAKAAEAAAAiAAIAAAAKAAEAAAA5AAkAAAAKAAEAAAA6AAkAAAAKAAEAAAA7AAkAAAAKAAEAAAA8AAkAAAAKAAEAAAA9AAkAAAAKAAEAAAA+AAkAAAAKAAEAAAA/AAkAAAAKAAEAAABAAAkAAAAKAAEAAAA=")
+
+[node name="Coins" type="Node2D" parent="." unique_id=1175146373]
+
+[node name="Coin" parent="Coins" unique_id=1128664019 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(1472, 320)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin2" parent="Coins" unique_id=32492335 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(1408, -203)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin8" parent="Coins" unique_id=1842178474 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(1091, -204)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin22" parent="Coins" unique_id=1938878787 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(770, -202)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin3" parent="Coins" unique_id=1549947674 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(1600, 256)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin4" parent="Coins" unique_id=398881409 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(1728, 320)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin5" parent="Coins" unique_id=325075577 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(2880, 128)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin6" parent="Coins" unique_id=532684524 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(3131, -468)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin7" parent="Coins" unique_id=1569749007 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(3392, 128)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin12" parent="Coins" unique_id=907368729 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(3520, 128)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin13" parent="Coins" unique_id=1292072078 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(3264, 128)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin14" parent="Coins" unique_id=349986834 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(3008, 128)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin15" parent="Coins" unique_id=1044377228 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(2752, 128)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="CollisionShape2D" parent="Coins/Coin15" index="1" unique_id=450096059]
+disabled = true
+
+[node name="Coin16" parent="Coins" unique_id=951205277 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(3840, 832)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin17" parent="Coins" unique_id=1717322877 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(3712, 960)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin20" parent="Coins" unique_id=2014958923 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(3840, 704)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin18" parent="Coins" unique_id=1378032713 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(3456, 960)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin21" parent="Coins" unique_id=1188330002 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(3584, 960)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin19" parent="Coins" unique_id=258787563 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(3840, 960)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin9" parent="Coins" unique_id=127460837 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(960, 576)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin10" parent="Coins" unique_id=2029667068 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(3003, -404)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin11" parent="Coins" unique_id=1510925451 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(3259, -404)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin23" parent="Coins" unique_id=1431568585 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(7767, 908)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin31" parent="Coins" unique_id=1282563596 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(7770, 795)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin30" parent="Coins" unique_id=1791118691 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(7850, 685)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin29" parent="Coins" unique_id=1539654685 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(7782, 551)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin28" parent="Coins" unique_id=811725132 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(7827, 414)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin27" parent="Coins" unique_id=2050839723 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(7822, 280)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="CollisionShape2D" parent="Coins/Coin27" index="1" unique_id=450096059]
+disabled = true
+
+[node name="Coin24" parent="Coins" unique_id=451389644 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(7997, 1073)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin25" parent="Coins" unique_id=135573755 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(7869, 1081)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="Coin26" parent="Coins" unique_id=55790300 instance=ExtResource("5_ufbke")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(7752, 1077)
+texture = ExtResource("6_afvof")
+tint = Color(1, 1, 0, 1)
+
+[node name="SpecialCoins" type="Node2D" parent="." unique_id=868102732]
+
+[node name="SpecialCoin" parent="SpecialCoins" unique_id=811287481 instance=ExtResource("7_anfrv")]
+modulate = Color(1, 0.560065, 0.377408, 1)
+position = Vector2(4781, 262)
+texture = ExtResource("6_afvof")
+tint = Color(1, 0.560065, 0.377408, 1)
+
+[node name="SpecialCoin10" parent="SpecialCoins" unique_id=528461879 instance=ExtResource("7_anfrv")]
+modulate = Color(1, 0.560065, 0.377408, 1)
+position = Vector2(6451, -126)
+texture = ExtResource("6_afvof")
+tint = Color(1, 0.560065, 0.377408, 1)
+
+[node name="SpecialCoin12" parent="SpecialCoins" unique_id=2093720897 instance=ExtResource("7_anfrv")]
+modulate = Color(1, 0.560065, 0.377408, 1)
+position = Vector2(6549, -128)
+texture = ExtResource("6_afvof")
+tint = Color(1, 0.560065, 0.377408, 1)
+
+[node name="SpecialCoin11" parent="SpecialCoins" unique_id=1619453411 instance=ExtResource("7_anfrv")]
+modulate = Color(1, 0.560065, 0.377408, 1)
+position = Vector2(6349, -126)
+texture = ExtResource("6_afvof")
+tint = Color(1, 0.560065, 0.377408, 1)
+
+[node name="SpecialCoin2" parent="SpecialCoins" unique_id=804394285 instance=ExtResource("7_anfrv")]
+modulate = Color(1, 0.560065, 0.377408, 1)
+position = Vector2(5821, 733)
+texture = ExtResource("6_afvof")
+tint = Color(1, 0.560065, 0.377408, 1)
+
+[node name="SpecialCoin3" parent="SpecialCoins" unique_id=1661870795 instance=ExtResource("7_anfrv")]
+modulate = Color(1, 0.560065, 0.377408, 1)
+position = Vector2(7489, 836)
+texture = ExtResource("6_afvof")
+tint = Color(1, 0.560065, 0.377408, 1)
+
+[node name="SpecialCoin4" parent="SpecialCoins" unique_id=1752684696 instance=ExtResource("7_anfrv")]
+modulate = Color(1, 0.560065, 0.377408, 1)
+position = Vector2(7119, -994)
+texture = ExtResource("6_afvof")
+tint = Color(1, 0.560065, 0.377408, 1)
+
+[node name="SpecialCoin5" parent="SpecialCoins" unique_id=397742893 instance=ExtResource("7_anfrv")]
+modulate = Color(1, 0.560065, 0.377408, 1)
+position = Vector2(7016, -1031)
+texture = ExtResource("6_afvof")
+tint = Color(1, 0.560065, 0.377408, 1)
+
+[node name="SpecialCoin6" parent="SpecialCoins" unique_id=1048567879 instance=ExtResource("7_anfrv")]
+modulate = Color(1, 0.560065, 0.377408, 1)
+position = Vector2(6912, -1069)
+texture = ExtResource("6_afvof")
+tint = Color(1, 0.560065, 0.377408, 1)
+
+[node name="SpecialCoin7" parent="SpecialCoins" unique_id=1539612476 instance=ExtResource("7_anfrv")]
+modulate = Color(1, 0.560065, 0.377408, 1)
+position = Vector2(6810, -1092)
+texture = ExtResource("6_afvof")
+tint = Color(1, 0.560065, 0.377408, 1)
+
+[node name="SpecialCoin8" parent="SpecialCoins" unique_id=9810219 instance=ExtResource("7_anfrv")]
+modulate = Color(1, 0.560065, 0.377408, 1)
+position = Vector2(6711, -1124)
+texture = ExtResource("6_afvof")
+tint = Color(1, 0.560065, 0.377408, 1)
+
+[node name="SpecialCoin9" parent="SpecialCoins" unique_id=475996636 instance=ExtResource("7_anfrv")]
+modulate = Color(1, 0.560065, 0.377408, 1)
+position = Vector2(6608, -1165)
+texture = ExtResource("6_afvof")
+tint = Color(1, 0.560065, 0.377408, 1)
+
+[node name="Platforms" type="Node2D" parent="." unique_id=462508291]
+position = Vector2(1920, -64)
+
+[node name="Platform" parent="Platforms" unique_id=413722884 instance=ExtResource("8_baijo")]
+position = Vector2(960, 320)
+width = 2
+
+[node name="Platform4" parent="Platforms" unique_id=1842814748 instance=ExtResource("8_baijo")]
+position = Vector2(-1472, 0)
+width = 2
+one_way = true
+fall_time = 0.02
+
+[node name="Platform5" parent="Platforms" unique_id=148062231 instance=ExtResource("8_baijo")]
+position = Vector2(-1152, 0)
+width = 2
+one_way = true
+fall = true
+
+[node name="Platform6" parent="Platforms" unique_id=1439374545 instance=ExtResource("8_baijo")]
+position = Vector2(-832, 0)
+width = 2
+one_way = true
+fall_time = 0.02
+
+[node name="Platform7" parent="Platforms" unique_id=403331592 instance=ExtResource("8_baijo")]
+position = Vector2(-512, 0)
+width = 2
+one_way = true
+fall_time = 0.02
+
+[node name="Platform8" parent="Platforms" unique_id=764418748 instance=ExtResource("8_baijo")]
+position = Vector2(-192, 0)
+width = 2
+one_way = true
+fall = true
+
+[node name="Platform9" parent="Platforms" unique_id=601217625 instance=ExtResource("8_baijo")]
+position = Vector2(128, 0)
+width = 2
+one_way = true
+fall_time = 0.02
+
+[node name="Platform2" parent="Platforms" unique_id=1875067187 instance=ExtResource("8_baijo")]
+position = Vector2(1211, -148)
+width = 2
+
+[node name="Platform3" parent="Platforms" unique_id=2033329847 instance=ExtResource("8_baijo")]
+position = Vector2(1472, 320)
+width = 2
+
+[node name="Platform11" parent="Platforms" unique_id=469291996 instance=ExtResource("8_baijo")]
+position = Vector2(3904, 688)
+
+[node name="Platform12" parent="Platforms" unique_id=1680697809 instance=ExtResource("8_baijo")]
+position = Vector2(5120, 418)
+width = 2
+
+[node name="Platform13" parent="Platforms" unique_id=947402016 instance=ExtResource("8_baijo")]
+position = Vector2(4526, 84)
+width = 2
+
+[node name="AreaCollisionShape2D" parent="Platforms/Platform13/RigidBody2D/Area2D" parent_id_path=PackedInt32Array(947402016, 1585628033) index="0" unique_id=2132855283]
+shape = SubResource("RectangleShape2D_3dg71")
+
+[node name="CollisionShape2D" parent="Platforms/Platform13/RigidBody2D" parent_id_path=PackedInt32Array(947402016, 1856058631) index="1" unique_id=587124361]
+position = Vector2(4, 64)
+shape = SubResource("RectangleShape2D_bunc4")
+
+[node name="Platform14" parent="Platforms" unique_id=106812965 instance=ExtResource("8_baijo")]
+position = Vector2(3924, -191)
+width = 2
+
+[node name="Platform15" parent="Platforms" unique_id=1000285866 instance=ExtResource("8_baijo")]
+position = Vector2(3390, -507)
+width = 2
+
+[node name="Platform16" parent="Platforms" unique_id=623946927 instance=ExtResource("8_baijo")]
+position = Vector2(2816, -816)
+width = 2
+
+[node name="Signs" type="Node2D" parent="." unique_id=1033902353]
+
+[node name="Sign" parent="Signs" unique_id=1461333472 instance=ExtResource("9_flc0k")]
+position = Vector2(4283, 387)
+text = "How can I
+get past
+this wall?"
+
+[node name="Player" parent="." unique_id=148260795 instance=ExtResource("10_tb02s")]
+position = Vector2(487, 616)
+collision_layer = 1
+collision_mask = 7
+sprite_frames = ExtResource("11_lh1sx")
+jump_cut_factor = 100.0
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=730025030]
+position = Vector2(0, 15)
+limit_left = 0
+limit_bottom = 1080
+position_smoothing_enabled = true
+
+[node name="HUD" parent="." unique_id=1512572148 instance=ExtResource("12_ixmx3")]
+
+[node name="Enemies" type="Node2D" parent="." unique_id=2027433878]
+
+[node name="Enemy" parent="Enemies" unique_id=597184963 instance=ExtResource("13_3rps0")]
+position = Vector2(1600, 704)
+
+[node name="Enemy2" parent="Enemies" unique_id=1801361102 instance=ExtResource("13_3rps0")]
+position = Vector2(4030, 379)
+
+[node name="CollisionShape2D" parent="Enemies/Enemy2" index="3" unique_id=345687420]
+shape = SubResource("RectangleShape2D_wr7vp")
+
+[node name="CollisionShape2D" parent="Enemies/Enemy2/Hitbox" parent_id_path=PackedInt32Array(1801361102, 1154744414) index="0" unique_id=1302236694]
+position = Vector2(14, 58.5)
+disabled = true
+
+[node name="Enemy3" parent="Enemies" unique_id=1581069792 instance=ExtResource("13_3rps0")]
+position = Vector2(2147, 628)
+
+[node name="Enemy4" parent="Enemies" unique_id=1078351471 instance=ExtResource("13_3rps0")]
+position = Vector2(7367, 870)
+squashable = false
+
+[node name="Flag" parent="." unique_id=305338487 instance=ExtResource("14_dw26e")]
+position = Vector2(4192, 320)
+
+[node name="MultiplayerCamera" type="Camera2D" parent="." unique_id=1959379080]
+position = Vector2(0, 15)
+enabled = false
+limit_left = 0
+limit_bottom = 1080
+position_smoothing_enabled = true
+script = ExtResource("15_ek0ox")
+
+[editable path="Coins/Coin15"]
+[editable path="Coins/Coin27"]
+[editable path="Platforms/Platform13"]
+[editable path="Enemies/Enemy2"]
