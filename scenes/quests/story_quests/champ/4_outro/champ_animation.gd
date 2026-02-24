@@ -4,6 +4,7 @@ extends CharacterBody2D
 
 @onready var champ_animation: AnimatedSprite2D = $"Champ Animation"
 
+## How fast champ should swim in pixels per physics tick
 @export var swim_speed: int = 100
 
 func _ready() -> void:
@@ -14,8 +15,8 @@ func _physics_process(_delta: float) -> void:
 	# Make sure Champ doesn't swim out of the water! 
 	# If he gets too close, turn him around and start swimming the other direction
 	if position.x > 400 or position.x < 0:
-		champ_animation.scale.x *= -1
 		velocity.x *= -1
+		champ_animation.flip_h = velocity.x < 0
 
 	# TODO: Can we make Champ swim in a more interesting pattern?
 	# Can we change the way Champ swims vertically? Can we accelerate?
