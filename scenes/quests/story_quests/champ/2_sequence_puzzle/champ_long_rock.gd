@@ -30,7 +30,7 @@ func _ready() -> void:
 ## Function to tell champ sequence puzzle script the player guessed wrong and must be moved back
 func _on_area_2d_body_entered(_body: Node2D) -> void:
 	audio_player.play()
-	await get_tree().create_timer(1.5).timeout
+	#await get_tree().create_timer(1.5).timeout
 	water_entered.emit()
 
 
