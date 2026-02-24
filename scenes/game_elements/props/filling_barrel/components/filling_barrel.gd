@@ -18,6 +18,7 @@ signal completed
 
 const DEFAULT_SPRITE_FRAMES: SpriteFrames = preload("uid://dlsq0ke41s1yh")
 const FILLING_NAME_ANIMATION: StringName = &"filling"
+const LOCKED_COLOR := Color(0.5, 0.5, 0.5, 1)
 
 ## Determines how the FillingBarrel looks.[br]
 ## It is required that the [member sprite_frames] have an animation called filling.[br]
@@ -37,11 +38,13 @@ const FILLING_NAME_ANIMATION: StringName = &"filling"
 @export var color: Color:
 	set = _set_color
 
-var is_locked: bool = false
+## Controls whether the barrel can receive ink. When locked, it turns gray and ignores hits.
+var is_locked: bool = false:
+	set = set_is_locked
 
 var _amount: int = 0
 
-@onready var barrel_glow: AnimatedSprite2D = $BarrelGlow
+@onready var barrel_glow: AnimatedSprite2D = get_node_or_null("BarrelGlow")
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var collision_shape_2d: CollisionShape2D = %CollisionShape2D
@@ -62,8 +65,7 @@ func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 	sprite_frames = new_sprite_frames if new_sprite_frames else DEFAULT_SPRITE_FRAMES
 	if not is_node_ready():
 		return
-	if animated_sprite_2d:
-		animated_sprite_2d.sprite_frames = sprite_frames
+	animated_sprite_2d.sprite_frames = sprite_frames
 	update_configuration_warnings()
 
 
@@ -77,15 +79,15 @@ func _ready() -> void:
 		barrel_glow.visible = false
 
 
-func set_locked_state(locked: bool) -> void:
+func set_is_locked(locked: bool) -> void:
 	is_locked = locked
 
 	if is_locked:
-		modulate = Color(0.5, 0.5, 0.5, 1)
+		modulate = LOCKED_COLOR
 		if barrel_glow:
 			barrel_glow.visible = false
 	else:
-		modulate = Color(1, 1, 1, 1)
+		modulate = Color.WHITE
 		if barrel_glow:
 			barrel_glow.visible = true
 			barrel_glow.play("glowing")
