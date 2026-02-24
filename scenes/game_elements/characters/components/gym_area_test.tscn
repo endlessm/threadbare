@@ -29,6 +29,8 @@
 [ext_resource type="SpriteFrames" uid="uid://dnq8cw1cio2we" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_green.tres" id="20_jdub8"]
 [ext_resource type="Script" uid="uid://r1kriwyodjlt" path="res://scenes/game_logic/walk_behaviors/navigation_follow_walk_behavior.gd" id="21_jdub8"]
 [ext_resource type="PackedScene" uid="uid://dy8ohrl7j24qy" path="res://scenes/game_elements/characters/enemies/mothsache/Mothsache.tscn" id="29_phf8p"]
+[ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="30_m10i7"]
+[ext_resource type="PackedScene" uid="uid://4u7dloafx55f" path="res://scenes/game_elements/props/teleporter/teleporter/teleporter.tscn" id="31_dxlnp"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_oojqe"]
 vertices = PackedVector2Array(2612.09, 882.242, 1372.27, 799.719, 1388.82, 670.781, 2393.78, 645.758, 2512.78, -340, 2413.06, -200.32, 1470.91, -340, 1455.69, -202.648, -91.9688, -367.812, 1185.81, -149, 214.844, -149, 1448.35, 0.960938, 1188.65, 0.03125, -89.0234, 939, 227.094, 641.859, 380.844, 893.93, 378.094, 727.859)
@@ -332,6 +334,9 @@ point_count = 11
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jdub8"]
 radius = 6.0
 height = 21.9972
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1rbfs"]
+size = Vector2(163, 149)
 
 [node name="TestGymArea" type="Node2D" unique_id=1044929244]
 
@@ -638,6 +643,17 @@ character = NodePath("..")
 [node name="Mothsache" parent="." unique_id=1267607395 instance=ExtResource("29_phf8p")]
 position = Vector2(1064, 752)
 debug_mode = true
+
+[node name="TimeAndWeather" parent="." unique_id=1446545037 instance=ExtResource("30_m10i7")]
+
+[node name="Teleporter" parent="." unique_id=812046722 instance=ExtResource("31_dxlnp")]
+position = Vector2(709, 410)
+next_scene = "uid://cufkthb25mpxy"
+spawn_point_path = NodePath("SpawnPointAfterIntro")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" unique_id=1590021840]
+position = Vector2(7.5, -22.5)
+shape = SubResource("RectangleShape2D_1rbfs")
 
 [connection signal="body_entered" from="OnTheGround/CharacterBody2D/Area2D" to="OnTheGround/CharacterBody2D/Area2D" method="_on_body_entered"]
 [connection signal="timeout" from="OnTheGround/CharacterBody2D2/Timer" to="OnTheGround/CharacterBody2D2/ThrowProjectileBehavior" method="throw"]
