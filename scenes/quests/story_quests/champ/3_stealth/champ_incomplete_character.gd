@@ -4,8 +4,26 @@ extends CharacterBody2D
 
 const SPEED = 300.0
 var input_vector: Vector2
+## How fast does the player transition from walking/running to stopped.
+## A low value will make the character look as slipping on ice.
+## A high value will stop the character immediately.
+@export_range(10, 100000, 10) var stopping_step: float = 1500.0
+
+## How fast does the player transition from stopped to walking/running.
+@export_range(10, 100000, 10) var moving_step: float = 4000.0
 
 @export var tile_layer: TileMapLayer
+@export_group("Blink")
+## The hitbox that is used to determine a valid blink location.
+@export var blink_check: Area2D
+## The sprite that moves with the dummy hitbox to show valid blink locations.
+@export var blink_check_sprite: Sprite2D
+
+## The area of the level that the player can blink to (should be equivalent to the bounds of the level).
+@export var blink_bounds: Area2D
+## How many 64px tiles the player should teleport when the blink key (c) is pressed.
+@export_range(0,24,0.5,"suffix:tiles") var blink_distance = 3.0
+
 
 ## Controls how the player can interact with the world around them.
 enum Mode {
@@ -17,16 +35,9 @@ enum Mode {
 }
 var mode: Mode = Mode.COZY
 
-## How fast does the player transition from walking/running to stopped.
-## A low value will make the character look as slipping on ice.
-## A high value will stop the character immediately.
-@export_range(10, 100000, 10) var stopping_step: float = 1500.0
 
-## How fast does the player transition from stopped to walking/running.
-@export_range(10, 100000, 10) var moving_step: float = 4000.0
 
-## How many 64px tiles the player should teleport when the blink key (c) is pressed.
-@export_range(0,24,0.5,"suffix:tiles") var blink_distance = 3.0
+
 
 
 ## Function that is called every "tick" that is constantly listening
@@ -56,23 +67,22 @@ func _apply_blink() -> void:
 	var blink_direction := input_vector.normalized()
 	var target_coordinates: Vector2 = global_position # Missing parts of calculation!	
 # Move dummy to coordinates and force physics update
-	var dummy := $BlinkCheck
-	dummy.global_position = target_coordinates
-	dummy.force_update_transform()
+	blink_check.global_position = target_coordinates
+	blink_check.force_update_transform()
 # Show visual
-	$BlinkCheck/Sprite2D.show()
+	blink_check_sprite.show()
 # Delay is for visuals and to allow time for physics to update
 	await get_tree().create_timer(0.1).timeout
 # Ensure dummy is within bounds
-	if $"../Bounds/Blink Bounds".overlaps_area(dummy):
+	if blink_bounds.overlaps_area(blink_check):
 	# If there are no collisions, move the player to the new position.
-		if not dummy.has_overlapping_bodies():
+		if not blink_check.has_overlapping_bodies():
 			#TODO: Teleport the player instantly to the desired location
 			return
 			
 	# Reset dummy
-	$BlinkCheck.global_position = global_position
-	$BlinkCheck/Sprite2D.hide()
+	blink_check.global_position = global_position
+	blink_check_sprite.hide()
 
 	# TODO: (Optional) Add a cooldown so you can’t blink every frame.
 	# Start a timer or use a variable that counts down.
