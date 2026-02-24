@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_tp7qs"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="4_6ss6a"]
 [ext_resource type="PackedScene" uid="uid://lfvn4u30s4yf" path="res://scenes/game_elements/props/buildings/house/house_1.tscn" id="5_5jg1p"]
+[ext_resource type="Script" uid="uid://ctko5bdas16ah" path="res://scenes/game_logic/canvasitem_behaviors/modulate_as_sky_behavior.gd" id="5_duxxr"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="5_ppslc"]
 [ext_resource type="Texture2D" uid="uid://dsh7g1nlaitvv" path="res://scenes/game_elements/props/buildings/house/components/House_Patch_Blue_02.png" id="5_uhynt"]
 [ext_resource type="Texture2D" uid="uid://d2kjk3oiu5o6o" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Blue_02.png" id="5_uojly"]
@@ -51,8 +52,8 @@
 [ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="45_cjmkx"]
 [ext_resource type="PackedScene" uid="uid://cr65lmm5b0ueo" path="res://scenes/game_elements/characters/npcs/cat/cat.tscn" id="52_ppslc"]
 [ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="54_duxxr"]
-[ext_resource type="PackedScene" uid="uid://c0374lgarm8gj" path="res://scenes/game_elements/fx/clouds_shadow/clouds_shadow.tscn" id="54_ns5r3"]
 [ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="55_2vvub"]
+[ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="55_ojao8"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="55_wymun"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="56_ojao8"]
 
@@ -82,6 +83,11 @@ position = Vector2(0, 8)
 [node name="Water" type="TileMapLayer" parent="TileMapLayers" unique_id=1840175252]
 tile_map_data = PackedByteArray("AAABABcAAAAAAAAAAAABABYAAAAAAAAAAAACABcAAAAAAAAAAAACABYAAAAAAAAAAAACABUAAAAAAAAAAAADABUAAAAAAAAAAAAEABUAAAAAAAAAAAADABYAAAAAAAAAAAAEABYAAAAAAAAAAAAFABYAAAAAAAAAAAAFABUAAAAAAAAAAAAGABYAAAAAAAAAAAAGABUAAAAAAAAAAAAHABUAAAAAAAAAAAAHABYAAAAAAAAAAAAIABUAAAAAAAAAAAAIABQAAAAAAAAAAAAJABQAAAAAAAAAAAAKABQAAAAAAAAAAAAKABUAAAAAAAAAAAAJABUAAAAAAAAAAAALABUAAAAAAAAAAAAMABUAAAAAAAAAAAANABUAAAAAAAAAAAANABQAAAAAAAAAAAAMABQAAAAAAAAAAAALABQAAAAAAAAAAAAOABQAAAAAAAAAAAAOABUAAAAAAAAAAAAQABUAAAAAAAAAAAARABUAAAAAAAAAAAARABQAAAAAAAAAAAAQABQAAAAAAAAAAAASABQAAAAAAAAAAAATABQAAAAAAAAAAAAUABQAAAAAAAAAAAAVABQAAAAAAAAAAAAWABQAAAAAAAAAAAAXABQAAAAAAAAAAAAYABQAAAAAAAAAAAAZABQAAAAAAAAAAAAaABQAAAAAAAAAAAAaABUAAAAAAAAAAAAZABUAAAAAAAAAAAAYABUAAAAAAAAAAAAXABUAAAAAAAAAAAAWABUAAAAAAAAAAAAVABUAAAAAAAAAAAAUABUAAAAAAAAAAAATABUAAAAAAAAAAAASABUAAAAAAAAAAAAZABYAAAAAAAAAAAAaABYAAAAAAAAAAAAaABcAAAAAAAAAAAAbABcAAAAAAAAAAAAcABcAAAAAAAAAAAAbABgAAAAAAAAAAAAcABgAAAAAAAAAAAAdABgAAAAAAAAAAAAcABkAAAAAAAAAAAAdABkAAAAAAAAAAAAeABkAAAAAAAAAAAAfABkAAAAAAAAAAAAdABoAAAAAAAAAAAAeABoAAAAAAAAAAAAfABoAAAAAAAAAAAADABcAAAAAAAAAAAAEABcAAAAAAAAAAAAFABcAAAAAAAAAAAAGABcAAAAAAAAAAAAHABcAAAAAAAAAAAAIABYAAAAAAAAAAAAJABYAAAAAAAAAAAAKABYAAAAAAAAAAAALABYAAAAAAAAAAAAMABYAAAAAAAAAAAANABYAAAAAAAAAAAAOABYAAAAAAAAAAAAQABYAAAAAAAAAAAARABYAAAAAAAAAAAASABYAAAAAAAAAAAATABYAAAAAAAAAAAAUABYAAAAAAAAAAAAVABYAAAAAAAAAAAAWABYAAAAAAAAAAAAXABYAAAAAAAAAAAAYABYAAAAAAAAAAAAZABcAAAAAAAAAAAAaABgAAAAAAAAAAAAaABkAAAAAAAAAAAAbABkAAAAAAAAAAAAbABoAAAAAAAAAAAAcABoAAAAAAAAAAAAcABQAAAAAAAAAAAAdABQAAAAAAAAAAAAcABUAAAAAAAAAAAAdABUAAAAAAAAAAAAeABUAAAAAAAAAAAAfABUAAAAAAAAAAAAfABYAAAAAAAAAAAAeABYAAAAAAAAAAAAdABYAAAAAAAAAAAAcABYAAAAAAAAAAAAdABcAAAAAAAAAAAAeABcAAAAAAAAAAAAfABcAAAAAAAAAAAAeABgAAAAAAAAAAAAfABgAAAAAAAAAAAAWABcAAAAAAAAAAAAWABgAAAAAAAAAAAAXABgAAAAAAAAAAAAYABgAAAAAAAAAAAAYABcAAAAAAAAAAAAXABcAAAAAAAAAAAAYABkAAAAAAAAAAAAXABkAAAAAAAAAAAAYABoAAAAAAAAAAAAZABkAAAAAAAAAAAAZABgAAAAAAAAAAAAZABoAAAAAAAAAAAAaABoAAAAAAAAAAAAXABoAAAAAAAAAAAAYABsAAAAAAAAAAAAZABsAAAAAAAAAAAAaABsAAAAAAAAAAAAbABsAAAAAAAAAAAAcABsAAAAAAAAAAAAdABsAAAAAAAAAAQAeABsAAAAAAAAAAQAfABsAAAAAAAAAAQAdABwAAAAAAAAAAQAeABwAAAAAAAAAAAAfABwAAAAAAAAAAAAAABYAAAAAAAAAAAAAABcAAAAAAAAAAAABABUAAAAAAAAAAgAAABUAAAAAAAAAAgAbABYAAAAAAAAAAgD//xcAAAAAAAAAAAD//xgAAAAAAAAAAAD//xkAAAAAAAAAAAD//xoAAAAAAAAAAAD//xsAAAAAAAAAAAD//xwAAAAAAAAAAAAPABQAAAAAAAAAAQAPABUAAAAAAAAAAQAPABYAAAAAAAAAAQAbABQAAAAAAAAAAQAbABUAAAAAAAAAAQAAABgAAAAAAAAAAQABABgAAAAAAAAAAQACABgAAAAAAAAAAQADABgAAAAAAAAAAQAEABgAAAAAAAAAAQAFABgAAAAAAAAAAQAGABgAAAAAAAAAAQAHABgAAAAAAAAAAQAIABcAAAAAAAAAAQAJABcAAAAAAAAAAQAKABcAAAAAAAAAAQALABcAAAAAAAAAAQAMABcAAAAAAAAAAQANABcAAAAAAAAAAQAOABcAAAAAAAAAAQAPABcAAAAAAAAAAQAQABcAAAAAAAAAAQARABcAAAAAAAAAAQASABcAAAAAAAAAAQATABcAAAAAAAAAAQAUABcAAAAAAAAAAQAVABcAAAAAAAAAAQAVABgAAAAAAAAAAQAWABkAAAAAAAAAAQAWABoAAAAAAAAAAQAXABsAAAAAAAAAAQAXABwAAAAAAAAAAQAYABwAAAAAAAAAAQAZABwAAAAAAAAAAQAaABwAAAAAAAAAAQAbABwAAAAAAAAAAQAcABwAAAAAAAAAAQA=")
 tile_set = ExtResource("4_6ss6a")
+
+[node name="ModulateAsSkyBehavior" type="Node" parent="TileMapLayers/Water" unique_id=1052174442 node_paths=PackedStringArray("canvas_item")]
+script = ExtResource("5_duxxr")
+canvas_item = NodePath("..")
+metadata/_custom_type_script = "uid://ctko5bdas16ah"
 
 [node name="Foam" type="TileMapLayer" parent="TileMapLayers" unique_id=632936150]
 scale = Vector2(1.00113, 1)
@@ -1115,8 +1121,7 @@ metadata/_custom_type_script = "uid://edcifob4jc4s"
 [node name="SpawnPointAfterIntro" parent="." unique_id=69976262 instance=ExtResource("37_thm8h")]
 position = Vector2(62, 1747)
 
-[node name="CloudsShadow" parent="." unique_id=1515275591 instance=ExtResource("54_ns5r3")]
-metadata/_edit_lock_ = true
+[node name="TimeAndWeather" parent="." unique_id=1446545037 instance=ExtResource("55_ojao8")]
 
 [connection signal="interaction_ended" from="NPCs/Farmer/InteractArea" to="NPCs/Farmer" method="_on_interact_area_interaction_ended"]
 [connection signal="interaction_started" from="NPCs/Farmer/InteractArea" to="NPCs/Farmer" method="_on_interact_area_interaction_started"]
