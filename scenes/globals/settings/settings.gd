@@ -4,10 +4,15 @@ extends Node
 
 const SETTINGS_PATH := "user://settings.cfg"
 
+const META_SECTION := "Meta"
+const VERSION_KEY := "Version"
+const VERSION := 1
+
 const VOLUME_SECTION := "Volume"
-const MIN_VOLUME := -30.0
+const MIN_VOLUME := 0.0
+const MAX_VOLUME := 1.0
 const DEFAULT_VOLUMES: Dictionary[String, float] = {
-	"Music": -15.0,
+	"Music": 0.5,
 }
 
 ## 5:4 ratio of 1280×1024, 1024×768, and other pre-widescreen monitors.
@@ -27,6 +32,11 @@ func _ready() -> void:
 	if err != OK and err != ERR_FILE_NOT_FOUND:
 		push_error("Failed to load %s: %s" % [SETTINGS_PATH, err])
 
+	var file_version: Variant = _settings.get_value(META_SECTION, VERSION_KEY, 0)
+	if file_version != VERSION:
+		_settings.clear()
+	_settings.set_value(META_SECTION, VERSION_KEY, VERSION)
+
 	_restore_volumes()
 	_load_project_settings_overrides()
 	_set_minimum_window_size()
@@ -35,10 +45,11 @@ func _ready() -> void:
 func _restore_volumes() -> void:
 	for bus_idx in AudioServer.bus_count:
 		var bus := AudioServer.get_bus_name(bus_idx)
-		var volume_db: float = _settings.get_value(
-			VOLUME_SECTION, bus, DEFAULT_VOLUMES.get(bus, 0.0)
+		var volume_linear: float = _settings.get_value(
+			VOLUME_SECTION, bus, DEFAULT_VOLUMES.get(bus, MAX_VOLUME)
 		)
-		_set_volume(bus_idx, volume_db)
+
+		_set_volume(bus_idx, volume_linear)
 
 
 func _load_project_settings_overrides() -> void:
@@ -68,14 +79,14 @@ func _set_minimum_window_size() -> void:
 func get_volume(bus: String) -> float:
 	var bus_idx := AudioServer.get_bus_index(bus)
 
-	return AudioServer.get_bus_volume_db(bus_idx)
+	return AudioServer.get_bus_volume_linear(bus_idx)
 
 
-func set_volume(bus: String, volume_db: float) -> void:
+func set_volume(bus: String, volume_linear: float) -> void:
 	var bus_idx := AudioServer.get_bus_index(bus)
-	_set_volume(bus_idx, volume_db)
+	_set_volume(bus_idx, volume_linear)
 
-	_settings.set_value(VOLUME_SECTION, bus, volume_db)
+	_settings.set_value(VOLUME_SECTION, bus, volume_linear)
 	_save()
 
 
@@ -102,10 +113,8 @@ func set_window_mode(window_mode: int) -> void:
 			push_warning("Failed to save to", _overrides_path, ": ", error_string(ret))
 
 
-func _set_volume(bus_idx: int, volume_db: float) -> void:
-	AudioServer.set_bus_volume_db(bus_idx, volume_db)
-	var mute := volume_db <= MIN_VOLUME
-	AudioServer.set_bus_mute(bus_idx, mute)
+func _set_volume(bus_idx: int, volume_linear: float) -> void:
+	AudioServer.set_bus_volume_linear(bus_idx, volume_linear)
 
 
 func _save() -> void:

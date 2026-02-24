@@ -11,7 +11,6 @@ extends HSlider
 
 
 func _ready() -> void:
-	min_value = Settings.MIN_VOLUME
 	_refresh()
 
 

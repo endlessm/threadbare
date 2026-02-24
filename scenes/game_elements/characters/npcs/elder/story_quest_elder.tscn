@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dedhjloxblho6" path="res://scenes/game_elements/characters/npcs/elder/components/elder.gd" id="1_rah8h"]
 [ext_resource type="Resource" uid="uid://ykdgo73x62wa" path="res://scenes/game_elements/characters/npcs/elder/components/story_quest_starter.dialogue" id="2_dyfur"]
+[ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_logic/sprite_behaviors/random_frame_sprite_behavior.gd" id="3_dyfur"]
 [ext_resource type="SpriteFrames" uid="uid://cqe47tmqq3mu4" path="res://scenes/game_elements/characters/components/sprite_frames/elder2.tres" id="3_rah8h"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="4_v03uk"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="5_bi5h8"]
@@ -30,7 +31,11 @@ position = Vector2(0, -40)
 sprite_frames = ExtResource("3_rah8h")
 animation = &"idle"
 autoplay = "idle"
-frame = 5
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=807199844 node_paths=PackedStringArray("sprite")]
+script = ExtResource("3_dyfur")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
 
 [node name="BodyShape" type="CollisionShape2D" parent="." unique_id=1964287603]
 position = Vector2(-1, 0)

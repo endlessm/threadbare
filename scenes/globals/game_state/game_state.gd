@@ -29,7 +29,7 @@ const GLOBAL_SECTION := "global"
 const GLOBAL_INCORPORATING_THREADS_KEY := "incorporating_threads"
 const COMPLETED_QUESTS_KEY := "completed_quests"
 const LIVES_KEY := "current_lives"
-const MAX_LIVES := 3
+const MAX_LIVES := 0x7fffffffffffffff
 const DEBUG_LIVES := false
 
 ## Scenes to skip from saving.

@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://rt2t10osn0e"]
+
+[ext_resource type="Script" uid="uid://br3of3tj8lb8p" path="res://scenes/quests/story_quests/champ/2_sequence_puzzle/champ_sequence_puzzle_object.gd" id="1_flhem"]
+[ext_resource type="SpriteFrames" uid="uid://c2m3tplriqe2s" path="res://scenes/quests/story_quests/champ/2_sequence_puzzle/champ_object.tres" id="2_as5uj"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="4_g5jna"]
+[ext_resource type="AudioStream" uid="uid://b1qhmlf8hcbnv" path="res://scenes/quests/story_quests/champ/2_sequence_puzzle/champ_rock_sound.ogg" id="5_as5uj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_flhem"]
+size = Vector2(60, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kw7av"]
+size = Vector2(45, 45)
+
+[node name="ChampSequencePuzzleObject" type="StaticBody2D" unique_id=1816202099 groups=["sequence_object"]]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_flhem")
+sprite_frames = ExtResource("2_as5uj")
+audio_stream = ExtResource("5_as5uj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=73143252]
+unique_name_in_owner = true
+scale = Vector2(0.7, 0.7)
+sprite_frames = ExtResource("2_as5uj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=897793013]
+position = Vector2(3, 7)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_flhem")
+
+[node name="InteractArea" type="Area2D" parent="." unique_id=560626341]
+unique_name_in_owner = true
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("4_g5jna")
+interact_label_position = Vector2(0, 30)
+action = "Tap"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1674431163]
+position = Vector2(3, -11)
+shape = SubResource("RectangleShape2D_kw7av")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=661787463]
+unique_name_in_owner = true
+stream = ExtResource("5_as5uj")
+bus = &"SFX"
+
+[connection signal="interaction_started" from="InteractArea" to="." method="_on_interaction_started"]
