@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://diknsuw3mtj1n" path="res://scenes/game_elements/props/decoration/decoration.gd" id="1_qufpk"]
 [ext_resource type="Texture2D" uid="uid://dyf1kgdf0ovtj" path="res://scenes/game_elements/props/buildings/house/components/House_Patch_Blue_01.png" id="2_qufpk"]
+[ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="3_8suvv"]
+[ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/artificial_light_behavior.gd" id="4_1q8nw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sr1lu"]
 size = Vector2(64.0002, 80)
@@ -23,3 +25,17 @@ shape = SubResource("RectangleShape2D_sr1lu")
 unique_name_in_owner = true
 position = Vector2(1, -75)
 texture = ExtResource("2_qufpk")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=557148839 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, -55)
+enabled = false
+color = Color(1, 1, 0, 1)
+energy = 0.5
+texture = ExtResource("3_8suvv")
+
+[node name="ArtificialLightBehavior" type="Node" parent="PointLight2D" unique_id=1503410579 node_paths=PackedStringArray("light")]
+script = ExtResource("4_1q8nw")
+light = NodePath("..")
+random_delay = 3.0
+metadata/_custom_type_script = "uid://bk52qjv58locq"
