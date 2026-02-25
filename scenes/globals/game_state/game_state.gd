@@ -17,6 +17,10 @@ signal collected_items_changed(updated_items: Array[InventoryItem])
 ## Emitted when the player's lives change.
 signal lives_changed(new_lives: int)
 
+## Emitted when it becomes too dark that artificial lights can turn on, or
+## when darkness goes away so artificial lights should turn off.
+signal lights_changed(lights_on: bool, immediate: bool)
+
 const GAME_STATE_PATH := "user://game_state.cfg"
 const INVENTORY_SECTION := "inventory"
 const INVENTORY_ITEMS_KEY := "items_collected"
@@ -45,6 +49,9 @@ const TRANSIENT_SCENES := [
 
 ## Current number of lives the player has.
 var current_lives: int = MAX_LIVES
+
+## Current state of artificial lights.
+var lights_on: bool
 
 ## Set when the loom transports the player to a trio of Sokoban puzzles, so that
 ## when the player returns to Fray's End the loom can trigger a brief cutscene.
@@ -290,6 +297,11 @@ func add_life() -> void:
 		lives_changed.emit(current_lives)
 		if DEBUG_LIVES:
 			prints("[LIVES DEBUG] Life added. Lives now:", current_lives)
+
+
+func change_lights(new_lights_on: bool, immediate: bool = false) -> void:
+	lights_on = new_lights_on
+	lights_changed.emit(lights_on, immediate)
 
 
 ## Clear the persisted state.
