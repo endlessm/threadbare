@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name Toggleable
+@abstract class_name Toggleable
 extends Node2D
 
 
@@ -18,6 +18,4 @@ func initialize_with_value(value: bool) -> void:
 	set_toggled(value)
 
 
-func set_toggled(_value: bool) -> void:
-	# For subclasses to override (mandatory)
-	assert(false, "Subclasses must override this method")
+@abstract func set_toggled(value: bool) -> void
