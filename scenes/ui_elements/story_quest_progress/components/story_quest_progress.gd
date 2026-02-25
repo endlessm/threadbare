@@ -9,7 +9,6 @@ const ITEM_SLOT: PackedScene = preload("uid://1mjm4atk2j6e")
 
 func _ready() -> void:
 	if not GameState.current_quest:
-		push_warning("No current quest")
 		return
 
 	if GameState.current_quest.threads_to_collect == 0:
