@@ -34,25 +34,6 @@ scale_max = 5.0
 scale_over_velocity_max = 1000.0
 scale_over_velocity_curve = SubResource("CurveTexture_ns5r3")
 
-[sub_resource type="GDScript" id="GDScript_2vvub"]
-script/source = "# SPDX-FileCopyrightText: The Threadbare Authors
-# SPDX-License-Identifier: MPL-2.0
-extends GPUParticles2D
-
-
-func randomize() -> void:
-	var rain_type := randf()
-	if rain_type < 0.25:
-		# 25% chances of having a drizzle.
-		amount_ratio = randf_range(0, 0.1)
-	elif rain_type >= 0.75:
-		# 25% chances of having a steady rain.
-		amount_ratio = randf_range(0.8, 1)
-	else:
-		# 50% chances of having something in between.
-		amount_ratio = randf_range(0.1, 0.8)
-"
-
 [node name="Rain" type="CanvasLayer" unique_id=1558838625]
 script = ExtResource("1_63sw3")
 
@@ -66,4 +47,3 @@ texture = SubResource("GradientTexture2D_2vvub")
 lifetime = 0.81
 speed_scale = 2.0
 process_material = SubResource("ParticleProcessMaterial_r1ek1")
-script = SubResource("GDScript_2vvub")
