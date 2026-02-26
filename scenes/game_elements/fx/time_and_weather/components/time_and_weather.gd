@@ -19,7 +19,7 @@ const SECONDS_PER_DAY: float = 24 * 60 * 60
 ## Use system time for determining the time in game.
 ## [br][br]
 ## For example if the system time is 15 (3 PM) and the time scale is:[br]
-## - 1: 15 (same time in game than in system).
+## - 1: 15 (same time in game as in system).
 ## - 2: 6 (30 hours in game have passed today).
 ## - 4: 12 (noon in game, exactly 2 and a half days have passed in game today).
 ## - 8: 0 (midnight in game, exactly 5 days have passed in game today).
@@ -31,7 +31,7 @@ const SECONDS_PER_DAY: float = 24 * 60 * 60
 ## - 4: 4 AM.[br]
 ## - 12: Noon.[br]
 ## - 16: 4 PM.[br]
-@export_range(0.0, 24.0, 0.1) var start_time: float = 10.0
+@export_range(0.0, 24.0, 0.1, "suffix:h") var start_time: float = 10.0
 
 ## How fast should time pass in the game.[br]
 ## - 1: One day in game matches one day in reality. Don't do this![br]
@@ -45,7 +45,8 @@ const SECONDS_PER_DAY: float = 24 * 60 * 60
 @export_group("Debugging")
 
 ## Display debugging information on screen.
-@export var show_debug_label: bool = false
+@export var show_debug_label: bool = false:
+	set = _set_show_debug_label
 
 ## The environment for post-processing effects.
 @onready var world_environment: WorldEnvironment = %WorldEnvironment
@@ -84,6 +85,18 @@ func _set_time_scale(new_time_scale: float) -> void:
 	# The current animation length (in seconds) corresponds to 1 day.
 	var animation_scale := SECONDS_PER_DAY / animation_player.current_animation_length
 	animation_player.speed_scale = time_scale / animation_scale
+
+
+func _set_show_debug_label(new_show_debug_label: bool) -> void:
+	show_debug_label = new_show_debug_label
+	if Engine.is_editor_hint():
+		return
+	if not debug_label:
+		return
+	debug_label.visible = show_debug_label
+	debug_label.process_mode = (
+		Node.PROCESS_MODE_INHERIT if show_debug_label else Node.PROCESS_MODE_DISABLED
+	)
 
 
 func _seek_animation(new_time: float) -> void:
@@ -164,10 +177,7 @@ func _ready() -> void:
 	else:
 		set_time(start_time)
 	_set_time_scale(time_scale)
-	debug_label.visible = show_debug_label
-	debug_label.process_mode = (
-		Node.PROCESS_MODE_INHERIT if show_debug_label else Node.PROCESS_MODE_DISABLED
-	)
+	_set_show_debug_label(show_debug_label)
 
 
 func _on_lights_on_timer_timeout() -> void:
