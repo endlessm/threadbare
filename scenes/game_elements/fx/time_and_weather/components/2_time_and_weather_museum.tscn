@@ -1,0 +1,142 @@
+[gd_scene format=4 uid="uid://co2wxwlojq08k"]
+
+[ext_resource type="Script" uid="uid://dsdrfbcu4jigd" path="res://scenes/game_elements/fx/time_and_weather/components/2_time_and_weather_museum.gd" id="1_g6rud"]
+[ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="2_o3luo"]
+[ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="3_aw1ih"]
+[ext_resource type="TileSet" uid="uid://b778cuoftt88r" path="res://tiles/elevation_2.tres" id="4_g7vbn"]
+[ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="5_1g7im"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="6_flthm"]
+[ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="7_ly3o5"]
+[ext_resource type="PackedScene" uid="uid://lfvn4u30s4yf" path="res://scenes/game_elements/props/buildings/house/house_1.tscn" id="8_cvgjt"]
+[ext_resource type="Texture2D" uid="uid://ol20om7xc1o7" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage1.png" id="8_v4wrw"]
+[ext_resource type="Texture2D" uid="uid://cy66l5b3uox84" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage2.png" id="9_6ulor"]
+[ext_resource type="Texture2D" uid="uid://lylpujgq8e4v" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage1.png" id="10_h3871"]
+[ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="11_2owc0"]
+[ext_resource type="PackedScene" uid="uid://cfvr32bp2achm" path="res://scenes/game_elements/props/decoration/rock/fabric_rock.tscn" id="11_6ulor"]
+[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="12_h3871"]
+[ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="15_pr1ca"]
+[ext_resource type="PackedScene" uid="uid://4u7dloafx55f" path="res://scenes/game_elements/props/teleporter/teleporter/teleporter.tscn" id="16_ykirg"]
+[ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="17_3d8kk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h3871"]
+radius = 87.43
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_stvbe"]
+size = Vector2(110, 155)
+
+[node name="TimeAndWeatherMuseum" type="Node2D" unique_id=598230680]
+script = ExtResource("1_g6rud")
+
+[node name="TileMapLayers" type="Node2D" parent="." unique_id=1892602766]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="TileMapLayers" unique_id=1324398225]
+position = Vector2(-1, 0)
+tile_map_data = PackedByteArray("AAAPAP//AAAAAAAAAAAPAAAAAAAAAAAAAAAPAAEAAAAAAAAAAAAPAAIAAAAAAAAAAAAPAAUAAAAAAAAAAAAPAAYAAAAAAAAAAAAPAAcAAAAAAAAAAAAPAAgAAAAAAAAAAAAPAAkAAAAAAAAAAAAPAAoAAAAAAAAAAAAQAP//AAAAAAAAAAAQAAAAAAAAAAAAAAAQAAEAAAAAAAAAAAAQAAIAAAAAAAAAAAAQAAUAAAAAAAAAAAAQAAYAAAAAAAAAAAAQAAcAAAAAAAAAAAAQAAgAAAAAAAAAAAAQAAkAAAAAAAAAAAAQAAoAAAAAAAAAAAARAP//AAAAAAAAAAARAAAAAAAAAAAAAAARAAEAAAAAAAAAAAARAAIAAAAAAAAAAAARAAUAAAAAAAAAAAARAAYAAAAAAAAAAAARAAcAAAAAAAAAAAARAAgAAAAAAAAAAAARAAkAAAAAAAAAAAARAAoAAAAAAAAAAAASAP//AAAAAAAAAAASAAAAAAAAAAAAAAASAAEAAAAAAAAAAAASAAIAAAAAAAAAAAASAAUAAAAAAAAAAAASAAYAAAAAAAAAAAASAAcAAAAAAAAAAAASAAgAAAAAAAAAAAASAAkAAAAAAAAAAAASAAoAAAAAAAAAAAATAP//AAAAAAAAAAATAAAAAAAAAAAAAAATAAEAAAAAAAAAAAATAAIAAAAAAAAAAAATAAUAAAAAAAAAAAATAAYAAAAAAAAAAAATAAcAAAAAAAAAAAATAAgAAAAAAAAAAAATAAkAAAAAAAAAAAATAAoAAAAAAAAAAAAUAP//AAAAAAAAAAAUAAAAAAAAAAAAAAAUAAEAAAAAAAAAAAAUAAIAAAAAAAAAAAAUAAUAAAAAAAAAAAAUAAYAAAAAAAAAAAAUAAcAAAAAAAAAAAAUAAgAAAAAAAAAAAAUAAkAAAAAAAAAAAAUAAoAAAAAAAAAAAAVAP//AAAAAAAAAAAVAAAAAAAAAAAAAAAVAAEAAAAAAAAAAAAVAAIAAAAAAAAAAAAVAAUAAAAAAAAAAAAVAAYAAAAAAAAAAAAVAAcAAAAAAAAAAAAVAAgAAAAAAAAAAAAVAAkAAAAAAAAAAAAVAAoAAAAAAAAAAAAWAP//AAAAAAAAAAAWAAAAAAAAAAAAAAAWAAEAAAAAAAAAAAAWAAIAAAAAAAAAAAAWAAUAAAAAAAAAAAAWAAYAAAAAAAAAAAAWAAcAAAAAAAAAAAAWAAgAAAAAAAAAAAAWAAkAAAAAAAAAAAAWAAoAAAAAAAAAAAAOAP//AAAAAAAAAAANAP//AAAAAAAAAAAMAP//AAAAAAAAAAALAP//AAAAAAAAAAAKAP//AAAAAAAAAAAJAP//AAAAAAAAAAAIAP//AAAAAAAAAAAHAP//AAAAAAAAAAAGAP//AAAAAAAAAAAFAP//AAAAAAAAAAAEAP//AAAAAAAAAAADAP//AAAAAAAAAAACAP//AAAAAAAAAAABAP//AAAAAAAAAAAAAP//AAAAAAAAAAAOAAoAAAAAAAAAAAANAAoAAAAAAAAAAAAMAAoAAAAAAAAAAAALAAoAAAAAAAAAAAAKAAoAAAAAAAAAAAAJAAoAAAAAAAAAAAAIAAoAAAAAAAAAAAAHAAoAAAAAAAAAAAAGAAoAAAAAAAAAAAAFAAoAAAAAAAAAAAAEAAoAAAAAAAAAAAADAAoAAAAAAAAAAAACAAoAAAAAAAAAAAABAAoAAAAAAAAAAAAAAAoAAAAAAAAAAAD//woAAAAAAAAAAAD//wkAAAAAAAAAAAD//wgAAAAAAAAAAAD//wcAAAAAAAAAAAD//wQAAAAAAAAAAAD//wMAAAAAAAAAAAD//wIAAAAAAAAAAAD//wEAAAAAAAAAAAD//wAAAAAAAAAAAAD/////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAkAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAALAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAANAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAOAAkAAAAAAAAAAAANAAkAAAAAAAAAAAAMAAkAAAAAAAAAAAALAAkAAAAAAAAAAAACAAkAAAAAAAAAAAABAAkAAAAAAAAAAAADAAkAAAAAAAAAAAAEAAkAAAAAAAAAAAAFAAkAAAAAAAAAAAAGAAkAAAAAAAAAAAAHAAkAAAAAAAAAAAAIAAkAAAAAAAAAAAAJAAkAAAAAAAAAAAAKAAkAAAAAAAAAAAABAAEAAAAAAAAAAAAOAAEAAAAAAAAAAAACAAQAAAAAAAAAAAACAAMAAAAAAAAAAAACAAIAAAAAAAAAAAACAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAAAAAAAAAACAAcAAAAAAAAAAAACAAgAAAAAAAAAAAABAAgAAAAAAAAAAAABAAcAAAAAAAAAAAADAAcAAAAAAAAAAAADAAgAAAAAAAAAAAADAAQAAAAAAAAAAAADAAMAAAAAAAAAAAADAAIAAAAAAAAAAAADAAEAAAAAAAAAAAAOAAIAAAAAAAAAAAAOAAMAAAAAAAAAAAAPAAMAAAAAAAAAAAAPAAQAAAAAAAAAAAAOAAcAAAAAAAAAAAAOAAgAAAAAAAAAAAAOAAYAAAAAAAAAAAAOAAUAAAAAAAAAAAAOAAQAAAAAAAAAAAAQAAMAAAAAAAAAAAARAAMAAAAAAAAAAAASAAMAAAAAAAAAAAATAAMAAAAAAAAAAAAUAAMAAAAAAAAAAAAVAAMAAAAAAAAAAAAVAAQAAAAAAAAAAAAUAAQAAAAAAAAAAAATAAQAAAAAAAAAAAASAAQAAAAAAAAAAAARAAQAAAAAAAAAAAAQAAQAAAAAAAAAAAAWAAMAAAAAAAAAAAAWAAQAAAAAAAAAAAAEAAEAAAAAAAAAAQANAAEAAAAAAAAAAQA=")
+tile_set = ExtResource("2_o3luo")
+
+[node name="TileMapLayer3" type="TileMapLayer" parent="TileMapLayers" unique_id=1741325590]
+tile_map_data = PackedByteArray("AAANAAkAAgAAAAAAAAAMAAkAAgAAAAAAAAALAAkAAgAAAAAAAAAEAAkAAgAAAAAAAAAFAAkAAgAAAAAAAAAGAAkAAgAAAAAAAAAHAAkAAgAAAAAAAAAIAAkAAgAAAAAAAAAJAAkAAgAAAAAAAAAKAAkAAgAAAAAAAAAEAAIAAgAAAAAAAAAEAAMAAgAAAAAAAAAEAAQAAgAAAAAAAAAEAAgAAgAAAAAAAAD//wcAAgAAAAAAAAAAAAcAAgAAAAAAAAABAAcAAgAAAAAAAAACAAcAAgAAAAAAAAADAAcAAgAAAAAAAAANAAIAAgAAAAAAAAANAAMAAgAAAAAAAAANAAQAAgAAAAAAAAANAAUAAgAAAAAAAAANAAYAAgAAAAAAAAANAAcAAgAAAAAAAAANAAgAAgAAAAAAAAA=")
+tile_set = ExtResource("3_aw1ih")
+
+[node name="TileMapLayer2" type="TileMapLayer" parent="TileMapLayers" unique_id=137371501]
+tile_map_data = PackedByteArray("AAD//wYABAABAAQAAAAAAAYABAABAAQAAAABAAYABAABAAQAAAACAAYABAABAAQAAAADAAYABAABAAQAAAD+/wYABAAAAAQAAAAEAAYABAACAAAAAAAEAAcABAADAAEAAAAEAAgABAAAAAIAAAAFAAgABAABAAQAAAAGAAgABAABAAQAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAACAAIAAAANAAcABAADAAAAAAA=")
+tile_set = ExtResource("4_g7vbn")
+occlusion_enabled = false
+collision_enabled = false
+
+[node name="TileMapLayer4" type="TileMapLayer" parent="TileMapLayers" unique_id=1164982986]
+tile_map_data = PackedByteArray("AAANAAgAAQACAAIAAAANAAcAAQACAAEAAAANAAYAAQACAAEAAAANAAUAAQACAAEAAAAMAAgAAQABAAIAAAAMAAcAAQABAAEAAAAMAAYAAQABAAEAAAAMAAUAAQABAAEAAAALAAgAAQABAAIAAAALAAcAAQABAAEAAAALAAYAAQABAAEAAAALAAUAAQABAAEAAAAKAAgAAQABAAIAAAAKAAcAAQABAAEAAAAKAAYAAQABAAEAAAAKAAUAAQABAAEAAAAJAAgAAQABAAIAAAAJAAcAAQABAAEAAAAJAAYAAQABAAEAAAAJAAUAAQABAAEAAAAIAAgAAQABAAIAAAAIAAcAAQABAAEAAAAIAAYAAQABAAEAAAAIAAUAAQABAAEAAAAHAAgAAQABAAIAAAAHAAcAAQABAAEAAAAHAAYAAQABAAEAAAAHAAUAAQABAAEAAAAGAAgAAQABAAIAAAAGAAcAAQABAAEAAAAGAAYAAQABAAEAAAAGAAUAAQABAAEAAAAFAAgAAQABAAIAAAAFAAcAAQABAAEAAAAFAAYAAQABAAEAAAAFAAUAAQABAAEAAAAEAAgAAQAAAAIAAAAEAAcAAQAAAAEAAAAEAAYAAQABAAEAAAAEAAUAAQABAAEAAAADAAYAAQABAAIAAAADAAUAAQABAAAAAAACAAYAAQABAAIAAAACAAUAAQABAAAAAAABAAYAAQABAAIAAAABAAUAAQABAAAAAAAAAAYAAQABAAIAAAAAAAUAAQABAAAAAAD//wYAAQAAAAIAAAD//wUAAQAAAAAAAAANAAQAAQACAAEAAAANAAMAAQACAAEAAAANAAIAAQACAAEAAAANAAEAAQACAAAAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAAAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAAAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAKAAEAAQABAAAAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAJAAEAAQABAAAAAAAIAAQAAQABAAEAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAIAAEAAQABAAAAAAAHAAQAAQABAAEAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAAAAAAGAAQAAQABAAEAAAAGAAMAAQABAAEAAAAGAAIAAQABAAEAAAAGAAEAAQABAAAAAAAFAAQAAQABAAEAAAAFAAMAAQABAAEAAAAFAAIAAQABAAEAAAAFAAEAAQABAAAAAAAEAAQAAQAAAAEAAAAEAAMAAQAAAAEAAAAEAAIAAQAAAAEAAAAEAAEAAQAAAAAAAAA=")
+tile_set = ExtResource("5_1g7im")
+
+[node name="TileMapLayer5" type="TileMapLayer" parent="TileMapLayers" unique_id=1852606572]
+tile_map_data = PackedByteArray("AAALAAMAAQAHAAAAAAAKAAMAAQAGAAAAAAALAAQAAQAHAAEAAAAKAAQAAQAGAAEAAAAJAAQAAQAGAAEAAAAIAAMAAQAGAAAAAAAJAAMAAQAGAAAAAAAHAAMAAQAFAAAAAAAHAAQAAQAFAAEAAAAHAAUAAQAGAAEAAAAIAAUAAQAGAAEAAAAJAAUAAQAGAAEAAAAKAAUAAQAGAAEAAAALAAUAAQAHAAEAAAAIAAQAAQAGAAEAAAALAAYAAQAHAAEAAAAKAAYAAQAGAAEAAAAJAAYAAQAGAAEAAAAIAAYAAQAGAAEAAAAHAAYAAQAGAAEAAAALAAcAAQAHAAIAAAAKAAcAAQAGAAIAAAAJAAcAAQAGAAIAAAAIAAcAAQAGAAIAAAAHAAcAAQAFAAIAAAAGAAYAAQAGAAIAAAAGAAUAAQAGAAAAAAAFAAYAAQAGAAIAAAAFAAUAAQAGAAAAAAAEAAYAAQAGAAIAAAAEAAUAAQAGAAAAAAADAAYAAQAGAAIAAAADAAUAAQAGAAAAAAACAAYAAQAGAAIAAAACAAUAAQAGAAAAAAABAAYAAQAGAAIAAAABAAUAAQAGAAAAAAAAAAYAAQAGAAIAAAAAAAUAAQAGAAAAAAD//wYAAQAFAAIAAAD//wUAAQAFAAAAAAA=")
+tile_set = ExtResource("5_1g7im")
+
+[node name="OnTheGround" type="Node2D" parent="." unique_id=341026700]
+y_sort_enabled = true
+
+[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("6_flthm")]
+position = Vector2(57, 413)
+player_name = "StoryWeaver"
+sprite_frames = ExtResource("7_ly3o5")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=255616199]
+limit_left = 0
+limit_top = 0
+limit_right = 1408
+limit_bottom = 640
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[node name="House_1" parent="OnTheGround" unique_id=593509202 instance=ExtResource("8_cvgjt")]
+position = Vector2(383, 171)
+texture = ExtResource("8_v4wrw")
+
+[node name="House_2" parent="OnTheGround" unique_id=1157742102 instance=ExtResource("8_cvgjt")]
+position = Vector2(317, 131)
+texture = ExtResource("9_6ulor")
+
+[node name="House_3" parent="OnTheGround" unique_id=1887721550 instance=ExtResource("8_cvgjt")]
+position = Vector2(539, 150)
+texture = ExtResource("10_h3871")
+
+[node name="Sign" parent="OnTheGround" unique_id=1579530966 instance=ExtResource("11_2owc0")]
+position = Vector2(307, 387)
+direction = 1
+text = "Use rocks to set the time of day.
+Warning! This will unsync it with
+the scene at west."
+
+[node name="FabricRock" parent="OnTheGround" unique_id=1319147835 instance=ExtResource("11_6ulor")]
+position = Vector2(477, 239)
+
+[node name="InteractAreaMorning" parent="OnTheGround/FabricRock" unique_id=248145530 instance=ExtResource("12_h3871")]
+action = "6 AM"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FabricRock/InteractAreaMorning" unique_id=223757199]
+position = Vector2(-3, -14)
+shape = SubResource("CircleShape2D_h3871")
+
+[node name="FabricRock2" parent="OnTheGround" unique_id=1829262008 instance=ExtResource("11_6ulor")]
+position = Vector2(616, 344)
+
+[node name="InteractAreaEvening" parent="OnTheGround/FabricRock2" unique_id=1830959577 instance=ExtResource("12_h3871")]
+action = "6 PM"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FabricRock2/InteractAreaEvening" unique_id=943679952]
+position = Vector2(-3, -14)
+shape = SubResource("CircleShape2D_h3871")
+
+[node name="FabricRock3" parent="OnTheGround" unique_id=2033968538 instance=ExtResource("11_6ulor")]
+position = Vector2(718, 476)
+
+[node name="InteractAreaNight" parent="OnTheGround/FabricRock3" unique_id=1095523783 instance=ExtResource("12_h3871")]
+action = "10 PM"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FabricRock3/InteractAreaNight" unique_id=132025755]
+position = Vector2(-3, -14)
+shape = SubResource("CircleShape2D_h3871")
+
+[node name="SpawnPoint" parent="." unique_id=2047736206 instance=ExtResource("15_pr1ca")]
+position = Vector2(525, 166)
+look_at_side_on_spawn = -1
+
+[node name="Teleporter" parent="." unique_id=812046722 instance=ExtResource("16_ykirg")]
+position = Vector2(-89, 336)
+next_scene = "uid://dep64htv6c4na"
+spawn_point_path = NodePath("SpawnPoint")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" unique_id=1238931458]
+position = Vector2(45, 51.5)
+shape = SubResource("RectangleShape2D_stvbe")
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1650503984]
+
+[node name="TimeAndWeather" parent="." unique_id=1446545037 instance=ExtResource("17_3d8kk")]
+unique_name_in_owner = true
+time_scale = 1440.0
+show_debug_label = true
+
+[connection signal="interaction_started" from="OnTheGround/FabricRock/InteractAreaMorning" to="." method="_on_set_time" flags=18 unbinds=2 binds= [6.0]]
+[connection signal="interaction_started" from="OnTheGround/FabricRock2/InteractAreaEvening" to="." method="_on_set_time" flags=18 unbinds=2 binds= [18.0]]
+[connection signal="interaction_started" from="OnTheGround/FabricRock3/InteractAreaNight" to="." method="_on_set_time" flags=18 unbinds=2 binds= [22.0]]
