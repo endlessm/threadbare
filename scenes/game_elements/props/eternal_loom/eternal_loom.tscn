@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://6bf8rum68wq3" path="res://assets/first_party/collectibles/world_imagination.png" id="5_eq7jh"]
 [ext_resource type="Texture2D" uid="uid://cepg1o3ihp055" path="res://assets/first_party/collectibles/world_spirit.png" id="6_hfqem"]
 [ext_resource type="AudioStream" uid="uid://bg8u4en3hlo6w" path="res://assets/third_party/sounds/eternal_loom/EternalLoomShort.ogg" id="7_12bvc"]
+[ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="9_mjlja"]
+[ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="10_k2bt4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dj2yp"]
 atlas = ExtResource("2_dj2yp")
@@ -585,3 +587,17 @@ texture = ExtResource("6_hfqem")
 [node name="LoomOfferingSound" type="AudioStreamPlayer2D" parent="LoomOfferingAnimation" unique_id=1851096463]
 stream = ExtResource("7_12bvc")
 bus = &"SFX"
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=853151346 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(0, 39)
+scale = Vector2(2.9765627, 1.765625)
+enabled = false
+color = Color(1, 1, 0, 1)
+energy = 0.5
+texture = ExtResource("9_mjlja")
+
+[node name="ArtificialLightBehavior" type="Node" parent="PointLight2D" unique_id=326293187 node_paths=PackedStringArray("light")]
+script = ExtResource("10_k2bt4")
+light = NodePath("..")
+metadata/_custom_type_script = "uid://bk52qjv58locq"

@@ -15,6 +15,8 @@
 [ext_resource type="Script" uid="uid://b7704hdflt5t8" path="res://scenes/game_elements/characters/player/components/player_hook.gd" id="11_nrnyj"]
 [ext_resource type="Texture2D" uid="uid://dxaq5piwxqnht" path="res://scenes/game_elements/characters/player/components/dust.png" id="12_3in67"]
 [ext_resource type="PackedScene" uid="uid://b0dehcnfo68j1" path="res://scenes/game_elements/props/hook_control/hook_control.tscn" id="13_ecbbk"]
+[ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="16_ecbbk"]
+[ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="16_tnibl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_je7p5"]
 size = Vector2(32, 47)
@@ -650,3 +652,16 @@ stream = ExtResource("11_blfj0")
 volume_db = -5.0
 pitch_scale = 7.0
 bus = &"SFX"
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=460659966 groups=["night-lights"]]
+visibility_layer = 2
+scale = Vector2(4, 3)
+enabled = false
+energy = 0.5
+texture = ExtResource("16_tnibl")
+
+[node name="ArtificialLightBehavior" type="Node" parent="PointLight2D" unique_id=789625383 node_paths=PackedStringArray("light")]
+editor_description = "There is no random delay applied here, because we want the area around the player to be illuminated as soon as it becomes dark."
+script = ExtResource("16_ecbbk")
+light = NodePath("..")
+metadata/_custom_type_script = "uid://bk52qjv58locq"
