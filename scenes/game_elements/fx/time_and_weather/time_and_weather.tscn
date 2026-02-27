@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dc3bqwr0cvimn" path="res://scenes/game_elements/fx/time_and_weather/components/time_and_weather.gd" id="1_rr8fb"]
 [ext_resource type="PackedScene" uid="uid://c0374lgarm8gj" path="res://scenes/game_elements/fx/clouds_shadow/clouds_shadow.tscn" id="2_oruto"]
 [ext_resource type="PackedScene" uid="uid://dpbsi065gmh8a" path="res://scenes/game_elements/fx/fog/fog.tscn" id="3_uf36w"]
+[ext_resource type="Script" uid="uid://qrbdfx4ka2o8" path="res://scenes/game_elements/fx/time_and_weather/components/debug_label.gd" id="4_uf36w"]
 
 [sub_resource type="Gradient" id="Gradient_duxxr"]
 
@@ -162,28 +163,6 @@ _data = {
 &"day-night": SubResource("Animation_ns5r3")
 }
 
-[sub_resource type="GDScript" id="GDScript_oruto"]
-script/source = "# SPDX-FileCopyrightText: The Threadbare Authors
-# SPDX-License-Identifier: MPL-2.0
-extends Label
-
-@onready var animation_player: AnimationPlayer = $\"../../AnimationPlayer\"
-
-
-func _process(_delta: float) -> void:
-	var time := animation_player.current_animation_position
-	var period: String
-	if time > 5 and time <= 12:
-		period = \"morning\"
-	elif time > 12 and time <= 18:
-		period = \"afternoon\"
-	elif time > 18 and time <= 22:
-		period = \"evening\"
-	else:
-		period = \"night\"
-	text = \"%.1f %s\" % [time, period]
-"
-
 [node name="TimeAndWeather" type="Node2D" unique_id=1446545037]
 editor_description = "The inner nodes here are good examples of visual effects to use in levels:
 - Add a WorldEnvironment for adjusting brightness, contrast, saturation. And much more!
@@ -243,7 +222,7 @@ unique_name_in_owner = true
 offset_right = 119.0
 offset_bottom = 23.0
 text = "What time is it?"
-script = SubResource("GDScript_oruto")
+script = ExtResource("4_uf36w")
 
 [connection signal="timeout" from="LightsOnTimer" to="." method="_on_lights_on_timer_timeout"]
 [connection signal="timeout" from="LightsOffTimer" to="." method="_on_lights_off_timer_timeout"]
