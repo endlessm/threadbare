@@ -7,6 +7,7 @@ extends CanvasLayer
 
 @onready var pause_menu: Control = %PauseMenu
 @onready var resume_button: Button = %ResumeButton
+@onready var inventory: Control = %Inventory
 @onready var options: Control = %Options
 @onready var abandon_quest_button: Button = %AbandonQuestButton
 
@@ -38,6 +39,15 @@ func _on_abandon_quest_pressed() -> void:
 	SceneSwitcher.change_to_file_with_transition(
 		frays_end, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 	)
+
+
+func _on_inventory_button_pressed() -> void:
+	inventory.show()
+
+
+func _on_inventory_back() -> void:
+	pause_menu.show()
+	resume_button.grab_focus()
 
 
 func _on_options_button_pressed() -> void:
