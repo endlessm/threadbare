@@ -41,20 +41,10 @@ var _navigation_locked: bool = false
 
 
 func _enumerate_quests() -> Array[Quest]:
-	var has_template: bool = false
-	var quests: Array[Quest] = []
-
-	for dir in ResourceLoader.list_directory(quest_directory):
-		var quest_path := quest_directory.path_join(dir).path_join(QUEST_RESOURCE_NAME)
-		if ResourceLoader.exists(quest_path):
-			var quest: Quest = ResourceLoader.load(quest_path)
-			if quest == STORY_QUEST_TEMPLATE:
-				has_template = true
-			else:
-				quests.append(quest)
-
-	if has_template:
-		quests.append(TEMPLATE_QUEST_METADATA)
+	var quests: Array[Quest] = Quest.enumerate(quest_directory)
+	var template_index := quests.find(STORY_QUEST_TEMPLATE)
+	if template_index != -1:
+		quests[template_index] = TEMPLATE_QUEST_METADATA
 
 	return quests
 

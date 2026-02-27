@@ -22,6 +22,9 @@ signal lives_changed(new_lives: int)
 ## when darkness goes away so artificial lights should turn off.
 signal lights_changed(lights_on: bool, immediate: bool)
 
+## Emitted when a quest is added or removed from [member completed_quests].
+signal completed_quests_changed
+
 const GAME_STATE_PATH := "user://game_state.cfg"
 const INVENTORY_SECTION := "inventory"
 const INVENTORY_ITEMS_KEY := "items_collected"
@@ -200,11 +203,7 @@ func _clear_quest_state() -> void:
 ## and unset it. Also resets lives to maximum.
 func mark_quest_completed() -> void:
 	if current_quest:
-		var quest_name := current_quest.resource_path
-		if quest_name not in completed_quests:
-			completed_quests.append(quest_name)
-			_state.set_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, completed_quests)
-
+		_do_set_quest_completed_state(current_quest, true)
 		current_quest = null
 		_clear_quest_state()
 		_save()
@@ -236,6 +235,26 @@ func abandon_quest() -> void:
 	_clear_quest_state()
 	current_quest = null
 	clear_inventory()
+
+
+## Updates [member completed_quests] to include [param quest] if [param
+## is_completed] is true, or remove [param quest] if [param is_completed] is
+## false.
+func set_quest_completed_state(quest: Quest, is_completed: bool) -> void:
+	_do_set_quest_completed_state(quest, is_completed)
+	_save()
+
+
+func _do_set_quest_completed_state(quest: Quest, is_completed: bool) -> void:
+	var quest_name := quest.resource_path
+	if is_completed:
+		if quest_name not in completed_quests:
+			completed_quests.append(quest_name)
+			completed_quests_changed.emit()
+	else:
+		while quest_name in completed_quests:
+			completed_quests.erase(quest_name)
+			completed_quests_changed.emit()
 
 
 ## Remove all [InventoryItem] from the [member inventory].
@@ -355,6 +374,7 @@ func restore() -> Dictionary:
 func _save() -> void:
 	if not persist_progress:
 		return
+	_state.set_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, completed_quests)
 	var err := _state.save(GAME_STATE_PATH)
 	if err != OK:
 		push_error("Failed to save settings to %s: %s" % [GAME_STATE_PATH, err])

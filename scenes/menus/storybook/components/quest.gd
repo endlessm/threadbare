@@ -15,6 +15,9 @@ enum Status {
 	BROKEN = 2,
 }
 
+## [Quest] resources must have this filename to be found by the game.
+const FILENAME := "quest.tres"
+
 ## The development status of this quest.
 @export var status: Status = Status.WORK_IN_PROGRESS
 
@@ -50,6 +53,23 @@ enum Status {
 
 ## The animation in [member sprite_frames] to display. This should typically be a looping animation.
 @export var animation_name: StringName = &""
+
+
+## Lists all quests in [param quest_directory]; which is to say, all [Quest]
+## resources named [const FILENAME] which are in an immediate subdirectory of
+## [param quest_directory].
+## [br][br]
+## In Bash terms, this is: [code]$quest_directory/*/quest.tres[/code]
+static func enumerate(quest_directory: String) -> Array[Quest]:
+	var quests: Array[Quest] = []
+
+	for dir in ResourceLoader.list_directory(quest_directory):
+		var quest_path := quest_directory.path_join(dir).path_join(FILENAME)
+		if ResourceLoader.exists(quest_path):
+			var quest: Quest = ResourceLoader.load(quest_path)
+			quests.append(quest)
+
+	return quests
 
 
 func _validate_property(property: Dictionary) -> void:
