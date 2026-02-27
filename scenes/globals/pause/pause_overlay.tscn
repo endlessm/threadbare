@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://lg5dl13njsg3" path="res://assets/first_party/tiles/Grass_And_Sand_Tiles.png" id="2_1tcw0"]
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="2_sd5t1"]
 [ext_resource type="PackedScene" uid="uid://dkeb0yjgcfi86" path="res://scenes/menus/options/options.tscn" id="3_sd5t1"]
-[ext_resource type="PackedScene" path="res://scenes/ui_elements/inventory/inventory.tscn" id="4_inv"]
+[ext_resource type="PackedScene" uid="uid://fdedj5gjhhh3" path="res://scenes/ui_elements/inventory/inventory.tscn" id="4_inv"]
 [ext_resource type="PackedScene" uid="uid://56ja3m4283wa" path="res://scenes/menus/debug/debug_settings.tscn" id="5_ai8ue"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1tcw0"]
@@ -69,7 +69,7 @@ size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Resume"
 
-[node name="InventoryButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer"]
+[node name="InventoryButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=551488208]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -104,29 +104,31 @@ size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Exit to Title"
 
-[node name="Inventory" parent="TabContainer" instance=ExtResource("4_inv")]
+[node name="Inventory" parent="TabContainer" unique_id=1305017818 instance=ExtResource("4_inv")]
 unique_name_in_owner = true
 process_mode = 2
 visible = false
 layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="Options" parent="TabContainer" unique_id=2078715393 instance=ExtResource("3_sd5t1")]
 unique_name_in_owner = true
 process_mode = 2
 visible = false
 layout_mode = 2
+metadata/_tab_index = 2
 
 [node name="DebugSettings" parent="TabContainer" unique_id=1197092088 instance=ExtResource("5_ai8ue")]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 2
+metadata/_tab_index = 3
 
 [connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/InventoryButton" to="." method="_on_inventory_button_pressed"]
-[connection signal="back" from="TabContainer/Inventory" to="." method="_on_inventory_back"]
 [connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/AbandonQuestButton" to="." method="_on_abandon_quest_pressed"]
 [connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/DebugButton" to="TabContainer/DebugSettings" method="show"]
 [connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/TitleScreenButton" to="." method="_on_title_screen_button_pressed"]
+[connection signal="back" from="TabContainer/Inventory" to="." method="_on_inventory_back"]
 [connection signal="back" from="TabContainer/Options" to="." method="_on_options_back"]
 [connection signal="back" from="TabContainer/DebugSettings" to="." method="_on_options_back"]
