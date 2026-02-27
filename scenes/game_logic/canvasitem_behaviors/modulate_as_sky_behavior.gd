@@ -33,6 +33,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
+		set_process(false)
 		return
 	time_and_weather = get_tree().current_scene.get_node_or_null("TimeAndWeather")
 	if not time_and_weather:
@@ -40,8 +41,6 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if Engine.is_editor_hint():
-		return
 	if not canvas_item:
 		return
 	canvas_item.modulate = time_and_weather.get_sky_color()
