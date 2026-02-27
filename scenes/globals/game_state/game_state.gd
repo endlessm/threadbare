@@ -312,7 +312,16 @@ func _update_trinkets_state() -> void:
 	_state.set_value(
 		TRINKETS_SECTION,
 		TRINKETS_IDS_KEY,
-		trinkets.map(func(t: Trinket) -> StringName: return t.id)
+		trinkets.map(
+			func(t: Trinket) -> Dictionary:
+				return {
+					"id": t.id,
+					"name": t.name,
+					"description": t.description,
+					"icon": t.icon.resource_path if t.icon else "",
+					"full_text": t.full_text,
+				}
+		)
 	)
 
 
@@ -404,11 +413,17 @@ func restore() -> Dictionary:
 	)
 	completed_quests = _state.get_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, [] as Array[String])
 
-	# Restore trinkets from saved IDs
+	# Restore trinkets from saved data
 	trinkets.clear()
-	for trinket_id: StringName in _state.get_value(TRINKETS_SECTION, TRINKETS_IDS_KEY, []):
+	for trinket_data: Dictionary in _state.get_value(TRINKETS_SECTION, TRINKETS_IDS_KEY, []):
 		var trinket := Trinket.new()
-		trinket.id = trinket_id
+		trinket.id = trinket_data.get("id", &"")
+		trinket.name = trinket_data.get("name", "")
+		trinket.description = trinket_data.get("description", "")
+		var icon_path: String = trinket_data.get("icon", "")
+		if not icon_path.is_empty():
+			trinket.icon = load(icon_path)
+		trinket.full_text = trinket_data.get("full_text", "")
 		trinkets.append(trinket)
 
 	# Restore lives from saved state, default to MAX_LIVES if not found
