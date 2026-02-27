@@ -339,7 +339,7 @@ func _on_attack_radius_body_entered(body: Node2D) -> void:
 
 		if body.has_method("defeat"):
 			var player: Node2D = body
-			player.defeat(true)
+			player.defeat()
 
 
 ## Called when the attack animation finishes.
