@@ -17,9 +17,27 @@
 [ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="13_udo54"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="14_nlj8l"]
 [ext_resource type="Script" uid="uid://d2m5qm4ranctd" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/switch_mode_area.gd" id="15_8mj0p"]
+[ext_resource type="Texture2D" uid="uid://b65dg7i548oip" path="res://scenes/game_elements/props/decoration/books/components/Books_1.png" id="16_8mj0p"]
+[ext_resource type="Script" uid="uid://vaqmbvvfuxgp" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/trinket.gd" id="16_tgh2l"]
+[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="17_g02tq"]
+[ext_resource type="Script" uid="uid://pih63r764oet" path="res://scenes/ui_elements/inventory/components/trinket.gd" id="17_mfk3e"]
 [ext_resource type="PackedScene" uid="uid://mruqy04d0vl8" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/buttons_collector.tscn" id="18_udo54"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8mj0p"]
+size = Vector2(131, 87)
+
+[sub_resource type="Resource" id="Resource_8xcfu"]
+script = ExtResource("17_mfk3e")
+id = &"frith-fraywalkers-letter"
+name = "Frith Fraywalker’s Letter"
+description = "Found floating near the Tangled Temple, Ink Well"
+icon = ExtResource("16_8mj0p")
+metadata/_custom_type_script = "uid://pih63r764oet"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tgh2l"]
+radius = 64.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mfk3e"]
 size = Vector2(131, 87)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_drlay"]
@@ -195,18 +213,6 @@ position = Vector2(-409, 296)
 [node name="ButtonItem4" parent="OnTheGround/ButtonsB" unique_id=1852889363 instance=ExtResource("6_8mj0p")]
 position = Vector2(-450, 261)
 
-[node name="ButtonItem5" parent="OnTheGround/ButtonsB" unique_id=761154544 instance=ExtResource("6_8mj0p")]
-position = Vector2(-399, 689)
-
-[node name="ButtonItem6" parent="OnTheGround/ButtonsB" unique_id=544985972 instance=ExtResource("6_8mj0p")]
-position = Vector2(-440, 654)
-
-[node name="ButtonItem7" parent="OnTheGround/ButtonsB" unique_id=1196174678 instance=ExtResource("6_8mj0p")]
-position = Vector2(-354, 657)
-
-[node name="ButtonItem8" parent="OnTheGround/ButtonsB" unique_id=1632378500 instance=ExtResource("6_8mj0p")]
-position = Vector2(-395, 622)
-
 [node name="ButtonItem9" parent="OnTheGround/ButtonsB" unique_id=1704337129 instance=ExtResource("6_8mj0p")]
 position = Vector2(621, 332)
 
@@ -336,6 +342,30 @@ script = ExtResource("15_8mj0p")
 position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_8mj0p")
 
+[node name="Trinket" type="Node2D" parent="OnTheGround" unique_id=1185665407]
+position = Vector2(1376, 1888)
+script = ExtResource("16_tgh2l")
+trinket = SubResource("Resource_8xcfu")
+
+[node name="Books1" type="Sprite2D" parent="OnTheGround/Trinket" unique_id=629770298]
+texture = ExtResource("16_8mj0p")
+
+[node name="InteractArea" parent="OnTheGround/Trinket" unique_id=248145530 instance=ExtResource("17_g02tq")]
+interact_label_position = Vector2(0, -60)
+action = "Pick"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Trinket/InteractArea" unique_id=1898491232]
+shape = SubResource("CircleShape2D_tgh2l")
+
+[node name="SwitchModeArea" type="Area2D" parent="." unique_id=321074376]
+position = Vector2(1376, 1888)
+collision_layer = 0
+script = ExtResource("15_8mj0p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SwitchModeArea" unique_id=1686379116]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_mfk3e")
+
 [node name="TeleporterNext" parent="." unique_id=1560505035 instance=ExtResource("13_6ihfv")]
 position = Vector2(2759, 1281)
 next_scene = "uid://c3iv8nbog410p"
@@ -358,3 +388,6 @@ metadata/_custom_type_script = "uid://0enyu5v4ra34"
 
 [connection signal="body_entered" from="OnTheGround/ButtonsCollector/SwitchModeArea" to="OnTheGround/ButtonsCollector/SwitchModeArea" method="_on_body_entered"]
 [connection signal="body_exited" from="OnTheGround/ButtonsCollector/SwitchModeArea" to="OnTheGround/ButtonsCollector/SwitchModeArea" method="_on_body_exited"]
+[connection signal="interaction_started" from="OnTheGround/Trinket/InteractArea" to="OnTheGround/Trinket" method="_on_interact_area_interaction_started" flags=18 unbinds=2]
+[connection signal="body_entered" from="SwitchModeArea" to="SwitchModeArea" method="_on_body_entered"]
+[connection signal="body_exited" from="SwitchModeArea" to="SwitchModeArea" method="_on_body_exited"]
