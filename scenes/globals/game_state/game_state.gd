@@ -120,8 +120,6 @@ func set_incorporating_threads(new_incorporating_threads: bool) -> void:
 ## Set [member current_quest] and clear the [member inventory].
 ## Also resets lives to maximum when starting a quest.
 func start_quest(quest: Quest) -> void:
-	_do_clear_inventory()
-	_update_inventory_state()
 	current_quest = quest
 	_state.set_value(QUEST_SECTION, QUEST_PATH_KEY, quest.resource_path)
 	_do_set_scene(quest.first_scene, ^"")
@@ -245,7 +243,6 @@ func abandon_quest() -> void:
 	set_incorporating_threads(false)
 	_clear_quest_state()
 	current_quest = null
-	clear_inventory()
 
 
 ## Updates [member completed_quests] to include [param quest] if [param
@@ -370,6 +367,8 @@ func change_lights(new_lights_on: bool, immediate: bool = false) -> void:
 func clear() -> void:
 	_state.clear()
 	completed_quests = []
+	_do_clear_inventory()
+	trinkets.clear()
 	current_lives = MAX_LIVES
 	if DEBUG_LIVES:
 		prints("[LIVES DEBUG] State cleared. Lives reset to:", current_lives)
