@@ -33,7 +33,7 @@ const SECONDS_PER_DAY: float = 24 * 60 * 60
 ## - 16: 4 PM.[br]
 @export_range(0.0, 24.0, 0.1, "suffix:h") var start_time: float = 10.0
 
-## How fast should time pass in the game.[br]
+## The number of game-days in a real-world day.[br]
 ## - 1: One day in game matches one day in reality. Don't do this![br]
 ## - 24: One hour in game matches one day in reality.[br]
 ## - 144: 10 minutes in game matches one day in reality (default).[br]
@@ -85,6 +85,7 @@ func _set_time_scale(new_time_scale: float) -> void:
 	# The current animation length (in seconds) corresponds to 1 day.
 	var animation_scale := SECONDS_PER_DAY / animation_player.current_animation_length
 	animation_player.speed_scale = time_scale / animation_scale
+	set_time(get_current_time())
 
 
 func _set_show_debug_label(new_show_debug_label: bool) -> void:
