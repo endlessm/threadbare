@@ -7,3 +7,8 @@ extends Resource
 @export var name: String
 @export var description: String
 @export var icon: Texture2D
+@export_multiline var full_text: String
+
+
+func is_readable() -> bool:
+	return not full_text.is_empty()

@@ -23,6 +23,7 @@ tab_count = 1
 tab_0/title = "Trinkets"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -31,6 +32,44 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 5
+
+[node name="InspectPanel" type="PanelContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/InspectPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/InspectPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="InspectIcon" type="TextureRect" parent="VBoxContainer/InspectPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+expand_mode = 3
+stretch_mode = 5
+
+[node name="InspectText" type="RichTextLabel" parent="VBoxContainer/InspectPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+fit_content = true
+scroll_active = false
+
+[node name="CloseButton" type="Button" parent="VBoxContainer/InspectPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+text = "Close"
 
 [node name="BackButton" type="Button" parent="VBoxContainer"]
 unique_name_in_owner = true
@@ -42,4 +81,5 @@ icon = ExtResource("3_arrow")
 flat = true
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="VBoxContainer/InspectPanel/MarginContainer/VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
