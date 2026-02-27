@@ -376,7 +376,7 @@ func change_lights(new_lights_on: bool, immediate: bool = false) -> void:
 func clear() -> void:
 	_state.clear()
 	completed_quests = []
-	_do_clear_inventory()
+	clear_inventory()
 	trinkets.clear()
 	current_lives = MAX_LIVES
 	if DEBUG_LIVES:
