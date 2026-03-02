@@ -141,6 +141,8 @@ func change_to_file(scene_path: String, spawn_point: NodePath = ^"") -> void:
 
 
 func change_to_packed(scene: PackedScene, spawn_point: NodePath = ^"") -> void:
+	GameState.clear_per_scane_state()
+
 	if get_tree().change_scene_to_packed(scene) == OK:
 		_set_hash(scene.resource_path)
 		GameState.set_scene(scene.resource_path, spawn_point)
