@@ -308,22 +308,18 @@ func has_trinket(id: StringName) -> bool:
 	return trinkets.any(func(t: Trinket) -> bool: return t.id == id)
 
 
-# gdformat:disable
+func _trinket_to_dict(t: Trinket) -> Dictionary:
+	return {
+		"id": t.id,
+		"name": t.name,
+		"description": t.description,
+		"icon": t.icon.resource_path if t.icon else "",
+		"full_text": t.full_text,
+	}
+
+
 func _update_trinkets_state() -> void:
-	_state.set_value(
-		TRINKETS_SECTION,
-		TRINKETS_IDS_KEY,
-		trinkets.map(
-			func(t: Trinket) -> Dictionary: return {
-				"id": t.id,
-				"name": t.name,
-				"description": t.description,
-				"icon": t.icon.resource_path if t.icon else "",
-				"full_text": t.full_text,
-			}
-		)
-	)
-# gdformat:enable
+	_state.set_value(TRINKETS_SECTION, TRINKETS_IDS_KEY, trinkets.map(_trinket_to_dict))
 
 
 func _update_inventory_state() -> void:
