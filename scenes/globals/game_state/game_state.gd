@@ -324,6 +324,11 @@ func change_lights(new_lights_on: bool, immediate: bool = false) -> void:
 	lights_changed.emit(lights_on, immediate)
 
 
+## Clear the per-scene state.
+func clear_per_scene_state() -> void:
+	lights_on = false
+
+
 ## Clear the persisted state.
 func clear() -> void:
 	_state.clear()
