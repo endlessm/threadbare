@@ -8,6 +8,10 @@ extends CanvasLayer
 @export var _seed: int:
 	set = _set_seed
 
+## The probability distribution for the amount of rain. The y-axis is the amount
+## of rain for a given (randomly-chosen) point on the x-axis.
+@export var rain_distribution: Curve
+
 var _random_number_generator := RandomNumberGenerator.new()
 
 @onready var gpu_particles_2d: GPUParticles2D = %GPUParticles2D
@@ -16,19 +20,11 @@ var _random_number_generator := RandomNumberGenerator.new()
 func _set_seed(new_seed: int) -> void:
 	_seed = new_seed
 	_random_number_generator.seed = _seed
-	var rain_type := _random_number_generator.randf()
-	prints("RAIN", rain_type)
 	if not gpu_particles_2d:
 		return
-	if rain_type < 0.25:
-		# 25% chances of having a drizzle.
-		gpu_particles_2d.amount_ratio = _random_number_generator.randf_range(0, 0.1)
-	elif rain_type >= 0.75:
-		# 25% chances of having a steady rain.
-		gpu_particles_2d.amount_ratio = _random_number_generator.randf_range(0.8, 1)
-	else:
-		# 50% chances of having something in between.
-		gpu_particles_2d.amount_ratio = _random_number_generator.randf_range(0.1, 0.8)
+	var x := _random_number_generator.randf()
+	var rain_amount := rain_distribution.sample(x)
+	gpu_particles_2d.amount_ratio = rain_amount
 
 
 func randomize() -> void:
