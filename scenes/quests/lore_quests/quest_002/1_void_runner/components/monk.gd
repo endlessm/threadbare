@@ -13,8 +13,6 @@ var _repelled := false
 
 
 func repel_void() -> void:
-	enemy.queue_free()
-
 	var tween := create_tween()
 	var original_zoom := camera.zoom
 	tween.tween_property(camera, "zoom", original_zoom / 3.0, 1.0).set_ease(Tween.EASE_IN_OUT)

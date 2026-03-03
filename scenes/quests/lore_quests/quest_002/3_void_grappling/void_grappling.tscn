@@ -5,8 +5,9 @@
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="1_kijyv"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_lmfic"]
 [ext_resource type="Script" uid="uid://d1ly6uhh500xu" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/tile_map_cover.gd" id="1_wd35e"]
-[ext_resource type="AudioStream" uid="uid://dgwihwibc8ah6" path="res://assets/first_party/music/Threadbare_Combat.ogg" id="2_ayr6d"]
+[ext_resource type="AudioStream" uid="uid://bwgtbylflkup2" path="res://scenes/quests/lore_quests/quest_002/components/void_music.tres" id="2_bcye7"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="2_kmyoj"]
+[ext_resource type="Script" uid="uid://c2lx7gvkonxaa" path="res://scenes/game_elements/props/background_music/components/clip_switcher.gd" id="3_4laor"]
 [ext_resource type="Script" uid="uid://dagrhfrj0f33i" path="res://scenes/game_logic/camera_behaviors/frame_camera_behavior.gd" id="3_jrfsf"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="3_yxlsu"]
 [ext_resource type="Resource" uid="uid://btx8kdmjsxwyo" path="res://scenes/quests/lore_quests/quest_002/3_void_grappling/components/void_grappling.dialogue" id="4_yxlsu"]
@@ -77,7 +78,14 @@ size = Vector2(128, 320)
 metadata/_edit_lock_ = true
 
 [node name="BackgroundMusic" parent="." unique_id=268347884 instance=ExtResource("1_grfk2")]
-stream = ExtResource("2_ayr6d")
+stream = ExtResource("2_bcye7")
+clip = &"Still"
+
+[node name="ClipSwitcher" type="Node" parent="BackgroundMusic" unique_id=938722825 node_paths=PackedStringArray("trigger")]
+script = ExtResource("3_4laor")
+clip = &"Bloom 2"
+trigger = NodePath("../../EnemyChaseTrigger")
+metadata/_custom_type_script = "uid://c2lx7gvkonxaa"
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=2025924955]
 script = ExtResource("3_yxlsu")
