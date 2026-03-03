@@ -25,6 +25,12 @@
 [ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="20_7wffi"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="21_y3es2"]
 [ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="22_2yns8"]
+[ext_resource type="SpriteFrames" uid="uid://we3g65bpiba4" path="res://scenes/game_elements/characters/components/sprite_frames/capycorn_purple.tres" id="23_2yns8"]
+[ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_logic/sprite_behaviors/random_frame_sprite_behavior.gd" id="24_5c5pq"]
+[ext_resource type="SpriteFrames" uid="uid://b0ba41utstkyk" path="res://scenes/game_elements/characters/components/sprite_frames/sheep.tres" id="24_43hb3"]
+[ext_resource type="SpriteFrames" uid="uid://dvgkthnd2qo4y" path="res://scenes/game_elements/characters/components/sprite_frames/bunny_pink.tres" id="25_16jok"]
+[ext_resource type="SpriteFrames" uid="uid://d0sqoy5x0tfum" path="res://scenes/game_elements/characters/components/sprite_frames/capycorn_light_brown.tres" id="25_c4nxe"]
+[ext_resource type="SpriteFrames" uid="uid://bq7qvwju02mtx" path="res://scenes/game_elements/characters/components/sprite_frames/bunny_brown.tres" id="25_o57pd"]
 
 [sub_resource type="Animation" id="Animation_kuea1"]
 length = 0.001
@@ -232,7 +238,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_tn5hb"]
 resource_name = "retreat"
-length = 6.0
+length = 10.0
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -514,6 +520,55 @@ sprite_frames = ExtResource("22_2yns8")
 [node name="Bush2" parent="OnTheGround/Bushes" unique_id=1998070032 instance=ExtResource("21_y3es2")]
 position = Vector2(971, 246)
 
+[node name="Animals" type="Node2D" parent="OnTheGround" unique_id=502881433]
+y_sort_enabled = true
+
+[node name="AnimatedSprite2D6" type="AnimatedSprite2D" parent="OnTheGround/Animals" unique_id=668378154]
+position = Vector2(936, 216)
+sprite_frames = ExtResource("25_c4nxe")
+animation = &"idle"
+autoplay = "idle"
+flip_h = true
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/Animals/AnimatedSprite2D6" unique_id=290214502 node_paths=PackedStringArray("sprite")]
+script = ExtResource("24_5c5pq")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
+[node name="AnimatedSprite2D7" type="AnimatedSprite2D" parent="OnTheGround/Animals" unique_id=404320947]
+position = Vector2(704, 256)
+sprite_frames = ExtResource("25_16jok")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/Animals/AnimatedSprite2D7" unique_id=121310299 node_paths=PackedStringArray("sprite")]
+script = ExtResource("24_5c5pq")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
+[node name="AnimatedSprite2D8" type="AnimatedSprite2D" parent="OnTheGround/Animals" unique_id=2003367543]
+position = Vector2(256, 456)
+sprite_frames = ExtResource("24_43hb3")
+animation = &"idle"
+autoplay = "idle"
+flip_h = true
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/Animals/AnimatedSprite2D8" unique_id=380327128 node_paths=PackedStringArray("sprite")]
+script = ExtResource("24_5c5pq")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
+[node name="AnimatedSprite2D9" type="AnimatedSprite2D" parent="OnTheGround/Animals" unique_id=1044349689]
+position = Vector2(200, 488)
+sprite_frames = ExtResource("24_43hb3")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/Animals/AnimatedSprite2D9" unique_id=208961258 node_paths=PackedStringArray("sprite")]
+script = ExtResource("24_5c5pq")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
 [node name="PropsHidden" type="Node2D" parent="OnTheGround" unique_id=576116804]
 modulate = Color(1, 1, 1, 0)
 y_sort_enabled = true
@@ -550,6 +605,85 @@ sprite_frames = ExtResource("22_2yns8")
 
 [node name="Bush11" parent="OnTheGround/PropsHidden" unique_id=2044569790 instance=ExtResource("21_y3es2")]
 position = Vector2(288, 671)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/PropsHidden" unique_id=735367860]
+position = Vector2(824, 688)
+sprite_frames = ExtResource("23_2yns8")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/PropsHidden/AnimatedSprite2D" unique_id=1536633519 node_paths=PackedStringArray("sprite")]
+script = ExtResource("24_5c5pq")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
+[node name="AnimatedSprite2D5" type="AnimatedSprite2D" parent="OnTheGround/PropsHidden" unique_id=1738558372]
+position = Vector2(913, 687)
+sprite_frames = ExtResource("25_o57pd")
+animation = &"idle"
+autoplay = "idle"
+flip_h = true
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/PropsHidden/AnimatedSprite2D5" unique_id=158093101 node_paths=PackedStringArray("sprite")]
+script = ExtResource("24_5c5pq")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="OnTheGround/PropsHidden" unique_id=943134949]
+position = Vector2(1064, 608)
+sprite_frames = ExtResource("24_43hb3")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/PropsHidden/AnimatedSprite2D2" unique_id=581013323 node_paths=PackedStringArray("sprite")]
+script = ExtResource("24_5c5pq")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="OnTheGround/PropsHidden" unique_id=1740347437]
+position = Vector2(1032, 632)
+sprite_frames = ExtResource("24_43hb3")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/PropsHidden/AnimatedSprite2D3" unique_id=83849283 node_paths=PackedStringArray("sprite")]
+script = ExtResource("24_5c5pq")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
+[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="OnTheGround/PropsHidden" unique_id=455756012]
+position = Vector2(1152, 624)
+sprite_frames = ExtResource("24_43hb3")
+animation = &"idle"
+autoplay = "idle"
+flip_h = true
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/PropsHidden/AnimatedSprite2D4" unique_id=1232128331 node_paths=PackedStringArray("sprite")]
+script = ExtResource("24_5c5pq")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
+[node name="AnimatedSprite2D6" type="AnimatedSprite2D" parent="OnTheGround/PropsHidden" unique_id=2130944958]
+position = Vector2(640, 744)
+sprite_frames = ExtResource("24_43hb3")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/PropsHidden/AnimatedSprite2D6" unique_id=353533677 node_paths=PackedStringArray("sprite")]
+script = ExtResource("24_5c5pq")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
+[node name="AnimatedSprite2D7" type="AnimatedSprite2D" parent="OnTheGround/PropsHidden" unique_id=1560640793]
+position = Vector2(456, 680)
+sprite_frames = ExtResource("24_43hb3")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="OnTheGround/PropsHidden/AnimatedSprite2D7" unique_id=156746617 node_paths=PackedStringArray("sprite")]
+script = ExtResource("24_5c5pq")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
 
 [node name="HUD" parent="." unique_id=1203174168 instance=ExtResource("3_nphcy")]
 
