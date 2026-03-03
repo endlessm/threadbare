@@ -16,3 +16,14 @@ func randomize() -> void:
 	else:
 		# 50% chances of having something in between.
 		gpu_particles_2d.amount_ratio = randf_range(0.1, 0.8)
+
+
+func fade_in(_duration: float = 1) -> void:
+	gpu_particles_2d.emitting = true
+	visible = true
+
+
+func fade_out(_duration: float = 1) -> void:
+	gpu_particles_2d.emitting = false
+	await gpu_particles_2d.finished
+	visible = false
