@@ -16,9 +16,11 @@
 [ext_resource type="Texture2D" uid="uid://cy66l5b3uox84" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage2.png" id="9_g6oum"]
 [ext_resource type="Texture2D" uid="uid://c8xgl7dcju5h7" path="res://scenes/game_elements/props/buildings/house/components/House_Patch_Blue_03.png" id="11_tn5hb"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="12_6i34l"]
-[ext_resource type="PackedScene" uid="uid://bs6vm2sdawbhh" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/townie.tscn" id="13_t5n3s"]
+[ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="13_wty5d"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="14_pditp"]
 [ext_resource type="Texture2D" uid="uid://ol20om7xc1o7" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage1.png" id="14_tl8te"]
 [ext_resource type="Texture2D" uid="uid://0xceungm1p8a" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage2.png" id="15_hbvq8"]
+[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="15_tje2f"]
 [ext_resource type="Texture2D" uid="uid://be3845r07rhkm" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage3.png" id="16_7wffi"]
 [ext_resource type="Texture2D" uid="uid://lylpujgq8e4v" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage1.png" id="17_g6oum"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="19_hbvq8"]
@@ -32,151 +34,154 @@
 [ext_resource type="SpriteFrames" uid="uid://d0sqoy5x0tfum" path="res://scenes/game_elements/characters/components/sprite_frames/capycorn_light_brown.tres" id="25_c4nxe"]
 [ext_resource type="SpriteFrames" uid="uid://bq7qvwju02mtx" path="res://scenes/game_elements/characters/components/sprite_frames/bunny_brown.tres" id="25_o57pd"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e2p5u"]
+size = Vector2(90, 86)
+
 [sub_resource type="Animation" id="Animation_kuea1"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Townie3:visible")
+tracks/0/path = NodePath("OnTheGround/Houses/House_8:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [ExtResource("16_7wffi")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Townie4:visible")
+tracks/1/path = NodePath("OnTheGround/Houses/House_6:texture")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [ExtResource("16_7wffi")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("OnTheGround/Townie5:visible")
+tracks/2/path = NodePath("OnTheGround/Houses/House_4:texture")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [ExtResource("15_hbvq8")]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("OnTheGround/Houses/House_8:texture")
+tracks/3/path = NodePath("OnTheGround/Houses/House_3:texture")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("16_7wffi")]
+"values": [ExtResource("9_g6oum")]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("OnTheGround/Houses/House_6:texture")
+tracks/4/path = NodePath("Camera2D:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("16_7wffi")]
+"update": 0,
+"values": [Vector2(0, 0)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("OnTheGround/Houses/House_4:texture")
+tracks/5/path = NodePath("TileMapLayers/Void:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("15_hbvq8")]
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("OnTheGround/Houses/House_3:texture")
+tracks/6/path = NodePath("OnTheGround/StoryWeaver-NonPlayable!:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("9_g6oum")]
+"update": 0,
+"values": [Vector2(757, 404)]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Camera2D:position")
+tracks/7/path = NodePath("OnTheGround/StoryWeaver-NonPlayable!:animation")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
+"update": 1,
+"values": [&"idle"]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("TileMapLayers/Void:modulate")
+tracks/8/path = NodePath("OnTheGround/PropsHidden:modulate")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("OnTheGround/StoryWeaver-NonPlayable!:position")
+tracks/9/path = NodePath("OnTheGround/Townie3:visible")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(757, 404)]
+"update": 1,
+"values": [false]
 }
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("OnTheGround/StoryWeaver-NonPlayable!:animation")
+tracks/10/path = NodePath("OnTheGround/Townie4:visible")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"idle"]
+"values": [false]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("OnTheGround/PropsHidden:modulate")
+tracks/11/path = NodePath("OnTheGround/Townie5:visible")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_8lys0"]
@@ -282,86 +287,86 @@ resource_name = "reveal"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Townie3:visible")
+tracks/0/path = NodePath("OnTheGround/Houses/House_8:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [ExtResource("14_tl8te")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Townie4:visible")
+tracks/1/path = NodePath("OnTheGround/Houses/House_6:texture")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [ExtResource("14_tl8te")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("OnTheGround/Townie5:visible")
+tracks/2/path = NodePath("OnTheGround/Houses/House_4:texture")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [ExtResource("14_tl8te")]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("OnTheGround/Houses/House_8:texture")
+tracks/3/path = NodePath("OnTheGround/Houses/House_3:texture")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("14_tl8te")]
+"values": [ExtResource("17_g6oum")]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("OnTheGround/Houses/House_6:texture")
+tracks/4/path = NodePath("OnTheGround/Townie3:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("14_tl8te")]
+"values": [true]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("OnTheGround/Houses/House_4:texture")
+tracks/5/path = NodePath("OnTheGround/Townie4:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("14_tl8te")]
+"values": [true]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("OnTheGround/Houses/House_3:texture")
+tracks/6/path = NodePath("OnTheGround/Townie5:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("17_g6oum")]
+"values": [true]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tbkr8"]
@@ -422,23 +427,56 @@ sprite_frames = ExtResource("12_6i34l")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="Townie" parent="OnTheGround" unique_id=2004155774 instance=ExtResource("13_t5n3s")]
-position = Vector2(932, 386)
+[node name="Townie" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("13_wty5d")]
+position = Vector2(960, 440)
+rotation = 3.1415927
+scale = Vector2(1, -1)
+character_seed = 1494307959
 
-[node name="Townie2" parent="OnTheGround" unique_id=535444218 instance=ExtResource("13_t5n3s")]
-position = Vector2(964, 444)
+[node name="Townie2" parent="OnTheGround" unique_id=1617254333 instance=ExtResource("13_wty5d")]
+position = Vector2(928, 384)
+rotation = 3.1415927
+scale = Vector2(1, -1)
+character_seed = 2682917086
 
-[node name="Townie3" parent="OnTheGround" unique_id=2086147436 instance=ExtResource("13_t5n3s")]
+[node name="Townie3" parent="OnTheGround" unique_id=761264604 instance=ExtResource("13_wty5d")]
 visible = false
-position = Vector2(893, 526)
+position = Vector2(896, 528)
+rotation = 3.1415927
+scale = Vector2(1, -1)
+character_seed = 3087942009
 
-[node name="Townie4" parent="OnTheGround" unique_id=902884674 instance=ExtResource("13_t5n3s")]
+[node name="Townie4" parent="OnTheGround" unique_id=540660933 instance=ExtResource("13_wty5d")]
 visible = false
-position = Vector2(831, 538)
+position = Vector2(816, 544)
+rotation = 3.1415927
+scale = Vector2(1, -1)
+character_seed = 3622649909
 
-[node name="Townie5" parent="OnTheGround" unique_id=1749778137 instance=ExtResource("13_t5n3s")]
+[node name="Townie5" parent="OnTheGround" unique_id=319793089 instance=ExtResource("13_wty5d")]
 visible = false
-position = Vector2(697, 513)
+position = Vector2(696, 520)
+rotation = 3.1415927
+scale = Vector2(-1, -1)
+character_seed = 1897244511
+look_at_side = 1
+
+[node name="TalkBehavior" type="Node" parent="OnTheGround" unique_id=1147866878 node_paths=PackedStringArray("interact_area")]
+script = ExtResource("14_pditp")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
+
+[node name="InteractArea" parent="OnTheGround" unique_id=248145530 instance=ExtResource("15_tje2f")]
+visible = false
+position = Vector2(928, 424)
+rotation = 3.1415927
+scale = Vector2(1, -1)
+interact_label_position = Vector2(0, -100)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/InteractArea" unique_id=153059657]
+position = Vector2(-19, -11)
+shape = SubResource("RectangleShape2D_e2p5u")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
 [node name="Houses" type="Node2D" parent="OnTheGround" unique_id=1300750032]
 y_sort_enabled = true
@@ -696,3 +734,6 @@ limit_left = 0
 limit_top = 0
 limit_right = 1280
 limit_bottom = 1536
+
+[connection signal="interaction_ended" from="OnTheGround/InteractArea" to="OnTheGround/Townie" method="_on_interact_area_interaction_ended"]
+[connection signal="interaction_started" from="OnTheGround/InteractArea" to="OnTheGround/Townie" method="_on_interact_area_interaction_started"]
