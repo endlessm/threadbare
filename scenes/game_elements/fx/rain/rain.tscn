@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://hcmrrtp62iue"]
+
+[ext_resource type="Script" uid="uid://cj6sjml7vpydg" path="res://scenes/game_elements/fx/rain/components/rain.gd" id="1_63sw3"]
+
+[sub_resource type="Curve" id="Curve_63sw3"]
+_data = [Vector2(0, 0), 0.0, 0.4, 0, 1, Vector2(0.25, 0.1), 0.4, 1.4, 1, 1, Vector2(0.75, 0.8), 1.4, 0.79999995, 1, 1, Vector2(1, 1), 0.79999995, 0.0, 1, 0]
+point_count = 4
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_r1ek1"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_duxxr"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2vvub"]
+gradient = SubResource("Gradient_duxxr")
+width = 1
+height = 10
+fill_to = Vector2(0.042735044, 1)
+
+[sub_resource type="Curve" id="Curve_r1ek1"]
+_data = [Vector2(0, 0.23757458), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ns5r3"]
+curve = SubResource("Curve_r1ek1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r1ek1"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(1280, 0, 0)
+emission_shape = 3
+emission_box_extents = Vector3(1280, 1, 1)
+direction = Vector3(0, 1, 0)
+spread = 0.0
+initial_velocity_min = 100.0
+initial_velocity_max = 1000.0
+gravity = Vector3(0, 98, 0)
+scale_max = 5.0
+scale_over_velocity_max = 1000.0
+scale_over_velocity_curve = SubResource("CurveTexture_ns5r3")
+
+[node name="Rain" type="CanvasLayer" unique_id=1558838625]
+script = ExtResource("1_63sw3")
+rain_distribution = SubResource("Curve_63sw3")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1757968667]
+unique_name_in_owner = true
+modulate = Color(0.3575, 0.44733334, 0.55, 1)
+material = SubResource("CanvasItemMaterial_r1ek1")
+amount = 3000
+texture = SubResource("GradientTexture2D_2vvub")
+lifetime = 0.81
+speed_scale = 2.0
+process_material = SubResource("ParticleProcessMaterial_r1ek1")
