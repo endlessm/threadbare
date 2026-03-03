@@ -325,7 +325,7 @@ func change_lights(new_lights_on: bool, immediate: bool = false) -> void:
 
 
 ## Clear the per-scene state.
-func clear_per_scane_state() -> void:
+func clear_per_scene_state() -> void:
 	lights_on = false
 
 
