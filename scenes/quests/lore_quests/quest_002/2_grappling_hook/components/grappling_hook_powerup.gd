@@ -15,7 +15,6 @@ func _ready() -> void:
 
 
 func _on_button_item_collected() -> void:
-	var player: Player = get_tree().get_first_node_in_group("player")
 	LongerHook.grant_longer_hook(player)
 
 	# Zoom out the camera when collecting the powerup, because now the player
