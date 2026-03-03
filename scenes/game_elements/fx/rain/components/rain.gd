@@ -3,7 +3,7 @@
 @tool
 extends CanvasLayer
 
-@export_tool_button("Random Rain") var randomize_button: Callable = randomize
+@export_tool_button("Random Rain") var randomize_button: Callable = randomize_effect
 
 @export var _seed: int:
 	set = _set_seed
@@ -27,7 +27,7 @@ func _set_seed(new_seed: int) -> void:
 	gpu_particles_2d.amount_ratio = rain_amount
 
 
-func randomize() -> void:
+func randomize_effect() -> void:
 	_set_seed(randi())
 
 

@@ -192,8 +192,8 @@ func _on_lights_off_timer_timeout() -> void:
 
 
 func _on_clouds_shadow_start_timer_timeout() -> void:
-	if clouds_shadow.has_method("randomize"):
-		await clouds_shadow.randomize()
+	if clouds_shadow.has_method("randomize_effect"):
+		await clouds_shadow.randomize_effect()
 	if clouds_shadow.has_method("fade_in"):
 		clouds_shadow.fade_in()
 	_schedule_in_one_day(clouds_shadow_start_timer)
@@ -206,8 +206,8 @@ func _on_clouds_shadow_stop_timer_timeout() -> void:
 
 
 func _on_fog_start_timer_timeout() -> void:
-	if fog.has_method("randomize"):
-		await fog.randomize()
+	if fog.has_method("randomize_effect"):
+		await fog.randomize_effect()
 	if fog.has_method("fade_in"):
 		fog.fade_in()
 	_schedule_in_one_day(fog_start_timer)
