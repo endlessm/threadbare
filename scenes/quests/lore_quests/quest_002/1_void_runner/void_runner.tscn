@@ -38,6 +38,7 @@
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="28_oo13r"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="29_gbo6l"]
 [ext_resource type="PackedScene" uid="uid://cf3cbl12wt6vr" path="res://scenes/game_elements/props/buildings/temple/temple.tscn" id="37_kgem8"]
+[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter/components/teleporter.gd" id="39_5y4tu"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_05yrb"]
 vertices = PackedVector2Array(2927.9531, 1448.9609, 2920.039, 3273.8203, -1078, 3206.1563, -1078, 1433.0313)
@@ -60,6 +61,9 @@ point_count = 17
 script = ExtResource("23_amu0w")
 name = "Memory"
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7xlw5"]
+size = Vector2(151, 167)
 
 [node name="VoidRunner" type="Node2D" unique_id=506997450]
 metadata/_edit_lock_ = true
@@ -152,7 +156,7 @@ shape = SubResource("RectangleShape2D_kgem8")
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=1051216917 instance=ExtResource("4_85y51")]
-position = Vector2(38, 2855)
+position = Vector2(-864, 2917)
 player_name = "StoryWeaver"
 sprite_frames = ExtResource("5_46vkj")
 
@@ -1174,6 +1178,18 @@ position = Vector2(2461, 2732)
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=667119560]
 
 [node name="HUD" parent="." unique_id=1953354605 instance=ExtResource("29_gbo6l")]
+
+[node name="OverworldTeleporter" type="Area2D" parent="." unique_id=1303186387]
+collision_layer = 4
+script = ExtResource("39_5y4tu")
+next_scene = "uid://ds7q0lkarf2q5"
+spawn_point_path = NodePath("TeleportersAndSpawnPoints/Temple")
+exit_transition = 5
+metadata/_custom_type_script = "uid://hqdquinbimce"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OverworldTeleporter" unique_id=1819198331]
+position = Vector2(-1013, 3047.5)
+shape = SubResource("RectangleShape2D_7xlw5")
 
 [connection signal="body_entered" from="EnemyTrigger" to="OnTheGround/VoidSpreadingEnemy" method="start" flags=6]
 [connection signal="body_entered" from="GoalReachedTrigger" to="OnTheGround/VoidSpreadingEnemy" method="defeat" flags=6 unbinds=1]

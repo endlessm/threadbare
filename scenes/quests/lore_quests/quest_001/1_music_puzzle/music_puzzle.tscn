@@ -45,6 +45,7 @@
 [ext_resource type="AudioStream" uid="uid://c7om8kdork2rx" path="res://assets/third_party/sounds/characters/enemies/guard/Torch.ogg" id="31_ink4c"]
 [ext_resource type="SpriteFrames" uid="uid://cefk7kf0bpm3q" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign_backward.tres" id="32_0wfv2"]
 [ext_resource type="AudioStream" uid="uid://xuqj6b5qqs3w" path="res://assets/third_party/sounds/ambient/459405__pfannkuchn__small-river-1-fast-semi-close.ogg" id="35_l8fgn"]
+[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter/components/teleporter.gd" id="46_ftljy"]
 
 [sub_resource type="Resource" id="Resource_dp3eg"]
 script = ExtResource("15_rxyid")
@@ -61,6 +62,9 @@ _data = {
 "points": PackedVector2Array(0, 0, 0, 0, -408, 1104, -178.928, -15.944, 178.928, 15.944, 280, 1056, -246.247, 7.08624, 246.247, -7.08624, 1144, 1160, -441.119, -17.7156, 441.119, 17.7156, 2776, 1048)
 }
 point_count = 4
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ftljy"]
+size = Vector2(849, 131.5)
 
 [node name="MusicPuzzle" type="Node2D" unique_id=1049570333]
 
@@ -1486,11 +1490,11 @@ collision_mask = 0
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="ForestCollider" unique_id=1608983045]
 position = Vector2(-132, 140)
-polygon = PackedVector2Array(728, 2042, 726, 1901, 521, 1907, 217, 1904, 231, 1832, 198, 1767, 171, 1706, 202, 1667, 203, 1606, 282, 1497, 269, 1430, 230, 1402, 3, 1188, 51, 1170, 62, 967, 90, 869, 59, 788, 84, 649, 133, 539, 131, 472, 183, 426, 257, 440, 384, 365, 449, 374, 560, 304, 619, 332, 830, 311, 819, -43, 812, -290, 808, -511, -954, -513, -960, 384, -954, 2047)
+polygon = PackedVector2Array(214, 2037, 217, 1904, 231, 1832, 198, 1767, 171, 1706, 202, 1667, 203, 1606, 282, 1497, 269, 1430, 230, 1402, 3, 1188, 51, 1170, 62, 967, 90, 869, 59, 788, 84, 649, 133, 539, 131, 472, 183, 426, 257, 440, 384, 365, 449, 374, 560, 304, 619, 332, 830, 311, 819, -43, 812, -290, 808, -511, -954, -513, -960, 384, -954, 2047)
 
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="ForestCollider" unique_id=129910360]
 position = Vector2(129, 5)
-polygon = PackedVector2Array(856, 1866, 857, 1793, 857, 1690, 844, 1655, 897, 1553, 976, 1539, 1025, 1482, 1051, 1298, 1017, 1197, 1040, 1087, 1076, 1020, 1060, 928, 1060, 770, 1064, 677, 1007, 550, 749, 470, 654, 487, 567, 434, 533, -385, 2040, -381, 2048, 2048, 2056, 2176, 448, 2172, 448, 2037, 768, 2036, 877, 1949)
+polygon = PackedVector2Array(856, 1866, 857, 1793, 857, 1690, 844, 1655, 897, 1553, 976, 1539, 1025, 1482, 1051, 1298, 1017, 1197, 1040, 1087, 1076, 1020, 1060, 928, 1060, 770, 1064, 677, 1007, 550, 749, 470, 654, 487, 567, 434, 533, -385, 2040, -381, 2048, 2048, 2056, 2176, 801, 2167, 768, 2036, 877, 1949)
 
 [node name="ForestSoundPath" type="Path2D" parent="." unique_id=623080982]
 curve = SubResource("Curve2D_306df")
@@ -1525,5 +1529,18 @@ max_distance = 1000.0
 attenuation = 1.41421
 panning_strength = 0.0
 bus = &"SFX"
+
+[node name="Teleporter" type="Area2D" parent="." unique_id=2134038909]
+collision_layer = 4
+script = ExtResource("46_ftljy")
+next_scene = "uid://ds7q0lkarf2q5"
+spawn_point_path = NodePath("TeleportersAndSpawnPoints/SongSanctuary")
+enter_transition = 5
+exit_transition = 4
+metadata/_custom_type_script = "uid://hqdquinbimce"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" unique_id=1265317109]
+position = Vector2(503.5, 2113.25)
+shape = SubResource("RectangleShape2D_ftljy")
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/SequencePuzzle/CollectibleItem" method="reveal"]
