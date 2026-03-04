@@ -17,9 +17,13 @@
 [ext_resource type="SpriteFrames" uid="uid://brspwu70qbdaf" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_blue.tres" id="9_htidp"]
 [ext_resource type="SpriteFrames" uid="uid://d36eq8tqdaxdy" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_green.tres" id="10_wps5n"]
 [ext_resource type="PackedScene" uid="uid://lfvn4u30s4yf" path="res://scenes/game_elements/props/buildings/house/house_1.tscn" id="11_2x7c2"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="11_ovokv"]
 [ext_resource type="Texture2D" uid="uid://cvm2x4fhekowd" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Blue_03.png" id="12_feqgw"]
+[ext_resource type="Resource" uid="uid://dx773k0ovb35j" path="res://scenes/world_map/components/oscar.dialogue" id="12_otyi0"]
+[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="13_8o6qx"]
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="13_ltemt"]
 [ext_resource type="Texture2D" uid="uid://d2kjk3oiu5o6o" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Blue_02.png" id="13_qm4wv"]
+[ext_resource type="Resource" uid="uid://d4kkr5cifitfm" path="res://scenes/world_map/components/sigurd.dialogue" id="14_otyi0"]
 [ext_resource type="SpriteFrames" uid="uid://b0ba41utstkyk" path="res://scenes/game_elements/characters/components/sprite_frames/sheep.tres" id="20_feqgw"]
 [ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_logic/sprite_behaviors/random_frame_sprite_behavior.gd" id="21_qm4wv"]
 [ext_resource type="SpriteFrames" uid="uid://7yx2vrxg6ytx" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_blue_large.tres" id="22_y5day"]
@@ -28,7 +32,10 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8hv4q"]
 size = Vector2(128, 128)
 
-[node name="WestOfFraysEnd" type="Node2D" unique_id=1575051889]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kxo1k"]
+size = Vector2(52, 61)
+
+[node name="FraysEndWest" type="Node2D" unique_id=1575051889]
 metadata/_edit_vertical_guides_ = [1281.0]
 metadata/_edit_horizontal_guides_ = [772.0]
 
@@ -96,15 +103,47 @@ limit_bottom = 896
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="Townie" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("5_wf3xu")]
+[node name="Oscar" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("5_wf3xu")]
 position = Vector2(544, 255)
 character_seed = 2842990351
 
-[node name="Townie2" parent="OnTheGround" unique_id=1735084916 instance=ExtResource("5_wf3xu")]
+[node name="TalkBehavior" type="Node" parent="OnTheGround/Oscar" unique_id=1625775301 node_paths=PackedStringArray("interact_area")]
+script = ExtResource("11_ovokv")
+dialogue = ExtResource("12_otyi0")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
+
+[node name="InteractArea" parent="OnTheGround/Oscar" unique_id=248145530 instance=ExtResource("13_8o6qx")]
+visible = false
+interact_label_position = Vector2(0, -100)
+action = "Talk to Óscar"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Oscar/InteractArea" unique_id=1380061781]
+position = Vector2(0, -23.5)
+shape = SubResource("RectangleShape2D_kxo1k")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="Sigurd" parent="OnTheGround" unique_id=1735084916 instance=ExtResource("5_wf3xu")]
 position = Vector2(429, 271)
 scale = Vector2(-1, 1)
 character_seed = 3839842409
 look_at_side = 1
+
+[node name="TalkBehavior" type="Node" parent="OnTheGround/Sigurd" unique_id=1769151024 node_paths=PackedStringArray("interact_area")]
+script = ExtResource("11_ovokv")
+dialogue = ExtResource("14_otyi0")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
+
+[node name="InteractArea" parent="OnTheGround/Sigurd" unique_id=113255734 instance=ExtResource("13_8o6qx")]
+visible = false
+interact_label_position = Vector2(0, -100)
+action = "Talk to Sigurd"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Sigurd/InteractArea" unique_id=728137002]
+position = Vector2(0, -23.5)
+shape = SubResource("RectangleShape2D_kxo1k")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
 [node name="Sign" parent="OnTheGround" unique_id=1579530966 instance=ExtResource("6_eitnf")]
 position = Vector2(1171, 621)
