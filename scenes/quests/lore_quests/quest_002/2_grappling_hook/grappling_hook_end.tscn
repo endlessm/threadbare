@@ -13,7 +13,6 @@
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="8_nt6an"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="9_x5deh"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="10_qkedd"]
-[ext_resource type="Script" uid="uid://d2m5qm4ranctd" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/switch_mode_area.gd" id="11_ygswq"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="12_wrdap"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="14_hf4li"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="14_j6qjo"]
@@ -24,9 +23,6 @@ script = ExtResource("9_x5deh")
 name = "Imagination"
 type = 1
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_b0r3o"]
-size = Vector2(131, 87)
 
 [node name="GrapplingHookEnd" type="Node2D" unique_id=2075725183]
 script = ExtResource("1_1dsdq")
@@ -204,15 +200,6 @@ sprite_frames = ExtResource("15_nt6an")
 [node name="Bush14" parent="OnTheGround/Bushes" unique_id=497586474 instance=ExtResource("14_hf4li")]
 position = Vector2(261, 440)
 
-[node name="SwitchModeArea" type="Area2D" parent="." unique_id=523599684]
-position = Vector2(1434, 532)
-collision_layer = 0
-script = ExtResource("11_ygswq")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SwitchModeArea" unique_id=553066267]
-position = Vector2(-1, 0)
-shape = SubResource("RectangleShape2D_b0r3o")
-
 [node name="SpawnPointEnter" type="Marker2D" parent="." unique_id=1163506455 groups=["spawn_point"]]
 position = Vector2(2691, 545)
 script = ExtResource("14_j6qjo")
@@ -222,6 +209,3 @@ metadata/_custom_type_script = "uid://0enyu5v4ra34"
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1646643121]
 
 [node name="HUD" parent="." unique_id=919464251 instance=ExtResource("12_wrdap")]
-
-[connection signal="body_entered" from="SwitchModeArea" to="SwitchModeArea" method="_on_body_entered"]
-[connection signal="body_exited" from="SwitchModeArea" to="SwitchModeArea" method="_on_body_exited"]
