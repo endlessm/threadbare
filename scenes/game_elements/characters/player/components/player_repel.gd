@@ -1,13 +1,18 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+class_name PlayerRepel
 extends Node2D
 
-var is_fighting: bool = false
+## Emitted when the repel starts or stops.
+signal repelling_changed(repelling: bool)
+
+## Current state of the repel.
+var repelling: bool = false:
+	set = _set_repelling
 
 @onready var hit_box: Area2D = %HitBox
 @onready var got_hit_animation: AnimationPlayer = %GotHitAnimation
 @onready var air_stream: Area2D = %AirStream
-@onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 
 @onready var player: Player = self.owner as Player
 
@@ -17,11 +22,16 @@ func _ready() -> void:
 	air_stream.body_entered.connect(_on_air_stream_body_entered)
 
 
+func _set_repelling(new_repelling: bool) -> void:
+	repelling = new_repelling
+	repelling_changed.emit(repelling)
+
+
 func _unhandled_input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed(&"repel"):
-		is_fighting = true
+		repelling = true
 	elif Input.is_action_just_released(&"repel"):
-		is_fighting = false
+		repelling = false
 
 
 func _on_body_entered(body: Node2D) -> void:
