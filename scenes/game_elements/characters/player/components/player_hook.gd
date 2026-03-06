@@ -273,7 +273,7 @@ func get_ending_area() -> HookableArea:
 	return areas_hooked[-1]
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not is_instance_valid(hook_string):
 		return
 	if pulling:
