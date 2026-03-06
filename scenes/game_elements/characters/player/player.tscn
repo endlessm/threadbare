@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://necvar42rnih" path="res://scenes/game_elements/characters/player/components/interact_zone.gd" id="6_3in67"]
 [ext_resource type="PackedScene" uid="uid://yfpfno276rol" path="res://scenes/game_elements/props/fixed_size_label/fixed_size_label.tscn" id="6_h17s1"]
 [ext_resource type="Script" uid="uid://e78f8iq448e1" path="res://scenes/game_elements/characters/player/components/animation_player.gd" id="7_0owmy"]
-[ext_resource type="Script" uid="uid://kni2yl26matc" path="res://scenes/game_elements/characters/player/components/player_fighting.gd" id="7_5gtgg"]
+[ext_resource type="Script" uid="uid://kni2yl26matc" path="res://scenes/game_elements/characters/player/components/player_repel.gd" id="7_5gtgg"]
 [ext_resource type="Texture2D" uid="uid://dda0lxfswrncy" path="res://scenes/game_elements/characters/player/components/blow.png" id="9_je7p5"]
 [ext_resource type="AudioStream" uid="uid://crfylo055wa8e" path="res://scenes/game_elements/characters/player/components/blow.wav" id="10_fm80t"]
 [ext_resource type="AudioStream" uid="uid://cx6jv2cflrmqu" path="res://assets/third_party/sounds/characters/player/Foot.ogg" id="11_blfj0"]
@@ -117,11 +117,6 @@ _data = {
 &"got_hit": SubResource("Animation_4ypcv")
 }
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_75vfm"]
-closed = false
-cull_mode = 1
-polygon = PackedVector2Array(7, 7, 24, -20, 14, -49, -3, -74, -17, -61, -17, -42, -31, -42, -27, -8, 6, 7)
-
 [sub_resource type="Animation" id="Animation_0owmy"]
 length = 0.001
 tracks/0/type = "value"
@@ -151,7 +146,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("PlayerFighting/AirStream/AirStreamCollision:disabled")
+tracks/2/path = NodePath("PlayerRepel/AirStream/AirStreamCollision:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -163,7 +158,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("PlayerFighting/AirStream/AirStreamCollision:shape:radius")
+tracks/3/path = NodePath("PlayerRepel/AirStream/AirStreamCollision:shape:radius")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -175,7 +170,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("PlayerFighting/AirStream:position")
+tracks/4/path = NodePath("PlayerRepel/AirStream:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -187,7 +182,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("PlayerFighting/AirStream/Sprite2D:visible")
+tracks/5/path = NodePath("PlayerRepel/AirStream/Sprite2D:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -199,7 +194,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("PlayerFighting/AirStream/Sprite2D:scale")
+tracks/6/path = NodePath("PlayerRepel/AirStream/Sprite2D:scale")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -211,7 +206,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("PlayerFighting/AirStream/Sprite2D:modulate")
+tracks/7/path = NodePath("PlayerRepel/AirStream/Sprite2D:modulate")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -282,12 +277,11 @@ tracks/1/keys = {
 [sub_resource type="Animation" id="Animation_u5klv"]
 resource_name = "repel"
 length = 0.6
-loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerFighting/AirStream/AirStreamCollision:disabled")
+tracks/0/path = NodePath("PlayerRepel/AirStream/AirStreamCollision:disabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -323,7 +317,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("PlayerFighting/AirStream/AirStreamCollision:shape:radius")
+tracks/3/path = NodePath("PlayerRepel/AirStream/AirStreamCollision:shape:radius")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -335,7 +329,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("PlayerFighting/AirStream:position")
+tracks/4/path = NodePath("PlayerRepel/AirStream:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -347,7 +341,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("PlayerFighting/AirStream/Sprite2D:visible")
+tracks/5/path = NodePath("PlayerRepel/AirStream/Sprite2D:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -359,7 +353,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("PlayerFighting/AirStream/Sprite2D:scale")
+tracks/6/path = NodePath("PlayerRepel/AirStream/Sprite2D:scale")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -371,7 +365,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("PlayerFighting/AirStream/Sprite2D:modulate")
+tracks/7/path = NodePath("PlayerRepel/AirStream/Sprite2D:modulate")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -383,7 +377,7 @@ tracks/7/keys = {
 tracks/8/type = "audio"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("PlayerFighting/AirStream/AudioStreamPlayer2D")
+tracks/8/path = NodePath("PlayerRepel/AirStream/AudioStreamPlayer2D")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -594,40 +588,36 @@ offset_bottom = 11.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PlayerFighting" type="Node2D" parent="." unique_id=1745412343]
+[node name="PlayerRepel" type="Node2D" parent="." unique_id=1745412343]
 unique_name_in_owner = true
-process_mode = 4
-visible = false
 script = ExtResource("7_5gtgg")
 
-[node name="AirStream" type="Area2D" parent="PlayerFighting" unique_id=642627191]
+[node name="AirStream" type="Area2D" parent="PlayerRepel" unique_id=642627191]
 unique_name_in_owner = true
 position = Vector2(0, -24)
 collision_layer = 0
 collision_mask = 256
 
-[node name="AirStreamCollision" type="CollisionShape2D" parent="PlayerFighting/AirStream" unique_id=2073501549]
+[node name="AirStreamCollision" type="CollisionShape2D" parent="PlayerRepel/AirStream" unique_id=2073501549]
 unique_name_in_owner = true
 shape = SubResource("CircleShape2D_h17s1")
 disabled = true
 
-[node name="Sprite2D" type="Sprite2D" parent="PlayerFighting/AirStream" unique_id=2035148168]
+[node name="Sprite2D" type="Sprite2D" parent="PlayerRepel/AirStream" unique_id=2035148168]
 visible = false
 material = SubResource("CanvasItemMaterial_je7p5")
 scale = Vector2(0.12577, 0.12577)
 texture = ExtResource("9_je7p5")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PlayerFighting/AirStream" unique_id=25920746]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PlayerRepel/AirStream" unique_id=25920746]
 bus = &"SFX"
 
-[node name="GotHitAnimation" type="AnimationPlayer" parent="PlayerFighting" unique_id=1067804411]
+[node name="GotHitAnimation" type="AnimationPlayer" parent="PlayerRepel" unique_id=1067804411]
 unique_name_in_owner = true
 libraries/ = SubResource("AnimationLibrary_1n58k")
 
 [node name="PlayerHook" type="Node2D" parent="." unique_id=1215042910 groups=["hook_listener"]]
 unique_name_in_owner = true
-process_mode = 4
-visible = false
 position = Vector2(0, -20)
 script = ExtResource("11_nrnyj")
 
@@ -635,11 +625,6 @@ script = ExtResource("11_nrnyj")
 state = 1
 
 [node name="HookEnding" type="Marker2D" parent="PlayerHook" unique_id=94764927]
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=747608118]
-visible = false
-occluder = SubResource("OccluderPolygon2D_75vfm")
-sdf_collision = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=683750023]
 unique_name_in_owner = true

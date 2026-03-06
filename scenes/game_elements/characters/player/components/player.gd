@@ -75,7 +75,7 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 var input_vector: Vector2
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
-@onready var player_fighting: Node2D = %PlayerFighting
+@onready var player_repel: Node2D = %PlayerRepel
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
@@ -87,26 +87,15 @@ func _set_mode(new_mode: Mode) -> void:
 	if not is_node_ready():
 		return
 	match mode:
-		Mode.COZY:
-			_toggle_player_behavior(player_interaction, true)
-			_toggle_player_behavior(player_fighting, false)
-			_toggle_player_behavior(player_hook, false)
-			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
-		Mode.FIGHTING:
-			_toggle_player_behavior(player_interaction, false)
-			_toggle_player_behavior(player_fighting, true)
-			_toggle_player_behavior(player_hook, false)
-			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
-		Mode.HOOKING:
-			_toggle_player_behavior(player_interaction, false)
-			_toggle_player_behavior(player_fighting, false)
-			_toggle_player_behavior(player_hook, true)
-			Input.set_default_cursor_shape(Input.CURSOR_CROSS)
 		Mode.DEFEATED:
 			_toggle_player_behavior(player_interaction, false)
-			_toggle_player_behavior(player_fighting, false)
+			_toggle_player_behavior(player_repel, false)
 			_toggle_player_behavior(player_hook, false)
-			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+		_:
+			_toggle_player_behavior(player_interaction, true)
+			_toggle_player_behavior(player_repel, true)
+			_toggle_player_behavior(player_hook, true)
+
 	if mode != previous_mode:
 		mode_changed.emit(mode)
 
