@@ -184,11 +184,11 @@ func is_running() -> bool:
 	return input_vector.length_squared() > (walk_speed * walk_speed) + 1.0
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 
-	# While pulling the grappling hook, the movement is handled in PlayerHook._process.
+	# While pulling the grappling hook, the movement is handled in PlayerHook._physics_process.
 	if player_hook.pulling:
 		return
 
