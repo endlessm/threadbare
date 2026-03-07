@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://fdedj5gjhhh3"]
+
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_theme"]
+[ext_resource type="Script" uid="uid://ipkyvsxlcpiv" path="res://scenes/ui_elements/inventory/components/inventory.gd" id="2_script"]
+[ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="3_arrow"]
+
+[node name="Inventory" type="PanelContainer" unique_id=1518531873]
+custom_minimum_size = Vector2(800, 600)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_theme")
+script = ExtResource("2_script")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=716636447]
+layout_mode = 2
+
+[node name="TabBar" type="TabBar" parent="VBoxContainer" unique_id=935986579]
+unique_name_in_owner = true
+layout_mode = 2
+current_tab = 0
+tab_count = 1
+tab_0/title = "Trinkets"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=766950734]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemsGrid" type="GridContainer" parent="VBoxContainer/ScrollContainer" unique_id=824202967]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 5
+
+[node name="InspectPanel" type="PanelContainer" parent="VBoxContainer" unique_id=1837968640]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/InspectPanel" unique_id=1290645998]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/InspectPanel/MarginContainer" unique_id=1945517949]
+layout_mode = 2
+
+[node name="InspectIcon" type="TextureRect" parent="VBoxContainer/InspectPanel/MarginContainer/VBoxContainer" unique_id=439455063]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+expand_mode = 3
+stretch_mode = 5
+
+[node name="InspectText" type="RichTextLabel" parent="VBoxContainer/InspectPanel/MarginContainer/VBoxContainer" unique_id=1340829475]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CloseButton" type="Button" parent="VBoxContainer/InspectPanel/MarginContainer/VBoxContainer" unique_id=800569538]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+text = "Close"
+
+[node name="BackButton" type="Button" parent="VBoxContainer" unique_id=1566964954]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+text = "Back"
+icon = ExtResource("3_arrow")
+flat = true
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="VBoxContainer/InspectPanel/MarginContainer/VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
