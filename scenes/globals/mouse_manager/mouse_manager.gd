@@ -11,6 +11,7 @@ const MOUSE_CURSOR_CROSS = preload("uid://bx11wyx7unc4q")
 func _ready() -> void:
 	Input.set_custom_mouse_cursor(MOUSE_CURSOR_DEFAULT, Input.CURSOR_ARROW, Vector2(0, 0))
 	Input.set_custom_mouse_cursor(MOUSE_CURSOR_CROSS, Input.CURSOR_CROSS, Vector2(32, 32))
+	Input.set_default_cursor_shape(Input.CURSOR_CROSS)
 
 
 func _input(event: InputEvent) -> void:
