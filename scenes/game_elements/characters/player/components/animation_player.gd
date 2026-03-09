@@ -65,7 +65,8 @@ func _on_player_repel_repelling_changed(repelling: bool) -> void:
 
 func _on_player_hook_string_thrown() -> void:
 	# A new throw action (blading sword) interrupts the previous one.
-	if current_animation == &"throw_string":
+	# It also interrupts the repel action.
+	if current_animation in [&"repel", &"throw_string"]:
 		stop()
 	speed_scale = original_speed_scale
 	play(&"throw_string")
