@@ -26,6 +26,8 @@ func toggle_pause() -> void:
 	visible = new_state
 	get_tree().paused = new_state
 
+	Input.set_default_cursor_shape(Input.CURSOR_ARROW if new_state else Input.CURSOR_CROSS)
+
 	if new_state:
 		abandon_quest_button.visible = GameState.is_on_quest()
 		pause_menu.show()
