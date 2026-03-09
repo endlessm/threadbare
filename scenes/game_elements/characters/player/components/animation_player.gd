@@ -52,6 +52,10 @@ func _on_player_repel_repelling_changed(repelling: bool) -> void:
 	if not repelling:
 		return
 
+	# The repel animation is already ongoing. Prevent starting it again by smashing the buttons.
+	if current_animation == &"repel":
+		return
+
 	# Repel animation is being played for the first time. So skip the anticipation and go
 	# directly to the action.
 	speed_scale = original_speed_scale
