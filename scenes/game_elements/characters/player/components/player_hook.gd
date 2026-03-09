@@ -294,17 +294,19 @@ func _process_hook_string(delta: float) -> void:
 	# TODO: Only updates the endings. Connections are assumed static for now.
 
 	# Move last point to the player position.
-	hook_string.points[-1] = character.position + position
+	hook_string.set_point_position(hook_string.get_point_count() - 1, character.position + position)
 
 	var ending_area := get_ending_area()
 	if ending_area:
 		# Move first point to the hooked position.
-		hook_string.points[0] = ending_area.get_anchor_position()
+		hook_string.set_point_position(0, ending_area.get_anchor_position())
 
 	else:
 		# Not hooked, so a throw that hit air or wall.
 		# Progressively shorten the line.
-		hook_string.points[0] = hook_string.points[0].lerp(hook_string.points[1], 10.0 * delta)
+		hook_string.set_point_position(
+			0, hook_string.points[0].lerp(hook_string.points[1], 10.0 * delta)
+		)
 		# Remove the string when the line is short enough.
 		if (
 			(hook_string.points[1] - hook_string.points[0]).length_squared()
