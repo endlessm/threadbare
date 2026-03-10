@@ -96,6 +96,10 @@ jobs:
           name: web
           path: build
 
+      - name: Rename pck file
+        run: |
+          mv build/index.pck build/threadbare.pck
+
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
           bundle: threadbare.flatpak
