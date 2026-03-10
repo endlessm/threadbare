@@ -15,7 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="12_g3km8"]
 [ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="13_e4f0h"]
 [ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="14_s7qaw"]
-[ext_resource type="PackedScene" uid="uid://4u7dloafx55f" path="res://scenes/game_elements/props/teleporter/teleporter/teleporter.tscn" id="15_7fjxo"]
+[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="16_d01n5"]
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="16_qvyuv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_stvbe"]
@@ -121,8 +121,10 @@ metadata/_custom_type_script = "uid://bk52qjv58locq"
 position = Vector2(1348, 253)
 look_at_side_on_spawn = -1
 
-[node name="Teleporter" parent="." unique_id=812046722 instance=ExtResource("15_7fjxo")]
+[node name="Teleporter" type="Area2D" parent="." unique_id=812046722]
 position = Vector2(1401, 201)
+collision_layer = 4
+script = ExtResource("16_d01n5")
 next_scene = "uid://co2wxwlojq08k"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" unique_id=1238931458]

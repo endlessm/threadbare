@@ -17,13 +17,13 @@
 [ext_resource type="PackedScene" uid="uid://cokul8w425pja" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_spreading_enemy.tscn" id="9_3g3x4"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="9_vdhd3"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="10_upilw"]
-[ext_resource type="PackedScene" uid="uid://4u7dloafx55f" path="res://scenes/game_elements/props/teleporter/teleporter/teleporter.tscn" id="10_wxpj0"]
 [ext_resource type="PackedScene" uid="uid://cdwf2nmeqns31" path="res://scenes/ui_elements/input_hints/throw_hint.tscn" id="11_10ahs"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="11_p44d7"]
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="13_3g3x4"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="14_jqq45"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="18_wv4km"]
 [ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="19_6n4qp"]
+[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="20_wv4km"]
 [ext_resource type="PackedScene" uid="uid://cqkly1vjd6xhy" path="res://scenes/ui_elements/input_hints/aim_input_hint.tscn" id="23_wv4km"]
 
 [sub_resource type="Animation" id="Animation_w67qe"]
@@ -338,8 +338,10 @@ sprite_frames = ExtResource("19_6n4qp")
 [node name="Bush14" parent="OnTheGround/Bushes" unique_id=391246514 instance=ExtResource("18_wv4km")]
 position = Vector2(261, 440)
 
-[node name="Teleporter" parent="." unique_id=579212473 instance=ExtResource("10_wxpj0")]
+[node name="Teleporter" type="Area2D" parent="." unique_id=579212473]
 position = Vector2(2704, 1216)
+collision_layer = 4
+script = ExtResource("20_wv4km")
 next_scene = "uid://dpv6x7h2p2i3l"
 enter_transition = 2
 exit_transition = 1
