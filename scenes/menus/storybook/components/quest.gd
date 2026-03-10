@@ -42,6 +42,9 @@ const FILENAME := "quest.tres"
 ## [CollectibleItem]s in the quest.
 @export_range(0, 6, 1, "suffix:threads") var threads_to_collect: int = 3
 
+## Whether this is a lore quest (part of the main storyline).
+@export var is_lore_quest: bool = false
+
 @export_group("Animation")
 
 ## An optional sprite frame library to show in the storybook page for this quest.
