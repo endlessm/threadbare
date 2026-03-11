@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+~ start
+if puzzle.is_solved():
+	=> item_hint
+
+if puzzle.get_progress() >= 1 or not first_conversation:
+	=> hints
+
+set first_conversation = false
+
+{{npc_name}}: We meet again, {{player_name}}!
+{{npc_name}}: Once again, you must relight the altars by playing a melody on the colorful rocks.
+{{npc_name}}: Each altar contains the memory of a different tune. You must light each one in turn.
+{{npc_name}}: Lighting all three altars should reveal a thread of Spirit on the island furthest east from here.
+{{npc_name}}: But tread carefully: the altars are guarded by vicious StoryVores. Stay out of their sight! You should be safe if you stand north of the rocks.
+{{npc_name}}: You should be safe if you stand north of the rocks.
+{{npc_name}}: Good luck!
+=> END
+
+~ hints
+match puzzle.get_progress()
+	when 0
+		{{npc_name}}: For the first altar, tap the first rock, then the second rock.
+	when 1
+		{{npc_name}}: For the second altar, tap the second rock, then the third, and finally the first.
+		{{npc_name}}: The bridge between the second and third rocks broke long ago, so you will have to avoid the StoryVores.
+	when 2
+		{{npc_name}}: For the last altar, tap the third rock, then the second, and finally the fourth.
+		{{npc_name}}: You will need to move quickly and carefully to reach the fourth rock.
+		{{npc_name}}: When you have lit the flame, don't come back to me. Head east to find the thread of Spirit.
+{{npc_name}}: Good luck!
+=> END
+
+~ item_hint
+{{npc_name}}: Thank you, {{player_name}}! But our princess is in another castle!
+{{player_name}}: ???
+{{npc_name}}: I don't know where that came from.
+{{npc_name}}: I meant to say: the thread of Spirit is on another island.
+{{npc_name}}: Evade the StoryVores, and cross the long bridge to the east of here.
+{{npc_name}}: Farewell for now, {{player_name}}!
+=> END
