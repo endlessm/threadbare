@@ -56,7 +56,8 @@ func _ready() -> void:
 
 
 func _on_body_entered(_body: PhysicsBody2D) -> void:
-	if next_scene and next_scene != get_tree().current_scene.scene_file_path:
+	var next_scene_path := _get_next_scene_path()
+	if next_scene_path and next_scene_path != get_tree().current_scene.scene_file_path:
 		# We are using call_deferred here because removing nodes with
 		# collisions during a callback caused by a collision might cause
 		# undesired behavior.
@@ -86,10 +87,7 @@ func _teleport_to_spawn_point(spawn_point: SpawnPoint) -> void:
 
 
 func _get_next_scene_path() -> String:
-	if next_scene.begins_with("uid"):
-		return ResourceUID.get_id_path(ResourceUID.text_to_id(next_scene))
-
-	return next_scene
+	return ResourceUID.ensure_path(next_scene) if next_scene else ""
 
 
 func _update_available_spawn_points() -> void:
@@ -97,8 +95,7 @@ func _update_available_spawn_points() -> void:
 		return
 
 	var next_scene_path: String = _get_next_scene_path()
-
-	if not next_scene or next_scene_path == get_tree().edited_scene_root.scene_file_path:
+	if not next_scene_path or next_scene_path == get_tree().edited_scene_root.scene_file_path:
 		var spawn_points := get_tree().get_nodes_in_group("spawn_point")
 		_available_spawn_points.assign(
 			spawn_points.map(func(spawn_point: Node) -> String: return get_path_to(spawn_point))
