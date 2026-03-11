@@ -17,10 +17,10 @@
 [ext_resource type="Texture2D" uid="uid://c8xgl7dcju5h7" path="res://scenes/game_elements/props/buildings/house/components/House_Patch_Blue_03.png" id="11_tn5hb"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="12_6i34l"]
 [ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="13_wty5d"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="14_5uden"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="14_pditp"]
 [ext_resource type="Texture2D" uid="uid://ol20om7xc1o7" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage1.png" id="14_tl8te"]
 [ext_resource type="Texture2D" uid="uid://0xceungm1p8a" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage2.png" id="15_hbvq8"]
-[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="15_tje2f"]
 [ext_resource type="Texture2D" uid="uid://be3845r07rhkm" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage3.png" id="16_7wffi"]
 [ext_resource type="Texture2D" uid="uid://lylpujgq8e4v" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage1.png" id="17_g6oum"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="19_hbvq8"]
@@ -466,12 +466,16 @@ script = ExtResource("14_pditp")
 interact_area = NodePath("../InteractArea")
 metadata/_custom_type_script = "uid://edcifob4jc4s"
 
-[node name="InteractArea" parent="OnTheGround" unique_id=248145530 instance=ExtResource("15_tje2f")]
+[node name="InteractArea" type="Area2D" parent="OnTheGround" unique_id=248145530]
 visible = false
 position = Vector2(928, 424)
 rotation = 3.1415927
 scale = Vector2(1, -1)
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("14_5uden")
 interact_label_position = Vector2(0, -100)
+metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/InteractArea" unique_id=153059657]
 position = Vector2(-19, -11)
