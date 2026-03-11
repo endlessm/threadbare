@@ -156,7 +156,7 @@ func start_quest(
 
 	if not current_quest.is_lore_quest:
 		storyquest_player_abilities = 0
-		_state.set_value(QUEST_SECTION, QUEST_PLAYER_ABILITIES_KEY, storyquest_player_abilities)
+		# _state.set_value(QUEST_SECTION, QUEST_PLAYER_ABILITIES_KEY, storyquest_player_abilities)
 
 	# Reset lives when starting a new quest
 	reset_lives()
@@ -347,7 +347,8 @@ func set_ability(ability: Enums.PlayerAbilities, is_enabled: bool) -> void:
 	if _use_lore_abilities():
 		_state.set_value(GLOBAL_SECTION, LORE_PLAYER_ABILITIES_KEY, lore_player_abilities)
 	else:
-		_state.set_value(QUEST_SECTION, QUEST_PLAYER_ABILITIES_KEY, storyquest_player_abilities)
+		pass
+		# _state.set_value(QUEST_SECTION, QUEST_PLAYER_ABILITIES_KEY, storyquest_player_abilities)
 	_save()
 
 
@@ -475,7 +476,7 @@ func restore() -> Dictionary:
 	completed_quests = _state.get_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, [] as Array[String])
 
 	lore_player_abilities = _state.get_value(GLOBAL_SECTION, LORE_PLAYER_ABILITIES_KEY, 0)
-	storyquest_player_abilities = _state.get_value(QUEST_SECTION, QUEST_PLAYER_ABILITIES_KEY, 0)
+	# storyquest_player_abilities = _state.get_value(QUEST_SECTION, QUEST_PLAYER_ABILITIES_KEY, 0)
 
 	# Restore lives from saved state, default to MAX_LIVES if not found
 	current_lives = _state.get_value(GLOBAL_SECTION, LIVES_KEY, MAX_LIVES)
