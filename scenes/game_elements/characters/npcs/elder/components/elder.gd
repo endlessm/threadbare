@@ -86,9 +86,9 @@ func _before_dialogue() -> void:
 func _on_interaction_ended() -> void:
 	if chosen_quest:
 		interact_area.disabled = true
-		GameState.start_quest(chosen_quest)
+		var target := GameState.start_quest(chosen_quest)
 		SceneSwitcher.change_to_file_with_transition(
-			chosen_quest.first_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+			target.scene_path, target.spawn_point, Transition.Effect.FADE, Transition.Effect.FADE
 		)
 		chosen_quest = null
 
