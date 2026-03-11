@@ -32,18 +32,19 @@ signal abilities_changed
 const GAME_STATE_PATH := "user://game_state.cfg"
 const INVENTORY_SECTION := "inventory"
 const INVENTORY_ITEMS_KEY := "items_collected"
-const QUEST_SECTION := "quest"
-const QUEST_PATH_KEY := "resource_path"
-const QUEST_CURRENTSCENE_KEY := "current_scene"
-const QUEST_SPAWNPOINT_KEY := "current_spawn_point"
 const QUEST_CHALLENGE_START_KEY := "challenge_start_scene"
 const QUEST_PLAYER_ABILITIES_KEY := "storyquest_player_abilities"
+const QUEST_ABANDON_SCENE_KEY := "abandon_scene"
+const QUEST_ABANDON_SPAWNPOINT_KEY := "abandon_spawn_point"
 const GLOBAL_SECTION := "global"
 const GLOBAL_INCORPORATING_THREADS_KEY := "incorporating_threads"
 const COMPLETED_QUESTS_KEY := "completed_quests"
 const LORE_PLAYER_ABILITIES_KEY := "lore_player_abilities"
+const QUEST_PATH_KEY := "quest_path"
+const CURRENTSCENE_KEY := "current_scene"
+const SPAWNPOINT_KEY := "current_spawn_point"
 const LIVES_KEY := "current_lives"
-const MAX_LIVES := 0x7fffffffffffffff
+const MAX_LIVES := 2 ** 53
 const DEBUG_LIVES := false
 
 ## Scenes to skip from saving.
@@ -140,15 +141,18 @@ func set_incorporating_threads(new_incorporating_threads: bool) -> void:
 
 ## Set [member current_quest] and clear the [member inventory].
 ## Also resets lives to maximum when starting a quest.
-func start_quest(quest: Quest) -> void:
+func start_quest(
+	quest: Quest,
+	abandon_scene: String = "",
+	abandon_spawn_point: NodePath = ^"",
+) -> Dictionary:
 	_do_clear_inventory()
 	_update_inventory_state()
 	current_quest = quest
-	_state.set_value(QUEST_SECTION, QUEST_PATH_KEY, quest.resource_path)
-	_do_set_scene(quest.first_scene, ^"")
+	_state.set_value(GLOBAL_SECTION, QUEST_PATH_KEY, quest.resource_path)
 
-	# Set the challenge start scene to the first scene of the quest
-	_state.set_value(QUEST_SECTION, QUEST_CHALLENGE_START_KEY, quest.first_scene)
+	_state.set_value(quest.resource_path, QUEST_ABANDON_SCENE_KEY, abandon_scene)
+	_state.set_value(quest.resource_path, QUEST_ABANDON_SPAWNPOINT_KEY, abandon_spawn_point)
 
 	if not current_quest.is_lore_quest:
 		storyquest_player_abilities = 0
@@ -157,6 +161,12 @@ func start_quest(quest: Quest) -> void:
 	# Reset lives when starting a new quest
 	reset_lives()
 	_save()
+
+	var ret := {
+		"scene_path": _state.get_value(quest.resource_path, CURRENTSCENE_KEY, quest.first_scene),
+		"spawn_point": _state.get_value(quest.resource_path, SPAWNPOINT_KEY, ^""),
+	}
+	return ret
 
 
 ## Guess which quest the given scene is part of, and set [member current_quest]
@@ -192,35 +202,29 @@ func set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
 ## Set the current spawn point and save it.
 func set_current_spawn_point(spawn_point: NodePath = ^"") -> void:
 	current_spawn_point = spawn_point
-	_state.set_value(QUEST_SECTION, QUEST_SPAWNPOINT_KEY, current_spawn_point)
+	_state.set_value(GLOBAL_SECTION, SPAWNPOINT_KEY, current_spawn_point)
+	if current_quest:
+		_state.set_value(current_quest.resource_path, SPAWNPOINT_KEY, current_spawn_point)
 	_save()
 
 
 ## Set the challenge start scene. This is the scene the player returns to
 ## when they run out of lives.
 func set_challenge_start_scene(scene_path: String) -> void:
-	_state.set_value(QUEST_SECTION, QUEST_CHALLENGE_START_KEY, scene_path)
-
-	if DEBUG_LIVES:
-		prints("[LIVES DEBUG] Challenge start set to:", scene_path)
-
-	_save()
+	if current_quest:
+		_state.set_value(current_quest.resource_path, QUEST_CHALLENGE_START_KEY, scene_path)
+		_save()
 
 
 ## Get the challenge start scene, or the first scene of the current quest
 ## if no challenge start has been set.
 func get_challenge_start_scene() -> String:
-	var challenge_start: String = _state.get_value(QUEST_SECTION, QUEST_CHALLENGE_START_KEY, "")
+	if not current_quest:
+		return ""
 
-	if challenge_start.is_empty() and current_quest:
-		challenge_start = current_quest.first_scene
-
-		if DEBUG_LIVES:
-			prints(
-				"[LIVES DEBUG] No challenge start set, using quest first scene:", challenge_start
-			)
-
-	return challenge_start
+	return _state.get_value(
+		current_quest.resource_path, QUEST_CHALLENGE_START_KEY, current_quest.first_scene
+	)
 
 
 ## Returns [code]true[/code] if the player is currently on a quest; i.e. if
@@ -231,8 +235,8 @@ func is_on_quest() -> bool:
 
 ## Clear all quest-related state from the config file.
 func _clear_quest_state() -> void:
-	if _state.has_section(QUEST_SECTION):
-		_state.erase_section(QUEST_SECTION)
+	if _state.has_section_key(GLOBAL_SECTION, QUEST_PATH_KEY):
+		_state.erase_section_key(GLOBAL_SECTION, QUEST_PATH_KEY)
 
 
 ## If [member current_quest] is set, record this quest as having been completed,
@@ -251,8 +255,11 @@ func _do_set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
 		intro_dialogue_shown = false
 
 	current_spawn_point = spawn_point
-	_state.set_value(QUEST_SECTION, QUEST_CURRENTSCENE_KEY, scene_path)
-	_state.set_value(QUEST_SECTION, QUEST_SPAWNPOINT_KEY, current_spawn_point)
+	_state.set_value(GLOBAL_SECTION, CURRENTSCENE_KEY, scene_path)
+	_state.set_value(GLOBAL_SECTION, SPAWNPOINT_KEY, current_spawn_point)
+	if current_quest:
+		_state.set_value(current_quest.resource_path, CURRENTSCENE_KEY, scene_path)
+		_state.set_value(current_quest.resource_path, SPAWNPOINT_KEY, current_spawn_point)
 
 
 ## Add the [InventoryItem] to the [member inventory].
@@ -266,12 +273,19 @@ func add_collected_item(item: InventoryItem) -> void:
 
 ## If [member current_quest] is set, unset it, without recording the quest as
 ## having been completed. Also resets lives to maximum.
-func abandon_quest() -> void:
+func abandon_quest() -> Dictionary:
+	assert(current_quest)
+	var ret := {
+		"scene_path": _state.get_value(current_quest.resource_path, QUEST_ABANDON_SCENE_KEY, ""),
+		"spawn_point":
+		_state.get_value(current_quest.resource_path, QUEST_ABANDON_SPAWNPOINT_KEY, ^""),
+	}
 	set_incorporating_threads(false)
 	_clear_quest_state()
 	current_quest = null
 	storyquest_player_abilities = 0
 	clear_inventory()
+	return ret
 
 
 ## Updates [member completed_quests] to include [param quest] if [param
@@ -433,12 +447,12 @@ func clear() -> void:
 
 ## Check if there is persisted state.
 func can_restore() -> bool:
-	return _state.get_sections().size()
+	return get_scene_to_restore() != ""
 
 
 ## If there is a scene to restore, return it.
 func get_scene_to_restore() -> String:
-	return _state.get_value(QUEST_SECTION, QUEST_CURRENTSCENE_KEY, "")
+	return _state.get_value(GLOBAL_SECTION, CURRENTSCENE_KEY, "")
 
 
 ## Restore the persisted state.
@@ -450,11 +464,11 @@ func restore() -> Dictionary:
 		var item := InventoryItem.with_type(item_type)
 		inventory.append(item)
 
-	if _state.has_section_key(QUEST_SECTION, QUEST_PATH_KEY):
-		current_quest = load(_state.get_value(QUEST_SECTION, QUEST_PATH_KEY)) as Quest
+	if _state.has_section_key(GLOBAL_SECTION, QUEST_PATH_KEY):
+		current_quest = load(_state.get_value(GLOBAL_SECTION, QUEST_PATH_KEY)) as Quest
 
-	var scene_path: String = _state.get_value(QUEST_SECTION, QUEST_CURRENTSCENE_KEY, "")
-	current_spawn_point = _state.get_value(QUEST_SECTION, QUEST_SPAWNPOINT_KEY, ^"")
+	var scene_path: String = _state.get_value(GLOBAL_SECTION, CURRENTSCENE_KEY, "")
+	current_spawn_point = _state.get_value(GLOBAL_SECTION, SPAWNPOINT_KEY, ^"")
 	incorporating_threads = _state.get_value(
 		GLOBAL_SECTION, GLOBAL_INCORPORATING_THREADS_KEY, false
 	)
