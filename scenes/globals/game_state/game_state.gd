@@ -30,12 +30,12 @@ const INVENTORY_SECTION := "inventory"
 const INVENTORY_ITEMS_KEY := "items_collected"
 const QUEST_SECTION := "quest"
 const QUEST_PATH_KEY := "resource_path"
-const QUEST_CURRENTSCENE_KEY := "current_scene"
-const QUEST_SPAWNPOINT_KEY := "current_spawn_point"
 const QUEST_CHALLENGE_START_KEY := "challenge_start_scene"
 const GLOBAL_SECTION := "global"
 const GLOBAL_INCORPORATING_THREADS_KEY := "incorporating_threads"
 const COMPLETED_QUESTS_KEY := "completed_quests"
+const CURRENTSCENE_KEY := "current_scene"
+const SPAWNPOINT_KEY := "current_spawn_point"
 const LIVES_KEY := "current_lives"
 const MAX_LIVES := 2 ** 53
 const DEBUG_LIVES := false
@@ -156,7 +156,7 @@ func set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
 ## Set the current spawn point and save it.
 func set_current_spawn_point(spawn_point: NodePath = ^"") -> void:
 	current_spawn_point = spawn_point
-	_state.set_value(QUEST_SECTION, QUEST_SPAWNPOINT_KEY, current_spawn_point)
+	_state.set_value(GLOBAL_SECTION, SPAWNPOINT_KEY, current_spawn_point)
 	_save()
 
 
@@ -215,8 +215,8 @@ func _do_set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
 		intro_dialogue_shown = false
 
 	current_spawn_point = spawn_point
-	_state.set_value(QUEST_SECTION, QUEST_CURRENTSCENE_KEY, scene_path)
-	_state.set_value(QUEST_SECTION, QUEST_SPAWNPOINT_KEY, current_spawn_point)
+	_state.set_value(GLOBAL_SECTION, CURRENTSCENE_KEY, scene_path)
+	_state.set_value(GLOBAL_SECTION, SPAWNPOINT_KEY, current_spawn_point)
 
 
 ## Add the [InventoryItem] to the [member inventory].
@@ -341,12 +341,12 @@ func clear() -> void:
 
 ## Check if there is persisted state.
 func can_restore() -> bool:
-	return _state.get_sections().size()
+	return get_scene_to_restore() != ""
 
 
 ## If there is a scene to restore, return it.
 func get_scene_to_restore() -> String:
-	return _state.get_value(QUEST_SECTION, QUEST_CURRENTSCENE_KEY, "")
+	return _state.get_value(GLOBAL_SECTION, CURRENTSCENE_KEY, "")
 
 
 ## Restore the persisted state.
@@ -361,8 +361,8 @@ func restore() -> Dictionary:
 	if _state.has_section_key(QUEST_SECTION, QUEST_PATH_KEY):
 		current_quest = load(_state.get_value(QUEST_SECTION, QUEST_PATH_KEY)) as Quest
 
-	var scene_path: String = _state.get_value(QUEST_SECTION, QUEST_CURRENTSCENE_KEY, "")
-	current_spawn_point = _state.get_value(QUEST_SECTION, QUEST_SPAWNPOINT_KEY, ^"")
+	var scene_path: String = _state.get_value(GLOBAL_SECTION, CURRENTSCENE_KEY, "")
+	current_spawn_point = _state.get_value(GLOBAL_SECTION, SPAWNPOINT_KEY, ^"")
 	incorporating_threads = _state.get_value(
 		GLOBAL_SECTION, GLOBAL_INCORPORATING_THREADS_KEY, false
 	)
