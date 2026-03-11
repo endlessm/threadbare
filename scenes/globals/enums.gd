@@ -25,3 +25,22 @@ enum CollisionLayers {
 	NON_WALKABLE_FLOOR = 10,
 	HOOKABLE = 13,
 }
+
+## Flags for player abilities
+## [br][br]
+## These are generic flags that can be treated differently
+## in the lore game and in StoryQuests.
+enum PlayerAbilities {
+	ABILITY_A = 1 << 0,
+	ABILITY_A_MODIFIER_1 = 1 << 1,
+	ABILITY_A_MODIFIER_2 = 1 << 2,
+	ABILITY_A_MODIFIER_3 = 1 << 3,
+	ABILITY_B = 1 << 4,
+	ABILITY_B_MODIFIER_1 = 1 << 5,
+	ABILITY_B_MODIFIER_2 = 1 << 6,
+	ABILITY_B_MODIFIER_3 = 1 << 7,
+	ABILITY_C = 1 << 8,
+	ABILITY_C_MODIFIER_1 = 1 << 9,
+	ABILITY_C_MODIFIER_2 = 1 << 10,
+	ABILITY_C_MODIFIER_3 = 1 << 11,
+}
