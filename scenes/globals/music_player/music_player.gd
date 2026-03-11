@@ -32,10 +32,8 @@ func _ready() -> void:
 
 func _on_scene_changed() -> void:
 	if _pending_new_stream:
-		# No background music in the new scene.
-		background_music_player.stop()
-		background_music_player.stream = null
-		_pending_new_stream = false
+		# No BackgroundMusic node in the new scene.
+		play_stream(null)
 
 
 ## Called to indicate that the scene is about to change. If no corresponding
@@ -55,7 +53,8 @@ func _get_clip_index_by_name(stream: AudioStreamInteractive, clip_name: StringNa
 
 ## Start playing [param stream], if it is not already playing, fading out any
 ## other stream that was playing before. If [param stream] is an [AudioStreamInteractive],
-## and [param clip_name] is not empty, transition to the clip of that name.
+## and [param clip_name] is not empty, transition to the clip of that name. If
+## [param stream] is [code]null[/code], stop the current music.
 func play_stream(stream: AudioStream, clip_name: StringName = &"") -> void:
 	if clip_name and stream is not AudioStreamInteractive:
 		push_warning("clip_name can only be used with AudioStreamInteractive")
