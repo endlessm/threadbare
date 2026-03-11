@@ -16,8 +16,8 @@
 [ext_resource type="PackedScene" uid="uid://cfvr32bp2achm" path="res://scenes/game_elements/props/decoration/rock/fabric_rock.tscn" id="11_6ulor"]
 [ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="12_h3871"]
 [ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="15_pr1ca"]
-[ext_resource type="PackedScene" uid="uid://4u7dloafx55f" path="res://scenes/game_elements/props/teleporter/teleporter/teleporter.tscn" id="16_ykirg"]
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="17_3d8kk"]
+[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="17_o3luo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h3871"]
 radius = 87.43
@@ -37,7 +37,7 @@ tile_set = ExtResource("2_o3luo")
 
 [node name="ModulateAsSkyBehavior" type="Node" parent="TileMapLayers/TileMapLayer" unique_id=1490804684 node_paths=PackedStringArray("canvas_item")]
 script = ExtResource("3_o3luo")
-canvas_item = NodePath("")
+canvas_item = NodePath("..")
 metadata/_custom_type_script = "uid://ctko5bdas16ah"
 
 [node name="TileMapLayer3" type="TileMapLayer" parent="TileMapLayers" unique_id=1741325590]
@@ -127,8 +127,10 @@ shape = SubResource("CircleShape2D_h3871")
 position = Vector2(525, 166)
 look_at_side_on_spawn = -1
 
-[node name="Teleporter" parent="." unique_id=812046722 instance=ExtResource("16_ykirg")]
+[node name="Teleporter" type="Area2D" parent="." unique_id=812046722]
 position = Vector2(-89, 336)
+collision_layer = 4
+script = ExtResource("17_o3luo")
 next_scene = "uid://dep64htv6c4na"
 spawn_point_path = NodePath("SpawnPoint")
 enter_transition = 2

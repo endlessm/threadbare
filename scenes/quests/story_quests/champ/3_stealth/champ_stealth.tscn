@@ -35,7 +35,6 @@
 [ext_resource type="Script" uid="uid://necvar42rnih" path="res://scenes/game_elements/characters/player/components/interact_zone.gd" id="16_g11k1"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="16_ol5cv"]
 [ext_resource type="Resource" uid="uid://c3yuq52k21sga" path="res://scenes/quests/story_quests/champ/3_stealth/stealth_components/champ_incomplete_stealth_guard_path_hint.dialogue" id="17_8qkne"]
-[ext_resource type="PackedScene" uid="uid://4u7dloafx55f" path="res://scenes/game_elements/props/teleporter/teleporter/teleporter.tscn" id="17_24qmm"]
 [ext_resource type="Texture2D" uid="uid://cnmmh3uq7rkla" path="res://assets/third_party/tiny-swords/Terrain/Bridge/Bridge_All.png" id="17_g2bud"]
 [ext_resource type="SpriteFrames" uid="uid://h85time5ateg" path="res://scenes/quests/story_quests/champ/2_sequence_puzzle/learner_edits/champ_default_npc.tres" id="17_ol5cv"]
 [ext_resource type="PackedScene" uid="uid://yfpfno276rol" path="res://scenes/game_elements/props/fixed_size_label/fixed_size_label.tscn" id="17_saf7v"]
@@ -59,6 +58,7 @@
 [ext_resource type="Texture2D" uid="uid://djen1whwwin1w" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/keyboard/keyboard_f_outline.tres" id="37_yfmpo"]
 [ext_resource type="Texture2D" uid="uid://c63g4rx3fvw4o" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/keyboard/keyboard_c_outline.tres" id="38_wbd51"]
 [ext_resource type="Texture2D" uid="uid://h606ovawbm0x" path="res://scenes/quests/story_quests/champ/3_stealth/stealth_components/BlinkMarker.png" id="44_onp74"]
+[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="46_8k5n0"]
 [ext_resource type="Resource" uid="uid://cxjgjjb44ssnm" path="res://scenes/quests/story_quests/champ/3_stealth/stealth_components/champ_walking_on_water.dialogue" id="55_rosy4"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_0wfyh"]
@@ -1870,8 +1870,10 @@ position = Vector2(110, 34)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("44_onp74")
 
-[node name="Teleporter" parent="." unique_id=1237177419 instance=ExtResource("17_24qmm")]
+[node name="Teleporter" type="Area2D" parent="." unique_id=1237177419]
 position = Vector2(1676, 519)
+collision_layer = 4
+script = ExtResource("46_8k5n0")
 next_scene = "uid://bbjh0yoqbchuo"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" unique_id=2026668028]
