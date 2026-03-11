@@ -1,6 +1,7 @@
 # gdlint: disable=max-public-methods
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+@tool
 extends Node
 
 ## Emitted when a new item is collected, even if it wasn't added to the
@@ -25,6 +26,9 @@ signal lights_changed(lights_on: bool, immediate: bool)
 ## Emitted when a quest is added or removed from [member completed_quests].
 signal completed_quests_changed
 
+## Emitted when lore or StoryQuest player abilities change.
+signal abilities_changed
+
 const GAME_STATE_PATH := "user://game_state.cfg"
 const INVENTORY_SECTION := "inventory"
 const INVENTORY_ITEMS_KEY := "items_collected"
@@ -33,9 +37,11 @@ const QUEST_PATH_KEY := "resource_path"
 const QUEST_CURRENTSCENE_KEY := "current_scene"
 const QUEST_SPAWNPOINT_KEY := "current_spawn_point"
 const QUEST_CHALLENGE_START_KEY := "challenge_start_scene"
+const QUEST_PLAYER_ABILITIES_KEY := "storyquest_player_abilities"
 const GLOBAL_SECTION := "global"
 const GLOBAL_INCORPORATING_THREADS_KEY := "incorporating_threads"
 const COMPLETED_QUESTS_KEY := "completed_quests"
+const LORE_PLAYER_ABILITIES_KEY := "lore_player_abilities"
 const LIVES_KEY := "current_lives"
 const MAX_LIVES := 0x7fffffffffffffff
 const DEBUG_LIVES := false
@@ -50,6 +56,20 @@ const TRANSIENT_SCENES := [
 ## can be added to the loom.
 @export var inventory: Array[InventoryItem] = []
 @export var current_spawn_point: NodePath
+
+## Player abilities for the whole game.
+## [br][br]
+## These are flags that enable systems or mechanics for the player progression
+## during the entire game.[br]
+## When involved in a StoryQuest, [member storyquest_player_abilities] are used instead.
+@export var lore_player_abilities: int = 0:
+	set = _set_lore_player_abilities
+
+## Player abilities for the current StoryQuest.
+## [br][br]
+## These are flags that enable systems or mechanics for the StoryQuest progression[br]
+## When involved in a lore quest, [member lore_player_abilities] are used instead.
+@export var storyquest_player_abilities: int = 0
 
 ## Current number of lives the player has.
 var current_lives: int = MAX_LIVES
@@ -75,6 +95,18 @@ var current_quest: Quest
 
 var persist_progress: bool
 var _state := ConfigFile.new()
+
+
+func _validate_property(property: Dictionary) -> void:
+	match property["name"]:
+		# Treat the player abilities as bit flags.
+		# The @export_flags would be ideal but it expects constant
+		# strings, and we want to use the PlayerAbilities enum keys
+		# as hint strings.
+		# This also requires this script to be a @tool.
+		"lore_player_abilities", "storyquest_player_abilities":
+			property.hint = PROPERTY_HINT_FLAGS
+			property.hint_string = ",".join(Enums.PlayerAbilities.keys())
 
 
 func _ready() -> void:
@@ -117,6 +149,10 @@ func start_quest(quest: Quest) -> void:
 
 	# Set the challenge start scene to the first scene of the quest
 	_state.set_value(QUEST_SECTION, QUEST_CHALLENGE_START_KEY, quest.first_scene)
+
+	if not current_quest.is_lore_quest:
+		storyquest_player_abilities = 0
+		_state.set_value(QUEST_SECTION, QUEST_PLAYER_ABILITIES_KEY, storyquest_player_abilities)
 
 	# Reset lives when starting a new quest
 	reset_lives()
@@ -234,6 +270,7 @@ func abandon_quest() -> void:
 	set_incorporating_threads(false)
 	_clear_quest_state()
 	current_quest = null
+	storyquest_player_abilities = 0
 	clear_inventory()
 
 
@@ -255,6 +292,60 @@ func _do_set_quest_completed_state(quest: Quest, is_completed: bool) -> void:
 		while quest_name in completed_quests:
 			completed_quests.erase(quest_name)
 			completed_quests_changed.emit()
+
+
+func _set_lore_player_abilities(new_lore_player_abilities: int) -> void:
+	if lore_player_abilities == new_lore_player_abilities:
+		return
+	lore_player_abilities = new_lore_player_abilities
+	abilities_changed.emit()
+
+
+func _set_storyquest_player_abilities(new_storyquest_player_abilities: int) -> void:
+	if storyquest_player_abilities == new_storyquest_player_abilities:
+		return
+	storyquest_player_abilities = new_storyquest_player_abilities
+	abilities_changed.emit()
+
+
+func _use_lore_abilities() -> bool:
+	return current_quest == null or current_quest.is_lore_quest
+
+
+## Enable or disable a player ability.
+## [br][br]
+## This will behave differently in the main "lore" game than in
+## StoryQuests: the lore has player progression that last the whole game,
+## while StoryQuests are narrative units and have their own player progression.
+func set_ability(ability: Enums.PlayerAbilities, is_enabled: bool) -> void:
+	if is_enabled:
+		if not has_ability(ability):
+			if _use_lore_abilities():
+				lore_player_abilities |= ability
+			else:
+				storyquest_player_abilities |= ability
+	else:
+		if has_ability(ability):
+			if _use_lore_abilities():
+				lore_player_abilities &= ~ability
+			else:
+				storyquest_player_abilities &= ~ability
+	if _use_lore_abilities():
+		_state.set_value(GLOBAL_SECTION, LORE_PLAYER_ABILITIES_KEY, lore_player_abilities)
+	else:
+		_state.set_value(QUEST_SECTION, QUEST_PLAYER_ABILITIES_KEY, storyquest_player_abilities)
+	_save()
+
+
+## Check if a player ability is enabled.
+## [br][br]
+## This will behave differently in the main "lore" game than in
+## StoryQuests: the lore has player progression that last the whole game,
+## while StoryQuests are narrative units and have their own player progression.
+func has_ability(ability: Enums.PlayerAbilities) -> bool:
+	if _use_lore_abilities():
+		return lore_player_abilities & ability
+	return storyquest_player_abilities & ability
 
 
 ## Remove all [InventoryItem] from the [member inventory].
@@ -333,6 +424,7 @@ func clear_per_scene_state() -> void:
 func clear() -> void:
 	_state.clear()
 	completed_quests = []
+	lore_player_abilities = 0
 	current_lives = MAX_LIVES
 	if DEBUG_LIVES:
 		prints("[LIVES DEBUG] State cleared. Lives reset to:", current_lives)
@@ -367,6 +459,9 @@ func restore() -> Dictionary:
 		GLOBAL_SECTION, GLOBAL_INCORPORATING_THREADS_KEY, false
 	)
 	completed_quests = _state.get_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, [] as Array[String])
+
+	lore_player_abilities = _state.get_value(GLOBAL_SECTION, LORE_PLAYER_ABILITIES_KEY, 0)
+	storyquest_player_abilities = _state.get_value(QUEST_SECTION, QUEST_PLAYER_ABILITIES_KEY, 0)
 
 	# Restore lives from saved state, default to MAX_LIVES if not found
 	current_lives = _state.get_value(GLOBAL_SECTION, LIVES_KEY, MAX_LIVES)
