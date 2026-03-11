@@ -97,6 +97,9 @@ var current_quest: Quest
 var persist_progress: bool
 var _state := ConfigFile.new()
 
+var _quest_scene_path: String
+var _quest_spawn_point: String
+
 
 func _validate_property(property: Dictionary) -> void:
 	match property["name"]:
@@ -166,6 +169,8 @@ func start_quest(
 		"scene_path": _state.get_value(quest.resource_path, CURRENTSCENE_KEY, quest.first_scene),
 		"spawn_point": _state.get_value(quest.resource_path, SPAWNPOINT_KEY, ^""),
 	}
+	_quest_scene_path = ret.scene_path
+	_quest_spawn_point = ret.spawn_point
 	return ret
 
 

@@ -4,6 +4,8 @@
 class_name QuestTeleporter
 extends Area2D
 
+const QUEST_SEPARATOR = preload("uid://c0fdh0ttv7brl")
+
 ## Scene to switch to when the player enters this teleport. If empty, the player
 ## will teleport within the current scene, to the position specified by [member
 ## spawn_point_path].
@@ -42,7 +44,13 @@ func _on_body_entered(_body: PhysicsBody2D) -> void:
 
 	var scene := get_tree().current_scene
 	var abandon_point_path := scene.get_path_to(abandon_spawn_point)
-	var target := GameState.start_quest(quest, scene.scene_file_path, abandon_point_path)
-	SceneSwitcher.change_to_file_with_transition(
-		target.scene_path, target.spawn_point, enter_transition, Transition.Effect.FADE
+	GameState.start_quest(quest, scene.scene_file_path, abandon_point_path)
+	(
+		SceneSwitcher
+		. change_to_packed_with_transition(
+			QUEST_SEPARATOR,
+			"",
+			enter_transition,
+			Transition.Effect.FADE,
+		)
 	)
