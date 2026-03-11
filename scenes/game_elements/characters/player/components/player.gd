@@ -93,8 +93,7 @@ func _set_mode(new_mode: Mode) -> void:
 			_toggle_player_behavior(player_hook, false)
 		_:
 			_toggle_player_behavior(player_interaction, true)
-			_toggle_player_behavior(player_repel, true)
-			_toggle_player_behavior(player_hook, true)
+			_toggle_abilities()
 
 	if mode != previous_mode:
 		mode_changed.emit(mode)
@@ -148,6 +147,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 func _ready() -> void:
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
+	GameState.abilities_changed.connect(_on_abilities_changed)
 
 
 func _unhandled_input(_event: InputEvent) -> void:
@@ -246,6 +246,22 @@ func defeat(falling: bool = false) -> void:
 	else:
 		# Game over - restart from challenge start
 		_handle_game_over()
+
+
+func _toggle_abilities() -> void:
+	var can_repel := GameState.has_ability(Enums.PlayerAbilities.ABILITY_A)
+	var can_grapple := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B)
+	_toggle_player_behavior(player_repel, can_repel)
+	_toggle_player_behavior(player_hook, can_grapple)
+	if can_grapple:
+		var has_longer_hook := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B_MODIFIER_1)
+		player_hook.string_throw_length = 400.0 if has_longer_hook else 200.0
+		player_hook.string_max_length = 450.0 if has_longer_hook else 250.0
+
+
+func _on_abilities_changed() -> void:
+	if mode != Mode.DEFEATED:
+		_toggle_abilities()
 
 
 ## Handles game over logic: restarts from the beginning of the current challenge
