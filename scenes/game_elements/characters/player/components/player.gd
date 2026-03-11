@@ -75,7 +75,7 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 var input_vector: Vector2
 
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
-@onready var player_fighting: Node2D = %PlayerFighting
+@onready var player_repel: Node2D = %PlayerRepel
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
@@ -87,26 +87,14 @@ func _set_mode(new_mode: Mode) -> void:
 	if not is_node_ready():
 		return
 	match mode:
-		Mode.COZY:
-			_toggle_player_behavior(player_interaction, true)
-			_toggle_player_behavior(player_fighting, false)
-			_toggle_player_behavior(player_hook, false)
-			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
-		Mode.FIGHTING:
-			_toggle_player_behavior(player_interaction, false)
-			_toggle_player_behavior(player_fighting, true)
-			_toggle_player_behavior(player_hook, false)
-			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
-		Mode.HOOKING:
-			_toggle_player_behavior(player_interaction, false)
-			_toggle_player_behavior(player_fighting, false)
-			_toggle_player_behavior(player_hook, true)
-			Input.set_default_cursor_shape(Input.CURSOR_CROSS)
 		Mode.DEFEATED:
 			_toggle_player_behavior(player_interaction, false)
-			_toggle_player_behavior(player_fighting, false)
+			_toggle_player_behavior(player_repel, false)
 			_toggle_player_behavior(player_hook, false)
-			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+		_:
+			_toggle_player_behavior(player_interaction, true)
+			_toggle_abilities()
+
 	if mode != previous_mode:
 		mode_changed.emit(mode)
 
@@ -159,6 +147,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 func _ready() -> void:
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
+	GameState.abilities_changed.connect(_on_abilities_changed)
 
 
 func _unhandled_input(_event: InputEvent) -> void:
@@ -257,6 +246,22 @@ func defeat(falling: bool = false) -> void:
 	else:
 		# Game over - restart from challenge start
 		_handle_game_over()
+
+
+func _toggle_abilities() -> void:
+	var can_repel := GameState.has_ability(Enums.PlayerAbilities.ABILITY_A)
+	var can_grapple := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B)
+	_toggle_player_behavior(player_repel, can_repel)
+	_toggle_player_behavior(player_hook, can_grapple)
+	if can_grapple:
+		var has_longer_hook := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B_MODIFIER_1)
+		player_hook.string_throw_length = 400.0 if has_longer_hook else 200.0
+		player_hook.string_max_length = 450.0 if has_longer_hook else 250.0
+
+
+func _on_abilities_changed() -> void:
+	if mode != Mode.DEFEATED:
+		_toggle_abilities()
 
 
 ## Handles game over logic: restarts from the beginning of the current challenge

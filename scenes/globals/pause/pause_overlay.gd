@@ -26,6 +26,8 @@ func toggle_pause() -> void:
 	visible = new_state
 	get_tree().paused = new_state
 
+	Input.set_default_cursor_shape(Input.CURSOR_ARROW if new_state else Input.CURSOR_CROSS)
+
 	if new_state:
 		abandon_quest_button.visible = GameState.is_on_quest()
 		pause_menu.show()
@@ -34,9 +36,12 @@ func toggle_pause() -> void:
 
 func _on_abandon_quest_pressed() -> void:
 	toggle_pause()
-	GameState.abandon_quest()
+	var abandon_target := GameState.abandon_quest()
+	var scene_path: String = abandon_target.get("scene_path", frays_end)
+	var spawn_point: NodePath = abandon_target.get("spawn_point", ^"")
+
 	SceneSwitcher.change_to_file_with_transition(
-		frays_end, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		scene_path, spawn_point, Transition.Effect.FADE, Transition.Effect.FADE
 	)
 
 
