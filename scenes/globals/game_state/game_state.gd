@@ -18,6 +18,12 @@ signal collected_items_changed(updated_items: Array[InventoryItem])
 ## Emitted when the player's lives change.
 signal lives_changed(new_lives: int)
 
+## Emitted when a [Trinket] is added to the collection.
+signal trinket_collected(trinket: Trinket)
+
+## Emitted when a [Trinket] is removed from the collection.
+signal trinket_removed(trinket: Trinket)
+
 ## Emitted when it becomes too dark that artificial lights can turn on, or
 ## when darkness goes away so artificial lights should turn off.
 signal lights_changed(lights_on: bool, immediate: bool)
@@ -37,6 +43,8 @@ const GLOBAL_SECTION := "global"
 const GLOBAL_INCORPORATING_THREADS_KEY := "incorporating_threads"
 const COMPLETED_QUESTS_KEY := "completed_quests"
 const LIVES_KEY := "current_lives"
+const TRINKETS_SECTION := "trinkets"
+const TRINKETS_IDS_KEY := "collected_ids"
 const MAX_LIVES := 0x7fffffffffffffff
 const DEBUG_LIVES := false
 
@@ -50,6 +58,9 @@ const TRANSIENT_SCENES := [
 ## can be added to the loom.
 @export var inventory: Array[InventoryItem] = []
 @export var current_spawn_point: NodePath
+
+## Trinkets the player has collected. Persisted independently from quest state.
+var trinkets: Array[Trinket] = []
 
 ## Current number of lives the player has.
 var current_lives: int = MAX_LIVES
@@ -109,8 +120,6 @@ func set_incorporating_threads(new_incorporating_threads: bool) -> void:
 ## Set [member current_quest] and clear the [member inventory].
 ## Also resets lives to maximum when starting a quest.
 func start_quest(quest: Quest) -> void:
-	_do_clear_inventory()
-	_update_inventory_state()
 	current_quest = quest
 	_state.set_value(QUEST_SECTION, QUEST_PATH_KEY, quest.resource_path)
 	_do_set_scene(quest.first_scene, ^"")
@@ -234,7 +243,6 @@ func abandon_quest() -> void:
 	set_incorporating_threads(false)
 	_clear_quest_state()
 	current_quest = null
-	clear_inventory()
 
 
 ## Updates [member completed_quests] to include [param quest] if [param
@@ -275,6 +283,43 @@ func _do_clear_inventory() -> void:
 ## Return all the items collected so far in the [member inventory].
 func items_collected() -> Array[InventoryItem]:
 	return inventory.duplicate()
+
+
+## Add a [Trinket] to the collection if not already present.
+func add_trinket(trinket: Trinket) -> void:
+	if has_trinket(trinket.id):
+		return
+	trinkets.append(trinket)
+	trinket_collected.emit(trinket)
+	_update_trinkets_state()
+	_save()
+
+
+## Remove a [Trinket] from the collection.
+func remove_trinket(trinket: Trinket) -> void:
+	trinkets.erase(trinket)
+	trinket_removed.emit(trinket)
+	_update_trinkets_state()
+	_save()
+
+
+## Returns [code]true[/code] if a trinket with the given [param id] has been collected.
+func has_trinket(id: StringName) -> bool:
+	return trinkets.any(func(t: Trinket) -> bool: return t.id == id)
+
+
+func _trinket_to_dict(t: Trinket) -> Dictionary:
+	return {
+		"id": t.id,
+		"name": t.name,
+		"description": t.description,
+		"icon": t.icon.resource_path if t.icon else "",
+		"full_text": t.full_text,
+	}
+
+
+func _update_trinkets_state() -> void:
+	_state.set_value(TRINKETS_SECTION, TRINKETS_IDS_KEY, trinkets.map(_trinket_to_dict))
 
 
 func _update_inventory_state() -> void:
@@ -333,6 +378,8 @@ func clear_per_scene_state() -> void:
 func clear() -> void:
 	_state.clear()
 	completed_quests = []
+	clear_inventory()
+	trinkets.clear()
 	current_lives = MAX_LIVES
 	if DEBUG_LIVES:
 		prints("[LIVES DEBUG] State cleared. Lives reset to:", current_lives)
@@ -367,6 +414,19 @@ func restore() -> Dictionary:
 		GLOBAL_SECTION, GLOBAL_INCORPORATING_THREADS_KEY, false
 	)
 	completed_quests = _state.get_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, [] as Array[String])
+
+	# Restore trinkets from saved data
+	trinkets.clear()
+	for trinket_data: Dictionary in _state.get_value(TRINKETS_SECTION, TRINKETS_IDS_KEY, []):
+		var trinket := Trinket.new()
+		trinket.id = trinket_data.get("id", &"")
+		trinket.name = trinket_data.get("name", "")
+		trinket.description = trinket_data.get("description", "")
+		var icon_path: String = trinket_data.get("icon", "")
+		if not icon_path.is_empty():
+			trinket.icon = load(icon_path)
+		trinket.full_text = trinket_data.get("full_text", "")
+		trinkets.append(trinket)
 
 	# Restore lives from saved state, default to MAX_LIVES if not found
 	current_lives = _state.get_value(GLOBAL_SECTION, LIVES_KEY, MAX_LIVES)
