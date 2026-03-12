@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="2_46px3"]
 [ext_resource type="PackedScene" uid="uid://cie2w455avmwm" path="res://scenes/menus/debug/debug_completed_quest_list.tscn" id="2_k06h7"]
 [ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="3_46px3"]
+[ext_resource type="PackedScene" uid="uid://dap7xk2m1yfhs" path="res://scenes/menus/debug/debug_player_abilities_list.tscn" id="4_abilities"]
 
 [node name="DebugSettings" type="PanelContainer" unique_id=35497477 node_paths=PackedStringArray("back_button")]
 custom_minimum_size = Vector2(800, 600)
@@ -32,6 +33,25 @@ follow_focus = true
 horizontal_scroll_mode = 0
 
 [node name="DebugCompletedQuestList" parent="VBoxContainer/ScrollContainer" unique_id=1279772854 instance=ExtResource("2_k06h7")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"PlayerRibbon"
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer2"]
+layout_mode = 2
+text = "Player Abilities"
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="DebugPlayerAbilitiesList" parent="VBoxContainer/ScrollContainer2" instance=ExtResource("4_abilities")]
 layout_mode = 2
 size_flags_vertical = 3
 
