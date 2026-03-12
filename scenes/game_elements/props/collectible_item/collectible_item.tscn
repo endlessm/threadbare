@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://fuhl3l6gxq5k"]
 
 [ext_resource type="Script" uid="uid://be7lr8ty24cix" path="res://scenes/game_elements/props/collectible_item/components/collectible_item.gd" id="1_7ff3m"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="2_1kegn"]
 [ext_resource type="AudioStream" uid="uid://bhgpds38q0j4r" path="res://assets/third_party/sounds/collectibles/MemoryCollectable.ogg" id="5_hhgm5"]
 [ext_resource type="AudioStream" uid="uid://38xwdjm46478" path="res://assets/third_party/sounds/collectibles/CollectibleAppear.ogg" id="5_oh62b"]
-[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="6_j0enh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ghwae"]
 radius = 20.0
@@ -277,9 +277,13 @@ height = 28.0
 [node name="CollectibleItem" type="Node2D" unique_id=327991066]
 script = ExtResource("1_7ff3m")
 
-[node name="InteractArea" parent="." unique_id=1327503985 instance=ExtResource("6_j0enh")]
+[node name="InteractArea" type="Area2D" parent="." unique_id=1327503985]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("2_1kegn")
 interact_label_position = Vector2(0, -71)
 action = "Collect"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1121983883]
 shape = SubResource("CircleShape2D_ghwae")

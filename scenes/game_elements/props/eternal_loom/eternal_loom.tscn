@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dj5shb75ckk2a" path="res://scenes/game_elements/props/eternal_loom/components/eternal_loom.gd" id="1_0f752"]
 [ext_resource type="Texture2D" uid="uid://cj62bpasgf643" path="res://scenes/game_elements/props/eternal_loom/components/eternal_loom_blue.png" id="2_dj2yp"]
-[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="3_kyhkd"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="3_mjlja"]
 [ext_resource type="Texture2D" uid="uid://5wscjc8yqqts" path="res://assets/first_party/collectibles/world_memory.png" id="4_12bvc"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="4_eq7jh"]
 [ext_resource type="Texture2D" uid="uid://6bf8rum68wq3" path="res://assets/first_party/collectibles/world_imagination.png" id="5_eq7jh"]
@@ -542,12 +542,16 @@ position = Vector2(-1.5, 32)
 shape = SubResource("RectangleShape2D_uojly")
 debug_color = Color(0, 0.588235, 0.698039, 0.419608)
 
-[node name="InteractArea" parent="." unique_id=1735004807 instance=ExtResource("3_kyhkd")]
+[node name="InteractArea" type="Area2D" parent="." unique_id=1735004807]
 unique_name_in_owner = true
 visible = false
 position = Vector2(0, 55)
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_mjlja")
 interact_label_position = Vector2(0, 45)
 action = "Use Eternal Loom"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1537085446]
 position = Vector2(0, 120)

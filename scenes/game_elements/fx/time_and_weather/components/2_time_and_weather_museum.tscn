@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://lylpujgq8e4v" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage1.png" id="10_h3871"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="11_2owc0"]
 [ext_resource type="PackedScene" uid="uid://cfvr32bp2achm" path="res://scenes/game_elements/props/decoration/rock/fabric_rock.tscn" id="11_6ulor"]
-[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="12_h3871"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="15_o3luo"]
 [ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="15_pr1ca"]
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="17_3d8kk"]
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="17_o3luo"]
@@ -96,8 +96,12 @@ the scene at west."
 [node name="FabricRock" parent="OnTheGround" unique_id=1319147835 instance=ExtResource("11_6ulor")]
 position = Vector2(477, 239)
 
-[node name="InteractAreaMorning" parent="OnTheGround/FabricRock" unique_id=248145530 instance=ExtResource("12_h3871")]
+[node name="InteractAreaMorning" type="Area2D" parent="OnTheGround/FabricRock" unique_id=248145530]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("15_o3luo")
 action = "6 AM"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FabricRock/InteractAreaMorning" unique_id=223757199]
 position = Vector2(-3, -14)
@@ -106,8 +110,12 @@ shape = SubResource("CircleShape2D_h3871")
 [node name="FabricRock2" parent="OnTheGround" unique_id=1829262008 instance=ExtResource("11_6ulor")]
 position = Vector2(616, 344)
 
-[node name="InteractAreaEvening" parent="OnTheGround/FabricRock2" unique_id=1830959577 instance=ExtResource("12_h3871")]
+[node name="InteractAreaEvening" type="Area2D" parent="OnTheGround/FabricRock2" unique_id=1830959577]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("15_o3luo")
 action = "6 PM"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FabricRock2/InteractAreaEvening" unique_id=943679952]
 position = Vector2(-3, -14)
@@ -116,8 +124,12 @@ shape = SubResource("CircleShape2D_h3871")
 [node name="FabricRock3" parent="OnTheGround" unique_id=2033968538 instance=ExtResource("11_6ulor")]
 position = Vector2(718, 476)
 
-[node name="InteractAreaNight" parent="OnTheGround/FabricRock3" unique_id=1095523783 instance=ExtResource("12_h3871")]
+[node name="InteractAreaNight" type="Area2D" parent="OnTheGround/FabricRock3" unique_id=1095523783]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("15_o3luo")
 action = "10 PM"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FabricRock3/InteractAreaNight" unique_id=132025755]
 position = Vector2(-3, -14)

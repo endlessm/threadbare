@@ -43,6 +43,7 @@
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="35_ljovl"]
 [ext_resource type="Texture2D" uid="uid://c6fggds355rko" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/keyboard/keyboard_space_outline.tres" id="36_ns5r3"]
 [ext_resource type="Texture2D" uid="uid://cxnx628qkf1br" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/xbox/xbox_button_color_a.tres" id="36_r1ek1"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="37_f3823"]
 [ext_resource type="Texture2D" uid="uid://da6qvcr5sq71n" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/playstation/playstation_button_color_cross_outline.tres" id="37_ns5r3"]
 [ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="37_thm8h"]
 [ext_resource type="Texture2D" uid="uid://upt0tmtsk3y2" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/nintendo_switch/switch_button_a.tres" id="38_5j6h7"]
@@ -56,7 +57,6 @@
 [ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="45_cjmkx"]
 [ext_resource type="PackedScene" uid="uid://cr65lmm5b0ueo" path="res://scenes/game_elements/characters/npcs/cat/cat.tscn" id="52_ppslc"]
 [ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="54_duxxr"]
-[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="55_2vvub"]
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="55_ojao8"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="55_wymun"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="56_ojao8"]
@@ -384,9 +384,13 @@ dialogue = ExtResource("25_6r0j2")
 interact_area = NodePath("../InteractArea")
 metadata/_custom_type_script = "uid://edcifob4jc4s"
 
-[node name="InteractArea" parent="OnTheGround/NPCs/Farmer" unique_id=248145530 instance=ExtResource("55_2vvub")]
+[node name="InteractArea" type="Area2D" parent="OnTheGround/NPCs/Farmer" unique_id=248145530]
 visible = false
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("37_f3823")
 interact_label_position = Vector2(0, -100)
+metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/NPCs/Farmer/InteractArea" unique_id=1727136394]
 position = Vector2(0, -23.5)
@@ -410,10 +414,14 @@ interact_area = NodePath("../InteractArea")
 extra_context = [NodePath("../../../WestPath/Unlocker")]
 metadata/_custom_type_script = "uid://edcifob4jc4s"
 
-[node name="InteractArea" parent="OnTheGround/NPCs/GardenerA" unique_id=1100609138 instance=ExtResource("55_2vvub")]
+[node name="InteractArea" type="Area2D" parent="OnTheGround/NPCs/GardenerA" unique_id=1100609138]
 visible = false
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("37_f3823")
 interact_label_position = Vector2(0, -100)
 action = "Talk to Marie"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/NPCs/GardenerA/InteractArea" unique_id=1159647598]
 position = Vector2(0, -23.5)
@@ -1088,9 +1096,13 @@ scale = Vector2(-1, 1)
 character_seed = 2433932515
 look_at_side = 1
 
-[node name="InteractArea" parent="OnTheGround/Tutorial/TutorialGuy" unique_id=226800588 instance=ExtResource("55_2vvub")]
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Tutorial/TutorialGuy" unique_id=226800588]
 visible = false
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("37_f3823")
 interact_label_position = Vector2(0, -100)
+metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Tutorial/TutorialGuy/InteractArea" unique_id=1652917244]
 position = Vector2(0, -23.5)

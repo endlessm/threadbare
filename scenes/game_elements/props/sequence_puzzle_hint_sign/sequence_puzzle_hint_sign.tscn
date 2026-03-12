@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dsowa7f2l478a" path="res://scenes/game_elements/props/sequence_puzzle_hint_sign/components/sequence_puzzle_hint_sign.gd" id="1_4621y"]
 [ext_resource type="SpriteFrames" uid="uid://b5pj1pt7r6hdg" path="res://scenes/quests/template_quests/NO_EDIT/3_NO_EDIT_sequence_puzzle/NO_EDIT_sign.tres" id="2_1po6h"]
-[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="5_1po6h"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="3_oa8ov"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qkb0b"]
 radius = 7.85715
@@ -22,7 +22,7 @@ position = Vector2(0, -57)
 sprite_frames = ExtResource("2_1po6h")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.75323665
+frame_progress = 0.3351486
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1384790841]
 position = Vector2(0, -2)
@@ -31,12 +31,15 @@ scale = Vector2(1.4, 1)
 shape = SubResource("CapsuleShape2D_qkb0b")
 debug_color = Color(0.994024, 0, 0.22864, 0.42)
 
-[node name="InteractArea" parent="." unique_id=1306680899 instance=ExtResource("5_1po6h")]
+[node name="InteractArea" type="Area2D" parent="." unique_id=1306680899]
 unique_name_in_owner = true
 position = Vector2(-2, 1)
 collision_layer = 0
+collision_mask = 0
+script = ExtResource("3_oa8ov")
 disabled = true
 action = "Examine"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1281208512]
 position = Vector2(2, 0)

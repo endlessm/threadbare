@@ -3,6 +3,16 @@
 @tool
 class_name InteractArea
 extends Area2D
+## An area that the player-character can interact with
+##
+## To make an interactable object, add an [InteractArea] to it, and handle
+## [signal interaction_started]. When the interaction is complete, call [method
+## end_interaction]. This area is detected by the player scene's [InteractZone];
+## the player scene is typically responsible for calling [method
+## start_interaction] in response to player input.
+## [br][br]
+## This script automatically configures the correct [member collision_layer] and
+## [member collision_mask] values to enable interaction with the player.
 
 signal interaction_started(player: Player, from_right: bool)
 signal interaction_ended
@@ -36,22 +46,11 @@ func get_global_interact_label_position() -> Vector2:
 	return to_global(interact_label_position)
 
 
-func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray
-	if not disabled and not get_collision_layer_value(Enums.CollisionLayers.INTERACTABLE):
-		warnings.append(
-			(
-				"Consider enabling collision with the interactable layer: %d."
-				% Enums.CollisionLayers.INTERACTABLE
-			)
-		)
-	return warnings
-
-
-func _set(property: StringName, _value: Variant) -> bool:
-	if property == "collision_layer":
-		update_configuration_warnings()
-	return false
+func _ready() -> void:
+	collision_layer = 0
+	collision_mask = 0
+	# Initialise interactable bit in collision_layer
+	disabled = disabled
 
 
 func _draw() -> void:

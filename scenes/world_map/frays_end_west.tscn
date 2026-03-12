@@ -20,8 +20,8 @@
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="11_ovokv"]
 [ext_resource type="Texture2D" uid="uid://cvm2x4fhekowd" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Blue_03.png" id="12_feqgw"]
 [ext_resource type="Resource" uid="uid://dx773k0ovb35j" path="res://scenes/world_map/components/oscar.dialogue" id="12_otyi0"]
-[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="13_8o6qx"]
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="13_ltemt"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="13_otyi0"]
 [ext_resource type="Texture2D" uid="uid://d2kjk3oiu5o6o" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Blue_02.png" id="13_qm4wv"]
 [ext_resource type="Resource" uid="uid://d4kkr5cifitfm" path="res://scenes/world_map/components/sigurd.dialogue" id="14_otyi0"]
 [ext_resource type="SpriteFrames" uid="uid://b0ba41utstkyk" path="res://scenes/game_elements/characters/components/sprite_frames/sheep.tres" id="20_feqgw"]
@@ -113,10 +113,14 @@ dialogue = ExtResource("12_otyi0")
 interact_area = NodePath("../InteractArea")
 metadata/_custom_type_script = "uid://edcifob4jc4s"
 
-[node name="InteractArea" parent="OnTheGround/Oscar" unique_id=248145530 instance=ExtResource("13_8o6qx")]
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Oscar" unique_id=248145530]
 visible = false
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("13_otyi0")
 interact_label_position = Vector2(0, -100)
 action = "Talk to Óscar"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Oscar/InteractArea" unique_id=1380061781]
 position = Vector2(0, -23.5)
@@ -135,10 +139,14 @@ dialogue = ExtResource("14_otyi0")
 interact_area = NodePath("../InteractArea")
 metadata/_custom_type_script = "uid://edcifob4jc4s"
 
-[node name="InteractArea" parent="OnTheGround/Sigurd" unique_id=113255734 instance=ExtResource("13_8o6qx")]
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Sigurd" unique_id=113255734]
 visible = false
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("13_otyi0")
 interact_label_position = Vector2(0, -100)
 action = "Talk to Sigurd"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Sigurd/InteractArea" unique_id=728137002]
 position = Vector2(0, -23.5)
