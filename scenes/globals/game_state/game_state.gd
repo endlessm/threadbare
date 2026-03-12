@@ -46,6 +46,13 @@ const LIVES_KEY := "current_lives"
 const MAX_LIVES := 2 ** 53
 const DEBUG_LIVES := false
 
+## The player abilities to have from the beginning
+## when not running the game from the main scene.
+const DEBUG_PLAYER_ABILITIES := [
+	Enums.PlayerAbilities.ABILITY_A,
+	Enums.PlayerAbilities.ABILITY_B,
+]
+
 ## Scenes to skip from saving.
 const TRANSIENT_SCENES := [
 	"res://scenes/menus/title/title_screen.tscn",
@@ -93,7 +100,11 @@ var completed_quests: Array[String] = []
 ## mark_quest_completed] and [method abandon_quest].
 var current_quest: Quest
 
+## The progress is persisted only if the game is run normally from the main scene.
+## Otherwise, it means we are playing a specific scene: the current scene from the editor or
+## with a direct URL hash to a scene in the web build. In the latter cases, this variable is false.
 var persist_progress: bool
+
 var _state := ConfigFile.new()
 
 
@@ -121,6 +132,9 @@ func _ready() -> void:
 	if not persist_progress:
 		if current_scene:
 			guess_quest(current_scene.scene_file_path)
+		# Grant all debug player abilities:
+		for ability: Enums.PlayerAbilities in DEBUG_PLAYER_ABILITIES:
+			set_ability(ability, true)
 		return
 
 	var err := _state.load(GAME_STATE_PATH)
