@@ -129,9 +129,9 @@ metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [sub_resource type="Curve2D" id="Curve2D_vdhd3"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -1512, 3, 0, 0, 0, 0, -264, 3, 0, 0, 0, 0, -264, -221, 0, 0, 0, 0, 120, -221, 0, 0, 0, 0, 120, 163, 0, 0, 0, 0, 248, 163, 0, 0, 0, 0, 248, -285, 0, 0, 0, 0, 888, -285)
+"points": PackedVector2Array(0, 0, 0, 0, 888, -973, 0, 0, 0, 0, 888, -285, 0, 0, 0, 0, 248, -285, 0, 0, 0, 0, 248, 163, 0, 0, 0, 0, 120, 163, 0, 0, 0, 0, 120, -221, 0, 0, 0, 0, -264, -221, 0, 0, 0, 0, -264, 3, 0, 0, 0, 0, -1512, 3)
 }
-point_count = 8
+point_count = 9
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_drlay"]
 size = Vector2(64, 128)
@@ -147,6 +147,7 @@ clip = &"Creep Intro"
 script = ExtResource("3_p44d7")
 dialogue = ExtResource("4_aiq76")
 animation_player = NodePath("../AnimationPlayer")
+autostart = false
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1296302605]
@@ -272,6 +273,7 @@ direction = 1
 text = "Go!"
 
 [node name="VoidPatrolling" parent="OnTheGround" unique_id=1938075518 node_paths=PackedStringArray("void_layer", "idle_patrol_path") instance=ExtResource("9_3g3x4")]
+unique_name_in_owner = true
 process_mode = 4
 position = Vector2(1100, 677)
 void_layer = NodePath("../../TileMapLayers/Void")
@@ -358,6 +360,12 @@ script = ExtResource("14_jqq45")
 look_at_side_on_spawn = -1
 metadata/_custom_type_script = "uid://0enyu5v4ra34"
 
+[node name="SpawnPointFromPowerup" type="Marker2D" parent="." unique_id=1553099395 groups=["spawn_point"]]
+position = Vector2(2691, 545)
+script = ExtResource("14_jqq45")
+look_at_side_on_spawn = -1
+metadata/_custom_type_script = "uid://0enyu5v4ra34"
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=355832986]
 
 [node name="InputHint" type="Control" parent="ScreenOverlay" unique_id=1843013517]
@@ -395,5 +403,7 @@ theme_type_variation = &"HintLabel"
 text = "Aim"
 
 [node name="HUD" parent="." unique_id=1590862536 instance=ExtResource("11_p44d7")]
+
+[connection signal="player_teleported" from="SpawnPointFromPowerup" to="." method="_on_spawn_point_from_powerup_player_teleported"]
 
 [editable path="OnTheGround/VoidPatrolling"]
