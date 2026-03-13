@@ -3,6 +3,13 @@ extends CharacterBody2D
 @export var foam: TileMapLayer
 @export var submerged_blocks: TileMapLayer
 
+func _ready() -> void:
+	if not submerged_blocks and get_parent() is TileMapLayer:
+		submerged_blocks = get_parent()
+	
+	if not foam:
+		foam = submerged_blocks.get_parent().get_node("Foam")
+
 
 func _on_area_2d_body_shape_entered(
 	body_rid: RID,
