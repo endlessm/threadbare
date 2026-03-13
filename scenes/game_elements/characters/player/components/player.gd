@@ -74,14 +74,6 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 
 var input_vector: Vector2
 
-# Storing this is cribbed from top_down_push_ship_player_2d.gd in GDQuest's Node
-# Essentials course. TODO: I don't understand why this is necessary, and in my
-# implementation the player "sticks" to the block for 1 frame when they walk
-# away, dragging the block with them.
-var _pushing_block: CharacterBody2D
-var _pushing_direction: Vector2
-var _detach_distance: float
-
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_fighting: Node2D = %PlayerFighting
 @onready var player_hook: PlayerHook = %PlayerHook
@@ -209,30 +201,7 @@ func _physics_process(delta: float) -> void:
 	)
 	velocity = velocity.move_toward(input_vector, step * delta)
 
-	if is_instance_valid(_pushing_block):
-		_pushing_block.velocity = velocity
-		_pushing_block.move_and_slide()
-
 	move_and_slide()
-
-	_push_block()
-
-
-func _push_block() -> void:
-	for i: int in get_slide_collision_count():
-		var collision := get_slide_collision(i)
-		var collider := collision.get_collider() as CharacterBody2D
-		if collider:
-			_pushing_block = collider
-			# TODO: quantize to cardinal direction?
-			_pushing_direction = input_vector
-			_detach_distance = global_position.distance_to(collider.global_position) + 1.0
-			break
-
-	if _pushing_block:
-		var distance := global_position.distance_to(_pushing_block.global_position)
-		if input_vector != _pushing_direction or distance > _detach_distance:
-			_pushing_block = null
 
 
 func teleport_to(
