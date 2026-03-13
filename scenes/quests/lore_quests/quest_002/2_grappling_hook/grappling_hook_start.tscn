@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://b8mfigsd8y5qs"]
 
+[ext_resource type="Script" uid="uid://cypo7qnrrj4qq" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/grappling_hook_start.gd" id="1_6n4qp"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_wxpj0"]
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="2_85rkf"]
 [ext_resource type="AudioStream" uid="uid://bwgtbylflkup2" path="res://scenes/quests/lore_quests/quest_002/components/void_music.tres" id="2_wv4km"]
@@ -19,7 +20,6 @@
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="10_upilw"]
 [ext_resource type="PackedScene" uid="uid://cdwf2nmeqns31" path="res://scenes/ui_elements/input_hints/throw_hint.tscn" id="11_10ahs"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="11_p44d7"]
-[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="13_3g3x4"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="14_jqq45"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="18_wv4km"]
 [ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="19_6n4qp"]
@@ -128,14 +128,15 @@ metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [sub_resource type="Curve2D" id="Curve2D_vdhd3"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -1512, 3, 0, 0, 0, 0, -264, 3, 0, 0, 0, 0, -264, -221, 0, 0, 0, 0, 120, -221, 0, 0, 0, 0, 120, 163, 0, 0, 0, 0, 248, 163, 0, 0, 0, 0, 248, -285, 0, 0, 0, 0, 888, -285)
+"points": PackedVector2Array(0, 0, 0, 0, 888, -973, 0, 0, 0, 0, 888, -285, 0, 0, 0, 0, 248, -285, 0, 0, 0, 0, 248, 163, 0, 0, 0, 0, 120, 163, 0, 0, 0, 0, 120, -221, 0, 0, 0, 0, -264, -221, 0, 0, 0, 0, -264, 3, 0, 0, 0, 0, -1512, 3)
 }
-point_count = 8
+point_count = 9
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_drlay"]
 size = Vector2(64, 128)
 
 [node name="GrapplingHookStart" type="Node2D" unique_id=462883478]
+script = ExtResource("1_6n4qp")
 
 [node name="BackgroundMusic" parent="." unique_id=936481265 instance=ExtResource("1_wxpj0")]
 stream = ExtResource("2_wv4km")
@@ -145,6 +146,7 @@ clip = &"Creep Intro"
 script = ExtResource("3_p44d7")
 dialogue = ExtResource("4_aiq76")
 animation_player = NodePath("../AnimationPlayer")
+autostart = false
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1296302605]
@@ -270,6 +272,7 @@ direction = 1
 text = "Go!"
 
 [node name="VoidPatrolling" parent="OnTheGround" unique_id=1938075518 node_paths=PackedStringArray("void_layer", "idle_patrol_path") instance=ExtResource("9_3g3x4")]
+unique_name_in_owner = true
 process_mode = 4
 position = Vector2(1100, 677)
 void_layer = NodePath("../../TileMapLayers/Void")
@@ -356,6 +359,12 @@ script = ExtResource("14_jqq45")
 look_at_side_on_spawn = -1
 metadata/_custom_type_script = "uid://0enyu5v4ra34"
 
+[node name="SpawnPointFromPowerup" type="Marker2D" parent="." unique_id=1553099395 groups=["spawn_point"]]
+position = Vector2(2691, 545)
+script = ExtResource("14_jqq45")
+look_at_side_on_spawn = -1
+metadata/_custom_type_script = "uid://0enyu5v4ra34"
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=355832986]
 
 [node name="InputHint" type="Control" parent="ScreenOverlay" unique_id=1843013517]
@@ -386,12 +395,8 @@ layout_mode = 2
 [node name="AimInputHint" parent="ScreenOverlay/InputHint/VBoxContainer/HBoxContainer2" unique_id=1196650566 instance=ExtResource("23_wv4km")]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScreenOverlay/InputHint/VBoxContainer/HBoxContainer2" unique_id=1102684800]
-layout_mode = 2
-theme = ExtResource("13_3g3x4")
-theme_type_variation = &"HintLabel"
-text = "Aim"
-
 [node name="HUD" parent="." unique_id=1590862536 instance=ExtResource("11_p44d7")]
+
+[connection signal="player_teleported" from="SpawnPointFromPowerup" to="." method="_on_spawn_point_from_powerup_player_teleported"]
 
 [editable path="OnTheGround/VoidPatrolling"]

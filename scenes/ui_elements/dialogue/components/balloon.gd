@@ -74,6 +74,7 @@ var _player_name: String = ""
 func _ready() -> void:
 	balloon.hide()
 	Engine.get_singleton("DialogueManager").mutated.connect(_on_mutated)
+	Engine.get_singleton("DialogueManager").dialogue_ended.connect(_on_dialogue_ended)
 
 	# If the responses menu doesn't have a next action set, use this one
 	if responses_menu.next_action.is_empty():
@@ -112,6 +113,7 @@ func start(
 	resource = dialogue_resource
 	self.dialogue_line = await resource.get_next_dialogue_line(title, temporary_game_states)
 	talk_sound_player.play()
+	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 
 
 ## Apply any changes to the balloon given a new [DialogueLine].
@@ -186,6 +188,10 @@ func _on_mutated(_mutation: Dictionary) -> void:
 	is_waiting_for_input = false
 	will_hide_balloon = true
 	mutation_cooldown.start(0.1)
+
+
+func _on_dialogue_ended(_resource: DialogueResource) -> void:
+	Input.set_default_cursor_shape(Input.CURSOR_CROSS)
 
 
 func _on_balloon_gui_input(event: InputEvent) -> void:
