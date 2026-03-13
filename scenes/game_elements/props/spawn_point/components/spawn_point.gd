@@ -4,6 +4,12 @@
 class_name SpawnPoint
 extends Marker2D
 
+## Emitted after the player position has been changed.
+## [br][br]
+## Level scenes can use this signal to behave differently depending on
+## which SpawnPoint was used (or if no SpawnPoint at all was used).
+signal player_teleported
+
 @export var look_at_side_on_spawn: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
 
 
@@ -24,3 +30,5 @@ func move_player_to_self_position(smooth_camera: bool = false) -> void:
 
 	if is_instance_valid(player):
 		player.teleport_to(self.global_position, smooth_camera, look_at_side_on_spawn)
+
+	player_teleported.emit()
