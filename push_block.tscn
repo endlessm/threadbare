@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://040geb1h683b"]
+
+[ext_resource type="Script" uid="uid://bxulfsreyu63i" path="res://push_block.gd" id="1_jmvaw"]
+[ext_resource type="Texture2D" uid="uid://c86ayucyybr2t" path="res://scenes/eternal_loom_sokoban/components/wall/walls.png" id="2_byqtm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ko04g"]
+atlas = ExtResource("2_byqtm")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6jm70"]
+size = Vector2(64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cqfek"]
+size = Vector2(1, 1)
+
+[node name="PushBlock" type="CharacterBody2D" unique_id=1349233887]
+collision_mask = 274
+motion_mode = 1
+script = ExtResource("1_jmvaw")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=448744553]
+texture = SubResource("AtlasTexture_ko04g")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1387816029]
+shape = SubResource("RectangleShape2D_6jm70")
+metadata/_edit_lock_ = true
+
+[node name="WaterDetector" type="Area2D" parent="." unique_id=222932605]
+collision_layer = 0
+collision_mask = 512
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WaterDetector" unique_id=1457035837]
+shape = SubResource("RectangleShape2D_cqfek")
+
+[connection signal="body_shape_entered" from="WaterDetector" to="." method="_on_area_2d_body_shape_entered"]
