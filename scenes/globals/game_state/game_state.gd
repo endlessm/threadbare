@@ -327,6 +327,14 @@ func _use_lore_abilities() -> bool:
 	return current_quest == null or current_quest.is_lore_quest
 
 
+## Clear player abilities.
+func clear_abilities() -> void:
+	if _use_lore_abilities():
+		lore_player_abilities = 0
+	else:
+		storyquest_player_abilities = 0
+
+
 ## Enable or disable a player ability.
 ## [br][br]
 ## This will behave differently in the main "lore" game than in
