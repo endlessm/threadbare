@@ -1,9 +1,11 @@
 [gd_scene format=4 uid="uid://detarlsgchyx3"]
 
-[ext_resource type="Script" uid="uid://cli0ni1rah58q" path="res://scenes/quests/story_quests/shjourney/7_shjourney_combate/fill_game_logic2.gd" id="1_ymgo3"]
+[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/PlayerMode.gd" id="1_pmkxv"]
 [ext_resource type="TileSet" uid="uid://cff3wffsnp02" path="res://scenes/quests/story_quests/shjourney/7_shjourney_combate/tilesetMinijuego03.tres" id="2_l82d5"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="2_mtgbq"]
 [ext_resource type="Resource" uid="uid://dnhietnxc72ks" path="res://scenes/quests/story_quests/shjourney/7_shjourney_combate/template_combat_components/CombateDialogo.dialogue" id="2_ymgo3"]
 [ext_resource type="SpriteFrames" uid="uid://blbgeo0jjttf4" path="res://scenes/quests/story_quests/shjourney/7_shjourney_combate/template_playerFight.tres" id="4_l82d5"]
+[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="4_r2vdt"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_w4e0j"]
 [ext_resource type="Shader" uid="uid://bvb4l5wskqwhf" path="res://scenes/quests/story_quests/shjourney/3_shjourney_intro/intro0.2.gdshader" id="4_ydosg"]
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="5_xtx35"]
@@ -20,7 +22,6 @@
 [ext_resource type="PackedScene" uid="uid://gnqum6w7qe4a" path="res://scenes/quests/story_quests/shjourney/7_shjourney_combate/template_combat_components/fireball2.tscn" id="12_lpt11"]
 [ext_resource type="PackedScene" uid="uid://dkx3dgc1br3b4" path="res://scenes/ui_elements/input_hints/repel_hint.tscn" id="19_mtgbq"]
 [ext_resource type="AudioStream" uid="uid://dxoui232ly161" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/musicas/Hunting in the Reeds.ogg" id="22_r2vdt"]
-[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/PlayerMode.gd" id="1_pmkxv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jqvha"]
 shader = ExtResource("4_ydosg")
@@ -91,11 +92,16 @@ y_sort_enabled = true
 
 [node name="PlayerMode" type="Node" parent="." unique_id=1258307633]
 script = ExtResource("1_pmkxv")
+mode = 1
 metadata/_custom_type_script = "uid://pk3ucq7e2eah"
 
-[node name="FillGameLogic2" type="Node" parent="." unique_id=1440674695]
-script = ExtResource("1_ymgo3")
-intro_dialogue = ExtResource("2_ymgo3")
+[node name="Cinematic" type="Node2D" parent="." unique_id=114199410]
+script = ExtResource("2_mtgbq")
+dialogue = ExtResource("2_ymgo3")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="FillGameLogic" type="Node" parent="." unique_id=1332397917]
+script = ExtResource("4_r2vdt")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=478372880]
@@ -230,4 +236,5 @@ scale = Vector2(5.625, 5.625)
 stream = ExtResource("22_r2vdt")
 autoplay = true
 
-[connection signal="goal_reached" from="FillGameLogic2" to="OnTheGround/CollectibleItem" method="reveal"]
+[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
+[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
