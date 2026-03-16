@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://b4dotq384vljq"]
 
 [ext_resource type="TileSet" uid="uid://birttlb0sk74i" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/tilesetOutro.tres" id="1_0jcvd"]
-[ext_resource type="Script" uid="uid://c3lamv6dvbldv" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/fill_game_logic_outro.gd" id="1_v1avb"]
+[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/PlayerMode.gd" id="1_pm877"]
 [ext_resource type="TileSet" uid="uid://bpyv8qhmeyo6l" path="res://scenes/quests/story_quests/shjourney/3_shjourney_intro/tilesetIntro.tres" id="2_r1lym"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_14vr6"]
 [ext_resource type="PackedScene" uid="uid://p6q2uo2us0il" path="res://scenes/quests/story_quests/shjourney/light.tscn" id="5_14vr6"]
@@ -31,7 +31,6 @@
 [ext_resource type="PackedScene" uid="uid://bhipktaj0oefq" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/Puerta.tscn" id="28_qomnf"]
 [ext_resource type="Texture2D" uid="uid://cpeefsvw0r68s" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/marco_.png" id="29_3urrv"]
 [ext_resource type="PackedScene" uid="uid://dpbsi065gmh8a" path="res://scenes/game_elements/fx/fog/fog.tscn" id="32_43lgm"]
-[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/PlayerMode.gd" id="1_pm877"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rdjet"]
 atlas = ExtResource("16_3urrv")
@@ -93,10 +92,6 @@ size = Vector2(134, 143)
 [node name="PlayerMode" type="Node" parent="." unique_id=340234109]
 script = ExtResource("1_pm877")
 metadata/_custom_type_script = "uid://pk3ucq7e2eah"
-
-[node name="FillGameLogic_outro" type="Node" parent="." unique_id=700980534]
-script = ExtResource("1_v1avb")
-metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=2070144937]
 
@@ -487,11 +482,11 @@ position = Vector2(1431, 1314)
 [node name="FireFly26" parent="." unique_id=1657380025 instance=ExtResource("9_v1avb")]
 position = Vector2(963, 2556)
 
-[connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="reportar_arbol_contactado"]
-[connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="_on_arbol_fantasma_1_dialogo_terminado"]
 [connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="_on_arbol_dialogo_terminado"]
-[connection signal="dialogo_terminado2" from="quest_arbol2/ArbolFantasma2" to="quest_arbol2" method="_on_arbol_fantasma_2_dialogo_terminado_2"]
+[connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="_on_arbol_fantasma_1_dialogo_terminado"]
+[connection signal="dialogo_terminado" from="quest_arbol/ArbolFantasma1" to="." method="reportar_arbol_contactado"]
 [connection signal="dialogo_terminado2" from="quest_arbol2/ArbolFantasma2" to="quest_arbol2" method="reportar_arbol_contactado2"]
+[connection signal="dialogo_terminado2" from="quest_arbol2/ArbolFantasma2" to="quest_arbol2" method="_on_arbol_fantasma_2_dialogo_terminado_2"]
 [connection signal="dialogo_terminado3" from="quest_arbol3/ArbolFantasma3" to="quest_arbol3" method="reportar_arbol_contactado3"]
 [connection signal="dialogo_terminado3" from="quest_arbol3/ArbolFantasma3" to="quest_arbol3" method="_on_arbol_fantasma_3_dialogo_terminado_3"]
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]
