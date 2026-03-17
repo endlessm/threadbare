@@ -6,6 +6,8 @@ extends Node2D
 ## Emitted when the repel starts or stops.
 signal repelling_changed(repelling: bool)
 
+@export var input_action: StringName = &"repel"
+
 ## Current state of the repel.
 var repelling: bool = false:
 	set = _set_repelling
@@ -21,9 +23,9 @@ func _set_repelling(new_repelling: bool) -> void:
 
 
 func _unhandled_input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed(&"repel"):
+	if Input.is_action_just_pressed(input_action):
 		repelling = true
-	elif Input.is_action_just_released(&"repel"):
+	elif Input.is_action_just_released(input_action):
 		repelling = false
 
 
