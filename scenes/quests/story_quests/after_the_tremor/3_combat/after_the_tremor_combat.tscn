@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="1_ine85"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_n5amm"]
 [ext_resource type="Script" uid="uid://da5eiigxh4x7e" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/scripts/combat.gd" id="1_omu5o"]
+[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/PlayerMode.gd" id="1_pmsah"]
 [ext_resource type="TileSet" uid="uid://4ewcvb1sibsf" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/2_cinematicacombate/tile/tilestaller.tres" id="4_05iye"]
-[ext_resource type="Script" uid="uid://db4o0p7nc3svv" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/scripts/charlie_fighting.gd" id="4_kiv56"]
 [ext_resource type="SpriteFrames" uid="uid://wdv3k3hudj1h" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/charliegato.tres" id="4_uft25"]
 [ext_resource type="SpriteFrames" uid="uid://x5dyax1ulw8f" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/boss.tres" id="7_f4d1w"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="8_tmljt"]
@@ -23,7 +23,6 @@
 [ext_resource type="AudioStream" uid="uid://sbiee65fj5qw" path="res://scenes/quests/story_quests/after_the_tremor/music/minijuego3.ogg" id="21_ilkny"]
 [ext_resource type="Script" uid="uid://d31cxd03praji" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/scripts/MusicFix.gd" id="22_ilkny"]
 [ext_resource type="AudioStream" uid="uid://bnnmm5oppg6nr" path="res://scenes/quests/story_quests/after_the_tremor/music/sounds/defeat.wav" id="23_ilkny"]
-[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/PlayerMode.gd" id="1_pmsah"]
 
 [sub_resource type="Resource" id="Resource_ilkny"]
 script = ExtResource("16_epny2")
@@ -48,9 +47,9 @@ y_sort_enabled = true
 script = ExtResource("1_omu5o")
 
 [node name="PlayerMode" type="Node" parent="." unique_id=573392624]
+unique_name_in_owner = true
 script = ExtResource("1_pmsah")
 mode = 1
-metadata/_custom_type_script = "uid://pk3ucq7e2eah"
 
 [node name="PlayersContainer" type="Node2D" parent="." unique_id=1961030992]
 modulate = Color(0.7919991, 0.79199916, 0.7919991, 1)
@@ -64,25 +63,17 @@ walk_speed = 10.0
 run_speed = 10.0
 sprite_frames = ExtResource("4_uft25")
 
-[node name="PlayerSprite" parent="PlayersContainer/charlie" index="2" unique_id=1785485617]
+[node name="PlayerSprite" parent="PlayersContainer/charlie" index="1" unique_id=1785485617]
 sprite_frames = ExtResource("4_uft25")
 
 [node name="PlayerInteraction" parent="PlayersContainer/charlie" index="4" unique_id=1260226520]
-process_mode = 4
-visible = false
 position = Vector2(-126, 3554)
 
 [node name="InteractLabel" parent="PlayersContainer/charlie/PlayerInteraction/InteractMarker" parent_id_path=PackedInt32Array(1453346405, 439387414) index="0" unique_id=554498577]
 visible = false
 
-[node name="PlayerFighting" parent="PlayersContainer/charlie" index="5" unique_id=1745412343]
-process_mode = 0
-visible = true
-script = ExtResource("4_kiv56")
-input_action = "move_left"
-
-[node name="AudioStreamPlayer2D" parent="PlayersContainer/charlie/PlayerFighting/AirStream" parent_id_path=PackedInt32Array(1453346405, 642627191) index="2" unique_id=25920746]
-bus = &"SFX"
+[node name="PlayerRepel" parent="PlayersContainer/charlie" index="5" unique_id=1745412343]
+input_action = &"move_left"
 
 [node name="bryan" parent="PlayersContainer" unique_id=1722313202 instance=ExtResource("1_n5amm")]
 z_index = 1
@@ -93,26 +84,21 @@ walk_speed = 10.0
 run_speed = 10.0
 sprite_frames = ExtResource("16_ilkny")
 
-[node name="PlayerSprite" parent="PlayersContainer/bryan" index="2" unique_id=1785485617]
+[node name="PlayerSprite" parent="PlayersContainer/bryan" index="1" unique_id=1785485617]
 sprite_frames = ExtResource("16_ilkny")
 flip_h = true
 
 [node name="PlayerInteraction" parent="PlayersContainer/bryan" index="4" unique_id=1260226520]
-process_mode = 4
-visible = false
 position = Vector2(2674, 182)
 
 [node name="LabelContainer" parent="PlayersContainer/bryan/PlayerInteraction/InteractMarker/InteractLabel" parent_id_path=PackedInt32Array(1722313202, 554498577) index="0" unique_id=640967064]
-offset_right = 32.0
+offset_left = -68.0
+offset_top = -46.0
+offset_right = 0.0
+offset_bottom = 0.0
 
-[node name="PlayerFighting" parent="PlayersContainer/bryan" index="5" unique_id=1745412343]
-process_mode = 0
-visible = true
-script = ExtResource("4_kiv56")
-input_action = "move_right"
-
-[node name="AudioStreamPlayer2D" parent="PlayersContainer/bryan/PlayerFighting/AirStream" parent_id_path=PackedInt32Array(1722313202, 642627191) index="2" unique_id=25920746]
-bus = &"SFX"
+[node name="PlayerRepel" parent="PlayersContainer/bryan" index="5" unique_id=1745412343]
+input_action = &"move_right"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=609593329]
 
@@ -209,7 +195,7 @@ position = Vector2(716, 392)
 script = ExtResource("18_fq20r")
 needed_amount = 50
 
-[node name="HitBox" parent="BossHealth" index="1" unique_id=1847617565]
+[node name="HitBox" parent="BossHealth" index="2" unique_id=1847617565]
 position = Vector2(-2, 54)
 
 [node name="CollisionShape2D" parent="BossHealth/HitBox" index="0" unique_id=426954511]
