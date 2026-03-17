@@ -6,15 +6,13 @@ extends CharacterBody2D
 
 signal mode_changed(mode: Mode)
 
-## Controls how the player can interact with the world around them.
+## The possible player states.
 enum Mode {
-	## Player can explore the world, interact with items and NPCs, but is not
-	## engaged in combat. Combat actions are not available in this mode.
-	COZY,
-	## Player is engaged in combat. Player can use combat actions.
-	FIGHTING,
-	## Player is using the grappling hook.
-	HOOKING,
+	## Player is reacting to user input.
+	PLAYING,
+	## Player is being controlled by other means: interacting,
+	## pulling the grappling hook, being put on rails, etc.
+	CONTROLLED,
 	## Player can't be controlled anymore.
 	DEFEATED,
 }
@@ -41,8 +39,8 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 ## is speaking during dialogue.
 @export var player_name: String = "Player Name"
 
-## Controls how the player can interact with the world around them.
-@export var mode: Mode = Mode.COZY:
+## The current player state.
+@export var mode: Mode = Mode.PLAYING:
 	set = _set_mode
 
 ## The character walking speed.
@@ -87,13 +85,13 @@ func _set_mode(new_mode: Mode) -> void:
 	if not is_node_ready():
 		return
 	match mode:
+		Mode.PLAYING, Mode.CONTROLLED:
+			_toggle_player_behavior(player_interaction, true)
+			_toggle_abilities()
 		Mode.DEFEATED:
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_repel, false)
 			_toggle_player_behavior(player_hook, false)
-		_:
-			_toggle_player_behavior(player_interaction, true)
-			_toggle_abilities()
 
 	if mode != previous_mode:
 		mode_changed.emit(mode)
@@ -177,12 +175,8 @@ func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 
-	# While pulling the grappling hook, the movement is handled in PlayerHook._physics_process.
-	if player_hook.pulling:
-		return
-
-	if player_interaction.is_interacting or mode == Mode.DEFEATED:
-		velocity = Vector2.ZERO
+	# TODO: Use InputWalkBehavior instead, and enable/disable it when the mode changes.
+	if mode in [Mode.CONTROLLED, Mode.DEFEATED]:
 		return
 
 	var step := (
@@ -230,6 +224,9 @@ func defeat(falling: bool = false) -> void:
 
 	mode = Player.Mode.DEFEATED
 
+	# Stop moving the player.
+	velocity = Vector2.ZERO
+
 	# Decrement lives and save the new count
 	GameState.decrement_lives()
 
@@ -246,6 +243,14 @@ func defeat(falling: bool = false) -> void:
 	else:
 		# Game over - restart from challenge start
 		_handle_game_over()
+
+
+func take_control(_controlled_by: Node) -> void:
+	mode = Mode.CONTROLLED
+
+
+func return_control(_controlled_by: Node) -> void:
+	mode = Mode.PLAYING
 
 
 func _toggle_abilities() -> void:
