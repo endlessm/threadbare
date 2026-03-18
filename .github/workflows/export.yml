@@ -125,50 +125,43 @@ jobs:
     needs: [build, flatpak]
     if: ${{ github.event_name == 'release' }}
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - name: Download web bundle
+        id: download-web-bundle
         uses: actions/download-artifact@v8
         with:
           name: web
-          path: web
-
-      - name: Attach PCK
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          cp web/index.pck '${{ env.PCK_NAME }}-${{ github.ref_name }}.pck'
-          gh release upload '${{ github.ref_name }}' '${{ env.PCK_NAME }}-${{ github.ref_name }}.pck' --repo '${{ github.repository }}'
+          skip-decompress: true
+          path: 'threadbare-${{ github.ref_name }}-web.zip'
 
       - name: Download Flatpak bundle
         uses: actions/download-artifact@v8
         with:
           name: threadbare-x86_64.flatpak
 
+      - name: Download Linux metadata bundle
+        uses: actions/download-artifact@v8
+        with:
+          name: threadbare-linux-metadata.tar.gz
+
+      - name: Attach web bundle to release
+        run: |
+          gh release upload '${{ github.ref_name }}' ${{ steps.download-web-bundle.outputs.download-path }} --repo '${{ github.repository }}'
+
+      - name: Attach PCK to release
+        run: |
+          unzip ${{ steps.download-web-bundle.outputs.download-path }} index.pck
+          mv index.pck '${{ env.PCK_NAME }}-${{ github.ref_name }}.pck'
+          gh release upload '${{ github.ref_name }}' '${{ env.PCK_NAME }}-${{ github.ref_name }}.pck' --repo '${{ github.repository }}'
+
       - name: Attach Flatpak bundle to release
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
         run: |
           mv threadbare.flatpak 'threadbare-${{ github.ref_name }}-x86_64.flatpak'
           gh release upload '${{ github.ref_name }}' 'threadbare-${{ github.ref_name }}-x86_64.flatpak' --repo '${{ github.repository }}'
 
-      - name: Attach web bundle to release
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          pushd web
-          zip -r "../threadbare-${{ github.ref_name }}-web.zip" .
-          popd
-
-          gh release upload '${{ github.ref_name }}' 'threadbare-${{ github.ref_name }}-web.zip' --repo '${{ github.repository }}'
-
-      - name: Download Linux metadata bundle
-        uses: actions/download-artifact@v8
-        with:
-          name: threadbare-linux-metadata
-
       - name: Attach Linux metadata bundle to release
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
         run: |
           mv threadbare-linux-metadata.tar.gz 'threadbare-${{ github.ref_name }}-linux-metadata.tar.gz'
           gh release upload '${{ github.ref_name }}' 'threadbare-${{ github.ref_name }}-linux-metadata.tar.gz' --repo '${{ github.repository }}'
