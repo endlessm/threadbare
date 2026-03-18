@@ -42,6 +42,7 @@ const DEBUG_LIVES := false
 
 ## Scenes to skip from saving.
 const TRANSIENT_SCENES := [
+	"res://scenes/menus/splash/splash.tscn",
 	"res://scenes/menus/title/title_screen.tscn",
 	"res://scenes/menus/intro/intro.tscn",
 ]
