@@ -19,12 +19,12 @@ var quest: Quest = preload("uid://dwl8letaanhhi"):
 
 
 # This is an in-joke/Easter egg for the Endless Access team
-func _chadify(name: String) -> String:
-	if name != "Justin Bourque":
-		return name
+static func _chadify(author_name: String) -> String:
+	if author_name != "Justin Bourque":
+		return author_name
 
 	var options := [
-		name,
+		author_name,
 		"Chad Bourque",
 		"Eric Bourque",
 	]
