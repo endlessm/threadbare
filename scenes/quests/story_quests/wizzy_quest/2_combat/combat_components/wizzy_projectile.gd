@@ -61,7 +61,7 @@ func _process(_delta: float) -> void:
 ## Returns the player if they're in fighting mode, null otherwise
 func _get_fighting_player() -> Player:
 	var player: Player = get_tree().get_first_node_in_group("player")
-	if player and player.mode == Player.Mode.FIGHTING:
+	if player and GameState.has_ability(Enums.PlayerAbilities.ABILITY_A):
 		return player
 	return null
 

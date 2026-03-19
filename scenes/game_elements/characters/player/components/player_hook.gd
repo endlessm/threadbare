@@ -237,6 +237,9 @@ func shatter_string() -> void:
 ## While pulling, the player is allowed to go through non-walkable floor.
 func pull_string() -> void:
 	pulling = true
+	# While pulling, this class takes control over the player movement.
+	if character.has_method("take_control"):
+		character.take_control(self)
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, false)
 
 
@@ -247,6 +250,9 @@ func pull_string() -> void:
 func stop_pulling() -> void:
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, true)
 	pulling = false
+	# After pulling, return control to the user.
+	if character.has_method("return_control"):
+		character.return_control(self)
 	remove_string()
 
 
