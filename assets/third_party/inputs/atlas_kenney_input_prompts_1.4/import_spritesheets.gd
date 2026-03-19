@@ -35,14 +35,14 @@ func import(spritesheet_xml_file: String) -> void:
 	create_atlas_textures(folder, full_image, atlas)
 
 
-func create_atlas_textures(folder: String, full_image: Texture2D, atlas: Dictionary):
+func create_atlas_textures(folder: String, full_image: Texture2D, atlas: Dictionary) -> bool:
 	for sprite: Dictionary in atlas.sprites:
 		if not create_atlas_texture(folder, full_image, sprite):
 			return false
 	return true
 
 
-func create_atlas_texture(folder: String, full_image: Texture2D, sprite: Dictionary):
+func create_atlas_texture(folder: String, full_image: Texture2D, sprite: Dictionary) -> bool:
 	var name := "%s/%s.%s" % [folder, sprite.name, "tres"]
 	var texture: AtlasTexture
 	if ResourceLoader.exists(name, "AtlasTexture"):
@@ -69,7 +69,7 @@ func create_atlas_texture(folder: String, full_image: Texture2D, sprite: Diction
 
 
 func save_resource(name: String, texture: AtlasTexture) -> bool:
-	var status = ResourceSaver.save(texture, name)
+	var status := ResourceSaver.save(texture, name)
 	if status != OK:
 		printerr("Failed to save resource " + name)
 		return false
@@ -81,19 +81,19 @@ func read_kenney_sprite_sheet(source_file: String) -> Dictionary:
 	var sprites: Array[Dictionary]
 	var parser := XMLParser.new()
 	if OK == parser.open(source_file):
-		var read = parser.read()
+		var read := parser.read()
 		if read == OK:
 			atlas["sprites"] = sprites
 		while read != ERR_FILE_EOF:
 			if parser.get_node_type() == XMLParser.NODE_ELEMENT:
-				var node_name = parser.get_node_name()
+				var node_name := parser.get_node_name()
 				match node_name:
 					"TextureAtlas":
 						atlas["imagePath"] = source_file.get_base_dir().path_join(
 							parser.get_named_attribute_value("imagePath")
 						)
 					"SubTexture":
-						var sprite = {}
+						var sprite := {}
 						sprite["name"] = parser.get_named_attribute_value("name")
 						sprite["x"] = float(parser.get_named_attribute_value("x"))
 						sprite["y"] = float(parser.get_named_attribute_value("y"))
