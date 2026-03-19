@@ -4,6 +4,8 @@ extends AnimationPlayer
 
 const REPEL_ANTICIPATION_TIME: float = 0.3
 
+var _is_player_running: bool
+
 @onready var player: Player = owner
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var player_repel: PlayerRepel = %PlayerRepel
@@ -26,12 +28,12 @@ func _process(_delta: float) -> void:
 
 	if player.velocity.is_zero_approx():
 		play(&"idle")
-	elif player_sprite.sprite_frames.has_animation(&"run") and player.is_running():
+	elif player_sprite.sprite_frames.has_animation(&"run") and _is_player_running:
 		play(&"run")
 	else:
 		play(&"walk")
 
-	var double_speed: bool = current_animation == &"walk" and player.is_running()
+	var double_speed: bool = current_animation == &"walk" and _is_player_running
 	speed_scale = original_speed_scale * (2.0 if double_speed else 1.0)
 
 
@@ -70,3 +72,7 @@ func _on_player_hook_string_thrown() -> void:
 		stop()
 	speed_scale = original_speed_scale
 	play(&"throw_string")
+
+
+func _on_input_walk_behavior_running_changed(is_running: bool) -> void:
+	_is_player_running = is_running
