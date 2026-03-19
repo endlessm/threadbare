@@ -9,10 +9,10 @@ signal mode_changed(mode: Mode)
 ## The possible player states.
 enum Mode {
 	## Player is reacting to user input.
-	PLAYING,
+	USER_CONTROLLED,
 	## Player is being controlled by other means: interacting,
 	## pulling the grappling hook, being put on rails, etc.
-	CONTROLLED,
+	SYSTEM_CONTROLLED,
 	## Player can't be controlled anymore.
 	DEFEATED,
 }
@@ -40,7 +40,7 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 @export var player_name: String = "Player Name"
 
 ## The current player state.
-@export var mode: Mode = Mode.PLAYING:
+@export var mode: Mode = Mode.USER_CONTROLLED:
 	set = _set_mode
 
 ## The character walking speed.
@@ -85,7 +85,7 @@ func _set_mode(new_mode: Mode) -> void:
 	if not is_node_ready():
 		return
 	match mode:
-		Mode.PLAYING, Mode.CONTROLLED:
+		Mode.USER_CONTROLLED, Mode.SYSTEM_CONTROLLED:
 			_toggle_player_behavior(player_interaction, true)
 			_toggle_abilities()
 		Mode.DEFEATED:
@@ -176,7 +176,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	# TODO: Use InputWalkBehavior instead, and enable/disable it when the mode changes.
-	if mode in [Mode.CONTROLLED, Mode.DEFEATED]:
+	if mode in [Mode.SYSTEM_CONTROLLED, Mode.DEFEATED]:
 		return
 
 	var step := (
@@ -246,11 +246,11 @@ func defeat(falling: bool = false) -> void:
 
 
 func take_control(_controlled_by: Node) -> void:
-	mode = Mode.CONTROLLED
+	mode = Mode.SYSTEM_CONTROLLED
 
 
 func return_control(_controlled_by: Node) -> void:
-	mode = Mode.PLAYING
+	mode = Mode.USER_CONTROLLED
 
 
 func _toggle_abilities() -> void:
