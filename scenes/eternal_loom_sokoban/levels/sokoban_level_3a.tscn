@@ -5,7 +5,6 @@
 [ext_resource type="Material" uid="uid://jpl3v3f7elq6" path="res://scenes/eternal_loom_sokoban/components/floor/tiled_mat.tres" id="4_20ol2"]
 [ext_resource type="Script" uid="uid://dppvw2f8yh4vu" path="res://scenes/eternal_loom_sokoban/components/system/board/board_2d.gd" id="5_x0rcl"]
 [ext_resource type="TileSet" uid="uid://dand23uvn70pg" path="res://scenes/eternal_loom_sokoban/components/eternal_loom_tileset.tres" id="6_nr7ak"]
-[ext_resource type="PackedScene" uid="uid://b4d5rf6hn0x4" path="res://scenes/eternal_loom_sokoban/components/hud/sokoban_hud.tscn" id="6_qga2c"]
 [ext_resource type="PackedScene" uid="uid://btpeaqx2nur3q" path="res://scenes/eternal_loom_sokoban/components/eternal_loom_ruleset.tscn" id="7_qga2c"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="8_20ol2"]
 [ext_resource type="AudioStream" uid="uid://bbamdm6wtjjcn" path="res://assets/first_party/music/Threadbare_Bed.ogg" id="9_wwulk"]
@@ -54,15 +53,9 @@ tile_set = ExtResource("6_nr7ak")
 tile_map_data = PackedByteArray("AAD///r/AAAAAAAABwAAAPr/AAAAAAAABwABAPr/AAAAAAAABwABAP7/AAAAAAAAAQD+//r/AAAAAAAAAQD+//v/AAAAAAAABwD+//z/AAAAAAAAAQD+//3/AAAAAAAABwD+//7/AAAAAAAABwD/////AAAAAAAABwD//wAAAAAAAAAABwABAP//AAAAAAAABwABAAAAAAAAAAAABwD///7/AAAAAAAAAQAAAPv/BgAAAAAAAQABAPv/AAAAAAAABwABAPz/AAAAAAAAAQABAP3/AAAAAAAABwD///3/AAAAAAAABgD+/wEAAAAAAAAAAQD+/wIAAAAAAAAABwD+/wMAAAAAAAAABwD+/wQAAAAAAAAABwD+/wUAAAAAAAAABwAAAAUAAAAAAAAABwABAAEAAAAAAAAABwABAAIAAAAAAAAAAQABAAMAAAAAAAAABwABAAQAAAAAAAAABwABAAUAAAAAAAAABwD+/wAAAAAAAAAABwD//wUAAAAAAAAAAQAAAAAAAAAAAAAACQAAAAQABgAAAAAAAgA=")
 tile_set = ExtResource("6_nr7ak")
 
-[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1713440731]
-
-[node name="SokobanHUD" parent="ScreenOverlay" unique_id=1880330019 instance=ExtResource("6_qga2c")]
-
 [node name="RuleEngine" parent="." unique_id=865867186 node_paths=PackedStringArray("board") instance=ExtResource("7_qga2c")]
 board = NodePath("../Board2D")
 next_scene = "uid://ughhyyuc83kk"
 
 [node name="BackgroundMusic" parent="." unique_id=350956816 instance=ExtResource("8_20ol2")]
 stream = ExtResource("9_wwulk")
-
-[connection signal="skip_enabled" from="RuleEngine" to="ScreenOverlay/SokobanHUD" method="display_skip"]
