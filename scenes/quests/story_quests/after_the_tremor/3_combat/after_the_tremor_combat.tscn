@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_pmsah"]
 [ext_resource type="TileSet" uid="uid://4ewcvb1sibsf" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/2_cinematicacombate/tile/tilestaller.tres" id="4_05iye"]
 [ext_resource type="SpriteFrames" uid="uid://wdv3k3hudj1h" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/charliegato.tres" id="4_uft25"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="5_aisso"]
 [ext_resource type="SpriteFrames" uid="uid://x5dyax1ulw8f" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/boss.tres" id="7_f4d1w"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="8_tmljt"]
 [ext_resource type="Resource" uid="uid://cblaldkf38re3" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/dialogocomienzo.dialogue" id="10_ilkny"]
@@ -23,6 +24,14 @@
 [ext_resource type="AudioStream" uid="uid://sbiee65fj5qw" path="res://scenes/quests/story_quests/after_the_tremor/music/minijuego3.ogg" id="21_ilkny"]
 [ext_resource type="Script" uid="uid://d31cxd03praji" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/scripts/MusicFix.gd" id="22_ilkny"]
 [ext_resource type="AudioStream" uid="uid://bnnmm5oppg6nr" path="res://scenes/quests/story_quests/after_the_tremor/music/sounds/defeat.wav" id="23_ilkny"]
+
+[sub_resource type="Resource" id="Resource_cvb4d"]
+script = ExtResource("5_aisso")
+metadata/_custom_type_script = "uid://csev4hv57utxv"
+
+[sub_resource type="Resource" id="Resource_aisso"]
+script = ExtResource("5_aisso")
+metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [sub_resource type="Resource" id="Resource_ilkny"]
 script = ExtResource("16_epny2")
@@ -58,37 +67,42 @@ modulate = Color(0.7919991, 0.79199916, 0.7919991, 1)
 z_index = 1
 position = Vector2(472, 639)
 scale = Vector2(0.5, 0.5)
-mode = 1
-walk_speed = 10.0
-run_speed = 10.0
 sprite_frames = ExtResource("4_uft25")
 
-[node name="PlayerSprite" parent="PlayersContainer/charlie" index="1" unique_id=1785485617]
+[node name="InputWalkBehavior" parent="PlayersContainer/charlie" index="0" unique_id=1817340985]
+speeds = SubResource("Resource_cvb4d")
+
+[node name="PlayerSprite" parent="PlayersContainer/charlie" index="2" unique_id=1785485617]
 sprite_frames = ExtResource("4_uft25")
 
-[node name="PlayerInteraction" parent="PlayersContainer/charlie" index="4" unique_id=1260226520]
+[node name="PlayerInteraction" parent="PlayersContainer/charlie" index="5" unique_id=1260226520]
 position = Vector2(-126, 3554)
 
 [node name="InteractLabel" parent="PlayersContainer/charlie/PlayerInteraction/InteractMarker" parent_id_path=PackedInt32Array(1453346405, 439387414) index="0" unique_id=554498577]
 visible = false
 
-[node name="PlayerRepel" parent="PlayersContainer/charlie" index="5" unique_id=1745412343]
+[node name="PlayerRepel" parent="PlayersContainer/charlie" index="6" unique_id=1745412343]
 input_action = &"move_left"
 
 [node name="bryan" parent="PlayersContainer" unique_id=1722313202 instance=ExtResource("1_n5amm")]
 z_index = 1
 position = Vector2(920, 638)
 scale = Vector2(0.5, 0.5)
-mode = 1
-walk_speed = 10.0
-run_speed = 10.0
+speeds = SubResource("Resource_aisso")
 sprite_frames = ExtResource("16_ilkny")
 
-[node name="PlayerSprite" parent="PlayersContainer/bryan" index="1" unique_id=1785485617]
+[node name="InputWalkBehavior" parent="PlayersContainer/bryan" index="0" unique_id=1817340985]
+speeds = SubResource("Resource_aisso")
+
+[node name="PlayerDustParticles" parent="PlayersContainer/bryan" index="1" unique_id=785276606]
+process_mode = 4
+visible = false
+
+[node name="PlayerSprite" parent="PlayersContainer/bryan" index="2" unique_id=1785485617]
 sprite_frames = ExtResource("16_ilkny")
 flip_h = true
 
-[node name="PlayerInteraction" parent="PlayersContainer/bryan" index="4" unique_id=1260226520]
+[node name="PlayerInteraction" parent="PlayersContainer/bryan" index="5" unique_id=1260226520]
 position = Vector2(2674, 182)
 
 [node name="LabelContainer" parent="PlayersContainer/bryan/PlayerInteraction/InteractMarker/InteractLabel" parent_id_path=PackedInt32Array(1722313202, 554498577) index="0" unique_id=640967064]
@@ -97,7 +111,7 @@ offset_top = -46.0
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="PlayerRepel" parent="PlayersContainer/bryan" index="5" unique_id=1745412343]
+[node name="PlayerRepel" parent="PlayersContainer/bryan" index="6" unique_id=1745412343]
 input_action = &"move_right"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=609593329]
