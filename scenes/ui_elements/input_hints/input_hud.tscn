@@ -2,36 +2,63 @@
 
 [ext_resource type="Script" uid="uid://bxl20vw5nxss6" path="res://scenes/ui_elements/input_hints/components/input_hud.gd" id="1_bewlk"]
 [ext_resource type="PackedScene" uid="uid://cqkly1vjd6xhy" path="res://scenes/ui_elements/input_hints/aim_input_hint.tscn" id="1_u1put"]
-[ext_resource type="PackedScene" uid="uid://dt1y8odxq0xys" path="res://scenes/ui_elements/input_hints/movement_input_hints.tscn" id="2_bewlk"]
-[ext_resource type="PackedScene" uid="uid://dkx3dgc1br3b4" path="res://scenes/ui_elements/input_hints/repel_hint.tscn" id="3_xu7en"]
-[ext_resource type="PackedScene" uid="uid://badjtfhkj7gbt" path="res://scenes/ui_elements/input_hints/run_hint.tscn" id="4_i3pcn"]
-[ext_resource type="PackedScene" uid="uid://cdwf2nmeqns31" path="res://scenes/ui_elements/input_hints/throw_hint.tscn" id="5_ke286"]
+[ext_resource type="PackedScene" uid="uid://dt1y8odxq0xys" path="res://scenes/ui_elements/input_hints/movement_input_hint.tscn" id="2_bewlk"]
+[ext_resource type="PackedScene" uid="uid://dkx3dgc1br3b4" path="res://scenes/ui_elements/input_hints/repel_input_hint.tscn" id="3_xu7en"]
+[ext_resource type="PackedScene" uid="uid://badjtfhkj7gbt" path="res://scenes/ui_elements/input_hints/run_input_hint.tscn" id="4_i3pcn"]
+[ext_resource type="PackedScene" uid="uid://cdwf2nmeqns31" path="res://scenes/ui_elements/input_hints/throw_input_hint.tscn" id="5_ke286"]
+[ext_resource type="PackedScene" uid="uid://bl3pt0n5r8tm5" path="res://scenes/ui_elements/input_hints/undo_input_hint.tscn" id="7_ke286"]
+[ext_resource type="PackedScene" uid="uid://cjg3rptgsh0lf" path="res://scenes/ui_elements/input_hints/resett_input_hint.tscn" id="8_ae80x"]
+[ext_resource type="PackedScene" uid="uid://b50dfpi7c1sdw" path="res://scenes/ui_elements/input_hints/skipt_input_hint.tscn" id="9_ofrnu"]
 
 [node name="InputHud" type="CanvasLayer" unique_id=203487218]
 layer = 36
 script = ExtResource("1_bewlk")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2094239495]
-z_index = 38
+[node name="TabContainer" type="TabContainer" parent="." unique_id=2133091109]
+self_modulate = Color(1, 1, 1, 0)
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -64.0
 grow_horizontal = 2
 grow_vertical = 0
+current_tab = 1
+tabs_visible = false
 
-[node name="MovementInputHints" parent="HBoxContainer" unique_id=30281671 instance=ExtResource("2_bewlk")]
+[node name="NormalControls" type="HBoxContainer" parent="TabContainer" unique_id=2094239495]
+visible = false
+z_index = 38
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="MovementInputHint" parent="TabContainer/NormalControls" unique_id=30281671 instance=ExtResource("2_bewlk")]
 layout_mode = 2
 
-[node name="RunHint" parent="HBoxContainer" unique_id=204428787 instance=ExtResource("4_i3pcn")]
+[node name="RunInputHint" parent="TabContainer/NormalControls" unique_id=204428787 instance=ExtResource("4_i3pcn")]
 layout_mode = 2
 
-[node name="RepelHint" parent="HBoxContainer" unique_id=736303687 instance=ExtResource("3_xu7en")]
+[node name="RepelInputHint" parent="TabContainer/NormalControls" unique_id=736303687 instance=ExtResource("3_xu7en")]
 layout_mode = 2
 
-[node name="AimInputHint" parent="HBoxContainer" unique_id=2095395309 instance=ExtResource("1_u1put")]
+[node name="AimInputHint" parent="TabContainer/NormalControls" unique_id=2095395309 instance=ExtResource("1_u1put")]
 layout_mode = 2
 
-[node name="ThrowHint" parent="HBoxContainer" unique_id=1113313011 instance=ExtResource("5_ke286")]
+[node name="ThrowInputHint" parent="TabContainer/NormalControls" unique_id=1113313011 instance=ExtResource("5_ke286")]
+layout_mode = 2
+
+[node name="SokobanControls" type="HBoxContainer" parent="TabContainer" unique_id=1543053795]
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="MovementInputHints" parent="TabContainer/SokobanControls" unique_id=1797965313 instance=ExtResource("2_bewlk")]
+layout_mode = 2
+
+[node name="UndoInputHint" parent="TabContainer/SokobanControls" unique_id=1063563018 instance=ExtResource("7_ke286")]
+layout_mode = 2
+
+[node name="ResettInputHint" parent="TabContainer/SokobanControls" unique_id=1042096726 instance=ExtResource("8_ae80x")]
+layout_mode = 2
+
+[node name="SkiptInputHint" parent="TabContainer/SokobanControls" unique_id=2102034377 instance=ExtResource("9_ofrnu")]
+visible = false
 layout_mode = 2
