@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://p6q2uo2us0il" path="res://scenes/quests/story_quests/shjourney/light.tscn" id="5_14vr6"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="6_s07u0"]
 [ext_resource type="Texture2D" uid="uid://bnfq0mr48gai7" path="res://assets/third_party/tiny-swords/Factions/Knights/Buildings/House/House_Blue.png" id="7_qomnf"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="8_43lgm"]
 [ext_resource type="Material" uid="uid://bmwe2wu7hxepf" path="res://scenes/game_elements/props/tree/components/wind_affected_material.tres" id="8_bov4k"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="9_3dk7l"]
 [ext_resource type="SpriteFrames" uid="uid://vrthlt7kah8w" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/tim_sprite_frames.tres" id="9_kdw2l"]
@@ -31,6 +32,12 @@
 [ext_resource type="PackedScene" uid="uid://bhipktaj0oefq" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/Puerta.tscn" id="28_qomnf"]
 [ext_resource type="Texture2D" uid="uid://cpeefsvw0r68s" path="res://scenes/quests/story_quests/shjourney/8_shjourney_outro/marco_.png" id="29_3urrv"]
 [ext_resource type="PackedScene" uid="uid://dpbsi065gmh8a" path="res://scenes/game_elements/fx/fog/fog.tscn" id="32_43lgm"]
+
+[sub_resource type="Resource" id="Resource_qomnf"]
+script = ExtResource("8_43lgm")
+walk_speed = 200.0
+run_speed = 300.0
+metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rdjet"]
 atlas = ExtResource("16_3urrv")
@@ -229,8 +236,7 @@ z_index = 1
 position = Vector2(113, 5326)
 scale = Vector2(1.199, 1.199)
 player_name = "Tim"
-walk_speed = 200.0
-run_speed = 300.0
+speeds = SubResource("Resource_qomnf")
 sprite_frames = ExtResource("9_kdw2l")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=516284963]
