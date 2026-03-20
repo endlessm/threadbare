@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://dmevaymmt6wco"]
+
+[ext_resource type="Script" uid="uid://bhmae3daygmqh" path="res://scenes/game_elements/props/powerup/components/powerup.gd" id="1_5vrqc"]
+[ext_resource type="Texture2D" uid="uid://dr1cdu5ien6jq" path="res://scenes/game_elements/props/powerup/components/powerup.png" id="2_bq5to"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="2_q7xhf"]
+[ext_resource type="Texture2D" uid="uid://bbo1nd3usbxnr" path="res://scenes/game_elements/props/powerup/components/powerup_highlight.png" id="4_bq5to"]
+[ext_resource type="Shader" uid="uid://v56tvdvw22lj" path="res://scenes/game_elements/props/powerup/components/ripple_effect.gdshader" id="4_vllb8"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bq5to"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_bq5to")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5vrqc"]
+radius = 50.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bq5to"]
+radius = 16.0
+height = 68.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_spw1e"]
+shader = ExtResource("4_vllb8")
+shader_parameter/ease = 2.0
+shader_parameter/modulo_width = 0.2
+shader_parameter/width = 0.4
+shader_parameter/speed = 0.2
+
+[node name="Powerup" type="Node2D" unique_id=1795462717]
+script = ExtResource("1_5vrqc")
+ability_name = "Repel"
+interact_action = "Collect Repel"
+sprite_frames = SubResource("SpriteFrames_bq5to")
+
+[node name="InteractArea" type="Area2D" parent="." unique_id=1443651205]
+unique_name_in_owner = true
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("2_q7xhf")
+interact_label_position = Vector2(0, -142)
+action = "Collect Repel"
+
+[node name="InteractCollision" type="CollisionShape2D" parent="InteractArea" unique_id=1651676696]
+unique_name_in_owner = true
+position = Vector2(0, -33)
+shape = SubResource("CircleShape2D_5vrqc")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=21266648]
+collision_mask = 0
+
+[node name="GroundCollision" type="CollisionShape2D" parent="StaticBody2D" unique_id=1403567890]
+unique_name_in_owner = true
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_bq5to")
+debug_color = Color(0.976711, 0, 0.409753, 0.42)
+
+[node name="HighlightEffect" type="Sprite2D" parent="." unique_id=1449487876]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_spw1e")
+position = Vector2(0, -34)
+texture = ExtResource("4_bq5to")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=682377422]
+unique_name_in_owner = true
+position = Vector2(0, -34)
+sprite_frames = SubResource("SpriteFrames_bq5to")
+autoplay = "default"
+
+[connection signal="interaction_started" from="InteractArea" to="." method="_on_interact_area_interaction_started" flags=18]
+[connection signal="observers_changed" from="InteractArea" to="." method="_on_interact_area_observers_changed"]
