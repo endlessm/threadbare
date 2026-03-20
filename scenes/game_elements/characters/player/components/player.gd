@@ -43,22 +43,13 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 @export var mode: Mode = Mode.USER_CONTROLLED:
 	set = _set_mode
 
-## The character walking speed.
-@export_range(10, 100000, 10) var walk_speed: float = 300.0
-
-## The character running speed.
-@export_range(10, 100000, 10) var run_speed: float = 500.0
+## Parameters controlling the speed at which this player walks. If unset, the default values of
+## [CharacterSpeeds] are used.
+@export var speeds: CharacterSpeeds:
+	set = _set_speeds
 
 ## The character speed when aiming with the grappling hook.
 @export_range(10, 100000, 10) var aiming_speed: float = 100.0
-
-## How fast does the player transition from walking/running to stopped.
-## A low value will make the character look as slipping on ice.
-## A high value will stop the character immediately.
-@export_range(10, 100000, 10) var stopping_step: float = 1500.0
-
-## How fast does the player transition from stopped to walking/running.
-@export_range(10, 100000, 10) var moving_step: float = 4000.0
 
 ## The SpriteFrames must have specific animations with a certain amount of frames.
 ## See [constant REQUIRED_ANIMATION_FRAMES] and [constant OPTIONAL_ANIMATION_FRAMES].
@@ -70,8 +61,10 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 @export var walk_sound_stream: AudioStream = preload("uid://cx6jv2cflrmqu"):
 	set = _set_walk_sound_stream
 
-var input_vector: Vector2
+var _initial_walk_speed: float
+var _initial_run_speed: float
 
+@onready var input_walk_behavior: InputWalkBehavior = %InputWalkBehavior
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_repel: Node2D = %PlayerRepel
 @onready var player_hook: PlayerHook = %PlayerHook
@@ -85,10 +78,16 @@ func _set_mode(new_mode: Mode) -> void:
 	if not is_node_ready():
 		return
 	match mode:
-		Mode.USER_CONTROLLED, Mode.SYSTEM_CONTROLLED:
+		Mode.USER_CONTROLLED:
+			_toggle_player_behavior(input_walk_behavior, true)
+			_toggle_player_behavior(player_interaction, true)
+			_toggle_abilities()
+		Mode.SYSTEM_CONTROLLED:
+			_toggle_player_behavior(input_walk_behavior, false)
 			_toggle_player_behavior(player_interaction, true)
 			_toggle_abilities()
 		Mode.DEFEATED:
+			_toggle_player_behavior(input_walk_behavior, false)
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_repel, false)
 			_toggle_player_behavior(player_hook, false)
@@ -143,48 +142,20 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 func _ready() -> void:
+	_set_speeds(speeds)
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
 	GameState.abilities_changed.connect(_on_abilities_changed)
 
 
-func _unhandled_input(_event: InputEvent) -> void:
-	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
-
-	var speed: float
-	if player_hook.is_throwing_or_aiming():
-		speed = aiming_speed
-	elif Input.is_action_pressed(&"running"):
-		speed = run_speed
-	else:
-		speed = walk_speed
-
-	input_vector = axis * speed
-
-
-## Returns [code]true[/code] if the player is running. When using an analogue joystick, this can be
-## [code]false[/code] even if the player is holding the "run" button, because the joystick may be
-## inclined only slightly.
-func is_running() -> bool:
-	# While walking diagonally with an analogue joystick, the input vector can be fractionally
-	# greater than walk_speed, due to trigonometric/floating-point inaccuracy.
-	return input_vector.length_squared() > (walk_speed * walk_speed) + 1.0
-
-
-func _physics_process(delta: float) -> void:
-	if Engine.is_editor_hint():
+func _set_speeds(new_speeds: CharacterSpeeds) -> void:
+	speeds = new_speeds
+	# speeds.changed.connect()
+	_initial_walk_speed = speeds.walk_speed
+	_initial_run_speed = speeds.run_speed
+	if not is_node_ready():
 		return
-
-	# TODO: Use InputWalkBehavior instead, and enable/disable it when the mode changes.
-	if mode in [Mode.SYSTEM_CONTROLLED, Mode.DEFEATED]:
-		return
-
-	var step := (
-		stopping_step if velocity.length_squared() > input_vector.length_squared() else moving_step
-	)
-	velocity = velocity.move_toward(input_vector, step * delta)
-
-	move_and_slide()
+	input_walk_behavior.speeds = speeds
 
 
 func teleport_to(
@@ -288,3 +259,8 @@ func _handle_game_over() -> void:
 		SceneSwitcher.change_to_file_with_transition(
 			challenge_start_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 		)
+
+
+func _on_player_hook_aiming_changed(is_aiming: bool) -> void:
+	input_walk_behavior.speeds.walk_speed = aiming_speed if is_aiming else _initial_walk_speed
+	input_walk_behavior.speeds.run_speed = aiming_speed if is_aiming else _initial_run_speed
