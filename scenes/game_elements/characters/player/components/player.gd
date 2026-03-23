@@ -61,8 +61,7 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 @export var walk_sound_stream: AudioStream = preload("uid://cx6jv2cflrmqu"):
 	set = _set_walk_sound_stream
 
-var _initial_walk_speed: float
-var _initial_run_speed: float
+var _initial_speeds: CharacterSpeeds
 
 @onready var input_walk_behavior: InputWalkBehavior = %InputWalkBehavior
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
@@ -150,9 +149,7 @@ func _ready() -> void:
 
 func _set_speeds(new_speeds: CharacterSpeeds) -> void:
 	speeds = new_speeds
-	# speeds.changed.connect()
-	_initial_walk_speed = speeds.walk_speed
-	_initial_run_speed = speeds.run_speed
+	_initial_speeds = new_speeds.duplicate()
 	if not is_node_ready():
 		return
 	input_walk_behavior.speeds = speeds
@@ -262,5 +259,7 @@ func _handle_game_over() -> void:
 
 
 func _on_player_hook_aiming_changed(is_aiming: bool) -> void:
-	input_walk_behavior.speeds.walk_speed = aiming_speed if is_aiming else _initial_walk_speed
-	input_walk_behavior.speeds.run_speed = aiming_speed if is_aiming else _initial_run_speed
+	input_walk_behavior.speeds.walk_speed = (
+		aiming_speed if is_aiming else _initial_speeds.walk_speed
+	)
+	input_walk_behavior.speeds.run_speed = aiming_speed if is_aiming else _initial_speeds.run_speed
