@@ -40,8 +40,8 @@ func _ready():
 	if music and not music.playing: music.play()
 
 func _setup_combat_player(p_node):
-	p_node.walk_speed = 0.0
-	p_node.run_speed = 0.0
+	p_node.speeds.walk_speed = 0.0
+	p_node.speeds.run_speed = 0.0
 
 
 func _update_health_bar(current_damage_taken):
@@ -67,5 +67,5 @@ func _on_boss_defeated():
 		if sprite: sprite.play("idle"); sprite.stop()
 
 	if bryan:
-		bryan.walk_speed = 300.0
-		bryan.run_speed = 500.0
+		bryan.speeds.walk_speed = 300.0
+		bryan.speeds.run_speed = 500.0

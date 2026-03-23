@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://iu2q66clupc6"]
 
 [ext_resource type="Script" uid="uid://bwllxup305eib" path="res://scenes/game_elements/characters/player/components/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://c8xbryhknipab" path="res://scenes/game_logic/walk_behaviors/input_walk_behavior.gd" id="2_5lbww"]
 [ext_resource type="Script" uid="uid://dajod2qsesqte" path="res://scenes/game_elements/characters/player/components/player_harm.gd" id="2_8jhju"]
 [ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/template_quests/NO_EDIT/NO_EDIT_player_components/NO_EDIT_player.tres" id="2_blfj0"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="3_cvb4d"]
 [ext_resource type="Script" uid="uid://bpu6jo4kvehlg" path="res://scenes/game_elements/characters/player/components/player_interaction.gd" id="3_dqkch"]
 [ext_resource type="Script" uid="uid://ciw2w16c38ewq" path="res://scenes/game_elements/characters/player/components/player_dust_particles.gd" id="3_j0tly"]
 [ext_resource type="Script" uid="uid://qro4uo83ba8f" path="res://scenes/game_elements/characters/player/components/player_sprite.gd" id="3_qlg0r"]
@@ -18,6 +20,14 @@
 [ext_resource type="PackedScene" uid="uid://b0dehcnfo68j1" path="res://scenes/game_elements/props/hook_control/hook_control.tscn" id="13_ecbbk"]
 [ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="16_ecbbk"]
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="16_tnibl"]
+
+[sub_resource type="Resource" id="Resource_cvb4d"]
+script = ExtResource("3_cvb4d")
+metadata/_custom_type_script = "uid://csev4hv57utxv"
+
+[sub_resource type="Resource" id="Resource_ubfef"]
+script = ExtResource("3_cvb4d")
+metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_j0tly"]
 blend_mode = 1
@@ -521,6 +531,14 @@ motion_mode = 1
 wall_min_slide_angle = 0.017453292
 safe_margin = 1.0
 script = ExtResource("1_g2els")
+speeds = SubResource("Resource_cvb4d")
+
+[node name="InputWalkBehavior" type="Node2D" parent="." unique_id=1817340985 node_paths=PackedStringArray("character")]
+unique_name_in_owner = true
+script = ExtResource("2_5lbww")
+speeds = SubResource("Resource_ubfef")
+character = NodePath("..")
+metadata/_custom_type_script = "uid://c8xbryhknipab"
 
 [node name="PlayerDustParticles" type="GPUParticles2D" parent="." unique_id=785276606]
 unique_name_in_owner = true
@@ -658,5 +676,8 @@ unique_name_in_owner = true
 root_node = NodePath("../../PlayerRepel")
 libraries/ = SubResource("AnimationLibrary_1n58k")
 
+[connection signal="running_changed" from="InputWalkBehavior" to="PlayerDustParticles" method="_on_input_walk_behavior_running_changed"]
+[connection signal="running_changed" from="InputWalkBehavior" to="AnimationPlayer" method="_on_input_walk_behavior_running_changed"]
 [connection signal="body_entered" from="PlayerRepel/AirStream" to="PlayerRepel" method="_on_air_stream_body_entered"]
+[connection signal="aiming_changed" from="PlayerHook" to="." method="_on_player_hook_aiming_changed"]
 [connection signal="body_entered" from="PlayerHarm/HitBox" to="PlayerHarm" method="_on_hit_box_body_entered"]

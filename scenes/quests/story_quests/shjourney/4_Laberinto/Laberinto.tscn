@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://dyx8toyemw2vx"]
 
 [ext_resource type="Script" uid="uid://bb15xji6f5syf" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/ScripBase.gd" id="1_f2sr3"]
+[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_pmxep"]
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_wjmvn"]
 [ext_resource type="TileSet" uid="uid://d30304ne3bph" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/tileselaberinto.tres" id="2_n2lu8"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_atgg6"]
@@ -20,6 +21,7 @@
 [ext_resource type="SpriteFrames" uid="uid://vrthlt7kah8w" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/tim_sprite_frames.tres" id="11_38eo7"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="12_37aoh"]
 [ext_resource type="SpriteFrames" uid="uid://bjfl1ii3am8ll" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/guardia_sprite_frames.tres" id="13_656p3"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="14_3ri7t"]
 [ext_resource type="Script" uid="uid://d1gt3e47m6nts" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/UI-KEYS.gd" id="14_u1x3w"]
 [ext_resource type="Texture2D" uid="uid://5wscjc8yqqts" path="res://assets/first_party/collectibles/world_memory.png" id="16_7ve7e"]
 [ext_resource type="SpriteFrames" uid="uid://bshou7t46r4nu" path="res://scenes/quests/story_quests/shjourney/Angel/components/angel.tres" id="16_656p3"]
@@ -41,7 +43,6 @@
 [ext_resource type="Texture2D" uid="uid://b8yn4tog2cnaw" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/personajes/estructuras(decoracion)/llave 1.png" id="38_3ri7t"]
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="40_u1x3w"]
 [ext_resource type="PackedScene" uid="uid://dpbsi065gmh8a" path="res://scenes/game_elements/fx/fog/fog.tscn" id="43_3ri7t"]
-[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_pmxep"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sdlc6"]
 texture = ExtResource("5_bw2w6")
@@ -834,6 +835,12 @@ texture_region_size = Vector2i(64, 64)
 [sub_resource type="TileSet" id="TileSet_jg4bf"]
 tile_size = Vector2i(64, 64)
 sources/0 = SubResource("TileSetAtlasSource_sdlc6")
+
+[sub_resource type="Resource" id="Resource_b8bcu"]
+script = ExtResource("14_3ri7t")
+walk_speed = 200.0
+run_speed = 350.0
+metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qn20b"]
 bg_color = Color(0.6, 0.6, 0.6, 0.309804)
@@ -2111,8 +2118,7 @@ z_index = 1
 position = Vector2(165, 3692)
 scale = Vector2(1.34, 1.34)
 player_name = "Tim"
-walk_speed = 200.0
-run_speed = 350.0
+speeds = SubResource("Resource_b8bcu")
 sprite_frames = ExtResource("11_38eo7")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=2068490872]
