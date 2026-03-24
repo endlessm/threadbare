@@ -25,6 +25,7 @@
 [ext_resource type="AudioStream" uid="uid://bbnj2fog3rdy8" path="res://assets/first_party/sounds/throwing_enemy/Spray.wav" id="14_7ekah"]
 [ext_resource type="PackedScene" uid="uid://c5jedlvvnnbi0" path="res://scenes/game_elements/props/projectile/ink_blob_projectile.tscn" id="16_k65js"]
 [ext_resource type="PackedScene" uid="uid://dkx3dgc1br3b4" path="res://scenes/ui_elements/input_hints/repel_hint.tscn" id="22_8me22"]
+[ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="26_a4lwd"]
 
 [sub_resource type="Animation" id="Animation_nlryc"]
 resource_name = "goal_completed"
@@ -211,9 +212,15 @@ scale = Vector2(1.00063, 0.911434)
 position = Vector2(674, 32)
 scale = Vector2(0.95, 0.95)
 
+[node name="RepelPowerup" parent="OnTheGround" unique_id=1795462717 instance=ExtResource("26_a4lwd")]
+position = Vector2(236, 428)
+highlight_color = Color(0, 0, 1, 1)
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=127644403]
 
 [node name="InputHints" type="HBoxContainer" parent="ScreenOverlay" unique_id=367368380]
+unique_name_in_owner = true
+visible = false
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -237,3 +244,4 @@ editor_draw_limits = true
 
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]
+[connection signal="collected" from="OnTheGround/RepelPowerup" to="." method="_on_repel_powerup_collected"]

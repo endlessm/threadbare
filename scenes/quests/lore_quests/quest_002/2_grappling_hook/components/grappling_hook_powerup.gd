@@ -3,9 +3,7 @@
 extends Node2D
 
 
-func _on_button_item_collected() -> void:
-	GameState.set_ability(Enums.PlayerAbilities.ABILITY_B_MODIFIER_1, true)
-
+func _on_longer_thread_powerup_collected() -> void:
 	# Zoom out the camera when collecting the powerup, because now the player
 	# can throw a longer thread:
 	var camera: Camera2D = get_viewport().get_camera_2d()

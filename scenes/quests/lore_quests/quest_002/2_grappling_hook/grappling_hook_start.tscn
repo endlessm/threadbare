@@ -24,6 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="18_wv4km"]
 [ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="19_6n4qp"]
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="20_wv4km"]
+[ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="21_6n4qp"]
 [ext_resource type="PackedScene" uid="uid://cqkly1vjd6xhy" path="res://scenes/ui_elements/input_hints/aim_input_hint.tscn" id="23_wv4km"]
 
 [sub_resource type="Animation" id="Animation_w67qe"]
@@ -340,6 +341,13 @@ sprite_frames = ExtResource("19_6n4qp")
 [node name="Bush14" parent="OnTheGround/Bushes" unique_id=391246514 instance=ExtResource("18_wv4km")]
 position = Vector2(261, 440)
 
+[node name="GrapplePowerup" parent="OnTheGround" unique_id=1795462717 instance=ExtResource("21_6n4qp")]
+position = Vector2(933, 689)
+ability = 16
+ability_name = "Grapple"
+interact_action = "Collect Grapple"
+highlight_color = Color(0.8910073, 0.7227245, 0, 1)
+
 [node name="Teleporter" type="Area2D" parent="." unique_id=579212473]
 position = Vector2(2704, 1216)
 collision_layer = 4
@@ -396,6 +404,7 @@ layout_mode = 2
 
 [node name="HUD" parent="." unique_id=1590862536 instance=ExtResource("11_p44d7")]
 
+[connection signal="collected" from="OnTheGround/GrapplePowerup" to="." method="_on_grapple_powerup_collected"]
 [connection signal="player_teleported" from="SpawnPointFromPowerup" to="." method="_on_spawn_point_from_powerup_player_teleported"]
 
 [editable path="OnTheGround/VoidPatrolling"]
