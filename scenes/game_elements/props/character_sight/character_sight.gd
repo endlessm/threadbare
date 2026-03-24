@@ -22,7 +22,16 @@ signal interact_area_changed
 var is_looking_from_right: bool = false
 
 ## The area that the character is currently observing.
-var interact_area: InteractArea
+var interact_area: InteractArea:
+	set = _set_interact_area
+
+
+func _set_interact_area(new_interact_area: InteractArea) -> void:
+	if interact_area:
+		interact_area.remove_observer(self)
+	interact_area = new_interact_area
+	if new_interact_area:
+		interact_area.add_observer(self)
 
 
 func _ready() -> void:
