@@ -13,7 +13,7 @@ extends Node2D
 var is_interacting: bool:
 	get = _get_is_interacting
 
-@onready var interact_zone: Area2D = %InteractZone
+@onready var character_sight: CharacterSight = %CharacterSight
 @onready var interact_marker: Marker2D = %InteractMarker
 @onready var interact_label: FixedSizeLabel = %InteractLabel
 
@@ -26,7 +26,7 @@ func _set_character(new_character: CharacterBody2D) -> void:
 
 
 func _get_is_interacting() -> bool:
-	return not interact_zone.monitoring
+	return not character_sight.monitoring
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -36,24 +36,24 @@ func _get_configuration_warnings() -> PackedStringArray:
 	return warnings
 
 
-func _process(_delta: float) -> void:
-	if is_interacting:
-		return
+func _ready() -> void:
+	character_sight.interact_area_changed.connect(_on_character_sight_interact_area_changed)
+	_on_character_sight_interact_area_changed()
 
-	var interact_area: InteractArea = interact_zone.get_interact_area()
-	if not interact_area:
-		interact_label.visible = false
-	else:
-		interact_label.visible = true
-		interact_label.label_text = interact_area.action
-		interact_marker.global_position = interact_area.get_global_interact_label_position()
+
+func _process(_delta: float) -> void:
+	if not character_sight.interact_area:
+		return
+	interact_marker.global_position = (
+		character_sight.interact_area.get_global_interact_label_position()
+	)
 
 
 func _unhandled_input(_event: InputEvent) -> void:
 	if is_interacting:
 		return
 
-	var interact_area: InteractArea = interact_zone.get_interact_area()
+	var interact_area := character_sight.interact_area
 	if interact_area and Input.is_action_just_pressed(&"interact"):
 		# While interacting, this class takes control over the player movement.
 		if character.has_method("take_control"):
@@ -61,14 +61,25 @@ func _unhandled_input(_event: InputEvent) -> void:
 			character.velocity = Vector2.ZERO
 
 		get_viewport().set_input_as_handled()
-		interact_zone.monitoring = false
+		character_sight.monitoring = false
 		interact_label.visible = false
 		interact_area.interaction_ended.connect(_on_interaction_ended, CONNECT_ONE_SHOT)
-		interact_area.start_interaction(player, interact_zone.is_looking_from_right)
+		interact_area.start_interaction(player, character_sight.is_looking_from_right)
 
 
 func _on_interaction_ended() -> void:
-	interact_zone.monitoring = true
+	character_sight.monitoring = true
 	# After interacting, return control to the user.
 	if character.has_method("return_control"):
 		character.return_control(self)
+
+
+func _on_character_sight_interact_area_changed() -> void:
+	if is_interacting:
+		return
+
+	if not character_sight.interact_area:
+		interact_label.visible = false
+	else:
+		interact_label.visible = true
+		interact_label.label_text = character_sight.interact_area.action
