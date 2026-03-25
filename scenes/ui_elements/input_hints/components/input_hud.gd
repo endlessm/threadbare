@@ -8,6 +8,8 @@ extends CanvasLayer
 @onready var throw_input_hint: HBoxContainer = $TabContainer/NormalControls/ThrowInputHint
 @onready var sokoban_controls: HBoxContainer = $TabContainer/SokobanControls
 @onready var skip_input_hint: HBoxContainer = $TabContainer/SokobanControls/SkiptInputHint
+@onready var interact_input_hint: HBoxContainer = $TabContainer/NormalControls/InteractInputHint
+
 
 func _ready() -> void:
 	if get_tree().current_scene.scene_file_path in GameState.TRANSIENT_SCENES:

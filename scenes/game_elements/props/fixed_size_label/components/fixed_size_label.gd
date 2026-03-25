@@ -50,6 +50,7 @@ func _ready() -> void:
 
 func on_visibility_changed() -> void:
 	label_container.visible = is_visible_in_tree()
+	InputHud.interact_input_hint.visible = label_container.visible
 
 
 func _exit_tree() -> void:
