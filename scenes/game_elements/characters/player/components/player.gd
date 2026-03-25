@@ -159,8 +159,9 @@ func _get_configuration_warnings() -> PackedStringArray:
 func _ready() -> void:
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
-	mode_changed.connect(InputHud._on_player_mode_changed)
-	InputHud._on_player_mode_changed(mode)
+	if not Engine.is_editor_hint():
+		mode_changed.connect(InputHud._on_player_mode_changed)
+		InputHud._on_player_mode_changed(mode)
 
 
 func _unhandled_input(_event: InputEvent) -> void:
