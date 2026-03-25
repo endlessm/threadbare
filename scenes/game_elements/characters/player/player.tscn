@@ -6,7 +6,6 @@
 [ext_resource type="SpriteFrames" uid="uid://vwf8e1v8brdp" path="res://scenes/quests/template_quests/NO_EDIT/NO_EDIT_player_components/NO_EDIT_player.tres" id="2_blfj0"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="3_cvb4d"]
 [ext_resource type="Script" uid="uid://bpu6jo4kvehlg" path="res://scenes/game_elements/characters/player/components/player_interaction.gd" id="3_dqkch"]
-[ext_resource type="Script" uid="uid://ciw2w16c38ewq" path="res://scenes/game_elements/characters/player/components/player_dust_particles.gd" id="3_j0tly"]
 [ext_resource type="Script" uid="uid://qro4uo83ba8f" path="res://scenes/game_elements/characters/player/components/player_sprite.gd" id="3_qlg0r"]
 [ext_resource type="Script" uid="uid://necvar42rnih" path="res://scenes/game_elements/props/character_sight/character_sight.gd" id="6_3in67"]
 [ext_resource type="PackedScene" uid="uid://yfpfno276rol" path="res://scenes/game_elements/props/fixed_size_label/fixed_size_label.tscn" id="6_h17s1"]
@@ -22,10 +21,6 @@
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="16_tnibl"]
 
 [sub_resource type="Resource" id="Resource_cvb4d"]
-script = ExtResource("3_cvb4d")
-metadata/_custom_type_script = "uid://csev4hv57utxv"
-
-[sub_resource type="Resource" id="Resource_ubfef"]
 script = ExtResource("3_cvb4d")
 metadata/_custom_type_script = "uid://csev4hv57utxv"
 
@@ -65,8 +60,6 @@ particle_flag_disable_z = true
 emission_shape = 1
 emission_sphere_radius = 25.0
 spread = 0.0
-initial_velocity_min = -40.0
-initial_velocity_max = -10.0
 directional_velocity_min = 1.0
 directional_velocity_max = 1.0
 directional_velocity_curve = SubResource("CurveXYZTexture_3in67")
@@ -536,7 +529,7 @@ speeds = SubResource("Resource_cvb4d")
 [node name="InputWalkBehavior" type="Node2D" parent="." unique_id=1817340985 node_paths=PackedStringArray("character")]
 unique_name_in_owner = true
 script = ExtResource("2_5lbww")
-speeds = SubResource("Resource_ubfef")
+speeds = SubResource("Resource_cvb4d")
 character = NodePath("..")
 metadata/_custom_type_script = "uid://c8xbryhknipab"
 
@@ -545,13 +538,13 @@ unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.498039)
 material = SubResource("CanvasItemMaterial_j0tly")
 position = Vector2(0, -6)
+emitting = false
 amount = 6
 texture = ExtResource("12_3in67")
 lifetime = 0.5
 randomness = 0.6
 fixed_fps = 10
 process_material = SubResource("ParticleProcessMaterial_nrnyj")
-script = ExtResource("3_j0tly")
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="." unique_id=1785485617]
 unique_name_in_owner = true
@@ -676,7 +669,7 @@ unique_name_in_owner = true
 root_node = NodePath("../../PlayerRepel")
 libraries/ = SubResource("AnimationLibrary_1n58k")
 
-[connection signal="running_changed" from="InputWalkBehavior" to="PlayerDustParticles" method="_on_input_walk_behavior_running_changed"]
+[connection signal="running_changed" from="InputWalkBehavior" to="PlayerDustParticles" method="set_emitting"]
 [connection signal="running_changed" from="InputWalkBehavior" to="AnimationPlayer" method="_on_input_walk_behavior_running_changed"]
 [connection signal="body_entered" from="PlayerRepel/AirStream" to="PlayerRepel" method="_on_air_stream_body_entered"]
 [connection signal="aiming_changed" from="PlayerHook" to="." method="_on_player_hook_aiming_changed"]
