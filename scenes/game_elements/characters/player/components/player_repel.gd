@@ -29,5 +29,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 		repelling = false
 
 
-func _on_air_stream_body_entered(body: Projectile) -> void:
-	body.got_hit(owner)
+func _on_air_stream_body_entered(body: Node2D) -> void:
+	if body.has_method("got_repelled"):
+		var direction := global_position.direction_to(body.global_position)
+		body.got_repelled(direction)
