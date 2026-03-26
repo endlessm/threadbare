@@ -153,10 +153,12 @@ func _on_body_entered(body: Node2D) -> void:
 			queue_free()
 
 
-func got_hit(player: Player) -> void:
+## Called from the Repel component when this body
+## enters the repel area.
+func got_repelled(repel_direction: Vector2) -> void:
 	add_small_fx()
 	duration_timer.start()
-	var hit_vector: Vector2 = player.global_position.direction_to(global_position) * hit_speed
+	var hit_vector: Vector2 = repel_direction * hit_speed
 	hit_sound.play()
 	animated_sprite_2d.speed_scale = 2
 	if _trail_particles:
