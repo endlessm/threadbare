@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://dqo4d6mp4hwhi"]
+
+[ext_resource type="Script" uid="uid://c334l8qftb4fy" path="res://scenes/game_elements/props/repellable_box/components/repellable_box.gd" id="1_c0tix"]
+[ext_resource type="Texture2D" uid="uid://c7oht7wudd8wa" path="res://assets/first_party/tiles/Cliff_Tiles.png" id="2_c0tix"]
+[ext_resource type="Texture2D" uid="uid://dslom0xbe1if7" path="res://assets/third_party/tiny-swords/Terrain/Ground/Shadows.png" id="2_sbite"]
+[ext_resource type="Script" uid="uid://dunsvrhq42214" path="res://scenes/game_elements/fx/shaker/components/shaker.gd" id="3_2i1pw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bu3x1"]
+atlas = ExtResource("2_c0tix")
+region = Rect2(192, 256, 64, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8dti7"]
+size = Vector2(64, 64)
+
+[node name="RepellableBox" type="AnimatableBody2D" unique_id=1805651676]
+editor_description = "A repellable box that moves in a fixed grid.
+
+This is an AnimatableBody2D so it can move in the 64x64 tiles grid (using a Tweener for animating the position).
+
+It needs a TileMapLayer and it is constrained to the painted tiles.
+
+ But also it doesn't collide with other bodies so it doesn't stop!"
+collision_layer = 768
+collision_mask = 531
+script = ExtResource("1_c0tix")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1393129317]
+texture = ExtResource("2_sbite")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=898668959]
+position = Vector2(0, -32)
+texture = SubResource("AtlasTexture_bu3x1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=363689712]
+rotation = -1.5707964
+shape = SubResource("RectangleShape2D_8dti7")
+
+[node name="Shaker" type="Node2D" parent="." unique_id=103380831 node_paths=PackedStringArray("target")]
+script = ExtResource("3_2i1pw")
+target = NodePath("..")
+shake_intensity = 60.0
+duration = 0.5
+frequency = 30.0
+metadata/_custom_type_script = "uid://dunsvrhq42214"

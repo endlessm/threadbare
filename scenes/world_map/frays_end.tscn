@@ -59,12 +59,19 @@
 [ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="54_duxxr"]
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="55_ojao8"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="55_wymun"]
+[ext_resource type="Texture2D" uid="uid://ctwx8gghts62p" path="res://assets/third_party/tiny-swords/Deco/06.png" id="56_7kfal"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="56_ojao8"]
+[ext_resource type="Texture2D" uid="uid://ciwy8mfi0mv65" path="res://scenes/quests/story_quests/after_the_tremor/0_intro/Imagenes/ball_free.png" id="57_8dti7"]
+[ext_resource type="Texture2D" uid="uid://pjdmmuwvkw14" path="res://assets/third_party/tiny-swords-non-cc0/Terrain/Resources/Gold/Gold Stones/Gold Stone 6.png" id="57_bu3x1"]
+[ext_resource type="Texture2D" uid="uid://dlpjjca2udf42" path="res://scenes/game_elements/props/button_item/components/button-shadow.png" id="58_7hq0m"]
 [ext_resource type="Script" uid="uid://uaaaiviytliw" path="res://scenes/world_map/components/quest_progress_unlocker.gd" id="58_ojao8"]
 [ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="59_qgpx3"]
 [ext_resource type="Resource" uid="uid://t50glay2iqhg" path="res://scenes/quests/lore_quests/quest_002/quest.tres" id="60_6b07c"]
+[ext_resource type="PackedScene" uid="uid://dqo4d6mp4hwhi" path="res://scenes/game_elements/props/repellable_box/repellable_box.tscn" id="60_p2k53"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="61_6b07c"]
+[ext_resource type="Texture2D" uid="uid://uy2acspf6apo" path="res://scenes/game_elements/props/lever/components/Lever.png" id="62_p2k53"]
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="62_t7c6s"]
+[ext_resource type="Script" uid="uid://dunsvrhq42214" path="res://scenes/game_elements/fx/shaker/components/shaker.gd" id="63_a070f"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="64_uxfrp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_duxxr"]
@@ -81,6 +88,117 @@ size = Vector2(52, 61)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ulm71"]
 size = Vector2(128, 128)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_16ifw"]
+
+[sub_resource type="GDScript" id="GDScript_bu3x1"]
+script/source = "# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends RigidBody2D
+
+var tween: Tween
+
+
+func got_repelled(direction: Vector2) -> void:
+	var hit_vector: Vector2 = direction * 300.0
+	linear_velocity = Vector2.ZERO
+	apply_impulse(hit_vector)
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7n6eg"]
+radius = 11.0
+height = 36.0
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bu3x1"]
+friction = 0.5
+bounce = 1.0
+
+[sub_resource type="GDScript" id="GDScript_8dti7"]
+script/source = "# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends RigidBody2D
+
+var tween: Tween
+
+
+func got_repelled(direction: Vector2) -> void:
+	var hit_vector: Vector2 = direction * 300.0
+	linear_damp = 2
+	linear_velocity = Vector2.ZERO
+	apply_impulse(hit_vector)
+
+
+func _on_sleeping_state_changed() -> void:
+	linear_damp = 10
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bu3x1"]
+radius = 19.104973
+
+[sub_resource type="GDScript" id="GDScript_7kfal"]
+script/source = "# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends RigidBody2D
+
+
+func get_closest_axis(vector: Vector2) -> Vector2:
+	if abs(vector.x) > abs(vector.y):
+		# Closer to Horizontal (X-axis)
+		return Vector2(sign(vector.x), 0)
+	else:
+		# Closer to Vertical (Y-axis)
+		return Vector2(0, sign(vector.y))
+
+
+func got_repelled(direction: Vector2) -> void:
+	var hit_vector: Vector2 = get_closest_axis(direction) * 100.0
+	linear_velocity = Vector2.ZERO
+	apply_impulse(hit_vector)
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bu3x1"]
+radius = 19.0
+height = 64.0
+
+[sub_resource type="GDScript" id="GDScript_p2k53"]
+script/source = "# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends StaticBody2D
+
+const FRAME_FOR_SIDE: Dictionary[Enums.LookAtSide, int] = {
+	Enums.LookAtSide.LEFT: 0,
+	Enums.LookAtSide.RIGHT: 1,
+}
+
+@onready var lever_sprite: Sprite2D = $LeverSprite
+@onready var shaker: Shaker = $Shaker
+
+var lever_side: Enums.LookAtSide = Enums.LookAtSide.LEFT:
+	set = set_lever_side
+
+func set_lever_side(new_side: Enums.LookAtSide) -> void:
+	lever_side = new_side
+	lever_sprite.frame = FRAME_FOR_SIDE[lever_side]
+
+func _ready() -> void:
+	set_lever_side(lever_side)
+
+
+func got_repelled(direction: Vector2) -> void:
+	var sign_x := signf(direction.x)
+	var new_side: Enums.LookAtSide
+	if sign_x == 1:
+		new_side = Enums.LookAtSide.RIGHT
+	elif sign_x == -1:
+		new_side = Enums.LookAtSide.LEFT
+	if new_side == lever_side:
+		shaker.shake()
+	else:
+		lever_side = new_side
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p2k53"]
+height = 58.0
 
 [node name="FraysEnd" type="Node2D" unique_id=1849947277]
 script = ExtResource("1_4gse6")
@@ -125,7 +243,7 @@ tile_map_data = PackedByteArray("AAAaAAYABgACAAAAAAAaAAcABgACAAIAAAAZAAcABgABAAI
 tile_set = ExtResource("7_r1ek1")
 
 [node name="Paths_Level1" type="TileMapLayer" parent="TileMapLayers" unique_id=971351640]
-tile_map_data = PackedByteArray("AAARAA0AAQAHAAIAAAARAAwAAQAHAAEAAAAQAA0AAQAGAAIAAAAQAAwAAQAGAAEAAAAPAA4AAQAIAAEAAAAPAA0AAQAGAAEAAAAPAAwAAQAGAAEAAAAOAA0AAQAGAAIAAAAOAAwAAQAGAAEAAAANAA0AAQAFAAIAAAANAAwAAQAFAAEAAAARAAsAAQAHAAEAAAAQAAsAAQAGAAEAAAAPABEAAQAIAAEAAAAPABAAAQAIAAEAAAAPAA8AAQAIAAEAAAAPAAsAAQAGAAEAAAAOAAsAAQAGAAEAAAANAAsAAQAFAAEAAAAPABkAAQAHAAIAAAAPABgAAQAIAAEAAAAOABkAAQAGAAMAAAAPABcAAQAIAAAAAAAPABMAAQAIAAIAAAABABkAAQAGAAAAAAACABkAAQAGAAAAAAADABkAAQAGAAAAAAAEABkAAQAGAAMAAAAFABkAAQAGAAMAAAAGABkAAQAGAAMAAAAHABkAAQAGAAMAAAAIABkAAQAGAAMAAAAJABkAAQAGAAMAAAAKABkAAQAGAAMAAAALABkAAQAGAAMAAAAMABkAAQAGAAMAAAANABkAAQAGAAMAAAAAABkAAQAFAAAAAAAAABoAAQAFAAEAAAABABoAAQAGAAEAAAACABoAAQAGAAEAAAADABoAAQAHAAEAAAAAABsAAQAFAAIAAAABABsAAQAGAAIAAAACABsAAQAGAAIAAAADABsAAQAHAAIAAAAPABIAAQAIAAEAAAARAAoAAQAHAAEAAAANAAoAAQAFAAEAAAANAAkAAQAFAAAAAAAOAAkAAQAGAAAAAAAPAAkAAQAGAAAAAAAQAAkAAQAGAAAAAAARAAkAAQAHAAAAAAAOAAoAAQAGAAEAAAAPAAoAAQAGAAEAAAAQAAoAAQAGAAEAAAA=")
+tile_map_data = PackedByteArray("AAARAA0AAQAHAAIAAAARAAwAAQAHAAEAAAAQAA0AAQAGAAIAAAAQAAwAAQAGAAEAAAAPAA4AAQAIAAEAAAAPAA0AAQAGAAEAAAAPAAwAAQAGAAEAAAAOAA0AAQAGAAIAAAAOAAwAAQAGAAEAAAANAA0AAQAFAAIAAAANAAwAAQAFAAEAAAARAAsAAQAHAAEAAAAQAAsAAQAGAAEAAAAPABEAAQAIAAEAAAAPABAAAQAIAAEAAAAPAA8AAQAIAAEAAAAPAAsAAQAGAAEAAAAOAAsAAQAGAAEAAAANAAsAAQAFAAEAAAAPABkAAQAHAAIAAAAPABgAAQAIAAEAAAAOABkAAQAGAAMAAAAPABcAAQAIAAAAAAAPABMAAQAGAAIAAAABABkAAQAGAAAAAAACABkAAQAGAAAAAAADABkAAQAGAAAAAAAEABkAAQAGAAMAAAAFABkAAQAGAAMAAAAGABkAAQAGAAMAAAAHABkAAQAGAAMAAAAIABkAAQAGAAMAAAAJABkAAQAGAAMAAAAKABkAAQAGAAMAAAALABkAAQAGAAMAAAAMABkAAQAGAAMAAAANABkAAQAGAAMAAAAAABkAAQAFAAAAAAAAABoAAQAFAAEAAAABABoAAQAGAAEAAAACABoAAQAGAAEAAAADABoAAQAHAAEAAAAAABsAAQAFAAIAAAABABsAAQAGAAIAAAACABsAAQAGAAIAAAADABsAAQAHAAIAAAAPABIAAQAGAAEAAAARAAoAAQAHAAEAAAANAAoAAQAFAAEAAAANAAkAAQAFAAAAAAAOAAkAAQAGAAAAAAAPAAkAAQAGAAAAAAAQAAkAAQAGAAAAAAARAAkAAQAHAAAAAAAOAAoAAQAGAAEAAAAPAAoAAQAGAAEAAAAQAAoAAQAGAAEAAAAOABMAAQAFAAIAAAAQABMAAQAHAAIAAAAOABIAAQAFAAAAAAAQABIAAQAHAAAAAAA=")
 tile_set = ExtResource("7_r1ek1")
 
 [node name="Paths_Level2" type="TileMapLayer" parent="TileMapLayers" unique_id=1784740911]
@@ -1144,6 +1262,124 @@ shape = SubResource("RectangleShape2D_ulm71")
 position = Vector2(95, 664)
 text = "West End"
 
+[node name="RepellableRock" type="RigidBody2D" parent="OnTheGround" unique_id=1901173256]
+editor_description = "A repellable rock.
+
+It's in collision layer repellable for it to work, and has a got_repelled() method defined.
+
+It has some dumping to simulate friction that's why it stops (unlike the ice cube)."
+position = Vector2(913, 868)
+collision_layer = 768
+collision_mask = 531
+physics_material_override = SubResource("PhysicsMaterial_16ifw")
+lock_rotation = true
+linear_damp = 2.0
+script = SubResource("GDScript_bu3x1")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/RepellableRock" unique_id=513881379]
+position = Vector2(-2, -3)
+texture = ExtResource("56_7kfal")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/RepellableRock" unique_id=589342826]
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_7n6eg")
+
+[node name="BallAnchor" type="Node2D" parent="OnTheGround" unique_id=1725206225]
+position = Vector2(1136, 1007)
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/BallAnchor" unique_id=2045011868]
+position = Vector2(0, -30)
+scale = Vector2(2.489, 2)
+texture = ExtResource("58_7hq0m")
+hframes = 4
+
+[node name="BallSprite" type="Sprite2D" parent="OnTheGround/BallAnchor" unique_id=1585779611]
+position = Vector2(0, -17)
+scale = Vector2(0.18770815, 0.18770815)
+texture = ExtResource("57_8dti7")
+
+[node name="RepellableBall" type="RigidBody2D" parent="OnTheGround" unique_id=1394157854]
+editor_description = "A repellable ball.
+"
+position = Vector2(1136, 1007)
+scale = Vector2(0.99999994, 0.99999994)
+collision_layer = 256
+collision_mask = 531
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_bu3x1")
+linear_damp = 20.0
+angular_damp = 2.0
+script = SubResource("GDScript_8dti7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/RepellableBall" unique_id=271750635]
+rotation = -1.5707964
+shape = SubResource("CircleShape2D_bu3x1")
+debug_color = Color(0.9570816, 1.0588765e-06, 0.5370912, 0.41960785)
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="OnTheGround/RepellableBall" unique_id=1152753866]
+position = Vector2(-1.1920929e-07, -1.9073486e-06)
+scale = Vector2(0.18770815, 0.18770815)
+remote_path = NodePath("../../BallAnchor")
+update_rotation = false
+update_scale = false
+
+[node name="RemoteTransform2D2" type="RemoteTransform2D" parent="OnTheGround/RepellableBall" unique_id=650646433]
+position = Vector2(-1.1920929e-07, -1.9073486e-06)
+scale = Vector2(0.18770815, 0.18770815)
+remote_path = NodePath("../../BallAnchor/BallSprite")
+update_position = false
+update_scale = false
+
+[node name="RepellableIceCube" type="RigidBody2D" parent="OnTheGround" unique_id=1744685581]
+editor_description = "A repellable ice cube.
+
+The got_repelled() method constrains the direction to the 4 axis (top, down, left, right).
+
+Has no damping so it moves until it hits a wall or something."
+position = Vector2(1204, 899)
+collision_layer = 768
+collision_mask = 531
+lock_rotation = true
+script = SubResource("GDScript_7kfal")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/RepellableIceCube" unique_id=276581240]
+position = Vector2(2, -5)
+texture = ExtResource("57_bu3x1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/RepellableIceCube" unique_id=1875420561]
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_bu3x1")
+
+[node name="RepellableBox" parent="OnTheGround" unique_id=1805651676 node_paths=PackedStringArray("constrain_layer") instance=ExtResource("60_p2k53")]
+position = Vector2(990, 1256)
+constrain_layer = NodePath("../../TileMapLayers/Paths_Level1")
+
+[node name="RepellableBox2" parent="OnTheGround" unique_id=2072092672 node_paths=PackedStringArray("constrain_layer") instance=ExtResource("60_p2k53")]
+position = Vector2(932, 1191)
+constrain_layer = NodePath("../../TileMapLayers/Paths_Level1")
+
+[node name="RepellableLever" type="StaticBody2D" parent="OnTheGround" unique_id=1178804777]
+position = Vector2(747, 914)
+collision_layer = 768
+collision_mask = 0
+script = SubResource("GDScript_p2k53")
+
+[node name="LeverSprite" type="Sprite2D" parent="OnTheGround/RepellableLever" unique_id=118513672]
+position = Vector2(0, -10)
+texture = ExtResource("62_p2k53")
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/RepellableLever" unique_id=287400683]
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_p2k53")
+
+[node name="Shaker" type="Node2D" parent="OnTheGround/RepellableLever" unique_id=2090116419 node_paths=PackedStringArray("target")]
+script = ExtResource("63_a070f")
+target = NodePath("..")
+duration = 0.5
+frequency = 30.0
+metadata/_custom_type_script = "uid://dunsvrhq42214"
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1144668032]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScreenOverlay" unique_id=1583452192]
@@ -1209,3 +1445,5 @@ position = Vector2(62, 1747)
 [connection signal="interaction_started" from="OnTheGround/NPCs/GardenerA/InteractArea" to="OnTheGround/NPCs/GardenerA" method="_on_interact_area_interaction_started"]
 [connection signal="interaction_ended" from="OnTheGround/Tutorial/TutorialGuy/InteractArea" to="OnTheGround/Tutorial/TutorialGuy" method="_on_interact_area_interaction_ended"]
 [connection signal="interaction_started" from="OnTheGround/Tutorial/TutorialGuy/InteractArea" to="OnTheGround/Tutorial/TutorialGuy" method="_on_interact_area_interaction_started"]
+[connection signal="sleeping_state_changed" from="OnTheGround/RepellableRock" to="." method="_on_repellable_rock_sleeping_state_changed"]
+[connection signal="sleeping_state_changed" from="OnTheGround/RepellableBall" to="OnTheGround/RepellableBall" method="_on_sleeping_state_changed"]
