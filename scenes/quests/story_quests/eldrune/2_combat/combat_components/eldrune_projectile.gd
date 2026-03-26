@@ -87,7 +87,7 @@ func _physics_process(_delta: float) -> void:
 		_is_sliding = false
 
 
-func got_hit(player: Player) -> void:
+func got_repelled(_direction: Vector2) -> void:
 	if _is_disabled:
 		return
 	
