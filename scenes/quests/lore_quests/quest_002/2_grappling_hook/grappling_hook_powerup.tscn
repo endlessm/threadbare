@@ -18,50 +18,14 @@
 [ext_resource type="TileSet" uid="uid://bdc7ucso7bx0s" path="res://tiles/shadows.tres" id="8_iu48k"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="11_7v23v"]
 [ext_resource type="PackedScene" uid="uid://cokul8w425pja" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_spreading_enemy.tscn" id="12_ptg16"]
-[ext_resource type="Texture2D" uid="uid://dnwfhdpvdl0gi" path="res://scenes/game_elements/props/button_item/components/button-blue.png" id="13_7gbyj"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="13_vodlh"]
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="15_rlnni"]
+[ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="17_a36ca"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="20_exmm1"]
 [ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="21_y6p0v"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="22_iu48k"]
 [ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="23_b7aom"]
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="25_iu48k"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rup4f"]
-atlas = ExtResource("13_7gbyj")
-region = Rect2(0, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ptg16"]
-atlas = ExtResource("13_7gbyj")
-region = Rect2(64, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vodlh"]
-atlas = ExtResource("13_7gbyj")
-region = Rect2(128, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rlnni"]
-atlas = ExtResource("13_7gbyj")
-region = Rect2(192, 0, 64, 64)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_g2ubw"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rup4f")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ptg16")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vodlh")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rlnni")
-}],
-"loop": true,
-"name": &"default",
-"speed": 10.0
-}]
 
 [sub_resource type="Resource" id="Resource_rlnni"]
 script = ExtResource("13_vodlh")
@@ -257,15 +221,12 @@ position = Vector2(837, -280)
 position = Vector2(-1581, 1616)
 text = "Go!"
 
-[node name="LongerStringPowerUp" parent="OnTheGround" unique_id=987233957 instance=ExtResource("7_rlnni")]
-position = Vector2(-555, 727)
-scale = Vector2(2, 2)
-
-[node name="ButtonSprite" parent="OnTheGround/LongerStringPowerUp/ButtonItem" parent_id_path=PackedInt32Array(987233957, 1967107361) index="0" unique_id=1194360136]
-sprite_frames = SubResource("SpriteFrames_g2ubw")
-
-[node name="HookableArea" parent="OnTheGround/LongerStringPowerUp" index="2" unique_id=1267513436]
-weight = 0.3
+[node name="LongerThreadPowerup" parent="OnTheGround" unique_id=1795462717 instance=ExtResource("17_a36ca")]
+position = Vector2(-549, 689)
+ability = 32
+ability_name = "Longer Thread"
+interact_action = "Collect Longer Thread"
+highlight_color = Color(0.8910073, 0.7227245, 0, 1)
 
 [node name="VoidPatrolling" parent="OnTheGround" unique_id=2124322919 node_paths=PackedStringArray("void_layer", "idle_patrol_path") instance=ExtResource("12_ptg16")]
 position = Vector2(-1099, 1758)
@@ -399,8 +360,4 @@ shape = SubResource("RectangleShape2D_s7yva")
 
 [node name="HUD" parent="." unique_id=1267842834 instance=ExtResource("11_7v23v")]
 
-[connection signal="collected" from="OnTheGround/LongerStringPowerUp/ButtonItem" to="." method="_on_button_item_collected"]
-
-[editable path="OnTheGround/LongerStringPowerUp"]
-[editable path="OnTheGround/LongerStringPowerUp/ButtonItem"]
 [editable path="OnTheGround/VoidPatrolling"]

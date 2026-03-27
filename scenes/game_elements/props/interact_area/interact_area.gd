@@ -17,6 +17,9 @@ extends Area2D
 signal interaction_started(player: Player, from_right: bool)
 signal interaction_ended
 
+## Emitted when characters start or stop seeing this area for interaction.
+signal observers_changed
+
 const EXAMPLE_INTERACTION_FONT = preload("uid://c3bb7lmvdqc5e")
 const EXAMPLE_INTERACTION_FONT_SIZE = 34
 
@@ -33,6 +36,13 @@ var interact_label_position: Vector2:
 		set_collision_layer_value(Enums.CollisionLayers.INTERACTABLE, not disabled)
 @export var action: String = "Talk"
 
+## Whether this area is being observed by one or more characters.
+## That is, if a [CharacterSight] area is seeing this area for interaction.
+var is_being_observed: bool:
+	get = _get_is_being_observed
+
+var _observers: Array[CharacterSight] = []
+
 
 func start_interaction(player: Player, from_right: bool) -> void:
 	interaction_started.emit(player, from_right)
@@ -44,6 +54,22 @@ func end_interaction() -> void:
 
 func get_global_interact_label_position() -> Vector2:
 	return to_global(interact_label_position)
+
+
+## A [CharacterSight] calls this when it starts seeing this area.
+func add_observer(character_sight: CharacterSight) -> void:
+	_observers.append(character_sight)
+	observers_changed.emit()
+
+
+## A [CharacterSight] calls this when it stops seeing this area.
+func remove_observer(character_sight: CharacterSight) -> void:
+	_observers.erase(character_sight)
+	observers_changed.emit()
+
+
+func _get_is_being_observed() -> bool:
+	return bool(_observers.size())
 
 
 func _ready() -> void:
