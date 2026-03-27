@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-extends Node2D
+extends CharacterBody2D
 ## A powerup that, when interacted, enables a player ability.
 ##
 ## By default it also displays a dialogue telling the player that an ability
@@ -38,6 +38,7 @@ var _tween: Tween
 @onready var sprite: AnimatedSprite2D = %Sprite
 @onready var interact_collision: CollisionShape2D = %InteractCollision
 @onready var ground_collision: CollisionShape2D = %GroundCollision
+@onready var hookable_collision: CollisionShape2D = %HookableCollision
 
 
 func _set_interact_action(new_interact_action: String) -> void:
@@ -81,6 +82,7 @@ func _on_abilities_changed() -> void:
 	var has_ability := GameState.has_ability(ability)
 	ground_collision.disabled = has_ability
 	interact_collision.disabled = has_ability
+	hookable_collision.disabled = has_ability
 	highlight_effect.visible = not has_ability
 	var alpha: float = 0.5 if has_ability else 1.0
 	sprite.modulate = Color(Color.WHITE, alpha)
