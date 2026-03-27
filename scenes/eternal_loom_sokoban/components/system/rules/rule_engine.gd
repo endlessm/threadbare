@@ -55,8 +55,6 @@ func _ready() -> void:
 
 	_setup_first_state()
 	_setup_skip_timer()
-	
-	skip_enabled.connect(InputHud.display_skip)
 
 
 func _setup_skip_timer() -> void:

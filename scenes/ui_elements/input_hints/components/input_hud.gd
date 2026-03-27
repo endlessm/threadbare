@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 
+@onready var normal_controls: HBoxContainer = $TabContainer/NormalControls
 @onready var movement_input_hint: HBoxContainer = $TabContainer/NormalControls/MovementInputHint
 @onready var run_input_hint: HBoxContainer = $TabContainer/NormalControls/RunInputHint
 @onready var repel_input_hint: HBoxContainer = $TabContainer/NormalControls/RepelInputHint
@@ -12,25 +13,25 @@ extends CanvasLayer
 
 
 func _ready() -> void:
-	if get_tree().current_scene.scene_file_path in GameState.TRANSIENT_SCENES:
-		visible = false
 	get_tree().scene_changed.connect(_on_scene_changed)
-	if _is_sakoban_level(get_tree().current_scene.scene_file_path):
-		sokoban_controls.visible = true
-	else: 
-		sokoban_controls.visible = false
-	skip_input_hint.visible = false
+	_on_scene_changed()
 
 
 func _on_scene_changed() -> void:
-	if get_tree().current_scene.scene_file_path in GameState.TRANSIENT_SCENES:
+	if get_tree().current_scene.scene_file_path in GameState.TRANSIENT_SCENES \
+		or not get_tree().current_scene.scene_file_path == "res://scenes/menus/splash/splash.tscn":
 		visible = false
-	else:
-		visible = true
-	if _is_sakoban_level(get_tree().current_scene.scene_file_path):
+	var player: Player = get_tree().get_first_node_in_group("player")
+	var sokoban_ruleset: RuleEngine = get_tree().get_first_node_in_group("sokoban_ruleset")
+	if player:
+		normal_controls.visible = true
+		player.mode_changed.connect(_on_player_mode_changed)
+		_on_player_mode_changed(player.mode)
+	elif sokoban_ruleset:
 		sokoban_controls.visible = true
-	else: 
-		sokoban_controls.visible = false
+		sokoban_ruleset.skip_enabled.connect(display_skip)
+	else:
+		visible = false
 	skip_input_hint.visible = false
 
 
@@ -47,10 +48,6 @@ func _on_player_mode_changed(mode: Player.Mode) -> void:
 		repel_input_hint.visible = false
 		aim_input_hint.visible = false
 		throw_input_hint.visible = false
-
-
-func _is_sakoban_level(scene_path: String) -> bool:
-	return scene_path.begins_with("res://scenes/eternal_loom_sokoban/")
 
 
 func display_skip() -> void: 
