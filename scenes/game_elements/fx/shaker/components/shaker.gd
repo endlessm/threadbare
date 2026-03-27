@@ -13,8 +13,11 @@ signal started
 ## Emitted when the target stopped shaking
 signal finished
 
-## Node that will be shaked
-@export var target: CanvasItem
+## Node that will be shaked. If the parent node is a CanvasItem and target isn't set,
+## the parent node will be automatically assigned to this variable.
+@export var target: CanvasItem:
+	set = _set_target
+
 ## Maximum possible value in which the position of the node might be offset.
 @export_range(1.0, 100.0, 1.0, "or_greater", "or_less") var shake_intensity: float = 30.0
 ## How much time (in seconds) the node will be shaken.
@@ -43,9 +46,26 @@ var current_intensity: float = 0.0
 var shake_tween: Tween
 
 
+func _enter_tree() -> void:
+	if not target and get_parent() is CanvasItem:
+		target = get_parent()
+
+
 func _ready() -> void:
 	noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	noise.frequency = 1.0
+
+
+func _set_target(new_target: CanvasItem) -> void:
+	target = new_target
+	update_configuration_warnings()
+
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray
+	if not target:
+		warnings.append("Target must be set.")
+	return warnings
 
 
 ## Shake the node's position by a maximum of [param intensity] and rotation by
