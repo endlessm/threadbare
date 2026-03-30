@@ -19,15 +19,16 @@ func _ready() -> void:
 
 func _on_scene_changed() -> void:
 	if get_tree().current_scene.scene_file_path in GameState.TRANSIENT_SCENES \
-		or not get_tree().current_scene.scene_file_path == "res://scenes/menus/splash/splash.tscn":
+		or get_tree().current_scene.scene_file_path == "res://scenes/menus/splash/splash.tscn":
 		visible = false
 	var player: Player = get_tree().get_first_node_in_group("player")
 	var sokoban_ruleset: RuleEngine = get_tree().get_first_node_in_group("sokoban_ruleset")
 	if player:
+		visible = true
 		normal_controls.visible = true
-		player.mode_changed.connect(_on_player_mode_changed)
-		_on_player_mode_changed(player.mode)
+		player.player_interaction.can_interact.connect(_on_player_interaction_can_interact)
 	elif sokoban_ruleset:
+		visible = true
 		sokoban_controls.visible = true
 		sokoban_ruleset.skip_enabled.connect(display_skip)
 	else:
@@ -35,19 +36,8 @@ func _on_scene_changed() -> void:
 	skip_input_hint.visible = false
 
 
-func _on_player_mode_changed(mode: Player.Mode) -> void:
-	if mode == Player.Mode.FIGHTING:
-		repel_input_hint.visible = true
-		aim_input_hint.visible = false
-		throw_input_hint.visible = false
-	elif mode == Player.Mode.HOOKING:
-		repel_input_hint.visible = false
-		aim_input_hint.visible = true
-		throw_input_hint.visible = true
-	else:
-		repel_input_hint.visible = false
-		aim_input_hint.visible = false
-		throw_input_hint.visible = false
+func _on_player_interaction_can_interact(can_interact: bool) -> void:
+	interact_input_hint.visible = can_interact
 
 
 func display_skip() -> void: 

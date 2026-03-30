@@ -5,7 +5,6 @@ class_name Player
 extends CharacterBody2D
 
 signal mode_changed(mode: Mode)
-signal can_interact
 
 ## The possible player states.
 enum Mode {

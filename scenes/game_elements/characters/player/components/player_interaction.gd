@@ -3,6 +3,9 @@
 class_name PlayerInteraction
 extends Node2D
 
+## Emitted when [Player] can interact with the surroundings.
+signal can_interact(can_interact: bool)
+
 ## The character that gains interaction.
 ## [br][br]
 ## [b]Note:[/b] If the parent node is a CharacterBody2D and character isn't set,
@@ -80,6 +83,8 @@ func _on_character_sight_interact_area_changed() -> void:
 
 	if not character_sight.interact_area:
 		interact_label.visible = false
+		can_interact.emit(false)
 	else:
 		interact_label.visible = true
+		can_interact.emit(true)
 		interact_label.label_text = character_sight.interact_area.action
