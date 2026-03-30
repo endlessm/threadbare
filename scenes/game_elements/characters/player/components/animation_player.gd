@@ -2,8 +2,6 @@
 # SPDX-License-Identifier: MPL-2.0
 extends AnimationPlayer
 
-const REPEL_ANTICIPATION_TIME: float = 0.3
-
 var _is_player_running: bool
 
 @onready var player: Player = owner
@@ -62,7 +60,7 @@ func _on_player_repel_repelling_changed(repelling: bool) -> void:
 	# directly to the action.
 	speed_scale = original_speed_scale
 	play(&"repel")
-	seek(REPEL_ANTICIPATION_TIME, false, false)
+	seek(player_repel.REPEL_ANTICIPATION_TIME, false, false)
 
 
 func _on_player_hook_string_thrown() -> void:
