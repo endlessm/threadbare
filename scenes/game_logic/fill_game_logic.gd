@@ -70,9 +70,4 @@ func _on_barrel_completed() -> void:
 		return
 	get_tree().call_group("throwing_enemy", "remove")
 	get_tree().call_group("projectiles", "remove")
-	# TODO: Do not change player mode!
-	# https://github.com/endlessm/threadbare/issues/1375
-	var player: Player = get_tree().get_first_node_in_group("player")
-	if player:
-		player.mode = Player.Mode.COZY
 	goal_reached.emit()

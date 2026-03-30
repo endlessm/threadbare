@@ -7,7 +7,7 @@ extends Area2D
 ##
 ## To make an interactable object, add an [InteractArea] to it, and handle
 ## [signal interaction_started]. When the interaction is complete, call [method
-## end_interaction]. This area is detected by the player scene's [InteractZone];
+## end_interaction]. This area is detected by character's [CharacterSight];
 ## the player scene is typically responsible for calling [method
 ## start_interaction] in response to player input.
 ## [br][br]

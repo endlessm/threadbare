@@ -32,7 +32,7 @@
 [ext_resource type="Texture2D" uid="uid://c1vlj61hnl1dx" path="res://scenes/quests/story_quests/champ/tiles/assets/shore_and_lake_tiles.png" id="15_wbd51"]
 [ext_resource type="Texture2D" uid="uid://cexg7otw5enpu" path="res://assets/third_party/tiny-swords/Terrain/Water/Foam/Foam.png" id="16_40h7x"]
 [ext_resource type="Script" uid="uid://dwd8vjl5h6nxy" path="res://scenes/quests/story_quests/champ/3_stealth/champ_incomplete_character.gd" id="16_fw64s"]
-[ext_resource type="Script" uid="uid://necvar42rnih" path="res://scenes/game_elements/characters/player/components/interact_zone.gd" id="16_g11k1"]
+[ext_resource type="Script" uid="uid://necvar42rnih" path="res://scenes/game_elements/props/character_sight/character_sight.gd" id="16_g11k1"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="16_ol5cv"]
 [ext_resource type="Resource" uid="uid://c3yuq52k21sga" path="res://scenes/quests/story_quests/champ/3_stealth/stealth_components/champ_incomplete_stealth_guard_path_hint.dialogue" id="17_8qkne"]
 [ext_resource type="Texture2D" uid="uid://cnmmh3uq7rkla" path="res://assets/third_party/tiny-swords/Terrain/Bridge/Bridge_All.png" id="17_g2bud"]
@@ -1825,17 +1825,19 @@ limit_bottom = 9999999
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="PlayerInteraction" type="Node2D" parent="Incomplete Character" unique_id=161308293]
+[node name="PlayerInteraction" type="Node2D" parent="Incomplete Character" unique_id=161308293 node_paths=PackedStringArray("character")]
 unique_name_in_owner = true
 script = ExtResource("15_ecrvd")
+character = NodePath("..")
 
-[node name="InteractZone" type="Area2D" parent="Incomplete Character/PlayerInteraction" unique_id=826531250]
+[node name="CharacterSight" type="Area2D" parent="Incomplete Character/PlayerInteraction" unique_id=826531250 node_paths=PackedStringArray("character")]
 unique_name_in_owner = true
 collision_layer = 0
 collision_mask = 32
 script = ExtResource("16_g11k1")
+character = NodePath("../..")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Incomplete Character/PlayerInteraction/InteractZone" unique_id=663814065]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Incomplete Character/PlayerInteraction/CharacterSight" unique_id=663814065]
 position = Vector2(167, 5)
 shape = SubResource("RectangleShape2D_680ig")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)

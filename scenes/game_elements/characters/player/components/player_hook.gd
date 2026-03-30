@@ -17,6 +17,12 @@ extends Node2D
 ## Emitted when the string is thrown from the primary control.
 signal string_thrown
 
+## Emitted when character using the grappling hook starts or stops aiming.
+## [br][br]
+## This could be used to reduce the character movement while aiming with the same input controls
+## (the case of keyboard).
+signal aiming_changed(is_aiming: bool)
+
 ## The character using the grapping hook tool.
 ## [br][br]
 ## [b]Note:[/b] If the parent node is a CharacterBody2D and character isn't set,
@@ -146,8 +152,9 @@ func hooked(_new_hooked_to: HookableArea, is_loop: bool) -> void:
 	hook_ending.global_position = p
 	areas_hooked.append(_new_hooked_to)
 	if not _new_hooked_to.hook_control:
+		# The area hooked doesn't have a control to aim from it, so start pulling:
 		pull_string()
-	if is_loop:
+	elif is_loop:
 		# Play a blink animation and then remove the string:
 		var tween: Tween = create_tween()
 		tween.tween_property(hook_string, "modulate:a", 0.0, 0.1).set_trans(
@@ -160,6 +167,9 @@ func hooked(_new_hooked_to: HookableArea, is_loop: bool) -> void:
 		tween.play()
 		await tween.finished
 		remove_string()
+	else:
+		# Start aiming:
+		aiming_changed.emit(true)
 
 
 ## Called when a throw has hit a wall.
@@ -196,6 +206,8 @@ func remove_string() -> void:
 			area.hook_control.release()
 			area.hook_control.state = HookControl.State.DISABLED
 	areas_hooked.clear()
+
+	aiming_changed.emit(false)
 
 	# Wait for the string to be freed before reenabling aiming:
 	if is_instance_valid(hook_string):
@@ -237,6 +249,9 @@ func shatter_string() -> void:
 ## While pulling, the player is allowed to go through non-walkable floor.
 func pull_string() -> void:
 	pulling = true
+	# While pulling, this class takes control over the player movement.
+	if character.has_method("take_control"):
+		character.take_control(self)
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, false)
 
 
@@ -247,22 +262,10 @@ func pull_string() -> void:
 func stop_pulling() -> void:
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, true)
 	pulling = false
+	# After pulling, return control to the user.
+	if character.has_method("return_control"):
+		character.return_control(self)
 	remove_string()
-
-
-## True if this hook's control is throwing or the hook control of the last area hooked is aiming.
-## [br][br]
-## Used to slow down the character movement for more precise control.
-func is_throwing_or_aiming() -> bool:
-	var ending_area := get_ending_area()
-	return (
-		hook_control.pressing_throw_action
-		or (
-			ending_area
-			and ending_area.hook_control
-			and ending_area.hook_control.state == HookControl.State.AIMING
-		)
-	)
 
 
 ## Helper function to return the last area hooked, or

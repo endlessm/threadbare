@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://buvo0sgtr3qeg"]
 
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_igvqa"]
+[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_pmff0"]
 [ext_resource type="AudioStream" uid="uid://676ese8fg2qm" path="res://scenes/quests/story_quests/renya_beyond_sorrow/Complementos/music/7. Silent Longing (Loop).ogg" id="2_rqh7d"]
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="3_s61i2"]
 [ext_resource type="TileSet" uid="uid://dmg13wgcc7so5" path="res://scenes/quests/story_quests/renya_beyond_sorrow/renya_tileset.tres" id="4_kr32a"]
@@ -43,6 +44,11 @@ _data = {
 size = Vector2(101, 49)
 
 [node name="InkCombat" type="Node2D" unique_id=1007367827]
+
+[node name="PlayerMode" type="Node" parent="." unique_id=1020054627]
+script = ExtResource("1_pmff0")
+mode = 1
+metadata/_custom_type_script = "uid://pk3ucq7e2eah"
 
 [node name="BackgroundMusic" parent="." unique_id=1956929768 instance=ExtResource("1_igvqa")]
 stream = ExtResource("2_rqh7d")
@@ -126,7 +132,6 @@ shape = SubResource("RectangleShape2D_e81yh")
 [node name="Player" parent="OnTheGround" unique_id=524940182 instance=ExtResource("8_fhg3o")]
 position = Vector2(162, 615)
 player_name = "StoryWeaver"
-mode = 1
 sprite_frames = ExtResource("11_rqh7d")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=489668817]

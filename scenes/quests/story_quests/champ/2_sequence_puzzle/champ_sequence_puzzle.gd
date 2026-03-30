@@ -130,7 +130,7 @@ func _on_champ_long_rock_water_entered() -> void:
 			if sequences[0].sequence.has(objs[i]) or sequences[1].sequence.has(objs[i]):
 				objs[i].interact_area.disabled = false
 		solve_progress = 0 # redundant?
-	player.mode = Player.Mode.COZY
+	player.mode = Player.Mode.USER_CONTROLLED
 
 ## Overrides the parent function so we can continue to do logic after sequence ends
 func _on_demonstrate_sequence(step: SequencePuzzleStep) -> void:

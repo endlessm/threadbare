@@ -3,7 +3,9 @@
 [ext_resource type="Script" uid="uid://y88qplkioj1q" path="res://scenes/globals/pause/pause_overlay.gd" id="1_lf64b"]
 [ext_resource type="Texture2D" uid="uid://lg5dl13njsg3" path="res://assets/first_party/tiles/Grass_And_Sand_Tiles.png" id="2_1tcw0"]
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="2_sd5t1"]
+[ext_resource type="Script" uid="uid://i4urwefxrrdt" path="res://addons/threadbare_git_describe/version_label.gd" id="3_m62bn"]
 [ext_resource type="PackedScene" uid="uid://dkeb0yjgcfi86" path="res://scenes/menus/options/options.tscn" id="3_sd5t1"]
+[ext_resource type="Script" uid="uid://gntvq01vvati" path="res://scenes/globals/pause/report_bug_button.gd" id="4_mjd51"]
 [ext_resource type="PackedScene" uid="uid://56ja3m4283wa" path="res://scenes/menus/debug/debug_settings.tscn" id="5_ai8ue"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1tcw0"]
@@ -26,6 +28,22 @@ texture = ExtResource("2_1tcw0")
 region_rect = Rect2(384, 64, 64, 64)
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1289064546]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -33.0
+offset_top = -68.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("2_sd5t1")
+
+[node name="VersionLabel" type="Label" parent="MarginContainer" unique_id=494777321]
+layout_mode = 2
+script = ExtResource("3_m62bn")
 
 [node name="TabContainer" type="TabContainer" parent="." unique_id=877845808]
 anchors_preset = 8
@@ -88,6 +106,14 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Debug Settings"
+
+[node name="ReportBugButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=1750937607]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+text = "Report a Problem"
+script = ExtResource("4_mjd51")
 
 [node name="TitleScreenButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=830702640]
 unique_name_in_owner = true

@@ -7,15 +7,13 @@ extends CharacterBody2D
 signal mode_changed(mode: Mode)
 signal can_interact
 
-## Controls how the player can interact with the world around them.
+## The possible player states.
 enum Mode {
-	## Player can explore the world, interact with items and NPCs, but is not
-	## engaged in combat. Combat actions are not available in this mode.
-	COZY,
-	## Player is engaged in combat. Player can use combat actions.
-	FIGHTING,
-	## Player is using the grappling hook.
-	HOOKING,
+	## Player is reacting to user input.
+	USER_CONTROLLED,
+	## Player is being controlled by other means: interacting,
+	## pulling the grappling hook, being put on rails, etc.
+	SYSTEM_CONTROLLED,
 	## Player can't be controlled anymore.
 	DEFEATED,
 }
@@ -42,26 +40,17 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 ## is speaking during dialogue.
 @export var player_name: String = "Player Name"
 
-## Controls how the player can interact with the world around them.
-@export var mode: Mode = Mode.COZY:
+## The current player state.
+@export var mode: Mode = Mode.USER_CONTROLLED:
 	set = _set_mode
 
-## The character walking speed.
-@export_range(10, 100000, 10) var walk_speed: float = 300.0
-
-## The character running speed.
-@export_range(10, 100000, 10) var run_speed: float = 500.0
+## Parameters controlling the speed at which this player walks. If unset, the default values of
+## [CharacterSpeeds] are used.
+@export var speeds: CharacterSpeeds:
+	set = _set_speeds
 
 ## The character speed when aiming with the grappling hook.
 @export_range(10, 100000, 10) var aiming_speed: float = 100.0
-
-## How fast does the player transition from walking/running to stopped.
-## A low value will make the character look as slipping on ice.
-## A high value will stop the character immediately.
-@export_range(10, 100000, 10) var stopping_step: float = 1500.0
-
-## How fast does the player transition from stopped to walking/running.
-@export_range(10, 100000, 10) var moving_step: float = 4000.0
 
 ## The SpriteFrames must have specific animations with a certain amount of frames.
 ## See [constant REQUIRED_ANIMATION_FRAMES] and [constant OPTIONAL_ANIMATION_FRAMES].
@@ -73,10 +62,11 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 @export var walk_sound_stream: AudioStream = preload("uid://cx6jv2cflrmqu"):
 	set = _set_walk_sound_stream
 
-var input_vector: Vector2
+var _initial_speeds: CharacterSpeeds
 
+@onready var input_walk_behavior: InputWalkBehavior = %InputWalkBehavior
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
-@onready var player_fighting: Node2D = %PlayerFighting
+@onready var player_repel: Node2D = %PlayerRepel
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
@@ -88,26 +78,20 @@ func _set_mode(new_mode: Mode) -> void:
 	if not is_node_ready():
 		return
 	match mode:
-		Mode.COZY:
+		Mode.USER_CONTROLLED:
+			_toggle_player_behavior(input_walk_behavior, true)
 			_toggle_player_behavior(player_interaction, true)
-			_toggle_player_behavior(player_fighting, false)
-			_toggle_player_behavior(player_hook, false)
-			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
-		Mode.FIGHTING:
-			_toggle_player_behavior(player_interaction, false)
-			_toggle_player_behavior(player_fighting, true)
-			_toggle_player_behavior(player_hook, false)
-			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
-		Mode.HOOKING:
-			_toggle_player_behavior(player_interaction, false)
-			_toggle_player_behavior(player_fighting, false)
-			_toggle_player_behavior(player_hook, true)
-			Input.set_default_cursor_shape(Input.CURSOR_CROSS)
+			_toggle_abilities()
+		Mode.SYSTEM_CONTROLLED:
+			_toggle_player_behavior(input_walk_behavior, false)
+			_toggle_player_behavior(player_interaction, true)
+			_toggle_abilities()
 		Mode.DEFEATED:
+			_toggle_player_behavior(input_walk_behavior, false)
 			_toggle_player_behavior(player_interaction, false)
-			_toggle_player_behavior(player_fighting, false)
+			_toggle_player_behavior(player_repel, false)
 			_toggle_player_behavior(player_hook, false)
-			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+
 	if mode != previous_mode:
 		mode_changed.emit(mode)
 
@@ -158,51 +142,18 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 func _ready() -> void:
+	_set_speeds(speeds)
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
+	GameState.abilities_changed.connect(_on_abilities_changed)
 
 
-func _unhandled_input(_event: InputEvent) -> void:
-	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
-
-	var speed: float
-	if player_hook.is_throwing_or_aiming():
-		speed = aiming_speed
-	elif Input.is_action_pressed(&"running"):
-		speed = run_speed
-	else:
-		speed = walk_speed
-
-	input_vector = axis * speed
-
-
-## Returns [code]true[/code] if the player is running. When using an analogue joystick, this can be
-## [code]false[/code] even if the player is holding the "run" button, because the joystick may be
-## inclined only slightly.
-func is_running() -> bool:
-	# While walking diagonally with an analogue joystick, the input vector can be fractionally
-	# greater than walk_speed, due to trigonometric/floating-point inaccuracy.
-	return input_vector.length_squared() > (walk_speed * walk_speed) + 1.0
-
-
-func _physics_process(delta: float) -> void:
-	if Engine.is_editor_hint():
+func _set_speeds(new_speeds: CharacterSpeeds) -> void:
+	speeds = new_speeds
+	_initial_speeds = new_speeds.duplicate()
+	if not is_node_ready():
 		return
-
-	# While pulling the grappling hook, the movement is handled in PlayerHook._physics_process.
-	if player_hook.pulling:
-		return
-
-	if player_interaction.is_interacting or mode == Mode.DEFEATED:
-		velocity = Vector2.ZERO
-		return
-
-	var step := (
-		stopping_step if velocity.length_squared() > input_vector.length_squared() else moving_step
-	)
-	velocity = velocity.move_toward(input_vector, step * delta)
-
-	move_and_slide()
+	input_walk_behavior.speeds = speeds
 
 
 func teleport_to(
@@ -242,6 +193,9 @@ func defeat(falling: bool = false) -> void:
 
 	mode = Player.Mode.DEFEATED
 
+	# Stop moving the player.
+	velocity = Vector2.ZERO
+
 	# Decrement lives and save the new count
 	GameState.decrement_lives()
 
@@ -258,6 +212,30 @@ func defeat(falling: bool = false) -> void:
 	else:
 		# Game over - restart from challenge start
 		_handle_game_over()
+
+
+func take_control(_controlled_by: Node) -> void:
+	mode = Mode.SYSTEM_CONTROLLED
+
+
+func return_control(_controlled_by: Node) -> void:
+	mode = Mode.USER_CONTROLLED
+
+
+func _toggle_abilities() -> void:
+	var can_repel := GameState.has_ability(Enums.PlayerAbilities.ABILITY_A)
+	var can_grapple := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B)
+	_toggle_player_behavior(player_repel, can_repel)
+	_toggle_player_behavior(player_hook, can_grapple)
+	if can_grapple:
+		var has_longer_hook := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B_MODIFIER_1)
+		player_hook.string_throw_length = 400.0 if has_longer_hook else 200.0
+		player_hook.string_max_length = 450.0 if has_longer_hook else 250.0
+
+
+func _on_abilities_changed() -> void:
+	if mode != Mode.DEFEATED:
+		_toggle_abilities()
 
 
 ## Handles game over logic: restarts from the beginning of the current challenge
@@ -279,3 +257,10 @@ func _handle_game_over() -> void:
 		SceneSwitcher.change_to_file_with_transition(
 			challenge_start_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 		)
+
+
+func _on_player_hook_aiming_changed(is_aiming: bool) -> void:
+	input_walk_behavior.speeds.walk_speed = (
+		aiming_speed if is_aiming else _initial_speeds.walk_speed
+	)
+	input_walk_behavior.speeds.run_speed = aiming_speed if is_aiming else _initial_speeds.run_speed

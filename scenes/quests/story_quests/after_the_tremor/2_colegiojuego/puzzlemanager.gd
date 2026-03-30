@@ -101,9 +101,6 @@ func _success() -> void:
 		await DialogueManager.dialogue_ended
 
 
-	_set_player_mode_to_cozy()
-
-
 	if final_collectible != NodePath(""):
 		var col := get_node_or_null(final_collectible)
 		if col and col.has_method("reveal"):
@@ -186,26 +183,6 @@ func _update_timer_label(seconds_left: int) -> void:
 	var s := int(seconds_left % 60)
 	lab.text = _zero(m) + ":" + _zero(s)
 
-
-func _set_player_mode_to_cozy() -> void:
-	var player := _get_player_node()
-	if not player:
-		print("PuzzleManager: no se encontró Player.")
-		return
-
-	player.mode = 0   # COZY
-	print("PuzzleManager: player.mode = COZY (0)")
-
-
-func _get_player_node() -> Node:
-	if player_node != NodePath("") and get_node_or_null(player_node):
-		return get_node_or_null(player_node)
-
-	var group_nodes := get_tree().get_nodes_in_group("player")
-	if group_nodes.size() > 0:
-		return group_nodes[0]
-
-	return null
 
 
 func _zero(n: int) -> String:

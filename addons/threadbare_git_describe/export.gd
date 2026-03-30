@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: MPL-2.0
 extends EditorExportPlugin
 
+const Version = preload("./version.gd")
+
 
 func _get_name() -> String:
 	return "threadbare_git_describe_exporter"
@@ -17,13 +19,7 @@ func set_version(version: Variant) -> void:
 func _export_begin(
 	_features: PackedStringArray, _is_debug: bool, _path: String, _flags: int
 ) -> void:
-	var output: Array[String] = []
-	var ret := OS.execute("git", ["describe", "--tags"], output)
-	if ret != 0:
-		printerr("git describe --tags failed: %d" % ret)
-	else:
-		var version := output[0].strip_edges()
-		set_version(version)
+	set_version(Version.git_describe(true))
 
 
 func _export_end() -> void:

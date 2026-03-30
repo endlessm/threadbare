@@ -25,8 +25,16 @@ signal cinematic_finished
 ## leave this blank.
 @export var spawn_point_path: String
 
+## Wether to automatically start the cinematic.
+@export var autostart: bool = true
+
 
 func _ready() -> void:
+	if autostart:
+		start()
+
+
+func start() -> void:
 	if not GameState.intro_dialogue_shown:
 		DialogueManager.show_dialogue_balloon(dialogue, "", [self])
 		await DialogueManager.dialogue_ended
