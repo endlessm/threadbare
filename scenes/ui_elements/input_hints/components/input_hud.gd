@@ -2,8 +2,6 @@ extends CanvasLayer
 
 
 @onready var normal_controls: HBoxContainer = $TabContainer/NormalControls
-@onready var movement_input_hint: HBoxContainer = $TabContainer/NormalControls/MovementInputHint
-@onready var run_input_hint: HBoxContainer = $TabContainer/NormalControls/RunInputHint
 @onready var repel_input_hint: HBoxContainer = $TabContainer/NormalControls/RepelInputHint
 @onready var aim_input_hint: HBoxContainer = $TabContainer/NormalControls/AimInputHint
 @onready var throw_input_hint: HBoxContainer = $TabContainer/NormalControls/ThrowInputHint
@@ -26,7 +24,11 @@ func _on_scene_changed() -> void:
 	if player:
 		visible = true
 		normal_controls.visible = true
-		player.player_interaction.can_interact.connect(_on_player_interaction_can_interact)
+		if player.player_repel:
+			_connect_player(player)
+		else:
+			await player.ready
+			_connect_player(player)
 	elif sokoban_ruleset:
 		visible = true
 		sokoban_controls.visible = true
@@ -36,9 +38,28 @@ func _on_scene_changed() -> void:
 	skip_input_hint.visible = false
 
 
+func _connect_player(player: Player) -> void:
+	player.player_interaction.can_interact.connect(_on_player_interaction_can_interact)
+	player.player_repel.visibility_changed.connect(_on_player_repel_visibility_changed.bind(player))
+	_on_player_repel_visibility_changed(player)
+	player.player_hook.visibility_changed.connect(_on_player_hook_visibility_changed.bind(player))
+	_on_player_hook_visibility_changed(player)
+
+
 func _on_player_interaction_can_interact(can_interact: bool) -> void:
 	interact_input_hint.visible = can_interact
 
 
-func display_skip() -> void: 
+func _on_player_repel_visibility_changed(player: Player) -> void:
+	if player:
+		repel_input_hint.visible = player.player_repel.visible
+
+
+func _on_player_hook_visibility_changed(player: Player) -> void:
+	if player:
+		throw_input_hint.visible = player.player_hook.visible
+		aim_input_hint.visible = player.player_hook.visible
+
+
+func display_skip() -> void:
 	skip_input_hint.visible = true
