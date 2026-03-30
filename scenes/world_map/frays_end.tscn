@@ -34,7 +34,6 @@
 [ext_resource type="PackedScene" uid="uid://v2uakefmp67y" path="res://scenes/game_elements/characters/npcs/elder/story_quest_elder.tscn" id="20_jqkod"]
 [ext_resource type="PackedScene" uid="uid://bytkm0r5fe5xb" path="res://scenes/game_elements/characters/npcs/elder/lore_quest_elder.tscn" id="20_xt3dw"]
 [ext_resource type="Resource" uid="uid://qva3nnhkgirm" path="res://scenes/world_map/components/farmer_npc.dialogue" id="25_6r0j2"]
-[ext_resource type="PackedScene" uid="uid://hafqgtdg2nvp" path="res://scenes/game_elements/props/hint/hint.tscn" id="26_w8iew"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="27_aj6tp"]
 [ext_resource type="Texture2D" uid="uid://drfnq08l2wbgy" path="res://assets/third_party/tiny-swords/Deco/03.png" id="28_6r0j2"]
 [ext_resource type="Resource" uid="uid://byhqan5a7vkgg" path="res://scenes/world_map/components/tutorial_npc.dialogue" id="32_djq26"]
@@ -61,12 +60,6 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_duxxr"]
 size = Vector2(52, 61)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_h30yx"]
-size = Vector2(2070, 585)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_djq26"]
-size = Vector2(161, 95)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2vvub"]
 size = Vector2(52, 61)
@@ -1065,23 +1058,6 @@ position = Vector2(1689, 1694)
 [node name="Tutorial" type="Node2D" parent="OnTheGround" unique_id=1760774148]
 y_sort_enabled = true
 
-[node name="MovementInputHint" parent="OnTheGround/Tutorial" unique_id=1630623962 node_paths=PackedStringArray("hint_node") instance=ExtResource("26_w8iew")]
-position = Vector2(474, 1658)
-hint_node = NodePath("")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Tutorial/MovementInputHint" unique_id=1450943447]
-visible = false
-position = Vector2(552, 112.5)
-shape = SubResource("RectangleShape2D_h30yx")
-
-[node name="InteractInputHint" parent="OnTheGround/Tutorial/MovementInputHint" unique_id=1614272832 node_paths=PackedStringArray("hint_node") instance=ExtResource("26_w8iew")]
-position = Vector2(40, -45)
-hint_node = NodePath("")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Tutorial/MovementInputHint/InteractInputHint" unique_id=9243216]
-position = Vector2(0.5, -8.5)
-shape = SubResource("RectangleShape2D_djq26")
-
 [node name="TutorialGuy" parent="OnTheGround/Tutorial" unique_id=618221375 instance=ExtResource("54_duxxr")]
 position = Vector2(514, 1613)
 scale = Vector2(-1, 1)
@@ -1135,6 +1111,8 @@ shape = SubResource("RectangleShape2D_ulm71")
 [node name="Sign" parent="OnTheGround/WestPath" unique_id=1579530966 instance=ExtResource("64_uxfrp")]
 position = Vector2(95, 664)
 text = "West End"
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1752283368]
 
 [node name="HUD" parent="." unique_id=1876437396 instance=ExtResource("27_aj6tp")]
 unique_name_in_owner = true
