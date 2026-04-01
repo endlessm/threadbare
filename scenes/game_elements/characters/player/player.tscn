@@ -11,10 +11,9 @@
 [ext_resource type="PackedScene" uid="uid://yfpfno276rol" path="res://scenes/game_elements/props/fixed_size_label/fixed_size_label.tscn" id="6_h17s1"]
 [ext_resource type="Script" uid="uid://e78f8iq448e1" path="res://scenes/game_elements/characters/player/components/animation_player.gd" id="7_0owmy"]
 [ext_resource type="AudioStream" uid="uid://cx6jv2cflrmqu" path="res://assets/third_party/sounds/characters/player/Foot.ogg" id="11_blfj0"]
-[ext_resource type="Script" uid="uid://b7704hdflt5t8" path="res://scenes/game_elements/characters/player/components/player_hook.gd" id="11_nrnyj"]
 [ext_resource type="Texture2D" uid="uid://dxaq5piwxqnht" path="res://scenes/game_elements/characters/player/components/dust.png" id="12_3in67"]
 [ext_resource type="PackedScene" uid="uid://cl06pid826dtg" path="res://scenes/game_elements/characters/player/components/player_repel.tscn" id="12_tnibl"]
-[ext_resource type="PackedScene" uid="uid://b0dehcnfo68j1" path="res://scenes/game_elements/props/hook_control/hook_control.tscn" id="13_ecbbk"]
+[ext_resource type="PackedScene" uid="uid://b3111eergq5yg" path="res://scenes/game_elements/characters/player/components/player_hook.tscn" id="13_ecbbk"]
 [ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="16_ecbbk"]
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="16_tnibl"]
 
@@ -441,16 +440,10 @@ grow_vertical = 2
 unique_name_in_owner = true
 position = Vector2(0, -24)
 
-[node name="PlayerHook" type="Node2D" parent="." unique_id=1215042910 node_paths=PackedStringArray("character") groups=["hook_listener"]]
+[node name="PlayerHook" parent="." unique_id=1972626703 node_paths=PackedStringArray("character") instance=ExtResource("13_ecbbk")]
 unique_name_in_owner = true
 position = Vector2(0, -20)
-script = ExtResource("11_nrnyj")
 character = NodePath("..")
-
-[node name="HookControl" parent="PlayerHook" unique_id=1395550080 instance=ExtResource("13_ecbbk")]
-state = 1
-
-[node name="HookEnding" type="Marker2D" parent="PlayerHook" unique_id=94764927]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=683750023]
 unique_name_in_owner = true
