@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node
 
-@export var zone_nodes: Array[NodePath] = []        
+@export var zone_nodes: Array[AllHooked] = []
 @export var timer_node: NodePath                    
 @export var timer_seconds: int = 180                
 @export var timer_label: NodePath = NodePath("")    
@@ -25,13 +25,9 @@ var _running: bool = false
 
 func _ready() -> void:
 
-	for p in zone_nodes:
-		var n := get_node_or_null(p)
-		if n:
-			var cb := Callable(self, "_on_zone_all_hooked").bind(n)
-			if not n.is_connected("all_hooked", cb):
-				n.connect("all_hooked", cb)
-			_zones_done[n] = false
+	for n in zone_nodes:
+		n.all_hooked.connect(_on_zone_all_hooked.bind(n))
+		_zones_done[n] = false
 
 
 	_timer = get_node_or_null(timer_node) as Timer
@@ -139,34 +135,8 @@ func _on_timer_timeout() -> void:
 
 
 func _reset_zones_state() -> void:
-	for p in zone_nodes:
-		var n := get_node_or_null(p)
-		if not n:
-			continue
-
-
+	for n in zone_nodes:
 		_reset_cables(n)
-
-		var areas: Array = []
-
-
-		var temp = null
-		if n and n.has_method("get"):
-
-			temp = n.get("areas_to_hook")
-		else:
-
-			temp = n.get("areas_to_hook")
-
-		if temp is Array:
-			areas = temp
-
-		for area in areas:
-			if area and n.has_method("released"):
-
-				n.released(area)
-
-
 		_zones_done[n] = false
 
 
@@ -205,47 +175,14 @@ func _collect_cables_recursive(node: Node, out_array: Array) -> void:
 
 
 
-func _light_up_cables(zone_node: Node) -> void:
-	if not zone_node:
-		return
-
-	var cables: Array = []
-	_collect_cables_recursive(zone_node, cables)
-
-
-	var seen := {}
-	for c in cables:
-		if not c:
-			continue
-		if seen.has(c):
-			continue
-		seen[c] = true
-
-
+func _light_up_cables(zone_node: AllHooked) -> void:
+	for c in zone_node.elements:
 		if c.has_method("turn_on"):
 			c.turn_on()
 			print("PuzzleManager: encendiendo cable -> ", c.get_path())
 
-		elif c.has_node("Sprite2D"):
-			var spr = c.get_node("Sprite2D") as CanvasItem
-			if spr:
-				spr.modulate = Color(1, 1, 1)
-				print("PuzzleManager: encendiendo (modulate) -> ", c.get_path())
-		else:
-			print("PuzzleManager: candidato cable sin método ni Sprite2D -> ", c.get_path())
 
-
-func _reset_cables(zone_node: Node) -> void:
-	if not zone_node:
-		return
-	var cables: Array = []
-	_collect_cables_recursive(zone_node, cables)
-	for c in cables:
-		if not c:
-			continue
+func _reset_cables(zone_node: AllHooked) -> void:
+	for c in zone_node.elements:
 		if c.has_method("turn_off"):
 			c.turn_off()
-		elif c.has_node("Sprite2D"):
-			var spr = c.get_node("Sprite2D") as CanvasItem
-			if spr:
-				spr.modulate = Color(0.6, 0.6, 0.6)

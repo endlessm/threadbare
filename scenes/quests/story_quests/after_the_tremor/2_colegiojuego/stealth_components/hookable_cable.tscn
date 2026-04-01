@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://dducqjoutx6p2"]
+
+[ext_resource type="Script" uid="uid://dx02yocf8sk1a" path="res://scenes/quests/story_quests/after_the_tremor/2_colegiojuego/hookable_cable.gd" id="1_3bbus"]
+[ext_resource type="Script" uid="uid://dabvr3pqmyya4" path="res://scenes/game_elements/props/hookable_area/components/hookable_area.gd" id="2_3bbus"]
+[ext_resource type="PackedScene" uid="uid://b0dehcnfo68j1" path="res://scenes/game_elements/props/hook_control/hook_control.tscn" id="3_o6882"]
+[ext_resource type="Texture2D" uid="uid://cvt085hooy518" path="res://scenes/quests/story_quests/after_the_tremor/2_colegiojuego/stealth_components/cable5.png" id="4_25nu8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vrucw"]
+size = Vector2(50, 76)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lsxbb"]
+
+[node name="HookableCable" type="StaticBody2D" unique_id=1507173979]
+script = ExtResource("1_3bbus")
+
+[node name="HookableArea" type="Area2D" parent="." unique_id=1167593557 node_paths=PackedStringArray("controlled_entity", "hook_control", "anchor_point")]
+collision_layer = 4096
+collision_mask = 0
+script = ExtResource("2_3bbus")
+controlled_entity = NodePath("..")
+hook_control = NodePath("HookControl")
+anchor_point = NodePath("Marker2D")
+metadata/_custom_type_script = "uid://dabvr3pqmyya4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea" unique_id=1356949742]
+position = Vector2(0, -28)
+shape = SubResource("RectangleShape2D_vrucw")
+debug_color = Color(0.689707, 0.288376, 1, 0.42)
+
+[node name="Marker2D" type="Marker2D" parent="HookableArea" unique_id=1674666531]
+position = Vector2(0, -48)
+
+[node name="HookControl" parent="HookableArea" unique_id=1022482491 node_paths=PackedStringArray("hook_area") instance=ExtResource("3_o6882")]
+position = Vector2(0, -48)
+hook_area = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2132118589]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_lsxbb")
+disabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=839901088]
+unique_name_in_owner = true
+position = Vector2(0, -29)
+texture = ExtResource("4_25nu8")
