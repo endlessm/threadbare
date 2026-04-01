@@ -15,8 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://dohb701lxbe5s" path="res://scenes/game_elements/props/hookable_needle/hookable_needle.tscn" id="13_6fnam"]
 [ext_resource type="Script" uid="uid://dagrhfrj0f33i" path="res://scenes/game_logic/camera_behaviors/frame_camera_behavior.gd" id="13_xwjev"]
 [ext_resource type="PackedScene" uid="uid://evb46lm6ssu2" path="res://scenes/game_elements/props/hookable_pin/hookable_pin.tscn" id="14_4tdqi"]
-[ext_resource type="PackedScene" uid="uid://dvj15pnuqr2ua" path="res://scenes/game_elements/props/hookable_button_item/hookable_button_item.tscn" id="14_lmmn3"]
-[ext_resource type="Texture2D" uid="uid://dnwfhdpvdl0gi" path="res://scenes/game_elements/props/button_item/components/button-blue.png" id="15_johb0"]
+[ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="16_bkul7"]
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="20_q1v2m"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="21_gvlvr"]
 [ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="22_siwq5"]
@@ -73,42 +72,6 @@ _data = {
 "points": PackedVector2Array(0, 0, 30, -30, 0, 0, -30, -30, 30, 30, 128, 0, 30, -30, -30, 30, 128, 128, 30, 30, -30, -30, 0, 128, -30, 30, 0, 0, 0, 0)
 }
 point_count = 5
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rup4f"]
-atlas = ExtResource("15_johb0")
-region = Rect2(0, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ptg16"]
-atlas = ExtResource("15_johb0")
-region = Rect2(64, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vodlh"]
-atlas = ExtResource("15_johb0")
-region = Rect2(128, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rlnni"]
-atlas = ExtResource("15_johb0")
-region = Rect2(192, 0, 64, 64)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_vbdam"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rup4f")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ptg16")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vodlh")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rlnni")
-}],
-"loop": true,
-"name": &"default",
-"speed": 10.0
-}]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_c2723"]
 vertices = PackedVector2Array(2921.961, 2408.0469, 2928.9375, 3614.9766, -1572.9609, 3609.0078, -1559.0313, 112, 3734.039, 116.99219, 3742.961, 2105.039)
@@ -246,15 +209,12 @@ scale = Vector2(2.219653, 2.219653)
 curve = SubResource("Curve2D_nm3ku")
 metadata/_edit_group_ = true
 
-[node name="LongerStringPowerUp" parent="OnTheGround" unique_id=1151446514 instance=ExtResource("14_lmmn3")]
+[node name="LongerThreadPowerup" parent="OnTheGround" unique_id=297202740 instance=ExtResource("16_bkul7")]
 position = Vector2(2048, 576)
-scale = Vector2(2, 2)
-
-[node name="ButtonSprite" parent="OnTheGround/LongerStringPowerUp/ButtonItem" parent_id_path=PackedInt32Array(1151446514, 1967107361) index="0" unique_id=1194360136]
-sprite_frames = SubResource("SpriteFrames_vbdam")
-
-[node name="HookableArea" parent="OnTheGround/LongerStringPowerUp" index="2" unique_id=1267513436]
-weight = 0.3
+ability = 32
+ability_name = "Longer Thread"
+interact_action = "Collect Longer Thread"
+highlight_color = Color(0.8910073, 0.7227245, 0, 1)
 
 [node name="PinsAndNeedles" type="Node2D" parent="OnTheGround" unique_id=478811176]
 y_sort_enabled = true
@@ -687,9 +647,7 @@ position = Vector2(0, 23)
 shape = SubResource("RectangleShape2D_rk3po")
 
 [connection signal="body_entered" from="EnemyDefeatTrigger" to="OnTheGround/VoidChasing" method="defeat" unbinds=1]
-[connection signal="collected" from="OnTheGround/LongerStringPowerUp/ButtonItem" to="." method="_on_button_item_collected"]
+[connection signal="collected" from="OnTheGround/LongerThreadPowerup" to="." method="_on_longer_thread_powerup_collected"]
 
 [editable path="OnTheGround/VoidPatrolling"]
 [editable path="OnTheGround/VoidChasing"]
-[editable path="OnTheGround/LongerStringPowerUp"]
-[editable path="OnTheGround/LongerStringPowerUp/ButtonItem"]

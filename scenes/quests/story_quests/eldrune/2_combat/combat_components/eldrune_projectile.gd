@@ -87,7 +87,7 @@ func _physics_process(_delta: float) -> void:
 		_is_sliding = false
 
 
-func got_hit(player: Player) -> void:
+func got_repelled(_direction: Vector2) -> void:
 	if _is_disabled:
 		return
 	
@@ -123,13 +123,13 @@ func _configure_disabled_collision_layers() -> void:
 	set_collision_mask_value(Enums.CollisionLayers.PLAYERS_HITBOX, false)
 	
 	# Change from PROJECTILES to NON_WALKABLE_FLOOR layer
-	set_collision_layer_value(Enums.CollisionLayers.PROJECTILES, false)
+	set_collision_layer_value(Enums.CollisionLayers.REPELLABLE, false)
 	set_collision_layer_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, true)
 	
 	# Enable collisions with environment and entities
 	set_collision_mask_value(Enums.CollisionLayers.WALLS, true)
 	set_collision_mask_value(Enums.CollisionLayers.PLAYERS, true)
-	set_collision_mask_value(Enums.CollisionLayers.PROJECTILES, true)
+	set_collision_mask_value(Enums.CollisionLayers.REPELLABLE, true)
 	set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, true)
 	set_collision_mask_value(Enums.CollisionLayers.ENEMIES_HITBOX, false)
 

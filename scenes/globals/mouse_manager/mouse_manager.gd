@@ -13,6 +13,9 @@ func _ready() -> void:
 	Input.set_custom_mouse_cursor(MOUSE_CURSOR_CROSS, Input.CURSOR_CROSS, Vector2(32, 32))
 	Input.set_default_cursor_shape(Input.CURSOR_CROSS)
 
+	DialogueManager.dialogue_started.connect(_on_dialogue_started)
+	DialogueManager.dialogue_ended.connect(_on_dialogue_ended)
+
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -22,3 +25,11 @@ func _input(event: InputEvent) -> void:
 
 func _on_hide_timer_timeout() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+
+
+func _on_dialogue_started(_resource: DialogueResource) -> void:
+	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+
+
+func _on_dialogue_ended(_resource: DialogueResource) -> void:
+	Input.set_default_cursor_shape(Input.CURSOR_CROSS)

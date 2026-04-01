@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://w50y4sa4xay2"]
+
+[ext_resource type="Texture2D" uid="uid://1qo8s4w7n11i" path="res://scenes/game_elements/props/repellable_ball/components/ball-shadow.png" id="1_du84j"]
+[ext_resource type="Texture2D" uid="uid://c4qa5xnao47wk" path="res://scenes/game_elements/props/repellable_ball/components/ball.png" id="2_x354y"]
+[ext_resource type="Texture2D" uid="uid://dpr2frn4lct3x" path="res://scenes/game_elements/props/repellable_ball/components/ball-shading.png" id="3_x354y"]
+[ext_resource type="Script" uid="uid://cc3hmrxspu10y" path="res://scenes/game_elements/props/repellable_ball/components/repellable_ball.gd" id="4_x354y"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_jquq1"]
+friction = 0.5
+bounce = 0.8
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_72ys2"]
+radius = 32.0
+
+[node name="RepellableBall" type="Node2D" unique_id=916389317]
+editor_description = "A repellable ball.
+
+RemoteTransform2D nodes are used to fake the top-down perspective in this ball:
+- One RemoteTransform2D transforms the assets position.
+- Another RemoteTransform2D transforms the rotation of the sprite leaving the shading and shadow sprites unrotated.
+
+When the RigidBody2D is repelled, an impulse is applied."
+y_sort_enabled = true
+
+[node name="BallAnchor" type="Node2D" parent="." unique_id=508543928]
+position = Vector2(-1.1920928e-07, -1.9073485e-06)
+
+[node name="BallShadow" type="Sprite2D" parent="BallAnchor" unique_id=1589712964]
+position = Vector2(0, -17)
+texture = ExtResource("1_du84j")
+
+[node name="BallSprite" type="Sprite2D" parent="BallAnchor" unique_id=1799532476]
+position = Vector2(0, -17)
+texture = ExtResource("2_x354y")
+
+[node name="BallShading" type="Sprite2D" parent="BallAnchor" unique_id=1629171296]
+position = Vector2(0, -17)
+texture = ExtResource("3_x354y")
+
+[node name="RepellableBall" type="RigidBody2D" parent="." unique_id=1170135240]
+scale = Vector2(0.99999994, 0.99999994)
+collision_layer = 256
+collision_mask = 787
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_jquq1")
+continuous_cd = 1
+linear_damp = 10.0
+angular_damp = 2.0
+script = ExtResource("4_x354y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RepellableBall" unique_id=1226352204]
+rotation = -1.5707964
+shape = SubResource("CircleShape2D_72ys2")
+debug_color = Color(0.9570816, 1.0588765e-06, 0.5370912, 0.41960785)
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="RepellableBall" unique_id=884674732]
+position = Vector2(-1.1920929e-07, -1.9073486e-06)
+scale = Vector2(0.18770815, 0.18770815)
+remote_path = NodePath("../../BallAnchor")
+update_rotation = false
+update_scale = false
+
+[node name="RemoteTransform2D2" type="RemoteTransform2D" parent="RepellableBall" unique_id=1732009559]
+position = Vector2(-1.1920929e-07, -1.9073486e-06)
+scale = Vector2(0.18770815, 0.18770815)
+remote_path = NodePath("../../BallAnchor/BallSprite")
+update_position = false
+update_scale = false

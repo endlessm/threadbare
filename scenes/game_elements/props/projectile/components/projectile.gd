@@ -37,6 +37,9 @@ extends RigidBody2D
 ## The speed of the initial impulse and the bouncing impulse.
 @export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s") var speed: float = 30.0
 
+## The speed after the projectile gets hit.
+@export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s") var hit_speed: float = 100.0
+
 ## The initial direction.
 @export var direction: Vector2 = Vector2(0, -1):
 	set = _set_direction
@@ -150,11 +153,12 @@ func _on_body_entered(body: Node2D) -> void:
 			queue_free()
 
 
-func got_hit(player: Player) -> void:
+## Called from the Repel component when this body
+## enters the repel area.
+func got_repelled(repel_direction: Vector2) -> void:
 	add_small_fx()
 	duration_timer.start()
-	var hit_speed := 100.0
-	var hit_vector: Vector2 = player.global_position.direction_to(global_position) * hit_speed
+	var hit_vector: Vector2 = repel_direction * hit_speed
 	hit_sound.play()
 	animated_sprite_2d.speed_scale = 2
 	if _trail_particles:
