@@ -3,15 +3,15 @@
 class_name PlayerInteraction
 extends Node2D
 
+## Emitted when [method can_interact] will return a different value.
+signal can_interact_changed
+
 ## The character that gains interaction.
 ## [br][br]
 ## [b]Note:[/b] If the parent node is a CharacterBody2D and character isn't set,
 ## the parent node will be automatically assigned to this variable.
 @export var character: CharacterBody2D:
 	set = _set_character
-
-var is_interacting: bool:
-	get = _get_is_interacting
 
 @onready var character_sight: CharacterSight = %CharacterSight
 @onready var interact_marker: Marker2D = %InteractMarker
@@ -25,7 +25,13 @@ func _set_character(new_character: CharacterBody2D) -> void:
 	update_configuration_warnings()
 
 
-func _get_is_interacting() -> bool:
+## Returns [code]true[/code] if the character is currently able to interact with
+## something in the environment.
+func can_interact() -> bool:
+	return character_sight.interact_area != null
+
+
+func _is_interacting() -> bool:
 	return not character_sight.monitoring
 
 
@@ -50,7 +56,7 @@ func _process(_delta: float) -> void:
 
 
 func _unhandled_input(_event: InputEvent) -> void:
-	if is_interacting:
+	if _is_interacting():
 		return
 
 	var interact_area := character_sight.interact_area
@@ -75,7 +81,7 @@ func _on_interaction_ended() -> void:
 
 
 func _on_character_sight_interact_area_changed() -> void:
-	if is_interacting:
+	if _is_interacting():
 		return
 
 	if not character_sight.interact_area:
@@ -83,3 +89,5 @@ func _on_character_sight_interact_area_changed() -> void:
 	else:
 		interact_label.visible = true
 		interact_label.label_text = character_sight.interact_area.action
+
+	can_interact_changed.emit()

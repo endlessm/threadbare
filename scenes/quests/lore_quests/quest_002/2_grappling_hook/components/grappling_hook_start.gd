@@ -23,7 +23,3 @@ func _on_spawn_point_from_powerup_player_teleported() -> void:
 		await ready
 	void_patrolling.visible = false
 	animation_player.play(&"eat_floor")
-
-
-func _on_grapple_powerup_collected() -> void:
-	animation_player.play(&"show_input_hints")

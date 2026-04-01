@@ -2,7 +2,6 @@
 
 [ext_resource type="Material" uid="uid://jpl3v3f7elq6" path="res://scenes/eternal_loom_sokoban/components/floor/tiled_mat.tres" id="2_nx7po"]
 [ext_resource type="PackedScene" uid="uid://btpeaqx2nur3q" path="res://scenes/eternal_loom_sokoban/components/eternal_loom_ruleset.tscn" id="4_41qil"]
-[ext_resource type="PackedScene" uid="uid://b4d5rf6hn0x4" path="res://scenes/eternal_loom_sokoban/components/hud/sokoban_hud.tscn" id="4_rkq20"]
 [ext_resource type="Script" uid="uid://dppvw2f8yh4vu" path="res://scenes/eternal_loom_sokoban/components/system/board/board_2d.gd" id="5_5baf1"]
 [ext_resource type="TileSet" uid="uid://dand23uvn70pg" path="res://scenes/eternal_loom_sokoban/components/eternal_loom_tileset.tres" id="6_fj6du"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="6_nx7po"]
@@ -47,15 +46,9 @@ tile_set = ExtResource("6_fj6du")
 tile_map_data = PackedByteArray("AAD9//3/AAAAAAAABwD9//7/AAAAAAAAAQD9////AAAAAAAABwD9/wAAAAAAAAAABwD+//z/AAAAAAAABwD+//3/AAAAAAAABwD+/wIAAAAAAAAABwD///v/AAAAAAAABwD//wMAAAAAAAAABwAAAPv/AAAAAAAABwAAAP7/BgAAAAAAAwAAAAAABgAAAAAABAABAPv/AAAAAAAABwABAP7/AAAAAAAACgACAP7/BgAAAAAAAQACAAAABgAAAAAAAgADAPz/AAAAAAAABwADAP3/AAAAAAAAAQADAP7/AAAAAAAABwADAP//AAAAAAAABwADAAAAAAAAAAAABwADAAEAAAAAAAAABwADAAIAAAAAAAAAAQACAPv/AAAAAAAAAQD///z/AAAAAAAAAQADAPv/AAAAAAAABwADAAMAAAAAAAAABwD+/wMAAAAAAAAABwABAAAAAAAAAAAACQABAP3/AAAAAAAABgD//wAAAAAAAAAACAADAAQAAAAAAAAABwACAAQAAAAAAAAAAQABAAQAAAAAAAAABwAAAAQAAAAAAAAABwD//wQAAAAAAAAAAQD+/wEAAAAAAAAAAQD9/wEAAAAAAAAABwA=")
 tile_set = ExtResource("6_fj6du")
 
-[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1506141203]
-
-[node name="SokobanHUD" parent="ScreenOverlay" unique_id=2126103069 instance=ExtResource("4_rkq20")]
-
 [node name="RuleEngine" parent="." unique_id=1415539640 node_paths=PackedStringArray("board") instance=ExtResource("4_41qil")]
 board = NodePath("../Board2D")
 next_scene = "uid://ydbh5jddjnaf"
 
 [node name="BackgroundMusic" parent="." unique_id=1269579040 instance=ExtResource("6_nx7po")]
 stream = ExtResource("7_ir0b6")
-
-[connection signal="skip_enabled" from="RuleEngine" to="ScreenOverlay/SokobanHUD" method="display_skip"]

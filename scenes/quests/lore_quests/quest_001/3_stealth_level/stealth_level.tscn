@@ -18,7 +18,6 @@
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="10_idy4y"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="11_75rvf"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="11_idy4y"]
-[ext_resource type="PackedScene" uid="uid://hafqgtdg2nvp" path="res://scenes/game_elements/props/hint/hint.tscn" id="12_0csld"]
 [ext_resource type="Texture2D" uid="uid://ck738xogv1kp5" path="res://assets/third_party/tiny-swords/Deco/11.png" id="13_f6dpy"]
 [ext_resource type="Texture2D" uid="uid://ctwx8gghts62p" path="res://assets/third_party/tiny-swords/Deco/06.png" id="14_v7vlq"]
 [ext_resource type="Texture2D" uid="uid://cw330muutqql7" path="res://assets/third_party/tiny-swords/Deco/05.png" id="15_7kcq2"]
@@ -51,7 +50,6 @@
 [ext_resource type="SpriteFrames" uid="uid://tchths61dylv" path="res://scenes/game_elements/characters/enemies/guard/components/storyvoretorch_frames_green.tres" id="31_fl2gg"]
 [ext_resource type="SpriteFrames" uid="uid://debgqvx62xx5o" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_red.tres" id="32_pld6d"]
 [ext_resource type="SpriteFrames" uid="uid://qwlhm21ndgn2" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_orange.tres" id="33_pld6d"]
-[ext_resource type="PackedScene" uid="uid://badjtfhkj7gbt" path="res://scenes/ui_elements/input_hints/run_hint.tscn" id="42_rbmmg"]
 
 [sub_resource type="Curve2D" id="Curve2D_vnsq3"]
 _data = {
@@ -147,9 +145,6 @@ size = Vector2(212, 254)
 script = ExtResource("3_idy4y")
 type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pfu1m"]
-size = Vector2(559, 381)
 
 [node name="Level" type="Node2D" unique_id=1653863263]
 y_sort_enabled = true
@@ -979,14 +974,6 @@ debug_color = Color(0, 0, 0, 0.42)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=603394532]
 
-[node name="RunHint" parent="ScreenOverlay" unique_id=2083741990 instance=ExtResource("42_rbmmg")]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -64.0
-offset_right = 104.0
-grow_vertical = 0
-
 [node name="HUD" parent="." unique_id=1759029767 instance=ExtResource("10_idy4y")]
 
 [node name="CollectibleItem" parent="." unique_id=1252493919 instance=ExtResource("2_1b8xw")]
@@ -996,11 +983,3 @@ item = SubResource("Resource_idy4y")
 
 [node name="Door" parent="." unique_id=1358622977 instance=ExtResource("25_ulxtw")]
 position = Vector2(7391, 701)
-
-[node name="RunInputHint" parent="." unique_id=1463739882 node_paths=PackedStringArray("hint_node") instance=ExtResource("12_0csld")]
-position = Vector2(487, 191)
-hint_node = NodePath("../ScreenOverlay/RunHint")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RunInputHint" unique_id=1780740030]
-position = Vector2(-203.5, 10.5)
-shape = SubResource("RectangleShape2D_pfu1m")

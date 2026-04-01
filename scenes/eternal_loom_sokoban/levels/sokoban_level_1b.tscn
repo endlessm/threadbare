@@ -1,7 +1,6 @@
 [gd_scene format=4 uid="uid://c80o1bys5radq"]
 
 [ext_resource type="Material" uid="uid://jpl3v3f7elq6" path="res://scenes/eternal_loom_sokoban/components/floor/tiled_mat.tres" id="2_1cxqe"]
-[ext_resource type="PackedScene" uid="uid://b4d5rf6hn0x4" path="res://scenes/eternal_loom_sokoban/components/hud/sokoban_hud.tscn" id="4_hd1xn"]
 [ext_resource type="PackedScene" uid="uid://btpeaqx2nur3q" path="res://scenes/eternal_loom_sokoban/components/eternal_loom_ruleset.tscn" id="4_pdh5l"]
 [ext_resource type="Script" uid="uid://dppvw2f8yh4vu" path="res://scenes/eternal_loom_sokoban/components/system/board/board_2d.gd" id="5_644u0"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="6_1cxqe"]
@@ -48,15 +47,9 @@ tile_set = ExtResource("6_fr34n")
 tile_map_data = PackedByteArray("AAD8/wEABgAAAAAABAD9/wEAAAAAAAAAAQD+/wEAAAAAAAAABwD///3/AAAAAAAABwD//wEAAAAAAAAABwAAAAEAAAAAAAAAAQABAAEAAAAAAAAABwACAAEAAAAAAAAABwD7/wEAAAAAAAAABwAAAP//AAAAAAAACQD6//3/AAAAAAAAAQD6//7/AAAAAAAABwD6////AAAAAAAABwD6/wAAAAAAAAAABwD+////AAAAAAAACgD9//7/AAAAAAAABwD6//z/AAAAAAAABwD7//z/BgAAAAAAAQD8//z/AAAAAAAABwD9//z/AAAAAAAABwD8//7/BgAAAAAAAwD+//z/AAAAAAAAAQD///z/AAAAAAAABwACAAAAAAAAAAAABwACAP//AAAAAAAABwACAP7/AAAAAAAABwD///7/AAAAAAAABwAAAP7/AAAAAAAABwABAP7/AAAAAAAAAQD7/wAABgAAAAAAAgD/////AAAAAAAABgD8//v/AAAAAAAABwD7//v/AAAAAAAABwD6//v/AAAAAAAABwD6/wEAAAAAAAAABwD7/wIAAAAAAAAABwD8/wIAAAAAAAAABwD9/wIAAAAAAAAABwA=")
 tile_set = ExtResource("6_fr34n")
 
-[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1831313310]
-
-[node name="SokobanHUD" parent="ScreenOverlay" unique_id=717386321 instance=ExtResource("4_hd1xn")]
-
 [node name="RuleEngine" parent="." unique_id=1676328937 node_paths=PackedStringArray("board") instance=ExtResource("4_pdh5l")]
 board = NodePath("../Board2D")
 next_scene = "uid://cpv57hirgmyml"
 
 [node name="BackgroundMusic" parent="." unique_id=162178963 instance=ExtResource("6_1cxqe")]
 stream = ExtResource("7_aqnm5")
-
-[connection signal="skip_enabled" from="RuleEngine" to="ScreenOverlay/SokobanHUD" method="display_skip"]
