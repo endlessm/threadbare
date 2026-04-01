@@ -13,7 +13,7 @@ const NEIGHBORS_FOR_AXIS: Dictionary[Vector2i, TileSet.CellNeighbor] = {
 
 var tween: Tween
 
-@onready var shaker: Shaker = $Shaker
+@onready var shaker: Shaker = %Shaker
 
 
 func global_position_to_tile_coordinate(global_pos: Vector2) -> Vector2i:
@@ -21,7 +21,7 @@ func global_position_to_tile_coordinate(global_pos: Vector2) -> Vector2i:
 
 
 func tile_coordinate_to_global_position(coord: Vector2i) -> Vector2:
-	return constrain_layer.map_to_local(coord)
+	return constrain_layer.to_global(constrain_layer.map_to_local(coord))
 
 
 func _ready() -> void:
