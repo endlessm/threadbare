@@ -43,20 +43,17 @@ func _on_scene_changed() -> void:
 	if player:
 		normal_controls.visible = true
 
-		if "player_interaction" in player:
-			player_interaction = player.player_interaction as PlayerInteraction
-			if player_interaction:
-				player_interaction.can_interact_changed.connect(_update_player_state)
+		player_interaction = player.get("player_interaction") as PlayerInteraction
+		if player_interaction:
+			player_interaction.can_interact_changed.connect(_update_player_state)
 
-		if "player_repel" in player:
-			player_repel = player.player_repel as PlayerRepel
-			if player_repel:
-				player_repel.visibility_changed.connect(_update_player_state)
+		player_repel = player.get("player_repel") as PlayerRepel
+		if player_repel:
+			player_repel.visibility_changed.connect(_update_player_state)
 
-		if "player_hook" in player:
-			player_hook = player.player_hook as PlayerHook
-			if player_hook:
-				player_hook.visibility_changed.connect(_update_player_state)
+		player_hook = player.get("player_hook") as PlayerHook
+		if player_hook:
+			player_hook.visibility_changed.connect(_update_player_state)
 
 		_update_player_state()
 	elif sokoban_ruleset:
