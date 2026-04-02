@@ -3,6 +3,7 @@
 extends CanvasLayer
 
 var player: Player
+var sokoban_ruleset: RuleEngine
 
 @onready var normal_controls := %NormalControls
 @onready var interact_input_hint := %InteractInputHint
@@ -17,6 +18,9 @@ var player: Player
 func _ready() -> void:
 	get_tree().scene_changed.connect(_on_scene_changed)
 
+	Transitions.started.connect(_update_visibility)
+	Transitions.finished.connect(_update_visibility)
+
 	# When running a scene that contains a player directly, this node becomes
 	# ready before the player. Defer the initial setup so that we can assume the
 	# whole scene (and in particular the player) is ready in
@@ -28,10 +32,11 @@ func _ready() -> void:
 
 func _on_scene_changed() -> void:
 	player = get_tree().get_first_node_in_group("player")
-	var sokoban_ruleset: RuleEngine = get_tree().get_first_node_in_group("sokoban_ruleset")
+	sokoban_ruleset = get_tree().get_first_node_in_group("sokoban_ruleset")
+
+	_update_visibility()
 
 	if player:
-		visible = true
 		normal_controls.visible = true
 
 		player.player_interaction.can_interact_changed.connect(_update_player_state)
@@ -40,12 +45,19 @@ func _on_scene_changed() -> void:
 
 		_update_player_state()
 	elif sokoban_ruleset:
-		visible = true
 		sokoban_controls.visible = true
 		skip_input_hint.visible = false
 		sokoban_ruleset.skip_enabled.connect(_display_skip)
-	else:
-		visible = false
+
+
+func _update_visibility() -> void:
+	visible = not get_tree().paused and not Transitions.is_running() and (player or sokoban_ruleset)
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_PAUSED, NOTIFICATION_UNPAUSED:
+			_update_visibility()
 
 
 func _update_player_state() -> void:
