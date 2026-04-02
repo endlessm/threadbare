@@ -2,7 +2,11 @@
 # SPDX-License-Identifier: MPL-2.0
 extends CanvasLayer
 
-var player: Player
+var player: CharacterBody2D
+var player_interaction: PlayerInteraction
+var player_repel: PlayerRepel
+var player_hook: PlayerHook
+
 var sokoban_ruleset: RuleEngine
 
 @onready var normal_controls := %NormalControls
@@ -39,9 +43,18 @@ func _on_scene_changed() -> void:
 	if player:
 		normal_controls.visible = true
 
-		player.player_interaction.can_interact_changed.connect(_update_player_state)
-		player.player_repel.visibility_changed.connect(_update_player_state)
-		player.player_hook.visibility_changed.connect(_update_player_state)
+		if "player_interaction" in player:
+			player_interaction = player.player_interaction as PlayerInteraction
+			if player_interaction:
+				player_interaction.can_interact_changed.connect(_update_player_state)
+
+		if "player_repel" in player:
+			player_repel = player.player_repel as PlayerRepel
+			player_repel.visibility_changed.connect(_update_player_state)
+
+		if "player_hook" in player:
+			player_hook = player.player_hook as PlayerHook
+			player_hook.visibility_changed.connect(_update_player_state)
 
 		_update_player_state()
 	elif sokoban_ruleset:
@@ -61,12 +74,12 @@ func _notification(what: int) -> void:
 
 
 func _update_player_state() -> void:
-	interact_input_hint.visible = player.player_interaction.can_interact()
+	interact_input_hint.visible = player_interaction and player_interaction.can_interact()
 
-	repel_input_hint.visible = player.player_repel.visible
+	repel_input_hint.visible = player_repel and player_repel.visible
 
-	throw_input_hint.visible = player.player_hook.visible
-	aim_input_hint.visible = player.player_hook.visible
+	throw_input_hint.visible = player_hook and player_hook.visible
+	aim_input_hint.visible = player_hook and player_hook.visible
 
 
 func _display_skip() -> void:
