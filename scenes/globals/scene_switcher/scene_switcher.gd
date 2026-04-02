@@ -67,6 +67,9 @@ func _restore_from_hash() -> void:
 				GameState.clear()
 				GameState.guess_quest(path)
 				GameState.set_challenge_start_scene(path)
+				for ability: Enums.PlayerAbilities in GameState.DEBUG_PLAYER_ABILITIES:
+					GameState.set_ability(ability, true)
+				# TODO: this duplicates code in GameState._ready, find a way to consolidate.
 
 			# In theory, we might like to avoid switching scene if the specified
 			# scene is the default scene. In practice, that will not happen, and
