@@ -29,6 +29,9 @@ extends Area2D
 ## This script automatically configures the correct [member collision_layer] and
 ## [member collision_mask] values to enable interaction with the grappling hook.
 
+## Use this signal to release itself from a grappling hook pull.
+signal pull_released(cancelled: bool)
+
 ## The game entity that becomes hookable.
 ## [br][br]
 ## [b]Note:[/b] If the parent node is a Node2D and this isn't set,
@@ -68,6 +71,11 @@ func _ready() -> void:
 ## Return the global position used to connect the hook.
 func get_anchor_position() -> Vector2:
 	return anchor_point.global_position if anchor_point else global_position
+
+
+## Emit the [signal pull_released] signal.
+func release_from_pull(cancelled: bool = false) -> void:
+	pull_released.emit(cancelled)
 
 
 func _get_configuration_warnings() -> PackedStringArray:

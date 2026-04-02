@@ -249,10 +249,25 @@ func shatter_string() -> void:
 ## While pulling, the player is allowed to go through non-walkable floor.
 func pull_string() -> void:
 	pulling = true
+
 	# While pulling, this class takes control over the player movement.
 	if character.has_method("take_control"):
 		character.take_control(self)
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, false)
+
+	# If the entity has a got_pulled handler, call it and connect to the pull_released signal
+	# of the HookableArea. The entity is responsible to call it.
+	var ending_area := get_ending_area()
+	if ending_area.controlled_entity.has_method("got_pulled"):
+		ending_area.pull_released.connect(_on_pull_released, CONNECT_ONE_SHOT)
+		var direction := hook_string.points[0].direction_to(hook_string.points[1])
+		ending_area.controlled_entity.got_pulled(direction)
+
+
+func _on_pull_released(cancelled: bool) -> void:
+	if cancelled and hook_string:
+		shatter_string()
+	stop_pulling()
 
 
 ## Stop pulling and remove the [member hook_string].
@@ -332,7 +347,7 @@ func _process_pulling(_delta: float) -> void:
 		return
 
 	var target := ending_area.controlled_entity
-	var weight := ending_area.weight if target is CharacterBody2D else 1.0
+	var weight := ending_area.weight
 
 	# Vector from player to first point:
 	var player_distance: Vector2 = hook_string.points[-2] - hook_string.points[-1]

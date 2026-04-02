@@ -20,7 +20,7 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		hide_timer.start(3)
+		hide_timer.start()
 
 
 func _on_hide_timer_timeout() -> void:
