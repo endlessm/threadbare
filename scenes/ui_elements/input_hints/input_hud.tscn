@@ -15,58 +15,81 @@
 layer = 36
 script = ExtResource("1_bewlk")
 
-[node name="TabContainer" type="TabContainer" parent="." unique_id=2133091109]
-self_modulate = Color(1, 1, 1, 0)
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=176382299]
+editor_description = "The 8px right margin is chosen to match the 8px margin in the dpad & keyboard-arrows icons."
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -64.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_constants/margin_right = 8
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer" unique_id=2133091109]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
 current_tab = 1
 tabs_visible = false
 
-[node name="NormalControls" type="HBoxContainer" parent="TabContainer" unique_id=2094239495]
+[node name="NormalControls" type="HBoxContainer" parent="MarginContainer/TabContainer" unique_id=2094239495]
+unique_name_in_owner = true
 visible = false
 z_index = 38
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="MovementInputHint" parent="TabContainer/NormalControls" unique_id=30281671 instance=ExtResource("2_bewlk")]
+[node name="MovementInputHint" parent="MarginContainer/TabContainer/NormalControls" unique_id=30281671 instance=ExtResource("2_bewlk")]
 layout_mode = 2
 
-[node name="RunInputHint" parent="TabContainer/NormalControls" unique_id=204428787 instance=ExtResource("4_i3pcn")]
+[node name="RunInputHint" parent="MarginContainer/TabContainer/NormalControls" unique_id=204428787 instance=ExtResource("4_i3pcn")]
 layout_mode = 2
 
-[node name="InteractInputHint" parent="TabContainer/NormalControls" unique_id=1438993105 instance=ExtResource("4_ae80x")]
+[node name="InteractInputHint" parent="MarginContainer/TabContainer/NormalControls" unique_id=1438993105 instance=ExtResource("4_ae80x")]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="RepelInputHint" parent="TabContainer/NormalControls" unique_id=1938432601 instance=ExtResource("3_xu7en")]
+[node name="Spacer" type="Control" parent="MarginContainer/TabContainer/NormalControls" unique_id=1059909765]
+editor_description = "This empty control expands to fill the center of the hbox, pushing any controls packed after it to the right margin."
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AimInputHint" parent="MarginContainer/TabContainer/NormalControls" unique_id=2095395309 instance=ExtResource("1_u1put")]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="AimInputHint" parent="TabContainer/NormalControls" unique_id=2095395309 instance=ExtResource("1_u1put")]
+[node name="ThrowInputHint" parent="MarginContainer/TabContainer/NormalControls" unique_id=1113313011 instance=ExtResource("5_ke286")]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="ThrowInputHint" parent="TabContainer/NormalControls" unique_id=1113313011 instance=ExtResource("5_ke286")]
+[node name="RepelInputHint" parent="MarginContainer/TabContainer/NormalControls" unique_id=1938432601 instance=ExtResource("3_xu7en")]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="SokobanControls" type="HBoxContainer" parent="TabContainer" unique_id=1543053795]
+[node name="SokobanControls" type="HBoxContainer" parent="MarginContainer/TabContainer" unique_id=1543053795]
+unique_name_in_owner = true
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="MovementInputHints" parent="TabContainer/SokobanControls" unique_id=1797965313 instance=ExtResource("2_bewlk")]
+[node name="MovementInputHints" parent="MarginContainer/TabContainer/SokobanControls" unique_id=1797965313 instance=ExtResource("2_bewlk")]
 layout_mode = 2
 
-[node name="UndoInputHint" parent="TabContainer/SokobanControls" unique_id=1063563018 instance=ExtResource("7_ke286")]
+[node name="Spacer" type="Control" parent="MarginContainer/TabContainer/SokobanControls" unique_id=1667129251]
+editor_description = "This empty control expands to fill the center of the hbox, pushing any controls packed after it to the right margin."
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="ResetInputHint" parent="TabContainer/SokobanControls" unique_id=1042096726 instance=ExtResource("8_ae80x")]
-layout_mode = 2
-
-[node name="SkiptInputHint" parent="TabContainer/SokobanControls" unique_id=2102034377 instance=ExtResource("9_ofrnu")]
+[node name="SkipInputHint" parent="MarginContainer/TabContainer/SokobanControls" unique_id=2102034377 instance=ExtResource("9_ofrnu")]
+unique_name_in_owner = true
 visible = false
+layout_mode = 2
+
+[node name="ResetInputHint" parent="MarginContainer/TabContainer/SokobanControls" unique_id=1042096726 instance=ExtResource("8_ae80x")]
+layout_mode = 2
+
+[node name="UndoInputHint" parent="MarginContainer/TabContainer/SokobanControls" unique_id=1063563018 instance=ExtResource("7_ke286")]
 layout_mode = 2

@@ -4,13 +4,14 @@ extends CanvasLayer
 
 var player: Player
 
-@onready var normal_controls: HBoxContainer = $TabContainer/NormalControls
-@onready var repel_input_hint: HBoxContainer = $TabContainer/NormalControls/RepelInputHint
-@onready var aim_input_hint: HBoxContainer = $TabContainer/NormalControls/AimInputHint
-@onready var throw_input_hint: HBoxContainer = $TabContainer/NormalControls/ThrowInputHint
-@onready var sokoban_controls: HBoxContainer = $TabContainer/SokobanControls
-@onready var skip_input_hint: HBoxContainer = $TabContainer/SokobanControls/SkiptInputHint
-@onready var interact_input_hint: HBoxContainer = $TabContainer/NormalControls/InteractInputHint
+@onready var normal_controls := %NormalControls
+@onready var interact_input_hint := %InteractInputHint
+@onready var aim_input_hint := %AimInputHint
+@onready var throw_input_hint := %ThrowInputHint
+@onready var repel_input_hint := %RepelInputHint
+
+@onready var sokoban_controls := %SokobanControls
+@onready var skip_input_hint := %SkipInputHint
 
 
 func _ready() -> void:
