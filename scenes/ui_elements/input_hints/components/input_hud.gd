@@ -50,11 +50,13 @@ func _on_scene_changed() -> void:
 
 		if "player_repel" in player:
 			player_repel = player.player_repel as PlayerRepel
-			player_repel.visibility_changed.connect(_update_player_state)
+			if player_repel:
+				player_repel.visibility_changed.connect(_update_player_state)
 
 		if "player_hook" in player:
 			player_hook = player.player_hook as PlayerHook
-			player_hook.visibility_changed.connect(_update_player_state)
+			if player_hook:
+				player_hook.visibility_changed.connect(_update_player_state)
 
 		_update_player_state()
 	elif sokoban_ruleset:
