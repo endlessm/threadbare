@@ -25,9 +25,6 @@ func _ready() -> void:
 
 func turn_on() -> void:
 	is_on = true
-	if not sprite_2d:
-		prints("TODO")
-		return
 	sprite_2d.modulate = Color(3, 3, 3)
 
 
