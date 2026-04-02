@@ -98,6 +98,20 @@ func _on_hash_changed(args: Array) -> void:
 		_restore_from_hash()
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"copy_current_scene"):
+		var current_scene := get_tree().current_scene
+		if current_scene:
+			var scene_path := current_scene.scene_file_path
+			DisplayServer.clipboard_set(scene_path)
+	elif event.is_action_pressed(&"paste_current_scene"):
+		var scene_path := DisplayServer.clipboard_get()
+		if ResourceLoader.exists(scene_path):
+			SceneSwitcher.change_to_file_with_transition(
+				scene_path, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+			)
+
+
 func change_to_file_with_transition(
 	scene_path: String,
 	spawn_point: NodePath = ^"",
