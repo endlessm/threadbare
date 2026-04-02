@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://dkpelgxwtvcxd"]
+
+[ext_resource type="Script" uid="uid://gvjhy1uvsqpc" path="res://scenes/game_elements/props/hookable_box/components/hookable_box.gd" id="1_34j61"]
+[ext_resource type="Texture2D" uid="uid://dslom0xbe1if7" path="res://assets/third_party/tiny-swords/Terrain/Ground/Shadows.png" id="2_f8qwn"]
+[ext_resource type="Texture2D" uid="uid://c7oht7wudd8wa" path="res://assets/first_party/tiles/Cliff_Tiles.png" id="3_u0gye"]
+[ext_resource type="Script" uid="uid://dabvr3pqmyya4" path="res://scenes/game_elements/props/hookable_area/components/hookable_area.gd" id="4_ml4a5"]
+[ext_resource type="Script" uid="uid://dunsvrhq42214" path="res://scenes/game_elements/fx/shaker/components/shaker.gd" id="4_to7a4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bu3x1"]
+atlas = ExtResource("3_u0gye")
+region = Rect2(192, 256, 64, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8dti7"]
+size = Vector2(64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ml4a5"]
+size = Vector2(96, 160)
+
+[node name="HookableBox" type="AnimatableBody2D" unique_id=1805651676]
+editor_description = "A hookable box that moves in a fixed grid.
+
+Almost the same as the repellable box example, but instead has a HookableArea and defines a got_hooked() handler method."
+collision_layer = 768
+collision_mask = 531
+script = ExtResource("1_34j61")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1393129317]
+texture = ExtResource("2_f8qwn")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=898668959]
+position = Vector2(0, -32)
+texture = SubResource("AtlasTexture_bu3x1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=363689712]
+rotation = -1.5707964
+shape = SubResource("RectangleShape2D_8dti7")
+
+[node name="Shaker" type="Node2D" parent="." unique_id=103380831 node_paths=PackedStringArray("target")]
+unique_name_in_owner = true
+script = ExtResource("4_to7a4")
+target = NodePath("..")
+shake_intensity = 60.0
+duration = 0.5
+frequency = 30.0
+metadata/_custom_type_script = "uid://dunsvrhq42214"
+
+[node name="HookableArea" type="Area2D" parent="." unique_id=1417858664 node_paths=PackedStringArray("controlled_entity", "anchor_point")]
+unique_name_in_owner = true
+collision_layer = 4096
+collision_mask = 0
+script = ExtResource("4_ml4a5")
+controlled_entity = NodePath("..")
+anchor_point = NodePath("Marker2D")
+weight = 0.0
+metadata/_custom_type_script = "uid://dabvr3pqmyya4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea" unique_id=68720889]
+position = Vector2(0, -32)
+shape = SubResource("RectangleShape2D_ml4a5")
+debug_color = Color(0.689707, 0.288376, 1, 0.42)
+
+[node name="Marker2D" type="Marker2D" parent="HookableArea" unique_id=1758696959]
+position = Vector2(0, -16)
