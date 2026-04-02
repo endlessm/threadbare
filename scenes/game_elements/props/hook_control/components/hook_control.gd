@@ -87,9 +87,12 @@ var _hook_angle: float
 ## diagonal directions when releasing the input actions.
 @onready var d_pad_timer: Timer = %DPadTimer
 
+@onready var mouse_aiming_timer: Timer = %MouseAimingTimer
+
 
 func _unhandled_input(_event: InputEvent) -> void:
 	if _event is InputEventMouseMotion:
+		mouse_aiming_timer.start()
 		var axis := get_global_mouse_position() - global_position
 		if not axis.is_zero_approx():
 			_hook_angle = axis.angle()
@@ -102,7 +105,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 	# there is always one that is released first so the aim direction ends up being either left or
 	# down, not left AND down.
 	if (
-		_event is InputEventKey
+		mouse_aiming_timer.is_stopped()
+		and _event is InputEventKey
 		and (
 			_event.is_action_released(&"aim_left")
 			or _event.is_action_released(&"aim_right")
@@ -113,7 +117,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 		d_pad_timer.start()
 		return
 
-	_update_hook_angle()
+	if mouse_aiming_timer.is_stopped():
+		_update_hook_angle()
 
 	if Input.is_action_just_pressed(&"throw"):
 		pressing_throw_action = true
