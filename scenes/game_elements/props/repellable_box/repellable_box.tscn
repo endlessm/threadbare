@@ -12,6 +12,9 @@ region = Rect2(192, 256, 64, 128)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8dti7"]
 size = Vector2(64, 64)
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_sbite"]
+polygon = PackedVector2Array(-32, 32, 32, 32, 32, -64, -32, -64)
+
 [node name="RepellableBox" type="AnimatableBody2D" unique_id=1805651676]
 editor_description = "A repellable box that moves in a fixed grid.
 
@@ -43,3 +46,6 @@ shake_intensity = 60.0
 duration = 0.5
 frequency = 30.0
 metadata/_custom_type_script = "uid://dunsvrhq42214"
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=2018120731]
+occluder = SubResource("OccluderPolygon2D_sbite")

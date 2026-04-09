@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://c47lkkvljrsg"]
+
+[ext_resource type="Script" uid="uid://d3iwkqlwrjrg0" path="res://scenes/game_elements/props/hookable_lever/components/hookable_lever.gd" id="1_mrig6"]
+[ext_resource type="Texture2D" uid="uid://uy2acspf6apo" path="res://scenes/game_elements/props/lever/components/Lever.png" id="2_ved61"]
+[ext_resource type="Script" uid="uid://dunsvrhq42214" path="res://scenes/game_elements/fx/shaker/components/shaker.gd" id="3_082ac"]
+[ext_resource type="Script" uid="uid://dabvr3pqmyya4" path="res://scenes/game_elements/props/hookable_area/components/hookable_area.gd" id="4_l44sk"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p2k53"]
+height = 58.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h3468"]
+size = Vector2(96, 96)
+
+[node name="HookableLever" type="StaticBody2D" unique_id=37452001]
+editor_description = "A repellable lever.
+
+It can be switched in the horizontal direction that's being repelled. It will shake when the direction is the same as the lever, indicating that it couldn't be switched from there."
+collision_layer = 768
+collision_mask = 0
+script = ExtResource("1_mrig6")
+
+[node name="LeverSprite" type="Sprite2D" parent="." unique_id=2043405312]
+unique_name_in_owner = true
+position = Vector2(0, -10)
+texture = ExtResource("2_ved61")
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1984459816]
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_p2k53")
+
+[node name="Shaker" type="Node2D" parent="." unique_id=1105059859 node_paths=PackedStringArray("target")]
+unique_name_in_owner = true
+script = ExtResource("3_082ac")
+target = NodePath("..")
+duration = 0.5
+frequency = 30.0
+metadata/_custom_type_script = "uid://dunsvrhq42214"
+
+[node name="HookableArea" type="Area2D" parent="." unique_id=72195883 node_paths=PackedStringArray("controlled_entity")]
+unique_name_in_owner = true
+collision_layer = 4096
+collision_mask = 0
+script = ExtResource("4_l44sk")
+controlled_entity = NodePath("..")
+weight = 0.0
+metadata/_custom_type_script = "uid://dabvr3pqmyya4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea" unique_id=503665020]
+shape = SubResource("RectangleShape2D_h3468")
+debug_color = Color(0.689707, 0.288376, 1, 0.42)
