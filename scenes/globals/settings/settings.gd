@@ -15,6 +15,10 @@ const DEFAULT_VOLUMES: Dictionary[String, float] = {
 	"Music": 0.5,
 }
 
+const LANGUAGE_SECTION := "Language"
+const LOCALE_KEY := "Locale"
+const DEFAULT_LOCALE := "en"
+
 ## 5:4 ratio of 1280×1024, 1024×768, and other pre-widescreen monitors.
 const MINIMUM_ASPECT_RATIO := 1.25
 
@@ -38,6 +42,7 @@ func _ready() -> void:
 	_settings.set_value(META_SECTION, VERSION_KEY, VERSION)
 
 	_restore_volumes()
+	_restore_locale()
 	_load_project_settings_overrides()
 	_set_minimum_window_size()
 
@@ -101,6 +106,16 @@ func toggle_fullscreen(toggled_on: bool) -> void:
 		set_window_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 
 
+func get_locale() -> String:
+	return TranslationServer.get_locale()
+
+
+func set_locale(locale: String) -> void:
+	TranslationServer.set_locale(locale)
+	_settings.set_value(LANGUAGE_SECTION, LOCALE_KEY, locale)
+	_save()
+
+
 func set_window_mode(window_mode: int) -> void:
 	if window_mode == DisplayServer.window_get_mode():
 		return
@@ -111,6 +126,11 @@ func set_window_mode(window_mode: int) -> void:
 		var ret := _overrides.save(_overrides_path)
 		if ret != OK:
 			push_warning("Failed to save to", _overrides_path, ": ", error_string(ret))
+
+
+func _restore_locale() -> void:
+	var locale: String = _settings.get_value(LANGUAGE_SECTION, LOCALE_KEY, DEFAULT_LOCALE)
+	TranslationServer.set_locale(locale)
 
 
 func _set_volume(bus_idx: int, volume_linear: float) -> void:
