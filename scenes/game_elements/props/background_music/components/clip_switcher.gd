@@ -95,4 +95,4 @@ func _on_body_entered(_body: Node2D) -> void:
 ## Tell the parent [BackgroundMusic] to switch to [member clip].
 func switch() -> void:
 	assert(_bgm)
-	_bgm.switch_to_clip(clip)
+	_bgm.set_clip(clip)
