@@ -10,7 +10,7 @@ extends Node
 ## [br][br]
 ## If [member stream] is an [AudioStreamInteractive], you can control the clip
 ## to play at different points in the scene using [member clip], [method
-## switch_to_clip], and [ClipSwitcher] child nodes.
+## set_clip], and [ClipSwitcher] child nodes.
 ## [br][br]
 ## There should be at most one BackgroundMusic component in a scene.
 
@@ -32,16 +32,17 @@ extends Node
 
 ## If [member stream] is an [AudioStreamInteractive], switch to the named clip
 ## (rather than [member stream]'s [member AudioStreamInteractive.initial_clip])
-## when entering (or restarting) this scene.
+## when entering (or restarting) this scene. If the music is already playing,
+## switch to this clip.
 ## [br][br]
 ## If not set, the behaviour depends on what was playing in the previous scene.
 ## If a different stream was playing, [member stream]'s
 ## [member AudioStreamInteractive.initial_clip] will play. If [member stream]
 ## was already playing, whatever clip it happened to be playing will continue.
 @export var clip: StringName:
-	set(new_value):
-		clip = new_value
-		update_configuration_warnings()
+	set = set_clip
+
+var _playing := false
 
 
 func _get_clip_names() -> Array[String]:
@@ -91,16 +92,19 @@ func _exit_tree() -> void:
 ## Start playing [member stream], if it is not already playing. Does nothing if
 ## [member stream] is already playing.
 func play() -> void:
+	_playing = true
 	MusicPlayer.play_stream(stream, clip)
 
 
 ## Stop playing background music.
 func stop() -> void:
+	_playing = false
 	MusicPlayer.play_stream(null)
 
 
 ## If [member stream] is an [AudioStreamInteractive], and is playing,
 ## switch to [param clip_name].
-func switch_to_clip(clip_name: StringName) -> void:
-	# TODO: remove this wrapper?
-	MusicPlayer.switch_to_clip(clip_name)
+func set_clip(clip_name: StringName) -> void:
+	clip = clip_name
+	if _playing:
+		MusicPlayer.switch_to_clip(clip_name)
