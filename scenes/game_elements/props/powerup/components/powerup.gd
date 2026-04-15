@@ -21,10 +21,10 @@ signal collected
 	set = _set_interact_action
 
 ## Asset of this powerup.
-@export var sprite_frames: SpriteFrames:
+@export var sprite_frames: SpriteFrames = preload("uid://cualgrcaaggcm"):
 	set = _set_sprite_frames
 
-## The powerup shines with this color through a shader.
+## The powerup shines with this color.
 @export var highlight_color: Color = Color.WHITE:
 	set = _set_highlight_color
 
@@ -34,7 +34,7 @@ signal collected
 var _tween: Tween
 
 @onready var interact_area: InteractArea = %InteractArea
-@onready var highlight_effect: Sprite2D = %HighlightEffect
+@onready var highlight_effect: AnimatedSprite2D = %HighlightEffect
 @onready var sprite: AnimatedSprite2D = %Sprite
 @onready var interact_collision: CollisionShape2D = %InteractCollision
 @onready var ground_collision: CollisionShape2D = %GroundCollision
@@ -99,7 +99,6 @@ func _on_interact_area_interaction_started(
 		_tween.kill()
 	_tween = create_tween()
 	_tween.tween_property(highlight_effect, "modulate", Color.WHITE, 0.5)
-	_tween.tween_property(highlight_effect, "material:shader_parameter/width", 1.0, 1.0)
 	await _tween.finished
 	if dialogue:
 		DialogueManager.show_dialogue_balloon(dialogue, "", [self])
@@ -113,5 +112,5 @@ func _on_interact_area_observers_changed() -> void:
 	if _tween:
 		_tween.kill()
 	_tween = create_tween()
-	var width: float = 0.8 if interact_area.is_being_observed else 0.4
-	_tween.tween_property(highlight_effect, "material:shader_parameter/width", width, 1.0)
+	var color: Color = Color.WHITE if interact_area.is_being_observed else highlight_color
+	_tween.tween_property(highlight_effect, "modulate", color, 0.5)
