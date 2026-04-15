@@ -24,7 +24,7 @@ signal collected
 @export var sprite_frames: SpriteFrames = preload("uid://cualgrcaaggcm"):
 	set = _set_sprite_frames
 
-## The powerup shines with this color through a shader.
+## The powerup shines with this color.
 @export var highlight_color: Color = Color.WHITE:
 	set = _set_highlight_color
 
