@@ -45,8 +45,11 @@ func _offset_child_sprites(offset: Vector2) -> void:
 
 
 ## Pick a random texture from [member textures] and set it to the sprite.
-func randomize_texture() -> void:
-	var new_texture: Texture2D = textures.pick_random()
+func randomize_texture(rng: RandomNumberGenerator = null) -> void:
+	var random_int: int = rng.randi() if rng else randi()
+	var index := random_int % textures.size()
+	var new_texture := textures[index]
+
 	var offset := _get_offset_from_texture_filename(new_texture)
 	_offset_child_sprites(offset)
 	SpriteFramesHelper.replace_texture(null, new_texture, sprite.sprite_frames)

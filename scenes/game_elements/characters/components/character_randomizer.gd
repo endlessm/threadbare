@@ -1,7 +1,8 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-extends Node2D
+class_name CharacterRandomizer
+extends CharacterBody2D
 ## @experimental
 ##
 ## Provide a single button to randomize various aspects of a character.
@@ -41,6 +42,8 @@ var random_texture_nodes: Array[RandomTextureSpriteBehavior] = []
 
 var _undoredo: Object  # EditorUndoRedoManager
 
+var _random_number_generator := RandomNumberGenerator.new()
+
 var _previous_look_at_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
 
 
@@ -49,18 +52,18 @@ var _previous_look_at_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
 ## Do it in a consistent way by first seeding the default random number generator
 ## with the [member character_seed].
 func apply_character_randomizations() -> void:
-	seed(character_seed)
+	_random_number_generator.seed = character_seed
 
 	if skin_recolor_nodes:
 		var new_skin_medium_color: Color
-		skin_recolor_nodes[-1].set_random_skin_color()
+		skin_recolor_nodes[-1].set_random_skin_color(_random_number_generator)
 		new_skin_medium_color = skin_recolor_nodes[-1].medium_color
 		for n in skin_recolor_nodes:
 			n.automatic_shades = true
 			n.medium_color = new_skin_medium_color
 
 	for n in random_texture_nodes:
-		n.randomize_texture()
+		n.randomize_texture(_random_number_generator)
 
 
 ## Set a random seed and randomize the character.

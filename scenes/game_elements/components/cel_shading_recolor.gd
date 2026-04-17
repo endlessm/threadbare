@@ -159,9 +159,11 @@ func colorize() -> void:
 
 
 ## Pick a random color from [constant SKIN_COLORS] and automatically set all shades from it.
-func set_random_skin_color() -> void:
+func set_random_skin_color(rng: RandomNumberGenerator = null) -> void:
 	automatic_shades = true
-	medium_color = SKIN_COLORS.values().pick_random()
+	var random_int: int = rng.randi() if rng else randi()
+	var index := random_int % SKIN_COLORS.size()
+	medium_color = SKIN_COLORS.values()[index]
 
 
 func _get_configuration_warnings() -> PackedStringArray:
