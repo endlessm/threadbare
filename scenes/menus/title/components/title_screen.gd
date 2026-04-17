@@ -9,6 +9,18 @@ extends Control
 @onready var credits: Control = %Credits
 
 
+func _ready() -> void:
+	if ProjectSettings.get_setting(ThreadbareProjectSettings.SKIP_SPLASH):
+		var saved_scene: Dictionary = GameState.restore()
+		(
+			SceneSwitcher
+			. change_to_file(
+				saved_scene["scene_path"],
+				saved_scene["spawn_point"],
+			)
+		)
+
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"pause"):
 		get_viewport().set_input_as_handled()
