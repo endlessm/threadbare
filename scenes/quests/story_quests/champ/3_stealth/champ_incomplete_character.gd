@@ -65,24 +65,23 @@ func _apply_blink() -> void:
 	var blink_distance_pixels = blink_distance*64
 # Figure out where to blink
 	var blink_direction := input_vector.normalized()
-	var target_coordinates: Vector2 = global_position # Missing parts of calculation!	
+	var target_coordinates: Vector2 = global_position + (blink_direction * blink_distance_pixels)	
 # Move dummy to coordinates and force physics update
-	blink_check.global_position = target_coordinates
-	blink_check.force_update_transform()
+	var dummy := $BlinkCheck
+	dummy.global_position = target_coordinates
+	dummy.force_update_transform()
 # Show visual
-	blink_check_sprite.show()
+	$BlinkCheck/Sprite2D.show()
 # Delay is for visuals and to allow time for physics to update
 	await get_tree().create_timer(0.1).timeout
 # Ensure dummy is within bounds
-	if blink_bounds.overlaps_area(blink_check):
+	if $"../Bounds/Blink Bounds".overlaps_area(dummy):
 	# If there are no collisions, move the player to the new position.
-		if not blink_check.has_overlapping_bodies():
-			#TODO: Teleport the player instantly to the desired location
-			return
-			
+		if not dummy.has_overlapping_bodies():
+			global_position = target_coordinates
 	# Reset dummy
-	blink_check.global_position = global_position
-	blink_check_sprite.hide()
+	dummy.global_position = global_position
+	$BlinkCheck/Sprite2D.hide()
 
 	# TODO: (Optional) Add a cooldown so you can’t blink every frame.
 	# Start a timer or use a variable that counts down.
@@ -95,23 +94,16 @@ func _apply_blink() -> void:
 func _walk_on_water() -> void:
 	#remove the collision of the Water_border, allowing player to "walk" on "water"
 	tile_layer.enabled = false
+	await get_tree().create_timer(2.0).timeout
+	tile_layer.enabled = true
 	# TODO do you think having the border permanently in that state is a good idea?
 	# TODO you can try to come up with a way to ensure it get enabled again after a while
 	# TODO (Optional) add a visual indicator that the function was activated
 
 ## Function to listen for user input, each key press corresponding to movement is handled here
 func _unhandled_input(_event: InputEvent) -> void:
-	# Set movement inputs (more options can be found in the Input Map in Project Settings)
-	# Left and right movement
-	var axis: Vector2 = Vector2(0,0)
-
-	if(Input.is_action_pressed(&"move_left")):
-		axis.x = -1
-	if(Input.is_action_pressed(&"move_right")):
-		axis.x = 1
+	var axis: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 	input_vector = axis * SPEED
-	# TODO: how can we make the character walk up and down?
- 	# TODO:  how can we make diagonal speed the same as walking in a straight line?
 	
 	# Blink ability
 	if(Input.is_action_just_pressed(&"champ_blink")):
