@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://tahf2q1d3e74"]
 
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_qb52c"]
-[ext_resource type="Script" uid="uid://c63sfg6wgj2uy" path="res://scenes/menus/options/components/fullscreen_toggle.gd" id="2_qb52c"]
+[ext_resource type="Script" uid="uid://c63sfg6wgj2uy" path="res://scenes/menus/options/components/settings_toggle.gd" id="2_qb52c"]
 
 [node name="VideoSettings" type="VBoxContainer" unique_id=1199621136]
 offset_left = 96.0
@@ -21,12 +21,17 @@ text = "Video Settings"
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=277212195]
 layout_mode = 2
-columns = 2
+theme_override_constants/v_separation = 0
 
-[node name="CheckButton" type="CheckButton" parent="GridContainer" unique_id=409098937]
+[node name="ShowControlsButton" type="CheckButton" parent="GridContainer" unique_id=153771304]
+layout_mode = 2
+text = "Show Controls"
+script = ExtResource("2_qb52c")
+setting = &"show_input_hud"
+
+[node name="FullscreenButton" type="CheckButton" parent="GridContainer" unique_id=409098937]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Fullscreen"
 script = ExtResource("2_qb52c")
-
-[connection signal="toggled" from="GridContainer/CheckButton" to="." method="_on_check_button_toggled"]
+setting = &"fullscreen"

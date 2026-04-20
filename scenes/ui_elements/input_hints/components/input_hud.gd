@@ -63,7 +63,12 @@ func _on_scene_changed() -> void:
 
 
 func _update_visibility() -> void:
-	visible = not get_tree().paused and not Transitions.is_running() and (player or sokoban_ruleset)
+	visible = (
+		Settings.show_input_hud
+		and not get_tree().paused
+		and not Transitions.is_running()
+		and (player or sokoban_ruleset)
+	)
 
 
 func _notification(what: int) -> void:

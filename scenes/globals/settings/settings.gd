@@ -15,6 +15,9 @@ const DEFAULT_VOLUMES: Dictionary[String, float] = {
 	"Music": 0.5,
 }
 
+const DISPLAY_SECTION := "Display"
+const SHOW_HUD_KEY := "Show HUD"
+
 const LANGUAGE_SECTION := "Language"
 const LOCALE_KEY := "Locale"
 const DEFAULT_LOCALE := "en"
@@ -24,6 +27,17 @@ const MINIMUM_ASPECT_RATIO := 1.25
 
 ## An arbitrary wide ratio, lower than 21:9 ("ultrawide").
 const MAXIMUM_ASPECT_RATIO := 2.2
+
+@export var fullscreen: bool:
+	get = is_fullscreen,
+	set = set_fullscreen
+
+@export var show_input_hud := true:
+	get:
+		return _settings.get_value(DISPLAY_SECTION, SHOW_HUD_KEY, true)
+	set(new_value):
+		_settings.set_value(DISPLAY_SECTION, SHOW_HUD_KEY, new_value)
+		_save()
 
 var _settings := ConfigFile.new()
 
@@ -99,7 +113,7 @@ func is_fullscreen() -> bool:
 	return DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 
 
-func toggle_fullscreen(toggled_on: bool) -> void:
+func set_fullscreen(toggled_on: bool) -> void:
 	if toggled_on:
 		set_window_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 	else:
