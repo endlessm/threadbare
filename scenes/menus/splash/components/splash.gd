@@ -9,6 +9,9 @@ extends Control
 
 
 func _ready() -> void:
+	if ProjectSettings.get_setting(ThreadbareProjectSettings.SKIP_SPLASH):
+		SceneSwitcher.change_to_file.call_deferred(next_scene)
+		return
 	logo_stitcher.finished.connect(scene_switch_timer.start)
 	scene_switch_timer.timeout.connect(switch_to_intro)
 

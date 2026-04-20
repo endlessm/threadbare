@@ -6,6 +6,7 @@ extends EditorPlugin
 
 const DEBUG_ASPECT_RATIO = "threadbare/debugging/debug_aspect_ratio"
 const SKIP_SOKOBANS = "threadbare/debugging/skip_sokobans"
+const SKIP_SPLASH = "threadbare/debugging/skip_splash"
 
 static var setttings_configuration = {
 	DEBUG_ASPECT_RATIO:
@@ -19,6 +20,13 @@ static var setttings_configuration = {
 		value = false,
 		type = TYPE_BOOL,
 		hint_string = "Skip the sokobans from the core game loop, and complete the quest directly.",
+	},
+	SKIP_SPLASH:
+	{
+		value = false,
+		type = TYPE_BOOL,
+		hint_string =
+		"Skip the splash screen and title menu, and resume the game state. Like when clicking Continue.",
 	},
 }
 
