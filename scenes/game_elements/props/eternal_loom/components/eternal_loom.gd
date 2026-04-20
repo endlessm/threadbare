@@ -56,11 +56,13 @@ func _find_elder(quest: Quest) -> Elder:
 
 func _on_interaction_ended() -> void:
 	if _have_threads:
-		# Hide interact label during scene transition
-		interact_area.disabled = true
-
-		GameState.set_incorporating_threads(true)
-		SceneSwitcher.change_to_file_with_transition(SOKOBANS.pick_random())
+		if not ProjectSettings.get_setting(ThreadbareProjectSettings.SKIP_SOKOBANS):
+			# Hide interact label during scene transition
+			interact_area.disabled = true
+			GameState.set_incorporating_threads(true)
+			SceneSwitcher.change_to_file_with_transition(SOKOBANS.pick_random())
+		else:
+			GameState.mark_quest_completed()
 
 
 func on_offering_succeeded() -> void:

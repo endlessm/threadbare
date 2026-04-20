@@ -4,5 +4,5 @@ extends CanvasLayer
 
 
 func _ready() -> void:
-	if not ProjectSettings.get_setting("threadbare/debugging/debug_aspect_ratio"):
+	if not ProjectSettings.get_setting(ThreadbareProjectSettings.DEBUG_ASPECT_RATIO):
 		queue_free()
