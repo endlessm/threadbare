@@ -84,6 +84,9 @@ func _ready() -> void:
 
 ## Show/hide index or detail pages
 func _update_page_visibility() -> void:
+	left_button.visible = _current_spread_index > 0
+	right_button.visible = _current_spread_index < _quests.size()
+
 	if _current_spread_index == 0:
 		quest_container.visible = true
 		storybook_page.visible = false
@@ -117,10 +120,8 @@ func _switch_to_page(spread_index: int) -> void:
 	if total_spreads <= 1:
 		return
 
-	if spread_index < 0:
-		spread_index = total_spreads - 1
-	if spread_index >= total_spreads:
-		spread_index = 0
+	if spread_index < 0 or spread_index >= total_spreads:
+		return
 
 	if spread_index == _current_spread_index:
 		return
