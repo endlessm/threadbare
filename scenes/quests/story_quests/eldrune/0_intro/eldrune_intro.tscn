@@ -5,13 +5,14 @@
 [ext_resource type="Texture2D" uid="uid://2cqgyp3qyys2" path="res://scenes/quests/story_quests/eldrune/0_intro/intro_components/Fondo_y_adornos/mago.png" id="3_3rlya"]
 [ext_resource type="SpriteFrames" uid="uid://b1sol6f5xak4b" path="res://scenes/quests/story_quests/eldrune/player_components/eldrune_player.tres" id="3_6qcmh"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_qgyin"]
-[ext_resource type="AudioStream" uid="uid://bcbsnow6xac0j" path="res://scenes/quests/story_quests/eldrune/Musica/Minstrel_Dance.mp3" id="5_etpm5"]
 [ext_resource type="Resource" uid="uid://br7l03ywmnj1i" path="res://scenes/quests/story_quests/eldrune/0_intro/intro_components/eldrune_intro.dialogue" id="5_olulc"]
 [ext_resource type="SpriteFrames" uid="uid://uwdjwgblgvjr" path="res://scenes/quests/story_quests/eldrune/0_intro/intro_components/elementos/runa_fuego.tres" id="8_3rlya"]
 [ext_resource type="PackedScene" uid="uid://bdba78m76jb57" path="res://scenes/quests/story_quests/eldrune/0_intro/intro_components/elementos/runa.tscn" id="8_6qcmh"]
 [ext_resource type="SpriteFrames" uid="uid://bxh8altsecw3n" path="res://scenes/quests/story_quests/eldrune/0_intro/intro_components/elementos/runa_luz.tres" id="9_etpm5"]
 [ext_resource type="SpriteFrames" uid="uid://blud6sa110r1r" path="res://scenes/quests/story_quests/eldrune/0_intro/intro_components/elementos/runa_oscuridad.tres" id="10_aj5jk"]
 [ext_resource type="SpriteFrames" uid="uid://ccm3187a53jko" path="res://scenes/quests/story_quests/eldrune/0_intro/intro_components/elementos/runa_agua.tres" id="11_vvxkt"]
+[ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="12_naske"]
+[ext_resource type="AudioStream" uid="uid://cbk3756m7uhuy" path="res://scenes/quests/story_quests/eldrune/Musica/Minstrel_Dance.ogg" id="13_naske"]
 
 [sub_resource type="Animation" id="Animation_etpm5"]
 length = 0.001
@@ -184,11 +185,6 @@ autoplay = "idle"
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_w30kv")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="OnTheGround" unique_id=2118804480]
-stream = ExtResource("5_etpm5")
-volume_db = -20.0
-autoplay = true
-
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=2029623860]
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1931206514 node_paths=PackedStringArray("animation_player")]
@@ -217,3 +213,8 @@ sprite_frames = ExtResource("10_aj5jk")
 position = Vector2(418, 287)
 scale = Vector2(0.8, 0.8)
 sprite_frames = ExtResource("11_vvxkt")
+
+[node name="BackgroundMusic" type="Node" parent="." unique_id=1953072275]
+script = ExtResource("12_naske")
+stream = ExtResource("13_naske")
+metadata/_custom_type_script = "uid://c8405c212rbn6"
