@@ -2,13 +2,13 @@
 # SPDX-License-Identifier: MPL-2.0
 @tool
 class_name ThreadbareProjectSettings
-extends EditorPlugin
+extends Node
 
 const DEBUG_ASPECT_RATIO = "threadbare/debugging/debug_aspect_ratio"
 const SKIP_SOKOBANS = "threadbare/debugging/skip_sokobans"
 const SKIP_SPLASH = "threadbare/debugging/skip_splash"
 
-static var setttings_configuration = {
+static var settings_configuration = {
 	DEBUG_ASPECT_RATIO:
 	{
 		value = false,
@@ -31,13 +31,9 @@ static var setttings_configuration = {
 }
 
 
-func _enter_tree() -> void:
-	setup_threadbare_settings()
-
-
 static func setup_threadbare_settings() -> void:
-	for setting_name: String in setttings_configuration:
-		var setting_config: Dictionary = setttings_configuration[setting_name]
+	for setting_name: String in settings_configuration:
+		var setting_config: Dictionary = settings_configuration[setting_name]
 		assert(setting_name.begins_with("threadbare"))
 
 		if not ProjectSettings.has_setting(setting_name):
