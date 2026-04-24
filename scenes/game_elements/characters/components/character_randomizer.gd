@@ -131,6 +131,7 @@ func _randomize_all_sprites_progress() -> void:
 	var random_frame := randi_range(0, frames_length)
 	var random_progress := randf()
 	for sprite in animated_sprites:
+		sprite.play("idle")
 		sprite.set_frame_and_progress(random_frame, random_progress)
 
 
