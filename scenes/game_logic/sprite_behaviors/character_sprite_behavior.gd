@@ -56,10 +56,10 @@ func _process_animations(_delta: float) -> void:
 				sprite.play(&"run")
 			else:
 				sprite.speed_scale = 2.0
-				sprite.play(&"walk")
+				sprite.play(&"walk" if sprite.sprite_frames.has_animation(&"walk") else &"idle")
 		else:
 			sprite.speed_scale = 1.0
-			sprite.play(&"walk")
+			sprite.play(&"walk" if sprite.sprite_frames.has_animation(&"walk") else &"idle")
 
 
 func _notification(what: int) -> void:
