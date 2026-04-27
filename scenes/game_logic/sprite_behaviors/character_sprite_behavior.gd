@@ -19,6 +19,7 @@ extends BaseSpriteBehavior
 ## Use this when using more advanced animation through an AnimationPlayer node.
 @export var play_animations: bool = true
 
+var _previous_character_velocity: Vector2
 var _is_character_running: bool = false
 
 
@@ -48,7 +49,9 @@ func _process(delta: float) -> void:
 func _process_animations(_delta: float) -> void:
 	if character.velocity.is_zero_approx():
 		sprite.speed_scale = 1.0
-		sprite.play(&"idle")
+		if not _previous_character_velocity.is_zero_approx():
+			sprite.play(&"idle")
+			sprite.set_frame_and_progress(0, 0.0)
 	else:
 		if _is_character_running:
 			if sprite.sprite_frames.has_animation(&"run"):
@@ -60,6 +63,7 @@ func _process_animations(_delta: float) -> void:
 		else:
 			sprite.speed_scale = 1.0
 			sprite.play(&"walk" if sprite.sprite_frames.has_animation(&"walk") else &"idle")
+	_previous_character_velocity = character.velocity
 
 
 func _notification(what: int) -> void:
