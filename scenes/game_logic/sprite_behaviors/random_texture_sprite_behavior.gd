@@ -62,5 +62,5 @@ func randomize_texture(rng: RandomNumberGenerator = null) -> void:
 	sprite.sprite_frames = new_sprite_frames
 	if not Engine.is_editor_hint():
 		if previous_animation in sprite.sprite_frames.get_animation_names():
-			sprite.play(&"idle")
+			sprite.play(previous_animation)
 			sprite.set_frame_and_progress(0, 0.0)
