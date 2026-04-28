@@ -7,22 +7,27 @@ extends BaseSpriteBehavior
 ##
 ## Can set a random texture to a sprite.
 ##
-## The picked texture may have offset information. In that case,
+## The idle texture filename may have offset information. In that case,
 ## also set the position of each sub-sprite in the controlled sprite children.
 
 const SpriteFramesHelper = preload(
 	"res://addons/sprite_frames_exported_textures/sprite_frames_helper.gd"
 )
 
-## The array of textures, from which to pick a random one.
-@export var textures: Array[Texture2D]
+## The array of spriteframes, from which to pick a random one.
+@export var sprite_frames: Array[SpriteFrames]
 
 ## Click this button to set a random texture to the sprite.
 @export_tool_button("Randomize") var randomize_texture_button: Callable = randomize_texture
 
 
-func _get_offset_from_texture_filename(new_texture: Texture2D) -> Vector2:
-	var filename: String = new_texture.resource_path.get_file()
+func _get_offset_from_spriteframes_filename(new_sprite_frames: SpriteFrames) -> Vector2:
+	var filename: String
+	var sprite_frame_filename := new_sprite_frames.resource_path.get_file()
+	if sprite_frame_filename:
+		filename = sprite_frame_filename
+	elif "idle" in new_sprite_frames.get_animation_names():
+		filename = new_sprite_frames.get_frame_texture(&"idle", 0).resource_path
 	var offset := Vector2.ZERO
 	# TODO: Use regular expressions.
 	for part: String in filename.split("."):
@@ -47,9 +52,15 @@ func _offset_child_sprites(offset: Vector2) -> void:
 ## Pick a random texture from [member textures] and set it to the sprite.
 func randomize_texture(rng: RandomNumberGenerator = null) -> void:
 	var random_int: int = rng.randi() if rng else randi()
-	var index := random_int % textures.size()
-	var new_texture := textures[index]
+	var index := random_int % sprite_frames.size()
+	var new_sprite_frames := sprite_frames[index]
 
-	var offset := _get_offset_from_texture_filename(new_texture)
+	var offset := _get_offset_from_spriteframes_filename(new_sprite_frames)
 	_offset_child_sprites(offset)
-	SpriteFramesHelper.replace_texture(null, new_texture, sprite.sprite_frames)
+
+	var previous_animation := sprite.animation
+	sprite.sprite_frames = new_sprite_frames
+	if not Engine.is_editor_hint():
+		if previous_animation in sprite.sprite_frames.get_animation_names():
+			sprite.play(previous_animation)
+			sprite.set_frame_and_progress(0, 0.0)
