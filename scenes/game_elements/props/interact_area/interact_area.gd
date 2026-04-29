@@ -20,20 +20,26 @@ signal interaction_ended
 ## Emitted when characters start or stop seeing this area for interaction.
 signal observers_changed
 
-const EXAMPLE_INTERACTION_FONT = preload("uid://c3bb7lmvdqc5e")
-const EXAMPLE_INTERACTION_FONT_SIZE = 34
+const INDICATOR_SCENE := preload("uid://d252j2mhya0kq")
 
-## Vector2 that approximates the position in which the interact label would
-## appear when a player is close.
-@export_custom(PROPERTY_HINT_RANGE, "-200,200,1,suffix:px,or_greater,or_less")
-var interact_label_position: Vector2:
+## Position at which to show an arrow when this area is being observed. This
+## should generally be centred, slightly above the visible extents of the parent
+## object. If not set, a default position will be used, which may be good enough.
+@export var marker: Marker2D:
 	set(new_value):
-		interact_label_position = new_value
-		queue_redraw()
+		if marker and _indicator:
+			marker.remove_child(_indicator)
+		marker = new_value
+		if marker and _indicator:
+			marker.add_child(_indicator)
+
 @export var disabled: bool = false:
 	set(new_value):
 		disabled = new_value
 		set_collision_layer_value(Enums.CollisionLayers.INTERACTABLE, not disabled)
+		if _indicator:
+			_indicator.visible = not disabled
+
 @export var action: String = "Talk"
 
 ## Whether this area is being observed by one or more characters.
@@ -43,6 +49,8 @@ var is_being_observed: bool:
 
 var _observers: Array[CharacterSight] = []
 
+var _indicator: Node2D
+
 
 func start_interaction(player: Player, from_right: bool) -> void:
 	interaction_started.emit(player, from_right)
@@ -50,10 +58,6 @@ func start_interaction(player: Player, from_right: bool) -> void:
 
 func end_interaction() -> void:
 	interaction_ended.emit()
-
-
-func get_global_interact_label_position() -> Vector2:
-	return to_global(interact_label_position)
 
 
 ## A [CharacterSight] calls this when it starts seeing this area.
@@ -78,32 +82,19 @@ func _ready() -> void:
 	# Initialise interactable bit in collision_layer
 	disabled = disabled
 
+	if not marker and not Engine.is_editor_hint():
+		marker = Marker2D.new()
+		marker.name = "Marker"
+		# Vaguely sensible default position
+		marker.position = Vector2(0, -64)
+		add_child(marker)
 
-func _draw() -> void:
-	if not Engine.is_editor_hint():
-		return
+	_indicator = INDICATOR_SCENE.instantiate()
+	if marker:
+		marker.add_child(_indicator)
 
-	var string_size := EXAMPLE_INTERACTION_FONT.get_string_size(
-		action, HORIZONTAL_ALIGNMENT_LEFT, -1, EXAMPLE_INTERACTION_FONT_SIZE
-	)
-	var draw_position := (
-		interact_label_position - Vector2(string_size.x, -string_size.y * 2.0) / 2.0
-	)
-	draw_string(
-		EXAMPLE_INTERACTION_FONT,
-		draw_position,
-		action,
-		HORIZONTAL_ALIGNMENT_LEFT,
-		-1,
-		EXAMPLE_INTERACTION_FONT_SIZE
-	)
-	draw_string_outline(
-		EXAMPLE_INTERACTION_FONT,
-		draw_position,
-		action,
-		HORIZONTAL_ALIGNMENT_LEFT,
-		-1,
-		EXAMPLE_INTERACTION_FONT_SIZE,
-		1,
-		Color.BLACK
-	)
+	observers_changed.connect(_on_observers_changed)
+
+
+func _on_observers_changed() -> void:
+	_indicator.bouncing = is_being_observed

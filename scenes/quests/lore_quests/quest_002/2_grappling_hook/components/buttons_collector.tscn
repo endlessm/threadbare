@@ -27,16 +27,19 @@ autoplay = "idle"
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_vnm58")
 
-[node name="InteractArea" type="Area2D" parent="." unique_id=1488513282]
+[node name="InteractArea" type="Area2D" parent="." unique_id=1488513282 node_paths=PackedStringArray("marker")]
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("3_bpxq8")
-interact_label_position = Vector2(0, -128)
+marker = NodePath("Marker")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1253932590]
 position = Vector2(0, -29)
 shape = SubResource("RectangleShape2D_vnm58")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="Marker" type="Marker2D" parent="InteractArea" unique_id=2111856598]
+position = Vector2(0, -128)
 
 [node name="TalkBehavior" type="Node" parent="." unique_id=1124185946 node_paths=PackedStringArray("interact_area")]
 script = ExtResource("4_tv1as")
