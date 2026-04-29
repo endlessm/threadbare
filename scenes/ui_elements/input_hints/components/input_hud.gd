@@ -10,7 +10,7 @@ var player_hook: PlayerHook
 var sokoban_ruleset: RuleEngine
 
 @onready var normal_controls := %NormalControls
-@onready var interact_input_hint := %InteractInputHint
+@onready var interact_input_hint: LabeledInputHint = %InteractInputHint
 @onready var aim_input_hint := %AimInputHint
 @onready var throw_input_hint := %ThrowInputHint
 @onready var repel_input_hint := %RepelInputHint
@@ -45,7 +45,7 @@ func _on_scene_changed() -> void:
 
 		player_interaction = player.get("player_interaction") as PlayerInteraction
 		if player_interaction:
-			player_interaction.can_interact_changed.connect(_update_player_state)
+			player_interaction.interact_action_changed.connect(_update_player_state)
 
 		player_repel = player.get("player_repel") as PlayerRepel
 		if player_repel:
@@ -78,7 +78,12 @@ func _notification(what: int) -> void:
 
 
 func _update_player_state() -> void:
-	interact_input_hint.visible = player_interaction and player_interaction.can_interact()
+	if player_interaction:
+		var action := player_interaction.get_interact_action()
+		interact_input_hint.visible = not action.is_empty()
+		interact_input_hint.text = action
+	else:
+		interact_input_hint.visible = false
 
 	repel_input_hint.visible = player_repel and player_repel.visible
 

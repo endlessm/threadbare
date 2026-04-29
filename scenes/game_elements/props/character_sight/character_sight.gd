@@ -76,10 +76,15 @@ func _process(_delta: float) -> void:
 
 
 func _on_area_entered(_area: Area2D) -> void:
-	interact_area = _get_best_interact_area()
-	interact_area_changed.emit()
+	_update_interact_area()
 
 
 func _on_area_exited(_area: Area2D) -> void:
-	interact_area = _get_best_interact_area()
-	interact_area_changed.emit()
+	_update_interact_area()
+
+
+func _update_interact_area() -> void:
+	var best := _get_best_interact_area()
+	if interact_area != best:
+		interact_area = best
+		interact_area_changed.emit()

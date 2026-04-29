@@ -3,8 +3,9 @@
 class_name PlayerInteraction
 extends Node2D
 
-## Emitted when [method can_interact] will return a different value.
-signal can_interact_changed
+## Emitted when the entity the player is able to interact with changes (possibly
+## to nothing).
+signal interact_action_changed
 
 ## The character that gains interaction.
 ## [br][br]
@@ -14,8 +15,6 @@ signal can_interact_changed
 	set = _set_character
 
 @onready var character_sight: CharacterSight = %CharacterSight
-@onready var interact_marker: Marker2D = %InteractMarker
-@onready var interact_label: FixedSizeLabel = %InteractLabel
 
 @onready var player: Player = self.owner as Player
 
@@ -25,10 +24,15 @@ func _set_character(new_character: CharacterBody2D) -> void:
 	update_configuration_warnings()
 
 
-## Returns [code]true[/code] if the character is currently able to interact with
-## something in the environment.
-func can_interact() -> bool:
-	return character_sight.interact_area != null
+## Returns the human-readable text of [member character]'s current interact
+## action (e.g. [code]"Talk"[/code]), or [code]""[/code] (empty string) if
+## [member character] cannot currently interact with anything. Use [signal
+## interact_action_changed] to monitor for changes.
+func get_interact_action() -> String:
+	if character_sight.interact_area != null:
+		var action := character_sight.interact_area.action
+		return action if action else tr("Interact")
+	return ""
 
 
 func _is_interacting() -> bool:
@@ -47,14 +51,6 @@ func _ready() -> void:
 	_on_character_sight_interact_area_changed()
 
 
-func _process(_delta: float) -> void:
-	if not character_sight.interact_area:
-		return
-	interact_marker.global_position = (
-		character_sight.interact_area.get_global_interact_label_position()
-	)
-
-
 func _unhandled_input(_event: InputEvent) -> void:
 	if _is_interacting():
 		return
@@ -68,7 +64,6 @@ func _unhandled_input(_event: InputEvent) -> void:
 
 		get_viewport().set_input_as_handled()
 		character_sight.monitoring = false
-		interact_label.visible = false
 		interact_area.interaction_ended.connect(_on_interaction_ended, CONNECT_ONE_SHOT)
 		interact_area.start_interaction(player, character_sight.is_looking_from_right)
 
@@ -81,13 +76,4 @@ func _on_interaction_ended() -> void:
 
 
 func _on_character_sight_interact_area_changed() -> void:
-	if _is_interacting():
-		return
-
-	if not character_sight.interact_area:
-		interact_label.visible = false
-	else:
-		interact_label.visible = true
-		interact_label.label_text = character_sight.interact_area.action
-
-	can_interact_changed.emit()
+	interact_action_changed.emit()

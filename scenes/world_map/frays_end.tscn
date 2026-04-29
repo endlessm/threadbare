@@ -370,14 +370,13 @@ interact_area = NodePath("../InteractArea")
 metadata/_custom_type_script = "uid://edcifob4jc4s"
 
 [node name="InteractArea" type="Area2D" parent="OnTheGround/NPCs/Farmer" unique_id=248145530]
-visible = false
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("37_f3823")
-interact_label_position = Vector2(0, -100)
 metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/NPCs/Farmer/InteractArea" unique_id=1727136394]
+visible = false
 position = Vector2(0, -23.5)
 shape = SubResource("RectangleShape2D_duxxr")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
@@ -400,15 +399,14 @@ extra_context = [NodePath("../../../WestPath/Unlocker")]
 metadata/_custom_type_script = "uid://edcifob4jc4s"
 
 [node name="InteractArea" type="Area2D" parent="OnTheGround/NPCs/GardenerA" unique_id=1100609138]
-visible = false
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("37_f3823")
-interact_label_position = Vector2(0, -100)
 action = "Talk to Marie"
 metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/NPCs/GardenerA/InteractArea" unique_id=1159647598]
+visible = false
 position = Vector2(0, -23.5)
 shape = SubResource("RectangleShape2D_duxxr")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
@@ -1064,18 +1062,20 @@ scale = Vector2(-1, 1)
 character_seed = 2433932515
 look_at_side = 1
 
-[node name="InteractArea" type="Area2D" parent="OnTheGround/Tutorial/TutorialGuy" unique_id=226800588]
-visible = false
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Tutorial/TutorialGuy" unique_id=226800588 node_paths=PackedStringArray("marker")]
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("37_f3823")
-interact_label_position = Vector2(0, -100)
+marker = NodePath("Marker")
 metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Tutorial/TutorialGuy/InteractArea" unique_id=1652917244]
 position = Vector2(0, -23.5)
 shape = SubResource("RectangleShape2D_2vvub")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="Marker" type="Marker2D" parent="OnTheGround/Tutorial/TutorialGuy/InteractArea" unique_id=1432505873]
+position = Vector2(0, -100)
 
 [node name="TalkBehavior" type="Node" parent="OnTheGround/Tutorial/TutorialGuy" unique_id=283277394 node_paths=PackedStringArray("interact_area")]
 script = ExtResource("56_ojao8")
