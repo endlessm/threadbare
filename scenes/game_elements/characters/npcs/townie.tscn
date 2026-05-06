@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://c0a7xf5qx8p4y" path="res://scenes/game_elements/components/cel_shading_recolor.gd" id="2_nj51j"]
 [ext_resource type="Script" uid="uid://dl6rgfwdn3qp4" path="res://scenes/game_elements/characters/components/character_randomizer.gd" id="2_xf1o5"]
 [ext_resource type="SpriteFrames" uid="uid://do4waj3mgr6vw" path="res://scenes/game_elements/characters/components/sprite_frames/townie-legs_003.dy_-12.tres" id="3_4rgc5"]
+[ext_resource type="Shader" uid="uid://bs1yj5q1vidgx" path="res://scenes/game_elements/components/cel_shading_recolor.gdshader" id="3_byt3c"]
 [ext_resource type="Script" uid="uid://boyesrjdix688" path="res://scenes/game_logic/sprite_behaviors/random_texture_sprite_behavior.gd" id="5_8nfuc"]
 [ext_resource type="SpriteFrames" uid="uid://bygxgwwtt1j6h" path="res://scenes/game_elements/characters/components/sprite_frames/townie-legs_001.tres" id="5_r7ycj"]
 [ext_resource type="SpriteFrames" uid="uid://ubitgryup0jx" path="res://scenes/game_elements/characters/components/sprite_frames/townie-legs_002.dy_-6.tres" id="6_hbfaq"]
@@ -22,22 +23,32 @@
 [ext_resource type="SpriteFrames" uid="uid://dnfyg3i87cp17" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_005.tres" id="24_hskxo"]
 [ext_resource type="SpriteFrames" uid="uid://c43yaqne7a2kh" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_002.tres" id="33_m1eb2"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_byt3c"]
+resource_local_to_scene = true
+shader = ExtResource("3_byt3c")
+shader_parameter/shade_medium_key = Vector3i(0, 255, 0)
+shader_parameter/shade_high_key = Vector3i(160, 255, 160)
+shader_parameter/shade_low_key = Vector3i(0, 160, 0)
+shader_parameter/shade_medium_new = Color(0.89, 0.89, 0, 1)
+shader_parameter/shade_high_new = Color(0.91, 0.91, 0.2, 1)
+shader_parameter/shade_low_new = Color(0.71, 0.71, 0, 1)
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qs15o"]
 
-[node name="Townie" type="CharacterBody2D" unique_id=1098678013]
+[node name="Townie" type="CharacterBody2D" unique_id=1098678013 node_paths=PackedStringArray("cel_shading_recolor")]
 material = ExtResource("1_nj51j")
-instance_shader_parameters/shade_high_new = Color(0.9056, 0.7616, 0.7928, 1)
-instance_shader_parameters/shade_low_new = Color(0.7056, 0.5616, 0.5928, 1)
-instance_shader_parameters/shade_medium_new = Color(0.882, 0.702, 0.741, 1)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("2_xf1o5")
+cel_shading_recolor = NodePath("CelShadingRecolor")
+shader_material = SubResource("ShaderMaterial_byt3c")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=128596675]
 rotation = -1.5707964
 shape = SubResource("CapsuleShape2D_qs15o")
 
 [node name="AnimatedSprite2DLegs" type="AnimatedSprite2D" parent="." unique_id=385222684]
+material = SubResource("ShaderMaterial_byt3c")
 position = Vector2(-3, -31)
 sprite_frames = ExtResource("3_4rgc5")
 animation = &"idle"
@@ -56,21 +67,11 @@ sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
 [node name="AnimatedSprite2DBody" type="AnimatedSprite2D" parent="AnimatedSprite2DLegs" unique_id=2098127821]
-material = ExtResource("1_nj51j")
-instance_shader_parameters/shade_high_new = Color(0.91999996, 0.91999996, 0.2, 1)
-instance_shader_parameters/shade_low_new = Color(0.71999997, 0.71999997, 0, 1)
-instance_shader_parameters/shade_medium_new = Color(0.9, 0.9, 0, 1)
+material = SubResource("ShaderMaterial_byt3c")
 position = Vector2(0, -12)
 sprite_frames = ExtResource("16_5y6le")
 animation = &"idle"
 autoplay = "idle"
-
-[node name="CelShadingRecolor" type="Node" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=1327679537 node_paths=PackedStringArray("node_to_recolor")]
-script = ExtResource("2_nj51j")
-node_to_recolor = NodePath("..")
-high_color = Color(0.91999996, 0.91999996, 0.2, 1)
-low_color = Color(0.71999997, 0.71999997, 0, 1)
-metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
 
 [node name="RandomTextureSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=1733667753 node_paths=PackedStringArray("sprite")]
 script = ExtResource("5_8nfuc")
@@ -84,20 +85,10 @@ sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
 [node name="AnimatedSprite2DHead" type="AnimatedSprite2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=421503015]
-material = ExtResource("1_nj51j")
-instance_shader_parameters/shade_high_new = Color(0.91999996, 0.91999996, 0.2, 1)
-instance_shader_parameters/shade_low_new = Color(0.71999997, 0.71999997, 0, 1)
-instance_shader_parameters/shade_medium_new = Color(0.9, 0.9, 0, 1)
+material = SubResource("ShaderMaterial_byt3c")
 sprite_frames = ExtResource("22_8wbfo")
 animation = &"idle"
 autoplay = "idle"
-
-[node name="CelShadingRecolor" type="Node" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=2000765677 node_paths=PackedStringArray("node_to_recolor")]
-script = ExtResource("2_nj51j")
-node_to_recolor = NodePath("..")
-high_color = Color(0.91999996, 0.91999996, 0.2, 1)
-low_color = Color(0.71999997, 0.71999997, 0, 1)
-metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
 
 [node name="RandomTextureSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=592927150 node_paths=PackedStringArray("sprite")]
 script = ExtResource("5_8nfuc")
@@ -112,6 +103,7 @@ sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
 [node name="AnimatedSprite2DHair" type="AnimatedSprite2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=2123781958]
+material = SubResource("ShaderMaterial_byt3c")
 sprite_frames = ExtResource("33_m1eb2")
 animation = &"idle"
 autoplay = "idle"
@@ -128,3 +120,10 @@ script = ExtResource("10_syy7w")
 character = NodePath("../../../../..")
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="CelShadingRecolor" type="Node" parent="." unique_id=1327679537]
+script = ExtResource("2_nj51j")
+shader_material = SubResource("ShaderMaterial_byt3c")
+high_color = Color(0.91999996, 0.91999996, 0.2, 1)
+low_color = Color(0.71999997, 0.71999997, 0, 1)
+metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"

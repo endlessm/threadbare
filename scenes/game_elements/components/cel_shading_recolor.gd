@@ -11,10 +11,16 @@ extends Node
 ## But instead of dealing with a full palette, this will recolor 3 shades.
 ## Which is the style expected in Threadbare.
 ## [br][br]
-## [b]Note:[/b] This behavior will only work if the [member node_to_recolor] has the
-## material "cel_shading_recolor_material.tres" applied to it.
+## [b]Note:[/b] This behavior will only work if the [member shader_material] is a
+## duplicate of "cel_shading_recolor_material.tres".
+## [br][br]
+## [b]Note:[/b] A node can be set in [member node_to_recolor] as a shortcut to
+## use its material directly.
 ## [br][br]
 ## One possible use of this is to apply different skin tones to characters.
+## [br][br]
+## Share the [member shader_material] to apply the same recoloring to multiple
+## sprites (multiple parts of the same character, for instance).
 
 ## Named skin colors
 ## [br][br]
@@ -71,6 +77,12 @@ const SKIN_COLORS: Dictionary[String, Color] = {
 	"pearl": Color(0.949, 0.867, 0.894, 1.0),
 }
 
+## The shader material to modify.
+## If [member node_to_recolor] has a material of type [ShaderMaterial], that one will be used.
+## [b]Note:[/b] This behavior will only work if this
+## material is a duplicate of "cel_shading_recolor_material.tres".
+@export var shader_material: ShaderMaterial
+
 ## The node that will be recolored
 ## [br][br]
 ## [b]Note:[/b] This behavior will only work if it has the
@@ -101,16 +113,16 @@ const SKIN_COLORS: Dictionary[String, Color] = {
 var random_skin_color_button: Callable = set_random_skin_color
 
 
-func _enter_tree() -> void:
-	if not node_to_recolor and get_parent() is CanvasItem:
-		node_to_recolor = get_parent()
-		medium_color = medium_color
+func _ready() -> void:
+	colorize()
 
 
 func _set_node_to_recolor(new_node_to_recolor: CanvasItem) -> void:
 	node_to_recolor = new_node_to_recolor
-	update_configuration_warnings()
-	colorize()
+	if not shader_material and node_to_recolor:
+		shader_material = node_to_recolor.material as ShaderMaterial
+		update_configuration_warnings()
+		colorize()
 
 
 func _set_medium_color(new_medium_color: Color) -> void:
@@ -151,11 +163,12 @@ func _validate_property(property: Dictionary) -> void:
 
 ## Apply the colors by setting the shader parameters
 func colorize() -> void:
-	if not node_to_recolor:
+	if not shader_material:
 		return
-	node_to_recolor.set_instance_shader_parameter("shade_medium_new", medium_color)
-	node_to_recolor.set_instance_shader_parameter("shade_high_new", high_color)
-	node_to_recolor.set_instance_shader_parameter("shade_low_new", low_color)
+
+	shader_material.set_shader_parameter("shade_medium_new", medium_color)
+	shader_material.set_shader_parameter("shade_high_new", high_color)
+	shader_material.set_shader_parameter("shade_low_new", low_color)
 
 
 ## Pick a random color from [constant SKIN_COLORS] and automatically set all shades from it.
@@ -168,10 +181,6 @@ func set_random_skin_color(rng: RandomNumberGenerator = null) -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
-	if not node_to_recolor:
-		warnings.append("The Skin Node must be set.")
-		return warnings
-	var shader_material: ShaderMaterial = node_to_recolor.material as ShaderMaterial
 	if not shader_material:
 		warnings.append("The Skin Node material must be a ShaderMaterial.")
 		return warnings
@@ -179,6 +188,6 @@ func _get_configuration_warnings() -> PackedStringArray:
 		warnings.append("The Skin Node material must have a shader.")
 		return warnings
 	for uniform_name: String in ["shade_medium_new", "shade_high_new", "shade_low_new"]:
-		if node_to_recolor.get_instance_shader_parameter(uniform_name) == null:
-			warnings.append("The Node To Recolor must have an instance uniform %s." % uniform_name)
+		if shader_material.get_shader_parameter(uniform_name) == null:
+			warnings.append("The Node To Recolor material must have an uniform %s." % uniform_name)
 	return warnings

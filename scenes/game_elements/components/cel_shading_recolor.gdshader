@@ -38,17 +38,17 @@ group_uniforms NewColors;
  * [br][br]
  * Defaults to yellow emoji-like color.
  */
-instance uniform vec4 shade_medium_new : source_color = vec4(0.89, 0.89, 0, 1);
+uniform vec4 shade_medium_new : source_color = vec4(0.89, 0.89, 0, 1);
 
 /**
  * The new high or lightened color.
  */
-instance uniform vec4 shade_high_new : source_color = vec4(0.91, 0.91, 0.2, 1);
+uniform vec4 shade_high_new : source_color = vec4(0.91, 0.91, 0.2, 1);
 
 /**
  * The new low or darkened color.
  */
-instance uniform vec4 shade_low_new : source_color = vec4(0.71, 0.71, 0, 1);
+uniform vec4 shade_low_new : source_color = vec4(0.71, 0.71, 0, 1);
 
 void fragment() {
 	ivec3 colori = ivec3(round(COLOR.rgb * 255.0));
