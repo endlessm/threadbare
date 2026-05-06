@@ -24,7 +24,7 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qs15o"]
 
-[node name="Townie" type="CharacterBody2D" unique_id=1098678013]
+[node name="Townie" type="CharacterBody2D" unique_id=1098678013 node_paths=PackedStringArray("root_sprite", "cel_shading_recolor")]
 material = ExtResource("1_nj51j")
 instance_shader_parameters/shade_high_new = Color(0.9056, 0.7616, 0.7928, 1)
 instance_shader_parameters/shade_low_new = Color(0.7056, 0.5616, 0.5928, 1)
@@ -32,99 +32,92 @@ instance_shader_parameters/shade_medium_new = Color(0.882, 0.702, 0.741, 1)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("2_xf1o5")
+root_sprite = NodePath("CanvasGroup/AnimatedSprite2DLegs")
+cel_shading_recolor = NodePath("CanvasGroup/CelShadingRecolor")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=128596675]
 rotation = -1.5707964
 shape = SubResource("CapsuleShape2D_qs15o")
 
-[node name="AnimatedSprite2DLegs" type="AnimatedSprite2D" parent="." unique_id=385222684]
+[node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=235759707]
+material = ExtResource("1_nj51j")
+instance_shader_parameters/shade_high_new = Color(0.91999996, 0.91999996, 0.2, 1)
+instance_shader_parameters/shade_low_new = Color(0.71999997, 0.71999997, 0, 1)
+instance_shader_parameters/shade_medium_new = Color(0.9, 0.9, 0, 1)
+
+[node name="AnimatedSprite2DLegs" type="AnimatedSprite2D" parent="CanvasGroup" unique_id=385222684]
 position = Vector2(-3, -31)
 sprite_frames = ExtResource("3_4rgc5")
 animation = &"idle"
 
-[node name="RandomTextureSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs" unique_id=471097323 node_paths=PackedStringArray("sprite")]
+[node name="RandomTextureSpriteBehavior" type="Node2D" parent="CanvasGroup/AnimatedSprite2DLegs" unique_id=471097323 node_paths=PackedStringArray("sprite")]
 script = ExtResource("5_8nfuc")
 sprite_frames = Array[SpriteFrames]([ExtResource("5_r7ycj"), ExtResource("6_hbfaq"), ExtResource("3_4rgc5")])
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://boyesrjdix688"
 
-[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs" unique_id=1671495161 node_paths=PackedStringArray("character", "sprite")]
+[node name="CharacterSpriteBehavior" type="Node2D" parent="CanvasGroup/AnimatedSprite2DLegs" unique_id=1671495161 node_paths=PackedStringArray("character", "sprite")]
 position = Vector2(3, 30)
-script = ExtResource("10_syy7w")
-character = NodePath("../..")
-sprite = NodePath("..")
-metadata/_custom_type_script = "uid://dy68p7gf07pi3"
-
-[node name="AnimatedSprite2DBody" type="AnimatedSprite2D" parent="AnimatedSprite2DLegs" unique_id=2098127821]
-material = ExtResource("1_nj51j")
-instance_shader_parameters/shade_high_new = Color(0.91999996, 0.91999996, 0.2, 1)
-instance_shader_parameters/shade_low_new = Color(0.71999997, 0.71999997, 0, 1)
-instance_shader_parameters/shade_medium_new = Color(0.9, 0.9, 0, 1)
-position = Vector2(0, -12)
-sprite_frames = ExtResource("16_5y6le")
-animation = &"idle"
-autoplay = "idle"
-
-[node name="CelShadingRecolor" type="Node" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=1327679537 node_paths=PackedStringArray("node_to_recolor")]
-script = ExtResource("2_nj51j")
-node_to_recolor = NodePath("..")
-high_color = Color(0.91999996, 0.91999996, 0.2, 1)
-low_color = Color(0.71999997, 0.71999997, 0, 1)
-metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
-
-[node name="RandomTextureSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=1733667753 node_paths=PackedStringArray("sprite")]
-script = ExtResource("5_8nfuc")
-sprite_frames = Array[SpriteFrames]([ExtResource("16_5y6le"), ExtResource("11_tidpj"), ExtResource("12_hurny")])
-sprite = NodePath("..")
-
-[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=273990310 node_paths=PackedStringArray("character", "sprite")]
 script = ExtResource("10_syy7w")
 character = NodePath("../../..")
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
-[node name="AnimatedSprite2DHead" type="AnimatedSprite2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=421503015]
-material = ExtResource("1_nj51j")
-instance_shader_parameters/shade_high_new = Color(0.91999996, 0.91999996, 0.2, 1)
-instance_shader_parameters/shade_low_new = Color(0.71999997, 0.71999997, 0, 1)
-instance_shader_parameters/shade_medium_new = Color(0.9, 0.9, 0, 1)
-sprite_frames = ExtResource("22_8wbfo")
+[node name="AnimatedSprite2DBody" type="AnimatedSprite2D" parent="CanvasGroup/AnimatedSprite2DLegs" unique_id=2098127821]
+position = Vector2(0, -12)
+sprite_frames = ExtResource("16_5y6le")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="CelShadingRecolor" type="Node" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=2000765677 node_paths=PackedStringArray("node_to_recolor")]
-script = ExtResource("2_nj51j")
-node_to_recolor = NodePath("..")
-high_color = Color(0.91999996, 0.91999996, 0.2, 1)
-low_color = Color(0.71999997, 0.71999997, 0, 1)
-metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
-
-[node name="RandomTextureSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=592927150 node_paths=PackedStringArray("sprite")]
+[node name="RandomTextureSpriteBehavior" type="Node2D" parent="CanvasGroup/AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=1733667753 node_paths=PackedStringArray("sprite")]
 script = ExtResource("5_8nfuc")
-sprite_frames = Array[SpriteFrames]([ExtResource("22_8wbfo"), ExtResource("15_byt3c"), ExtResource("16_kccyr"), ExtResource("17_syy7w"), ExtResource("18_4rgc5")])
+sprite_frames = Array[SpriteFrames]([ExtResource("16_5y6le"), ExtResource("11_tidpj"), ExtResource("12_hurny")])
 sprite = NodePath("..")
-metadata/_custom_type_script = "uid://boyesrjdix688"
 
-[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=1897959413 node_paths=PackedStringArray("character", "sprite")]
+[node name="CharacterSpriteBehavior" type="Node2D" parent="CanvasGroup/AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=273990310 node_paths=PackedStringArray("character", "sprite")]
 script = ExtResource("10_syy7w")
 character = NodePath("../../../..")
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
-[node name="AnimatedSprite2DHair" type="AnimatedSprite2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=2123781958]
+[node name="AnimatedSprite2DHead" type="AnimatedSprite2D" parent="CanvasGroup/AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=421503015]
+sprite_frames = ExtResource("22_8wbfo")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="RandomTextureSpriteBehavior" type="Node2D" parent="CanvasGroup/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=592927150 node_paths=PackedStringArray("sprite")]
+script = ExtResource("5_8nfuc")
+sprite_frames = Array[SpriteFrames]([ExtResource("22_8wbfo"), ExtResource("15_byt3c"), ExtResource("16_kccyr"), ExtResource("17_syy7w"), ExtResource("18_4rgc5")])
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://boyesrjdix688"
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="CanvasGroup/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=1897959413 node_paths=PackedStringArray("character", "sprite")]
+script = ExtResource("10_syy7w")
+character = NodePath("../../../../..")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="AnimatedSprite2DHair" type="AnimatedSprite2D" parent="CanvasGroup/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=2123781958]
 sprite_frames = ExtResource("33_m1eb2")
 animation = &"idle"
 autoplay = "idle"
 metadata/_edit_lock_ = true
 
-[node name="RandomTextureSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHair" unique_id=358939124 node_paths=PackedStringArray("sprite")]
+[node name="RandomTextureSpriteBehavior" type="Node2D" parent="CanvasGroup/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHair" unique_id=358939124 node_paths=PackedStringArray("sprite")]
 script = ExtResource("5_8nfuc")
 sprite_frames = Array[SpriteFrames]([ExtResource("20_syy7w"), ExtResource("33_m1eb2"), ExtResource("22_4rgc5"), ExtResource("23_umw6f"), ExtResource("24_hskxo")])
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://boyesrjdix688"
 
-[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHair" unique_id=280440134 node_paths=PackedStringArray("character", "sprite")]
+[node name="CharacterSpriteBehavior" type="Node2D" parent="CanvasGroup/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHair" unique_id=280440134 node_paths=PackedStringArray("character", "sprite")]
 script = ExtResource("10_syy7w")
-character = NodePath("../../../../..")
+character = NodePath("../../../../../..")
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="CelShadingRecolor" type="Node" parent="CanvasGroup" unique_id=1327679537 node_paths=PackedStringArray("node_to_recolor")]
+script = ExtResource("2_nj51j")
+node_to_recolor = NodePath("..")
+high_color = Color(0.91999996, 0.91999996, 0.2, 1)
+low_color = Color(0.71999997, 0.71999997, 0, 1)
+metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"

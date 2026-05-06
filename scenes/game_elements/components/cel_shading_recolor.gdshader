@@ -9,6 +9,9 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 shader_type canvas_item;
+render_mode unshaded;
+
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
 
 // Note: key colors are intentionally vec3 because they don't need alpha channel.
 // This is unlike the new colors which are of type vec4.
@@ -51,7 +54,13 @@ instance uniform vec4 shade_high_new : source_color = vec4(0.91, 0.91, 0.2, 1);
 instance uniform vec4 shade_low_new : source_color = vec4(0.71, 0.71, 0, 1);
 
 void fragment() {
-	ivec3 colori = ivec3(round(COLOR.rgb * 255.0));
+	vec4 color = textureLod(screen_texture, SCREEN_UV, 0.0);
+
+	if (color.a > 0.0001) {
+		color.rgb /= color.a;
+	}
+
+	ivec3 colori = ivec3(round(color.rgb * 255.0));
 	if (colori == shade_medium_key) {
 		COLOR = shade_medium_new;
 	}
@@ -60,5 +69,8 @@ void fragment() {
 	}
 	else if (colori == shade_low_key) {
 		COLOR = shade_low_new;
+	}
+	else {
+		COLOR = color;
 	}
 }

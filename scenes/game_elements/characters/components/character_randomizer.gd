@@ -28,14 +28,17 @@ extends CharacterBody2D
 @export var look_at_side: Enums.LookAtSide = Enums.LookAtSide.LEFT:
 	set = _set_look_at_side
 
+## The root sprite of the hierarchy. Usually the legs.
+@export var root_sprite: AnimatedSprite2D
+
+## The node that recolors the character.
+@export var cel_shading_recolor: CelShadingRecolor
+
 ## Click this button to create a random character.
 @export_tool_button("Randomize") var randomize_character_button: Callable = randomize_character
 
 ## The inner AnimatedSprite2D nodes.
 var animated_sprites: Array[AnimatedSprite2D] = []
-
-## The inner nodes that recolor the character skin.
-var skin_recolor_nodes: Array[CelShadingRecolor] = []
 
 ## The inner nodes that randomize sprites textures.
 var random_texture_nodes: Array[RandomTextureSpriteBehavior] = []
@@ -54,13 +57,8 @@ var _previous_look_at_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
 func apply_character_randomizations() -> void:
 	_random_number_generator.seed = character_seed
 
-	if skin_recolor_nodes:
-		var new_skin_medium_color: Color
-		skin_recolor_nodes[-1].set_random_skin_color(_random_number_generator)
-		new_skin_medium_color = skin_recolor_nodes[-1].medium_color
-		for n in skin_recolor_nodes:
-			n.automatic_shades = true
-			n.medium_color = new_skin_medium_color
+	if cel_shading_recolor:
+		cel_shading_recolor.set_random_skin_color(_random_number_generator)
 
 	for n in random_texture_nodes:
 		n.randomize_texture(_random_number_generator)
@@ -109,18 +107,14 @@ func _traverse(node: Node) -> void:
 		animated_sprites.append(node)
 		for child in node.get_children():
 			_traverse(child)
-	elif node is CelShadingRecolor:
-		skin_recolor_nodes.append(node)
 	elif node is RandomTextureSpriteBehavior:
 		random_texture_nodes.append(node)
 
 
 func _setup_nodes() -> void:
 	animated_sprites = []
-	skin_recolor_nodes = []
 	random_texture_nodes = []
-	for child in get_children():
-		_traverse(child)
+	_traverse(root_sprite)
 
 
 func _randomize_all_sprites_progress() -> void:
