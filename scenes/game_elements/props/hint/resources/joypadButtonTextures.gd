@@ -10,6 +10,35 @@ extends Resource
 ## Textures for the [code]aim_*[/code] actions
 @export var aim: DirectionalInputTextures
 
+## Texture for the [code]running[/code] action
+@export var running: Texture2D
+
+## Texture for the [code]interact[/code] action
+@export var interact: Texture2D
+
+## Texture for the [code]repel[/code] action
+@export var repel: Texture2D
+
+## Alternative texture for the [code]repel[/code] action (i.e. the keyboard key
+## as opposed to mouse button)
+@export var repel_alt: Texture2D
+
+## Texture for the [code]throw[/code] action
+@export var throw: Texture2D
+
+## Alternative texture for the [code]throw[/code] action (i.e. the keyboard key
+## as opposed to mouse button)
+@export var throw_alt: Texture2D
+
+## Texture for the [code]sokoban_undo[/code] action
+@export var sokoban_undo: Texture2D
+
+## Texture for the [code]sokoban_reset[/code] action
+@export var sokoban_reset: Texture2D
+
+## Texture for the [code]sokoban_skip[/code] action
+@export var sokoban_skip: Texture2D
+
 
 ## Returns the texture for a directional action. For instance, to get the
 ## correct texture for the [code]aim_left[/code] action, use:
