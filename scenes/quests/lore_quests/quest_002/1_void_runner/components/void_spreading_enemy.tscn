@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="3_45we0"]
 [ext_resource type="AudioStream" uid="uid://dgpeb1dtmfqud" path="res://assets/third_party/sounds/characters/enemies/guard/AlertSound.ogg" id="5_2dnul"]
 [ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="6_pumxu"]
+[ext_resource type="Shader" uid="uid://dvyec12fgsuta" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/particles_canvasgroup_outline.gdshader" id="7_o4sxw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8g3pn"]
 size = Vector2(68, 20)
@@ -99,6 +100,11 @@ _data = {
 &"alert": SubResource("Animation_pumxu")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gwqur"]
+shader = ExtResource("7_o4sxw")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/thickness = 2.0
+
 [node name="VoidSpreadingEnemy" type="CharacterBody2D" unique_id=1007896559]
 collision_layer = 0
 collision_mask = 0
@@ -158,5 +164,9 @@ texture = ExtResource("6_pumxu")
 [node name="AlertAnimation" type="AnimationPlayer" parent="." unique_id=76419508]
 unique_name_in_owner = true
 libraries/ = SubResource("AnimationLibrary_gwqur")
+
+[node name="ParticlesCanvasGroup" type="CanvasGroup" parent="." unique_id=574273484]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_gwqur")
 
 [connection signal="body_entered" from="PlayerCaptureArea" to="." method="_on_player_capture_area_body_entered"]
