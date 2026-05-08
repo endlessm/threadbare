@@ -47,6 +47,7 @@ var _live_particles: int = 0
 @onready var path_walk_behavior: PathWalkBehavior = %PathWalkBehavior
 @onready var follow_walk_behavior: NavigationFollowWalkBehavior = %NavigationFollowWalkBehavior
 @onready var alert_animation: AnimationPlayer = %AlertAnimation
+@onready var particles_canvas_group: CanvasGroup = %ParticlesCanvasGroup
 
 
 func _set_idle_patrol_path(new_path: Path2D) -> void:
@@ -123,7 +124,7 @@ func _emit_particles() -> void:
 
 	var particles: GPUParticles2D = VOID_PARTICLES.instantiate()
 	particles.emitting = true
-	add_child(particles)
+	particles_canvas_group.add_child(particles)
 	_live_particles += 1
 
 	await particles.finished
