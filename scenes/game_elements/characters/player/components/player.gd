@@ -68,6 +68,7 @@ var _initial_speeds: CharacterSpeeds
 @onready var player_repel: Node2D = %PlayerRepel
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
+@onready var bridge_crossing_behavior: BridgeCrossingBehavior = %BridgeCrossingBehavior
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
 
@@ -81,15 +82,18 @@ func _set_mode(new_mode: Mode) -> void:
 			_toggle_player_behavior(input_walk_behavior, true)
 			_toggle_player_behavior(player_interaction, true)
 			_toggle_abilities()
+			bridge_crossing_behavior.monitoring = true
 		Mode.SYSTEM_CONTROLLED:
 			_toggle_player_behavior(input_walk_behavior, false)
 			_toggle_player_behavior(player_interaction, true)
 			_toggle_abilities()
+			bridge_crossing_behavior.monitoring = false
 		Mode.DEFEATED:
 			_toggle_player_behavior(input_walk_behavior, false)
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_repel, false)
 			_toggle_player_behavior(player_hook, false)
+			bridge_crossing_behavior.monitoring = false
 
 	if mode != previous_mode:
 		mode_changed.emit(mode)

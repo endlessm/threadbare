@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dxaq5piwxqnht" path="res://scenes/game_elements/characters/player/components/dust.png" id="12_3in67"]
 [ext_resource type="PackedScene" uid="uid://cl06pid826dtg" path="res://scenes/game_elements/characters/player/components/player_repel.tscn" id="12_tnibl"]
 [ext_resource type="PackedScene" uid="uid://b3111eergq5yg" path="res://scenes/game_elements/characters/player/components/player_hook.tscn" id="13_ecbbk"]
+[ext_resource type="Script" uid="uid://dn4ijphw4e84s" path="res://scenes/game_logic/bridge_crossing_behavior.gd" id="16_8jhju"]
 [ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="16_ecbbk"]
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="16_tnibl"]
 
@@ -349,8 +350,12 @@ _data = {
 &"got_hit": SubResource("Animation_4ypcv")
 }
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ecbbk"]
+radius = 5.0
+height = 21.0
+
 [node name="Player" type="CharacterBody2D" unique_id=296354958 groups=["player"]]
-collision_mask = 531
+collision_mask = 8723
 motion_mode = 1
 wall_min_slide_angle = 0.017453292
 safe_margin = 1.0
@@ -457,6 +462,18 @@ debug_color = Color(0.94902, 0.231373, 0, 0.419608)
 unique_name_in_owner = true
 root_node = NodePath("../../PlayerRepel")
 libraries/ = SubResource("AnimationLibrary_1n58k")
+
+[node name="BridgeCrossingBehavior" type="Area2D" parent="." unique_id=457107742 node_paths=PackedStringArray("character")]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 1024
+script = ExtResource("16_8jhju")
+character = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BridgeCrossingBehavior" unique_id=1926006827]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_ecbbk")
+debug_color = Color(0.8414687, 0.38268504, 0, 0.41960785)
 
 [connection signal="running_changed" from="InputWalkBehavior" to="PlayerDustParticles" method="set_emitting"]
 [connection signal="running_changed" from="InputWalkBehavior" to="AnimationPlayer" method="_on_input_walk_behavior_running_changed"]

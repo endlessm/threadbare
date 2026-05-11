@@ -9,6 +9,7 @@
 [ext_resource type="SpriteFrames" uid="uid://ovu5wqo15s5g" path="res://scenes/quests/template_quests/NO_EDIT/1_NO_EDIT_stealth/NO_EDIT_stealth_components/NO_EDIT_guard_enemy.tres" id="5_mswbt"]
 [ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="7_klpct"]
 [ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="9_8vt0k"]
+[ext_resource type="Script" uid="uid://dn4ijphw4e84s" path="res://scenes/game_logic/bridge_crossing_behavior.gd" id="10_mswbt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g173s"]
 radius = 35.0
@@ -200,9 +201,12 @@ _data = {
 &"walk": SubResource("Animation_8vt0k")
 }
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_innil"]
+radius = 7.0
+
 [node name="Guard" type="CharacterBody2D" unique_id=689832587 groups=["guard_enemy"]]
 collision_layer = 0
-collision_mask = 528
+collision_mask = 8720
 motion_mode = 1
 script = ExtResource("1_g173s")
 
@@ -335,6 +339,17 @@ unique_name_in_owner = true
 volume_db = -2.0
 max_distance = 500.0
 bus = &"SFX"
+
+[node name="BridgeCrossingBehavior" type="Area2D" parent="." unique_id=65400463 node_paths=PackedStringArray("character")]
+collision_layer = 0
+collision_mask = 1024
+script = ExtResource("10_mswbt")
+character = NodePath("..")
+metadata/_custom_type_script = "uid://dn4ijphw4e84s"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BridgeCrossingBehavior" unique_id=47726962]
+shape = SubResource("CircleShape2D_innil")
+debug_color = Color(0.8414687, 0.38268504, 0, 0.41960785)
 
 [connection signal="body_entered" from="InstantDetectionArea" to="." method="_on_instant_detection_area_body_entered"]
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
