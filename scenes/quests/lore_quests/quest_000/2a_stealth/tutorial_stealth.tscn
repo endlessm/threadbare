@@ -18,11 +18,11 @@
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="10_kjr36"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="10_pbknt"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="11_6a0j2"]
-[ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="11_gmhs0"]
 [ext_resource type="Resource" uid="uid://bvxfbfjv2oleg" path="res://scenes/quests/lore_quests/quest_000/2a_stealth/components/tutorial_stealth.dialogue" id="11_hiptn"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="11_nil71"]
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="12_es244"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="13_qj7hh"]
+[ext_resource type="SpriteFrames" uid="uid://c5q1t8qd1h1pl" path="res://scenes/game_elements/props/decoration/water_rock/components/water_rock_02.tres" id="13_thfh2"]
 [ext_resource type="SpriteFrames" uid="uid://d1k25io0tiiij" path="res://scenes/game_elements/characters/enemies/guard/components/storyvoretorch_frames_blue.tres" id="14_6a0j2"]
 [ext_resource type="AudioStream" uid="uid://dgpeb1dtmfqud" path="res://assets/third_party/sounds/characters/enemies/guard/AlertSound.ogg" id="15_tfxnn"]
 [ext_resource type="AudioStream" uid="uid://4ec6e2alns71" path="res://assets/third_party/sounds/characters/enemies/guard/GrassFoot.ogg" id="16_pbknt"]
@@ -32,19 +32,12 @@
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="25_qj7hh"]
 [ext_resource type="AudioStream" uid="uid://qnqpd21qyfnc" path="res://assets/first_party/music/Threadbare_Stealth.ogg" id="26_m6viv"]
 [ext_resource type="SpriteFrames" uid="uid://d000bjl2xdg0g" path="res://scenes/game_elements/props/checkpoint/components/knitwitch_frames_green.tres" id="28_06hgc"]
+[ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="30_06hgc"]
+[ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="31_thfh2"]
+[ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="32_p5ken"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="33_j2uqn"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_j2uqn"]
-size = Vector2(462.5, 607)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_06hgc"]
-size = Vector2(284.5, 1142)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vncx3"]
-size = Vector2(1153.5, 908.4375)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_royi8"]
-size = Vector2(442.78906, 1341.9063)
+[ext_resource type="SpriteFrames" uid="uid://br4k784ht8hh0" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_yellow_large.tres" id="33_p5ken"]
+[ext_resource type="SpriteFrames" uid="uid://dfthhmtn4x3t8" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_yellow_small.tres" id="34_s0dut"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tfxnn"]
 size = Vector2(52, 61)
@@ -132,103 +125,59 @@ tile_set = ExtResource("8_nil71")
 [node name="InTheWater" type="Node2D" parent="." unique_id=866765693]
 z_index = -1
 
-[node name="WaterRocks" type="Area2D" parent="InTheWater" unique_id=2060751404]
-monitoring = false
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InTheWater/WaterRocks" unique_id=1514292003]
-position = Vector2(325, 379)
-shape = SubResource("RectangleShape2D_j2uqn")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="InTheWater/WaterRocks" unique_id=1243420307]
-position = Vector2(-33.25, 891)
-shape = SubResource("RectangleShape2D_06hgc")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="InTheWater/WaterRocks" unique_id=355424420]
-position = Vector2(2611.25, 862.21875)
-shape = SubResource("RectangleShape2D_vncx3")
-
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="InTheWater/WaterRocks" unique_id=985146122]
-position = Vector2(2385.3945, 621)
-shape = SubResource("RectangleShape2D_royi8")
-
-[node name="AreaFiller" type="Node" parent="InTheWater/WaterRocks" unique_id=1427090622]
-script = ExtResource("11_gmhs0")
-scenes = Array[PackedScene]([ExtResource("12_es244")])
-minimum_separation = 256.0
-metadata/_custom_type_script = "uid://bdhjixygupit1"
-
-[node name="WaterRock" parent="InTheWater/WaterRocks" unique_id=200189883 instance=ExtResource("12_es244")]
+[node name="WaterRock" parent="InTheWater" unique_id=200189883 instance=ExtResource("12_es244")]
 position = Vector2(-175.5, 698.25006)
 
-[node name="WaterRock2" parent="InTheWater/WaterRocks" unique_id=1552286387 instance=ExtResource("12_es244")]
+[node name="WaterRock2" parent="InTheWater" unique_id=1552286387 instance=ExtResource("12_es244")]
 position = Vector2(101.69739, 879.53955)
 
-[node name="WaterRock3" parent="InTheWater/WaterRocks" unique_id=1023081952 instance=ExtResource("12_es244")]
+[node name="WaterRock3" parent="InTheWater" unique_id=1023081952 instance=ExtResource("12_es244")]
 position = Vector2(23, 1235)
 
-[node name="WaterRock4" parent="InTheWater/WaterRocks" unique_id=594762992 instance=ExtResource("12_es244")]
-position = Vector2(53.615543, 490.64972)
+[node name="WaterRock4" parent="InTheWater" unique_id=594762992 instance=ExtResource("12_es244")]
+position = Vector2(292, 310)
 
-[node name="WaterRock5" parent="InTheWater/WaterRocks" unique_id=1775755274 instance=ExtResource("12_es244")]
+[node name="WaterRock5" parent="InTheWater" unique_id=1775755274 instance=ExtResource("12_es244")]
 position = Vector2(-148.23828, 954.7435)
 
-[node name="WaterRock6" parent="InTheWater/WaterRocks" unique_id=655531925 instance=ExtResource("12_es244")]
-position = Vector2(549.0706, 645.8522)
+[node name="WaterRock6" parent="InTheWater" unique_id=655531925 instance=ExtResource("12_es244")]
+position = Vector2(786, 554)
 
-[node name="WaterRock7" parent="InTheWater/WaterRocks" unique_id=388138522 instance=ExtResource("12_es244")]
-position = Vector2(335.1267, 448.98172)
+[node name="WaterRock7" parent="InTheWater" unique_id=388138522 instance=ExtResource("12_es244")]
+position = Vector2(774, 579)
+scale = Vector2(0.8, 0.8)
 
-[node name="WaterRock8" parent="InTheWater/WaterRocks" unique_id=900350161 instance=ExtResource("12_es244")]
-position = Vector2(273.69772, 132.7297)
+[node name="WaterRock8" parent="InTheWater" unique_id=900350161 instance=ExtResource("12_es244")]
+position = Vector2(610, 46)
 
-[node name="WaterRock9" parent="InTheWater/WaterRocks" unique_id=926592231 instance=ExtResource("12_es244")]
+[node name="WaterRock9" parent="InTheWater" unique_id=926592231 instance=ExtResource("12_es244")]
 position = Vector2(2686, -6)
 
-[node name="WaterRock10" parent="InTheWater/WaterRocks" unique_id=263156385 instance=ExtResource("12_es244")]
-position = Vector2(3092.7158, 796.3076)
+[node name="WaterRock11" parent="InTheWater" unique_id=462006462 instance=ExtResource("12_es244")]
+position = Vector2(2554, 200)
+sprite_frames = ExtResource("13_thfh2")
 
-[node name="WaterRock11" parent="InTheWater/WaterRocks" unique_id=462006462 instance=ExtResource("12_es244")]
-position = Vector2(3099, 461)
+[node name="WaterRock14" parent="InTheWater" unique_id=55463410 instance=ExtResource("12_es244")]
+position = Vector2(2141, 661)
 
-[node name="WaterRock12" parent="InTheWater/WaterRocks" unique_id=585690536 instance=ExtResource("12_es244")]
-position = Vector2(2816.5854, 957.08813)
+[node name="WaterRock15" parent="InTheWater" unique_id=900354334 instance=ExtResource("12_es244")]
+position = Vector2(2203, 316)
 
-[node name="WaterRock13" parent="InTheWater/WaterRocks" unique_id=1171481931 instance=ExtResource("12_es244")]
-position = Vector2(2569.9119, 605.4549)
-
-[node name="WaterRock14" parent="InTheWater/WaterRocks" unique_id=55463410 instance=ExtResource("12_es244")]
-position = Vector2(2129.914, 686.03326)
-
-[node name="WaterRock15" parent="InTheWater/WaterRocks" unique_id=900354334 instance=ExtResource("12_es244")]
-position = Vector2(2368.056, 420.58646)
-
-[node name="WaterRock16" parent="InTheWater/WaterRocks" unique_id=1691258639 instance=ExtResource("12_es244")]
+[node name="WaterRock16" parent="InTheWater" unique_id=1691258639 instance=ExtResource("12_es244")]
 position = Vector2(2516.0132, 166.1694)
 
-[node name="WaterRock17" parent="InTheWater/WaterRocks" unique_id=213741202 instance=ExtResource("12_es244")]
-position = Vector2(2865.5793, 611.0574)
-
-[node name="WaterRock18" parent="InTheWater/WaterRocks" unique_id=280318976 instance=ExtResource("12_es244")]
-position = Vector2(2409.6099, 927.864)
-
-[node name="WaterRock19" parent="InTheWater/WaterRocks" unique_id=491019577 instance=ExtResource("12_es244")]
-position = Vector2(2404.5752, 1230.1433)
-
-[node name="WaterRock20" parent="InTheWater/WaterRocks" unique_id=2031699422 instance=ExtResource("12_es244")]
-position = Vector2(2080.652, 1295.4508)
-
-[node name="WaterRock21" parent="InTheWater/WaterRocks" unique_id=1716228158 instance=ExtResource("12_es244")]
-position = Vector2(2198.3293, 130.04593)
-
-[node name="WaterRock22" parent="InTheWater/WaterRocks" unique_id=791163964 instance=ExtResource("12_es244")]
+[node name="WaterRock22" parent="InTheWater" unique_id=791163964 instance=ExtResource("12_es244")]
 position = Vector2(2046.5078, 1019.0532)
+
+[node name="WaterRock10" parent="InTheWater" unique_id=273298693 instance=ExtResource("12_es244")]
+position = Vector2(2120, 675)
+sprite_frames = ExtResource("13_thfh2")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=1651151541]
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=1079296690 instance=ExtResource("5_xu4jl")]
-position = Vector2(276, 1186)
+position = Vector2(205, 1189)
 player_name = "StoryWeaver"
 sprite_frames = ExtResource("8_xu4jl")
 
@@ -347,6 +296,46 @@ position = Vector2(2881, 254)
 revealed = false
 next_scene = "uid://c2cdgfy31u86r"
 item = SubResource("Resource_rl5ft")
+
+[node name="Tree" parent="OnTheGround" unique_id=1182216860 instance=ExtResource("30_06hgc")]
+position = Vector2(2783, 34)
+scale = Vector2(1.2351161, 1.1818894)
+sprite_frames = ExtResource("31_thfh2")
+
+[node name="Tree2" parent="OnTheGround" unique_id=268729682 instance=ExtResource("30_06hgc")]
+position = Vector2(3104, 26)
+scale = Vector2(0.90378326, 0.9827504)
+sprite_frames = ExtResource("31_thfh2")
+
+[node name="Tree3" parent="OnTheGround" unique_id=140653176 instance=ExtResource("30_06hgc")]
+position = Vector2(3058, 53)
+scale = Vector2(0.9702769, 0.9232949)
+sprite_frames = ExtResource("31_thfh2")
+
+[node name="Tree4" parent="OnTheGround" unique_id=1615331083 instance=ExtResource("30_06hgc")]
+position = Vector2(2661, 157)
+scale = Vector2(1.2558501, 1.1712801)
+sprite_frames = ExtResource("31_thfh2")
+
+[node name="Bush" parent="OnTheGround" unique_id=1924859315 instance=ExtResource("32_p5ken")]
+position = Vector2(2803, 66)
+sprite_frames = ExtResource("33_p5ken")
+
+[node name="Bush2" parent="OnTheGround" unique_id=1093107514 instance=ExtResource("32_p5ken")]
+position = Vector2(2785, 89)
+sprite_frames = ExtResource("34_s0dut")
+
+[node name="Bush3" parent="OnTheGround" unique_id=1552953484 instance=ExtResource("32_p5ken")]
+position = Vector2(3070, 30)
+sprite_frames = ExtResource("34_s0dut")
+
+[node name="Bush4" parent="OnTheGround" unique_id=1234131945 instance=ExtResource("32_p5ken")]
+position = Vector2(3090, 223)
+sprite_frames = ExtResource("33_p5ken")
+
+[node name="Bush5" parent="OnTheGround" unique_id=250498822 instance=ExtResource("32_p5ken")]
+position = Vector2(3049, 311)
+sprite_frames = ExtResource("34_s0dut")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=495226624]
 
