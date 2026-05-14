@@ -1,24 +1,26 @@
 [gd_scene format=4 uid="uid://7hehs33no2j3"]
 
 [ext_resource type="TileSet" uid="uid://dfp36ffpanjq2" path="res://tiles/elevation.tres" id="1_acxkl"]
+[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_pmwti"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_2paq5"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="2_io7px"]
 [ext_resource type="PackedScene" uid="uid://boc4ibh8o13d2" path="res://scenes/quests/story_quests/el_juguete_perdido/0_intro/components/trees1.tscn" id="2_yiahn"]
 [ext_resource type="SpriteFrames" uid="uid://b7oxscw47ykwj" path="res://scenes/quests/story_quests/el_juguete_perdido/player_components/player_with_apolo_components/storyweaver_apolo.tres" id="3_yiahn"]
-[ext_resource type="PackedScene" uid="uid://cf5a4ramrfe7y" path="res://scenes/quests/story_quests/el_juguete_perdido/player_components/npcs_components/sheep.tscn" id="8_brm1x"]
-[ext_resource type="SpriteFrames" uid="uid://dl5x4d40a8p1t" path="res://scenes/quests/story_quests/el_juguete_perdido/3_sequence_puzzle/components/sheeptoy_idle.tres" id="9_uwvkc"]
+[ext_resource type="PackedScene" uid="uid://c4vbokn408f2c" path="res://scenes/game_elements/props/decoration/sheep/sheep.tscn" id="10_acxkl"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="14_y2gkn"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="15_i80sc"]
 [ext_resource type="Resource" uid="uid://b6umdn3fee6tf" path="res://scenes/quests/story_quests/el_juguete_perdido/3_sequence_puzzle/components/sequence_puzzle.dialogue" id="16_6jc5p"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="17_64xko"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="18_hstlp"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="19_my15m"]
-[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_pmwti"]
 
 [sub_resource type="Resource" id="Resource_u8qfb"]
 script = ExtResource("15_i80sc")
 type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_acxkl"]
+height = 42.0
 
 [node name="SequencePuzzleTemplate" type="Node2D" unique_id=1912634357]
 
@@ -83,9 +85,16 @@ item = SubResource("Resource_u8qfb")
 collected_dialogue = ExtResource("16_6jc5p")
 dialogue_title = &"well_done"
 
-[node name="sheep_idle" parent="OnTheGround" unique_id=2038844619 instance=ExtResource("8_brm1x")]
+[node name="Sheep" parent="OnTheGround" unique_id=398073521 instance=ExtResource("10_acxkl")]
 position = Vector2(1481, 389)
-sprite_frames = ExtResource("9_uwvkc")
+scale = Vector2(-1, 1)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/Sheep" unique_id=1499841164]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Sheep/StaticBody2D" unique_id=899751853]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_acxkl")
 
 [node name="Sign" parent="OnTheGround" unique_id=999258150 instance=ExtResource("17_64xko")]
 position = Vector2(230, 92)
