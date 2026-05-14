@@ -2,9 +2,11 @@
 
 [ext_resource type="AudioStream" uid="uid://dkgtyb0x1i0m2" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/combat_music.tres" id="2_4q3i8"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="2_wqron"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="3_14glv"]
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="3_wqron"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="4_4q3i8"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="4_4r6cg"]
+[ext_resource type="Resource" uid="uid://cmhcuoms2kh1a" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/dialogues/ink_well.dialogue" id="4_oigmj"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="5_4q3i8"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_bk6nl"]
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="6_e81yh"]
@@ -52,10 +54,14 @@ size = Vector2(101, 49)
 [node name="BackgroundMusic" parent="." unique_id=826955846 instance=ExtResource("2_wqron")]
 stream = ExtResource("2_4q3i8")
 
+[node name="Cinematic" type="Node2D" parent="." unique_id=1816467916]
+script = ExtResource("3_14glv")
+dialogue = ExtResource("4_oigmj")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
 [node name="FillGameLogic" type="Node" parent="." unique_id=237952704]
 script = ExtResource("3_wqron")
 barrels_to_win = 2
-autostart = true
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="LevelCompletedAnimation" type="AnimationPlayer" parent="FillGameLogic" unique_id=927256664]
@@ -131,7 +137,6 @@ sprite_frames = ExtResource("9_bk6nl")
 
 [node name="ThrowingEnemy" parent="OnTheGround" unique_id=1393787050 instance=ExtResource("6_e81yh")]
 position = Vector2(59, 264)
-autostart = true
 sprite_frames = ExtResource("10_0kd4s")
 idle_sound_stream = ExtResource("12_btlpg")
 attack_sound_stream = ExtResource("13_i2l34")
@@ -139,7 +144,6 @@ projectile_scene = ExtResource("14_oigmj")
 
 [node name="ThrowingEnemy2" parent="OnTheGround" unique_id=1156522586 instance=ExtResource("6_e81yh")]
 position = Vector2(62, 410)
-autostart = true
 sprite_frames = ExtResource("11_bk6nl")
 idle_sound_stream = ExtResource("12_btlpg")
 attack_sound_stream = ExtResource("13_i2l34")
@@ -171,4 +175,5 @@ limit_bottom = 544
 position_smoothing_enabled = true
 editor_draw_limits = true
 
+[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]
