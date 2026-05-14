@@ -7,6 +7,7 @@ var _play_cinematic: bool = true
 @onready var cinematic: Cinematic = $Cinematic
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var void_patrolling: CharacterBody2D = %VoidPatrolling
+@onready var non_hookable_buttons: Node2D = %NonHookableButtons
 
 
 func _ready() -> void:
@@ -21,5 +22,6 @@ func _on_spawn_point_from_powerup_player_teleported() -> void:
 	_play_cinematic = false
 	if not is_node_ready():
 		await ready
+	non_hookable_buttons.queue_free()
 	void_patrolling.visible = false
 	animation_player.play(&"eat_floor")
