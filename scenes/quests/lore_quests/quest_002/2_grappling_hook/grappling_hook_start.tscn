@@ -21,11 +21,10 @@
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="10_upilw"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="11_p44d7"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="14_jqq45"]
+[ext_resource type="PackedScene" uid="uid://1vunygl4wpj6" path="res://scenes/game_elements/props/button_item/button_item.tscn" id="15_wv4km"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="18_wv4km"]
 [ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="19_6n4qp"]
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="20_wv4km"]
-[ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="21_6n4qp"]
-[ext_resource type="SpriteFrames" uid="uid://cfgahyntmtfgu" path="res://scenes/game_elements/props/powerup/components/powerup_thread.tres" id="23_6n4qp"]
 
 [sub_resource type="Animation" id="Animation_w67qe"]
 length = 0.001
@@ -146,6 +145,7 @@ position_smoothing_enabled = true
 editor_draw_limits = true
 
 [node name="Pins" type="Node2D" parent="OnTheGround" unique_id=2066460652]
+y_sort_enabled = true
 
 [node name="HookablePin" parent="OnTheGround/Pins" unique_id=1712001088 instance=ExtResource("5_cspw2")]
 position = Vector2(975, 854)
@@ -212,6 +212,19 @@ position = Vector2(-376, 201)
 
 [node name="HookableButtonItem12" parent="OnTheGround/HookableButtons" unique_id=1554954874 instance=ExtResource("6_3g3x4")]
 position = Vector2(-417, 227)
+
+[node name="NonHookableButtons" type="Node2D" parent="OnTheGround" unique_id=872709428]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="ButtonItem" parent="OnTheGround/NonHookableButtons" unique_id=944394142 instance=ExtResource("15_wv4km")]
+position = Vector2(966, 783)
+
+[node name="ButtonItem2" parent="OnTheGround/NonHookableButtons" unique_id=72748837 instance=ExtResource("15_wv4km")]
+position = Vector2(1179, 1124)
+
+[node name="ButtonItem3" parent="OnTheGround/NonHookableButtons" unique_id=1623745746 instance=ExtResource("15_wv4km")]
+position = Vector2(1132, 1079)
 
 [node name="CollectibleItem" parent="OnTheGround" unique_id=317578047 instance=ExtResource("7_upilw")]
 position = Vector2(1434, 520)
@@ -293,14 +306,6 @@ sprite_frames = ExtResource("19_6n4qp")
 
 [node name="Bush14" parent="OnTheGround/Bushes" unique_id=391246514 instance=ExtResource("18_wv4km")]
 position = Vector2(261, 440)
-
-[node name="GrapplePowerup" parent="OnTheGround" unique_id=1795462717 instance=ExtResource("21_6n4qp")]
-position = Vector2(933, 689)
-ability = 16
-ability_name = "Grapple"
-interact_action = "Collect Grapple"
-sprite_frames = ExtResource("23_6n4qp")
-highlight_color = Color(0.8910073, 0.7227245, 0, 1)
 
 [node name="Teleporter" type="Area2D" parent="." unique_id=579212473]
 position = Vector2(2704, 1216)
