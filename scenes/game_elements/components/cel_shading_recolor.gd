@@ -77,6 +77,45 @@ const SKIN_COLORS: Dictionary[String, Color] = {
 	"pearl": Color(0.949, 0.867, 0.894, 1.0),
 }
 
+const HAIR_COLORS: Dictionary[String, Color] = {
+	"blonde": Color(0.93, 0.852, 0.273, 1.0),
+	"dark blonde": Color(0.831, 0.698, 0.264, 1.0),
+	"dark blonde 2": Color(0.813, 0.623, 0.198, 1.0),
+	"medium brown": Color(0.629, 0.406, 0.165, 1.0),
+	"dark brown": Color(0.466, 0.322, 0.139, 1.0),
+	"dark brown 2": Color(0.41, 0.241, 0.116, 1.0),
+	"black": Color(0.133, 0.194, 0.247, 1.0),
+	"black 2": Color(0.066, 0.064, 0.112, 1.0),
+	"auburn": Color(0.598, 0.324, 0.279, 1.0),
+	"red": Color(0.772, 0.325, 0.274, 1.0),
+	"gray": Color(0.755, 0.812, 0.842, 1.0),
+	"white": Color(0.898, 0.923, 0.936, 1.0),
+}
+
+const LINE_COLOR := Color(0x161c2eff)
+const LINE_COLOR_LIGHT := Color(0x364356ff)
+
+const CLOTH_COLORS: Dictionary[String, Color] = {
+	"magnolia": Color(0.805, 0.676, 0.461, 1.0),
+	"dusty rose": Color(0.662, 0.41, 0.425, 1.0),
+	"orange": Color(0.809, 0.322, 0.105, 1.0),
+	"violet": Color(0.437, 0.279, 0.492, 1.0),
+	"amaranth purple": Color(0.662, 0.109, 0.446, 1.0),
+	"red": Color(0.773, 0.109, 0.239, 1.0),
+	"blue": Color(0.177, 0.341, 0.542, 1.0),
+	"blue velvet": Color(0.024, 0.235, 0.698, 1.0),
+	"dark grey": Color(0.281, 0.366, 0.453, 1.0),
+	"brown": Color("af5d23"),
+	"green": Color(0.399, 0.546, 0.437, 1.0),
+	"black": Color(0.018, 0.039, 0.023, 1.0),
+}
+
+const SKIN_PALETTE_INDEX := 0
+const HAIR_PALETTE_INDEX := 4
+const CLOTH_PALETTE_INDEX := 8
+
+const TOWNIE_KEYS_PALETTE = preload("uid://bt0d8ui0rahnd")
+
 ## The shader material to modify.
 ## If [member node_to_recolor] has a material of type [ShaderMaterial], that one will be used.
 ## [b]Note:[/b] This behavior will only work if this
@@ -90,27 +129,30 @@ const SKIN_COLORS: Dictionary[String, Color] = {
 @export var node_to_recolor: CanvasItem:
 	set = _set_node_to_recolor
 
-## Medium or unshaded color of a 3-colors cel-shading palette
-## [br][br]
-## Defaults to yellow emoji-like color.
-@export var medium_color: Color = Color(0.9, 0.9, 0.0, 1.0):
-	set = _set_medium_color
+## The source or "key" colors to change.
+@export var key_colors_palette: ColorPalette = TOWNIE_KEYS_PALETTE
 
-## High or lightened color of a 3-colors cel-shading palette
-@export var high_color: Color:
-	set = _set_high_color
+## The output or final colors. Each key color in [member key_colors] will map to a color
+## of the same index position in this palette.
+@export var new_colors_palette: ColorPalette
 
-## Low or darkened color of a 3-colors cel-shading palette
-@export var low_color: Color:
-	set = _set_low_color
+## Click this button to update the colors.
+@export_tool_button("Update") var update_button: Callable = colorize
 
-## Whether to the high and low colors from the medium color
-@export var automatic_shades: bool = true:
-	set = _set_automatic_shades
+## Click this button to pick random skin, hair and cloth colors.
+@export_tool_button("Randomize") var randomize_button: Callable = randomize
 
-## Click this button to pick a random color from a list of known skin colors
+## Click this button to pick a random color from a list of known skin colors.
 @export_tool_button("Random Skin Color")
 var random_skin_color_button: Callable = set_random_skin_color
+
+## Click this button to pick a random color from a list of known hair colors.
+@export_tool_button("Random Hair Color")
+var random_hair_color_button: Callable = set_random_hair_color
+
+## Click this button to pick a random color from a list of known cloth colors.
+@export_tool_button("Random Cloth Color")
+var random_cloth_color_button: Callable = set_random_cloth_color
 
 
 func _ready() -> void:
@@ -125,69 +167,113 @@ func _set_node_to_recolor(new_node_to_recolor: CanvasItem) -> void:
 		colorize()
 
 
-func _set_medium_color(new_medium_color: Color) -> void:
-	medium_color = new_medium_color
-	if automatic_shades:
-		high_color = medium_color.lightened(0.2)
-		low_color = medium_color.darkened(0.2)
-	colorize()
-
-
-func _set_high_color(new_high_color: Color) -> void:
-	high_color = new_high_color
-	if automatic_shades:
-		return
-	colorize()
-
-
-func _set_low_color(new_low_color: Color) -> void:
-	low_color = new_low_color
-	if automatic_shades:
-		return
-	colorize()
-
-
-func _set_automatic_shades(new_automatic_shades: bool) -> void:
-	automatic_shades = new_automatic_shades
-	notify_property_list_changed()
-	if automatic_shades:
-		medium_color = medium_color
-
-
-func _validate_property(property: Dictionary) -> void:
-	match property["name"]:
-		"high_color", "low_color":
-			if automatic_shades:
-				property.usage |= PROPERTY_USAGE_READ_ONLY
-
-
 ## Apply the colors by setting the shader parameters
 func colorize() -> void:
+	if not new_colors_palette:
+		new_colors_palette = ColorPalette.new()
 	if not shader_material:
 		return
+	var source: PackedInt32Array
+	source.resize(768)
 
-	shader_material.set_shader_parameter("shade_medium_new", medium_color)
-	shader_material.set_shader_parameter("shade_high_new", high_color)
-	shader_material.set_shader_parameter("shade_low_new", low_color)
+	var output: PackedVector3Array
+	output.resize(256)
+
+	for i in range(key_colors_palette.colors.size()):
+		var source_color := key_colors_palette.colors[i]
+		source[i * 3 + 0] = source_color.r8
+		source[i * 3 + 1] = source_color.g8
+		source[i * 3 + 2] = source_color.b8
+
+	var color_count := new_colors_palette.colors.size()
+	for i in range(color_count):
+		var color := new_colors_palette.colors[i]
+		output[i] = Vector3(color.r, color.g, color.b)
+
+	shader_material.set_shader_parameter("color_count", color_count)
+	shader_material.set_shader_parameter("key_colors", source)
+	shader_material.set_shader_parameter("new_colors", output)
 
 
-## Pick a random color from [constant SKIN_COLORS] and automatically set all shades from it.
-func set_random_skin_color(rng: RandomNumberGenerator = null) -> void:
-	automatic_shades = true
+func _change_colors(
+	in_colors: PackedColorArray,
+	colors_data: Dictionary[String, Color],
+	palette_index: int,
+	rng: RandomNumberGenerator = null
+) -> PackedColorArray:
+	var out_colors := in_colors.duplicate()
+	if out_colors.size() < palette_index + 4:
+		out_colors.resize(palette_index + 4)
+
 	var random_int: int = rng.randi() if rng else randi()
-	var index := random_int % SKIN_COLORS.size()
-	medium_color = SKIN_COLORS.values()[index]
+	var index := random_int % colors_data.size()
+	var medium_color: Color = colors_data.values()[index]
+	var high_color := medium_color.lightened(0.2)
+	var low_color := medium_color.darkened(0.2)
+
+	out_colors.set(palette_index + 0, high_color)
+	out_colors.set(palette_index + 1, medium_color)
+	out_colors.set(palette_index + 2, low_color)
+
+	if low_color.v < 0.3:
+		out_colors.set(palette_index + 3, LINE_COLOR_LIGHT)  #medium_color.lightened(0.7))
+	else:
+		out_colors.set(palette_index + 3, LINE_COLOR)
+
+	return out_colors
+
+
+## Pick random colors for skin, hair and cloth.
+func randomize(rng: RandomNumberGenerator = null) -> void:
+	if not new_colors_palette:
+		new_colors_palette = ColorPalette.new()
+	var skin_colors := _change_colors(
+		new_colors_palette.colors, SKIN_COLORS, SKIN_PALETTE_INDEX, rng
+	)
+	var skin_hair_colors := _change_colors(skin_colors, HAIR_COLORS, HAIR_PALETTE_INDEX, rng)
+	var skin_hair_cloth_colors := _change_colors(
+		skin_hair_colors, CLOTH_COLORS, CLOTH_PALETTE_INDEX, rng
+	)
+	new_colors_palette.set_colors(skin_hair_cloth_colors)
+	colorize()
+
+
+## Pick a random color from [constant SKIN_COLORS] and automatically set high/low shades from it.
+func set_random_skin_color(rng: RandomNumberGenerator = null) -> void:
+	var new_colors := _change_colors(
+		new_colors_palette.colors, SKIN_COLORS, SKIN_PALETTE_INDEX, rng
+	)
+	new_colors_palette.set_colors(new_colors)
+	colorize()
+
+
+## Pick a random color from [constant HAIR_COLORS] and automatically set high/low shades from it.
+func set_random_hair_color(rng: RandomNumberGenerator = null) -> void:
+	var new_colors := _change_colors(
+		new_colors_palette.colors, HAIR_COLORS, HAIR_PALETTE_INDEX, rng
+	)
+	new_colors_palette.set_colors(new_colors)
+	colorize()
+
+
+## Pick a random color from [constant CLOTH_COLORS] and automatically set high/low shades from it.
+func set_random_cloth_color(rng: RandomNumberGenerator = null) -> void:
+	var new_colors := _change_colors(
+		new_colors_palette.colors, CLOTH_COLORS, CLOTH_PALETTE_INDEX, rng
+	)
+	new_colors_palette.set_colors(new_colors)
+	colorize()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
 	if not shader_material:
-		warnings.append("The Skin Node material must be a ShaderMaterial.")
+		warnings.append("The shader material must be set.")
 		return warnings
 	if not shader_material.shader:
-		warnings.append("The Skin Node material must have a shader.")
+		warnings.append("The shader material must have a shader.")
 		return warnings
-	for uniform_name: String in ["shade_medium_new", "shade_high_new", "shade_low_new"]:
+	for uniform_name: String in ["color_count", "key_colors", "new_colors"]:
 		if shader_material.get_shader_parameter(uniform_name) == null:
-			warnings.append("The Node To Recolor material must have an uniform %s." % uniform_name)
+			warnings.append("The material must have an uniform %s." % uniform_name)
 	return warnings
