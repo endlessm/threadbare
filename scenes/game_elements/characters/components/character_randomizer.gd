@@ -37,6 +37,9 @@ const CEL_SHADING_RECOLOR_MATERIAL = preload("uid://b7kf0suo0sc7k")
 ## If none, a duplicate of the corresponding material will be set.
 @export var shader_material: ShaderMaterial
 
+## Click this button to update the randomization according to the [member character_seed].
+@export_tool_button("Update") var update_button: Callable = apply_character_randomizations
+
 ## Click this button to create a random character.
 @export_tool_button("Randomize") var randomize_character_button: Callable = randomize_character
 
@@ -61,7 +64,7 @@ func apply_character_randomizations() -> void:
 	_random_number_generator.seed = character_seed
 
 	if cel_shading_recolor:
-		cel_shading_recolor.set_random_skin_color(_random_number_generator)
+		cel_shading_recolor.randomize(_random_number_generator)
 
 	for n in random_texture_nodes:
 		n.randomize_texture(_random_number_generator)
