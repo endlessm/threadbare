@@ -8,4 +8,4 @@ extends Label
 
 
 func _ready() -> void:
-	text = preload("./version.gd").get_version()
+	text = preload("./version.gd").get_full_version()
