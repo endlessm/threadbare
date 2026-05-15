@@ -24,7 +24,8 @@ const QUEST_RESOURCE_NAME := "quest.tres"
 
 ## Directory to scan for quests. This directory should have 1 or more subdirectories, each of which
 ## have a [code]quest.tres[/code] file within.
-@export_dir var quest_directory: String = "res://scenes/quests/story_quests"
+@export_dir var quest_directory: String = "res://scenes/quests/story_quests":
+	set = _set_quest_directory
 
 var _quests: Array[Quest] = []
 var _current_spread_index: int = -1
@@ -49,10 +50,13 @@ func _enumerate_quests() -> Array[Quest]:
 	return quests
 
 
+func _set_quest_directory(new_value: String) -> void:
+	quest_directory = new_value
+	_quests = _enumerate_quests()
+
+
 func _ready() -> void:
 	animated_book.animation_finished.connect(_on_animation_finished)
-
-	_quests = _enumerate_quests()
 
 	var previous_button: Button = null
 	for i in _quests.size():
@@ -186,3 +190,7 @@ func _on_back_button_pressed() -> void:
 
 func reset_focus() -> void:
 	_switch_to_page(0)
+
+
+func has_quests() -> bool:
+	return not _quests.is_empty()

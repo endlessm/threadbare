@@ -57,6 +57,10 @@ func _get_configuration_warnings() -> PackedStringArray:
 	return warnings
 
 
+func has_quests() -> bool:
+	return _storybook and _storybook.has_quests()
+
+
 ## Show a storybook to the player, and wait for them to select a story or close the book.
 func show_storybook() -> void:
 	if not _storybook:
@@ -81,6 +85,10 @@ func congratulate_player() -> void:
 func _before_dialogue() -> void:
 	if eternal_loom and eternal_loom.is_item_offering_possible():
 		talk_behavior.title = "go_to_loom"
+	elif not _storybook or not _storybook.has_quests():
+		talk_behavior.title = "no_quests"
+	else:
+		talk_behavior.title = ""
 
 
 func _on_interaction_ended() -> void:
