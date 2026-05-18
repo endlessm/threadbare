@@ -4,6 +4,9 @@ name: "Build and Export Game"
 on:
   workflow_dispatch:
     inputs:
+      build_windows:
+        description: "Also build for Windows"
+        type: boolean
       build_flatpak:
         description: "Also build a Flatpak bundle"
         type: boolean
@@ -22,56 +25,26 @@ env:
   PCK_NAME: threadbare
 
 jobs:
-  build:
+  web:
     name: Build for web
     runs-on: ubuntu-latest
     outputs:
-      linux-changed: ${{ steps.changes.outputs.linux }}
+      linux-changed:   ${{ steps.changes.outputs.linux }}
+      windows-changed: ${{ steps.changes.outputs.windows }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          # TODO: can we use --filter to avoid fetching the trees & blobs for
-          # all historical commits, while still fetching the commit history &
-          # tags?
+          # Fetch full history of commits and tags so that git describe --tags works
           fetch-depth: 0
-          fetch-tags: true
 
-      - name: Create Git LFS file list
-        run: git lfs ls-files -l |cut -d' ' -f1 |sort >.git/lfs-hashes.txt
-
-      - name: Restore Git LFS object cache
-        uses: actions/cache@v5
-        with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfsdata-v1-${{ hashFiles('.git/lfs-hashes.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-lfsdata-v1-
-            ${{ runner.os }}-lfsdata
-
-      - name: Fetch any needed Git LFS objects and prune extraneous ones
-        run: git lfs fetch --prune
-
-      - name: Check out Git LFS content
-        run: git lfs checkout
-
-      - id: changes
-        uses: dorny/paths-filter@v4
-        with:
-          filters: |
-            linux:
-              - 'linux/**'
-              - .github/workflows/export.yml
+      - uses: ./.github/actions/lfs-cached-checkout
 
       - name: Export web build
-        uses: endlessm/godot-export-action@v1
+        uses: endlessm/godot-export-action@v2
         with:
           godot_version: "4.6.2"
-
-      - name: Check GDScript diagnostics
-        run: |
-          python tools/check-gdscript-lsp-diagnostics.py --godot build/godot || \
-          echo "::warning::GDScript diagnostics check failed (exit code $?)"
+          export_preset: "Web"
 
       - name: Upload web artifact
         uses: actions/upload-artifact@v7
@@ -79,10 +52,57 @@ jobs:
           name: web
           path: build/web
 
+      # This check needs the LFS objects to have been fetched and the project
+      # imported into Godot. Do it here rather than in a separate job to save
+      # time & electrons.
+      - name: Check GDScript diagnostics
+        run: |
+          python tools/check-gdscript-lsp-diagnostics.py --godot build/godot || \
+          echo "::warning::GDScript diagnostics check failed (exit code $?)"
+
+      # This could be a separate job but this one runs every time anyway.
+      - name: Check if Windows & Linux builds should be run
+        id: changes
+        uses: dorny/paths-filter@v4
+        with:
+          filters: |
+            linux:
+              - 'linux/**'
+              - .github/workflows/export.yml
+            windows:
+              - export_presets.cfg
+              - .github/workflows/export.yml
+
+  windows:
+    name: Build for Windows
+    runs-on: ubuntu-latest
+    needs: web
+    if: ${{ inputs.build_windows || github.event_name == 'release' || needs.web.outputs.windows-changed == 'true' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          # Fetch full history of commits and tags so that git describe --tags works
+          fetch-depth: 0
+
+      - uses: ./.github/actions/lfs-cached-checkout
+
+      - name: Export Windows build
+        uses: endlessm/godot-export-action@v2
+        with:
+          godot_version: "4.6.2"
+          export_preset: "Windows x86_64"
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: windows-x86_64
+          path: build/windows-x86_64
+
   flatpak:
     name: Build Flatpak
-    needs: build
-    if: ${{ inputs.build_flatpak || github.event_name == 'release' || needs.build.outputs.linux-changed == 'true' }}
+    needs: web
+    if: ${{ inputs.build_flatpak || github.event_name == 'release' || needs.web.outputs.linux-changed == 'true' }}
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
@@ -127,7 +147,7 @@ jobs:
 
   release:
     name: Attach to release
-    needs: [build, flatpak]
+    needs: [web, flatpak, windows]
     if: ${{ github.event_name == 'release' }}
     runs-on: ubuntu-latest
     env:
@@ -137,6 +157,12 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: web
+          skip-decompress: true
+
+      - name: Download Windows x86_64 bundle
+        uses: actions/download-artifact@v8
+        with:
+          name: windows-x86_64
           skip-decompress: true
 
       - name: Download Flatpak bundle
@@ -157,8 +183,9 @@ jobs:
           mv index.pck 'threadbare-${{ github.ref_name }}.pck'
 
           mv web.zip 'threadbare-${{ github.ref_name }}-web.zip'
+          mv windows-x86_64.zip  'threadbare-${{ github.ref_name }}-windows-x86_64.zip'
 
-          mv threadbare.flatpak 'threadbare-${{ github.ref_name }}-x86_64.flatpak'
+          mv threadbare.flatpak 'threadbare-${{ github.ref_name }}-linux-x86_64.flatpak'
           mv threadbare-linux-metadata.tar.gz 'threadbare-${{ github.ref_name }}-linux-metadata.tar.gz'
 
           for file in threadbare-${{ github.ref_name }}*; do
