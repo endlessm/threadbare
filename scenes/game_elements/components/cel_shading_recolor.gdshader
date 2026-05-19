@@ -6,8 +6,8 @@
  *
  * It is copied from: [link]https://github.com/KoBeWi/Godot-Palette-Swap-Shader/blob/master/addons/PaletteSwapShader/SimplePaletteSwap.gdshader[/link]
  *
- * SPDX-FileCopyrightText: The Threadbare Authors
- * SPDX-License-Identifier: MPL-2.0
+ * SPDX-FileCopyrightText: 2025 KoBeWi
+ * SPDX-License-Identifier: MIT
  */
 shader_type canvas_item;
 
