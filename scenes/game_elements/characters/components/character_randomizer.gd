@@ -20,8 +20,6 @@ extends CharacterBody2D
 ## Also can look at sides. Defaults to look at left, and scales everything by -1 to look
 ## at right.
 
-const CEL_SHADING_RECOLOR_MATERIAL = preload("uid://b7kf0suo0sc7k")
-
 ## The random seed of this character. Setting another character to the same seed
 ## will make them identical. Setting it to zero will reset the skin color.
 @export var character_seed: int
@@ -32,10 +30,6 @@ const CEL_SHADING_RECOLOR_MATERIAL = preload("uid://b7kf0suo0sc7k")
 ## Where is the character facing. Relative to the character.
 @export var look_at_side: Enums.LookAtSide = Enums.LookAtSide.LEFT:
 	set = _set_look_at_side
-
-## The shader material that will be set to all the sprites, the parts that conform the character.
-## If none, a duplicate of the corresponding material will be set.
-@export var shader_material: ShaderMaterial
 
 ## Click this button to update the randomization according to the [member character_seed].
 @export_tool_button("Update") var update_button: Callable = apply_character_randomizations
@@ -90,13 +84,8 @@ func randomize_character() -> void:
 func _ready() -> void:
 	_setup_nodes()
 
-	if not shader_material:
-		shader_material = (CEL_SHADING_RECOLOR_MATERIAL as ShaderMaterial).duplicate()
-
 	for node in animated_sprites:
-		node.material = shader_material
-
-	cel_shading_recolor.shader_material = shader_material
+		node.material = cel_shading_recolor.shader_material
 
 	if character_seed:
 		apply_character_randomizations()

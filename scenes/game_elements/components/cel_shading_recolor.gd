@@ -173,11 +173,14 @@ func colorize() -> void:
 		new_colors_palette = ColorPalette.new()
 	if not shader_material:
 		return
+
+	var color_count := new_colors_palette.colors.size()
+
 	var source: PackedInt32Array
-	source.resize(768)
+	source.resize(color_count * 3)
 
 	var output: PackedVector3Array
-	output.resize(256)
+	output.resize(color_count)
 
 	for i in range(key_colors_palette.colors.size()):
 		var source_color := key_colors_palette.colors[i]
@@ -185,7 +188,6 @@ func colorize() -> void:
 		source[i * 3 + 1] = source_color.g8
 		source[i * 3 + 2] = source_color.b8
 
-	var color_count := new_colors_palette.colors.size()
 	for i in range(color_count):
 		var color := new_colors_palette.colors[i]
 		output[i] = Vector3(color.r, color.g, color.b)

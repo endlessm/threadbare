@@ -12,8 +12,8 @@
 shader_type canvas_item;
 
 uniform int color_count;
-uniform ivec3[256] key_colors;
-uniform vec3[256] new_colors;
+uniform ivec3[12] key_colors;
+uniform vec3[12] new_colors;
 
 void fragment() {
 	ivec3 colori = ivec3(round(COLOR.rgb * 255.0));
