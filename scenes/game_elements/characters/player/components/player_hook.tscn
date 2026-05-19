@@ -2,6 +2,11 @@
 
 [ext_resource type="Script" uid="uid://b7704hdflt5t8" path="res://scenes/game_elements/characters/player/components/player_hook.gd" id="1_40sye"]
 [ext_resource type="PackedScene" uid="uid://b0dehcnfo68j1" path="res://scenes/game_elements/props/hook_control/hook_control.tscn" id="2_5svv0"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="3_wahl3"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_muesi"]
+
+[sub_resource type="Resource" id="Resource_lv7pl"]
+script = ExtResource("4_muesi")
 
 [node name="PlayerHook" type="Node2D" unique_id=1972626703 groups=["hook_listener"]]
 script = ExtResource("1_40sye")
@@ -10,3 +15,16 @@ script = ExtResource("1_40sye")
 state = 1
 
 [node name="HookEnding" type="Marker2D" parent="." unique_id=123633963]
+
+[node name="PhantomCamera2D" type="Node2D" parent="." unique_id=173768274 node_paths=PackedStringArray("follow_target")]
+unique_name_in_owner = true
+top_level = true
+script = ExtResource("3_wahl3")
+follow_mode = 5
+follow_target = NodePath("../HookEnding")
+tween_resource = SubResource("Resource_lv7pl")
+follow_damping = true
+dead_zone_width = 0.5
+dead_zone_height = 0.5
+draw_limits = true
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
