@@ -102,7 +102,6 @@ func _ready() -> void:
 	_indicator = HOOKABLE_INDICATOR.instantiate()
 	if indicator_point:
 		indicator_point.add_child(_indicator)
-		# _indicator.bouncing = true
 
 	observers_changed.connect(_on_observers_changed)
 
