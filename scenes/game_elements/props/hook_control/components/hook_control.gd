@@ -161,6 +161,8 @@ func _throw() -> void:
 					if hook_area:
 						hooked_to.hook_control.exclude_areas.append(hook_area)
 				state = State.DISABLED
+			else:
+				state = State.AIMING_PAUSED
 			get_tree().call_group(&"hook_listener", &"hooked", hooked_to, is_loop)
 		else:
 			release()
