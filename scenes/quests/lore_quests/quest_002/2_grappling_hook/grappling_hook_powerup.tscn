@@ -16,8 +16,11 @@
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="8_g2ubw"]
 [ext_resource type="TileSet" uid="uid://bdc7ucso7bx0s" path="res://tiles/shadows.tres" id="8_iu48k"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="11_7v23v"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="12_6tfyx"]
 [ext_resource type="PackedScene" uid="uid://cokul8w425pja" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_spreading_enemy.tscn" id="12_ptg16"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="13_ckhob"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="13_vodlh"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="14_0rece"]
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="15_rlnni"]
 [ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="17_a36ca"]
 [ext_resource type="SpriteFrames" uid="uid://cfgahyntmtfgu" path="res://scenes/game_elements/props/powerup/components/powerup_thread.tres" id="18_a36ca"]
@@ -26,6 +29,9 @@
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="22_iu48k"]
 [ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="23_b7aom"]
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="25_iu48k"]
+
+[sub_resource type="Resource" id="Resource_ycnvk"]
+script = ExtResource("14_0rece")
 
 [sub_resource type="Resource" id="Resource_rlnni"]
 script = ExtResource("13_vodlh")
@@ -87,12 +93,37 @@ player_name = "Storyweaver"
 sprite_frames = ExtResource("5_7gbyj")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1997394979]
+physics_interpolation_mode = 1
+top_level = true
+position = Vector2(1280, 2008)
 limit_left = -1792
 limit_top = 0
 limit_right = 1920
 limit_bottom = 2368
-position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="PhantomCameraHost" type="Node" parent="OnTheGround/Player/Camera2D" unique_id=194932047]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("12_6tfyx")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="PhantomCamera2D" type="Node2D" parent="OnTheGround/Player" unique_id=388370853 node_paths=PackedStringArray("follow_target")]
+top_level = true
+position = Vector2(1632, 2312)
+script = ExtResource("13_ckhob")
+priority = 10
+follow_mode = 2
+follow_target = NodePath("..")
+tween_resource = SubResource("Resource_ycnvk")
+tween_on_load = false
+follow_damping = true
+draw_limits = true
+limit_left = -1792
+limit_top = 0
+limit_right = 1920
+limit_bottom = 2368
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 
 [node name="ButtonsA" type="Node2D" parent="OnTheGround" unique_id=545916953]
 y_sort_enabled = true

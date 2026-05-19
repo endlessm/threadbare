@@ -19,13 +19,19 @@
 [ext_resource type="PackedScene" uid="uid://cvtty6np3dcv4" path="res://scenes/game_elements/props/all_hooked/all_hooked.tscn" id="10_e0lfj"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="10_qsqmk"]
 [ext_resource type="PackedScene" uid="uid://evb46lm6ssu2" path="res://scenes/game_elements/props/hookable_pin/hookable_pin.tscn" id="12_qsqmk"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="14_7iwrw"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="14_bxmjx"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="14_omyxq"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="15_374sg"]
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="15_mg68y"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="16_dysib"]
 [ext_resource type="PackedScene" uid="uid://b7h2j0j6jmigc" path="res://scenes/game_elements/props/tree/tree_void_affected.tscn" id="22_374sg"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="23_p8sis"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="24_7iwrw"]
 [ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="25_374sg"]
+
+[sub_resource type="Resource" id="Resource_374sg"]
+script = ExtResource("16_dysib")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_41yfr"]
 size = Vector2(140.5, 194.5)
@@ -87,12 +93,37 @@ player_name = "Storyweaver"
 sprite_frames = ExtResource("5_dwcg4")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1852627393]
+physics_interpolation_mode = 1
+top_level = true
+position = Vector2(832, 462)
 limit_left = 192
 limit_top = 0
 limit_right = 1920
 limit_bottom = 1728
-position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="PhantomCameraHost" type="Node" parent="OnTheGround/Player/Camera2D" unique_id=1975954443]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("14_7iwrw")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="PhantomCamera2D" type="Node2D" parent="OnTheGround/Player" unique_id=2063429275 node_paths=PackedStringArray("follow_target")]
+top_level = true
+position = Vector2(232, 462)
+script = ExtResource("15_374sg")
+priority = 10
+follow_mode = 2
+follow_target = NodePath("..")
+tween_resource = SubResource("Resource_374sg")
+tween_on_load = false
+follow_damping = true
+draw_limits = true
+limit_left = 192
+limit_top = 0
+limit_right = 1920
+limit_bottom = 1728
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 
 [node name="ButtonsA" type="Node2D" parent="OnTheGround" unique_id=382045558]
 y_sort_enabled = true

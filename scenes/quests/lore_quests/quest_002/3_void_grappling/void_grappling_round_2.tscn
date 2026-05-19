@@ -13,7 +13,10 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="11_ikk66"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="12_80kqf"]
 [ext_resource type="PackedScene" uid="uid://dohb701lxbe5s" path="res://scenes/game_elements/props/hookable_needle/hookable_needle.tscn" id="13_6fnam"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="13_hxopk"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="13_lg1kl"]
 [ext_resource type="PackedScene" uid="uid://evb46lm6ssu2" path="res://scenes/game_elements/props/hookable_pin/hookable_pin.tscn" id="14_4tdqi"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="14_lg1kl"]
 [ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="16_bkul7"]
 [ext_resource type="SpriteFrames" uid="uid://cfgahyntmtfgu" path="res://scenes/game_elements/props/powerup/components/powerup_thread.tres" id="17_jr6vd"]
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="20_q1v2m"]
@@ -32,6 +35,9 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_grfk2"]
 size = Vector2(246, 549)
+
+[sub_resource type="Resource" id="Resource_7xn87"]
+script = ExtResource("14_lg1kl")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wgn4u"]
 radius = 101.0
@@ -150,12 +156,37 @@ player_name = "Storyweaver"
 sprite_frames = ExtResource("12_80kqf")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=430310865]
+physics_interpolation_mode = 1
+top_level = true
+position = Vector2(640, 428)
 limit_left = 0
 limit_top = -320
 limit_right = 5120
 limit_bottom = 3008
-position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="PhantomCameraHost" type="Node" parent="OnTheGround/Player/Camera2D" unique_id=1821023031]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("13_lg1kl")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="PhantomCamera2D" type="Node2D" parent="OnTheGround/Player" unique_id=1096245283 node_paths=PackedStringArray("follow_target")]
+top_level = true
+position = Vector2(68, 428)
+script = ExtResource("13_hxopk")
+priority = 10
+follow_mode = 2
+follow_target = NodePath("..")
+tween_resource = SubResource("Resource_7xn87")
+tween_on_load = false
+follow_damping = true
+draw_limits = true
+limit_left = 0
+limit_top = -320
+limit_right = 5120
+limit_bottom = 3008
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 
 [node name="VoidPatrolling" parent="OnTheGround" unique_id=1622889110 node_paths=PackedStringArray("void_layer", "idle_patrol_path") instance=ExtResource("23_l07ag")]
 position = Vector2(960, 256)
