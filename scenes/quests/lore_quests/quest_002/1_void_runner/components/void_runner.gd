@@ -1,9 +1,8 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-@tool
-extends NPC
+extends Node2D
 
-@export var enemy: CharacterBody2D
+@onready var enemy: CharacterBody2D = %VoidSpreadingEnemy
 
 
 func is_enemy_defeated() -> bool:
