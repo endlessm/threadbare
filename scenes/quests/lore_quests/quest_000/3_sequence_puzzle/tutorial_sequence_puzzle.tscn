@@ -28,28 +28,14 @@
 [ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="20_7lgro"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="21_hsgd8"]
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="22_r2jqy"]
-[ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="23_61ued"]
-[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="24_cvlqn"]
-[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="25_0u7h2"]
-[ext_resource type="Script" uid="uid://dlnfvmc1o31rc" path="res://scenes/quests/lore_quests/quest_000/3_sequence_puzzle/components/townie_behaviors.gd" id="25_ewpk3"]
+[ext_resource type="PackedScene" uid="uid://b2mj4jggli0ci" path="res://scenes/quests/lore_quests/quest_000/tutorial_npc/tutorial_npc.tscn" id="23_61ued"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="26_x36jo"]
-[ext_resource type="Script" uid="uid://id28maao3vdy" path="res://scenes/game_logic/walk_behaviors/path_walk_behavior.gd" id="27_0u7h2"]
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="27_rtvrw"]
-[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="28_ewpk3"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="29_2be51"]
 [ext_resource type="Resource" uid="uid://bevp181alogxl" path="res://scenes/quests/lore_quests/quest_000/3_sequence_puzzle/components/tutorial_sequence_puzzle.dialogue" id="30_ypup5"]
 [ext_resource type="PackedScene" uid="uid://c4vbokn408f2c" path="res://scenes/game_elements/props/decoration/sheep/sheep.tscn" id="32_orron"]
 [ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="34_2be51"]
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="37_545ss"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_tfxnn"]
-size = Vector2(52, 61)
-
-[sub_resource type="Resource" id="Resource_2be51"]
-script = ExtResource("28_ewpk3")
-walk_speed = 250.0
-run_speed = 250.0
-metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [sub_resource type="Curve2D" id="Curve2D_ewpk3"]
 _data = {
@@ -60,9 +46,8 @@ point_count = 3
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ypup5"]
 size = Vector2(64, 64)
 
-[node name="TutorialSequencePuzzle" type="Node2D" unique_id=217609538 node_paths=PackedStringArray("puzzle")]
+[node name="TutorialSequencePuzzle" type="Node2D" unique_id=217609538]
 script = ExtResource("1_2be51")
-puzzle = NodePath("OnTheGround/SequencePuzzle")
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=2088852286]
 
@@ -188,46 +173,12 @@ text = "Fray's End"
 [node name="Door" parent="OnTheGround" unique_id=1860367584 instance=ExtResource("22_r2jqy")]
 position = Vector2(928, 58)
 
-[node name="Townie" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("23_61ued")]
+[node name="TutorialNPC" parent="OnTheGround" unique_id=1098678013 node_paths=PackedStringArray("path") instance=ExtResource("23_61ued")]
+unique_name_in_owner = true
 position = Vector2(-347, 289)
-motion_mode = 1
-character_seed = 3222241206
-
-[node name="InteractArea" type="Area2D" parent="OnTheGround/Townie" unique_id=1871294201]
-collision_layer = 32
-collision_mask = 0
-script = ExtResource("24_cvlqn")
-metadata/_custom_type_script = "uid://du8wfijr35r35"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Townie/InteractArea" unique_id=797020185]
-visible = false
-position = Vector2(0, -23.5)
-shape = SubResource("RectangleShape2D_tfxnn")
-debug_color = Color(0.600391, 0.54335, 0, 0.42)
-
-[node name="TownieBehaviors" type="Node2D" parent="OnTheGround/Townie" unique_id=1628281924 node_paths=PackedStringArray("interact_area", "talk_behavior", "path_walk_behavior", "cinematic", "sequence_puzzle")]
-script = ExtResource("25_ewpk3")
-interact_area = NodePath("../InteractArea")
-talk_behavior = NodePath("TalkBehavior")
-path_walk_behavior = NodePath("PathWalkBehavior")
-cinematic = NodePath("../../../Cinematic")
-sequence_puzzle = NodePath("../../SequencePuzzle")
-
-[node name="TalkBehavior" type="Node" parent="OnTheGround/Townie/TownieBehaviors" unique_id=1769752629 node_paths=PackedStringArray("interact_area")]
-script = ExtResource("25_0u7h2")
 dialogue = ExtResource("30_ypup5")
-title = "puzzle_hints"
-interact_area = NodePath("../../InteractArea")
-metadata/_custom_type_script = "uid://edcifob4jc4s"
-
-[node name="PathWalkBehavior" type="Node2D" parent="OnTheGround/Townie/TownieBehaviors" unique_id=1800550028 node_paths=PackedStringArray("walking_path", "character")]
-process_mode = 4
-script = ExtResource("27_0u7h2")
-speeds = SubResource("Resource_2be51")
-walking_path = NodePath("../../../../TowniePath")
-turn_around = false
-character = NodePath("../..")
-metadata/_custom_type_script = "uid://id28maao3vdy"
+dialogue_title = &"puzzle_hints"
+path = NodePath("../../TutorialNPCPaths")
 
 [node name="Sheep" parent="OnTheGround" unique_id=398073521 instance=ExtResource("32_orron")]
 position = Vector2(335, 150)
@@ -278,11 +229,12 @@ start_time = 7.0
 time_scale = 1.0
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1598959612]
+unique_name_in_owner = true
 script = ExtResource("29_2be51")
 dialogue = ExtResource("30_ypup5")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
-[node name="TowniePath" type="Path2D" parent="." unique_id=452466281]
+[node name="TutorialNPCPaths" type="Path2D" parent="." unique_id=452466281]
 position = Vector2(-347, 289)
 curve = SubResource("Curve2D_ewpk3")
 
@@ -299,5 +251,3 @@ metadata/_custom_type_script = "uid://hqdquinbimce"
 shape = SubResource("RectangleShape2D_ypup5")
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/Door" method="open"]
-[connection signal="interaction_ended" from="OnTheGround/Townie/InteractArea" to="OnTheGround/Townie" method="_on_interact_area_interaction_ended"]
-[connection signal="interaction_started" from="OnTheGround/Townie/InteractArea" to="OnTheGround/Townie" method="_on_interact_area_interaction_started"]

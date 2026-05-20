@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://durvgybueqayn"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_7bw2l"]
-[ext_resource type="Script" uid="uid://t43ctefgmwif" path="res://scenes/quests/lore_quests/quest_000/2a_stealth/tutorial_stealth.gd" id="1_q2v54"]
+[ext_resource type="Script" uid="uid://t43ctefgmwif" path="res://scenes/quests/lore_quests/quest_000/2_stealth/components/tutorial_stealth.gd" id="1_q2v54"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="2_pbkqu"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="2_wcwd1"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="3_lx70h"]
@@ -14,11 +14,9 @@
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="7_pbknt"]
 [ext_resource type="TileSet" uid="uid://ciq5guijvlyb0" path="res://tiles/void_chromakey.tres" id="8_nil71"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="8_xu4jl"]
-[ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="9_be8bo"]
-[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="10_kjr36"]
+[ext_resource type="PackedScene" uid="uid://b2mj4jggli0ci" path="res://scenes/quests/lore_quests/quest_000/tutorial_npc/tutorial_npc.tscn" id="9_be8bo"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="10_pbknt"]
-[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="11_6a0j2"]
-[ext_resource type="Resource" uid="uid://bvxfbfjv2oleg" path="res://scenes/quests/lore_quests/quest_000/2a_stealth/components/tutorial_stealth.dialogue" id="11_hiptn"]
+[ext_resource type="Resource" uid="uid://bvxfbfjv2oleg" path="res://scenes/quests/lore_quests/quest_000/2_stealth/components/tutorial_stealth.dialogue" id="11_hiptn"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="11_nil71"]
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="12_es244"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="13_qj7hh"]
@@ -38,9 +36,6 @@
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="33_j2uqn"]
 [ext_resource type="SpriteFrames" uid="uid://br4k784ht8hh0" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_yellow_large.tres" id="33_p5ken"]
 [ext_resource type="SpriteFrames" uid="uid://dfthhmtn4x3t8" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_yellow_small.tres" id="34_s0dut"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_tfxnn"]
-size = Vector2(52, 61)
 
 [sub_resource type="Curve2D" id="Curve2D_6a0j2"]
 _data = {
@@ -197,54 +192,17 @@ limit_bottom = 1312
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="Townie" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("9_be8bo")]
+[node name="TutorialNPC" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("9_be8bo")]
 position = Vector2(101, 1192)
-character_seed = 3222241206
-
-[node name="InteractArea" type="Area2D" parent="OnTheGround/Townie" unique_id=513111428]
-unique_name_in_owner = true
-collision_layer = 32
-collision_mask = 0
-script = ExtResource("10_kjr36")
-metadata/_custom_type_script = "uid://du8wfijr35r35"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Townie/InteractArea" unique_id=1862208709]
-visible = false
-position = Vector2(0, -23.5)
-shape = SubResource("RectangleShape2D_tfxnn")
-debug_color = Color(0.600391, 0.54335, 0, 0.42)
-
-[node name="TalkBehavior" type="Node" parent="OnTheGround/Townie" unique_id=1808600192 node_paths=PackedStringArray("interact_area")]
-script = ExtResource("11_6a0j2")
 dialogue = ExtResource("11_hiptn")
-title = "walk_through"
-interact_area = NodePath("../InteractArea")
-metadata/_custom_type_script = "uid://edcifob4jc4s"
+dialogue_title = &"walk_through"
 
-[node name="Townie2" parent="OnTheGround" unique_id=1905290874 instance=ExtResource("9_be8bo")]
+[node name="TutorialNPC2" parent="OnTheGround" unique_id=1905290874 instance=ExtResource("9_be8bo")]
 position = Vector2(3037, 232)
 scale = Vector2(-1, 1)
-character_seed = 3222241206
-look_at_side = 1
-
-[node name="InteractArea" type="Area2D" parent="OnTheGround/Townie2" unique_id=1850835966]
-collision_layer = 32
-collision_mask = 0
-script = ExtResource("10_kjr36")
-metadata/_custom_type_script = "uid://du8wfijr35r35"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Townie2/InteractArea" unique_id=1063348811]
-visible = false
-position = Vector2(0, -23.5)
-shape = SubResource("RectangleShape2D_tfxnn")
-debug_color = Color(0.600391, 0.54335, 0, 0.42)
-
-[node name="TalkBehavior" type="Node" parent="OnTheGround/Townie2" unique_id=704236578 node_paths=PackedStringArray("interact_area")]
-script = ExtResource("11_6a0j2")
 dialogue = ExtResource("11_hiptn")
-title = "well_done"
-interact_area = NodePath("../InteractArea")
-metadata/_custom_type_script = "uid://edcifob4jc4s"
+dialogue_title = &"well_done"
+look_at_side = 1
 
 [node name="EnemyGuards" type="Node2D" parent="OnTheGround" unique_id=1997239040]
 y_sort_enabled = true
@@ -370,9 +328,5 @@ metadata/_edit_lock_ = true
 [node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("33_j2uqn")]
 unique_name_in_owner = true
 
-[connection signal="interaction_ended" from="OnTheGround/Townie/InteractArea" to="OnTheGround/Townie" method="_on_interact_area_interaction_ended"]
-[connection signal="interaction_started" from="OnTheGround/Townie/InteractArea" to="OnTheGround/Townie" method="_on_interact_area_interaction_started"]
-[connection signal="interaction_ended" from="OnTheGround/Townie2/InteractArea" to="OnTheGround/Townie2" method="_on_interact_area_interaction_ended"]
-[connection signal="interaction_started" from="OnTheGround/Townie2/InteractArea" to="OnTheGround/Townie2" method="_on_interact_area_interaction_started"]
 [connection signal="body_entered" from="CaveLighting" to="." method="_on_cave_lighting_body_entered"]
 [connection signal="body_exited" from="CaveLighting" to="." method="_on_cave_lighting_body_exited"]

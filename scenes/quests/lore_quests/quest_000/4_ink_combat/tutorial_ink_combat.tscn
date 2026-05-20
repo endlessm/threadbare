@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://bk7lmd8tmkdql"]
 
-[ext_resource type="Script" uid="uid://bgh5dqhp52yv6" path="res://scenes/quests/lore_quests/quest_000/4_ink_combat/tutorial_ink_combat.gd" id="1_dyyts"]
+[ext_resource type="Script" uid="uid://bgh5dqhp52yv6" path="res://scenes/quests/lore_quests/quest_000/4_ink_combat/components/tutorial_ink_combat.gd" id="1_dyyts"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_l3lhs"]
 [ext_resource type="AudioStream" uid="uid://dkgtyb0x1i0m2" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/combat_music.tres" id="2_4c7rx"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="3_pagku"]
@@ -28,10 +28,8 @@
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="22_nhha4"]
 [ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="23_ofk5g"]
 [ext_resource type="SpriteFrames" uid="uid://cni7ipc5funa7" path="res://scenes/game_elements/props/powerup/components/powerup_button.tres" id="24_8k5n8"]
-[ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="25_dyyts"]
+[ext_resource type="PackedScene" uid="uid://b2mj4jggli0ci" path="res://scenes/quests/lore_quests/quest_000/tutorial_npc/tutorial_npc.tscn" id="25_dyyts"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="25_wx8m8"]
-[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="26_rfiuc"]
-[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="27_nw4ve"]
 [ext_resource type="SpriteFrames" uid="uid://brspwu70qbdaf" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_blue.tres" id="27_nymbh"]
 
 [sub_resource type="Animation" id="Animation_nlryc"]
@@ -72,9 +70,6 @@ _data = {
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lmnu5"]
 size = Vector2(101, 49)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_6c68c"]
-size = Vector2(52, 61)
 
 [node name="TutorialInkCombat" type="Node2D" unique_id=1019395160]
 script = ExtResource("1_dyyts")
@@ -242,29 +237,10 @@ position = Vector2(189, 292)
 sprite_frames = ExtResource("24_8k5n8")
 highlight_color = Color(0, 0.4392157, 1, 1)
 
-[node name="Townie" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("25_dyyts")]
+[node name="TutorialNPC" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("25_dyyts")]
 position = Vector2(31, 462)
-character_seed = 3222241206
-
-[node name="InteractArea" type="Area2D" parent="OnTheGround/Townie" unique_id=2008407896]
-unique_name_in_owner = true
-collision_layer = 32
-collision_mask = 0
-script = ExtResource("26_rfiuc")
-metadata/_custom_type_script = "uid://du8wfijr35r35"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Townie/InteractArea" unique_id=468695814]
-visible = false
-position = Vector2(0, -23.5)
-shape = SubResource("RectangleShape2D_6c68c")
-debug_color = Color(0.600391, 0.54335, 0, 0.42)
-
-[node name="TalkBehavior" type="Node" parent="OnTheGround/Townie" unique_id=186408622 node_paths=PackedStringArray("interact_area")]
-script = ExtResource("27_nw4ve")
 dialogue = ExtResource("4_4u14d")
-title = "interact"
-interact_area = NodePath("../InteractArea")
-metadata/_custom_type_script = "uid://edcifob4jc4s"
+dialogue_title = &"interact"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=127644403]
 
@@ -281,5 +257,3 @@ editor_draw_limits = true
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]
 [connection signal="collected" from="OnTheGround/RepelPowerup" to="." method="_on_repel_powerup_collected"]
-[connection signal="interaction_ended" from="OnTheGround/Townie/InteractArea" to="OnTheGround/Townie" method="_on_interact_area_interaction_ended"]
-[connection signal="interaction_started" from="OnTheGround/Townie/InteractArea" to="OnTheGround/Townie" method="_on_interact_area_interaction_started"]
