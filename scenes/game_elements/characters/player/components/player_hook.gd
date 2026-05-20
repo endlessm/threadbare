@@ -144,6 +144,24 @@ func _new_hook_string() -> Line2D:
 	return new_hook_string
 
 
+## Return the absolute path to the limit target of the current active camera, if it has one.
+func _get_phantom_camera_limit_target() -> NodePath:
+	var phantom_camera_hosts := PhantomCameraManager.phantom_camera_hosts
+	if not phantom_camera_hosts:
+		return ""
+	var active_pcam := phantom_camera_hosts[0].get_active_pcam() as PhantomCamera2D
+	if not active_pcam:
+		return ""
+	if not active_pcam.limit_target:
+		return ""
+	if active_pcam.limit_target.is_absolute():
+		return active_pcam.limit_target
+	var absolute_target_path := NodePath(
+		String(active_pcam.get_path()) + "/" + String(active_pcam.limit_target)
+	)
+	return absolute_target_path
+
+
 ## Called when the area was hooked.
 ## [br][br]
 ## Part of group hook_listener.
@@ -152,6 +170,9 @@ func hooked(_new_hooked_to: HookableArea, is_loop: bool) -> void:
 	if not hook_string:
 		hook_string = _new_hook_string()
 	hook_string.add_point(p, 0)
+	var limit_target := _get_phantom_camera_limit_target()
+	if limit_target:
+		phantom_camera_2d.limit_target = limit_target
 	phantom_camera_2d.priority = 20
 	hook_ending.global_position = p
 	areas_hooked.append(_new_hooked_to)
