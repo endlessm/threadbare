@@ -14,13 +14,13 @@
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="11_sty8l"]
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="12_dcclj"]
 [ext_resource type="TileSet" uid="uid://b778cuoftt88r" path="res://tiles/elevation_2.tres" id="13_cqudy"]
-[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="13_eis6y"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="13_nw4ve"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="14_culag"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="15_2vr3v"]
 [ext_resource type="SpriteFrames" uid="uid://7yx2vrxg6ytx" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_blue_large.tres" id="15_6c68c"]
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="16_cmppr"]
 [ext_resource type="SpriteFrames" uid="uid://b3r84ksew5djp" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_purple.tres" id="17_laquw"]
+[ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="17_sgtky"]
 [ext_resource type="AudioStream" uid="uid://qf2d38rabx8o" path="res://assets/third_party/sounds/characters/enemies/throwing_enemy/Wings.ogg" id="18_0816u"]
 [ext_resource type="AudioStream" uid="uid://bbnj2fog3rdy8" path="res://assets/first_party/sounds/throwing_enemy/Spray.wav" id="19_bex1y"]
 [ext_resource type="PackedScene" uid="uid://c5jedlvvnnbi0" path="res://scenes/game_elements/props/projectile/ink_blob_projectile.tscn" id="20_t8fi2"]
@@ -182,15 +182,12 @@ position = Vector2(416, 0)
 position = Vector2(0, 72)
 play_victory_fanfare_on_open = true
 
-[node name="Teleporter" type="Area2D" parent="OnTheGround/LevelExit" unique_id=650526093]
+[node name="Teleporter" parent="OnTheGround/LevelExit" unique_id=1779636661 instance=ExtResource("17_sgtky")]
 position = Vector2(0, -25)
-collision_layer = 4
-script = ExtResource("13_eis6y")
 next_scene = "uid://cb7tqsakwhpgk"
 spawn_point_path = NodePath("SpawnPointAfterIntro")
 enter_transition = 4
 exit_transition = 5
-metadata/_custom_type_script = "uid://hqdquinbimce"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/LevelExit/Teleporter" unique_id=1082155385]
 position = Vector2(-1.5, -9.5)

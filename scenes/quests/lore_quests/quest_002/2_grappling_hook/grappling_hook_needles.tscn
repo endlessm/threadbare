@@ -23,12 +23,12 @@
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="14_bxmjx"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="14_omyxq"]
 [ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="15_374sg"]
-[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="15_mg68y"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="16_dysib"]
 [ext_resource type="PackedScene" uid="uid://b7h2j0j6jmigc" path="res://scenes/game_elements/props/tree/tree_void_affected.tscn" id="22_374sg"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="23_p8sis"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="24_7iwrw"]
 [ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="25_374sg"]
+[ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="26_bxmjx"]
 
 [sub_resource type="Resource" id="Resource_374sg"]
 script = ExtResource("16_dysib")
@@ -415,10 +415,8 @@ sprite_frames = ExtResource("25_374sg")
 position = Vector2(1429, 923)
 sprite_frames = ExtResource("25_374sg")
 
-[node name="TeleporterNext" type="Area2D" parent="." unique_id=1852093842]
+[node name="TeleporterNext" parent="." unique_id=1779636661 instance=ExtResource("26_bxmjx")]
 position = Vector2(1635, 282)
-collision_layer = 4
-script = ExtResource("15_mg68y")
 next_scene = "uid://bk8rjvfmm20b7"
 enter_transition = 4
 exit_transition = 5
@@ -426,13 +424,10 @@ exit_transition = 5
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TeleporterNext" unique_id=89957691]
 shape = SubResource("RectangleShape2D_41yfr")
 
-[node name="TeleporterBack" type="Area2D" parent="." unique_id=561115967]
+[node name="TeleporterBack" parent="." unique_id=1295241363 instance=ExtResource("26_bxmjx")]
 position = Vector2(152, 454)
-collision_layer = 4
-script = ExtResource("15_mg68y")
 next_scene = "uid://dpv6x7h2p2i3l"
 spawn_point_path = NodePath("SpawnPointBack")
-metadata/_custom_type_script = "uid://hqdquinbimce"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TeleporterBack" unique_id=1443311540]
 position = Vector2(8, -6)
