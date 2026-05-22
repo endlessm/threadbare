@@ -104,7 +104,7 @@ func _on_hash_changed(args: Array) -> void:
 func change_to_file_with_transition(
 	scene_path: String,
 	spawn_point: NodePath = ^"",
-	enter_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE,
+	enter_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE,
 	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
 ) -> void:
 	assert(scene_path != "")
@@ -124,7 +124,7 @@ func change_to_file_with_transition(
 func change_to_packed_with_transition(
 	scene: PackedScene,
 	spawn_point: NodePath = ^"",
-	enter_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE,
+	enter_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE,
 	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
 ) -> void:
 	assert(scene != null)

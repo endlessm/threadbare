@@ -33,7 +33,7 @@ const SPAWN_POINT_GROUP_NAME: String = "spawn_point"
 		notify_property_list_changed()
 
 ## Transition to use when the player enters this teleport.
-@export var enter_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
+@export var enter_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE
 
 ## Transition to use when the player leaves this teleport.
 @export var exit_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE
