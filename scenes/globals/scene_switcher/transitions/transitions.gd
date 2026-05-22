@@ -11,20 +11,15 @@ signal finished
 enum Effect {
 	## Fade the whole screen to/from black at once
 	FADE,
-
 	## Fade to/from black starting from the left of the screen and moving right
 	LEFT_TO_RIGHT_WIPE,
-
 	## Fade to/from black starting from the right of the screen and moving left
 	RIGHT_TO_LEFT_WIPE,
-
 	## Fade to black from the edges of the screen to a circle in the middle;
 	## fade from black starting at the middle and working outwards.
 	RADIAL,
-
 	## Fade to/from black starting from the top of the screen and moving down
 	TOP_TO_BOTTOM_WIPE,
-
 	## Fade to/from black starting from the bottom of the screen and moving up
 	BOTTOM_TO_TOP_WIPE,
 }
