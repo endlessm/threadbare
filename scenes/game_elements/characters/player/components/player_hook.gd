@@ -254,6 +254,7 @@ func pull_string() -> void:
 	if character.has_method("take_control"):
 		character.take_control(self)
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, false)
+	character.set_collision_mask_value(Enums.CollisionLayers.VOID, false)
 
 	# If the entity has a got_pulled handler, call it and connect to the pull_released signal
 	# of the HookableArea. The entity is responsible to call it.
@@ -276,6 +277,7 @@ func _on_pull_released(cancelled: bool) -> void:
 ## non-walkable floor.
 func stop_pulling() -> void:
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, true)
+	character.set_collision_mask_value(Enums.CollisionLayers.VOID, true)
 	pulling = false
 	# After pulling, return control to the user.
 	if character.has_method("return_control"):

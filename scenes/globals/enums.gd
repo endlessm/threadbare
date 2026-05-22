@@ -23,7 +23,10 @@ enum CollisionLayers {
 	ENEMIES_HITBOX = 8,
 	REPELLABLE = 9,
 	NON_WALKABLE_FLOOR = 10,
+	BRIDGE = 11,
+	BRIDGE_EDGE = 12,
 	HOOKABLE = 13,
+	VOID = 14,
 }
 
 ## Flags for player abilities
