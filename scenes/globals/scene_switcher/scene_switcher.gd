@@ -135,8 +135,8 @@ func change_to_packed_with_transition(
 
 
 func reload_with_transition(
-	enter_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE,
-	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
+	enter_transition: Transition.Effect = Transition.Effect.FADE,
+	exit_transition: Transition.Effect = Transition.Effect.FADE,
 ) -> void:
 	Transitions.do_transition(get_tree().reload_current_scene, enter_transition, exit_transition)
 

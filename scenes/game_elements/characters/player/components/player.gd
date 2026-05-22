@@ -207,7 +207,7 @@ func defeat(falling: bool = false) -> void:
 	# Check if player has lives remaining
 	if GameState.current_lives > 0:
 		# Still have lives - reload current scene/checkpoint
-		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+		SceneSwitcher.reload_with_transition()
 	else:
 		# Game over - restart from challenge start
 		_handle_game_over()
@@ -250,7 +250,7 @@ func _handle_game_over() -> void:
 		# Fallback: reload current scene if no challenge start is defined
 		# Clear spawn point to start from the beginning of the current scene
 		GameState.set_current_spawn_point(^"")
-		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+		SceneSwitcher.reload_with_transition()
 	else:
 		# Restart from the challenge start scene
 		SceneSwitcher.change_to_file_with_transition(
