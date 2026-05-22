@@ -18,6 +18,8 @@ signal interact_action_changed
 
 @onready var player: Player = self.owner as Player
 
+@onready var dialogue_camera: PhantomCamera2D = %DialogueCamera
+
 
 func _set_character(new_character: CharacterBody2D) -> void:
 	character = new_character
@@ -66,6 +68,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 		character_sight.monitoring = false
 		interact_area.interaction_ended.connect(_on_interaction_ended, CONNECT_ONE_SHOT)
 		interact_area.start_interaction(player, character_sight.is_looking_from_right)
+		dialogue_camera.priority = 20
 
 
 func _on_interaction_ended() -> void:
@@ -73,6 +76,7 @@ func _on_interaction_ended() -> void:
 	# After interacting, return control to the user.
 	if character.has_method("return_control"):
 		character.return_control(self)
+	dialogue_camera.priority = 0
 
 
 func _on_character_sight_interact_area_changed() -> void:
