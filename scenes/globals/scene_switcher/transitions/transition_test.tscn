@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://oym8umfgih1h"]
+
+[ext_resource type="Script" uid="uid://dwvh1yafebtd4" path="res://scenes/globals/scene_switcher/transitions/transition_test.gd" id="1_8veim"]
+[ext_resource type="AudioStream" uid="uid://dtf82j11434vb" path="res://scenes/game_elements/props/decoration/sheep/components/sheep_baa.wav" id="2_3lyof"]
+[ext_resource type="Texture2D" uid="uid://dcq6v7mx3h1fl" path="res://assets/first_party/tiles/Dirt_Tiles.png" id="2_fqvf2"]
+[ext_resource type="AudioStream" uid="uid://di2b2rgca1udv" path="res://scenes/game_elements/characters/npcs/cat/components/412017__skymary__cat-meow-short.wav" id="4_edsfq"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_2q0mi"]
+streams_count = 2
+stream_0/stream = ExtResource("2_3lyof")
+stream_1/stream = ExtResource("4_edsfq")
+
+[node name="TransitionTest" type="Control" unique_id=1244413077]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8veim")
+
+[node name="TextureRect" type="NinePatchRect" parent="." unique_id=2093316654]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_fqvf2")
+region_rect = Rect2(0, 0, 192, 192)
+patch_margin_left = 64
+patch_margin_top = 64
+patch_margin_right = 64
+patch_margin_bottom = 64
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1799258915]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=2144046823]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1227944483]
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+text = "Transition-o-Matic 5000"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="CenterContainer/VBoxContainer" unique_id=255510904]
+layout_mode = 2
+columns = 2
+
+[node name="OutEffectLabel" type="Label" parent="CenterContainer/VBoxContainer/GridContainer" unique_id=1972674029]
+layout_mode = 2
+text = "Out effect"
+
+[node name="OutEffectSelector" type="OptionButton" parent="CenterContainer/VBoxContainer/GridContainer" unique_id=1378294063]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InEffectLabel" type="Label" parent="CenterContainer/VBoxContainer/GridContainer" unique_id=565936595]
+layout_mode = 2
+text = "In effect"
+
+[node name="InEffectSelector" type="OptionButton" parent="CenterContainer/VBoxContainer/GridContainer" unique_id=336505201]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TestButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1661728786]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Test!"
+
+[node name="MidPointSound" type="AudioStreamPlayer" parent="." unique_id=317670024]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamRandomizer_2q0mi")
+bus = &"SFX"
