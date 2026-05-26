@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://db6vhi7s2f37c"]
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_f6lvl"]
+[ext_resource type="Script" uid="uid://cohjumppjssac" path="res://scenes/quests/lore_quests/quest_001/3_stealth_level/components/stealth_level.gd" id="1_qg4dv"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_t8tj0"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="2_1b8xw"]
 [ext_resource type="AudioStream" uid="uid://qnqpd21qyfnc" path="res://assets/first_party/music/Threadbare_Stealth.ogg" id="2_p2u32"]
@@ -43,13 +44,19 @@
 [ext_resource type="SpriteFrames" uid="uid://3elulifvmamm" path="res://scenes/game_elements/props/checkpoint/components/knitwitch_frames_blue.tres" id="27_lp8w2"]
 [ext_resource type="SpriteFrames" uid="uid://chqrsy2uornaf" path="res://scenes/game_elements/characters/enemies/guard/components/storyvoretorch_frames_red.tres" id="28_gtlgv"]
 [ext_resource type="SpriteFrames" uid="uid://clh0qxc8buapj" path="res://scenes/game_elements/props/checkpoint/components/knitwitch_frames_pink.tres" id="28_h5xg2"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="28_xuyoh"]
 [ext_resource type="SpriteFrames" uid="uid://bkxrywxf40i1u" path="res://scenes/game_elements/props/checkpoint/components/knitwitch_frames_brown.tres" id="29_5i2s8"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="29_86cpf"]
 [ext_resource type="SpriteFrames" uid="uid://cf4cepdtde4gr" path="res://scenes/game_elements/characters/enemies/guard/components/storyvoretorch_frames_gray.tres" id="29_pld6d"]
 [ext_resource type="SpriteFrames" uid="uid://d000bjl2xdg0g" path="res://scenes/game_elements/props/checkpoint/components/knitwitch_frames_green.tres" id="30_8dune"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="30_qg4dv"]
 [ext_resource type="SpriteFrames" uid="uid://dmls18v7n7g21" path="res://scenes/game_elements/characters/enemies/guard/components/storyvoretorch_frames_orange.tres" id="30_xddmm"]
 [ext_resource type="SpriteFrames" uid="uid://tchths61dylv" path="res://scenes/game_elements/characters/enemies/guard/components/storyvoretorch_frames_green.tres" id="31_fl2gg"]
 [ext_resource type="SpriteFrames" uid="uid://debgqvx62xx5o" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_red.tres" id="32_pld6d"]
 [ext_resource type="SpriteFrames" uid="uid://qwlhm21ndgn2" path="res://scenes/game_elements/characters/enemies/guard/components/storyvore_frames_orange.tres" id="33_pld6d"]
+
+[sub_resource type="Resource" id="Resource_c2gs0"]
+script = ExtResource("30_qg4dv")
 
 [sub_resource type="Curve2D" id="Curve2D_vnsq3"]
 _data = {
@@ -146,8 +153,21 @@ script = ExtResource("3_idy4y")
 type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
+[sub_resource type="Curve2D" id="Curve2D_86cpf"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -96, 224, 0, 0, 0, 0, 672, 232, 0, 0, 0, 0, 1952, 288, 0, 0, 0, 0, 2528, 424, 0, 0, 0, 0, 2528, 920, 0, 0, 0, 0, 2784, 1184, 0, 0, 0, 0, 3360, 1184, 0, 0, 0, 0, 4256, 1120, 0, 0, 0, 0, 5288, 1120, 0, 0, 0, 0, 5600, 1056, 0, 0, 0, 0, 6496, 896, 0, 0, 0, 0, 7096, 896)
+}
+point_count = 12
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_86cpf"]
+size = Vector2(656, 272)
+
+[sub_resource type="Resource" id="Resource_86cpf"]
+script = ExtResource("30_qg4dv")
+
 [node name="Level" type="Node2D" unique_id=1653863263]
 y_sort_enabled = true
+script = ExtResource("1_qg4dv")
 
 [node name="StealthGameLogic" type="Node" parent="." unique_id=884618699]
 script = ExtResource("1_f6lvl")
@@ -700,10 +720,34 @@ sprite_frames = ExtResource("21_p2u32")
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=857685128]
 unique_name_in_owner = true
 process_mode = 3
+physics_interpolation_mode = 1
+top_level = true
+position = Vector2(640, 360)
 limit_left = 0
 limit_top = 0
-position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="PhantomCameraHost" type="Node" parent="Player/Camera2D" unique_id=986291691]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("28_xuyoh")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="DollyCamera" type="Node2D" parent="Player" unique_id=103551485 node_paths=PackedStringArray("follow_target", "follow_path")]
+top_level = true
+position = Vector2(157.7328, 226.64305)
+script = ExtResource("29_86cpf")
+priority = 10
+follow_mode = 4
+follow_target = NodePath("..")
+follow_path = NodePath("../../CameraStuff/CameraPath")
+tween_resource = SubResource("Resource_c2gs0")
+tween_on_load = false
+follow_damping = true
+draw_limits = true
+limit_left = 0
+limit_top = 0
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 
 [node name="EnemyGuards" type="Node2D" parent="." unique_id=1913769214]
 y_sort_enabled = true
@@ -983,3 +1027,27 @@ item = SubResource("Resource_idy4y")
 
 [node name="Door" parent="." unique_id=1358622977 instance=ExtResource("25_ulxtw")]
 position = Vector2(7391, 701)
+
+[node name="CameraStuff" type="Node2D" parent="." unique_id=1671729356]
+
+[node name="CameraPath" type="Path2D" parent="CameraStuff" unique_id=685339766]
+curve = SubResource("Curve2D_86cpf")
+
+[node name="DeadEndArea" type="Area2D" parent="CameraStuff" unique_id=2067327247]
+position = Vector2(2624, 576)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraStuff/DeadEndArea" unique_id=1935543321]
+position = Vector2(320, 128)
+shape = SubResource("RectangleShape2D_86cpf")
+
+[node name="DeadEndCamera" type="Node2D" parent="CameraStuff" unique_id=93706224]
+unique_name_in_owner = true
+position = Vector2(2784, 704)
+script = ExtResource("29_86cpf")
+tween_resource = SubResource("Resource_86cpf")
+draw_limits = true
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
+
+[connection signal="body_entered" from="CameraStuff/DeadEndArea" to="." method="_on_dead_end_area_body_entered"]
+[connection signal="body_exited" from="CameraStuff/DeadEndArea" to="." method="_on_dead_end_area_body_exited"]
