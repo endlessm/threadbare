@@ -38,8 +38,9 @@ func start() -> void:
 	if not GameState.intro_dialogue_shown:
 		DialogueManager.show_dialogue_balloon(dialogue, "", [self])
 		await DialogueManager.dialogue_ended
-		cinematic_finished.emit()
 		GameState.intro_dialogue_shown = true
+
+	cinematic_finished.emit()
 
 	if next_scene:
 		(

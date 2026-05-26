@@ -8,7 +8,6 @@ extends Node2D
 
 
 func _ready() -> void:
-	if not GameState.intro_dialogue_shown:
-		await cinematic.cinematic_finished
+	await cinematic.cinematic_finished
 
 	tutorial_npc.walk_path()
