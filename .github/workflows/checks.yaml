@@ -16,7 +16,7 @@ jobs:
   pre-commit:
     name: Linting and Formatting
     if: ${{ !github.event.repository.fork }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
     - uses: actions/checkout@v6
     - uses: ./.github/actions/lfs-cached-checkout
@@ -25,7 +25,7 @@ jobs:
   reuse:
     name: Licensing information
     if: ${{ !github.event.repository.fork }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
     - uses: actions/checkout@v6
     - name: Install the latest version of uv
