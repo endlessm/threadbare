@@ -280,6 +280,7 @@ func pull_string() -> void:
 	if character.has_method("take_control"):
 		character.take_control(self)
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, false)
+	phantom_camera_2d.priority = 0
 
 	# If the entity has a got_pulled handler, call it and connect to the pull_released signal
 	# of the HookableArea. The entity is responsible to call it.
