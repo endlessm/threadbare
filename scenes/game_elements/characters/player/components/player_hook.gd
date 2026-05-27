@@ -97,6 +97,9 @@ var hook_string: Line2D
 ## This can be used to pan or zoom the camera to frame the ending of the grappling hook.
 @onready var hook_ending: Marker2D = $HookEnding
 
+## A [PhantomCamera2D] at the tip of the string.
+@onready var phantom_camera_2d: PhantomCamera2D = %PhantomCamera2D
+
 
 func _enter_tree() -> void:
 	if not character and get_parent() is CharacterBody2D:
@@ -141,6 +144,22 @@ func _new_hook_string() -> Line2D:
 	return new_hook_string
 
 
+## Return the absolute path to the limit target of the current active camera, if it has one.
+func _get_phantom_camera_limit_target() -> NodePath:
+	var phantom_camera_hosts := PhantomCameraManager.phantom_camera_hosts
+	if not phantom_camera_hosts:
+		return ""
+	var active_pcam := phantom_camera_hosts[0].get_active_pcam() as PhantomCamera2D
+	if not active_pcam:
+		return ""
+	if not active_pcam.limit_target:
+		return ""
+	if active_pcam.limit_target.is_absolute():
+		return active_pcam.limit_target
+	var absolute_target_path := active_pcam.get_node(active_pcam.limit_target).get_path()
+	return absolute_target_path
+
+
 ## Called when the area was hooked.
 ## [br][br]
 ## Part of group hook_listener.
@@ -149,6 +168,10 @@ func hooked(_new_hooked_to: HookableArea, is_loop: bool) -> void:
 	if not hook_string:
 		hook_string = _new_hook_string()
 	hook_string.add_point(p, 0)
+	var limit_target := _get_phantom_camera_limit_target()
+	if limit_target:
+		phantom_camera_2d.limit_target = limit_target
+	phantom_camera_2d.priority = 20
 	hook_ending.global_position = p
 	areas_hooked.append(_new_hooked_to)
 	if not _new_hooked_to.hook_control:
@@ -217,6 +240,7 @@ func remove_string() -> void:
 	hook_control.release()
 	hook_control.state = HookControl.State.AIMING
 
+	phantom_camera_2d.priority = 0
 	hook_ending.global_position = global_position
 
 
@@ -254,6 +278,7 @@ func pull_string() -> void:
 	if character.has_method("take_control"):
 		character.take_control(self)
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, false)
+	phantom_camera_2d.priority = 0
 
 	# If the entity has a got_pulled handler, call it and connect to the pull_released signal
 	# of the HookableArea. The entity is responsible to call it.
