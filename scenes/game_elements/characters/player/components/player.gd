@@ -74,7 +74,7 @@ var _initial_speeds: CharacterSpeeds
 func _set_mode(new_mode: Mode) -> void:
 	var previous_mode: Mode = mode
 	mode = new_mode
-	if not is_node_ready():
+	if Engine.is_editor_hint() or not is_node_ready():
 		return
 	match mode:
 		Mode.USER_CONTROLLED:
@@ -144,7 +144,18 @@ func _ready() -> void:
 	_set_speeds(speeds)
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
-	GameState.abilities_changed.connect(_on_abilities_changed)
+
+	if Engine.is_editor_hint():
+		return
+
+	GameState.player.abilities_changed.connect(_on_abilities_changed)
+	GameState.player_changed.connect(_on_player_state_changed)
+
+
+func _on_player_state_changed(old: PlayerState, new: PlayerState) -> void:
+	old.abilities_changed.disconnect(_on_abilities_changed)
+	new.abilities_changed.connect(_on_abilities_changed)
+	_on_abilities_changed()
 
 
 func _set_speeds(new_speeds: CharacterSpeeds) -> void:
@@ -195,8 +206,7 @@ func defeat(falling: bool = false) -> void:
 	# Stop moving the player.
 	velocity = Vector2.ZERO
 
-	# Decrement lives and save the new count
-	GameState.decrement_lives()
+	GameState.player.decrement_lives()
 
 	if falling:
 		var tween := create_tween()
@@ -205,7 +215,7 @@ func defeat(falling: bool = false) -> void:
 	await get_tree().create_timer(2.0).timeout
 
 	# Check if player has lives remaining
-	if GameState.current_lives > 0:
+	if GameState.player.lives > 0:
 		# Still have lives - reload current scene/checkpoint
 		SceneSwitcher.reload_with_transition()
 	else:
@@ -222,12 +232,14 @@ func return_control(_controlled_by: Node) -> void:
 
 
 func _toggle_abilities() -> void:
-	var can_repel := GameState.has_ability(Enums.PlayerAbilities.ABILITY_A)
-	var can_grapple := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B)
+	var can_repel := GameState.player.has_ability(Enums.PlayerAbilities.ABILITY_A)
+	var can_grapple := GameState.player.has_ability(Enums.PlayerAbilities.ABILITY_B)
 	_toggle_player_behavior(player_repel, can_repel)
 	_toggle_player_behavior(player_hook, can_grapple)
 	if can_grapple:
-		var has_longer_hook := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B_MODIFIER_1)
+		var has_longer_hook := GameState.player.has_ability(
+			Enums.PlayerAbilities.ABILITY_B_MODIFIER_1
+		)
 		player_hook.string_throw_length = 400.0 if has_longer_hook else 200.0
 		player_hook.string_max_length = 450.0 if has_longer_hook else 250.0
 
@@ -237,19 +249,20 @@ func _on_abilities_changed() -> void:
 		_toggle_abilities()
 
 
-## Handles game over logic: restarts from the beginning of the current challenge
-## with lives reset to 3.
+## Handles game over logic: restarts from the beginning of the current challenge,
+## with lives reset.
 func _handle_game_over() -> void:
-	# Reset lives to 3
-	GameState.reset_lives()
+	GameState.player.reset_lives()
 
 	# Get the start of the current challenge
-	var challenge_start_scene: String = GameState.get_challenge_start_scene()
+	var challenge_start_scene: String
+	if GameState.quest:
+		challenge_start_scene = GameState.quest.challenge_start_scene
 
 	if challenge_start_scene.is_empty():
 		# Fallback: reload current scene if no challenge start is defined
 		# Clear spawn point to start from the beginning of the current scene
-		GameState.set_current_spawn_point(^"")
+		GameState.scene.spawn_point = ^""
 		SceneSwitcher.reload_with_transition()
 	else:
 		# Restart from the challenge start scene

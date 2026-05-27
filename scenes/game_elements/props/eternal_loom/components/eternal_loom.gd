@@ -27,22 +27,16 @@ func _ready() -> void:
 	talk_behavior.title = "have_threads" if _have_threads else "no_threads"
 	interact_area.interaction_ended.connect(self._on_interaction_ended)
 
-	if GameState.incorporating_threads:
+	if GameState.quest and GameState.quest.incorporating_threads:
 		if Transitions.is_running():
 			await Transitions.finished
 
-		var elder: Elder
-		if GameState.current_quest:
-			elder = _find_elder(GameState.current_quest)
-		else:
-			push_warning("incorporating_threads was set, but current_quest was null")
-			if elders:
-				# Pick any elder.
-				elder = elders.pick_random()
+		var elder: Elder = _find_elder(GameState.quest.quest)
 		if elder:
 			await elder.congratulate_player()
+		else:
+			push_warning("Could not find elder for %s" % [GameState.quest.quest.resource_path])
 
-		GameState.set_incorporating_threads(false)
 		GameState.mark_quest_completed()
 
 
@@ -59,7 +53,7 @@ func _on_interaction_ended() -> void:
 		if not ProjectSettings.get_setting(ThreadbareProjectSettings.SKIP_SOKOBANS):
 			# Hide interact label during scene transition
 			interact_area.disabled = true
-			GameState.set_incorporating_threads(true)
+			GameState.quest.incorporating_threads = true
 			SceneSwitcher.change_to_file_with_transition(SOKOBANS.pick_random())
 		else:
 			GameState.mark_quest_completed()
@@ -68,12 +62,12 @@ func _on_interaction_ended() -> void:
 func on_offering_succeeded() -> void:
 	loom_offering_animation_player.play(&"loom_offering")
 	await loom_offering_animation_player.animation_finished
-	GameState.clear_inventory()
+	GameState.global.clear_inventory()
 
 
 func is_item_offering_possible() -> bool:
 	return (
-		GameState.current_quest
-		and GameState.current_quest.threads_to_collect > 0
-		and GameState.items_collected().size() >= GameState.current_quest.threads_to_collect
+		GameState.quest
+		and GameState.quest.quest.threads_to_collect > 0
+		and GameState.global.inventory.size() >= GameState.quest.quest.threads_to_collect
 	)

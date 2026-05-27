@@ -30,10 +30,10 @@ func toggle_pause() -> void:
 	Input.set_default_cursor_shape(Input.CURSOR_ARROW if new_state else Input.CURSOR_CROSS)
 
 	if new_state:
-		if not GameState.current_quest:
+		if not GameState.quest:
 			skip_tutorial_button.hide()
 			abandon_quest_button.hide()
-		elif GameState.current_quest.skippable:
+		elif GameState.quest.quest.skippable:
 			skip_tutorial_button.show()
 			abandon_quest_button.hide()
 		else:
@@ -53,8 +53,10 @@ func _on_abandon_quest_pressed() -> void:
 
 func _on_skip_tutorial_pressed() -> void:
 	toggle_pause()
-	for ability: Enums.PlayerAbilities in GameState.current_quest.skip_abilities:
-		GameState.set_ability(ability, true)
+	assert(GameState.quest)
+	assert(GameState.quest.quest)
+	for ability: Enums.PlayerAbilities in GameState.quest.quest.skip_abilities:
+		GameState.player.set_ability(ability, true)
 	GameState.mark_quest_completed()
 	SceneSwitcher.change_to_file_with_transition(
 		frays_end, ^"", Transition.Effect.FADE, Transition.Effect.FADE

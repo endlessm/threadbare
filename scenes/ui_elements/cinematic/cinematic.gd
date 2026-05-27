@@ -25,15 +25,18 @@ signal cinematic_finished
 func _ready() -> void:
 	super._ready()
 
+	if Engine.is_editor_hint():
+		return
+
 	if autostart:
 		start()
 
 
 func start() -> void:
-	if not GameState.intro_dialogue_shown:
+	if not GameState.scene.intro_dialogue_shown:
 		DialogueManager.show_dialogue_balloon(dialogue, "", [self])
 		await DialogueManager.dialogue_ended
-		GameState.intro_dialogue_shown = true
+		GameState.scene.intro_dialogue_shown = true
 
 	cinematic_finished.emit()
 	switch()

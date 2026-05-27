@@ -66,7 +66,7 @@ func _ready() -> void:
 	_set_highlight_color(highlight_color)
 	if Engine.is_editor_hint():
 		return
-	GameState.abilities_changed.connect(_on_abilities_changed)
+	GameState.player.abilities_changed.connect(_on_abilities_changed)
 	_on_abilities_changed()
 
 
@@ -79,7 +79,7 @@ func _notification(what: int) -> void:
 
 
 func _on_abilities_changed() -> void:
-	var has_ability := GameState.has_ability(ability)
+	var has_ability := GameState.player.has_ability(ability)
 	ground_collision.disabled = has_ability
 	interact_collision.disabled = has_ability
 	hookable_collision.disabled = has_ability
@@ -104,7 +104,7 @@ func _on_interact_area_interaction_started(
 		DialogueManager.show_dialogue_balloon(dialogue, "", [self])
 		await DialogueManager.dialogue_ended
 	source.end_interaction()
-	GameState.set_ability(ability, true)
+	GameState.player.set_ability(ability, true)
 	collected.emit()
 
 

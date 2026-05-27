@@ -8,11 +8,9 @@ extends Node2D
 
 func _ready() -> void:
 	_update_story_quest_progress_visibility()
-	GameState.collected_items_changed.connect(_update_story_quest_progress_visibility)
-
-	# Restore lives to maximum when entering Fray's End
-	GameState.reset_lives()
+	GameState.global.item_collected.connect(_update_story_quest_progress_visibility)
+	GameState.global.item_consumed.connect(_update_story_quest_progress_visibility)
 
 
-func _update_story_quest_progress_visibility(_new_items: Array[InventoryItem] = []) -> void:
+func _update_story_quest_progress_visibility(_item: InventoryItem = null) -> void:
 	hud.change_story_quest_progress_visibility(eternal_loom.is_item_offering_possible())
