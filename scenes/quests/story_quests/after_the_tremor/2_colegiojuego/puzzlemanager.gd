@@ -3,9 +3,9 @@
 extends Node
 
 @export var zone_nodes: Array[AllHooked] = []
-@export var timer_node: NodePath                    
-@export var timer_seconds: int = 180                
-@export var timer_label: NodePath = NodePath("")    
+@export var timer_node: NodePath
+@export var timer_seconds: int = 180
+@export var timer_label: NodePath = NodePath("")
 @export var auto_start_on_first_zone: bool = true
 @export var final_collectible: NodePath
 @export var final_dialogue: DialogueResource
@@ -18,7 +18,7 @@ extends Node
 signal puzzle_succeeded
 signal puzzle_failed
 
-var _zones_done: Dictionary = {}   
+var _zones_done: Dictionary = {}
 var _timer: Timer = null
 var _running: bool = false
 
@@ -131,7 +131,7 @@ func _on_timer_timeout() -> void:
 			lab.text = "Tiempo agotado. Reiniciando..."
 
 	await get_tree().create_timer(0.8).timeout
-	get_tree().reload_current_scene()
+	SceneSwitcher.reload_with_transition()
 
 
 func _reset_zones_state() -> void:

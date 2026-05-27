@@ -93,7 +93,7 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	animation_player.play("collected")
 	await animation_player.animation_finished
 
-	GameState.add_collected_item(item)
+	GameState.global.add_collected_item(item)
 
 	if collected_dialogue:
 		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])
@@ -103,7 +103,10 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	queue_free()
 
 	if next_scene:
-		GameState.set_challenge_start_scene(next_scene)
+		if GameState.quest:
+			GameState.quest.challenge_start_scene = next_scene
+		else:
+			push_warning("Collectible collected while not on a quest")
 		switch()
 
 

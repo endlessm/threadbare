@@ -11,9 +11,8 @@ extends Control
 
 func _ready() -> void:
 	if ProjectSettings.get_setting(ThreadbareProjectSettings.SKIP_SPLASH):
-		var saved_scene: Dictionary = GameState.restore()
-		if saved_scene["scene_path"]:
-			SceneSwitcher.change_to_file(saved_scene["scene_path"], saved_scene["spawn_point"])
+		if GameState.can_restore():
+			_on_main_menu_continue_pressed()
 		else:
 			_on_start_pressed()
 
@@ -24,12 +23,11 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_main_menu_continue_pressed() -> void:
-	var saved_scene: Dictionary = GameState.restore()
 	(
 		SceneSwitcher
 		. change_to_file_with_transition(
-			saved_scene["scene_path"],
-			saved_scene["spawn_point"],
+			GameState.scene.path,
+			GameState.scene.spawn_point,
 			Transition.Effect.FADE,
 			Transition.Effect.FADE,
 		)
@@ -37,8 +35,7 @@ func _on_main_menu_continue_pressed() -> void:
 
 
 func _on_start_pressed() -> void:
-	if GameState.can_restore():
-		GameState.clear()
+	GameState.clear()
 
 	GameState.start_quest(tutorial_quest)
 	SceneSwitcher.change_to_file_with_transition(

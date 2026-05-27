@@ -6,12 +6,14 @@ var zoom_tween: Tween
 
 
 func _ready() -> void:
-	GameState.abilities_changed.connect(_on_abilities_changed)
+	GameState.player.abilities_changed.connect(_on_abilities_changed)
 	_on_abilities_changed()
 
 
 func _on_abilities_changed() -> void:
-	var has_longer_thread := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B_MODIFIER_1)
+	var has_longer_thread := GameState.player.has_ability(
+		Enums.PlayerAbilities.ABILITY_B_MODIFIER_1
+	)
 	var camera_zoom := Vector2(0.5, 0.5) if has_longer_thread else Vector2(1.0, 1.0)
 	# Zoom out when the player can throw a longer thread:
 	if zoom_tween:
