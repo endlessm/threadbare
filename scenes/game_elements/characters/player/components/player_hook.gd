@@ -156,9 +156,7 @@ func _get_phantom_camera_limit_target() -> NodePath:
 		return ""
 	if active_pcam.limit_target.is_absolute():
 		return active_pcam.limit_target
-	var absolute_target_path := NodePath(
-		String(active_pcam.get_path()) + "/" + String(active_pcam.limit_target)
-	)
+	var absolute_target_path := active_pcam.get_node(active_pcam.limit_target).get_path()
 	return absolute_target_path
 
 
