@@ -31,7 +31,7 @@ const SPAWN_POINT_GROUP_NAME: String = "spawn_point"
 @export_group("Transition")
 
 ## Whether to use a visual transition effect when switching to the target scene.
-@export var use_transition: bool = true:
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var use_transition: bool = true:
 	set(new_val):
 		use_transition = new_val
 		notify_property_list_changed()
@@ -123,12 +123,6 @@ func _validate_property(property: Dictionary) -> void:
 			property.type = TYPE_STRING
 			property.hint = PROPERTY_HINT_ENUM
 			property.hint_string = ",".join(["NONE"] + _available_spawn_points)
-		"enter_transition":
-			if not use_transition:
-				property.usage |= PROPERTY_USAGE_READ_ONLY
-		"exit_transition":
-			if not use_transition:
-				property.usage |= PROPERTY_USAGE_READ_ONLY
 
 
 func _get_configuration_warnings() -> PackedStringArray:
