@@ -1,7 +1,6 @@
 [gd_scene format=4 uid="uid://bm4ewr8p48x0i"]
 
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_g2rto"]
-[ext_resource type="Script" uid="uid://2lwkwxpawda3" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_runner.gd" id="1_r04sh"]
 [ext_resource type="AudioStream" uid="uid://bwgtbylflkup2" path="res://scenes/quests/lore_quests/quest_002/components/void_music.tres" id="2_kgem8"]
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="2_ljnmn"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="3_7u86q"]
@@ -18,7 +17,7 @@
 [ext_resource type="TileSet" uid="uid://ciq5guijvlyb0" path="res://tiles/void_chromakey.tres" id="9_qgmg5"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="10_epkxq"]
 [ext_resource type="PackedScene" uid="uid://bp20cjimwi8l0" path="res://scenes/game_elements/props/buildings/house/house_2.tscn" id="11_5y4tu"]
-[ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="12_ljnmn"]
+[ext_resource type="PackedScene" uid="uid://bs6vm2sdawbhh" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/townie.tscn" id="12_ljnmn"]
 [ext_resource type="SpriteFrames" uid="uid://djwymcffy83" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_red.tres" id="13_b5w51"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="13_wy2h8"]
 [ext_resource type="SpriteFrames" uid="uid://br4k784ht8hh0" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_yellow_large.tres" id="14_ljnmn"]
@@ -29,12 +28,9 @@
 [ext_resource type="Texture2D" uid="uid://be3845r07rhkm" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage3.png" id="17_tsnue"]
 [ext_resource type="Texture2D" uid="uid://cy66l5b3uox84" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage2.png" id="18_rrp37"]
 [ext_resource type="Texture2D" uid="uid://0xceungm1p8a" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage2.png" id="19_j6nb3"]
-[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="20_s0pn8"]
 [ext_resource type="SpriteFrames" uid="uid://cuokvpf58hkee" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_purple.tres" id="20_twlcp"]
-[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="21_kfcfu"]
 [ext_resource type="SpriteFrames" uid="uid://brspwu70qbdaf" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_blue.tres" id="21_xqo3t"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="22_auh5r"]
-[ext_resource type="Resource" uid="uid://cy6q1djsmma1f" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/townie.dialogue" id="22_tsnue"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="23_amu0w"]
 [ext_resource type="PackedScene" uid="uid://dme77bdscoo1o" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/monk.tscn" id="23_swnl7"]
 [ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="23_wtoj6"]
@@ -60,16 +56,12 @@ _data = {
 }
 point_count = 17
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rrp37"]
-size = Vector2(52, 61)
-
 [sub_resource type="Resource" id="Resource_8l6e1"]
 script = ExtResource("23_amu0w")
 name = "Memory"
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="VoidRunner" type="Node2D" unique_id=506997450]
-script = ExtResource("1_r04sh")
 metadata/_edit_lock_ = true
 
 [node name="BackgroundMusic" parent="." unique_id=649811497 instance=ExtResource("1_g2rto")]
@@ -173,7 +165,6 @@ position_smoothing_enabled = true
 editor_draw_limits = true
 
 [node name="VoidSpreadingEnemy" parent="OnTheGround" unique_id=1727069559 node_paths=PackedStringArray("void_layer", "idle_patrol_path") instance=ExtResource("6_wtoj6")]
-unique_name_in_owner = true
 position = Vector2(735, 3148)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidSpreadingEnemyPatrolPath")
@@ -277,28 +268,9 @@ y_sort_enabled = true
 [node name="House_2" parent="OnTheGround/StartingIsland" unique_id=132243375 instance=ExtResource("11_5y4tu")]
 position = Vector2(353, 2635)
 
-[node name="Townie" parent="OnTheGround/StartingIsland" unique_id=202712988 instance=ExtResource("12_ljnmn")]
+[node name="Townie" parent="OnTheGround/StartingIsland" unique_id=202712988 node_paths=PackedStringArray("enemy") instance=ExtResource("12_ljnmn")]
 position = Vector2(298, 2715)
-character_seed = 1006531516
-
-[node name="InteractArea" type="Area2D" parent="OnTheGround/StartingIsland/Townie" unique_id=1515853328]
-unique_name_in_owner = true
-collision_layer = 32
-collision_mask = 0
-script = ExtResource("20_s0pn8")
-metadata/_custom_type_script = "uid://du8wfijr35r35"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/StartingIsland/Townie/InteractArea" unique_id=1236597835]
-visible = false
-position = Vector2(0, -23.5)
-shape = SubResource("RectangleShape2D_rrp37")
-debug_color = Color(0.600391, 0.54335, 0, 0.42)
-
-[node name="TalkBehavior" type="Node" parent="OnTheGround/StartingIsland/Townie" unique_id=526014934 node_paths=PackedStringArray("interact_area")]
-script = ExtResource("21_kfcfu")
-dialogue = ExtResource("22_tsnue")
-interact_area = NodePath("../InteractArea")
-metadata/_custom_type_script = "uid://edcifob4jc4s"
+enemy = NodePath("../../VoidSpreadingEnemy")
 
 [node name="Sign" parent="OnTheGround/StartingIsland" unique_id=111510925 instance=ExtResource("14_r04sh")]
 position = Vector2(600, 2802)
@@ -1205,5 +1177,3 @@ position = Vector2(2461, 2732)
 
 [connection signal="body_entered" from="EnemyTrigger" to="OnTheGround/VoidSpreadingEnemy" method="start" flags=6]
 [connection signal="body_entered" from="GoalReachedTrigger" to="OnTheGround/VoidSpreadingEnemy" method="defeat" flags=6 unbinds=1]
-[connection signal="interaction_ended" from="OnTheGround/StartingIsland/Townie/InteractArea" to="OnTheGround/StartingIsland/Townie" method="_on_interact_area_interaction_ended"]
-[connection signal="interaction_started" from="OnTheGround/StartingIsland/Townie/InteractArea" to="OnTheGround/StartingIsland/Townie" method="_on_interact_area_interaction_started"]

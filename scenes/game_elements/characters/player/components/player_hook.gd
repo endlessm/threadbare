@@ -381,12 +381,11 @@ func _process_pulling(_delta: float) -> void:
 			return
 
 	character.velocity = player_distance.normalized() * pull_velocity * weight
-	if weight != 0:
-		var player_collided := character.move_and_slide()
+	var player_collided := character.move_and_slide()
 
-		if player_collided:
-			if character.get_real_velocity().length_squared() <= stuck_speed * stuck_speed:
-				stop_pulling()
+	if player_collided:
+		if character.get_real_velocity().length_squared() <= stuck_speed * stuck_speed:
+			stop_pulling()
 
 	if target is CharacterBody2D:
 		target.velocity = target_distance.normalized() * pull_velocity * (1 - weight)

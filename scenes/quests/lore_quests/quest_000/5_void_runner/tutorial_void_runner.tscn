@@ -1,7 +1,6 @@
 [gd_scene format=4 uid="uid://cb7tqsakwhpgk"]
 
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="1_kefym"]
-[ext_resource type="Script" uid="uid://c0txelutrcr" path="res://scenes/quests/lore_quests/quest_000/5_void_runner/components/tutorial_void_runner.gd" id="1_tjonm"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="2_tl32x"]
 [ext_resource type="TileSet" uid="uid://b778cuoftt88r" path="res://tiles/elevation_2.tres" id="3_egghn"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="4_uxkgr"]
@@ -15,9 +14,11 @@
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="12_rogtb"]
 [ext_resource type="PackedScene" uid="uid://cokul8w425pja" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_spreading_enemy.tscn" id="13_app83"]
 [ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="14_2lxhj"]
-[ext_resource type="PackedScene" uid="uid://b2mj4jggli0ci" path="res://scenes/quests/lore_quests/quest_000/tutorial_npc/tutorial_npc.tscn" id="14_sdmwi"]
+[ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="14_sdmwi"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="15_m0rx6"]
-[ext_resource type="Resource" uid="uid://bf8ijgu3jlfvm" path="res://scenes/quests/lore_quests/quest_000/5_void_runner/components/tutorial_void_runner.dialogue" id="17_u5x30"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="15_u5x30"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="16_f8xlp"]
+[ext_resource type="Resource" uid="uid://bf8ijgu3jlfvm" path="res://scenes/quests/lore_quests/quest_000/5_void_runner/tutorial_void_runner.dialogue" id="17_u5x30"]
 [ext_resource type="PackedScene" uid="uid://cfvr32bp2achm" path="res://scenes/game_elements/props/decoration/rock/fabric_rock.tscn" id="18_f8xlp"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="20_f8xlp"]
 [ext_resource type="SpriteFrames" uid="uid://cuokvpf58hkee" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_purple.tres" id="22_af6h4"]
@@ -31,6 +32,12 @@
 script = ExtResource("12_rogtb")
 type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tfxnn"]
+size = Vector2(52, 61)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u5x30"]
+size = Vector2(52, 61)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fwbcl"]
 size = Vector2(337.5, 826)
@@ -64,8 +71,7 @@ size = Vector2(64, 192)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m0rx6"]
 size = Vector2(64, 64)
 
-[node name="TutorialVoidRunner" type="Node2D" unique_id=54297093]
-script = ExtResource("1_tjonm")
+[node name="VoidGrapplingRunner" type="Node2D" unique_id=54297093]
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1241762654]
 
@@ -127,7 +133,6 @@ position_smoothing_enabled = true
 editor_draw_limits = true
 
 [node name="SpiritThread" parent="OnTheGround" unique_id=327991066 instance=ExtResource("11_wdt4i")]
-unique_name_in_owner = true
 position = Vector2(2943, -135)
 revealed = false
 next_scene = "uid://dmoxtp65y3r2w"
@@ -138,17 +143,55 @@ position = Vector2(-195, 1774)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../../EnemyPatrolPath")
 
-[node name="TutorialNPC" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("14_sdmwi")]
+[node name="Townie" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("14_sdmwi")]
 position = Vector2(198, 1540)
-dialogue = ExtResource("17_u5x30")
-dialogue_title = &"interact"
+character_seed = 3222241206
 
-[node name="TutorialNPC2" parent="OnTheGround" unique_id=183522457 instance=ExtResource("14_sdmwi")]
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Townie" unique_id=1745845356]
+unique_name_in_owner = true
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("15_u5x30")
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Townie/InteractArea" unique_id=387591210]
+visible = false
+position = Vector2(0, -23.5)
+shape = SubResource("RectangleShape2D_tfxnn")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="OnTheGround/Townie" unique_id=999721288 node_paths=PackedStringArray("interact_area")]
+script = ExtResource("16_f8xlp")
+dialogue = ExtResource("17_u5x30")
+title = "interact"
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
+
+[node name="Townie2" parent="OnTheGround" unique_id=183522457 instance=ExtResource("14_sdmwi")]
 position = Vector2(3197, -179)
 scale = Vector2(-1, 1)
-dialogue = ExtResource("17_u5x30")
-dialogue_title = &"well_done"
+character_seed = 3222241206
 look_at_side = 1
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Townie2" unique_id=1777869773]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("15_u5x30")
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Townie2/InteractArea" unique_id=556369693]
+visible = false
+position = Vector2(0, -23.5)
+shape = SubResource("RectangleShape2D_u5x30")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="OnTheGround/Townie2" unique_id=1521381274 node_paths=PackedStringArray("interact_area", "extra_context")]
+script = ExtResource("16_f8xlp")
+dialogue = ExtResource("17_u5x30")
+title = "well_done"
+interact_area = NodePath("../InteractArea")
+extra_context = [NodePath("../../SpiritThread")]
+metadata/_custom_type_script = "uid://edcifob4jc4s"
 
 [node name="ConsumableProps" type="Node2D" parent="OnTheGround" unique_id=349453195]
 y_sort_enabled = true
@@ -832,5 +875,9 @@ metadata/_custom_type_script = "uid://c2lx7gvkonxaa"
 
 [node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("25_xfbr2")]
 
+[connection signal="interaction_ended" from="OnTheGround/Townie/InteractArea" to="OnTheGround/Townie" method="_on_interact_area_interaction_ended"]
+[connection signal="interaction_started" from="OnTheGround/Townie/InteractArea" to="OnTheGround/Townie" method="_on_interact_area_interaction_started"]
+[connection signal="interaction_ended" from="OnTheGround/Townie2/InteractArea" to="OnTheGround/Townie2" method="_on_interact_area_interaction_ended"]
+[connection signal="interaction_started" from="OnTheGround/Townie2/InteractArea" to="OnTheGround/Townie2" method="_on_interact_area_interaction_started"]
 [connection signal="body_entered" from="EnemyTrigger" to="OnTheGround/VoidSpreadingEnemy" method="start" flags=6]
 [connection signal="body_entered" from="GoalReachedTrigger" to="OnTheGround/VoidSpreadingEnemy" method="defeat" flags=6 unbinds=1]
