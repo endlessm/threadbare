@@ -24,7 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://1vunygl4wpj6" path="res://scenes/game_elements/props/button_item/button_item.tscn" id="15_wv4km"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="18_wv4km"]
 [ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="19_6n4qp"]
-[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="20_wv4km"]
+[ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="23_wv4km"]
 
 [sub_resource type="Animation" id="Animation_w67qe"]
 length = 0.001
@@ -228,8 +228,9 @@ position = Vector2(1132, 1079)
 
 [node name="CollectibleItem" parent="OnTheGround" unique_id=317578047 instance=ExtResource("7_upilw")]
 position = Vector2(1434, 520)
-next_scene = "uid://ce7nk8qmi64d2"
 item = SubResource("Resource_kr8u1")
+next_scene = "uid://ce7nk8qmi64d2"
+exit_transition = 1
 
 [node name="Sign" parent="OnTheGround" unique_id=516698120 instance=ExtResource("9_vdhd3")]
 position = Vector2(2552, 1168)
@@ -303,12 +304,10 @@ sprite_frames = ExtResource("19_6n4qp")
 [node name="Bush14" parent="OnTheGround/Bushes" unique_id=391246514 instance=ExtResource("18_wv4km")]
 position = Vector2(261, 440)
 
-[node name="Teleporter" type="Area2D" parent="." unique_id=579212473]
+[node name="Teleporter" parent="." unique_id=1779636661 instance=ExtResource("23_wv4km")]
 position = Vector2(2704, 1216)
-collision_layer = 4
-script = ExtResource("20_wv4km")
 next_scene = "uid://dpv6x7h2p2i3l"
-enter_transition = 2
+enter_transition = 1
 exit_transition = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" unique_id=1421802846]

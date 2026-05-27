@@ -132,5 +132,4 @@ func defeat() -> void:
 	await get_tree().create_timer(2.0).timeout
 
 	# reload current scene/checkpoint
-	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
-	
+	SceneSwitcher.reload_with_transition()

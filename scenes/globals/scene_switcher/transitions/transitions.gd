@@ -9,7 +9,19 @@ signal started
 signal finished
 
 enum Effect {
-	FADE, LEFT_TO_RIGHT_WIPE, RIGHT_TO_LEFT_WIPE, RADIAL, TOP_TO_BOTTOM_WIPE, BOTTOM_TO_TOP_WIPE
+	## Fade the whole screen to/from black at once
+	FADE,
+	## Fade to/from black starting from the left of the screen and moving right
+	LEFT_TO_RIGHT_WIPE,
+	## Fade to/from black starting from the right of the screen and moving left
+	RIGHT_TO_LEFT_WIPE,
+	## Fade to black from the edges of the screen to a circle in the middle;
+	## fade from black starting at the middle and working outwards.
+	RADIAL,
+	## Fade to/from black starting from the top of the screen and moving down
+	TOP_TO_BOTTOM_WIPE,
+	## Fade to/from black starting from the bottom of the screen and moving up
+	BOTTOM_TO_TOP_WIPE,
 }
 
 const FADE_TEXTURE: Texture = preload("uid://cpvc4xmg7at7r")
@@ -22,6 +34,20 @@ const BOTTOM_TO_TOP_WIPE_TEXTURE: Texture = preload("uid://dv8a5iybchwot")
 var _current_tween: Tween
 
 @onready var transition_mask: ColorRect = $TransitionMask
+
+
+static func _invert(effect: Effect) -> Effect:
+	match effect:
+		Effect.LEFT_TO_RIGHT_WIPE:
+			return Effect.RIGHT_TO_LEFT_WIPE
+		Effect.RIGHT_TO_LEFT_WIPE:
+			return Effect.LEFT_TO_RIGHT_WIPE
+		Effect.TOP_TO_BOTTOM_WIPE:
+			return Effect.BOTTOM_TO_TOP_WIPE
+		Effect.BOTTOM_TO_TOP_WIPE:
+			return Effect.TOP_TO_BOTTOM_WIPE
+		_:
+			return effect
 
 
 func _input(_event: InputEvent) -> void:
@@ -64,21 +90,21 @@ func _do_tween(
 
 
 func _leave_scene(
-	_transition_effect: Effect = Effect.FADE,
+	transition_effect: Effect = Effect.FADE,
 	duration: float = 1.0,
 	easing: Tween.EaseType = Tween.EaseType.EASE_OUT,
 	transition_type: Tween.TransitionType = Tween.TransitionType.TRANS_QUAD
 ) -> void:
-	await _do_tween(0.0, _transition_effect, duration, easing, transition_type)
+	await _do_tween(0.0, _invert(transition_effect), duration, easing, transition_type)
 
 
 func _introduce_scene(
-	_transition_effect: Effect = Effect.FADE,
+	transition_effect: Effect = Effect.FADE,
 	duration: float = 1.0,
 	easing: Tween.EaseType = Tween.EaseType.EASE_IN,
 	transition_type: Tween.TransitionType = Tween.TransitionType.TRANS_QUAD
 ) -> void:
-	await _do_tween(1.0, _transition_effect, duration, easing, transition_type)
+	await _do_tween(1.0, transition_effect, duration, easing, transition_type)
 
 
 func do_transition(

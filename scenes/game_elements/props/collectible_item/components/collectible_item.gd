@@ -1,7 +1,8 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name CollectibleItem extends Node2D
+class_name CollectibleItem
+extends SceneLink
 
 ## Overworld collectible that can be interacted with. When a player interacts
 ## with it, an [InventoryItem] is added to the [Inventory]
@@ -13,9 +14,6 @@ class_name CollectibleItem extends Node2D
 	set(new_value):
 		revealed = new_value
 		_update_based_on_revealed()
-
-## If provided, switch to this scene after collecting and possibly displaying a dialogue.
-@export_file("*.tscn") var next_scene: String
 
 ## [InventoryItem] provided by this collectible when interacted with.
 @export var item: InventoryItem:
@@ -40,6 +38,7 @@ class_name CollectibleItem extends Node2D
 
 
 func _validate_property(property: Dictionary) -> void:
+	super._validate_property(property)
 	match property.name:
 		"dialogue_title":
 			if not collected_dialogue:
@@ -47,9 +46,10 @@ func _validate_property(property: Dictionary) -> void:
 
 
 func _get_configuration_warnings() -> PackedStringArray:
+	var warnings := super._get_configuration_warnings()
 	if not item:
-		return ["item property must be set"]
-	return []
+		warnings.append("item property must be set")
+	return warnings
 
 
 func _set_item(new_value: InventoryItem) -> void:
@@ -65,6 +65,8 @@ func _set_item(new_value: InventoryItem) -> void:
 
 
 func _ready() -> void:
+	super._ready()
+
 	_set_item(item)
 	_update_based_on_revealed()
 	sprite_2d.modulate = Color.WHITE if revealed else Color.TRANSPARENT
@@ -102,7 +104,7 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 
 	if next_scene:
 		GameState.set_challenge_start_scene(next_scene)
-		SceneSwitcher.change_to_file_with_transition(next_scene)
+		switch()
 
 
 func _update_based_on_revealed() -> void:

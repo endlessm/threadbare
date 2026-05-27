@@ -1,8 +1,12 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name Teleporter
-extends Area2D
+class_name SceneLink
+extends Node2D
+## Represents a potential transition to another scene.
+##
+## This can be used directly, but acts primarily a base class for other
+## components: [Cinematic], [CollectibleItem], and the Teleporter scene.
 
 const SPAWN_POINT_GROUP_NAME: String = "spawn_point"
 
@@ -13,7 +17,6 @@ const SPAWN_POINT_GROUP_NAME: String = "spawn_point"
 	set(new_value):
 		next_scene = new_value
 		_update_available_spawn_points()
-		notify_property_list_changed()
 
 ## Which SpawnPoint in [member next_scene] the player character should start at;
 ## or blank/NONE to start at the default position in the scene.
@@ -23,46 +26,38 @@ const SPAWN_POINT_GROUP_NAME: String = "spawn_point"
 			spawn_point_path = ^""
 		else:
 			spawn_point_path = new_val
+		update_configuration_warnings()
 
 @export_group("Transition")
 
-## Whether to use a visual transition effect when the player enters the teleporter.
-@export var use_transition: bool = true:
+## Whether to use a visual transition effect when switching to the target scene.
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var use_transition: bool = true:
 	set(new_val):
 		use_transition = new_val
 		notify_property_list_changed()
 
-## Transition to use when the player enters this teleport.
-@export var enter_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
+## Transition to use at the start of the switch to [member next_scene].
+@export var enter_transition: Transition.Effect = Transition.Effect.FADE
 
-## Transition to use when the player leaves this teleport.
-@export var exit_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE
+## Transition to use at the end of the switch to [member next_scene].
+@export var exit_transition: Transition.Effect = Transition.Effect.FADE
 
 var _available_spawn_points: Array[NodePath] = []
 
 
 func _ready() -> void:
-	collision_layer = 0
-	collision_mask = 0
-	set_collision_layer_value(3, true)
-	set_collision_mask_value(1, true)
-
 	if Engine.is_editor_hint():
 		_update_available_spawn_points()
-		notify_property_list_changed()
 		return
 
-	self.body_entered.connect(_on_body_entered, CONNECT_ONE_SHOT)
 
-
-func _on_body_entered(_body: PhysicsBody2D) -> void:
+## Trigger the scene-switch or teleport described by [member next_scene] and
+## [member spawn_point_path], with the configured transition.
+func switch() -> void:
 	var next_scene_path := _get_next_scene_path()
 	if next_scene_path and next_scene_path != get_tree().current_scene.scene_file_path:
-		# We are using call_deferred here because removing nodes with
-		# collisions during a callback caused by a collision might cause
-		# undesired behavior.
 		if use_transition:
-			SceneSwitcher.change_to_file_with_transition.call_deferred(
+			SceneSwitcher.change_to_file_with_transition(
 				next_scene, spawn_point_path, enter_transition, exit_transition
 			)
 		else:
@@ -72,7 +67,7 @@ func _on_body_entered(_body: PhysicsBody2D) -> void:
 
 		if is_instance_valid(spawn_point):
 			if use_transition:
-				Transitions.do_transition(
+				await Transitions.do_transition(
 					self._teleport_to_spawn_point.bind(spawn_point),
 					enter_transition,
 					exit_transition
@@ -83,7 +78,6 @@ func _on_body_entered(_body: PhysicsBody2D) -> void:
 
 func _teleport_to_spawn_point(spawn_point: SpawnPoint) -> void:
 	spawn_point.move_player_to_self_position(true)
-	self.body_entered.connect(_on_body_entered, CONNECT_ONE_SHOT)
 
 
 func _get_next_scene_path() -> String:
@@ -119,6 +113,9 @@ func _update_available_spawn_points() -> void:
 
 		_available_spawn_points = paths
 
+	notify_property_list_changed()
+	update_configuration_warnings()
+
 
 func _validate_property(property: Dictionary) -> void:
 	match property.name:
@@ -126,9 +123,10 @@ func _validate_property(property: Dictionary) -> void:
 			property.type = TYPE_STRING
 			property.hint = PROPERTY_HINT_ENUM
 			property.hint_string = ",".join(["NONE"] + _available_spawn_points)
-		"enter_transition":
-			if not use_transition:
-				property.usage |= PROPERTY_USAGE_READ_ONLY
-		"exit_transition":
-			if not use_transition:
-				property.usage |= PROPERTY_USAGE_READ_ONLY
+
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray
+	if spawn_point_path and spawn_point_path not in _available_spawn_points:
+		warnings.append("Spawn point '%s' does not exist" % [spawn_point_path])
+	return warnings
