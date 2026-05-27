@@ -19,6 +19,9 @@ script = ExtResource("15_i80sc")
 type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_acxkl"]
+height = 42.0
+
 [node name="SequencePuzzleTemplate" type="Node2D" unique_id=1912634357]
 
 [node name="PlayerMode" type="Node" parent="." unique_id=2087262417]
@@ -85,6 +88,13 @@ dialogue_title = &"well_done"
 [node name="Sheep" parent="OnTheGround" unique_id=398073521 instance=ExtResource("10_acxkl")]
 position = Vector2(1481, 389)
 scale = Vector2(-1, 1)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/Sheep" unique_id=1499841164]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Sheep/StaticBody2D" unique_id=899751853]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_acxkl")
 
 [node name="Sign" parent="OnTheGround" unique_id=999258150 instance=ExtResource("17_64xko")]
 position = Vector2(230, 92)

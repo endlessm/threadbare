@@ -27,16 +27,8 @@ func _get_offset_from_spriteframes_filename(new_sprite_frames: SpriteFrames) -> 
 	if sprite_frame_filename:
 		filename = sprite_frame_filename
 	elif "idle" in new_sprite_frames.get_animation_names():
-		var idle_texture := new_sprite_frames.get_frame_texture(&"idle", 0)
-		if idle_texture is AtlasTexture:
-			idle_texture = idle_texture.atlas
-		filename = idle_texture.resource_path.get_file()
-
+		filename = new_sprite_frames.get_frame_texture(&"idle", 0).resource_path
 	var offset := Vector2.ZERO
-	if not filename:
-		push_warning("%s: Can't find filename for %s" % [get_path(), new_sprite_frames])
-		return offset
-
 	# TODO: Use regular expressions.
 	for part: String in filename.split("."):
 		var data := part.split("_")

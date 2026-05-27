@@ -24,7 +24,7 @@ const QUEST_RESOURCE_NAME := "quest.tres"
 
 ## Directory to scan for quests. This directory should have 1 or more subdirectories, each of which
 ## have a [code]quest.tres[/code] file within.
-@export_dir var quest_directory: String:
+@export_dir var quest_directory: String = "res://scenes/quests/story_quests":
 	set = _set_quest_directory
 
 var _quests: Array[Quest] = []

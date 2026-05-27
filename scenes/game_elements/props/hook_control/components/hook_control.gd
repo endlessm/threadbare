@@ -75,8 +75,6 @@ var _hook_angle_set: bool = false
 
 var _hook_angle: float
 
-var _pointing_at_area: HookableArea
-
 ## The visual representation of the [member ray_cast_2d] direction.
 ## It also indicates if the ray is hitting a [HookableArea] by displaying
 ## the sprite solid, or semitransparent if not.
@@ -150,7 +148,7 @@ func _get_hook_angle() -> float:
 
 func _throw() -> void:
 	if ray_cast_2d.is_colliding():
-		if _pointing_at_area:
+		if _can_connect():
 			hooked_to = ray_cast_2d.get_collider() as HookableArea
 			var is_loop := false
 			if hooked_to.hook_control:
@@ -161,8 +159,6 @@ func _throw() -> void:
 					if hook_area:
 						hooked_to.hook_control.exclude_areas.append(hook_area)
 				state = State.DISABLED
-			else:
-				state = State.AIMING_PAUSED
 			get_tree().call_group(&"hook_listener", &"hooked", hooked_to, is_loop)
 		else:
 			release()
@@ -187,40 +183,23 @@ func release() -> void:
 		hooked_to = null
 
 
-## If an area was being pointed at, clear it.
-func clear_pointing_at_area() -> void:
-	if _pointing_at_area:
-		_pointing_at_area.remove_observer(self)
-		_pointing_at_area = null
-
-
-func _update_pointing_at_area() -> void:
+func _can_connect() -> bool:
 	if not ray_cast_2d.is_colliding():
-		clear_pointing_at_area()
-		return
+		return false
 	var area := ray_cast_2d.get_collider() as HookableArea
 	if not area:
-		clear_pointing_at_area()
-		return
-	if area != _pointing_at_area:
-		if area not in exclude_areas:
-			clear_pointing_at_area()
-			area.add_observer(self)
-			_pointing_at_area = area
+		return false
+	return area not in exclude_areas
 
 
 func _set_state(new_state: State) -> void:
 	state = new_state
-	if not is_node_ready():
+	if not ready:
 		return
-	match state:
-		State.DISABLED:
-			rotation = 0
-			pressing_throw_action = false
-			throw_failed_while_pressing = false
-			clear_pointing_at_area()
-		State.AIMING_PAUSED:
-			clear_pointing_at_area()
+	if state == State.DISABLED:
+		rotation = 0
+		pressing_throw_action = false
+		throw_failed_while_pressing = false
 	if sprite_2d:
 		sprite_2d.visible = state != State.DISABLED
 	if ray_cast_2d:
@@ -236,9 +215,7 @@ func _process(_delta: float) -> void:
 	if state == State.DISABLED:
 		return
 	rotation = _get_hook_angle()
-	if state == State.AIMING:
-		_update_pointing_at_area()
-	sprite_2d.modulate = Color.WHITE if _pointing_at_area else Color(Color.WHITE, 0.5)
+	sprite_2d.modulate = Color.WHITE if _can_connect() else Color(Color.WHITE, 0.5)
 	if hooked_to:
 		# Currently the control can be hooked to a single area.
 		return

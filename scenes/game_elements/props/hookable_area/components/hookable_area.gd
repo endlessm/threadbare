@@ -32,11 +32,6 @@ extends Area2D
 ## Use this signal to release itself from a grappling hook pull.
 signal pull_released(cancelled: bool)
 
-## Emitted when hook controls start or stop pointing at this area when aiming.
-signal observers_changed
-
-const HOOKABLE_INDICATOR = preload("uid://dyldoadlxd7po")
-
 ## The game entity that becomes hookable.
 ## [br][br]
 ## [b]Note:[/b] If the parent node is a Node2D and this isn't set,
@@ -53,17 +48,6 @@ const HOOKABLE_INDICATOR = preload("uid://dyldoadlxd7po")
 ## Optional. [member global_position] will be used if this is not set.
 @export var anchor_point: Marker2D
 
-## Position at which to show an arrow when this area is being pointed for aiming.
-## This should generally be slightly above the anchor point.
-## If not set, a default position will be used, which may be good enough.
-@export var indicator_point: Marker2D:
-	set(new_value):
-		if indicator_point and _indicator:
-			indicator_point.remove_child(_indicator)
-		indicator_point = new_value
-		if indicator_point and _indicator:
-			indicator_point.add_child(_indicator)
-
 ## When the grappling hook pulls and this area is hooked:[br]
 ## • 1: The player moves towards this.[br]
 ## • 0: This node's controlled entity moves towards the player.[br]
@@ -71,15 +55,6 @@ const HOOKABLE_INDICATOR = preload("uid://dyldoadlxd7po")
 ## Not relevant if [member hook_control] is set.[br][br]
 ## If this node's controlled entity is not a [CharacterBody2D], 1 is assumed.
 @export var weight: float = 1.0
-
-## Whether this area is being observed by one or more control hooks.
-## That is, if a [HookControl] is pointing at this area for hooking.
-var is_being_observed: bool:
-	get = _get_is_being_observed
-
-var _indicator: Node2D
-
-var _observers: Array[HookControl] = []
 
 
 func _enter_tree() -> void:
@@ -92,19 +67,6 @@ func _ready() -> void:
 	collision_mask = 0
 	set_collision_layer_value(Enums.CollisionLayers.HOOKABLE, true)
 
-	if not indicator_point and not Engine.is_editor_hint():
-		indicator_point = Marker2D.new()
-		indicator_point.name = "IndicatorMarker"
-		add_child(indicator_point)
-		# Vaguely sensible default position
-		indicator_point.global_position = get_anchor_position() + Vector2(0, -32)
-
-	_indicator = HOOKABLE_INDICATOR.instantiate()
-	if indicator_point:
-		indicator_point.add_child(_indicator)
-
-	observers_changed.connect(_on_observers_changed)
-
 
 ## Return the global position used to connect the hook.
 func get_anchor_position() -> Vector2:
@@ -114,22 +76,6 @@ func get_anchor_position() -> Vector2:
 ## Emit the [signal pull_released] signal.
 func release_from_pull(cancelled: bool = false) -> void:
 	pull_released.emit(cancelled)
-
-
-## A [HookControl] calls this when it starts pointing at this area.
-func add_observer(observer_hook_control: HookControl) -> void:
-	_observers.append(observer_hook_control)
-	observers_changed.emit()
-
-
-## A [HookControl] calls this when it stops pointing at this area.
-func remove_observer(observer_hook_control: HookControl) -> void:
-	_observers.erase(observer_hook_control)
-	observers_changed.emit()
-
-
-func _get_is_being_observed() -> bool:
-	return bool(_observers.size())
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -153,7 +99,3 @@ func _set_controlled_entity(new_controlled_entity: Node2D) -> void:
 func _set_hook_control(new_hook_control: HookControl) -> void:
 	hook_control = new_hook_control
 	hook_control.hook_area = self
-
-
-func _on_observers_changed() -> void:
-	_indicator.bouncing = is_being_observed
