@@ -181,7 +181,10 @@ func _on_quest_button_pressed(button: Button) -> void:
 
 
 func _on_storybook_page_selected(quest: Quest) -> void:
-	selected.emit(quest)
+	if quest == TEMPLATE_QUEST_METADATA:
+		selected.emit(STORY_QUEST_TEMPLATE)
+	else:
+		selected.emit(quest)
 
 
 func _on_back_button_pressed() -> void:
