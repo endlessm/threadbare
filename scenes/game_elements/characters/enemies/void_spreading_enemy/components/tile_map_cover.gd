@@ -5,13 +5,11 @@ class_name TileMapCover
 extends TileMapLayer
 ## A layer that covers props beneath it
 ##
-## This is used as part of an experimental game mechanic where the Void (a starfield that acts like
+## This is used as part of a game mechanic where the Void (a starfield that acts like
 ## an invisibility cloak) expands as the player runs ahead of it. When cells are covered using
 ## [method consume_cells], void tiles are placed in those cells and any props in those cells are
 ## hidden. Any props on tiles that are initially placed are also hidden at the start of the scene.
 ## [method uncover_all] can be used to remove all cells and reveal the props that were hidden.
-##
-## @experimental
 
 const _DURATION: float = 0.25
 
