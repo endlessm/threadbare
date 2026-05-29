@@ -6,13 +6,13 @@
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="2_ljnmn"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="3_7u86q"]
 [ext_resource type="Script" uid="uid://c2lx7gvkonxaa" path="res://scenes/game_elements/props/background_music/components/clip_switcher.gd" id="3_epkxq"]
-[ext_resource type="Script" uid="uid://d1ly6uhh500xu" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/tile_map_cover.gd" id="3_g2rto"]
+[ext_resource type="Script" uid="uid://d1ly6uhh500xu" path="res://scenes/game_elements/characters/enemies/void_spreading_enemy/components/tile_map_cover.gd" id="3_g2rto"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_85y51"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="4_epkxq"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="5_46vkj"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="6_5y4tu"]
 [ext_resource type="TileSet" uid="uid://b778cuoftt88r" path="res://tiles/elevation_2.tres" id="6_epkxq"]
-[ext_resource type="PackedScene" uid="uid://cokul8w425pja" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_spreading_enemy.tscn" id="6_wtoj6"]
+[ext_resource type="PackedScene" uid="uid://cokul8w425pja" path="res://scenes/game_elements/characters/enemies/void_spreading_enemy/void_spreading_enemy.tscn" id="6_wtoj6"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="7_7xlw5"]
 [ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="9_kgem8"]
 [ext_resource type="TileSet" uid="uid://ciq5guijvlyb0" path="res://tiles/void_chromakey.tres" id="9_qgmg5"]
@@ -1109,17 +1109,16 @@ polygon = PackedVector2Array(-221.5, 55.5, -226.5, 102.5, -174.5, 105.5, -158.5,
 [node name="CollectibleItem" parent="OnTheGround" unique_id=1898669578 instance=ExtResource("22_auh5r")]
 position = Vector2(474, 1058)
 revealed = false
-next_scene = "uid://b8mfigsd8y5qs"
 item = SubResource("Resource_8l6e1")
 collected_dialogue = ExtResource("27_g2rto")
+next_scene = "uid://b8mfigsd8y5qs"
 
 [node name="Temple" parent="OnTheGround" unique_id=539194064 instance=ExtResource("37_kgem8")]
 position = Vector2(3935, 1874)
 
-[node name="Monk" parent="OnTheGround" unique_id=1480705042 node_paths=PackedStringArray("camera", "void_layer", "enemy", "collectible_thread") instance=ExtResource("23_swnl7")]
+[node name="Monk" parent="OnTheGround" unique_id=1480705042 node_paths=PackedStringArray("camera", "enemy", "collectible_thread") instance=ExtResource("23_swnl7")]
 position = Vector2(3842, 1882)
 camera = NodePath("../Player/Camera2D")
-void_layer = NodePath("../../TileMapLayers/Void")
 enemy = NodePath("../VoidSpreadingEnemy")
 collectible_thread = NodePath("../CollectibleItem")
 

@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 extends CharacterBody2D
-## @experimental
+## An enemy that patrols or chases the player, spreading Void as it moves
 
 ## The state of this enemy
 enum State {
@@ -15,11 +15,6 @@ enum State {
 	DEFEATED,
 }
 
-const VOID_PARTICLES = preload(
-	"res://scenes/quests/lore_quests/quest_002/1_void_runner/components/void_particles.tscn"
-)
-const TERRAIN_SET: int = 0
-const VOID_TERRAIN: int = 9
 const NEIGHBORS := [
 	TileSet.CELL_NEIGHBOR_BOTTOM_SIDE,
 	TileSet.CELL_NEIGHBOR_LEFT_SIDE,
@@ -33,6 +28,9 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 
 @export var idle_patrol_path: Path2D:
 	set = _set_idle_patrol_path
+
+## [GPUParticles2D] scene to spawn when tiles are consumed.
+@export var void_particles: PackedScene
 
 var node_to_follow: Node2D:
 	set = _set_node_to_follow
@@ -122,7 +120,7 @@ func _process(_delta: float) -> void:
 func _emit_particles() -> void:
 	_distance_since_emit = 0
 
-	var particles: GPUParticles2D = VOID_PARTICLES.instantiate()
+	var particles: GPUParticles2D = void_particles.instantiate()
 	particles.emitting = true
 	particles_canvas_group.add_child(particles)
 	_live_particles += 1
