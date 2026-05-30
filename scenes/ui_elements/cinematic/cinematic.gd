@@ -13,7 +13,8 @@ signal cinematic_finished
 
 ## Dialogue for cinematic scene.
 @export var dialogue: DialogueResource = preload("uid://b7ad8nar1hmfs")
-
+@export var dialogue2: DialogueResource = preload("res://scenes/quests/story_quests/phantom_toy/0_intro/intro_components/into2.dialogue")
+@export var dialogue3: DialogueResource = preload("res://scenes/quests/story_quests/phantom_toy/0_intro/intro_components/intro3.dialogue")
 ## Optional animation player, to be used from [member dialogue] (if needed).
 @export var animation_player: AnimationPlayer
 
@@ -31,6 +32,7 @@ signal cinematic_finished
 
 func _ready() -> void:
 	if autostart:
+		
 		start()
 
 
@@ -38,8 +40,20 @@ func start() -> void:
 	if not GameState.intro_dialogue_shown:
 		DialogueManager.show_dialogue_balloon(dialogue, "", [self])
 		await DialogueManager.dialogue_ended
+		
+		animation_player.play("walk_on")
+		await animation_player.animation_finished
+		
+		DialogueManager.show_dialogue_balloon(dialogue2, "",[self])
+		await DialogueManager.dialogue_ended
+		
+		#AQUI AÑADIMOS OTRA ANIMACION
+		DialogueManager.show_dialogue_balloon(dialogue3, "",[self])
+		await DialogueManager.dialogue_ended
+		
 		cinematic_finished.emit()
 		GameState.intro_dialogue_shown = true
+		
 
 	if next_scene:
 		(
