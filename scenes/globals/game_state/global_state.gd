@@ -66,6 +66,8 @@ signal completed_quests_changed
 ## used instead. [GameState.player] always points to the correct instance.
 @export var player: PlayerState = PlayerState.new()
 
+@export var helper: HelperCharacterState = HelperCharacterState.new()
+
 
 func _validate_property(property: Dictionary) -> void:
 	match property.name:
