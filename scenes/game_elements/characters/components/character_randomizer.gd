@@ -49,6 +49,9 @@ var _random_number_generator := RandomNumberGenerator.new()
 
 var _previous_look_at_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
 
+## The character head node. This can be used to show the head only in the HUD.
+@onready var head: AnimatedSprite2D = %AnimatedSprite2DHead
+
 
 ## Randomize the skin color and textures of the character.
 ## [br][br]
