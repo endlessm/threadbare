@@ -2,99 +2,56 @@
 
 [ext_resource type="TileSet" uid="uid://dcqq5mawasgik" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_exterior_floors.tres" id="1_8xpoh"]
 [ext_resource type="Texture2D" uid="uid://07k43id4c81h" path="res://assets/first_party/templates/intro/NO_EDIT_intro_image.png" id="2_qe5pr"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_7mqfb"]
 [ext_resource type="SpriteFrames" uid="uid://cwcaxjyrcejw5" path="res://scenes/quests/story_quests/no_trace_left/player_components/grupo_4_player.tres" id="3_07v0r"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="4_3ow41"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_nuyqu"]
 [ext_resource type="Resource" uid="uid://cxyn4tco6rt43" path="res://scenes/quests/story_quests/no_trace_left/0_intro/intro_components/grupo_4_intro.dialogue" id="5_vqr71"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_hr4e7"]
+[ext_resource type="Script" uid="uid://dxdo8lbe3tuvl" path="res://scenes/quests/story_quests/no_trace_left/0_intro/thunder.gd" id="6_og5p0"]
 
-[sub_resource type="Animation" id="Animation_0d111"]
+[sub_resource type="Resource" id="Resource_og5p0"]
+script = ExtResource("4_3ow41")
+walk_speed = 200.0
+run_speed = 400.0
+metadata/_custom_type_script = "uid://csev4hv57utxv"
+
+[sub_resource type="Animation" id="Animation_3ow41"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"idle"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(400, 349)]
+"values": [Color(1, 1, 1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_52y3o"]
-resource_name = "walk_off"
-length = 2.0
+[sub_resource type="Animation" id="Animation_og5p0"]
+resource_name = "fade_to_normal"
+length = 10.0
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
-tracks/0/interp = 1
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [&"walk", &"idle"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 1, 1.5, 2, 2.5, 3.5, 4, 4.5, 5, 6, 6.5, 7, 7.5, 8.5, 9, 9.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(495, 478), Vector2(1010, 478)]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_m27gm"]
-resource_name = "walk_on"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [&"walk", &"idle"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-50, 478), Vector2(495, 478)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_5s54a"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_c7lkc"]
 _data = {
-&"RESET": SubResource("Animation_0d111"),
-&"walk_off": SubResource("Animation_52y3o"),
-&"walk_on": SubResource("Animation_m27gm")
+&"RESET": SubResource("Animation_3ow41"),
+&"fade_to_normal": SubResource("Animation_og5p0")
 }
 
 [node name="Grupo4Intro" type="Node2D" unique_id=2049284984]
@@ -125,26 +82,30 @@ limit_bottom = 540
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="OnTheGround" type="Node2D" parent="." unique_id=836096441]
-y_sort_enabled = true
-
-[node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=169229228]
-position = Vector2(400, 349)
+[node name="Player" parent="." unique_id=296354958 instance=ExtResource("3_7mqfb")]
+position = Vector2(131, 463)
+speeds = SubResource("Resource_og5p0")
 sprite_frames = ExtResource("3_07v0r")
-animation = &"idle"
-autoplay = "idle"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround" unique_id=49807179]
-root_node = NodePath("../..")
-libraries/ = SubResource("AnimationLibrary_5s54a")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
 
-[node name="Cinematic" type="Node2D" parent="." unique_id=1398238637 node_paths=PackedStringArray("animation_player")]
+[node name="thunder" type="CanvasLayer" parent="." unique_id=1467554074]
+script = ExtResource("6_og5p0")
+
+[node name="ColorRect" type="ColorRect" parent="thunder" unique_id=1528786446]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="fade_thunder" type="AnimationPlayer" parent="thunder/ColorRect" unique_id=1309748028]
+libraries/ = SubResource("AnimationLibrary_c7lkc")
+
+[node name="Cinematic" type="Node2D" parent="." unique_id=1398238637]
 script = ExtResource("4_nuyqu")
 dialogue = ExtResource("5_vqr71")
-animation_player = NodePath("../OnTheGround/AnimationPlayer")
-next_scene = "uid://csmio5wd62jc3"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." unique_id=912112339 instance=ExtResource("6_hr4e7")]
