@@ -44,10 +44,18 @@
 [ext_resource type="AudioStream" uid="uid://c7om8kdork2rx" path="res://assets/third_party/sounds/characters/enemies/guard/Torch.ogg" id="31_ink4c"]
 [ext_resource type="SpriteFrames" uid="uid://cefk7kf0bpm3q" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign_backward.tres" id="32_0wfv2"]
 [ext_resource type="AudioStream" uid="uid://xuqj6b5qqs3w" path="res://assets/third_party/sounds/ambient/459405__pfannkuchn__small-river-1-fast-semi-close.ogg" id="35_l8fgn"]
+[ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="42_ps6xw"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="43_icnj0"]
+[ext_resource type="Resource" uid="uid://jf1tng8jxd3o" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/dialogues/music_lore_helper.dialogue" id="44_pgedt"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="45_6y4lh"]
+[ext_resource type="Script" uid="uid://diskln3jup064" path="res://scenes/game_elements/characters/npcs/components/helper_character.gd" id="46_jaqfj"]
 
 [sub_resource type="Resource" id="Resource_dp3eg"]
 script = ExtResource("15_rxyid")
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vigmf"]
+size = Vector2(52, 61)
 
 [sub_resource type="Curve2D" id="Curve2D_306df"]
 _data = {
@@ -1466,6 +1474,37 @@ next_scene = "uid://cgemeabsewy1f"
 item = SubResource("Resource_dp3eg")
 collected_dialogue = ExtResource("6_l4i5r")
 dialogue_title = &"well_done"
+
+[node name="Helper" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("42_ps6xw")]
+position = Vector2(675, 1714)
+scale = Vector2(-1, 1)
+look_at_side = 1
+
+[node name="TalkBehavior" type="Node" parent="OnTheGround/Helper" unique_id=1704084092 node_paths=PackedStringArray("interact_area")]
+script = ExtResource("43_icnj0")
+dialogue = ExtResource("44_pgedt")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Helper" unique_id=1857849502 node_paths=PackedStringArray("marker")]
+visible = false
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("45_6y4lh")
+marker = NodePath("../Marker")
+action = "Want a story?"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Helper/InteractArea" unique_id=317299534]
+position = Vector2(0, -23.5)
+shape = SubResource("RectangleShape2D_vigmf")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="HelperCharacter" type="Node" parent="OnTheGround/Helper" unique_id=2049853056]
+script = ExtResource("46_jaqfj")
+
+[node name="Marker" type="Marker2D" parent="OnTheGround/Helper" unique_id=259590179]
+position = Vector2(0, -72)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1333274951]
 
