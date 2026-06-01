@@ -3,6 +3,7 @@
 extends Node2D
 
 @onready var background_music: BackgroundMusic = %BackgroundMusic
+@onready var thread: CollectibleItem = %CollectibleItem
 
 
 func _on_sequence_puzzle_step_solved(step_index: int) -> void:
