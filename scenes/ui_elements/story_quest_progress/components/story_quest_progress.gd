@@ -3,11 +3,18 @@
 extends PanelContainer
 
 const ITEM_SLOT: PackedScene = preload("uid://1mjm4atk2j6e")
+const TOWNIE = preload("uid://dgrrudegturnw")
 
 @onready var items_container: HBoxContainer = %ItemsContainer
+@onready var helper_container: CenterContainer = %HelperContainer
+@onready var helper_marker: Marker2D = %HelperMarker
+@onready var helper_color: ColorRect = %HelperColor
 
 
 func _ready() -> void:
+	GameState.global.helper.changed.connect(_on_helper_state_changed)
+	_on_helper_state_changed()
+
 	var n := 0
 	if GameState.quest:
 		n = GameState.quest.quest.threads_to_collect
@@ -29,6 +36,22 @@ func _ready() -> void:
 	# Then, when each new item is collected, it is added to the progress UI
 	GameState.global.item_collected.connect(self._on_item_collected)
 	GameState.global.item_consumed.connect(self._on_item_consumed)
+
+
+func _on_helper_state_changed() -> void:
+	var has_helper := bool(GameState.global.helper.character_seed)
+	helper_container.visible = has_helper
+	if has_helper:
+		var helper_character: CharacterRandomizer = TOWNIE.instantiate()
+		add_child(helper_character)
+		helper_character.character_seed = GameState.global.helper.character_seed
+		helper_character.apply_character_randomizations()
+		var head := helper_character.head
+		head.global_position = helper_marker.global_position
+		head.reparent(helper_container)
+		head.process_mode = Node.PROCESS_MODE_DISABLED
+		remove_child(helper_character)
+		helper_color.color = InventoryItem.COLORS_PER_TYPE[GameState.global.helper.helper_type]
 
 
 func _on_item_collected(item: InventoryItem) -> void:
