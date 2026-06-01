@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://7vg52qj6ude"]
+
+[ext_resource type="Script" uid="uid://d4by8wgnai5h3" path="res://scenes/world_map/components/retelling_townie.gd" id="1_is3ec"]
+[ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="2_5ba7h"]
+[ext_resource type="Script" uid="uid://id28maao3vdy" path="res://scenes/game_logic/walk_behaviors/path_walk_behavior.gd" id="3_tbudv"]
+
+[node name="RetellingTownie" type="Node2D" unique_id=1477896501]
+script = ExtResource("1_is3ec")
+
+[node name="Townie" parent="." unique_id=1098678013 instance=ExtResource("2_5ba7h")]
+unique_name_in_owner = true
+
+[node name="PathWalkBehavior" type="Node2D" parent="Townie" unique_id=1667400872 node_paths=PackedStringArray("character")]
+unique_name_in_owner = true
+script = ExtResource("3_tbudv")
+turn_around = false
+character = NodePath("..")
+metadata/_custom_type_script = "uid://id28maao3vdy"
