@@ -82,6 +82,7 @@ func randomize_character() -> void:
 	else:
 		character_seed = new_character_seed
 		apply_character_randomizations()
+		_randomize_all_sprites_progress()
 
 
 func _ready() -> void:
