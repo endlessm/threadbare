@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+~ start
+if VoidSlower.is_void_alive()
+	Do you want some help?
+	- Yes => help_accepted
+	- No => help_denied
+else
+	You did it! => END
+
+~ help_accepted
+Let me distract that Void. It will slow them down.
+do VoidSlower.slowdown_void()
+Bye!
+do GameState.global.helper.clear()
+=> END
+
+~ help_denied
+OK, bye!
+=> END
