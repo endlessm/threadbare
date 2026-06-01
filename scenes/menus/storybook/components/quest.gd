@@ -57,6 +57,10 @@ const FILENAME := "quest.tres"
 ## Which abilities to award if the quest is skipped
 @export var skip_abilities: Array[Enums.PlayerAbilities] = []
 
+## Optional dialogue to retell the adventures that occurred in the quest,
+## when returning the magical threads to the loom.
+@export var retelling: DialogueResource
+
 @export_group("Animation")
 
 ## An optional sprite frame library to show in the storybook page for this quest.
