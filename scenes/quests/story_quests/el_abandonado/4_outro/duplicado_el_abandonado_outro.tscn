@@ -9,9 +9,143 @@
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="6_hc1ty"]
 [ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="7_m4y8w"]
 [ext_resource type="SpriteFrames" uid="uid://d36eq8tqdaxdy" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_green.tres" id="8_ushhy"]
+[ext_resource type="Texture2D" uid="uid://btluuojuvbl7" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/Lapida.png" id="10_m4y8w"]
+
+[sub_resource type="Animation" id="Animation_vshjc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-208, 146)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:animation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+
+[sub_resource type="Animation" id="Animation_e5cln"]
+resource_name = "walk_off"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-200, 160), Vector2(234, 160)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"idle", &"idle"]
+}
+
+[sub_resource type="Animation" id="Animation_m4y8w"]
+resource_name = "walk_off_2"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(478, 478), Vector2(1000, 478)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_m4y8w"]
+_data = {
+&"RESET": SubResource("Animation_vshjc"),
+&"walk_off": SubResource("Animation_e5cln"),
+&"walk_off_2": SubResource("Animation_m4y8w")
+}
+
+[sub_resource type="Animation" id="Animation_65s5o"]
+resource_name = "Animation up"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ushhy"]
+_data = {
+&"Animation up": SubResource("Animation_65s5o")
+}
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ofu3j"]
 size = Vector2(1205, 431)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ushhy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_m4y8w")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="ElAbandonadoOutro" type="Node2D" unique_id=1273842832]
 
@@ -64,6 +198,10 @@ limit_bottom = 540
 position_smoothing_enabled = true
 editor_draw_limits = true
 
+[node name="OnTheGround2" type="Node2D" parent="." unique_id=550931239]
+y_sort_enabled = true
+position = Vector2(108, 318)
+
 [node name="OnTheGround" type="Node2D" parent="." unique_id=2094226334]
 y_sort_enabled = true
 position = Vector2(316, 172)
@@ -73,6 +211,16 @@ position = Vector2(-208, 146)
 sprite_frames = ExtResource("3_ushhy")
 animation = &"walk"
 autoplay = "idle"
+frame_progress = 0.6114571
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/Character" unique_id=1233315804]
+position = Vector2(434, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround/Character" unique_id=544551881]
+libraries/ = SubResource("AnimationLibrary_m4y8w")
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="OnTheGround/Character" unique_id=819847280]
+libraries/ = SubResource("AnimationLibrary_ushhy")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1305410749]
 
@@ -125,7 +273,7 @@ position = Vector2(216.99998, 196)
 scale = Vector2(1.0857643, 1.0913429)
 
 [node name="Tree48" parent="Forest" unique_id=719980409 instance=ExtResource("6_hc1ty")]
-position = Vector2(578.00006, 578)
+position = Vector2(602.00006, 511)
 scale = Vector2(0.7914543, 0.8055921)
 
 [node name="Tree50" parent="Forest" unique_id=1235283233 instance=ExtResource("6_hc1ty")]
@@ -176,7 +324,7 @@ position = Vector2(461, 7.0000005)
 scale = Vector2(0.92301464, 0.9273033)
 
 [node name="Tree61" parent="Forest" unique_id=1959398318 instance=ExtResource("6_hc1ty")]
-position = Vector2(528.00006, 517)
+position = Vector2(543.00006, 537)
 scale = Vector2(0.99410814, 0.9377908)
 
 [node name="Tree62" parent="Forest" unique_id=1571200015 instance=ExtResource("6_hc1ty")]
@@ -205,12 +353,12 @@ position = Vector2(642, 14)
 scale = Vector2(1.0657846, 1.1625344)
 
 [node name="Tree67" parent="Forest" unique_id=1615409031 instance=ExtResource("6_hc1ty")]
-position = Vector2(723, 571.00006)
+position = Vector2(675, 555.00006)
 scale = Vector2(0.84976095, 0.84610724)
 sprite_frames = ExtResource("7_m4y8w")
 
 [node name="Tree76" parent="Forest" unique_id=323960652 instance=ExtResource("6_hc1ty")]
-position = Vector2(509, 583.00006)
+position = Vector2(514, 544)
 scale = Vector2(1.1483678, 1.0605124)
 
 [node name="Tree78" parent="Forest" unique_id=1182216860 instance=ExtResource("6_hc1ty")]
@@ -231,5 +379,25 @@ scale = Vector2(1.0741869, 1.1028868)
 sprite_frames = ExtResource("7_m4y8w")
 
 [node name="Tree87" parent="Forest" unique_id=1646473173 instance=ExtResource("6_hc1ty")]
-position = Vector2(635, 560)
+position = Vector2(679, 558)
 scale = Vector2(1.0405519, 1.1536475)
+
+[node name="Lapida 1" type="AnimatedSprite2D" parent="." unique_id=711058280]
+position = Vector2(353, 162)
+scale = Vector2(1.0968014, 1.0314941)
+sprite_frames = SubResource("SpriteFrames_ushhy")
+
+[node name="Lapida 4" type="AnimatedSprite2D" parent="." unique_id=953574903]
+position = Vector2(734, 163.00002)
+scale = Vector2(1.2203315, 1.0476112)
+sprite_frames = SubResource("SpriteFrames_ushhy")
+
+[node name="Lapida 3" type="AnimatedSprite2D" parent="." unique_id=1193488112]
+position = Vector2(609, 164)
+scale = Vector2(1.1623535, 1.0314941)
+sprite_frames = SubResource("SpriteFrames_ushhy")
+
+[node name="Lapida 2" type="AnimatedSprite2D" parent="." unique_id=2048479278]
+position = Vector2(479, 167)
+scale = Vector2(1.078125, 1.015625)
+sprite_frames = SubResource("SpriteFrames_ushhy")
