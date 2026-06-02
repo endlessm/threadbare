@@ -43,8 +43,10 @@
 [ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="38_cjmkx"]
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="38_jqkod"]
 [ext_resource type="PackedScene" uid="uid://bqkui35x5ly0" path="res://scenes/game_elements/props/decoration/crops/tomato.tscn" id="39_ljovl"]
+[ext_resource type="Script" uid="uid://dntu74hg8e5mt" path="res://scenes/world_map/components/retelling_manager.gd" id="41_ojao8"]
 [ext_resource type="PackedScene" uid="uid://ccpgw7k4rlmea" path="res://scenes/game_elements/props/decoration/crops/barley.tscn" id="42_eodqy"]
 [ext_resource type="PackedScene" uid="uid://c78fj5em5tpm5" path="res://scenes/game_elements/props/decoration/crops/carrot.tscn" id="42_ljovl"]
+[ext_resource type="PackedScene" uid="uid://7vg52qj6ude" path="res://scenes/world_map/components/retelling_townie.tscn" id="42_qgpx3"]
 [ext_resource type="PackedScene" uid="uid://vb5o7hh5an8j" path="res://scenes/game_elements/characters/npcs/elder/template_elder.tscn" id="43_ppslc"]
 [ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="45_cjmkx"]
 [ext_resource type="PackedScene" uid="uid://cr65lmm5b0ueo" path="res://scenes/game_elements/characters/npcs/cat/cat.tscn" id="52_ppslc"]
@@ -60,6 +62,42 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_duxxr"]
 size = Vector2(52, 61)
+
+[sub_resource type="Curve2D" id="Curve2D_ojao8"]
+_data = {
+"points": PackedVector2Array(-114.64216, 15.427484, 0, 0, -743.3334, -113.333374, -92.66128, -38.684425, 92.66128, 38.684425, -462.22223, -84.44446, -87.54299, 0.32184923, 87.54299, -0.32184923, -262.22223, -2.222229, 0, 0, 50.626884, -4.280592, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="Curve2D" id="Curve2D_6fau3"]
+_data = {
+"points": PackedVector2Array(-124.643425, 32.477512, 0, 0, -700, 46.666687, -104.95585, -14.449045, 104.95585, 14.449045, -336.6667, 27.777771, 0, 0, 64.917, -8.23934, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="Curve2D" id="Curve2D_qgpx3"]
+_data = {
+"points": PackedVector2Array(-101.80204, 24.181007, 0, 0, -666.6666, 183.33337, -116.14508, -1.5714827, 116.14508, 1.5714827, -415.55554, 83.33331, 0, 0, 244.63762, -62.310017, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="Curve2D" id="Curve2D_6b07c"]
+_data = {
+"points": PackedVector2Array(-73.87503, -23.41164, 0, 0, 574.4446, 256.6667, 72.81401, 0.29982376, -72.81401, -0.29982376, 352.2223, 152.22223, 57.84887, 26.733473, -57.84887, -26.733473, 164.44446, 48.888855, 0, 0, 59.436245, 21.320118, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="Curve2D" id="Curve2D_t7c6s"]
+_data = {
+"points": PackedVector2Array(-77.37468, -34.149662, 0, 0, 564.44446, 21.111206, 41.451706, -0.04301092, -41.451706, 0.04301092, 380, 2.22229, 44.749817, 2.0858927, -44.749817, -2.0858927, 123.33325, 31.111206, 0, 0, 77.96913, 1.1672745, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="Curve2D" id="Curve2D_ulm71"]
+_data = {
+"points": PackedVector2Array(-98.07021, 22.23685, 0, 0, 676.6666, 67.77789, 72.42304, 1.4143486, -72.42304, -1.4143486, 372.22217, -27.77771, -57.81142, 0.9386225, 57.81142, -0.9386225, 153.33325, -2.222107, 0, 0, 61.9745, 5.1265907, 0, 0)
+}
+point_count = 4
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2vvub"]
 size = Vector2(52, 61)
@@ -422,6 +460,61 @@ position = Vector2(267, 642)
 unique_name_in_owner = true
 position = Vector2(993, 477)
 scale = Vector2(0.9, 0.9)
+
+[node name="RetellingManager" type="Node2D" parent="OnTheGround" unique_id=366416019 node_paths=PackedStringArray("townies")]
+y_sort_enabled = true
+position = Vector2(993, 704)
+scale = Vector2(0.9, 0.9)
+script = ExtResource("41_ojao8")
+townies = [NodePath("RetellingTownie"), NodePath("RetellingTownie2"), NodePath("RetellingTownie3"), NodePath("RetellingTownie4"), NodePath("RetellingTownie5"), NodePath("RetellingTownie6")]
+
+[node name="RetellingTownie" parent="OnTheGround/RetellingManager" unique_id=1477896501 node_paths=PackedStringArray("enter_path") instance=ExtResource("42_qgpx3")]
+position = Vector2(-178.88892, -54.444458)
+enter_path = NodePath("../Path2D")
+
+[node name="Path2D" type="Path2D" parent="OnTheGround/RetellingManager" unique_id=2016520834]
+position = Vector2(-178.88892, -54.444458)
+curve = SubResource("Curve2D_ojao8")
+
+[node name="RetellingTownie2" parent="OnTheGround/RetellingManager" unique_id=1970315239 node_paths=PackedStringArray("enter_path") instance=ExtResource("42_qgpx3")]
+position = Vector2(-154.44446, 23.333313)
+enter_path = NodePath("../Path2D2")
+
+[node name="Path2D2" type="Path2D" parent="OnTheGround/RetellingManager" unique_id=332549749]
+position = Vector2(-154.44446, 23.333313)
+curve = SubResource("Curve2D_6fau3")
+
+[node name="RetellingTownie3" parent="OnTheGround/RetellingManager" unique_id=711827666 node_paths=PackedStringArray("enter_path") instance=ExtResource("42_qgpx3")]
+position = Vector2(-86.66669, 101.111084)
+enter_path = NodePath("../Path2D3")
+
+[node name="Path2D3" type="Path2D" parent="OnTheGround/RetellingManager" unique_id=352162875]
+position = Vector2(-86.66669, 101.111084)
+curve = SubResource("Curve2D_qgpx3")
+
+[node name="RetellingTownie4" parent="OnTheGround/RetellingManager" unique_id=1601781004 node_paths=PackedStringArray("enter_path") instance=ExtResource("42_qgpx3")]
+position = Vector2(86.666626, 107.77777)
+enter_path = NodePath("../Path2D4")
+
+[node name="Path2D4" type="Path2D" parent="OnTheGround/RetellingManager" unique_id=365432028]
+position = Vector2(86.666626, 107.77777)
+curve = SubResource("Curve2D_6b07c")
+
+[node name="RetellingTownie5" parent="OnTheGround/RetellingManager" unique_id=1197363791 node_paths=PackedStringArray("enter_path") instance=ExtResource("42_qgpx3")]
+position = Vector2(152.22229, 26.666565)
+enter_path = NodePath("../Path2D5")
+
+[node name="Path2D5" type="Path2D" parent="OnTheGround/RetellingManager" unique_id=1984894808]
+position = Vector2(152.22229, 26.666626)
+curve = SubResource("Curve2D_t7c6s")
+
+[node name="RetellingTownie6" parent="OnTheGround/RetellingManager" unique_id=1150045076 node_paths=PackedStringArray("enter_path") instance=ExtResource("42_qgpx3")]
+position = Vector2(172.22229, -60.000122)
+enter_path = NodePath("../Path2D6")
+
+[node name="Path2D6" type="Path2D" parent="OnTheGround/RetellingManager" unique_id=1023192886]
+position = Vector2(172.22229, -60.00006)
+curve = SubResource("Curve2D_ulm71")
 
 [node name="ForestLimit" type="StaticBody2D" parent="OnTheGround" unique_id=1908977889]
 position = Vector2(972, 2039)

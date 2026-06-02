@@ -25,10 +25,6 @@ extends Resource
 	get = get_challenge_start_scene,
 	set = set_challenge_start_scene
 
-## Set when the loom transports the player to a trio of Sokoban puzzles, so that
-## when the player returns to Fray's End the loom can trigger a brief cutscene.
-@export var incorporating_threads: bool
-
 ## Player state within [member quest]. If [member Quest.is_lore_quest] is
 ## [code]true[/code], this will be initialised as a copy of [member
 ## GlobalState.player], and propagated back to [GlobalState] if the quest is

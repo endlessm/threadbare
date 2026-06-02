@@ -29,8 +29,20 @@
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="24_7iwrw"]
 [ext_resource type="SpriteFrames" uid="uid://bapks76u4hipj" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_green_small.tres" id="25_374sg"]
 [ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="26_bxmjx"]
+[ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="27_4v0rf"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="28_m31kb"]
+[ext_resource type="Resource" uid="uid://c5yum5j1gs5cn" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/needles_helper.dialogue" id="29_4v0rf"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="30_0ncce"]
+[ext_resource type="Script" uid="uid://diskln3jup064" path="res://scenes/game_elements/characters/npcs/components/helper_character.gd" id="31_hnwdt"]
+[ext_resource type="Script" uid="uid://bvfkoxe64fsvk" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/extra_needles.gd" id="32_m31kb"]
 
 [sub_resource type="Resource" id="Resource_374sg"]
+script = ExtResource("16_dysib")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6wsnq"]
+size = Vector2(52, 61)
+
+[sub_resource type="Resource" id="Resource_pi753"]
 script = ExtResource("16_dysib")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_41yfr"]
@@ -415,6 +427,49 @@ sprite_frames = ExtResource("25_374sg")
 position = Vector2(1429, 923)
 sprite_frames = ExtResource("25_374sg")
 
+[node name="Helper" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("27_4v0rf")]
+position = Vector2(544, 896)
+
+[node name="TalkBehavior" type="Node" parent="OnTheGround/Helper" unique_id=963618379 node_paths=PackedStringArray("interact_area", "extra_context")]
+script = ExtResource("28_m31kb")
+dialogue = ExtResource("29_4v0rf")
+interact_area = NodePath("../InteractArea")
+extra_context = [NodePath("../ExtraNeedles")]
+metadata/_custom_type_script = "uid://edcifob4jc4s"
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Helper" unique_id=1589102652 node_paths=PackedStringArray("marker")]
+visible = false
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("30_0ncce")
+marker = NodePath("../Marker")
+action = "Want some help?"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Helper/InteractArea" unique_id=1731870932]
+position = Vector2(0, -23.5)
+shape = SubResource("RectangleShape2D_6wsnq")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="HelperCharacter" type="Node" parent="OnTheGround/Helper" unique_id=423859809]
+script = ExtResource("31_hnwdt")
+helper_type = 1
+
+[node name="ExtraNeedles" type="Node" parent="OnTheGround/Helper" unique_id=1619136299 node_paths=PackedStringArray("extra_needles")]
+script = ExtResource("32_m31kb")
+extra_needles = [NodePath("../../HookableNeedle3"), NodePath("../../HookableNeedle4"), NodePath("../../HookableNeedle5"), NodePath("../../HookableNeedle6")]
+
+[node name="Marker" type="Marker2D" parent="OnTheGround/Helper" unique_id=1861871076]
+position = Vector2(0, -72)
+
+[node name="HelperCamera" type="Node2D" parent="OnTheGround/Helper" unique_id=190625804]
+unique_name_in_owner = true
+position = Vector2(217, 255)
+script = ExtResource("15_374sg")
+tween_resource = SubResource("Resource_pi753")
+draw_limits = true
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
+
 [node name="TeleporterNext" parent="." unique_id=1779636661 instance=ExtResource("26_bxmjx")]
 position = Vector2(1635, 282)
 next_scene = "uid://bk8rjvfmm20b7"
@@ -438,6 +493,5 @@ shape = SubResource("RectangleShape2D_m6xvq")
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=2138557645]
 
 [node name="HUD" parent="." unique_id=1326600171 instance=ExtResource("14_bxmjx")]
-visible = false
 
 [connection signal="all_hooked" from="OnTheGround/AllHooked" to="." method="_on_all_hooked_all_hooked" flags=6]
