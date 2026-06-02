@@ -13,4 +13,4 @@ var _tiles_to_fix: Array[Vector2i] = [Vector2i(86, 21), Vector2i(108, 19)]
 func fix_bridge() -> void:
 	for t in _tiles_to_fix:
 		bridges.set_cell(t, BRIDGE_TILESET_SOURCE_ID, FIXED_BRIDGE_ATLAS_COORDS)
-	await Engine.get_main_loop().create_timer(1).timeout
+	await get_tree().create_timer(1).timeout
