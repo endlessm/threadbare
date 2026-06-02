@@ -63,6 +63,8 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 
 var _initial_speeds: CharacterSpeeds
 
+var _system_controllers: Array[Node] = []
+
 @onready var input_walk_behavior: InputWalkBehavior = %InputWalkBehavior
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_repel: Node2D = %PlayerRepel
@@ -223,12 +225,15 @@ func defeat(falling: bool = false) -> void:
 		_handle_game_over()
 
 
-func take_control(_controlled_by: Node) -> void:
+func take_control(controlled_by: Node) -> void:
+	_system_controllers.append(controlled_by)
 	mode = Mode.SYSTEM_CONTROLLED
 
 
-func return_control(_controlled_by: Node) -> void:
-	mode = Mode.USER_CONTROLLED
+func return_control(controlled_by: Node) -> void:
+	_system_controllers.erase(controlled_by)
+	if not _system_controllers:
+		mode = Mode.USER_CONTROLLED
 
 
 func _toggle_abilities() -> void:
