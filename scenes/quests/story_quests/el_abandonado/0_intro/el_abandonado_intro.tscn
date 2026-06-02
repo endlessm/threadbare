@@ -2,7 +2,6 @@
 
 [ext_resource type="TileSet" uid="uid://c6a5uyrq2avjt" path="res://scenes/quests/story_quests/el_abandonado/tiles/el_abandonado_exterior_floors.tres" id="1_ddrw5"]
 [ext_resource type="Texture2D" uid="uid://07k43id4c81h" path="res://assets/first_party/templates/intro/NO_EDIT_intro_image.png" id="2_yurg1"]
-[ext_resource type="SpriteFrames" uid="uid://bnqgoek7mqcau" path="res://scenes/quests/story_quests/el_abandonado/player_components/el_abandonado_player.tres" id="3_uadea"]
 [ext_resource type="TileSet" uid="uid://bpyv8qhmeyo6l" path="res://scenes/quests/story_quests/shjourney/3_shjourney_intro/tilesetIntro.tres" id="3_yurg1"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_cn6qs"]
 [ext_resource type="Resource" uid="uid://t8y5aarjrmv5" path="res://scenes/quests/story_quests/el_abandonado/0_intro/intro_components/el_abandonado_intro.dialogue" id="5_m5lwp"]
@@ -10,13 +9,27 @@
 [ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="8_p1kai"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="9_vshjc"]
 [ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="10_e5cln"]
+[ext_resource type="Texture2D" uid="uid://6swhmdrf4emw" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/New Piskel.png" id="11_p1kai"]
 [ext_resource type="SpriteFrames" uid="uid://d36eq8tqdaxdy" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_green.tres" id="11_vaa7y"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vshjc"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
+}]
 
 [sub_resource type="Animation" id="Animation_vshjc"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
-tracks/0/enabled = true
+tracks/0/enabled = false
 tracks/0/path = NodePath("OnTheGround/Character:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
@@ -28,7 +41,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/path = NodePath("OnTheGround/Character:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -36,7 +49,31 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(400, 200)]
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-208, 146)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:animation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
 }
 
 [sub_resource type="Animation" id="Animation_5rl0u"]
@@ -101,26 +138,26 @@ length = 5.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 5),
 "transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [&"walk", &"idle"]
+"update": 0,
+"values": [Vector2(-200, 160), Vector2(234, 160)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/path = NodePath(".:animation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 5),
 "transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(478, 478), Vector2(1000, 478)]
+"update": 1,
+"values": [&"walk", &"walk"]
 }
 
 [sub_resource type="Animation" id="Animation_vaa7y"]
@@ -201,6 +238,7 @@ _data = {
 size = Vector2(458.25, 349)
 
 [node name="ElAbandonadoIntro" type="Node2D" unique_id=2049284984]
+position = Vector2(-208, 146)
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=591504591]
 
@@ -223,7 +261,7 @@ tile_map_data = PackedByteArray("AAAAAAcAAQAGAAMAAAD//wcAAQAGAAMAAAABAAcAAQAGAAM
 tile_set = ExtResource("1_ddrw5")
 
 [node name="Decoraciones" type="TileMapLayer" parent="TileMapLayers" unique_id=1536369346]
-tile_map_data = PackedByteArray("AAAGAAYAFwAGAAEAAAAIAAYAFwAGAAEAAAD//wYAFwAGAAEAAAAPAAYAFwAGAAEAAAAAAAgAFwADAAYAAAACAAgAFwADAAYAAAAEAAgAFwADAAYAAAAGAAgAFwADAAYAAAAIAAgAFwADAAYAAAAKAAgAFwADAAYAAAAMAAgAFwADAAYAAAAOAAgAFwADAAYAAAAQAAgAFwADAAYAAAAAAAcAFwAEAAMAAAAPAAcAFwAEAAMAAAABAAcAFwAEAAQAAAALAAcAFwAEAAQAAAAGAAUAFwAEAAQAAAAJAAIAFwAEAAQAAAADAAIAFwAEAAQAAAABAAMAFwAEAAQAAAAJAAgAFwAEAAMAAAAMAAQAFwAEAAMAAAA=")
+tile_map_data = PackedByteArray("AAAGAAYAFwAGAAEAAAD//wYAFwAGAAEAAAAPAAYAFwAGAAEAAAAAAAgAFwADAAYAAAACAAgAFwADAAYAAAAEAAgAFwADAAYAAAAGAAgAFwADAAYAAAAIAAgAFwADAAYAAAAKAAgAFwADAAYAAAAMAAgAFwADAAYAAAAOAAgAFwADAAYAAAAQAAgAFwADAAYAAAAAAAcAFwAEAAMAAAAPAAcAFwAEAAMAAAABAAcAFwAEAAQAAAALAAcAFwAEAAQAAAAGAAUAFwAEAAQAAAAJAAIAFwAEAAQAAAADAAIAFwAEAAQAAAABAAMAFwAEAAQAAAAJAAgAFwAEAAMAAAAMAAQAFwAEAAMAAAAIAAYAFwAGAAEAAAA=")
 tile_set = ExtResource("3_yurg1")
 
 [node name="Pantano" type="TileMapLayer" parent="TileMapLayers" unique_id=166635348]
@@ -246,10 +284,9 @@ editor_draw_limits = true
 y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=169229228]
-position = Vector2(400, 200)
-sprite_frames = ExtResource("3_uadea")
-animation = &"idle"
-autoplay = "idle"
+position = Vector2(478, 262)
+sprite_frames = SubResource("SpriteFrames_vshjc")
+animation = &"defeated"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround" unique_id=49807179]
 root_node = NodePath("../..")
@@ -373,7 +410,7 @@ scale = Vector2(1.4026544, 1.1989621)
 editor_description = "This uses Threadbare's \"AreaFiller\" component to place trees randomly in a given area. Try adjusting the parameters on the AreaFiller node and press \"Refill\"."
 modulate = Color(0.8175213, 0.8175213, 0.81752115, 1)
 y_sort_enabled = true
-position = Vector2(2831.0825, 991.26996)
+position = Vector2(2822, 982)
 collision_layer = 16
 collision_mask = 0
 
@@ -617,3 +654,13 @@ position = Vector2(136, 362)
 scale = Vector2(1.1843371, 1.0949713)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=304226487]
+
+[node name="PointLight2D2" type="PointLight2D" parent="." unique_id=317446285]
+position = Vector2(546, 396.00003)
+scale = Vector2(1.035464, 0.9805651)
+texture = ExtResource("11_p1kai")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1500641707]
+position = Vector2(417, 396.00003)
+scale = Vector2(1.0175775, 0.99023485)
+texture = ExtResource("11_p1kai")
