@@ -1,6 +1,9 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 ~ start
+if thread.revealed:
+	=> collect_the_thread
+
 if puzzle.is_solved():
 	=> item_hint
 
@@ -88,6 +91,8 @@ match get_hint_level()
 Musician: You did it!... That's the magical melody... how wonderful. It's been so long since I heard it.
 Musician: You have opened the portal to the Ink Well. Let's go there to collect ink so songs and stories can be written again.
 Musician: But we must be careful, InkDrinkers dwell there!
+do thread.reveal()
+~ collect_the_thread
 Musician: The melody awakened the memory of song. Collect the Memory threads before you go!
 => END
 
