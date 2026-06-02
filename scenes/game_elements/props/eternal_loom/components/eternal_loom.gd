@@ -7,20 +7,11 @@ signal retelling_started
 signal retelling_finished
 signal give_retelling_upgrade(type: InventoryItem.ItemType)
 
-const ETERNAL_LOOM_INTERACTION: DialogueResource = preload("uid://yafw7bf362gh")
-
 var elders: Array[Elder]
-
-var _have_threads := is_item_offering_possible()
 
 @onready var interact_area: InteractArea = %InteractArea
 @onready var talk_behavior: TalkBehavior = %TalkBehavior
 @onready var loom_offering_animation_player: AnimationPlayer = %LoomOfferingAnimationPlayer
-
-
-func _ready() -> void:
-	talk_behavior.dialogue = ETERNAL_LOOM_INTERACTION
-	talk_behavior.title = "have_threads" if _have_threads else "no_threads"
 
 
 func _find_elder(quest: Quest) -> Elder:
@@ -109,6 +100,7 @@ func on_offering_succeeded() -> void:
 		push_warning("Could not find elder for %s" % [GameState.quest.quest.resource_path])
 
 	GameState.mark_quest_completed()
+	GameState.save()
 
 
 func has_retelling() -> bool:
