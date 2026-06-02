@@ -12,7 +12,7 @@ const TOWNIE = preload("uid://dgrrudegturnw")
 
 
 func _ready() -> void:
-	GameState.global.helper.changed.connect(_on_helper_state_changed)
+	GameState.global.helper_changed.connect(_on_helper_state_changed)
 	_on_helper_state_changed()
 
 	var n := 0
@@ -39,7 +39,7 @@ func _ready() -> void:
 
 
 func _on_helper_state_changed() -> void:
-	var has_helper := bool(GameState.global.helper.character_seed)
+	var has_helper := GameState.global.helper != null
 	helper_container.visible = has_helper
 	if has_helper:
 		var helper_character: CharacterRandomizer = TOWNIE.instantiate()

@@ -18,13 +18,14 @@ extends Node
 
 
 func _ready() -> void:
-	GameState.global.helper.changed.connect(_on_helper_state_changed)
+	GameState.global.helper_changed.connect(_on_helper_state_changed)
 	_on_helper_state_changed()
 
 
 func _on_helper_state_changed() -> void:
 	var is_enabled := (
-		helper_type == GameState.global.helper.helper_type
+		GameState.global.helper
+		and helper_type == GameState.global.helper.helper_type
 		and bool(GameState.global.helper.character_seed)
 	)
 	character.visible = is_enabled

@@ -14,6 +14,9 @@ signal item_consumed(item: InventoryItem)
 ## Emitted when a quest is added or removed from [member completed_quests].
 signal completed_quests_changed
 
+## Emitted when the [member helper] changes.
+signal helper_changed
+
 ## Inventory of collected threads. Modify with [member add_collected_item] and
 ## [member clear_inventory].
 @export var inventory: Array[InventoryItem]
@@ -66,7 +69,7 @@ signal completed_quests_changed
 ## used instead. [GameState.player] always points to the correct instance.
 @export var player: PlayerState = PlayerState.new()
 
-@export var helper: HelperCharacterState = HelperCharacterState.new()
+@export var helper: HelperCharacterState
 
 
 func _validate_property(property: Dictionary) -> void:
@@ -104,3 +107,19 @@ func set_quest_completed_state(quest: Quest, is_completed: bool) -> void:
 			completed_quests.erase(quest)
 			completed_quests_changed.emit()
 			changed.emit()
+
+
+## Obtain the help from a townie, for using it later in the game.
+func obtain_help(new_helper_type: InventoryItem.ItemType, new_character_seed: int) -> void:
+	helper = HelperCharacterState.new()
+	helper.helper_type = new_helper_type
+	helper.character_seed = new_character_seed
+	helper_changed.emit()
+	emit_changed()
+
+
+## Consume the help after using it.
+func clear_help() -> void:
+	helper = null
+	helper_changed.emit()
+	emit_changed()

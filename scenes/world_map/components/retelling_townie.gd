@@ -67,7 +67,7 @@ func go_to_the_loom() -> void:
 
 ## Walk a bit closer to the StoryWeaver.
 func become_helper(type: InventoryItem.ItemType) -> void:
-	GameState.global.helper.obtain(type, townie.character_seed)
+	GameState.global.obtain_help(type, townie.character_seed)
 
 	var closer_path := Path2D.new()
 	enter_path.add_sibling(closer_path)
