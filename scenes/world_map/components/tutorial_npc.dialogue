@@ -1,5 +1,13 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 ~ start
-Villager: Welcome, traveler. Fray's End is just across the bridge.
+if not GameState.quest:
+	# Player is not on a quest ⇒ they finished the tutorial!
+	% Arun: It's so good to be in Fray's End again!
+	% Arun: Thank you for traveling here with me.
+# TODO: Use an object at the root of the scene rather than hardcoding this path?
+else:
+	if GameState.quest.quest_path == "res://scenes/quests/lore_quests/quest_000/quest.tres":
+		Arun: We made it, StoryWeaver! Fray's End is just across the bridge.
+	Arun: Take the threads you've collected to the Eternal Loom.
 => END
