@@ -49,6 +49,7 @@
 [ext_resource type="PackedScene" uid="uid://7vg52qj6ude" path="res://scenes/world_map/components/retelling_townie.tscn" id="42_qgpx3"]
 [ext_resource type="PackedScene" uid="uid://vb5o7hh5an8j" path="res://scenes/game_elements/characters/npcs/elder/template_elder.tscn" id="43_ppslc"]
 [ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="45_cjmkx"]
+[ext_resource type="PackedScene" uid="uid://b2mj4jggli0ci" path="res://scenes/quests/lore_quests/quest_000/tutorial_npc/tutorial_npc.tscn" id="50_qgpx3"]
 [ext_resource type="PackedScene" uid="uid://cr65lmm5b0ueo" path="res://scenes/game_elements/characters/npcs/cat/cat.tscn" id="52_ppslc"]
 [ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="53_2vvub"]
 [ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="54_duxxr"]
@@ -98,9 +99,6 @@ _data = {
 "points": PackedVector2Array(-98.07021, 22.23685, 0, 0, 676.6666, 67.77789, 72.42304, 1.4143486, -72.42304, -1.4143486, 372.22217, -27.77771, -57.81142, 0.9386225, 57.81142, -0.9386225, 153.33325, -2.222107, 0, 0, 61.9745, 5.1265907, 0, 0)
 }
 point_count = 4
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2vvub"]
-size = Vector2(52, 61)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ulm71"]
 size = Vector2(128, 128)
@@ -1144,35 +1142,11 @@ position = Vector2(1578, 1469)
 [node name="WaterRock4" parent="OnTheGround/WaterRocks" unique_id=1688358840 instance=ExtResource("38_jqkod")]
 position = Vector2(1689, 1686)
 
-[node name="Tutorial" type="Node2D" parent="OnTheGround" unique_id=1760774148]
-y_sort_enabled = true
-
-[node name="TutorialGuy" parent="OnTheGround/Tutorial" unique_id=618221375 instance=ExtResource("54_duxxr")]
-position = Vector2(514, 1605)
+[node name="TutorialNPC" parent="OnTheGround" unique_id=1227664548 instance=ExtResource("50_qgpx3")]
+position = Vector2(513, 1605)
 scale = Vector2(-1, 1)
-character_seed = 2433932515
-look_at_side = 1
-
-[node name="InteractArea" type="Area2D" parent="OnTheGround/Tutorial/TutorialGuy" unique_id=226800588 node_paths=PackedStringArray("marker")]
-collision_layer = 32
-collision_mask = 0
-script = ExtResource("37_f3823")
-marker = NodePath("Marker")
-metadata/_custom_type_script = "uid://du8wfijr35r35"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Tutorial/TutorialGuy/InteractArea" unique_id=1652917244]
-position = Vector2(0, -23.5)
-shape = SubResource("RectangleShape2D_2vvub")
-debug_color = Color(0.600391, 0.54335, 0, 0.42)
-
-[node name="Marker" type="Marker2D" parent="OnTheGround/Tutorial/TutorialGuy/InteractArea" unique_id=1432505873]
-position = Vector2(0, -100)
-
-[node name="TalkBehavior" type="Node" parent="OnTheGround/Tutorial/TutorialGuy" unique_id=283277394 node_paths=PackedStringArray("interact_area")]
-script = ExtResource("56_ojao8")
 dialogue = ExtResource("32_djq26")
-interact_area = NodePath("../InteractArea")
-metadata/_custom_type_script = "uid://edcifob4jc4s"
+look_at_side = 1
 
 [node name="WestPath" type="Node2D" parent="OnTheGround" unique_id=2042146768]
 y_sort_enabled = true
@@ -1216,5 +1190,3 @@ position = Vector2(62, 1747)
 [connection signal="interaction_started" from="OnTheGround/NPCs/Farmer/InteractArea" to="OnTheGround/NPCs/Farmer" method="_on_interact_area_interaction_started"]
 [connection signal="interaction_ended" from="OnTheGround/NPCs/GardenerA/InteractArea" to="OnTheGround/NPCs/GardenerA" method="_on_interact_area_interaction_ended"]
 [connection signal="interaction_started" from="OnTheGround/NPCs/GardenerA/InteractArea" to="OnTheGround/NPCs/GardenerA" method="_on_interact_area_interaction_started"]
-[connection signal="interaction_ended" from="OnTheGround/Tutorial/TutorialGuy/InteractArea" to="OnTheGround/Tutorial/TutorialGuy" method="_on_interact_area_interaction_ended"]
-[connection signal="interaction_started" from="OnTheGround/Tutorial/TutorialGuy/InteractArea" to="OnTheGround/Tutorial/TutorialGuy" method="_on_interact_area_interaction_started"]
