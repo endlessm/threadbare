@@ -96,7 +96,7 @@ func start_quest(new_quest: Quest) -> void:
 	global.clear_inventory()
 
 	var quest_player_state: PlayerState
-	if new_quest.is_lore_quest:
+	if new_quest is LoreQuest:
 		# Duplicate the current global player state. If the quest is completed,
 		# it will be copied back; if abandoned, it will be discarded.
 		quest_player_state = global.player.duplicate()
@@ -146,7 +146,7 @@ func set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
 func mark_quest_completed() -> void:
 	assert(quest)
 
-	if quest.quest.is_lore_quest:
+	if quest.quest is LoreQuest:
 		# Copy quest abilities to game abilities.
 		global.player = quest.player
 

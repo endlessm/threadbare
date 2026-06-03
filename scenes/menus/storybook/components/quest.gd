@@ -42,21 +42,6 @@ const FILENAME := "quest.tres"
 ## [CollectibleItem]s in the quest.
 @export_range(0, 6, 1, "suffix:threads") var threads_to_collect: int = 3
 
-## Whether this is a lore quest (part of the main storyline).
-@export var is_lore_quest: bool = false:
-	set(new_value):
-		is_lore_quest = new_value
-		notify_property_list_changed()
-
-## Whether this quest is skippable (i.e. is the tutorial). Only supported for lore quests.
-@export var skippable: bool = false:
-	set(new_value):
-		skippable = new_value
-		notify_property_list_changed()
-
-## Which abilities to award if the quest is skipped
-@export var skip_abilities: Array[Enums.PlayerAbilities] = []
-
 ## Optional dialogue to retell the adventures that occurred in the quest,
 ## when returning the magical threads to the loom.
 @export var retelling: DialogueResource
@@ -99,15 +84,10 @@ func _validate_property(property: Dictionary) -> void:
 				property.hint_string = ",".join(sprite_frames.get_animation_names())
 			else:
 				property.usage |= PROPERTY_USAGE_READ_ONLY
-		"skippable":
-			if not is_lore_quest:
-				property.usage = PROPERTY_USAGE_NONE
-		"skip_abilities":
-			if not (is_lore_quest and skippable):
-				property.usage = PROPERTY_USAGE_NONE
 
 
 func _to_string() -> String:
+	# TODO: subclass name
 	return '<Quest %s: "%s">' % [resource_path, title]
 
 
