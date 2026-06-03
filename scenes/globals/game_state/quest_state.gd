@@ -25,8 +25,8 @@ extends Resource
 	get = get_challenge_start_scene,
 	set = set_challenge_start_scene
 
-## Player state within [member quest]. If [member Quest.is_lore_quest] is
-## [code]true[/code], this will be initialised as a copy of [member
+## Player state within [member quest]. If the quest is a [LoreQuest],
+## this will be initialised as a copy of [member
 ## GlobalState.player], and propagated back to [GlobalState] if the quest is
 ## completed. For StoryQuests, this is a fresh state at the start of the quest
 ## and is discarded at the end.

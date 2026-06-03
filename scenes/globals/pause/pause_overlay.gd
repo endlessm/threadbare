@@ -33,7 +33,7 @@ func toggle_pause() -> void:
 		if not GameState.quest:
 			skip_tutorial_button.hide()
 			abandon_quest_button.hide()
-		elif GameState.quest.quest.skippable:
+		elif GameState.quest.quest is LoreQuest and GameState.quest.quest.skippable:
 			skip_tutorial_button.show()
 			abandon_quest_button.hide()
 		else:
@@ -53,9 +53,8 @@ func _on_abandon_quest_pressed() -> void:
 
 func _on_skip_tutorial_pressed() -> void:
 	toggle_pause()
-	assert(GameState.quest)
-	assert(GameState.quest.quest)
-	for ability: Enums.PlayerAbilities in GameState.quest.quest.skip_abilities:
+	var lq := GameState.quest.quest as LoreQuest
+	for ability: Enums.PlayerAbilities in lq.skip_abilities:
 		GameState.player.set_ability(ability, true)
 	GameState.mark_quest_completed()
 	SceneSwitcher.change_to_file_with_transition(
