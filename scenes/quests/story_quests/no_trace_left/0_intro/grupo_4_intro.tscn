@@ -1,14 +1,22 @@
 [gd_scene format=4 uid="uid://c5ixbgo571nqu"]
 
 [ext_resource type="TileSet" uid="uid://dcqq5mawasgik" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_exterior_floors.tres" id="1_8xpoh"]
-[ext_resource type="Texture2D" uid="uid://07k43id4c81h" path="res://assets/first_party/templates/intro/NO_EDIT_intro_image.png" id="2_qe5pr"]
+[ext_resource type="TileSet" uid="uid://caxhfeix35kmt" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_shadows.tres" id="3_2nxwt"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_7mqfb"]
 [ext_resource type="SpriteFrames" uid="uid://cwcaxjyrcejw5" path="res://scenes/quests/story_quests/no_trace_left/player_components/grupo_4_player.tres" id="3_07v0r"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="4_3ow41"]
+[ext_resource type="TileSet" uid="uid://bej3ohy3bqt4p" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_bridges.tres" id="4_e7um1"]
+[ext_resource type="TileSet" uid="uid://utx2oblod12l" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_elevation_2.tres" id="4_ibd17"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_nuyqu"]
 [ext_resource type="Resource" uid="uid://cxyn4tco6rt43" path="res://scenes/quests/story_quests/no_trace_left/0_intro/intro_components/grupo_4_intro.dialogue" id="5_vqr71"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_hr4e7"]
 [ext_resource type="Script" uid="uid://dxdo8lbe3tuvl" path="res://scenes/quests/story_quests/no_trace_left/0_intro/thunder.gd" id="6_og5p0"]
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="12_2plii"]
+[ext_resource type="Script" uid="uid://yr1n0aurrsav" path="res://scenes/quests/story_quests/no_trace_left/0_intro/audio_stream_player_phone.gd" id="12_gacj4"]
+[ext_resource type="AudioStream" uid="uid://bor3gwl1h5n7h" path="res://scenes/quests/story_quests/no_trace_left/audio/phone_call.ogg" id="12_pod6q"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="13_pod6q"]
+[ext_resource type="Resource" uid="uid://c24q7vt0jyuaj" path="res://scenes/quests/story_quests/no_trace_left/0_intro/intro_components/ntl_intro_phone.dialogue" id="14_gacj4"]
+[ext_resource type="AudioStream" uid="uid://bygtehrfdw1ya" path="res://scenes/quests/story_quests/no_trace_left/audio/rain.ogg" id="16_pod6q"]
 
 [sub_resource type="Resource" id="Resource_og5p0"]
 script = ExtResource("4_3ow41")
@@ -54,6 +62,10 @@ _data = {
 &"fade_to_normal": SubResource("Animation_og5p0")
 }
 
+[sub_resource type="Resource" id="Resource_2axdu"]
+script = ExtResource("13_pod6q")
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
 [node name="Grupo4Intro" type="Node2D" unique_id=2049284984]
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=591504591]
@@ -63,33 +75,35 @@ tile_map_data = PackedByteArray("AAAAAAUAAQABAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAE
 tile_set = ExtResource("1_8xpoh")
 metadata/_edit_lock_ = true
 
-[node name="IntroImage" type="Sprite2D" parent="TileMapLayers" unique_id=1406016146]
-position = Vector2(770, 227)
-scale = Vector2(0.802083, 0.802083)
-texture = ExtResource("2_qe5pr")
+[node name="Shadows" type="TileMapLayer" parent="TileMapLayers" unique_id=281914711]
+tile_set = ExtResource("3_2nxwt")
 
-[node name="Sand" type="TileMapLayer" parent="TileMapLayers" unique_id=874671513]
-tile_map_data = PackedByteArray("AAAKAAEABgAAAAAAAAAKAAIABgADAAEAAAAKAAMABgADAAEAAAAKAAQABgADAAEAAAANAAEABgACAAAAAAANAAIABgADAAEAAAANAAMABgADAAEAAAANAAQABgADAAEAAAAKAAUABgAAAAIAAAALAAEABgABAAMAAAALAAUABgABAAMAAAAMAAEABgABAAMAAAAMAAUABgABAAMAAAANAAUABgACAAIAAAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAD//wcAAQAGAAMAAAD+/wcAAQAGAAMAAAD9/wcAAQAGAAMAAAD8/wcAAQAGAAMAAAD7/wcAAQAGAAMAAAD6/wcAAQAGAAMAAAD5/wcAAQAGAAMAAAD4/wcAAQAFAAMAAAAPAAcAAQAGAAMAAAAQAAcAAQAGAAMAAAARAAcAAQAGAAMAAAASAAcAAQAGAAMAAAATAAcAAQAGAAMAAAAUAAcAAQAGAAMAAAAVAAcAAQAGAAMAAAAWAAcAAQAHAAMAAAA=")
-tile_set = ExtResource("1_8xpoh")
+[node name="Walls" type="TileMapLayer" parent="TileMapLayers" unique_id=1060915519]
+tile_map_data = PackedByteArray("AAABAAAABAABAAIAAAACAAAABAABAAIAAAADAAAABAABAAIAAAAEAAAABAABAAIAAAAFAAAABAABAAIAAAAHAAAABAABAAIAAAAGAAAABAABAAIAAAAIAAAABAABAAIAAAAJAAAABAABAAIAAAAKAAAABAABAAIAAAALAAAABAABAAIAAAAMAAAABAABAAIAAAANAAAABAABAAIAAAAAAAEABAADAAEAAAAAAAAABAAAAAAAAAAAAAIABAADAAEAAAAAAAMABAADAAEAAAAAAAQABAADAAEAAAAAAAUABAADAAEAAAAAAAYABAADAAEAAAAOAAAABAACAAAAAAAOAAgABAACAAIAAAAAAAgABAAAAAIAAAAAAAcABAADAAEAAAABAAgABAABAAQAAAACAAgABAABAAQAAAADAAgABAABAAQAAAAEAAgABAABAAQAAAAFAAgABAABAAQAAAAGAAgABAABAAQAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAABAAQAAAAOAAcABAADAAEAAAAOAAYABAADAAEAAAAOAAUABAADAAEAAAAOAAQABAADAAEAAAAOAAMABAADAAEAAAAOAAIABAADAAEAAAAOAAEABAADAAEAAAA=")
+tile_set = ExtResource("4_ibd17")
+
+[node name="Decorations" type="TileMapLayer" parent="TileMapLayers" unique_id=347364873]
+tile_set = ExtResource("4_e7um1")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1064875179]
 position = Vector2(153, 366)
 zoom = Vector2(1.333, 1.333)
-limit_left = 0
-limit_top = 0
-limit_right = 960
-limit_bottom = 540
+limit_left = -1
+limit_top = 58
+limit_right = 959
+limit_bottom = 598
 position_smoothing_enabled = true
 editor_draw_limits = true
 
 [node name="Player" parent="." unique_id=296354958 instance=ExtResource("3_7mqfb")]
-position = Vector2(131, 463)
+position = Vector2(235, 460)
 speeds = SubResource("Resource_og5p0")
 sprite_frames = ExtResource("3_07v0r")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
 
 [node name="thunder" type="CanvasLayer" parent="." unique_id=1467554074]
+visible = false
 script = ExtResource("6_og5p0")
 
 [node name="ColorRect" type="ColorRect" parent="thunder" unique_id=1528786446]
@@ -109,4 +123,20 @@ dialogue = ExtResource("5_vqr71")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." unique_id=912112339 instance=ExtResource("6_hr4e7")]
-position = Vector2(125, 403)
+position = Vector2(841, 274)
+
+[node name="CollectibleItem" parent="." unique_id=327991066 instance=ExtResource("12_2plii")]
+position = Vector2(843, 254)
+next_scene = "uid://dhho7hr48exe5"
+item = SubResource("Resource_2axdu")
+collected_dialogue = ExtResource("14_gacj4")
+
+[node name="AudioStreamPlayerPhone" type="AudioStreamPlayer2D" parent="." unique_id=2018213416]
+stream = ExtResource("12_pod6q")
+volume_db = -15.0
+script = ExtResource("12_gacj4")
+
+[node name="AudioStreamPlayerRain" type="AudioStreamPlayer2D" parent="." unique_id=1875486431]
+stream = ExtResource("16_pod6q")
+volume_db = -15.0
+autoplay = true
