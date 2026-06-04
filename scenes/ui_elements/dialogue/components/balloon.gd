@@ -53,11 +53,11 @@ var _player_name: String = ""
 ## The base balloon anchor
 @onready var balloon: Control = %Balloon
 
-## The panel holding the label showing the name of the currently-speaking character
-@onready var character_panel: PanelContainer = %CharacterPanel
+## The balloon container to anchor it to the top or bottom
+@onready var balloon_container: VBoxContainer = %BalloonContainer
 
 ## The label showing the name of the currently speaking character
-@onready var character_label: Label = %CharacterLabel
+@onready var character_label: RichTextLabel = %CharacterLabel
 
 ## The label showing the currently spoken dialogue
 @onready var dialogue_label: DialogueLabel = %DialogueLabel
@@ -122,13 +122,8 @@ func apply_dialogue_line() -> void:
 	balloon.focus_mode = Control.FOCUS_ALL
 	balloon.grab_focus()
 
-	character_panel.visible = not dialogue_line.character.is_empty()
-	character_panel.theme_type_variation = (
-		PLAYER_RIBBON_TYPE_VARIATION
-		if _player_name == dialogue_line.character
-		else NPC_RIBBON_TYPE_VARIATION
-	)
-	character_label.text = tr(dialogue_line.character, "dialogue")
+	character_label.visible = not dialogue_line.character.is_empty()
+	character_label.text = "[u]" + tr(dialogue_line.character, "dialogue") + ":"
 
 	dialogue_label.hide()
 	dialogue_label.dialogue_line = dialogue_line
@@ -137,6 +132,16 @@ func apply_dialogue_line() -> void:
 	responses_menu.responses = dialogue_line.responses
 
 	next_button.hide()
+
+	if _is_player_at_top():
+		# Anchor container to bottom:
+		balloon_container.anchor_top = 1
+		balloon_container.anchor_bottom = 1
+		balloon_container.offset_top = 4096
+		balloon_container.offset_bottom = 0
+		balloon_container.grow_vertical = Control.GROW_DIRECTION_BEGIN
+		# And change the order of the next button:
+		balloon_container.move_child(next_button, 0)
 
 	# Show our balloon
 	balloon.show()
@@ -166,6 +171,17 @@ func apply_dialogue_line() -> void:
 		balloon.focus_mode = Control.FOCUS_ALL
 		balloon.grab_focus()
 		next_button.show()
+
+
+func _is_player_at_top() -> bool:
+	var player: Node2D = get_tree().get_first_node_in_group("player")
+	if not player:
+		return false
+
+	var viewport := player.get_viewport()
+	var screen_pos: Vector2 = viewport.get_canvas_transform() * player.global_position
+	var viewport_size: Vector2 = viewport.get_visible_rect().size
+	return screen_pos.y <= viewport_size.y / 2.0
 
 
 ## Go to the next line
