@@ -56,8 +56,11 @@ var _player_name: String = ""
 ## The balloon container to anchor it to the top or bottom
 @onready var balloon_container: VBoxContainer = %BalloonContainer
 
+## The panel holding the label showing the name of the currently-speaking character
+@onready var character_panel: PanelContainer = %CharacterPanel
+
 ## The label showing the name of the currently speaking character
-@onready var character_label: RichTextLabel = %CharacterLabel
+@onready var character_label: Label = %CharacterLabel
 
 ## The label showing the currently spoken dialogue
 @onready var dialogue_label: DialogueLabel = %DialogueLabel
@@ -122,8 +125,13 @@ func apply_dialogue_line() -> void:
 	balloon.focus_mode = Control.FOCUS_ALL
 	balloon.grab_focus()
 
-	character_label.visible = not dialogue_line.character.is_empty()
-	character_label.text = "[u]" + tr(dialogue_line.character, "dialogue") + ":"
+	character_panel.visible = not dialogue_line.character.is_empty()
+	character_panel.theme_type_variation = (
+		PLAYER_RIBBON_TYPE_VARIATION
+		if _player_name == dialogue_line.character
+		else NPC_RIBBON_TYPE_VARIATION
+	)
+	character_label.text = tr(dialogue_line.character, "dialogue")
 
 	dialogue_label.hide()
 	dialogue_label.dialogue_line = dialogue_line

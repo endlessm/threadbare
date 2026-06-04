@@ -52,45 +52,62 @@ grow_horizontal = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 theme_override_constants/separation = -38
 
-[node name="MarginContainer" type="MarginContainer" parent="Balloon/BalloonContainer" unique_id=1972618856]
+[node name="MarginContainer" type="MarginContainer" parent="Balloon/BalloonContainer" unique_id=344362871]
 layout_mode = 2
 theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_bottom = 0
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 8
 
-[node name="PanelContainer" type="PanelContainer" parent="Balloon/BalloonContainer/MarginContainer" unique_id=58550594]
+[node name="CharacterPanel" type="PanelContainer" parent="Balloon/BalloonContainer/MarginContainer" unique_id=737681563]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_type_variation = &"NPCRibbon"
+
+[node name="CharacterLabel" type="Label" parent="Balloon/BalloonContainer/MarginContainer/CharacterPanel" unique_id=1133007357]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 1
+text = "Musician"
+
+[node name="MarginContainer" type="MarginContainer" parent="Balloon/BalloonContainer/MarginContainer" unique_id=1972618856]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 27
+theme_override_constants/margin_right = 29
+theme_override_constants/margin_bottom = 29
+
+[node name="PanelContainer" type="PanelContainer" parent="Balloon/BalloonContainer/MarginContainer/MarginContainer" unique_id=58550594]
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_beq22")
 
-[node name="MarginContainer" type="MarginContainer" parent="Balloon/BalloonContainer/MarginContainer/PanelContainer" unique_id=234873226]
+[node name="MarginContainer" type="MarginContainer" parent="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer" unique_id=234873226]
 layout_mode = 2
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Balloon/BalloonContainer/MarginContainer/PanelContainer/MarginContainer" unique_id=412895659]
+[node name="VBoxContainer" type="VBoxContainer" parent="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer" unique_id=412895659]
 custom_minimum_size = Vector2(704, 0)
 layout_mode = 2
-size_flags_vertical = 8
 theme_override_constants/separation = 3
 
-[node name="CharacterLabel" type="RichTextLabel" parent="Balloon/BalloonContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=109841824]
+[node name="DialogueLabel" parent="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=728821532 instance=ExtResource("4_3tiik")]
 unique_name_in_owner = true
 layout_mode = 2
-mouse_filter = 1
-bbcode_enabled = true
-text = "[u]Musician:"
-fit_content = true
-
-[node name="DialogueLabel" parent="Balloon/BalloonContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=728821532 instance=ExtResource("4_3tiik")]
-unique_name_in_owner = true
-layout_mode = 2
+size_flags_vertical = 3
 text = "¡Ah! ¿Another wanderer? It’s been a while siñce aňyone çame löõkiŋ for  instead of «treaßure»."
+vertical_alignment = 1
 skip_action = &"dialogue_skip"
 
-[node name="ResponsesMenu" type="VBoxContainer" parent="Balloon/BalloonContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=938619174 node_paths=PackedStringArray("response_template")]
+[node name="ResponsesMenu" type="VBoxContainer" parent="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=938619174 node_paths=PackedStringArray("response_template")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -100,20 +117,21 @@ theme_override_constants/separation = 2
 script = ExtResource("5_gjlrd")
 response_template = NodePath("ResponseExample")
 
-[node name="ResponseExample" type="Button" parent="Balloon/BalloonContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ResponsesMenu" unique_id=957333658]
+[node name="ResponseExample" type="Button" parent="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ResponsesMenu" unique_id=957333658]
 layout_mode = 2
 theme_type_variation = &"FlatButton"
 text = "Response example"
 
-[node name="NextButton" type="Button" parent="Balloon/BalloonContainer" unique_id=1047703477]
+[node name="NextButton" type="Button" parent="Balloon/BalloonContainer/MarginContainer" unique_id=1047703477]
 unique_name_in_owner = true
 z_index = 1
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 8
+size_flags_vertical = 8
 theme_type_variation = &"NextButton"
 
-[node name="InteractHint" type="TextureRect" parent="Balloon/BalloonContainer/NextButton" unique_id=661213085]
+[node name="InteractHint" type="TextureRect" parent="Balloon/BalloonContainer/MarginContainer/NextButton" unique_id=661213085]
 material = ExtResource("6_y5co6")
 layout_mode = 1
 anchors_preset = 8
@@ -141,4 +159,4 @@ bus = &"SFX"
 parameters/looping = true
 
 [connection signal="gui_input" from="Balloon" to="." method="_on_balloon_gui_input"]
-[connection signal="response_selected" from="Balloon/BalloonContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ResponsesMenu" to="." method="_on_responses_menu_response_selected"]
+[connection signal="response_selected" from="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ResponsesMenu" to="." method="_on_responses_menu_response_selected"]
