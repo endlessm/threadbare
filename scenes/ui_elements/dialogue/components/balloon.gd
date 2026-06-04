@@ -147,6 +147,14 @@ func apply_dialogue_line() -> void:
 	balloon.show()
 	will_hide_balloon = false
 
+	# Add a squash-stretch effect when the dialogue appears.
+	balloon_container.scale = Vector2(1.15, 0.7)
+	var tween := create_tween().set_parallel(true).set_trans(Tween.TRANS_BACK).set_ease(
+		Tween.EASE_OUT
+	)
+	tween.tween_property(balloon_container, "scale:x", 1.0, 0.25)
+	tween.tween_property(balloon_container, "scale:y", 1.0, 0.25)
+
 	dialogue_label.show()
 	if not dialogue_line.text.is_empty():
 		dialogue_label.type_out()
