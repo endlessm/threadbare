@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://o54tdc374nxc" path="res://scenes/game_elements/props/sign/components/sign.gd" id="1_cb2ey"]
 [ext_resource type="Texture2D" uid="uid://cq5l1xle30ch7" path="res://assets/third_party/tiny-swords/Deco/17.png" id="2_85li6"]
 [ext_resource type="FontFile" uid="uid://b0tjcgrk504qg" path="res://assets/third_party/fonts/jersey/Jersey10-Regular.ttf" id="3_1ap0m"]
+[ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="4_c8ong"]
+[ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="5_7odj1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cb2ey"]
 radius = 12.0
@@ -62,6 +64,21 @@ collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=966380620]
 shape = SubResource("CircleShape2D_85li6")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1797167108 groups=["night-lights"]]
+visible = false
+visibility_layer = 2
+position = Vector2(0, -40)
+enabled = false
+color = Color(1, 1, 0, 1)
+energy = 0.5
+texture = ExtResource("4_c8ong")
+
+[node name="ArtificialLightBehavior" type="Node" parent="PointLight2D" unique_id=178722534 node_paths=PackedStringArray("light")]
+script = ExtResource("5_7odj1")
+light = NodePath("..")
+random_delay = 3.0
+metadata/_custom_type_script = "uid://bk52qjv58locq"
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
