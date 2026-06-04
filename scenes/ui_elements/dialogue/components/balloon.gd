@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: 2022-present Nathan Hoad and Dialogue Manager contributors.
 # SPDX-License-Identifier: MIT
+@tool
 extends CanvasLayer
 ## A basic dialogue balloon for use with Dialogue Manager.
 
@@ -11,6 +12,9 @@ const NPC_RIBBON_TYPE_VARIATION := &"NPCRibbon"
 
 ## The action to use to skip typing the dialogue
 @export var skip_action: StringName = &"dialogue_skip"
+
+@export_tool_button("Anchor to top") var to_top_editor_button: Callable = anchor_to_top
+@export_tool_button("Anchor to bottom") var to_bottom_editor_button: Callable = anchor_to_bottom
 
 ## The dialogue resource
 var resource: DialogueResource
@@ -75,6 +79,8 @@ var _player_name: String = ""
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
 	balloon.hide()
 	Engine.get_singleton("DialogueManager").mutated.connect(_on_mutated)
 
@@ -104,6 +110,8 @@ func _notification(what: int) -> void:
 		self.dialogue_line = await resource.get_next_dialogue_line(dialogue_line.id)
 		if visible_ratio < 1:
 			dialogue_label.skip_typing()
+	elif what == NOTIFICATION_EDITOR_PRE_SAVE:
+		anchor_to_bottom()
 
 
 ## Start some dialogue
@@ -141,15 +149,9 @@ func apply_dialogue_line() -> void:
 
 	next_button.hide()
 
-	if _is_player_at_top():
-		# Anchor container to bottom:
-		balloon_container.anchor_top = 1
-		balloon_container.anchor_bottom = 1
-		balloon_container.offset_top = 4096
-		balloon_container.offset_bottom = 0
-		balloon_container.grow_vertical = Control.GROW_DIRECTION_BEGIN
-		# And change the order of the next button:
-		balloon_container.move_child(next_button, 0)
+	# Assumes that the balloon scene is anchored to the bottom by default:
+	if _is_player_at_bottom():
+		anchor_to_top()
 
 	# Show our balloon
 	balloon.show()
@@ -189,7 +191,8 @@ func apply_dialogue_line() -> void:
 		next_button.show()
 
 
-func _is_player_at_top() -> bool:
+## True if the player position is at the bottom vertical quarter of the screen.
+func _is_player_at_bottom() -> bool:
 	var player: Node2D = get_tree().get_first_node_in_group("player")
 	if not player:
 		return false
@@ -197,7 +200,25 @@ func _is_player_at_top() -> bool:
 	var viewport := player.get_viewport()
 	var screen_pos: Vector2 = viewport.get_canvas_transform() * player.global_position
 	var viewport_size: Vector2 = viewport.get_visible_rect().size
-	return screen_pos.y <= viewport_size.y / 2.0
+	return screen_pos.y > viewport_size.y * 3 / 4.0
+
+
+## Anchor container to top:
+func anchor_to_top() -> void:
+	balloon_container.anchor_top = 0
+	balloon_container.anchor_bottom = 0
+	balloon_container.offset_top = 0
+	balloon_container.offset_bottom = -4096
+	balloon_container.grow_vertical = Control.GROW_DIRECTION_END
+
+
+## Anchor container to bottom:
+func anchor_to_bottom() -> void:
+	balloon_container.anchor_top = 1
+	balloon_container.anchor_bottom = 1
+	balloon_container.offset_top = 4096
+	balloon_container.offset_bottom = 0
+	balloon_container.grow_vertical = Control.GROW_DIRECTION_BEGIN
 
 
 ## Go to the next line
