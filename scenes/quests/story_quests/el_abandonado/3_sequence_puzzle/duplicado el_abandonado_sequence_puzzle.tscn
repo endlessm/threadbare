@@ -5,6 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_wn0we"]
 [ext_resource type="SpriteFrames" uid="uid://bnqgoek7mqcau" path="res://scenes/quests/story_quests/el_abandonado/player_components/el_abandonado_player.tres" id="6_opvje"]
 [ext_resource type="Script" uid="uid://bto6idrte7y2a" path="res://scenes/quests/story_quests/el_abandonado/3_sequence_puzzle/alma_del_padre.gd" id="9_oq0ul"]
+[ext_resource type="PackedScene" uid="uid://c7t6aexpvqca8" path="res://scenes/quests/story_quests/el_abandonado/3_sequence_puzzle/espectro.tscn" id="10_v32h0"]
+[ext_resource type="Texture2D" uid="uid://ds5lnx81lsl1f" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/el_alma_del_padre_spritesheet_8frames.png" id="10_yrqos"]
+[ext_resource type="Script" uid="uid://xs4qca8rw24u" path="res://scenes/quests/story_quests/el_abandonado/3_sequence_puzzle/boss_fight_ui.gd" id="13_r73n3"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="20_4tbqg"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="21_nxohm"]
 [ext_resource type="Resource" uid="uid://crjgu3vgx82ja" path="res://scenes/quests/story_quests/el_abandonado/3_sequence_puzzle/el_abandonado_sequence_puzzle.dialogue" id="22_jtp0s"]
@@ -12,23 +15,100 @@
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="24_tydwv"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_6f3pt"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v32h0"]
+size = Vector2(55, 40)
+
 [sub_resource type="Resource" id="Resource_5nxfm"]
 script = ExtResource("21_nxohm")
 type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_v32h0"]
+atlas = ExtResource("10_yrqos")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r73n3"]
+atlas = ExtResource("10_yrqos")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7htle"]
+atlas = ExtResource("10_yrqos")
+region = Rect2(512, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_octfb"]
+atlas = ExtResource("10_yrqos")
+region = Rect2(768, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xsl4m"]
+atlas = ExtResource("10_yrqos")
+region = Rect2(1024, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1y0y6"]
+atlas = ExtResource("10_yrqos")
+region = Rect2(1280, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oq0ul"]
+atlas = ExtResource("10_yrqos")
+region = Rect2(1536, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wjnk0"]
+atlas = ExtResource("10_yrqos")
+region = Rect2(1792, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_560e1"]
+atlas = ExtResource("10_yrqos")
+region = Rect2(1536, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ljj2g"]
+atlas = ExtResource("10_yrqos")
+region = Rect2(0, 0, 256, 256)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_5b0ys"]
 animations = [{
-"frames": [],
-"loop": true,
-"name": &"attack",
-"speed": 5.0
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v32h0")
 }, {
-"frames": [],
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r73n3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7htle")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_octfb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xsl4m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1y0y6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oq0ul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjnk0")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_560e1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ljj2g")
+}],
 "loop": true,
 "name": &"idle",
 "speed": 2.0
 }]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yrqos"]
+radius = 24.956985
+height = 175.00485
 
 [node name="ElAbandonadoSequencePuzzle" type="Node2D" unique_id=217609538]
 
@@ -56,14 +136,14 @@ position = Vector2(56, 852)
 sprite_frames = ExtResource("3_ra5yg")
 animation = &"MORADO"
 autoplay = "MORADO"
-frame_progress = 0.33947012
+frame_progress = 0.2668287
 
 [node name="FUEGO VERDE" type="AnimatedSprite2D" parent="TileMapLayers/Sand/Node2D" unique_id=209884529]
-position = Vector2(-232, 836)
+position = Vector2(-264, 797)
 sprite_frames = ExtResource("3_ra5yg")
 animation = &"verde"
 autoplay = "verde"
-frame_progress = 0.79022956
+frame_progress = 0.7175765
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=1358184019]
 y_sort_enabled = true
@@ -80,6 +160,14 @@ limit_bottom = 1166
 position_smoothing_enabled = true
 editor_draw_limits = true
 
+[node name="SwordHitbox" type="Area2D" parent="OnTheGround/Player" unique_id=814598051]
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Player/SwordHitbox" unique_id=491375870]
+position = Vector2(35, -23)
+shape = SubResource("RectangleShape2D_v32h0")
+disabled = true
+
 [node name="CollectibleItem" parent="OnTheGround" unique_id=1678374994 instance=ExtResource("20_4tbqg")]
 position = Vector2(2475, 534)
 revealed = false
@@ -89,25 +177,58 @@ collected_dialogue = ExtResource("22_jtp0s")
 dialogue_title = &"well_done"
 
 [node name="Sign" parent="OnTheGround" unique_id=263994380 instance=ExtResource("23_52yiv")]
-position = Vector2(2588, 384)
+position = Vector2(1753, 229)
 direction = 1
 text = "First melody: yellow, green, blue."
 
-[node name="Alma del padre" type="Node2D" parent="." unique_id=1292158364]
+[node name="Alma del padre" type="CharacterBody2D" parent="." unique_id=1273755827 groups=["boss"]]
 position = Vector2(1282, 373)
 script = ExtResource("9_oq0ul")
+min_wait_time = 0.2
+max_wait_time = 0.5
+espectro_scene = ExtResource("10_v32h0")
+min_attack_time = 0.5
+max_attack_time = 1.0
+attack_shoot_frame = 1
+burst_count = 9
+burst_delay = 0.07
+max_health = 1200
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Alma del padre" unique_id=1488200186]
-position = Vector2(-1291, -247)
-scale = Vector2(1.578125, 1.5234375)
+position = Vector2(-973, -9)
+scale = Vector2(1.9633783, 1.8056642)
 sprite_frames = SubResource("SpriteFrames_5b0ys")
 animation = &"attack"
+autoplay = "attack"
+frame_progress = 0.9367344
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Alma del padre" unique_id=176326809]
+position = Vector2(-980, -21)
+scale = Vector2(1.9633783, 1.8056642)
+shape = SubResource("CapsuleShape2D_yrqos")
+
+[node name="WanderTimer" type="Timer" parent="Alma del padre" unique_id=2081262048]
+one_shot = true
+
+[node name="AttackTimer" type="Timer" parent="Alma del padre" unique_id=19363569]
+one_shot = true
+
+[node name="ProjectileSpawn" type="Marker2D" parent="Alma del padre" unique_id=1277342830]
+position = Vector2(-973, -93)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1686505878]
-visible = false
 
 [node name="HUD" parent="." unique_id=1084128841 instance=ExtResource("24_tydwv")]
-visible = false
+layer = 50
+
+[node name="BossFightUI" type="Control" parent="HUD" unique_id=234551291]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 96.0
+offset_top = 272.0
+offset_right = 1376.0
+offset_bottom = 992.0
+script = ExtResource("13_r73n3")
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1869940872]
 script = ExtResource("25_6f3pt")
