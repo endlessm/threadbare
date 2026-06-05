@@ -4,6 +4,9 @@ extends Node2D
 
 @onready var hud: CanvasLayer = %HUD
 @onready var eternal_loom: EternalLoom = %EternalLoom
+@onready var void_quest_unlocker: QuestProgressUnlocker = %VoidQuestUnlocker
+@onready var mythical_meadows_unlocker: QuestProgressUnlocker = %MythicalMeadowsUnlocker
+@onready var exit_blocker: Area2D = %ExitBlocker
 
 
 func _ready() -> void:
@@ -13,4 +16,6 @@ func _ready() -> void:
 
 
 func _update_story_quest_progress_visibility(_item: InventoryItem = null) -> void:
-	hud.change_story_quest_progress_visibility(eternal_loom.is_item_offering_possible())
+	var end_of_quest := eternal_loom.is_item_offering_possible()
+	hud.change_story_quest_progress_visibility(end_of_quest)
+	exit_blocker.set_deferred(&"monitoring", end_of_quest)

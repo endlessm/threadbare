@@ -45,9 +45,17 @@ func toggle_pause() -> void:
 
 func _on_abandon_quest_pressed() -> void:
 	toggle_pause()
+
+	var abandon_scene := GameState.quest.abandon_scene_path
+	var abandon_spawn_point: NodePath
+	if abandon_scene:
+		abandon_spawn_point = GameState.quest.abandon_spawn_point
+	else:
+		abandon_scene = frays_end
+
 	GameState.abandon_quest()
 	SceneSwitcher.change_to_file_with_transition(
-		frays_end, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		abandon_scene, abandon_spawn_point, Transition.Effect.FADE, Transition.Effect.FADE
 	)
 
 
