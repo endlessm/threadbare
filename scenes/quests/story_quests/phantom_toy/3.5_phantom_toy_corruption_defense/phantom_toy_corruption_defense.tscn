@@ -32,6 +32,9 @@ script = ExtResource("21_rhebo")
 type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dr3qm"]
+size = Vector2(205.5, 187.5)
+
 [node name="PhantomToyCorruptionDefense" type="Node2D" unique_id=1537424246]
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=827843016]
@@ -51,6 +54,7 @@ tile_set = ExtResource("4_to1pq")
 collision_enabled = false
 
 [node name="Sand" type="TileMapLayer" parent="TileMapLayers" unique_id=1256257383]
+tile_map_data = PackedByteArray("AAATAAkAAQAGAAEAAAAUAAkAAQAGAAEAAAATAAoAAQAGAAEAAAAUAAoAAQAGAAEAAAATAAgAAQAGAAEAAAAUAAgAAQAGAAEAAAAVAAgAAQAGAAEAAAAVAAkAAQAGAAEAAAAVAAoAAQAGAAEAAAAVAAsAAQAGAAEAAAAUAAsAAQAGAAEAAAATAAsAAQAGAAEAAAASAAsAAQAGAAEAAAASAAoAAQAGAAEAAAASAAkAAQAGAAEAAAASAAgAAQAGAAEAAAAGAPz/AQAGAAEAAAAHAPz/AQAGAAEAAAAIAPz/AQAGAAEAAAAJAPz/AQAGAAEAAAAJAP3/AQAGAAEAAAAJAP7/AQAGAAEAAAAIAP7/AQAGAAEAAAAHAP7/AQAGAAEAAAAGAP7/AQAGAAEAAAAGAP3/AQAGAAEAAAAHAP3/AQAGAAEAAAAIAP3/AQAGAAEAAAAGAP//AQAGAAEAAAAHAP//AQAGAAEAAAAIAP//AQAGAAEAAAAJAP//AQAGAAEAAAD6/wgAAQAGAAEAAAD7/wgAAQAGAAEAAAD8/wgAAQAGAAEAAAD9/wgAAQAGAAEAAAD9/wkAAQAGAAEAAAD8/wkAAQAGAAEAAAD7/wkAAQAGAAEAAAD6/wkAAQAGAAEAAAD6/woAAQAGAAEAAAD7/woAAQAGAAEAAAD8/woAAQAGAAEAAAD9/woAAQAGAAEAAAAJABQAAQAGAAEAAAAIABQAAQAGAAEAAAAHABQAAQAGAAEAAAAGABQAAQAGAAEAAAAGABYAAQAGAAEAAAAGABUAAQAGAAEAAAAHABUAAQAGAAEAAAAHABYAAQAGAAEAAAAIABYAAQAGAAEAAAAIABUAAQAGAAEAAAAJABUAAQAGAAEAAAAJABYAAQAGAAEAAAA=")
 tile_set = ExtResource("4_to1pq")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=975270477]
@@ -161,17 +165,41 @@ text = "First melody: yellow, green, blue."
 position = Vector2(500, -149)
 script = ExtResource("24_dr3qm")
 
+[node name="Area2D" type="Area2D" parent="OnTheGround/CorruptionZones/NorthZone" unique_id=24395805]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/CorruptionZones/NorthZone/Area2D" unique_id=1363549289]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_dr3qm")
+
 [node name="SouthZone" type="Node2D" parent="OnTheGround/CorruptionZones" unique_id=1218750992]
 position = Vector2(534, 1370)
 script = ExtResource("24_dr3qm")
+
+[node name="Area2D" type="Area2D" parent="OnTheGround/CorruptionZones/SouthZone" unique_id=312534383]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/CorruptionZones/SouthZone/Area2D" unique_id=876218406]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_dr3qm")
 
 [node name="EastZone" type="Node2D" parent="OnTheGround/CorruptionZones" unique_id=926514108]
 position = Vector2(1284, 621)
 script = ExtResource("24_dr3qm")
 
+[node name="Area2D" type="Area2D" parent="OnTheGround/CorruptionZones/EastZone" unique_id=633940392]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/CorruptionZones/EastZone/Area2D" unique_id=75566583]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_dr3qm")
+
 [node name="WestZone" type="Node2D" parent="OnTheGround/CorruptionZones" unique_id=1394475869]
 position = Vector2(-261, 606)
 script = ExtResource("24_dr3qm")
+
+[node name="Area2D" type="Area2D" parent="OnTheGround/CorruptionZones/WestZone" unique_id=85895622]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/CorruptionZones/WestZone/Area2D" unique_id=834985291]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_dr3qm")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1188824144]
 
@@ -181,3 +209,12 @@ script = ExtResource("24_dr3qm")
 script = ExtResource("25_wtx7s")
 dialogue = ExtResource("22_kr4tv")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[connection signal="body_entered" from="OnTheGround/CorruptionZones/NorthZone/Area2D" to="OnTheGround/CorruptionZones/NorthZone" method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="OnTheGround/CorruptionZones/NorthZone/Area2D" to="OnTheGround/CorruptionZones/NorthZone" method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="OnTheGround/CorruptionZones/SouthZone/Area2D" to="OnTheGround/CorruptionZones/SouthZone" method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="OnTheGround/CorruptionZones/SouthZone/Area2D" to="OnTheGround/CorruptionZones/SouthZone" method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="OnTheGround/CorruptionZones/EastZone/Area2D" to="OnTheGround/CorruptionZones/EastZone" method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="OnTheGround/CorruptionZones/EastZone/Area2D" to="OnTheGround/CorruptionZones/EastZone" method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="OnTheGround/CorruptionZones/WestZone/Area2D" to="OnTheGround/CorruptionZones/WestZone" method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="OnTheGround/CorruptionZones/WestZone/Area2D" to="OnTheGround/CorruptionZones/WestZone" method="_on_area_2d_body_exited"]
