@@ -4,11 +4,13 @@
 [ext_resource type="TileSet" uid="uid://caxhfeix35kmt" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_shadows.tres" id="3_2nxwt"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_7mqfb"]
 [ext_resource type="SpriteFrames" uid="uid://cwcaxjyrcejw5" path="res://scenes/quests/story_quests/no_trace_left/player_components/grupo_4_player.tres" id="3_07v0r"]
+[ext_resource type="TileSet" uid="uid://djqqfdi2amxee" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_decoration.tres" id="4_2axdu"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="4_3ow41"]
 [ext_resource type="TileSet" uid="uid://utx2oblod12l" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_elevation_2.tres" id="4_ibd17"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_nuyqu"]
 [ext_resource type="Resource" uid="uid://cxyn4tco6rt43" path="res://scenes/quests/story_quests/no_trace_left/0_intro/intro_components/grupo_4_intro.dialogue" id="5_vqr71"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_hr4e7"]
+[ext_resource type="Script" uid="uid://bq3q84pbumo31" path="res://scenes/quests/story_quests/no_trace_left/0_intro/transition_screen.gd" id="12_2axdu"]
 [ext_resource type="Script" uid="uid://yr1n0aurrsav" path="res://scenes/quests/story_quests/no_trace_left/0_intro/audio_stream_player_phone.gd" id="12_gacj4"]
 [ext_resource type="AudioStream" uid="uid://bor3gwl1h5n7h" path="res://scenes/quests/story_quests/no_trace_left/audio/phone_call.ogg" id="12_pod6q"]
 [ext_resource type="Resource" uid="uid://c24q7vt0jyuaj" path="res://scenes/quests/story_quests/no_trace_left/0_intro/intro_components/ntl_intro_phone.dialogue" id="14_gacj4"]
@@ -16,6 +18,8 @@
 [ext_resource type="AudioStream" uid="uid://bygtehrfdw1ya" path="res://scenes/quests/story_quests/no_trace_left/audio/rain.ogg" id="16_pod6q"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="16_wuthf"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="18_oe5b8"]
+[ext_resource type="PackedScene" uid="uid://yichpepa7ef6" path="res://scenes/quests/story_quests/no_trace_left/collectible_item2.tscn" id="20_oe5b8"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="21_skp08"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_skp08"]
 size = Vector2(52, 61)
@@ -25,6 +29,62 @@ script = ExtResource("4_3ow41")
 walk_speed = 200.0
 run_speed = 400.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
+
+[sub_resource type="Animation" id="Animation_pod6q"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_gacj4"]
+resource_name = "fade_to_black"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_2axdu"]
+resource_name = "fade_to_normal"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2axdu"]
+_data = {
+&"RESET": SubResource("Animation_pod6q"),
+&"fade_to_black": SubResource("Animation_gacj4"),
+&"fade_to_normal": SubResource("Animation_2axdu")
+}
+
+[sub_resource type="Resource" id="Resource_mqp3b"]
+script = ExtResource("21_skp08")
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="Grupo4Intro" type="Node2D" unique_id=2049284984]
 
@@ -43,6 +103,14 @@ tile_set = ExtResource("3_2nxwt")
 tile_map_data = PackedByteArray("AAABAAAABAABAAIAAAACAAAABAABAAIAAAADAAAABAABAAIAAAAEAAAABAABAAIAAAAFAAAABAABAAIAAAAHAAAABAABAAIAAAAGAAAABAABAAIAAAAIAAAABAABAAIAAAAJAAAABAABAAIAAAAKAAAABAABAAIAAAALAAAABAABAAIAAAAMAAAABAABAAIAAAANAAAABAABAAIAAAAAAAEABAADAAEAAAAAAAAABAAAAAAAAAAAAAIABAADAAEAAAAAAAMABAADAAEAAAAAAAQABAADAAEAAAAAAAUABAADAAEAAAAAAAYABAADAAEAAAAOAAAABAACAAAAAAAOAAgABAACAAIAAAAAAAgABAAAAAIAAAAAAAcABAADAAEAAAABAAgABAABAAQAAAACAAgABAABAAQAAAADAAgABAABAAQAAAAEAAgABAABAAQAAAAFAAgABAABAAQAAAAGAAgABAABAAQAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAABAAQAAAAOAAcABAADAAEAAAAOAAYABAADAAEAAAAOAAUABAADAAEAAAAOAAQABAADAAEAAAAOAAMABAADAAEAAAAOAAIABAADAAEAAAAOAAEABAADAAEAAAA=")
 tile_set = ExtResource("4_ibd17")
 
+[node name="Decorations1" type="TileMapLayer" parent="TileMapLayers" unique_id=2065476515]
+tile_map_data = PackedByteArray("AAALAAEAAAABAAUAAAAHAAEAAAADAAIAAAAIAAEAAAADAAIAAAAGAAEAAAADAAIAAAA=")
+tile_set = ExtResource("4_2axdu")
+
+[node name="Decorations2" type="TileMapLayer" parent="TileMapLayers" unique_id=675090738]
+tile_map_data = PackedByteArray("AAAGAAMABAAAAAQAAAAHAAMABAABAAQAAAAIAAMABAACAAQAAAA=")
+tile_set = ExtResource("4_ibd17")
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1064875179]
 position = Vector2(153, 366)
 zoom = Vector2(1.333, 1.333)
@@ -59,7 +127,7 @@ position = Vector2(841, 274)
 [node name="phone" parent="." unique_id=1098678013 instance=ExtResource("15_2axdu")]
 position = Vector2(844, 264)
 rotation = 3.1415927
-scale = Vector2(1, -1)
+scale = Vector2(-1, -1)
 character_seed = 3839842409
 look_at_side = 1
 
@@ -90,6 +158,22 @@ position = Vector2(475, 410)
 speeds = SubResource("Resource_og5p0")
 sprite_frames = ExtResource("3_07v0r")
 
+[node name="transition_screen" type="CanvasLayer" parent="." unique_id=829313798]
+visible = false
+script = ExtResource("12_2axdu")
+
+[node name="ColorRect" type="ColorRect" parent="transition_screen" unique_id=1954309347]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="transition_screen" unique_id=724589938]
+libraries/ = SubResource("AnimationLibrary_2axdu")
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1398238637]
@@ -106,3 +190,8 @@ script = ExtResource("12_gacj4")
 stream = ExtResource("16_pod6q")
 volume_db = -15.0
 autoplay = true
+
+[node name="CollectibleItem_note" parent="." unique_id=327991066 instance=ExtResource("20_oe5b8")]
+position = Vector2(483, 208)
+revealed = false
+item = SubResource("Resource_mqp3b")
