@@ -1,0 +1,159 @@
+[gd_scene format=4 uid="uid://q3n2lbmfjxdl"]
+
+[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_d8hso"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="2_xffik"]
+[ext_resource type="Resource" uid="uid://bunevijolpu4s" path="res://scenes/quests/story_quests/en_la_prondidad/2_combat/combat_components/en_la_prondidad_combat.dialogue" id="3_k1hun"]
+[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="4_raop8"]
+[ext_resource type="TileSet" uid="uid://dicqet1gqoig3" path="res://scenes/quests/story_quests/en_la_prondidad/tiles/en_la_prondidad_exterior_floors.tres" id="5_ovxkm"]
+[ext_resource type="TileSet" uid="uid://b7o6f6cgv8egv" path="res://scenes/quests/story_quests/en_la_prondidad/tiles/en_la_prondidad_shadows.tres" id="6_lqaim"]
+[ext_resource type="TileSet" uid="uid://cxpljndouwn3y" path="res://scenes/quests/story_quests/en_la_prondidad/tiles/en_la_prondidad_elevation_2.tres" id="7_1js3n"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="8_ybm8k"]
+[ext_resource type="SpriteFrames" uid="uid://ogvyoa4f8bcj" path="res://scenes/quests/story_quests/en_la_prondidad/player_components/en_la_prondidad_player.tres" id="9_78hw6"]
+[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="10_lbfcp"]
+[ext_resource type="SpriteFrames" uid="uid://dhr6vcdok6d4a" path="res://scenes/quests/story_quests/en_la_prondidad/2_combat/combat_components/en_la_prondidad_throwing_enemy.tres" id="11_hv2sw"]
+[ext_resource type="PackedScene" uid="uid://drttkfe7wbhck" path="res://scenes/quests/story_quests/en_la_prondidad/2_combat/combat_components/en_la_prondidad_projectile.tscn" id="12_bukxy"]
+[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="13_xocie"]
+[ext_resource type="SpriteFrames" uid="uid://b61ahx3hcvut6" path="res://scenes/quests/story_quests/en_la_prondidad/2_combat/combat_components/en_la_prondidad_target_spriteframes.tres" id="14_a8868"]
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="15_uueub"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="16_57h3s"]
+[ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="17_pgafq"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="18_gab03"]
+[ext_resource type="SpriteFrames" uid="uid://c4d8ern43f006" path="res://scenes/quests/story_quests/el_juguete_perdido/2_combat/components/throwing_enemy.tres" id="19_xffik"]
+
+[sub_resource type="Resource" id="Resource_w84lh"]
+script = ExtResource("16_57h3s")
+type = 1
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k1hun"]
+size = Vector2(15.934509, 0.3256445)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_raop8"]
+size = Vector2(263.35284, 169.3125)
+
+[node name="EnLaProndidadCombat" type="Node2D" unique_id=1610054737]
+y_sort_enabled = true
+
+[node name="PlayerMode" type="Node" parent="." unique_id=969358735]
+script = ExtResource("1_d8hso")
+mode = 1
+metadata/_custom_type_script = "uid://pk3ucq7e2eah"
+
+[node name="Cinematic" type="Node2D" parent="." unique_id=951341763]
+script = ExtResource("2_xffik")
+dialogue = ExtResource("3_k1hun")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="FillGameLogic" type="Node" parent="." unique_id=1828019770]
+script = ExtResource("4_raop8")
+metadata/_custom_type_script = "uid://cp54mgi54nywo"
+
+[node name="TileMapLayers" type="Node2D" parent="." unique_id=738016104]
+
+[node name="Grass" type="TileMapLayer" parent="TileMapLayers" unique_id=293208529]
+tile_map_data = PackedByteArray("AAAVAAMABgABAAEAAAAVAAQABgABAAEAAAAVAAUABgABAAEAAAAVAAYABgABAAEAAAAVAAcABgABAAEAAAAVAAgABgABAAEAAAAVAAkABgABAAEAAAAVAAoABgABAAEAAAAVAAsABgABAAEAAAAWAAIABgABAAEAAAAWAAMABgABAAEAAAAWAAQABgABAAEAAAAWAAUABgABAAEAAAAWAAYABgABAAEAAAAWAAcABgABAAEAAAAWAAgABgABAAEAAAAWAAkABgABAAEAAAAWAAoABgABAAEAAAAWAAsABgABAAEAAAAWAAwABgABAAEAAAAXAAEABgABAAEAAAAXAAIABgABAAEAAAAXAAMABgABAAEAAAAXAAQABgABAAEAAAAXAAUABgABAAEAAAAXAAYABgABAAEAAAAXAAcABgABAAEAAAAXAAgABgABAAEAAAAXAAkABgABAAEAAAAXAAoABgABAAEAAAAXAAsABgABAAEAAAAXAAwABgABAAEAAAAXAA0ABgABAAEAAAAYAAEABgABAAEAAAAYAAIABgABAAEAAAAYAAMABgABAAEAAAAYAAQABgABAAEAAAAYAAUABgABAAEAAAAYAAYABgABAAEAAAAYAAcABgABAAEAAAAYAAgABgABAAEAAAAYAAkABgABAAEAAAAYAAoABgABAAEAAAAYAAsABgABAAEAAAAYAAwABgABAAEAAAAYAA0ABgABAAEAAAAZAAEABgABAAEAAAAZAAIABgABAAEAAAAZAAMABgABAAEAAAAZAAQABgABAAEAAAAZAAUABgABAAEAAAAZAAYABgABAAEAAAAZAAcABgABAAEAAAAZAAgABgABAAEAAAAZAAkABgABAAEAAAAZAAoABgABAAEAAAAZAAsABgABAAEAAAAZAAwABgABAAEAAAAZAA0ABgABAAEAAAAaAAEABgABAAEAAAAaAAIABgABAAEAAAAaAAMABgABAAEAAAAaAAQABgABAAEAAAAaAAUABgABAAEAAAAaAAYABgABAAEAAAAaAAcABgABAAEAAAAaAAgABgABAAEAAAAaAAkABgABAAEAAAAaAAoABgABAAEAAAAaAAsABgABAAEAAAAaAAwABgABAAEAAAAaAA0ABgABAAEAAAAbAAEABgABAAEAAAAbAAIABgABAAEAAAAbAAMABgABAAEAAAAbAAQABgABAAEAAAAbAAUABgABAAEAAAAbAAYABgABAAEAAAAbAAcABgABAAEAAAAbAAgABgABAAEAAAAbAAkABgABAAEAAAAbAAoABgABAAEAAAAbAAsABgABAAEAAAAbAAwABgABAAEAAAAbAA0ABgABAAEAAAAcAAEABgABAAEAAAAcAAIABgABAAEAAAAcAAMABgABAAEAAAAcAAQABgABAAEAAAAcAAUABgABAAEAAAAcAAYABgABAAEAAAAcAAcABgABAAEAAAAcAAgABgABAAEAAAAcAAkABgABAAEAAAAcAAoABgABAAEAAAAcAAsABgABAAEAAAAcAAwABgABAAEAAAAcAA0ABgABAAEAAAAdAAEABgABAAEAAAAdAAIABgABAAEAAAAdAAMABgABAAEAAAAdAAQABgABAAEAAAAdAAUABgABAAEAAAAdAAYABgABAAEAAAAdAAcABgABAAEAAAAdAAgABgABAAEAAAAdAAkABgABAAEAAAAdAAoABgABAAEAAAAdAAsABgABAAEAAAAdAAwABgABAAEAAAAdAA0ABgABAAEAAAAeAAEABgABAAEAAAAeAAIABgABAAEAAAAeAAMABgABAAEAAAAeAAQABgABAAEAAAAeAAUABgABAAEAAAAeAAYABgABAAEAAAAeAAcABgABAAEAAAAeAAgABgABAAEAAAAeAAkABgABAAEAAAAeAAoABgABAAEAAAAeAAsABgABAAEAAAAeAAwABgABAAEAAAAeAA0ABgABAAEAAAAfAAEABgABAAEAAAAfAAIABgABAAEAAAAfAAMABgABAAEAAAAfAAQABgABAAEAAAAfAAUABgABAAEAAAAfAAYABgABAAEAAAAfAAcABgABAAEAAAAfAAgABgABAAEAAAAfAAkABgABAAEAAAAfAAoABgABAAEAAAAfAAsABgABAAEAAAAfAAwABgABAAEAAAAfAA0ABgABAAEAAAAgAAEABgABAAEAAAAgAAIABgABAAEAAAAgAAMABgABAAEAAAAgAAQABgABAAEAAAAgAAUABgABAAEAAAAgAAYABgABAAEAAAAgAAcABgABAAEAAAAgAAgABgABAAEAAAAgAAkABgABAAEAAAAgAAoABgABAAEAAAAgAAsABgABAAEAAAAgAAwABgABAAEAAAAgAA0ABgABAAEAAAAhAAEABgABAAEAAAAhAAIABgABAAEAAAAhAAMABgABAAEAAAAhAAQABgABAAEAAAAhAAUABgABAAEAAAAhAAYABgABAAEAAAAhAAcABgABAAEAAAAhAAgABgABAAEAAAAhAAkABgABAAEAAAAhAAoABgABAAEAAAAhAAsABgABAAEAAAAhAAwABgABAAEAAAAhAA0ABgABAAEAAAAiAAEABgABAAEAAAAiAAIABgABAAEAAAAiAAMABgABAAEAAAAiAAQABgABAAEAAAAiAAUABgABAAEAAAAiAAYABgABAAEAAAAiAAcABgABAAEAAAAiAAgABgABAAEAAAAiAAkABgABAAEAAAAiAAoABgABAAEAAAAiAAsABgABAAEAAAAiAAwABgABAAEAAAAiAA0ABgABAAEAAAAjAAEABgABAAEAAAAjAAIABgABAAEAAAAjAAMABgABAAEAAAAjAAQABgABAAEAAAAjAAUABgABAAEAAAAjAAYABgABAAEAAAAjAAcABgABAAEAAAAjAAgABgABAAEAAAAjAAkABgABAAEAAAAjAAoABgABAAEAAAAjAAsABgABAAEAAAAjAAwABgABAAEAAAAjAA0ABgABAAEAAAAkAAEABgABAAEAAAAkAAIABgABAAEAAAAkAAMABgABAAEAAAAkAAQABgABAAEAAAAkAAUABgABAAEAAAAkAAYABgABAAEAAAAkAAcABgABAAEAAAAkAAgABgABAAEAAAAkAAkABgABAAEAAAAkAAoABgABAAEAAAAkAAsABgABAAEAAAAkAAwABgABAAEAAAAkAA0ABgABAAEAAAAlAAEABgABAAEAAAAlAAIABgABAAEAAAAlAAMABgABAAEAAAAlAAQABgABAAEAAAAlAAUABgABAAEAAAAlAAYABgABAAEAAAAlAAcABgABAAEAAAAlAAgABgABAAEAAAAlAAkABgABAAEAAAAlAAoABgABAAEAAAAlAAsABgABAAEAAAAlAAwABgABAAEAAAAmAAMABgABAAEAAAAmAAQABgABAAEAAAAmAAUABgABAAEAAAAmAAYABgABAAEAAAAmAAcABgABAAEAAAAmAAgABgABAAEAAAAmAAkABgABAAEAAAAmAAoABgABAAEAAAAmAAsABgABAAEAAAAmAAwABgABAAEAAAAnAAMABgABAAEAAAAnAAQABgABAAEAAAAnAAUABgABAAEAAAAnAAYABgABAAEAAAAnAAcABgABAAEAAAAnAAgABgABAAEAAAAnAAkABgABAAEAAAAnAAoABgABAAEAAAAnAAsABgABAAEAAAAoAAQABgABAAEAAAAoAAUABgABAAEAAAAoAAYABgABAAEAAAAoAAcABgABAAEAAAAoAAgABgABAAEAAAAoAAkABgABAAEAAAAoAAoABgABAAEAAAAmAAIABgABAAEAAAAUAAQABgABAAEAAAAUAAMABgABAAEAAAAVAAIABgABAAEAAAAWAAEABgABAAEAAAA=")
+tile_set = ExtResource("5_ovxkm")
+
+[node name="Shadows" type="TileMapLayer" parent="TileMapLayers" unique_id=710920852]
+tile_set = ExtResource("6_lqaim")
+
+[node name="Stones" type="TileMapLayer" parent="TileMapLayers" unique_id=702916193]
+tile_map_data = PackedByteArray("AAAUAAQABAADAAEAAAAUAAUABAADAAEAAAAUAAoABAADAAEAAAAUAAsABAABAAAAAAAQAAUABAADAAEAAQARAAUABAADAAEAAQASAAUABAADAAEAAQATAAUABAADAAEAAQAQAAkABAADAAEAAQARAAkABAADAAEAAQASAAkABAADAAEAAQATAAkABAABAAAAAAALAAUABAADAAEAAQAMAAUABAADAAEAAQANAAUABAADAAEAAQAOAAUABAADAAEAAQAPAAUABAADAAEAAQAJAAkABAADAAEAAQAKAAkABAADAAEAAQALAAkABAADAAEAAQAMAAkABAADAAEAAQANAAkABAADAAEAAQAOAAkABAADAAEAAQAPAAkABAADAAEAAQAJAAUABAADAAEAAQAKAAUABAADAAEAAQATAAQABAABAAEAAAATAAoABAABAAEAAAAVAAMABAACAAEAAAAWAAIABAACAAEAAAAVAAIABAACAAEAAAAXAAIABAACAAEAAAAVAAQABAACAAEAAAAWAAMABAACAAEAAAAYAAIABAACAAEAAAAXAAMABAACAAEAAAAZAAIABAACAAEAAAAUAAMABAADAAEAAAAWAAEABAACAAEAAAAXAAEABAACAAEAAAAYAAEABAACAAEAAAAZAAEABAACAAEAAAAaAAEABAACAAEAAAAbAAEABAACAAEAAAAcAAEABAACAAEAAAAdAAEABAACAAEAAAAeAAEABAACAAEAAAAfAAEABAACAAEAAAAgAAEABAACAAEAAAAhAAEABAACAAEAAAAiAAEABAACAAEAAAAjAAEABAACAAEAAAAkAAEABAACAAEAAAAiAAIABAACAAEAAAAjAAIABAACAAEAAAAkAAIABAACAAEAAAAlAAIABAACAAEAAAAmAAIABAACAAEAAAAlAAMABAACAAEAAAAmAAMABAACAAEAAAAnAAMABAACAAEAAAAnAAQABAACAAEAAAAoAAQABAACAAEAAAAoAAUABAACAAEAAAAkAAMABAACAAEAAAAmAAQABAACAAEAAAAnAAUABAACAAEAAAAoAAYABAACAAEAAAAoAAcABAACAAEAAAAoAAgABAACAAEAAAAoAAkABAACAAEAAAAoAAoABAACAAEAAAAnAAYABAACAAEAAAAnAAcABAACAAEAAAAnAAgABAACAAEAAAAnAAkABAACAAEAAAAnAAoABAACAAEAAAAnAAsABAACAAEAAAAUAAkABAACAAEAAAAVAAoABAACAAEAAAAVAAsABAABAAAAAAAWAAsABAABAAAAAAAXAAsABAABAAAAAAAYAAwABAABAAAAAAAZAAwABAABAAAAAAAYAA0ABAABAAAAAAAZAA0ABAABAAAAAAAaAA0ABAABAAAAAAAbAA0ABAABAAAAAAAcAA0ABAABAAAAAAAdAA0ABAABAAAAAAAeAA0ABAABAAAAAAAfAA0ABAABAAAAAAAgAA0ABAABAAAAAAAhAA0ABAABAAAAAAAiAA0ABAABAAAAAAAjAA0ABAABAAAAAAAkAA0ABAABAAAAAAAlAA0ABAABAAAAAAAWAAwABAABAAAAAAAXAAwABAABAAAAAAAVAAwABAABAAAAAAAXAA0ABAABAAAAAAAiAAwABAABAAAAAAAjAAwABAABAAAAAAAkAAsABAABAAAAAAAlAAsABAABAAAAAAAmAAoABAABAAAAAAAkAAwABAABAAAAAAAlAAwABAABAAAAAAAmAAwABAABAAAAAAAmAAsABAABAAAAAAAlAAEABAACAAEAAAAaAAwABAABAAAAAAAhAAwABAABAAAAAAAaAAIABAABAAAAAAAhAAIABAABAAAAAAA=")
+tile_set = ExtResource("7_1js3n")
+
+[node name="OnTheGround" type="Node2D" parent="." unique_id=410171371]
+y_sort_enabled = true
+
+[node name="Player" parent="OnTheGround" unique_id=1799818537 instance=ExtResource("8_ybm8k")]
+position = Vector2(348, 335)
+sprite_frames = ExtResource("9_78hw6")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=415956383]
+
+[node name="ThrowingNPC" parent="OnTheGround" unique_id=2065424633 instance=ExtResource("10_lbfcp")]
+position = Vector2(902, 1203)
+sprite_frames = ExtResource("11_hv2sw")
+projectile_scene = ExtResource("12_bukxy")
+
+[node name="Target" parent="OnTheGround" unique_id=1718603548 instance=ExtResource("13_xocie")]
+position = Vector2(650, 1499)
+sprite_frames = ExtResource("14_a8868")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target2" parent="OnTheGround" unique_id=711725062 instance=ExtResource("13_xocie")]
+position = Vector2(687, 1510)
+sprite_frames = ExtResource("14_a8868")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target3" parent="OnTheGround" unique_id=1832726000 instance=ExtResource("13_xocie")]
+position = Vector2(664, 1527)
+sprite_frames = ExtResource("14_a8868")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target4" parent="OnTheGround" unique_id=857122250 instance=ExtResource("13_xocie")]
+position = Vector2(681, 1498)
+sprite_frames = ExtResource("14_a8868")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target5" parent="OnTheGround" unique_id=1348280126 instance=ExtResource("13_xocie")]
+position = Vector2(704, 1499)
+sprite_frames = ExtResource("14_a8868")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target6" parent="OnTheGround" unique_id=1005497940 instance=ExtResource("13_xocie")]
+position = Vector2(678, 1501)
+sprite_frames = ExtResource("14_a8868")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="CollectibleItem" parent="OnTheGround" unique_id=1864193206 instance=ExtResource("15_uueub")]
+unique_name_in_owner = true
+position = Vector2(241, 1186)
+revealed = false
+next_scene = "uid://cprri1wvtphad"
+item = SubResource("Resource_w84lh")
+collected_dialogue = ExtResource("3_k1hun")
+dialogue_title = &"well_done"
+
+[node name="RepelPowerup" parent="OnTheGround" unique_id=1795462717 instance=ExtResource("17_pgafq")]
+position = Vector2(252, 1773)
+highlight_color = Color(0, 0.4392157, 1, 1)
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1277924950]
+
+[node name="HUD" parent="." unique_id=1216951978 instance=ExtResource("18_gab03")]
+
+[node name="Enemigo" type="CharacterBody2D" parent="." unique_id=1095555936]
+position = Vector2(2435, 458)
+scale = Vector2(1.0185953, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Enemigo" unique_id=525379849]
+scale = Vector2(-1, 1)
+sprite_frames = ExtResource("19_xffik")
+animation = &"attack"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemigo" unique_id=614779057]
+visible = false
+position = Vector2(3.435791, 8.5)
+rotation = -3.1415925
+scale = Vector2(2.0331671, -144.32916)
+shape = SubResource("RectangleShape2D_k1hun")
+debug_color = Color(0.83160263, 0.0014125413, 0.9430689, 0.41960785)
+
+[node name="activacion" type="Area2D" parent="Enemigo" unique_id=421131253]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemigo/activacion" unique_id=27074494]
+position = Vector2(-223.83755, 45)
+shape = SubResource("RectangleShape2D_raop8")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Enemigo" unique_id=283801339]
+visible = false
+position = Vector2(25.525347, 17)
+
+[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
+[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
