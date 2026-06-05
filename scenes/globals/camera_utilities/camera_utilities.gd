@@ -5,7 +5,7 @@ class_name CameraUtilities
 
 ## Return the absolute path to the limit target of the current active camera, if it has one.
 static func _get_phantom_camera_limit_target() -> NodePath:
-	var phantom_camera_hosts := PhantomCameraManager.phantom_camera_hosts
+	var phantom_camera_hosts: Array[PhantomCameraHost] = PhantomCameraManager.phantom_camera_hosts
 	if not phantom_camera_hosts:
 		return ""
 	var active_pcam := phantom_camera_hosts[0].get_active_pcam() as PhantomCamera2D
