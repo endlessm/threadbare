@@ -19,6 +19,6 @@ func _on_abilities_changed() -> void:
 	if zoom_tween:
 		zoom_tween.kill()
 	zoom_tween = create_tween()
-	var cameras := PhantomCameraManager.get_phantom_camera_2ds()
+	var cameras: Array[PhantomCamera2D] = PhantomCameraManager.get_phantom_camera_2ds()
 	for cam: PhantomCamera2D in cameras:
 		zoom_tween.tween_property(cam, "zoom", camera_zoom, 1.0)
