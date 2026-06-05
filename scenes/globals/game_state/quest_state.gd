@@ -32,6 +32,13 @@ extends Resource
 ## and is discarded at the end.
 @export var player: PlayerState = PlayerState.new()
 
+## The path to the scene to return to if the quest is abandoned.
+@export var abandon_scene_path: String
+
+## [SpawnPoint] node within [member abandon_scene_path] to return to if the
+## quest is abandoned.
+@export var abandon_spawn_point: NodePath
+
 
 func _init(q: Quest = null, p: PlayerState = null) -> void:
 	quest = q
