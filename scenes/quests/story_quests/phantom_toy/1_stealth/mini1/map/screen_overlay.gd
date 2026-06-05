@@ -1,5 +1,4 @@
 extends CanvasLayer
-
 @onready var panel = $Panel 
 @onready var label = $Panel/Label 
 

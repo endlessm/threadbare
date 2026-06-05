@@ -35,20 +35,17 @@ func _ready() -> void:
 
 
 func start() -> void:
-	if not GameState.intro_dialogue_shown:
-		DialogueManager.show_dialogue_balloon(dialogue, "", [self])
-		await DialogueManager.dialogue_ended
-		
-		cinematic_finished.emit()
-		GameState.intro_dialogue_shown = true
+	DialogueManager.show_dialogue_balloon(dialogue, "start", [self])
+	await DialogueManager.dialogue_ended
+
+	
+
+	cinematic_finished.emit()
 
 	if next_scene:
-		(
-			SceneSwitcher
-			. change_to_file_with_transition(
-				next_scene,
-				spawn_point_path,
-				Transition.Effect.FADE,
-				Transition.Effect.FADE,
-			)
-		)
+		SceneSwitcher.change_to_file_with_transition(
+		next_scene,
+		spawn_point_path,
+		Transition.Effect.FADE,
+		Transition.Effect.FADE,
+	)
