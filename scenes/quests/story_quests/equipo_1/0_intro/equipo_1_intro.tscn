@@ -31,7 +31,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(400, 349)]
+"values": [Vector2(-107, 417)]
 }
 
 [sub_resource type="Animation" id="Animation_augem"]
@@ -59,7 +59,35 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(495, 478), Vector2(1010, 478)]
+"values": [Vector2(495, 478), Vector2(843, 473)]
+}
+
+[sub_resource type="Animation" id="Animation_tujw1"]
+resource_name = "walk_off_2"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(843, 473), Vector2(1030, 475)]
 }
 
 [sub_resource type="Animation" id="Animation_cnubl"]
@@ -94,6 +122,7 @@ tracks/1/keys = {
 _data = {
 &"RESET": SubResource("Animation_468w5"),
 &"walk_off": SubResource("Animation_augem"),
+&"walk_off_2": SubResource("Animation_tujw1"),
 &"walk_on": SubResource("Animation_cnubl")
 }
 
@@ -129,7 +158,7 @@ editor_draw_limits = true
 y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=169229228]
-position = Vector2(400, 349)
+position = Vector2(-107, 417)
 sprite_frames = ExtResource("3_o3j47")
 animation = &"idle"
 autoplay = "idle"
@@ -148,4 +177,14 @@ next_scene = "uid://dilvhm7tjtnfa"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." unique_id=912112339 instance=ExtResource("6_eb25u")]
-position = Vector2(125, 403)
+
+position = Vector2(894, 429)
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=389598042]
+modulate = Color(1, 1, 1, 0)
+offset_right = 960.0
+offset_bottom = 542.0
+color = Color(0, 0, 0, 1)
+
+[node name="Rock2" parent="." unique_id=1319147835 instance=ExtResource("6_eb25u")]
+position = Vector2(655, 417)
