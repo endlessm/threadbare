@@ -11,14 +11,8 @@ extends CharacterBody2D
 signal collected
 
 ## The player ability to enable.
-@export var ability: Enums.PlayerAbilities = Enums.PlayerAbilities.ABILITY_A
-
-## Name for the ability to display if using the default dialogue.
-@export var ability_name: String
-
-## Text to display in the label when the player gets close to interact with this powerup.
-@export var interact_action: String:
-	set = _set_interact_action
+@export var ability: Enums.PlayerAbilities = Enums.PlayerAbilities.ABILITY_A:
+	set = _set_ability
 
 ## Asset of this powerup.
 @export var sprite_frames: SpriteFrames = preload("uid://cualgrcaaggcm"):
@@ -31,6 +25,9 @@ signal collected
 ## Dialogue to display when collecting the powerup.
 @export var dialogue: DialogueResource = preload("uid://cj0i5jwlv8idi")
 
+## Name for the ability to display if using the default dialogue.
+var ability_name: String
+
 var _tween: Tween
 
 @onready var interact_area: InteractArea = %InteractArea
@@ -41,10 +38,10 @@ var _tween: Tween
 @onready var hookable_collision: CollisionShape2D = %HookableCollision
 
 
-func _set_interact_action(new_interact_action: String) -> void:
-	interact_action = new_interact_action
-	if is_node_ready():
-		interact_area.action = interact_action
+func _set_ability(new_ability: Enums.PlayerAbilities) -> void:
+	ability = new_ability
+	_update_ability_name()
+	interact_area.action = "Collect " + ability_name
 
 
 func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
@@ -60,8 +57,19 @@ func _set_highlight_color(new_highlight_color: Color) -> void:
 		highlight_effect.modulate = highlight_color
 
 
+func _update_ability_name() -> void:
+	if not ability:
+		ability_name = ""
+		return
+	var abilities_names: Dictionary[Enums.PlayerAbilities, String] = LoreInfo.ABILITIES_NAMES
+	if GameState.quest and GameState.quest.quest is StoryQuest:
+		var sq := GameState.quest.quest as StoryQuest
+		abilities_names = sq.abilities_names
+	ability_name = abilities_names.get(ability)
+
+
 func _ready() -> void:
-	_set_interact_action(interact_action)
+	_set_ability(ability)
 	_set_sprite_frames(sprite_frames)
 	_set_highlight_color(highlight_color)
 	if Engine.is_editor_hint():
