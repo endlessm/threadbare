@@ -11,7 +11,8 @@ extends Area2D
 
 ## Spawn point in the current scene to place the player at if they abandon the
 ## quest. Should be outside this area.
-@export var abandon_point: SpawnPoint
+@export var abandon_point: SpawnPoint:
+	set = set_abandon_point
 
 ## Transition to use at the start of the switch to [member quest].
 @export var enter_transition: Transition.Effect:
