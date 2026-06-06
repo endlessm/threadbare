@@ -1,11 +1,11 @@
-[gd_scene format=4 uid="uid://djucserfogpyw"]
+[gd_scene format=4 uid="uid://b4bow13n7llrx"]
 
 [ext_resource type="TileSet" uid="uid://kfeh06bf30lu" path="res://scenes/quests/story_quests/eldrune/eldrune_main_tileset.tres" id="1_biwba"]
 [ext_resource type="TileSet" uid="uid://bpyv8qhmeyo6l" path="res://scenes/quests/story_quests/shjourney/3_shjourney_intro/tilesetIntro.tres" id="2_0vaf7"]
 [ext_resource type="TileSet" uid="uid://2lmejfj6w3o5" path="res://scenes/quests/story_quests/el_ojo_revelador/el_ojo_revelador_tileset.tres" id="3_ii021"]
 [ext_resource type="SpriteFrames" uid="uid://ckvi0pb0mnugd" path="res://scenes/quests/story_quests/huayllay/player_components/huayllay_player.tres" id="4_tigv4"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="5_nr1xt"]
-[ext_resource type="Resource" uid="uid://dbq2wstfx63so" path="res://scenes/quests/story_quests/huayllay/0_intro/intro_components/huayllay_intro.dialogue" id="6_ie1os"]
+[ext_resource type="Resource" uid="uid://cif6er103j0wb" path="res://scenes/quests/story_quests/huayllay/0_intro/intro_components/huayllay_intro_cave.dialogue" id="6_14t8d"]
 
 [sub_resource type="Animation" id="Animation_o3l1h"]
 length = 0.001
@@ -19,7 +19,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"idle"]
+"values": [&"defeated"]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -31,12 +31,12 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(750, 349)]
+"values": [Vector2(-139, 341)]
 }
 
 [sub_resource type="Animation" id="Animation_27lhj"]
-resource_name = "walk_off"
-length = 2.0
+resource_name = "wake_up"
+length = 5.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -47,19 +47,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [&"walk", &"idle"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(495, 478), Vector2(1010, 478)]
+"values": [&"idle", &"defeated"]
 }
 
 [sub_resource type="Animation" id="Animation_rv67a"]
@@ -87,14 +75,101 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-50, 478), Vector2(495, 478)]
+"values": [Vector2(-139, 341), Vector2(0, 478)]
+}
+
+[sub_resource type="Animation" id="Animation_14t8d"]
+resource_name = "walk_on_2"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 478), Vector2(90, 200)]
+}
+
+[sub_resource type="Animation" id="Animation_6bhyn"]
+resource_name = "walk_on_3"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(90, 200), Vector2(300, 350)]
+}
+
+[sub_resource type="Animation" id="Animation_t2i4w"]
+resource_name = "walk_on_4"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(300, 350), Vector2(300, 350), Vector2(1000, 350)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xo7iv"]
 _data = {
 &"RESET": SubResource("Animation_o3l1h"),
-&"walk_off": SubResource("Animation_27lhj"),
-&"walk_on": SubResource("Animation_rv67a")
+&"wake_up": SubResource("Animation_27lhj"),
+&"walk_on": SubResource("Animation_rv67a"),
+&"walk_on_2": SubResource("Animation_14t8d"),
+&"walk_on_3": SubResource("Animation_6bhyn"),
+&"walk_on_4": SubResource("Animation_t2i4w")
 }
 
 [sub_resource type="AudioStreamWAV" id="AudioStreamWAV_14t8d"]
@@ -104,6 +179,9 @@ mix_rate = 48000
 stereo = true
 
 [node name="HuayllayIntro" type="Node2D" unique_id=2049284984]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=975268221]
+color = Color(0.40069774, 0.40069774, 0.40069768, 1)
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=591504591]
 
@@ -138,9 +216,9 @@ editor_draw_limits = true
 y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=169229228]
-position = Vector2(750, 349)
+position = Vector2(-139, 341)
 sprite_frames = ExtResource("4_tigv4")
-animation = &"idle"
+animation = &"defeated"
 autoplay = "idle"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround" unique_id=49807179]
@@ -151,7 +229,7 @@ libraries/ = SubResource("AnimationLibrary_xo7iv")
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1398238637 node_paths=PackedStringArray("animation_player")]
 script = ExtResource("5_nr1xt")
-dialogue = ExtResource("6_ie1os")
+dialogue = ExtResource("6_14t8d")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
 next_scene = "uid://seinlhu3ydjp"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"

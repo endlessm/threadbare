@@ -1,9 +1,10 @@
-[gd_scene format=4 uid="uid://dveolym80ecnt"]
+[gd_scene format=4 uid="uid://kebpnex10s0p"]
 
 [ext_resource type="TileSet" uid="uid://bpyv8qhmeyo6l" path="res://scenes/quests/story_quests/shjourney/3_shjourney_intro/tilesetIntro.tres" id="2_0vaf7"]
+[ext_resource type="SpriteFrames" uid="uid://dxrmerjyhbv7p" path="res://scenes/quests/story_quests/huayllay/2_combat/combat_components/huayllay_target_spriteframes.tres" id="3_gtx0w"]
+[ext_resource type="Resource" uid="uid://oxficbyhbf2s" path="res://scenes/quests/story_quests/huayllay/0_intro/intro_components/huayllay_intro_exploration.dialogue" id="4_2awkw"]
 [ext_resource type="SpriteFrames" uid="uid://ckvi0pb0mnugd" path="res://scenes/quests/story_quests/huayllay/player_components/huayllay_player.tres" id="4_tigv4"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="5_nr1xt"]
-[ext_resource type="Resource" uid="uid://dbq2wstfx63so" path="res://scenes/quests/story_quests/huayllay/0_intro/intro_components/huayllay_intro.dialogue" id="6_ie1os"]
 
 [sub_resource type="Animation" id="Animation_o3l1h"]
 length = 0.001
@@ -29,40 +30,40 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(750, 349)]
+"values": [Vector2(-134, 349)]
 }
 
-[sub_resource type="Animation" id="Animation_27lhj"]
-resource_name = "walk_off"
+[sub_resource type="Animation" id="Animation_biwba"]
+resource_name = "bus_off"
 length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/path = NodePath("OnTheGround/Character:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [&"walk", &"idle"]
+"update": 0,
+"values": [Vector2(318, 349), Vector2(270, 430)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/path = NodePath("OnTheGround/Character:animation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(495, 478), Vector2(1010, 478)]
+"update": 1,
+"values": [&"walk", &"idle"]
 }
 
 [sub_resource type="Animation" id="Animation_rv67a"]
-resource_name = "walk_on"
-length = 2.0
+resource_name = "bus_on"
+length = 3.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -70,7 +71,7 @@ tracks/0/path = NodePath("OnTheGround/Character:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
+"times": PackedFloat32Array(0, 3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [&"walk", &"idle"]
@@ -82,20 +83,93 @@ tracks/1/path = NodePath("OnTheGround/Character:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 2),
+"times": PackedFloat32Array(0, 3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-50, 478), Vector2(495, 478)]
+"values": [Vector2(-134, 349), Vector2(318, 349)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Bus:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-134, 349), Vector2(318, 349)]
+}
+
+[sub_resource type="Animation" id="Animation_0vaf7"]
+resource_name = "walk_off"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1200, 240), Vector2(1510, -50)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+
+[sub_resource type="Animation" id="Animation_gtx0w"]
+resource_name = "walk_on"
+length = 9.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 3.5, 5, 6.4666667, 9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(270, 430), Vector2(593, 436), Vector2(593, 436), Vector2(905, 543), Vector2(905, 543), Vector2(1200, 240)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2, 3.5, 5, 6.4666667, 9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [&"walk", &"idle", &"walk", &"idle", &"walk", &"idle"]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xo7iv"]
 _data = {
 &"RESET": SubResource("Animation_o3l1h"),
-&"walk_off": SubResource("Animation_27lhj"),
-&"walk_on": SubResource("Animation_rv67a")
+&"bus_off": SubResource("Animation_biwba"),
+&"bus_on": SubResource("Animation_rv67a"),
+&"walk_off": SubResource("Animation_0vaf7"),
+&"walk_on": SubResource("Animation_gtx0w")
 }
 
 [node name="HuayllayIntro" type="Node2D" unique_id=2049284984]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1848969179]
+color = Color(0.9999998, 0.8899193, 0.80421543, 1)
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=506246995]
 position = Vector2(936, 0)
@@ -132,35 +206,40 @@ tile_set = ExtResource("2_0vaf7")
 tile_map_data = PackedByteArray("AAD1/woAAAAAAAAAAAD1/wsAAAAAAAAAAAD0/wsAAAAAAAAAAAA=")
 tile_set = ExtResource("2_0vaf7")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1064875179]
-position = Vector2(582, 303)
-scale = Vector2(70441.42, -147.753)
-limit_enabled = false
-limit_left = 0
-limit_top = 0
-limit_right = 960
-limit_bottom = 540
-position_smoothing_enabled = true
-editor_draw_limits = true
-
 [node name="OnTheGround" type="Node2D" parent="." unique_id=836096441]
 y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=169229228]
-position = Vector2(750, 349)
+position = Vector2(-134, 349)
 sprite_frames = ExtResource("4_tigv4")
 animation = &"idle"
 autoplay = "idle"
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Character" unique_id=1064875179]
+position = Vector2(1.4933319, -9)
+scale = Vector2(70441.42, -147.753)
+zoom = Vector2(1.2, 1.2)
+limit_left = 0
+limit_top = -100
+limit_right = 1700
+limit_bottom = 700
+position_smoothing_enabled = true
+editor_draw_limits = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround" unique_id=49807179]
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_xo7iv")
 
+[node name="Bus" type="AnimatedSprite2D" parent="OnTheGround" unique_id=2112124292]
+position = Vector2(-134, 349)
+sprite_frames = ExtResource("3_gtx0w")
+animation = &"filling"
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1398238637 node_paths=PackedStringArray("animation_player")]
 script = ExtResource("5_nr1xt")
-dialogue = ExtResource("6_ie1os")
+dialogue = ExtResource("4_2awkw")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
-next_scene = "uid://cgi1roafdr2xp"
+next_scene = "uid://bjtsyemowa3ja"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"

@@ -1,9 +1,9 @@
-[gd_scene format=4 uid="uid://ctt5hy41l71yt"]
+[gd_scene format=4 uid="uid://fdo1osfakxxo"]
 
 [ext_resource type="TileSet" uid="uid://bpyv8qhmeyo6l" path="res://scenes/quests/story_quests/shjourney/3_shjourney_intro/tilesetIntro.tres" id="2_nve1f"]
 [ext_resource type="SpriteFrames" uid="uid://ckvi0pb0mnugd" path="res://scenes/quests/story_quests/huayllay/player_components/huayllay_player.tres" id="4_oxu41"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="5_2e8lx"]
-[ext_resource type="Resource" uid="uid://dbq2wstfx63so" path="res://scenes/quests/story_quests/huayllay/0_intro/intro_components/huayllay_intro.dialogue" id="6_yypyh"]
+[ext_resource type="Resource" uid="uid://dbq2wstfx63so" path="res://scenes/quests/story_quests/huayllay/0_intro/intro_components/huayllay_intro_beginning.dialogue" id="6_yypyh"]
 
 [sub_resource type="Animation" id="Animation_o3l1h"]
 length = 0.001
@@ -57,12 +57,12 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(495, 478), Vector2(1010, 478)]
+"values": [Vector2(495, 350), Vector2(1000, 350)]
 }
 
 [sub_resource type="Animation" id="Animation_rv67a"]
 resource_name = "walk_on"
-length = 2.0
+length = 10.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -70,7 +70,7 @@ tracks/0/path = NodePath("OnTheGround/Character:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
+"times": PackedFloat32Array(0, 10),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [&"walk", &"idle"]
@@ -82,10 +82,10 @@ tracks/1/path = NodePath("OnTheGround/Character:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 2),
+"times": PackedFloat32Array(0, 10),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-50, 478), Vector2(495, 478)]
+"values": [Vector2(-100, 350), Vector2(2400, 350)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xo7iv"]
@@ -96,6 +96,9 @@ _data = {
 }
 
 [node name="HuayllayIntro" type="Node2D" unique_id=2049284984]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=2204162]
+color = Color(0.9999998, 0.8899193, 0.80421543, 1)
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=591504591]
 position = Vector2(936, 0)
@@ -132,19 +135,6 @@ tile_set = ExtResource("2_nve1f")
 tile_map_data = PackedByteArray("AAD0/wsAAgAAAAEAAAD1/woAAgABAAAAAAD3/wsAAgACAAEAAAD3/woAAgACAAEAAAD3/wkAAgACAAEAAADz/wgAAgAAAAEAAAD4/wgAAgACAAEAAAD3/wcAAgABAAAAAAD1/wsAAAAAAAAAAAD2/wsAAAAAAAAAAAD2/woAAAAAAAAAAAD2/wkAAAAAAAAAAAD1/wkAAAAAAAAAAAD1/wgAAAAAAAAAAAD2/wgAAAAAAAAAAAD0/wgAAAAAAAAAAAD1/wcAAAAAAAAAAAD3/wgAAAAAAAAAAAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAAAAP7/AAAAAAAAAAABAP7/AAAAAAAAAAACAP7/AAAAAAAAAAADAP7/AAAAAAAAAAACAP//AAAAAAAAAAADAP3/AAAAAAAAAAAEAP3/AAAAAAAAAAAFAP3/AAAAAAAAAAALAP3/AAAAAAAAAAALAP7/AAAAAAAAAAAMAP7/AAAAAAAAAAAMAP//AAAAAAAAAAABAP//AAAAAAAAAAA=")
 tile_set = ExtResource("2_nve1f")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1064875179]
-position = Vector2(709, 299)
-scale = Vector2(70441.42, -147.753)
-zoom = Vector2(0.85, 0.85)
-limit_enabled = false
-limit_left = 0
-limit_top = 0
-limit_right = 1200
-limit_bottom = 601
-position_smoothing_enabled = true
-position_smoothing_speed = 10.0
-metadata/_edit_group_ = true
-
 [node name="OnTheGround" type="Node2D" parent="." unique_id=836096441]
 y_sort_enabled = true
 
@@ -153,6 +143,18 @@ position = Vector2(0, 349)
 sprite_frames = ExtResource("4_oxu41")
 animation = &"walk"
 autoplay = "idle"
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Character" unique_id=1064875179]
+position = Vector2(759, -51)
+scale = Vector2(70441.42, -147.753)
+zoom = Vector2(0.85, 0.85)
+limit_left = 0
+limit_top = 0
+limit_right = 2300
+limit_bottom = 601
+position_smoothing_enabled = true
+position_smoothing_speed = 0.5
+metadata/_edit_group_ = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround" unique_id=49807179]
 root_node = NodePath("../..")
@@ -165,5 +167,5 @@ position = Vector2(3, 0)
 script = ExtResource("5_2e8lx")
 dialogue = ExtResource("6_yypyh")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
-next_scene = "uid://dveolym80ecnt"
+next_scene = "uid://kebpnex10s0p"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
