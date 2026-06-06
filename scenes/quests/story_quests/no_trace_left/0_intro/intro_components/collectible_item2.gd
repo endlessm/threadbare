@@ -65,8 +65,8 @@ func _set_item(new_value: InventoryItem) -> void:
 
 
 func _ready() -> void:
-	if $"../phone/InteractArea".has_signal("interaction_ended"):
-		$"../phone/InteractArea".interaction_ended.connect(reveal)
+	if $"../NtlPhone/InteractArea".has_signal("interaction_ended"):
+		$"../NtlPhone/InteractArea".interaction_ended.connect(reveal)
 	_set_item(item)
 	_update_based_on_revealed()
 	sprite_2d.modulate = Color.WHITE if revealed else Color.TRANSPARENT
