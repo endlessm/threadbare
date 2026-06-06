@@ -10,19 +10,15 @@
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_nuyqu"]
 [ext_resource type="Resource" uid="uid://cxyn4tco6rt43" path="res://scenes/quests/story_quests/no_trace_left/0_intro/intro_components/grupo_4_intro.dialogue" id="5_vqr71"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_hr4e7"]
-[ext_resource type="Script" uid="uid://bq3q84pbumo31" path="res://scenes/quests/story_quests/no_trace_left/0_intro/transition_screen.gd" id="12_2axdu"]
+[ext_resource type="Texture2D" uid="uid://c1vybd05igapr" path="res://scenes/quests/story_quests/no_trace_left/0_intro/intro_components/ntl_phone.png" id="9_wuthf"]
 [ext_resource type="Script" uid="uid://yr1n0aurrsav" path="res://scenes/quests/story_quests/no_trace_left/0_intro/audio_stream_player_phone.gd" id="12_gacj4"]
 [ext_resource type="AudioStream" uid="uid://bor3gwl1h5n7h" path="res://scenes/quests/story_quests/no_trace_left/audio/phone_call.ogg" id="12_pod6q"]
 [ext_resource type="Resource" uid="uid://c24q7vt0jyuaj" path="res://scenes/quests/story_quests/no_trace_left/0_intro/intro_components/ntl_intro_phone.dialogue" id="14_gacj4"]
-[ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="15_2axdu"]
 [ext_resource type="AudioStream" uid="uid://bygtehrfdw1ya" path="res://scenes/quests/story_quests/no_trace_left/audio/rain.ogg" id="16_pod6q"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="16_wuthf"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="18_oe5b8"]
-[ext_resource type="PackedScene" uid="uid://yichpepa7ef6" path="res://scenes/quests/story_quests/no_trace_left/collectible_item2.tscn" id="20_oe5b8"]
+[ext_resource type="PackedScene" uid="uid://yichpepa7ef6" path="res://scenes/quests/story_quests/no_trace_left/0_intro/intro_components/collectible_item2.tscn" id="20_oe5b8"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="21_skp08"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_skp08"]
-size = Vector2(52, 61)
 
 [sub_resource type="Resource" id="Resource_og5p0"]
 script = ExtResource("4_3ow41")
@@ -30,57 +26,8 @@ walk_speed = 200.0
 run_speed = 400.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
 
-[sub_resource type="Animation" id="Animation_pod6q"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_gacj4"]
-resource_name = "fade_to_black"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_2axdu"]
-resource_name = "fade_to_normal"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_2axdu"]
-_data = {
-&"RESET": SubResource("Animation_pod6q"),
-&"fade_to_black": SubResource("Animation_gacj4"),
-&"fade_to_normal": SubResource("Animation_2axdu")
-}
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mqp3b"]
+size = Vector2(60, 52.5)
 
 [sub_resource type="Resource" id="Resource_mqp3b"]
 script = ExtResource("21_skp08")
@@ -124,55 +71,36 @@ editor_draw_limits = true
 [node name="Rock" parent="." unique_id=912112339 instance=ExtResource("6_hr4e7")]
 position = Vector2(841, 274)
 
-[node name="phone" parent="." unique_id=1098678013 instance=ExtResource("15_2axdu")]
-position = Vector2(844, 264)
-rotation = 3.1415927
-scale = Vector2(-1, -1)
-character_seed = 3839842409
-look_at_side = 1
-
-[node name="TalkBehavior" type="Node" parent="phone" unique_id=1281875745 node_paths=PackedStringArray("interact_area")]
-script = ExtResource("16_wuthf")
-dialogue = ExtResource("14_gacj4")
-interact_area = NodePath("../InteractArea")
-metadata/_custom_type_script = "uid://edcifob4jc4s"
-
-[node name="InteractArea" type="Area2D" parent="phone" unique_id=1585388027 node_paths=PackedStringArray("marker")]
-collision_layer = 32
-collision_mask = 0
-script = ExtResource("18_oe5b8")
-marker = NodePath("Marker")
-action = "Answer Phone"
-metadata/_custom_type_script = "uid://du8wfijr35r35"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="phone/InteractArea" unique_id=2145053035]
-position = Vector2(0, -23.5)
-shape = SubResource("RectangleShape2D_skp08")
-debug_color = Color(0.600391, 0.54335, 0, 0.42)
-
-[node name="Marker" type="Marker2D" parent="phone/InteractArea" unique_id=1834814238]
-position = Vector2(0, -100)
-
 [node name="Player" parent="." unique_id=296354958 instance=ExtResource("3_7mqfb")]
 position = Vector2(475, 410)
 speeds = SubResource("Resource_og5p0")
 sprite_frames = ExtResource("3_07v0r")
 
-[node name="transition_screen" type="CanvasLayer" parent="." unique_id=829313798]
-visible = false
-script = ExtResource("12_2axdu")
+[node name="NtlPhone" type="Sprite2D" parent="." unique_id=705982081]
+position = Vector2(845, 261)
+texture = ExtResource("9_wuthf")
 
-[node name="ColorRect" type="ColorRect" parent="transition_screen" unique_id=1954309347]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
+[node name="TalkBehavior" type="Node" parent="NtlPhone" unique_id=858934685 node_paths=PackedStringArray("interact_area")]
+script = ExtResource("16_wuthf")
+dialogue = ExtResource("14_gacj4")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="transition_screen" unique_id=724589938]
-libraries/ = SubResource("AnimationLibrary_2axdu")
+[node name="InteractArea" type="Area2D" parent="NtlPhone" unique_id=605260473 node_paths=PackedStringArray("marker")]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("18_oe5b8")
+marker = NodePath("Marker")
+action = "Contestar"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NtlPhone/InteractArea" unique_id=931299477]
+position = Vector2(-3, -7)
+shape = SubResource("RectangleShape2D_mqp3b")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="Marker" type="Marker2D" parent="NtlPhone/InteractArea" unique_id=983750480]
+position = Vector2(-3, -50)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
 
