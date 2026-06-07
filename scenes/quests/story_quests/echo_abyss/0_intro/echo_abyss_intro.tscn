@@ -10,7 +10,11 @@
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_5ljvx"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="8_pfgq4"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="8_yyxck"]
+[ext_resource type="PackedScene" uid="uid://b2mj4jggli0ci" path="res://scenes/quests/lore_quests/quest_000/tutorial_npc/tutorial_npc.tscn" id="9_r66nt"]
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="11_s0x21"]
+[ext_resource type="Texture2D" uid="uid://bajunr7lyvujd" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/healthbarUnder.png" id="12_yyxck"]
+[ext_resource type="Texture2D" uid="uid://bx717x50vbm3e" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/healthbarProgress.png" id="13_kll4l"]
+[ext_resource type="Texture2D" uid="uid://bgdrugq5fo6j1" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/pixel-heart-Full.png" id="14_r66nt"]
 
 [sub_resource type="Animation" id="Animation_ivd0k"]
 length = 0.001
@@ -91,13 +95,16 @@ limit_bottom = 916
 editor_draw_limits = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=2030597362]
-visible = false
-position = Vector2(400, 349)
+position = Vector2(151, 168)
 sprite_frames = ExtResource("3_pfgq4")
 animation = &"idle"
 autoplay = "idle"
-frame = 2
-frame_progress = 0.16707996
+frame_progress = 0.9914729
+
+[node name="TutorialNPC" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("9_r66nt")]
+unique_name_in_owner = true
+position = Vector2(287, 176)
+script = null
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
 
@@ -109,3 +116,45 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." unique_id=912112339 instance=ExtResource("6_5ljvx")]
 position = Vector2(104, 552)
+
+[node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=2143367725]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CanvasGroup" unique_id=73785874]
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasGroup/CanvasLayer" unique_id=828548942]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -360.0
+offset_top = 32.0
+offset_right = -296.0
+offset_bottom = 42.0
+grow_horizontal = 0
+scale = Vector2(5, 5)
+value = 50.0
+texture_under = ExtResource("12_yyxck")
+texture_progress = ExtResource("13_kll4l")
+tint_progress = Color(0.5019608, 0, 0.9254902, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasGroup/CanvasLayer" unique_id=1359738266]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -528.0
+offset_top = 32.0
+offset_right = 3320.0
+offset_bottom = 1312.0
+grow_horizontal = 0
+scale = Vector2(0.04, 0.04)
+
+[node name="Heart1" type="TextureRect" parent="CanvasGroup/CanvasLayer/HBoxContainer" unique_id=196856218]
+layout_mode = 2
+texture = ExtResource("14_r66nt")
+
+[node name="Heart2" type="TextureRect" parent="CanvasGroup/CanvasLayer/HBoxContainer" unique_id=2072673262]
+layout_mode = 2
+texture = ExtResource("14_r66nt")
+
+[node name="Heart3" type="TextureRect" parent="CanvasGroup/CanvasLayer/HBoxContainer" unique_id=860148114]
+layout_mode = 2
+texture = ExtResource("14_r66nt")
