@@ -4,6 +4,7 @@ extends CanvasLayer
 
 @export_file("*.tscn") var title_scene: String
 @export_file("*.tscn") var frays_end: String
+@export var abandon_dialogue: DialogueResource
 
 @onready var pause_menu: Control = %PauseMenu
 @onready var resume_button: Button = %ResumeButton
@@ -46,6 +47,7 @@ func toggle_pause() -> void:
 func _on_abandon_quest_pressed() -> void:
 	toggle_pause()
 
+	var quest := GameState.quest.quest
 	var abandon_scene := GameState.quest.abandon_scene_path
 	var abandon_spawn_point: NodePath
 	if abandon_scene:
@@ -57,6 +59,12 @@ func _on_abandon_quest_pressed() -> void:
 	SceneSwitcher.change_to_file_with_transition(
 		abandon_scene, abandon_spawn_point, Transition.Effect.FADE, Transition.Effect.FADE
 	)
+	await Transitions.finished
+
+	var player: Node2D = get_tree().get_first_node_in_group("player")
+	var replaying := quest in GameState.global.completed_quests
+	var title := "abandoned_replay" if replaying else "abandoned"
+	DialogueManager.show_dialogue_balloon(abandon_dialogue, title, [player])
 
 
 func _on_skip_tutorial_pressed() -> void:
