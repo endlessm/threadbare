@@ -27,6 +27,7 @@
 [ext_resource type="Script" uid="uid://bvnvrpcn1ishv" path="res://scenes/quests/story_quests/el_abandonado/1_stealth/inicio_persecucion.gd" id="27_18e3s"]
 [ext_resource type="Script" uid="uid://cul4awgmdqsre" path="res://scenes/quests/story_quests/el_abandonado/1_stealth/static_body_2d.gd" id="28_2c8wg"]
 [ext_resource type="Script" uid="uid://dt5e34qkkn3dq" path="res://scenes/quests/story_quests/el_abandonado/1_stealth/player_limiter.gd" id="29_18e3s"]
+[ext_resource type="Script" uid="uid://4lt1r1yx7y5j" path="res://scenes/quests/story_quests/el_abandonado/1_stealth/fin_persecucion.gd" id="30_8sd4y"]
 [ext_resource type="Script" uid="uid://bgr1psevtnevt" path="res://scenes/quests/story_quests/el_abandonado/1_stealth/enemy_right.gd" id="30_p8vlt"]
 [ext_resource type="SpriteFrames" uid="uid://dbdys7gewepba" path="res://scenes/quests/story_quests/el_juguete_perdido/1_stealth/components/guard_enemy.tres" id="31_p8vlt"]
 
@@ -184,6 +185,9 @@ size = Vector2(5, 495.5)
 radius = 229.0
 height = 650.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p8vlt"]
+size = Vector2(81, 511)
+
 [node name="ElAbandonadoStealth" type="Node2D" unique_id=528815133]
 y_sort_enabled = true
 
@@ -237,7 +241,7 @@ process_mode = 3
 position = Vector2(125, 487)
 limit_left = 0
 limit_top = 0
-limit_right = 10237
+limit_right = 11508
 limit_bottom = 1280
 position_smoothing_enabled = true
 editor_draw_limits = true
@@ -264,7 +268,7 @@ debug_color = Color(0, 0, 0, 0.42)
 [node name="HUD" parent="." unique_id=1994868895 instance=ExtResource("11_sfgay")]
 
 [node name="CollectibleItem" parent="." unique_id=1779229490 instance=ExtResource("12_3dvnr")]
-position = Vector2(1490, 447)
+position = Vector2(10719, 462)
 next_scene = "uid://brruedbqrtxfy"
 item = SubResource("Resource_i7vj3")
 collected_dialogue = ExtResource("14_18e3s")
@@ -345,7 +349,8 @@ script = ExtResource("29_18e3s")
 script = ExtResource("30_p8vlt")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Enemy" unique_id=509823497]
-modulate = Color(2.1840885, 2.1840885, 2.635911, 1)
+modulate = Color(1.9512445, 1.9350268, 2.636, 1)
+self_modulate = Color(0.8217887, 0.82178867, 0.82178867, 1)
 position = Vector2(-95, 1)
 scale = Vector2(2.3548613, 2.0169272)
 sprite_frames = ExtResource("31_p8vlt")
@@ -357,5 +362,14 @@ animation = &"idle"
 position = Vector2(-105, 8)
 shape = SubResource("CapsuleShape2D_p8vlt")
 
+[node name="FinPersecucion" type="Area2D" parent="." unique_id=60513450]
+position = Vector2(10103, 470)
+script = ExtResource("30_8sd4y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FinPersecucion" unique_id=1538597246]
+position = Vector2(1, -22)
+shape = SubResource("RectangleShape2D_p8vlt")
+
 [connection signal="body_entered" from="InicioPersecucion" to="InicioPersecucion" method="_on_body_entered"]
 [connection signal="body_entered" from="Enemy/Area2D" to="Enemy" method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="FinPersecucion" to="FinPersecucion" method="_on_body_entered"]
