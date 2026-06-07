@@ -11,8 +11,10 @@ func _ready() -> void:
 	guardian.set_process(false)
 	guardian.set_physics_process(false)
 
-func _on_zona_dialogo_body_entered(body: Node2D) -> void:
+func _on_zonewar_body_entered(body: Node2D) -> void:
+	print("Zona tocada por: ", body.name)
 	if guardian_bloqueado and body.is_in_group("player"):
+		print("¡Jugador detectado! Iniciando minijuego...")
 		memory_game.iniciar()
 
 func _on_minijuego_completado() -> void:

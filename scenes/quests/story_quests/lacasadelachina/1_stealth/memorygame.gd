@@ -1,12 +1,20 @@
 extends Control
 
 const RONDAS = [4, 6, 8]
-const SIMBOLOS = ["A", "B", "C", "D", "E", "F", "G", "H"]
+const SIMBOLOS = [
+	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/hoja.png",
+	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/sol.png",
+	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/luna.png",
+	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/flor.png",
+	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/condor.png",
+]
+
+const CARD_BACK = "res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/card_back.png"
 const CARD_SIZE = Vector2(64, 64)
 
-@onready var grid        = get_node("PanelFondo/VBoxContainer/GridContainer")
-@onready var lbl_ronda   = get_node("PanelFondo/VBoxContainer/Lblronda")
-@onready var lbl_pares   = get_node("PanelFondo/VBoxContainer/LblPares")
+@onready var panel      = get_node("PanelFondo")
+@onready var lbl_ronda  = get_node("PanelFondo/VBoxContainer/Lblronda")
+@onready var lbl_pares  = get_node("PanelFondo/VBoxContainer/LblPares")
 @onready var lbl_mensaje = get_node("PanelFondo/VBoxContainer/LblMensaje")
 
 var ronda_actual      : int   = 0
@@ -14,6 +22,7 @@ var pares_encontrados : int   = 0
 var pares_totales     : int   = 0
 var cartas_volteadas  : Array = []
 var puede_voltear     : bool  = true
+var cartas_en_juego   : Array = []
 
 signal minijuego_completado
 
@@ -28,22 +37,29 @@ func iniciar():
 func _cargar_ronda():
 	pares_encontrados = 0
 	cartas_volteadas.clear()
-	puede_voltear     = true
+	puede_voltear = true
 	lbl_mensaje.visible = false
+
+	# Limpia cartas anteriores
+	for carta in cartas_en_juego:
+		carta.queue_free()
+	cartas_en_juego.clear()
 
 	var num_cartas = RONDAS[ronda_actual]
 	pares_totales  = num_cartas / 2
 
 	lbl_ronda.text = "Ronda %d / %d" % [ronda_actual + 1, RONDAS.size()]
 	lbl_pares.text = "Pares: 0 / %d" % pares_totales
-	grid.columns   = num_cartas / 2
-
-	for c in grid.get_children():
-		c.queue_free()
 
 	var mazo = _crear_mazo(pares_totales)
+	var col  = 0
+	var fila = 0
 	for simbolo in mazo:
-		_crear_carta(simbolo)
+		_crear_carta(simbolo, col, fila)
+		col += 1
+		if col >= pares_totales:
+			col = 0
+			fila += 1
 
 func _crear_mazo(num_pares: int) -> Array:
 	var mazo = []
@@ -53,21 +69,26 @@ func _crear_mazo(num_pares: int) -> Array:
 	mazo.shuffle()
 	return mazo
 
-func _crear_carta(simbolo: String):
-	var btn = Button.new()
-	btn.custom_minimum_size = CARD_SIZE
-	btn.text = "?"
-	btn.set_meta("simbolo", simbolo)
+func _crear_carta(simbolo_path: String, col: int, fila: int):
+	var btn = TextureButton.new()
+	btn.size = Vector2(64, 64)
+	btn.custom_minimum_size = Vector2(64, 64)
+	btn.position = Vector2(20 + col * 70, 80 + fila * 70)
+	btn.ignore_texture_size = true
+	btn.stretch_mode = TextureButton.STRETCH_SCALE
+	btn.texture_normal = load(CARD_BACK) as Texture2D
+	btn.set_meta("simbolo", simbolo_path)
 	btn.set_meta("volteada", false)
 	btn.pressed.connect(_on_carta_presionada.bind(btn))
-	grid.add_child(btn)
+	panel.add_child(btn)
+	cartas_en_juego.append(btn)
 
-func _on_carta_presionada(carta: Button):
-	if not puede_voltear:             return
-	if carta.get_meta("volteada"):    return
-	if cartas_volteadas.size() >= 2:  return
+func _on_carta_presionada(carta: TextureButton):
+	if not puede_voltear:            return
+	if carta.get_meta("volteada"):   return
+	if cartas_volteadas.size() >= 2: return
 
-	carta.text = carta.get_meta("simbolo")
+	carta.texture_normal = load(carta.get_meta("simbolo")) as Texture2D
 	carta.set_meta("volteada", true)
 	cartas_volteadas.append(carta)
 
@@ -77,8 +98,8 @@ func _on_carta_presionada(carta: Button):
 		_evaluar_par()
 
 func _evaluar_par():
-	var c1 : Button = cartas_volteadas[0]
-	var c2 : Button = cartas_volteadas[1]
+	var c1 : TextureButton = cartas_volteadas[0]
+	var c2 : TextureButton = cartas_volteadas[1]
 
 	if c1.get_meta("simbolo") == c2.get_meta("simbolo"):
 		c1.modulate = Color(0.5, 1.0, 0.5)
@@ -92,8 +113,8 @@ func _evaluar_par():
 			await get_tree().create_timer(0.5).timeout
 			_ronda_completada()
 	else:
-		c1.text = "?"
-		c2.text = "?"
+		c1.texture_normal = load(CARD_BACK) as Texture2D
+		c2.texture_normal = load(CARD_BACK) as Texture2D
 		c1.set_meta("volteada", false)
 		c2.set_meta("volteada", false)
 
