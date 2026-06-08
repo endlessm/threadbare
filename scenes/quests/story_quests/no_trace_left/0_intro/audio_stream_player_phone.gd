@@ -5,6 +5,7 @@ extends AudioStreamPlayer2D
 func _ready() -> void:
 	if $"../Cinematic".has_signal("cinematic_finished"):
 		$"../Cinematic".cinematic_finished.connect(_start_phone)
+
 	if $"../NtlPhone/InteractArea".has_signal("interaction_started"):
 		$"../NtlPhone/InteractArea".interaction_started.connect(_end_phone)
 

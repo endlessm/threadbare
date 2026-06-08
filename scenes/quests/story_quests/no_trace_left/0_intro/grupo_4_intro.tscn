@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://c5ixbgo571nqu"]
 
 [ext_resource type="TileSet" uid="uid://dcqq5mawasgik" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_exterior_floors.tres" id="1_8xpoh"]
+[ext_resource type="Script" uid="uid://cvt4dls7s8v2o" path="res://scenes/quests/story_quests/no_trace_left/0_intro/grupo_4_intro.gd" id="1_wuthf"]
 [ext_resource type="TileSet" uid="uid://caxhfeix35kmt" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_shadows.tres" id="3_2nxwt"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_7mqfb"]
 [ext_resource type="SpriteFrames" uid="uid://cwcaxjyrcejw5" path="res://scenes/quests/story_quests/no_trace_left/player_components/grupo_4_player.tres" id="3_07v0r"]
@@ -14,26 +15,22 @@
 [ext_resource type="Script" uid="uid://yr1n0aurrsav" path="res://scenes/quests/story_quests/no_trace_left/0_intro/audio_stream_player_phone.gd" id="12_gacj4"]
 [ext_resource type="AudioStream" uid="uid://bor3gwl1h5n7h" path="res://scenes/quests/story_quests/no_trace_left/audio/phone_call.ogg" id="12_pod6q"]
 [ext_resource type="Resource" uid="uid://c24q7vt0jyuaj" path="res://scenes/quests/story_quests/no_trace_left/0_intro/intro_components/ntl_intro_phone.dialogue" id="14_gacj4"]
+[ext_resource type="Texture2D" uid="uid://dbxyw1r1c22bn" path="res://scenes/quests/story_quests/no_trace_left/0_intro/intro_components/ntl_papers.png" id="14_oe5b8"]
+[ext_resource type="Resource" uid="uid://byvv673tp68f5" path="res://scenes/quests/story_quests/no_trace_left/0_intro/intro_components/ntl_intro_final.dialogue" id="15_oe5b8"]
 [ext_resource type="AudioStream" uid="uid://bygtehrfdw1ya" path="res://scenes/quests/story_quests/no_trace_left/audio/rain.ogg" id="16_pod6q"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="16_wuthf"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="18_oe5b8"]
-[ext_resource type="PackedScene" uid="uid://yichpepa7ef6" path="res://scenes/quests/story_quests/no_trace_left/0_intro/intro_components/collectible_item2.tscn" id="20_oe5b8"]
-[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="21_skp08"]
 
 [sub_resource type="Resource" id="Resource_og5p0"]
 script = ExtResource("4_3ow41")
-walk_speed = 200.0
-run_speed = 400.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mqp3b"]
-size = Vector2(60, 52.5)
-
-[sub_resource type="Resource" id="Resource_mqp3b"]
-script = ExtResource("21_skp08")
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+size = Vector2(77, 66.25)
 
 [node name="Grupo4Intro" type="Node2D" unique_id=2049284984]
+script = ExtResource("1_wuthf")
+next_scene = "uid://csmio5wd62jc3"
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=591504591]
 
@@ -95,11 +92,37 @@ action = "Contestar"
 metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NtlPhone/InteractArea" unique_id=931299477]
-position = Vector2(-3, -7)
+position = Vector2(-3, -6)
 shape = SubResource("RectangleShape2D_mqp3b")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
 [node name="Marker" type="Marker2D" parent="NtlPhone/InteractArea" unique_id=983750480]
+position = Vector2(-3, -50)
+
+[node name="NtlPapers" type="Sprite2D" parent="." unique_id=1370147681]
+position = Vector2(482, 222)
+texture = ExtResource("14_oe5b8")
+
+[node name="TalkBehavior" type="Node" parent="NtlPapers" unique_id=2001852695 node_paths=PackedStringArray("interact_area")]
+script = ExtResource("16_wuthf")
+dialogue = ExtResource("15_oe5b8")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
+
+[node name="InteractArea" type="Area2D" parent="NtlPapers" unique_id=366489969 node_paths=PackedStringArray("marker")]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("18_oe5b8")
+marker = NodePath("Marker")
+disabled = true
+action = "Contestar"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NtlPapers/InteractArea" unique_id=865210804]
+shape = SubResource("RectangleShape2D_mqp3b")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="Marker" type="Marker2D" parent="NtlPapers/InteractArea" unique_id=818704280]
 position = Vector2(-3, -50)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
@@ -118,8 +141,3 @@ script = ExtResource("12_gacj4")
 stream = ExtResource("16_pod6q")
 volume_db = -15.0
 autoplay = true
-
-[node name="CollectibleItem_note" parent="." unique_id=327991066 instance=ExtResource("20_oe5b8")]
-position = Vector2(483, 208)
-revealed = false
-item = SubResource("Resource_mqp3b")
