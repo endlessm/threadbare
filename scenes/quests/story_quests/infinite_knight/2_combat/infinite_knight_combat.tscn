@@ -10,11 +10,16 @@
 [ext_resource type="TileSet" uid="uid://haxvbtijkihu" path="res://scenes/quests/story_quests/infinite_knight/tiles/infinite_knight_elevation_2.tres" id="7_j3ith"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="8_y8yp8"]
 [ext_resource type="SpriteFrames" uid="uid://7q17ox014opg" path="res://scenes/quests/story_quests/infinite_knight/player_components/infinite_knight_player.tres" id="9_dl5hf"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="12_oty0w"]
 [ext_resource type="PackedScene" uid="uid://c1s3revmgbb27" path="res://scenes/quests/story_quests/infinite_knight/2_combat/combat_components/infinite_knight_rift.tscn" id="14_wfxgv"]
 [ext_resource type="PackedScene" uid="uid://c845gw7ym2pt3" path="res://scenes/quests/story_quests/infinite_knight/2_combat/combat_components/infinite_knight_enemy.tscn" id="15_5kkom"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="15_tjsxx"]
 [ext_resource type="PackedScene" uid="uid://bcy53c3sfhw28" path="res://scenes/quests/story_quests/infinite_knight/2_combat/combat_components/attack_input_hint.tscn" id="16_5kkom"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="18_qvo8w"]
+
+[sub_resource type="Resource" id="Resource_o0agx"]
+script = ExtResource("12_oty0w")
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="InfiniteKnightCombat" type="Node2D" unique_id=1610054737]
 y_sort_enabled = true
@@ -58,9 +63,11 @@ zoom = Vector2(1.333, 1.333)
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="CollectibleItem" parent="OnTheGround" unique_id=1864193206 instance=ExtResource("15_tjsxx")]
-unique_name_in_owner = true
-position = Vector2(868, 303)
+[node name="CollectibleItem" parent="OnTheGround" unique_id=327991066 instance=ExtResource("15_tjsxx")]
+revealed = false
+next_scene = "uid://dsksocaiqjfdm"
+item = SubResource("Resource_o0agx")
+collected_dialogue = ExtResource("3_6r2ti")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1277924950]
 
@@ -164,4 +171,3 @@ offset_right = -8.0
 
 [connection signal="cinematic_finished" from="Cinematic" to="." method="_on_cinematic_cinematic_finished"]
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
-[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
