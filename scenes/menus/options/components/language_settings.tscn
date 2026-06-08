@@ -2,28 +2,43 @@
 
 [ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_abc"]
 [ext_resource type="Script" uid="uid://dk2wa6nonu0jc" path="res://scenes/menus/options/components/language_option.gd" id="2_abc"]
+[ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="3_back"]
+[ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="4_arrow"]
 
-[node name="LanguageSettings" type="VBoxContainer" unique_id=85827291]
-offset_left = 96.0
-offset_top = 64.0
-offset_right = 544.0
-offset_bottom = 254.0
+[node name="LanguageSettings" type="PanelContainer" unique_id=1534586532 node_paths=PackedStringArray("back_button")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -266.5
+offset_top = -153.0
+offset_right = 266.5
+offset_bottom = 153.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1_abc")
+script = ExtResource("3_back")
+back_button = NodePath("VBoxContainer/BackButton")
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1311807474]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=85827291]
+custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
-size_flags_horizontal = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=1311807474]
+layout_mode = 2
+size_flags_horizontal = 4
 theme_type_variation = &"PlayerRibbon"
 
-[node name="Label" type="Label" parent="PanelContainer" unique_id=1487597883]
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer" unique_id=1487597883]
 layout_mode = 2
 text = "Language Settings"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1302951996]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1302951996]
 layout_mode = 2
 script = ExtResource("2_abc")
 
-[node name="EnglishButton" type="Button" parent="HBoxContainer" unique_id=993974861]
+[node name="EnglishButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=993974861]
 unique_name_in_owner = true
 auto_translate_mode = 2
 layout_mode = 2
@@ -32,7 +47,7 @@ theme_type_variation = &"FlatButton"
 toggle_mode = true
 text = "English"
 
-[node name="SpanishButton" type="Button" parent="HBoxContainer" unique_id=355814411]
+[node name="SpanishButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=355814411]
 unique_name_in_owner = true
 auto_translate_mode = 2
 layout_mode = 2
@@ -41,5 +56,14 @@ theme_type_variation = &"FlatButton"
 toggle_mode = true
 text = "Español"
 
-[connection signal="pressed" from="HBoxContainer/EnglishButton" to="HBoxContainer" method="_on_button_pressed" binds= ["en"]]
-[connection signal="pressed" from="HBoxContainer/SpanishButton" to="HBoxContainer" method="_on_button_pressed" binds= ["es"]]
+[node name="BackButton" type="Button" parent="VBoxContainer" unique_id=1300000003]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+text = "Back"
+icon = ExtResource("4_arrow")
+flat = true
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/EnglishButton" to="VBoxContainer/HBoxContainer" method="_on_button_pressed" binds= ["en"]]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/SpanishButton" to="VBoxContainer/HBoxContainer" method="_on_button_pressed" binds= ["es"]]
