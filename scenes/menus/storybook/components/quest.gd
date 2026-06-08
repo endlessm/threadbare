@@ -87,8 +87,8 @@ func _validate_property(property: Dictionary) -> void:
 
 
 func _to_string() -> String:
-	# TODO: subclass name
-	return '<Quest %s: "%s">' % [resource_path, title]
+	var subclass_name: StringName = (get_script() as Script).get_global_name()
+	return '<%s %s: "%s">' % [subclass_name, resource_path, title]
 
 
 ## Returns [member title] if set, or a placeholder identifying the quest otherwise.
