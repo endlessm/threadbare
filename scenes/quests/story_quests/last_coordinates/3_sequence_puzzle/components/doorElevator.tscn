@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://574362hwkr51"]
+
+[ext_resource type="Script" uid="uid://baaa0ub67lo27" path="res://scenes/quests/story_quests/last_coordinates/3_sequence_puzzle/components/door_elevator.gd" id="1_wpq0c"]
+[ext_resource type="Texture2D" uid="uid://kuhwfqudkcyx" path="res://scenes/quests/story_quests/last_coordinates/3_sequence_puzzle/components/doorElevClosed.png" id="2_ewou8"]
+[ext_resource type="AudioStream" uid="uid://bdboi4ndapqec" path="res://assets/third_party/nepalese_hand_bells/handBells-a4.ogg" id="3_flw1o"]
+[ext_resource type="Texture2D" uid="uid://c4jlghdjhkv46" path="res://scenes/quests/story_quests/last_coordinates/3_sequence_puzzle/components/doorElevOpened.png" id="3_w276a"]
+[ext_resource type="AudioStream" uid="uid://chun7os3ehah7" path="res://scenes/quests/story_quests/last_coordinates/assets/sounds/elevatorOpened.ogg" id="4_ewou8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wpq0c"]
+size = Vector2(128, 25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ewou8"]
+size = Vector2(23, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w276a"]
+size = Vector2(24, 128)
+
+[node name="DoorElevator" type="Node2D" unique_id=1104565747]
+script = ExtResource("1_wpq0c")
+metadata/_custom_type_script = "uid://d07mqvoeg2pt2"
+
+[node name="DoorElevClose" type="Sprite2D" parent="." unique_id=1067372274]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+texture = ExtResource("2_ewou8")
+offset = Vector2(0, -32)
+
+[node name="DoorElevOpen" type="Sprite2D" parent="." unique_id=1688308684]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -33)
+texture = ExtResource("3_w276a")
+offset = Vector2(0, -31)
+
+[node name="ColliderWhenClosed" type="StaticBody2D" parent="." unique_id=2071914760]
+unique_name_in_owner = true
+collision_layer = 16
+
+[node name="ShapeWhenClosed" type="CollisionShape2D" parent="ColliderWhenClosed" unique_id=1245038321]
+position = Vector2(0, -12.5)
+shape = SubResource("RectangleShape2D_wpq0c")
+
+[node name="DoorOpenedSound" type="AudioStreamPlayer2D" parent="." unique_id=1543767163]
+stream = ExtResource("4_ewou8")
+volume_db = 14.416
+
+[node name="DoorClosedSound" type="AudioStreamPlayer2D" parent="." unique_id=1660924753]
+stream = ExtResource("3_flw1o")
+
+[node name="ColliderWhenOpened" type="StaticBody2D" parent="." unique_id=936513182]
+unique_name_in_owner = true
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ColliderWhenOpened" unique_id=395681597]
+position = Vector2(-53.5, -64)
+shape = SubResource("RectangleShape2D_ewou8")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ColliderWhenOpened" unique_id=1651823553]
+position = Vector2(52, -64)
+shape = SubResource("RectangleShape2D_w276a")
