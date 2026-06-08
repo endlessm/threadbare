@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://cik0esnnmu3y2"]
+
+[ext_resource type="Script" uid="uid://7bhq0cdsv6w7" path="res://scripts/exterior.gd" id="1_wtukp"]
+[ext_resource type="Texture2D" uid="uid://bythgsx2c7moy" path="res://sprites/otros/puerta.png" id="2_2wee4"]
+[ext_resource type="Texture2D" uid="uid://dl6rpcxsn1tob" path="res://sprites/otros/map2.png" id="4_2wee4"]
+[ext_resource type="Texture2D" uid="uid://d3qk6sxq5aj88" path="res://sprites/player/calabera.png" id="4_5clk1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2wee4"]
+size = Vector2(20.750004, 13.333321)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5clk1"]
+size = Vector2(16.33334, 19.333324)
+
+[node name="Exterior" type="Node2D" unique_id=713830241]
+script = ExtResource("1_wtukp")
+
+[node name="Fondo" type="ColorRect" parent="." unique_id=1137648625]
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(0.039215688, 0, 0.0627451, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Fondo" unique_id=1465744149]
+position = Vector2(641, 358)
+scale = Vector2(5.3250003, 2.9916666)
+texture = ExtResource("4_2wee4")
+
+[node name="Casa" type="Sprite2D" parent="." unique_id=1345405023]
+
+[node name="Puerta" type="Area2D" parent="." unique_id=670738936]
+position = Vector2(303, 405)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Puerta" unique_id=2090407201]
+position = Vector2(-6.125, -11)
+scale = Vector2(3, 3)
+shape = SubResource("RectangleShape2D_2wee4")
+debug_color = Color(0.40579996, 0.5534315, 0.6858482, 0.41960785)
+
+[node name="Sprite2D" type="Sprite2D" parent="Puerta" unique_id=1369054091]
+position = Vector2(-7.000003, -10.000011)
+scale = Vector2(1.9609371, 1.1875005)
+texture = ExtResource("2_2wee4")
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1404629256]
+position = Vector2(568, 713)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=649757070]
+position = Vector2(-14.000015, -38)
+scale = Vector2(0.07770856, 0.110031225)
+texture = ExtResource("4_5clk1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=157830536]
+position = Vector2(-13.5, -38)
+scale = Vector2(3, 3)
+shape = SubResource("RectangleShape2D_5clk1")
+
+[node name="Text" type="Label" parent="." unique_id=1695474785]
+offset_left = 384.0
+offset_top = 68.0
+offset_right = 955.0
+offset_bottom = 103.0
+theme_override_colors/font_color = Color(0.0030197052, 0.0382876, 0.041487917, 1)
+theme_override_font_sizes/font_size = 25
+text = "Usa las flechas para caminar y Llega a la puerta"
+
+[connection signal="body_entered" from="Puerta" to="." method="_on_puerta_body_entered"]
