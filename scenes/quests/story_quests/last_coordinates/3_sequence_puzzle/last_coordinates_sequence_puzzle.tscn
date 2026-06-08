@@ -8,7 +8,7 @@
 [ext_resource type="SpriteFrames" uid="uid://6lrnci820w0p" path="res://scenes/quests/story_quests/last_coordinates/player_components/last_coordinates_player.tres" id="6_y0ml3"]
 [ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="7_n4hya"]
 [ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/game_elements/props/sequence_puzzle_object/sequence_puzzle_object.tscn" id="8_40w37"]
-[ext_resource type="SpriteFrames" uid="uid://coj4syswwv1t4" path="res://scenes/quests/story_quests/last_coordinates/3_sequence_puzzle/last_coordinates_object.tres" id="9_s4aki"]
+[ext_resource type="SpriteFrames" uid="uid://coj4syswwv1t4" path="res://scenes/quests/story_quests/last_coordinates/3_sequence_puzzle/button.tres" id="9_s4aki"]
 [ext_resource type="AudioStream" uid="uid://cg57q82pb243w" path="res://assets/third_party/nepalese_hand_bells/handBells-c4.ogg" id="10_rlkru"]
 [ext_resource type="AudioStream" uid="uid://b83x8h0ob5mpq" path="res://assets/third_party/nepalese_hand_bells/handBells-d4.ogg" id="11_sarhc"]
 [ext_resource type="AudioStream" uid="uid://cmtiwg2cylmts" path="res://assets/third_party/nepalese_hand_bells/handBells-e4.ogg" id="12_x7kpn"]
@@ -56,7 +56,7 @@ tile_set = ExtResource("4_37oto")
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=747348360 instance=ExtResource("5_5p872")]
-position = Vector2(383, 371)
+position = Vector2(414, 428)
 sprite_frames = ExtResource("6_y0ml3")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1732237457]
@@ -125,15 +125,15 @@ sprite_frames = ExtResource("18_q3ebv")
 
 [node name="Steps" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=666035394]
 
-[node name="SequencePuzzleStep1" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" unique_id=202668807 node_paths=PackedStringArray("sequence", "hint_sign")]
-script = ExtResource("19_5q7vy")
-sequence = [NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), NodePath("../../Objects/Blue")]
-hint_sign = NodePath("../../Signs/HintSign1")
-
 [node name="SequencePuzzleStep2" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" unique_id=17422018 node_paths=PackedStringArray("sequence", "hint_sign")]
 script = ExtResource("19_5q7vy")
 sequence = [NodePath("../../Objects/Blue"), NodePath("../../Objects/Green"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green")]
 hint_sign = NodePath("../../Signs/HintSign2")
+
+[node name="SequencePuzzleStep1" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" unique_id=202668807 node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("19_5q7vy")
+sequence = [NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), NodePath("../../Objects/Blue")]
+hint_sign = NodePath("../../Signs/HintSign1")
 
 [node name="CollectibleItem" parent="OnTheGround" unique_id=1678374994 instance=ExtResource("20_s7a0f")]
 position = Vector2(861, 282)
@@ -149,10 +149,13 @@ direction = 1
 text = "First melody: yellow, green, blue."
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1686505878]
+visible = false
 
 [node name="HUD" parent="." unique_id=1084128841 instance=ExtResource("24_sf65h")]
+visible = false
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1869940872]
+visible = false
 script = ExtResource("25_35pmi")
 dialogue = ExtResource("22_q0iup")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
