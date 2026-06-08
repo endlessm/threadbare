@@ -36,16 +36,16 @@ func _ready() -> void:
 	if self not in eternal_loom.elders:
 		eternal_loom.elders.append(self)
 
-	GameState.global.item_collected.connect(_update_dialogue_title)
-	GameState.global.item_consumed.connect(_update_dialogue_title)
-	_update_dialogue_title()
-
 	interact_area.interaction_ended.connect(_on_interaction_ended)
 	animated_sprite_2d.connect("frame_changed", _on_frame_changed)
 
 	if quest_directory:
 		_storybook = STORYBOOK_SCENE.instantiate()
 		_storybook.quest_directory = quest_directory
+
+	GameState.global.item_collected.connect(_update_dialogue_title)
+	GameState.global.item_consumed.connect(_update_dialogue_title)
+	_update_dialogue_title()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
