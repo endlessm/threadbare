@@ -6,6 +6,7 @@
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="4_1a0nr"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_3p7aa"]
 [ext_resource type="TileSet" uid="uid://bfm88b0buimbj" path="res://scenes/quests/story_quests/echo_abyss/tiles/echo_abyss_decoration.tres" id="5_g3acg"]
+[ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="7_1a0nr"]
 [ext_resource type="Script" uid="uid://cth45lafadnxn" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_player.gd" id="7_8er3d"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="8_iwhha"]
 [ext_resource type="PackedScene" path="res://scenes/quests/story_quests/echo_abyss/1_stealth/stealth_components/echo_abyss_essence_npc.tscn" id="9_gqts5"]
@@ -14,8 +15,11 @@
 [ext_resource type="Script" uid="uid://bdk4uhfdprt3t" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_hud.gd" id="15_vwco0"]
 [ext_resource type="Texture2D" uid="uid://bgdrugq5fo6j1" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/pixel-heart-Full.png" id="16_3crhn"]
 [ext_resource type="Texture2D" uid="uid://dp70jmxsf86kh" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/pixel-heart-Empty.png" id="17_qs6yt"]
+[ext_resource type="SpriteFrames" uid="uid://bn2plmxs5qs4o" path="res://scenes/quests/story_quests/echo_abyss/1_stealthcopia/stealth_components/echo_abyss_guard_enemy.tres" id="18_bdobu"]
 [ext_resource type="Texture2D" uid="uid://bajunr7lyvujd" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/healthbarUnder.png" id="18_vbtt8"]
 [ext_resource type="Texture2D" uid="uid://bx717x50vbm3e" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/healthbarProgress.png" id="19_c2ses"]
+[ext_resource type="Script" uid="uid://7sjdm5jme6ir" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_stealth_logic.gd" id="20_stealth_logic"]
+[ext_resource type="PackedScene" path="res://scenes/quests/story_quests/echo_abyss/0_intro/intro_components/echo_abyss_essence_exit.tscn" id="21_essence_exit"]
 
 [sub_resource type="Animation" id="Animation_ivd0k"]
 length = 0.001
@@ -35,8 +39,23 @@ _data = {
 &"walk_on": SubResource("Animation_yyxck")
 }
 
+[sub_resource type="Curve2D" id="Curve2D_k4ekl"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -4629.33, 278.319, 0, 0, 0, 0, 2660, 266.98)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_3p7aa"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 488, -91, 0, 0, 0, 0, 516.5416, 7.851181, 0, 0, 0, 0, 480, 106, 0, 0, 0, 0, 330.25305, 122.75966, 0, 0, 0, 0, 239, 131, 0, 0, 0, 0, 221.94592, 65.84372, 0, 0, 0, 0, 228.08325, -125.6184, 0, 0, 0, 0, 409.20837, -149.17186, 0, 0, 0, 0, 488, -91)
+}
+point_count = 9
+
 [node name="EchoAbyssStealth" type="Node2D" unique_id=2049284984]
 position = Vector2(49, 168)
+
+[node name="EchoAbyssStealthLogic" type="Node" parent="." unique_id=1268423249]
+script = ExtResource("20_stealth_logic")
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1980188577]
 
@@ -90,6 +109,8 @@ max_health = 3
 starting_essence = 0
 max_essence = 100
 reset_stats_on_ready = true
+reload_scene_on_defeat = true
+defeat_reload_delay = 1.0
 player_name = "StoryWeaver"
 sprite_frames = ExtResource("8_iwhha")
 
@@ -103,26 +124,33 @@ editor_draw_limits = true
 [node name="Character1" parent="OnTheGround" unique_id=2030597362 instance=ExtResource("9_gqts5")]
 position = Vector2(615, -320)
 dialogue_title = "character_1"
+essence_reward = 20
 
 [node name="Character2" parent="OnTheGround" unique_id=1188245920 instance=ExtResource("9_gqts5")]
 position = Vector2(2391, -80)
 dialogue_title = "character_2"
+essence_reward = 20
 
 [node name="Character3" parent="OnTheGround" unique_id=725467076 instance=ExtResource("9_gqts5")]
-position = Vector2(1143, 184)
+position = Vector2(1327, 180)
 dialogue_title = "character_3"
+essence_reward = 20
 
 [node name="Character4" parent="OnTheGround" unique_id=1196720230 instance=ExtResource("9_gqts5")]
-position = Vector2(1951, 384)
+position = Vector2(1271, 416)
 dialogue_title = "character_4"
+essence_reward = 20
 
 [node name="Character5" parent="OnTheGround" unique_id=64165714 instance=ExtResource("9_gqts5")]
-position = Vector2(23, 568)
-dialogue_title = "character_4"
+position = Vector2(1967, 352)
+dialogue_title = "character_5"
+essence_reward = 20
 
-[node name="Character6" parent="OnTheGround" unique_id=1175832960 instance=ExtResource("9_gqts5")]
-position = Vector2(1271, 432)
-dialogue_title = "character_4"
+[node name="EssenceExit" parent="OnTheGround" unique_id=1606149158 instance=ExtResource("21_essence_exit")]
+position = Vector2(2759, 608)
+player_path = NodePath("../Player")
+dialogue_title = "stealth_exit"
+next_scene = "res://scenes/quests/story_quests/echo_abyss/2_combat/echo_abyss_combat.tscn"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
 
@@ -178,3 +206,78 @@ texture = ExtResource("16_3crhn")
 [node name="Heart3" type="TextureRect" parent="CanvasGroup/CanvasLayer/HealthPlayer" unique_id=860148114]
 layout_mode = 2
 texture = ExtResource("16_3crhn")
+
+[node name="EnemyGuards" type="Node2D" parent="." unique_id=871211107]
+y_sort_enabled = true
+
+[node name="Guard1" type="Node2D" parent="EnemyGuards" unique_id=915966271]
+
+[node name="Guard1-GoingBackAndForth" parent="EnemyGuards/Guard1" unique_id=689832587 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_1a0nr")]
+position = Vector2(207.00006, 316.00003)
+sprite_frames = ExtResource("18_bdobu")
+patrol_path = NodePath("../PatrolPath")
+move_speed = 200.0
+
+[node name="PatrolPath" type="Path2D" parent="EnemyGuards/Guard1" unique_id=617764848]
+top_level = true
+position = Vector2(752.00037, 385.818)
+scale = Vector2(0.107143, 0.352768)
+curve = SubResource("Curve2D_k4ekl")
+
+[node name="Guard2" type="Node2D" parent="EnemyGuards" unique_id=836463836]
+
+[node name="Guard2-RunningInCircles" parent="EnemyGuards/Guard2" unique_id=1209854493 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_1a0nr")]
+position = Vector2(2353.7964, 279.42444)
+sprite_frames = ExtResource("18_bdobu")
+patrol_path = NodePath("../PatrolPath")
+wait_time = 0.3
+move_speed = 1000.0
+detection_area_scale = 0.1
+
+[node name="PatrolPath" type="Path2D" parent="EnemyGuards/Guard2" unique_id=501219174]
+position = Vector2(1717.6978, 391.15588)
+scale = Vector2(1.3034809, 1.227818)
+curve = SubResource("Curve2D_3p7aa")
+
+[node name="Guard3" type="Node2D" parent="EnemyGuards" unique_id=1812378642]
+
+[node name="Guard3-GoingBackAndForth" parent="EnemyGuards/Guard3" unique_id=69426771 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_1a0nr")]
+position = Vector2(1263, -315.99997)
+sprite_frames = ExtResource("18_bdobu")
+patrol_path = NodePath("../PatrolPath")
+move_speed = 200.0
+
+[node name="PatrolPath" type="Path2D" parent="EnemyGuards/Guard3" unique_id=2105645297]
+top_level = true
+position = Vector2(1808.0002, -246.182)
+scale = Vector2(0.107143, 0.352768)
+curve = SubResource("Curve2D_k4ekl")
+
+[node name="Guard4" type="Node2D" parent="EnemyGuards" unique_id=1127134528]
+
+[node name="Guard4-GoingBackAndForth" parent="EnemyGuards/Guard4" unique_id=390728027 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_1a0nr")]
+position = Vector2(1079, 588)
+sprite_frames = ExtResource("18_bdobu")
+patrol_path = NodePath("../PatrolPath")
+move_speed = 200.0
+
+[node name="PatrolPath" type="Path2D" parent="EnemyGuards/Guard4" unique_id=1915043333]
+top_level = true
+position = Vector2(1624.0002, 657.818)
+scale = Vector2(0.107143, 0.352768)
+curve = SubResource("Curve2D_k4ekl")
+
+[node name="Guard5" type="Node2D" parent="EnemyGuards" unique_id=967323266]
+
+[node name="Guard5-RunningInCircles" parent="EnemyGuards/Guard5" unique_id=1036344091 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_1a0nr")]
+position = Vector2(2611.3196, -220.0328)
+sprite_frames = ExtResource("18_bdobu")
+patrol_path = NodePath("../PatrolPath")
+wait_time = 0.3
+move_speed = 1000.0
+detection_area_scale = 0.1
+
+[node name="PatrolPath" type="Path2D" parent="EnemyGuards/Guard5" unique_id=1506025726]
+position = Vector2(1590.9105, -51.136513)
+scale = Vector2(2.091002, 1.8560033)
+curve = SubResource("Curve2D_3p7aa")
