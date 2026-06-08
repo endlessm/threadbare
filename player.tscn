@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c2emci01jmle1"]
+
+[sub_resource type="GDScript" id="GDScript_sh265"]
+script/source = "extends CharacterBody2D
+
+@export var walk_speed: float = 200.0
+
+func _physics_process(delta):
+	var direction = Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
+	velocity = direction * walk_speed
+	move_and_slide()
+"
+
+[node name="Player" type="Node2D" unique_id=979741330]
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1103722555]
+script = SubResource("GDScript_sh265")

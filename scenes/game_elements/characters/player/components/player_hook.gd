@@ -110,8 +110,8 @@ func _set_character(new_character: CharacterBody2D) -> void:
 	update_configuration_warnings()
 
 
-func _on_player_mode_changed(mode: Player.Mode) -> void:
-	if mode == Player.Mode.DEFEATED:
+func _on_player_mode_changed(mode: axel.Mode) -> void:
+	if mode == axel.Mode.DEFEATED:
 		if hook_string:
 			shatter_string()
 
