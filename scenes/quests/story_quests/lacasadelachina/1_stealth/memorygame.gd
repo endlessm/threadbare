@@ -2,20 +2,28 @@ extends Control
 
 const RONDAS = [4, 6, 8]
 const SIMBOLOS = [
-	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/hoja.png",
-	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/sol.png",
-	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/luna.png",
-	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/flor.png",
+	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/rana.png",
+	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/sol.jpg",
+	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/serpiente.png",
+	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/mariposa.png",
 	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/condor.png",
 ]
 
 const CARD_BACK = "res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/card_back.png"
 const CARD_SIZE = Vector2(64, 64)
 
-@onready var panel      = get_node("PanelFondo")
-@onready var lbl_ronda  = get_node("PanelFondo/VBoxContainer/Lblronda")
-@onready var lbl_pares  = get_node("PanelFondo/VBoxContainer/LblPares")
+@onready var panel       = get_node("PanelFondo")
+@onready var lbl_ronda   = get_node("PanelFondo/VBoxContainer/Lblronda")
+@onready var lbl_pares   = get_node("PanelFondo/VBoxContainer/LblPares")
 @onready var lbl_mensaje = get_node("PanelFondo/VBoxContainer/LblMensaje")
+
+@onready var bloqueo1 = get_node("/root/LacasadelachinaStealth/TileMapLayers/bloqueo")
+@onready var bloqueo2 = get_node("/root/LacasadelachinaStealth/TileMapLayers/bloqueo2")
+@onready var bloqueo3 = get_node("/root/LacasadelachinaStealth/TileMapLayers/bloqueo3")
+
+@onready var guardia1 = get_node("/root/LacasadelachinaStealth/EnemyGuards/Guard1-GoingBackAndForth")
+@onready var guardia2 = get_node("/root/LacasadelachinaStealth/EnemyGuards/Guard2-GoingBackAndForth2")
+@onready var guardia3 = get_node("/root/LacasadelachinaStealth/EnemyGuards/Guard3-GoingBackAndForth3")
 
 var ronda_actual      : int   = 0
 var pares_encontrados : int   = 0
@@ -40,7 +48,6 @@ func _cargar_ronda():
 	puede_voltear = true
 	lbl_mensaje.visible = false
 
-	# Limpia cartas anteriores
 	for carta in cartas_en_juego:
 		carta.queue_free()
 	cartas_en_juego.clear()
@@ -122,6 +129,17 @@ func _evaluar_par():
 	puede_voltear = true
 
 func _ronda_completada():
+	# Oculta bloqueo y guardián de la ronda que acaba de terminar
+	if ronda_actual == 0:
+		bloqueo1.visible = false
+		guardia1.visible = false
+	elif ronda_actual == 1:
+		bloqueo2.visible = false
+		guardia2.visible = false
+	elif ronda_actual == 2:
+		bloqueo3.visible = false
+		guardia3.visible = false
+
 	ronda_actual += 1
 
 	if ronda_actual < RONDAS.size():
