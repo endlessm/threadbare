@@ -27,6 +27,8 @@ func rebuild() -> void:
 		var ability: Enums.PlayerAbilities = Enums.PlayerAbilities[ability_string]
 		var button := CheckButton.new()
 		button.text = abilities_names.get(ability, ability_string)
+		button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		button.clip_text = true
 		button.button_pressed = GameState.player.has_ability(ability)
 		button.toggled.connect(_on_button_toggled.bind(ability))
 		add_child(button)
