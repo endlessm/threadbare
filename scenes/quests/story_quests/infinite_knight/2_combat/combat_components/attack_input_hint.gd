@@ -1,7 +1,7 @@
 extends TextureRect
 
 func _process(_delta: float) -> void:
-	# Oscurece la imagen si mantienes el clic, la vuelve blanca si lo sueltas
+	# Oscurece el icono si se mantiene presionado el ataque
 	if Input.is_action_pressed("attack"):
 		modulate = Color.GRAY
 	else:

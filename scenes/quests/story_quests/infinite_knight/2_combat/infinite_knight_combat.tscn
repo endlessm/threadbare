@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://c845gw7ym2pt3" path="res://scenes/quests/story_quests/infinite_knight/2_combat/combat_components/infinite_knight_enemy.tscn" id="15_5kkom"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="15_tjsxx"]
 [ext_resource type="PackedScene" uid="uid://bcy53c3sfhw28" path="res://scenes/quests/story_quests/infinite_knight/2_combat/combat_components/attack_input_hint.tscn" id="16_5kkom"]
+[ext_resource type="Texture2D" uid="uid://cs8dj6t3nq3kn" path="res://scenes/quests/story_quests/infinite_knight/2_combat/combat_components/background.png" id="17_oty0w"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="18_qvo8w"]
 
 [sub_resource type="Resource" id="Resource_o0agx"]
@@ -68,6 +69,7 @@ revealed = false
 next_scene = "uid://dsksocaiqjfdm"
 item = SubResource("Resource_o0agx")
 collected_dialogue = ExtResource("3_6r2ti")
+dialogue_title = &"well_done"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1277924950]
 
@@ -168,6 +170,20 @@ spawn_delay = 5.0
 [node name="AttackInputHint" parent="CanvasLayer" unique_id=1113313011 instance=ExtResource("16_5kkom")]
 offset_left = -210.0
 offset_right = -8.0
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=204601801]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1221212299]
+motion_scale = Vector2(0.1, 0.1)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer" unique_id=686425570]
+texture_filter = 1
+offset_left = -1224.0
+offset_top = -195.0
+offset_right = 40.0
+offset_bottom = 562.0
+scale = Vector2(2, 2)
+texture = ExtResource("17_oty0w")
 
 [connection signal="cinematic_finished" from="Cinematic" to="." method="_on_cinematic_cinematic_finished"]
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]

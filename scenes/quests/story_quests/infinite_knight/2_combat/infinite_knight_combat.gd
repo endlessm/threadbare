@@ -5,38 +5,41 @@ var is_player_invulnerable: bool = false
 var combat_started: bool = false
 
 var player_start_pos: Vector2 = Vector2.ZERO
-var player_node: Node = null
+var player_node: CharacterBody2D = null
 
 var _hidden_ui_nodes: Array[CanvasItem] = []
 
-# --- SISTEMA DE OLEADAS Y COLECCIONABLE ---
 var current_wave: int = 1
 var max_waves: int = 3
 var enemies_defeated_in_current_wave: int = 0
-var collectible_node: CollectibleItem = null # Tipado explícito
+var collectible_node: CollectibleItem = null
 
-# Enemigos por oleada
 var enemies_per_wave: Array[int] = [3, 5, 7] 
 
 func _ready() -> void:
-	player_node = find_child("Player", true, false)
-	if player_node:
+	var found_player: Node = find_child("Player", true, false)
+	if found_player and found_player is CharacterBody2D:
+		player_node = found_player as CharacterBody2D
 		player_start_pos = player_node.global_position
 		player_node.set_collision_mask_value(3, true)
 		
 		var repel_node: Node = player_node.get_node_or_null("%PlayerRepel")
 		if repel_node:
 			repel_node.input_action = "attack" 
-
+			if repel_node is CanvasItem:
+				repel_node.hide()
+				
+	# Oculta el letrero de tutorial viejo sin destruirlo
 	var root: Window = get_tree().root
 	var viejo_letrero: CanvasItem = root.find_child("RepelInputHint", true, false) as CanvasItem
 	if is_instance_valid(viejo_letrero):
 		viejo_letrero.modulate.a = 0.0 
 		_hidden_ui_nodes.append(viejo_letrero)
 		
-	# --- OCULTAR HILO USANDO SU PROPIO SISTEMA ---
-	collectible_node = find_child("CollectibleItem", true, false) as CollectibleItem
-	if collectible_node:
+	# Oculta el hilo usando su propia variable para no romper sus fisicas
+	var found_collectible: Node = find_child("CollectibleItem", true, false)
+	if found_collectible and found_collectible is CollectibleItem:
+		collectible_node = found_collectible as CollectibleItem
 		collectible_node.revealed = false
 
 func _exit_tree() -> void:
@@ -46,7 +49,7 @@ func _exit_tree() -> void:
 	_hidden_ui_nodes.clear()
 
 func _process(_delta: float) -> void:
-	if not combat_started and player_node and player_node is CharacterBody2D: # Verificación de tipo
+	if not combat_started and is_instance_valid(player_node):
 		if player_node.mode == Player.Mode.USER_CONTROLLED:
 			if player_node.global_position.distance_to(player_start_pos) > 10.0:
 				start_combat()
@@ -75,27 +78,31 @@ func on_enemy_defeated() -> void:
 			await get_tree().create_timer(1.5).timeout
 			_start_wave()
 		else:
-			# --- REVELAR HILO CORRECTAMENTE ---
-			if collectible_node:
+			# Victoria: Muestra el hilo arriba del jugador
+			if is_instance_valid(collectible_node):
 				if is_instance_valid(player_node):
 					collectible_node.global_position = player_node.global_position + Vector2(0, -40)
 				
-				collectible_node.revealed = true
+				collectible_node.set_deferred("revealed", true)
 				if collectible_node.has_method("reveal"):
-					collectible_node.reveal()
+					collectible_node.call_deferred("reveal")
 
 func damage_player() -> void:
-	if is_player_invulnerable: return
-	is_player_invulnerable = true
+	if is_player_invulnerable: 
+		return
 		
+	is_player_invulnerable = true
 	player_hp -= 1
+	
 	if player_hp <= 0:
-		if player_node and player_node.has_method("defeat"):
+		if is_instance_valid(player_node) and player_node.has_method("defeat"):
 			player_node.defeat()
 	else:
-		if player_node:
+		if is_instance_valid(player_node):
 			player_node.modulate = Color.RED
 			await get_tree().create_timer(0.2).timeout
-			player_node.modulate = Color.WHITE
+			if is_instance_valid(player_node):
+				player_node.modulate = Color.WHITE
+		
 		await get_tree().create_timer(0.8).timeout
 		is_player_invulnerable = false
