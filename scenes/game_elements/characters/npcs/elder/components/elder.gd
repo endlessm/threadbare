@@ -36,7 +36,10 @@ func _ready() -> void:
 	if self not in eternal_loom.elders:
 		eternal_loom.elders.append(self)
 
-	talk_behavior.before_dialogue = _before_dialogue
+	GameState.global.item_collected.connect(_update_dialogue_title)
+	GameState.global.item_consumed.connect(_update_dialogue_title)
+	_update_dialogue_title()
+
 	interact_area.interaction_ended.connect(_on_interaction_ended)
 	animated_sprite_2d.connect("frame_changed", _on_frame_changed)
 
@@ -82,7 +85,7 @@ func congratulate_player() -> void:
 	await DialogueManager.dialogue_ended
 
 
-func _before_dialogue() -> void:
+func _update_dialogue_title(_item: InventoryItem = null) -> void:
 	if eternal_loom and eternal_loom.is_item_offering_possible():
 		talk_behavior.title = "go_to_loom"
 	elif not _storybook or not _storybook.has_quests():
