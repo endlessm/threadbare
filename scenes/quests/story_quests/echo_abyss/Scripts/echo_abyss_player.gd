@@ -11,6 +11,8 @@ signal echo_abyss_defeated
 @export_range(0, 100, 1) var starting_essence: int = 0
 @export_range(1, 100, 1) var max_essence: int = 100
 @export var reset_stats_on_ready: bool = true
+@export var reload_scene_on_defeat: bool = true
+@export_range(0.0, 10.0, 0.1, "suffix:s") var defeat_reload_delay: float = 1.0
 
 var current_health: int = max_health
 var current_essence: int = starting_essence
@@ -100,3 +102,6 @@ func _handle_echo_abyss_defeat() -> void:
 	mode = Mode.DEFEATED
 	velocity = Vector2.ZERO
 	echo_abyss_defeated.emit()
+	if reload_scene_on_defeat:
+		await get_tree().create_timer(defeat_reload_delay).timeout
+		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
