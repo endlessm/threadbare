@@ -22,12 +22,9 @@ const TEMPLATE_ANIMATION_NAME: StringName = &"idle"
 
 const QUEST_RESOURCE_NAME := "quest.tres"
 
-## Directory to scan for quests. This directory should have 1 or more subdirectories, each of which
-## have a [code]quest.tres[/code] file within.
-@export_dir var quest_directory: String:
-	set = _set_quest_directory
+## Quests to show in the storybook.
+@export var quests: Array[Quest]
 
-var _quests: Array[Quest] = []
 var _current_spread_index: int = -1
 var _navigation_locked: bool = false
 
@@ -41,26 +38,14 @@ var _navigation_locked: bool = false
 @onready var right_button: Button = %Right_Button
 
 
-func _enumerate_quests() -> Array[Quest]:
-	var quests: Array[Quest] = Quest.enumerate(quest_directory)
-	var template_index := quests.find(STORY_QUEST_TEMPLATE)
-	if template_index != -1:
-		quests[template_index] = TEMPLATE_QUEST_METADATA
-
-	return quests
-
-
-func _set_quest_directory(new_value: String) -> void:
-	quest_directory = new_value
-	_quests = _enumerate_quests()
-
-
 func _ready() -> void:
 	animated_book.animation_finished.connect(_on_animation_finished)
 
 	var previous_button: Button = null
-	for i in _quests.size():
-		var quest: Quest = _quests[i]
+	for i in quests.size():
+		var quest: Quest = quests[i]
+		if quest == STORY_QUEST_TEMPLATE:
+			quest = TEMPLATE_QUEST_METADATA
 		var button := Button.new()
 		button.text = quest.get_title()
 		button.theme_type_variation = "FlatButton"
@@ -89,7 +74,7 @@ func _ready() -> void:
 ## Show/hide index or detail pages
 func _update_page_visibility() -> void:
 	left_button.visible = _current_spread_index > 0
-	right_button.visible = _current_spread_index < _quests.size()
+	right_button.visible = _current_spread_index < quests.size()
 
 	if _current_spread_index == 0:
 		quest_container.visible = true
@@ -104,8 +89,11 @@ func _update_page_visibility() -> void:
 		storybook_page.visible = true
 
 		var quest_index: int = _current_spread_index - 1
-		if quest_index >= 0 and quest_index < _quests.size():
-			storybook_page.quest = _quests[quest_index]
+		if quest_index >= 0 and quest_index < quests.size():
+			var quest: Quest = quests[quest_index]
+			if quest == STORY_QUEST_TEMPLATE:
+				quest = TEMPLATE_QUEST_METADATA
+			storybook_page.quest = quest
 
 			if storybook_page.play_button and is_instance_valid(storybook_page.play_button):
 				if not storybook_page.play_button.has_focus():
@@ -120,7 +108,7 @@ func _switch_to_page(spread_index: int) -> void:
 	if _navigation_locked:
 		return
 
-	var total_spreads: int = _quests.size() + 1
+	var total_spreads: int = quests.size() + 1
 	if total_spreads <= 1:
 		return
 
@@ -193,7 +181,3 @@ func _on_back_button_pressed() -> void:
 
 func reset_focus() -> void:
 	_switch_to_page(0)
-
-
-func has_quests() -> bool:
-	return not _quests.is_empty()
