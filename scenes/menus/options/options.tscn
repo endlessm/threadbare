@@ -4,12 +4,13 @@
 [ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="2_cw13b"]
 [ext_resource type="PackedScene" uid="uid://de6s2quemrmkf" path="res://scenes/menus/options/components/sound_settings.tscn" id="3_sound"]
 [ext_resource type="PackedScene" uid="uid://tahf2q1d3e74" path="res://scenes/menus/options/components/video_settings.tscn" id="4_video"]
+[ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="5_qdq3g"]
 [ext_resource type="PackedScene" uid="uid://w0uscqwgsi4w" path="res://scenes/menus/options/components/language_settings.tscn" id="6_lang"]
 [ext_resource type="PackedScene" uid="uid://56ja3m4283wa" path="res://scenes/menus/debug/debug_settings.tscn" id="7_s7dil"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_panel"]
 
-[node name="Options" type="CenterContainer" unique_id=810691496 node_paths=PackedStringArray("default_page")]
+[node name="Options" type="CenterContainer" unique_id=810691496 node_paths=PackedStringArray("back_button", "default_page")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -23,6 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_ptihp")
 script = ExtResource("2_cw13b")
+back_button = NodePath("TabContainer/OptionsMenu/VBoxContainer/BackButton")
 default_page = NodePath("TabContainer/OptionsMenu")
 
 [node name="TabContainer" type="TabContainer" parent="." unique_id=2066163370]
@@ -73,6 +75,15 @@ size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Debug Settings"
 
+[node name="BackButton" type="Button" parent="TabContainer/OptionsMenu/VBoxContainer" unique_id=200110196]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+text = "Back"
+icon = ExtResource("5_qdq3g")
+flat = true
+
 [node name="SoundSettings" parent="TabContainer" unique_id=1100000010 instance=ExtResource("3_sound")]
 visible = false
 layout_mode = 2
@@ -98,6 +109,10 @@ metadata/_tab_index = 4
 [connection signal="pressed" from="TabContainer/OptionsMenu/VBoxContainer/LanguageSettingsButton" to="TabContainer/LanguageSettings" method="show"]
 [connection signal="pressed" from="TabContainer/OptionsMenu/VBoxContainer/DebugSettingsButton" to="TabContainer/DebugSettings" method="show"]
 [connection signal="back" from="TabContainer/SoundSettings" to="TabContainer/OptionsMenu" method="show"]
+[connection signal="back" from="TabContainer/SoundSettings" to="TabContainer/OptionsMenu/VBoxContainer/BackButton" method="grab_focus"]
 [connection signal="back" from="TabContainer/VideoSettings" to="TabContainer/OptionsMenu" method="show"]
+[connection signal="back" from="TabContainer/VideoSettings" to="TabContainer/OptionsMenu/VBoxContainer/BackButton" method="grab_focus"]
 [connection signal="back" from="TabContainer/LanguageSettings" to="TabContainer/OptionsMenu" method="show"]
+[connection signal="back" from="TabContainer/LanguageSettings" to="TabContainer/OptionsMenu/VBoxContainer/BackButton" method="grab_focus"]
 [connection signal="back" from="TabContainer/DebugSettings" to="TabContainer/OptionsMenu" method="show"]
+[connection signal="back" from="TabContainer/DebugSettings" to="TabContainer/OptionsMenu/VBoxContainer/BackButton" method="grab_focus"]

@@ -16,8 +16,8 @@ signal back
 func _ready() -> void:
 	visibility_changed.connect(_on_visibility_changed)
 	_on_visibility_changed()
-	if back_button:
-		back_button.pressed.connect(_on_back_button_pressed)
+
+	back_button.pressed.connect(_on_back_button_pressed)
 
 
 func _on_visibility_changed() -> void:
