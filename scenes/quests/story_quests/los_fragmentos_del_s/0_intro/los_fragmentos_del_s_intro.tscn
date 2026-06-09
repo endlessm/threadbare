@@ -7,7 +7,9 @@
 [ext_resource type="Resource" uid="uid://dvg8k1rmfkmqw" path="res://scenes/quests/story_quests/los_fragmentos_del_s/0_intro/intro_components/los_fragmentos_del_s_intro.dialogue" id="5_mvttv"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_61n3q"]
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="7_bgmus"]
-[ext_resource type="AudioStream" uid="uid://dfragdream22ogg" path="res://assets/third_party/ninja_adventure/dream_theme.ogg" id="8_bgmus"]
+[ext_resource type="AudioStream" uid="uid://cvwxb1nldylcs" path="res://assets/third_party/ninja_adventure/dream_theme.ogg" id="8_bgmus"]
+[ext_resource type="PackedScene" uid="uid://ccp4ayow34e7g" path="res://scenes/game_elements/props/decoration/books/books.tscn" id="9_books"]
+[ext_resource type="PackedScene" uid="uid://bqhlguj2qmwx4" path="res://scenes/game_elements/props/decoration/spool/spool.tscn" id="10_spool"]
 
 [sub_resource type="Animation" id="Animation_wwekd"]
 length = 0.001
@@ -99,6 +101,116 @@ _data = {
 &"walk_on": SubResource("Animation_uvdp3")
 }
 
+[sub_resource type="Animation" id="Animation_ambreset"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FloatingObjects/Books:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(560, 200)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FloatingObjects/Spool:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(240, 460)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FloatingObjects/Books2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(380, 320)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DreamLight:color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.8, 0.77, 0.97, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ambient"]
+resource_name = "ambient"
+length = 6.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FloatingObjects/Books:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3.2, 6.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(560, 200), Vector2(560, 191), Vector2(560, 200)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FloatingObjects/Spool:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2, 4.8, 6.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(240, 460), Vector2(240, 453), Vector2(240, 460), Vector2(240, 467), Vector2(240, 460)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FloatingObjects/Books2:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3.2, 6.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(380, 312), Vector2(380, 320), Vector2(380, 312)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DreamLight:color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.9, 1.7, 2.3, 3.1, 4.2, 5.3, 6.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.8, 0.77, 0.97, 1), Color(0.85, 0.82, 1, 1), Color(0.77, 0.74, 0.94, 1), Color(0.83, 0.8, 0.99, 1), Color(0.78, 0.75, 0.95, 1), Color(0.86, 0.83, 1, 1), Color(0.76, 0.73, 0.93, 1), Color(0.8, 0.77, 0.97, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ambfx"]
+_data = {
+&"RESET": SubResource("Animation_ambreset"),
+&"ambient": SubResource("Animation_ambient")
+}
+
 [node name="LosFragmentosDelSIntro" type="Node2D" unique_id=2049284984]
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=591504591]
@@ -126,6 +238,17 @@ limit_right = 960
 limit_bottom = 540
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="FloatingObjects" type="Node2D" parent="." unique_id=1731205883]
+
+[node name="Books" parent="FloatingObjects" unique_id=1731205884 instance=ExtResource("9_books")]
+position = Vector2(560, 200)
+
+[node name="Spool" parent="FloatingObjects" unique_id=1731205885 instance=ExtResource("10_spool")]
+position = Vector2(240, 460)
+
+[node name="Books2" parent="FloatingObjects" unique_id=1731205886 instance=ExtResource("9_books")]
+position = Vector2(380, 320)
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=836096441]
 y_sort_enabled = true
@@ -159,3 +282,7 @@ color = Color(0.8, 0.77, 0.97, 1)
 script = ExtResource("7_bgmus")
 stream = ExtResource("8_bgmus")
 metadata/_custom_type_script = "uid://c8405c212rbn6"
+
+[node name="AmbientAnimation" type="AnimationPlayer" parent="." unique_id=1731205887]
+libraries/ = SubResource("AnimationLibrary_ambfx")
+autoplay = "ambient"
