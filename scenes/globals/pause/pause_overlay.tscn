@@ -6,6 +6,10 @@
 [ext_resource type="Script" uid="uid://i4urwefxrrdt" path="res://addons/threadbare_git_describe/version_label.gd" id="3_m62bn"]
 [ext_resource type="PackedScene" uid="uid://dkeb0yjgcfi86" path="res://scenes/menus/options/options.tscn" id="3_sd5t1"]
 [ext_resource type="Script" uid="uid://gntvq01vvati" path="res://scenes/globals/pause/report_bug_button.gd" id="4_mjd51"]
+[ext_resource type="Material" uid="uid://cruf3tlajs4jo" path="res://scenes/ui_elements/input_hints/components/drop_shadow_material.tres" id="7_bwxj8"]
+[ext_resource type="Texture2D" uid="uid://45plriwir0nj" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/keyboard/keyboard_p_outline.tres" id="8_bwxj8"]
+[ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="9_fh64e"]
+[ext_resource type="Resource" uid="uid://c1beocky1qjxi" path="res://scenes/game_elements/props/hint/resources/devices.tres" id="10_ywskk"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1tcw0"]
 
@@ -25,88 +29,72 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1289064546]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=241125738]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -33.0
-offset_top = -68.0
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("2_sd5t1")
-
-[node name="VersionLabel" type="Label" parent="MarginContainer" unique_id=494777321]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "0123456789"
-script = ExtResource("3_m62bn")
-
-[node name="TabContainer" type="TabContainer" parent="." unique_id=877845808]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -237.0
-offset_top = -183.0
-offset_right = 237.0
-offset_bottom = 183.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_1tcw0")
-current_tab = 0
-tabs_visible = false
+theme = ExtResource("2_sd5t1")
 
-[node name="PauseMenu" type="PanelContainer" parent="TabContainer" unique_id=158909332]
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer" unique_id=877845808]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("2_sd5t1")
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_1tcw0")
+current_tab = 1
+
+[node name="Menu" type="CenterContainer" parent="VBoxContainer/TabContainer" unique_id=1341135248]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/PauseMenu" unique_id=113544093]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/TabContainer/Menu" unique_id=2049717971]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Menu/PanelContainer" unique_id=113544093]
 custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=1739655898]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1739655898]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"PlayerRibbon"
 
-[node name="Label" type="Label" parent="TabContainer/PauseMenu/VBoxContainer/PanelContainer" unique_id=502033901]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/PanelContainer" unique_id=502033901]
 layout_mode = 2
 text = "Game Paused"
 
-[node name="ResumeButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=1399677178]
+[node name="ResumeButton" type="Button" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1399677178]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Resume"
 
-[node name="AbandonQuestButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=1859424584]
+[node name="AbandonQuestButton" type="Button" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1859424584]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Abandon Quest"
 
-[node name="SkipTutorialButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=979952363]
+[node name="SkipTutorialButton" type="Button" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=979952363]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Skip Tutorial"
 
-[node name="OptionsButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=117724427]
+[node name="OptionsButton" type="Button" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=117724427]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Options"
 
-[node name="ReportBugButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=1750937607]
+[node name="ReportBugButton" type="Button" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1750937607]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -114,23 +102,106 @@ theme_type_variation = &"FlatButton"
 text = "Report a Problem"
 script = ExtResource("4_mjd51")
 
-[node name="TitleScreenButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=830702640]
+[node name="TitleScreenButton" type="Button" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=830702640]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Exit to Title"
 
-[node name="Options" parent="TabContainer" unique_id=2078715393 instance=ExtResource("3_sd5t1")]
+[node name="Options" parent="VBoxContainer/TabContainer" unique_id=2078715393 instance=ExtResource("3_sd5t1")]
 unique_name_in_owner = true
 process_mode = 2
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
-[connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/AbandonQuestButton" to="." method="_on_abandon_quest_pressed"]
-[connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/SkipTutorialButton" to="." method="_on_skip_tutorial_pressed"]
-[connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
-[connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/TitleScreenButton" to="." method="_on_title_screen_button_pressed"]
-[connection signal="back" from="TabContainer/Options" to="." method="_on_options_back"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=389756877]
+layout_mode = 2
+theme = ExtResource("2_sd5t1")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=1140765663]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="PauseContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=300043409]
+layout_mode = 2
+
+[node name="PauseHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=1079672650]
+material = ExtResource("7_bwxj8")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = ExtResource("8_bwxj8")
+script = ExtResource("9_fh64e")
+action_name = &"pause"
+devices = ExtResource("10_ywskk")
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=762214617]
+layout_mode = 2
+theme = ExtResource("2_sd5t1")
+theme_type_variation = &"HintLabel"
+theme_override_font_sizes/font_size = 25
+text = "Resume"
+
+[node name="PreviousTabContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=165681227]
+layout_mode = 2
+
+[node name="PreviousTabHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HBoxContainer/PauseContainer/PreviousTabContainer" unique_id=1994017251]
+material = ExtResource("7_bwxj8")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = ExtResource("8_bwxj8")
+script = ExtResource("9_fh64e")
+action_name = &"previous_tab"
+devices = ExtResource("10_ywskk")
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/PauseContainer/PreviousTabContainer" unique_id=703188421]
+layout_mode = 2
+theme = ExtResource("2_sd5t1")
+theme_type_variation = &"HintLabel"
+theme_override_font_sizes/font_size = 25
+text = "Previous"
+
+[node name="NextTabContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=2863309]
+layout_mode = 2
+
+[node name="NextTabHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=1788019381]
+material = ExtResource("7_bwxj8")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = ExtResource("8_bwxj8")
+script = ExtResource("9_fh64e")
+action_name = &"next_tab"
+devices = ExtResource("10_ywskk")
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=1814948712]
+layout_mode = 2
+theme = ExtResource("2_sd5t1")
+theme_type_variation = &"HintLabel"
+theme_override_font_sizes/font_size = 25
+text = "Next"
+
+[node name="Spacer" type="Control" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=32192576]
+editor_description = "This empty control expands to fill the center of the hbox, pushing any controls packed after it to the right margin."
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VersionLabel" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=283448683]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "0123456789"
+script = ExtResource("3_m62bn")
+
+[connection signal="visibility_changed" from="VBoxContainer/TabContainer/Menu" to="." method="_on_menu_visibility_changed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/AbandonQuestButton" to="." method="_on_abandon_quest_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/SkipTutorialButton" to="." method="_on_skip_tutorial_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/TitleScreenButton" to="." method="_on_title_screen_button_pressed"]
+[connection signal="back" from="VBoxContainer/TabContainer/Options" to="." method="_on_options_back"]
