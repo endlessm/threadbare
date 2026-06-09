@@ -18,10 +18,6 @@ extends Area2D
 @export var enter_transition: Transition.Effect:
 	set = set_enter_transition
 
-## Transition to use at the end of the switch to [member quest].
-@export var exit_transition: Transition.Effect:
-	set = set_exit_transition
-
 @onready var scene_link: SceneLink = %SceneLink
 
 
@@ -29,7 +25,6 @@ extends Area2D
 func _ready() -> void:
 	set_quest(quest)
 	set_enter_transition(enter_transition)
-	set_exit_transition(exit_transition)
 
 	if not Engine.is_editor_hint():
 		body_entered.connect(_on_body_entered)
@@ -50,8 +45,6 @@ func _get_configuration_warnings() -> PackedStringArray:
 #region Setters
 func set_quest(new_value: LoreQuest) -> void:
 	quest = new_value
-	if scene_link:
-		scene_link.next_scene = quest.first_scene if quest else ""
 	update_configuration_warnings()
 
 
@@ -64,12 +57,6 @@ func set_enter_transition(new_value: Transition.Effect) -> void:
 	enter_transition = new_value
 	if scene_link:
 		scene_link.enter_transition = new_value
-
-
-func set_exit_transition(new_value: Transition.Effect) -> void:
-	exit_transition = new_value
-	if scene_link:
-		scene_link.exit_transition = new_value
 
 
 #endregion
