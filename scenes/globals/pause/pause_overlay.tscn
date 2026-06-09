@@ -31,15 +31,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=241125738]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=746524343]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_top = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=241125738]
+layout_mode = 2
 theme = ExtResource("2_sd5t1")
 
-[node name="TabContainer" type="TabContainer" parent="VBoxContainer" unique_id=877845808]
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/VBoxContainer" unique_id=877845808]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -47,38 +51,30 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_1tcw0")
 tab_alignment = 1
 current_tab = 2
 
-[node name="Inventory" parent="VBoxContainer/TabContainer" unique_id=1910667653 instance=ExtResource("4_qydtk")]
+[node name="Inventory" parent="MarginContainer/VBoxContainer/TabContainer" unique_id=1910667653 instance=ExtResource("4_qydtk")]
+visible = false
 layout_mode = 2
 
-[node name="Options" parent="VBoxContainer/TabContainer" unique_id=2078715393 instance=ExtResource("3_sd5t1")]
+[node name="Options" parent="MarginContainer/VBoxContainer/TabContainer" unique_id=2078715393 instance=ExtResource("3_sd5t1")]
 unique_name_in_owner = true
 process_mode = 2
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Menu" type="CenterContainer" parent="VBoxContainer/TabContainer" unique_id=1341135248]
+[node name="Menu" type="CenterContainer" parent="MarginContainer/VBoxContainer/TabContainer" unique_id=1341135248]
 unique_name_in_owner = true
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/TabContainer/Menu" unique_id=2049717971]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/TabContainer/Menu" unique_id=2049717971]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Menu/PanelContainer" unique_id=113544093]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer" unique_id=113544093]
 custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1739655898]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &"PlayerRibbon"
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/PanelContainer" unique_id=502033901]
-layout_mode = 2
-text = "Game Paused"
-
-[node name="ResumeButton" type="Button" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1399677178]
+[node name="ResumeButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1399677178]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -86,28 +82,28 @@ theme_type_variation = &"FlatButton"
 shortcut = ExtResource("6_fh64e")
 text = "Resume"
 
-[node name="AbandonQuestButton" type="Button" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1859424584]
+[node name="AbandonQuestButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1859424584]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Abandon Quest"
 
-[node name="SkipTutorialButton" type="Button" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=979952363]
+[node name="SkipTutorialButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=979952363]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Skip Tutorial"
 
-[node name="OptionsButton" type="Button" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=117724427]
+[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=117724427]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Options"
 
-[node name="ReportBugButton" type="Button" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1750937607]
+[node name="ReportBugButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1750937607]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -115,14 +111,14 @@ theme_type_variation = &"FlatButton"
 text = "Report a Problem"
 script = ExtResource("4_mjd51")
 
-[node name="TitleScreenButton" type="Button" parent="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=830702640]
+[node name="TitleScreenButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=830702640]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Exit to Title"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=389756877]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=389756877]
 layout_mode = 2
 theme = ExtResource("2_sd5t1")
 theme_override_constants/margin_left = 0
@@ -130,14 +126,14 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=1140765663]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer" unique_id=1140765663]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="PauseContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=300043409]
+[node name="PauseContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=300043409]
 layout_mode = 2
 
-[node name="PauseHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=1079672650]
+[node name="PauseHint" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=1079672650]
 material = ExtResource("7_bwxj8")
 layout_mode = 2
 size_flags_horizontal = 8
@@ -147,17 +143,17 @@ script = ExtResource("9_fh64e")
 action_name = &"pause"
 devices = ExtResource("10_ywskk")
 
-[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=762214617]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=762214617]
 layout_mode = 2
 theme = ExtResource("2_sd5t1")
 theme_type_variation = &"HintLabel"
 theme_override_font_sizes/font_size = 25
 text = "Resume"
 
-[node name="PreviousTabContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=165681227]
+[node name="PreviousTabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=165681227]
 layout_mode = 2
 
-[node name="PreviousTabHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HBoxContainer/PauseContainer/PreviousTabContainer" unique_id=1994017251]
+[node name="PreviousTabHint" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer/PreviousTabContainer" unique_id=1994017251]
 material = ExtResource("7_bwxj8")
 layout_mode = 2
 size_flags_horizontal = 8
@@ -167,17 +163,17 @@ script = ExtResource("9_fh64e")
 action_name = &"previous_tab"
 devices = ExtResource("10_ywskk")
 
-[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/PauseContainer/PreviousTabContainer" unique_id=703188421]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer/PreviousTabContainer" unique_id=703188421]
 layout_mode = 2
 theme = ExtResource("2_sd5t1")
 theme_type_variation = &"HintLabel"
 theme_override_font_sizes/font_size = 25
 text = "Previous"
 
-[node name="NextTabContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=2863309]
+[node name="NextTabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=2863309]
 layout_mode = 2
 
-[node name="NextTabHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=1788019381]
+[node name="NextTabHint" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=1788019381]
 material = ExtResource("7_bwxj8")
 layout_mode = 2
 size_flags_horizontal = 8
@@ -187,28 +183,28 @@ script = ExtResource("9_fh64e")
 action_name = &"next_tab"
 devices = ExtResource("10_ywskk")
 
-[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=1814948712]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=1814948712]
 layout_mode = 2
 theme = ExtResource("2_sd5t1")
 theme_type_variation = &"HintLabel"
 theme_override_font_sizes/font_size = 25
 text = "Next"
 
-[node name="Spacer" type="Control" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=32192576]
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=32192576]
 editor_description = "This empty control expands to fill the center of the hbox, pushing any controls packed after it to the right margin."
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VersionLabel" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=283448683]
+[node name="VersionLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=283448683]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "0123456789"
 script = ExtResource("3_m62bn")
 
-[connection signal="back" from="VBoxContainer/TabContainer/Options" to="." method="_on_options_back"]
-[connection signal="visibility_changed" from="VBoxContainer/TabContainer/Menu" to="." method="_on_menu_visibility_changed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/AbandonQuestButton" to="." method="_on_abandon_quest_pressed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/SkipTutorialButton" to="." method="_on_skip_tutorial_pressed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/TitleScreenButton" to="." method="_on_title_screen_button_pressed"]
+[connection signal="back" from="MarginContainer/VBoxContainer/TabContainer/Options" to="." method="_on_options_back"]
+[connection signal="visibility_changed" from="MarginContainer/VBoxContainer/TabContainer/Menu" to="." method="_on_menu_visibility_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/AbandonQuestButton" to="." method="_on_abandon_quest_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/SkipTutorialButton" to="." method="_on_skip_tutorial_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/TitleScreenButton" to="." method="_on_title_screen_button_pressed"]
