@@ -15,6 +15,7 @@ enum State { IDLE, JUMPING, CHASING, ATTACKING, DEFEATED }
 @export var melee_cooldown: float = 1.5
 @export var chase_speed: float = 120.0
 @export var rock_spawn_period: float = 2.0
+@export var phase2_jump_cooldown := 2.0
 
 var health: float = max_health
 var current_state: State = State.IDLE
@@ -26,6 +27,8 @@ var _melee_timer: float = 0.0
 var _rock_timer: float = 0.0
 var _is_defeated: bool = false
 var _health_bar: TextureProgressBar
+var _is_phase2_jumping := false
+var _phase2_jump_timer := 0.0
 
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
@@ -129,32 +132,70 @@ func _process_phase_1(_delta: float) -> void:
 	# Jumping handles its own movement. We just check if we should shoot.
 	pass
 
+func _jump_to_player() -> void:
+	if _is_phase2_jumping or _is_defeated:
+		return
+
+	_is_phase2_jumping = true
+
+	current_state = State.JUMPING
+	animation_player.play(&"walk")
+
+	var start_pos = global_position
+	var target_global = _player.global_position
+
+	var tween = create_tween().set_parallel(true)
+
+	tween.tween_method(
+		func(t: float):
+			if _is_defeated:
+				return
+
+			var horizontal_pos = start_pos.lerp(target_global, t)
+			var vertical_offset = Vector2.UP * sin(t * PI) * jump_height
+
+			global_position = horizontal_pos + vertical_offset,
+		0.0,
+		1.0,
+		jump_duration
+	)
+
+	await tween.finished
+
+	_is_phase2_jumping = false
+
+	if _is_defeated:
+		return
+
+	current_state = State.ATTACKING
+
+	_perform_melee_attack()
+	_shoot_projectile()
+
+	animation_player.play(&"idle")
+	
 func _process_phase_2(delta: float) -> void:
+	if not _player:
+		return
+	
+	#Orientacion de boss
 	var dir_to_player := global_position.direction_to(_player.global_position)
-	scale.x = 1 if dir_to_player.x < 0 else -1
+	
+	if dir_to_player.x < 0:
+		scale.x = 1
+	else:
+		scale.x = -1
+		
 	# Phase 2: Spawns falling rocks periodically and chases player for melee
 	_rock_timer += delta
 	if _rock_timer >= rock_spawn_period:
 		_rock_timer = 0.0
 		_spawn_falling_rock()
-
-	var dist_to_player = global_position.distance_to(_player.global_position)
-	if dist_to_player <= melee_range:
-		# In range, attack
-		current_state = State.ATTACKING
-		velocity = Vector2.ZERO
 		
-		_melee_timer += delta
-		if _melee_timer >= melee_cooldown:
-			_melee_timer = 0.0
-			_perform_melee_attack()
-	else:
-		# Chase player
-		current_state = State.CHASING
-		animation_player.play(&"walk")
-		var dir = global_position.direction_to(_player.global_position)
-		velocity = dir * chase_speed
-		move_and_slide()
+	_phase2_jump_timer += delta
+	if _phase2_jump_timer >= phase2_jump_cooldown:
+		_phase2_jump_timer = 0.0
+		_jump_to_player()
 
 func _shoot_projectile() -> void:
 	if not projectile_scene or not is_instance_valid(_player):
