@@ -24,6 +24,9 @@ extends Node
 ## Having multiple nodes in this list with the same name is not advised.
 @export var extra_context: Array[Node]
 
+## While showing dialogue, the dialogue balloon node.
+var dialogue_balloon: Node
+
 
 func _set_interact_area(new_interact_area: InteractArea) -> void:
 	interact_area = new_interact_area
@@ -51,6 +54,9 @@ func _on_interaction_started(player: Player, _from_right: bool) -> void:
 	var extra: Dictionary[String, Node]
 	for node: Node in extra_context:
 		extra[node.name] = node
-	DialogueManager.show_dialogue_balloon(dialogue, title, [get_parent(), player, extra])
+	dialogue_balloon = DialogueManager.show_dialogue_balloon(
+		dialogue, title, [get_parent(), player, extra]
+	)
 	await DialogueManager.dialogue_ended
+	dialogue_balloon = null  # The balloon queue_free()s itself
 	interact_area.end_interaction()

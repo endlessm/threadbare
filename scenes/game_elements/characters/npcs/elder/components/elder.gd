@@ -22,7 +22,6 @@ const STORYBOOK_SCENE := preload("uid://bhm7fdjvppt8b")
 ## The quest chosen by the player from the storybook
 var chosen_quest: Quest
 
-var _dialogue_balloon: CanvasLayer
 var _quests: Array[Quest]
 
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
@@ -75,8 +74,10 @@ func show_storybook() -> void:
 
 	# GDM will hide the balloon after a short pause if the awaitable hasn't resolved, but we want it
 	# to be replaced with the storybook immediately.
-	if _dialogue_balloon:
-		_dialogue_balloon.balloon.hide()
+	if talk_behavior.dialogue_balloon:
+		# Confusingly the DialogueBalloon node (root of our balloon.tscn) has a balloon property;
+		# it is the latter which gets hidden and shown.
+		talk_behavior.dialogue_balloon.balloon.hide()
 
 	_storybook_layer.add_child(storybook)
 	chosen_quest = await storybook.selected
