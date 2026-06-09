@@ -23,9 +23,6 @@ func _ready() -> void:
 
 
 func _on_input_device_changed(device: String, _device_index: int) -> void:
-	if not device:
-		# TODO: Fix.
-		return
 	var textures := devices.device_map[InputHelper.device]
 	if alternative:
 		texture = textures.get(action_name + "_alt")
