@@ -52,7 +52,8 @@ func _set_quest_directory(new_value: String) -> void:
 	if Engine.is_editor_hint():
 		return
 	_quests = Quest.enumerate(quest_directory)
-	_update_dialogue_title()
+	if is_node_ready():
+		_update_dialogue_title()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
