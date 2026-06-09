@@ -1,0 +1,113 @@
+[gd_scene format=3 uid="uid://c0fdh0ttv7brl"]
+
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_7uacu"]
+[ext_resource type="Texture2D" uid="uid://lg5dl13njsg3" path="res://assets/first_party/tiles/Grass_And_Sand_Tiles.png" id="1_m3hp4"]
+[ext_resource type="Script" uid="uid://dccjkvox5cjsy" path="res://scenes/menus/quest_separator/components/quest_separator.gd" id="2_ayaqs"]
+[ext_resource type="Texture2D" uid="uid://csbhg24hsxecd" path="res://scenes/quests/lore_quests/quest_002/Void.png" id="4_fqr5p"]
+[ext_resource type="Script" uid="uid://dfx8s2ybd11mt" path="res://scenes/menus/storybook/components/animated_texture_rect.gd" id="4_olqir"]
+[ext_resource type="Texture2D" uid="uid://dcwmaoqgu5t84" path="res://scenes/globals/scene_switcher/transitions/Radial.png" id="6_wq0a1"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l1xe8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_fqr5p")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Shader" id="Shader_wq0a1"]
+code = "shader_type canvas_item;
+render_mode blend_sub;
+
+void vertex() {
+	// Called for every vertex the material is visible on.
+}
+
+void fragment() {
+	// Called for every pixel the material is visible on.
+}
+
+//void light() {
+//	// Called for every pixel for every light affecting the CanvasItem.
+//	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_amr4g"]
+shader = SubResource("Shader_wq0a1")
+
+[node name="QuestSeparator" type="Control" unique_id=277155232]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7uacu")
+script = ExtResource("2_ayaqs")
+
+[node name="FabricBackground" type="NinePatchRect" parent="." unique_id=321321864]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_m3hp4")
+region_rect = Rect2(384, 64, 64, 64)
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1658580560]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1354617346]
+layout_mode = 2
+
+[node name="TitleBox" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=495174348]
+custom_minimum_size = Vector2(370, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"PlayerRibbon"
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/TitleBox" unique_id=3731616]
+unique_name_in_owner = true
+layout_mode = 2
+text = "The Void"
+horizontal_alignment = 1
+
+[node name="AnimatedTextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=2119895536]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("4_olqir")
+sprite_frames = SubResource("SpriteFrames_l1xe8")
+animation_name = &"default"
+metadata/_custom_type_script = "uid://dfx8s2ybd11mt"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=822544477]
+unique_name_in_owner = true
+layout_mode = 2
+text = "StoryWeaver runs away from a growing emptiness that spreads across the land, smothering and swallowing everything it covers."
+fit_content = true
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=279230856]
+material = SubResource("ShaderMaterial_amr4g")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_wq0a1")
