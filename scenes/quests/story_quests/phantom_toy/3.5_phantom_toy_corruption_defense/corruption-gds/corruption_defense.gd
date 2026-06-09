@@ -2,7 +2,17 @@ extends Node2D
 
 @export var zones: Array[CorruptionZone]
 
+@onready var collectible_item: CollectibleItem = $"../CollectibleItem"
+
 @onready var player: Player = $"../Player"
+
+@onready var timer_label = $"../../HUD/CorruptionHUD/VBoxContainer/TimerLabel"
+
+@onready var north_label = $"../../HUD/CorruptionHUD/VBoxContainer/NorthLabel"
+@onready var south_label = $"../../HUD/CorruptionHUD/VBoxContainer/SouthLabel"
+@onready var east_label = $"../../HUD/CorruptionHUD/VBoxContainer/EastLabel"
+@onready var west_label = $"../../HUD/CorruptionHUD/VBoxContainer/WestLabel"
+
 var current_zone: CorruptionZone
 var player_was_inside := {}
 var game_started: bool = false
@@ -60,6 +70,7 @@ func _process(delta: float) -> void:
 				select_random_zone()
 
 		player_was_inside[zone] = zone.player_inside
+		update_hud()
 
 
 func select_random_zone() -> void:
@@ -91,10 +102,20 @@ func win_game() -> void:
 	game_finished = true
 
 	print("YOU WIN!")
-	
+	collectible_item.reveal()
 func lose_game() -> void:
 	game_finished = true
 	
 	print("GAME OVER!")
 	
 	player.defeat()
+
+
+func update_hud() -> void:
+
+	timer_label.text = "Time: " + str(int(game_time))
+
+	north_label.text = "North: " + str(int(zones[0].corruption)) + "%"
+	south_label.text = "South: " + str(int(zones[1].corruption)) + "%"
+	east_label.text = "East: " + str(int(zones[2].corruption)) + "%"
+	west_label.text = "West: " + str(int(zones[3].corruption)) + "%"
