@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://i4urwefxrrdt" path="res://addons/threadbare_git_describe/version_label.gd" id="3_m62bn"]
 [ext_resource type="PackedScene" uid="uid://dkeb0yjgcfi86" path="res://scenes/menus/options/options.tscn" id="3_sd5t1"]
 [ext_resource type="Script" uid="uid://gntvq01vvati" path="res://scenes/globals/pause/report_bug_button.gd" id="4_mjd51"]
+[ext_resource type="PackedScene" uid="uid://bjpyvet0x5dw8" path="res://scenes/menus/inventory/inventory.tscn" id="4_qydtk"]
 [ext_resource type="Material" uid="uid://cruf3tlajs4jo" path="res://scenes/ui_elements/input_hints/components/drop_shadow_material.tres" id="7_bwxj8"]
 [ext_resource type="Texture2D" uid="uid://45plriwir0nj" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/keyboard/keyboard_p_outline.tres" id="8_bwxj8"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="9_fh64e"]
@@ -42,13 +43,22 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_1tcw0")
-current_tab = 1
+current_tab = 2
+
+[node name="Inventory" parent="VBoxContainer/TabContainer" unique_id=1910667653 instance=ExtResource("4_qydtk")]
+layout_mode = 2
+
+[node name="Options" parent="VBoxContainer/TabContainer" unique_id=2078715393 instance=ExtResource("3_sd5t1")]
+unique_name_in_owner = true
+process_mode = 2
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="Menu" type="CenterContainer" parent="VBoxContainer/TabContainer" unique_id=1341135248]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
-metadata/_tab_index = 0
+metadata/_tab_index = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/TabContainer/Menu" unique_id=2049717971]
 layout_mode = 2
@@ -108,12 +118,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Exit to Title"
-
-[node name="Options" parent="VBoxContainer/TabContainer" unique_id=2078715393 instance=ExtResource("3_sd5t1")]
-unique_name_in_owner = true
-process_mode = 2
-layout_mode = 2
-metadata/_tab_index = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=389756877]
 layout_mode = 2
@@ -198,10 +202,10 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "0123456789"
 script = ExtResource("3_m62bn")
 
+[connection signal="back" from="VBoxContainer/TabContainer/Options" to="." method="_on_options_back"]
 [connection signal="visibility_changed" from="VBoxContainer/TabContainer/Menu" to="." method="_on_menu_visibility_changed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/AbandonQuestButton" to="." method="_on_abandon_quest_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/SkipTutorialButton" to="." method="_on_skip_tutorial_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/TitleScreenButton" to="." method="_on_title_screen_button_pressed"]
-[connection signal="back" from="VBoxContainer/TabContainer/Options" to="." method="_on_options_back"]
