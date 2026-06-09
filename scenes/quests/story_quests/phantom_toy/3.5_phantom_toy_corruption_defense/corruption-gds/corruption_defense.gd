@@ -65,6 +65,8 @@ func _process(delta: float) -> void:
 			print("Player discovered ", zone.name)
 
 			if zone == current_zone:
+				zone.altar.set_corrupted(false)
+				
 				print("Shadow escaped!")
 
 				select_random_zone()
@@ -86,6 +88,7 @@ func select_random_zone() -> void:
 		return
 
 	current_zone = available_zones.pick_random()
+	current_zone.altar.set_corrupted(true)
 
 	print("Corrupting: ", current_zone.name)
 

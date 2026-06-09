@@ -3,7 +3,7 @@ extends Node2D
 
 @export_range(0.0, 100.0)
 var corruption: float = 0.0
-
+@export var altar: Altar
 var player_inside := false
 
 

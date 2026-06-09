@@ -23,9 +23,12 @@
 [ext_resource type="Texture2D" uid="uid://b8p8hgyfa0hy5" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/tumba.png" id="23_mlctm"]
 [ext_resource type="Script" uid="uid://br8klysqxs4tx" path="res://scenes/quests/story_quests/phantom_toy/3.5_phantom_toy_corruption_defense/corruption-gds/corruption_zone.gd" id="24_dr3qm"]
 [ext_resource type="Texture2D" uid="uid://bn21qglo2e44m" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/mediotronco_creepy.png" id="24_kidpr"]
+[ext_resource type="Script" uid="uid://curiepiiue2oc" path="res://scenes/quests/story_quests/phantom_toy/3.5_phantom_toy_corruption_defense/corruption-gds/altar.gd" id="25_07vu5"]
 [ext_resource type="Script" uid="uid://dyjksexdhluf4" path="res://scenes/quests/story_quests/phantom_toy/3.5_phantom_toy_corruption_defense/corruption-gds/LightningManager.gd" id="25_fh4o3"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_wtx7s"]
+[ext_resource type="Texture2D" uid="uid://bujn7d1vbgbb4" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/marmol2.png" id="26_tojwt"]
 [ext_resource type="Texture2D" uid="uid://ba73plhmg3c3m" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/calavera_sombrero_payaso.png" id="27_5pq7a"]
+[ext_resource type="Texture2D" uid="uid://blmqemmfps2la" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/marmol.png" id="27_mlctm"]
 [ext_resource type="Texture2D" uid="uid://bbufexuxa7ydk" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/calavera_payaso.png" id="28_cifp1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oxfsk"]
@@ -59,7 +62,7 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 size = Vector2(191.75, 192)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4y8pf"]
-size = Vector2(27.733334, 14.93332)
+size = Vector2(48.533318, 43.733334)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dklmw"]
 size = Vector2(39.999992, 14.93332)
@@ -102,6 +105,18 @@ size = Vector2(32, 12.80003)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w4aa1"]
 size = Vector2(32, 12.80003)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_diq11"]
+size = Vector2(48.533318, 43.733334)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r7q3b"]
+size = Vector2(48.533318, 43.733334)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v3of3"]
+size = Vector2(48.533318, 43.733334)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eqx4r"]
+size = Vector2(48.533318, 43.733334)
 
 [node name="PhantomToyCorruptionDefense" type="Node2D" unique_id=1537424246]
 
@@ -178,9 +193,10 @@ dialogue_title = &"well_done"
 
 [node name="CorruptionZones" type="Node2D" parent="OnTheGround" unique_id=1841575986]
 
-[node name="NorthZone" type="Node2D" parent="OnTheGround/CorruptionZones" unique_id=1471370771]
+[node name="NorthZone" type="Node2D" parent="OnTheGround/CorruptionZones" unique_id=1471370771 node_paths=PackedStringArray("altar")]
 position = Vector2(500, -149)
 script = ExtResource("24_dr3qm")
+altar = NodePath("../../Objetos/altar norte")
 
 [node name="Area2D" type="Area2D" parent="OnTheGround/CorruptionZones/NorthZone" unique_id=24395805]
 
@@ -188,9 +204,10 @@ script = ExtResource("24_dr3qm")
 position = Vector2(28, -10)
 shape = SubResource("RectangleShape2D_dr3qm")
 
-[node name="SouthZone" type="Node2D" parent="OnTheGround/CorruptionZones" unique_id=1218750992]
+[node name="SouthZone" type="Node2D" parent="OnTheGround/CorruptionZones" unique_id=1218750992 node_paths=PackedStringArray("altar")]
 position = Vector2(534, 1370)
 script = ExtResource("24_dr3qm")
+altar = NodePath("../../Objetos/altar sur")
 
 [node name="Area2D" type="Area2D" parent="OnTheGround/CorruptionZones/SouthZone" unique_id=312534383]
 
@@ -198,9 +215,10 @@ script = ExtResource("24_dr3qm")
 position = Vector2(-6, 70)
 shape = SubResource("RectangleShape2D_dr3qm")
 
-[node name="EastZone" type="Node2D" parent="OnTheGround/CorruptionZones" unique_id=926514108]
+[node name="EastZone" type="Node2D" parent="OnTheGround/CorruptionZones" unique_id=926514108 node_paths=PackedStringArray("altar")]
 position = Vector2(1284, 621)
 script = ExtResource("24_dr3qm")
+altar = NodePath("../../Objetos/altar este")
 
 [node name="Area2D" type="Area2D" parent="OnTheGround/CorruptionZones/EastZone" unique_id=633940392]
 
@@ -208,9 +226,10 @@ script = ExtResource("24_dr3qm")
 position = Vector2(-4, 3)
 shape = SubResource("RectangleShape2D_dr3qm")
 
-[node name="WestZone" type="Node2D" parent="OnTheGround/CorruptionZones" unique_id=1394475869]
+[node name="WestZone" type="Node2D" parent="OnTheGround/CorruptionZones" unique_id=1394475869 node_paths=PackedStringArray("altar")]
 position = Vector2(-261, 606)
 script = ExtResource("24_dr3qm")
+altar = NodePath("../../Objetos/altar oeste")
 
 [node name="Area2D" type="Area2D" parent="OnTheGround/CorruptionZones/WestZone" unique_id=85895622]
 
@@ -485,6 +504,82 @@ position = Vector2(4.000002, -43.999973)
 scale = Vector2(1.6465911, 1.6465911)
 texture = ExtResource("28_cifp1")
 
+[node name="altar norte" type="Node2D" parent="OnTheGround/Objetos" unique_id=203569417]
+position = Vector2(529, -125)
+script = ExtResource("25_07vu5")
+clean_texture = ExtResource("26_tojwt")
+corrupted_texture = ExtResource("27_mlctm")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/Objetos/altar norte" unique_id=740873418]
+position = Vector2(0, -16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Objetos/altar norte/StaticBody2D" unique_id=575078511]
+position = Vector2(-1.5, -28)
+scale = Vector2(1.875, 1.875)
+shape = SubResource("RectangleShape2D_diq11")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/Objetos/altar norte" unique_id=431689820]
+position = Vector2(-1.0557594, -41.90625)
+scale = Vector2(1.8002452, 1.8002452)
+texture = ExtResource("26_tojwt")
+
+[node name="altar sur" type="Node2D" parent="OnTheGround/Objetos" unique_id=643589569]
+position = Vector2(531, 1481)
+script = ExtResource("25_07vu5")
+clean_texture = ExtResource("26_tojwt")
+corrupted_texture = ExtResource("27_mlctm")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/Objetos/altar sur" unique_id=1639404839]
+position = Vector2(0, -16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Objetos/altar sur/StaticBody2D" unique_id=1238572904]
+position = Vector2(-1.5, -28)
+scale = Vector2(1.875, 1.875)
+shape = SubResource("RectangleShape2D_r7q3b")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/Objetos/altar sur" unique_id=562432280]
+position = Vector2(-1.0557594, -41.90625)
+scale = Vector2(1.8002452, 1.8002452)
+texture = ExtResource("26_tojwt")
+
+[node name="altar este" type="Node2D" parent="OnTheGround/Objetos" unique_id=734356082]
+position = Vector2(1283, 662)
+script = ExtResource("25_07vu5")
+clean_texture = ExtResource("26_tojwt")
+corrupted_texture = ExtResource("27_mlctm")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/Objetos/altar este" unique_id=370199631]
+position = Vector2(0, -16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Objetos/altar este/StaticBody2D" unique_id=1588083483]
+position = Vector2(-1.5, -28)
+scale = Vector2(1.875, 1.875)
+shape = SubResource("RectangleShape2D_v3of3")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/Objetos/altar este" unique_id=255992111]
+position = Vector2(-1.0557594, -41.90625)
+scale = Vector2(1.8002452, 1.8002452)
+texture = ExtResource("26_tojwt")
+
+[node name="altar oeste" type="Node2D" parent="OnTheGround/Objetos" unique_id=338143943]
+position = Vector2(-294, 672)
+script = ExtResource("25_07vu5")
+clean_texture = ExtResource("26_tojwt")
+corrupted_texture = ExtResource("27_mlctm")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/Objetos/altar oeste" unique_id=1736293409]
+position = Vector2(0, -16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Objetos/altar oeste/StaticBody2D" unique_id=1655903653]
+position = Vector2(-1.5, -28)
+scale = Vector2(1.875, 1.875)
+shape = SubResource("RectangleShape2D_eqx4r")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/Objetos/altar oeste" unique_id=614763936]
+position = Vector2(-1.0557594, -41.90625)
+scale = Vector2(1.8002452, 1.8002452)
+texture = ExtResource("26_tojwt")
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1188824144]
 
 [node name="ColorRect" type="ColorRect" parent="ScreenOverlay" unique_id=348146081]
@@ -502,6 +597,7 @@ dialogue = ExtResource("22_kr4tv")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=368661843]
+visible = false
 color = Color(0, 0, 0, 1)
 
 [node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("16_t8os4")]
