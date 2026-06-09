@@ -6,11 +6,10 @@ extends CanvasLayer
 @export_file("*.tscn") var frays_end: String
 @export var abandon_dialogue: DialogueResource
 
-@onready var pause_menu: Control = %PauseMenu
-@onready var resume_button: Button = %ResumeButton
-@onready var options: Control = %Options
+@onready var tab_container: TabContainer = %TabContainer
 @onready var abandon_quest_button: Button = %AbandonQuestButton
 @onready var skip_tutorial_button: Button = %SkipTutorialButton
+@onready var title_screen_button: Button = %TitleScreenButton
 
 
 func _ready() -> void:
@@ -21,6 +20,16 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"pause"):
 		toggle_pause()
 		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("next_tab"):
+		tab_container.current_tab = wrapi(
+			tab_container.current_tab + 1, 0, tab_container.get_tab_count()
+		)
+		tab_container.accept_event()
+	elif event.is_action_pressed("previous_tab"):
+		tab_container.current_tab = wrapi(
+			tab_container.current_tab - 1, 0, tab_container.get_tab_count()
+		)
+		tab_container.accept_event()
 
 
 func toggle_pause() -> void:
@@ -34,14 +43,15 @@ func toggle_pause() -> void:
 		if not GameState.quest:
 			skip_tutorial_button.hide()
 			abandon_quest_button.hide()
+			title_screen_button.grab_focus()
 		elif GameState.quest.quest is LoreQuest and GameState.quest.quest.skippable:
 			skip_tutorial_button.show()
+			skip_tutorial_button.grab_focus()
 			abandon_quest_button.hide()
 		else:
 			skip_tutorial_button.hide()
 			abandon_quest_button.show()
-		pause_menu.show()
-		resume_button.grab_focus()
+			abandon_quest_button.grab_focus()
 
 
 func _on_abandon_quest_pressed() -> void:
@@ -76,19 +86,6 @@ func _on_skip_tutorial_pressed() -> void:
 	SceneSwitcher.change_to_file_with_transition(
 		frays_end, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 	)
-
-
-func _on_options_button_pressed() -> void:
-	options.show()
-
-
-func _on_options_back() -> void:
-	pause_menu.show()
-	resume_button.grab_focus()
-
-
-func _on_resume_button_pressed() -> void:
-	toggle_pause()
 
 
 func _on_title_screen_button_pressed() -> void:
