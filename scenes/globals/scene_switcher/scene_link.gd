@@ -18,6 +18,8 @@ const SPAWN_POINT_GROUP_NAME: String = "spawn_point"
 		next_scene = new_value
 		_update_available_spawn_points()
 
+@export_tool_button("Open Next Scene") var open_next_scene: Callable = _open_next_scene
+
 ## Which SpawnPoint in [member next_scene] the player character should start at;
 ## or blank/NONE to start at the default position in the scene.
 @export var spawn_point_path: NodePath:
@@ -84,6 +86,17 @@ func _get_next_scene_path() -> String:
 	return ResourceUID.ensure_path(next_scene) if next_scene else ""
 
 
+func _open_next_scene() -> void:
+	var editor_interface := Engine.get_singleton("EditorInterface")
+	var next_scene_path: String = _get_next_scene_path()
+	if (
+		editor_interface
+		and next_scene_path
+		and next_scene_path != get_tree().edited_scene_root.scene_file_path
+	):
+		editor_interface.open_scene_from_path.call_deferred(next_scene_path)
+
+
 func _update_available_spawn_points() -> void:
 	if not Engine.is_editor_hint() or not is_inside_tree():
 		return
@@ -94,7 +107,6 @@ func _update_available_spawn_points() -> void:
 		_available_spawn_points.assign(
 			spawn_points.map(func(spawn_point: Node) -> String: return get_path_to(spawn_point))
 		)
-
 	elif ResourceLoader.exists(next_scene, "PackedScene"):
 		var packed_scene: PackedScene = load(next_scene)
 		var paths: Array[NodePath] = []
@@ -119,6 +131,15 @@ func _update_available_spawn_points() -> void:
 
 func _validate_property(property: Dictionary) -> void:
 	match property.name:
+		"open_next_scene":
+			var next_scene_path: String = _get_next_scene_path()
+			if not next_scene_path:
+				property.usage |= PROPERTY_USAGE_READ_ONLY
+			elif (
+				is_inside_tree() and next_scene_path == get_tree().edited_scene_root.scene_file_path
+			):
+				property.usage |= PROPERTY_USAGE_READ_ONLY
+
 		"spawn_point_path":
 			property.type = TYPE_STRING
 			property.hint = PROPERTY_HINT_ENUM
