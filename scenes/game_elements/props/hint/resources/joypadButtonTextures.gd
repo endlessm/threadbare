@@ -19,6 +19,12 @@ extends Resource
 ## Texture for the [code]pause[/code] action
 @export var pause: Texture2D
 
+## Texture for the [code]previous_tab[/code] action
+@export var previous_tab: Texture2D
+
+## Texture for the [code]next_tab[/code] action
+@export var next_tab: Texture2D
+
 ## Texture for the [code]repel[/code] action
 @export var repel: Texture2D
 
