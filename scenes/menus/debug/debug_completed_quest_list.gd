@@ -30,6 +30,8 @@ func rebuild() -> void:
 			bits.append(quest.resource_path.get_base_dir().substr(QUEST_ROOT.length() + 1))
 			var button := CheckButton.new()
 			button.text = " · ".join(bits)
+			button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+			button.clip_text = true
 			button.button_pressed = completed_quests.has(quest)
 			button.toggled.connect(_on_button_toggled.bind(quest))
 			add_child(button)

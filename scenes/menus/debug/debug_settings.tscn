@@ -1,65 +1,88 @@
 [gd_scene format=3 uid="uid://56ja3m4283wa"]
 
-[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_w7kol"]
-[ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="2_46px3"]
-[ext_resource type="PackedScene" uid="uid://cie2w455avmwm" path="res://scenes/menus/debug/debug_completed_quest_list.tscn" id="2_k06h7"]
-[ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="3_46px3"]
-[ext_resource type="PackedScene" uid="uid://dap7xk2m1yfhs" path="res://scenes/menus/debug/debug_player_abilities_list.tscn" id="4_abilities"]
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_theme"]
+[ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="2_back"]
+[ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="3_arrow"]
+[ext_resource type="PackedScene" uid="uid://bdbgcqsts7sk2" path="res://scenes/menus/debug/components/debug_completed_quests.tscn" id="4_cq"]
+[ext_resource type="PackedScene" uid="uid://bdbgpa6vsm70w" path="res://scenes/menus/debug/components/debug_player_abilities.tscn" id="5_pa"]
 
-[node name="DebugSettings" type="PanelContainer" unique_id=35497477 node_paths=PackedStringArray("back_button")]
-custom_minimum_size = Vector2(800, 600)
-offset_right = 675.0
-offset_bottom = 255.0
-theme = ExtResource("1_w7kol")
-script = ExtResource("2_46px3")
-back_button = NodePath("VBoxContainer/BackButton")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_panel"]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1670771472]
+[node name="DebugSettings" type="CenterContainer" unique_id=35497477 node_paths=PackedStringArray("back_button", "default_page")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -221.0
+offset_top = -225.0
+offset_right = 221.0
+offset_bottom = 225.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_theme")
+script = ExtResource("2_back")
+back_button = NodePath("TabContainer/DebugMenu/VBoxContainer/BackButton")
+default_page = NodePath("TabContainer/DebugMenu")
+
+[node name="TabContainer" type="TabContainer" parent="." unique_id=1100040001]
 layout_mode = 2
-
-[node name="TabContainer" type="TabContainer" parent="VBoxContainer" unique_id=57528092]
-layout_mode = 2
-size_flags_vertical = 3
-tab_alignment = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_panel")
 current_tab = 0
+tabs_visible = false
 
-[node name="Completed Quests" type="ScrollContainer" parent="VBoxContainer/TabContainer" unique_id=2057728842]
+[node name="DebugMenu" type="PanelContainer" parent="TabContainer" unique_id=1100040002]
+unique_name_in_owner = true
 layout_mode = 2
-follow_focus = true
-horizontal_scroll_mode = 0
 metadata/_tab_index = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Completed Quests" unique_id=802864242]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/DebugMenu" unique_id=1100040003]
+custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 
-[node name="DebugCompletedQuestList" parent="VBoxContainer/TabContainer/Completed Quests/MarginContainer" unique_id=1279772854 instance=ExtResource("2_k06h7")]
+[node name="PanelContainer" type="PanelContainer" parent="TabContainer/DebugMenu/VBoxContainer" unique_id=1100040004]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 4
+theme_type_variation = &"PlayerRibbon"
 
-[node name="Player Abilities" type="ScrollContainer" parent="VBoxContainer/TabContainer" unique_id=1413429209]
-visible = false
+[node name="Label" type="Label" parent="TabContainer/DebugMenu/VBoxContainer/PanelContainer" unique_id=1100040005]
 layout_mode = 2
-follow_focus = true
-horizontal_scroll_mode = 0
-metadata/_tab_index = 1
+text = "Debug Settings"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Player Abilities" unique_id=1320054365]
+[node name="CompletedQuestsButton" type="Button" parent="TabContainer/DebugMenu/VBoxContainer" unique_id=1100040006]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+text = "Completed Quests"
 
-[node name="DebugPlayerAbilitiesList" parent="VBoxContainer/TabContainer/Player Abilities/MarginContainer" unique_id=1996259651 instance=ExtResource("4_abilities")]
+[node name="PlayerAbilitiesButton" type="Button" parent="TabContainer/DebugMenu/VBoxContainer" unique_id=1100040007]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+text = "Player Abilities"
 
-[node name="BackButton" type="Button" parent="VBoxContainer" unique_id=751568689]
+[node name="BackButton" type="Button" parent="TabContainer/DebugMenu/VBoxContainer" unique_id=1100040008]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Back"
-icon = ExtResource("3_46px3")
+icon = ExtResource("3_arrow")
 flat = true
+
+[node name="CompletedQuests" parent="TabContainer" unique_id=1100040010 instance=ExtResource("4_cq")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="PlayerAbilities" parent="TabContainer" unique_id=1100040011 instance=ExtResource("5_pa")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[connection signal="pressed" from="TabContainer/DebugMenu/VBoxContainer/CompletedQuestsButton" to="TabContainer/CompletedQuests" method="show"]
+[connection signal="pressed" from="TabContainer/DebugMenu/VBoxContainer/PlayerAbilitiesButton" to="TabContainer/PlayerAbilities" method="show"]
+[connection signal="back" from="TabContainer/CompletedQuests" to="TabContainer/DebugMenu" method="show"]
+[connection signal="back" from="TabContainer/CompletedQuests" to="TabContainer/DebugMenu/VBoxContainer/BackButton" method="grab_focus"]
+[connection signal="back" from="TabContainer/PlayerAbilities" to="TabContainer/DebugMenu" method="show"]
+[connection signal="back" from="TabContainer/PlayerAbilities" to="TabContainer/DebugMenu/VBoxContainer/BackButton" method="grab_focus"]
