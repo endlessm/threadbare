@@ -1,0 +1,223 @@
+[gd_scene format=3 uid="uid://c40eyjqxbhrko"]
+
+[ext_resource type="Script" uid="uid://fx8568j0b1vd" path="res://scenes/quests/story_quests/last_coordinates/3_sequence_puzzle/components/square_hurt.gd" id="1_q0dll"]
+[ext_resource type="Texture2D" uid="uid://8c6vlwpni24n" path="res://scenes/quests/story_quests/last_coordinates/assets/decoration.png" id="2_nxm75"]
+[ext_resource type="Texture2D" uid="uid://8csq73butm2h" path="res://scenes/quests/story_quests/last_coordinates/assets/laserAnimation.png" id="3_pkh10"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pkh10"]
+texture = ExtResource("2_nxm75")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_7jrln"]
+tile_size = Vector2i(64, 64)
+sources/1 = SubResource("TileSetAtlasSource_pkh10")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_achqq"]
+size = Vector2(64, 64)
+
+[sub_resource type="Animation" id="Animation_nxm75"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"impactLaser"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+
+[sub_resource type="Animation" id="Animation_pkh10"]
+resource_name = "impact"
+length = 5.0
+step = 0.05
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(3.4, 3.9, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"values": [{
+"args": [],
+"method": &"activar_colision"
+}, {
+"args": [],
+"method": &"desactivar_colision"
+}, {
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"impactLaser"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(2.1, 3.7),
+"transitions": PackedFloat32Array(0.9659363, 1),
+"update": 0,
+"values": [0, 11]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7jrln"]
+_data = {
+&"RESET": SubResource("Animation_nxm75"),
+&"impact": SubResource("Animation_pkh10")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pkh10"]
+atlas = ExtResource("3_pkh10")
+region = Rect2(0, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7jrln"]
+atlas = ExtResource("3_pkh10")
+region = Rect2(0, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w6gpp"]
+atlas = ExtResource("3_pkh10")
+region = Rect2(64, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dwaec"]
+atlas = ExtResource("3_pkh10")
+region = Rect2(128, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hcbb0"]
+atlas = ExtResource("3_pkh10")
+region = Rect2(192, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_isgh5"]
+atlas = ExtResource("3_pkh10")
+region = Rect2(256, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_um8kg"]
+atlas = ExtResource("3_pkh10")
+region = Rect2(320, 0, 64, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nxm75"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pkh10")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7jrln")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w6gpp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dwaec")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hcbb0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_isgh5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_um8kg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_um8kg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_isgh5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hcbb0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dwaec")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"impactLaser",
+"speed": 3.0
+}]
+
+[node name="SquareHurt" type="Node2D" unique_id=1774695474]
+script = ExtResource("1_q0dll")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1908247293]
+unique_name_in_owner = true
+monitoring = false
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Area2D" unique_id=579811638]
+visible = false
+position = Vector2(32, 32)
+tile_map_data = PackedByteArray(0, 0, 255, 255, 255, 255, 1, 0, 1, 0, 2, 0, 0, 0)
+tile_set = SubResource("TileSet_7jrln")
+
+[node name="Colision" type="CollisionShape2D" parent="Area2D" unique_id=1390199219]
+unique_name_in_owner = true
+shape = SubResource("RectangleShape2D_achqq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1546118699]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_7jrln")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1672696531]
+sprite_frames = SubResource("SpriteFrames_nxm75")
+animation = &"impactLaser"
+frame = 4
+offset = Vector2(0, -32)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

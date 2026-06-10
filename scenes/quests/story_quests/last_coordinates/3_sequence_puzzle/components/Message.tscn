@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://dcxg0kjbrokcp"]
+
+[ext_resource type="Script" uid="uid://b14glw0tqwhn7" path="res://scenes/quests/story_quests/last_coordinates/3_sequence_puzzle/components/message.gd" id="1_twq62"]
+[ext_resource type="Texture2D" uid="uid://cmrbtp8xfojr" path="res://scenes/quests/story_quests/last_coordinates/assets/AnimationInteraction.png" id="2_2ji8l"]
+[ext_resource type="FontFile" uid="uid://b0tjcgrk504qg" path="res://assets/third_party/fonts/jersey/Jersey10-Regular.ttf" id="2_uvsef"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5h8k0"]
+atlas = ExtResource("2_2ji8l")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_72g71"]
+atlas = ExtResource("2_2ji8l")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_giswc"]
+atlas = ExtResource("2_2ji8l")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_afp7i"]
+atlas = ExtResource("2_2ji8l")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0rk7q"]
+atlas = ExtResource("2_2ji8l")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ikl4f"]
+atlas = ExtResource("2_2ji8l")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_akqjw"]
+atlas = ExtResource("2_2ji8l")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ymfpu"]
+atlas = ExtResource("2_2ji8l")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uvsef"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5h8k0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_72g71")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_giswc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_afp7i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0rk7q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ikl4f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_akqjw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ymfpu")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_uvsef"]
+font_size = 28
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2ji8l"]
+radius = 70.0
+
+[node name="Message" type="Node2D" unique_id=528051641]
+script = ExtResource("1_twq62")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=429985372]
+unique_name_in_owner = true
+sprite_frames = SubResource("SpriteFrames_uvsef")
+frame = 5
+frame_progress = 0.6273799
+
+[node name="LabelContainer" type="MarginContainer" parent="." unique_id=1511958238]
+z_index = 1
+offset_left = -96.0
+offset_top = -176.0
+offset_right = 104.0
+offset_bottom = -76.0
+pivot_offset = Vector2(100, 50)
+
+[node name="PanelContainer" type="PanelContainer" parent="LabelContainer" unique_id=1795023181]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="MarginContainer" type="MarginContainer" parent="LabelContainer/PanelContainer" unique_id=1462110188]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="LabelContainer/PanelContainer/MarginContainer" unique_id=1553390827]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_uvsef")
+theme_override_font_sizes/font_size = 19
+label_settings = SubResource("LabelSettings_uvsef")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1283700228]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1344407631]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_2ji8l")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
