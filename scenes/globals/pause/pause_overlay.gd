@@ -8,7 +8,7 @@ extends CanvasLayer
 
 @onready var tab_container: TabContainer = %TabContainer
 @onready var pause_menu: Control = %Menu
-@onready var resume_button: Button = %ResumeButton
+@onready var back_button: Button = %BackButton
 @onready var options: Control = %Options
 @onready var abandon_quest_button: Button = %AbandonQuestButton
 @onready var skip_tutorial_button: Button = %SkipTutorialButton
@@ -52,7 +52,7 @@ func toggle_pause() -> void:
 			skip_tutorial_button.hide()
 			abandon_quest_button.show()
 		pause_menu.show()
-		resume_button.grab_focus()
+		back_button.grab_focus()
 
 
 func _on_abandon_quest_pressed() -> void:
@@ -89,16 +89,11 @@ func _on_skip_tutorial_pressed() -> void:
 	)
 
 
-func _on_options_button_pressed() -> void:
-	options.show()
-
-
 func _on_options_back() -> void:
-	pause_menu.show()
-	resume_button.grab_focus()
+	toggle_pause()
 
 
-func _on_resume_button_pressed() -> void:
+func _on_back_button_pressed() -> void:
 	toggle_pause()
 
 
@@ -113,4 +108,8 @@ func _on_menu_visibility_changed() -> void:
 	if not is_node_ready():
 		return
 	if pause_menu.visible:
-		resume_button.grab_focus()
+		back_button.grab_focus()
+
+
+func _on_inventory_back() -> void:
+	toggle_pause()

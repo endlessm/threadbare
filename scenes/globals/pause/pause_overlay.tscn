@@ -10,6 +10,7 @@
 [ext_resource type="Shortcut" uid="uid://c5pwgp1w8p3y1" path="res://scenes/ui_elements/shortcuts/back_shortcut.tres" id="6_fh64e"]
 [ext_resource type="Material" uid="uid://cruf3tlajs4jo" path="res://scenes/ui_elements/input_hints/components/drop_shadow_material.tres" id="7_bwxj8"]
 [ext_resource type="Texture2D" uid="uid://45plriwir0nj" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/keyboard/keyboard_p_outline.tres" id="8_bwxj8"]
+[ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="8_ywskk"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="9_fh64e"]
 [ext_resource type="Resource" uid="uid://c1beocky1qjxi" path="res://scenes/game_elements/props/hint/resources/devices.tres" id="10_ywskk"]
 
@@ -74,14 +75,6 @@ layout_mode = 2
 custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
 
-[node name="ResumeButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1399677178]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &"FlatButton"
-shortcut = ExtResource("6_fh64e")
-text = "Resume"
-
 [node name="AbandonQuestButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1859424584]
 unique_name_in_owner = true
 layout_mode = 2
@@ -95,13 +88,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Skip Tutorial"
-
-[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=117724427]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &"FlatButton"
-text = "Options"
 
 [node name="ReportBugButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1750937607]
 unique_name_in_owner = true
@@ -117,6 +103,15 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Exit to Title"
+
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1399677178]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+shortcut = ExtResource("6_fh64e")
+text = "Back"
+icon = ExtResource("8_ywskk")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=389756877]
 layout_mode = 2
@@ -201,10 +196,10 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "0123456789"
 script = ExtResource("3_m62bn")
 
+[connection signal="back" from="MarginContainer/VBoxContainer/TabContainer/Inventory" to="." method="_on_inventory_back"]
 [connection signal="back" from="MarginContainer/VBoxContainer/TabContainer/Options" to="." method="_on_options_back"]
 [connection signal="visibility_changed" from="MarginContainer/VBoxContainer/TabContainer/Menu" to="." method="_on_menu_visibility_changed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/AbandonQuestButton" to="." method="_on_abandon_quest_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/SkipTutorialButton" to="." method="_on_skip_tutorial_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/TitleScreenButton" to="." method="_on_title_screen_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
