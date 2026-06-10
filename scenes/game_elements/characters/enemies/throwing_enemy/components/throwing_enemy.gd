@@ -176,7 +176,7 @@ func _ready() -> void:
 		var direction: Vector2 = projectile_marker.global_position.direction_to(
 			player.global_position
 		)
-		scale.x = 1 if direction.x < 0 else -1
+		scale.x = -1 if direction.x < 0 else 1
 	if autostart:
 		start()
 
@@ -291,7 +291,7 @@ func shoot_projectile_at(target: Node2D) -> bool:
 
 	projectile.direction = projectile_marker.global_position.direction_to(target.global_position)
 	projectile.global_position = projectile_marker.global_position + projectile.direction * distance
-	scale.x = 1 if projectile.direction.x < 0 else -1
+	scale.x = -1 if projectile.direction.x < 0 else 1
 
 	if projectile_follows_player:
 		projectile.node_to_follow = target
