@@ -53,18 +53,6 @@ func _physics_process(delta: float) -> void:
 	character.velocity = character.velocity.move_toward(input_vector, step * delta)
 	character.move_and_slide()
 
-	# --- LÓGICA DE EMPUJE DE CAJAS ---
-	# Iteramos sobre las colisiones del "character" (el jugador)
-	for i in character.get_slide_collision_count():
-		var colision = character.get_slide_collision(i)
-		var collider = colision.get_collider()
-
-		# Verificamos si chocó con algo del grupo "caja"
-		if collider and collider.is_in_group("caja"):
-			var direccion_empuje = -colision.get_normal()
-			collider.empujar(direccion_empuje)
-	# ---------------------------------
-
 	# When using an analogue joystick, this can be false even if the player is
 	# holding the "run" button, because the joystick may be inclined only slightly.
 	is_running = input_vector.length_squared() > (speeds.walk_speed * speeds.walk_speed) + 1.0
