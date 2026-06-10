@@ -12,6 +12,7 @@ func _ready() -> void:
 
 	title.text = quest.title
 	animated_texture_rect.sprite_frames = quest.sprite_frames
+	animated_texture_rect.animation_name = quest.animation_name
 	rich_text_label.text = quest.description
 
 	await get_tree().create_timer(3).timeout
