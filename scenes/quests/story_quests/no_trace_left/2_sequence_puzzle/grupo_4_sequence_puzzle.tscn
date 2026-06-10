@@ -1,0 +1,218 @@
+[gd_scene format=4 uid="uid://dbnavppnhuhyq"]
+
+[ext_resource type="TileSet" uid="uid://caxhfeix35kmt" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_shadows.tres" id="2_hp3xw"]
+[ext_resource type="TileSet" uid="uid://utx2oblod12l" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_elevation_2.tres" id="3_l4v5n"]
+[ext_resource type="TileSet" uid="uid://dcqq5mawasgik" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_exterior_floors.tres" id="4_ogif5"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_2adu0"]
+[ext_resource type="SpriteFrames" uid="uid://cwcaxjyrcejw5" path="res://scenes/quests/story_quests/no_trace_left/player_components/grupo_4_player.tres" id="6_2sfre"]
+[ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="7_jgn2b"]
+[ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/game_elements/props/sequence_puzzle_object/sequence_puzzle_object.tscn" id="8_pk4t6"]
+[ext_resource type="SpriteFrames" uid="uid://b5s2qsfle1wch" path="res://scenes/quests/story_quests/no_trace_left/2_sequence_puzzle/grupo_4_object.tres" id="9_epsjp"]
+[ext_resource type="AudioStream" uid="uid://cg57q82pb243w" path="res://assets/third_party/nepalese_hand_bells/handBells-c4.ogg" id="10_xmx7e"]
+[ext_resource type="AudioStream" uid="uid://b83x8h0ob5mpq" path="res://assets/third_party/nepalese_hand_bells/handBells-d4.ogg" id="11_innt8"]
+[ext_resource type="AudioStream" uid="uid://cmtiwg2cylmts" path="res://assets/third_party/nepalese_hand_bells/handBells-e4.ogg" id="12_tx5yr"]
+[ext_resource type="AudioStream" uid="uid://8k1hyi4gjae4" path="res://assets/third_party/nepalese_hand_bells/handBells-f4.ogg" id="13_wotkv"]
+[ext_resource type="AudioStream" uid="uid://6oahn2ucxxjv" path="res://assets/third_party/nepalese_hand_bells/handBells-g4.ogg" id="14_bumui"]
+[ext_resource type="AudioStream" uid="uid://bdboi4ndapqec" path="res://assets/third_party/nepalese_hand_bells/handBells-a4.ogg" id="15_5157w"]
+[ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/game_elements/props/sequence_puzzle_hint_sign/sequence_puzzle_hint_sign.tscn" id="16_4tdel"]
+[ext_resource type="SpriteFrames" uid="uid://x8qtakr5h4c2" path="res://scenes/quests/story_quests/no_trace_left/2_sequence_puzzle/grupo_4_sign.tres" id="17_wk8ev"]
+[ext_resource type="SpriteFrames" uid="uid://dpa78hes321t6" path="res://scenes/quests/story_quests/no_trace_left/2_sequence_puzzle/grupo_4_sign_2.tres" id="18_1sx8r"]
+[ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="19_umc4r"]
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="20_37xyc"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="21_5nhgo"]
+[ext_resource type="Resource" uid="uid://tr8ajw3btrhn" path="res://scenes/quests/story_quests/no_trace_left/2_sequence_puzzle/grupo_4_sequence_puzzle.dialogue" id="22_7btov"]
+[ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="23_1nnmx"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="24_b43bd"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_jbgfi"]
+[ext_resource type="AudioStream" uid="uid://c6a05suxa6i4l" path="res://scenes/quests/story_quests/no_trace_left/audio/street.ogg" id="25_l4v5n"]
+
+[sub_resource type="Resource" id="Resource_2vru2"]
+script = ExtResource("21_5nhgo")
+type = 2
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[node name="Grupo4SequencePuzzle" type="Node2D" unique_id=217609538]
+
+[node name="TileMapLayers" type="Node2D" parent="." unique_id=1685295331]
+
+[node name="Grass" type="TileMapLayer" parent="TileMapLayers" unique_id=1618937072]
+tile_map_data = PackedByteArray("AAANAAcABgABAAEAAAANAAYABgABAAEAAAANAAUABgABAAEAAAANAAQABgABAAEAAAANAAMABgABAAEAAAANAAIABgABAAEAAAANAAEABgABAAEAAAAMAAcABgABAAEAAAAMAAYABgABAAEAAAAMAAUABgABAAEAAAAMAAQABgABAAEAAAAMAAMABgABAAEAAAAMAAIABgABAAEAAAAMAAEABgABAAEAAAALAAcABgABAAEAAAALAAYABgABAAEAAAALAAUABgABAAEAAAALAAQABgABAAEAAAALAAMABgABAAEAAAALAAIABgABAAEAAAALAAEABgABAAEAAAAKAAcABgABAAEAAAAKAAYABgABAAEAAAAKAAUABgABAAEAAAAKAAQABgABAAEAAAAKAAMABgABAAEAAAAKAAIABgABAAEAAAAKAAEAAQAHAAMAAAAJAAcABgABAAEAAAAJAAYABgABAAEAAAAJAAUABgABAAEAAAAJAAQABgABAAEAAAAJAAMABgABAAEAAAAJAAIABgABAAEAAAAJAAEAAQAGAAMAAAAIAAcABgABAAEAAAAIAAYABgABAAEAAAAIAAUABgABAAEAAAAIAAQABgABAAEAAAAIAAMABgABAAEAAAAIAAIABgABAAEAAAAIAAEAAQAFAAMAAAAHAAcABgABAAEAAAAHAAYABgABAAEAAAAHAAUABgABAAEAAAAHAAQABgABAAEAAAAHAAMABgABAAEAAAAHAAIABgABAAEAAAAHAAEABgABAAEAAAAGAAcABgABAAEAAAAGAAYABgABAAEAAAAGAAUABgABAAEAAAAGAAQABgABAAEAAAAGAAMABgABAAEAAAAGAAIABgABAAEAAAAFAAcABgABAAEAAAAFAAYABgABAAEAAAAFAAUABgABAAEAAAAFAAQABgABAAEAAAAFAAMABgABAAEAAAAFAAIABgABAAEAAAAFAAEABgABAAEAAAAEAAcABgABAAEAAAAEAAYABgABAAEAAAAEAAUABgABAAEAAAAEAAQABgABAAEAAAAEAAMABgABAAEAAAAEAAIABgABAAEAAAAEAAEAAQAHAAMAAAADAAcABgABAAEAAAADAAYABgABAAEAAAADAAUABgABAAEAAAADAAQABgABAAEAAAADAAMABgABAAEAAAADAAIABgABAAEAAAADAAEAAQAGAAMAAAACAAcABgABAAEAAAACAAYABgABAAEAAAACAAUABgABAAEAAAACAAMABgABAAEAAAACAAIABgABAAEAAAACAAEAAQAFAAMAAAABAAcABgABAAEAAAABAAYABgABAAEAAAABAAUABgABAAEAAAABAAMABgABAAEAAAABAAIABgABAAEAAAABAAEABgABAAEAAAACAAQABgABAAEAAAABAAQABgABAAEAAAAAAAQABgABAAEAAAAAAAUABgABAAEAAAAAAAYABgABAAEAAAAAAAcABgABAAEAAAAGAAAABgABAAEAAAAGAAEABgABAAEAAAAHAAAABgABAAEAAAAFAAAABgABAAEAAAAIAAAABgABAAEAAAAJAAAABgABAAEAAAALAAAABgABAAEAAAAMAAAABgABAAEAAAAKAAAABgABAAEAAAANAAAABgABAAEAAAAEAAAABgABAAEAAAADAAAABgABAAEAAAACAAAABgABAAEAAAABAAAABgABAAEAAAAAAAAABgABAAEAAAAAAAEABgABAAEAAAAAAAIABgABAAEAAAAAAAMABgABAAEAAAAAAAgABgABAAEAAAABAAgABgABAAEAAAACAAgAAQAFAAMAAAADAAgAAQAGAAMAAAAEAAgAAQAHAAMAAAAFAAgABgABAAEAAAAGAAgABgABAAEAAAAHAAgABgABAAEAAAAIAAgAAQAFAAMAAAAJAAgAAQAGAAMAAAAKAAgAAQAHAAMAAAAMAAgABgABAAEAAAALAAgABgABAAEAAAANAAgABgABAAEAAAAOAAgAAQAFAAMAAAAOAAcABgABAAEAAAAOAAYABgABAAEAAAAOAAUABgABAAEAAAAOAAQABgABAAEAAAAOAAMABgABAAEAAAAOAAIABgABAAEAAAAOAAEAAQAFAAMAAAAOAAAABgABAAEAAAD//wAABgABAAEAAAD//wIABgABAAEAAAD//wMABgABAAEAAAD//wQABgABAAEAAAD//wUABgABAAEAAAD//wYABgABAAEAAAD//wcABgABAAEAAAD//wgABgABAAEAAAD8////BgABAAEAAAD9////BgABAAEAAAD+////BgABAAEAAAD/////BgABAAEAAAAAAP//BgABAAEAAAABAP//BgABAAEAAAACAP//BgABAAEAAAADAP//BgABAAEAAAAEAP//BgABAAEAAAAFAP//BgABAAEAAAAGAP//BgABAAEAAAAHAP//BgABAAEAAAAIAP//BgABAAEAAAAJAP//BgABAAEAAAAKAP//BgABAAEAAAALAP//BgABAAEAAAAPAAAABgABAAEAAAAPAP//BgABAAEAAAAOAP//BgABAAEAAAANAP//BgABAAEAAAAMAP//BgABAAEAAAAPAAEAAQAGAAMAAAAPAAIABgABAAEAAAAPAAMABgABAAEAAAAPAAQABgABAAEAAAAPAAUABgABAAEAAAAPAAYABgABAAEAAAAPAAcABgABAAEAAAAPAAgAAQAGAAMAAAAPAAkABgABAAEAAAD8/wAABgABAAEAAAD9/wAABgABAAEAAAD+/wAABgABAAEAAAD+/wEAAQAHAAMAAAD9/wEAAQAGAAMAAAD9/wIABgABAAEAAAD+/wIABgABAAEAAAD+/wMABgABAAEAAAD9/wMABgABAAEAAAD8/wMABgABAAEAAAD8/wQABgABAAEAAAD9/wQABgABAAEAAAD+/wQABgABAAEAAAD+/wUABgABAAEAAAD+/wYABgABAAEAAAD9/wUABgABAAEAAAD8/wUABgABAAEAAAD8/wYABgABAAEAAAD9/wYABgABAAEAAAD+/wcABgABAAEAAAD9/wcABgABAAEAAAD8/wcABgABAAEAAAD8/wgAAQAFAAMAAAD9/wgAAQAGAAMAAAD+/wgAAQAHAAMAAAD+/wkABgABAAEAAAD9/wkABgABAAEAAAD8/wkABgABAAEAAAD//wkABgABAAEAAAAAAAkABgABAAEAAAABAAkABgABAAEAAAACAAkABgABAAEAAAADAAkABgABAAEAAAAEAAkABgABAAEAAAAFAAkABgABAAEAAAAGAAkABgABAAEAAAAHAAkABgABAAEAAAAIAAkABgABAAEAAAAJAAkABgABAAEAAAAKAAkABgABAAEAAAALAAkABgABAAEAAAAMAAkABgABAAEAAAANAAkABgABAAEAAAAOAAkABgABAAEAAAAQAAkABgABAAEAAAAQAAgAAQAHAAMAAAAQAAcABgABAAEAAAAQAAYABgABAAEAAAAQAAUABgABAAEAAAAQAAQABgABAAEAAAAQAAMABgABAAEAAAAQAAIABgABAAEAAAAQAAEAAQAHAAMAAAAQAAAABgABAAEAAAAQAP//BgABAAEAAAARAP//BgABAAEAAAARAAAABgABAAEAAAARAAEABgABAAEAAAARAAIABgABAAEAAAARAAMABgABAAEAAAARAAQABgABAAEAAAARAAUABgABAAEAAAARAAYABgABAAEAAAARAAcABgABAAEAAAARAAgABgABAAEAAAARAAkABgABAAEAAAD7/wAABgABAAEAAAD7/wEABgABAAEAAAD7/wIABgABAAEAAAD7/wMABgABAAEAAAD7/wQABgABAAEAAAD7/wUABgABAAEAAAD7/wYABgABAAEAAAD7/wcABgABAAEAAAD7/wgABgABAAEAAAD7/wkABgABAAEAAAD6/wAABgABAAEAAAD6/wEABgABAAEAAAD6/wIABgABAAEAAAD6/wUABgABAAEAAAD6/wYABgABAAEAAAD6/wcABgABAAEAAAD6/wgABgABAAEAAAD6/wkABgABAAEAAAD6/wMABgABAAEAAAD6/wQABgABAAEAAAD7////BgABAAEAAAD6////BgABAAEAAAASAP//BgABAAEAAAASAAAABgABAAEAAAASAAEABgABAAEAAAASAAIABgABAAEAAAASAAMABgABAAEAAAASAAQABgABAAEAAAASAAUABgABAAEAAAASAAYABgABAAEAAAASAAcABgABAAEAAAASAAgABgABAAEAAAASAAkABgABAAEAAAATAAkABgABAAEAAAATAAgABgABAAEAAAATAAcABgABAAEAAAATAAYABgABAAEAAAATAAUABgABAAEAAAATAAQABgABAAEAAAATAAMABgABAAEAAAATAAIABgABAAEAAAATAAEABgABAAEAAAATAAAABgABAAEAAAATAP//BgABAAEAAAD8/wIABgABAAEAAAD8/wEAAQAFAAMAAAD//wEABgABAAEAAAA=")
+tile_set = ExtResource("4_ogif5")
+
+[node name="Shadows" type="TileMapLayer" parent="TileMapLayers" unique_id=288846221]
+tile_map_data = PackedByteArray("AAD8////AAAAAAAAAAD9////AAAAAAAAAAD+////AAAAAAAAAAD/////AAAAAAAAAAAAAP//AAAAAAAAAAABAP//AAAAAAAAAAACAP//AAAAAAAAAAADAP//AAAAAAAAAAAEAP//AAAAAAAAAAAFAP//AAAAAAAAAAAGAP//AAAAAAAAAAAHAP//AAAAAAAAAAAIAP//AAAAAAAAAAAJAP//AAAAAAAAAAAKAP//AAAAAAAAAAALAP//AAAAAAAAAAAMAP//AAAAAAAAAAANAP//AAAAAAAAAAAOAP//AAAAAAAAAAAPAP//AAAAAAAAAAAQAP//AAAAAAAAAAARAP//AAAAAAAAAAD7////AAAAAAAAAAD6////AAAAAAAAAAD5//7/AAAAAAAAAAD5////AAAAAAAAAAD5/wAAAAAAAAAAAAD5/wEAAAAAAAAAAAD5/wIAAAAAAAAAAAD5/wMAAAAAAAAAAAD5/wQAAAAAAAAAAAD5/wUAAAAAAAAAAAD5/wYAAAAAAAAAAAD5/wcAAAAAAAAAAAD5/wgAAAAAAAAAAAD5/wkAAAAAAAAAAAAUAAkAAAAAAAAAAAAUAAgAAAAAAAAAAAAUAAcAAAAAAAAAAAAUAAYAAAAAAAAAAAAUAAUAAAAAAAAAAAAUAAQAAAAAAAAAAAAUAAMAAAAAAAAAAAAUAAIAAAAAAAAAAAAUAAEAAAAAAAAAAAAUAAAAAAAAAAAAAAAUAP//AAAAAAAAAAAUAP7/AAAAAAAAAAA=")
+tile_set = ExtResource("2_hp3xw")
+
+[node name="Stones" type="TileMapLayer" parent="TileMapLayers" unique_id=1079277268]
+tile_map_data = PackedByteArray("AAAVAAAABAABAAIAAAAVAP//BAABAAIAAAAVAP7/BAABAAIAAAAVAP3/BAABAAIAAAAVAPz/BAABAAIAAAAVAPv/BAABAAEAAAAUAAAABAABAAIAAAAUAP//BAABAAIAAAAUAP7/BAABAAIAAAAUAP3/BAABAAEAAAAUAPz/BAABAAEAAAAUAPv/BAABAAAAAAATAP7/BAABAAIAAAATAP3/BAABAAEAAAATAPz/BAABAAEAAAATAPv/BAABAAAAAAASAP7/BAABAAIAAAASAP3/BAABAAEAAAASAPz/BAABAAEAAAASAPv/BAABAAAAAAARAP7/BAABAAIAAAARAP3/BAABAAEAAAARAPz/BAABAAEAAAARAPv/BAABAAAAAAAQAP7/BAABAAIAAAAQAP3/BAABAAEAAAAQAPz/BAABAAEAAAAQAPv/BAABAAAAAAAPAP7/BAABAAIAAAAPAP3/BAABAAEAAAAPAPz/BAABAAEAAAAPAPv/BAABAAAAAAAOAP7/BAABAAIAAAAOAP3/BAABAAEAAAAOAPz/BAABAAEAAAAOAPv/BAABAAAAAAANAP7/BAABAAIAAAANAP3/BAABAAEAAAANAPz/BAABAAEAAAANAPv/BAABAAAAAAAMAP7/BAABAAIAAAAMAP3/BAABAAEAAAAMAPz/BAABAAEAAAAMAPv/BAABAAAAAAALAP7/BAABAAIAAAALAP3/BAABAAEAAAALAPz/BAABAAEAAAALAPv/BAABAAAAAAAKAP7/BAABAAIAAAAKAP3/BAABAAEAAAAKAPz/BAABAAEAAAAKAPv/BAABAAAAAAAJAP7/BAABAAIAAAAJAP3/BAABAAEAAAAJAPz/BAABAAEAAAAJAPv/BAABAAAAAAAIAP7/BAABAAIAAAAIAP3/BAABAAEAAAAIAPz/BAABAAEAAAAIAPv/BAABAAAAAAAHAP7/BAABAAIAAAAHAP3/BAABAAEAAAAHAPz/BAABAAEAAAAHAPv/BAABAAAAAAAGAP7/BAABAAIAAAAGAP3/BAABAAEAAAAGAPz/BAABAAEAAAAGAPv/BAABAAAAAAAFAP7/BAABAAIAAAAFAP3/BAABAAEAAAAFAPz/BAABAAEAAAAFAPv/BAABAAAAAAAEAP7/BAABAAIAAAAEAP3/BAABAAEAAAAEAPz/BAABAAEAAAAEAPv/BAABAAAAAAADAP7/BAABAAIAAAADAP3/BAABAAEAAAADAPz/BAABAAEAAAADAPv/BAABAAAAAAACAP7/BAABAAIAAAACAP3/BAABAAEAAAACAPz/BAABAAEAAAACAPv/BAABAAAAAAABAP7/BAABAAIAAAABAP3/BAABAAEAAAABAPz/BAABAAEAAAABAPv/BAABAAAAAAAAAP7/BAABAAIAAAAAAP3/BAABAAEAAAAAAPz/BAABAAEAAAAAAPv/BAABAAAAAAD///7/BAABAAIAAAD///3/BAABAAEAAAD///z/BAABAAEAAAD///v/BAABAAAAAAD+//7/BAABAAIAAAD+//3/BAABAAEAAAD+//z/BAABAAEAAAD+//v/BAABAAAAAAD9//7/BAABAAIAAAD9//3/BAABAAEAAAD9//z/BAABAAEAAAD9//v/BAABAAAAAAD8//7/BAABAAIAAAD8//3/BAABAAEAAAD8//z/BAABAAEAAAD8//v/BAABAAAAAAD7//7/BAABAAIAAAD7//3/BAABAAEAAAD7//z/BAABAAEAAAD7//v/BAABAAAAAAD6//7/BAABAAIAAAD6//3/BAABAAEAAAD6//z/BAABAAEAAAD6//v/BAABAAAAAAD5/wAABAABAAIAAAD5////BAABAAIAAAD5//7/BAABAAIAAAD5//3/BAAAAAEAAAD5//z/BAAAAAEAAAD5//v/BAABAAAAAAAVAAIABAABAAIAAAAVAAEABAABAAIAAAAUAAIABAABAAIAAAAUAAEABAABAAIAAAAVAA0ABAABAAIAAAAVAAwABAABAAAAAAAVAAsABAABAAAAAAAVAAoABAABAAAAAAAVAAkABAABAAIAAAAVAAgABAABAAIAAAAVAAcABAABAAIAAAAVAAYABAABAAIAAAAVAAUABAABAAIAAAAVAAQABAABAAIAAAAVAAMABAABAAIAAAAUAA0ABAABAAIAAAAUAAwABAABAAAAAAAUAAsABAABAAAAAAAUAAoABAABAAAAAAAUAAkABAABAAIAAAAUAAgABAABAAIAAAAUAAcABAABAAIAAAAUAAYABAABAAIAAAAUAAUABAABAAIAAAAUAAQABAABAAIAAAAUAAMABAABAAIAAAATAA0ABAABAAIAAAATAAwABAABAAAAAAATAAsABAABAAAAAAATAAoABAABAAAAAAASAA0ABAABAAIAAAASAAwABAABAAAAAAASAAsABAABAAAAAAASAAoABAABAAAAAAARAA0ABAABAAIAAAARAAwABAABAAAAAAARAAsABAABAAAAAAARAAoABAABAAAAAAAQAA0ABAABAAIAAAAQAAwABAABAAAAAAAQAAsABAABAAAAAAAQAAoABAABAAAAAAAPAA0ABAABAAIAAAAPAAwABAABAAAAAAAPAAsABAABAAAAAAAPAAoABAABAAAAAAAOAA0ABAABAAIAAAAOAAwABAABAAAAAAAOAAsABAABAAAAAAAOAAoABAABAAAAAAANAA0ABAABAAIAAAANAAwABAABAAAAAAANAAsABAABAAAAAAANAAoABAABAAAAAAAMAA0ABAABAAIAAAAMAAwABAABAAAAAAAMAAsABAABAAAAAAAMAAoABAABAAAAAAALAA0ABAABAAIAAAALAAwABAABAAAAAAALAAsABAABAAAAAAALAAoABAABAAAAAAAKAA0ABAABAAIAAAAKAAwABAABAAAAAAAKAAsABAABAAAAAAAKAAoABAABAAAAAAAJAA0ABAABAAIAAAAJAAwABAABAAAAAAAJAAsABAABAAAAAAAJAAoABAABAAAAAAAIAA0ABAABAAIAAAAIAAwABAABAAAAAAAIAAsABAABAAAAAAAIAAoABAABAAAAAAAHAA0ABAABAAIAAAAHAAwABAABAAAAAAAHAAsABAABAAAAAAAHAAoABAABAAAAAAAGAA0ABAABAAIAAAAGAAwABAABAAAAAAAGAAsABAABAAAAAAAGAAoABAABAAAAAAAFAA0ABAABAAIAAAAFAAwABAABAAAAAAAFAAsABAABAAAAAAAFAAoABAABAAAAAAAEAA0ABAABAAIAAAAEAAwABAABAAAAAAAEAAsABAABAAAAAAAEAAoABAABAAAAAAADAA0ABAABAAIAAAADAAwABAABAAAAAAADAAsABAABAAAAAAADAAoABAABAAAAAAACAA0ABAABAAIAAAACAAwABAABAAAAAAACAAsABAABAAAAAAACAAoABAABAAAAAAABAA0ABAABAAIAAAABAAwABAABAAAAAAABAAsABAABAAAAAAABAAoABAABAAAAAAAAAA0ABAABAAIAAAAAAAwABAABAAAAAAAAAAsABAABAAAAAAAAAAoABAABAAAAAAD//w0ABAABAAIAAAD//wwABAABAAAAAAD//wsABAABAAAAAAD//woABAABAAAAAAD+/w0ABAABAAIAAAD+/wwABAABAAAAAAD+/wsABAABAAAAAAD+/woABAABAAAAAAD9/w0ABAABAAIAAAD9/wwABAABAAAAAAD9/wsABAABAAAAAAD9/woABAABAAAAAAD8/w0ABAABAAIAAAD8/wwABAABAAAAAAD8/wsABAABAAAAAAD8/woABAABAAAAAAD7/w0ABAABAAIAAAD7/wwABAABAAAAAAD7/wsABAABAAAAAAD7/woABAABAAAAAAD6/w0ABAABAAIAAAD6/wwABAABAAAAAAD6/wsABAABAAAAAAD6/woABAABAAAAAAD5/w0ABAABAAIAAAD5/wwABAABAAAAAAD5/wsABAABAAAAAAD5/woABAABAAAAAAD5/wkABAABAAIAAAD5/wgABAABAAIAAAD5/wcABAABAAIAAAD5/wYABAABAAIAAAD5/wUABAABAAIAAAD5/wQABAABAAIAAAD5/wMABAABAAIAAAD5/wIABAABAAIAAAD5/wEABAABAAIAAAD4//z/BAABAAIAAAD4//3/BAABAAIAAAD4//7/BAABAAIAAAD4////BAABAAIAAAD4/wAABAABAAIAAAD3/wEABAABAAIAAAD3/wIABAABAAIAAAD4/wIABAABAAIAAAD4/wMABAABAAIAAAD4/wQABAABAAIAAAD4/wEABAABAAIAAAD3/wAABAABAAIAAAD3////BAABAAIAAAD3//7/BAABAAIAAAD3//3/BAABAAIAAAD3//z/BAABAAIAAAD3/wMABAABAAIAAAD3/wQABAABAAIAAAD4/wUABAABAAIAAAD3/wUABAABAAIAAAD3/wYABAABAAIAAAD3/wcABAABAAIAAAD4/wcABAABAAIAAAD4/wYABAABAAIAAAD4/wgABAABAAIAAAD3/wgABAABAAIAAAD3/wkABAABAAIAAAD3/woABAABAAIAAAD4/wkABAABAAIAAAD4/woABAABAAIAAAD4/wsABAABAAIAAAD3/wsABAABAAIAAAD3/wwABAABAAIAAAD4/wwABAABAAIAAAD4/w0ABAABAAIAAAD3/w0ABAAAAAIAAAD4//v/BAABAAAAAAD3//v/BAAAAAAAAAAWAPv/BAACAAAAAAAWAA0ABAACAAIAAAAWAAwABAABAAEAAAAWAAsABAABAAEAAAAWAAoABAABAAEAAAAWAAkABAABAAEAAAAWAPz/BAABAAEAAAAWAP3/BAABAAEAAAAWAP7/BAABAAEAAAAWAP//BAABAAEAAAAWAAAABAABAAEAAAAWAAEABAABAAEAAAAWAAIABAABAAEAAAAWAAMABAABAAEAAAAWAAQABAABAAEAAAAWAAUABAABAAEAAAAWAAYABAABAAEAAAAWAAcABAABAAEAAAAWAAgABAABAAEAAAA=")
+tile_set = ExtResource("3_l4v5n")
+
+[node name="OnTheGround" type="Node2D" parent="." unique_id=1358184019]
+y_sort_enabled = true
+
+[node name="Player" parent="OnTheGround" unique_id=747348360 instance=ExtResource("5_2adu0")]
+position = Vector2(-280, 344)
+sprite_frames = ExtResource("6_2sfre")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1732237457]
+limit_left = -456
+limit_top = -128
+limit_right = 1342
+limit_bottom = 712
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[node name="SequencePuzzle" type="Node2D" parent="OnTheGround" unique_id=1771259982 node_paths=PackedStringArray("steps")]
+y_sort_enabled = true
+position = Vector2(-1, 0)
+script = ExtResource("7_jgn2b")
+steps = [NodePath("Steps/SequencePuzzleStep1")]
+metadata/_custom_type_script = "uid://c68oh8dtr21ti"
+
+[node name="Objects" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=7570625]
+y_sort_enabled = true
+position = Vector2(326, 489)
+
+[node name="1718" parent="OnTheGround/SequencePuzzle/Objects" unique_id=883789242 instance=ExtResource("8_pk4t6")]
+position = Vector2(-101, -385)
+sprite_frames = ExtResource("9_epsjp")
+sprite_modulate = Color(0.89, 0.804817, 0.2937, 1)
+audio_stream = ExtResource("12_tx5yr")
+
+[node name="1748" parent="OnTheGround/SequencePuzzle/Objects" unique_id=472811334 instance=ExtResource("8_pk4t6")]
+position = Vector2(-101, 63)
+sprite_frames = ExtResource("9_epsjp")
+sprite_modulate = Color(0.188235, 0.717647, 0, 1)
+audio_stream = ExtResource("13_wotkv")
+
+[node name="1789" parent="OnTheGround/SequencePuzzle/Objects" unique_id=141148153 instance=ExtResource("8_pk4t6")]
+position = Vector2(283, 63)
+sprite_frames = ExtResource("9_epsjp")
+sprite_modulate = Color(0.89, 0.2937, 0.2937, 1)
+audio_stream = ExtResource("15_5157w")
+
+[node name="1824" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1112501847 instance=ExtResource("8_pk4t6")]
+position = Vector2(667, -385)
+sprite_frames = ExtResource("9_epsjp")
+sprite_modulate = Color(0.89, 0.2937, 0.804817, 1)
+audio_stream = ExtResource("11_innt8")
+
+[node name="1867" parent="OnTheGround/SequencePuzzle/Objects" unique_id=947200111 instance=ExtResource("8_pk4t6")]
+position = Vector2(-485, -385)
+sprite_frames = ExtResource("9_epsjp")
+sprite_modulate = Color(0.89, 0.2937, 0.804817, 1)
+audio_stream = ExtResource("11_innt8")
+
+[node name="1913" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1919458224 instance=ExtResource("8_pk4t6")]
+position = Vector2(675, 63)
+sprite_frames = ExtResource("9_epsjp")
+sprite_modulate = Color(0, 0.4, 0.6, 1)
+audio_stream = ExtResource("10_xmx7e")
+
+[node name="1958" parent="OnTheGround/SequencePuzzle/Objects" unique_id=288264421 instance=ExtResource("8_pk4t6")]
+position = Vector2(-485, 63)
+sprite_frames = ExtResource("9_epsjp")
+sprite_modulate = Color(0, 0.4, 0.6, 1)
+audio_stream = ExtResource("10_xmx7e")
+
+[node name="1986" parent="OnTheGround/SequencePuzzle/Objects" unique_id=699569316 instance=ExtResource("8_pk4t6")]
+position = Vector2(283, -385)
+sprite_frames = ExtResource("9_epsjp")
+sprite_modulate = Color(0.464066, 0.2937, 0.89, 1)
+audio_stream = ExtResource("14_bumui")
+
+[node name="Signs" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=1795857144]
+y_sort_enabled = true
+
+[node name="HintSign1" parent="OnTheGround/SequencePuzzle/Signs" unique_id=948532428 instance=ExtResource("16_4tdel")]
+position = Vector2(1033, 848)
+sprite_frames = ExtResource("17_wk8ev")
+
+[node name="HintSign2" parent="OnTheGround/SequencePuzzle/Signs" unique_id=2039036310 instance=ExtResource("16_4tdel")]
+position = Vector2(1129, 848)
+sprite_frames = ExtResource("18_1sx8r")
+
+[node name="Sign1" parent="OnTheGround/SequencePuzzle/Signs" unique_id=1579530966 instance=ExtResource("23_1nnmx")]
+position = Vector2(-271, 176)
+direction = 1
+text = "Retrato del Conde de Lorrain
+[pintado en 1867]"
+
+[node name="Sign2" parent="OnTheGround/SequencePuzzle/Signs" unique_id=2022955492 instance=ExtResource("23_1nnmx")]
+position = Vector2(-271, 504)
+direction = 1
+text = "Busto de bronce “El Guardián Silente”
+[esculpido en 1958]"
+
+[node name="Sign3" parent="OnTheGround/SequencePuzzle/Signs" unique_id=1193838852 instance=ExtResource("23_1nnmx")]
+position = Vector2(105, 504)
+direction = 1
+text = "Escultura de mármol de la familia Arden
+[esculpida en 1746]"
+
+[node name="Sign4" parent="OnTheGround/SequencePuzzle/Signs" unique_id=1859137227 instance=ExtResource("23_1nnmx")]
+position = Vector2(105, 176)
+direction = 1
+text = "Reloj de péndulo del Salón Norte
+[adquirido en 1718]"
+
+[node name="Sign5" parent="OnTheGround/SequencePuzzle/Signs" unique_id=509955329 instance=ExtResource("23_1nnmx")]
+position = Vector2(489, 504)
+direction = 1
+text = "Espejo veneciano con marco dorado
+[elaborado en 1789]"
+
+[node name="Sign6" parent="OnTheGround/SequencePuzzle/Signs" unique_id=843069447 instance=ExtResource("23_1nnmx")]
+position = Vector2(497, 176)
+direction = 1
+text = "Gramófono de salón imperial Valmont
+[adquirido en 1986]"
+
+[node name="Sign7" parent="OnTheGround/SequencePuzzle/Signs" unique_id=763684153 instance=ExtResource("23_1nnmx")]
+position = Vector2(881, 176)
+direction = 1
+text = "Piano de cola imperial “Ashford Grand”
+[construido en 1824]"
+
+[node name="Sign8" parent="OnTheGround/SequencePuzzle/Signs" unique_id=1582145119 instance=ExtResource("23_1nnmx")]
+position = Vector2(881, 504)
+direction = 1
+text = "Retrato al óleo de la nobleza de inicio de siglo
+[pintado en 1913]"
+
+[node name="Steps" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=666035394]
+
+[node name="SequencePuzzleStep1" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" unique_id=202668807 node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("19_umc4r")
+sequence = [NodePath("../../Objects/1718"), NodePath("../../Objects/1748"), NodePath("../../Objects/1789"), NodePath("../../Objects/1824"), NodePath("../../Objects/1867"), NodePath("../../Objects/1913"), NodePath("../../Objects/1958"), NodePath("../../Objects/1986")]
+hint_sign = NodePath("../../Signs/HintSign1")
+
+[node name="CollectibleItem" parent="OnTheGround" unique_id=1678374994 instance=ExtResource("20_37xyc")]
+position = Vector2(1192, 336)
+revealed = false
+next_scene = "uid://dhho7hr48exe5"
+item = SubResource("Resource_2vru2")
+collected_dialogue = ExtResource("22_7btov")
+dialogue_title = &"well_done"
+
+[node name="Sign" parent="OnTheGround" unique_id=263994380 instance=ExtResource("23_1nnmx")]
+position = Vector2(1264, 840)
+direction = 1
+text = "First melody: yellow, green, blue."
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1686505878]
+
+[node name="HUD" parent="." unique_id=1084128841 instance=ExtResource("24_b43bd")]
+
+[node name="Cinematic" type="Node2D" parent="." unique_id=1869940872]
+script = ExtResource("25_jbgfi")
+dialogue = ExtResource("22_7btov")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=246171443]
+stream = ExtResource("25_l4v5n")
+volume_db = -7.87
+autoplay = true
+parameters/looping = true
+
+[connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]
