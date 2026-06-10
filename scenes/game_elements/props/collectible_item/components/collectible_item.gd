@@ -87,28 +87,19 @@ func reveal() -> void:
 ## and when that finishes, a new [InventoryItem] will be added to the
 ## [GameState] and the interaction will have ended.
 func _on_interacted(player: Player, _from_right: bool) -> void:
-	##llamamos a la funcion del padre para avisar que un item se recolecto
-	get_parent().item_collected();
-	##verificamos si todos los items fueron recolectados
-	var collected = get_parent().are_all_collected();
-	
 	z_index += 1
 	animation_player.play("collected")
 	await animation_player.animation_finished
 
 	GameState.add_collected_item(item)
-	
-	if collected_dialogue && collected:##para mostrar el dialogo solo si los items han sido recolectados
+
+	if collected_dialogue:
 		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])
 		await DialogueManager.dialogue_ended
 
 	interact_area.end_interaction()
 	queue_free()
-	
-	##si no estan recolectados, no pasa a la siguiente escena
-	if !collected:
-		return
-	
+
 	if next_scene:
 		GameState.set_challenge_start_scene(next_scene)
 		SceneSwitcher.change_to_file_with_transition(next_scene)
