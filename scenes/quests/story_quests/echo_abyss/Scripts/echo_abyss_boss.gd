@@ -29,6 +29,8 @@ var _is_defeated: bool = false
 var _health_bar: TextureProgressBar
 var _is_phase2_jumping := false
 var _phase2_jump_timer := 0.0
+# Flag para detener el loop de saltos de fase 1 al transicionar a fase 2
+var _phase1_active: bool = false
 
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
@@ -83,10 +85,12 @@ func _process(delta: float) -> void:
 func _start_phase_1() -> void:
 	current_state = State.IDLE
 	_shoot_timer = shoot_cooldown
+	_phase1_active = true
 	_do_next_jump()
 
 func _do_next_jump() -> void:
-	if _is_defeated or health <= 50:
+	# Salir si el boss fue derrotado o si la fase 1 ya no está activa
+	if _is_defeated or not _phase1_active or health <= 50:
 		return
 
 	if not patrol_path or patrol_path.curve.point_count < 2:
@@ -116,10 +120,11 @@ func _do_next_jump() -> void:
 	await tween.finished
 	_is_jumping = false
 
-	if _is_defeated:
+	# Verificar de nuevo tras el await por si el estado cambió
+	if _is_defeated or not _phase1_active:
 		return
 
-	# Shoot immediately upon landing or mid-jump
+	# Capturamos la posición del player en este instante exacto para el disparo
 	_shoot_projectile()
 
 	# Wait a short moment then jump again
@@ -169,7 +174,8 @@ func _jump_to_player() -> void:
 
 	current_state = State.ATTACKING
 
-	_perform_melee_attack()
+	if global_position.distance_to(_player.global_position) <= melee_range:
+		_perform_melee_attack()
 	_shoot_projectile()
 
 	animation_player.play(&"idle")
@@ -209,6 +215,8 @@ func _shoot_projectile() -> void:
 	projectile.can_hit_enemy = false
 	projectile.can_hit_player = true
 	
+	#print(projectile.get_script().resource_path)
+	
 	var dir = projectile_marker.global_position.direction_to(_player.global_position)
 	projectile.direction = dir
 	projectile.global_position = projectile_marker.global_position + dir * 20.0
@@ -239,6 +247,12 @@ func _spawn_falling_rock() -> void:
 	rock.direction = Vector2.DOWN
 	rock.speed = 180.0
 	rock.duration = 5.0
+	
+	# IMPORTANTE: Las rocas NO deben colisionar con el cuerpo del boss (capa 1)
+	# para evitar que reboten en él antes de llegar al player.
+	# Usamos la máscara 80 (WALLS + PLAYERS_HITBOX) sin incluir PLAYERS(1).
+	# La detección de daño al player se hace vía el HitBox Area2D del player.
+	rock.set_collision_mask_value(1, false)
 	
 	get_tree().current_scene.add_child(rock)
 
@@ -272,7 +286,8 @@ func take_damage(amount: float) -> void:
 	if health <= 0.0:
 		_defeat()
 	elif health <= 50.0 and current_state != State.CHASING and current_state != State.ATTACKING:
-		# Transition to Phase 2 immediately
+		# Detener el loop de fase 1 antes de transicionar
+		_phase1_active = false
 		_is_jumping = false
 		current_state = State.CHASING
 
@@ -287,6 +302,7 @@ func _on_hit_box_body_entered(body: Node2D) -> void:
 
 func _defeat() -> void:
 	_is_defeated = true
+	_phase1_active = false
 	current_state = State.DEFEATED
 	velocity = Vector2.ZERO
 	animation_player.play(&"defeated")
@@ -298,9 +314,9 @@ func _defeat() -> void:
 	# Wait for defeat animation and trigger victory condition
 	await animation_player.animation_finished
 	
-	# Unlock level exit if LevelExit node exists
-	var exit_door = get_tree().current_scene.find_child("Door Exit", true, false)
-	if exit_door and exit_door.has_method("open"):
-		exit_door.open()
-		
+	# Activar el EssenceExit para que el player pueda pasar al siguiente nivel
+	var essence_exit = get_tree().current_scene.find_child("EssenceExit", true, false)
+	if essence_exit and essence_exit.has_method("_set_unlocked"):
+		essence_exit._set_unlocked(true)
+	
 	queue_free()
