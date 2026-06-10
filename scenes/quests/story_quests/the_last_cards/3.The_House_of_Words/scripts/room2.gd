@@ -59,10 +59,10 @@ func _physics_process(delta):
 	var velocity = Vector2.ZERO
 	if Input.is_action_pressed("ui_right"):
 		velocity.x = 150
-		$Player/Sprite2D.flip_h = false
+		$Player/AnimatedSprite2D.flip_h = false
 	elif Input.is_action_pressed("ui_left"):
 		velocity.x = -150
-		$Player/Sprite2D.flip_h = true
+		$Player/AnimatedSprite2D.flip_h = true
 	if Input.is_action_pressed("ui_up"):
 		velocity.y = -150
 	elif Input.is_action_pressed("ui_down"):
@@ -98,7 +98,7 @@ func _evaluar_intento(intento):
 		juego_activo = false
 		$CanvasGroup/Panel/LabelMensaje.text = "¡Correcto! Siguiente habitación..."
 		await get_tree().create_timer(2.0).timeout
-		get_tree().change_scene_to_file("res://scenes/Room3.tscn")
+		get_tree().change_scene_to_file("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Room3.tscn")
 	else:
 		intento_actual += 1
 		if intento_actual >= 6:
@@ -129,7 +129,7 @@ func _actualizar_timer_display():
 
 func _game_over():
 	juego_activo = false
-	get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+	get_tree().change_scene_to_file("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/GameOver.tscn")
 
 func _on_input_focus():
 	escribiendo = true
