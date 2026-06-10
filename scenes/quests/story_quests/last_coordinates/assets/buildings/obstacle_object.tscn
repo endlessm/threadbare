@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bix4ue4tbq8jt"]
+
+[sub_resource type="GDScript" id="GDScript_y787v"]
+script/source = "@tool
+extends Node2D
+
+
+@export var sprite_frames: SpriteFrames = null
+
+@export var sprite: Texture2D = null
+@export var collision_shape: Shape2D
+
+func _ready() -> void:
+	%Sprite2D.texture = sprite
+	$CollisionShape2D.shape = collision_shape
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kw7av"]
+height = 42.0
+
+[node name="Rock" type="StaticBody2D" unique_id=1319147835]
+collision_layer = 16
+collision_mask = 0
+script = SubResource("GDScript_y787v")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1310606653]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2100829996]
+position = Vector2(3, 7)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_kw7av")
