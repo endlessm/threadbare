@@ -4,7 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://dkgtyb0x1i0m2" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/combat_music.tres" id="2_ah6ns"]
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="3_ajc71"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="4_gteq2"]
-[ext_resource type="Script" uid="uid://cr3nm7w2jemy" path="res://scenes/quests/lore_quests/quest_003/2_ink_drinker_levels/components/difficulty_ramp.gd" id="4_ubp0p"]
+[ext_resource type="Script" uid="uid://cr3nm7w2jemy" path="res://scenes/quests/lore_quests/song_sanctuary_3/1_ink_drinker_levels/components/difficulty_ramp.gd" id="4_ubp0p"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="6_ah6ns"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="6_ubp0p"]
 [ext_resource type="TileSet" uid="uid://dfp36ffpanjq2" path="res://tiles/elevation.tres" id="7_ubp0p"]
@@ -25,7 +25,9 @@
 [ext_resource type="SpriteFrames" uid="uid://r0w8oerw0kga" path="res://scenes/game_elements/props/decoration/water_rock/components/water_rock_01.tres" id="24_ubp0p"]
 [ext_resource type="SpriteFrames" uid="uid://c5q1t8qd1h1pl" path="res://scenes/game_elements/props/decoration/water_rock/components/water_rock_02.tres" id="25_jgk56"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="26_jqnd2"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="27_b2ao2"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="27_qh3g1"]
+[ext_resource type="Resource" uid="uid://1q4ntvf11y4l" path="res://scenes/quests/lore_quests/song_sanctuary_3/1_ink_drinker_levels/components/musician.dialogue" id="28_414na"]
 
 [sub_resource type="Animation" id="Animation_nlryc"]
 resource_name = "goal_completed"
@@ -57,10 +59,15 @@ size = Vector2(101, 49)
 [node name="BackgroundMusic" parent="." unique_id=26893484 instance=ExtResource("1_i2xws")]
 stream = ExtResource("2_ah6ns")
 
+[node name="Cinematic" type="Node2D" parent="." unique_id=771284646]
+script = ExtResource("27_b2ao2")
+dialogue = ExtResource("28_414na")
+dialogue_title = "round_4"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
 [node name="FillGameLogic" type="Node" parent="." unique_id=835746618]
 script = ExtResource("3_ajc71")
 barrels_to_win = 3
-autostart = true
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="LevelCompletedAnimation" type="AnimationPlayer" parent="FillGameLogic" unique_id=228751517]
@@ -134,7 +141,6 @@ position = Vector2(415, 145)
 scale = Vector2(-1, 1)
 distance = 30.0
 throwing_period = 4.0
-autostart = true
 sprite_frames = ExtResource("13_7o6on")
 idle_sound_stream = ExtResource("14_plgxr")
 attack_sound_stream = ExtResource("15_i740e")
@@ -149,7 +155,6 @@ position = Vector2(675, 145)
 distance = 30.0
 throwing_period = 4.0
 odd_shoot = true
-autostart = true
 sprite_frames = ExtResource("21_jcr1e")
 idle_sound_stream = ExtResource("14_plgxr")
 attack_sound_stream = ExtResource("15_i740e")
@@ -240,4 +245,5 @@ limit_bottom = 704
 position_smoothing_enabled = true
 editor_draw_limits = true
 
+[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]

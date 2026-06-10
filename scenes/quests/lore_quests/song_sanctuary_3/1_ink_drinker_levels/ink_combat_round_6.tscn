@@ -7,7 +7,7 @@
 [ext_resource type="TileSet" uid="uid://dfp36ffpanjq2" path="res://tiles/elevation.tres" id="2_s2t2y"]
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="3_1a5yo"]
 [ext_resource type="Script" uid="uid://c2lx7gvkonxaa" path="res://scenes/game_elements/props/background_music/components/clip_switcher.gd" id="3_4co4a"]
-[ext_resource type="Script" uid="uid://en37d2lad0px" path="res://scenes/quests/lore_quests/quest_003/2_ink_drinker_levels/components/barrel_unlock_sequence.gd" id="3_ihx08"]
+[ext_resource type="Script" uid="uid://en37d2lad0px" path="res://scenes/quests/lore_quests/song_sanctuary_3/1_ink_drinker_levels/components/barrel_unlock_sequence.gd" id="3_ihx08"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="5_4co4a"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="5_bl3l0"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_pbtyo"]
@@ -29,6 +29,8 @@
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="27_7y6db"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="28_ihx08"]
 [ext_resource type="PackedScene" uid="uid://dy8ohrl7j24qy" path="res://scenes/game_elements/characters/enemies/mothsache/Mothsache.tscn" id="30_4co4a"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="30_t7x86"]
+[ext_resource type="Resource" uid="uid://1q4ntvf11y4l" path="res://scenes/quests/lore_quests/song_sanctuary_3/1_ink_drinker_levels/components/musician.dialogue" id="31_n0ti8"]
 
 [sub_resource type="Animation" id="Animation_k5uk8"]
 resource_name = "goal_completed"
@@ -71,10 +73,15 @@ metadata/_custom_type_script = "uid://c2lx7gvkonxaa"
 script = ExtResource("3_ihx08")
 barrels = [NodePath("../OnTheGround/FillingBarrel"), NodePath("../OnTheGround/FillingBarrel2"), NodePath("../OnTheGround/FillingBarrel3")]
 
+[node name="Cinematic" type="Node2D" parent="." unique_id=590207237]
+script = ExtResource("30_t7x86")
+dialogue = ExtResource("31_n0ti8")
+dialogue_title = "round_6"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
 [node name="FillGameLogic" type="Node" parent="." unique_id=14736843]
 script = ExtResource("3_1a5yo")
 barrels_to_win = 3
-autostart = true
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="LevelCompletedAnimation" type="AnimationPlayer" parent="FillGameLogic" unique_id=469517005]
@@ -126,7 +133,6 @@ position = Vector2(96, 717)
 position = Vector2(1174, 350)
 throwing_period = 3.0
 odd_shoot = true
-autostart = true
 sprite_frames = ExtResource("17_d8vgr")
 idle_sound_stream = ExtResource("10_7y6db")
 attack_sound_stream = ExtResource("11_ck7cp")
@@ -140,7 +146,6 @@ walking_speed = 20.0
 position = Vector2(110, 356)
 throwing_period = 3.0
 odd_shoot = true
-autostart = true
 sprite_frames = ExtResource("17_d8vgr")
 idle_sound_stream = ExtResource("10_7y6db")
 attack_sound_stream = ExtResource("11_ck7cp")
@@ -230,9 +235,9 @@ scale = Vector2(0.8, 0.8)
 unique_name_in_owner = true
 position = Vector2(593, 356)
 revealed = false
-next_scene = "uid://cufkthb25mpxy"
 item = SubResource("Resource_rlfef")
 dialogue_title = &"well_done"
+next_scene = "uid://cufkthb25mpxy"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=170542824]
 position = Vector2(0, -3)
@@ -250,5 +255,6 @@ editor_draw_limits = true
 [node name="Mothsache" parent="." unique_id=1695758163 instance=ExtResource("30_4co4a")]
 position = Vector2(800, 362)
 
+[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="BackgroundMusic/ClipSwitcher" method="switch"]
 [connection signal="goal_reached" from="FillGameLogic" to="FillGameLogic/LevelCompletedAnimation" method="play" binds= ["goal_completed"]]

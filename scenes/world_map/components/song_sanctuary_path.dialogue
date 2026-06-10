@@ -1,13 +1,23 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 ~ start
-if musician_quest_unlocker.is_satisfied():
-	Bridget: Thanks for helping clear away those InkDrinkers!
-	Bridget: I fixed the bridge east of here while you were away.
-else:
+if not musician_quest_unlocker.is_satisfied():
 	Bridget: That bridge to the east has been broken for ages.
 	Bridget: Have you met the musician? He lives north of here.
 	% Bridget: Maybe you can help him put this place back together.
 	% Bridget: I still can’t figure out how he plays that triple-necked guitar. He only has two hands!
 	% Bridget: To be honest, I blame him for how run-down this place is. He stopped turning up for our weekly singalongs.
+elif not guarded_stones_unlocker.is_satisfied() or not oops_all_inkdrinkers_unlocker.is_satisfied():
+	if not guarded_stones_unlocker.is_satisfied() and not oops_all_inkdrinkers_unlocker.is_satisfied():
+		# If the player has completed neither, thank them for the first quest
+		Bridget: Thanks for helping clear away those InkDrinkers!
+		Bridget: I fixed the bridge east of here while you were away.
+	if not guarded_stones_unlocker.is_satisfied():
+		Bridget: The musician found another set of stones and altars to the east, but they are guarded by StoryVores.
+		Bridget: I think you could sneak past them and rediscover the melodies!
+	else:
+		Bridget: I'm afraid there's another infestation of InkDrinkers east of here.
+		Bridget: Can you help clear them away?
+else:
+	Bridget: Thanks for all your help!
 => END
