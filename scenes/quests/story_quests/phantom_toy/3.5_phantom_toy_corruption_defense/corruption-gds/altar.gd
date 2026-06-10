@@ -9,6 +9,9 @@ extends Node2D
 
 func set_corrupted(value: bool) -> void:
 
+	if not is_node_ready():
+		await ready
+
 	if value:
 		sprite.texture = corrupted_texture
 	else:
