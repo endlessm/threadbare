@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://0xcyaw6q8l8s"]
+
+[ext_resource type="Script" uid="uid://dt125q7jamrqh" path="res://scenes/quests/story_quests/en_la_prondidad/2_combat/proyectile.gd" id="1_ru0kx"]
+[ext_resource type="Texture2D" uid="uid://b0aj7d2iyhun6" path="res://scenes/quests/story_quests/en_la_prondidad/asets/proyectil.png" id="2_ru0kx"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sohk5"]
+radius = 8.920531
+height = 56.010555
+
+[node name="Proyectile" type="Node2D" unique_id=578675265]
+script = ExtResource("1_ru0kx")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=576854894]
+scale = Vector2(0.84374994, 0.90625)
+texture = ExtResource("2_ru0kx")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=450543999 groups=["projectiles"]]
+modulate = Color(1, 1, 0.54509807, 1)
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=125368290]
+scale = Vector2(0.89680755, 0.9998116)
+shape = SubResource("CapsuleShape2D_sohk5")
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
