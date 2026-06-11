@@ -87,7 +87,7 @@ func _set_mode(new_mode: Mode) -> void:
 			_toggle_abilities()
 		Mode.DEFEATED:
 			_toggle_player_behavior(input_walk_behavior, false)
-			_toggle_player_behavior(player_interaction, false)
+			_toggle_player_behavior(player_interaction, true)
 			_toggle_player_behavior(player_repel, false)
 			_toggle_player_behavior(player_hook, false)
 
