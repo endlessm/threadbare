@@ -3,13 +3,10 @@
 [ext_resource type="Script" uid="uid://crj5kpcqk0dgn" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/room3.gd" id="1_5hlaq"]
 [ext_resource type="TileSet" uid="uid://4ewcvb1sibsf" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/2_cinematicacombate/tile/tilestaller.tres" id="2_ekjj7"]
 [ext_resource type="SpriteFrames" uid="uid://dkcv15as5d6gw" path="res://scenes/quests/story_quests/after_the_tremor/bryan_components/after_the_tremor_bryan.tres" id="3_sja76"]
-[ext_resource type="SpriteFrames" uid="uid://nfm4t7txex23" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/ente.tres" id="4_ugidv"]
+[ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="4_ekjj7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_46cre"]
 size = Vector2(83.5, 109)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_dfufo"]
-size = Vector2(107, 124)
 
 [node name="Room3" type="Node2D" unique_id=8831323]
 script = ExtResource("1_5hlaq")
@@ -53,19 +50,6 @@ position = Vector2(27, 120)
 position = Vector2(-98.625, -8.499982)
 scale = Vector2(0.56782955, 0.42035383)
 sprite_frames = ExtResource("3_sja76")
-animation = &"idle"
-
-[node name="Bestia" type="CharacterBody2D" parent="." unique_id=542319242]
-position = Vector2(1400, 621)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Bestia" unique_id=1694810153]
-position = Vector2(-82.5, 26)
-shape = SubResource("RectangleShape2D_dfufo")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Bestia" unique_id=18339121]
-position = Vector2(-81.5, 26.499998)
-scale = Vector2(0.39583337, 0.40073523)
-sprite_frames = ExtResource("4_ugidv")
 animation = &"idle"
 
 [node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=561364126]
@@ -122,3 +106,5 @@ offset_bottom = 781.0
 theme_override_font_sizes/font_size = 22
 text = "\"Presiona una letra del teclado\"
 "
+
+[node name="Bestia" parent="." unique_id=689832587 instance=ExtResource("4_ekjj7")]
