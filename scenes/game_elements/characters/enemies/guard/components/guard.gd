@@ -459,11 +459,18 @@ func _set_alert_other_sound_stream(new_value: AudioStream) -> void:
 
 
 func _on_instant_detection_area_body_entered(body: Node2D) -> void:
+	# SI LO QUE ENTRÓ NO TIENE EL MÉTODO DEFEAT (NO ES EL JUGADOR), IGNÓRALO
+	if not body.has_method("defeat"):
+		return
+		
+	# Si sí es el jugador, se alerta de inmediato
 	state = State.ALERTED
 	player_detected.emit(body)
-
-
+	
 func _on_detection_area_body_entered(body: Node2D) -> void:
+	if not body.has_method("defeat"):
+		return
+
 	_player = body
 	if _is_sight_to_point_blocked(body.global_position):
 		return
@@ -472,7 +479,6 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 		player_detected.emit(_player)
 	else:
 		state = State.DETECTING
-
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
 	_player = null
