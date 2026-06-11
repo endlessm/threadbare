@@ -4,7 +4,7 @@ extends Node2D
 
 @onready var collectible_item: CollectibleItem = $"../CollectibleItem"
 
-@onready var player: Player = $"../Player"
+@onready var player: Player = $"../CorruptionPlayer"
 
 @onready var timer_label = $"../../HUD/CorruptionHUD/VBoxContainer/TimerLabel"
 

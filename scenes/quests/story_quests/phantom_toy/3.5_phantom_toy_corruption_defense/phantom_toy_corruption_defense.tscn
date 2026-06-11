@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_hp1ma"]
 [ext_resource type="SpriteFrames" uid="uid://hg6rad1yyt17" path="res://scenes/quests/story_quests/phantom_toy/player_components/phantom_toy_player.tres" id="6_07vu5"]
 [ext_resource type="Script" uid="uid://dpw6rcsiar8so" path="res://scenes/quests/story_quests/phantom_toy/3.5_phantom_toy_corruption_defense/corruption-gds/corruption_defense.gd" id="7_dklmw"]
-[ext_resource type="Script" uid="uid://b7kuruje8cude" path="res://scenes/quests/story_quests/phantom_toy/3.5_phantom_toy_corruption_defense/corruption-gds/player.gd" id="7_tojwt"]
+[ext_resource type="Script" uid="uid://b7kuruje8cude" path="res://scenes/quests/story_quests/phantom_toy/3.5_phantom_toy_corruption_defense/corruption-gds/CorruptionPlayer.gd" id="7_tojwt"]
 [ext_resource type="Texture2D" uid="uid://b811uw1fj6oej" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/north.png" id="13_voy1e"]
 [ext_resource type="Texture2D" uid="uid://cw6x8lrjc641v" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/south.png" id="14_1aejw"]
 [ext_resource type="Texture2D" uid="uid://cwavram1kyqmb" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/west.png" id="15_oxfsk"]
@@ -31,6 +31,13 @@
 [ext_resource type="Texture2D" uid="uid://ba73plhmg3c3m" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/calavera_sombrero_payaso.png" id="27_5pq7a"]
 [ext_resource type="Texture2D" uid="uid://blmqemmfps2la" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/marmol.png" id="27_mlctm"]
 [ext_resource type="Texture2D" uid="uid://bbufexuxa7ydk" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/calavera_payaso.png" id="28_cifp1"]
+[ext_resource type="Texture2D" uid="uid://dkn4ri6t43t6d" path="res://scenes/quests/story_quests/phantom_toy/assets/oso/steady_oso/steady_oso_steady_0.png" id="29_cifp1"]
+[ext_resource type="Script" uid="uid://bqlki1yrrne1i" path="res://scenes/quests/story_quests/phantom_toy/3.5_phantom_toy_corruption_defense/corruption-gds/bear_follower.gd" id="29_e64m4"]
+[ext_resource type="Texture2D" uid="uid://c7rb31cud02tw" path="res://scenes/quests/story_quests/phantom_toy/assets/oso/steady_oso/steady_oso_steady_1.png" id="30_e64m4"]
+[ext_resource type="Texture2D" uid="uid://bcdsu85kv12sl" path="res://scenes/quests/story_quests/phantom_toy/assets/oso/steady_oso/steady_oso_steady_2.png" id="31_w4aa1"]
+[ext_resource type="Texture2D" uid="uid://ltyeducybmhe" path="res://scenes/quests/story_quests/phantom_toy/assets/oso/run_oso/run_oso_run_0.png" id="32_diq11"]
+[ext_resource type="Texture2D" uid="uid://dsew3eflryh2l" path="res://scenes/quests/story_quests/phantom_toy/assets/oso/run_oso/run_oso_run_1.png" id="33_r7q3b"]
+[ext_resource type="Texture2D" uid="uid://btkimxol7yp7i" path="res://scenes/quests/story_quests/phantom_toy/assets/oso/run_oso/run_oso_run_2.png" id="34_v3of3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oxfsk"]
 texture = ExtResource("5_1aejw")
@@ -119,6 +126,39 @@ size = Vector2(48.533318, 43.733334)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eqx4r"]
 size = Vector2(48.533318, 43.733334)
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_eqx4r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("29_cifp1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_e64m4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_w4aa1")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("32_diq11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_r7q3b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_v3of3")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x6uqc"]
+
 [node name="PhantomToyCorruptionDefense" type="Node2D" unique_id=1537424246]
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=827843016]
@@ -148,12 +188,12 @@ tile_set = SubResource("TileSet_2dvmi")
 [node name="OnTheGround" type="Node2D" parent="." unique_id=975270477]
 y_sort_enabled = true
 
-[node name="Player" parent="OnTheGround" unique_id=392727400 instance=ExtResource("5_hp1ma")]
+[node name="CorruptionPlayer" parent="OnTheGround" unique_id=392727400 instance=ExtResource("5_hp1ma")]
 position = Vector2(538, 679)
 script = ExtResource("7_tojwt")
 sprite_frames = ExtResource("6_07vu5")
 
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1470090955]
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/CorruptionPlayer" unique_id=1470090955]
 limit_enabled = false
 limit_left = 101
 limit_top = 89
@@ -162,7 +202,7 @@ limit_bottom = 583
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="PointLight2D2" type="PointLight2D" parent="OnTheGround/Player" unique_id=933616028]
+[node name="PointLight2D2" type="PointLight2D" parent="OnTheGround/CorruptionPlayer" unique_id=933616028]
 position = Vector2(1, -22)
 color = Color(0.99, 0.99, 0.99, 1)
 texture = SubResource("GradientTexture2D_to1pq")
@@ -581,6 +621,20 @@ shape = SubResource("RectangleShape2D_eqx4r")
 position = Vector2(-1.0557594, -41.90625)
 scale = Vector2(1.8002452, 1.8002452)
 texture = ExtResource("26_tojwt")
+
+[node name="BearFollower" type="CharacterBody2D" parent="OnTheGround" unique_id=70711721 node_paths=PackedStringArray("target")]
+position = Vector2(494, 684)
+script = ExtResource("29_e64m4")
+target = NodePath("../CorruptionPlayer")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/BearFollower" unique_id=79591739]
+position = Vector2(3, -17)
+sprite_frames = SubResource("SpriteFrames_eqx4r")
+animation = &"walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/BearFollower" unique_id=296098973]
+shape = SubResource("RectangleShape2D_x6uqc")
+disabled = true
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1188824144]
 
