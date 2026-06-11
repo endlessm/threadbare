@@ -5,9 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="4_3tiik"]
 [ext_resource type="Script" uid="uid://bb52rsfwhkxbn" path="res://addons/dialogue_manager/dialogue_responses_menu.gd" id="5_gjlrd"]
 [ext_resource type="Material" uid="uid://cruf3tlajs4jo" path="res://scenes/ui_elements/input_hints/components/drop_shadow_material.tres" id="6_y5co6"]
-[ext_resource type="Texture2D" uid="uid://c6fggds355rko" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/keyboard/keyboard_space_outline.tres" id="7_qmj24"]
+[ext_resource type="Texture2D" uid="uid://bbvedlx2ahdxk" path="res://assets/third_party/kenney_input_prompts/keyboard-&-mouse_sheet_default.png" id="7_u3aeq"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="8_saw5e"]
-[ext_resource type="Resource" uid="uid://c1beocky1qjxi" path="res://scenes/game_elements/props/hint/resources/devices.tres" id="9_j0m6q"]
 [ext_resource type="AudioStream" uid="uid://cs1bx2odpj6vm" path="res://scenes/ui_elements/dialogue/components/sounds/pencil.ogg" id="10_oyhl1"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_beq22"]
@@ -23,6 +22,10 @@ texture_margin_bottom = 64.0
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 modulate_color = Color(1.3807716, 1.3807716, 1.3807716, 0.83137256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oh0dh"]
+atlas = ExtResource("7_u3aeq")
+region = Rect2(128, 192, 64, 64)
 
 [node name="DialogueBalloon" type="CanvasLayer" unique_id=308207015]
 layer = 100
@@ -148,10 +151,9 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
-texture = ExtResource("7_qmj24")
+texture = SubResource("AtlasTexture_oh0dh")
 script = ExtResource("8_saw5e")
-action_name = &"interact"
-devices = ExtResource("9_j0m6q")
+action_name = &"dialogue_next"
 
 [node name="TalkSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1778551533]
 stream = ExtResource("10_oyhl1")

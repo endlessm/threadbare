@@ -8,12 +8,23 @@
 [ext_resource type="PackedScene" uid="uid://bjpyvet0x5dw8" path="res://scenes/menus/inventory/inventory.tscn" id="4_qydtk"]
 [ext_resource type="Shortcut" uid="uid://c5pwgp1w8p3y1" path="res://scenes/ui_elements/shortcuts/back_shortcut.tres" id="6_fh64e"]
 [ext_resource type="Material" uid="uid://cruf3tlajs4jo" path="res://scenes/ui_elements/input_hints/components/drop_shadow_material.tres" id="7_bwxj8"]
-[ext_resource type="Texture2D" uid="uid://45plriwir0nj" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/keyboard/keyboard_p_outline.tres" id="8_bwxj8"]
 [ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="8_ywskk"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="9_fh64e"]
-[ext_resource type="Resource" uid="uid://c1beocky1qjxi" path="res://scenes/game_elements/props/hint/resources/devices.tres" id="10_ywskk"]
+[ext_resource type="Texture2D" uid="uid://dgfsrkr8a370h" path="res://assets/third_party/kenney_input_prompts/steam-deck_sheet_default.png" id="10_fh64e"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1tcw0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ywskk"]
+atlas = ExtResource("10_fh64e")
+region = Rect2(320, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fh64e"]
+atlas = ExtResource("10_fh64e")
+region = Rect2(512, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mn3wt"]
+atlas = ExtResource("10_fh64e")
+region = Rect2(576, 576, 64, 64)
 
 [node name="PauseOverlay" type="CanvasLayer" unique_id=102598744]
 process_mode = 3
@@ -127,10 +138,9 @@ material = ExtResource("7_bwxj8")
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
-texture = ExtResource("8_bwxj8")
+texture = SubResource("AtlasTexture_ywskk")
 script = ExtResource("9_fh64e")
 action_name = &"pause"
-devices = ExtResource("10_ywskk")
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=762214617]
 layout_mode = 2
@@ -146,10 +156,9 @@ material = ExtResource("7_bwxj8")
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
-texture = ExtResource("8_bwxj8")
+texture = SubResource("AtlasTexture_fh64e")
 script = ExtResource("9_fh64e")
 action_name = &"previous_tab"
-devices = ExtResource("10_ywskk")
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer/PreviousTabContainer" unique_id=703188421]
 layout_mode = 2
@@ -165,10 +174,9 @@ material = ExtResource("7_bwxj8")
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
-texture = ExtResource("8_bwxj8")
+texture = SubResource("AtlasTexture_mn3wt")
 script = ExtResource("9_fh64e")
 action_name = &"next_tab"
-devices = ExtResource("10_ywskk")
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=1814948712]
 layout_mode = 2

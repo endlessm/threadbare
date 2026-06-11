@@ -1,9 +1,12 @@
 [gd_scene format=3 uid="uid://cjg3rptgsh0lf"]
 
-[ext_resource type="Texture2D" uid="uid://do0gp3uj3iiw3" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/keyboard/keyboard_r.tres" id="1_qfkb4"]
 [ext_resource type="Material" uid="uid://cruf3tlajs4jo" path="res://scenes/ui_elements/input_hints/components/drop_shadow_material.tres" id="1_ykdc3"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="2_jc2yi"]
-[ext_resource type="Resource" uid="uid://c1beocky1qjxi" path="res://scenes/game_elements/props/hint/resources/devices.tres" id="3_qoa1j"]
+[ext_resource type="Texture2D" uid="uid://bbvedlx2ahdxk" path="res://assets/third_party/kenney_input_prompts/keyboard-&-mouse_sheet_default.png" id="2_qoa1j"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ykdc3"]
+atlas = ExtResource("2_qoa1j")
+region = Rect2(1024, 320, 64, 64)
 
 [node name="ResettInputHint" type="HBoxContainer" unique_id=1042096726]
 texture_filter = 2
@@ -15,10 +18,9 @@ material = ExtResource("1_ykdc3")
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
-texture = ExtResource("1_qfkb4")
+texture = SubResource("AtlasTexture_ykdc3")
 script = ExtResource("2_jc2yi")
 action_name = &"sokoban_reset"
-devices = ExtResource("3_qoa1j")
 
 [node name="Label" type="Label" parent="." unique_id=2059219668]
 layout_mode = 2
