@@ -13,6 +13,7 @@ extends Node2D
 @onready var east_label = $"../../HUD/CorruptionHUD/VBoxContainer/EastLabel"
 @onready var west_label = $"../../HUD/CorruptionHUD/VBoxContainer/WestLabel"
 
+
 var current_zone: CorruptionZone
 var player_was_inside := {}
 var game_started: bool = false
@@ -22,7 +23,8 @@ var game_finished: bool = false
 
 
 func _ready() -> void:
-
+	
+	
 	for zone in zones:
 		player_was_inside[zone] = false
 	if GameState.intro_dialogue_shown:

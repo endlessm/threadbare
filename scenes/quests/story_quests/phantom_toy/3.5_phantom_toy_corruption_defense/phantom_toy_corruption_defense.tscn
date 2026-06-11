@@ -9,6 +9,7 @@
 [ext_resource type="SpriteFrames" uid="uid://hg6rad1yyt17" path="res://scenes/quests/story_quests/phantom_toy/player_components/phantom_toy_player.tres" id="6_07vu5"]
 [ext_resource type="Script" uid="uid://dpw6rcsiar8so" path="res://scenes/quests/story_quests/phantom_toy/3.5_phantom_toy_corruption_defense/corruption-gds/corruption_defense.gd" id="7_dklmw"]
 [ext_resource type="Script" uid="uid://b7kuruje8cude" path="res://scenes/quests/story_quests/phantom_toy/3.5_phantom_toy_corruption_defense/corruption-gds/CorruptionPlayer.gd" id="7_tojwt"]
+[ext_resource type="Script" uid="uid://doe4tcnlduifb" path="res://scenes/quests/story_quests/phantom_toy/3.5_phantom_toy_corruption_defense/corruption-gds/infection_arrow.gd" id="9_w4aa1"]
 [ext_resource type="Texture2D" uid="uid://b811uw1fj6oej" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/north.png" id="13_voy1e"]
 [ext_resource type="Texture2D" uid="uid://cw6x8lrjc641v" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/south.png" id="14_1aejw"]
 [ext_resource type="Texture2D" uid="uid://cwavram1kyqmb" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/west.png" id="15_oxfsk"]
@@ -207,6 +208,13 @@ position = Vector2(1, -22)
 color = Color(0.99, 0.99, 0.99, 1)
 texture = SubResource("GradientTexture2D_to1pq")
 texture_scale = 1.62
+
+[node name="InfectionArrow" type="Polygon2D" parent="OnTheGround/CorruptionPlayer" unique_id=1297078233 node_paths=PackedStringArray("defense")]
+position = Vector2(2, -64)
+color = Color(1, 0, 0, 1)
+polygon = PackedVector2Array(0, -15, -5.21933, -1.9517212, -10, 10, 10, 10)
+script = ExtResource("9_w4aa1")
+defense = NodePath("../../CorruptionManager")
 
 [node name="CorruptionManager" type="Node2D" parent="OnTheGround" unique_id=1514060659 node_paths=PackedStringArray("zones")]
 y_sort_enabled = true
@@ -653,7 +661,6 @@ dialogue = ExtResource("22_kr4tv")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=368661843]
-visible = false
 color = Color(0, 0, 0, 1)
 
 [node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("16_t8os4")]
