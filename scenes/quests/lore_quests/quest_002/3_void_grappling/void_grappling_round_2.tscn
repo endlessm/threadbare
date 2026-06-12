@@ -32,6 +32,7 @@
 [ext_resource type="SpriteFrames" uid="uid://ckf0ncgsrnhek" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_purple_large.tres" id="27_jr6vd"]
 [ext_resource type="SpriteFrames" uid="uid://k4jucjwkxxhc" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_purple_small.tres" id="28_hxopk"]
 [ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="30_jr6vd"]
+[ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="31_7xn87"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_grfk2"]
 size = Vector2(246, 549)
@@ -78,6 +79,12 @@ _data = {
 "points": PackedVector2Array(0, 0, 30, -30, 0, 0, -30, -30, 30, 30, 128, 0, 30, -30, -30, 30, 128, 128, 30, 30, -30, -30, 0, 128, -30, 30, 0, 0, 0, 0)
 }
 point_count = 5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jsqns"]
+size = Vector2(20, 320)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7xn87"]
+size = Vector2(128, 128)
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_c2723"]
 vertices = PackedVector2Array(2921.961, 2408.0469, 2928.9375, 3614.9766, -1572.9609, 3609.0078, -1559.0313, 112, 3734.039, 116.99219, 3742.961, 2105.039)
@@ -646,6 +653,19 @@ sprite_frames = ExtResource("27_jr6vd")
 [node name="Bush12" parent="OnTheGround/Props" unique_id=1771825618 instance=ExtResource("24_wrwcr")]
 position = Vector2(3234, 347)
 sprite_frames = ExtResource("28_hxopk")
+
+[node name="Checkpoint" parent="OnTheGround" unique_id=1789892556 instance=ExtResource("31_7xn87")]
+position = Vector2(374, 411)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Checkpoint" unique_id=2027973572]
+shape = SubResource("RectangleShape2D_jsqns")
+
+[node name="Checkpoint2" parent="OnTheGround" unique_id=1081431851 instance=ExtResource("31_7xn87")]
+position = Vector2(1673, 195)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Checkpoint2" unique_id=376778593]
+position = Vector2(-26, 0)
+shape = SubResource("RectangleShape2D_7xn87")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1623064448]
 

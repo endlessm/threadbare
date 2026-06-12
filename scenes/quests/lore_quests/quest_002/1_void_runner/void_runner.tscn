@@ -49,6 +49,7 @@
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="29_gbo6l"]
 [ext_resource type="Resource" uid="uid://cki0neredlfou" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/runner_lore_helper.dialogue" id="29_tsnue"]
 [ext_resource type="PackedScene" uid="uid://cf3cbl12wt6vr" path="res://scenes/game_elements/props/buildings/temple/temple.tscn" id="37_kgem8"]
+[ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="48_auh5r"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_05yrb"]
 vertices = PackedVector2Array(2927.9531, 1448.9609, 2920.039, 3273.8203, -1078, 3206.1563, -1078, 1433.0313)
@@ -80,6 +81,9 @@ size = Vector2(52, 61)
 script = ExtResource("23_amu0w")
 name = "Memory"
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_amu0w"]
+size = Vector2(64, 64)
 
 [node name="VoidRunner" type="Node2D" unique_id=506997450 node_paths=PackedStringArray("whole_scene_camera", "void_layer", "collectible_thread", "enemy")]
 script = ExtResource("1_r04sh")
@@ -1245,6 +1249,13 @@ sprite_frames = ExtResource("23_wtoj6")
 
 [node name="Rock" parent="OnTheGround/UnreachableIsland1" unique_id=82472428 instance=ExtResource("16_kfcfu")]
 position = Vector2(3079, 2415)
+
+[node name="Checkpoint" parent="OnTheGround" unique_id=1789892556 instance=ExtResource("48_auh5r")]
+position = Vector2(891, 2845)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Checkpoint" unique_id=181527241]
+position = Vector2(-25, 5)
+shape = SubResource("RectangleShape2D_amu0w")
 
 [node name="InTheWater" type="Node2D" parent="." unique_id=1796092885]
 z_index = -1
