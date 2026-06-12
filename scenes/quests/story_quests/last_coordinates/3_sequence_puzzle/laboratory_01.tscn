@@ -1,5 +1,8 @@
 [gd_scene format=4 uid="uid://dv4mj3dgdvdg5"]
 
+[ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="1_dilhb"]
+[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_mks7v"]
+[ext_resource type="AudioStream" uid="uid://qnqpd21qyfnc" path="res://assets/first_party/music/Threadbare_Stealth.ogg" id="2_svf0p"]
 [ext_resource type="Texture2D" uid="uid://ocfg0u0t6m5k" path="res://scenes/quests/story_quests/last_coordinates/assets/laboratory_Tiles.png" id="3_dvd3l"]
 [ext_resource type="Texture2D" uid="uid://kuhwfqudkcyx" path="res://scenes/quests/story_quests/last_coordinates/3_sequence_puzzle/components/doorElevClosed.png" id="3_umlyn"]
 [ext_resource type="Texture2D" uid="uid://kenx0efkqx85" path="res://scenes/quests/story_quests/last_coordinates/assets/wallsLaboratotyCurvedHigh_tiles.png" id="4_rqy2y"]
@@ -15,7 +18,6 @@
 [ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/game_elements/props/sequence_puzzle_object/sequence_puzzle_object.tscn" id="13_sdk78"]
 [ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="14_dilhb"]
 [ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/game_elements/props/sequence_puzzle_hint_sign/sequence_puzzle_hint_sign.tscn" id="15_svf0p"]
-[ext_resource type="Script" uid="uid://4cae5464vkqu" path="res://scenes/quests/story_quests/last_coordinates/3_sequence_puzzle/PlayerMode.gd" id="16_52y2u"]
 [ext_resource type="PackedScene" uid="uid://574362hwkr51" path="res://scenes/quests/story_quests/last_coordinates/3_sequence_puzzle/components/doorElevator.tscn" id="16_sdk78"]
 [ext_resource type="PackedScene" uid="uid://dcxg0kjbrokcp" path="res://scenes/quests/story_quests/last_coordinates/3_sequence_puzzle/components/Message.tscn" id="17_sdk78"]
 
@@ -47,7 +49,7 @@ func _on_player_detected(player: Node2D) -> void:
 
 func _on_lightTurnOn() -> void:
 	var tween: Tween = create_tween()
-	tween.tween_property(canvasModulate, \"color\", Color(\"d3d3d3ff\"), 2.5)  # Cambiar color a rojo
+	tween.tween_property(canvasModulate, \"color\", Color(\"d3d3d3ff\"), 2.5)
 	allEnemies.queue_free()
 	messageEnergyOff.queue_free()
 	print(\"Se hizo la luz\")
@@ -413,9 +415,14 @@ size = Vector2(108, 45)
 
 [node name="Laboratory01" type="Node2D" unique_id=660429662]
 
-[node name="PlayerMode" type="Node" parent="." unique_id=148510106]
-script = ExtResource("16_52y2u")
-metadata/_custom_type_script = "uid://4cae5464vkqu"
+[node name="BackgroundMusic" type="Node" parent="." unique_id=963345439]
+script = ExtResource("1_dilhb")
+stream = ExtResource("2_svf0p")
+metadata/_custom_type_script = "uid://c8405c212rbn6"
+
+[node name="PlayerMode" type="Node" parent="." unique_id=1156475320]
+script = ExtResource("1_mks7v")
+metadata/_custom_type_script = "uid://pk3ucq7e2eah"
 
 [node name="StealthGameLogic" type="Node" parent="." unique_id=1952038876]
 script = SubResource("GDScript_sdk78")
@@ -584,7 +591,7 @@ text = "El orden es: 1 -2 - 3 - 4 - 1"
 
 [node name="MessageEnergyOff" parent="UnderGround" unique_id=528051641 instance=ExtResource("17_sdk78")]
 unique_name_in_owner = true
-position = Vector2(896, -35)
+position = Vector2(896, -19)
 text = "No funciona, quiza si
 encuentre una manera de 
 activar la energia"
