@@ -39,7 +39,7 @@ func _ready() -> void:
 
 
 func _on_scene_changed() -> void:
-	player = get_tree().get_first_node_in_group("player")
+	player = get_tree().get_first_node_in_group("player") as CharacterBody2D
 	sokoban_ruleset = get_tree().get_first_node_in_group("sokoban_ruleset")
 
 	_update_visibility()

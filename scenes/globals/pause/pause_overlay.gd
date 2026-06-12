@@ -72,7 +72,7 @@ func _on_abandon_quest_pressed() -> void:
 	)
 	await Transitions.finished
 
-	var player: Node2D = get_tree().get_first_node_in_group("player")
+	var player := get_tree().get_first_node_in_group("player") as Node2D
 	var replaying := quest in GameState.global.completed_quests
 	var title := "abandoned_replay" if replaying else "abandoned"
 	DialogueManager.show_dialogue_balloon(abandon_dialogue, title, [player])
