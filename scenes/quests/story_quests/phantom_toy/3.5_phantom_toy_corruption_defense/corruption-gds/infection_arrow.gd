@@ -3,6 +3,7 @@ extends Polygon2D
 @export var defense: Node
 @export var min_distance := 150.0
 
+
 func _ready():
 
 	var tween = create_tween()
@@ -23,12 +24,18 @@ func _ready():
 		0.5
 	)
 
+
 func _process(_delta):
+
 	var player = get_parent()
 
 	var target_position: Vector2
 
 	if defense.game_finished:
+
+		if not is_instance_valid(defense.collectible_item):
+			visible = false
+			return
 
 		target_position = defense.collectible_item.global_position
 
@@ -45,7 +52,6 @@ func _process(_delta):
 		target_position
 		- player.global_position
 	)
-
 
 	visible = direction.length() > min_distance
 
