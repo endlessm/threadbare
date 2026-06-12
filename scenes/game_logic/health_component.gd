@@ -4,18 +4,20 @@ class_name HealthComponent
 extends Node2D
 
 signal health_depleted
-signal health_changed(current_health: int, has_depleted_health: bool)
+signal health_changed(current_health: int)
 
 @export_range(1, 100) var max_health: int = 4
 
 var current_health: int = max_health:
 	set(value):
-		var old_health: int = current_health
+		if value == current_health:
+			pass
+
 		current_health = value
-		if value <= 0:
+		if current_health <= 0:
 			health_depleted.emit()
-		elif value != old_health:
-			health_changed.emit(value, has_depleted_health)
+		else:
+			health_changed.emit(current_health)
 
 var damage_taken: int:
 	get:
