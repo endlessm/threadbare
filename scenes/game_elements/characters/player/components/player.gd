@@ -70,6 +70,7 @@ var _system_controllers: Array[Node] = []
 @onready var player_repel: Node2D = %PlayerRepel
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
+@onready var player_dust_particles: GPUParticles2D = %PlayerDustParticles
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
 
@@ -207,6 +208,8 @@ func defeat(falling: bool = false) -> void:
 
 	# Stop moving the player.
 	velocity = Vector2.ZERO
+
+	player_dust_particles.emitting = false
 
 	GameState.player.decrement_lives()
 
