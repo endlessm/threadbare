@@ -5,10 +5,10 @@
 [ext_resource type="Script" uid="uid://d05hp7ascndlr" path="res://scenes/game_elements/props/filling_barrel/components/fragile_barrel.gd" id="2_wal8y"]
 [ext_resource type="AudioStream" uid="uid://bknpb07lvbded" path="res://scenes/game_elements/props/filling_barrel/components/sfx_barrel_crack.tres" id="4_sdj6j"]
 [ext_resource type="AudioStream" uid="uid://c3iuv5ax8i78v" path="res://scenes/game_elements/props/filling_barrel/components/sfx_barrel_breaking.tres" id="5_v7k7g"]
+[ext_resource type="Script" uid="uid://b0qrfv6upnqtu" path="res://scenes/game_logic/health_component.gd" id="6_v7k7g"]
 
 [node name="FragileBarrel" unique_id=2064522120 instance=ExtResource("1_ab25j")]
 script = ExtResource("2_wal8y")
-max_health = 4
 
 [node name="CrackOverlay" type="AnimatedSprite2D" parent="." index="1" unique_id=473951260]
 unique_name_in_owner = true
@@ -25,3 +25,11 @@ bus = &"SFX"
 unique_name_in_owner = true
 stream = ExtResource("5_v7k7g")
 bus = &"SFX"
+
+[node name="HealthComponent" type="Node2D" parent="." index="10" unique_id=1654759649]
+unique_name_in_owner = true
+script = ExtResource("6_v7k7g")
+metadata/_custom_type_script = "uid://b0qrfv6upnqtu"
+
+[connection signal="health_changed" from="HealthComponent" to="." method="take_damage"]
+[connection signal="health_depleted" from="HealthComponent" to="." method="break_barrel"]
