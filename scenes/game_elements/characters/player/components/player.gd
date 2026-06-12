@@ -5,14 +5,20 @@ class_name Player
 extends CharacterBody2D
 
 signal mode_changed(mode: Mode)
-signal health_changed(current_health: int, max_health: int)
 
+## The possible player states.
 enum Mode {
+	## Player is reacting to user input.
 	USER_CONTROLLED,
+	## Player is being controlled by other means: interacting,
+	## pulling the grappling hook, being put on rails, etc.
 	SYSTEM_CONTROLLED,
+	## Player can't be controlled anymore.
 	DEFEATED,
 }
 
+## The animations which must be provided by [member sprite_frames], each with the corresponding
+## number of frames.
 const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
 	&"idle": 10,
 	&"walk": 6,
@@ -21,39 +27,40 @@ const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
 	&"defeated": 11,
 }
 
+## Optional animations which, if provided by [member sprite_frames], must have the corresponding
+## number of frames.
 const OPTIONAL_ANIMATION_FRAMES: Dictionary[StringName, int] = {
 	&"run": 6,
 }
 
 const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 
+## The character's name. This is used to highlight when the player's character
+## is speaking during dialogue.
 @export var player_name: String = "Player Name"
 
+## The current player state.
 @export var mode: Mode = Mode.USER_CONTROLLED:
 	set = _set_mode
 
+## Parameters controlling the speed at which this player walks. If unset, the default values of
+## [CharacterSpeeds] are used.
 @export var speeds: CharacterSpeeds:
 	set = _set_speeds
 
+## The character speed when aiming with the grappling hook.
 @export_range(10, 100000, 10) var aiming_speed: float = 100.0
 
+## The SpriteFrames must have specific animations with a certain amount of frames.
+## See [constant REQUIRED_ANIMATION_FRAMES] and [constant OPTIONAL_ANIMATION_FRAMES].
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
 
 @export_group("Sounds")
+## Sound that plays for each step during the walk animation
 @export var walk_sound_stream: AudioStream = preload("uid://cx6jv2cflrmqu"):
 	set = _set_walk_sound_stream
 
-@export_group("Sword Attack")
-@export var sword_damage: int = 25
-@export var sword_active_frame_start: int = 1
-@export var sword_active_frame_end: int = 2
-@export var sword_attack_duration: float = 0.45
-
-@export_group("Health")
-@export var max_health: int = 100
-
-var current_health: int
 var _initial_speeds: CharacterSpeeds
 
 @onready var input_walk_behavior: InputWalkBehavior = %InputWalkBehavior
@@ -63,32 +70,21 @@ var _initial_speeds: CharacterSpeeds
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
-@onready var sword_hitbox: Area2D = get_node_or_null("SwordHitbox")
-@onready var sword_collision: CollisionShape2D = get_node_or_null("SwordHitbox/CollisionShape2D")
-
-var is_attacking: bool = false
-var sword_can_damage: bool = true
-var last_attack_direction: Vector2 = Vector2.RIGHT
-
 
 func _set_mode(new_mode: Mode) -> void:
 	var previous_mode: Mode = mode
 	mode = new_mode
-
 	if not is_node_ready():
 		return
-
 	match mode:
 		Mode.USER_CONTROLLED:
 			_toggle_player_behavior(input_walk_behavior, true)
 			_toggle_player_behavior(player_interaction, true)
 			_toggle_abilities()
-
 		Mode.SYSTEM_CONTROLLED:
 			_toggle_player_behavior(input_walk_behavior, false)
 			_toggle_player_behavior(player_interaction, true)
 			_toggle_abilities()
-
 		Mode.DEFEATED:
 			_toggle_player_behavior(input_walk_behavior, false)
 			_toggle_player_behavior(player_interaction, false)
@@ -101,13 +97,10 @@ func _set_mode(new_mode: Mode) -> void:
 
 func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 	sprite_frames = new_sprite_frames
-
 	if not is_node_ready():
 		return
-
 	if new_sprite_frames == null:
 		new_sprite_frames = DEFAULT_SPRITE_FRAME
-
 	player_sprite.sprite_frames = new_sprite_frames
 	update_configuration_warnings()
 
@@ -129,7 +122,6 @@ func _get_configuration_warnings() -> PackedStringArray:
 	var animations: Dictionary[StringName, int] = REQUIRED_ANIMATION_FRAMES.merged(
 		OPTIONAL_ANIMATION_FRAMES
 	)
-
 	for animation: StringName in animations:
 		if not sprite_frames.has_animation(animation):
 			continue
@@ -152,197 +144,14 @@ func _ready() -> void:
 	_set_speeds(speeds)
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
-
 	GameState.abilities_changed.connect(_on_abilities_changed)
-
-	current_health = max_health
-	health_changed.emit(current_health, max_health)
-
-	if sword_hitbox == null:
-		push_error("ERROR: Falta SwordHitbox como hijo directo de Player.")
-		return
-
-	if sword_collision == null:
-		push_error("ERROR: Falta CollisionShape2D dentro de SwordHitbox.")
-		return
-
-	sword_hitbox.monitoring = false
-	sword_collision.disabled = true
-
-	if not sword_hitbox.body_entered.is_connected(_on_sword_hitbox_body_entered):
-		sword_hitbox.body_entered.connect(_on_sword_hitbox_body_entered)
-
-	if not player_sprite.frame_changed.is_connected(_on_player_sprite_frame_changed):
-		player_sprite.frame_changed.connect(_on_player_sprite_frame_changed)
-
-	if not player_sprite.animation_finished.is_connected(_on_player_sprite_animation_finished):
-		player_sprite.animation_finished.connect(_on_player_sprite_animation_finished)
-
-
-func _input(event: InputEvent) -> void:
-	if mode != Mode.USER_CONTROLLED:
-		return
-
-	if is_attacking:
-		return
-
-	if event.is_action_pressed("attack") and not event.is_echo():
-		start_sword_attack()
-
-
-func start_sword_attack() -> void:
-	if mode != Mode.USER_CONTROLLED:
-		return
-
-	if is_attacking:
-		return
-
-	is_attacking = true
-	sword_can_damage = true
-
-	_update_last_attack_direction()
-	_update_sword_hitbox_position()
-
-	if player_sprite.sprite_frames != null and player_sprite.sprite_frames.has_animation("attack_01"):
-		player_sprite.play("attack_01")
-	else:
-		_enable_sword_hitbox()
-
-	await get_tree().create_timer(sword_attack_duration).timeout
-
-	if is_attacking:
-		_finish_sword_attack()
-
-
-func _update_last_attack_direction() -> void:
-	var input_direction := Vector2.ZERO
-
-	if Input.is_action_pressed("ui_right"):
-		input_direction.x += 1
-
-	if Input.is_action_pressed("ui_left"):
-		input_direction.x -= 1
-
-	if Input.is_action_pressed("ui_down"):
-		input_direction.y += 1
-
-	if Input.is_action_pressed("ui_up"):
-		input_direction.y -= 1
-
-	if input_direction != Vector2.ZERO:
-		last_attack_direction = input_direction.normalized()
-	elif velocity != Vector2.ZERO:
-		last_attack_direction = velocity.normalized()
-
-
-func _update_sword_hitbox_position() -> void:
-	if sword_hitbox == null:
-		return
-
-	if abs(last_attack_direction.x) > abs(last_attack_direction.y):
-		if last_attack_direction.x > 0:
-			sword_hitbox.position = Vector2(38, 0)
-		else:
-			sword_hitbox.position = Vector2(-38, 0)
-	else:
-		if last_attack_direction.y > 0:
-			sword_hitbox.position = Vector2(0, 38)
-		else:
-			sword_hitbox.position = Vector2(0, -38)
-
-
-func _enable_sword_hitbox() -> void:
-	if sword_hitbox == null or sword_collision == null:
-		return
-
-	sword_hitbox.monitoring = true
-	sword_collision.set_deferred("disabled", false)
-
-
-func _disable_sword_hitbox() -> void:
-	if sword_hitbox == null or sword_collision == null:
-		return
-
-	sword_hitbox.monitoring = false
-	sword_collision.set_deferred("disabled", true)
-
-
-func _on_player_sprite_frame_changed() -> void:
-	if not is_attacking:
-		return
-
-	if player_sprite.animation != "attack_01" and player_sprite.animation != "attack_02":
-		return
-
-	if player_sprite.frame >= sword_active_frame_start and player_sprite.frame <= sword_active_frame_end:
-		_enable_sword_hitbox()
-	else:
-		_disable_sword_hitbox()
-
-
-func _on_player_sprite_animation_finished() -> void:
-	if not is_attacking:
-		return
-
-	if player_sprite.animation == "attack_01" or player_sprite.animation == "attack_02":
-		_finish_sword_attack()
-
-
-func _finish_sword_attack() -> void:
-	if not is_attacking:
-		return
-
-	_disable_sword_hitbox()
-
-	is_attacking = false
-	sword_can_damage = true
-
-	if velocity == Vector2.ZERO:
-		if player_sprite.sprite_frames != null and player_sprite.sprite_frames.has_animation("idle"):
-			player_sprite.play("idle")
-
-
-func _on_sword_hitbox_body_entered(body: Node) -> void:
-	if not is_attacking:
-		return
-
-	if not sword_can_damage:
-		return
-
-	if body.is_in_group("boss"):
-		print("Golpeaste al jefe con la espada")
-
-		if body.has_method("take_damage"):
-			body.take_damage(sword_damage)
-
-		sword_can_damage = false
-
-
-func take_damage(amount: int) -> void:
-	if mode == Mode.DEFEATED:
-		return
-
-	current_health -= amount
-	current_health = clamp(current_health, 0, max_health)
-
-	print("Jugador recibió daño: ", amount)
-	print("Vida del jugador: ", current_health)
-
-	health_changed.emit(current_health, max_health)
-
-	if current_health <= 0:
-		defeat()
 
 
 func _set_speeds(new_speeds: CharacterSpeeds) -> void:
 	speeds = new_speeds
-
-	if new_speeds != null:
-		_initial_speeds = new_speeds.duplicate()
-
+	_initial_speeds = new_speeds.duplicate()
 	if not is_node_ready():
 		return
-
 	input_walk_behavior.speeds = speeds
 
 
@@ -366,20 +175,27 @@ func teleport_to(
 
 func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	walk_sound_stream = new_value
-
 	if not is_node_ready():
 		await ready
-
 	_walk_sound.stream = walk_sound_stream
 
 
+## Sets the player's [member mode] to [constant DEFEATED], if it is
+## not already. Handles respawn logic based on remaining lives.
+## [br][br]
+## If [param falling] is [code]true[/code], scale the player to zero, as if they
+## are falling into the screen as they unravel.
 func defeat(falling: bool = false) -> void:
+	# Prevent multiple defeat calls
 	if mode == Player.Mode.DEFEATED:
 		return
 
 	mode = Player.Mode.DEFEATED
+
+	# Stop moving the player.
 	velocity = Vector2.ZERO
 
+	# Decrement lives and save the new count
 	GameState.decrement_lives()
 
 	if falling:
@@ -388,9 +204,12 @@ func defeat(falling: bool = false) -> void:
 
 	await get_tree().create_timer(2.0).timeout
 
+	# Check if player has lives remaining
 	if GameState.current_lives > 0:
+		# Still have lives - reload current scene/checkpoint
 		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
 	else:
+		# Game over - restart from challenge start
 		_handle_game_over()
 
 
@@ -405,10 +224,8 @@ func return_control(_controlled_by: Node) -> void:
 func _toggle_abilities() -> void:
 	var can_repel := GameState.has_ability(Enums.PlayerAbilities.ABILITY_A)
 	var can_grapple := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B)
-
 	_toggle_player_behavior(player_repel, can_repel)
 	_toggle_player_behavior(player_hook, can_grapple)
-
 	if can_grapple:
 		var has_longer_hook := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B_MODIFIER_1)
 		player_hook.string_throw_length = 400.0 if has_longer_hook else 200.0
@@ -420,20 +237,24 @@ func _on_abilities_changed() -> void:
 		_toggle_abilities()
 
 
+## Handles game over logic: restarts from the beginning of the current challenge
+## with lives reset to 3.
 func _handle_game_over() -> void:
+	# Reset lives to 3
 	GameState.reset_lives()
 
+	# Get the start of the current challenge
 	var challenge_start_scene: String = GameState.get_challenge_start_scene()
 
 	if challenge_start_scene.is_empty():
+		# Fallback: reload current scene if no challenge start is defined
+		# Clear spawn point to start from the beginning of the current scene
 		GameState.set_current_spawn_point(^"")
 		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
 	else:
+		# Restart from the challenge start scene
 		SceneSwitcher.change_to_file_with_transition(
-			challenge_start_scene,
-			^"",
-			Transition.Effect.FADE,
-			Transition.Effect.FADE
+			challenge_start_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 		)
 
 
@@ -441,7 +262,4 @@ func _on_player_hook_aiming_changed(is_aiming: bool) -> void:
 	input_walk_behavior.speeds.walk_speed = (
 		aiming_speed if is_aiming else _initial_speeds.walk_speed
 	)
-
-	input_walk_behavior.speeds.run_speed = (
-		aiming_speed if is_aiming else _initial_speeds.run_speed
-	)
+	input_walk_behavior.speeds.run_speed = aiming_speed if is_aiming else _initial_speeds.run_speed
