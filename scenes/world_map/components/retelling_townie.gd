@@ -74,7 +74,7 @@ func become_helper(type: InventoryItem.ItemType) -> void:
 	closer_path.global_position = enter_path.global_position
 	var curve := Curve2D.new()
 	curve.add_point(Vector2.ZERO)
-	var player: Node2D = get_tree().get_first_node_in_group("player")
+	var player := get_tree().get_first_node_in_group("player") as Node2D
 	_closer_to_player_position = townie.global_position.direction_to(player.global_position) * 100.0
 	curve.add_point(_closer_to_player_position)
 	closer_path.curve = curve
