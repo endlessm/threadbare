@@ -72,13 +72,6 @@ func show_storybook() -> void:
 	var storybook := STORYBOOK_SCENE.instantiate()
 	storybook.quests = _quests
 
-	# GDM will hide the balloon after a short pause if the awaitable hasn't resolved, but we want it
-	# to be replaced with the storybook immediately.
-	if talk_behavior.dialogue_balloon:
-		# Confusingly the DialogueBalloon node (root of our balloon.tscn) has a balloon property;
-		# it is the latter which gets hidden and shown.
-		talk_behavior.dialogue_balloon.balloon.hide()
-
 	_storybook_layer.add_child(storybook)
 	chosen_quest = await storybook.selected
 	_storybook_layer.remove_child(storybook)
