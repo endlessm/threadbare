@@ -25,6 +25,9 @@ func _physics_process(delta):
 		velocity = direction.normalized() * move_speed
 
 		sprite.play("walk")
+		
+		if abs(direction.x) > 5:
+			sprite.flip_h = direction.x < 0
 
 	else:
 
