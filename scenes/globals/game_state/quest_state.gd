@@ -62,4 +62,4 @@ func get_challenge_start_scene() -> String:
 
 func set_challenge_start_scene(value: String) -> void:
 	challenge_start_scene = ResourceUID.ensure_path(value)
-	changed.emit()
+	emit_changed()

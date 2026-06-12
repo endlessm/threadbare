@@ -43,4 +43,4 @@ func set_lights_on(new_value: bool, immediate: bool = false) -> void:
 
 func set_spawn_point(new_value: NodePath) -> void:
 	spawn_point = new_value
-	changed.emit()
+	emit_changed()

@@ -13,14 +13,14 @@ const MAX_LIVES := 2 ** 53
 @export_range(0, MAX_LIVES, 1) var lives: int = MAX_LIVES:
 	set(value):
 		lives = value
-		changed.emit()
+		emit_changed()
 
 ## Bitfield of elements of Enums.PlayerAbilities
 @export var abilities: int:
 	set(value):
 		if abilities != value:
 			abilities = value
-			changed.emit()
+			emit_changed()
 			abilities_changed.emit()
 
 
