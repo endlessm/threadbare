@@ -17,18 +17,6 @@
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="15_kpvn1"]
 [ext_resource type="Resource" uid="uid://bmjtamrcfsg1r" path="res://scenes/quests/story_quests/legends_without_name/1_stealth/stealth_components/legends_without_name_stealth.dialogue" id="16_mqa5n"]
 
-[sub_resource type="Curve2D" id="Curve2D_gggf6"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, -4629.33, 278.319, 0, 0, 0, 0, -4444.215, 665.05615, 0, 0, 0, 0, -4240.953, 743.7146, 0, 0, 0, 0, -4320.8057, 501.18433, 0, 0, 0, 0, -4629.3267, 584.4691, 0, 0, 0, 0, -4527.698, 1100.6348, 0, 0, 0, 0, -4498.66, 791.40393)
-}
-point_count = 7
-
-[sub_resource type="Curve2D" id="Curve2D_ewy4b"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 488, -91, 0, 0, 0, 0, 480, 106, 0, 0, 0, 0, 356, 208, 0, 0, 0, 0, 239, 131, 0, 0, 0, 0, 166, 26, 0, 0, 0, 0, 169, -97, 0, 0, 0, 0, 354, -101, 0, 0, 0, 0, 488, -91)
-}
-point_count = 8
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p7xgw"]
 size = Vector2(168.25, 122)
 
@@ -79,29 +67,38 @@ editor_draw_limits = true
 [node name="EnemyGuards" type="Node2D" parent="." unique_id=1997239040]
 y_sort_enabled = true
 
-[node name="Guard1-GoingBackAndForth" parent="EnemyGuards" unique_id=1357389645 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_3taup")]
-position = Vector2(1776.0006, 1588)
+[node name="Guard2-RunningInCircles" parent="EnemyGuards" unique_id=478814464 instance=ExtResource("7_3taup")]
+position = Vector2(706, 541)
+solo_ronda_zona = true
+radio_patrulla = 400.0
+radio_radar = 400.0
 sprite_frames = ExtResource("8_6grgm")
-patrol_path = NodePath("../Guard1-PatrolPath")
+wait_time = 0.2
 move_speed = 200.0
-
-[node name="Guard1-PatrolPath" type="Path2D" parent="EnemyGuards" unique_id=335964649]
-top_level = true
-position = Vector2(3492.4255, 1733.5367)
-scale = Vector2(0.37077177, -0.5229135)
-curve = SubResource("Curve2D_gggf6")
-
-[node name="Guard2-RunningInCircles" parent="EnemyGuards" unique_id=478814464 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_3taup")]
-position = Vector2(2560, 1158)
-sprite_frames = ExtResource("8_6grgm")
-patrol_path = NodePath("../Guard2-RunningPath")
-wait_time = 0.3
-move_speed = 1000.0
+time_to_detect_player = 5.0
 detection_area_scale = 0.1
 
-[node name="Guard2-RunningPath" type="Path2D" parent="EnemyGuards" unique_id=1687817077]
-position = Vector2(2072, 1249)
-curve = SubResource("Curve2D_ewy4b")
+[node name="Guard2-RunningInCircles2" parent="EnemyGuards" unique_id=689832587 instance=ExtResource("7_3taup")]
+position = Vector2(1607, 441)
+solo_ronda_zona = true
+radio_patrulla = 400.0
+radio_radar = 400.0
+sprite_frames = ExtResource("8_6grgm")
+wait_time = 0.2
+move_speed = 200.0
+time_to_detect_player = 5.0
+detection_area_scale = 0.1
+
+[node name="Guard2-RunningInCircles3" parent="EnemyGuards" unique_id=735383607 instance=ExtResource("7_3taup")]
+position = Vector2(2105, 1537)
+solo_ronda_zona = true
+radio_patrulla = 150.0
+radio_radar = 150.0
+sprite_frames = ExtResource("8_6grgm")
+wait_time = 0.2
+move_speed = 200.0
+time_to_detect_player = 5.0
+detection_area_scale = 0.1
 
 [node name="Checkpoints" type="Node2D" parent="." unique_id=344631200]
 y_sort_enabled = true
