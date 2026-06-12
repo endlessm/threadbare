@@ -12,6 +12,7 @@ extends Node2D
 @onready var south_label = $"../../HUD/CorruptionHUD/VBoxContainer/SouthLabel"
 @onready var east_label = $"../../HUD/CorruptionHUD/VBoxContainer/EastLabel"
 @onready var west_label = $"../../HUD/CorruptionHUD/VBoxContainer/WestLabel"
+@onready var shadow = $"../Shadow"
 
 var current_zone: CorruptionZone
 var player_was_inside := {}
@@ -22,7 +23,8 @@ var game_finished: bool = false
 
 
 func _ready() -> void:
-
+	
+	
 	for zone in zones:
 		player_was_inside[zone] = false
 	if GameState.intro_dialogue_shown:
@@ -68,8 +70,11 @@ func _process(delta: float) -> void:
 				zone.altar.set_corrupted(false)
 				
 				print("Shadow escaped!")
-
+				var previous_zone = current_zone
+				
 				select_random_zone()
+				shadow.global_position = previous_zone.global_position
+				shadow.move_to(current_zone.global_position)
 
 		player_was_inside[zone] = zone.player_inside
 		update_hud()
@@ -105,10 +110,11 @@ func win_game() -> void:
 	game_finished = true
 
 	print("YOU WIN!")
+	shadow.hide()
 	collectible_item.reveal()
 func lose_game() -> void:
 	game_finished = true
-	
+	shadow.stop_shadow()
 	print("GAME OVER!")
 	
 	player.defeat()
