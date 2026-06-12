@@ -19,4 +19,3 @@ func _on_zonewar_body_entered(body: Node2D) -> void:
 
 func _on_minijuego_completado() -> void:
 	guardian_bloqueado = false
-	guardian.visible = false

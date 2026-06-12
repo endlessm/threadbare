@@ -2,20 +2,27 @@ extends Control
 
 const RONDAS = [4, 6, 8]
 const SIMBOLOS = [
-	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/hoja.png",
+	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/rana.png",
 	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/sol.png",
-	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/luna.png",
-	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/flor.png",
+	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/serpiente.png",
+	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/mariposa.png",
 	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/condor.png",
 ]
 
 const CARD_BACK = "res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/card_back.png"
-const CARD_SIZE = Vector2(64, 64)
 
-@onready var panel      = get_node("PanelFondo")
-@onready var lbl_ronda  = get_node("PanelFondo/VBoxContainer/Lblronda")
-@onready var lbl_pares  = get_node("PanelFondo/VBoxContainer/LblPares")
+@onready var panel       = get_node("PanelFondo")
+@onready var lbl_ronda   = get_node("PanelFondo/VBoxContainer/Lblronda")
+@onready var lbl_pares   = get_node("PanelFondo/VBoxContainer/LblPares")
 @onready var lbl_mensaje = get_node("PanelFondo/VBoxContainer/LblMensaje")
+
+@onready var bloqueo1 = get_node("/root/LacasadelachinaStealth/TileMapLayers/bloqueo")
+@onready var bloqueo2 = get_node("/root/LacasadelachinaStealth/TileMapLayers/bloqueo2")
+@onready var bloqueo3 = get_node("/root/LacasadelachinaStealth/TileMapLayers/bloqueo3")
+
+@onready var guardia1 = get_node("/root/LacasadelachinaStealth/EnemyGuards/Guard1-GoingBackAndForth")
+@onready var guardia2 = get_node("/root/LacasadelachinaStealth/EnemyGuards/Guard2-GoingBackAndForth2")
+@onready var guardia3 = get_node("/root/LacasadelachinaStealth/EnemyGuards/Guard3-GoingBackAndForth3")
 
 var ronda_actual      : int   = 0
 var pares_encontrados : int   = 0
@@ -28,10 +35,13 @@ signal minijuego_completado
 
 func _ready():
 	visible = false
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func iniciar():
-	ronda_actual = 0
+	if visible:
+		return
 	visible = true
+	get_tree().paused = true
 	_cargar_ronda()
 
 func _cargar_ronda():
@@ -40,7 +50,6 @@ func _cargar_ronda():
 	puede_voltear = true
 	lbl_mensaje.visible = false
 
-	# Limpia cartas anteriores
 	for carta in cartas_en_juego:
 		carta.queue_free()
 	cartas_en_juego.clear()
@@ -71,9 +80,9 @@ func _crear_mazo(num_pares: int) -> Array:
 
 func _crear_carta(simbolo_path: String, col: int, fila: int):
 	var btn = TextureButton.new()
-	btn.size = Vector2(64, 64)
-	btn.custom_minimum_size = Vector2(64, 64)
-	btn.position = Vector2(20 + col * 70, 80 + fila * 70)
+	btn.size = Vector2(128, 128)
+	btn.custom_minimum_size = Vector2(128, 128)
+	btn.position = Vector2(20 + col * 140, 80 + fila * 140)
 	btn.ignore_texture_size = true
 	btn.stretch_mode = TextureButton.STRETCH_SCALE
 	btn.texture_normal = load(CARD_BACK) as Texture2D
@@ -102,8 +111,8 @@ func _evaluar_par():
 	var c2 : TextureButton = cartas_volteadas[1]
 
 	if c1.get_meta("simbolo") == c2.get_meta("simbolo"):
-		c1.modulate = Color(0.5, 1.0, 0.5)
-		c2.modulate = Color(0.5, 1.0, 0.5)
+		c1.modulate = Color(0.637, 0.274, 1.0, 1.0)
+		c2.modulate = Color(0.639, 0.275, 1.0, 1.0)
 		c1.disabled = true
 		c2.disabled = true
 		pares_encontrados += 1
@@ -122,16 +131,33 @@ func _evaluar_par():
 	puede_voltear = true
 
 func _ronda_completada():
+	if ronda_actual == 0:
+		bloqueo1.visible = false
+		if is_instance_valid(guardia1):
+			guardia1.queue_free()
+
+	elif ronda_actual == 1:
+		bloqueo2.visible = false
+		if is_instance_valid(guardia2):
+			guardia2.queue_free()
+
+	elif ronda_actual == 2:
+		bloqueo3.visible = false
+		if is_instance_valid(guardia3):
+			guardia3.queue_free()
+
 	ronda_actual += 1
 
 	if ronda_actual < RONDAS.size():
-		lbl_mensaje.text    = "¡Bien! Ronda %d…" % (ronda_actual + 1)
+		lbl_mensaje.text = "¡Bien! Avanza al siguiente guardia..."
 		lbl_mensaje.visible = true
 		await get_tree().create_timer(1.5).timeout
-		_cargar_ronda()
+		visible = false
+		get_tree().paused = false
 	else:
-		lbl_mensaje.text    = "¡El guardián se aparta!\nEl camino es tuyo."
+		lbl_mensaje.text = "¡El camino es tuyo!"
 		lbl_mensaje.visible = true
 		await get_tree().create_timer(2.0).timeout
 		visible = false
+		get_tree().paused = false
 		emit_signal("minijuego_completado")
