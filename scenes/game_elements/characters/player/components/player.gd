@@ -22,9 +22,9 @@ enum Mode {
 const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
 	&"idle": 10,
 	&"walk": 6,
-	&"attack_01": 4,
-	&"attack_02": 4,
-	&"defeated": 11,
+	#&"attack_01": 4,
+	#&"attack_02": 4,
+	#&"defeated": 11,
 }
 
 ## Optional animations which, if provided by [member sprite_frames], must have the corresponding
