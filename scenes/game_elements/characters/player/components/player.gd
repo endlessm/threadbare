@@ -71,6 +71,7 @@ var _system_controllers: Array[Node] = []
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
+@onready var player_dust_particles: GPUParticles2D = %PlayerDustParticles
 
 
 func _set_mode(new_mode: Mode) -> void:
@@ -207,6 +208,8 @@ func defeat(falling: bool = false) -> void:
 
 	# Stop moving the player.
 	velocity = Vector2.ZERO
+
+	player_dust_particles.emitting = false
 
 	GameState.player.decrement_lives()
 
