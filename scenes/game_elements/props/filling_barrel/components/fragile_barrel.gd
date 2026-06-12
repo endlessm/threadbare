@@ -30,10 +30,9 @@ func hit_by_droplet(droplet_label: String) -> void:
 		health_component.damage(1)
 
 
-func take_damage(_current_health: int, has_depleted_health: bool) -> void:
-	if not has_depleted_health:
-		crack_sound.play()
-		update_cracks()
+func take_damage() -> void:
+	crack_sound.play()
+	update_cracks()
 
 
 func update_cracks() -> void:
