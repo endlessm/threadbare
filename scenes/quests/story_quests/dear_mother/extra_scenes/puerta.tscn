@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://cknm6g5dn5r3y"]
+
+[ext_resource type="Texture2D" uid="uid://c3l7lhhu5de88" path="res://assets/third_party/tiny-swords/Deco/16.png" id="1_1egta"]
+[ext_resource type="Script" uid="uid://cymicmq2mf06w" path="res://scenes/quests/story_quests/dear_mother/extra_scripts/puerta.gd" id="1_1uoqd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1uoqd"]
+size = Vector2(56, 98)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1uoqd"]
+radius = 13.152946
+
+[node name="puerta" type="Area2D" unique_id=838752789]
+script = ExtResource("1_1uoqd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=995479067]
+position = Vector2(0, -11)
+shape = SubResource("RectangleShape2D_1uoqd")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1630722824]
+texture = ExtResource("1_1egta")
+
+[node name="UIPopup" type="CanvasLayer" parent="." unique_id=529094761]
+
+[node name="Panel" type="Panel" parent="UIPopup" unique_id=2024239312]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -75.0
+offset_right = 150.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UIPopup/Panel" unique_id=1747347628]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 26.0
+offset_right = 20.0
+offset_bottom = 49.0
+grow_horizontal = 2
+text = "¿Estás segura de proceder?"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UIPopup/Panel" unique_id=1156674836]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -76.0
+offset_right = -20.0
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="BtnSi" type="Button" parent="UIPopup/Panel/HBoxContainer" unique_id=795384374]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sí"
+
+[node name="BtnNo" type="Button" parent="UIPopup/Panel/HBoxContainer" unique_id=2098472286]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Aún no..."
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=213220347]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=201874654]
+position = Vector2(1, 34)
+shape = SubResource("CircleShape2D_1uoqd")
+
+[connection signal="body_entered" from="." to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_area_2d_body_exited"]
+[connection signal="pressed" from="UIPopup/Panel/HBoxContainer/BtnSi" to="." method="_on_btn_si_pressed"]
+[connection signal="pressed" from="UIPopup/Panel/HBoxContainer/BtnNo" to="." method="_on_btn_no_pressed"]
