@@ -37,7 +37,7 @@ signal helper_changed
 			else:
 				push_warning("Ignoring unknown inventory item type: %s" % type_name)
 		inventory = items
-		changed.emit()
+		emit_changed()
 
 ## [Quest]s which the player has previously completed. Modify this with
 ## [method set_quest_completed_state].
@@ -63,7 +63,7 @@ signal helper_changed
 				push_warning("Ignoring unknown quest in save file: %s" % path)
 		completed_quests = quests
 		completed_quests_changed.emit()
-		changed.emit()
+		emit_changed()
 
 ## Global player state. During a quest, [member QuestState.player] should be
 ## used instead. [GameState.player] always points to the correct instance.
@@ -82,7 +82,7 @@ func _validate_property(property: Dictionary) -> void:
 func add_collected_item(item: InventoryItem) -> void:
 	inventory.append(item)
 	item_collected.emit(item)
-	changed.emit()
+	emit_changed()
 
 
 ## Remove all [InventoryItem]s from the [member inventory].
@@ -90,7 +90,7 @@ func clear_inventory() -> void:
 	for item: InventoryItem in inventory.duplicate():
 		inventory.erase(item)
 		item_consumed.emit(item)
-	changed.emit()
+	emit_changed()
 
 
 ## Updates [member completed_quests] to include [param quest] if [param
@@ -101,12 +101,12 @@ func set_quest_completed_state(quest: Quest, is_completed: bool) -> void:
 		if quest not in completed_quests:
 			completed_quests.append(quest)
 			completed_quests_changed.emit()
-			changed.emit()
+			emit_changed()
 	else:
 		while quest in completed_quests:
 			completed_quests.erase(quest)
 			completed_quests_changed.emit()
-			changed.emit()
+			emit_changed()
 
 
 ## Obtain the help from a townie, for using it later in the game.
