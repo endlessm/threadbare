@@ -13,8 +13,11 @@
 [ext_resource type="PackedScene" uid="uid://cl06pid826dtg" path="res://scenes/game_elements/characters/player/components/player_repel.tscn" id="12_tnibl"]
 [ext_resource type="PackedScene" uid="uid://b3111eergq5yg" path="res://scenes/game_elements/characters/player/components/player_hook.tscn" id="13_ecbbk"]
 [ext_resource type="Script" uid="uid://bljkandp8ga11" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_player_hit_reaction.gd" id="15_4nivu"]
+[ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="16_3ic5n"]
 [ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="16_ecbbk"]
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="16_tnibl"]
+[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="17_q5tod"]
+[ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="18_ius80"]
 
 [sub_resource type="Resource" id="Resource_cvb4d"]
 script = ExtResource("3_cvb4d")
@@ -458,6 +461,29 @@ debug_color = Color(0.94902, 0.231373, 0, 0.419608)
 unique_name_in_owner = true
 root_node = NodePath("../../PlayerRepel")
 libraries/ = SubResource("AnimationLibrary_1n58k")
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=1921508006]
+unique_name_in_owner = true
+position = Vector2(0, -19)
+collision_layer = 0
+script = ExtResource("16_3ic5n")
+
+[node name="Light" type="PointLight2D" parent="DetectionArea" unique_id=1643008903]
+position = Vector2(19.940811, 1.33333)
+scale = Vector2(0.25465804, 0.340496)
+color = Color(1, 1, 0.796078, 1)
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("17_q5tod")
+offset = Vector2(377.88, 10.7686)
+script = ExtResource("18_ius80")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea" unique_id=2105911294]
+position = Vector2(-32.979877, -132.47382)
+scale = Vector2(0.7194939, 0.94425666)
+polygon = PackedVector2Array(302, 48, 283, 52, 279, 52, 101, 114, 98, 114, 79, 124, 77, 124, 72, 131, 71, 131, 71, 138, 78, 145, 78, 146, 95, 154, 95, 155, 275, 226, 275, 227, 292, 231, 292, 232, 312, 230, 316, 230, 330, 222, 332, 222, 340, 214, 341, 214, 346, 205, 347, 205, 351, 185, 351, 100, 347, 82, 347, 79, 338, 67, 338, 65, 325, 55, 325, 54, 302, 47)
 
 [connection signal="running_changed" from="InputWalkBehavior" to="PlayerDustParticles" method="set_emitting"]
 [connection signal="running_changed" from="InputWalkBehavior" to="AnimationPlayer" method="_on_input_walk_behavior_running_changed"]
