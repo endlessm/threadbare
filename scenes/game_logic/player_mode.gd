@@ -25,6 +25,8 @@ enum Mode {
 
 func set_mode(new_mode: Mode) -> void:
 	mode = new_mode
+	if not is_node_ready():
+		return
 	match mode:
 		Mode.FIGHTING:
 			GameState.player.abilities = Enums.PlayerAbilities.ABILITY_A
