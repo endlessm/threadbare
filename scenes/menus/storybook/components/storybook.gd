@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 class_name Storybook
-extends Control
+extends CanvasLayer
 ## Offers a choice of quests by scanning a given [member quest_directory].
 
 ## Emitted when the player chooses a quest; or leaves the storybook without choosing a quest, in
