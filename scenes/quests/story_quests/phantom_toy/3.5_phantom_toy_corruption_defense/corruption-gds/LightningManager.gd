@@ -1,15 +1,24 @@
 extends ColorRect
 
+@onready var thunder_sound: AudioStreamPlayer = $"../ThunderSound"
+
+
 func _ready():
+
+	visible = false
+
 	start_lightning_loop()
 
 
 func start_lightning_loop() -> void:
+
 	while true:
 
-		await get_tree().create_timer(randf_range(8.0, 15.0)).timeout
+		await get_tree().create_timer(
+			randf_range(15.0, 25.0)
+		).timeout
 
-		flash()
+		await flash()
 
 
 func flash() -> void:
@@ -29,3 +38,7 @@ func flash() -> void:
 	await get_tree().create_timer(0.04).timeout
 
 	modulate.a = 0.0
+
+	visible = false
+
+	thunder_sound.play()
