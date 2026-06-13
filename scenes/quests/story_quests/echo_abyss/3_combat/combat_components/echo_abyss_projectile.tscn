@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://bbkb5q7ep2yqk"]
+[gd_scene format=3 uid="uid://1lnd3opqfdy0"]
 
-[ext_resource type="Script" uid="uid://ddehw1vfcgcrm" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_boss_projectile.gd" id="1_fmp8n"]
-[ext_resource type="SpriteFrames" uid="uid://cbva76cl6p360" path="res://scenes/quests/story_quests/echo_abyss/3_combat/combat_components/echo_abyss_projectile_spriteframes.tres" id="2_83pod"]
+[ext_resource type="Script" uid="uid://ddehw1vfcgcrm" path="res://scenes/quests/story_quests/echo_abyss/3_combat/combat_components/projectile/components/echo_abyss_boss_projectile.gd" id="1_fmp8n"]
+[ext_resource type="Texture2D" uid="uid://cagyo41xspko" path="res://assets/first_party/templates/combat/NO_EDIT_projectile.png" id="2_fmp8n"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3nj6a"]
 friction = 0.0
@@ -9,6 +9,21 @@ bounce = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vx00k"]
 size = Vector2(44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6ony"]
+atlas = ExtResource("2_fmp8n")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_83pod"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a6ony")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
 
 [node name="EchoAbyssProjectile" type="RigidBody2D" unique_id=1611529190 groups=["projectiles"]]
 collision_layer = 256
@@ -31,7 +46,7 @@ position = Vector2(-3, 0)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VisibleThings" unique_id=1816818143]
 unique_name_in_owner = true
-sprite_frames = ExtResource("2_83pod")
+sprite_frames = SubResource("SpriteFrames_83pod")
 autoplay = "default"
 
 [node name="TrailFXMarker" type="Marker2D" parent="VisibleThings" unique_id=771420475]

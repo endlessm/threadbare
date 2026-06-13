@@ -20,6 +20,7 @@ extends CharacterBody2D
 
 
 func _ready() -> void:
+	_animated_sprite.play("idle")
 	if sprite_frames:
 		_animated_sprite.sprite_frames = sprite_frames
 	if Engine.is_editor_hint():

@@ -20,8 +20,8 @@ var _has_awarded_essence := false
 @onready var _animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
 @onready var _interact_area: InteractArea = %InteractArea
 
-
 func _ready() -> void:
+	_animated_sprite.play("idle")
 	if sprite_frames:
 		_animated_sprite.sprite_frames = sprite_frames
 	if not Engine.is_editor_hint():
