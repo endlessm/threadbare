@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://bw2m8i323f6lf"]
+
+[ext_resource type="Script" uid="uid://cl80c6crfww05" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_essence_exit.gd" id="1_script"]
+[ext_resource type="SpriteFrames" uid="uid://bbexxr1ctc5wt" path="res://scenes/quests/story_quests/echo_abyss/player_components/echo_abyss_player.tres" id="2_sprite"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="3_interact"]
+[ext_resource type="Resource" uid="uid://bh0bhe3wi6h73" path="res://scenes/quests/story_quests/echo_abyss/0_intro/intro_components/echo_abyss_essence_exit.dialogue" id="4_dialogue"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
+height = 42.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_interact"]
+size = Vector2(80, 80)
+
+[node name="EchoAbyssEssenceExit" type="CharacterBody2D" unique_id=775390554]
+collision_layer = 2
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("1_script")
+dialogue = ExtResource("4_dialogue")
+sprite_frames = ExtResource("2_sprite")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=341327135]
+position = Vector2(0, -18)
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_body")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=434675866]
+unique_name_in_owner = true
+modulate = Color(1, 0.27450982, 1, 1)
+sprite_frames = ExtResource("2_sprite")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.24843317
+
+[node name="InteractArea" type="Area2D" parent="." unique_id=1556566497 node_paths=PackedStringArray("marker")]
+unique_name_in_owner = true
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_interact")
+marker = NodePath("Marker2D")
+action = "Enter"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1172332733]
+visible = false
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_interact")
+debug_color = Color(0.5019608, 0, 0.9254902, 0.42)
+
+[node name="Marker2D" type="Marker2D" parent="InteractArea" unique_id=424111061]
+position = Vector2(0, -76)
