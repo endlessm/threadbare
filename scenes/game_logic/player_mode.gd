@@ -25,12 +25,15 @@ enum Mode {
 
 func set_mode(new_mode: Mode) -> void:
 	mode = new_mode
-	GameState.clear_abilities()
+	if not is_node_ready():
+		return
 	match mode:
 		Mode.FIGHTING:
-			GameState.set_ability(Enums.PlayerAbilities.ABILITY_A, true)
+			GameState.player.abilities = Enums.PlayerAbilities.ABILITY_A
 		Mode.HOOKING:
-			GameState.set_ability(Enums.PlayerAbilities.ABILITY_B, true)
+			GameState.player.abilities = Enums.PlayerAbilities.ABILITY_B
+		_:
+			GameState.player.abilities = 0
 
 
 func _ready() -> void:

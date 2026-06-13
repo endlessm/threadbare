@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node
 
+signal mode_changed
+
 const MOUSE_CURSOR_DEFAULT = preload("uid://cee2juvnxco6c")
 const MOUSE_CURSOR_CROSS = preload("uid://bx11wyx7unc4q")
 
@@ -20,11 +22,13 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		mode_changed.emit()
 		hide_timer.start()
 
 
 func _on_hide_timer_timeout() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	mode_changed.emit()
 
 
 func _on_dialogue_started(_resource: DialogueResource) -> void:
