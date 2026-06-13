@@ -9,6 +9,8 @@ var player_hook: PlayerHook
 
 var sokoban_ruleset: RuleEngine
 
+var displaying_dialogue: bool
+
 @onready var normal_controls := %NormalControls
 @onready var interact_input_hint: LabeledInputHint = %InteractInputHint
 @onready var aim_input_hint := %AimInputHint
@@ -21,6 +23,8 @@ var sokoban_ruleset: RuleEngine
 
 func _ready() -> void:
 	get_tree().scene_changed.connect(_on_scene_changed)
+	DialogueManager.dialogue_started.connect(_on_dialogue_started)
+	DialogueManager.dialogue_ended.connect(_on_dialogue_ended)
 
 	Transitions.started.connect(_update_visibility)
 	Transitions.finished.connect(_update_visibility)
@@ -67,6 +71,7 @@ func _update_visibility() -> void:
 		Settings.show_input_hud
 		and not get_tree().paused
 		and not Transitions.is_running()
+		and not displaying_dialogue
 		and (player or sokoban_ruleset)
 	)
 
@@ -89,6 +94,16 @@ func _update_player_state() -> void:
 
 	throw_input_hint.visible = player_hook and player_hook.visible
 	aim_input_hint.visible = player_hook and player_hook.visible
+
+
+func _on_dialogue_started(_resource: DialogueResource) -> void:
+	displaying_dialogue = true
+	_update_visibility()
+
+
+func _on_dialogue_ended(_resource: DialogueResource) -> void:
+	displaying_dialogue = false
+	_update_visibility()
 
 
 func _display_skip() -> void:

@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://bdbgpa6vsm70w"]
+
+[ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="2_back"]
+[ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="3_arrow"]
+[ext_resource type="Shortcut" uid="uid://c5pwgp1w8p3y1" path="res://scenes/ui_elements/shortcuts/back_shortcut.tres" id="4_0r7hk"]
+[ext_resource type="PackedScene" uid="uid://dap7xk2m1yfhs" path="res://scenes/menus/debug/debug_player_abilities_list.tscn" id="4_list"]
+
+[node name="DebugPlayerAbilities" type="PanelContainer" unique_id=1100030001 node_paths=PackedStringArray("back_button")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -300.0
+offset_right = 320.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_back")
+back_button = NodePath("VBoxContainer/BackButton")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1100030002]
+custom_minimum_size = Vector2(640, 0)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=1100030003]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"PlayerRibbon"
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer" unique_id=1100030004]
+layout_mode = 2
+text = "Player Abilities"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=1100030005]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer" unique_id=1100030006]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_right = 8
+
+[node name="DebugPlayerAbilitiesList" parent="VBoxContainer/ScrollContainer/MarginContainer" unique_id=1100030007 instance=ExtResource("4_list")]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="VBoxContainer" unique_id=1100030008]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+shortcut = ExtResource("4_0r7hk")
+text = "Back"
+icon = ExtResource("3_arrow")
+flat = true

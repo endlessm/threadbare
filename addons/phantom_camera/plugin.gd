@@ -37,6 +37,7 @@ var pcam_3d_noise_emitter_gizmo_plugin: EditorNode3DGizmoPlugin = PCam3DNoiseEmi
 var editor_panel_instance: Control
 var panel_button: Button
 #var viewfinder_panel_instance
+var export_plugin: EditorExportPlugin
 
 #endregion
 
@@ -122,8 +123,16 @@ func _enter_tree() -> void:
 	scene_changed.connect(editor_panel_instance.viewfinder.scene_changed)
 	scene_changed.connect(_scene_changed)
 
+	if Engine.is_editor_hint():
+		export_plugin = preload("./export_plugin.gd").new()
+		add_export_plugin(export_plugin)
+
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		remove_export_plugin(export_plugin)
+		export_plugin = null
+
 	panel_button.toggled.disconnect(_btn_toggled)
 	scene_changed.disconnect(editor_panel_instance.viewfinder.scene_changed)
 	scene_changed.disconnect(_scene_changed)

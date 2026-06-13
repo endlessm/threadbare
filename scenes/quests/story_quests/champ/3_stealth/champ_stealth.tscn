@@ -54,11 +54,10 @@
 [ext_resource type="Resource" uid="uid://dl6n1ifa5ktnp" path="res://scenes/quests/story_quests/champ/3_stealth/stealth_components/champ_incomplete_stealth_movement_hint.dialogue" id="28_fqjr6"]
 [ext_resource type="PackedScene" uid="uid://drew54gcfpekn" path="res://scenes/quests/story_quests/champ/3_stealth/stealth_components/champ_water_rock/champ_water_rock.tscn" id="29_rik0t"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="30_nyycj"]
-[ext_resource type="Texture2D" uid="uid://c63g4rx3fvw4o" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/keyboard/keyboard_c_outline.tres" id="31_8k5n0"]
-[ext_resource type="Texture2D" uid="uid://djen1whwwin1w" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/keyboard/keyboard_f_outline.tres" id="33_1n21b"]
+[ext_resource type="Texture2D" uid="uid://bbvedlx2ahdxk" path="res://assets/third_party/kenney_input_prompts/keyboard-&-mouse_sheet_default.png" id="31_y8c8x"]
 [ext_resource type="Resource" uid="uid://bmharix12w26t" path="res://scenes/quests/story_quests/champ/3_stealth/stealth_components/champ_blink.dialogue" id="34_g76pt"]
 [ext_resource type="Texture2D" uid="uid://h606ovawbm0x" path="res://scenes/quests/story_quests/champ/3_stealth/stealth_components/BlinkMarker.png" id="44_onp74"]
-[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="46_8k5n0"]
+[ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="46_8k5n0"]
 [ext_resource type="Resource" uid="uid://cxjgjjb44ssnm" path="res://scenes/quests/story_quests/champ/3_stealth/stealth_components/champ_walking_on_water.dialogue" id="55_rosy4"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_0wfyh"]
@@ -1625,6 +1624,14 @@ size = Vector2(168.25, 122)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1n21b"]
 size = Vector2(387, 631.61835)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_8k5n0"]
+atlas = ExtResource("31_y8c8x")
+region = Rect2(192, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1n21b"]
+atlas = ExtResource("31_y8c8x")
+region = Rect2(64, 576, 64, 64)
+
 [sub_resource type="Resource" id="Resource_x1dad"]
 script = ExtResource("12_epx14")
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
@@ -1752,7 +1759,7 @@ layout_mode = 2
 
 [node name="Interaction_hint" type="TextureRect" parent="ScreenOverlay/Hint/Blink_Hint" unique_id=207495647]
 layout_mode = 2
-texture = ExtResource("31_8k5n0")
+texture = SubResource("AtlasTexture_8k5n0")
 script = ExtResource("30_nyycj")
 action_name = &"champ_blink"
 
@@ -1765,7 +1772,7 @@ layout_mode = 2
 
 [node name="Water_hint" type="TextureRect" parent="ScreenOverlay/Hint/walking_on_water" unique_id=506122502]
 layout_mode = 2
-texture = ExtResource("33_1n21b")
+texture = SubResource("AtlasTexture_1n21b")
 script = ExtResource("30_nyycj")
 action_name = &"champ_walk_on_water"
 
@@ -1781,15 +1788,15 @@ text = "Walk on water"
 
 [node name="CollectibleItem" parent="." unique_id=1250372978 instance=ExtResource("11_680ig")]
 position = Vector2(892, -2934)
-next_scene = "uid://bbjh0yoqbchuo"
 item = SubResource("Resource_x1dad")
 collected_dialogue = ExtResource("13_oswsn")
+next_scene = "uid://bbjh0yoqbchuo"
 
 [node name="CollectibleItem2" parent="." unique_id=327991066 instance=ExtResource("11_680ig")]
 position = Vector2(2510, 513)
-next_scene = "uid://bbjh0yoqbchuo"
 item = SubResource("Resource_x1dad")
 collected_dialogue = ExtResource("13_oswsn")
+next_scene = "uid://bbjh0yoqbchuo"
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=260237335]
 script = ExtResource("14_fqjr6")
@@ -1872,11 +1879,11 @@ position = Vector2(110, 34)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("44_onp74")
 
-[node name="Teleporter" type="Area2D" parent="." unique_id=1237177419]
+[node name="Teleporter" parent="." unique_id=1779636661 instance=ExtResource("46_8k5n0")]
 position = Vector2(1676, 519)
-collision_layer = 4
-script = ExtResource("46_8k5n0")
 next_scene = "uid://bbjh0yoqbchuo"
+enter_transition = 1
+exit_transition = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" unique_id=2026668028]
 shape = SubResource("CircleShape2D_24qmm")
