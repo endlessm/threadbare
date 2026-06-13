@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://stdqc6ttomff"]
 
-[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_kj1pq"]
 [ext_resource type="Script" uid="uid://c6nc0jka32ow2" path="res://scenes/menus/title/components/title_screen.gd" id="2_0vy2n"]
 [ext_resource type="Resource" uid="uid://0dcffjdxn6g2" path="res://scenes/quests/lore_quests/quest_000/quest.tres" id="3_5uobg"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="4_c6kyi"]
@@ -19,7 +18,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_kj1pq")
 script = ExtResource("2_0vy2n")
 tutorial_quest = ExtResource("3_5uobg")
 
@@ -54,20 +52,22 @@ unique_name_in_owner = true
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Options" parent="Pages" unique_id=1924255406 instance=ExtResource("8_5uobg")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-
 [node name="Credits" parent="Pages" unique_id=999256361 instance=ExtResource("6_2ijyo")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Options" parent="Pages" unique_id=1924255406 instance=ExtResource("8_5uobg")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
 metadata/_tab_index = 2
 
 [connection signal="continue_pressed" from="Pages/MainMenu" to="." method="_on_main_menu_continue_pressed"]
 [connection signal="credits_pressed" from="Pages/MainMenu" to="." method="_on_main_menu_credits_pressed"]
 [connection signal="options_pressed" from="Pages/MainMenu" to="." method="_on_main_menu_options_pressed"]
 [connection signal="start_pressed" from="Pages/MainMenu" to="." method="_on_start_pressed"]
-[connection signal="back" from="Pages/Options" to="." method="_on_options_back"]
 [connection signal="back" from="Pages/Credits" to="." method="_on_credits_back"]
+[connection signal="back" from="Pages/Options" to="." method="_on_options_back"]

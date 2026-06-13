@@ -2,15 +2,16 @@
 # SPDX-License-Identifier: MPL-2.0
 ~ welcome
 The Eternal Loom welcomes you, StoryWeaver. Threads you collect help to repair the fabric of our world.
-=> END
-
-~ no_threads
-=>< welcome
-It seems you are lacking the threads of Memory, Imagination, and Spirit... try coming back later.
-=> END
+if is_item_offering_possible():
+	=> have_threads
+else:
+	It seems you are lacking the threads of Memory, Imagination, and Spirit... try coming back later.
+	=> END
 
 ~ have_threads
-=>< welcome
 The Memory, Imagination, and Spirit threads are ready to be incorporated into the loom!
+if has_retelling():
+	do start_retelling()
+	do retelling_finished
 do on_offering_succeeded()
 => END
