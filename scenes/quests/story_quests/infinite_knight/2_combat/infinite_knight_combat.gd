@@ -25,7 +25,7 @@ func _ready() -> void:
 		
 		var repel_node: Node = player_node.get_node_or_null("%PlayerRepel")
 		if repel_node:
-			repel_node.input_action = "attack" 
+			repel_node.input_action = "throw" 
 			if repel_node is CanvasItem:
 				repel_node.hide()
 				
