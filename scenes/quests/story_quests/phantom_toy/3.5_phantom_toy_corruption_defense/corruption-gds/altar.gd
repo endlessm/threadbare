@@ -13,7 +13,7 @@ var cleaning_started := false
 @onready var purify_sound: AudioStreamPlayer2D = $PurifySound
 
 
-func set_corrupted(value: bool) -> void:
+func set_corrupted(value: bool, play_sound := true) -> void:
 
 	if not is_node_ready():
 		await ready
@@ -25,8 +25,8 @@ func set_corrupted(value: bool) -> void:
 
 		sprite.texture = corrupted_texture
 
-		corrupt_sound.stop()
-		corrupt_sound.play()
+		if play_sound:
+			play_corruption_sound()
 
 	else:
 
@@ -47,8 +47,63 @@ func _delayed_clean() -> void:
 
 	sprite.texture = clean_texture
 
-	purify_sound.stop()
-	purify_sound.play()
-
 	is_corrupted = false
 	cleaning_started = false
+
+
+func play_corruption_sound() -> void:
+
+	if not is_node_ready():
+		await ready
+
+	if corrupt_sound == null:
+		return
+
+	if not corrupt_sound.playing:
+		corrupt_sound.play()
+
+
+func stop_corruption_sound() -> void:
+
+	if not is_node_ready():
+		await ready
+
+	if corrupt_sound == null:
+		return
+
+	corrupt_sound.stop()
+
+
+func play_purification_sound() -> void:
+
+	if not is_node_ready():
+		await ready
+
+	if purify_sound == null:
+		return
+
+	if not purify_sound.playing:
+		purify_sound.play()
+
+
+func stop_purification_sound() -> void:
+
+	if not is_node_ready():
+		await ready
+
+	if purify_sound == null:
+		return
+
+	purify_sound.stop()
+
+
+func stop_all_sounds() -> void:
+
+	if not is_node_ready():
+		await ready
+
+	if corrupt_sound != null:
+		corrupt_sound.stop()
+
+	if purify_sound != null:
+		purify_sound.stop()
