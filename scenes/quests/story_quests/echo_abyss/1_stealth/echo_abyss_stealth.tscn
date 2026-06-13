@@ -7,10 +7,12 @@
 [ext_resource type="TileSet" uid="uid://bfm88b0buimbj" path="res://scenes/quests/story_quests/echo_abyss/tiles/echo_abyss_decoration.tres" id="5_g3acg"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="7_1a0nr"]
 [ext_resource type="SpriteFrames" uid="uid://b6pm0p3stv78r" path="res://scenes/quests/story_quests/echo_abyss/player_components/first_form_azrael.tres" id="8_g3acg"]
+[ext_resource type="Resource" uid="uid://dhxdosogmtm5w" path="res://scenes/quests/story_quests/echo_abyss/1_stealth/stealth_components/echo_abyss_essence_npc.dialogue" id="8_iwhha"]
 [ext_resource type="PackedScene" uid="uid://b8dae6aib363j" path="res://scenes/quests/story_quests/echo_abyss/Characters/echo_abyss_essence_npc.tscn" id="10_g3acg"]
 [ext_resource type="SpriteFrames" uid="uid://uwont7hj7jtx" path="res://scenes/quests/story_quests/echo_abyss/player_components/contaminated_creature.tres" id="11_8er3d"]
 [ext_resource type="Resource" uid="uid://bn1gqt8tmqwm4" path="res://scenes/quests/story_quests/echo_abyss/1_stealth/stealth_components/echo_abyss_stealth.dialogue" id="11_do6nd"]
 [ext_resource type="PackedScene" uid="uid://bxqqun8fikc1u" path="res://scenes/quests/story_quests/echo_abyss/Characters/azrael_player.tscn" id="11_g3acg"]
+[ext_resource type="Resource" uid="uid://bpodx7xlfpvbo" path="res://scenes/quests/story_quests/echo_abyss/1_stealth/stealth_components/echo_abyss_essence_exit.dialogue" id="11_gqts5"]
 [ext_resource type="SpriteFrames" uid="uid://dnswfspgfmqo5" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_red.tres" id="13_iwhha"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="15_3crhn"]
 [ext_resource type="Script" uid="uid://bdk4uhfdprt3t" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_hud.gd" id="15_vwco0"]
@@ -230,36 +232,43 @@ libraries/ = SubResource("AnimationLibrary_kll4l")
 
 [node name="Character1" parent="OnTheGround" unique_id=642768190 instance=ExtResource("10_g3acg")]
 position = Vector2(608, -312)
+dialogue = ExtResource("8_iwhha")
 dialogue_title = "character_1"
 essence_reward = 20
 sprite_frames = ExtResource("11_8er3d")
 
 [node name="Character2" parent="OnTheGround" unique_id=708542597 instance=ExtResource("10_g3acg")]
 position = Vector2(2360, -64)
+dialogue = ExtResource("8_iwhha")
 dialogue_title = "character_2"
 essence_reward = 20
 sprite_frames = ExtResource("11_8er3d")
 
 [node name="Character3" parent="OnTheGround" unique_id=2136176725 instance=ExtResource("10_g3acg")]
 position = Vector2(1960, 344)
+dialogue = ExtResource("8_iwhha")
 dialogue_title = "character_3"
 essence_reward = 20
 sprite_frames = ExtResource("11_8er3d")
 
 [node name="Character4" parent="OnTheGround" unique_id=1600699831 instance=ExtResource("10_g3acg")]
 position = Vector2(1264, 408)
+dialogue = ExtResource("8_iwhha")
 dialogue_title = "character_4"
 essence_reward = 20
 sprite_frames = ExtResource("11_8er3d")
 
 [node name="Character5" parent="OnTheGround" unique_id=1311767469 instance=ExtResource("10_g3acg")]
 position = Vector2(1352, 168)
+dialogue = ExtResource("8_iwhha")
 dialogue_title = "character_5"
 essence_reward = 20
 sprite_frames = ExtResource("11_8er3d")
 
 [node name="EssenceExit" parent="OnTheGround" unique_id=1606149158 instance=ExtResource("21_essence_exit")]
 position = Vector2(32, 528)
+player_path = NodePath("../Player")
+dialogue = ExtResource("11_gqts5")
 dialogue_title = "stealth_exit"
 next_scene = "res://scenes/quests/story_quests/echo_abyss/2_flee/echo_abyss_flee.tscn"
 sprite_frames = ExtResource("13_iwhha")
@@ -289,6 +298,7 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="CanvasGroup" unique_id=73785874]
 script = ExtResource("15_vwco0")
+player_path = NodePath("../../OnTheGround/Player")
 essence_progress_bar_path = NodePath("EssenceProgressBar")
 health_container_path = NodePath("HealthPlayer")
 full_heart_texture = ExtResource("16_3crhn")

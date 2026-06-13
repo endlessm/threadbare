@@ -6,6 +6,7 @@
 [ext_resource type="TileSet" uid="uid://bfm88b0buimbj" path="res://scenes/quests/story_quests/echo_abyss/tiles/echo_abyss_decoration.tres" id="5_5ljvx"]
 [ext_resource type="Resource" uid="uid://cgodcjob4lgdk" path="res://scenes/quests/story_quests/echo_abyss/0_intro/intro_components/echo_abyss_intro.dialogue" id="5_r1h08"]
 [ext_resource type="PackedScene" uid="uid://bxqqun8fikc1u" path="res://scenes/quests/story_quests/echo_abyss/Characters/azrael_player.tscn" id="6_s0x21"]
+[ext_resource type="Resource" uid="uid://dci1ckhi662iq" path="res://scenes/quests/story_quests/echo_abyss/0_intro/intro_components/echo_abyss_essence_npc.dialogue" id="7_ackhe"]
 [ext_resource type="SpriteFrames" uid="uid://b6pm0p3stv78r" path="res://scenes/quests/story_quests/echo_abyss/player_components/first_form_azrael.tres" id="7_gcyiv"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="8_yyxck"]
 [ext_resource type="SpriteFrames" uid="uid://uwont7hj7jtx" path="res://scenes/quests/story_quests/echo_abyss/player_components/contaminated_creature.tres" id="10_ackhe"]
@@ -84,60 +85,61 @@ y_sort_enabled = true
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_kll4l")
 
-[node name="Player" parent="OnTheGround" unique_id=732479178 instance=ExtResource("6_s0x21")]
-position = Vector2(224, -152)
-scale = Vector2(1.5, 1.5)
-sprite_frames = ExtResource("7_gcyiv")
-
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1311191200]
-position = Vector2(328, -32.000008)
-scale = Vector2(1.5, 1.5)
-limit_left = -52
-limit_top = -428
-limit_right = 2836
-limit_bottom = 760
-editor_draw_limits = true
-
 [node name="Character1" parent="OnTheGround" unique_id=642768190 instance=ExtResource("18_essence_npc")]
 position = Vector2(80, 112)
-dialogue = null
+dialogue = ExtResource("7_ackhe")
 dialogue_title = "character_1"
 essence_reward = 20
 sprite_frames = ExtResource("10_ackhe")
 
 [node name="Character2" parent="OnTheGround" unique_id=1188245920 instance=ExtResource("18_essence_npc")]
 position = Vector2(1479, -232)
-dialogue = null
+dialogue = ExtResource("7_ackhe")
 dialogue_title = "character_2"
 essence_reward = 20
 sprite_frames = ExtResource("10_ackhe")
 
 [node name="Character3" parent="OnTheGround" unique_id=725467076 instance=ExtResource("18_essence_npc")]
 position = Vector2(2599, 384)
-dialogue = null
+dialogue = ExtResource("7_ackhe")
 dialogue_title = "character_3"
 essence_reward = 20
 sprite_frames = ExtResource("10_ackhe")
 
 [node name="Character4" parent="OnTheGround" unique_id=1196720230 instance=ExtResource("18_essence_npc")]
 position = Vector2(1128, 416)
-dialogue = null
+dialogue = ExtResource("7_ackhe")
 dialogue_title = "character_4"
 essence_reward = 20
 sprite_frames = ExtResource("10_ackhe")
 
 [node name="Character5" parent="OnTheGround" unique_id=2009565783 instance=ExtResource("18_essence_npc")]
 position = Vector2(144, 392)
-dialogue = null
+dialogue = ExtResource("7_ackhe")
 dialogue_title = "character_5"
 essence_reward = 20
 sprite_frames = ExtResource("10_ackhe")
 
 [node name="EssenceExit" parent="OnTheGround" unique_id=1606149158 instance=ExtResource("19_essence_exit")]
 position = Vector2(335, 432)
+player_path = NodePath("../Player")
 dialogue_title = "intro_exit"
 next_scene = "res://scenes/quests/story_quests/echo_abyss/1_stealth/echo_abyss_stealth.tscn"
 sprite_frames = ExtResource("11_gcyiv")
+
+[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("6_s0x21")]
+position = Vector2(168, -128)
+scale = Vector2(1.5, 1.5)
+sprite_frames = ExtResource("7_gcyiv")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1311191200]
+position = Vector2(306.6667, 58.666656)
+scale = Vector2(1.5, 1.5)
+limit_left = -52
+limit_top = -428
+limit_right = 2836
+limit_bottom = 760
+editor_draw_limits = true
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
 
@@ -151,6 +153,7 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="CanvasGroup" unique_id=73785874]
 script = ExtResource("17_echo_hud")
+player_path = NodePath("../../OnTheGround/Player")
 essence_progress_bar_path = NodePath("EssenceProgressBar")
 health_container_path = NodePath("HealthPlayer")
 full_heart_texture = ExtResource("14_r66nt")
