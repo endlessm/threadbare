@@ -4,7 +4,7 @@
 
 extends CharacterBody2D
 
-const MOVE_SPEED: float = 250.0
+const MOVE_SPEED: float = 150.0
 
 signal letra_iluminada(node: Node2D)
 signal letra_oscurecida(node: Node2D)
@@ -21,6 +21,7 @@ const LOOK_AT_TURN_SPEED: float = 10.0
 
 func _ready() -> void:
 	add_to_group("player")
+	detection_area.add_to_group("player")  # ✅ solo esto se agrega
 	detection_area.area_entered.connect(_on_detection_area_area_entered)
 	detection_area.area_exited.connect(_on_detection_area_area_exited)
 
