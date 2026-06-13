@@ -3,8 +3,11 @@
 [ext_resource type="Script" uid="uid://dmf866kgfnp3c" path="res://scenes/game_elements/characters/enemies/guard/components/guard.gd" id="1_aik1g"]
 [ext_resource type="SpriteFrames" uid="uid://xuo0ejdfulrh" path="res://scenes/quests/story_quests/last_coordinates/assets/enemies/last_coordinates_guard_enemy2.tres" id="2_aik1g"]
 [ext_resource type="Script" uid="uid://c477jgx4lwr86" path="res://scenes/game_elements/characters/enemies/guard/components/guard_movement.gd" id="2_oi74f"]
+[ext_resource type="AudioStream" uid="uid://dffwe5pwe50rd" path="res://scenes/quests/story_quests/last_coordinates/assets/sounds/found_you.wav" id="3_mlad2"]
 [ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="3_uxqh5"]
+[ext_resource type="AudioStream" uid="uid://bs1v1d6dmh6ds" path="res://scenes/quests/story_quests/last_coordinates/assets/sounds/heaavy_steps.wav" id="4_l1bjh"]
 [ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="4_mlad2"]
+[ext_resource type="AudioStream" uid="uid://in1dsc8vrdyy" path="res://scenes/quests/story_quests/last_coordinates/assets/sounds/electrocute.wav" id="5_3728e"]
 [ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="5_l1bjh"]
 [ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="7_u740e"]
 [ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="8_ecso7"]
@@ -206,6 +209,9 @@ collision_mask = 528
 motion_mode = 1
 script = ExtResource("1_aik1g")
 sprite_frames = ExtResource("2_aik1g")
+alerted_sound_stream = ExtResource("3_mlad2")
+footsteps_sound_stream = ExtResource("4_l1bjh")
+alert_others_sound_stream = ExtResource("5_3728e")
 
 [node name="GuardMovement" type="Node2D" parent="." unique_id=1116278916]
 unique_name_in_owner = true
@@ -249,7 +255,6 @@ polygon = PackedVector2Array(302, 48, 283, 52, 279, 52, 101, 114, 98, 114, 79, 1
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=616054452]
 unique_name_in_owner = true
 position = Vector2(0, -16)
-scale = Vector2(1.64, 1.64)
 sprite_frames = ExtResource("2_aik1g")
 animation = &"walk"
 autoplay = "idle"
@@ -315,11 +320,13 @@ metadata/_custom_type_script = "uid://b3hx1n2yl88qr"
 
 [node name="AlertSound" type="AudioStreamPlayer" parent="Sounds" unique_id=1366827513]
 unique_name_in_owner = true
+stream = ExtResource("3_mlad2")
 volume_db = -5.0
 bus = &"SFX"
 
 [node name="FootSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=1825167375]
 unique_name_in_owner = true
+stream = ExtResource("4_l1bjh")
 volume_db = -2.0
 max_distance = 350.0
 bus = &"SFX"
@@ -334,6 +341,7 @@ bus = &"SFX"
 
 [node name="TorchHitSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=1573897868]
 unique_name_in_owner = true
+stream = ExtResource("5_3728e")
 volume_db = -2.0
 max_distance = 500.0
 bus = &"SFX"

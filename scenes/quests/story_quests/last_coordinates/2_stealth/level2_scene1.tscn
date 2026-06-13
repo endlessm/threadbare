@@ -10,18 +10,16 @@
 [ext_resource type="SpriteFrames" uid="uid://6lrnci820w0p" path="res://scenes/quests/story_quests/last_coordinates/player_components/last_coordinates_player.tres" id="6_ju6ja"]
 [ext_resource type="Texture2D" uid="uid://bp3rqfaokud51" path="res://scenes/quests/story_quests/last_coordinates/assets/buildings/house_gray_destroyed.png" id="7_be2d8"]
 [ext_resource type="Texture2D" uid="uid://b67jl7gt7jipe" path="res://scenes/quests/story_quests/last_coordinates/assets/buildings/house_gray.png" id="8_rhgso"]
-[ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="9_f4e5p"]
-[ext_resource type="Resource" uid="uid://dafewhmikjlc4" path="res://scenes/quests/story_quests/last_coordinates/2_stealth/stealth_components/last_coordinates_checkpoint.dialogue" id="10_xny2p"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="11_8fgse"]
 [ext_resource type="Texture2D" uid="uid://dqm0mf0t6of32" path="res://scenes/quests/story_quests/last_coordinates/assets/obstacles/obstacle_barrier.png" id="11_rhgso"]
 [ext_resource type="PackedScene" uid="uid://c8dmgv3bp8kum" path="res://scenes/quests/story_quests/last_coordinates/assets/obstacles/obstacle_vertical.tscn" id="12_hl57d"]
-[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="12_vvlro"]
 [ext_resource type="PackedScene" uid="uid://dlo6bm0003vln" path="res://scenes/quests/story_quests/last_coordinates/assets/obstacles/obstacle_horizontal.tscn" id="13_hl57d"]
-[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="13_otluu"]
-[ext_resource type="Resource" uid="uid://bpikrbutau6h4" path="res://scenes/quests/story_quests/last_coordinates/2_stealth/stealth_components/last_coordinates_collected.dialogue" id="14_725g8"]
 [ext_resource type="PackedScene" uid="uid://bym2x4mxm04jk" path="res://scenes/quests/story_quests/last_coordinates/assets/enemies/last_coordinates_guard.tscn" id="14_hl57d"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="15_ouvpq"]
-[ext_resource type="Resource" uid="uid://bijrun6i7dk12" path="res://scenes/quests/story_quests/last_coordinates/2_stealth/stealth_components/last_coordinates_stealth.dialogue" id="16_r1qp8"]
+[ext_resource type="PackedScene" uid="uid://cm6u2v13a1dgt" path="res://scenes/quests/story_quests/last_coordinates/objects/checkpoint/last_coordinates_checkpoint.tscn" id="15_yuvam"]
+[ext_resource type="Resource" uid="uid://dafewhmikjlc4" path="res://scenes/quests/story_quests/last_coordinates/2_stealth/stealth_components/lc_checkpoint1.dialogue" id="16_0g42c"]
+[ext_resource type="Resource" uid="uid://bijrun6i7dk12" path="res://scenes/quests/story_quests/last_coordinates/2_stealth/stealth_components/start.dialogue" id="16_r1qp8"]
+[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="20_piun6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5lsdd"]
 resource_name = "Road Tiles"
@@ -345,6 +343,12 @@ texture_region_size = Vector2i(64, 64)
 2:0/0 = 0
 2:0/0/texture_origin = Vector2i(0, -32)
 2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(43, -28, 9, 108, -44, 102, -7, -50)
+1:0/0 = 0
+1:1/0 = 0
+0:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+3:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_4dax4"]
 tile_size = Vector2i(64, 64)
@@ -385,13 +389,11 @@ _data = {
 }
 point_count = 8
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sawi3"]
-size = Vector2(168.25, 122)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0g42c"]
+size = Vector2(162, 114.5)
 
-[sub_resource type="Resource" id="Resource_7qi7u"]
-script = ExtResource("13_otluu")
-type = 2
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yuvam"]
+size = Vector2(90, 259)
 
 [node name="LastCoordinatesStealth" type="Node2D" unique_id=528815133]
 
@@ -407,7 +409,8 @@ color = Color(0.48235294, 0.48235294, 0.48235294, 1)
 
 [node name="Player" parent="." unique_id=1079296690 instance=ExtResource("5_phtw2")]
 z_index = 1
-position = Vector2(43, 2552)
+position = Vector2(2218, 1287)
+player_name = "Playerrrr"
 sprite_frames = ExtResource("6_ju6ja")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1196891219]
@@ -433,7 +436,7 @@ tile_map_data = PackedByteArray("AAABABEAAAAAAAIAAAACABEAAAABAAIAAAADABEAAAABAAI
 tile_set = SubResource("TileSet_mp1c5")
 
 [node name="Obstacles" type="TileMapLayer" parent="TileMapLayers" unique_id=694364054]
-tile_map_data = PackedByteArray("AAASAB0AAAACAAMAAAARAB0AAAABAAMAAAAQAB0AAAABAAMAAAAPAB0AAAAAAAMAAAAPAB4AAAAAAAIAAAAaACYAAQABAAAAAAAaACcAAQABAAEAAAAaACgAAQABAAEAAAAaACkAAQAJAAMAAAAIACYAAAAAAAMAAAAJACYAAAABAAMAAAAKACYAAAABAAMAAAALACYAAAABAAMAAAAMACYAAAACAAMAAAAdAC4AAAACAAAAAAAcAC4AAAABAAAAAAAbAC4AAAABAAAAAAAaAC4AAAAAAAAAAAAdAC8AAAACAAIAAAAcAC8AAAABAAIAAAAbAC8AAAABAAIAAAAaAC8AAAAAAAIAAAARACUAAAADAAMAAAADAB4AAAAAAAAAAAAEAB4AAAABAAAAAAAFAB4AAAABAAAAAAAGAB4AAAACAAAAAAAGAB8AAAACAAIAAAAFAB8AAAABAAIAAAAEAB8AAAABAAIAAAADAB8AAAAAAAIAAAADACAAAAAAAAMAAAAEACAAAAABAAMAAAAFACAAAAACAAMAAAAJAB4AAAADAAMAAAAMAB8AAAADAAMAAAAKACIAAAADAAMAAAARACkAAAADAAMAAAA=")
+tile_map_data = PackedByteArray("AAASAB0AAAACAAMAAAARAB0AAAABAAMAAAAQAB0AAAABAAMAAAAPAB0AAAAAAAMAAAAPAB4AAAAAAAIAAAAaACYAAQABAAAAAAAaACcAAQABAAEAAAAaACgAAQABAAEAAAAaACkAAQAJAAMAAAAIACYAAAAAAAMAAAAJACYAAAABAAMAAAAKACYAAAABAAMAAAALACYAAAABAAMAAAAMACYAAAACAAMAAAAdAC4AAAACAAAAAAAcAC4AAAABAAAAAAAbAC4AAAABAAAAAAAaAC4AAAAAAAAAAAAdAC8AAAACAAIAAAAcAC8AAAABAAIAAAAbAC8AAAABAAIAAAAaAC8AAAAAAAIAAAARACUAAAADAAMAAAADAB4AAAAAAAAAAAAEAB4AAAABAAAAAAAFAB4AAAABAAAAAAAGAB4AAAACAAAAAAAGAB8AAAACAAIAAAAFAB8AAAABAAIAAAAEAB8AAAABAAIAAAADAB8AAAAAAAIAAAADACAAAAAAAAMAAAAEACAAAAABAAMAAAAFACAAAAACAAMAAAAJAB4AAAADAAMAAAAMAB8AAAADAAMAAAAKACIAAAADAAMAAAARACkAAAADAAMAAAD+/yYAAAADAAAAAAD+/ycAAAADAAEAAAD+/ygAAAADAAEAAAD+/ykAAAADAAIAAAA=")
 tile_set = SubResource("TileSet_4dax4")
 
 [node name="Obstacles" type="Node2D" parent="." unique_id=1576796718]
@@ -515,6 +518,7 @@ curve = SubResource("Curve2D_ckw1w")
 [node name="Guard4" parent="EnemyGuards" unique_id=2111937298 node_paths=PackedStringArray("patrol_path") instance=ExtResource("14_hl57d")]
 position = Vector2(1463, 2542)
 patrol_path = NodePath("../Guard4 - Patrol Path")
+wait_time = 2.5
 detection_area_scale = 1.8
 
 [node name="Guard4 - Patrol Path" type="Path2D" parent="EnemyGuards" unique_id=1966727951]
@@ -535,27 +539,29 @@ curve = SubResource("Curve2D_mp1c5")
 [node name="Checkpoints" type="Node2D" parent="." unique_id=344631200]
 y_sort_enabled = true
 
-[node name="Checkpoint" parent="Checkpoints" unique_id=1983094 instance=ExtResource("9_f4e5p")]
-position = Vector2(2061, 1645)
-dialogue = ExtResource("10_xny2p")
+[node name="Checkpoint" parent="Checkpoints" unique_id=1789892556 instance=ExtResource("15_yuvam")]
+position = Vector2(2049, 1649)
+dialogue = ExtResource("16_0g42c")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint" unique_id=328425926]
-position = Vector2(1, -2)
-shape = SubResource("RectangleShape2D_sawi3")
-debug_color = Color(0, 0, 0, 0.42)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint" unique_id=2124094216]
+shape = SubResource("RectangleShape2D_0g42c")
+debug_color = Color(0, 0, 0, 0.41960785)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=495226624]
 
 [node name="HUD" parent="." unique_id=1994868895 instance=ExtResource("11_8fgse")]
 
-[node name="CollectibleItem" parent="." unique_id=1779229490 instance=ExtResource("12_vvlro")]
-modulate = Color(0.99999994, 0.19859871, 0.7341849, 1)
-position = Vector2(2335, 955)
-next_scene = "uid://bbauo5ahyr8js"
-item = SubResource("Resource_7qi7u")
-collected_dialogue = ExtResource("14_725g8")
-
 [node name="Cinematic" type="Node2D" parent="." unique_id=859706882]
 script = ExtResource("15_ouvpq")
 dialogue = ExtResource("16_r1qp8")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="Teleporter" type="Area2D" parent="." unique_id=1434594624]
+position = Vector2(3149, 2560)
+collision_layer = 4
+script = ExtResource("20_piun6")
+next_scene = "uid://cpfccenyntli7"
+metadata/_custom_type_script = "uid://hqdquinbimce"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" unique_id=170557970]
+shape = SubResource("RectangleShape2D_yuvam")
