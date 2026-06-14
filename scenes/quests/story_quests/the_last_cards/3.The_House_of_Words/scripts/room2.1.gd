@@ -68,7 +68,7 @@ func _ready():
 		_iniciar_juego()
 
 func _iniciar_dialogo():
-	var dialogue_resource = load("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/dialogues/room2.dialogue")
+	var dialogue_resource = load("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/dialogues/room2_1.dialogue")
 	if dialogue_resource:
 		dialogue_balloon.start(dialogue_resource, "start")
 	else:
@@ -186,7 +186,7 @@ func _actualizar_timer_display():
 
 func _game_over():
 	juego_activo = false
-	get_tree().change_scene_to_file("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Room2.tscn")
+	get_tree().change_scene_to_file("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Room2.1.tscn")
 
 func _on_button_pressed():
 	get_tree().change_scene_to_file("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Room3.tscn")

@@ -4,7 +4,7 @@
 
 extends CharacterBody2D
 
-const MOVE_SPEED: float = 150.0
+const MOVE_SPEED: float = 250.0
 
 signal letra_iluminada(node: Node2D)
 signal letra_oscurecida(node: Node2D)

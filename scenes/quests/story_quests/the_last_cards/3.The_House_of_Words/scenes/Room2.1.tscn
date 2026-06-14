@@ -1,17 +1,22 @@
-[gd_scene format=4 uid="uid://icxmuswvxk8c"]
+[gd_scene format=4 uid="uid://euwkutvixfeo"]
 
-[ext_resource type="Script" uid="uid://4j6fvyhsis6o" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/room1.gd" id="1_2dtu0"]
-[ext_resource type="Shader" uid="uid://dh84ve3vk3fvm" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/darkness_cone.gdshader" id="2_04nh5"]
-[ext_resource type="Script" uid="uid://d3tdqiu0hfunn" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/darkness_overlay.gd" id="3_sc6b0"]
-[ext_resource type="PackedScene" uid="uid://e3vubu06sx60" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Player.tscn" id="4_04nh5"]
-[ext_resource type="TileSet" uid="uid://4ewcvb1sibsf" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/2_cinematicacombate/tile/tilestaller.tres" id="4_7l0ir"]
-[ext_resource type="SpriteFrames" uid="uid://nfm4t7txex23" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/ente.tres" id="4_rie1x"]
-[ext_resource type="Script" uid="uid://df1hlhbkn06ws" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/hidden_letter.gd" id="5_rie1x"]
-[ext_resource type="PackedScene" uid="uid://dhydhpp43urah" path="res://scenes/ui_elements/dialogue/balloon.tscn" id="7_sc6b0"]
-[ext_resource type="AudioStream" uid="uid://caha8luj754tw" path="res://scenes/quests/story_quests/after_the_tremor/music/enteaparece.ogg" id="8_o6256"]
+[ext_resource type="Script" uid="uid://bgqjn6glms6i" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/room2.gd" id="1_msr4u"]
+[ext_resource type="TileSet" uid="uid://4ewcvb1sibsf" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/2_cinematicacombate/tile/tilestaller.tres" id="2_a67xw"]
+[ext_resource type="SpriteFrames" uid="uid://nfm4t7txex23" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/ente.tres" id="3_fycwp"]
+[ext_resource type="PackedScene" uid="uid://dhydhpp43urah" path="res://scenes/ui_elements/dialogue/balloon.tscn" id="4_e1c5g"]
+[ext_resource type="PackedScene" uid="uid://e3vubu06sx60" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Player.tscn" id="5_bfk32"]
+[ext_resource type="Shader" uid="uid://dh84ve3vk3fvm" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/darkness_cone.gdshader" id="6_6887x"]
+[ext_resource type="Script" uid="uid://d3tdqiu0hfunn" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/darkness_overlay.gd" id="7_6sf41"]
+[ext_resource type="Script" uid="uid://df1hlhbkn06ws" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/hidden_letter.gd" id="8_llk4l"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_o6256"]
-shader = ExtResource("2_04nh5")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sf7up"]
+size = Vector2(107, 124)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oe7il"]
+size = Vector2(440, 436)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_og4n5"]
+shader = ExtResource("6_6887x")
 shader_parameter/light_pos = Vector2(0.5, 0.5)
 shader_parameter/light_radius = 0.22
 shader_parameter/cone_angle = 1.05
@@ -20,53 +25,40 @@ shader_parameter/darkness = 0.96
 shader_parameter/edge_softness = 0.08
 shader_parameter/aspect_ratio = 1.7778
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sf7up"]
-size = Vector2(82, 90)
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7sa2y"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_bj4ne"]
-size = Vector2(367, 441)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_04nh5"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_msr4u"]
 radius = 75.9276
 
-[node name="Room1" type="Node2D" unique_id=8831323 groups=["hidden_letter"]]
-position = Vector2(0, 1)
-script = ExtResource("1_2dtu0")
+[node name="Room2_1" type="Node2D" unique_id=8831323 groups=["hidden_acertijo", "hidden_letter"]]
+script = ExtResource("1_msr4u")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=695187882]
-layer = 10
+[node name="TileMaps" type="Node2D" parent="." unique_id=1469583828]
+position = Vector2(30, 120)
 
-[node name="DarknessOverlay" type="ColorRect" parent="CanvasLayer" unique_id=351799045]
-z_index = 10
-material = SubResource("ShaderMaterial_o6256")
-offset_right = 1612.0
-offset_bottom = 973.0
-mouse_filter = 2
-color = Color(0, 0, 0, 0.003921569)
-script = ExtResource("3_sc6b0")
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=2042230701]
-visible = false
-offset_right = 1612.0
-offset_bottom = 973.0
-mouse_filter = 2
-color = Color(0.92535293, 0.9253528, 0.9253529, 1)
-
-[node name="Piso2" type="TileMapLayer" parent="." unique_id=502417440]
+[node name="Piso2" type="TileMapLayer" parent="TileMaps" unique_id=2139988482]
 z_index = -2
-position = Vector2(30, 150)
 tile_map_data = PackedByteArray("AAD9////EQAAAAMAAAD9/wAAEQAAAAMAAAD9/wEAEQAAAAMAAAD9/wIAEQAAAAMAAAD9/wMAEQAAAAMAAAD9/wQAEQAAAAMAAAD9/wUAEQAAAAMAAAD9/wYAEQAAAAMAAAD9/wcAEQAAAAMAAAD9/wgAEQAAAAMAAAD9/wkAEQAAAAMAAAD9/woAEQAAAAMAAAD9/wsAEQAAAAMAAAD9/wwAEQAAAAMAAAD9/w0AEQAAAAMAAAD+////EQAAAAMAAAD+/wAAEQAAAAMAAAD+/wEAEQAAAAMAAAD+/wIAEQAAAAMAAAD+/wMAEQAAAAMAAAD+/wQAEQAAAAMAAAD+/wUAEQAAAAMAAAD+/wYAEQAAAAMAAAD+/wcAEQAAAAMAAAD+/wgAEQAAAAMAAAD+/wkAEQAAAAMAAAD+/woAEQAAAAMAAAD+/wsAEQAAAAMAAAD+/wwAEQAAAAMAAAD+/w0AEQAAAAMAAAD/////EQAAAAMAAAD//wAAEQAAAAMAAAD//wEAEQAAAAMAAAD//wIAEQAAAAMAAAD//wMAEQAAAAMAAAD//wQAEQAAAAMAAAD//wUAEQAAAAMAAAD//wYAEQAAAAMAAAD//wcAEQAAAAMAAAD//wgAEQAAAAMAAAD//wkAEQAAAAMAAAD//woAEQAAAAMAAAD//wsAEQAAAAMAAAD//wwAEQAAAAMAAAD//w0AEQAAAAMAAAAAAP//EQAAAAMAAAAAAAAAEQAAAAMAAAAAAAEAEQAAAAMAAAAAAAIAEQAAAAMAAAAAAAMAEQAAAAMAAAAAAAQAEQAAAAMAAAAAAAUAEQAAAAMAAAAAAAYAEQAAAAMAAAAAAAcAEQAAAAMAAAAAAAgAEQAAAAMAAAAAAAkAEQAAAAMAAAAAAAoAEQAAAAMAAAAAAAsAEQAAAAMAAAAAAAwAEQAAAAMAAAAAAA0AEQAAAAMAAAABAP//EQAAAAMAAAABAAAAEQAAAAMAAAABAAEAEQAAAAMAAAABAAIAEQAAAAMAAAABAAMAEQAAAAMAAAABAAQAEQAAAAMAAAABAAUAEQAAAAMAAAABAAYAEQAAAAMAAAABAAcAEQAAAAMAAAABAAgAEQAAAAMAAAABAAkAEQAAAAMAAAABAAoAEQAAAAMAAAABAAsAEQAAAAMAAAABAAwAEQAAAAMAAAABAA0AEQAAAAMAAAACAP//EQAAAAMAAAACAAAAEQAAAAMAAAACAAEAEQAAAAMAAAACAAIAEQAAAAMAAAACAAMAEQAAAAMAAAACAAQAEQAAAAMAAAACAAUAEQAAAAMAAAACAAYAEQAAAAMAAAACAAcAEQAAAAMAAAACAAgAEQAAAAMAAAACAAkAEQAAAAMAAAACAAoAEQAAAAMAAAACAAsAEQAAAAMAAAACAAwAEQAAAAMAAAACAA0AEQAAAAMAAAADAP//EQAAAAMAAAADAAAAEQAAAAMAAAADAAEAEQAAAAMAAAADAAIAEQAAAAMAAAADAAMAEQAAAAMAAAADAAQAEQAAAAMAAAADAAUAEQAAAAMAAAADAAYAEQAAAAMAAAADAAcAEQAAAAMAAAADAAgAEQAAAAMAAAADAAkAEQAAAAMAAAADAAoAEQAAAAMAAAADAAsAEQAAAAMAAAADAAwAEQAAAAMAAAADAA0AEQAAAAMAAAAEAP//EQAAAAMAAAAEAAAAEQAAAAMAAAAEAAEAEQAAAAMAAAAEAAIAEQAAAAMAAAAEAAMAEQAAAAMAAAAEAAQAEQAAAAMAAAAEAAUAEQAAAAMAAAAEAAYAEQAAAAMAAAAEAAcAEQAAAAMAAAAEAAgAEQAAAAMAAAAEAAkAEQAAAAMAAAAEAAoAEQAAAAMAAAAEAAsAEQAAAAMAAAAEAAwAEQAAAAMAAAAEAA0AEQAAAAMAAAAFAP//EQAAAAMAAAAFAAAAEQAAAAMAAAAFAAEAEQAAAAMAAAAFAAIAEQAAAAMAAAAFAAMAEQAAAAMAAAAFAAQAEQAAAAMAAAAFAAUAEQAAAAMAAAAFAAYAEQAAAAMAAAAFAAcAEQAAAAMAAAAFAAgAEQAAAAMAAAAFAAkAEQAAAAMAAAAFAAoAEQAAAAMAAAAFAAsAEQAAAAMAAAAFAAwAEQAAAAMAAAAFAA0AEQAAAAMAAAAGAP//EQAAAAMAAAAGAAAAEQAAAAMAAAAGAAEAEQAAAAMAAAAGAAIAEQAAAAMAAAAGAAMAEQAAAAMAAAAGAAQAEQAAAAMAAAAGAAUAEQAAAAMAAAAGAAYAEQAAAAMAAAAGAAcAEQAAAAMAAAAGAAgAEQAAAAMAAAAGAAkAEQAAAAMAAAAGAAoAEQAAAAMAAAAGAAsAEQAAAAMAAAAGAAwAEQAAAAMAAAAGAA0AEQAAAAMAAAAHAP//EQAAAAMAAAAHAAAAEQAAAAMAAAAHAAEAEQAAAAMAAAAHAAIAEQAAAAMAAAAHAAMAEQAAAAMAAAAHAAQAEQAAAAMAAAAHAAUAEQAAAAMAAAAHAAYAEQAAAAMAAAAHAAcAEQAAAAMAAAAHAAgAEQAAAAMAAAAHAAkAEQAAAAMAAAAHAAoAEQAAAAMAAAAHAAsAEQAAAAMAAAAHAAwAEQAAAAMAAAAHAA0AEQAAAAMAAAAIAP//EQAAAAMAAAAIAAAAEQAAAAMAAAAIAAEAEQAAAAMAAAAIAAIAEQAAAAMAAAAIAAMAEQAAAAMAAAAIAAQAEQAAAAMAAAAIAAUAEQAAAAMAAAAIAAYAEQAAAAMAAAAIAAcAEQAAAAMAAAAIAAgAEQAAAAMAAAAIAAkAEQAAAAMAAAAIAAoAEQAAAAMAAAAIAAsAEQAAAAMAAAAIAAwAEQAAAAMAAAAIAA0AEQAAAAMAAAAJAP//EQAAAAMAAAAJAAAAEQAAAAMAAAAJAAEAEQAAAAMAAAAJAAIAEQAAAAMAAAAJAAMAEQAAAAMAAAAJAAQAEQAAAAMAAAAJAAUAEQAAAAMAAAAJAAYAEQAAAAMAAAAJAAcAEQAAAAMAAAAJAAgAEQAAAAMAAAAJAAkAEQAAAAMAAAAJAAoAEQAAAAMAAAAJAAsAEQAAAAMAAAAJAAwAEQAAAAMAAAAJAA0AEQAAAAMAAAAKAP//EQAAAAMAAAAKAAAAEQAAAAMAAAAKAAEAEQAAAAMAAAAKAAIAEQAAAAMAAAAKAAMAEQAAAAMAAAAKAAQAEQAAAAMAAAAKAAUAEQAAAAMAAAAKAAYAEQAAAAMAAAAKAAcAEQAAAAMAAAAKAAgAEQAAAAMAAAAKAAkAEQAAAAMAAAAKAAoAEQAAAAMAAAAKAAsAEQAAAAMAAAAKAAwAEQAAAAMAAAAKAA0AEQAAAAMAAAALAP//EQAAAAMAAAALAAAAEQAAAAMAAAALAAEAEQAAAAMAAAALAAIAEQAAAAMAAAALAAMAEQAAAAMAAAALAAQAEQAAAAMAAAALAAUAEQAAAAMAAAALAAYAEQAAAAMAAAALAAcAEQAAAAMAAAALAAgAEQAAAAMAAAALAAkAEQAAAAMAAAALAAoAEQAAAAMAAAALAAsAEQAAAAMAAAALAAwAEQAAAAMAAAALAA0AEQAAAAMAAAAMAP//EQAAAAMAAAAMAAAAEQAAAAMAAAAMAAEAEQAAAAMAAAAMAAIAEQAAAAMAAAAMAAMAEQAAAAMAAAAMAAQAEQAAAAMAAAAMAAUAEQAAAAMAAAAMAAYAEQAAAAMAAAAMAAcAEQAAAAMAAAAMAAgAEQAAAAMAAAAMAAkAEQAAAAMAAAAMAAoAEQAAAAMAAAAMAAsAEQAAAAMAAAAMAAwAEQAAAAMAAAAMAA0AEQAAAAMAAAANAP//EQAAAAMAAAANAAAAEQAAAAMAAAANAAEAEQAAAAMAAAANAAIAEQAAAAMAAAANAAMAEQAAAAMAAAANAAQAEQAAAAMAAAANAAUAEQAAAAMAAAANAAYAEQAAAAMAAAANAAcAEQAAAAMAAAANAAgAEQAAAAMAAAANAAkAEQAAAAMAAAANAAoAEQAAAAMAAAANAAsAEQAAAAMAAAANAAwAEQAAAAMAAAANAA0AEQAAAAMAAAAOAP//EQAAAAMAAAAOAAAAEQAAAAMAAAAOAAEAEQAAAAMAAAAOAAIAEQAAAAMAAAAOAAMAEQAAAAMAAAAOAAQAEQAAAAMAAAAOAAUAEQAAAAMAAAAOAAYAEQAAAAMAAAAOAAcAEQAAAAMAAAAOAAgAEQAAAAMAAAAOAAkAEQAAAAMAAAAOAAoAEQAAAAMAAAAOAAsAEQAAAAMAAAAOAAwAEQAAAAMAAAAOAA0AEQAAAAMAAAAPAP//EQAAAAMAAAAPAAAAEQAAAAMAAAAPAAEAEQAAAAMAAAAPAAIAEQAAAAMAAAAPAAMAEQAAAAMAAAAPAAQAEQAAAAMAAAAPAAUAEQAAAAMAAAAPAAYAEQAAAAMAAAAPAAcAEQAAAAMAAAAPAAgAEQAAAAMAAAAPAAkAEQAAAAMAAAAPAAoAEQAAAAMAAAAPAAsAEQAAAAMAAAAPAAwAEQAAAAMAAAAPAA0AEQAAAAMAAAAQAP//EQAAAAMAAAAQAAAAEQAAAAMAAAAQAAEAEQAAAAMAAAAQAAIAEQAAAAMAAAAQAAMAEQAAAAMAAAAQAAQAEQAAAAMAAAAQAAUAEQAAAAMAAAAQAAYAEQAAAAMAAAAQAAcAEQAAAAMAAAAQAAgAEQAAAAMAAAAQAAkAEQAAAAMAAAAQAAoAEQAAAAMAAAAQAAsAEQAAAAMAAAAQAAwAEQAAAAMAAAAQAA0AEQAAAAMAAAARAP//EQAAAAMAAAARAAAAEQAAAAMAAAARAAEAEQAAAAMAAAARAAIAEQAAAAMAAAARAAMAEQAAAAMAAAARAAQAEQAAAAMAAAARAAUAEQAAAAMAAAARAAYAEQAAAAMAAAARAAcAEQAAAAMAAAARAAgAEQAAAAMAAAARAAkAEQAAAAMAAAARAAoAEQAAAAMAAAARAAsAEQAAAAMAAAARAAwAEQAAAAMAAAARAA0AEQAAAAMAAAASAP//EQAAAAMAAAASAAAAEQAAAAMAAAASAAEAEQAAAAMAAAASAAIAEQAAAAMAAAASAAMAEQAAAAMAAAASAAQAEQAAAAMAAAASAAUAEQAAAAMAAAASAAYAEQAAAAMAAAASAAcAEQAAAAMAAAASAAgAEQAAAAMAAAASAAkAEQAAAAMAAAASAAoAEQAAAAMAAAASAAsAEQAAAAMAAAASAAwAEQAAAAMAAAASAA0AEQAAAAMAAAATAP//EQAAAAMAAAATAAAAEQAAAAMAAAATAAEAEQAAAAMAAAATAAIAEQAAAAMAAAATAAMAEQAAAAMAAAATAAQAEQAAAAMAAAATAAUAEQAAAAMAAAATAAYAEQAAAAMAAAATAAcAEQAAAAMAAAATAAgAEQAAAAMAAAATAAkAEQAAAAMAAAATAAoAEQAAAAMAAAATAAsAEQAAAAMAAAATAAwAEQAAAAMAAAATAA0AEQAAAAMAAAAUAP//EQAAAAMAAAAUAAAAEQAAAAMAAAAUAAEAEQAAAAMAAAAUAAIAEQAAAAMAAAAUAAMAEQAAAAMAAAAUAAQAEQAAAAMAAAAUAAUAEQAAAAMAAAAUAAYAEQAAAAMAAAAUAAcAEQAAAAMAAAAUAAgAEQAAAAMAAAAUAAkAEQAAAAMAAAAUAAoAEQAAAAMAAAAUAAsAEQAAAAMAAAAUAAwAEQAAAAMAAAAUAA0AEQAAAAMAAAAVAP//EQAAAAMAAAAVAAAAEQAAAAMAAAAVAAEAEQAAAAMAAAAVAAIAEQAAAAMAAAAVAAMAEQAAAAMAAAAVAAQAEQAAAAMAAAAVAAUAEQAAAAMAAAAVAAYAEQAAAAMAAAAVAAcAEQAAAAMAAAAVAAgAEQAAAAMAAAAVAAkAEQAAAAMAAAAVAAoAEQAAAAMAAAAVAAsAEQAAAAMAAAAVAAwAEQAAAAMAAAAVAA0AEQAAAAMAAAAWAP//EQAAAAMAAAAWAAAAEQAAAAMAAAAWAAEAEQAAAAMAAAAWAAIAEQAAAAMAAAAWAAMAEQAAAAMAAAAWAAQAEQAAAAMAAAAWAAUAEQAAAAMAAAAWAAYAEQAAAAMAAAAWAAcAEQAAAAMAAAAWAAgAEQAAAAMAAAAWAAkAEQAAAAMAAAAWAAoAEQAAAAMAAAAWAAsAEQAAAAMAAAAWAAwAEQAAAAMAAAAWAA0AEQAAAAMAAAAXAP//EQAAAAMAAAAXAAAAEQAAAAMAAAAXAAEAEQAAAAMAAAAXAAIAEQAAAAMAAAAXAAMAEQAAAAMAAAAXAAQAEQAAAAMAAAAXAAUAEQAAAAMAAAAXAAYAEQAAAAMAAAAXAAcAEQAAAAMAAAAXAAgAEQAAAAMAAAAXAAkAEQAAAAMAAAAXAAoAEQAAAAMAAAAXAAsAEQAAAAMAAAAXAAwAEQAAAAMAAAAXAA0AEQAAAAMAAAAYAP//EQAAAAMAAAAYAAAAEQAAAAMAAAAYAAEAEQAAAAMAAAAYAAIAEQAAAAMAAAAYAAMAEQAAAAMAAAAYAAQAEQAAAAMAAAAYAAUAEQAAAAMAAAAYAAYAEQAAAAMAAAAYAAcAEQAAAAMAAAAYAAgAEQAAAAMAAAAYAAkAEQAAAAMAAAAYAAoAEQAAAAMAAAAYAAsAEQAAAAMAAAAYAAwAEQAAAAMAAAAYAA0AEQAAAAMAAAAZAP//EQAAAAMAAAAZAAAAEQAAAAMAAAAZAAEAEQAAAAMAAAAZAAIAEQAAAAMAAAAZAAMAEQAAAAMAAAAZAAQAEQAAAAMAAAAZAAUAEQAAAAMAAAAZAAYAEQAAAAMAAAAZAAcAEQAAAAMAAAAZAAgAEQAAAAMAAAAZAAkAEQAAAAMAAAAZAAoAEQAAAAMAAAAZAAsAEQAAAAMAAAAZAAwAEQAAAAMAAAAZAA0AEQAAAAMAAAAaAP//EQAAAAMAAAAaAAAAEQAAAAMAAAAaAAEAEQAAAAMAAAAaAAIAEQAAAAMAAAAaAAMAEQAAAAMAAAAaAAQAEQAAAAMAAAAaAAUAEQAAAAMAAAAaAAYAEQAAAAMAAAAaAAcAEQAAAAMAAAAaAAgAEQAAAAMAAAAaAAkAEQAAAAMAAAAaAAoAEQAAAAMAAAAaAAsAEQAAAAMAAAAaAAwAEQAAAAMAAAAaAA0AEQAAAAMAAAAbAP//EQAAAAMAAAAbAAAAEQAAAAMAAAAbAAEAEQAAAAMAAAAbAAIAEQAAAAMAAAAbAAMAEQAAAAMAAAAbAAQAEQAAAAMAAAAbAAUAEQAAAAMAAAAbAAYAEQAAAAMAAAAbAAcAEQAAAAMAAAAbAAgAEQAAAAMAAAAbAAkAEQAAAAMAAAAbAAoAEQAAAAMAAAAbAAsAEQAAAAMAAAAbAAwAEQAAAAMAAAAbAA0AEQAAAAMAAAD7//z/EQAAAAMAAAD7//3/EQAAAAMAAAD7//7/EQAAAAMAAAD7////EQAAAAMAAAD7/wAAEQAAAAMAAAD7/wEAEQAAAAMAAAD7/wIAEQAAAAMAAAD7/wMAEQAAAAMAAAD7/wQAEQAAAAMAAAD7/wUAEQAAAAMAAAD7/wYAEQAAAAMAAAD7/wcAEQAAAAMAAAD7/wgAEQAAAAMAAAD7/wkAEQAAAAMAAAD7/woAEQAAAAMAAAD7/wsAEQAAAAMAAAD7/wwAEQAAAAMAAAD7/w0AEQAAAAMAAAD7/w4AEQAAAAMAAAD8//z/EQAAAAMAAAD8//3/EQAAAAMAAAD8//7/EQAAAAMAAAD8////EQAAAAMAAAD8/wAAEQAAAAMAAAD8/wEAEQAAAAMAAAD8/wIAEQAAAAMAAAD8/wMAEQAAAAMAAAD8/wQAEQAAAAMAAAD8/wUAEQAAAAMAAAD8/wYAEQAAAAMAAAD8/wcAEQAAAAMAAAD8/wgAEQAAAAMAAAD8/wkAEQAAAAMAAAD8/woAEQAAAAMAAAD8/wsAEQAAAAMAAAD8/wwAEQAAAAMAAAD8/w0AEQAAAAMAAAD8/w4AEQAAAAMAAAD9//z/EQAAAAMAAAD9//3/EQAAAAMAAAD9//7/EQAAAAMAAAD9/w4AEQAAAAMAAAD+//z/EQAAAAMAAAD+//3/EQAAAAMAAAD+//7/EQAAAAMAAAD+/w4AEQAAAAMAAAD///z/EQAAAAMAAAD///3/EQAAAAMAAAD///7/EQAAAAMAAAD//w4AEQAAAAMAAAAAAPz/EQAAAAMAAAAAAP3/EQAAAAMAAAAAAP7/EQAAAAMAAAAAAA4AEQAAAAMAAAABAPz/EQAAAAMAAAABAP3/EQAAAAMAAAABAP7/EQAAAAMAAAABAA4AEQAAAAMAAAACAPz/EQAAAAMAAAACAP3/EQAAAAMAAAACAP7/EQAAAAMAAAACAA4AEQAAAAMAAAADAPz/EQAAAAMAAAADAP3/EQAAAAMAAAADAP7/EQAAAAMAAAADAA4AEQAAAAMAAAAEAPz/EQAAAAMAAAAEAP3/EQAAAAMAAAAEAP7/EQAAAAMAAAAEAA4AEQAAAAMAAAAFAPz/EQAAAAMAAAAFAP3/EQAAAAMAAAAFAP7/EQAAAAMAAAAFAA4AEQAAAAMAAAAGAPz/EQAAAAMAAAAGAP3/EQAAAAMAAAAGAP7/EQAAAAMAAAAGAA4AEQAAAAMAAAAHAPz/EQAAAAMAAAAHAP3/EQAAAAMAAAAHAP7/EQAAAAMAAAAHAA4AEQAAAAMAAAAIAPz/EQAAAAMAAAAIAP3/EQAAAAMAAAAIAP7/EQAAAAMAAAAIAA4AEQAAAAMAAAAJAPz/EQAAAAMAAAAJAP3/EQAAAAMAAAAJAP7/EQAAAAMAAAAJAA4AEQAAAAMAAAAKAPz/EQAAAAMAAAAKAP3/EQAAAAMAAAAKAP7/EQAAAAMAAAAKAA4AEQAAAAMAAAALAPz/EQAAAAMAAAALAP3/EQAAAAMAAAALAP7/EQAAAAMAAAALAA4AEQAAAAMAAAAMAPz/EQAAAAMAAAAMAP3/EQAAAAMAAAAMAP7/EQAAAAMAAAAMAA4AEQAAAAMAAAANAPz/EQAAAAMAAAANAP3/EQAAAAMAAAANAP7/EQAAAAMAAAANAA4AEQAAAAMAAAAOAPz/EQAAAAMAAAAOAP3/EQAAAAMAAAAOAP7/EQAAAAMAAAAOAA4AEQAAAAMAAAAPAPz/EQAAAAMAAAAPAP3/EQAAAAMAAAAPAP7/EQAAAAMAAAAPAA4AEQAAAAMAAAAQAPz/EQAAAAMAAAAQAP3/EQAAAAMAAAAQAP7/EQAAAAMAAAAQAA4AEQAAAAMAAAARAPz/EQAAAAMAAAARAP3/EQAAAAMAAAARAP7/EQAAAAMAAAARAA4AEQAAAAMAAAASAPz/EQAAAAMAAAASAP3/EQAAAAMAAAASAP7/EQAAAAMAAAASAA4AEQAAAAMAAAATAPz/EQAAAAMAAAATAP3/EQAAAAMAAAATAP7/EQAAAAMAAAATAA4AEQAAAAMAAAAUAPz/EQAAAAMAAAAUAP3/EQAAAAMAAAAUAP7/EQAAAAMAAAAUAA4AEQAAAAMAAAAVAPz/EQAAAAMAAAAVAP3/EQAAAAMAAAAVAP7/EQAAAAMAAAAVAA4AEQAAAAMAAAAWAPz/EQAAAAMAAAAWAP3/EQAAAAMAAAAWAP7/EQAAAAMAAAAWAA4AEQAAAAMAAAAXAPz/EQAAAAMAAAAXAP3/EQAAAAMAAAAXAP7/EQAAAAMAAAAXAA4AEQAAAAMAAAAYAPz/EQAAAAMAAAAYAP3/EQAAAAMAAAAYAP7/EQAAAAMAAAAYAA4AEQAAAAMAAAAZAPz/EQAAAAMAAAAZAP3/EQAAAAMAAAAZAP7/EQAAAAMAAAAZAA4AEQAAAAMAAAAaAPz/EQAAAAMAAAAaAP3/EQAAAAMAAAAaAP7/EQAAAAMAAAAaAA4AEQAAAAMAAAAbAPz/EQAAAAMAAAAbAP3/EQAAAAMAAAAbAP7/EQAAAAMAAAAbAA4AEQAAAAMAAAAcAPz/EQAAAAMAAAAcAP3/EQAAAAMAAAAcAP7/EQAAAAMAAAAcAP//EQAAAAMAAAAcAAAAEQAAAAMAAAAcAAEAEQAAAAMAAAAcAAIAEQAAAAMAAAAcAAMAEQAAAAMAAAAcAAQAEQAAAAMAAAAcAAUAEQAAAAMAAAAcAAYAEQAAAAMAAAAcAAcAEQAAAAMAAAAcAAgAEQAAAAMAAAAcAAkAEQAAAAMAAAAcAAoAEQAAAAMAAAAcAAsAEQAAAAMAAAAcAAwAEQAAAAMAAAAcAA0AEQAAAAMAAAAcAA4AEQAAAAMAAAA=")
-tile_set = ExtResource("4_7l0ir")
+tile_set = ExtResource("2_a67xw")
+
+[node name="NubeNegra" type="CharacterBody2D" parent="." unique_id=31193335]
+position = Vector2(340, 80)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NubeNegra" unique_id=348876190]
+position = Vector2(-82.5, 26)
+shape = SubResource("RectangleShape2D_sf7up")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="NubeNegra" unique_id=57945610]
+position = Vector2(-81.5, 26.499998)
+scale = Vector2(0.39583337, 0.40073523)
+sprite_frames = ExtResource("3_fycwp")
+animation = &"idle"
 
 [node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=561364126]
 
 [node name="Panel" type="Panel" parent="CanvasGroup" unique_id=1523505706]
 offset_left = 470.0
 offset_top = 50.0
-offset_right = 840.0
-offset_bottom = 490.0
+offset_right = 890.0
+offset_bottom = 470.0
 
 [node name="LabelTitulo" type="Label" parent="CanvasGroup/Panel" unique_id=1887920196]
 layout_mode = 0
@@ -74,12 +66,12 @@ offset_right = 40.0
 offset_bottom = 23.0
 
 [node name="GridLetras" type="GridContainer" parent="CanvasGroup/Panel" unique_id=1543538091]
-custom_minimum_size = Vector2(370, 440)
+custom_minimum_size = Vector2(440, 440)
 layout_mode = 0
-offset_right = 370.0
+offset_right = 420.0
 offset_bottom = 440.0
 localize_numeral_system = false
-columns = 5
+columns = 6
 
 [node name="Label" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=748748540]
 custom_minimum_size = Vector2(70, 70)
@@ -87,175 +79,211 @@ layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=631521540]
+[node name="Label2" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1133672600]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label3" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=666016870]
+[node name="Label3" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1493345364]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label4" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1451087640]
+[node name="Label4" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1348726135]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label5" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1244310485]
+[node name="Label5" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=629461623]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label6" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=282418907]
+[node name="Label6" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=832688359]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label7" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=968697090]
+[node name="Label7" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1909732140]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label8" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=9840673]
+[node name="Label8" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=624823394]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label9" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1220285835]
+[node name="Label9" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1366071709]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label10" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=2017894231]
+[node name="Label10" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1960907983]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label11" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=2117492469]
+[node name="Label11" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=2106242041]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label12" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1211117502]
+[node name="Label12" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1939719451]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label13" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=750550928]
+[node name="Label13" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=538475299]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label14" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1433235164]
+[node name="Label14" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=385999043]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label15" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=2077218340]
+[node name="Label15" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=92913360]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label16" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=114497858]
+[node name="Label16" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=875308099]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label17" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1369680879]
+[node name="Label17" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1841958937]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label18" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=942741599]
+[node name="Label18" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1524573614]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label19" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1034396698]
+[node name="Label19" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=153993309]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label20" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=2140994170]
+[node name="Label20" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=2092290299]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label21" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1066926157]
+[node name="Label21" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1637442155]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label22" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=2088841596]
+[node name="Label22" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1021425623]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label23" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1357081111]
+[node name="Label23" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1660717389]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label24" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1655331949]
+[node name="Label24" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1045557449]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label25" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=2116863980]
+[node name="Label25" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1880295093]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label26" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=591898365]
+[node name="Label26" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1010793840]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label27" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1796314942]
+[node name="Label27" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1940167708]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label28" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=623858138]
+[node name="Label28" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=421137617]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label29" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=2016537448]
+[node name="Label29" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1365375374]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label30" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=188437629]
+[node name="Label30" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1222687209]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label31" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=891964931]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label32" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=676020784]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label33" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=725616112]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label34" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1184748528]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label35" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=207586719]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label36" type="Label" parent="CanvasGroup/Panel/GridLetras" unique_id=1581660928]
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 horizontal_alignment = 1
@@ -266,6 +294,10 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup/Panel" unique_id=623759788]
+position = Vector2(210, 208)
+shape = SubResource("RectangleShape2D_oe7il")
+
 [node name="LabelTiempo" type="Label" parent="CanvasGroup" unique_id=308577708]
 offset_left = 20.0
 offset_top = 202.0
@@ -274,127 +306,65 @@ offset_bottom = 225.0
 text = "2:00"
 
 [node name="InputLetra" type="LineEdit" parent="CanvasGroup" unique_id=931864505]
-offset_left = 475.0
-offset_top = 559.0
-offset_right = 845.0
-offset_bottom = 609.0
-max_length = 5
-
-[node name="Player" parent="." unique_id=689832587 instance=ExtResource("4_04nh5")]
-position = Vector2(199, 800)
+offset_left = 491.0
+offset_top = 507.0
+offset_right = 861.0
+offset_bottom = 557.0
+max_length = 6
 
 [node name="Timer" type="Timer" parent="." unique_id=306464338]
 wait_time = 90.0
 one_shot = true
 autostart = true
 
-[node name="Zombie" type="CharacterBody2D" parent="." unique_id=31193335]
-position = Vector2(340, 80)
+[node name="Dialogue" parent="." unique_id=308207015 instance=ExtResource("4_e1c5g")]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Zombie" unique_id=319730863]
-scale = Vector2(0.3, 0.3)
-sprite_frames = ExtResource("4_rie1x")
-animation = &"idle"
+[node name="Player" parent="." unique_id=689832587 instance=ExtResource("5_bfk32")]
+position = Vector2(103, 800)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Zombie" unique_id=348876190]
-position = Vector2(2, 0)
-shape = SubResource("RectangleShape2D_sf7up")
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=477637633]
+layer = 10
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1024507395]
-position = Vector2(650, 300)
-physics_material_override = SubResource("PhysicsMaterial_7sa2y")
+[node name="DarknessOverlay" type="ColorRect" parent="CanvasLayer" unique_id=132053182]
+z_index = 10
+material = SubResource("ShaderMaterial_og4n5")
+offset_right = 1612.0
+offset_bottom = 973.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.003921569)
+script = ExtResource("7_6sf41")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2114851096]
-position = Vector2(6.5, -24.5)
-shape = SubResource("RectangleShape2D_bj4ne")
+[node name="Letras Escondidas" type="Node2D" parent="." unique_id=1034447765]
 
-[node name="Letras Escondidas" type="Node2D" parent="." unique_id=949954514]
-
-[node name="Letra_C" type="Area2D" parent="Letras Escondidas" unique_id=1390338503 groups=["hidden_letter"]]
+[node name="Letra_T" type="Area2D" parent="Letras Escondidas" unique_id=243944560 groups=["hidden_letter"]]
 position = Vector2(200, 200)
-script = ExtResource("5_rie1x")
-letra = "C"
+script = ExtResource("8_llk4l")
+letra = "T"
 
-[node name="Label" type="Label" parent="Letras Escondidas/Letra_C" unique_id=1436133102]
+[node name="Label" type="Label" parent="Letras Escondidas/Letra_T" unique_id=1003188100]
 modulate = Color(1, 1, 1, 0)
 offset_right = 46.0
 offset_bottom = 99.0
 theme_override_font_sizes/font_size = 72
 text = "C"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Letras Escondidas/Letra_C" unique_id=746694752]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Letras Escondidas/Letra_T" unique_id=455920003]
 position = Vector2(34, 52)
-shape = SubResource("CircleShape2D_04nh5")
+shape = SubResource("CircleShape2D_msr4u")
 
-[node name="Letra_A" type="Area2D" parent="Letras Escondidas" unique_id=825080753 groups=["hidden_letter"]]
+[node name="Letra_O" type="Area2D" parent="Letras Escondidas" unique_id=1244163707 groups=["hidden_letter"]]
 position = Vector2(1200, 200)
-script = ExtResource("5_rie1x")
+script = ExtResource("8_llk4l")
+letra = "O"
 indice_en_palabra = 1
 
-[node name="Label" type="Label" parent="Letras Escondidas/Letra_A" unique_id=363449991]
+[node name="Label" type="Label" parent="Letras Escondidas/Letra_O" unique_id=648456848]
 modulate = Color(1, 1, 1, 0)
 offset_right = 46.0
 offset_bottom = 99.0
 theme_override_font_sizes/font_size = 72
 text = "C"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Letras Escondidas/Letra_A" unique_id=1719998156]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Letras Escondidas/Letra_O" unique_id=1631442088]
 position = Vector2(34, 52)
-shape = SubResource("CircleShape2D_04nh5")
-
-[node name="Letra_R" type="Area2D" parent="Letras Escondidas" unique_id=1392424883 groups=["hidden_letter"]]
-position = Vector2(1200, 500)
-script = ExtResource("5_rie1x")
-letra = "R"
-indice_en_palabra = 2
-
-[node name="Label" type="Label" parent="Letras Escondidas/Letra_R" unique_id=2047753378]
-modulate = Color(1, 1, 1, 0)
-offset_right = 46.0
-offset_bottom = 99.0
-theme_override_font_sizes/font_size = 72
-text = "C"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Letras Escondidas/Letra_R" unique_id=1408207336]
-position = Vector2(34, 52)
-shape = SubResource("CircleShape2D_04nh5")
-
-[node name="Letra_T" type="Area2D" parent="Letras Escondidas" unique_id=334375802 groups=["hidden_letter"]]
-position = Vector2(200, 500)
-script = ExtResource("5_rie1x")
-letra = "T"
-indice_en_palabra = 3
-
-[node name="Label" type="Label" parent="Letras Escondidas/Letra_T" unique_id=143958458]
-modulate = Color(1, 1, 1, 0)
-offset_right = 46.0
-offset_bottom = 99.0
-theme_override_font_sizes/font_size = 72
-text = "C"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Letras Escondidas/Letra_T" unique_id=286839372]
-position = Vector2(34, 52)
-shape = SubResource("CircleShape2D_04nh5")
-
-[node name="Letra_A2" type="Area2D" parent="Letras Escondidas" unique_id=960775291 groups=["hidden_letter"]]
-position = Vector2(800, 800)
-script = ExtResource("5_rie1x")
-indice_en_palabra = 4
-
-[node name="Label" type="Label" parent="Letras Escondidas/Letra_A2" unique_id=1546967999]
-modulate = Color(1, 1, 1, 0)
-offset_right = 46.0
-offset_bottom = 99.0
-theme_override_font_sizes/font_size = 72
-text = "C"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Letras Escondidas/Letra_A2" unique_id=1252844015]
-position = Vector2(34, 52)
-shape = SubResource("CircleShape2D_04nh5")
-
-[node name="Dialogue" parent="." unique_id=308207015 instance=ExtResource("7_sc6b0")]
-
-[node name="MusicaFondo" type="AudioStreamPlayer2D" parent="." unique_id=1431164153]
-stream = ExtResource("8_o6256")
-
-[node name="TileMaps" type="Node2D" parent="." unique_id=1075136432]
+shape = SubResource("CircleShape2D_msr4u")

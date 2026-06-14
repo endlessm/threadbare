@@ -3,10 +3,12 @@ extends Area2D
 @export var letra: String = "A"
 @export var indice_en_palabra: int = 0
 
+# ── Zona jugable de la sala (ajusta estos valores en el Inspector) ──
 @export var sala_min: Vector2 = Vector2(-280, -96)
 @export var sala_max: Vector2 = Vector2(1880, 1000)
-@export var zona_prohibida: Rect2 = Rect2(472, 56, 368, 544)
-@export var distancia_minima_entre_letras: float = 150.0
+
+# ── Zona prohibida: panel UI/diálogo (esquina superior izquierda) ──
+@export var zona_prohibida: Rect2 = Rect2(472, 56, 368, 544)  
 
 var recogida: bool = false
 
@@ -25,29 +27,17 @@ func _ready() -> void:
 func _posicionarse_aleatorio() -> void:
 	var pos: Vector2
 	var intentos := 0
-	while intentos < 300:
+	while intentos < 200:
 		pos = Vector2(
 			randf_range(sala_min.x, sala_max.x),
 			randf_range(sala_min.y, sala_max.y)
 		)
-		if zona_prohibida.has_point(pos):
-			intentos += 1
-			continue
-		if _hay_letra_cerca(pos):
-			intentos += 1
-			continue
-		global_position = pos
-		return
+		if not zona_prohibida.has_point(pos):
+			position = pos
+			return
+		intentos += 1
 	# Fallback si no encontró posición libre
-	global_position = Vector2(200, 420)
-
-func _hay_letra_cerca(pos: Vector2) -> bool:
-	for letra_node in get_tree().get_nodes_in_group("hidden_letter"):
-		if letra_node == self:
-			continue
-		if letra_node.global_position.distance_to(pos) < distancia_minima_entre_letras:
-			return true
-	return false
+	position = Vector2(200, 420)
 
 func revelar_desde_player() -> void:
 	if recogida:

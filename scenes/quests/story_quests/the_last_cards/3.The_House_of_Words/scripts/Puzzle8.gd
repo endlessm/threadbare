@@ -55,9 +55,9 @@ func _iniciar_juego():
 
 
 func _victoria():
-	print("¡Puzzle completado! Aquí puedes agregar la puerta o cambiar de escena")
-	# Ejemplo: instanciar puerta, cambiar de escena, etc.
-	# get_tree().change_scene_to_file("ruta_siguiente_escena.tscn")
+	print("¡Puzzle completado! ")
+	# instanciar puerta, cambiar de escena, etc.
+	get_tree().change_scene_to_file("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Room2.1.tscn")
 
 
 func actualizar_tablero():

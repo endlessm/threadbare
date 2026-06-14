@@ -219,7 +219,7 @@ func _game_over():
 	if musica_fondo and musica_fondo.playing:
 		musica_fondo.stop()
 	juego_activo = false
-	get_tree().change_scene_to_file("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/GameOver.tscn")
+	get_tree().change_scene_to_file("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Room1.tscn")
 
 func _input(event: InputEvent):
 	if not juego_activo:
