@@ -9,4 +9,4 @@ func _on_body_entered(body):
 
 	if body.name == "Player":
 		camara.persecucion_activa = false
-		lich.visible = false
+		lich.desaparecer()
