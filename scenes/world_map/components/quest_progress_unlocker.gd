@@ -41,7 +41,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 func _ready() -> void:
 	_connect_targets()
 
-	GameState.completed_quests_changed.connect(_on_completed_quests_changed)
+	GameState.global.completed_quests_changed.connect(_on_completed_quests_changed)
 
 	# To ensure the targets are ready, we do a "call_deferred"
 	_initialize_toggle_state.call_deferred()
@@ -64,8 +64,7 @@ func _on_completed_quests_changed() -> void:
 ## Returns whether all quests in [member required_quests] have been completed.
 func is_satisfied() -> bool:
 	for quest: Quest in required_quests:
-		# TODO: would be better if completed_quests held the Quest resources...
-		if quest.resource_path not in GameState.completed_quests:
+		if quest not in GameState.global.completed_quests:
 			return false
 
 	return true

@@ -1,43 +1,67 @@
 [gd_scene format=3 uid="uid://de6s2quemrmkf"]
 
-[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_g0mqx"]
 [ext_resource type="PackedScene" uid="uid://dvlpr4m0dt5rw" path="res://scenes/menus/options/components/volume_slider.tscn" id="3_ntmw0"]
+[ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="4_back"]
+[ext_resource type="Shortcut" uid="uid://c5pwgp1w8p3y1" path="res://scenes/ui_elements/shortcuts/back_shortcut.tres" id="4_k547c"]
+[ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="5_arrow"]
 
-[node name="SoundSettings" type="VBoxContainer" unique_id=707663916]
-offset_left = 96.0
-offset_top = 64.0
-offset_right = 544.0
-offset_bottom = 254.0
-theme = ExtResource("1_g0mqx")
+[node name="SoundSettings" type="PanelContainer" unique_id=1536122933 node_paths=PackedStringArray("back_button")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -224.0
+offset_top = -109.0
+offset_right = 224.0
+offset_bottom = 109.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_back")
+back_button = NodePath("VBoxContainer/BackButton")
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=2027742998]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=707663916]
+custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
-size_flags_horizontal = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=2027742998]
+layout_mode = 2
+size_flags_horizontal = 4
 theme_type_variation = &"PlayerRibbon"
 
-[node name="Label" type="Label" parent="PanelContainer" unique_id=305661971]
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer" unique_id=305661971]
 layout_mode = 2
 text = "Sound Settings"
 
-[node name="GridContainer" type="GridContainer" parent="." unique_id=198803873]
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer" unique_id=198803873]
 layout_mode = 2
 columns = 2
 
-[node name="MusicLabel" type="Label" parent="GridContainer" unique_id=1017472749]
+[node name="MusicLabel" type="Label" parent="VBoxContainer/GridContainer" unique_id=1017472749]
 layout_mode = 2
 text = "Music"
 horizontal_alignment = 2
 
-[node name="MusicSlider" parent="GridContainer" unique_id=72306828 instance=ExtResource("3_ntmw0")]
+[node name="MusicSlider" parent="VBoxContainer/GridContainer" unique_id=72306828 instance=ExtResource("3_ntmw0")]
 unique_name_in_owner = true
 layout_mode = 2
 bus_name = "Music"
 
-[node name="SFXLabel" type="Label" parent="GridContainer" unique_id=1732124740]
+[node name="SFXLabel" type="Label" parent="VBoxContainer/GridContainer" unique_id=1732124740]
 layout_mode = 2
 text = "Sound Effects"
 horizontal_alignment = 2
 
-[node name="SFXSlider" parent="GridContainer" unique_id=1153945983 instance=ExtResource("3_ntmw0")]
+[node name="SFXSlider" parent="VBoxContainer/GridContainer" unique_id=1153945983 instance=ExtResource("3_ntmw0")]
 layout_mode = 2
 bus_name = "SFX"
+
+[node name="BackButton" type="Button" parent="VBoxContainer" unique_id=1300000001]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+shortcut = ExtResource("4_k547c")
+text = "Back"
+icon = ExtResource("5_arrow")
+flat = true

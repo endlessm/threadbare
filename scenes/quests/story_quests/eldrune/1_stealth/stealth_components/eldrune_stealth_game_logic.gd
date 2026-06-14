@@ -26,7 +26,7 @@ func _on_player_detected(player: Node2D) -> void:
 	_play_defeat_sequence(player, is_shark_enemy)
 	
 	await get_tree().create_timer(DEFEAT_RELOAD_DELAY).timeout
-	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+	SceneSwitcher.reload_with_transition()
 
 
 ## Returns the first guard in ALERTED state, or null if none found

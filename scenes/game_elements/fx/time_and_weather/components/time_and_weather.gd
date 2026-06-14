@@ -130,7 +130,7 @@ func set_time(new_time: float) -> void:
 
 	# Change game state darkness so artificial lights can turn on/off.
 	var lights_on := new_time < 5 or new_time >= 19
-	GameState.change_lights(lights_on, true)
+	GameState.scene.set_lights_on(lights_on, true)
 	_schedule_timer(lights_off_timer, 5, new_time)
 	_schedule_timer(lights_on_timer, 19, new_time)
 
@@ -182,12 +182,12 @@ func _ready() -> void:
 
 
 func _on_lights_on_timer_timeout() -> void:
-	GameState.change_lights(true)
+	GameState.scene.set_lights_on(true)
 	_schedule_in_one_day(lights_on_timer)
 
 
 func _on_lights_off_timer_timeout() -> void:
-	GameState.change_lights(false)
+	GameState.scene.set_lights_on(false)
 	_schedule_in_one_day(lights_off_timer)
 
 

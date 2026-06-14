@@ -14,7 +14,7 @@ func _ready() -> void:
 func _on_pressed() -> void:
 	var url := URL_BASE
 
-	var version := Version.get_version()
+	var version := Version.get_full_version()
 	if version:
 		url += "&version=" + version.uri_encode()
 
