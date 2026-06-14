@@ -1,0 +1,151 @@
+[gd_scene format=3 uid="uid://c7xy485ug853k"]
+
+[ext_resource type="Script" uid="uid://7t1yp7aceruk" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_boss.gd" id="1_tgx0e"]
+[ext_resource type="PackedScene" uid="uid://cho16dd8dye2y" path="res://scenes/quests/story_quests/echo_abyss/3_combat/combat_components/projectile/ink_blob_projectile.tscn" id="2_ampfe"]
+[ext_resource type="SpriteFrames" uid="uid://b3r84ksew5djp" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_purple.tres" id="3_tj3s2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_boss"]
+radius = 32.24903
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_boss_hitbox"]
+radius = 60.926186
+
+[sub_resource type="Animation" id="Animation_boss_attack"]
+resource_name = "attack"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"attack"]
+}
+
+[sub_resource type="Animation" id="Animation_boss_defeated"]
+resource_name = "defeated"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"defeated"]
+}
+
+[sub_resource type="Animation" id="Animation_boss_gothit"]
+resource_name = "got hit"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0.2, 0.2, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_boss_idle"]
+resource_name = "idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+
+[sub_resource type="Animation" id="Animation_boss_walk"]
+resource_name = "walk"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_boss"]
+_data = {
+&"attack": SubResource("Animation_boss_attack"),
+&"defeated": SubResource("Animation_boss_defeated"),
+&"got hit": SubResource("Animation_boss_gothit"),
+&"idle": SubResource("Animation_boss_idle"),
+&"walk": SubResource("Animation_boss_walk")
+}
+
+[sub_resource type="Curve2D" id="Curve2D_boss_patrol"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -403.44055, -74.5946, 0, 0, 0, 0, -419.70636, -127.28482, 0, 0, 0, 0, -301.1983, -145.94595, 0, 0, 0, 0, -168.74811, -142.6528, 0, 0, 0, 0, -106.008575, -113.01456, 0, 0, 0, 0, -143.18756, -69.10603, 0, 0, 0, 0, -280.2851, -60.324326)
+}
+point_count = 7
+
+[node name="Boss" type="CharacterBody2D" unique_id=1743863804 node_paths=PackedStringArray("patrol_path")]
+collision_mask = 531
+motion_mode = 1
+script = ExtResource("1_tgx0e")
+projectile_scene = ExtResource("2_ampfe")
+patrol_path = NodePath("BossPatrolPath")
+projectile_color = Color(0.32888162, 0.77083725, 0.98742074, 1)
+rock_color = Color(0.9882353, 0.30588236, 1, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=810436770]
+unique_name_in_owner = true
+position = Vector2(19, -28)
+sprite_frames = ExtResource("3_tj3s2")
+animation = &"attack"
+autoplay = "idle"
+frame = 3
+frame_progress = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1193164735]
+position = Vector2(18.99997, -36)
+shape = SubResource("CircleShape2D_boss")
+
+[node name="HitBox" type="Area2D" parent="." unique_id=875089914]
+unique_name_in_owner = true
+position = Vector2(47.999996, -32.00001)
+collision_layer = 16
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=2043511085]
+position = Vector2(-32, -11.999985)
+shape = SubResource("CircleShape2D_boss_hitbox")
+
+[node name="ProjectileMarker" type="Marker2D" parent="." unique_id=690664132]
+unique_name_in_owner = true
+position = Vector2(40, -44)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=353272198]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_boss")
+
+[node name="BossPatrolPath" type="Path2D" parent="." unique_id=1481974708]
+top_level = true
+position = Vector2(1516.9667, 759.63635)
+scale = Vector2(3.4428043, 7.2878795)
+curve = SubResource("Curve2D_boss_patrol")
