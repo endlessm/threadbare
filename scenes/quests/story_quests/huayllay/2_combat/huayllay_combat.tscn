@@ -8,16 +8,21 @@
 [ext_resource type="TileSet" uid="uid://ij7nbyu7hpum" path="res://scenes/quests/story_quests/huayllay/tiles/huayllay_shadows.tres" id="6_t6lua"]
 [ext_resource type="TileSet" uid="uid://dsuc8s63iln4m" path="res://scenes/quests/story_quests/huayllay/tiles/huayllay_elevation_2.tres" id="7_jg1p4"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="8_88slx"]
-[ext_resource type="SpriteFrames" uid="uid://ckvi0pb0mnugd" path="res://scenes/quests/story_quests/huayllay/player_components/huayllay_player.tres" id="9_wnfxd"]
+[ext_resource type="SpriteFrames" uid="uid://dkcv15as5d6gw" path="res://scenes/quests/story_quests/after_the_tremor/bryan_components/after_the_tremor_bryan.tres" id="9_qeu44"]
+[ext_resource type="AudioStream" uid="uid://cx6jv2cflrmqu" path="res://assets/third_party/sounds/characters/player/Foot.ogg" id="10_318en"]
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="10_gut2u"]
-[ext_resource type="SpriteFrames" uid="uid://sonwlw5emglf" path="res://scenes/quests/story_quests/huayllay/2_combat/combat_components/huayllay_throwing_enemy.tres" id="11_s1awu"]
-[ext_resource type="PackedScene" uid="uid://0rwe408os7gg" path="res://scenes/quests/story_quests/huayllay/2_combat/combat_components/huayllay_projectile.tscn" id="12_ofr3b"]
+[ext_resource type="SpriteFrames" uid="uid://jnq3ufqsol6s" path="res://scenes/quests/story_quests/huayllay/2_combat/combat_components/throwing_enemy_huayllay.tres" id="11_318en"]
+[ext_resource type="PackedScene" uid="uid://cbef3rnjofke7" path="res://scenes/quests/story_quests/huayllay/2_combat/combat_components/projectile_huayllay.tscn" id="12_qeu44"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="13_kbwgf"]
-[ext_resource type="SpriteFrames" uid="uid://dxrmerjyhbv7p" path="res://scenes/quests/story_quests/huayllay/2_combat/combat_components/huayllay_target_spriteframes.tres" id="14_sbw0v"]
+[ext_resource type="SpriteFrames" uid="uid://cctntx307fbd1" path="res://scenes/quests/story_quests/huayllay/2_combat/combat_components/runestones.tres" id="14_lqy8c"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="15_i1y2i"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="16_q0g68"]
 [ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="17_xmsnp"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="18_w6b72"]
+[ext_resource type="PackedScene" uid="uid://c0374lgarm8gj" path="res://scenes/game_elements/fx/clouds_shadow/clouds_shadow.tscn" id="19_7etgq"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kbwgf"]
+height = 42.0
 
 [sub_resource type="Resource" id="Resource_f5dg0"]
 script = ExtResource("16_q0g68")
@@ -25,6 +30,8 @@ type = 1
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="HuayllayCombat" type="Node2D" unique_id=1610054737]
+modulate = Color(0.4839287, 0.4839287, 0.4839287, 1)
+self_modulate = Color(0.42357814, 0.42357814, 0.42357814, 1)
 y_sort_enabled = true
 
 [node name="PlayerMode" type="Node" parent="." unique_id=969358735]
@@ -59,53 +66,75 @@ tile_set = ExtResource("7_jg1p4")
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=1799818537 instance=ExtResource("8_88slx")]
-position = Vector2(348, 335)
-sprite_frames = ExtResource("9_wnfxd")
+position = Vector2(309, 302)
+scale = Vector2(0.5, 0.5)
+sprite_frames = ExtResource("9_qeu44")
+
+[node name="WalkSound2" type="AudioStreamPlayer2D" parent="OnTheGround/Player" unique_id=581184621]
+unique_name_in_owner = true
+position = Vector2(6, 0)
+stream = ExtResource("10_318en")
+volume_db = -5.0
+pitch_scale = 7.0
+bus = &"SFX"
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="OnTheGround/Player" unique_id=231450039]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_kbwgf")
 
 [node name="ThrowingNPC" parent="OnTheGround" unique_id=2065424633 instance=ExtResource("10_gut2u")]
-position = Vector2(857, 300)
-sprite_frames = ExtResource("11_s1awu")
-projectile_scene = ExtResource("12_ofr3b")
+position = Vector2(856, 321)
+distance = 14.0
+throwing_period = 3.0
+sprite_frames = ExtResource("11_318en")
+projectile_scene = ExtResource("12_qeu44")
+projectile_speed = 85.0
 
 [node name="Target" parent="OnTheGround" unique_id=1718603548 instance=ExtResource("13_kbwgf")]
-position = Vector2(502, 164)
-sprite_frames = ExtResource("14_sbw0v")
+position = Vector2(507, 139)
+scale = Vector2(0.2, 0.2)
+sprite_frames = ExtResource("14_lqy8c")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target2" parent="OnTheGround" unique_id=711725062 instance=ExtResource("13_kbwgf")]
-position = Vector2(758, 164)
-sprite_frames = ExtResource("14_sbw0v")
+position = Vector2(754, 140)
+scale = Vector2(0.2, 0.2)
+sprite_frames = ExtResource("14_lqy8c")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target3" parent="OnTheGround" unique_id=1832726000 instance=ExtResource("13_kbwgf")]
-position = Vector2(761, 497)
-sprite_frames = ExtResource("14_sbw0v")
+position = Vector2(761, 455)
+scale = Vector2(0.2, 0.2)
+sprite_frames = ExtResource("14_lqy8c")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target4" parent="OnTheGround" unique_id=857122250 instance=ExtResource("13_kbwgf")]
-position = Vector2(632, 497)
-sprite_frames = ExtResource("14_sbw0v")
+position = Vector2(636, 456)
+scale = Vector2(0.2, 0.2)
+sprite_frames = ExtResource("14_lqy8c")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target5" parent="OnTheGround" unique_id=1348280126 instance=ExtResource("13_kbwgf")]
-position = Vector2(633, 164)
-sprite_frames = ExtResource("14_sbw0v")
+position = Vector2(628, 140)
+scale = Vector2(0.2, 0.2)
+sprite_frames = ExtResource("14_lqy8c")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target6" parent="OnTheGround" unique_id=1005497940 instance=ExtResource("13_kbwgf")]
-position = Vector2(501, 497)
-sprite_frames = ExtResource("14_sbw0v")
+position = Vector2(511, 453)
+scale = Vector2(0.2, 0.2)
+sprite_frames = ExtResource("14_lqy8c")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="CollectibleItem" parent="OnTheGround" unique_id=1864193206 instance=ExtResource("15_i1y2i")]
 unique_name_in_owner = true
-position = Vector2(868, 303)
+position = Vector2(867, 325)
 revealed = false
 next_scene = "uid://bj68gmuiwb17h"
 item = SubResource("Resource_f5dg0")
@@ -119,6 +148,9 @@ highlight_color = Color(0, 0.4392157, 1, 1)
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1277924950]
 
 [node name="HUD" parent="." unique_id=1216951978 instance=ExtResource("18_w6b72")]
+
+[node name="CloudsShadow" parent="." unique_id=1515275591 instance=ExtResource("19_7etgq")]
+scroll_offset = Vector2(-36, 155)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=881414767]
 zoom = Vector2(1.333, 1.333)
