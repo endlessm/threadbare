@@ -227,20 +227,6 @@ y_sort_enabled = true
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_kll4l")
 
-[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("7_ene28")]
-position = Vector2(224, -152)
-scale = Vector2(1.5, 1.5)
-sprite_frames = ExtResource("8_h52nb")
-
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1311191200]
-position = Vector2(-80.00001, -77.333336)
-scale = Vector2(0.6666667, 0.6666667)
-limit_left = -50
-limit_top = -496
-limit_right = 2856
-limit_bottom = 759
-editor_draw_limits = true
-
 [node name="Character1" parent="OnTheGround" unique_id=2030597362 instance=ExtResource("10_25fiu")]
 position = Vector2(1496, -216)
 dialogue_title = "character_1"
@@ -279,6 +265,20 @@ dialogue_title = "stealth_exit"
 next_scene = "res://scenes/quests/story_quests/echo_abyss/3_combat/echo_abyss_combat.tscn"
 sprite_frames = ExtResource("13_ej04i")
 
+[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("7_ene28")]
+position = Vector2(152, -268)
+scale = Vector2(1.5, 1.5)
+sprite_frames = ExtResource("8_h52nb")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=215288254]
+position = Vector2(2.666687, 10.666658)
+scale = Vector2(1.5, 1.5)
+limit_left = -52
+limit_top = -428
+limit_right = 2836
+limit_bottom = 760
+editor_draw_limits = true
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1398238637 node_paths=PackedStringArray("animation_player")]
@@ -287,17 +287,15 @@ dialogue = ExtResource("13_xsh53")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
-[node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=2143367725]
-
-[node name="CanvasLayer" type="CanvasLayer" parent="CanvasGroup" unique_id=73785874]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=73785874]
 script = ExtResource("14_nivhx")
-player_path = NodePath("../../OnTheGround/Player")
+player_path = NodePath("../OnTheGround/Player")
 essence_progress_bar_path = NodePath("EssenceProgressBar")
 health_container_path = NodePath("HealthPlayer")
 full_heart_texture = ExtResource("15_neat2")
 empty_heart_texture = ExtResource("16_myaid")
 
-[node name="EssenceProgressBar" type="TextureProgressBar" parent="CanvasGroup/CanvasLayer" unique_id=828548942]
+[node name="EssenceProgressBar" type="TextureProgressBar" parent="CanvasLayer" unique_id=828548942]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -311,7 +309,7 @@ texture_under = ExtResource("17_eibr0")
 texture_progress = ExtResource("18_s81vf")
 tint_progress = Color(0.5019608, 0, 0.9254902, 1)
 
-[node name="HealthPlayer" type="HBoxContainer" parent="CanvasGroup/CanvasLayer" unique_id=1359738266]
+[node name="HealthPlayer" type="HBoxContainer" parent="CanvasLayer" unique_id=1359738266]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -322,15 +320,15 @@ offset_bottom = 1312.0
 grow_horizontal = 0
 scale = Vector2(0.04, 0.04)
 
-[node name="Heart1" type="TextureRect" parent="CanvasGroup/CanvasLayer/HealthPlayer" unique_id=196856218]
+[node name="Heart1" type="TextureRect" parent="CanvasLayer/HealthPlayer" unique_id=196856218]
 layout_mode = 2
 texture = ExtResource("15_neat2")
 
-[node name="Heart2" type="TextureRect" parent="CanvasGroup/CanvasLayer/HealthPlayer" unique_id=2072673262]
+[node name="Heart2" type="TextureRect" parent="CanvasLayer/HealthPlayer" unique_id=2072673262]
 layout_mode = 2
 texture = ExtResource("15_neat2")
 
-[node name="Heart3" type="TextureRect" parent="CanvasGroup/CanvasLayer/HealthPlayer" unique_id=860148114]
+[node name="Heart3" type="TextureRect" parent="CanvasLayer/HealthPlayer" unique_id=860148114]
 layout_mode = 2
 texture = ExtResource("15_neat2")
 
@@ -446,6 +444,9 @@ position = Vector2(944, 548)
 
 [node name="HookablePin15" parent="Pins" unique_id=1896076777 instance=ExtResource("22_rl2sl")]
 position = Vector2(1760, 264)
+
+[node name="HookablePin16" parent="Pins" unique_id=272207060 instance=ExtResource("22_rl2sl")]
+position = Vector2(672, 112)
 
 [node name="Needles" type="Node2D" parent="." unique_id=1750756427]
 y_sort_enabled = true

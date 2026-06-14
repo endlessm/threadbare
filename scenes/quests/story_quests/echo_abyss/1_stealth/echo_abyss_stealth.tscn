@@ -274,16 +274,17 @@ next_scene = "res://scenes/quests/story_quests/echo_abyss/2_flee/echo_abyss_flee
 sprite_frames = ExtResource("13_iwhha")
 
 [node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("11_g3acg")]
-position = Vector2(256, -288)
+position = Vector2(232, -296)
 scale = Vector2(1.5, 1.5)
 sprite_frames = ExtResource("8_g3acg")
 
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1311191200]
-position = Vector2(14.6666565, -85.333336)
-limit_left = -50
-limit_top = -429
-limit_right = 2838
-limit_bottom = 759
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1605184833]
+position = Vector2(2.666687, 10.666658)
+scale = Vector2(1.5, 1.5)
+limit_left = -52
+limit_top = -428
+limit_right = 2836
+limit_bottom = 760
 editor_draw_limits = true
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
@@ -293,53 +294,6 @@ script = ExtResource("15_3crhn")
 dialogue = ExtResource("11_do6nd")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
-
-[node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=2143367725]
-
-[node name="CanvasLayer" type="CanvasLayer" parent="CanvasGroup" unique_id=73785874]
-script = ExtResource("15_vwco0")
-player_path = NodePath("../../OnTheGround/Player")
-essence_progress_bar_path = NodePath("EssenceProgressBar")
-health_container_path = NodePath("HealthPlayer")
-full_heart_texture = ExtResource("16_3crhn")
-empty_heart_texture = ExtResource("17_qs6yt")
-
-[node name="EssenceProgressBar" type="TextureProgressBar" parent="CanvasGroup/CanvasLayer" unique_id=828548942]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -360.0
-offset_top = 32.0
-offset_right = -296.0
-offset_bottom = 42.0
-grow_horizontal = 0
-scale = Vector2(5, 5)
-texture_under = ExtResource("18_vbtt8")
-texture_progress = ExtResource("19_c2ses")
-tint_progress = Color(0.5019608, 0, 0.9254902, 1)
-
-[node name="HealthPlayer" type="HBoxContainer" parent="CanvasGroup/CanvasLayer" unique_id=1359738266]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -528.0
-offset_top = 32.0
-offset_right = 3320.0
-offset_bottom = 1312.0
-grow_horizontal = 0
-scale = Vector2(0.04, 0.04)
-
-[node name="Heart1" type="TextureRect" parent="CanvasGroup/CanvasLayer/HealthPlayer" unique_id=196856218]
-layout_mode = 2
-texture = ExtResource("16_3crhn")
-
-[node name="Heart2" type="TextureRect" parent="CanvasGroup/CanvasLayer/HealthPlayer" unique_id=2072673262]
-layout_mode = 2
-texture = ExtResource("16_3crhn")
-
-[node name="Heart3" type="TextureRect" parent="CanvasGroup/CanvasLayer/HealthPlayer" unique_id=860148114]
-layout_mode = 2
-texture = ExtResource("16_3crhn")
 
 [node name="EnemyGuards" type="Node2D" parent="." unique_id=871211107]
 y_sort_enabled = true
@@ -418,3 +372,48 @@ curve = SubResource("Curve2D_3p7aa")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=783616177]
 color = Color(0.55501574, 0.52019083, 0.4810639, 1)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=73785874]
+script = ExtResource("15_vwco0")
+player_path = NodePath("../OnTheGround/Player")
+essence_progress_bar_path = NodePath("EssenceProgressBar")
+health_container_path = NodePath("HealthPlayer")
+full_heart_texture = ExtResource("16_3crhn")
+empty_heart_texture = ExtResource("17_qs6yt")
+
+[node name="EssenceProgressBar" type="TextureProgressBar" parent="CanvasLayer" unique_id=828548942]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -360.0
+offset_top = 32.0
+offset_right = -296.0
+offset_bottom = 42.0
+grow_horizontal = 0
+scale = Vector2(5, 5)
+texture_under = ExtResource("18_vbtt8")
+texture_progress = ExtResource("19_c2ses")
+tint_progress = Color(0.5019608, 0, 0.9254902, 1)
+
+[node name="HealthPlayer" type="HBoxContainer" parent="CanvasLayer" unique_id=1359738266]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -528.0
+offset_top = 32.0
+offset_right = 3320.0
+offset_bottom = 1312.0
+grow_horizontal = 0
+scale = Vector2(0.04, 0.04)
+
+[node name="Heart1" type="TextureRect" parent="CanvasLayer/HealthPlayer" unique_id=196856218]
+layout_mode = 2
+texture = ExtResource("16_3crhn")
+
+[node name="Heart2" type="TextureRect" parent="CanvasLayer/HealthPlayer" unique_id=2072673262]
+layout_mode = 2
+texture = ExtResource("16_3crhn")
+
+[node name="Heart3" type="TextureRect" parent="CanvasLayer/HealthPlayer" unique_id=860148114]
+layout_mode = 2
+texture = ExtResource("16_3crhn")

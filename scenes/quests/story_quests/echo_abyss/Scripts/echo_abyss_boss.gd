@@ -18,7 +18,7 @@ enum State { IDLE, JUMPING, CHASING, ATTACKING, DEFEATED }
 @export var phase2_jump_cooldown := 2.0
 @export var projectile_color: Color = Color.WHITE
 @export var rock_color: Color = Color(0.741, 0.301, 0.087, 1.0)
-@export var health_bar: TextureProgressBar
+@export var essence_reward: int = 50
 
 var health: float = max_health
 var current_state: State = State.IDLE
@@ -33,12 +33,13 @@ var _is_phase2_jumping := false
 var _phase2_jump_timer := 0.0
 # Flag para detener el loop de saltos de fase 1 al transicionar a fase 2
 var _phase1_active: bool = false
-
+var intro_finished := false
 
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var hit_box: Area2D = %HitBox
 @onready var projectile_marker: Marker2D = %ProjectileMarker
+@onready var health_bar: TextureProgressBar = find_child("BossHealthBar", true, false)
 
 func _ready() -> void:
 	health = max_health
@@ -54,21 +55,16 @@ func _ready() -> void:
 	# Connect HitBox body entered
 	if hit_box:
 		hit_box.body_entered.connect(_on_hit_box_body_entered)
-	
-	# Start phase 1
-	_start_phase_1()
 
 func _process(delta: float) -> void:
+	if not intro_finished:
+		return
+	
 	if _is_defeated:
 		return
 
 	if not is_instance_valid(_player):
 		return
-
-	# Face the player
-	#var dir_to_player := global_position.direction_to(_player.global_position)
-	#if not _is_jumping:
-	#	scale.x = 1 if dir_to_player.x < 0 else -1
 
 	# State machine and updates
 	if health > 50:
@@ -77,6 +73,13 @@ func _process(delta: float) -> void:
 	else:
 		# Phase 2
 		_process_phase_2(delta)
+
+func begin_fight() -> void:
+	if intro_finished:
+		return
+
+	intro_finished = true
+	_start_phase_1()
 
 func _start_phase_1() -> void:
 	current_state = State.IDLE
@@ -307,13 +310,11 @@ func _defeat() -> void:
 	# Hide health bar
 	if health_bar:
 		health_bar.visible = false
-
+	
 	# Wait for defeat animation and trigger victory condition
 	await animation_player.animation_finished
 	
-	# Activar el EssenceExit para que el player pueda pasar al siguiente nivel
-	var essence_exit = get_tree().current_scene.find_child("EssenceExit", true, false)
-	if essence_exit and essence_exit.has_method("_set_unlocked"):
-		essence_exit._set_unlocked(true)
+	if is_instance_valid(_player) and _player.has_method("add_essence"):
+		_player.add_essence(essence_reward)
 	
 	queue_free()
