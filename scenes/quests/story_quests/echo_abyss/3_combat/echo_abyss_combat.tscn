@@ -101,12 +101,12 @@ y_sort_enabled = true
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_kll4l")
 
-[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("6_shyqt")]
+[node name="AzarelPlayer" parent="OnTheGround" unique_id=296354958 instance=ExtResource("6_shyqt")]
 position = Vector2(464, 48.000004)
 scale = Vector2(1.5, 1.5)
 sprite_frames = ExtResource("7_cg8tc")
 
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=611921364]
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/AzarelPlayer" unique_id=611921364]
 position = Vector2(426.66666, 69.333336)
 scale = Vector2(0.6666667, 0.6666667)
 zoom = Vector2(0.8, 0.8)
@@ -115,10 +115,10 @@ limit_top = -432
 limit_right = 1344
 limit_bottom = 504
 
-[node name="EssenceExit" parent="OnTheGround" unique_id=1606149158 instance=ExtResource("11_tyrdj")]
+[node name="TravelCreature" parent="OnTheGround" unique_id=1606149158 instance=ExtResource("11_tyrdj")]
 position = Vector2(980, 93)
-player_path = NodePath("../Player")
-dialogue_title = "stealth_exit"
+player_path = NodePath("../AzarelPlayer")
+dialogue_title = "combat_exit"
 next_scene = "res://scenes/quests/story_quests/echo_abyss/4_outro/echo_abyss_outro.tscn"
 sprite_frames = ExtResource("10_shyqt")
 
@@ -146,7 +146,7 @@ curve = SubResource("Curve2D_shyqt")
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1398238637 node_paths=PackedStringArray("animation_player")]
 script = ExtResource("11_okide")
-player_path = NodePath("../OnTheGround/Player")
+player_path = NodePath("../OnTheGround/AzarelPlayer")
 dialogue = ExtResource("13_tavui")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
@@ -165,7 +165,7 @@ color = Color(0.8348563, 0.81225747, 0.78731, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=73785874]
 script = ExtResource("14_kh5br")
-player_path = NodePath("../OnTheGround/Player")
+player_path = NodePath("../OnTheGround/AzarelPlayer")
 essence_progress_bar_path = NodePath("EssenceProgressBar")
 health_container_path = NodePath("HealthPlayer")
 full_heart_texture = ExtResource("15_kpa4k")

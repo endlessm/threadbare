@@ -12,7 +12,6 @@
 [ext_resource type="SpriteFrames" uid="uid://uwont7hj7jtx" path="res://scenes/quests/story_quests/echo_abyss/player_components/contaminated_creature.tres" id="11_8er3d"]
 [ext_resource type="Resource" uid="uid://bn1gqt8tmqwm4" path="res://scenes/quests/story_quests/echo_abyss/1_stealth/stealth_components/echo_abyss_stealth.dialogue" id="11_do6nd"]
 [ext_resource type="PackedScene" uid="uid://bxqqun8fikc1u" path="res://scenes/quests/story_quests/echo_abyss/Characters/azrael_player.tscn" id="11_g3acg"]
-[ext_resource type="Resource" uid="uid://bpodx7xlfpvbo" path="res://scenes/quests/story_quests/echo_abyss/1_stealth/stealth_components/echo_abyss_essence_exit.dialogue" id="11_gqts5"]
 [ext_resource type="SpriteFrames" uid="uid://dnswfspgfmqo5" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_red.tres" id="13_iwhha"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="15_3crhn"]
 [ext_resource type="Script" uid="uid://bdk4uhfdprt3t" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_hud.gd" id="15_vwco0"]
@@ -230,55 +229,54 @@ y_sort_enabled = true
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_kll4l")
 
-[node name="Character1" parent="OnTheGround" unique_id=642768190 instance=ExtResource("10_g3acg")]
+[node name="ContaminatedCreature1" parent="OnTheGround" unique_id=642768190 instance=ExtResource("10_g3acg")]
 position = Vector2(608, -312)
 dialogue = ExtResource("8_iwhha")
 dialogue_title = "character_1"
 essence_reward = 20
 sprite_frames = ExtResource("11_8er3d")
 
-[node name="Character2" parent="OnTheGround" unique_id=708542597 instance=ExtResource("10_g3acg")]
+[node name="ContaminatedCreature2" parent="OnTheGround" unique_id=708542597 instance=ExtResource("10_g3acg")]
 position = Vector2(2360, -64)
 dialogue = ExtResource("8_iwhha")
 dialogue_title = "character_2"
 essence_reward = 20
 sprite_frames = ExtResource("11_8er3d")
 
-[node name="Character3" parent="OnTheGround" unique_id=2136176725 instance=ExtResource("10_g3acg")]
-position = Vector2(1960, 344)
+[node name="ContaminatedCreature3" parent="OnTheGround" unique_id=2136176725 instance=ExtResource("10_g3acg")]
+position = Vector2(2760, 560)
 dialogue = ExtResource("8_iwhha")
 dialogue_title = "character_3"
 essence_reward = 20
 sprite_frames = ExtResource("11_8er3d")
 
-[node name="Character4" parent="OnTheGround" unique_id=1600699831 instance=ExtResource("10_g3acg")]
+[node name="ContaminatedCreature4" parent="OnTheGround" unique_id=1600699831 instance=ExtResource("10_g3acg")]
 position = Vector2(1264, 408)
 dialogue = ExtResource("8_iwhha")
 dialogue_title = "character_4"
 essence_reward = 20
 sprite_frames = ExtResource("11_8er3d")
 
-[node name="Character5" parent="OnTheGround" unique_id=1311767469 instance=ExtResource("10_g3acg")]
+[node name="ContaminatedCreature5" parent="OnTheGround" unique_id=1311767469 instance=ExtResource("10_g3acg")]
 position = Vector2(1352, 168)
 dialogue = ExtResource("8_iwhha")
 dialogue_title = "character_5"
 essence_reward = 20
 sprite_frames = ExtResource("11_8er3d")
 
-[node name="EssenceExit" parent="OnTheGround" unique_id=1606149158 instance=ExtResource("21_essence_exit")]
+[node name="TravelCreature" parent="OnTheGround" unique_id=1606149158 instance=ExtResource("21_essence_exit")]
 position = Vector2(32, 528)
-player_path = NodePath("../Player")
-dialogue = ExtResource("11_gqts5")
+player_path = NodePath("../AzraelPlayer")
 dialogue_title = "stealth_exit"
 next_scene = "res://scenes/quests/story_quests/echo_abyss/2_flee/echo_abyss_flee.tscn"
 sprite_frames = ExtResource("13_iwhha")
 
-[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("11_g3acg")]
+[node name="AzraelPlayer" parent="OnTheGround" unique_id=296354958 instance=ExtResource("11_g3acg")]
 position = Vector2(232, -296)
 scale = Vector2(1.5, 1.5)
 sprite_frames = ExtResource("8_g3acg")
 
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1605184833]
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/AzraelPlayer" unique_id=1605184833]
 position = Vector2(2.666687, 10.666658)
 scale = Vector2(1.5, 1.5)
 limit_left = -52
@@ -375,7 +373,7 @@ color = Color(0.55501574, 0.52019083, 0.4810639, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=73785874]
 script = ExtResource("15_vwco0")
-player_path = NodePath("../OnTheGround/Player")
+player_path = NodePath("../OnTheGround/AzraelPlayer")
 essence_progress_bar_path = NodePath("EssenceProgressBar")
 health_container_path = NodePath("HealthPlayer")
 full_heart_texture = ExtResource("16_3crhn")

@@ -316,5 +316,7 @@ func _defeat() -> void:
 	
 	if is_instance_valid(_player) and _player.has_method("add_essence"):
 		_player.add_essence(essence_reward)
+		if(_player.get_current_health()<_player.get_max_health()):
+			_player.set_health(1)
 	
 	queue_free()

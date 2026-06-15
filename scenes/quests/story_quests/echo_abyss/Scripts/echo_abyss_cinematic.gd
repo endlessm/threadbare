@@ -8,8 +8,7 @@ var cinematic_active := false
 func start() -> void:
 	var player = get_node_or_null(player_path)
 	var bosses = get_tree().get_nodes_in_group("bosses")
-	print("inicio del dialogo")
-	print(bosses)
+
 	if player:
 		player.set_process(false)
 		player.set_physics_process(false)
@@ -19,10 +18,12 @@ func start() -> void:
 			boss.set_process(false)
 			boss.set_physics_process(false)
 
-	DialogueManager.show_dialogue_balloon(dialogue, "", [self])
-	await DialogueManager.dialogue_ended
+	# Si ya vimos la intro, saltarla
+	if not GameState.intro_dialogue_shown:
+		DialogueManager.show_dialogue_balloon(dialogue, "", [self])
+		await DialogueManager.dialogue_ended
+		GameState.intro_dialogue_shown = true
 
-	print("Fin del dialogo")
 	for boss in bosses:
 		if boss and boss.has_method("begin_fight"):
 			boss.begin_fight()
