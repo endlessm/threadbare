@@ -23,7 +23,7 @@ var damage_taken: int:
 	get:
 		return max_health - current_health
 
-var damage_taken_percentage: float:
+var damage_taken_ratio: float:
 	get:
 		return float(damage_taken) / max_health
 
