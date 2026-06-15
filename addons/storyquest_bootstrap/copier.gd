@@ -119,7 +119,7 @@ func copy_packed_scene(packed_scene: PackedScene, copy_path: String) -> Resource
 	return copied
 
 
-func copy_quest(quest: Quest, copy_path: String) -> Quest:
+func copy_quest(quest: StoryQuest, copy_path: String) -> StoryQuest:
 	var copied := quest.duplicate()
 	copied.title = _title
 	copied.description = _description
@@ -210,7 +210,7 @@ func copy(uid: String, resource: Resource) -> Resource:
 	var copied: Resource
 	if resource is PackedScene:
 		copied = await copy_packed_scene(resource, copy_path)
-	elif resource is Quest:
+	elif resource is StoryQuest:
 		copied = await copy_quest(resource, copy_path)
 	elif resource is CompressedTexture2D or resource is DialogueResource:
 		copied = await copy_as_file(resource, copy_path)
@@ -262,6 +262,6 @@ func copy_tilesets() -> void:
 func create_storyquest() -> void:
 	copy_tilesets()
 
-	var quest: Quest = load(TEMPLATE_PATH.path_join(QUEST_FILENAME))
+	var quest: StoryQuest = load(TEMPLATE_PATH.path_join(QUEST_FILENAME))
 	await copy_resource(quest)
 	EditorInterface.save_all_scenes()

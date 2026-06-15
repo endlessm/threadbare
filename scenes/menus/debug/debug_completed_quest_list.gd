@@ -21,6 +21,7 @@ func rebuild() -> void:
 		remove_child(child)
 		child.queue_free()
 
+	var completed_quests := GameState.global.completed_quests
 	for dir: String in DirAccess.get_directories_at(QUEST_ROOT):
 		for quest in Quest.enumerate(QUEST_ROOT.path_join(dir)):
 			var bits: Array[String]
@@ -29,10 +30,13 @@ func rebuild() -> void:
 			bits.append(quest.resource_path.get_base_dir().substr(QUEST_ROOT.length() + 1))
 			var button := CheckButton.new()
 			button.text = " · ".join(bits)
-			button.button_pressed = GameState.completed_quests.has(quest.resource_path)
+			button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+			button.clip_text = true
+			button.button_pressed = completed_quests.has(quest)
 			button.toggled.connect(_on_button_toggled.bind(quest))
 			add_child(button)
 
 
 func _on_button_toggled(toggled_on: bool, quest: Quest) -> void:
-	GameState.set_quest_completed_state(quest, toggled_on)
+	GameState.global.set_quest_completed_state(quest, toggled_on)
+	GameState.save()

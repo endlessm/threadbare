@@ -9,7 +9,8 @@ extends Toggleable
 ## when disabled. Use this, for example, together with [QuestProgressUnlocker]
 ## to block off sections of Fray's End with water or void until the player has
 ## completed certain quests. (Depending on the level design, a door may be more
-## appropriate.)
+## appropriate.) To make the layer be [b]enabled[/b] when toggled on instead,
+## set [member invert].
 ## [br][br]
 ## This script may be attached to a [TileMapLayer] directly; instantiated as a
 ## child of a [TileMapLayer]; or instantiated elsewhere in the tree, in which
@@ -19,6 +20,11 @@ extends Toggleable
 ## [TileMapLayer], this property cannot be changed.
 @export var target: TileMapLayer:
 	set = _set_target
+
+## If true, flip the toggled state, so that [method
+## set_toggled][code](false)[/code] causes [member target] to be disabled rather
+## than enabled.
+@export var invert: bool = false
 
 
 func _enter_tree() -> void:
@@ -50,4 +56,4 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 func set_toggled(value: bool) -> void:
-	target.enabled = not value
+	target.enabled = value if invert else not value
