@@ -1,8 +1,9 @@
 [gd_scene format=4 uid="uid://c0bxwd2w5xlao"]
 
 [ext_resource type="TileSet" uid="uid://gpaqa6occfp6" path="res://scenes/quests/story_quests/3_patitas/tiles/3_patitas_exterior_floors.tres" id="1_bbqp3"]
-[ext_resource type="Texture2D" uid="uid://07k43id4c81h" path="res://assets/first_party/templates/intro/NO_EDIT_intro_image.png" id="2_yjn4e"]
+[ext_resource type="Texture2D" uid="uid://eb4yh48a1lcx" path="res://scenes/quests/story_quests/3_patitas/0_intro/intro_components/Intro-Cartel.jpg" id="2_bbqp3"]
 [ext_resource type="SpriteFrames" uid="uid://cfa0bj204vyea" path="res://scenes/quests/story_quests/3_patitas/player_components/3_patitas_player.tres" id="3_ivycq"]
+[ext_resource type="Script" uid="uid://hwoi0tsuajpg" path="res://scenes/quests/story_quests/3_patitas/0_intro/screen_overlay.gd" id="4_ivycq"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_onvlt"]
 [ext_resource type="Resource" uid="uid://e77c3baseyrt" path="res://scenes/quests/story_quests/3_patitas/0_intro/intro_components/3_patitas_intro.dialogue" id="5_tq536"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_wcywu"]
@@ -107,12 +108,12 @@ tile_set = ExtResource("1_bbqp3")
 metadata/_edit_lock_ = true
 
 [node name="IntroImage" type="Sprite2D" parent="TileMapLayers" unique_id=1406016146]
-position = Vector2(770, 227)
-scale = Vector2(0.802083, 0.802083)
-texture = ExtResource("2_yjn4e")
+position = Vector2(805.5, 221.99998)
+scale = Vector2(0.19039355, 0.19791664)
+texture = ExtResource("2_bbqp3")
 
 [node name="Sand" type="TileMapLayer" parent="TileMapLayers" unique_id=874671513]
-tile_map_data = PackedByteArray("AAAKAAEABgAAAAAAAAAKAAIABgADAAEAAAAKAAMABgADAAEAAAAKAAQABgADAAEAAAANAAEABgACAAAAAAANAAIABgADAAEAAAANAAMABgADAAEAAAANAAQABgADAAEAAAAKAAUABgAAAAIAAAALAAEABgABAAMAAAALAAUABgABAAMAAAAMAAEABgABAAMAAAAMAAUABgABAAMAAAANAAUABgACAAIAAAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAD//wcAAQAGAAMAAAD+/wcAAQAGAAMAAAD9/wcAAQAGAAMAAAD8/wcAAQAGAAMAAAD7/wcAAQAGAAMAAAD6/wcAAQAGAAMAAAD5/wcAAQAGAAMAAAD4/wcAAQAFAAMAAAAPAAcAAQAGAAMAAAAQAAcAAQAGAAMAAAARAAcAAQAGAAMAAAASAAcAAQAGAAMAAAATAAcAAQAGAAMAAAAUAAcAAQAGAAMAAAAVAAcAAQAGAAMAAAAWAAcAAQAHAAMAAAA=")
+tile_map_data = PackedByteArray("AAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAD//wcAAQAGAAMAAAD+/wcAAQAGAAMAAAD9/wcAAQAGAAMAAAD8/wcAAQAGAAMAAAD7/wcAAQAGAAMAAAD6/wcAAQAGAAMAAAD5/wcAAQAGAAMAAAD4/wcAAQAFAAMAAAAPAAcAAQAGAAMAAAAQAAcAAQAGAAMAAAARAAcAAQAGAAMAAAASAAcAAQAGAAMAAAATAAcAAQAGAAMAAAAUAAcAAQAGAAMAAAAVAAcAAQAGAAMAAAAWAAcAAQAHAAMAAAA=")
 tile_set = ExtResource("1_bbqp3")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1064875179]
@@ -130,22 +131,158 @@ y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=169229228]
 position = Vector2(400, 349)
+scale = Vector2(0.3, 0.307)
 sprite_frames = ExtResource("3_ivycq")
 animation = &"idle"
 autoplay = "idle"
+offset = Vector2(0, -130)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround" unique_id=49807179]
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_s2yl1")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
+script = ExtResource("4_ivycq")
+
+[node name="ColorRect" type="ColorRect" parent="ScreenOverlay" unique_id=110548844]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="ScreenOverlay" unique_id=200552669]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 35
+text = "                                          
+                                        He recorrido mares y desiertos…
+
+                                         
+                                         Esta vez, el camino me trajo aquí.
+
+
+                                          Soy Nox… y esto recién empieza."
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1398238637 node_paths=PackedStringArray("animation_player")]
 script = ExtResource("4_onvlt")
 dialogue = ExtResource("5_tq536")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
-next_scene = "uid://bilanaoj1ec81"
+next_scene = "uid://bs37x12ktl68p"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." unique_id=912112339 instance=ExtResource("6_wcywu")]
-position = Vector2(125, 403)
+position = Vector2(58, 524)
+
+[node name="Rock2" parent="." unique_id=1319147835 instance=ExtResource("6_wcywu")]
+position = Vector2(107, 524)
+
+[node name="Rock3" parent="." unique_id=640587168 instance=ExtResource("6_wcywu")]
+position = Vector2(157, 523)
+
+[node name="Rock4" parent="." unique_id=1512199791 instance=ExtResource("6_wcywu")]
+position = Vector2(206, 526)
+
+[node name="Rock5" parent="." unique_id=1453685753 instance=ExtResource("6_wcywu")]
+position = Vector2(252, 526)
+
+[node name="Rock6" parent="." unique_id=1533299129 instance=ExtResource("6_wcywu")]
+position = Vector2(302, 525)
+
+[node name="Rock7" parent="." unique_id=844234109 instance=ExtResource("6_wcywu")]
+position = Vector2(352, 525)
+
+[node name="Rock8" parent="." unique_id=1001141679 instance=ExtResource("6_wcywu")]
+position = Vector2(403, 525)
+
+[node name="Rock9" parent="." unique_id=1177968117 instance=ExtResource("6_wcywu")]
+position = Vector2(456, 525)
+
+[node name="Rock10" parent="." unique_id=1108823880 instance=ExtResource("6_wcywu")]
+position = Vector2(505, 523)
+
+[node name="Rock11" parent="." unique_id=1814473734 instance=ExtResource("6_wcywu")]
+position = Vector2(553, 524)
+
+[node name="Rock12" parent="." unique_id=379477491 instance=ExtResource("6_wcywu")]
+position = Vector2(601, 524)
+
+[node name="Rock13" parent="." unique_id=447033083 instance=ExtResource("6_wcywu")]
+position = Vector2(646, 523)
+
+[node name="Rock14" parent="." unique_id=1410307593 instance=ExtResource("6_wcywu")]
+position = Vector2(694, 524)
+
+[node name="Rock15" parent="." unique_id=1231333481 instance=ExtResource("6_wcywu")]
+position = Vector2(743, 524)
+
+[node name="Rock16" parent="." unique_id=1007297807 instance=ExtResource("6_wcywu")]
+position = Vector2(791, 523)
+
+[node name="Rock17" parent="." unique_id=1851210678 instance=ExtResource("6_wcywu")]
+position = Vector2(840, 523)
+
+[node name="Rock18" parent="." unique_id=1086770981 instance=ExtResource("6_wcywu")]
+position = Vector2(884, 524)
+
+[node name="Rock19" parent="." unique_id=37911399 instance=ExtResource("6_wcywu")]
+position = Vector2(932, 524)
+
+[node name="Rock20" parent="." unique_id=974248084 instance=ExtResource("6_wcywu")]
+position = Vector2(84, 543)
+
+[node name="Rock21" parent="." unique_id=343750794 instance=ExtResource("6_wcywu")]
+position = Vector2(129, 543)
+
+[node name="Rock22" parent="." unique_id=902163157 instance=ExtResource("6_wcywu")]
+position = Vector2(178, 544)
+
+[node name="Rock23" parent="." unique_id=1218580725 instance=ExtResource("6_wcywu")]
+position = Vector2(226, 544)
+
+[node name="Rock24" parent="." unique_id=850375720 instance=ExtResource("6_wcywu")]
+position = Vector2(277, 543)
+
+[node name="Rock25" parent="." unique_id=1268225251 instance=ExtResource("6_wcywu")]
+position = Vector2(323, 542)
+
+[node name="Rock26" parent="." unique_id=1836943656 instance=ExtResource("6_wcywu")]
+position = Vector2(371, 541)
+
+[node name="Rock27" parent="." unique_id=901410084 instance=ExtResource("6_wcywu")]
+position = Vector2(426, 541)
+
+[node name="Rock28" parent="." unique_id=1106961761 instance=ExtResource("6_wcywu")]
+position = Vector2(477, 541)
+
+[node name="Rock29" parent="." unique_id=1382089310 instance=ExtResource("6_wcywu")]
+position = Vector2(531, 541)
+
+[node name="Rock30" parent="." unique_id=1052685220 instance=ExtResource("6_wcywu")]
+position = Vector2(577, 539)
+
+[node name="Rock31" parent="." unique_id=2063123358 instance=ExtResource("6_wcywu")]
+position = Vector2(623, 539)
+
+[node name="Rock32" parent="." unique_id=2001639324 instance=ExtResource("6_wcywu")]
+position = Vector2(668, 540)
+
+[node name="Rock33" parent="." unique_id=952243778 instance=ExtResource("6_wcywu")]
+position = Vector2(719, 540)
+
+[node name="Rock34" parent="." unique_id=515042837 instance=ExtResource("6_wcywu")]
+position = Vector2(767, 540)
+
+[node name="Rock35" parent="." unique_id=1068730029 instance=ExtResource("6_wcywu")]
+position = Vector2(815, 535)
+
+[node name="Rock36" parent="." unique_id=517880613 instance=ExtResource("6_wcywu")]
+position = Vector2(859, 540)
+
+[node name="Rock37" parent="." unique_id=43890237 instance=ExtResource("6_wcywu")]
+position = Vector2(909, 540)
