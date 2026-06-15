@@ -1,0 +1,117 @@
+[gd_scene format=4 uid="uid://du48knqd2t0da"]
+
+[ext_resource type="Script" uid="uid://4bni5lomoqe8" path="res://scenes/quests/story_quests/last_coordinates/3_sequence_puzzle/logicFinalBoss.gd" id="1_4s40d"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="2_usykc"]
+[ext_resource type="Resource" uid="uid://1gc2e08pk3pi" path="res://scenes/quests/story_quests/last_coordinates/3_sequence_puzzle/components/startDialogue.dialogue" id="3_uwshk"]
+[ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="4_p83ao"]
+[ext_resource type="AudioStream" uid="uid://dkgtyb0x1i0m2" path="res://scenes/quests/lore_quests/quest_001/2_ink_combat/components/combat_music.tres" id="5_3doja"]
+[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="6_71pee"]
+[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="7_87rph"]
+[ext_resource type="Texture2D" uid="uid://ocfg0u0t6m5k" path="res://scenes/quests/story_quests/last_coordinates/assets/laboratory_Tiles.png" id="8_mfykf"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="9_fef25"]
+[ext_resource type="SpriteFrames" uid="uid://6lrnci820w0p" path="res://scenes/quests/story_quests/last_coordinates/player_components/last_coordinates_player.tres" id="10_h2wks"]
+[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="11_r4wh4"]
+[ext_resource type="PackedScene" uid="uid://yqbgsj15hp2m" path="res://scenes/quests/story_quests/last_coordinates/2_combat/combat_components/last_coordinates_projectile.tscn" id="12_gslgr"]
+[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="13_2470v"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sd82f"]
+texture = ExtResource("8_mfykf")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_u6l8l"]
+tile_size = Vector2i(64, 64)
+sources/1 = SubResource("TileSetAtlasSource_sd82f")
+
+[sub_resource type="LabelSettings" id="LabelSettings_u6l8l"]
+font_size = 29
+font_color = Color(0.93074685, 0.38772535, 0.8186555, 1)
+
+[node name="FinalBoss" type="Node2D" unique_id=1401333354]
+script = ExtResource("1_4s40d")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=206243688]
+unique_name_in_owner = true
+color = Color(0.025363795, 0.025363805, 0.02536378, 1)
+
+[node name="Cinematic" type="Node2D" parent="." unique_id=396048270]
+script = ExtResource("2_usykc")
+dialogue = ExtResource("3_uwshk")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="Timer" type="Timer" parent="." unique_id=45775917]
+wait_time = 2.0
+
+[node name="BackgroundMusic" type="Node" parent="." unique_id=1404372080]
+script = ExtResource("4_p83ao")
+stream = ExtResource("5_3doja")
+clip = &"cozy"
+metadata/_custom_type_script = "uid://c8405c212rbn6"
+
+[node name="PlayerMode" type="Node" parent="." unique_id=2117020859]
+script = ExtResource("6_71pee")
+mode = 1
+metadata/_custom_type_script = "uid://pk3ucq7e2eah"
+
+[node name="FillGameLogic" type="Node" parent="." unique_id=668472212]
+script = ExtResource("7_87rph")
+barrels_to_win = 2
+metadata/_custom_type_script = "uid://cp54mgi54nywo"
+
+[node name="Tiles" type="Node2D" parent="." unique_id=316845622]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Tiles" unique_id=1467054757]
+tile_map_data = PackedByteArray("AAAAAAAAAQACAAAAAAAAAAEAAQAAAAAAAAAAAAIAAQACAAAAAAAAAAMAAQACAAAAAAAAAAQAAQACAAAAAAAAAAUAAQADAAAAAAABAAAAAQADAAAAAAABAAEAAQADAAAAAAABAAIAAQAAAAAAAAABAAMAAQACAAAAAAABAAQAAQAAAAAAAAABAAUAAQABAAAAAAACAAAAAQACAAAAAAACAAEAAQAAAAAAAAACAAIAAQADAAAAAAACAAMAAQAAAAAAAAACAAQAAQAAAAAAAAACAAUAAQADAAAAAAADAAAAAQABAAAAAAADAAEAAQAAAAAAAAADAAIAAQAAAAAAAAADAAMAAQAAAAAAAAADAAQAAQADAAAAAAADAAUAAQABAAAAAAAEAAAAAQAAAAAAAAAEAAEAAQACAAAAAAAEAAIAAQABAAAAAAAEAAMAAQADAAAAAAAEAAQAAQACAAAAAAAEAAUAAQABAAAAAAAFAAAAAQACAAAAAAAFAAEAAQADAAAAAAAFAAIAAQACAAAAAAAFAAMAAQABAAAAAAAFAAUAAQACAAAAAAAGAAAAAQAAAAAAAAAGAAEAAQACAAAAAAAGAAIAAQACAAAAAAAGAAMAAQAAAAAAAAAGAAQAAQAAAAAAAAAGAAUAAQACAAAAAAAHAAAAAQABAAAAAAAHAAEAAQADAAAAAAAHAAIAAQADAAAAAAAHAAMAAQABAAAAAAAHAAQAAQAAAAAAAAAHAAUAAQACAAAAAAAIAAAAAQAAAAAAAAAIAAEAAQADAAAAAAAIAAIAAQADAAAAAAAIAAMAAQADAAAAAAAIAAQAAQADAAAAAAAIAAUAAQADAAAAAAAJAAAAAQAAAAAAAAAJAAEAAQACAAAAAAAJAAIAAQAAAAAAAAAJAAMAAQACAAAAAAAJAAQAAQACAAAAAAAJAAUAAQACAAAAAAAJAAYAAQAAAAAAAAAJAAcAAQABAAAAAAAAAAYAAQACAAAAAAAAAAcAAQACAAAAAAABAAYAAQAAAAAAAAABAAcAAQAAAAAAAAAFAAQAAQACAAAAAAACAAYAAQAAAAAAAAACAAcAAQADAAAAAAADAAYAAQADAAAAAAADAAcAAQABAAAAAAAEAAYAAQABAAAAAAAEAAcAAQADAAAAAAAFAAYAAQACAAAAAAAFAAcAAQABAAAAAAAGAAYAAQAAAAAAAAAGAAcAAQADAAAAAAAHAAYAAQABAAAAAAAHAAcAAQACAAAAAAAIAAYAAQADAAAAAAAIAAcAAQABAAAAAAD9/wAAAQAAAAAAAAD9/wEAAQABAAAAAAD9/wIAAQACAAAAAAD9/wMAAQABAAAAAAD9/wQAAQABAAAAAAD9/wUAAQADAAAAAAD9/wYAAQAAAAAAAAD9/wcAAQAAAAAAAAD+/wAAAQADAAAAAAD+/wEAAQADAAAAAAD+/wIAAQAAAAAAAAD+/wMAAQAAAAAAAAD+/wQAAQACAAAAAAD+/wUAAQAAAAAAAAD+/wYAAQAAAAAAAAD+/wcAAQABAAAAAAD//wAAAQACAAAAAAD//wEAAQABAAAAAAD//wIAAQABAAAAAAD//wMAAQABAAAAAAD//wQAAQAAAAAAAAD//wUAAQACAAAAAAD//wYAAQADAAAAAAD//wcAAQACAAAAAAD5//7/AQADAAAAAAD5////AQAAAAAAAAD5/wAAAQADAAAAAAD5/wEAAQADAAAAAAD5/wIAAQAAAAAAAAD5/wMAAQABAAAAAAD5/wQAAQACAAAAAAD5/wUAAQABAAAAAAD5/wYAAQADAAAAAAD5/wcAAQADAAAAAAD5/wgAAQABAAAAAAD5/wkAAQADAAAAAAD6//7/AQACAAAAAAD6////AQACAAAAAAD6/wAAAQAAAAAAAAD6/wEAAQADAAAAAAD6/wIAAQABAAAAAAD6/wMAAQACAAAAAAD6/wQAAQABAAAAAAD6/wUAAQAAAAAAAAD6/wYAAQADAAAAAAD6/wcAAQABAAAAAAD6/wgAAQABAAAAAAD6/wkAAQADAAAAAAD7//7/AQAAAAAAAAD7////AQADAAAAAAD7/wAAAQACAAAAAAD7/wEAAQADAAAAAAD7/wIAAQADAAAAAAD7/wMAAQADAAAAAAD7/wQAAQABAAAAAAD7/wUAAQAAAAAAAAD7/wYAAQABAAAAAAD7/wcAAQADAAAAAAD7/wgAAQABAAAAAAD7/wkAAQAAAAAAAAD8//7/AQAAAAAAAAD8////AQACAAAAAAD8/wAAAQAAAAAAAAD8/wEAAQACAAAAAAD8/wIAAQAAAAAAAAD8/wMAAQAAAAAAAAD8/wQAAQACAAAAAAD8/wUAAQADAAAAAAD8/wYAAQACAAAAAAD8/wcAAQACAAAAAAD8/wgAAQADAAAAAAD8/wkAAQACAAAAAAD9//7/AQAAAAAAAAD9////AQABAAAAAAD9/wgAAQAAAAAAAAD9/wkAAQABAAAAAAD+//7/AQACAAAAAAD+////AQACAAAAAAD+/wgAAQADAAAAAAD+/wkAAQADAAAAAAD///7/AQADAAAAAAD/////AQAAAAAAAAD//wgAAQACAAAAAAD//wkAAQACAAAAAAAAAP7/AQABAAAAAAAAAP//AQACAAAAAAAAAAgAAQADAAAAAAAAAAkAAQACAAAAAAABAP7/AQABAAAAAAABAP//AQAAAAAAAAABAAgAAQAAAAAAAAABAAkAAQAAAAAAAAACAP7/AQACAAAAAAACAP//AQADAAAAAAACAAgAAQAAAAAAAAACAAkAAQAAAAAAAAADAP7/AQACAAAAAAADAP//AQAAAAAAAAADAAgAAQADAAAAAAADAAkAAQACAAAAAAAEAP7/AQAAAAAAAAAEAP//AQADAAAAAAAEAAgAAQABAAAAAAAEAAkAAQACAAAAAAAFAP7/AQADAAAAAAAFAP//AQADAAAAAAAFAAgAAQACAAAAAAAFAAkAAQACAAAAAAAGAP7/AQADAAAAAAAGAP//AQACAAAAAAAGAAgAAQABAAAAAAAGAAkAAQACAAAAAAAHAP7/AQADAAAAAAAHAP//AQACAAAAAAAHAAgAAQABAAAAAAAHAAkAAQADAAAAAAAIAP7/AQADAAAAAAAIAP//AQADAAAAAAAIAAgAAQAAAAAAAAAIAAkAAQAAAAAAAAAJAP7/AQAAAAAAAAAJAP//AQABAAAAAAAJAAgAAQAAAAAAAAAJAAkAAQADAAAAAAAKAP7/AQADAAAAAAAKAP//AQAAAAAAAAAKAAAAAQABAAAAAAAKAAEAAQADAAAAAAAKAAIAAQABAAAAAAAKAAMAAQACAAAAAAAKAAQAAQAAAAAAAAAKAAUAAQACAAAAAAAKAAYAAQACAAAAAAAKAAcAAQABAAAAAAAKAAgAAQABAAAAAAAKAAkAAQADAAAAAAALAP7/AQADAAAAAAALAP//AQABAAAAAAALAAAAAQADAAAAAAALAAEAAQACAAAAAAALAAIAAQABAAAAAAALAAMAAQACAAAAAAALAAQAAQAAAAAAAAALAAUAAQADAAAAAAALAAYAAQAAAAAAAAALAAcAAQADAAAAAAALAAgAAQAAAAAAAAALAAkAAQABAAAAAAAMAP7/AQAAAAAAAAAMAP//AQADAAAAAAAMAAAAAQACAAAAAAAMAAEAAQABAAAAAAAMAAIAAQABAAAAAAAMAAMAAQAAAAAAAAAMAAQAAQADAAAAAAAMAAUAAQAAAAAAAAAMAAYAAQACAAAAAAAMAAcAAQABAAAAAAAMAAgAAQABAAAAAAAMAAkAAQAAAAAAAAANAP7/AQACAAAAAAANAP//AQABAAAAAAANAAAAAQABAAAAAAANAAEAAQAAAAAAAAANAAIAAQAAAAAAAAANAAMAAQADAAAAAAANAAQAAQACAAAAAAANAAUAAQADAAAAAAANAAYAAQABAAAAAAANAAcAAQACAAAAAAANAAgAAQACAAAAAAANAAkAAQACAAAAAAA=")
+tile_set = SubResource("TileSet_u6l8l")
+
+[node name="Underground" type="Node2D" parent="." unique_id=621238730]
+y_sort_enabled = true
+
+[node name="Player" parent="Underground" unique_id=296354958 instance=ExtResource("9_fef25")]
+y_sort_enabled = true
+position = Vector2(236, 351)
+sprite_frames = ExtResource("10_h2wks")
+
+[node name="Camera2D" type="Camera2D" parent="Underground/Player" unique_id=1690936989]
+limit_left = -218
+limit_top = -58
+limit_right = 670
+limit_bottom = 512
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[node name="ThrowingEnemy" parent="Underground" unique_id=1243855514 instance=ExtResource("11_r4wh4")]
+position = Vector2(230, 49)
+throwing_period = 2.0
+projectile_scene = ExtResource("12_gslgr")
+projectile_speed = 70.0
+projectile_duration = 3.6
+
+[node name="FillingBarrel" parent="Underground" unique_id=1861594411 instance=ExtResource("13_2470v")]
+position = Vector2(-35, 106)
+needed_amount = 4
+label = "Shield"
+
+[node name="FillingBarrel2" parent="Underground" unique_id=942068502 instance=ExtResource("13_2470v")]
+position = Vector2(487, 108)
+needed_amount = 4
+label = "Shield"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1313839868]
+
+[node name="lifesText" type="Label" parent="CanvasLayer" unique_id=299417153]
+offset_left = 996.0
+offset_top = -4.0
+offset_right = 1036.0
+offset_bottom = 36.0
+label_settings = SubResource("LabelSettings_u6l8l")
+
+[connection signal="cinematic_finished" from="Cinematic" to="." method="cinematic"]
+[connection signal="cinematic_finished" from="Cinematic" to="Timer" method="start"]
+[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
+[connection signal="cinematic_finished" from="Cinematic" to="BackgroundMusic" method="set_clip" binds= ["combat"]]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="goal_reached" from="FillGameLogic" to="." method="final"]
