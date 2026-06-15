@@ -1,131 +1,271 @@
 extends Node2D
 
+# =========================
+# PALABRAS DEL JUEGO
+# =========================
 const PALABRAS = [
 	"TUMBA", "CRUDA", "BRUJA", "HORROR", "PANICO",
-	"TERROR", "SOMBRA", "CRIPTA", "CADAVER", "ESPECTRO",
-	"TINIEBLA", "FANTASMA", "OSCURIDAD", "MALDICION"
+	"TERROR", "SOMBRA", "CRIPTA", "CADAVER",
+	"ESPECTRO", "TINIEBLA", "FANTASMA",
+	"OSCURIDAD", "MALDICION"
 ]
 
-const LETRAS = ["A","B","C","D","E","F","G","H","I","J","K","L","M",
-				"N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-
+# =========================
+# DIBUJO DEL AHORCADO
+# =========================
 const AHORCADO = [
-	"",
-	"  |  \n  |  \n  |  \n  |  \n__|__",
-	"  ____\n  |  \n  |  \n  |  \n__|__",
-	"  ____\n  |  |\n  |  \n  |  \n__|__",
-	"  ____\n  |  |\n  |  O\n  |  \n__|__",
-	"  ____\n  |  |\n  |  O\n  | /|\n__|__",
-	"  ____\n  |  |\n  |  O\n  | /|\\\n__|__",
-	"  ____\n  |  |\n  |  O\n  | /|\\\n__|__ /",
-    "  ____\n  |  |\n  |  O\n  | /|\\\n__|__ / \\"
+	[
+		"  +---+  ",
+		"  |    |  ",
+		"      |  ",
+		"      |  ",
+		"       |  ",
+		"========="
+	],
+	[
+		"  +---+  ",
+		"  |   |  ",
+		"  O   |  ",
+		"      |  ",
+		"      |  ",
+		"========="
+	],
+	[
+		"  +---+  ",
+		"  |   |  ",
+		"  O   |  ",
+		"  |   |  ",
+		"      |  ",
+		"========="
+	],
+	[
+		"  +---+  ",
+		"  |   |  ",
+		"  O   |  ",
+		" /|   |  ",
+		"      |  ",
+		"========="
+	],
+	[
+		"  +---+  ",
+		"  |   |  ",
+		"  O   |  ",
+		" /|\\  |  ",
+		"      |  ",
+		"========="
+	],
+	[
+		"  +---+  ",
+		"  |   |  ",
+		"  O   |  ",
+		" /|\\  |  ",
+		" /    |  ",
+		"========="
+	],
+	[
+		"  +---+  ",
+		"  |   |  ",
+		"  O   |  ",
+		" /|\\  |  ",
+		" / \\  |  ",
+		"========="
+	]
 ]
 
-var palabra_secreta = ""
-var letras_adivinadas = []
-var letras_falladas = []
-var fallos = 0
-var tiempo_restante = 60
-var juego_activo = true
+# =========================
+# VARIABLES
+# =========================
+var palabra_secreta: String = ""
+var letras_adivinadas: Array = []
+var letras_falladas: Array = []
 
-func _ready():
+var fallos := 0
+var tiempo_restante := 60
+var juego_activo := true
+
+# =========================
+# NODOS
+# =========================
+@onready var label_ahorcado = $CanvasGroup/Panel/LabelAhorcado
+@onready var label_palabra = $CanvasGroup/Panel/LabelPalabra
+@onready var label_letras_usadas = $CanvasGroup/Panel/LabelLetrasUsadas
+@onready var label_mensaje = $CanvasGroup/Panel/LabelMensaje
+@onready var label_tiempo = $CanvasGroup/LabelTiempo
+
+@onready var timer_principal = $Timer
+
+@onready var player = $Player
+@onready var bestia = $Bestia
+
+# =========================
+# INICIO
+# =========================
+func _ready() -> void:
 	randomize()
+
 	palabra_secreta = PALABRAS[randi() % PALABRAS.size()]
-	$Timer.timeout.connect(_on_tiempo_agotado)
-	
-	var tick = Timer.new()
-	tick.wait_time = 1.0
-	tick.autostart = true
-	add_child(tick)
-	tick.timeout.connect(_on_timer_tick)
-	
+
+	_configurar_fuente()
+	_configurar_timers()
+
 	_actualizar_display()
 	_actualizar_timer_display()
 
-func _on_letra_presionada(letra: String):
-	if not juego_activo:
-		return
+# =========================
+# CONFIGURACIÓN
+# =========================
+func _configurar_fuente() -> void:
+	var fuente = load("res://assets/fonts/JetBrainsMono-Regular.ttf")
+
+	if fuente:
+		label_ahorcado.add_theme_font_override("font", fuente)
+		label_ahorcado.add_theme_font_size_override("font_size", 16)
+
+	label_ahorcado.autowrap_mode = TextServer.AUTOWRAP_OFF
+
+func _configurar_timers() -> void:
+	timer_principal.timeout.connect(_on_tiempo_agotado)
+
+	var tick := Timer.new()
+	tick.wait_time = 1.0
+	tick.autostart = true
+	tick.one_shot = false
+
+	add_child(tick)
+
+	tick.timeout.connect(_on_timer_tick)
+
+# =========================
+# ACTUALIZAR INTERFAZ
+# =========================
+func _actualizar_display() -> void:
+	var texto_palabra := ""
+
+	for letra in palabra_secreta:
+		if letra in letras_adivinadas:
+			texto_palabra += letra + " "
+		else:
+			texto_palabra += "_ "
+
+	label_palabra.text = texto_palabra.strip_edges()
+
+	label_letras_usadas.text = "Errores: " + " ".join(letras_falladas)
+
+	if fallos < AHORCADO.size():
+		label_ahorcado.text = "\n".join(AHORCADO[fallos])
+
+func _actualizar_timer_display() -> void:
+	var minutos = tiempo_restante / 60
+	var segundos = tiempo_restante % 60
+
+	label_tiempo.text = "%02d:%02d" % [minutos, segundos]
+
+# =========================
+# LETRAS
+# =========================
+func _on_letra_presionada(letra: String) -> void:
+
 	if letra in letras_adivinadas or letra in letras_falladas:
 		return
-	
-	if palabra_secreta.contains(letra):
+
+	if letra in palabra_secreta:
 		letras_adivinadas.append(letra)
 	else:
 		letras_falladas.append(letra)
 		fallos += 1
+
 	_actualizar_display()
-	_verificar_victoria()
+	_verificar_estado_juego()
 
-func _actualizar_display():
-	# Mostrar palabra con guiones
-	var display = ""
-	for letra in palabra_secreta:
-		if letra in letras_adivinadas:
-			display += letra + " "
-		else:
-			display += "_ "
-	$CanvasGroup/Panel/LabelPalabra.text = display.strip_edges()
-	
-	# Mostrar letras falladas
-	$CanvasGroup/Panel/LabelLetrasUsadas.text = "Errores: " + " ".join(letras_falladas)
-	
-	# Mostrar ahorcado
-	if fallos < AHORCADO.size():
-		$CanvasGroup/Panel/LabelAhorcado.text = AHORCADO[fallos]
+# =========================
+# VERIFICAR ESTADO
+# =========================
+func _verificar_estado_juego() -> void:
 
-func _verificar_victoria():
-	# Verificar si ganó
-	var gano = true
+	var gano := true
+
 	for letra in palabra_secreta:
 		if letra not in letras_adivinadas:
 			gano = false
 			break
-	
+
 	if gano:
 		juego_activo = false
-		$CanvasGroup/Panel/LabelMensaje.text = "¡Escapaste! Abriendo puerta final..."
+
+		label_mensaje.text = "¡Escapaste! Abriendo puerta final..."
+
 		await get_tree().create_timer(2.0).timeout
-		get_tree().change_scene_to_file("res://scenes/Victory.tscn")
-	
-	# Verificar si perdió por fallos
-	if fallos >= 8:
+
+		get_tree().change_scene_to_file(
+			"res://scenes/Victory.tscn"
+		)
+		return
+
+	if fallos >= AHORCADO.size() - 1:
 		_game_over()
 
-func _process(delta):
+# =========================
+# PROCESO PRINCIPAL
+# =========================
+func _process(delta: float) -> void:
+
 	if not juego_activo:
 		return
-	# Bestia persigue al jugador continuamente
-	var dir = ($Player.position - $Bestia.position).normalized()
-	$Bestia.position += dir * 45 * delta
-	
-	var dist = $Bestia.position.distance_to($Player.position)
-	if dist < 60:
+
+	var direccion = (
+		player.position - bestia.position
+	).normalized()
+
+	bestia.position += direccion * 45.0 * delta
+
+	if bestia.position.distance_to(player.position) < 60:
 		_game_over()
 
-func _on_tiempo_agotado():
-	_game_over()
+# =========================
+# TEMPORIZADOR
+# =========================
+func _on_timer_tick() -> void:
 
-func _on_timer_tick():
 	if not juego_activo:
 		return
+
 	tiempo_restante -= 1
+
 	_actualizar_timer_display()
+
 	if tiempo_restante <= 0:
 		_game_over()
 
-func _actualizar_timer_display():
-	var minutos = int(tiempo_restante) / 60
-	var segundos = int(tiempo_restante) % 60
-	$CanvasGroup/LabelTiempo.text = "%02d:%02d" % [minutos, segundos]
+func _on_tiempo_agotado() -> void:
+	_game_over()
 
-func _game_over():
-	juego_activo = false
-	get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+# =========================
+# GAME OVER
+# =========================
+func _game_over() -> void:
 
-func _input(event):
 	if not juego_activo:
 		return
+
+	juego_activo = false
+
+	get_tree().change_scene_to_file(
+		"res://scenes/GameOver.tscn"
+	)
+
+# =========================
+# ENTRADA DEL TECLADO
+# =========================
+func _input(event) -> void:
+
+	if not juego_activo:
+		return
+
 	if event is InputEventKey and event.pressed:
-		var letra = OS.get_keycode_string(event.keycode).to_upper()
+
+		var letra = OS.get_keycode_string(
+			event.keycode
+		).to_upper()
+
 		if letra.length() == 1 and letra >= "A" and letra <= "Z":
 			_on_letra_presionada(letra)
