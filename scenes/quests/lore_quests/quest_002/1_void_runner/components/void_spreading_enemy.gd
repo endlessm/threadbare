@@ -143,3 +143,7 @@ func _on_player_capture_area_body_entered(body: Node2D) -> void:
 
 	var player := body as Player
 	player.defeat(true)
+
+
+func _on_enemy_trigger_body_entered(body: Node2D) -> void:
+	pass # Replace with function body.
