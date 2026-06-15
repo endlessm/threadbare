@@ -1,4 +1,4 @@
-[gd_scene format=4]
+[gd_scene format=3 uid="uid://c2fnj7pg7ihpr"]
 
 [ext_resource type="Script" uid="uid://cjen58efxy87a" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_essence_npc.gd" id="1_script"]
 [ext_resource type="SpriteFrames" uid="uid://bbexxr1ctc5wt" path="res://scenes/quests/story_quests/echo_abyss/player_components/echo_abyss_player.tres" id="2_sprite"]
@@ -11,7 +11,7 @@ height = 42.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interact"]
 size = Vector2(72, 72)
 
-[node name="EchoAbyssEssenceNpc" type="CharacterBody2D"]
+[node name="EchoAbyssEssenceNpc" type="CharacterBody2D" unique_id=647850240]
 collision_layer = 2
 collision_mask = 0
 motion_mode = 1
@@ -19,28 +19,30 @@ script = ExtResource("1_script")
 dialogue = ExtResource("4_dialogue")
 sprite_frames = ExtResource("2_sprite")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1187899063]
 position = Vector2(0, -18)
 rotation = -1.5707964
 shape = SubResource("CapsuleShape2D_body")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=477001539]
 unique_name_in_owner = true
 sprite_frames = ExtResource("2_sprite")
 animation = &"idle"
 autoplay = "idle"
+frame_progress = 0.8856602
 
-[node name="InteractArea" type="Area2D" parent="." node_paths=PackedStringArray("marker")]
+[node name="InteractArea" type="Area2D" parent="." unique_id=722504787 node_paths=PackedStringArray("marker")]
 unique_name_in_owner = true
+collision_layer = 32
+collision_mask = 0
 script = ExtResource("3_interact")
 marker = NodePath("Marker2D")
-action = "Talk"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=178664624]
 visible = false
 position = Vector2(0, -24)
 shape = SubResource("RectangleShape2D_interact")
 debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
-[node name="Marker2D" type="Marker2D" parent="InteractArea"]
+[node name="Marker2D" type="Marker2D" parent="InteractArea" unique_id=257532092]
 position = Vector2(0, -76)

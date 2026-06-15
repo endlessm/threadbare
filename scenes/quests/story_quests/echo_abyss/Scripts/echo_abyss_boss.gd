@@ -16,6 +16,9 @@ enum State { IDLE, JUMPING, CHASING, ATTACKING, DEFEATED }
 @export var chase_speed: float = 120.0
 @export var rock_spawn_period: float = 2.0
 @export var phase2_jump_cooldown := 2.0
+@export var projectile_color: Color = Color.WHITE
+@export var rock_color: Color = Color(0.741, 0.301, 0.087, 1.0)
+@export var essence_reward: int = 50
 
 var health: float = max_health
 var current_state: State = State.IDLE
@@ -26,22 +29,25 @@ var _shoot_timer: float = 0.0
 var _melee_timer: float = 0.0
 var _rock_timer: float = 0.0
 var _is_defeated: bool = false
-var _health_bar: TextureProgressBar
 var _is_phase2_jumping := false
 var _phase2_jump_timer := 0.0
 # Flag para detener el loop de saltos de fase 1 al transicionar a fase 2
 var _phase1_active: bool = false
+var intro_finished := false
 
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var hit_box: Area2D = %HitBox
 @onready var projectile_marker: Marker2D = %ProjectileMarker
+@onready var health_bar: TextureProgressBar = find_child("BossHealthBar", true, false)
 
 func _ready() -> void:
 	health = max_health
-	
-	# debug
-	print("PatrolPath: ", patrol_path)
+
+	if health_bar:
+		health_bar.max_value = max_health
+		health_bar.value = health
+		health_bar.visible = true
 
 	# Find player
 	_player = get_tree().get_first_node_in_group("player") as EchoAbyssPlayer
@@ -49,30 +55,16 @@ func _ready() -> void:
 	# Connect HitBox body entered
 	if hit_box:
 		hit_box.body_entered.connect(_on_hit_box_body_entered)
-	
-	# Try to find the health bar in the CanvasLayer
-	var canvas_layer = get_tree().current_scene.find_child("CanvasLayer", true, false)
-	if canvas_layer:
-		_health_bar = canvas_layer.find_child("BossHealthBar", true, false)
-		if _health_bar:
-			_health_bar.max_value = max_health
-			_health_bar.value = health
-			_health_bar.visible = true
-
-	# Start phase 1
-	_start_phase_1()
 
 func _process(delta: float) -> void:
+	if not intro_finished:
+		return
+	
 	if _is_defeated:
 		return
 
 	if not is_instance_valid(_player):
 		return
-
-	# Face the player
-	#var dir_to_player := global_position.direction_to(_player.global_position)
-	#if not _is_jumping:
-	#	scale.x = 1 if dir_to_player.x < 0 else -1
 
 	# State machine and updates
 	if health > 50:
@@ -81,6 +73,13 @@ func _process(delta: float) -> void:
 	else:
 		# Phase 2
 		_process_phase_2(delta)
+
+func begin_fight() -> void:
+	if intro_finished:
+		return
+
+	intro_finished = true
+	_start_phase_1()
 
 func _start_phase_1() -> void:
 	current_state = State.IDLE
@@ -214,6 +213,7 @@ func _shoot_projectile() -> void:
 
 	projectile.can_hit_enemy = false
 	projectile.can_hit_player = true
+	projectile.color = projectile_color
 	
 	#print(projectile.get_script().resource_path)
 	
@@ -237,7 +237,7 @@ func _spawn_falling_rock() -> void:
 	rock.can_hit_enemy = false
 	rock.can_hit_player = true
 	# Give it a rock-like color (dark grey/brown)
-	rock.color = Color(0.35, 0.35, 0.35, 1.0)
+	rock.color = rock_color
 	
 	# Spawn above player's current view
 	var spawn_x = _player.global_position.x + randf_range(-300.0, 300.0)
@@ -277,8 +277,8 @@ func take_damage(amount: float) -> void:
 		return
 		
 	health = max(0.0, health - amount)
-	if _health_bar:
-		_health_bar.value = health
+	if health_bar:
+		health_bar.value = health
 
 	animation_player.play(&"got hit")
 	animation_player.queue(&"idle")
@@ -308,15 +308,15 @@ func _defeat() -> void:
 	animation_player.play(&"defeated")
 	
 	# Hide health bar
-	if _health_bar:
-		_health_bar.visible = false
-
+	if health_bar:
+		health_bar.visible = false
+	
 	# Wait for defeat animation and trigger victory condition
 	await animation_player.animation_finished
 	
-	# Activar el EssenceExit para que el player pueda pasar al siguiente nivel
-	var essence_exit = get_tree().current_scene.find_child("EssenceExit", true, false)
-	if essence_exit and essence_exit.has_method("_set_unlocked"):
-		essence_exit._set_unlocked(true)
+	if is_instance_valid(_player) and _player.has_method("add_essence"):
+		_player.add_essence(essence_reward)
+		if(_player.get_current_health()<_player.get_max_health()):
+			_player.set_health(1)
 	
 	queue_free()
