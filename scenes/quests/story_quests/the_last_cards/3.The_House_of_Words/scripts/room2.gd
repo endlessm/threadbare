@@ -94,6 +94,16 @@ func _iniciar_juego():
 		tick.start()
 
 func _process(delta):
+	
+	# Aquí asumiendo que player ya se movió por su cuenta
+	var limite_izq = -280
+	var limite_der = 1850   # ajusta según tamaño de la sala
+	var limite_sup = -120
+	var limite_inf = 1000
+
+	player.position.x = clamp(player.position.x, limite_izq, limite_der)
+	player.position.y = clamp(player.position.y, limite_sup, limite_inf)
+	
 	if not juego_activo:
 		return
 	var dir = (player.position - nube.position).normalized()
