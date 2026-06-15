@@ -30,11 +30,6 @@ func hit_by_droplet(droplet_label: String) -> void:
 		health_component.damage(1)
 
 
-func take_damage() -> void:
-	crack_sound.play()
-	update_cracks()
-
-
 func update_cracks() -> void:
 	# IMPROVEMENT: Calculate frame index proportionally based on damage percentage.
 	var total_frames: int = crack_overlay_node.sprite_frames.get_frame_count("default")
@@ -57,3 +52,8 @@ func break_barrel() -> void:
 	await animated_sprite_2d.animation_finished
 
 	barrel_destroyed.emit(self)
+
+
+func _on_health_component_health_changed() -> void:
+	crack_sound.play()
+	update_cracks()
