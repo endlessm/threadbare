@@ -192,7 +192,7 @@ func apply_dialogue_line() -> void:
 
 ## True if the player position is at the bottom vertical quarter of the screen.
 func _is_player_at_bottom() -> bool:
-	var player: Node2D = get_tree().get_first_node_in_group("player")
+	var player := get_tree().get_first_node_in_group("player") as Node2D
 	if not player:
 		return false
 
