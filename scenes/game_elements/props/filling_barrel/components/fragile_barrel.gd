@@ -33,7 +33,7 @@ func hit_by_droplet(droplet_label: String) -> void:
 func update_cracks() -> void:
 	# IMPROVEMENT: Calculate frame index proportionally based on damage percentage.
 	var total_frames: int = crack_overlay_node.sprite_frames.get_frame_count("default")
-	var frame_index: int = int(floor((health_component.damage_taken_percentage) * total_frames))
+	var frame_index: int = int(floor((health_component.damage_taken_ratio) * total_frames))
 
 	# Clamp to ensure we don't exceed available frames (0-based index)
 	frame_index = clamp(frame_index, 0, total_frames - 1)
