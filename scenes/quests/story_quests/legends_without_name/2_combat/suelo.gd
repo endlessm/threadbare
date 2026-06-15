@@ -48,7 +48,8 @@ func _on_body_entered(body: Node2D) -> void:
 			timercaida.start()
 		elif estado == "hueco":
 			#el jugador camino hacia un hueco ya abierto
-			reiniciar_nivel()
+			body.defeat(true)
+			
 			
 func _on_timer_timeout() -> void: 
 	#ilusion optica de q la baldosa se cae al fondo
@@ -69,7 +70,7 @@ func convertir_en_hueco() ->void:
 	#get_overlapping_bodies() devuelve todo lo q este dentro del area2d en ese instante
 	for cuerpo in get_overlapping_bodies(): 
 		if cuerpo.is_in_group("player"): 
-			reiniciar_nivel()
+			cuerpo.defeat(true)
 			
 func _on_timer_timeout_regen() -> void:
 #	$CollisionShape2D.set_deferred("disabled", false)
@@ -80,6 +81,7 @@ func _on_timer_timeout_regen() -> void:
 
 func reiniciar_nivel() -> void:
 	#reinicia la escena completa
+	
 	get_tree().call_deferred("reload_current_scene")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
