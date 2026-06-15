@@ -11,9 +11,9 @@ signal health_changed(current_health: int)
 var current_health: int = max_health:
 	set(value):
 		if value == current_health:
-			pass
+			return
 
-		current_health = value
+		current_health = clamp(value, 0, max_health)
 		if current_health <= 0:
 			health_depleted.emit()
 		else:
