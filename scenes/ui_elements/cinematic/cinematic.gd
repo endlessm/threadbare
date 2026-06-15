@@ -41,7 +41,7 @@ func start() -> void:
 		await DialogueManager.dialogue_ended
 		cinematic_finished.emit()
 		GameState.intro_dialogue_shown = true
-	timer.start(90)
+	#timer.start(90)
 
 	if next_scene:
 		(
