@@ -18,6 +18,9 @@
 [ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="16_lrdlr"]
 [ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="17_x2qfs"]
 [ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="18_v2w3k"]
+[ext_resource type="AudioStream" uid="uid://dwcqyscd22sto" path="res://scenes/quests/story_quests/echo_abyss/Assets/sfx_and_music/sounds/ambient/magical_6.ogg" id="19_x2qfs"]
+[ext_resource type="AudioStream" uid="uid://bgt3o4s4ebpwu" path="res://scenes/quests/story_quests/echo_abyss/Assets/sfx_and_music/sounds/enemys/impactoespada.wav" id="20_v2w3k"]
+[ext_resource type="AudioStream" uid="uid://bvkqrh85lfa0x" path="res://scenes/quests/story_quests/echo_abyss/Assets/sfx_and_music/sounds/player/game_over.wav" id="21_kgf6h"]
 
 [sub_resource type="Resource" id="Resource_cvb4d"]
 script = ExtResource("2_8hfr8")
@@ -487,6 +490,15 @@ script = ExtResource("18_v2w3k")
 position = Vector2(0, -53)
 scale = Vector2(0.39276916, 0.3978297)
 polygon = PackedVector2Array(302, 48, 283, 52, 279, 52, 101, 114, 98, 114, 79, 124, 77, 124, 72, 131, 71, 131, 71, 138, 78, 145, 78, 146, 95, 154, 95, 155, 275, 226, 275, 227, 292, 231, 292, 232, 312, 230, 316, 230, 330, 222, 332, 222, 340, 214, 341, 214, 346, 205, 347, 205, 351, 185, 351, 100, 347, 82, 347, 79, 338, 67, 338, 65, 325, 55, 325, 54, 302, 47)
+
+[node name="SFX_esencia" type="AudioStreamPlayer" parent="." unique_id=260559208]
+stream = ExtResource("19_x2qfs")
+
+[node name="SFX_daño" type="AudioStreamPlayer" parent="." unique_id=978619826]
+stream = ExtResource("20_v2w3k")
+
+[node name="SFX_muerte" type="AudioStreamPlayer" parent="." unique_id=764296428]
+stream = ExtResource("21_kgf6h")
 
 [connection signal="running_changed" from="InputWalkBehavior" to="PlayerDustParticles" method="set_emitting"]
 [connection signal="running_changed" from="InputWalkBehavior" to="AnimationPlayer" method="_on_input_walk_behavior_running_changed"]

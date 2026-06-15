@@ -37,6 +37,7 @@ func take_damage(amount: int = 1) -> void:
 
 	set_health(current_health - amount)
 	CameraShake.shake()
+	$SFX_daño.play()
 
 	if current_health == 0:
 		_handle_echo_abyss_defeat()
@@ -61,7 +62,7 @@ func add_essence(amount: int) -> void:
 	if amount <= 0:
 		return
 	set_essence(current_essence + amount)
-
+	$SFX_esencia.play()
 
 func spend_essence(amount: int) -> bool:
 	if amount <= 0:
@@ -102,6 +103,11 @@ func _handle_echo_abyss_defeat() -> void:
 	mode = Mode.DEFEATED
 	velocity = Vector2.ZERO
 	echo_abyss_defeated.emit()
+	if owner:
+			for nodo in owner.find_children("*", "AudioStreamPlayer", true, false):
+				if nodo != $SFX_muerte and nodo.is_playing():
+					nodo.stop()
+	$SFX_muerte.play()
 	if reload_scene_on_defeat:
 		await get_tree().create_timer(defeat_reload_delay).timeout
 		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
