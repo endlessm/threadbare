@@ -3,130 +3,71 @@
 @tool
 class_name ThrowingEnemy
 extends CharacterBody2D
-## Enemy that throws [Projectile]s to the player.
-##
-## @tutorial: https://github.com/endlessm/threadbare/discussions/1323
-##
-## This is a piece of the fill-matching mechanic.
-## [br][br]
-## When throwing, the label/color of the [member projectile_scene] that is
-## thrown are picked from [member allowed_labels] and [member color_per_label].
-## These are typically updated by a [FillGameLogic] node in the scene.
-## [br][br]
-## If you want to throw different scenes depending on the target label, use
-## [member projectile_scene_for_label].
 
 enum State { IDLE, WALKING, ATTACKING, DEFEATED }
 
-## Animations that [member sprite_frames] is expected to have.
 const REQUIRED_ANIMATIONS: Array[StringName] = [
 	&"idle", &"walk", &"attack", &"attack anticipation", &"defeated"
 ]
 
 const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://deosvk5k4su5f")
-
-## When targetting the next walking position, skip this slice of the circle.
 const WALK_TARGET_SKIP_ANGLE: float = PI / 4.
-
-## When targetting the next walking position, skip an inner circle. The radius of the inner
-## circle is this proportion of the [member walking_range].
 const WALK_TARGET_SKIP_RANGE: float = 0.25
 
-## The projectile will be instantiated at this distance from the [member projectile_marker] node,
-## in the direction of the player.
 @export_range(0., 100., 1., "or_greater", "suffix:m") var distance: float = 20.0
-
-## The period of time between throwing projectiles.
-## Note: Currently this is limited by the length of the AnimationPlayer animation "attack".
-@export_range(0.1, 10., 0.1, "or_greater", "suffix:s") var throwing_period: float = 5.0:
+@export_range(0.1, 10., 0.1, "or_greater", "suffix:s") var throwing_period: float = 2.0:
 	set(value):
 		throwing_period = value
 		if timer:
 			timer.wait_time = throwing_period
 
-## Use this to have 2 enemies throwing projectiles alternatively and at the same pace
-## (same [member throwing_period]).
 @export var odd_shoot: bool = false
-
-## Whether the enemy starts attacking or walking automatically. If false, make sure
-## to call [method start].
 @export var autostart: bool = false
 
 @export_group("Visuals")
-
-## The SpriteFrames must have specific animations.
-## See [constant REQUIRED_ANIMATIONS].
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
 
 @export_group("Sounds")
-
-## Sound that plays while this enemy is not attacking
 @export var idle_sound_stream: AudioStream:
 	set = _set_idle_sound_stream
-## Sound that plays when this enemy starts its attack.
 @export var attack_sound_stream: AudioStream:
 	set = _set_attack_sound_stream
 
 @export_group("Projectile", "projectile")
-
-## The scene to instantiate when spawning a projectile. The scene's root node
-## should be a [Projectile].
-## [br][br]
-## If this is not set, then [member projectile_scene_for_label] must contain a
-## scene for every possible label.
 @export var projectile_scene: PackedScene:
 	set(new_value):
 		projectile_scene = new_value
 		update_configuration_warnings()
 
-## Alternative projectile scenes to spawn based on the target label.
-## [br][br]
-## When launching a projectile, if the chosen label is found in this dictionary,
-## the associated scene will be used. If not, the default [member projectile_scene]
-## will be used.
 @export var projectile_scene_for_label: Dictionary[String, PackedScene]:
 	set(new_value):
 		projectile_scene_for_label = new_value
 		update_configuration_warnings()
 
-## The speed of the projectile initial impulse and the projectile bouncing impulse.
-@export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s")
-var projectile_speed: float = 30.0
+# --- VELOCIDAD EXTREMA DESDE LA FASE 1 ---
+# Aumentamos el límite del slider a 200 y el valor por defecto a 90 (antes 30)
+@export_range(10., 200., 5., "or_greater", "or_less", "suffix:m/s")
+var projectile_speed: float = 90.0 
+# -----------------------------------------
 
-## The life span of the projectile.
 @export_range(0., 10., 0.1, "or_greater", "suffix:s") var projectile_duration: float = 5.0
-
-## If true, the projectile will constantly adjust itself to target the player.
 @export var projectile_follows_player: bool = false
 
 @export_group("Walking", "walking")
-
-## If this is not zero, the enemy walks this amount of time between being idle and
-## throwing. If it is bigger than [member throwing_period], the enemy walks all the
-## time.
 @export_range(0., 10., 0.1, "or_greater", "suffix:s") var walking_time: float = 0.0:
 	set(value):
 		walking_time = value
 		queue_redraw()
 
-## The range that the enemy is allowed to walk. This is the radius of a circle that
-## has the initial position as center. The range is visible in the editor when
-## [member walking_time] is not zero.
 @export_range(0., 500., 1., "or_greater", "suffix:m") var walking_range: float = 300.0:
 	set(value):
 		walking_range = value
 		queue_redraw()
 
-## The moving speed of the enemy when walking.
 @export_range(20, 300, 5, "or_greater", "or_less", "suffix:m/s") var walking_speed: float = 50.0
 
-## The label of each projectile thrown will be a random choice from this array.
-## So if a label appears more than once, this will increase the chance that it is thrown.
 var allowed_labels: Array[String] = ["???"]
-
-## Optional mapping of color per label. This is used to tint projectiles to make a
-## color-matching game.
 var color_per_label: Dictionary[String, Color]
 
 var _initial_position: Vector2
@@ -134,6 +75,8 @@ var _target_position: Vector2
 var _is_attacking: bool
 var _is_defeated: bool
 var _has_started: bool = false
+
+var current_phase: int = 1
 
 @onready var timer: Timer = %Timer
 @onready var projectile_marker: Marker2D = %ProjectileMarker
@@ -192,7 +135,6 @@ func _draw() -> void:
 			Color(0.0, 0.0, 0.0, 0.3)
 		)
 		if get_tree().is_debugging_collisions_hint():
-			## Only when playing with collision shapes visible, draw a dot for the target position:
 			draw_circle(_target_position - position, 10., Color(1.0, 0.0, 0.0, 0.7))
 
 
@@ -240,7 +182,6 @@ func _process(_delta: float) -> void:
 			velocity = _get_velocity()
 			move_and_slide()
 			if get_tree().is_debugging_collisions_hint():
-				# Update the debug shapes when the position changes:
 				queue_redraw()
 			if not velocity.is_zero_approx():
 				animated_sprite_2d.play(&"walk")
@@ -271,16 +212,25 @@ func _on_timeout() -> void:
 
 func shoot_projectile() -> void:
 	var player: Player = get_tree().get_first_node_in_group("player")
-	if not allowed_labels:
+	if not allowed_labels or not is_instance_valid(player):
 		_is_attacking = false
 		return
 
-	if shoot_projectile_at(player):
-		_set_target_position()
-		_is_attacking = false
+	if current_phase == 1:
+		shoot_projectile_at(player, 0.0)
+	elif current_phase == 2:
+		shoot_projectile_at(player, -0.2)
+		shoot_projectile_at(player, 0.2)
+	elif current_phase >= 3:
+		shoot_projectile_at(player, 0.0)
+		shoot_projectile_at(player, -0.3)
+		shoot_projectile_at(player, 0.3)
+
+	_set_target_position()
+	_is_attacking = false
 
 
-func shoot_projectile_at(target: Node2D) -> bool:
+func shoot_projectile_at(target: Node2D, angle_offset: float = 0.0) -> bool:
 	if not is_instance_valid(target):
 		return false
 
@@ -289,7 +239,9 @@ func shoot_projectile_at(target: Node2D) -> bool:
 	if projectile == null:
 		return false
 
-	projectile.direction = projectile_marker.global_position.direction_to(target.global_position)
+	var base_direction: Vector2 = projectile_marker.global_position.direction_to(target.global_position)
+	projectile.direction = base_direction.rotated(angle_offset)
+	
 	projectile.global_position = projectile_marker.global_position + projectile.direction * distance
 	scale.x = 1 if projectile.direction.x < 0 else -1
 
@@ -325,31 +277,52 @@ func _on_got_hit(body: Node2D) -> void:
 	animation_player.play(&"got hit")
 
 
-## Start attacking and/or walking. The enemy will be idle until this is called.
-## See [member autostart].
 func start() -> void:
-	if _has_started:
-		return
 	_has_started = true
+	_is_attacking = false
+	_is_defeated = false
+	
 	if not is_node_ready():
 		await ready
+		
 	timer.wait_time = throwing_period
-	timer.timeout.connect(_on_timeout)
-	hit_box.body_entered.connect(_on_got_hit)
+	if not timer.timeout.is_connected(_on_timeout):
+		timer.timeout.connect(_on_timeout)
+	if not hit_box.body_entered.is_connected(_on_got_hit):
+		hit_box.body_entered.connect(_on_got_hit)
+		
 	if odd_shoot:
 		await get_tree().create_timer(throwing_period / 2).timeout
+		
 	timer.start()
 	_initial_position = position
 	_set_target_position()
+	print("🎯 FASE 1: ¡El jefe dispara proyectiles a 110 m/s!")
 
 
-## Play a remove animation and then remove the enemy from the scene.
 func remove() -> void:
 	timer.stop()
 	_is_defeated = true
 	animation_player.play(&"defeated")
 	await animation_player.animation_finished
 	queue_free()
+
+
+func change_phase(barrels_completed: int) -> void:
+	if barrels_completed == 2:
+		current_phase = 2
+		throwing_period = 1.2
+		walking_speed = 100.0
+		projectile_speed = 140.0 # Más rápido en fase 2
+		timer.wait_time = throwing_period
+		print("😡 FASE 2: ¡Disparo Doble y proyectiles a 140 m/s!")
+	elif barrels_completed == 4:
+		current_phase = 3
+		throwing_period = 0.6
+		walking_speed = 150.0
+		projectile_speed = 170.0 # Ultra rápido en fase 3
+		timer.wait_time = throwing_period
+		print("🤬 FASE 3: ¡MODO CUPHEAD! Disparo triple a 170 m/s.")
 
 
 func _set_idle_sound_stream(new_value: AudioStream) -> void:

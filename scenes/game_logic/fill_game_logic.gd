@@ -2,38 +2,17 @@
 # SPDX-License-Identifier: MPL-2.0
 class_name FillGameLogic
 extends Node
-## Manages the logic of the fill-matching game.
-##
-## @tutorial: https://github.com/endlessm/threadbare/discussions/1323
-##
-## This is a piece of the fill-matching mechanic.
-## [br][br]
-## Grabs the label and optional color of each [FillingBarrel] that exist in the
-## current scene, and assigns them as the allowed label/color of the [Projectile]
-## that each [ThrowingEnemy] is allowed to throw.
-## Each time a [FillingBarrel] is filled, perform the label/color assignment again
-## so [ThrowingEnemy]s only throw projectiles that can increase the amount of
-## the remaining barrels.
-## [br][br]
-## Also keep track of the completed [FillingBarrel]s and emit [signal goal_reached]
-## when [member barrels_to_win] is reached.
 
-## Emited when [member barrels_completed] reaches [member barrels_to_win].
 signal goal_reached
 
-## How many barrels to complete for winning.
-@export var barrels_to_win: int = 1
-
-## Whether to start the game logic automatically.
-## If false, make sure to call [method start].
+@export var barrels_to_win: int = 5 # Ajustado a 5 para las 3 fases
 @export var autostart: bool = false
-
-## Counter for the completed barrels.
 var barrels_completed: int = 0
 
+static var batalla_iniciada: bool = false
 
-## Update the allowed labels/colors and tell enemies to start.
 func start() -> void:
+	batalla_iniciada = true
 	_update_allowed_colors()
 	get_tree().call_group("throwing_enemy", "start")
 
@@ -43,7 +22,9 @@ func _ready() -> void:
 	barrels_to_win = clampi(barrels_to_win, 0, filling_barrels.size())
 	for barrel: FillingBarrel in filling_barrels:
 		barrel.completed.connect(_on_barrel_completed)
-	if autostart:
+		
+	if autostart or FillGameLogic.batalla_iniciada:
+		await get_tree().create_timer(0.5).timeout
 		start()
 
 
@@ -66,6 +47,10 @@ func _update_allowed_colors() -> void:
 func _on_barrel_completed() -> void:
 	barrels_completed += 1
 	_update_allowed_colors()
+	
+	# ---> EL AVISO PARA CAMBIAR DE FASE <---
+	get_tree().call_group("throwing_enemy", "change_phase", barrels_completed)
+	
 	if barrels_completed < barrels_to_win:
 		return
 	get_tree().call_group("throwing_enemy", "remove")

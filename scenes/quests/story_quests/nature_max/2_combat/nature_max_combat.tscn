@@ -10,10 +10,10 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="8_2d45v"]
 [ext_resource type="SpriteFrames" uid="uid://bdvu20sxgtt0o" path="res://scenes/quests/story_quests/nature_max/player_components/nature_max_player.tres" id="9_eiisa"]
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="10_scoio"]
-[ext_resource type="SpriteFrames" uid="uid://dx8yho8qm2mf2" path="res://scenes/quests/story_quests/nature_max/2_combat/combat_components/nature_max_throwing_enemy.tres" id="11_rs1gd"]
+[ext_resource type="SpriteFrames" uid="uid://bt1ukjg0uacdw" path="res://scenes/quests/story_quests/nature_max/mis_mosaicos/naturemax_monstruo_animacion/naturemax_monstruo_defeated.tres" id="11_xw4qf"]
 [ext_resource type="PackedScene" uid="uid://bsuxvx60xbjxe" path="res://scenes/quests/story_quests/nature_max/2_combat/combat_components/nature_max_projectile.tscn" id="12_5qxpd"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="13_f7610"]
-[ext_resource type="SpriteFrames" uid="uid://dqokih1xcvckp" path="res://scenes/quests/story_quests/nature_max/2_combat/combat_components/nature_max_target_spriteframes.tres" id="14_8rsqy"]
+[ext_resource type="SpriteFrames" uid="uid://c2acr4u754f17" path="res://scenes/quests/story_quests/nature_max/mis_mosaicos/naturemax_recipiente.tres" id="14_xw4qf"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="15_t8ilv"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="16_nyqor"]
 [ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="17_i7gxl"]
@@ -23,6 +23,9 @@
 script = ExtResource("16_nyqor")
 type = 1
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xw4qf"]
+size = Vector2(6.125, 385)
 
 [node name="NatureMaxCombat" type="Node2D" unique_id=1610054737]
 y_sort_enabled = true
@@ -39,6 +42,7 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="FillGameLogic" type="Node" parent="." unique_id=1828019770]
 script = ExtResource("4_25me7")
+barrels_to_win = 6
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=738016104]
@@ -63,43 +67,47 @@ position = Vector2(348, 335)
 sprite_frames = ExtResource("9_eiisa")
 
 [node name="ThrowingNPC" parent="OnTheGround" unique_id=2065424633 instance=ExtResource("10_scoio")]
-position = Vector2(857, 300)
-sprite_frames = ExtResource("11_rs1gd")
+position = Vector2(640, 338)
+sprite_frames = ExtResource("11_xw4qf")
 projectile_scene = ExtResource("12_5qxpd")
+projectile_speed = 110.0
+walking_time = 2.0
+walking_range = 150.0
+walking_speed = 75.0
 
 [node name="Target" parent="OnTheGround" unique_id=1718603548 instance=ExtResource("13_f7610")]
 position = Vector2(502, 164)
-sprite_frames = ExtResource("14_8rsqy")
+sprite_frames = ExtResource("14_xw4qf")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target2" parent="OnTheGround" unique_id=711725062 instance=ExtResource("13_f7610")]
 position = Vector2(758, 164)
-sprite_frames = ExtResource("14_8rsqy")
+sprite_frames = ExtResource("14_xw4qf")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target3" parent="OnTheGround" unique_id=1832726000 instance=ExtResource("13_f7610")]
 position = Vector2(761, 497)
-sprite_frames = ExtResource("14_8rsqy")
+sprite_frames = ExtResource("14_xw4qf")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target4" parent="OnTheGround" unique_id=857122250 instance=ExtResource("13_f7610")]
 position = Vector2(632, 497)
-sprite_frames = ExtResource("14_8rsqy")
+sprite_frames = ExtResource("14_xw4qf")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target5" parent="OnTheGround" unique_id=1348280126 instance=ExtResource("13_f7610")]
 position = Vector2(633, 164)
-sprite_frames = ExtResource("14_8rsqy")
+sprite_frames = ExtResource("14_xw4qf")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target6" parent="OnTheGround" unique_id=1005497940 instance=ExtResource("13_f7610")]
 position = Vector2(501, 497)
-sprite_frames = ExtResource("14_8rsqy")
+sprite_frames = ExtResource("14_xw4qf")
 label = ""
 color = Color(1, 1, 1, 1)
 
@@ -128,6 +136,13 @@ limit_right = 960
 limit_bottom = 640
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="InvisibleWall" type="StaticBody2D" parent="." unique_id=149537427]
+collision_mask = 337
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InvisibleWall" unique_id=156765772]
+position = Vector2(403.9375, 320.5)
+shape = SubResource("RectangleShape2D_xw4qf")
 
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
