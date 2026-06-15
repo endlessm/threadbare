@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://da2pylsu33is8" path="res://scenes/quests/story_quests/the_last_cards/player_components/partes_ahorcado/cuello.png" id="7_84xrr"]
 [ext_resource type="Texture2D" uid="uid://j8ewieaqv4xt" path="res://scenes/quests/story_quests/the_last_cards/player_components/partes_ahorcado/derecha.png" id="8_2a3qg"]
 [ext_resource type="Texture2D" uid="uid://l1am1wf24iyi" path="res://scenes/quests/story_quests/the_last_cards/player_components/partes_ahorcado/izquierda.png" id="9_br062"]
+[ext_resource type="AudioStream" uid="uid://caha8luj754tw" path="res://scenes/quests/story_quests/after_the_tremor/music/enteaparece.ogg" id="10_84xrr"]
+[ext_resource type="PackedScene" uid="uid://dhydhpp43urah" path="res://scenes/ui_elements/dialogue/balloon.tscn" id="11_2a3qg"]
 
 [node name="Room3" type="Node2D" unique_id=8831323]
 script = ExtResource("1_5hlaq")
@@ -24,17 +26,17 @@ tile_set = ExtResource("2_ekjj7")
 [node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=561364126]
 
 [node name="Panel" type="Panel" parent="CanvasGroup" unique_id=1523505706]
-offset_left = 1128.0
-offset_top = 127.0
+offset_left = 1305.0
+offset_top = 91.0
 offset_right = 1808.0
-offset_bottom = 707.0
+offset_bottom = 637.0
 
 [node name="LabelPalabra" type="Label" parent="CanvasGroup/Panel" unique_id=1887920196]
 layout_mode = 0
-offset_left = 331.0
-offset_top = 294.0
-offset_right = 371.0
-offset_bottom = 361.0
+offset_left = 108.0
+offset_top = 374.0
+offset_right = 262.0
+offset_bottom = 441.0
 theme_override_font_sizes/font_size = 48
 
 [node name="LabelLetrasUsadas" type="Label" parent="CanvasGroup/Panel" unique_id=885155222]
@@ -56,10 +58,10 @@ offset_right = 40.0
 offset_bottom = 23.0
 
 [node name="LabelTiempo" type="Label" parent="CanvasGroup" unique_id=308577708]
-offset_left = 20.0
-offset_top = 202.0
-offset_right = 60.0
-offset_bottom = 225.0
+offset_left = 1724.0
+offset_top = 111.0
+offset_right = 1777.0
+offset_bottom = 134.0
 text = "2:00"
 
 [node name="Timer" type="Timer" parent="." unique_id=306464338]
@@ -68,10 +70,10 @@ one_shot = true
 autostart = true
 
 [node name="LabelInstruccion" type="Label" parent="." unique_id=1113375812]
-offset_left = 506.0
-offset_top = 716.0
-offset_right = 842.0
-offset_bottom = 781.0
+offset_left = 1398.0
+offset_top = 594.0
+offset_right = 1734.0
+offset_bottom = 659.0
 theme_override_font_sizes/font_size = 22
 text = "\"Presiona una letra del teclado\"
 "
@@ -81,45 +83,58 @@ text = "\"Presiona una letra del teclado\"
 [node name="Player" parent="." unique_id=999751747 instance=ExtResource("4_sja76")]
 position = Vector2(103, 800)
 
-[node name="Area2D" type="Area2D" parent="." unique_id=31725314]
-position = Vector2(761, -68.99999)
+[node name="PartesAhorcado" type="Area2D" parent="." unique_id=31725314]
+position = Vector2(857, -66)
 scale = Vector2(0.7, 0.7)
 
-[node name="Cabeza" type="Sprite2D" parent="Area2D" unique_id=631119940]
+[node name="Soporte" type="Sprite2D" parent="PartesAhorcado" unique_id=1711236812]
+position = Vector2(872, 390.25)
+scale = Vector2(4.2299986, 4.53)
+texture = ExtResource("3_sja76")
+
+[node name="Cabeza" type="Sprite2D" parent="PartesAhorcado" unique_id=631119940]
+visible = false
 position = Vector2(1030, 413.5)
 scale = Vector2(2.041, 2)
 texture = ExtResource("5_2d27x")
 
-[node name="Ahorcado" type="Sprite2D" parent="Area2D" unique_id=1711236812]
-position = Vector2(872, 385)
-scale = Vector2(4.229999, 4.46)
-texture = ExtResource("3_sja76")
-
-[node name="Cuello2" type="Sprite2D" parent="Area2D" unique_id=1696395820]
-position = Vector2(1031, 566.5)
-scale = Vector2(1, 2.58)
+[node name="Cuello" type="Sprite2D" parent="PartesAhorcado" unique_id=875629311]
+visible = false
+position = Vector2(1030, 482.99997)
+scale = Vector2(0.99999994, 0.99999994)
 texture = ExtResource("7_84xrr")
 
-[node name="Cuello" type="Sprite2D" parent="Area2D" unique_id=875629311]
-position = Vector2(1030, 483)
-texture = ExtResource("7_84xrr")
+[node name="BrazoIzquierdo" type="Sprite2D" parent="PartesAhorcado" unique_id=16368037]
+visible = false
+position = Vector2(991.99976, 540.99994)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("9_br062")
 
-[node name="Derecha" type="Sprite2D" parent="Area2D" unique_id=1998820868]
+[node name="BrazoDerecho" type="Sprite2D" parent="PartesAhorcado" unique_id=1998820868]
+visible = false
 position = Vector2(1063, 537)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("8_2a3qg")
 
-[node name="Izquierda" type="Sprite2D" parent="Area2D" unique_id=16368037]
-position = Vector2(992, 541)
-scale = Vector2(1.5, 1.5)
+[node name="Tronco" type="Sprite2D" parent="PartesAhorcado" unique_id=1696395820]
+visible = false
+position = Vector2(1030.9998, 566.49994)
+scale = Vector2(0.99999994, 2.5799997)
+texture = ExtResource("7_84xrr")
+
+[node name="PiernaIzquierdo" type="Sprite2D" parent="PartesAhorcado" unique_id=574481617]
+visible = false
+position = Vector2(991.99976, 658.99994)
+scale = Vector2(1.4999999, 1.4999999)
 texture = ExtResource("9_br062")
 
-[node name="Derecha2" type="Sprite2D" parent="Area2D" unique_id=1535967341]
+[node name="PiernaDerecho" type="Sprite2D" parent="PartesAhorcado" unique_id=1535967341]
+visible = false
 position = Vector2(1071, 658)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("8_2a3qg")
 
-[node name="Izquierda2" type="Sprite2D" parent="Area2D" unique_id=574481617]
-position = Vector2(992, 659)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("9_br062")
+[node name="MusicaFondo" type="AudioStreamPlayer2D" parent="." unique_id=1208928058]
+stream = ExtResource("10_84xrr")
+
+[node name="Dialogue" parent="." unique_id=308207015 instance=ExtResource("11_2a3qg")]

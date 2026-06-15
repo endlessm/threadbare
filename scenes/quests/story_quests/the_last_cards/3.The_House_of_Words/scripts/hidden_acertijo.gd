@@ -7,9 +7,6 @@ extends Area2D
 @export var sala_min: Vector2 = Vector2(-280, -96)
 @export var sala_max: Vector2 = Vector2(1880, 1000)
 
-# ── Zona prohibida: panel UI/diálogo (esquina superior izquierda) ──
-@export var zona_prohibida: Rect2 = Rect2(472, 56, 368, 544)  
-
 var recogida: bool = false
 
 @onready var label: Label = $Label
@@ -25,19 +22,11 @@ func _ready() -> void:
 	_posicionarse_aleatorio()
 
 func _posicionarse_aleatorio() -> void:
-	var pos: Vector2
-	var intentos := 0
-	while intentos < 200:
-		pos = Vector2(
-			randf_range(sala_min.x, sala_max.x),
-			randf_range(sala_min.y, sala_max.y)
-		)
-		if not zona_prohibida.has_point(pos):
-			position = pos
-			return
-		intentos += 1
-	# Fallback si no encontró posición libre
-	position = Vector2(200, 420)
+	var pos = Vector2(
+		randf_range(sala_min.x, sala_max.x),
+		randf_range(sala_min.y, sala_max.y)
+	)
+	position = pos
 
 func revelar_desde_player() -> void:
 	if recogida:

@@ -10,6 +10,7 @@ var tablero = [
 ]
 
 @onready var grid = $GridContainer
+@onready var musica_fondo = $MusicaFondo
 
 var juego_activo = false
 var dialogo_inicial_terminado = false
@@ -50,6 +51,8 @@ func _mostrar_dialogo(titulo: String):
 
 func _iniciar_juego():
 	juego_activo = true
+	if musica_fondo and musica_fondo.playing:
+		musica_fondo.stop()
 	actualizar_tablero()   # Habilita los botones
 	print("Puzzle activo - puedes mover las fichas")
 

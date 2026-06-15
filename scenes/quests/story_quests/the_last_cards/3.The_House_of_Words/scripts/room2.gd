@@ -18,6 +18,7 @@ var puerta_instanciada = false
 @onready var nube = $NubeNegra
 @onready var player = $Player
 @onready var button_area = $ButtonArea
+@onready var musica_fondo = $MusicaFondo
 
 var door = null
 
@@ -80,6 +81,8 @@ func _on_dialogue_finished():
 
 func _iniciar_juego():
 	juego_activo = true
+	if musica_fondo and not musica_fondo.playing:
+		musica_fondo.play()
 	input_letra.editable = true
 	input_letra.focus_mode = Control.FOCUS_ALL
 	input_letra.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -196,6 +199,8 @@ func _actualizar_timer_display():
 
 func _game_over():
 	juego_activo = false
+	if musica_fondo and musica_fondo.playing:
+		musica_fondo.stop()
 	get_tree().change_scene_to_file("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Room2.tscn")
 
 func _on_button_pressed():
