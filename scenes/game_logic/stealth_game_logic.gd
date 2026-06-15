@@ -4,6 +4,7 @@
 class_name StealthGameLogic
 extends Node
 
+@onready var player = $"../Player"
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -13,6 +14,13 @@ func _ready() -> void:
 
 
 func _on_player_detected(player: Node2D) -> void:
+	if player.has_method("defeat"):
+		player.defeat()
+	else:
+		push_warning("Detected node does not have defeat() method", player)
+
+
+func _on_timer_timeout() -> void:
 	if player.has_method("defeat"):
 		player.defeat()
 	else:

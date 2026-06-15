@@ -61,7 +61,18 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 @export var walk_sound_stream: AudioStream = preload("uid://cx6jv2cflrmqu"):
 	set = _set_walk_sound_stream
 
+
+@export_group("Mushroom Vision")
+@export var mushroom_zoom: Vector2 = Vector2(0.30, 0.30)
+@export var mushroom_view_duration: float = 2.0
+@export var mushroom_zoom_transition_time: float = 0.25
+
+
 var _initial_speeds: CharacterSpeeds
+
+var original_camera_zoom: Vector2 = Vector2.ONE
+var mushroom_camera_tween: Tween
+var mushroom_effect_token: int = 0
 
 @onready var input_walk_behavior: InputWalkBehavior = %InputWalkBehavior
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
@@ -69,6 +80,7 @@ var _initial_speeds: CharacterSpeeds
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
+@onready var mushroom_camera: Camera2D = $Camera2D
 
 
 func _set_mode(new_mode: Mode) -> void:
@@ -145,6 +157,9 @@ func _ready() -> void:
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
 	GameState.abilities_changed.connect(_on_abilities_changed)
+
+	original_camera_zoom = mushroom_camera.zoom
+	mushroom_camera.make_current()
 
 
 func _set_speeds(new_speeds: CharacterSpeeds) -> void:
@@ -263,3 +278,47 @@ func _on_player_hook_aiming_changed(is_aiming: bool) -> void:
 		aiming_speed if is_aiming else _initial_speeds.walk_speed
 	)
 	input_walk_behavior.speeds.run_speed = aiming_speed if is_aiming else _initial_speeds.run_speed
+
+
+func activate_mushroom_vision() -> void:
+	if not is_instance_valid(mushroom_camera):
+		return
+
+	mushroom_effect_token += 1
+	var current_token := mushroom_effect_token
+
+	if mushroom_camera_tween and mushroom_camera_tween.is_running():
+		mushroom_camera_tween.kill()
+
+	mushroom_camera_tween = create_tween()
+	mushroom_camera_tween.set_trans(Tween.TRANS_SINE)
+	mushroom_camera_tween.set_ease(Tween.EASE_OUT)
+	mushroom_camera_tween.tween_property(
+		mushroom_camera,
+		"zoom",
+		mushroom_zoom,
+		mushroom_zoom_transition_time
+	)
+
+	await mushroom_camera_tween.finished
+
+	if current_token != mushroom_effect_token:
+		return
+
+	await get_tree().create_timer(mushroom_view_duration).timeout
+
+	if current_token != mushroom_effect_token:
+		return
+
+	if mushroom_camera_tween and mushroom_camera_tween.is_running():
+		mushroom_camera_tween.kill()
+
+	mushroom_camera_tween = create_tween()
+	mushroom_camera_tween.set_trans(Tween.TRANS_SINE)
+	mushroom_camera_tween.set_ease(Tween.EASE_OUT)
+	mushroom_camera_tween.tween_property(
+		mushroom_camera,
+		"zoom",
+		original_camera_zoom,
+		mushroom_zoom_transition_time
+	)
