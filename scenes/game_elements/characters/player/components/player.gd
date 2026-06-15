@@ -199,6 +199,7 @@ func defeat(falling: bool = false) -> void:
 	GameState.decrement_lives()
 
 	if falling:
+		player_sprite.play("defeated")
 		var tween := create_tween()
 		tween.tween_property(self, "scale", Vector2.ZERO, 2.0)
 
@@ -263,3 +264,7 @@ func _on_player_hook_aiming_changed(is_aiming: bool) -> void:
 		aiming_speed if is_aiming else _initial_speeds.walk_speed
 	)
 	input_walk_behavior.speeds.run_speed = aiming_speed if is_aiming else _initial_speeds.run_speed
+
+
+func _on_suelo_body_entered(body: Node2D) -> void:
+	pass # Replace with function body.
