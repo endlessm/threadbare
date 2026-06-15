@@ -3,11 +3,17 @@
 class_name HealthComponent
 extends Node2D
 
+## Emitted when [member current_health] reaches zero.
 signal health_depleted
+
+## Emitted when [member current_health] changes.[br]
+## Is not emitted when the health reaches zero, [signal health_depleted] is emitted instead.
 signal health_changed(current_health: int)
 
 @export_range(1, 100) var max_health: int = 4
 
+## Represents the current health.[br]
+## The value will always be in the following range [code]0 <= current_health <= max_health[/code].
 var current_health: int = max_health:
 	set(value):
 		if value == current_health:
