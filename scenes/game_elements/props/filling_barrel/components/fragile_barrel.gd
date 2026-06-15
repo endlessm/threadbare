@@ -4,7 +4,7 @@
 class_name FragileBarrel
 extends FillingBarrel
 
-## Emitted when [member current_health] reaches 0.
+## Emitted when barrel's health reaches 0.
 signal barrel_destroyed(barrel_instance: FragileBarrel)
 
 @onready var crack_overlay_node: AnimatedSprite2D = %CrackOverlay
