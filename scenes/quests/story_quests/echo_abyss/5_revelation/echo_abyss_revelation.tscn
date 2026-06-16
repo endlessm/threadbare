@@ -9,12 +9,16 @@
 [ext_resource type="TileSet" uid="uid://b3n5hnw13aajd" path="res://scenes/quests/story_quests/echo_abyss/tiles/echo_abyss_void_chromakey.tres" id="4_05gi0"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_8h4nu"]
 [ext_resource type="SpriteFrames" uid="uid://b6pm0p3stv78r" path="res://scenes/quests/story_quests/echo_abyss/player_components/first_form_azrael.tres" id="4_jxora"]
-[ext_resource type="Resource" uid="uid://c7ax8wg6tbrfy" path="res://scenes/quests/story_quests/echo_abyss/5_revelation/outro_components/echo_abyss_outro.dialogue" id="5_exeec"]
+[ext_resource type="Resource" uid="uid://c7ax8wg6tbrfy" path="res://scenes/quests/story_quests/echo_abyss/5_revelation/outro_components/echo_abyss_revelation.dialogue" id="5_exeec"]
 [ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="6_kdurc"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="7_h3kmk"]
 [ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="8_cuscn"]
 [ext_resource type="SpriteFrames" uid="uid://d36eq8tqdaxdy" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_green.tres" id="9_8utj5"]
 [ext_resource type="SpriteFrames" uid="uid://djwymcffy83" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_red.tres" id="11_jy83y"]
+[ext_resource type="PackedScene" uid="uid://bw2m8i323f6lf" path="res://scenes/quests/story_quests/echo_abyss/Characters/echo_abyss_essence_exit.tscn" id="13_8ohke"]
+[ext_resource type="Script" uid="uid://bpma62qd5o627" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_travel_portal.gd" id="14_rruk1"]
+[ext_resource type="Resource" uid="uid://cj4frwvkpqtx7" path="res://scenes/quests/story_quests/echo_abyss/4_outro/outro_components/echo_abyss_level_travel.dialogue" id="15_xh5e4"]
+[ext_resource type="SpriteFrames" uid="uid://cy47injh7y40w" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_yellow.tres" id="16_vx8pb"]
 [ext_resource type="SpriteFrames" uid="uid://uwont7hj7jtx" path="res://scenes/quests/story_quests/echo_abyss/player_components/contaminated_creature.tres" id="ext_contaminated_sprite"]
 [ext_resource type="PackedScene" uid="uid://b6m4y8r6l7w2v" path="res://scenes/quests/story_quests/echo_abyss/5_revelation/components/void_devourer.tscn" id="ext_devourer_scene"]
 [ext_resource type="SpriteFrames" uid="uid://bbexxr1ctc5wt" path="res://scenes/quests/story_quests/echo_abyss/player_components/echo_abyss_player.tres" id="ext_player_sprite"]
@@ -98,6 +102,14 @@ idle_patrol_path = NodePath("../../DevourerPatrolPath")
 [node name="NPCSpawner" type="Node2D" parent="OnTheGround" unique_id=8923488]
 script = ExtResource("ext_spawner_script")
 npc_sprites = Array[SpriteFrames]([ExtResource("ext_contaminated_sprite"), ExtResource("ext_player_sprite")])
+
+[node name="FinalNexo" parent="OnTheGround" unique_id=775390554 instance=ExtResource("13_8ohke")]
+position = Vector2(1296, 800)
+script = ExtResource("14_rruk1")
+destination_scene = "uid://cufkthb25mpxy"
+dialogue = ExtResource("15_xh5e4")
+dialogue_title = "final"
+sprite_frames = ExtResource("16_vx8pb")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1305410749]
 
