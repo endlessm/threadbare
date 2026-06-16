@@ -42,6 +42,17 @@ const SECONDS_PER_DAY: float = 24 * 60 * 60
 @export_range(1.0, 3600.0, 1.0) var time_scale: float = 144.0:
 	set = _set_time_scale
 
+@export_group("Effects Schedule")
+
+## When does the lights on/off effect happens.
+@export var lights_schedule: EffectSchedule = preload("uid://cb514qccge0gq")
+
+## When does the cloud shadows effect happens.
+@export var clouds_shadows_schedule: EffectSchedule = preload("uid://jytd1cp6ogb3")
+
+## When does the fog effect happens.
+@export var fog_schedule: EffectSchedule = preload("uid://bcoehk7j53s33")
+
 @export_group("Debugging")
 
 ## Display debugging information on screen.
@@ -129,20 +140,23 @@ func set_time(new_time: float) -> void:
 	_seek_animation(new_time)
 
 	# Change game state darkness so artificial lights can turn on/off.
-	var lights_on := new_time < 5 or new_time >= 19
+	var lights_on := new_time < lights_schedule.stop_time or new_time >= lights_schedule.start_time
 	GameState.scene.set_lights_on(lights_on, true)
-	_schedule_timer(lights_off_timer, 5, new_time)
-	_schedule_timer(lights_on_timer, 19, new_time)
+	_schedule_timer(lights_off_timer, lights_schedule.stop_time, new_time)
+	_schedule_timer(lights_on_timer, lights_schedule.start_time, new_time)
 
 	# Cloud shadows during the day:
-	clouds_shadow.visible = new_time >= 6 and new_time < 17
-	_schedule_timer(clouds_shadow_start_timer, 6, new_time)
-	_schedule_timer(clouds_shadow_stop_timer, 17, new_time)
+	clouds_shadow.visible = (
+		new_time >= clouds_shadows_schedule.start_time
+		and new_time < clouds_shadows_schedule.stop_time
+	)
+	_schedule_timer(clouds_shadow_start_timer, clouds_shadows_schedule.start_time, new_time)
+	_schedule_timer(clouds_shadow_stop_timer, clouds_shadows_schedule.stop_time, new_time)
 
 	# Fog during late night and early in the morning:
-	fog.visible = new_time < 5 or new_time >= 22
-	_schedule_timer(fog_start_timer, 22, new_time)
-	_schedule_timer(fog_stop_timer, 5, new_time)
+	fog.visible = new_time < fog_schedule.stop_time or new_time >= fog_schedule.start_time
+	_schedule_timer(fog_start_timer, fog_schedule.start_time, new_time)
+	_schedule_timer(fog_stop_timer, fog_schedule.stop_time, new_time)
 
 
 ## Get the current time.
