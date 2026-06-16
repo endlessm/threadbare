@@ -8,6 +8,7 @@ var intento_actual = 0
 var tiempo_restante = 120
 var juego_activo = false
 var puerta_instanciada = false
+var palabra_actual = ""  # Acumula letras del teclado
 
 @onready var dialogue_balloon = $Dialogue
 @onready var input_letra = $CanvasGroup/InputLetra
@@ -18,6 +19,7 @@ var puerta_instanciada = false
 @onready var zombie = $Zombie
 @onready var player = $Player
 @onready var musica_fondo = $MusicaFondo
+@onready var teclado = $CanvasGroup/CanvasLayer/Teclado  
 
 var door = null
 
@@ -25,7 +27,7 @@ func _ready():
 	randomize()
 	palabra_secreta = PALABRAS[randi() % PALABRAS.size()]
 
-	# Oscuridad ignore clics
+	# Oscuridad ignora clics
 	var dark_overlay = get_node_or_null("CanvasLayer/DarknessOverlay")
 	if dark_overlay:
 		var color_rect = dark_overlay.get_node_or_null("ColorRect")
@@ -58,6 +60,13 @@ func _ready():
 	if musica_fondo:
 		musica_fondo.stop()
 
+	# Conectar teclado
+	if teclado:
+		teclado.letra_presionada.connect(_on_letra_teclado)
+	
+	# Agregar botón borrar al teclado
+	_agregar_boton_borrar()
+
 	if dialogue_balloon:
 		dialogue_balloon.tree_exited.connect(_on_dialogue_finished)
 		_iniciar_dialogo()
@@ -74,6 +83,48 @@ func _ready():
 	add_child(tick)
 	tick.timeout.connect(_on_timer_tick)
 	set_meta("tick_timer", tick)
+
+func _agregar_boton_borrar() -> void:
+	if not teclado:
+		return
+	var fila3 = teclado.get_node_or_null("Fila3")
+	if not fila3:
+		return
+	var boton_borrar = Button.new()
+	boton_borrar.text = "⌫"
+	boton_borrar.custom_minimum_size = Vector2(80, 60)
+	var estilo_normal = StyleBoxFlat.new()
+	estilo_normal.bg_color = Color(0.8, 0.2, 0.2)
+	estilo_normal.corner_radius_top_left = 8
+	estilo_normal.corner_radius_top_right = 8
+	estilo_normal.corner_radius_bottom_left = 8
+	estilo_normal.corner_radius_bottom_right = 8
+	var estilo_hover = StyleBoxFlat.new()
+	estilo_hover.bg_color = Color(1.0, 0.3, 0.3)
+	estilo_hover.corner_radius_top_left = 8
+	estilo_hover.corner_radius_top_right = 8
+	estilo_hover.corner_radius_bottom_left = 8
+	estilo_hover.corner_radius_bottom_right = 8
+	boton_borrar.add_theme_stylebox_override("normal", estilo_normal)
+	boton_borrar.add_theme_stylebox_override("hover", estilo_hover)
+	boton_borrar.add_theme_color_override("font_color", Color.WHITE)
+	boton_borrar.pressed.connect(func(): emit_signal("letra_presionada", "BORRAR"))
+	fila3.add_child(boton_borrar)
+
+func _on_letra_teclado(letra: String) -> void:
+	if not juego_activo:
+		return
+	if letra == "BORRAR":
+		if palabra_actual.length() > 0:
+			palabra_actual = palabra_actual.left(palabra_actual.length() - 1)
+			input_letra.text = palabra_actual
+		return
+	if palabra_actual.length() < 5:
+		palabra_actual += letra
+		input_letra.text = palabra_actual
+	if palabra_actual.length() == 5:
+		_on_palabra_enviada(palabra_actual)
+		palabra_actual = ""
 
 func _iniciar_dialogo():
 	var dialogue_resource = load("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/dialogues/acertijo.dialogue")
@@ -106,12 +157,14 @@ func _iniciar_juego():
 		tick.start()
 
 func _on_letra_iluminada(nodo: Node2D) -> void:
-	if not juego_activo: return
+	if not juego_activo:
+		return
 	if nodo.has_method("revelar_desde_player"):
 		nodo.revelar_desde_player()
 
 func _on_letra_oscurecida(nodo: Node2D) -> void:
-	if not juego_activo: return
+	if not juego_activo:
+		return
 	if nodo.has_method("oscurecer_desde_player"):
 		nodo.oscurecer_desde_player()
 
@@ -121,16 +174,6 @@ func _actualizar_timer_display():
 	label_tiempo.text = "%02d:%02d" % [minutos, segundos]
 
 func _process(delta):
-
-	# Aquí asumiendo que player ya se movió por su cuenta
-	var limite_izq = -280
-	var limite_der = 1850   # ajusta según tamaño de la sala
-	var limite_sup = -120
-	var limite_inf = 1000
-
-	player.position.x = clamp(player.position.x, limite_izq, limite_der)
-	player.position.y = clamp(player.position.y, limite_sup, limite_inf)
-	
 	if not juego_activo:
 		return
 	var dir = (player.position - zombie.position).normalized()
@@ -143,7 +186,7 @@ func _on_palabra_enviada(texto: String):
 		return
 	var intento = texto.to_upper().strip_edges()
 	input_letra.text = ""
-	input_letra.grab_focus()
+	palabra_actual = ""
 
 	if intento.length() != 5:
 		label_mensaje.text = "Escribe exactamente 5 letras"
@@ -166,11 +209,9 @@ func _evaluar_intento(intento: String):
 			label.add_theme_stylebox_override("normal", _crear_fondo(Color(0.3, 0.3, 0.3)))
 
 	if intento == palabra_secreta:
-		# VICTORIA
 		juego_activo = false
 		if musica_fondo and musica_fondo.playing:
 			musica_fondo.stop()
-
 		if not puerta_instanciada:
 			var door_scene = load("res://scenes/game_elements/props/door/door.tscn")
 			door = door_scene.instantiate()
@@ -178,10 +219,7 @@ func _evaluar_intento(intento: String):
 			door.global_position = player.global_position + Vector2(100, 0)
 			door.open()
 			puerta_instanciada = true
-
-		# Mostrar diálogo de victoria
 		await _mostrar_dialogo_victoria()
-		
 		get_tree().change_scene_to_file("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Room2.tscn")
 		return
 	else:
@@ -190,23 +228,28 @@ func _evaluar_intento(intento: String):
 			_game_over()
 		else:
 			label_mensaje.text = "Intento %d/6" % intento_actual
+			# Rehabilitar botones del teclado para el nuevo intento
+			_rehabilitar_teclado()
+
+func _rehabilitar_teclado() -> void:
+	if not teclado:
+		return
+	for fila in [teclado.get_node_or_null("Fila1"), teclado.get_node_or_null("Fila2"), teclado.get_node_or_null("Fila3")]:
+		if fila:
+			for boton in fila.get_children():
+				boton.mouse_filter = Control.MOUSE_FILTER_STOP
 
 func _mostrar_dialogo_victoria():
-	# Cargar la escena del balloon (ajusta la ruta si es diferente)
 	var balloon_scene = load("res://scenes/ui_elements/dialogue/balloon.tscn")
 	if not balloon_scene:
-		print("Error: no se encontró balloon.tscn")
 		return
-	
 	var victoria_balloon = balloon_scene.instantiate()
 	add_child(victoria_balloon)
-	
 	var dialogue_resource = load("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/dialogues/victoria.dialogue")
 	if dialogue_resource:
 		victoria_balloon.start(dialogue_resource, "start")
 		await victoria_balloon.tree_exited
 	else:
-		print("No se pudo cargar el diálogo de victoria")
 		victoria_balloon.queue_free()
 
 func _crear_fondo(color: Color) -> StyleBoxFlat:
