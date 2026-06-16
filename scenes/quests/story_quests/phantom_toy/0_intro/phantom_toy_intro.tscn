@@ -1114,39 +1114,6 @@ sources/13 = SubResource("TileSetAtlasSource_74a7w")
 sources/14 = SubResource("TileSetAtlasSource_nf1uu")
 sources/15 = SubResource("TileSetAtlasSource_tl5xj")
 
-[sub_resource type="Animation" id="Animation_2wqbi"]
-resource_name = "walk_on"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(61, 408), Vector2(447, 431)]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"values": [{
-"args": [],
-"method": &"play_walk"
-}, {
-"args": [],
-"method": &"play_idle"
-}]
-}
-
 [sub_resource type="Animation" id="Animation_osq5q"]
 length = 0.001
 tracks/0/type = "value"
@@ -1234,6 +1201,54 @@ tracks/6/keys = {
 "values": [Vector2(55, 450)]
 }
 
+[sub_resource type="Animation" id="Animation_02ov5"]
+resource_name = "sombra"
+length = 6.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/sombra:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/sombra")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"values": [{
+"args": [],
+"method": &"play_sale"
+}, {
+"args": [],
+"method": &"play_parado"
+}, {
+"args": [],
+"method": &"play_camina"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/sombra:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2, 3, 6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-39, 324), Vector2(306, 430), Vector2(306, 430), Vector2(1019, 427)]
+}
+
 [sub_resource type="Animation" id="Animation_l8a3p"]
 resource_name = "walk_off"
 length = 2.0
@@ -1290,6 +1305,39 @@ tracks/3/keys = {
 "values": [{
 "args": [],
 "method": &"play_walk1"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_2wqbi"]
+resource_name = "walk_on"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(60, 433.00003), Vector2(447, 431)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"play_walk"
+}, {
+"args": [],
+"method": &"play_idle"
 }]
 }
 
@@ -1357,54 +1405,6 @@ tracks/4/keys = {
 "args": [],
 "method": &"play_steady2"
 }]
-}
-
-[sub_resource type="Animation" id="Animation_02ov5"]
-resource_name = "sombra"
-length = 6.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/sombra:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/sombra")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 2, 3),
-"transitions": PackedFloat32Array(1, 1, 1),
-"values": [{
-"args": [],
-"method": &"play_sale"
-}, {
-"args": [],
-"method": &"play_parado"
-}, {
-"args": [],
-"method": &"play_camina"
-}]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("OnTheGround/sombra:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 2, 3, 6),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(-46, 504), Vector2(306, 430), Vector2(306, 430), Vector2(1019, 427)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_l8a3p"]
@@ -1580,6 +1580,7 @@ y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround"]
 position = Vector2(61, 408)
+scale = Vector2(1.34375, 1.4374996)
 sprite_frames = ExtResource("3_osq5q")
 animation = &"idle"
 autoplay = "idle"
@@ -1608,7 +1609,6 @@ script = ExtResource("47_dmwea")
 [node name="ScreenOverlay" type="CanvasLayer" parent="."]
 
 [node name="FadeRect" type="ColorRect" parent="ScreenOverlay"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
