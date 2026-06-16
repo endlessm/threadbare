@@ -39,6 +39,9 @@ extends Resource
 ## quest is abandoned.
 @export var abandon_spawn_point: NodePath
 
+## Inventory of collected threads.
+@export var inventory := InventoryState.new()
+
 
 func _init(q: Quest = null, p: PlayerState = null) -> void:
 	quest = q
