@@ -28,7 +28,6 @@ signal cinematic_finished
 ## Wether to automatically start the cinematic.
 @export var autostart: bool = true
 
-@onready var timer = $"../Timer"
 
 func _ready() -> void:
 	if autostart:
@@ -41,7 +40,6 @@ func start() -> void:
 		await DialogueManager.dialogue_ended
 		cinematic_finished.emit()
 		GameState.intro_dialogue_shown = true
-	#timer.start(90)
 
 	if next_scene:
 		(
