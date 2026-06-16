@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://dccjkvox5cjsy" path="res://scenes/menus/quest_separator/components/quest_separator.gd" id="2_ayaqs"]
 [ext_resource type="Texture2D" uid="uid://csbhg24hsxecd" path="res://scenes/quests/lore_quests/quest_002/Void.png" id="4_fqr5p"]
 [ext_resource type="Script" uid="uid://dfx8s2ybd11mt" path="res://scenes/menus/storybook/components/animated_texture_rect.gd" id="4_olqir"]
+[ext_resource type="Shortcut" uid="uid://c5pwgp1w8p3y1" path="res://scenes/ui_elements/shortcuts/back_shortcut.tres" id="5_wq0a1"]
+[ext_resource type="Script" uid="uid://b78blxbleps14" path="res://scenes/menus/quest_separator/components/timer_progress_bar.gd" id="6_amr4g"]
 [ext_resource type="Texture2D" uid="uid://dcwmaoqgu5t84" path="res://scenes/globals/scene_switcher/transitions/Radial.png" id="6_wq0a1"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_l1xe8"]
@@ -16,6 +18,8 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_amr4g"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wq0a1"]
 blend_mode = 2
@@ -48,6 +52,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 192
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 192
+theme_override_constants/margin_bottom = 64
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1354617346]
 layout_mode = 2
@@ -82,6 +90,44 @@ layout_mode = 2
 text = "StoryWeaver runs away from a growing emptiness that spreads across the land, smothering and swallowing everything it covers."
 fit_content = true
 
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=175954450]
+layout_mode = 2
+alignment = 2
+
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1588571350]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"FlatButton"
+shortcut = ExtResource("5_wq0a1")
+text = "Back"
+flat = true
+
+[node name="PlayButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=327046167]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"FlatButton"
+text = "Play"
+flat = true
+
+[node name="AutoPlayProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/PlayButton" unique_id=1528838248 node_paths=PackedStringArray("timer")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxEmpty_amr4g")
+value = 50.0
+show_percentage = false
+script = ExtResource("6_amr4g")
+timer = NodePath("../../../../../AutoPlayTimer")
+
 [node name="TextureRect" type="TextureRect" parent="." unique_id=279230856]
 material = SubResource("CanvasItemMaterial_wq0a1")
 layout_mode = 1
@@ -90,4 +136,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("6_wq0a1")
+
+[node name="AutoPlayTimer" type="Timer" parent="." unique_id=229639968]
+unique_name_in_owner = true
+wait_time = 5.0
+one_shot = true
+autostart = true

@@ -47,6 +47,13 @@ func toggle_pause() -> void:
 
 func _on_abandon_quest_pressed() -> void:
 	toggle_pause()
+	abandon_quest()
+
+
+func abandon_quest() -> void:
+	if not GameState.quest:
+		push_warning("No quest to abandon")
+		return
 
 	var quest := GameState.quest.quest
 	var abandon_scene := GameState.quest.abandon_scene_path
