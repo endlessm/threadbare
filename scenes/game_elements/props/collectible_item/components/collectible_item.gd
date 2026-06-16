@@ -5,7 +5,7 @@ class_name CollectibleItem
 extends SceneLink
 
 ## Overworld collectible that can be interacted with. When a player interacts
-## with it, an [InventoryItem] is added to the [Inventory]
+## with it, an [InventoryItem] is added to the [InventoryState].
 
 ## Wether the collectible can be seen or collected. This allows the collectible
 ## to be placed in the scene even when some condition has to be met for it to
@@ -93,7 +93,7 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	animation_player.play("collected")
 	await animation_player.animation_finished
 
-	GameState.global.add_collected_item(item)
+	GameState.quest.inventory.add_collected_item(item)
 
 	if collected_dialogue:
 		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])

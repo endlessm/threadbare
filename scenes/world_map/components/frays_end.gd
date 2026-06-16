@@ -11,8 +11,9 @@ extends Node2D
 
 func _ready() -> void:
 	_update_story_quest_progress_visibility()
-	GameState.global.item_collected.connect(_update_story_quest_progress_visibility)
-	GameState.global.item_consumed.connect(_update_story_quest_progress_visibility)
+	if GameState.quest:
+		GameState.quest.inventory.item_collected.connect(_update_story_quest_progress_visibility)
+		GameState.quest.inventory.item_consumed.connect(_update_story_quest_progress_visibility)
 
 
 func _update_story_quest_progress_visibility(_item: InventoryItem = null) -> void:

@@ -88,13 +88,10 @@ func _ready() -> void:
 		return
 
 
-## Sets [member quest], sets up a new [PlayerState] if necessary, and clears the
-## inventory. Note that this does not actually switch to the first scene of [param
+## Sets [member quest], setting up a new [PlayerState] if necessary.
+## Note that this does not actually switch to the first scene of [param
 ## new_quest].
 func start_quest(new_quest: Quest) -> void:
-	# TODO: this suggests that the inventory should be part of QuestState
-	global.clear_inventory()
-
 	var quest_player_state: PlayerState
 	if new_quest is LoreQuest:
 		# Duplicate the current global player state. If the quest is completed,
@@ -157,7 +154,6 @@ func mark_quest_completed() -> void:
 ## Abandon the current [member quest] without marking it as completed.
 func abandon_quest() -> void:
 	quest = null
-	global.clear_inventory()
 
 
 ## Clear the persisted state.

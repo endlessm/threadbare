@@ -4,40 +4,11 @@
 class_name GlobalState
 extends Resource
 
-## Emitted when a new item is collected.
-signal item_collected(item: InventoryItem)
-
-## Emitted when a item is consumed, causing it to be removed from the
-## [member inventory].
-signal item_consumed(item: InventoryItem)
-
 ## Emitted when a quest is added or removed from [member completed_quests].
 signal completed_quests_changed
 
 ## Emitted when the [member helper] changes.
 signal helper_changed
-
-## Inventory of collected threads. Modify with [member add_collected_item] and
-## [member clear_inventory].
-@export var inventory: Array[InventoryItem]
-
-## Types of items in [member inventory], for storage. Use [member inventory]
-## in game code.
-@export_storage var inventory_item_types: Array[String]:
-	get():
-		var types: Array[String]
-		for item: InventoryItem in inventory:
-			types.append(InventoryItem.ItemType.keys()[item.type])
-		return types
-	set(new_value):
-		var items: Array[InventoryItem]
-		for type_name: String in new_value:
-			if InventoryItem.ItemType.has(type_name):
-				items.append(InventoryItem.with_type(InventoryItem.ItemType[type_name]))
-			else:
-				push_warning("Ignoring unknown inventory item type: %s" % type_name)
-		inventory = items
-		emit_changed()
 
 ## [Quest]s which the player has previously completed. Modify this with
 ## [method set_quest_completed_state].
@@ -74,23 +45,8 @@ signal helper_changed
 
 func _validate_property(property: Dictionary) -> void:
 	match property.name:
-		"completed_quests", "inventory":
+		"completed_quests":
 			property.usage &= ~PROPERTY_USAGE_STORAGE
-
-
-## Add the [InventoryItem] to the [member inventory].
-func add_collected_item(item: InventoryItem) -> void:
-	inventory.append(item)
-	item_collected.emit(item)
-	emit_changed()
-
-
-## Remove all [InventoryItem]s from the [member inventory].
-func clear_inventory() -> void:
-	for item: InventoryItem in inventory.duplicate():
-		inventory.erase(item)
-		item_consumed.emit(item)
-	emit_changed()
 
 
 ## Updates [member completed_quests] to include [param quest] if [param

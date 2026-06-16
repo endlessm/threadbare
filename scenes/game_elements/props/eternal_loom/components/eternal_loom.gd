@@ -35,7 +35,7 @@ func show_retelling_dialogue() -> void:
 
 
 func _has_magical_thread_of_type(type: InventoryItem.ItemType) -> bool:
-	for item: InventoryItem in GameState.global.inventory:
+	for item: InventoryItem in GameState.quest.inventory.items:
 		if item.type == type:
 			return true
 	return false
@@ -91,7 +91,7 @@ func give_spirit_upgrade() -> void:
 func on_offering_succeeded() -> void:
 	loom_offering_animation_player.play(&"loom_offering")
 	await loom_offering_animation_player.animation_finished
-	GameState.global.clear_inventory()
+	GameState.quest.inventory.clear_inventory()
 
 	var elder: Elder = _find_elder(GameState.quest.quest)
 	if elder:
@@ -108,8 +108,10 @@ func has_retelling() -> bool:
 
 
 func is_item_offering_possible() -> bool:
-	return (
-		GameState.quest
-		and GameState.quest.quest.threads_to_collect > 0
-		and GameState.global.inventory.size() >= GameState.quest.quest.threads_to_collect
-	)
+	if not GameState.quest:
+		return false
+
+	if GameState.quest.quest.threads_to_collect <= 0:
+		return false
+
+	return GameState.quest.inventory.items.size() >= GameState.quest.quest.threads_to_collect

@@ -29,13 +29,13 @@ func _ready() -> void:
 
 	# On ready, the HUD is populated with the items that were collected so
 	# far in the quest.
-	var items_collected := GameState.global.inventory
+	var items_collected := GameState.quest.inventory.items
 	for i: int in min(items_collected.size(), n):
 		items_container.get_child(i).start_as_filled(items_collected[i])
 
 	# Then, when each new item is collected, it is added to the progress UI
-	GameState.global.item_collected.connect(self._on_item_collected)
-	GameState.global.item_consumed.connect(self._on_item_consumed)
+	GameState.quest.inventory.item_collected.connect(self._on_item_collected)
+	GameState.quest.inventory.item_consumed.connect(self._on_item_consumed)
 
 
 func _on_helper_state_changed() -> void:
