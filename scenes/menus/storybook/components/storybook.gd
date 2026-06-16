@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 class_name Storybook
-extends Control
+extends CanvasLayer
 ## Offers a choice of quests by scanning a given [member quest_directory].
 
 ## Emitted when the player chooses a quest; or leaves the storybook without choosing a quest, in
@@ -34,8 +34,6 @@ var _navigation_locked: bool = false
 @onready var back_button: Button = %BackButton
 @onready var animated_book: AnimatedSprite2D = %AnimatedSprite2D
 @onready var ui_container: Control = %StoryBookContent
-@onready var left_button: Button = %Left_Button
-@onready var right_button: Button = %Right_Button
 
 
 func _ready() -> void:
@@ -65,17 +63,11 @@ func _ready() -> void:
 		previous_button.focus_neighbor_bottom = back_button.get_path()
 		back_button.focus_neighbor_top = previous_button.get_path()
 
-	left_button.pressed.connect(_on_left_button_pressed)
-	right_button.pressed.connect(_on_right_button_pressed)
-
 	reset_focus()
 
 
 ## Show/hide index or detail pages
 func _update_page_visibility() -> void:
-	left_button.visible = _current_spread_index > 0
-	right_button.visible = _current_spread_index < quests.size()
-
 	if _current_spread_index == 0:
 		quest_container.visible = true
 		storybook_page.visible = false
@@ -158,6 +150,10 @@ func _input(event: InputEvent) -> void:
 		# Go back
 		get_viewport().set_input_as_handled()
 		selected.emit(null)
+	elif event.is_action_pressed("next_tab"):
+		_on_right_button_pressed()
+	elif event.is_action_pressed("previous_tab"):
+		_on_left_button_pressed()
 
 
 func _on_quest_button_pressed(button: Button) -> void:
