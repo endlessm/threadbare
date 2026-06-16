@@ -22,16 +22,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"pause"):
 		toggle_pause()
 		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("next_tab"):
-		tab_container.current_tab = wrapi(
-			tab_container.current_tab + 1, 0, tab_container.get_tab_count()
-		)
-		tab_container.accept_event()
-	elif event.is_action_pressed("previous_tab"):
-		tab_container.current_tab = wrapi(
-			tab_container.current_tab - 1, 0, tab_container.get_tab_count()
-		)
-		tab_container.accept_event()
 
 
 func toggle_pause() -> void:
