@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=3 uid="uid://b6m4y8r6l7w2v"]
+
+[ext_resource type="Script" uid="uid://b2mgaf03bei56" path="res://scenes/quests/story_quests/echo_abyss/5_revelation/components/void_devourer.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://id28maao3vdy" path="res://scenes/game_logic/walk_behaviors/path_walk_behavior.gd" id="2_path_walk"]
+[ext_resource type="Script" uid="uid://r1kriwyodjlt" path="res://scenes/game_logic/walk_behaviors/navigation_follow_walk_behavior.gd" id="3_follow_walk"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="4_speeds"]
+[ext_resource type="Shader" uid="uid://dvyec12fgsuta" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/particles_canvasgroup_outline.gdshader" id="5_shader"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_detection"]
+radius = 300.0
+
+[sub_resource type="Resource" id="Resource_patrol_speed"]
+script = ExtResource("4_speeds")
+walk_speed = 90.0
+run_speed = 90.0
+
+[sub_resource type="Resource" id="Resource_chase_speed"]
+script = ExtResource("4_speeds")
+walk_speed = 150.0
+run_speed = 150.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_outline"]
+shader = ExtResource("5_shader")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/thickness = 2.0
+
+[node name="VoidDevourer" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+unique_name_in_owner = true
+
+[node name="NPCDetectionArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPCDetectionArea"]
+shape = SubResource("CircleShape2D_detection")
+debug_color = Color(0.137255, 0.6, 0.137255, 0.419608)
+
+[node name="PathWalkBehavior" type="Node2D" parent="." node_paths=PackedStringArray("character")]
+unique_name_in_owner = true
+script = ExtResource("2_path_walk")
+speeds = SubResource("Resource_patrol_speed")
+character = NodePath("..")
+
+[node name="NavigationFollowWalkBehavior" type="Node2D" parent="." node_paths=PackedStringArray("agent", "character")]
+unique_name_in_owner = true
+script = ExtResource("3_follow_walk")
+speeds = SubResource("Resource_chase_speed")
+agent = NodePath("../NavigationAgent2D")
+running_distance = 128.0
+character = NodePath("..")
+
+[node name="ParticlesCanvasGroup" type="CanvasGroup" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_outline")
