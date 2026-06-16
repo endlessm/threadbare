@@ -78,8 +78,8 @@ const SECONDS_PER_DAY: float = 24 * 60 * 60
 @onready var fog_start_timer: Timer = %FogStartTimer
 @onready var fog_stop_timer: Timer = %FogStopTimer
 
-## Label to show debug information.
-@onready var debug_label: Label = %DebugLabel
+## Layer with the debug label.
+@onready var debug_canvas_layer: CanvasLayer = %DebugCanvasLayer
 
 
 func _set_use_system_time(new_use_system_time: bool) -> void:
@@ -103,10 +103,10 @@ func _set_show_debug_label(new_show_debug_label: bool) -> void:
 	show_debug_label = new_show_debug_label
 	if Engine.is_editor_hint():
 		return
-	if not debug_label:
+	if not is_node_ready():
 		return
-	debug_label.visible = show_debug_label
-	debug_label.process_mode = (
+	debug_canvas_layer.visible = show_debug_label
+	debug_canvas_layer.process_mode = (
 		Node.PROCESS_MODE_INHERIT if show_debug_label else Node.PROCESS_MODE_DISABLED
 	)
 

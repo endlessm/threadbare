@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dc3bqwr0cvimn" path="res://scenes/game_elements/fx/time_and_weather/components/time_and_weather.gd" id="1_rr8fb"]
 [ext_resource type="PackedScene" uid="uid://c0374lgarm8gj" path="res://scenes/game_elements/fx/clouds_shadow/clouds_shadow.tscn" id="2_oruto"]
 [ext_resource type="PackedScene" uid="uid://dpbsi065gmh8a" path="res://scenes/game_elements/fx/fog/fog.tscn" id="3_uf36w"]
+[ext_resource type="FontFile" uid="uid://b0tjcgrk504qg" path="res://assets/third_party/fonts/jersey/Jersey10-Regular.ttf" id="4_u1pcj"]
 [ext_resource type="Script" uid="uid://qrbdfx4ka2o8" path="res://scenes/game_elements/fx/time_and_weather/components/debug_label.gd" id="4_uf36w"]
 
 [sub_resource type="Gradient" id="Gradient_duxxr"]
@@ -217,10 +218,22 @@ one_shot = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1435119273]
 
-[node name="DebugLabel" type="Label" parent="CanvasLayer" unique_id=1439776273]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" unique_id=1335958639]
+offset_right = 117.0
+offset_bottom = 22.0
+theme_type_variation = &"FlatContainer"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer" unique_id=423612586]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="DebugLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer" unique_id=1439776273]
 unique_name_in_owner = true
-offset_right = 119.0
-offset_bottom = 23.0
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("4_u1pcj")
+theme_override_font_sizes/font_size = 19
 text = "What time is it?"
 script = ExtResource("4_uf36w")
 
