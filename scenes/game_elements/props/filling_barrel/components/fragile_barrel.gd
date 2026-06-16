@@ -42,7 +42,7 @@ func update_cracks() -> void:
 	crack_overlay_node.frame = frame_index
 
 
-func break_barrel() -> void:
+func _on_health_component_health_depleted() -> void:
 	crack_overlay_node.visible = false
 
 	shatter_sound.play()
