@@ -3,7 +3,6 @@ var se_uso = false;
 @export_category("Dialogue")
 @export var dialogue_title = "start";
 @export var pre_final_dialogue: DialogueResource:
-	
 	set(new_value):
 		pre_final_dialogue = new_value
 		notify_property_list_changed()

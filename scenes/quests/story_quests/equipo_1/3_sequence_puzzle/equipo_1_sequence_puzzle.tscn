@@ -25,10 +25,22 @@
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="23_8do7r"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="24_hss0q"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_kstbw"]
+[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="26_5n81x"]
+[ext_resource type="SpriteFrames" uid="uid://cfpwgn8fng7nq" path="res://scenes/quests/story_quests/equipo_1/2_combat/combat_components/equipo_1_throwing_enemy.tres" id="27_kxd5q"]
+[ext_resource type="PackedScene" uid="uid://e3gddslmvftf" path="res://scenes/quests/story_quests/equipo_1/2_combat/combat_components/equipo_1_projectile.tscn" id="28_8mvre"]
+[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="29_k6cg7"]
+[ext_resource type="SpriteFrames" uid="uid://btg1lwifolh04" path="res://scenes/quests/story_quests/equipo_1/2_combat/combat_components/equipo_1_target_spriteframes.tres" id="30_2nhfx"]
+[ext_resource type="Resource" uid="uid://bmiowy6b0guc1" path="res://scenes/quests/story_quests/equipo_1/2_combat/combat_components/equipo_1_combat.dialogue" id="31_u8u1b"]
+[ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="32_kltdv"]
 
 [sub_resource type="Resource" id="Resource_x3hq6"]
 script = ExtResource("21_b0e8n")
 type = 2
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="Resource" id="Resource_admdx"]
+script = ExtResource("21_b0e8n")
+type = 1
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="Equipo1SequencePuzzle" type="Node2D" unique_id=217609538]
@@ -156,5 +168,70 @@ text = "First melody: yellow, green, blue."
 script = ExtResource("25_kstbw")
 dialogue = ExtResource("22_0ne12")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="Node" type="Node" parent="." unique_id=1243729392]
+
+[node name="OnTheGround" type="Node2D" parent="Node" unique_id=1006115893]
+y_sort_enabled = true
+
+[node name="Player" parent="Node/OnTheGround" unique_id=296354958 instance=ExtResource("5_2hp60")]
+position = Vector2(348, 335)
+sprite_frames = ExtResource("6_0532a")
+
+[node name="Node2D" type="Node2D" parent="Node/OnTheGround/Player" unique_id=1220977532]
+
+[node name="ThrowingNPC" parent="Node/OnTheGround" unique_id=1243855514 instance=ExtResource("26_5n81x")]
+position = Vector2(857, 300)
+sprite_frames = ExtResource("27_kxd5q")
+projectile_scene = ExtResource("28_8mvre")
+
+[node name="Target" parent="Node/OnTheGround" unique_id=1861594411 instance=ExtResource("29_k6cg7")]
+position = Vector2(502, 164)
+sprite_frames = ExtResource("30_2nhfx")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target2" parent="Node/OnTheGround" unique_id=1967609192 instance=ExtResource("29_k6cg7")]
+position = Vector2(758, 164)
+sprite_frames = ExtResource("30_2nhfx")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target3" parent="Node/OnTheGround" unique_id=1398607099 instance=ExtResource("29_k6cg7")]
+position = Vector2(761, 497)
+sprite_frames = ExtResource("30_2nhfx")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target4" parent="Node/OnTheGround" unique_id=1723712982 instance=ExtResource("29_k6cg7")]
+position = Vector2(632, 497)
+sprite_frames = ExtResource("30_2nhfx")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target5" parent="Node/OnTheGround" unique_id=1331389352 instance=ExtResource("29_k6cg7")]
+position = Vector2(633, 164)
+sprite_frames = ExtResource("30_2nhfx")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target6" parent="Node/OnTheGround" unique_id=552257948 instance=ExtResource("29_k6cg7")]
+position = Vector2(501, 497)
+sprite_frames = ExtResource("30_2nhfx")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="CollectibleItem" parent="Node/OnTheGround" unique_id=327991066 instance=ExtResource("20_esfck")]
+unique_name_in_owner = true
+position = Vector2(868, 303)
+revealed = false
+next_scene = "uid://bgv5m68j4m35s"
+item = SubResource("Resource_admdx")
+collected_dialogue = ExtResource("31_u8u1b")
+dialogue_title = &"well_done"
+
+[node name="RepelPowerup" parent="Node/OnTheGround" unique_id=297202740 instance=ExtResource("32_kltdv")]
+position = Vector2(114, 488)
+highlight_color = Color(0, 0.4392157, 1, 1)
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]
