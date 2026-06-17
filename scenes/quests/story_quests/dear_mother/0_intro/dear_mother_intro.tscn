@@ -3,13 +3,13 @@
 [ext_resource type="TileSet" uid="uid://dof2h1cvkjkqr" path="res://scenes/quests/story_quests/dear_mother/tiles/dear_mother_exterior_floors.tres" id="1_q7g67"]
 [ext_resource type="Texture2D" uid="uid://07k43id4c81h" path="res://assets/first_party/templates/intro/NO_EDIT_intro_image.png" id="2_nb4m7"]
 [ext_resource type="PackedScene" uid="uid://6tkhqe1nvwop" path="res://scenes/game_elements/characters/npcs/npc_prop/fray_idle.tscn" id="3_qwu3o"]
-[ext_resource type="SpriteFrames" uid="uid://51wnbci75sso" path="res://scenes/quests/story_quests/dear_mother/player_components/dear_mother_player.tres" id="3_vryqs"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_1ge3f"]
-[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_qwu3o"]
-[ext_resource type="Resource" uid="uid://c61i5dm76pad0" path="res://scenes/quests/story_quests/dear_mother/0_intro/intro_components/dear_mother_intro.dialogue" id="5_1ge3f"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_2qa0r"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="7_nb4m7"]
 [ext_resource type="PackedScene" uid="uid://cknm6g5dn5r3y" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/puerta.tscn" id="10_1ge3f"]
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="10_vfx3s"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="11_qu1ry"]
+[ext_resource type="Resource" uid="uid://do3iobd4sbx48" path="res://scenes/quests/story_quests/dear_mother/1_persecusion/dear_mother_sequence_puzzle.dialogue" id="12_833sc"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vryqs"]
 normal = Vector2(0, 1)
@@ -55,95 +55,10 @@ _data = {
 &"aparition": SubResource("Animation_qwu3o")
 }
 
-[sub_resource type="Animation" id="Animation_vfx3s"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"idle"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(400, 349)]
-}
-
-[sub_resource type="Animation" id="Animation_qu1ry"]
-resource_name = "walk_off"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [&"walk", &"idle"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(495, 478), Vector2(1010, 478)]
-}
-
-[sub_resource type="Animation" id="Animation_833sc"]
-resource_name = "walk_on"
-length = 1.8
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("OnTheGround/Character:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.8),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [&"walk", &"idle"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("OnTheGround/Character:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1.8),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-66, 399), Vector2(250, 399)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_xb1mj"]
-_data = {
-&"RESET": SubResource("Animation_vfx3s"),
-&"walk_off": SubResource("Animation_qu1ry"),
-&"walk_on": SubResource("Animation_833sc")
-}
+[sub_resource type="Resource" id="Resource_xb1mj"]
+script = ExtResource("11_qu1ry")
+type = 2
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="DearMotherIntro" type="Node2D" unique_id=2049284984]
 
@@ -182,19 +97,8 @@ scale = Vector2(0.802083, 0.802083)
 texture = ExtResource("2_nb4m7")
 
 [node name="Sand" type="TileMapLayer" parent="TileMapLayers" unique_id=874671513]
-visible = false
 tile_map_data = PackedByteArray("AAD4/wYAAQAFAAMAAAD5/wYAAQAGAAMAAAD6/wYAAQAGAAMAAAD7/wYAAQAGAAMAAAD8/wYAAQAGAAMAAAD9/wYAAQAGAAMAAAD+/wYAAQAGAAMAAAD//wYAAQAGAAMAAAAAAAYAAQAGAAMAAAABAAYAAQAGAAMAAAACAAYAAQAGAAMAAAADAAYAAQAGAAMAAAAEAAYAAQAGAAMAAAAFAAYAAQAGAAMAAAAGAAYAAQAGAAMAAAAHAAYAAQAGAAMAAAAIAAYAAQAGAAMAAAAJAAYAAQAGAAMAAAAKAAYAAQAGAAMAAAALAAYAAQAGAAMAAAAMAAYAAQAGAAMAAAANAAYAAQAGAAMAAAAOAAYAAQAGAAMAAAAPAAYAAQAGAAMAAAAQAAYAAQAGAAMAAAARAAYAAQAGAAMAAAASAAYAAQAGAAMAAAATAAYAAQAGAAMAAAAUAAYAAQAGAAMAAAAVAAYAAQAGAAMAAAAWAAYAAQAHAAMAAAA=")
 tile_set = ExtResource("1_q7g67")
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1064875179]
-position = Vector2(153, 365)
-zoom = Vector2(1.333, 1.333)
-limit_left = 0
-limit_top = 0
-limit_right = 2221
-limit_bottom = 540
-position_smoothing_enabled = true
-editor_draw_limits = true
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=836096441]
 y_sort_enabled = true
@@ -205,41 +109,24 @@ position = Vector2(355, 192)
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround/fray_idle" unique_id=1998737545]
 libraries/ = SubResource("AnimationLibrary_1ge3f")
 
-[node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=169229228]
-position = Vector2(400, 349)
-sprite_frames = ExtResource("3_vryqs")
-animation = &"idle"
-autoplay = "idle"
-frame_progress = 0.29853415
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround/Character" unique_id=49807179]
-root_node = NodePath("../../..")
-libraries/ = SubResource("AnimationLibrary_xb1mj")
-
 [node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("4_1ge3f")]
-visible = false
 position = Vector2(250, 417)
 
-[node name="PointLight2D" parent="OnTheGround/Player" index="4" unique_id=460659966]
-visible = true
-
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=640452040]
-position = Vector2(0, -18)
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1064875179]
+position = Vector2(-97, -52)
+zoom = Vector2(1.333, 1.333)
 limit_left = 0
 limit_top = 0
-limit_right = 2220
+limit_right = 2221
 limit_bottom = 540
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[node name="puerta" parent="OnTheGround" unique_id=441035198 instance=ExtResource("10_1ge3f")]
+position = Vector2(2190, 203)
+next_scene = "uid://do3effejkc7vu"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
-
-[node name="Cinematic" type="Node2D" parent="." unique_id=1398238637 node_paths=PackedStringArray("animation_player", "player_camera", "actor_cinematica", "jugador_real")]
-script = ExtResource("4_qwu3o")
-dialogue = ExtResource("5_1ge3f")
-animation_player = NodePath("../OnTheGround/Character/AnimationPlayer")
-player_camera = NodePath("../OnTheGround/Player/Camera2D")
-actor_cinematica = NodePath("../OnTheGround/Character")
-jugador_real = NodePath("../OnTheGround/Player")
-metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." unique_id=912112339 instance=ExtResource("6_2qa0r")]
 position = Vector2(125, 220)
@@ -276,8 +163,8 @@ scale = Vector2(1.0189675, 1.1092033)
 position = Vector2(573, 267)
 scale = Vector2(1.0189675, 1.1092033)
 
-[node name="puerta" parent="." unique_id=441035198 instance=ExtResource("10_1ge3f")]
-position = Vector2(2190, 203)
-next_scene = "uid://do3effejkc7vu"
-
-[editable path="OnTheGround/Player"]
+[node name="CollectibleItem" parent="." unique_id=327991066 instance=ExtResource("10_vfx3s")]
+position = Vector2(1120, 285)
+item = SubResource("Resource_xb1mj")
+collected_dialogue = ExtResource("12_833sc")
+dialogue_title = &"well_done"

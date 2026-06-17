@@ -24,10 +24,13 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 
 func _on_btn_si_pressed() -> void:
 	if next_scene != "":
-		# Ocultamos el menú al momento de aceptar para que no estorbe en la transición
+		# Ocultamos el menú
 		ui_popup.hide()
 		
-		# Usamos SceneSwitcher
+		# Apaga por completo el código (movimiento) y las colisiones de la entidad
+		get_tree().call_group("chasing_enemy", "set_process_mode", Node.PROCESS_MODE_DISABLED)
+		
+		# Usamos SceneSwitcher para cambiar de nivel de forma segura
 		SceneSwitcher.change_to_file_with_transition(
 			next_scene,
 			"",
