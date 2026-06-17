@@ -2,15 +2,15 @@
 
 [ext_resource type="TileSet" uid="uid://2vrc8fvw65jg" path="res://scenes/quests/story_quests/echo_abyss/tiles/echo_abyss_exterior_floors.tres" id="2_mux6q"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="2_ulw10"]
-[ext_resource type="PackedScene" uid="uid://bxqqun8fikc1u" path="res://scenes/quests/story_quests/echo_abyss/Characters/azrael_player.tscn" id="3_b2xho"]
+[ext_resource type="PackedScene" uid="uid://bxqqun8fikc1u" path="res://scenes/quests/story_quests/echo_abyss/Characters/base_azrael_player.tscn" id="3_b2xho"]
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="3_jy83y"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="3_mnp7p"]
 [ext_resource type="TileSet" uid="uid://b3n5hnw13aajd" path="res://scenes/quests/story_quests/echo_abyss/tiles/echo_abyss_void_chromakey.tres" id="4_05gi0"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_8h4nu"]
-[ext_resource type="SpriteFrames" uid="uid://b6pm0p3stv78r" path="res://scenes/quests/story_quests/echo_abyss/player_components/first_form_azrael.tres" id="4_jxora"]
 [ext_resource type="Resource" uid="uid://c7ax8wg6tbrfy" path="res://scenes/quests/story_quests/echo_abyss/5_revelation/outro_components/echo_abyss_revelation.dialogue" id="5_exeec"]
 [ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="6_kdurc"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="7_h3kmk"]
+[ext_resource type="SpriteFrames" uid="uid://ur603spw7c67" path="res://scenes/quests/story_quests/echo_abyss/player_components/third_form_azrael.tres" id="7_jwfxk"]
 [ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="8_cuscn"]
 [ext_resource type="SpriteFrames" uid="uid://d36eq8tqdaxdy" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_green.tres" id="9_8utj5"]
 [ext_resource type="SpriteFrames" uid="uid://djwymcffy83" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_red.tres" id="11_jy83y"]
@@ -33,6 +33,7 @@
 [ext_resource type="Texture2D" uid="uid://dp70jmxsf86kh" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/UI/pixel-heart-Empty.png" id="32_4xr6j"]
 [ext_resource type="Texture2D" uid="uid://bajunr7lyvujd" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/UI/healthbarUnder.png" id="33_01a2b"]
 [ext_resource type="Texture2D" uid="uid://bx717x50vbm3e" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/UI/healthbarProgress.png" id="34_jwfxk"]
+[ext_resource type="AudioStream" uid="uid://b7oviic0q335u" path="res://scenes/quests/story_quests/echo_abyss/Assets/sfx_and_music/temas/temas niveles/breves_dies_hominis.ogg" id="38_ttx3l"]
 [ext_resource type="SpriteFrames" uid="uid://uwont7hj7jtx" path="res://scenes/quests/story_quests/echo_abyss/player_components/contaminated_creature.tres" id="ext_contaminated_sprite"]
 [ext_resource type="PackedScene" uid="uid://b6m4y8r6l7w2v" path="res://scenes/quests/story_quests/echo_abyss/5_revelation/components/void_devourer.tscn" id="ext_devourer_scene"]
 [ext_resource type="SpriteFrames" uid="uid://bbexxr1ctc5wt" path="res://scenes/quests/story_quests/echo_abyss/player_components/echo_abyss_player.tres" id="ext_player_sprite"]
@@ -48,6 +49,24 @@ _data = {
 "points": PackedVector2Array(0, 0, 0, 0, -300, 100, 0, 0, 0, 0, 146.34146, 42.217907, 0, 0, 0, 0, 536.5853, 76.45915, 0, 0, 0, 0, 917.07324, 179.18289, 0, 0, 0, 0, 1000, 500, 0, 0, 0, 0, 400, 650, 0, 0, 0, 0, -224.39026, 615.7587, 0, 0, 0, 0, -400, 400, 0, 0, 0, 0, -300, 100)
 }
 point_count = 9
+
+[sub_resource type="Animation" id="Animation_ivd0k"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_1doxx"]
+resource_name = "walk_off"
+length = 2.0
+
+[sub_resource type="Animation" id="Animation_yyxck"]
+resource_name = "walk_on"
+length = 2.0
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jwfxk"]
+_data = {
+&"RESET": SubResource("Animation_ivd0k"),
+&"walk_off": SubResource("Animation_1doxx"),
+&"walk_on": SubResource("Animation_yyxck")
+}
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xscrn"]
 size = Vector2(512, 752)
@@ -93,19 +112,9 @@ tile_set = ExtResource("4_05gi0")
 [node name="OnTheGround" type="Node2D" parent="." unique_id=2094226334]
 y_sort_enabled = true
 
-[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("3_b2xho")]
-position = Vector2(280, 1520)
-starting_essence = 100
-sprite_frames = ExtResource("4_jxora")
-
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=416693049]
-position = Vector2(2.666687, 10.666672)
-scale = Vector2(1.5, 1.5)
-limit_left = -576
-limit_top = -200
-limit_right = 2368
-limit_bottom = 1792
-editor_draw_limits = true
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround" unique_id=1107057718]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_jwfxk")
 
 [node name="VoidDevourer" parent="OnTheGround" unique_id=8923487 node_paths=PackedStringArray("idle_patrol_path") instance=ExtResource("ext_devourer_scene")]
 position = Vector2(1096, 584)
@@ -673,11 +682,26 @@ texture = ExtResource("24_hbi4b")
 position = Vector2(1288, 776)
 texture = ExtResource("24_hbi4b")
 
+[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("3_b2xho")]
+position = Vector2(287.99997, 1376)
+starting_essence = 100
+sprite_frames = ExtResource("7_jwfxk")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1653401840]
+position = Vector2(2.666687, 10.666672)
+scale = Vector2(1.5, 1.5)
+limit_left = -556
+limit_top = -205
+limit_right = 2392
+limit_bottom = 1784
+editor_draw_limits = true
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1305410749]
 
-[node name="Cinematic" type="Node2D" parent="." unique_id=1957659485]
+[node name="Cinematic" type="Node2D" parent="." unique_id=1957659485 node_paths=PackedStringArray("animation_player")]
 script = ExtResource("4_8h4nu")
 dialogue = ExtResource("5_exeec")
+animation_player = NodePath("../OnTheGround/AnimationPlayer")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1098062137]
@@ -685,7 +709,6 @@ color = Color(1, 0.4274861, 0.5756392, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=73005017]
 script = ExtResource("30_mtvjx")
-player_path = NodePath("../OnTheGround/Player")
 essence_progress_bar_path = NodePath("EssenceProgressBar")
 health_container_path = NodePath("HealthPlayer")
 full_heart_texture = ExtResource("31_s30pd")
@@ -727,3 +750,9 @@ texture = ExtResource("31_s30pd")
 [node name="Heart3" type="TextureRect" parent="CanvasLayer/HealthPlayer" unique_id=820899963]
 layout_mode = 2
 texture = ExtResource("31_s30pd")
+
+[node name="theme2" type="AudioStreamPlayer" parent="." unique_id=586242669]
+stream = ExtResource("38_ttx3l")
+volume_db = -13.54
+autoplay = true
+parameters/looping = true
