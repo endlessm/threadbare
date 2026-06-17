@@ -11,7 +11,7 @@ func _ready():
 	for item in get_children(false):
 		item.collected.connect(item_collected)
 	
-func item_collected()->void:
+func item_collected(item:CollectibleItem)->void:
 	dialogue_start.emit()
 	items_collected+=1;
 	if items_collected==items_count:
