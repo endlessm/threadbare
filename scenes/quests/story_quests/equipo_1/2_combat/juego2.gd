@@ -2,14 +2,14 @@ extends Node
 @onready var tiempo = %BalderPresente
 var mi_timer: Timer
 @onready var is_stopped =false
-@export var tiempo_detenido = 3
+@export var tiempo_detenido = 6
 func _ready() -> void:
 	mi_timer = Timer.new()
 	mi_timer.wait_time = 10.0
 	mi_timer.one_shot = false
 	mi_timer.timeout.connect(_on_timer)
 	get_parent().call_deferred("add_child", mi_timer)
-	mi_timer.call_deferred("start")
+	##mi_timer.call_deferred("start")
 
 func _on_timer() -> void:
 	mi_timer.stop()
@@ -29,3 +29,6 @@ func _reset_animacion():
 
 func _esta_detenido(estado:bool):
 	is_stopped = estado;
+
+func _activar_timer()->void:
+	mi_timer.call_deferred("start")

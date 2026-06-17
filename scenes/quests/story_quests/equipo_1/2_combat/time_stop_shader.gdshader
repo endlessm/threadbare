@@ -1,4 +1,4 @@
-   shader_type canvas_item;
+ shader_type canvas_item;
 
 // Colores que controlaremos desde la animación
 uniform vec4 color_actual : source_color = vec4(0.5, 0.0, 0.5, 1.0); 
