@@ -1,5 +1,7 @@
 extends Node2D
 
+signal pattern_finished
+
 @export var projectile_scene: PackedScene
 @export var spawn_y: float = 100.0
 
@@ -9,6 +11,7 @@ extends Node2D
 
 @export var offset_x: float = 15.0
 @export var tiempo_entre_tandas: float = 1.0
+@export var duracion: float = 5.0
 
 @export var velocidad: float = 200.0
 @export var daño: int = 1
@@ -22,20 +25,21 @@ func start_pattern() -> void:
 
 	activo = true
 	usar_offset = false
-	crear_loop()
+
+	loop_tandas()
+	control_duracion()
 
 func stop_pattern() -> void:
 	activo = false
 
-func crear_loop() -> void:
-	if not activo:
-		return
+func loop_tandas() -> void:
+	while activo:
+		crear_tanda()
+		await get_tree().create_timer(tiempo_entre_tandas).timeout
 
-	crear_tanda()
-
-	await get_tree().create_timer(tiempo_entre_tandas).timeout
-
-	crear_loop()  
+func control_duracion() -> void:
+	await get_tree().create_timer(duracion).timeout
+	emit_signal("pattern_finished")
 
 func crear_tanda() -> void:
 	var offset := 0.0

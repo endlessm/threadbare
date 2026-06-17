@@ -1,4 +1,3 @@
-
 extends Node2D
 
 @export var lifetime: float = 5.0

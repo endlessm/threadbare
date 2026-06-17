@@ -3,6 +3,8 @@ extends CharacterBody2D
 @export var velocidad: float = 220.0
 @export var vida: int = 5
 @export var iframes: float = 1.0
+@export var barra: TextureProgressBar
+@export var animacion: AnimatedSprite2D
 
 var vida_actual: int
 var invencible: bool = false
@@ -13,10 +15,10 @@ signal murio
 
 @onready var hitbox: Area2D = $Hitbox
 @onready var sprite: Sprite2D = $Sprite2D
-@onready var barra: ProgressBar = $"../../CanvasLayer/Control/ProgressBarplayer"
 
 func _ready() -> void:
 	vida_actual = vida
+
 	hitbox.area_entered.connect(_on_hitbox_area_entered)
 
 	barra.max_value = vida
@@ -41,16 +43,17 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	if invencible:
+	if not area.is_in_group("projectiles"):
 		return
 
-	if area.is_in_group("projectiles"):
-		var dano_recibido: int = area.get_meta("dano", 1)
-		recibir_dano(dano_recibido)
+	var dano_recibido: int = area.get_meta("dano", 1)
+	recibir_dano(dano_recibido)
 
 func recibir_dano(cantidad: int) -> void:
 	if invencible:
 		return
+
+	invencible = true
 
 	vida_actual -= cantidad
 
@@ -60,20 +63,21 @@ func recibir_dano(cantidad: int) -> void:
 	barra.value = vida_actual
 	vida_cambio.emit(vida_actual, vida)
 
+	animacion.play("dead")
+
 	if vida_actual <= 0:
 		morir()
 		return
 
-	iniciar_invencibilidad()
+	iniciar_iframes()
 
-func iniciar_invencibilidad() -> void:
-	invencible = true
-
+func iniciar_iframes() -> void:
 	sprite.modulate.a = 0.4
 
 	await get_tree().create_timer(iframes).timeout
 
 	sprite.modulate.a = 1.0
+	animacion.play("idle")
 	invencible = false
 
 func morir() -> void:
