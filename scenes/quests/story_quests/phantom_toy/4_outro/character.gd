@@ -5,3 +5,6 @@ func play_idle():
 
 func play_walk():
 	play("walk")
+
+func play_left():
+	play("left")
