@@ -5,10 +5,12 @@
 [ext_resource type="TileSet" uid="uid://c6a5uyrq2avjt" path="res://scenes/quests/story_quests/el_abandonado/tiles/el_abandonado_exterior_floors.tres" id="4_cpy3j"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_wn0we"]
 [ext_resource type="SpriteFrames" uid="uid://bnqgoek7mqcau" path="res://scenes/quests/story_quests/el_abandonado/player_components/el_abandonado_player.tres" id="6_opvje"]
+[ext_resource type="Script" uid="uid://h77hmgnv03iy" path="res://scenes/quests/story_quests/el_abandonado/3_sequence_puzzle/el_abandonado_collectible.gd" id="7_octfb"]
 [ext_resource type="Script" uid="uid://bto6idrte7y2a" path="res://scenes/quests/story_quests/el_abandonado/3_sequence_puzzle/alma_del_padre.gd" id="9_oq0ul"]
 [ext_resource type="PackedScene" uid="uid://c7t6aexpvqca8" path="res://scenes/quests/story_quests/el_abandonado/3_sequence_puzzle/espectro.tscn" id="10_v32h0"]
 [ext_resource type="Texture2D" uid="uid://ds5lnx81lsl1f" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/el_alma_del_padre_spritesheet_8frames.png" id="10_yrqos"]
 [ext_resource type="Script" uid="uid://xs4qca8rw24u" path="res://scenes/quests/story_quests/el_abandonado/3_sequence_puzzle/boss_fight_ui.gd" id="13_r73n3"]
+[ext_resource type="AudioStream" uid="uid://cooq4x7cplnwp" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/MUSICA/Magistar.mp3" id="17_xsl4m"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="20_4tbqg"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="21_nxohm"]
 [ext_resource type="Resource" uid="uid://crjgu3vgx82ja" path="res://scenes/quests/story_quests/el_abandonado/3_sequence_puzzle/el_abandonado_sequence_puzzle.dialogue" id="22_jtp0s"]
@@ -345,7 +347,8 @@ shape = SubResource("RectangleShape2D_v32h0")
 disabled = true
 
 [node name="CollectibleItem" parent="OnTheGround" unique_id=1678374994 instance=ExtResource("20_4tbqg")]
-position = Vector2(1658, -3)
+position = Vector2(-58, 305)
+script = ExtResource("7_octfb")
 revealed = false
 next_scene = "uid://c71fiynw3tm0v"
 item = SubResource("Resource_5nxfm")
@@ -353,7 +356,7 @@ collected_dialogue = ExtResource("22_jtp0s")
 dialogue_title = &"well_done"
 
 [node name="Sign" parent="OnTheGround" unique_id=263994380 instance=ExtResource("23_52yiv")]
-position = Vector2(1576, 362)
+position = Vector2(1586, 375)
 direction = 1
 text = "First melody: yellow, green, blue."
 
@@ -426,4 +429,10 @@ script = ExtResource("25_6f3pt")
 dialogue = ExtResource("22_jtp0s")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=1199184301]
+stream = ExtResource("17_xsl4m")
+autoplay = true
+parameters/looping = true
+
+[connection signal="boss_defeated" from="Alma del padre" to="OnTheGround/CollectibleItem" method="_on_alma_del_padre_boss_defeated"]
 [connection signal="animation_finished" from="Alma del padre/AnimatedSprite2D" to="Alma del padre" method="_on_animated_sprite_2d_animation_finished"]
