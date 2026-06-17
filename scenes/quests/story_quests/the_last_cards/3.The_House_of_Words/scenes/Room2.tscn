@@ -11,7 +11,7 @@
 [ext_resource type="Resource" uid="uid://b3pl62i4vjsym" path="res://art/The_last_card_Room1.dialogue" id="6_y68fb"]
 [ext_resource type="Script" uid="uid://c2555l0644riy" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/hidden_acertijo.gd" id="8_og4n5"]
 [ext_resource type="Script" uid="uid://dvl7f7f5xq33y" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/button_area.gd" id="9_og4n5"]
-[ext_resource type="AudioStream" uid="uid://caha8luj754tw" path="res://scenes/quests/story_quests/after_the_tremor/music/enteaparece.ogg" id="10_1fn7c"]
+[ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="12_exrx5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nkgo5"]
 texture = ExtResource("4_2sf53")
@@ -231,15 +231,30 @@ size = Vector2(82, 90)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_iemrx"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_atl65"]
-size = Vector2(107, 124)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ls064"]
 size = Vector2(35.75, 11.5)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q30pr"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xvmgm"]
+
+[sub_resource type="Curve2D" id="Curve2D_exrx5"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 72.34432, 362.99994, 0, 0, 0, 0, 150, 0)
+}
+point_count = 3
+
+[sub_resource type="Curve2D" id="Curve2D_piasx"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 83, 149, 0, 0, 0, 0, 150, 0)
+}
+point_count = 3
+
+[sub_resource type="Curve2D" id="Curve2D_2sf53"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 103, 120.031006, 0, 0, 0, 0, 150, 0)
+}
+point_count = 3
 
 [node name="SequencePuzzleTemplate" type="Node2D" unique_id=341518395]
 position = Vector2(0, 47)
@@ -308,9 +323,10 @@ debug_color = Color(0.7342049, 0.43056855, 0.51583934, 0.41960785)
 
 [node name="Player" parent="." unique_id=689832587 instance=ExtResource("5_tlfav")]
 position = Vector2(1700, 800)
+collision_mask = 528
 
 [node name="Zombie" type="CharacterBody2D" parent="." unique_id=2063481425]
-position = Vector2(800, 400)
+position = Vector2(120, 378.4861)
 scale = Vector2(1.5, 1.5)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Zombie" unique_id=1221902196]
@@ -327,19 +343,6 @@ position = Vector2(650, 300)
 physics_material_override = SubResource("PhysicsMaterial_iemrx")
 
 [node name="TileMaps" type="Node2D" parent="." unique_id=1012642124]
-
-[node name="NubeNegra" type="CharacterBody2D" parent="." unique_id=1890490590]
-position = Vector2(340, 80)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="NubeNegra" unique_id=1856206880]
-position = Vector2(-82.5, 26)
-shape = SubResource("RectangleShape2D_atl65")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="NubeNegra" unique_id=739124399]
-position = Vector2(-81.5, 26.499998)
-scale = Vector2(0.39583337, 0.40073523)
-sprite_frames = ExtResource("4_r87rn")
-animation = &"idle"
 
 [node name="Dialogue" parent="." unique_id=308207015 instance=ExtResource("5_l6voy")]
 
@@ -374,5 +377,42 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_q30pr")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_xvmgm")
 script = ExtResource("9_og4n5")
 
-[node name="MusicaFondo" type="AudioStreamPlayer2D" parent="." unique_id=848576818]
-stream = ExtResource("10_1fn7c")
+[node name="Guard" parent="." unique_id=224963129 node_paths=PackedStringArray("patrol_path") instance=ExtResource("12_exrx5")]
+position = Vector2(173, 902.00006)
+collision_layer = 16
+collision_mask = 1
+patrol_path = NodePath("../Guard-PatrolPath")
+move_speed = 45.0
+time_to_detect_player = 3.1
+detection_area_scale = 0.7999999999999999
+
+[node name="Guard2" parent="." unique_id=1943197917 node_paths=PackedStringArray("patrol_path") instance=ExtResource("12_exrx5")]
+position = Vector2(2701, 921)
+collision_layer = 16
+collision_mask = 529
+patrol_path = NodePath("../Guard2-PatrolPath")
+move_speed = 60.0
+time_to_detect_player = 4.0
+detection_area_scale = 0.7
+
+[node name="Guard3" parent="." unique_id=1992419865 node_paths=PackedStringArray("patrol_path") instance=ExtResource("12_exrx5")]
+position = Vector2(1401, 16.968994)
+patrol_path = NodePath("../Guard3-PatrolPath")
+move_speed = 60.0
+time_to_detect_player = 4.0
+detection_area_scale = 0.6
+
+[node name="Guard-PatrolPath" type="Path2D" parent="." unique_id=657358683]
+position = Vector2(173, 902.00006)
+scale = Vector2(7.3266673, 0.9779614)
+curve = SubResource("Curve2D_exrx5")
+
+[node name="Guard2-PatrolPath" type="Path2D" parent="." unique_id=1017864051]
+position = Vector2(2701, 921)
+scale = Vector2(5.46, 1.557047)
+curve = SubResource("Curve2D_piasx")
+
+[node name="Guard3-PatrolPath" type="Path2D" parent="." unique_id=1007029505]
+position = Vector2(1401, 16.968994)
+scale = Vector2(7.62, 1)
+curve = SubResource("Curve2D_2sf53")

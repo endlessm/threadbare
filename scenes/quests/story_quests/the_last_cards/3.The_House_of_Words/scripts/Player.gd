@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends CharacterBody2D
 
-const MOVE_SPEED: float = 250.0
+const MOVE_SPEED: float = 300.0
 const LOOK_AT_TURN_SPEED: float = 10.0
 
 signal letra_iluminada(node: Node2D)
@@ -59,15 +59,9 @@ func _configurar_mini_vista() -> void:
 	var zoom_final = min(zoom_x, zoom_y)
 	
 	_mini_camera.zoom = Vector2(zoom_final, zoom_final)
+	_mini_camera.global_position = Vector2(1760.0, 650.0)
 	
-	#  valores para centrar está tu escena
-	var centro_x = 1760.0  # mitad del ancho
-	var centro_y = 650.0   # mitad del alto
-	_mini_camera.global_position = Vector2(centro_x, centro_y)
-	
-	# Fondo negro en lugar de gris
 	viewport.transparent_bg = true
-	
 	viewport.add_child(_mini_camera)
 
 	var container = SubViewportContainer.new()
@@ -75,16 +69,40 @@ func _configurar_mini_vista() -> void:
 	container.size = Vector2(200, 150)
 	container.add_child(viewport)
 
+	# Borde del minimapa
+	var panel = Panel.new()
+	panel.size = Vector2(208, 158)  # un poco más grande que el container
+	var estilo = StyleBoxFlat.new()
+	estilo.bg_color = Color(0, 0, 0, 0)        # fondo transparente
+	estilo.border_width_left = 4
+	estilo.border_width_right = 4
+	estilo.border_width_top = 4
+	estilo.border_width_bottom = 4
+	estilo.border_color = Color(0.8, 0.7, 0.2)  # color dorado
+	estilo.corner_radius_top_left = 6
+	estilo.corner_radius_top_right = 6
+	estilo.corner_radius_bottom_left = 6
+	estilo.corner_radius_bottom_right = 6
+	panel.add_theme_stylebox_override("panel", estilo)
+
 	var canvas = CanvasLayer.new()
 	canvas.layer = 10
 	add_child(canvas)
+	canvas.add_child(panel)
 	canvas.add_child(container)
 
+	# Posicionar panel y container juntos
 	container.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
 	container.offset_left = -210
 	container.offset_top = -160
 	container.offset_right = -10
 	container.offset_bottom = -10
+
+	panel.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	panel.offset_left = -214  # 4px más que el container
+	panel.offset_top = -164
+	panel.offset_right = -6
+	panel.offset_bottom = -6
 	
 func _physics_process(delta: float) -> void:
 	var input_dir := Vector2.ZERO

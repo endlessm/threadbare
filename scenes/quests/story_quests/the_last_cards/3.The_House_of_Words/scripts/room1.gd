@@ -8,7 +8,14 @@ var intento_actual = 0
 var tiempo_restante = 120
 var juego_activo = false
 var puerta_instanciada = false
-var palabra_actual = ""  # Acumula letras del teclado
+var palabra_actual = ""
+
+# Límites de la sala del zombie
+const ZOMBIE_MIN = Vector2(0, 0)
+const ZOMBIE_MAX = Vector2(1200, 700)
+var zombie_dir = Vector2.RIGHT
+var zombie_detecta_player = false
+var zombie_cambio_dir_timer = 0.0
 
 @onready var dialogue_balloon = $Dialogue
 @onready var input_letra = $CanvasGroup/InputLetra
@@ -19,7 +26,10 @@ var palabra_actual = ""  # Acumula letras del teclado
 @onready var zombie = $Zombie
 @onready var player = $Player
 @onready var musica_fondo = $MusicaFondo
-@onready var teclado = $CanvasGroup/CanvasLayer/Teclado  
+@onready var teclado = $CanvasGroup/CanvasLayer/Teclado
+@onready var guardia1 = $Guard
+@onready var guardia2 = $Guard2
+@onready var guardia3 = $Guard3
 
 var door = null
 
@@ -27,14 +37,12 @@ func _ready():
 	randomize()
 	palabra_secreta = PALABRAS[randi() % PALABRAS.size()]
 
-	# Oscuridad ignora clics
 	var dark_overlay = get_node_or_null("CanvasLayer/DarknessOverlay")
 	if dark_overlay:
 		var color_rect = dark_overlay.get_node_or_null("ColorRect")
 		if color_rect:
 			color_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-	# Configurar grid de letras
 	for i in range(30):
 		var label = grid_letras.get_child(i)
 		label.custom_minimum_size = Vector2(70, 70)
@@ -50,9 +58,9 @@ func _ready():
 		sb.border_color = Color(0.4, 0.4, 0.6)
 		label.add_theme_stylebox_override("normal", sb)
 
-	# Deshabilitar UI hasta diálogo
 	input_letra.editable = false
 	input_letra.focus_mode = Control.FOCUS_NONE
+	input_letra.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label_mensaje.text = "Escucha el acertijo..."
 	timer_principal.stop()
 	label_tiempo.text = "00:00"
@@ -60,12 +68,17 @@ func _ready():
 	if musica_fondo:
 		musica_fondo.stop()
 
-	# Conectar teclado
 	if teclado:
 		teclado.letra_presionada.connect(_on_letra_teclado)
-	
-	# Agregar botón borrar al teclado
 	_agregar_boton_borrar()
+
+	# Conectar guardias
+	if guardia1:
+		guardia1.player_detected.connect(_on_player_detected)
+	if guardia2:
+		guardia2.player_detected.connect(_on_player_detected)
+	if guardia3:
+		guardia3.player_detected.connect(_on_player_detected)
 
 	if dialogue_balloon:
 		dialogue_balloon.tree_exited.connect(_on_dialogue_finished)
@@ -73,7 +86,6 @@ func _ready():
 	else:
 		_iniciar_juego()
 
-	input_letra.text_submitted.connect(_on_palabra_enviada)
 	player.letra_iluminada.connect(_on_letra_iluminada)
 	player.letra_oscurecida.connect(_on_letra_oscurecida)
 
@@ -83,6 +95,12 @@ func _ready():
 	add_child(tick)
 	tick.timeout.connect(_on_timer_tick)
 	set_meta("tick_timer", tick)
+
+	# Dirección inicial aleatoria para el zombie
+	zombie_dir = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
+
+func _on_player_detected(player_node: Node2D) -> void:
+	_game_over()
 
 func _agregar_boton_borrar() -> void:
 	if not teclado:
@@ -108,7 +126,7 @@ func _agregar_boton_borrar() -> void:
 	boton_borrar.add_theme_stylebox_override("normal", estilo_normal)
 	boton_borrar.add_theme_stylebox_override("hover", estilo_hover)
 	boton_borrar.add_theme_color_override("font_color", Color.WHITE)
-	boton_borrar.pressed.connect(func(): emit_signal("letra_presionada", "BORRAR"))
+	boton_borrar.pressed.connect(func(): _on_letra_teclado("BORRAR"))
 	fila3.add_child(boton_borrar)
 
 func _on_letra_teclado(letra: String) -> void:
@@ -123,8 +141,19 @@ func _on_letra_teclado(letra: String) -> void:
 		palabra_actual += letra
 		input_letra.text = palabra_actual
 	if palabra_actual.length() == 5:
-		_on_palabra_enviada(palabra_actual)
+		_procesar_intento(palabra_actual)
 		palabra_actual = ""
+
+func _procesar_intento(texto: String) -> void:
+	if not juego_activo:
+		return
+	var intento = texto.to_upper().strip_edges()
+	input_letra.text = ""
+	palabra_actual = ""
+	if intento.length() != 5:
+		label_mensaje.text = "Escribe exactamente 5 letras"
+		return
+	_evaluar_intento(intento)
 
 func _iniciar_dialogo():
 	var dialogue_resource = load("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/dialogues/acertijo.dialogue")
@@ -142,11 +171,10 @@ func _iniciar_juego():
 	if musica_fondo and not musica_fondo.playing:
 		musica_fondo.play()
 
-	input_letra.editable = true
-	input_letra.focus_mode = Control.FOCUS_ALL
-	input_letra.mouse_filter = Control.MOUSE_FILTER_STOP
-	await get_tree().process_frame
-	input_letra.grab_focus()
+	input_letra.editable = false
+	input_letra.focus_mode = Control.FOCUS_NONE
+	input_letra.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 	label_mensaje.text = "Escribe tu intento (5 letras)"
 	tiempo_restante = 120
 	_actualizar_timer_display()
@@ -176,23 +204,38 @@ func _actualizar_timer_display():
 func _process(delta):
 	if not juego_activo:
 		return
-	var dir = (player.position - zombie.position).normalized()
-	zombie.position += dir * SPEED_ZOMBIE * delta
-	if zombie.position.distance_to(player.position) < 80:
+	_mover_zombie(delta)
+
+func _mover_zombie(delta: float) -> void:
+	var distancia = zombie.position.distance_to(player.position)
+	var radio_deteccion = 200.0  # distancia a la que empieza a perseguir
+
+	if distancia < radio_deteccion:
+		# Perseguir al player
+		var dir = (player.position - zombie.position).normalized()
+		zombie.position += dir * SPEED_ZOMBIE * delta
+		zombie_detecta_player = true
+	else:
+		# Patrullar dentro de los límites
+		zombie_detecta_player = false
+		zombie_cambio_dir_timer -= delta
+		if zombie_cambio_dir_timer <= 0:
+			zombie_cambio_dir_timer = randf_range(1.5, 3.5)
+			zombie_dir = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
+
+		zombie.position += zombie_dir * SPEED_ZOMBIE * delta
+
+		# Rebotar en los límites de la sala
+		if zombie.position.x < ZOMBIE_MIN.x or zombie.position.x > ZOMBIE_MAX.x:
+			zombie_dir.x = -zombie_dir.x
+			zombie.position.x = clamp(zombie.position.x, ZOMBIE_MIN.x, ZOMBIE_MAX.x)
+		if zombie.position.y < ZOMBIE_MIN.y or zombie.position.y > ZOMBIE_MAX.y:
+			zombie_dir.y = -zombie_dir.y
+			zombie.position.y = clamp(zombie.position.y, ZOMBIE_MIN.y, ZOMBIE_MAX.y)
+
+	# Game over si toca al player
+	if distancia < 80:
 		_game_over()
-
-func _on_palabra_enviada(texto: String):
-	if not juego_activo:
-		return
-	var intento = texto.to_upper().strip_edges()
-	input_letra.text = ""
-	palabra_actual = ""
-
-	if intento.length() != 5:
-		label_mensaje.text = "Escribe exactamente 5 letras"
-		return
-
-	_evaluar_intento(intento)
 
 func _evaluar_intento(intento: String):
 	for i in range(5):
@@ -228,7 +271,6 @@ func _evaluar_intento(intento: String):
 			_game_over()
 		else:
 			label_mensaje.text = "Intento %d/6" % intento_actual
-			# Rehabilitar botones del teclado para el nuevo intento
 			_rehabilitar_teclado()
 
 func _rehabilitar_teclado() -> void:
@@ -274,12 +316,5 @@ func _game_over():
 	juego_activo = false
 	get_tree().change_scene_to_file("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Room1.tscn")
 
-func _input(event: InputEvent):
-	if not juego_activo:
-		return
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		var rect = input_letra.get_global_rect()
-		if rect.has_point(event.position):
-			input_letra.grab_focus()
-		else:
-			input_letra.release_focus()
+func _input(_event: InputEvent):
+	pass

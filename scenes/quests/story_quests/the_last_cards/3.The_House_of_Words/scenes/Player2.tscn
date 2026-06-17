@@ -1,157 +1,15 @@
-[gd_scene format=3 uid="uid://d37mebu7atru7"]
+[gd_scene format=3 uid="uid://cx6auvrwpmqx2"]
 
-[ext_resource type="Script" uid="uid://dmf866kgfnp3c" path="res://scenes/game_elements/characters/enemies/guard/components/guard.gd" id="1_g173s"]
-[ext_resource type="Script" uid="uid://c477jgx4lwr86" path="res://scenes/game_elements/characters/enemies/guard/components/guard_movement.gd" id="2_0hjcv"]
-[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="3_0hjcv"]
-[ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="3_pnkgp"]
-[ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="4_lptvm"]
-[ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="4_mswbt"]
-[ext_resource type="Texture2D" uid="uid://coddjxvahn4uy" path="res://assets/first_party/templates/guard_enemy/NO_EDIT_guard_enemy_alerted.png" id="6_innil"]
-[ext_resource type="Texture2D" uid="uid://dgci3qn52ul5r" path="res://assets/first_party/templates/guard_enemy/NO_EDIT_guard_enemy_idle.png" id="7_2e3xr"]
-[ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="7_klpct"]
-[ext_resource type="Texture2D" uid="uid://ylj56k2u3u6u" path="res://assets/first_party/templates/guard_enemy/NO_EDIT_guard_enemy_walk.png" id="8_txsdx"]
-[ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="9_8vt0k"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_g173s"]
-radius = 35.0
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7yuat"]
-atlas = ExtResource("6_innil")
-region = Rect2(0, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jl6rj"]
-atlas = ExtResource("6_innil")
-region = Rect2(384, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xwccc"]
-atlas = ExtResource("6_innil")
-region = Rect2(576, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_le63u"]
-atlas = ExtResource("6_innil")
-region = Rect2(768, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_r2l1b"]
-atlas = ExtResource("6_innil")
-region = Rect2(960, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rn2a8"]
-atlas = ExtResource("7_2e3xr")
-region = Rect2(0, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dhpc8"]
-atlas = ExtResource("7_2e3xr")
-region = Rect2(192, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xpsa5"]
-atlas = ExtResource("7_2e3xr")
-region = Rect2(384, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ty311"]
-atlas = ExtResource("7_2e3xr")
-region = Rect2(192, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_15ngm"]
-atlas = ExtResource("8_txsdx")
-region = Rect2(0, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vxxya"]
-atlas = ExtResource("8_txsdx")
-region = Rect2(192, 0, 192, 192)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_s662v"]
-atlas = ExtResource("8_txsdx")
-region = Rect2(384, 0, 192, 192)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_lbixc"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_7yuat")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jl6rj")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xwccc")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_le63u")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_r2l1b")
-}],
-"loop": true,
-"name": &"alerted",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rn2a8")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rn2a8")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rn2a8")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_dhpc8")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xpsa5")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xpsa5")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xpsa5")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ty311")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_15ngm")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vxxya")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_s662v")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_15ngm")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vxxya")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_s662v")
-}],
-"loop": true,
-"name": &"walk",
-"speed": 10.0
-}]
+[ext_resource type="Script" uid="uid://dirn26b5ynsc6" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/Player.gd" id="1_uwekr"]
+[ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="2_n71ca"]
+[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="3_w1ydb"]
+[ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="4_ybs0f"]
+[ext_resource type="SpriteFrames" uid="uid://e4o08sabpym2" path="res://scenes/quests/story_quests/the_last_cards/player_components/the_last_cards_player.tres" id="5_brldq"]
+[ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="6_vdijq"]
+[ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="7_50pna"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nv25s"]
 radius = 15.0
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nv25s"]
-light_mode = 1
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0hjcv"]
-light_mode = 1
-
-[sub_resource type="LabelSettings" id="LabelSettings_nv25s"]
-outline_size = 3
-outline_color = Color(0, 0, 0, 1)
-shadow_size = 2
-shadow_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Animation" id="Animation_mswbt"]
 length = 0.001
@@ -325,15 +183,11 @@ _data = {
 &"walk": SubResource("Animation_8vt0k")
 }
 
-[node name="Guard" type="CharacterBody2D" unique_id=689832587 groups=["guard_enemy"]]
+[node name="Player" type="CharacterBody2D" unique_id=689832587 groups=["player"]]
 collision_layer = 0
-collision_mask = 528
+collision_mask = 529
 motion_mode = 1
-script = ExtResource("1_g173s")
-
-[node name="GuardMovement" type="Node2D" parent="." unique_id=1116278916]
-unique_name_in_owner = true
-script = ExtResource("2_0hjcv")
+script = ExtResource("1_uwekr")
 
 [node name="SightRayCast" type="RayCast2D" parent="." unique_id=1964699795]
 unique_name_in_owner = true
@@ -341,30 +195,24 @@ collision_mask = 8
 hit_from_inside = true
 collide_with_areas = true
 
-[node name="InstantDetectionArea" type="Area2D" parent="." unique_id=1457569599]
-unique_name_in_owner = true
-collision_layer = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InstantDetectionArea" unique_id=1435997986]
-shape = SubResource("CircleShape2D_g173s")
-
 [node name="DetectionArea" type="Area2D" parent="." unique_id=885694991]
 unique_name_in_owner = true
 position = Vector2(0, -19)
 collision_layer = 0
-script = ExtResource("4_mswbt")
+script = ExtResource("2_n71ca")
 
 [node name="Light" type="PointLight2D" parent="DetectionArea" unique_id=366085581]
 position = Vector2(37.3333, 1.33333)
 scale = Vector2(0.340496, 0.340496)
-color = Color(1, 1, 0.796078, 1)
+color = Color(0.973893, 0.98556215, 0.99269813, 1)
+energy = 1.09
 blend_mode = 2
 shadow_enabled = true
 shadow_filter = 1
 shadow_filter_smooth = 0.5
-texture = ExtResource("3_0hjcv")
+texture = ExtResource("3_w1ydb")
 offset = Vector2(377.88, 10.7686)
-script = ExtResource("4_lptvm")
+script = ExtResource("4_ybs0f")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea" unique_id=1176393945]
 position = Vector2(-29.3333, -132)
@@ -373,12 +221,14 @@ polygon = PackedVector2Array(302, 48, 283, 52, 279, 52, 101, 114, 98, 114, 79, 1
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=616054452]
 unique_name_in_owner = true
 position = Vector2(0, -16)
-sprite_frames = SubResource("SpriteFrames_lbixc")
+scale = Vector2(0.15, 0.15)
+sprite_frames = ExtResource("5_brldq")
 animation = &"walk"
 autoplay = "idle"
 
 [node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=971917766 node_paths=PackedStringArray("character", "sprite")]
-script = ExtResource("7_klpct")
+position = Vector2(103, 129)
+script = ExtResource("6_vdijq")
 character = NodePath("../..")
 play_animations = false
 sprite = NodePath("..")
@@ -387,49 +237,13 @@ metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2124818446]
 shape = SubResource("CircleShape2D_nv25s")
 
-[node name="PlayerAwareness" type="TextureProgressBar" parent="." unique_id=578256400]
-unique_name_in_owner = true
-visible = false
-modulate = Color(1, 1, 1, 0)
-z_index = 1
-material = SubResource("CanvasItemMaterial_nv25s")
-offset_left = -62.0
-offset_top = -172.0
-offset_right = 62.0
-offset_bottom = -48.0
-pivot_offset = Vector2(62, 102)
-step = 0.01
-fill_mode = 3
-nine_patch_stretch = true
-texture_under = ExtResource("3_pnkgp")
-texture_progress = ExtResource("3_pnkgp")
-tint_under = Color(1, 1, 1, 0.392157)
-tint_progress = Color(1, 1, 0, 1)
-
-[node name="DebugInfo" type="Label" parent="." unique_id=1627535706]
-unique_name_in_owner = true
-visible = false
-z_index = 100
-material = SubResource("CanvasItemMaterial_0hjcv")
-offset_left = -36.0
-offset_top = 20.0
-offset_right = 4.0
-offset_bottom = 43.0
-text = "position: (0.0, 0.0)
-state: Patroling
-previous_patrol_point_idx: -1
-current_patrol_point_idx: 0
-time left: 0.00
-target point: (0.0, 0.0)
-"
-label_settings = SubResource("LabelSettings_nv25s")
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1642930547]
 libraries/ = SubResource("AnimationLibrary_innil")
 
 [node name="CharacterAnimationPlayerBehavior" type="Node2D" parent="AnimationPlayer" unique_id=1596266876 node_paths=PackedStringArray("character", "animation_player")]
 unique_name_in_owner = true
-script = ExtResource("9_8vt0k")
+position = Vector2(103, 129)
+script = ExtResource("7_50pna")
 character = NodePath("../..")
 animation_player = NodePath("..")
 metadata/_custom_type_script = "uid://b3hx1n2yl88qr"
@@ -439,13 +253,11 @@ metadata/_custom_type_script = "uid://b3hx1n2yl88qr"
 [node name="AlertSound" type="AudioStreamPlayer" parent="Sounds" unique_id=1366827513]
 unique_name_in_owner = true
 volume_db = -5.0
-bus = &"SFX"
 
 [node name="FootSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=1825167375]
 unique_name_in_owner = true
 volume_db = -2.0
 max_distance = 350.0
-bus = &"SFX"
 
 [node name="FireSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=946121497]
 unique_name_in_owner = true
@@ -453,14 +265,32 @@ volume_db = -2.0
 autoplay = true
 max_distance = 500.0
 attenuation = 2.0
-bus = &"SFX"
 
 [node name="TorchHitSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=1573897868]
 unique_name_in_owner = true
 volume_db = -2.0
 max_distance = 500.0
-bus = &"SFX"
 
-[connection signal="body_entered" from="InstantDetectionArea" to="." method="_on_instant_detection_area_body_entered"]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2133705779]
+offset = Vector2(300, -150)
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=503691116]
+position = Vector2(5, -17.000002)
+scale = Vector2(0.81249994, 2.1875)
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=174168487]
+offset_left = 74.0
+offset_top = 75.0
+offset_right = 74.0
+offset_bottom = 75.0
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1813628846]
+handle_input_locally = false
+size = Vector2i(2, 2)
+render_target_update_mode = 4
+
+[node name="Camera2D" type="Camera2D" parent="SubViewportContainer/SubViewport" unique_id=1133358702]
+
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

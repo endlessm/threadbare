@@ -8,8 +8,9 @@
 [ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="7_nl2jc"]
 [ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="9_v24r6"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_nv25s"]
-radius = 15.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ytdcr"]
+radius = 36.0
+height = 112.0
 
 [sub_resource type="Animation" id="Animation_mswbt"]
 length = 0.001
@@ -183,10 +184,10 @@ _data = {
 &"walk": SubResource("Animation_8vt0k")
 }
 
-[node name="Player" type="CharacterBody2D" unique_id=689832587 groups=["guard_enemy"]]
+[node name="Player" type="CharacterBody2D" unique_id=689832587 groups=["player"]]
 position = Vector2(103, 129)
 collision_layer = 0
-collision_mask = 528
+collision_mask = 529
 motion_mode = 1
 script = ExtResource("1_l7i7l")
 
@@ -236,7 +237,9 @@ sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2124818446]
-shape = SubResource("CircleShape2D_nv25s")
+position = Vector2(9, -14)
+scale = Vector2(0.5, 0.5)
+shape = SubResource("CapsuleShape2D_ytdcr")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1642930547]
 libraries/ = SubResource("AnimationLibrary_innil")
