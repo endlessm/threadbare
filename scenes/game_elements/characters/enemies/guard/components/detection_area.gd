@@ -11,5 +11,10 @@ func _physics_process(delta: float) -> void:
 	if character.velocity.is_zero_approx():
 		return
 
-	var target_angle: float = character.velocity.angle()
+	var offset := 0.0
+
+	if character.is_in_group("vertical_guard"):
+		offset = 90.0
+
+	var target_angle = character.velocity.angle() + deg_to_rad(offset)
 	rotation = rotate_toward(rotation, target_angle, delta * LOOK_AT_TURN_SPEED)
