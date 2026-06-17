@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 @tool
 class_name CollectibleItem extends Node2D
-
+signal item_collected(item: InventoryItem)  # <-- asegúrate que tenga el parámetro
 ## Overworld collectible that can be interacted with. When a player interacts
 ## with it, an [InventoryItem] is added to the [Inventory]
 
@@ -82,28 +82,44 @@ func reveal() -> void:
 	animation_player.play("reveal")
 	await animation_player.animation_finished
 
-
 ## When interacted with, the collectible will display a brief animation
 ## and when that finishes, a new [InventoryItem] will be added to the
 ## [GameState] and the interaction will have ended.
+ #func _on_interacted(player: Player, _from_right: bool) -> void:
+#	z_index += 1
+#	animation_player.play("collected")
+#	await animation_player.animation_finished
+
+	#GameState.add_collected_item(item)
+
+#	if collected_dialogue:
+#		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])
+#		await DialogueManager.dialogue_ended
+
+#	interact_area.end_interaction()
+#	item_collected.emit(item)
+#	queue_free()
+
 func _on_interacted(player: Player, _from_right: bool) -> void:
 	z_index += 1
 	animation_player.play("collected")
 	await animation_player.animation_finished
-
-	GameState.add_collected_item(item)
-
+	MiniGameState.register(name, get_tree().current_scene.scene_file_path)
+	
+	# llena la lana aquí si no hay StealthGameLogic manejando el contador
+	var has_stealth_logic := not get_tree().get_nodes_in_group(&"stealth_logic").is_empty()
+	if not has_stealth_logic:
+		GameState.add_collected_item(item)
+	
 	if collected_dialogue:
 		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])
 		await DialogueManager.dialogue_ended
-
 	interact_area.end_interaction()
-	queue_free()
-
+	item_collected.emit(item)
 	if next_scene:
 		GameState.set_challenge_start_scene(next_scene)
 		SceneSwitcher.change_to_file_with_transition(next_scene)
-
+	queue_free()
 
 func _update_based_on_revealed() -> void:
 	if interact_area:
