@@ -9,6 +9,8 @@ var viento_activo= false;
 var tiempo_viento = 0.0;
 var direccion = -1;
 var empezar=true
+var fuerza_viento =300 ##la fuerza en la que el viento te lleva hacia atras
+var segundos_para_activar_viento = 8
 @onready var aviso_viento: Label=$"../AvisoViento";
 
 func _ready()->void:
@@ -46,7 +48,7 @@ func _on_timer_viento_timeout()->void:
 		intento_activar_viento = 0;
 			
 	direccion_anterior = direccion_actual;	
-	if(intento_activar_viento>8):
+	if(intento_activar_viento>segundos_para_activar_viento):
 		viento_activo = true;
 		intento_activar_viento = 0;
 		aviso_viento.show();
@@ -57,7 +59,7 @@ func _physics_process(delta: float) -> void:
 		
 	tiempo_viento +=delta;
 	if(tiempo_viento<5):	
-		player.velocity.x = -200;
+		player.velocity.x = -fuerza_viento;
 	else:
 		tiempo_viento=0.0;
 		viento_activo=false;
@@ -70,3 +72,7 @@ func _reset_all_attributes()->void:
 	tiempo_viento = 0.0;
 	direccion = -1;
 	aviso_viento.hide();
+
+func _set_estado_viento(fuerza:int, segundos:int):
+	fuerza_viento=fuerza
+	segundos_para_activar_viento=segundos

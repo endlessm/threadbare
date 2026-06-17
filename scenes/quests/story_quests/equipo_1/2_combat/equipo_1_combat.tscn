@@ -34,6 +34,7 @@
 [ext_resource type="Script" uid="uid://658pxc06hni8" path="res://scenes/quests/story_quests/equipo_1/2_combat/efecto_multicolor.gd" id="31_tx1nx"]
 [ext_resource type="Script" uid="uid://c6s4lsrx03g8b" path="res://scenes/quests/story_quests/equipo_1/2_combat/pregunta.gd" id="33_f58gy"]
 [ext_resource type="Resource" uid="uid://0e74ug561sb0" path="res://scenes/quests/story_quests/equipo_1/2_combat/combat_components/acertijo_1.dialogue" id="34_1bynu"]
+[ext_resource type="Script" uid="uid://dl8dsop4diejx" path="res://scenes/quests/story_quests/equipo_1/2_combat/final_game_2.gd" id="35_1bynu"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_32rat"]
 radius = 28.160255
@@ -1088,59 +1089,68 @@ can_use = true
 position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_53nqh")
 
-[node name="Node" type="Node" parent="." unique_id=69987001]
+[node name="Acertijos" type="Node" parent="." unique_id=69987001]
 
-[node name="Pregunta1" type="Node" parent="Node" unique_id=1352902707]
+[node name="Pregunta1" type="Node" parent="Acertijos" unique_id=1352902707]
 script = ExtResource("33_f58gy")
 dialogue_title = "acertijo1"
 dialogue = ExtResource("34_1bynu")
 
-[node name="NPC" parent="Node/Pregunta1" unique_id=583433003 groups=["Entidades"] instance=ExtResource("18_g7n1e")]
+[node name="NPC" parent="Acertijos/Pregunta1" unique_id=583433003 groups=["Entidades"] instance=ExtResource("18_g7n1e")]
 position = Vector2(1001, 778)
 collision_layer = 2
 
-[node name="Pregunta2" type="Node" parent="Node" unique_id=209550939]
+[node name="Pregunta2" type="Node" parent="Acertijos" unique_id=209550939]
 script = ExtResource("33_f58gy")
 dialogue_title = "acertijo2"
 dialogue = ExtResource("34_1bynu")
 
-[node name="NPC" parent="Node/Pregunta2" unique_id=686714466 groups=["Entidades"] instance=ExtResource("18_g7n1e")]
+[node name="NPC" parent="Acertijos/Pregunta2" unique_id=686714466 groups=["Entidades"] instance=ExtResource("18_g7n1e")]
 position = Vector2(3020, 136)
 collision_layer = 2
 
-[node name="Pregunta3" type="Node" parent="Node" unique_id=1116946210]
+[node name="Pregunta3" type="Node" parent="Acertijos" unique_id=1116946210]
 script = ExtResource("33_f58gy")
 dialogue_title = "acertijo3"
 dialogue = ExtResource("34_1bynu")
 
-[node name="NPC" parent="Node/Pregunta3" unique_id=1652106569 groups=["Entidades"] instance=ExtResource("18_g7n1e")]
+[node name="NPC" parent="Acertijos/Pregunta3" unique_id=1652106569 groups=["Entidades"] instance=ExtResource("18_g7n1e")]
 position = Vector2(4010, -2542)
 collision_layer = 2
 
-[node name="Pregunta4" type="Node" parent="Node" unique_id=1661080750]
+[node name="Pregunta4" type="Node" parent="Acertijos" unique_id=1661080750]
 script = ExtResource("33_f58gy")
 dialogue_title = "acertijo4"
 dialogue = ExtResource("34_1bynu")
 
-[node name="NPC" parent="Node/Pregunta4" unique_id=863301943 groups=["Entidades"] instance=ExtResource("18_g7n1e")]
+[node name="NPC" parent="Acertijos/Pregunta4" unique_id=863301943 groups=["Entidades"] instance=ExtResource("18_g7n1e")]
 position = Vector2(7815, -2588)
 collision_layer = 2
 
-[node name="Pregunta5" type="Node" parent="Node" unique_id=1828999335]
+[node name="Pregunta5" type="Node" parent="Acertijos" unique_id=1828999335]
 script = ExtResource("33_f58gy")
 dialogue_title = "acertijo5"
 dialogue = ExtResource("34_1bynu")
 
-[node name="NPC" parent="Node/Pregunta5" unique_id=915518199 groups=["Entidades"] instance=ExtResource("18_g7n1e")]
+[node name="NPC" parent="Acertijos/Pregunta5" unique_id=915518199 groups=["Entidades"] instance=ExtResource("18_g7n1e")]
 position = Vector2(8518, 762)
 collision_layer = 2
+
+[node name="Final" type="Node" parent="." unique_id=718230561]
+script = ExtResource("35_1bynu")
+
+[node name="Reloj2" parent="Final" unique_id=1743139266 instance=ExtResource("17_0ljm5")]
+position = Vector2(-536, 155)
+script = ExtResource("18_dcf4l")
+item = SubResource("Resource_qd4n1")
+collected_dialogue = ExtResource("18_feshc")
 
 [connection signal="ready" from="." to="EfectoMulticolor" method="resetear_efecto"]
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="event" from="Jugador/DeteccionGuardian" to="BalderPresente" method="_reanudar_jugador"]
 [connection signal="collected" from="Acertijo1/Guardian1/Reloj" to="BalderPresente" method="aumentar_velocidad"]
-[connection signal="player_detected" from="Acertijo1/Guardian1/NPCEnemigos/Enemigo" to="Jugador/Player" method="defeat" unbinds=1]
 [connection signal="player_detected" from="Acertijo1/Guardian1/NPCEnemigos/Enemigo" to="TimeStop" method="_reset_animacion" unbinds=1]
+[connection signal="player_detected" from="Acertijo1/Guardian1/NPCEnemigos/Enemigo" to="Jugador/Player" method="defeat" unbinds=1]
 [connection signal="collected" from="Acertijo1/Guardian2/Reloj" to="BalderPresente" method="aumentar_velocidad"]
 [connection signal="player_detected" from="Acertijo1/Guardian2/NPCEnemigos/Enemigo" to="TimeStop" method="_reset_animacion"]
 [connection signal="player_detected" from="Acertijo1/Guardian2/NPCEnemigos/Enemigo" to="Jugador/Player" method="defeat" unbinds=1]
@@ -1175,12 +1185,13 @@ collision_layer = 2
 [connection signal="collected" from="Acertijo5/Guardian3/Reloj" to="BalderPresente" method="aumentar_velocidad"]
 [connection signal="pausado" from="BalderPresente" to="TimeStop" method="_esta_detenido"]
 [connection signal="reanudado" from="BalderPresente" to="TimeStop" method="_esta_detenido"]
-[connection signal="player_detected" from="BalderPresente/Balder" to="Jugador/Player" method="defeat" unbinds=1]
 [connection signal="player_detected" from="BalderPresente/Balder" to="TimeStop" method="_reset_animacion" unbinds=1]
+[connection signal="player_detected" from="BalderPresente/Balder" to="Jugador/Player" method="defeat" unbinds=1]
 [connection signal="event" from="BalderPresente/Area2D" to="BalderPresente" method="_parar_tiempo_deteccion"]
 [connection signal="event_area" from="BalderPresente/Area2D" to="BalderPresente" method="_atacar_jugador"]
-[connection signal="event" from="BalderActivacion" to="BalderPresente" method="activar_balder"]
 [connection signal="event" from="BalderActivacion" to="TimeStop" method="_activar_timer"]
+[connection signal="event" from="BalderActivacion" to="BalderPresente" method="activar_balder"]
+[connection signal="collected" from="Final/Reloj2" to="BalderPresente" method="aumentar_velocidad"]
 
 [editable path="Acertijo1/Guardian1/Reloj"]
 [editable path="Acertijo1/Guardian3/Reloj"]
