@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+@tool
 extends CharacterBody2D
 class_name EchoAbyssVoidDevourer
 
@@ -16,6 +17,24 @@ const IDLE_EMIT_DISTANCE := 90.0 # sqrt(2 * (64.0 ** 2)) is ~90.5
 
 @export var idle_patrol_path: Path2D:
 	set = _set_idle_patrol_path
+
+@export var custom_scale: float = 1.0:
+	set(value):
+		custom_scale = value
+		_update_scale()
+
+@export var core_color: Color = Color.BLACK
+
+@export var outline_color: Color = Color.WHITE:
+	set(value):
+		outline_color = value
+		_update_outline_color()
+
+@export var start_progress_ratio: float = 0.0
+
+@export var patrol_direction: int = 1
+
+@export var patrol_speed: float = 90.0
 
 var target_npc: CharacterBody2D = null
 var state := State.PATROLLING:
@@ -64,7 +83,24 @@ func _set_state(new_state: State) -> void:
 			follow_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			velocity = Vector2.ZERO
 
+func _update_scale() -> void:
+	scale = Vector2(custom_scale, custom_scale)
+
+func _update_outline_color() -> void:
+	if not is_node_ready():
+		return
+	if particles_canvas_group and particles_canvas_group.material:
+		if not particles_canvas_group.material.resource_local_to_scene:
+			particles_canvas_group.material = particles_canvas_group.material.duplicate()
+		particles_canvas_group.material.set_shader_parameter("outline_color", outline_color)
+
 func _ready() -> void:
+	_update_scale()
+	_update_outline_color()
+
+	if Engine.is_editor_hint():
+		return
+
 	if not _temp_patrol_path_nodepath.is_empty():
 		idle_patrol_path = get_node(_temp_patrol_path_nodepath) as Path2D
 		_temp_patrol_path_nodepath = ""
@@ -73,14 +109,29 @@ func _ready() -> void:
 
 	if path_walk_behavior:
 		path_walk_behavior.walking_path = idle_patrol_path
+		path_walk_behavior.direction = patrol_direction
+		if path_walk_behavior.speeds:
+			path_walk_behavior.speeds = path_walk_behavior.speeds.duplicate()
+			path_walk_behavior.speeds.walk_speed = patrol_speed
+			path_walk_behavior.speeds.run_speed = patrol_speed
+
+	if idle_patrol_path and start_progress_ratio > 0.0:
+		var path_length = idle_patrol_path.curve.get_baked_length()
+		var target_offset = path_length * start_progress_ratio
+		var local_pos = idle_patrol_path.curve.sample_baked(target_offset)
+		global_position = idle_patrol_path.to_global(local_pos)
 
 	state = State.PATROLLING
 	_last_position = position
 	
 	# Connect detection signals
-	npc_detection_area.body_entered.connect(_on_npc_detected)
+	if npc_detection_area:
+		npc_detection_area.body_entered.connect(_on_npc_detected)
 
 func _physics_process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+
 	# Emit particles based on distance travelled
 	_distance_since_emit += (position - _last_position).length()
 	_last_position = position
@@ -138,8 +189,10 @@ func _devour_npc(npc: EchoAbyssWanderingNpc) -> void:
 		
 	# Play local devour animation effect (pulsate)
 	var tween = create_tween()
-	tween.tween_property(self, "scale", Vector2(1.3, 1.3), 0.25)
-	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.25)
+	var target_scale = Vector2(1.3 * custom_scale, 1.3 * custom_scale)
+	var base_scale = Vector2(custom_scale, custom_scale)
+	tween.tween_property(self, "scale", target_scale, 0.25)
+	tween.tween_property(self, "scale", base_scale, 0.25)
 	
 	# Spawn extra particles for devouring
 	for i in range(3):
@@ -156,6 +209,7 @@ func _emit_particles() -> void:
 
 	var particles: GPUParticles2D = VOID_PARTICLES.instantiate()
 	particles.emitting = true
+	particles.self_modulate = core_color
 	particles_canvas_group.add_child(particles)
 	_live_particles += 1
 
