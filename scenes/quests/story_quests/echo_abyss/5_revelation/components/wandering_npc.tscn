@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://c8n4y8r6l7w2v"]
+
+[ext_resource type="Script" uid="uid://cr8mgaf03bei" path="res://scenes/quests/story_quests/echo_abyss/5_revelation/components/wandering_npc.gd" id="1_script"]
+[ext_resource type="SpriteFrames" uid="uid://uwont7hj7jtx" path="res://scenes/quests/story_quests/echo_abyss/player_components/contaminated_creature.tres" id="2_sprite"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
+radius = 12.0
+height = 34.0
+
+[node name="WanderingNPC" type="CharacterBody2D" groups=["wandering_npc"]]
+collision_layer = 2
+collision_mask = 528
+motion_mode = 1
+script = ExtResource("1_script")
+sprite_frames = ExtResource("2_sprite")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -12)
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_body")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -24)
+sprite_frames = ExtResource("2_sprite")
+animation = &"idle"
+autoplay = "idle"
