@@ -3,47 +3,27 @@
 [ext_resource type="Script" uid="uid://diyiwn8ck3f2r" path="res://scenes/quests/story_quests/no_trace_left/4_outro/grupo_4_outro.gd" id="1_e3asg"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_l2xmb"]
 [ext_resource type="TileSet" uid="uid://dcqq5mawasgik" path="res://scenes/quests/story_quests/no_trace_left/tiles/grupo_4_exterior_floors.tres" id="2_wabk2"]
-[ext_resource type="Texture2D" uid="uid://kym5n6hxy3du" path="res://scenes/quests/story_quests/no_trace_left/assets/caminar (1).png" id="3_pkcep"]
 [ext_resource type="SpriteFrames" uid="uid://cwcaxjyrcejw5" path="res://scenes/quests/story_quests/no_trace_left/player_components/grupo_4_player.tres" id="3_ywgh2"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_mnwdd"]
 [ext_resource type="Resource" uid="uid://cvj70frwrkgdd" path="res://scenes/quests/story_quests/no_trace_left/4_outro/outro_components/grupo_4_outro.dialogue" id="5_su8u8"]
+[ext_resource type="Texture2D" uid="uid://c1v2rrxslv2wm" path="res://scenes/quests/story_quests/no_trace_left/assets/mercader_idle.png" id="6_e3asg"]
 [ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="6_p6bje"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="7_rlct4"]
 [ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="8_olvn0"]
 [ext_resource type="SpriteFrames" uid="uid://d36eq8tqdaxdy" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_green.tres" id="9_lmi5e"]
 [ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="10_70rml"]
 [ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="11_pkcep"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_e3asg"]
-atlas = ExtResource("3_pkcep")
-region = Rect2(0, 0, 2944, 2944)
+[ext_resource type="AudioStream" uid="uid://bygtehrfdw1ya" path="res://scenes/quests/story_quests/no_trace_left/audio/rain.ogg" id="14_nnlfr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nnlfr"]
-atlas = ExtResource("3_pkcep")
-region = Rect2(2944, 0, 2944, 2944)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_u71wp"]
-atlas = ExtResource("3_pkcep")
-region = Rect2(5888, 0, 2944, 2944)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_cb4a7"]
-atlas = ExtResource("3_pkcep")
-region = Rect2(8832, 0, 2944, 2944)
+atlas = ExtResource("6_e3asg")
+region = Rect2(192, 0, 192, 192)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_xp8mv"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_e3asg")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_nnlfr")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_u71wp")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_cb4a7")
 }],
 "loop": true,
 "name": &"idle",
@@ -146,6 +126,19 @@ size = Vector2(1205, 431)
 [node name="Grupo4Outro" type="Node2D" unique_id=1273842832]
 script = ExtResource("1_e3asg")
 
+[node name="Light" type="PointLight2D" parent="." unique_id=1350647092]
+position = Vector2(575, 106)
+rotation = 1.5707964
+scale = Vector2(0.33978578, 0.36673918)
+color = Color(1, 1, 0.796078, 1)
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("10_70rml")
+offset = Vector2(377.88, 10.7686)
+script = ExtResource("11_pkcep")
+
 [node name="HUD" parent="." unique_id=260989644 instance=ExtResource("1_l2xmb")]
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=874277128]
@@ -159,12 +152,11 @@ tile_map_data = PackedByteArray("AAAAAAUAAQAGAAMAAAABAAUAAQAGAAMAAAACAAUAAQAGAAM
 tile_set = ExtResource("2_wabk2")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1523556790]
-position = Vector2(153, 366)
 zoom = Vector2(1.333, 1.333)
-limit_left = 0
-limit_top = 0
-limit_right = 960
-limit_bottom = 540
+limit_left = 1
+limit_top = -2
+limit_right = 961
+limit_bottom = 538
 position_smoothing_enabled = true
 editor_draw_limits = true
 
@@ -173,8 +165,8 @@ y_sort_enabled = true
 position = Vector2(0, -141)
 
 [node name="Mercader" type="AnimatedSprite2D" parent="OnTheGround" unique_id=1669351688]
-position = Vector2(653, 459)
-scale = Vector2(0.051589675, 0.054986414)
+position = Vector2(641, 455)
+scale = Vector2(0.6510417, 0.640625)
 sprite_frames = SubResource("SpriteFrames_xp8mv")
 animation = &"idle"
 flip_h = true
@@ -188,19 +180,6 @@ autoplay = "idle"
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround" unique_id=291445884]
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_rhtal")
-
-[node name="Light" type="PointLight2D" parent="." unique_id=1350647092]
-position = Vector2(575, 106)
-rotation = 1.5707964
-scale = Vector2(0.33978578, 0.36673918)
-color = Color(1, 1, 0.796078, 1)
-blend_mode = 2
-shadow_enabled = true
-shadow_filter = 1
-shadow_filter_smooth = 0.5
-texture = ExtResource("10_70rml")
-offset = Vector2(377.88, 10.7686)
-script = ExtResource("11_pkcep")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1305410749]
 
@@ -980,3 +959,8 @@ scale = Vector2(1.0405519, 1.1536475)
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1358295151]
 color = Color(0.20784314, 0.2901961, 0.45882353, 1)
+
+[node name="AudioStreamPlayerRain" type="AudioStreamPlayer2D" parent="." unique_id=896706506]
+stream = ExtResource("14_nnlfr")
+volume_db = -15.0
+autoplay = true
