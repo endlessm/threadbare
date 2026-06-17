@@ -133,13 +133,13 @@ func add_small_fx() -> void:
 	get_tree().current_scene.add_child(small_fx)
 	small_fx.global_position = global_position
 
-
+signal player_attacked
 func _on_body_entered(body: Node2D) -> void:
 	add_small_fx()
 	duration_timer.start()
-
 	# Logic for Fragile Barrel
 	# We must check for the specific subclass first because it inherits from FillingBarrel
+	
 	if body.owner is FragileBarrel:
 		body.owner.hit_by_droplet(label)
 		queue_free()
@@ -151,6 +151,7 @@ func _on_body_entered(body: Node2D) -> void:
 		if filling_barrel.label == label:
 			filling_barrel.increment()
 			queue_free()
+		
 
 
 ## Called from the Repel component when this body
