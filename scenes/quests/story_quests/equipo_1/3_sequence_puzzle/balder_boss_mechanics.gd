@@ -4,8 +4,8 @@ extends Node
 @onready var boss = %BalderFuturo
 @onready var mapa = %Sand
 
-@onready var pos_inicial_disparos=%EnemigosDisparos.global_position
-@onready var pos_inicial_targets = %PlayerTargets.global_position
+##@onready var pos_inicial_disparos=%EnemigosDisparos.get
+##@onready var pos_inicial_targets = %PlayerTargets.global_position
 enum Tipo {
 	NORTE,
 	SUR,
@@ -40,35 +40,16 @@ func _on_damaged(body:Node2D)->void:
 			return 
 			
 		print("me han pegado (¡Este sí es real!)")
-
-func _ejecutar_ataque() -> void:
-	# 1. Conseguimos el nodo de tu mapa (asegúrate de que el nombre coincida)
-	
-	# 2. Traducimos la posición en píxeles del jugador a coordenadas de casilla (Vector2i)
-	var casilla_jugador: Vector2i = mapa.local_to_map(player.global_position)
-	
-	# 3. Calculamos la casilla objetivo: la misma X del jugador, pero 5 casillas ARRIBA (-5 en Y)
-	var casilla_inicial_boss: Vector2i = casilla_jugador + Vector2i(0, -2)
-	
-	# 4. Definimos los parámetros para el ataque de prueba
-	var cantidad_ataques: int = 4              # Disparará 4 veces en total # Se irá desplazando hacia el Norte
-	
-	print("--- INICIANDO ATAQUE DE PRUEBA ---")
-	print("Casilla actual del jugador: ", casilla_jugador)
-	print("El Boss aparecerá en la casilla: ", casilla_inicial_boss)
-	
-	# 5. Llamamos a tu función con la coreografía ajustada
-	await _atacar_efecto(cantidad_ataques, casilla_inicial_boss, Tipo.NORTE)
-	
-	print("--- ATAQUE DE PRUEBA TERMINADO ---")
 	
 
-func _atacar_efecto(ataques: int, casilla_a_mover: Vector2i, direccion: Tipo) -> void:
+func _atacar_efecto(ataques: int, casilla_a_mover: Vector2i, direccion: Tipo, es_barrido:bool) -> void:
 	boss.global_position = mapa.map_to_local(casilla_a_mover)
 	# 2. Ahora sí, ejecuta su ataque por defecto (Disparo 1)
 	boss._on_timeout()
 	await boss.animation_player.animation_finished
-	
+	if es_barrido:##si queremos que sea ataque barrido le ponemos true
+		ataque_barrido(direccion)
+				
 	# 3. Obtenemos la dirección del script global
 	var vector_direccion: Vector2i = COORDENADAS[direccion]
 	var casilla_actual: Vector2i = casilla_a_mover
@@ -77,17 +58,46 @@ func _atacar_efecto(ataques: int, casilla_a_mover: Vector2i, direccion: Tipo) ->
 	var tiros_restantes: int = ataques - 1
 	
 	# Si nos quedan tiros por hacer, entramos al bucle
+	if tiros_restantes ==0:
+		return
+		
 	for a in tiros_restantes:
 		# Como ya disparó, primero se mueve una casilla hacia la dirección
 		casilla_actual = casilla_actual + vector_direccion
 		boss.global_position = mapa.map_to_local(casilla_actual)
+		
 		# El jefe hace el siguiente disparo de la ráfaga
 		boss.shoot_projectile_at(player)
+		if es_barrido:##si queremos que sea ataque barrido le ponemos true
+			ataque_barrido(direccion)
 		# Esperamos el pequeño bache de tiempo antes del siguiente tiro
 		await get_tree().create_timer(0.3).timeout
+
+func ataque_barrido(direccion:Tipo):
+	ataque_direcciones(direccion)		
 		
-func ataque_barrido_prueba()->void:
-	ataque_direcciones(Tipo.NOR_OESTE)
+func ataque_barrido_prueba()->void:	
+	
+	touhou_efecto(true,2)
+	return
+	var casilla_jugador: Vector2i = mapa.local_to_map(player.global_position)
+	
+	var casilla_inicial_boss: Vector2i = casilla_jugador + Vector2i(-2, -2)
+	
+	var cantidad_ataques: int = 4 
+	
+	await _atacar_efecto(cantidad_ataques, casilla_inicial_boss, Tipo.NOR_OESTE,true)
+
+func touhou_efecto(es_barrido:bool, cantidad_ataques:int)->void:
+	var direcciones = [Tipo.NORTE,Tipo.ESTE,Tipo.SUR,Tipo.OESTE];
+	for d in direcciones:
+		
+		var casilla_jugador: Vector2i = mapa.local_to_map(player.global_position)
+		
+		var casilla_inicial_boss: Vector2i = casilla_jugador + (Vector2i(4, 4)*COORDENADAS[d])
+		
+		
+		await _atacar_efecto(cantidad_ataques, casilla_inicial_boss, d,es_barrido)	
 
 func ataque_direcciones(direccion:Tipo)->void:
 	var direccion_enemigos = direccion_patron(direccion)
