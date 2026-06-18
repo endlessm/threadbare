@@ -3,22 +3,18 @@
 extends Node
 signal intro_finished
 
-# Ajustado a tu jerarquía de nodos visible en el editor
 @onready var camera: Camera2D = $"../Camera2D"
 @onready var flash_layer: CanvasLayer = $"../FlashOverlay"
 @onready var flash_rect: ColorRect = $"../FlashOverlay/ColorRect"
 
-# Rutas corregidas según tu árbol de escenas actual
 @onready var lino_animation: AnimationPlayer = $"../OnTheGround/AnimationPlayer"
 @onready var tilemap_walls: TileMapLayer = $"../CabanaParedes"
 @onready var tilemap_furnitures: TileMapLayer = $"../Furnitures"
 
 
 func _ready() -> void:
-	# 1. Conectamos la señal de fin de intro con la función que cambia de nivel
 	intro_finished.connect(_on_intro_finished)
 	
-	# 2. Arrancamos la introducción automáticamente
 	start_intro()
 
 
@@ -40,7 +36,7 @@ func _run_sequence() -> void:
 	# =========================================================================
 	if lino_animation:
 		lino_animation.play("intro_cinematic")
-		# Espera pacientemente los 24 segundos hasta que termine la pista completa
+		
 		await lino_animation.animation_finished
 	else:
 		print("ERROR: No se encontró el AnimationPlayer en la ruta especificada.")
@@ -60,7 +56,6 @@ func _run_sequence() -> void:
 
 	print("INTRO SECUENCIA TERMINADA")
 	
-	# Emitimos la señal. Esto disparará automáticamente la función de abajo
 	intro_finished.emit()
 
 
@@ -76,11 +71,9 @@ func _flash_in() -> void:
 # =========================================================================
 func _on_intro_finished() -> void:
 	print("CAMBIANDO AL NIVEL DE STEALTH...")
-	
-	# Ruta real copiada directamente de tu sistema de archivos
+
 	var nueva_escena_ruta: String = "res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/el_hilo_que_no_teji_stealth.tscn"
-	
-	# Verificamos si el archivo de la escena realmente existe en esa ruta
+
 	if ResourceLoader.exists(nueva_escena_ruta):
 		get_tree().change_scene_to_file(nueva_escena_ruta)
 	else:
