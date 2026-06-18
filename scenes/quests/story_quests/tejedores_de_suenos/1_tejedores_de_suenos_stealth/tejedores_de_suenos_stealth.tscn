@@ -7,7 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_62avq"]
 [ext_resource type="SpriteFrames" uid="uid://65f3v81r2wcq" path="res://scenes/quests/story_quests/tejedores_de_suenos/tejedores_de_suenos_player_components/tejedores_de_suenos_player.tres" id="6_idu6a"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="7_jyfos"]
+[ext_resource type="Texture2D" uid="uid://dryg5pbobhx6f" path="res://scenes/quests/story_quests/tejedores_de_suenos/tejedores_de_suenos_player_components/stitch.png" id="7_qhmk8"]
+[ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="8_dug2p"]
+[ext_resource type="Texture2D" uid="uid://bsovprboopmn2" path="res://scenes/quests/story_quests/tejedores_de_suenos/tejedores_de_suenos_player_components/Morphea.png" id="8_f16xa"]
 [ext_resource type="SpriteFrames" uid="uid://c0650ae3weg1i" path="res://scenes/quests/story_quests/tejedores_de_suenos/1_tejedores_de_suenos_stealth/stealth_components/tejedores_de_suenos_guard_enemy.tres" id="8_yxt4w"]
+[ext_resource type="AudioStream" uid="uid://bjjm7jcmrpt8g" path="res://scenes/quests/story_quests/tejedores_de_suenos/audios/Étude_No_01_En_Gm_versión_synthe_KLICKAUD.mp3" id="9_ay7ib"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="9_v6dx5"]
 [ext_resource type="Resource" uid="uid://be2po2gj4j0mk" path="res://scenes/quests/story_quests/tejedores_de_suenos/1_tejedores_de_suenos_stealth/stealth_components/tejedores_de_suenos_checkpoint.dialogue" id="10_h0i1u"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="11_448ak"]
@@ -16,6 +20,64 @@
 [ext_resource type="Resource" uid="uid://b2nuclqh50ujd" path="res://scenes/quests/story_quests/tejedores_de_suenos/1_tejedores_de_suenos_stealth/stealth_components/tejedores_de_suenos_collected.dialogue" id="14_pu42k"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="15_s2l6h"]
 [ext_resource type="Resource" uid="uid://ddu6ixohkxvsx" path="res://scenes/quests/story_quests/tejedores_de_suenos/1_tejedores_de_suenos_stealth/stealth_components/tejedores_de_suenos_stealth.dialogue" id="16_vyaq3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dug2p"]
+atlas = ExtResource("7_qhmk8")
+region = Rect2(0, 0, 342, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ay7ib"]
+atlas = ExtResource("7_qhmk8")
+region = Rect2(342, 0, 342, 94)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y1m4i"]
+atlas = ExtResource("7_qhmk8")
+region = Rect2(684, 0, 342, 94)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uy2hj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dug2p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ay7ib")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y1m4i")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_trkaw"]
+atlas = ExtResource("8_f16xa")
+region = Rect2(0, 0, 230, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fueij"]
+atlas = ExtResource("8_f16xa")
+region = Rect2(230, 0, 230, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_euemb"]
+atlas = ExtResource("8_f16xa")
+region = Rect2(460, 0, 230, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gil6q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_trkaw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fueij")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_euemb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="Curve2D" id="Curve2D_olgj1"]
 _data = {
@@ -74,6 +136,19 @@ limit_right = 2816
 limit_bottom = 1280
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="." unique_id=1761855579]
+position = Vector2(126, 569)
+sprite_frames = SubResource("SpriteFrames_uy2hj")
+
+[node name="BackgroundMusic" type="Node" parent="AnimatedSprite2D2" unique_id=1424911511]
+script = ExtResource("8_dug2p")
+stream = ExtResource("9_ay7ib")
+metadata/_custom_type_script = "uid://c8405c212rbn6"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1426210317]
+position = Vector2(194, 589)
+sprite_frames = SubResource("SpriteFrames_gil6q")
 
 [node name="EnemyGuards" type="Node2D" parent="." unique_id=1997239040]
 y_sort_enabled = true
