@@ -12,11 +12,11 @@
 [ext_resource type="Texture2D" uid="uid://c1bhlrwm2ph6x" path="res://assets/third_party/tiny-swords/Factions/Goblins/Buildings/Wood_House/Goblin_House_Destroyed.png" id="14_84anw"]
 [ext_resource type="Texture2D" uid="uid://dl6o7vcf2fyc" path="res://assets/first_party/towers/Tower_Patchwork_Ruined1.png" id="14_ytvk6"]
 [ext_resource type="Texture2D" uid="uid://beat6rualotec" path="res://assets/third_party/tiny-swords-non-cc0/Terrain/Resources/Tools/Tool_03.png" id="15_terr3"]
-[ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="17_8sc40"]
 [ext_resource type="Script" uid="uid://b3vpbmlsf8571" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/balder_boss_mechanics.gd" id="17_kn25j"]
 [ext_resource type="Texture2D" uid="uid://fas6gxj6up3p" path="res://assets/first_party/towers/Tower_Patchwork_Ruined2.png" id="17_rdxe2"]
 [ext_resource type="PackedScene" uid="uid://dj7i8jhtif61i" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/components/equipo_1_balder_throwing_enemy.tscn" id="17_rkiqp"]
 [ext_resource type="Script" uid="uid://50qvf81he027" path="res://scenes/quests/story_quests/equipo_1/2_combat/area_trigger.gd" id="20_8sc40"]
+[ext_resource type="PackedScene" uid="uid://c4ef2e8dic18c" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/disparo_extra.tscn" id="21_kn25j"]
 [ext_resource type="Resource" uid="uid://bbpvljhnjrtt0" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/equipo_1_sequence_puzzle.dialogue" id="22_0ne12"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="24_hss0q"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_kstbw"]
@@ -66,8 +66,9 @@ y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=747348360 instance=ExtResource("5_2hp60")]
 unique_name_in_owner = true
-position = Vector2(-165, 424)
+position = Vector2(328, 285)
 sprite_frames = ExtResource("6_0532a")
+metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1732237457]
 limit_left = -442
@@ -202,20 +203,17 @@ texture = ExtResource("15_terr3")
 [node name="BalderBoss" type="Node" parent="." unique_id=735473446]
 script = ExtResource("17_kn25j")
 
-[node name="FillingBarrel" parent="BalderBoss" unique_id=1861594411 instance=ExtResource("17_8sc40")]
-position = Vector2(223, 320)
-
 [node name="BalderFuturo" parent="BalderBoss" unique_id=1243855514 instance=ExtResource("17_rkiqp")]
 unique_name_in_owner = true
-position = Vector2(399, 289)
+position = Vector2(141, 122)
 collision_layer = 0
 collision_mask = 0
 throwing_period = 1.0
-autostart = true
-projectile_speed = 100.0
+projectile_speed = 5.0
 walking_time = 1.0
 walking_range = 800.0
 walking_speed = 150.0
+metadata/_edit_group_ = true
 
 [node name="Timer" parent="BalderBoss/BalderFuturo" index="2" unique_id=2084913349]
 wait_time = 1.0
@@ -227,7 +225,7 @@ script = ExtResource("20_8sc40")
 can_use = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="prueba/atacar" unique_id=323644234]
-position = Vector2(99, 606.25)
+position = Vector2(412, 352)
 shape = SubResource("RectangleShape2D_kn25j")
 
 [node name="parar" type="Area2D" parent="prueba" unique_id=398758717]
@@ -246,8 +244,46 @@ can_use = true
 position = Vector2(222, 738)
 shape = SubResource("RectangleShape2D_kn25j")
 
+[node name="EnemigosDisparos" type="Node" parent="." unique_id=217209903]
+unique_name_in_owner = true
+
+[node name="Disparo1" parent="EnemigosDisparos" unique_id=316159835 instance=ExtResource("21_kn25j")]
+visible = false
+position = Vector2(-555, -89)
+
+[node name="Disparo2" parent="EnemigosDisparos" unique_id=934165305 instance=ExtResource("21_kn25j")]
+visible = false
+position = Vector2(-547, -94)
+
+[node name="Disparo3" parent="EnemigosDisparos" unique_id=623606772 instance=ExtResource("21_kn25j")]
+visible = false
+position = Vector2(-545, -86)
+
+[node name="Disparo4" parent="EnemigosDisparos" unique_id=1189948498 instance=ExtResource("21_kn25j")]
+visible = false
+position = Vector2(-547, -91)
+
+[node name="PlayerTargets" type="Node" parent="." unique_id=2117500013]
+unique_name_in_owner = true
+
+[node name="Target1" type="Node2D" parent="PlayerTargets" unique_id=20706537]
+visible = false
+position = Vector2(-750, 205)
+
+[node name="Target2" type="Node2D" parent="PlayerTargets" unique_id=735768150]
+visible = false
+position = Vector2(-750, 205)
+
+[node name="Target3" type="Node2D" parent="PlayerTargets" unique_id=1124487032]
+visible = false
+position = Vector2(-750, 205)
+
+[node name="Target4" type="Node2D" parent="PlayerTargets" unique_id=275673817]
+visible = false
+position = Vector2(-750, 205)
+
 [connection signal="body_entered" from="BalderBoss/BalderFuturo/HitBox" to="BalderBoss" method="_on_damaged"]
-[connection signal="event" from="prueba/atacar" to="BalderBoss" method="_ejecutar_ataque"]
+[connection signal="event" from="prueba/atacar" to="BalderBoss" method="ataque_barrido_prueba"]
 [connection signal="event" from="prueba/parar" to="BalderBoss" method="_pausar"]
 [connection signal="event" from="prueba/resumir" to="BalderBoss" method="_reanudar"]
 
