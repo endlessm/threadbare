@@ -1,19 +1,19 @@
 [gd_scene format=4 uid="uid://cykild4nmsaom"]
 
-[ext_resource type="Script" uid="uid://4j6fvyhsis6o" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/room1.gd" id="1_he6jf"]
+[ext_resource type="Script" uid="uid://4ixnt038hytg" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/room_1_mejoras.gd" id="1_m2lsl"]
 [ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="2_m2lsl"]
 [ext_resource type="TileSet" uid="uid://chmqpyc2nqxxt" path="res://scenes/quests/story_quests/el_abrigo/el_abrigo_tileset/el_abrigo_tileset.tres" id="3_itnce"]
 [ext_resource type="Texture2D" uid="uid://bpodc8y0eukqw" path="res://art/Madera.png" id="4_obkiu"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="5_qwre6"]
 [ext_resource type="Resource" uid="uid://b3pl62i4vjsym" path="res://art/The_last_card_Room1.dialogue" id="6_vi5q3"]
 [ext_resource type="PackedScene" uid="uid://e3vubu06sx60" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Player.tscn" id="7_c31e7"]
-[ext_resource type="SpriteFrames" uid="uid://nfm4t7txex23" path="res://scenes/quests/story_quests/after_the_tremor/player_components/personajes/ente.tres" id="8_1qyue"]
 [ext_resource type="Script" uid="uid://df1hlhbkn06ws" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/hidden_letter.gd" id="9_rbnga"]
 [ext_resource type="PackedScene" uid="uid://dhydhpp43urah" path="res://scenes/ui_elements/dialogue/balloon.tscn" id="10_c21pb"]
 [ext_resource type="AudioStream" uid="uid://caha8luj754tw" path="res://scenes/quests/story_quests/after_the_tremor/music/enteaparece.ogg" id="11_wp0f4"]
 [ext_resource type="Script" uid="uid://c5lpc0gcc61by" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/teclado.gd" id="12_6mhfu"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="13_71wsy"]
-[ext_resource type="Script" uid="uid://c477jgx4lwr86" path="res://scenes/game_elements/characters/enemies/guard/components/guard_movement.gd" id="13_m2lsl"]
+[ext_resource type="PackedScene" uid="uid://cp7o3k22dkps7" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Zombie.tscn" id="14_itnce"]
+[ext_resource type="PackedScene" uid="uid://qgglhtnrdf5b" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Puerta.tscn" id="14_m2lsl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nkgo5"]
 texture = ExtResource("4_obkiu")
@@ -228,9 +228,6 @@ size = Vector2(563.25, 101)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v5i57"]
 size = Vector2(45, 517)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_andj5"]
-size = Vector2(82, 90)
-
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_iemrx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hyuec"]
@@ -259,7 +256,7 @@ point_count = 3
 
 [node name="SequencePuzzleTemplate" type="Node2D" unique_id=341518395]
 position = Vector2(0, 47)
-script = ExtResource("1_he6jf")
+script = ExtResource("1_m2lsl")
 
 [node name="PlayerMode" type="Node" parent="." unique_id=368062140]
 script = ExtResource("2_m2lsl")
@@ -326,19 +323,6 @@ debug_color = Color(0.7342049, 0.43056855, 0.51583934, 0.41960785)
 wait_time = 90.0
 one_shot = true
 autostart = true
-
-[node name="Zombie" type="CharacterBody2D" parent="." unique_id=2063481425]
-position = Vector2(800, 400)
-scale = Vector2(1.5, 1.5)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Zombie" unique_id=1221902196]
-scale = Vector2(0.3, 0.3)
-sprite_frames = ExtResource("8_1qyue")
-animation = &"idle"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Zombie" unique_id=1974197924]
-position = Vector2(2, 0)
-shape = SubResource("RectangleShape2D_andj5")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1295604188]
 position = Vector2(650, 300)
@@ -696,14 +680,6 @@ max_length = 5
 
 [node name="Guard" parent="." unique_id=1128917841 instance=ExtResource("13_71wsy")]
 position = Vector2(173, 902.00006)
-sprite_frames = null
-wait_time = null
-move_speed = null
-player_instantly_detected_on_sight = null
-time_to_detect_player = null
-detection_area_scale = null
-move_while_in_editor = null
-show_debug_info = null
 
 [node name="Guard-PatrolPath" type="Path2D" parent="." unique_id=1335407777]
 position = Vector2(165, 917)
@@ -712,18 +688,9 @@ curve = SubResource("Curve2D_2rwjr")
 
 [node name="Guard2" parent="." unique_id=1241441265 instance=ExtResource("13_71wsy")]
 position = Vector2(2701, 1004)
-script = ExtResource("13_m2lsl")
 
 [node name="Guard3" parent="." unique_id=1490058801 instance=ExtResource("13_71wsy")]
 position = Vector2(1401, 16.968994)
-sprite_frames = null
-wait_time = null
-move_speed = null
-player_instantly_detected_on_sight = null
-time_to_detect_player = null
-detection_area_scale = null
-move_while_in_editor = null
-show_debug_info = null
 
 [node name="Guard2-PatrolPath" type="Path2D" parent="." unique_id=600864424]
 position = Vector2(2701, 1004)
@@ -739,3 +706,16 @@ curve = SubResource("Curve2D_266br")
 position = Vector2(800, 1200)
 collision_layer = 1
 collision_mask = 17
+
+[node name="Zombie" parent="." unique_id=801310029 groups=["guard_enemy", "player"] instance=ExtResource("14_itnce")]
+position = Vector2(600, 100)
+scale = Vector2(0.6, 0.6)
+platform_wall_layers = 1
+speed = 100.0
+detection_radius = 500.0
+kill_distance = 100.0
+player_path = NodePath("../Player")
+
+[node name="Puerta" parent="." unique_id=1352736772 instance=ExtResource("14_m2lsl")]
+light_mask = 1048575
+visibility_layer = 1048543
