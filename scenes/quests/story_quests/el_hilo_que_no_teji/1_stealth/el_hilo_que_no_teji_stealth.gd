@@ -108,6 +108,16 @@ func _on_collectible_item_3_tree_exited() -> void:
 		hilos_totales += 1
 		actualizar_color()
 
+# En el script de la raíz de tu nivel actual:
+@onready var player_sprite: AnimatedSprite2D = $Player/AnimatedSprite2D
+
+func _process(_delta: float) -> void:
+	# Verificamos si el jugador está reproduciendo la animación normal
+	if player_sprite.animation == "walk":
+		player_sprite.animation = "c_walk"
+	elif player_sprite.animation == "idle":
+		player_sprite.animation = "c_idle"
+
 
 func _on_zona_climax_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):

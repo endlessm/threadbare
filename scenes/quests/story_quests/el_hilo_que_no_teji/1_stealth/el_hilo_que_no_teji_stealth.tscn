@@ -8,7 +8,6 @@
 [ext_resource type="TileSet" uid="uid://d2mtxt1q8ymnc" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_elevation_2.tres" id="4_qxjpk"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="5_3ut71"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_ac6ai"]
-[ext_resource type="SpriteFrames" uid="uid://pe5f4oarex8m" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/player_components/el_hilo_que_no_teji_player.tres" id="6_kjqur"]
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="6_qxjpk"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="7_l1c3l"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="8_l1c3l"]
@@ -16,7 +15,6 @@
 [ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="9_pljot"]
 [ext_resource type="TileSet" uid="uid://cm47p7eqxfdds" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_ladders.tres" id="9_pls6f"]
 [ext_resource type="TileSet" uid="uid://bc2u83inkptpc" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_void_chromakey.tres" id="10_qc1q3"]
-[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="11_pljot"]
 [ext_resource type="TileSet" uid="uid://6wyq888afw6m" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_void_chromakey_walkable.tres" id="11_ujlnr"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="12_pls6f"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="13_3x148"]
@@ -24,7 +22,10 @@
 [ext_resource type="AudioStream" uid="uid://dfhy5ea7edbxf" path="res://scenes/quests/story_quests/el_ojo_revelador/el_ojo_revelador_audios/Suspenso.wav" id="14_qc1q3"]
 [ext_resource type="SpriteFrames" uid="uid://co8o888wc5oc7" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/el_hilo_que_no_teji_shadow01_enemy.tres" id="15_l1c3l"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="15_t4hu1"]
+[ext_resource type="SpriteFrames" uid="uid://pe5f4oarex8m" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/lino/el_hilo_que_no_teji_player_collar.tres" id="16_3x148"]
 [ext_resource type="Resource" uid="uid://cut4yag2eux0s" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/el_hilo_que_no_teji_stealth.dialogue" id="16_4s4pt"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="16_goofh"]
+[ext_resource type="SpriteFrames" uid="uid://d1jsrwm2u7mfr" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/lino/el_hilo_que_no_teji_player.tres" id="17_3x148"]
 [ext_resource type="SpriteFrames" uid="uid://c6sdvderulugs" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/el_hilo_que_no_teji_shadow05_enemy.tres" id="17_pljot"]
 [ext_resource type="PackedScene" uid="uid://d3qifxaldyvfd" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/shaders/hud2.tscn" id="22_l1c3l"]
 [ext_resource type="Shader" uid="uid://dxbe3ygx05u8l" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/el_hilo_que_no_teji_stealth.gdshader" id="27_3x148"]
@@ -36,11 +37,21 @@ emission_sphere_radius = 45.0
 gravity = Vector3(0, -50, 0)
 color = Color(1, 0.84313726, 0, 1)
 
-[sub_resource type="Resource" id="Resource_qshk0"]
-script = ExtResource("11_pljot")
+[sub_resource type="Resource" id="Resource_t4hu1"]
+script = ExtResource("16_goofh")
 walk_speed = 200.0
 run_speed = 300.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
+
+[sub_resource type="Animation" id="Animation_3x148"]
+resource_name = "confused"
+length = 4.0
+step = 4.0
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_goofh"]
+_data = {
+&"confused": SubResource("Animation_3x148")
+}
 
 [sub_resource type="Curve2D" id="Curve2D_l1c3l"]
 _data = {
@@ -203,8 +214,8 @@ visible = false
 [node name="Player" parent="." unique_id=1079296690 instance=ExtResource("5_ac6ai")]
 position = Vector2(606, 1766)
 scale = Vector2(0.9, 0.9)
-speeds = SubResource("Resource_qshk0")
-sprite_frames = ExtResource("6_kjqur")
+speeds = SubResource("Resource_t4hu1")
+sprite_frames = ExtResource("16_3x148")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1196891219]
 process_mode = 3
@@ -216,6 +227,15 @@ limit_right = 2079
 limit_bottom = 2499
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player" unique_id=1962364012]
+visible = false
+sprite_frames = ExtResource("17_3x148")
+animation = &"c_run"
+frame_progress = 0.9035758
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="Player" unique_id=2035224619]
+libraries/ = SubResource("AnimationLibrary_goofh")
 
 [node name="EnemyGuards" type="Node2D" parent="." unique_id=1997239040]
 y_sort_enabled = true
