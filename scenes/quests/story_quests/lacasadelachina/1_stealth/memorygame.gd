@@ -10,7 +10,6 @@ const SIMBOLOS = [
 ]
 
 const CARD_BACK = "res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/card_back.png"
-const CARD_SIZE = Vector2(64, 64)
 
 @onready var panel       = get_node("PanelFondo")
 @onready var lbl_ronda   = get_node("PanelFondo/VBoxContainer/Lblronda")
@@ -36,10 +35,13 @@ signal minijuego_completado
 
 func _ready():
 	visible = false
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func iniciar():
-	ronda_actual = 0
+	if visible:
+		return
 	visible = true
+	get_tree().paused = true
 	_cargar_ronda()
 
 func _cargar_ronda():
@@ -78,9 +80,9 @@ func _crear_mazo(num_pares: int) -> Array:
 
 func _crear_carta(simbolo_path: String, col: int, fila: int):
 	var btn = TextureButton.new()
-	btn.size = Vector2(64, 64)
-	btn.custom_minimum_size = Vector2(64, 64)
-	btn.position = Vector2(20 + col * 70, 80 + fila * 70)
+	btn.size = Vector2(128, 128)
+	btn.custom_minimum_size = Vector2(128, 128)
+	btn.position = Vector2(20 + col * 140, 80 + fila * 140)
 	btn.ignore_texture_size = true
 	btn.stretch_mode = TextureButton.STRETCH_SCALE
 	btn.texture_normal = load(CARD_BACK) as Texture2D
@@ -109,8 +111,8 @@ func _evaluar_par():
 	var c2 : TextureButton = cartas_volteadas[1]
 
 	if c1.get_meta("simbolo") == c2.get_meta("simbolo"):
-		c1.modulate = Color(0.5, 1.0, 0.5)
-		c2.modulate = Color(0.5, 1.0, 0.5)
+		c1.modulate = Color(0.637, 0.274, 1.0, 1.0)
+		c2.modulate = Color(0.639, 0.275, 1.0, 1.0)
 		c1.disabled = true
 		c2.disabled = true
 		pares_encontrados += 1
@@ -143,13 +145,15 @@ func _ronda_completada():
 	ronda_actual += 1
 
 	if ronda_actual < RONDAS.size():
-		lbl_mensaje.text    = "¡Bien! Ronda %d…" % (ronda_actual + 1)
+		lbl_mensaje.text = "¡Bien! Avanza al siguiente guardia..."
 		lbl_mensaje.visible = true
 		await get_tree().create_timer(1.5).timeout
-		_cargar_ronda()
+		visible = false
+		get_tree().paused = false
 	else:
-		lbl_mensaje.text    = "¡El guardián se aparta!\nEl camino es tuyo."
+		lbl_mensaje.text = "¡El camino es tuyo!"
 		lbl_mensaje.visible = true
 		await get_tree().create_timer(2.0).timeout
 		visible = false
+		get_tree().paused = false
 		emit_signal("minijuego_completado")
