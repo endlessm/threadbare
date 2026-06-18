@@ -29,5 +29,7 @@ func _reducir_vida_jugador(body:Node2D)->void:
 		return
 	vidas=vidas-1;
 	if(vidas <1):
-		derrota.emit()	
+		derrota.emit()
+		for e in enemigos:
+			e.visible= false	
 				
