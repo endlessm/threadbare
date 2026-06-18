@@ -57,7 +57,6 @@
 [ext_resource type="Texture2D" uid="uid://c4ugqshwlk6on" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/tumba4.png" id="36_u7yjy"]
 [ext_resource type="Texture2D" uid="uid://c4s3fotlhq0sd" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/tumba2.png" id="37_twqfm"]
 [ext_resource type="Texture2D" uid="uid://b8on50y5usng8" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/tumba3.png" id="38_c177o"]
-[ext_resource type="Texture2D" uid="uid://cngn8vxpim77v" path="res://assets/third_party/tiny-swords/Deco/02.png" id="38_n76n8"]
 [ext_resource type="Script" uid="uid://yhfnfnrxnl76" path="res://scenes/quests/story_quests/phantom_toy/1_stealth/mini1/map/objeto_1.gd" id="38_uncuq"]
 [ext_resource type="Texture2D" uid="uid://b8p8hgyfa0hy5" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/tumba.png" id="39_1gla6"]
 [ext_resource type="Texture2D" uid="uid://dk728pfcvm5xh" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/arbol_creepy.png" id="41_os1fy"]
@@ -67,7 +66,11 @@
 [ext_resource type="Texture2D" uid="uid://ba73plhmg3c3m" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/calavera_sombrero_payaso.png" id="44_f3gqp"]
 [ext_resource type="Texture2D" uid="uid://bofjt1jp6jm55" path="res://scenes/quests/story_quests/phantom_toy/assets/sombra/crawl_sombra/crawl_sombra_crawl_sombra_0.png" id="62_6o8ve"]
 [ext_resource type="Texture2D" uid="uid://8pug4se450on" path="res://scenes/quests/story_quests/phantom_toy/assets/sombra/crawl_sombra/crawl_sombra_crawl_sombra_1.png" id="63_wyi20"]
+[ext_resource type="Texture2D" uid="uid://w2s50y2t2wda" path="res://scenes/quests/story_quests/phantom_toy/assets/fragmento/fragmento_steady_1_fragmento_steady_0.png" id="67_ufxrk"]
+[ext_resource type="Texture2D" uid="uid://b7pd1ejn8q464" path="res://scenes/quests/story_quests/phantom_toy/assets/fragmento/fragmento_steady_2_fragmento2_steady_0.png" id="68_k5vny"]
 [ext_resource type="Script" uid="uid://7dt0g7if5ioq" path="res://scenes/quests/story_quests/phantom_toy/1_stealth/mini1/map/control_sprint_2d.gd" id="68_wyi20"]
+[ext_resource type="Texture2D" uid="uid://e2xmjg7o04i" path="res://scenes/quests/story_quests/phantom_toy/assets/fragmento/fragmento_steady_3_fragmento3_steady_0.png" id="69_qqn4l"]
+[ext_resource type="Script" uid="uid://71x33v8j6nqq" path="res://scenes/quests/story_quests/phantom_toy/1_stealth/mini1/map/sprint_manager.gd" id="71_ra78s"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xvqqf"]
 texture = ExtResource("3_n76n8")
@@ -1211,10 +1214,10 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x0t7c"]
-size = Vector2(212, 221)
+size = Vector2(96.00001, 101.33334)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dwakq"]
-size = Vector2(222.5, 215)
+size = Vector2(191.83334, 200)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_s0f47"]
 a = Vector2(-292, -850)
@@ -1369,6 +1372,8 @@ dialogue = ExtResource("11_8iw7s")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Enemy" type="CharacterBody2D" parent="." unique_id=825104946]
+visible = false
+scale = Vector2(1.5, 1.5)
 script = ExtResource("13_dwakq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Enemy" unique_id=1580656875]
@@ -1378,13 +1383,13 @@ animation = &"walk"
 flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy" unique_id=422754764]
-position = Vector2(1, 9.5)
+position = Vector2(-14.666672, 1.3333435)
 shape = SubResource("RectangleShape2D_x0t7c")
 
 [node name="Area2D" type="Area2D" parent="Enemy" unique_id=1718667051]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/Area2D" unique_id=994363504]
-position = Vector2(2.75, 8.5)
+position = Vector2(-12.583328, 16)
 shape = SubResource("RectangleShape2D_dwakq")
 
 [node name="PointLight2D2" type="PointLight2D" parent="Enemy" unique_id=1681769355]
@@ -1395,7 +1400,7 @@ texture_scale = 1.78
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1937971254]
 position = Vector2(3, 0)
-color = Color(0.5673677, 0.56736773, 0.56736773, 1)
+color = Color(0, 0, 0, 1)
 
 [node name="Musica" type="AudioStreamPlayer" parent="." unique_id=1573818977]
 stream = ExtResource("23_83dqn")
@@ -1425,7 +1430,7 @@ script = ExtResource("38_uncuq")
 
 [node name="fragmento1" type="Sprite2D" parent="Objeto1" unique_id=316124490]
 scale = Vector2(2.1718752, 2.1015625)
-texture = ExtResource("38_n76n8")
+texture = ExtResource("67_ufxrk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Objeto1" unique_id=533937868]
 shape = SubResource("RectangleShape2D_uncuq")
@@ -1436,7 +1441,7 @@ script = ExtResource("38_uncuq")
 
 [node name="fragmento2" type="Sprite2D" parent="Objeto2" unique_id=188716215]
 scale = Vector2(1.3125, 1.296875)
-texture = ExtResource("38_n76n8")
+texture = ExtResource("68_k5vny")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Objeto2" unique_id=1690064293]
 shape = SubResource("RectangleShape2D_07iaq")
@@ -1447,7 +1452,7 @@ script = ExtResource("38_uncuq")
 
 [node name="Sprite2D" type="Sprite2D" parent="Objeto3" unique_id=1182850598]
 scale = Vector2(1.3359376, 1.4531249)
-texture = ExtResource("38_n76n8")
+texture = ExtResource("69_qqn4l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Objeto3" unique_id=1939212728]
 shape = SubResource("RectangleShape2D_l34yg")
@@ -1498,6 +1503,7 @@ position = Vector2(2175.125, -452.9375)
 shape = SubResource("RectangleShape2D_wyi20")
 
 [node name="ControlSprint2D" type="Node2D" parent="." unique_id=158525800]
+visible = false
 script = ExtResource("68_wyi20")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1001968405]
@@ -1547,6 +1553,9 @@ shape = SubResource("RectangleShape2D_ayaw3")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D11" unique_id=1491759947]
 position = Vector2(1662.5, 506.5)
 shape = SubResource("RectangleShape2D_c177o")
+
+[node name="SprintManager" type="Node2D" parent="." unique_id=1135301782]
+script = ExtResource("71_ra78s")
 
 [connection signal="cinematic_finished" from="Cinematic" to="." method="_on_cinematic_cinematic_finished"]
 [connection signal="body_entered" from="Enemy/Area2D" to="Enemy" method="_on_area_2d_body_entered"]
