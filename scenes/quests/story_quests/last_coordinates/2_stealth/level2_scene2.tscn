@@ -4,19 +4,18 @@
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="2_hhr7y"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_hbdua"]
 [ext_resource type="SpriteFrames" uid="uid://6lrnci820w0p" path="res://scenes/quests/story_quests/last_coordinates/player_components/last_coordinates_player.tres" id="4_1kbn2"]
-[ext_resource type="Texture2D" uid="uid://bjevnkfj35gch" path="res://scenes/quests/story_quests/last_coordinates/assets/enemies/road.png" id="5_rqasq"]
+[ext_resource type="Texture2D" uid="uid://bjevnkfj35gch" path="res://scenes/quests/story_quests/last_coordinates/assets/floor/road.png" id="5_rqasq"]
 [ext_resource type="Texture2D" uid="uid://ce864ov55arwi" path="res://scenes/quests/story_quests/last_coordinates/assets/floor/wooden_floor.png" id="6_mgv8s"]
 [ext_resource type="Texture2D" uid="uid://bp3rqfaokud51" path="res://scenes/quests/story_quests/last_coordinates/assets/buildings/house_gray_destroyed.png" id="7_lee21"]
 [ext_resource type="Texture2D" uid="uid://b67jl7gt7jipe" path="res://scenes/quests/story_quests/last_coordinates/assets/buildings/house_gray.png" id="8_3t3uq"]
 [ext_resource type="Texture2D" uid="uid://4ugpmvga32eo" path="res://scenes/quests/story_quests/last_coordinates/assets/minigame2_bricks.png" id="9_bff13"]
-[ext_resource type="Texture2D" uid="uid://dlx78iuooaba0" path="res://scenes/quests/story_quests/last_coordinates/assets/Luces.png" id="10_lsx11"]
+[ext_resource type="Texture2D" path="res://scenes/quests/story_quests/last_coordinates/assets/Luces.png" id="10_lsx11"]
 [ext_resource type="PackedScene" uid="uid://c8dmgv3bp8kum" path="res://scenes/quests/story_quests/last_coordinates/assets/obstacles/obstacle_vertical.tscn" id="12_631kd"]
 [ext_resource type="PackedScene" uid="uid://dlo6bm0003vln" path="res://scenes/quests/story_quests/last_coordinates/assets/obstacles/obstacle_horizontal.tscn" id="13_vsnx1"]
 [ext_resource type="PackedScene" uid="uid://bym2x4mxm04jk" path="res://scenes/quests/story_quests/last_coordinates/assets/enemies/last_coordinates_guard.tscn" id="14_xvrmc"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="17_b12i6"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="18_reodc"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="19_6olrc"]
-[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="19_epnnw"]
 [ext_resource type="Resource" uid="uid://bpikrbutau6h4" path="res://scenes/quests/story_quests/last_coordinates/2_stealth/stealth_components/collected.dialogue" id="20_f6137"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5lsdd"]
@@ -393,9 +392,6 @@ script = ExtResource("19_6olrc")
 type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wic7j"]
-size = Vector2(74, 129)
-
 [node name="LastCoordinatesStealth" type="Node2D" unique_id=528815133]
 
 [node name="PlayerMode" type="Node" parent="." unique_id=2011864890]
@@ -410,7 +406,7 @@ color = Color(0.48235294, 0.48235294, 0.48235294, 1)
 
 [node name="Player" parent="." unique_id=1079296690 instance=ExtResource("3_hbdua")]
 z_index = 1
-position = Vector2(2727, 1780)
+position = Vector2(43, 1789)
 sprite_frames = ExtResource("4_1kbn2")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1196891219]
@@ -543,9 +539,9 @@ position = Vector2(12, 1)
 curve = SubResource("Curve2D_ckw1w")
 
 [node name="Guard6" parent="EnemyGuards" unique_id=1815850028 node_paths=PackedStringArray("patrol_path") instance=ExtResource("14_xvrmc")]
-position = Vector2(1640, 2022)
-patrol_path = NodePath("../Guard3 - Patrol Path")
-wait_time = 0.7
+position = Vector2(898, 202)
+patrol_path = NodePath("../Guard6 - Patrol Path")
+wait_time = 0.0
 move_speed = 300.0
 detection_area_scale = 1.5
 
@@ -632,17 +628,7 @@ y_sort_enabled = true
 
 [node name="CollectibleItem" parent="." unique_id=1779229490 instance=ExtResource("18_reodc")]
 modulate = Color(0.99999994, 0.19859871, 0.7341849, 1)
-position = Vector2(3418, 1183)
-next_scene = "uid://bbauo5ahyr8js"
+position = Vector2(4334, 128)
+next_scene = "uid://dv4mj3dgdvdg5"
 item = SubResource("Resource_7qi7u")
 collected_dialogue = ExtResource("20_f6137")
-
-[node name="Teleporter" type="Area2D" parent="." unique_id=330713067]
-position = Vector2(4403, 127)
-collision_layer = 4
-script = ExtResource("19_epnnw")
-next_scene = "uid://dv4mj3dgdvdg5"
-metadata/_custom_type_script = "uid://hqdquinbimce"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" unique_id=1452339731]
-shape = SubResource("RectangleShape2D_wic7j")
