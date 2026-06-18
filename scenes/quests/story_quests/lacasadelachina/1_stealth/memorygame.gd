@@ -3,7 +3,7 @@ extends Control
 const RONDAS = [4, 6, 8]
 const SIMBOLOS = [
 	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/rana.png",
-	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/sol.png",
+	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/sol.jpg",
 	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/serpiente.png",
 	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/mariposa.png",
 	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/condor.png",
@@ -131,20 +131,16 @@ func _evaluar_par():
 	puede_voltear = true
 
 func _ronda_completada():
+	# Oculta bloqueo y guardián de la ronda que acaba de terminar
 	if ronda_actual == 0:
 		bloqueo1.visible = false
-		if is_instance_valid(guardia1):
-			guardia1.queue_free()
-
+		guardia1.visible = false
 	elif ronda_actual == 1:
 		bloqueo2.visible = false
-		if is_instance_valid(guardia2):
-			guardia2.queue_free()
-
+		guardia2.visible = false
 	elif ronda_actual == 2:
 		bloqueo3.visible = false
-		if is_instance_valid(guardia3):
-			guardia3.queue_free()
+		guardia3.visible = false
 
 	ronda_actual += 1
 
