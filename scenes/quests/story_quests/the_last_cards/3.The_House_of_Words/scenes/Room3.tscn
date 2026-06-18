@@ -235,6 +235,31 @@ size = Vector2(45, 517)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hyuec"]
 size = Vector2(498, 710)
 
+[sub_resource type="Curve2D" id="Curve2D_ofmwm"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 15.580475, 0.06231308, 0, 0, 0, 0, 975.7269, 2.741784)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_mjb4d"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 742, 20.462646)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_h61pw"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 24.539429, 6.1360903, 0, 0, 0, 0, 1045.3816, 66.98564)
+}
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_ofmwm"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mjb4d"]
+gradient = SubResource("Gradient_ofmwm")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0.017094018, 0.98717946)
+
 [node name="SequencePuzzleTemplate2" type="Node2D" unique_id=341518395]
 position = Vector2(0, 47)
 script = ExtResource("1_5hlaq")
@@ -455,3 +480,47 @@ texture = ExtResource("8_2a3qg")
 wait_time = 90.0
 one_shot = true
 autostart = true
+
+[node name="Guard" parent="." unique_id=764796754 node_paths=PackedStringArray("patrol_path") instance=ExtResource("4_ekjj7")]
+position = Vector2(160, 863.00006)
+motion_mode = 0
+patrol_path = NodePath("")
+move_speed = 45.0
+time_to_detect_player = 3.1
+detection_area_scale = 0.7999999999999999
+
+[node name="Guard2" parent="." unique_id=1070680655 node_paths=PackedStringArray("patrol_path") instance=ExtResource("4_ekjj7")]
+position = Vector2(2701, 949)
+motion_mode = 0
+patrol_path = NodePath("")
+move_speed = 60.0
+time_to_detect_player = 4.0
+detection_area_scale = 0.7
+
+[node name="Guard3" parent="." unique_id=244167138 node_paths=PackedStringArray("patrol_path") instance=ExtResource("4_ekjj7")]
+position = Vector2(1405, 3)
+motion_mode = 0
+patrol_path = NodePath("")
+move_speed = 60.0
+time_to_detect_player = 4.0
+detection_area_scale = 0.6
+
+[node name="Guard-PatrolPath" type="Path2D" parent="." unique_id=450979180]
+position = Vector2(144, 856.00006)
+scale = Vector2(1.0269266, 112.3356)
+curve = SubResource("Curve2D_ofmwm")
+
+[node name="Guard2-PatrolPath" type="Path2D" parent="." unique_id=505917345]
+position = Vector2(2701, 949)
+scale = Vector2(1, 17.250944)
+curve = SubResource("Curve2D_mjb4d")
+
+[node name="Guard3-PatrolPath" type="Path2D" parent="." unique_id=551017576]
+position = Vector2(1380, -21.000004)
+scale = Vector2(1.0187668, 3.9112856)
+curve = SubResource("Curve2D_h61pw")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=626183697]
+position = Vector2(3244.5, 325.50006)
+scale = Vector2(8.390621, 11.859375)
+texture = SubResource("GradientTexture2D_mjb4d")
