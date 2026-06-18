@@ -3,7 +3,6 @@
 @tool
 class_name Guard extends CharacterBody2D
 ## Enemy type that patrols along a path and raises an alert if the player is detected.
-
 ## Emitted when the player is detected.
 ## [br][br]
 ## As the name suggests, this is typically a [Player], but may be some

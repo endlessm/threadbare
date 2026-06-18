@@ -37,7 +37,7 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 
 ## The character's name. This is used to highlight when the player's character
 ## is speaking during dialogue.
-@export var player_name: String = "Player Name"
+@export var player_name: String = "player name"
 
 ## The current player state.
 @export var mode: Mode = Mode.USER_CONTROLLED:
