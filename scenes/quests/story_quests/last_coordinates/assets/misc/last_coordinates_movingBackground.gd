@@ -14,7 +14,7 @@ var x_length : int = 0.0
 ## Background
 @export var background : TextureRect
 
-## Duration in seconds of moving background
+## Duration in seconds of moving background	
 @export var duration : float = 10.0
 
 
@@ -26,12 +26,17 @@ func _ready() -> void:
 	camera.limit_bottom = y_length
 	camera.limit_right = x_length
 	speed = y_length / duration
-	pass
 	
 
+## Sets the background scale depending on viewport
+func set_scale_for_background() -> void:
+	var scale_x = get_viewport_rect().size.x / background.size.x
+	var scale_y = get_viewport_rect().size.y / background.size.y
+	background.scale = Vector2(scale_x, scale_y)
+	pass
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	camera.move_local_y(speed * delta)
-	

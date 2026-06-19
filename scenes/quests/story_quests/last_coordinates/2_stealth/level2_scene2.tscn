@@ -2,14 +2,15 @@
 
 [ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_s7i34"]
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="2_hhr7y"]
+[ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="3_cj4uv"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_hbdua"]
 [ext_resource type="SpriteFrames" uid="uid://6lrnci820w0p" path="res://scenes/quests/story_quests/last_coordinates/player_components/last_coordinates_player.tres" id="4_1kbn2"]
+[ext_resource type="AudioStream" uid="uid://cqx1ipgkpvvbo" path="res://scenes/quests/story_quests/last_coordinates/assets/sounds/lc_The_Void_Creep_Loop.ogg" id="4_epnnw"]
 [ext_resource type="Texture2D" uid="uid://bjevnkfj35gch" path="res://scenes/quests/story_quests/last_coordinates/assets/floor/road.png" id="5_rqasq"]
 [ext_resource type="Texture2D" uid="uid://ce864ov55arwi" path="res://scenes/quests/story_quests/last_coordinates/assets/floor/wooden_floor.png" id="6_mgv8s"]
 [ext_resource type="Texture2D" uid="uid://bp3rqfaokud51" path="res://scenes/quests/story_quests/last_coordinates/assets/buildings/house_gray_destroyed.png" id="7_lee21"]
 [ext_resource type="Texture2D" uid="uid://b67jl7gt7jipe" path="res://scenes/quests/story_quests/last_coordinates/assets/buildings/house_gray.png" id="8_3t3uq"]
 [ext_resource type="Texture2D" uid="uid://4ugpmvga32eo" path="res://scenes/quests/story_quests/last_coordinates/assets/minigame2_bricks.png" id="9_bff13"]
-[ext_resource type="Texture2D" path="res://scenes/quests/story_quests/last_coordinates/assets/Luces.png" id="10_lsx11"]
 [ext_resource type="PackedScene" uid="uid://c8dmgv3bp8kum" path="res://scenes/quests/story_quests/last_coordinates/assets/obstacles/obstacle_vertical.tscn" id="12_631kd"]
 [ext_resource type="PackedScene" uid="uid://dlo6bm0003vln" path="res://scenes/quests/story_quests/last_coordinates/assets/obstacles/obstacle_horizontal.tscn" id="13_vsnx1"]
 [ext_resource type="PackedScene" uid="uid://bym2x4mxm04jk" path="res://scenes/quests/story_quests/last_coordinates/assets/enemies/last_coordinates_guard.tscn" id="14_xvrmc"]
@@ -59,10 +60,6 @@ texture_region_size = Vector2i(64, 64)
 3:4/0 = 0
 4:4/0 = 0
 4:3/0 = 0
-3:1/0 = 0
-3:0/0 = 0
-4:0/0 = 0
-4:1/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ckw1w"]
 texture = ExtResource("6_mgv8s")
@@ -303,41 +300,12 @@ texture_region_size = Vector2i(64, 64)
 3:3/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_btn6b")
 3:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(1.6934242, -32, -32, 0.5644722, 0, 32, 32, 0.5644722)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rhgso"]
-texture = ExtResource("10_lsx11")
-texture_region_size = Vector2i(64, 64)
-0:0/0 = 0
-1:0/0 = 0
-0:3/0 = 0
-0:4/0 = 0
-0:1/0 = 0
-1:1/0 = 0
-1:4/0 = 0
-1:3/0 = 0
-5:0/0 = 0
-5:1/0 = 0
-6:1/0 = 0
-6:0/0 = 0
-5:3/0 = 0
-5:4/0 = 0
-6:4/0 = 0
-6:3/0 = 0
-8:3/0 = 0
-8:4/0 = 0
-9:4/0 = 0
-9:3/0 = 0
-8:0/0 = 0
-8:1/0 = 0
-9:1/0 = 0
-9:0/0 = 0
-
 [sub_resource type="TileSet" id="TileSet_4dax4"]
 tile_size = Vector2i(64, 64)
 occlusion_layer_0/light_mask = 1
 physics_layer_0/collision_layer = 24
 physics_layer_0/collision_mask = 3
 sources/0 = SubResource("TileSetAtlasSource_g2o4k")
-sources/1 = SubResource("TileSetAtlasSource_rhgso")
 
 [sub_resource type="Curve2D" id="Curve2D_5lsdd"]
 _data = {
@@ -401,6 +369,11 @@ metadata/_custom_type_script = "uid://pk3ucq7e2eah"
 [node name="StealthGameLogic" type="Node" parent="." unique_id=1734695953]
 script = ExtResource("2_hhr7y")
 
+[node name="BackgroundMusic" type="Node" parent="." unique_id=1938124924]
+script = ExtResource("3_cj4uv")
+stream = ExtResource("4_epnnw")
+metadata/_custom_type_script = "uid://c8405c212rbn6"
+
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=508226475]
 color = Color(0.48235294, 0.48235294, 0.48235294, 1)
 
@@ -432,7 +405,7 @@ tile_map_data = PackedByteArray("AAAGAAoABQAAAAIAAAAGAAsABQAAAAIAAAAHAAsABQABAAI
 tile_set = SubResource("TileSet_mp1c5")
 
 [node name="Obstacles" type="TileMapLayer" parent="TileMapLayers" unique_id=694364054]
-tile_map_data = PackedByteArray("AAAdAAgAAAAAAAAAAAAeAAgAAAABAAAAAAAfAAgAAAABAAAAAAAgAAgAAAABAAAAAAAhAAgAAAACAAAAAAAhAAkAAAACAAEAAAAgAAoAAAACAAIAAAAdAAoAAAAAAAIAAAAeAAoAAAABAAIAAAAfAAoAAAABAAIAAAAdAAkAAAAAAAEAAAAfAAkAAAABAAEAAAAgAAkAAAABAAEAAAAeAAkAAAABAAEAAAAoABAAAAADAAAAAAAoABEAAAADAAEAAAAoABIAAAADAAIAAAAlABAAAAADAAAAAAAlABEAAAADAAEAAAAlABIAAAADAAIAAAAmABEAAAADAAIAAAAmABAAAAADAAEAAAAmAA8AAAADAAAAAAAhABAAAAAAAAMAAAAiABAAAAABAAMAAAAjABAAAAACAAMAAAAfABEAAAAAAAMAAAAgABEAAAABAAMAAAAhABEAAAACAAMAAAAfAA4AAAADAAAAAAAfAA8AAAADAAEAAAAfABAAAAADAAIAAAAfAA0AAAAAAAMAAAAgAA0AAAABAAMAAAAhAA0AAAACAAMAAAAfAAsAAAAAAAMAAAAgAAsAAAABAAMAAAAhAAsAAAACAAMAAAAkAAgAAAADAAAAAAAkAAkAAAADAAEAAAAkAAoAAAADAAIAAAAmAAgAAAADAAAAAAAmAAkAAAADAAEAAAAmAAoAAAADAAIAAAApAAkAAAAAAAMAAAAqAAkAAAABAAMAAAArAAkAAAACAAMAAAAoAAoAAAAAAAMAAAApAAoAAAABAAMAAAAqAAoAAAACAAMAAAAPAAgAAAAAAAMAAAAQAAgAAAABAAMAAAARAAgAAAABAAMAAAASAAgAAAACAAMAAAAVAAgAAAADAAIAAAAVAAcAAAADAAEAAAAVAAYAAAADAAEAAAAVAAUAAAADAAEAAAAVAAQAAAADAAAAAAAQAAYAAAADAAMAAAARAAUAAAADAAMAAAATAAoAAAADAAMAAAASAAoAAAADAAMAAAASAAkAAAADAAMAAAARAAYAAAADAAMAAAA=")
+tile_map_data = PackedByteArray("AAAdAAgAAAAAAAAAAAAeAAgAAAABAAAAAAAfAAgAAAABAAAAAAAgAAgAAAABAAAAAAAhAAgAAAACAAAAAAAhAAkAAAACAAEAAAAgAAoAAAACAAIAAAAdAAoAAAAAAAIAAAAeAAoAAAABAAIAAAAfAAoAAAABAAIAAAAdAAkAAAAAAAEAAAAfAAkAAAABAAEAAAAgAAkAAAABAAEAAAAeAAkAAAABAAEAAAAoABAAAAADAAAAAAAoABEAAAADAAEAAAAoABIAAAADAAIAAAAlABAAAAADAAAAAAAlABEAAAADAAEAAAAlABIAAAADAAIAAAAmABEAAAADAAIAAAAmABAAAAADAAEAAAAmAA8AAAADAAAAAAAhABAAAAAAAAMAAAAiABAAAAABAAMAAAAjABAAAAACAAMAAAAfABEAAAAAAAMAAAAgABEAAAABAAMAAAAhABEAAAACAAMAAAAfAA4AAAADAAAAAAAfAA8AAAADAAEAAAAfABAAAAADAAIAAAAfAA0AAAAAAAMAAAAgAA0AAAABAAMAAAAhAA0AAAACAAMAAAAfAAsAAAAAAAMAAAAgAAsAAAABAAMAAAAhAAsAAAACAAMAAAAkAAgAAAADAAAAAAAkAAkAAAADAAEAAAAkAAoAAAADAAIAAAAmAAgAAAADAAAAAAAmAAkAAAADAAEAAAAmAAoAAAADAAIAAAApAAkAAAAAAAMAAAAqAAkAAAABAAMAAAArAAkAAAACAAMAAAAoAAoAAAAAAAMAAAApAAoAAAABAAMAAAAqAAoAAAACAAMAAAAPAAgAAAAAAAMAAAAQAAgAAAABAAMAAAARAAgAAAABAAMAAAASAAgAAAACAAMAAAAVAAgAAAADAAIAAAAVAAcAAAADAAEAAAAVAAYAAAADAAEAAAAVAAUAAAADAAEAAAAVAAQAAAADAAAAAAAQAAYAAAADAAMAAAARAAUAAAADAAMAAAATAAoAAAADAAMAAAASAAoAAAADAAMAAAASAAkAAAADAAMAAAARAAYAAAADAAMAAAD+/xoAAAADAAAAAAD+/x0AAAADAAIAAAD+/xwAAAADAAEAAAD+/xsAAAADAAEAAAA=")
 tile_set = SubResource("TileSet_4dax4")
 
 [node name="Obstacles" type="Node2D" parent="." unique_id=1576796718]
@@ -542,7 +515,7 @@ curve = SubResource("Curve2D_ckw1w")
 position = Vector2(898, 202)
 patrol_path = NodePath("../Guard6 - Patrol Path")
 wait_time = 0.0
-move_speed = 300.0
+move_speed = 450.0
 detection_area_scale = 1.5
 
 [node name="Guard6 - Patrol Path" type="Path2D" parent="EnemyGuards" unique_id=1608619010]
