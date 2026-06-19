@@ -6,7 +6,7 @@ extends CharacterBody2D
 ## Salud del zombi
 @export var health: int = 2
 ## Daño que inflige al jugador
-@export var damage: int = 1
+@export var damage: int = 10
 ## Tiempo de espera entre ataques (segundos)
 @export var attack_cooldown: float = 1.0
 ## Distancia a la que el zombi empieza a atacar al jugador

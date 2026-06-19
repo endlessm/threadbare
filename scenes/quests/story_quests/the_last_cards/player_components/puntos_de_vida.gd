@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var heal_amount: int = 20
+@export var heal_amount: int = 5
 
 func _ready():
 	body_entered.connect(_on_body_entered)
