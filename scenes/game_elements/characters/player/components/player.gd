@@ -56,6 +56,15 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
 
+# ------------------------------------------------------------
+# Salud del jugador
+# ------------------------------------------------------------
+## Vida máxima del jugador
+@export var max_hp: int = 100
+## Vida actual (se gestiona internamente)
+var hp: int
+# ------------------------------------------------------------
+
 @export_group("Sounds")
 ## Sound that plays for each step during the walk animation
 @export var walk_sound_stream: AudioStream = preload("uid://cx6jv2cflrmqu"):
@@ -141,10 +150,17 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 func _ready() -> void:
+	# Grupos necesarios: "player" (original del proyecto) y "target_player" (exclusivo para zombis)
+	add_to_group("player")
+	add_to_group("target_player")
+
 	_set_speeds(speeds)
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
 	GameState.abilities_changed.connect(_on_abilities_changed)
+
+	# Inicializar la salud
+	hp = max_hp
 
 
 func _set_speeds(new_speeds: CharacterSpeeds) -> void:
@@ -178,6 +194,20 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	if not is_node_ready():
 		await ready
 	_walk_sound.stream = walk_sound_stream
+
+
+## Recibe daño de enemigos (por ejemplo, el zombie).
+## Si la vida llega a 0, se llama a defeat().
+func take_damage(amount: int) -> void:
+	# Si ya estamos derrotados, no recibimos más daño
+	if mode == Mode.DEFEATED:
+		return
+
+	hp -= amount
+	hp = clamp(hp, 0, max_hp)
+
+	if hp <= 0:
+		defeat()
 
 
 ## Sets the player's [member mode] to [constant DEFEATED], if it is

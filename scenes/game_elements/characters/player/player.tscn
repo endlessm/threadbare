@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dxaq5piwxqnht" path="res://scenes/game_elements/characters/player/components/dust.png" id="12_3in67"]
 [ext_resource type="PackedScene" uid="uid://cl06pid826dtg" path="res://scenes/game_elements/characters/player/components/player_repel.tscn" id="12_tnibl"]
 [ext_resource type="PackedScene" uid="uid://b3111eergq5yg" path="res://scenes/game_elements/characters/player/components/player_hook.tscn" id="13_ecbbk"]
+[ext_resource type="Script" uid="uid://cdxk6b4d5gn68" path="res://scenes/game_elements/characters/player/attack_area.gd" id="16_8jhju"]
 [ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="16_ecbbk"]
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="16_tnibl"]
 
@@ -349,7 +350,11 @@ _data = {
 &"got_hit": SubResource("Animation_4ypcv")
 }
 
-[node name="Player" type="CharacterBody2D" unique_id=296354958 groups=["player"]]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ecbbk"]
+radius = 50.0
+height = 100.0
+
+[node name="Player" type="CharacterBody2D" unique_id=296354958 groups=["player", "target_player"]]
 collision_mask = 531
 motion_mode = 1
 wall_min_slide_angle = 0.017453292
@@ -360,6 +365,7 @@ sprite_frames = ExtResource("3_4nivu")
 
 [node name="InputWalkBehavior" type="Node2D" parent="." unique_id=1817340985 node_paths=PackedStringArray("character")]
 unique_name_in_owner = true
+visible = false
 script = ExtResource("2_5lbww")
 speeds = SubResource("Resource_cvb4d")
 character = NodePath("..")
@@ -367,6 +373,7 @@ metadata/_custom_type_script = "uid://c8xbryhknipab"
 
 [node name="PlayerDustParticles" type="GPUParticles2D" parent="." unique_id=785276606]
 unique_name_in_owner = true
+visible = false
 modulate = Color(1, 1, 1, 0.498039)
 material = SubResource("CanvasItemMaterial_j0tly")
 position = Vector2(0, -6)
@@ -387,6 +394,7 @@ animation = &"idle"
 script = ExtResource("3_qlg0r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=874691694]
+visible = false
 rotation = -1.5707964
 shape = SubResource("CapsuleShape2D_3vyb7")
 
@@ -406,6 +414,7 @@ metadata/_custom_type_script = "uid://bk52qjv58locq"
 
 [node name="PlayerInteraction" type="Node2D" parent="." unique_id=1260226520 node_paths=PackedStringArray("character")]
 unique_name_in_owner = true
+visible = false
 script = ExtResource("3_dqkch")
 character = NodePath("..")
 
@@ -423,10 +432,13 @@ debug_color = Color(0.600391, 0.54335, 0, 0.42)
 
 [node name="PlayerRepel" parent="." unique_id=1324972992 instance=ExtResource("12_tnibl")]
 unique_name_in_owner = true
+visible = false
+light_mask = 2
 position = Vector2(0, -24)
 
 [node name="PlayerHook" parent="." unique_id=1972626703 node_paths=PackedStringArray("character") instance=ExtResource("13_ecbbk")]
 unique_name_in_owner = true
+visible = false
 position = Vector2(0, -20)
 character = NodePath("..")
 
@@ -437,12 +449,14 @@ script = ExtResource("7_0owmy")
 
 [node name="WalkSound" type="AudioStreamPlayer2D" parent="." unique_id=1454454549]
 unique_name_in_owner = true
+visible = false
 stream = ExtResource("11_blfj0")
 volume_db = -5.0
 pitch_scale = 7.0
 bus = &"SFX"
 
 [node name="PlayerHarm" type="Node2D" parent="." unique_id=794226595]
+visible = false
 script = ExtResource("2_8jhju")
 
 [node name="HitBox" type="Area2D" parent="PlayerHarm" unique_id=1910507610]
@@ -459,6 +473,17 @@ debug_color = Color(0.94902, 0.231373, 0, 0.419608)
 unique_name_in_owner = true
 root_node = NodePath("../../PlayerRepel")
 libraries/ = SubResource("AnimationLibrary_1n58k")
+
+[node name="AttackArea" type="Area2D" parent="." unique_id=1777517366 groups=["player", "target_player"]]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("16_8jhju")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=413223475]
+light_mask = 2
+position = Vector2(-7, -23)
+shape = SubResource("CapsuleShape2D_ecbbk")
+debug_color = Color(1, 0, 0, 0.41960785)
 
 [connection signal="running_changed" from="InputWalkBehavior" to="PlayerDustParticles" method="set_emitting"]
 [connection signal="running_changed" from="InputWalkBehavior" to="AnimationPlayer" method="_on_input_walk_behavior_running_changed"]
