@@ -3,6 +3,13 @@
 [ext_resource type="TileSet" uid="uid://bsuw8fhdl4oo5" path="res://scenes/quests/story_quests/the_last_cards/tiles/the_last_cards_exterior_floors.tres" id="1_6bhfe"]
 [ext_resource type="TileSet" uid="uid://o2druultg784" path="res://scenes/quests/story_quests/the_last_cards/tiles/the_last_cards_shadows.tres" id="2_xbi24"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_8jnni"]
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="4_8jnni"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="5_r105f"]
+[ext_resource type="Resource" uid="uid://n546p2kle1fv" path="res://scenes/quests/story_quests/el_ojo_revelador/1_stealth/stealth_components/el_ojo_revelador_collected.dialogue" id="6_vft5q"]
+
+[sub_resource type="Resource" id="Resource_fu76e"]
+script = ExtResource("5_r105f")
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="TheHospital2Piso" type="Node2D" unique_id=1954398647]
 
@@ -20,6 +27,10 @@ tile_set = ExtResource("2_xbi24")
 
 [node name="Player" parent="." unique_id=296354958 instance=ExtResource("3_8jnni")]
 position = Vector2(1586, 856)
+collision_mask = 3
+attack_damage = 1
+attack_cooldown = 0.5
+attack_range = 80.0
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=96742231]
 process_mode = 3
@@ -29,3 +40,9 @@ limit_right = 5250
 limit_bottom = 3727
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="CollectibleItem" parent="." unique_id=327991066 instance=ExtResource("4_8jnni")]
+position = Vector2(113, 1441)
+next_scene = "uid://b7knwtjuwb4ff"
+item = SubResource("Resource_fu76e")
+collected_dialogue = ExtResource("6_vft5q")
