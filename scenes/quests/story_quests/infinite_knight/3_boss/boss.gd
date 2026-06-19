@@ -4,7 +4,7 @@ const ProyectilBola = preload("res://scenes/quests/story_quests/infinite_knight/
 
 signal jefe_derrotado
 
-var vida_maxima: int = 1
+var vida_maxima: int = 10
 var vida_actual: int
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
