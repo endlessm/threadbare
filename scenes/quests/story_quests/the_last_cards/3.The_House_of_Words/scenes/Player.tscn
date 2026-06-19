@@ -1,0 +1,300 @@
+[gd_scene format=3 uid="uid://e3vubu06sx60"]
+
+[ext_resource type="Script" uid="uid://dirn26b5ynsc6" path="res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/Player.gd" id="1_l7i7l"]
+[ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="3_ydfgf"]
+[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="4_xhdly"]
+[ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="5_6a57l"]
+[ext_resource type="SpriteFrames" uid="uid://e4o08sabpym2" path="res://scenes/quests/story_quests/the_last_cards/player_components/the_last_cards_player.tres" id="5_ytdcr"]
+[ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="7_nl2jc"]
+[ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="9_v24r6"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ytdcr"]
+radius = 36.0
+height = 112.0
+
+[sub_resource type="Animation" id="Animation_mswbt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sounds/TorchHitSound:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sounds/FootSound:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite2D:animation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimatedSprite2D:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_innil"]
+resource_name = "hit"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sounds/TorchHitSound:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"alerted"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 5]
+}
+
+[sub_resource type="Animation" id="Animation_ls1y7"]
+resource_name = "idle"
+length = 1.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10]
+}
+
+[sub_resource type="Animation" id="Animation_8vt0k"]
+resource_name = "walk"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sounds/FootSound:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_innil"]
+_data = {
+&"RESET": SubResource("Animation_mswbt"),
+&"alerted": SubResource("Animation_innil"),
+&"idle": SubResource("Animation_ls1y7"),
+&"walk": SubResource("Animation_8vt0k")
+}
+
+[node name="Player" type="CharacterBody2D" unique_id=689832587 groups=["player"]]
+position = Vector2(103, 129)
+collision_layer = 0
+collision_mask = 529
+motion_mode = 1
+script = ExtResource("1_l7i7l")
+
+[node name="SightRayCast" type="RayCast2D" parent="." unique_id=1964699795]
+unique_name_in_owner = true
+collision_mask = 8
+hit_from_inside = true
+collide_with_areas = true
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=885694991]
+unique_name_in_owner = true
+position = Vector2(0, -19)
+collision_layer = 0
+script = ExtResource("3_ydfgf")
+
+[node name="Light" type="PointLight2D" parent="DetectionArea" unique_id=366085581]
+position = Vector2(37.3333, 1.33333)
+scale = Vector2(0.340496, 0.340496)
+color = Color(0.973893, 0.98556215, 0.99269813, 1)
+energy = 1.09
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("4_xhdly")
+offset = Vector2(377.88, 10.7686)
+script = ExtResource("5_6a57l")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea" unique_id=1176393945]
+position = Vector2(-29.3333, -132)
+polygon = PackedVector2Array(302, 48, 283, 52, 279, 52, 101, 114, 98, 114, 79, 124, 77, 124, 72, 131, 71, 131, 71, 138, 78, 145, 78, 146, 95, 154, 95, 155, 275, 226, 275, 227, 292, 231, 292, 232, 312, 230, 316, 230, 330, 222, 332, 222, 340, 214, 341, 214, 346, 205, 347, 205, 351, 185, 351, 100, 347, 82, 347, 79, 338, 67, 338, 65, 325, 55, 325, 54, 302, 47)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=616054452]
+unique_name_in_owner = true
+position = Vector2(0, -16)
+scale = Vector2(0.15, 0.15)
+sprite_frames = ExtResource("5_ytdcr")
+animation = &"walk"
+autoplay = "idle"
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=971917766 node_paths=PackedStringArray("character", "sprite")]
+position = Vector2(103, 129)
+script = ExtResource("7_nl2jc")
+character = NodePath("../..")
+play_animations = false
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2124818446]
+position = Vector2(9, -14)
+scale = Vector2(0.5, 0.5)
+shape = SubResource("CapsuleShape2D_ytdcr")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1642930547]
+libraries/ = SubResource("AnimationLibrary_innil")
+
+[node name="CharacterAnimationPlayerBehavior" type="Node2D" parent="AnimationPlayer" unique_id=1596266876 node_paths=PackedStringArray("character", "animation_player")]
+unique_name_in_owner = true
+position = Vector2(103, 129)
+script = ExtResource("9_v24r6")
+character = NodePath("../..")
+animation_player = NodePath("..")
+metadata/_custom_type_script = "uid://b3hx1n2yl88qr"
+
+[node name="Sounds" type="Node2D" parent="." unique_id=787899072]
+
+[node name="AlertSound" type="AudioStreamPlayer" parent="Sounds" unique_id=1366827513]
+unique_name_in_owner = true
+volume_db = -5.0
+
+[node name="FootSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=1825167375]
+unique_name_in_owner = true
+volume_db = -2.0
+max_distance = 350.0
+
+[node name="FireSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=946121497]
+unique_name_in_owner = true
+volume_db = -2.0
+autoplay = true
+max_distance = 500.0
+attenuation = 2.0
+
+[node name="TorchHitSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=1573897868]
+unique_name_in_owner = true
+volume_db = -2.0
+max_distance = 500.0
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2133705779]
+offset = Vector2(300, -150)
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=503691116]
+position = Vector2(5, -17.000002)
+scale = Vector2(0.81249994, 2.1875)
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=174168487]
+offset_left = 74.0
+offset_top = 75.0
+offset_right = 74.0
+offset_bottom = 75.0
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1813628846]
+handle_input_locally = false
+size = Vector2i(2, 2)
+render_target_update_mode = 4
+
+[node name="Camera2D" type="Camera2D" parent="SubViewportContainer/SubViewport" unique_id=1133358702]
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
