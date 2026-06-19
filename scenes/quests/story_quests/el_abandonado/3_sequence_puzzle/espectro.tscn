@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://c7t6aexpvqca8"]
+
+[ext_resource type="Texture2D" uid="uid://ysswec0a14fo" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/espectro.png" id="1_0g36r"]
+[ext_resource type="Script" uid="uid://dpwkap8exff7w" path="res://scenes/quests/story_quests/el_abandonado/3_sequence_puzzle/espectro.gd.gd" id="1_5ynh0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ynh0"]
+atlas = ExtResource("1_0g36r")
+region = Rect2(0, 0, 627, 627)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wts14"]
+atlas = ExtResource("1_0g36r")
+region = Rect2(627, 0, 627, 627)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xgm32"]
+atlas = ExtResource("1_0g36r")
+region = Rect2(0, 627, 627, 627)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6uek4"]
+atlas = ExtResource("1_0g36r")
+region = Rect2(627, 627, 627, 627)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3bxf6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ynh0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wts14")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xgm32")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6uek4")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0g36r"]
+radius = 12.0
+
+[node name="Espectro" type="Area2D" unique_id=348005806]
+script = ExtResource("1_5ynh0")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1225922199]
+position = Vector2(20.000008, -20.000002)
+scale = Vector2(0.16068581, 0.15430622)
+sprite_frames = SubResource("SpriteFrames_3bxf6")
+animation = &"idle"
+autoplay = "idle"
+frame = 1
+frame_progress = 0.58625495
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1339393310]
+position = Vector2(1, -1)
+shape = SubResource("CircleShape2D_0g36r")
