@@ -1,9 +1,8 @@
 extends ColorRect
-@onready var enemigo = %Balder;
+@export var enemigo:CharacterBody2D;
 @onready var animador_efectos = %AnimadorEfectos
 
 func arrancar_efecto():
-	
 	print("animacion en curso")
 	
 	if is_instance_valid(enemigo):

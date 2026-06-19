@@ -9,6 +9,8 @@
 [ext_resource type="SpriteFrames" uid="uid://dc7pfg6wu2ffr" path="res://scenes/quests/story_quests/equipo_1/player_components/equipo_1_player.tres" id="6_0532a"]
 [ext_resource type="TileSet" uid="uid://bdc7ucso7bx0s" path="res://tiles/shadows.tres" id="6_rkiqp"]
 [ext_resource type="TileSet" uid="uid://ciq5guijvlyb0" path="res://tiles/void_chromakey.tres" id="7_terr3"]
+[ext_resource type="Script" uid="uid://d0xctfitu5bql" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/repel_bar.gd" id="10_5oqva"]
+[ext_resource type="Script" uid="uid://bwy7k76k2het6" path="res://scenes/game_elements/characters/player/components/equipo1_player_repel.gd" id="10_mcoxg"]
 [ext_resource type="Texture2D" uid="uid://c1bhlrwm2ph6x" path="res://assets/third_party/tiny-swords/Factions/Goblins/Buildings/Wood_House/Goblin_House_Destroyed.png" id="14_84anw"]
 [ext_resource type="Texture2D" uid="uid://dl6o7vcf2fyc" path="res://assets/first_party/towers/Tower_Patchwork_Ruined1.png" id="14_ytvk6"]
 [ext_resource type="Texture2D" uid="uid://beat6rualotec" path="res://assets/third_party/tiny-swords-non-cc0/Terrain/Resources/Tools/Tool_03.png" id="15_terr3"]
@@ -17,9 +19,11 @@
 [ext_resource type="PackedScene" uid="uid://dj7i8jhtif61i" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/components/equipo_1_balder_throwing_enemy.tscn" id="17_rkiqp"]
 [ext_resource type="Script" uid="uid://bencg6if3gmiu" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/components/balder_future_enemy.gd" id="19_kn25j"]
 [ext_resource type="Script" uid="uid://50qvf81he027" path="res://scenes/quests/story_quests/equipo_1/2_combat/area_trigger.gd" id="20_8sc40"]
-[ext_resource type="PackedScene" uid="uid://bdof1xxr0qbr4" path="res://scenes/quests/story_quests/equipo_1/2_combat/efecto_time_stop.tscn" id="20_ngkmu"]
+[ext_resource type="Shader" uid="uid://bml6c2of2y4j0" path="res://scenes/quests/story_quests/equipo_1/2_combat/time_stop_shader.gdshader" id="20_63udm"]
+[ext_resource type="Script" uid="uid://658pxc06hni8" path="res://scenes/quests/story_quests/equipo_1/2_combat/efecto_multicolor.gd" id="21_5oqva"]
 [ext_resource type="PackedScene" uid="uid://c4ef2e8dic18c" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/disparo_extra.tscn" id="21_kn25j"]
 [ext_resource type="Resource" uid="uid://bbpvljhnjrtt0" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/equipo_1_sequence_puzzle.dialogue" id="22_0ne12"]
+[ext_resource type="PackedScene" uid="uid://b8jgwcv4fenjt" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/animacion_time_stop_3.tscn" id="22_mcoxg"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="24_hss0q"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_kstbw"]
 
@@ -28,6 +32,15 @@ size = Vector2(127, 174)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ytvk6"]
 size = Vector2(150, 103)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tx1nx"]
+shader = ExtResource("20_63udm")
+shader_parameter/color_actual = Color(0.22352941, 0.05490196, 0.4627451, 0.89411765)
+shader_parameter/color_fondo_gris = Color(0.1764706, 0.1764706, 0.1764706, 0)
+shader_parameter/posicion_jugador = Vector2(0.5, 0.5)
+shader_parameter/radio_circulo = 0.0
+shader_parameter/invertir_mascara = false
+shader_parameter/tamano_mapa = Vector2(1000, 1000)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kn25j"]
 size = Vector2(62.5, 61.5)
@@ -70,15 +83,34 @@ y_sort_enabled = true
 unique_name_in_owner = true
 position = Vector2(929, 267)
 sprite_frames = ExtResource("6_0532a")
-metadata/_edit_group_ = true
+
+[node name="PlayerSprite" parent="OnTheGround/Player" index="2" unique_id=1785485617]
+sprite_frames = ExtResource("6_0532a")
+
+[node name="PlayerRepel" parent="OnTheGround/Player" index="6" unique_id=1324972992]
+script = ExtResource("10_mcoxg")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1732237457]
+zoom = Vector2(0.8, 0.8)
 limit_left = -442
 limit_top = -259
 limit_right = 1350
 limit_bottom = 1140
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="RepelBar" type="ProgressBar" parent="OnTheGround/Player" unique_id=1718118966 node_paths=PackedStringArray("jugador", "animacion")]
+offset_left = -52.0
+offset_top = 11.0
+offset_right = 54.0
+offset_bottom = 30.0
+show_percentage = false
+script = ExtResource("10_5oqva")
+jugador = NodePath("..")
+animacion = NodePath("../AnimationPlayer")
+
+[node name="Timer" type="Timer" parent="OnTheGround/Player/RepelBar" unique_id=29829779]
+one_shot = true
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1686505878]
 
@@ -204,7 +236,7 @@ texture = ExtResource("15_terr3")
 
 [node name="BalderBoss" type="Node" parent="." unique_id=735473446 node_paths=PackedStringArray("animacion")]
 script = ExtResource("17_kn25j")
-animacion = NodePath("../EfectoTimeStop/AnimadorEfectos")
+animacion = NodePath("../EfectoTimeStop/EfectoMulticolor")
 
 [node name="BalderFuturo" parent="BalderBoss" unique_id=1243855514 node_paths=PackedStringArray("mapa", "player", "disparos", "targets") instance=ExtResource("17_rkiqp")]
 unique_name_in_owner = true
@@ -217,7 +249,8 @@ player = NodePath("../../OnTheGround/Player")
 disparos = [NodePath("../../EnemigosDisparos/Disparo1"), NodePath("../../EnemigosDisparos/Disparo2"), NodePath("../../EnemigosDisparos/Disparo3"), NodePath("../../EnemigosDisparos/Disparo4")]
 targets = [NodePath("../../PlayerTargets/Target1"), NodePath("../../PlayerTargets/Target2"), NodePath("../../PlayerTargets/Target3"), NodePath("../../PlayerTargets/Target4")]
 throwing_period = 1.0
-projectile_speed = 100.0
+autostart = true
+projectile_speed = 75.0
 projectile_duration = 30.0
 walking_time = 1.0
 walking_range = 800.0
@@ -227,13 +260,31 @@ metadata/_edit_group_ = true
 [node name="Timer" parent="BalderBoss/BalderFuturo" index="2" unique_id=2084913349]
 wait_time = 1.0
 
-[node name="EfectoTimeStop" parent="." unique_id=905338166 instance=ExtResource("20_ngkmu")]
+[node name="EfectoTimeStop" type="Node" parent="." unique_id=905338166]
 
-[node name="EfectoMulticolor" parent="EfectoTimeStop" index="0" unique_id=544038501]
-offset_left = -1079.0
-offset_top = -613.0
-offset_right = 714.0
-offset_bottom = 778.0
+[node name="EfectoMulticolor" type="ColorRect" parent="EfectoTimeStop" unique_id=544038501 node_paths=PackedStringArray("enemigo")]
+unique_name_in_owner = true
+z_index = 2
+material = SubResource("ShaderMaterial_tx1nx")
+custom_minimum_size = Vector2(1000, 1000)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1365.0
+offset_top = -849.0
+offset_right = 1000.0
+offset_bottom = 1024.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+script = ExtResource("21_5oqva")
+enemigo = NodePath("../../BalderBoss/BalderFuturo")
+
+[node name="AnimadorEfectos" parent="EfectoTimeStop" unique_id=1099567706 instance=ExtResource("22_mcoxg")]
+unique_name_in_owner = true
 
 [node name="prueba" type="Node" parent="." unique_id=1098729123]
 
@@ -258,7 +309,7 @@ script = ExtResource("20_8sc40")
 can_use = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="prueba/parar" unique_id=1092671956]
-position = Vector2(929, 403)
+position = Vector2(1071, 293)
 shape = SubResource("RectangleShape2D_kn25j")
 
 [node name="resumir" type="Area2D" parent="prueba" unique_id=1865594942]
@@ -275,21 +326,25 @@ unique_name_in_owner = true
 [node name="Disparo1" parent="EnemigosDisparos" unique_id=316159835 instance=ExtResource("21_kn25j")]
 visible = false
 position = Vector2(-555, -89)
+projectile_speed = 75.0
 projectile_duration = 30.0
 
 [node name="Disparo2" parent="EnemigosDisparos" unique_id=934165305 instance=ExtResource("21_kn25j")]
 visible = false
 position = Vector2(-547, -94)
+projectile_speed = 75.0
 projectile_duration = 30.0
 
 [node name="Disparo3" parent="EnemigosDisparos" unique_id=623606772 instance=ExtResource("21_kn25j")]
 visible = false
 position = Vector2(-545, -86)
+projectile_speed = 75.0
 projectile_duration = 30.0
 
 [node name="Disparo4" parent="EnemigosDisparos" unique_id=1189948498 instance=ExtResource("21_kn25j")]
 visible = false
 position = Vector2(-547, -91)
+projectile_speed = 75.0
 projectile_duration = 30.0
 
 [node name="PlayerTargets" type="Node" parent="." unique_id=2117500013]
@@ -313,9 +368,9 @@ position = Vector2(-750, 205)
 
 [connection signal="body_entered" from="BalderBoss/BalderFuturo/HitBox" to="BalderBoss" method="_on_damaged"]
 [connection signal="event" from="prueba/atacar" to="BalderBoss" method="_time_stop"]
-[connection signal="event" from="prueba/atacar2" to="BalderBoss" method="ataque_barrido_prueba"]
+[connection signal="event" from="prueba/atacar2" to="BalderBoss" method="_time_stop"]
 [connection signal="event" from="prueba/parar" to="BalderBoss" method="_pausar"]
 [connection signal="event" from="prueba/resumir" to="BalderBoss" method="_reanudar"]
 
+[editable path="OnTheGround/Player"]
 [editable path="BalderBoss/BalderFuturo"]
-[editable path="EfectoTimeStop"]

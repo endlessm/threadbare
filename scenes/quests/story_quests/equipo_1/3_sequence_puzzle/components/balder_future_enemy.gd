@@ -34,19 +34,18 @@ var velocidad_actual_projectil:int
 
 func _atacar_efecto(ataques: int, casilla_a_mover: Vector2i, direccion: Tipo, es_barrido:bool) -> void:
 	global_position = mapa.map_to_local(casilla_a_mover)
-	# 2. Ahora sí, ejecuta su ataque por defecto (Disparo 1)
+	##ejecuta su ataque por defecto (Disparo 1)
 	_is_attacking = true
 	animation_player.play(&"attack")
 	await animation_player.animation_finished
 	
 	if es_barrido:##si queremos que sea ataque barrido le ponemos true
-		ataque_barrido(direccion)
-			
-	# 3. Obtenemos la dirección del script global
+		await ataque_barrido(direccion)
+	pausar_projectiles()		
 	var vector_direccion: Vector2i = COORDENADAS[direccion]
 	var casilla_actual: Vector2i = casilla_a_mover
 	
-	# 4. Calculamos cuántos tiros quedan pendientes
+	##Calculamos cuántos tiros quedan pendientes
 	var tiros_restantes: int = ataques - 1
 	
 	# Si nos quedan tiros por hacer, entramos al bucle
@@ -61,7 +60,8 @@ func _atacar_efecto(ataques: int, casilla_a_mover: Vector2i, direccion: Tipo, es
 		# El jefe hace el siguiente disparo de la ráfaga
 		shoot_projectile_at(player)
 		if es_barrido:##si queremos que sea ataque barrido le ponemos true
-			ataque_barrido(direccion)
+			await ataque_barrido(direccion)
+		pausar_projectiles()	
 		# Esperamos el pequeño bache de tiempo antes del siguiente tiro
 		await get_tree().create_timer(0.1).timeout
 
@@ -84,7 +84,7 @@ func ataque_circular(es_barrido:bool, cantidad_ataques:int)->void:
 		
 		var casilla_jugador: Vector2i = mapa.local_to_map(player.global_position)
 		
-		var casilla_inicial_boss: Vector2i = casilla_jugador + (Vector2i(3, 3)*COORDENADAS[d])
+		var casilla_inicial_boss: Vector2i = casilla_jugador + (Vector2i(5, 5)*COORDENADAS[d])
 		
 		
 		await _atacar_efecto(cantidad_ataques, casilla_inicial_boss, d,es_barrido)	
@@ -142,9 +142,10 @@ func patron_posiciones(posicion,direccion)->Array[Vector2i]:
 	##la posicion debe ser usando maptolocal
 	var posicion_iterada = posicion
 	var posiciones_nuevas : Array[Vector2i] = []
-	
+	var espaciado = 4
 	for e in targets.size()/2:
-		posicion_iterada = posicion_iterada+direccion
+		##cambiar el 2 si queremos balas mas acumuladas o no
+		posicion_iterada = posicion_iterada+(direccion*espaciado)
 		posiciones_nuevas.push_front(posicion_iterada)
 		
 	posicion_iterada = posicion
@@ -155,24 +156,20 @@ func patron_posiciones(posicion,direccion)->Array[Vector2i]:
 		variacion = 1
 	
 	for e in targets.size()/2+variacion:
-		posicion_iterada = posicion_iterada+direccion
+		posicion_iterada = posicion_iterada+(direccion*espaciado)
 		posiciones_nuevas.push_front(posicion_iterada)
 	
 	return posiciones_nuevas
 
 func pausar_projectiles():
-	velocidad_actual_projectil = projectile_speed
-
-	for d in disparos:
-		d.projectile_speed = 5	
-	projectile_speed = 5	
-
-func activar_projectiles(velocidad = null):
-	if(velocidad==null):
-		velocidad = 100		
-	
 	for p in get_tree().get_nodes_in_group("projectiles"):
-		p.can_sleep = false
-		p.speed = velocidad
-		print(p.speed)
+		p.process_mode = Node.PROCESS_MODE_DISABLED
+	
+
+func activar_projectiles():
+	for p in get_tree().get_nodes_in_group("projectiles"):
+		if p is Projectile:
+			p.process_mode = Node.PROCESS_MODE_INHERIT
+		
+		
 	

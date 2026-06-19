@@ -1,18 +1,20 @@
 extends Node
 
 @onready var boss = %BalderFuturo
-
-@export var animacion: AnimationPlayer
+@onready var player = %Player
+@export var animacion: ColorRect
 
 func _time_stop()->void:
-	animacion.play(&"super_transicion")
+	animacion.arrancar_efecto()
 	await get_tree().create_timer(3).timeout	
-	animacion.pause()
-	boss.pausar_projectiles()
-	await boss.ataque_circular(true,1)
-	animacion.play()
+	animacion.pausar_efecto()
+	player.process_mode = Node.PROCESS_MODE_DISABLED
+	await boss.ataque_circular(true,4)##aqui cambiamos parametros
+	animacion.reanudar_efecto()
 	await get_tree().create_timer(1).timeout
+	player.process_mode = Node.PROCESS_MODE_INHERIT
 	boss.activar_projectiles()
+	animacion.resetear_efecto()
 		
 
 func _on_damaged(body:Node2D)->void:
