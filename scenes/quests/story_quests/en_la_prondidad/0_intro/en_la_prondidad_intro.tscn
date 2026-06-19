@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_mnxhk"]
 [ext_resource type="Resource" uid="uid://c58xoi0bwev4s" path="res://scenes/quests/story_quests/en_la_prondidad/0_intro/intro_components/en_la_prondidad_intro.dialogue" id="5_jj51b"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_ki58x"]
+[ext_resource type="Texture2D" uid="uid://dtuonvomlkv1k" path="res://scenes/quests/story_quests/en_la_prondidad/asets/slider 1.png" id="7_a3qv8"]
+[ext_resource type="Script" uid="uid://b0jvk3alwe672" path="res://scenes/quests/story_quests/en_la_prondidad/0_intro/control.gd" id="7_gwile"]
 
 [sub_resource type="Animation" id="Animation_y8x5l"]
 length = 0.001
@@ -18,7 +20,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
+"update": 0,
 "values": [&"idle"]
 }
 tracks/1/type = "value"
@@ -46,7 +48,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
-"update": 1,
+"update": 0,
 "values": [&"walk", &"idle"]
 }
 tracks/1/type = "value"
@@ -74,7 +76,7 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
-"update": 1,
+"update": 0,
 "values": [&"walk", &"idle"]
 }
 tracks/1/type = "value"
@@ -96,6 +98,28 @@ _data = {
 &"walk_off": SubResource("Animation_tak3d"),
 &"walk_on": SubResource("Animation_qe0ij")
 }
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gwile"]
+atlas = ExtResource("7_a3qv8")
+region = Rect2(0, 0, 1360, 1080)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mnxhk"]
+atlas = ExtResource("7_a3qv8")
+region = Rect2(1360, 0, 1360, 1080)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hlyd6"]
+animations = [{
+"frames": [{
+"duration": 20.0,
+"texture": SubResource("AtlasTexture_gwile")
+}, {
+"duration": 20.0,
+"texture": SubResource("AtlasTexture_mnxhk")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
 
 [node name="EnLaProndidadIntro" type="Node2D" unique_id=2049284984]
 
@@ -149,3 +173,20 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="Rock" parent="." unique_id=912112339 instance=ExtResource("6_ki58x")]
 position = Vector2(125, 403)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1768178738]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1995866542 node_paths=PackedStringArray("animacion")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_gwile")
+animacion = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasLayer/Control" unique_id=2055474009]
+position = Vector2(640, 360)
+scale = Vector2(0.94117653, 0.66666657)
+sprite_frames = SubResource("SpriteFrames_hlyd6")
