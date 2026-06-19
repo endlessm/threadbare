@@ -28,6 +28,8 @@
 [ext_resource type="PackedScene" uid="uid://b8jgwcv4fenjt" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/animacion_time_stop_3.tscn" id="22_mcoxg"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="24_hss0q"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_kstbw"]
+[ext_resource type="Script" uid="uid://bnwwtarjg24os" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/final_3.gd" id="29_0532a"]
+[ext_resource type="Resource" uid="uid://cjspdqsp4hy5q" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/components/dialogue_final_3.dialogue" id="30_octjf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0hr8e"]
 bg_color = Color(0, 0, 0, 0.5882353)
@@ -336,9 +338,9 @@ fase2 = false
 throwing_period = 2.0
 projectile_speed = 80.0
 projectile_duration = 30.0
-walking_time = 2.5
+walking_time = 1.5
 walking_range = 600.0
-walking_speed = 100.0
+walking_speed = 300.0
 metadata/_edit_group_ = true
 
 [node name="Timer" parent="BalderBoss/BalderFuturo" index="2" unique_id=2084913349]
@@ -429,10 +431,19 @@ position = Vector2(-750, 205)
 visible = false
 position = Vector2(-750, 205)
 
+[node name="Final" type="Node" parent="." unique_id=961156261 node_paths=PackedStringArray("enemigo", "timer_time_stop")]
+script = ExtResource("29_0532a")
+dialogo_final = ExtResource("30_octjf")
+next_scene = "uid://c6jcw8wsvnwdn"
+enemigo = NodePath("../BalderBoss/BalderFuturo")
+timer_time_stop = NodePath("../BalderBoss/TimerAtaque")
+
 [connection signal="took_damage" from="OnTheGround/Player/PlayerHarm" to="BarrasVida" method="recibir_danio_player"]
 [connection signal="fase2" from="BarrasVida" to="BalderBoss" method="fase_2"]
 [connection signal="fase3" from="BarrasVida" to="BalderBoss" method="fase_3"]
+[connection signal="jefe_derrotado" from="BarrasVida" to="Final" method="enemigo_derrotado"]
 [connection signal="player_derrotado" from="BarrasVida" to="OnTheGround/Player" method="defeat"]
+[connection signal="player_derrotado" from="BarrasVida" to="EfectoTimeStop/EfectoMulticolor" method="resetear_efecto"]
 [connection signal="damage" from="BalderBoss" to="BarrasVida" method="recibir_danio"]
 [connection signal="body_entered" from="BalderBoss/BalderFuturo/HitBox" to="BalderBoss" method="_on_damaged"]
 [connection signal="timeout" from="BalderBoss/TimerAtaque" to="BalderBoss" method="_time_stop"]
