@@ -44,7 +44,7 @@ func _time_stop(numero_patron:int = -1)->void:
 	boss.activar_projectiles()
 	animacion.resetear_efecto()
 	
-	await get_tree().create_timer(5).timeout
+	await get_tree().create_timer(3).timeout
 	boss.timer.start()
 	recibir_danio=true
 	timer_time_stop.start()	
