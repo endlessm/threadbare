@@ -74,8 +74,9 @@ script = ExtResource("2_xffik")
 dialogue = ExtResource("3_k1hun")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
-[node name="FillGameLogic" type="Node" parent="." unique_id=1828019770]
+[node name="FillGameLogic" type="Node" parent="." unique_id=1828019770 node_paths=PackedStringArray("jefe")]
 script = ExtResource("4_k1hun")
+jefe = NodePath("../EnemigoHermano")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=738016104]
@@ -177,3 +178,4 @@ interact_area = NodePath("../InteractArea")
 metadata/_custom_type_script = "uid://edcifob4jc4s"
 
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
+[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
