@@ -1,7 +1,7 @@
 extends Node2D
 @onready var balder = %Balder
 @onready var player = %Player
-@onready var efecto = %EfectoMulticolor
+@export var efecto:ColorRect
 
 var deteccion_pos = Vector2i(-230.0,1308.0)
 
