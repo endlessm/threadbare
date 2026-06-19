@@ -1,7 +1,6 @@
 extends Node2D
 
 const PALABRAS = ["FUTURO"]
-const SPEED_NUBE = 55
 
 var palabra_secreta = ""
 var intento_actual = 0
@@ -16,17 +15,24 @@ var palabra_actual = ""
 @onready var label_mensaje = $CanvasGroup/Panel/LabelMensaje
 @onready var label_tiempo = $CanvasGroup/LabelTiempo
 @onready var timer_principal = $Timer
-@onready var nube = $NubeNegra
+@onready var zombie = $Zombie
 @onready var player = $Player
 @onready var button_area = $ButtonArea
 @onready var musica_fondo = $MusicaFondo
 @onready var teclado = $CanvasGroup/CanvasLayer/Teclado
+@onready var guardia1 = $Guard
+@onready var guardia2 = $Guard2
+@onready var guardia3 = $Guard3
+@onready var puerta_fija = $Puerta
+@onready var puerta_fija2 = $Puerta2
 
 var door = null
 
 func _ready():
 	randomize()
 	palabra_secreta = PALABRAS[randi() % PALABRAS.size()]
+	puerta_fija.global_position = Vector2(2573, 730)
+	puerta_fija2.global_position = Vector2(2573, 115)
 
 	for i in range(36):
 		var label = grid_letras.get_child(i)
@@ -71,11 +77,22 @@ func _ready():
 	if musica_fondo:
 		musica_fondo.stop()
 
+	# Conectar zombie (igual que en Room1/Room2): no se mueve hasta que empiece el juego
+	if zombie:
+		zombie.player_detected.connect(_on_player_detected)
+		zombie.set_activo(false)
+
+	# En esta sala las puertas ya se pueden abrir desde el inicio (no hay condición previa)
+	_actualizar_estado_puertas_inicial()
+
 	if dialogue_balloon:
 		dialogue_balloon.tree_exited.connect(_on_dialogue_finished)
 		_iniciar_dialogo()
 	else:
 		_iniciar_juego()
+
+func _on_player_detected(player_node: Node2D) -> void:
+	_game_over()
 
 func _agregar_boton_borrar() -> void:
 	if not teclado:
@@ -159,13 +176,9 @@ func _iniciar_juego():
 	if tick:
 		tick.start()
 
-func _process(delta):
-	if not juego_activo:
-		return
-	var dir = (player.position - nube.position).normalized()
-	nube.position += dir * SPEED_NUBE * delta
-	if nube.position.distance_to(player.position) < 80:
-		_game_over()
+	# El zombie empieza a moverse junto con el juego
+	if zombie:
+		zombie.set_activo(true)
 
 func _on_letra_iluminada(nodo: Node2D) -> void:
 	if not juego_activo:
@@ -195,6 +208,8 @@ func _evaluar_intento(intento: String):
 
 	if intento == palabra_secreta:
 		juego_activo = false
+		if zombie:
+			zombie.set_activo(false)
 		if musica_fondo and musica_fondo.playing:
 			musica_fondo.stop()
 		if not puerta_instanciada:
@@ -244,8 +259,17 @@ func _actualizar_timer_display():
 	var segundos = int(tiempo_restante) % 60
 	label_tiempo.text = "%02d:%02d" % [minutos, segundos]
 
+## Esta sala no tiene condición previa: ambas puertas se pueden abrir desde el inicio.
+func _actualizar_estado_puertas_inicial() -> void:
+	for puerta in [puerta_fija, puerta_fija2]:
+		if puerta:
+			puerta.puede_abrirse = true
+			puerta.mensaje_bloqueo = ""
+
 func _game_over():
 	juego_activo = false
+	if zombie:
+		zombie.set_activo(false)
 	if musica_fondo and musica_fondo.playing:
 		musica_fondo.stop()
 	get_tree().change_scene_to_file("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Room2.1.tscn")

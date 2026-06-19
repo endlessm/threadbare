@@ -22,12 +22,14 @@ var palabra_actual = ""
 @onready var guardia1 = $Guard
 @onready var guardia2 = $Guard2
 @onready var guardia3 = $Guard3
+@onready var puerta_fija = $Puerta
 
 var door = null
 
 func _ready():
 	randomize()
 	palabra_secreta = PALABRAS[randi() % PALABRAS.size()]
+	puerta_fija.global_position = Vector2(2573, 730)
 
 	var dark_overlay = get_node_or_null("CanvasLayer/DarknessOverlay")
 	if dark_overlay:
@@ -72,7 +74,7 @@ func _ready():
 	if guardia3:
 		guardia3.player_detected.connect(_on_player_detected)
 
-	# Conectar zombi (script reutilizable Zombi.tscn / zombi.gd)
+	# Conectar zombi 
 	if zombie:
 		zombie.player_detected.connect(_on_player_detected)
 		# El zombi no se mueve mientras corre el diálogo / el juego no ha empezado

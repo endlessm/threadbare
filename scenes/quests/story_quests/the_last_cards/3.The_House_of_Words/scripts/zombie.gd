@@ -2,8 +2,7 @@ extends CharacterBody2D
 class_name Zombie
 
 ## Señal que se emite cuando el zombi alcanza al player.
-## Room1.gd (o cualquier escena que lo use) se conecta a esta señal,
-## igual que ya hace con los Guard.
+
 signal player_detected(player_node: Node2D)
 
 @export_group("Movimiento")
@@ -24,8 +23,7 @@ signal player_detected(player_node: Node2D)
 @export var patrol_max: Vector2 = Vector2(1200, 700)
 
 @export_group("Referencias")
-## Opcional: si se deja vacío, el zombi busca automáticamente
-## un nodo en el grupo "player".
+
 @export var player_path: NodePath
 
 var player: Node2D = null
@@ -51,8 +49,7 @@ func _buscar_player() -> void:
 		print("Zombi -> player encontrado: ", player)
 
 
-## Permite que la escena que instancia al zombi le asigne el player manualmente
-## (útil si no quieres depender del grupo "player").
+## Permite que la escena que instancia al zombi le asigne el player 
 func set_player(nuevo_player: Node2D) -> void:
 	player = nuevo_player
 

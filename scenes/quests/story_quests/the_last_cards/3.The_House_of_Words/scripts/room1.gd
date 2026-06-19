@@ -1,6 +1,7 @@
 extends Node2D
 
 const PALABRAS = ["CARTA"]
+const LETRAS_NECESARIAS = 5
 
 var palabra_secreta = ""
 var intento_actual = 0
@@ -8,6 +9,10 @@ var tiempo_restante = 120
 var juego_activo = false
 var puerta_instanciada = false
 var palabra_actual = ""
+
+# Conteo de letras ocultas reveladas por el jugador 
+var letras_reveladas = []
+var puertas_habilitadas = false
 
 @onready var dialogue_balloon = $Dialogue
 @onready var input_letra = $CanvasGroup/InputLetra
@@ -22,12 +27,15 @@ var palabra_actual = ""
 @onready var guardia1 = $Guard
 @onready var guardia2 = $Guard2
 @onready var guardia3 = $Guard3
-
+@onready var puerta_fija = $Puerta
+@onready var puerta_fija2 = $Puerta2
 var door = null
 
 func _ready():
 	randomize()
 	palabra_secreta = PALABRAS[randi() % PALABRAS.size()]
+	puerta_fija.global_position = Vector2(2573, 730)
+	puerta_fija2.global_position = Vector2(2573, 115)
 
 	var dark_overlay = get_node_or_null("CanvasLayer/DarknessOverlay")
 	if dark_overlay:
@@ -72,7 +80,7 @@ func _ready():
 	if guardia3:
 		guardia3.player_detected.connect(_on_player_detected)
 
-	# Conectar zombi (script reutilizable Zombi.tscn / zombi.gd)
+	# Conectar zombie
 	if zombie:
 		zombie.player_detected.connect(_on_player_detected)
 		# El zombi no se mueve mientras corre el diálogo / el juego no ha empezado
@@ -86,6 +94,9 @@ func _ready():
 
 	player.letra_iluminada.connect(_on_letra_iluminada)
 	player.letra_oscurecida.connect(_on_letra_oscurecida)
+
+	# Las puertas empiezan bloqueadas hasta que se revelen las 5 letras
+	_actualizar_estado_puertas_inicial()
 
 	var tick = Timer.new()
 	tick.wait_time = 1.0
@@ -188,12 +199,48 @@ func _on_letra_iluminada(nodo: Node2D) -> void:
 		return
 	if nodo.has_method("revelar_desde_player"):
 		nodo.revelar_desde_player()
+	_registrar_letra_revelada(nodo)
 
 func _on_letra_oscurecida(nodo: Node2D) -> void:
 	if not juego_activo:
 		return
 	if nodo.has_method("oscurecer_desde_player"):
 		nodo.oscurecer_desde_player()
+
+## Registra una letra como revelada de forma permanente (al menos una vez detectada).
+## No cuenta duplicados aunque el jugador vuelva a iluminar la misma letra.
+func _registrar_letra_revelada(nodo: Node2D) -> void:
+	if letras_reveladas.has(nodo):
+		return
+	letras_reveladas.append(nodo)
+	_verificar_letras_completas()
+
+## Revisa si ya se alcanzó el número de letras necesarias y, si es así,
+## habilita ambas puertas (solo se ejecuta una vez).
+func _verificar_letras_completas() -> void:
+	if puertas_habilitadas:
+		return
+	if letras_reveladas.size() >= LETRAS_NECESARIAS:
+		puertas_habilitadas = true
+		habilitar_puertas()
+
+## Marca ambas puertas como abribles. A partir de aquí, Puerta.gd permite
+## que el jugador las abra con ui_accept.
+func habilitar_puertas() -> void:
+	if puerta_fija:
+		puerta_fija.puede_abrirse = true
+	if puerta_fija2:
+		puerta_fija2.puede_abrirse = true
+
+## Llamado en _ready para dejar el mensaje inicial correcto en ambas puertas
+## (bloqueadas mientras no se hayan revelado las 5 letras).
+func _actualizar_estado_puertas_inicial() -> void:
+	if puerta_fija:
+		puerta_fija.puede_abrirse = false
+		puerta_fija.mensaje_bloqueo = "No se puede abrir hasta encontrar las 5 letras"
+	if puerta_fija2:
+		puerta_fija2.puede_abrirse = false
+		puerta_fija2.mensaje_bloqueo = "No se puede abrir hasta encontrar las 5 letras"
 
 func _actualizar_timer_display():
 	var minutos = int(tiempo_restante) / 60

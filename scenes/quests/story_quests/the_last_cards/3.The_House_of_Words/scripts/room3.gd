@@ -23,17 +23,30 @@ var puerta_instanciada = false
 var door = null
 
 # ------------------------------
-# REFERENCIAS A NODOS (UI)
+# REFERENCIAS A NODOS 
 # ------------------------------
 @onready var label_palabra = $CanvasGroup/Panel/LabelPalabra
 @onready var label_letras_usadas = $CanvasGroup/Panel/LabelLetrasUsadas
 @onready var label_tiempo = $CanvasGroup/LabelTiempo
 @onready var timer_principal = $Timer
-@onready var bestia = $Bestia
 @onready var player = $Player
 @onready var dialogue_balloon = $Dialogue
 @onready var musica_fondo = $MusicaFondo
-@onready var teclado = $CanvasGroup/CanvasLayer/Teclado  
+@onready var teclado = $CanvasGroup/CanvasLayer/Teclado
+
+# ------------------------------
+# ZOMBIES (
+# ------------------------------
+@onready var zombie1 = $Zombie
+@onready var zombie2 = $Zombie2
+@onready var zombie3 = $Zombie3
+@onready var zombie4 = $Zombie4
+
+# ------------------------------
+# PUERTAS
+# ------------------------------
+@onready var puerta_fija = $Puerta
+@onready var puerta_fija2 = $Puerta2
 
 # ------------------------------
 # REFERENCIAS A LAS PARTES DEL AHORCADO
@@ -57,6 +70,9 @@ func _ready():
 	randomize()
 	palabra_secreta = PALABRAS[randi() % PALABRAS.size()]
 
+	puerta_fija.global_position = Vector2(2573, 730)
+	puerta_fija2.global_position = Vector2(2573, 115)
+
 	orden_partes = [cabeza, cuello, brazo_izq, brazo_der, tronco, pierna_izq, pierna_der]
 	for parte in orden_partes:
 		escalas_originales.append(parte.scale)
@@ -69,9 +85,14 @@ func _ready():
 	add_child(tick_timer)
 	tick_timer.timeout.connect(_on_timer_tick)
 
-	if bestia.has_node("DetectionArea"):
-		var detection_area = bestia.get_node("DetectionArea")
-		detection_area.body_entered.connect(_on_bestia_detecta)
+	# Conectar los 4 zombies
+	for zombie in [zombie1, zombie2, zombie3, zombie4]:
+		if zombie:
+			zombie.player_detected.connect(_on_player_detected)
+			zombie.set_activo(false)
+
+	# Por ahora las puertas se pueden abrir libremente, sin condición previa
+	_actualizar_estado_puertas_inicial()
 
 	# Conectar teclado virtual
 	if teclado:
@@ -96,9 +117,7 @@ func _agregar_boton_borrar() -> void:
 	var fila3 = teclado.get_node_or_null("Fila3")
 	if not fila3:
 		return
-	# En ahorcado no necesitamos borrar, pero agregamos un botón de ENTER
-	# por si se quiere confirmar visualmente (opcional)
-	# En ahorcado cada letra se envía de una sola vez, no hace falta acumular
+	# En ahorcado no necesitamos borrar
 
 func _on_letra_teclado(letra: String) -> void:
 	if not juego_activo:
@@ -106,13 +125,22 @@ func _on_letra_teclado(letra: String) -> void:
 	_on_letra_presionada(letra)
 
 # ------------------------------
-# BESTIA
+# ZOMBIES
 # ------------------------------
-func _on_bestia_detecta(body: Node2D) -> void:
+func _on_player_detected(player_node: Node2D) -> void:
 	if not juego_activo:
 		return
-	if body == player:
-		_game_over()
+	_game_over()
+
+# ------------------------------
+# PUERTAS
+# ------------------------------
+## Por ahora esta sala no tiene condición previa: ambas puertas se pueden abrir desde el inicio.
+func _actualizar_estado_puertas_inicial() -> void:
+	for puerta in [puerta_fija, puerta_fija2]:
+		if puerta:
+			puerta.puede_abrirse = true
+			puerta.mensaje_bloqueo = ""
 
 # ------------------------------
 # DIÁLOGO
@@ -138,10 +166,10 @@ func _iniciar_juego():
 	tick_timer.start()
 	label_letras_usadas.text = "Errores: (0/7)"
 
-	if bestia.has_node("GuardMovement"):
-		var guard_movement = bestia.get_node("GuardMovement")
-		if guard_movement.has_method("start_moving_now"):
-			guard_movement.start_moving_now()
+	# Los 4 zombies empiezan a moverse junto con el juego
+	for zombie in [zombie1, zombie2, zombie3, zombie4]:
+		if zombie:
+			zombie.set_activo(true)
 
 # ------------------------------
 # LÓGICA DE LETRAS
@@ -244,6 +272,9 @@ func _verificar_victoria():
 
 	if gano:
 		juego_activo = false
+		for zombie in [zombie1, zombie2, zombie3, zombie4]:
+			if zombie:
+				zombie.set_activo(false)
 		label_palabra.text = "¡ESCAPASTE!"
 		if not puerta_instanciada:
 			var door_scene = load("res://scenes/game_elements/props/door/door.tscn")
@@ -287,6 +318,9 @@ func _on_timer_tick():
 # ------------------------------
 func _game_over():
 	juego_activo = false
+	for zombie in [zombie1, zombie2, zombie3, zombie4]:
+		if zombie:
+			zombie.set_activo(false)
 	if musica_fondo and musica_fondo.playing:
 		musica_fondo.stop()
 	await get_tree().create_timer(0.8).timeout
