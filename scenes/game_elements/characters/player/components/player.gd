@@ -8,17 +8,11 @@ signal mode_changed(mode: Mode)
 
 ## The possible player states.
 enum Mode {
-	## Player is reacting to user input.
 	USER_CONTROLLED,
-	## Player is being controlled by other means: interacting,
-	## pulling the grappling hook, being put on rails, etc.
 	SYSTEM_CONTROLLED,
-	## Player can't be controlled anymore.
 	DEFEATED,
 }
 
-## The animations which must be provided by [member sprite_frames], each with the corresponding
-## number of frames.
 const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
 	&"idle": 10,
 	&"walk": 6,
@@ -27,46 +21,41 @@ const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
 	&"defeated": 11,
 }
 
-## Optional animations which, if provided by [member sprite_frames], must have the corresponding
-## number of frames.
 const OPTIONAL_ANIMATION_FRAMES: Dictionary[StringName, int] = {
 	&"run": 6,
 }
 
 const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 
-## The character's name. This is used to highlight when the player's character
-## is speaking during dialogue.
 @export var player_name: String = "Player Name"
 
-## The current player state.
 @export var mode: Mode = Mode.USER_CONTROLLED:
 	set = _set_mode
 
-## Parameters controlling the speed at which this player walks. If unset, the default values of
-## [CharacterSpeeds] are used.
 @export var speeds: CharacterSpeeds:
 	set = _set_speeds
 
-## The character speed when aiming with the grappling hook.
 @export_range(10, 100000, 10) var aiming_speed: float = 100.0
 
-## The SpriteFrames must have specific animations with a certain amount of frames.
-## See [constant REQUIRED_ANIMATION_FRAMES] and [constant OPTIONAL_ANIMATION_FRAMES].
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
 	set = _set_sprite_frames
 
 # ------------------------------------------------------------
 # Salud del jugador
 # ------------------------------------------------------------
-## Vida máxima del jugador
 @export var max_hp: int = 100
-## Vida actual (se gestiona internamente)
 var hp: int
+
+# ------------------------------------------------------------
+# Ataque cuerpo a cuerpo
+# ------------------------------------------------------------
+@export var attack_damage: int = 1
+@export var attack_cooldown: float = 0.5
+@export var attack_range: float = 80.0
+var can_attack: bool = true
 # ------------------------------------------------------------
 
 @export_group("Sounds")
-## Sound that plays for each step during the walk animation
 @export var walk_sound_stream: AudioStream = preload("uid://cx6jv2cflrmqu"):
 	set = _set_walk_sound_stream
 
@@ -78,6 +67,10 @@ var _initial_speeds: CharacterSpeeds
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
+
+# Referencias a la barra de vida y la etiqueta de texto
+@onready var health_bar: ProgressBar = $ProgressBar
+@onready var health_label: Label = $ProgressBar/Label
 
 
 func _set_mode(new_mode: Mode) -> void:
@@ -123,44 +116,42 @@ func _toggle_player_behavior(behavior_node: Node2D, is_active: bool) -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
-
 	for animation: StringName in REQUIRED_ANIMATION_FRAMES:
 		if not sprite_frames.has_animation(animation):
 			warnings.append("sprite_frames is missing the following animation: %s" % animation)
 
-	var animations: Dictionary[StringName, int] = REQUIRED_ANIMATION_FRAMES.merged(
-		OPTIONAL_ANIMATION_FRAMES
-	)
+	var animations: Dictionary[StringName, int] = REQUIRED_ANIMATION_FRAMES.merged(OPTIONAL_ANIMATION_FRAMES)
 	for animation: StringName in animations:
 		if not sprite_frames.has_animation(animation):
 			continue
-
 		var count := sprite_frames.get_frame_count(animation)
 		var expected_count := animations[animation]
-
 		if count != expected_count:
-			warnings.append(
-				(
-					"sprite_frames animation %s has %d frames, but should have %d"
-					% [animation, count, expected_count]
-				)
-			)
-
+			warnings.append("sprite_frames animation %s has %d frames, but should have %d" % [animation, count, expected_count])
 	return warnings
 
 
 func _ready() -> void:
-	# Grupos necesarios: "player" (original del proyecto) y "target_player" (exclusivo para zombis)
 	add_to_group("player")
 	add_to_group("target_player")
+
+	collision_layer = 1
+	collision_mask = 1 | 2
 
 	_set_speeds(speeds)
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
 	GameState.abilities_changed.connect(_on_abilities_changed)
 
-	# Inicializar la salud
 	hp = max_hp
+
+	# Inicializar la barra de vida
+	if health_bar:
+		health_bar.max_value = max_hp
+		health_bar.value = hp
+	# Inicializar la etiqueta de vida
+	if health_label:
+		health_label.text = "HP|" + str(hp) + "/" + str(max_hp)
 
 
 func _set_speeds(new_speeds: CharacterSpeeds) -> void:
@@ -171,13 +162,8 @@ func _set_speeds(new_speeds: CharacterSpeeds) -> void:
 	input_walk_behavior.speeds = speeds
 
 
-func teleport_to(
-	tele_position: Vector2,
-	smooth_camera: bool = false,
-	look_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
-) -> void:
+func teleport_to(tele_position: Vector2, smooth_camera: bool = false, look_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED) -> void:
 	var camera: Camera2D = get_viewport().get_camera_2d()
-
 	if is_instance_valid(camera):
 		var smoothing_was_enabled: bool = camera.position_smoothing_enabled
 		camera.position_smoothing_enabled = smooth_camera
@@ -196,36 +182,46 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	_walk_sound.stream = walk_sound_stream
 
 
-## Recibe daño de enemigos (por ejemplo, el zombie).
-## Si la vida llega a 0, se llama a defeat().
+## Recibe daño de enemigos. Si la vida llega a 0, se llama a defeat().
 func take_damage(amount: int) -> void:
-	# Si ya estamos derrotados, no recibimos más daño
 	if mode == Mode.DEFEATED:
 		return
 
 	hp -= amount
 	hp = clamp(hp, 0, max_hp)
+	print("JUGADOR - HP: ", hp, "/", max_hp)
+
+	# Actualizar la barra de vida
+	if health_bar:
+		health_bar.value = hp
+	# Actualizar la etiqueta de vida
+	if health_label:
+		health_label.text = "HP|" + str(hp) + "/" + str(max_hp)
 
 	if hp <= 0:
 		defeat()
 
 
-## Sets the player's [member mode] to [constant DEFEATED], if it is
-## not already. Handles respawn logic based on remaining lives.
-## [br][br]
-## If [param falling] is [code]true[/code], scale the player to zero, as if they
-## are falling into the screen as they unravel.
+## Restaura puntos de vida (por botiquines o habilidades).
+## No puede superar max_hp.
+func heal(amount: int) -> void:
+	if mode == Mode.DEFEATED:
+		return
+	hp += amount
+	hp = clamp(hp, 0, max_hp)
+	print("JUGADOR - Cura: ", amount, " HP: ", hp, "/", max_hp)
+	if health_bar:
+		health_bar.value = hp
+	if health_label:
+		health_label.text = "HP|" + str(hp) + "/" + str(max_hp)
+
+
 func defeat(falling: bool = false) -> void:
-	# Prevent multiple defeat calls
 	if mode == Player.Mode.DEFEATED:
 		return
 
 	mode = Player.Mode.DEFEATED
-
-	# Stop moving the player.
 	velocity = Vector2.ZERO
-
-	# Decrement lives and save the new count
 	GameState.decrement_lives()
 
 	if falling:
@@ -234,12 +230,9 @@ func defeat(falling: bool = false) -> void:
 
 	await get_tree().create_timer(2.0).timeout
 
-	# Check if player has lives remaining
 	if GameState.current_lives > 0:
-		# Still have lives - reload current scene/checkpoint
 		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
 	else:
-		# Game over - restart from challenge start
 		_handle_game_over()
 
 
@@ -267,29 +260,35 @@ func _on_abilities_changed() -> void:
 		_toggle_abilities()
 
 
-## Handles game over logic: restarts from the beginning of the current challenge
-## with lives reset to 3.
 func _handle_game_over() -> void:
-	# Reset lives to 3
 	GameState.reset_lives()
-
-	# Get the start of the current challenge
 	var challenge_start_scene: String = GameState.get_challenge_start_scene()
-
 	if challenge_start_scene.is_empty():
-		# Fallback: reload current scene if no challenge start is defined
-		# Clear spawn point to start from the beginning of the current scene
 		GameState.set_current_spawn_point(^"")
 		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
 	else:
-		# Restart from the challenge start scene
-		SceneSwitcher.change_to_file_with_transition(
-			challenge_start_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
-		)
+		SceneSwitcher.change_to_file_with_transition(challenge_start_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE)
 
 
 func _on_player_hook_aiming_changed(is_aiming: bool) -> void:
-	input_walk_behavior.speeds.walk_speed = (
-		aiming_speed if is_aiming else _initial_speeds.walk_speed
-	)
+	input_walk_behavior.speeds.walk_speed = aiming_speed if is_aiming else _initial_speeds.walk_speed
 	input_walk_behavior.speeds.run_speed = aiming_speed if is_aiming else _initial_speeds.run_speed
+
+
+# ------------------------------------------------------------
+# Ataque cuerpo a cuerpo (integrado)
+# ------------------------------------------------------------
+func _input(event):
+	if event.is_action_pressed("attack") and can_attack and mode != Mode.DEFEATED:
+		_melee_attack()
+
+func _melee_attack():
+	can_attack = false
+	for enemy in get_tree().get_nodes_in_group("enemies"):
+		if enemy.has_method("take_damage"):
+			var dist = global_position.distance_to(enemy.global_position)
+			if dist <= attack_range:
+				enemy.take_damage(attack_damage)
+				print("Golpe a ", enemy.name)
+	await get_tree().create_timer(attack_cooldown).timeout
+	can_attack = true

@@ -13,7 +13,6 @@
 [ext_resource type="Texture2D" uid="uid://dxaq5piwxqnht" path="res://scenes/game_elements/characters/player/components/dust.png" id="12_3in67"]
 [ext_resource type="PackedScene" uid="uid://cl06pid826dtg" path="res://scenes/game_elements/characters/player/components/player_repel.tscn" id="12_tnibl"]
 [ext_resource type="PackedScene" uid="uid://b3111eergq5yg" path="res://scenes/game_elements/characters/player/components/player_hook.tscn" id="13_ecbbk"]
-[ext_resource type="Script" uid="uid://cdxk6b4d5gn68" path="res://scenes/game_elements/characters/player/attack_area.gd" id="16_8jhju"]
 [ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="16_ecbbk"]
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="16_tnibl"]
 
@@ -350,10 +349,6 @@ _data = {
 &"got_hit": SubResource("Animation_4ypcv")
 }
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ecbbk"]
-radius = 50.0
-height = 100.0
-
 [node name="Player" type="CharacterBody2D" unique_id=296354958 groups=["player", "target_player"]]
 collision_mask = 531
 motion_mode = 1
@@ -362,6 +357,9 @@ safe_margin = 1.0
 script = ExtResource("1_g2els")
 speeds = SubResource("Resource_cvb4d")
 sprite_frames = ExtResource("3_4nivu")
+attack_damage = null
+attack_cooldown = null
+attack_range = null
 
 [node name="InputWalkBehavior" type="Node2D" parent="." unique_id=1817340985 node_paths=PackedStringArray("character")]
 unique_name_in_owner = true
@@ -474,16 +472,22 @@ unique_name_in_owner = true
 root_node = NodePath("../../PlayerRepel")
 libraries/ = SubResource("AnimationLibrary_1n58k")
 
-[node name="AttackArea" type="Area2D" parent="." unique_id=1777517366 groups=["player", "target_player"]]
-collision_layer = 0
-collision_mask = 2
-script = ExtResource("16_8jhju")
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1866719665]
+modulate = Color(0, 1, 0, 1)
+offset_left = -61.0
+offset_top = -91.0
+offset_right = 57.0
+offset_bottom = -64.0
+value = 100.0
+show_percentage = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=413223475]
-light_mask = 2
-position = Vector2(-7, -23)
-shape = SubResource("CapsuleShape2D_ecbbk")
-debug_color = Color(1, 0, 0, 0.41960785)
+[node name="Label" type="Label" parent="ProgressBar" unique_id=1503284700]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 2.0
+offset_right = 54.0
+offset_bottom = 25.0
+text = "HP|100/100"
 
 [connection signal="running_changed" from="InputWalkBehavior" to="PlayerDustParticles" method="set_emitting"]
 [connection signal="running_changed" from="InputWalkBehavior" to="AnimationPlayer" method="_on_input_walk_behavior_running_changed"]
