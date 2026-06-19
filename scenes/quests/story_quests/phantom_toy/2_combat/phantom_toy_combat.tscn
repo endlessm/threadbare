@@ -1,9 +1,8 @@
 [gd_scene format=4 uid="uid://c2ms0gvqdxwuf"]
 
-[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_yf247"]
+[ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_4qkxa"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="2_m80gb"]
 [ext_resource type="Resource" uid="uid://belqt1vcy2qiy" path="res://scenes/quests/story_quests/phantom_toy/2_combat/combat_components/phantom_toy_combat.dialogue" id="3_4qkxa"]
-[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="4_xidhb"]
 [ext_resource type="TileSet" uid="uid://cfvux4ffq3dms" path="res://scenes/quests/story_quests/phantom_toy/tiles/phantom_toy_exterior_floors.tres" id="5_o80om"]
 [ext_resource type="TileSet" uid="uid://00cdt5e6rlgj" path="res://scenes/quests/story_quests/phantom_toy/tiles/phantom_toy_shadows.tres" id="6_8yf2q"]
 [ext_resource type="TileSet" uid="uid://c3g4uvme1wljp" path="res://scenes/quests/story_quests/phantom_toy/tiles/phantom_toy_elevation_2.tres" id="7_dsjre"]
@@ -19,22 +18,8 @@
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="16_ic6yh"]
 [ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="17_56xds"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="18_yf247"]
-[ext_resource type="Texture2D" uid="uid://bofjt1jp6jm55" path="res://scenes/quests/story_quests/phantom_toy/assets/sombra/crawl_sombra/crawl_sombra_crawl_sombra_0.png" id="20_i27fr"]
-[ext_resource type="Script" uid="uid://dkx0crrinsur0" path="res://scenes/quests/story_quests/phantom_toy/2_combat/combat_components/guardia.gd" id="20_vc2sp"]
-[ext_resource type="Texture2D" uid="uid://8pug4se450on" path="res://scenes/quests/story_quests/phantom_toy/assets/sombra/crawl_sombra/crawl_sombra_crawl_sombra_1.png" id="21_bsaom"]
-[ext_resource type="Texture2D" uid="uid://dprgmtuh2s8rw" path="res://scenes/quests/story_quests/phantom_toy/assets/sombra/crawl_sombra/crawl_sombra_crawl_sombra_2.png" id="22_ge7ma"]
-[ext_resource type="Texture2D" uid="uid://046eb2vyotcc" path="res://scenes/quests/story_quests/phantom_toy/assets/sombra/steady_sombra/steady_sombra_steady_sombra_0.png" id="23_tcj0h"]
-[ext_resource type="Texture2D" uid="uid://c62x2quwv2yfp" path="res://scenes/quests/story_quests/phantom_toy/assets/sombra/steady_sombra/steady_sombra_steady_sombra_1.png" id="24_xljru"]
-[ext_resource type="Texture2D" uid="uid://bjuk1rnpx5hjc" path="res://scenes/quests/story_quests/phantom_toy/assets/sombra/steady_sombra/steady_sombra_steady_sombra_2.png" id="25_cldur"]
-[ext_resource type="Texture2D" uid="uid://0qanwlqtxbbo" path="res://scenes/quests/story_quests/phantom_toy/assets/sombra/run_sombra/run_sombra_run_rombra_1.png" id="26_ic6yh"]
-[ext_resource type="Texture2D" uid="uid://bybrv6wpsxnnm" path="res://scenes/quests/story_quests/phantom_toy/assets/sombra/run_sombra/run_sombra_run_rombra_0.png" id="27_56xds"]
-[ext_resource type="Script" uid="uid://c477jgx4lwr86" path="res://scenes/game_elements/characters/enemies/guard/components/guard_movement.gd" id="29_p3ao4"]
-[ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="30_3bm2w"]
-[ext_resource type="Texture2D" uid="uid://8t6ihmesvghq" path="res://scenes/game_elements/characters/enemies/guard/components/field_of_view.png" id="31_b1dpg"]
-[ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="32_p1sic"]
-[ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="33_x30y6"]
-[ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="34_y05fh"]
-[ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="35_j08l6"]
+[ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="20_xidhb"]
+[ext_resource type="SpriteFrames" uid="uid://4is2vrslj0it" path="res://scenes/quests/story_quests/phantom_toy/1_stealth/stealth_components/phantom_toy_guard_enemy.tres" id="21_o80om"]
 
 [sub_resource type="Resource" id="Resource_ge7ma"]
 script = ExtResource("9_bsaom")
@@ -60,273 +45,23 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yf247"]
 size = Vector2(128, 121)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_qiv61"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("20_i27fr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("21_bsaom")
-}, {
-"duration": 1.0,
-"texture": ExtResource("22_ge7ma")
-}],
-"loop": true,
-"name": &"alerted",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("24_xljru")
-}, {
-"duration": 1.0,
-"texture": ExtResource("23_tcj0h")
-}, {
-"duration": 1.0,
-"texture": ExtResource("25_cldur")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("27_56xds")
-}, {
-"duration": 1.0,
-"texture": ExtResource("26_ic6yh")
-}],
-"loop": true,
-"name": &"walk",
-"speed": 10.0
-}]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_g173s"]
-radius = 35.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_nv25s"]
-radius = 15.0
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nv25s"]
-light_mode = 1
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0hjcv"]
-light_mode = 1
-
-[sub_resource type="LabelSettings" id="LabelSettings_nv25s"]
-outline_size = 3
-outline_color = Color(0, 0, 0, 1)
-shadow_size = 2
-shadow_color = Color(0, 0, 0, 1)
-
-[sub_resource type="Animation" id="Animation_mswbt"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sounds/TorchHitSound:playing")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sounds/FootSound:playing")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimatedSprite2D:animation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"walk"]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("AnimatedSprite2D:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
-[sub_resource type="Animation" id="Animation_innil"]
-resource_name = "hit"
-length = 0.6
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sounds/TorchHitSound:playing")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D:animation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"alerted"]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimatedSprite2D:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 5]
-}
-
-[sub_resource type="Animation" id="Animation_ls1y7"]
-resource_name = "idle"
-length = 1.1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"idle"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10]
-}
-
-[sub_resource type="Animation" id="Animation_8vt0k"]
-resource_name = "walk"
-length = 0.6
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sounds/FootSound:playing")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.4, 0.7),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [true, false, true, false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D:animation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"walk"]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimatedSprite2D:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 5]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_innil"]
+[sub_resource type="Curve2D" id="Curve2D_8yf2q"]
 _data = {
-&"RESET": SubResource("Animation_mswbt"),
-&"alerted": SubResource("Animation_innil"),
-&"idle": SubResource("Animation_ls1y7"),
-&"walk": SubResource("Animation_8vt0k")
+"points": PackedVector2Array(0, 0, 0, 0, -4629.33, 278.319, 0, 0, 0, 0, -3574.6643, 298.1621, 0, 0, 0, 0, -4153.33, 159.2605, 0, 0, 0, 0, 9.333252, 197.12793)
 }
-
-[sub_resource type="Gradient" id="Gradient_b1dpg"]
-offsets = PackedFloat32Array(0.066433564, 0.506993, 0.9825175)
-colors = PackedColorArray(1, 1, 1, 1, 0.65, 0.65, 0.65, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_p1sic"]
-gradient = SubResource("Gradient_b1dpg")
-width = 150
-height = 150
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.5, 1)
-
-[sub_resource type="Curve2D" id="Curve2D_o80om"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, -4629.33, 278.319, 0, 0, 0, 0, 1467.3774, 293.95593, 0, 0, 0, 0, 11367.983, 181.42236)
-}
-point_count = 3
+point_count = 4
 
 [node name="PhantomToyCombat" type="Node2D" unique_id=1280866718]
 y_sort_enabled = true
 metadata/_edit_horizontal_guides_ = [1537.0]
 
-[node name="PlayerMode" type="Node" parent="." unique_id=1864538137]
-script = ExtResource("1_yf247")
-mode = 1
-metadata/_custom_type_script = "uid://pk3ucq7e2eah"
+[node name="StealthGameLogic" type="Node" parent="." unique_id=436448262]
+script = ExtResource("1_4qkxa")
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1075167611]
 script = ExtResource("2_m80gb")
 dialogue = ExtResource("3_4qkxa")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
-
-[node name="FillGameLogic" type="Node" parent="." unique_id=339840346]
-script = ExtResource("4_xidhb")
-metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1478317359]
 
@@ -408,160 +143,19 @@ shape = SubResource("RectangleShape2D_yf247")
 [node name="EnemyGuards" type="Node2D" parent="." unique_id=1742405955]
 y_sort_enabled = true
 
-[node name="Guard1-GoingBackAndForth" type="CharacterBody2D" parent="EnemyGuards" unique_id=689832587 node_paths=PackedStringArray("patrol_path") groups=["guard_enemy"]]
-position = Vector2(-1035.0002, 666.182)
-collision_layer = 0
-collision_mask = 528
-motion_mode = 1
-script = ExtResource("20_vc2sp")
-sprite_frames = SubResource("SpriteFrames_qiv61")
+[node name="Guard1-GoingBackAndForth" parent="EnemyGuards" unique_id=689832587 node_paths=PackedStringArray("patrol_path") instance=ExtResource("20_xidhb")]
+z_index = 1
+position = Vector2(-691.00006, -1871.0494)
+sprite_frames = ExtResource("21_o80om")
 patrol_path = NodePath("../Guard1-PatrolPath")
 move_speed = 200.0
 
-[node name="GuardMovement" type="Node2D" parent="EnemyGuards/Guard1-GoingBackAndForth" unique_id=1116278916]
-unique_name_in_owner = true
-script = ExtResource("29_p3ao4")
-
-[node name="SightRayCast" type="RayCast2D" parent="EnemyGuards/Guard1-GoingBackAndForth" unique_id=1964699795]
-unique_name_in_owner = true
-collision_mask = 8
-hit_from_inside = true
-collide_with_areas = true
-
-[node name="InstantDetectionArea" type="Area2D" parent="EnemyGuards/Guard1-GoingBackAndForth" unique_id=1457569599]
-unique_name_in_owner = true
-collision_layer = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyGuards/Guard1-GoingBackAndForth/InstantDetectionArea" unique_id=1435997986]
-shape = SubResource("CircleShape2D_g173s")
-
-[node name="DetectionArea" type="Area2D" parent="EnemyGuards/Guard1-GoingBackAndForth" unique_id=885694991]
-unique_name_in_owner = true
-position = Vector2(0, -19)
-collision_layer = 0
-script = ExtResource("30_3bm2w")
-
-[node name="Light" type="PointLight2D" parent="EnemyGuards/Guard1-GoingBackAndForth/DetectionArea" unique_id=366085581]
-position = Vector2(37.3333, 1.33333)
-scale = Vector2(0.340496, 0.340496)
-color = Color(1, 1, 0.796078, 1)
-blend_mode = 2
-shadow_enabled = true
-shadow_filter = 1
-shadow_filter_smooth = 0.5
-texture = ExtResource("31_b1dpg")
-offset = Vector2(377.88, 10.7686)
-script = ExtResource("32_p1sic")
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="EnemyGuards/Guard1-GoingBackAndForth/DetectionArea" unique_id=1176393945]
-position = Vector2(-29.3333, -132)
-polygon = PackedVector2Array(302, 48, 283, 52, 279, 52, 101, 114, 98, 114, 79, 124, 77, 124, 72, 131, 71, 131, 71, 138, 78, 145, 78, 146, 95, 154, 95, 155, 275, 226, 275, 227, 292, 231, 292, 232, 312, 230, 316, 230, 330, 222, 332, 222, 340, 214, 341, 214, 346, 205, 347, 205, 351, 185, 351, 100, 347, 82, 347, 79, 338, 67, 338, 65, 325, 55, 325, 54, 302, 47)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="EnemyGuards/Guard1-GoingBackAndForth" unique_id=616054452]
-unique_name_in_owner = true
-position = Vector2(0, -16)
-sprite_frames = SubResource("SpriteFrames_qiv61")
-animation = &"walk"
-
-[node name="CharacterSpriteBehavior" type="Node2D" parent="EnemyGuards/Guard1-GoingBackAndForth/AnimatedSprite2D" unique_id=971917766 node_paths=PackedStringArray("character", "sprite")]
-script = ExtResource("33_x30y6")
-character = NodePath("../..")
-play_animations = false
-sprite = NodePath("..")
-metadata/_custom_type_script = "uid://dy68p7gf07pi3"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyGuards/Guard1-GoingBackAndForth" unique_id=2124818446]
-shape = SubResource("CircleShape2D_nv25s")
-
-[node name="PlayerAwareness" type="TextureProgressBar" parent="EnemyGuards/Guard1-GoingBackAndForth" unique_id=578256400]
-unique_name_in_owner = true
-visible = false
-modulate = Color(1, 1, 1, 0)
-z_index = 1
-material = SubResource("CanvasItemMaterial_nv25s")
-offset_left = -62.0
-offset_top = -172.0
-offset_right = 62.0
-offset_bottom = -48.0
-pivot_offset = Vector2(62, 102)
-step = 0.01
-fill_mode = 3
-nine_patch_stretch = true
-texture_under = ExtResource("34_y05fh")
-texture_progress = ExtResource("34_y05fh")
-tint_under = Color(1, 1, 1, 0.392157)
-tint_progress = Color(1, 1, 0, 1)
-
-[node name="DebugInfo" type="Label" parent="EnemyGuards/Guard1-GoingBackAndForth" unique_id=1627535706]
-unique_name_in_owner = true
-visible = false
-z_index = 100
-material = SubResource("CanvasItemMaterial_0hjcv")
-offset_left = -36.0
-offset_top = 20.0
-offset_right = 4.0
-offset_bottom = 43.0
-text = "position: (0.0, 0.0)
-state: Patroling
-previous_patrol_point_idx: -1
-current_patrol_point_idx: 0
-time left: 0.00
-target point: (0.0, 0.0)
-"
-label_settings = SubResource("LabelSettings_nv25s")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="EnemyGuards/Guard1-GoingBackAndForth" unique_id=1642930547]
-libraries/ = SubResource("AnimationLibrary_innil")
-
-[node name="CharacterAnimationPlayerBehavior" type="Node2D" parent="EnemyGuards/Guard1-GoingBackAndForth/AnimationPlayer" unique_id=1596266876 node_paths=PackedStringArray("character", "animation_player")]
-unique_name_in_owner = true
-script = ExtResource("35_j08l6")
-character = NodePath("../..")
-animation_player = NodePath("..")
-metadata/_custom_type_script = "uid://b3hx1n2yl88qr"
-
-[node name="Sounds" type="Node2D" parent="EnemyGuards/Guard1-GoingBackAndForth" unique_id=787899072]
-
-[node name="AlertSound" type="AudioStreamPlayer" parent="EnemyGuards/Guard1-GoingBackAndForth/Sounds" unique_id=1366827513]
-unique_name_in_owner = true
-volume_db = -5.0
-bus = &"SFX"
-
-[node name="FootSound" type="AudioStreamPlayer2D" parent="EnemyGuards/Guard1-GoingBackAndForth/Sounds" unique_id=1825167375]
-unique_name_in_owner = true
-volume_db = -2.0
-max_distance = 350.0
-bus = &"SFX"
-
-[node name="FireSound" type="AudioStreamPlayer2D" parent="EnemyGuards/Guard1-GoingBackAndForth/Sounds" unique_id=946121497]
-unique_name_in_owner = true
-volume_db = -2.0
-autoplay = true
-max_distance = 500.0
-attenuation = 2.0
-bus = &"SFX"
-
-[node name="TorchHitSound" type="AudioStreamPlayer2D" parent="EnemyGuards/Guard1-GoingBackAndForth/Sounds" unique_id=1573897868]
-unique_name_in_owner = true
-volume_db = -2.0
-max_distance = 500.0
-bus = &"SFX"
-
-[node name="PointLight2D" type="PointLight2D" parent="EnemyGuards/Guard1-GoingBackAndForth" unique_id=1651862977]
-position = Vector2(-0.99975586, -23.182007)
-texture = SubResource("GradientTexture2D_p1sic")
-
-[node name="Guard1-PatrolPath" type="Path2D" parent="EnemyGuards" unique_id=211708085]
+[node name="Guard1-PatrolPath" type="Path2D" parent="EnemyGuards" unique_id=1063878166]
 top_level = true
-position = Vector2(-538.9999, 568)
-scale = Vector2(0.107143, 0.352768)
-curve = SubResource("Curve2D_o80om")
+z_index = 1
+position = Vector2(-194.99976, -1924.7004)
+scale = Vector2(0.107143, 0.19276801)
+curve = SubResource("Curve2D_8yf2q")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1143603164]
 color = Color(0.052452177, 0.052453026, 0.0726976, 1)
-
-[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
-[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
-[connection signal="body_entered" from="EnemyGuards/Guard1-GoingBackAndForth/InstantDetectionArea" to="EnemyGuards/Guard1-GoingBackAndForth" method="_on_instant_detection_area_body_entered"]
-[connection signal="body_entered" from="EnemyGuards/Guard1-GoingBackAndForth/DetectionArea" to="EnemyGuards/Guard1-GoingBackAndForth" method="_on_detection_area_body_entered"]
-[connection signal="body_exited" from="EnemyGuards/Guard1-GoingBackAndForth/DetectionArea" to="EnemyGuards/Guard1-GoingBackAndForth" method="_on_detection_area_body_exited"]
