@@ -1,13 +1,13 @@
 [gd_scene format=4 uid="uid://c2ms0gvqdxwuf"]
 
-[ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_yf247"]
+[ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_4qkxa"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="2_m80gb"]
 [ext_resource type="Resource" uid="uid://belqt1vcy2qiy" path="res://scenes/quests/story_quests/phantom_toy/2_combat/combat_components/phantom_toy_combat.dialogue" id="3_4qkxa"]
-[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="4_xidhb"]
 [ext_resource type="TileSet" uid="uid://cfvux4ffq3dms" path="res://scenes/quests/story_quests/phantom_toy/tiles/phantom_toy_exterior_floors.tres" id="5_o80om"]
 [ext_resource type="TileSet" uid="uid://00cdt5e6rlgj" path="res://scenes/quests/story_quests/phantom_toy/tiles/phantom_toy_shadows.tres" id="6_8yf2q"]
 [ext_resource type="TileSet" uid="uid://c3g4uvme1wljp" path="res://scenes/quests/story_quests/phantom_toy/tiles/phantom_toy_elevation_2.tres" id="7_dsjre"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="8_y2ft3"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="9_bsaom"]
 [ext_resource type="SpriteFrames" uid="uid://hg6rad1yyt17" path="res://scenes/quests/story_quests/phantom_toy/player_components/phantom_toy_player.tres" id="9_kxp1p"]
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="10_i27fr"]
 [ext_resource type="SpriteFrames" uid="uid://bgj41kopml56q" path="res://scenes/quests/story_quests/phantom_toy/2_combat/combat_components/phantom_toy_throwing_enemy.tres" id="11_bsaom"]
@@ -18,6 +18,24 @@
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="16_ic6yh"]
 [ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="17_56xds"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="18_yf247"]
+[ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="20_xidhb"]
+[ext_resource type="SpriteFrames" uid="uid://4is2vrslj0it" path="res://scenes/quests/story_quests/phantom_toy/1_stealth/stealth_components/phantom_toy_guard_enemy.tres" id="21_o80om"]
+
+[sub_resource type="Resource" id="Resource_ge7ma"]
+script = ExtResource("9_bsaom")
+metadata/_custom_type_script = "uid://csev4hv57utxv"
+
+[sub_resource type="Gradient" id="Gradient_vc2sp"]
+offsets = PackedFloat32Array(0.17832167, 0.52797204, 0.8636364)
+colors = PackedColorArray(1, 1, 1, 1, 0.5614035, 0.5614035, 0.5614035, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_p3ao4"]
+gradient = SubResource("Gradient_vc2sp")
+width = 150
+height = 150
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
 
 [sub_resource type="Resource" id="Resource_p3ao4"]
 script = ExtResource("16_ic6yh")
@@ -27,19 +45,13 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 [node name="PhantomToyCombat" type="Node2D" unique_id=1280866718]
 y_sort_enabled = true
 
-[node name="PlayerMode" type="Node" parent="." unique_id=1864538137]
-script = ExtResource("1_yf247")
-mode = 1
-metadata/_custom_type_script = "uid://pk3ucq7e2eah"
+[node name="StealthGameLogic" type="Node" parent="." unique_id=436448262]
+script = ExtResource("1_4qkxa")
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1075167611]
 script = ExtResource("2_m80gb")
 dialogue = ExtResource("3_4qkxa")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
-
-[node name="FillGameLogic" type="Node" parent="." unique_id=339840346]
-script = ExtResource("4_xidhb")
-metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1478317359]
 
@@ -61,6 +73,21 @@ y_sort_enabled = true
 [node name="Player" parent="OnTheGround" unique_id=691206030 instance=ExtResource("8_y2ft3")]
 position = Vector2(348, 335)
 sprite_frames = ExtResource("9_kxp1p")
+
+[node name="PointLight2D2" type="PointLight2D" parent="OnTheGround/Player" unique_id=2100745688]
+position = Vector2(-2, -17)
+texture = SubResource("GradientTexture2D_p3ao4")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1667905938]
+position = Vector2(7, 64)
+zoom = Vector2(1.333, 1.333)
+limit_enabled = false
+limit_left = 0
+limit_top = 0
+limit_right = 960
+limit_bottom = 640
+position_smoothing_enabled = true
+editor_draw_limits = true
 
 [node name="ThrowingNPC" parent="OnTheGround" unique_id=750417749 instance=ExtResource("10_i27fr")]
 position = Vector2(857, 300)
@@ -129,5 +156,145 @@ editor_draw_limits = true
 
 [node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("18_yf247")]
 
-[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
-[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
+[node name="EnemyGuards" type="Node2D" parent="." unique_id=1742405955]
+y_sort_enabled = true
+position = Vector2(-564, -33)
+
+[node name="Guard1-GoingBackAndForth" parent="EnemyGuards" unique_id=689832587 node_paths=PackedStringArray("patrol_path") instance=ExtResource("20_xidhb")]
+z_index = 1
+position = Vector2(-1462.6744, -378.0766)
+sprite_frames = ExtResource("21_o80om")
+patrol_path = NodePath("../Guard1-PatrolPath")
+move_speed = 200.0
+
+[node name="PointLight2D" type="PointLight2D" parent="EnemyGuards/Guard1-GoingBackAndForth" unique_id=1571759683]
+texture = SubResource("GradientTexture2D_xidhb")
+
+[node name="Guard1-PatrolPath" type="Path2D" parent="EnemyGuards" unique_id=1063878166]
+top_level = true
+z_index = 1
+position = Vector2(-1951, -506.48492)
+scale = Vector2(0.016346738, 0.34280205)
+curve = SubResource("Curve2D_8yf2q")
+
+[node name="Guard2-GoingBackAndForth2" parent="EnemyGuards" unique_id=1441911820 node_paths=PackedStringArray("patrol_path") instance=ExtResource("20_xidhb")]
+z_index = 1
+position = Vector2(-810.728, 864.9515)
+sprite_frames = ExtResource("21_o80om")
+patrol_path = NodePath("../Guard1-PatrolPath2")
+move_speed = 200.0
+
+[node name="PointLight2D" type="PointLight2D" parent="EnemyGuards/Guard2-GoingBackAndForth2" unique_id=1097020812]
+texture = SubResource("GradientTexture2D_xidhb")
+
+[node name="Guard1-PatrolPath2" type="Path2D" parent="EnemyGuards" unique_id=1056261025]
+top_level = true
+z_index = 1
+position = Vector2(2127.9995, 829.5954)
+scale = Vector2(0.7566381, 0.008465437)
+curve = SubResource("Curve2D_8yf2q")
+
+[node name="Guard3-GoingBackAndForth3" parent="EnemyGuards" unique_id=1025626823 node_paths=PackedStringArray("patrol_path") instance=ExtResource("20_xidhb")]
+z_index = 1
+position = Vector2(-488.00073, 29.075823)
+sprite_frames = ExtResource("21_o80om")
+patrol_path = NodePath("../Guard1-PatrolPath3")
+move_speed = 200.0
+
+[node name="PointLight2D" type="PointLight2D" parent="EnemyGuards/Guard3-GoingBackAndForth3" unique_id=1053407857]
+texture = SubResource("GradientTexture2D_xidhb")
+
+[node name="Guard1-PatrolPath3" type="Path2D" parent="EnemyGuards" unique_id=2029696931]
+top_level = true
+z_index = 1
+position = Vector2(2125.9119, -9.538689)
+scale = Vector2(0.68647355, 0.020172937)
+curve = SubResource("Curve2D_8yf2q")
+
+[node name="Guard4-GoingBackAndForth4" parent="EnemyGuards" unique_id=742633392 node_paths=PackedStringArray("patrol_path") instance=ExtResource("20_xidhb")]
+z_index = 1
+position = Vector2(1140.8152, 93.22377)
+sprite_frames = ExtResource("21_o80om")
+patrol_path = NodePath("../Guard1-PatrolPath4")
+move_speed = 200.0
+
+[node name="PointLight2D" type="PointLight2D" parent="EnemyGuards/Guard4-GoingBackAndForth4" unique_id=1767266786]
+texture = SubResource("GradientTexture2D_xidhb")
+
+[node name="Guard1-PatrolPath4" type="Path2D" parent="EnemyGuards" unique_id=1393551162]
+top_level = true
+z_index = 1
+position = Vector2(4220, 55.000008)
+scale = Vector2(0.78697884, 0.018768976)
+curve = SubResource("Curve2D_8yf2q")
+
+[node name="Guard5-GoingBackAndForth5" parent="EnemyGuards" unique_id=72622555 node_paths=PackedStringArray("patrol_path") instance=ExtResource("20_xidhb")]
+z_index = 1
+position = Vector2(1827.2013, -535.0311)
+sprite_frames = ExtResource("21_o80om")
+patrol_path = NodePath("../Guard1-PatrolPath5")
+move_speed = 200.0
+
+[node name="PointLight2D" type="PointLight2D" parent="EnemyGuards/Guard5-GoingBackAndForth5" unique_id=1805143225]
+texture = SubResource("GradientTexture2D_xidhb")
+
+[node name="Guard1-PatrolPath5" type="Path2D" parent="EnemyGuards" unique_id=984696426]
+top_level = true
+z_index = 1
+position = Vector2(1310.6012, -652.62573)
+scale = Vector2(0.010239045, 0.30394825)
+curve = SubResource("Curve2D_8yf2q")
+
+[node name="Guard6-GoingBackAndForth6" parent="EnemyGuards" unique_id=349346449 node_paths=PackedStringArray("patrol_path") instance=ExtResource("20_xidhb")]
+z_index = 1
+position = Vector2(577.64435, -422.2342)
+sprite_frames = ExtResource("21_o80om")
+patrol_path = NodePath("../Guard1-PatrolPath6")
+move_speed = 200.0
+
+[node name="PointLight2D" type="PointLight2D" parent="EnemyGuards/Guard6-GoingBackAndForth6" unique_id=306791515]
+texture = SubResource("GradientTexture2D_xidhb")
+
+[node name="Guard1-PatrolPath6" type="Path2D" parent="EnemyGuards" unique_id=953584867]
+top_level = true
+z_index = 1
+position = Vector2(198, -562.237)
+scale = Vector2(0.039823394, 0.38446102)
+curve = SubResource("Curve2D_8yf2q")
+
+[node name="Guard7-GoingBackAndForth7" parent="EnemyGuards" unique_id=1186537375 node_paths=PackedStringArray("patrol_path") instance=ExtResource("20_xidhb")]
+z_index = 1
+position = Vector2(1307.9999, 1570.0184)
+sprite_frames = ExtResource("21_o80om")
+patrol_path = NodePath("../Guard1-PatrolPath7")
+move_speed = 200.0
+
+[node name="PointLight2D" type="PointLight2D" parent="EnemyGuards/Guard7-GoingBackAndForth7" unique_id=414218284]
+texture = SubResource("GradientTexture2D_xidhb")
+
+[node name="Guard1-PatrolPath7" type="Path2D" parent="EnemyGuards" unique_id=1883417103]
+top_level = true
+z_index = 1
+position = Vector2(954.68945, 1488.5205)
+scale = Vector2(0.045511886, 0.1742529)
+curve = SubResource("Curve2D_8yf2q")
+
+[node name="Guard8-GoingBackAndForth8" parent="EnemyGuards" unique_id=1259825604 node_paths=PackedStringArray("patrol_path") instance=ExtResource("20_xidhb")]
+z_index = 1
+position = Vector2(2500.2754, -820.01624)
+sprite_frames = ExtResource("21_o80om")
+patrol_path = NodePath("../Guard1-PatrolPath8")
+move_speed = 200.0
+
+[node name="PointLight2D" type="PointLight2D" parent="EnemyGuards/Guard8-GoingBackAndForth8" unique_id=645963420]
+texture = SubResource("GradientTexture2D_xidhb")
+
+[node name="Guard1-PatrolPath8" type="Path2D" parent="EnemyGuards" unique_id=1219299987]
+top_level = true
+z_index = 1
+position = Vector2(2085, -906)
+scale = Vector2(0.032126598, 0.19037063)
+curve = SubResource("Curve2D_8yf2q")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1143603164]
+color = Color(0.052452177, 0.052453026, 0.0726976, 1)
