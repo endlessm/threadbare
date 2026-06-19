@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var velocidad := 700.0
+@export var velocidad := 100.0
 @export var tiempo_carga := 1
 
 var disparado := false

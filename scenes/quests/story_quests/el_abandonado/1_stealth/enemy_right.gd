@@ -7,7 +7,18 @@ extends Node2D
 @export var offset_x := 300.0
 @export var offset_y := 0.0
 @export var orbe_scene: PackedScene = null
-
+var frases = [
+	"Nos dejaste atrás, Brennan...",
+	"¿Por qué tú tuviste que vivir?",
+	"Corres como el cobarde que siempre fuiste...",
+	"¡Tus esfuerzos son inútiles!",
+	"¡La oscuridad te alcanzará!",
+	"¡La muerte te sigue!",
+	"¡No hay salida!",
+	"¡Tu viaje termina aquí!"
+]
+var indice_frase := 0
+var hablando := false
 var entrando := false
 var persecucion_iniciada := false
 
@@ -76,6 +87,7 @@ func iniciar_persecucion():
 	persecucion_iniciada = true
 
 	orbe_timer.start()
+	iniciar_dialogos()
 
 func crear_orbe() -> void:
 
@@ -85,7 +97,7 @@ func crear_orbe() -> void:
 	if orbe_scene == null:
 		return
 
-	anim.play("cast")
+	anim.play("idle")
 
 	var orbe = orbe_scene.instantiate()
 
@@ -106,6 +118,7 @@ func crear_orbe() -> void:
 func _on_area_2d_body_entered(body):
 
 	if body.name == "Player":
+		reiniciar_dialogos()
 		body.defeat()
 
 func desaparecer():
@@ -129,3 +142,31 @@ func desaparecer():
 	await tween.finished
 
 	visible = false
+func iniciar_dialogos():
+
+	if hablando:
+		return
+
+	hablando = true
+
+	while camara.persecucion_activa:
+
+		$Label.text = frases[indice_frase % frases.size()]
+		$Label.visible = true
+
+		await get_tree().create_timer(3.0).timeout
+
+		$Label.visible = false
+
+		await get_tree().create_timer(1.0).timeout
+
+		indice_frase += 1
+
+		if indice_frase >= frases.size():
+			indice_frase = 0
+
+func reiniciar_dialogos():
+
+	indice_frase = 0
+	hablando = false
+	$Label.visible = false

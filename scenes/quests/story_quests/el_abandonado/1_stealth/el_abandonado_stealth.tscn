@@ -47,6 +47,8 @@
 [ext_resource type="Texture2D" uid="uid://cy3touqrkm3dr" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/escombros 3.png" id="39_ip3m0"]
 [ext_resource type="Texture2D" uid="uid://dufhbfpkflhn2" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/escombros 1.png" id="40_cyhd7"]
 [ext_resource type="Texture2D" uid="uid://112ed4xfn8k6" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/escombros 2.png" id="41_njugo"]
+[ext_resource type="PackedScene" uid="uid://4kx4ieskeshh" path="res://scenes/quests/story_quests/el_abandonado/1_stealth/stealth_components/Hada.tscn" id="48_7hnus"]
+[ext_resource type="Script" uid="uid://b3v4uldliajvk" path="res://scenes/quests/story_quests/el_abandonado/1_stealth/area_2d.gd" id="49_q13pp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5vl5k"]
 size = Vector2(170.125, 252)
@@ -520,6 +522,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8tf0m"]
+size = Vector2(796.75, 706.6875)
+
 [node name="ElAbandonadoStealth" type="Node2D" unique_id=528815133]
 y_sort_enabled = true
 
@@ -561,7 +566,8 @@ tile_map_data = PackedByteArray("AAAGAAcADAABAAEAAAALAAYADAABAAEAAAALAAgADAABAAE
 tile_set = ExtResource("6_xhooa")
 
 [node name="TileMapLayer3" type="TileMapLayer" parent="TileMapLayers" unique_id=16683535]
-tile_map_data = PackedByteArray("AAAIAAcAFwAEAAQAAAAJAAUAFwAEAAMAAAAQAAgAFwAEAAQAAAAXAAYAFwAEAAQAAAASAAcAFwAEAAMAAAAaAAgAFwAEAAMAAAA=")
+modulate = Color(0.6986078, 0.7691787, 0.6985306, 1)
+tile_map_data = PackedByteArray("AAAIAAcAFwAEAAQAAAAJAAUAFwAEAAMAAAAQAAgAFwAEAAQAAAAXAAYAFwAEAAQAAAASAAcAFwAEAAMAAAAaAAgAFwAEAAMAAACkAAYAIQABAAEAAACjAAYAJAAEAAEAAAClAAYAJAABAAIAAACkAAUAIQABAAEAAACkAAcAJAACAAQAAACiAAYAIQAAAAEAAACmAAYAIQACAAEAAACkAAQAIQABAAAAAACkAAgAIQABAAIAAACiAAUAIQAAAAAAAACjAAQAIQAAAAAAAAClAAQAIQACAAAAAACmAAUAIQACAAAAAACmAAcAIQACAAIAAAClAAgAIQACAAIAAACiAAcAIQAAAAIAAACjAAgAIQAAAAIAAACjAAUAIQABAAEAAACjAAcAIQABAAEAAAClAAcAIQABAAEAAAClAAUAIQABAAEAAAA=")
 tile_set = ExtResource("6_xhooa")
 
 [node name="PointLight2D2" type="PointLight2D" parent="." unique_id=885911748]
@@ -588,7 +594,7 @@ editor_draw_limits = true
 script = ExtResource("12_2c8wg")
 
 [node name="Player" parent="." unique_id=1079296690 instance=ExtResource("5_otmse")]
-position = Vector2(125, 487)
+position = Vector2(102, 469)
 sprite_frames = ExtResource("6_2f5d2")
 
 [node name="Checkpoints" type="Node2D" parent="." unique_id=344631200]
@@ -608,7 +614,7 @@ debug_color = Color(0, 0, 0, 0.42)
 [node name="HUD" parent="." unique_id=1994868895 instance=ExtResource("11_sfgay")]
 
 [node name="CollectibleItem" parent="." unique_id=1779229490 instance=ExtResource("12_3dvnr")]
-position = Vector2(10546, 415)
+position = Vector2(10529, 414)
 next_scene = "uid://brruedbqrtxfy"
 item = SubResource("Resource_i7vj3")
 collected_dialogue = ExtResource("14_18e3s")
@@ -653,7 +659,8 @@ offset_right = 168.0
 offset_bottom = 542.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="NPC_2" unique_id=483656644]
-position = Vector2(123, 564)
+position = Vector2(121.5, 585.5)
+scale = Vector2(1.015625, 0.7760417)
 sprite_frames = ExtResource("20_xhooa")
 animation = &"idle"
 autoplay = "idle"
@@ -757,6 +764,14 @@ position = Vector2(95, -33)
 [node name="OrbeTimer" type="Timer" parent="Enemy" unique_id=1723856726]
 autostart = true
 
+[node name="Label" type="Label" parent="Enemy" unique_id=1717859742]
+z_index = 10
+offset_left = 100.0
+offset_top = -150.0
+offset_right = 140.0
+offset_bottom = -127.0
+horizontal_alignment = 1
+
 [node name="FinPersecucion" type="Area2D" parent="." unique_id=60513450]
 position = Vector2(10103, 470)
 script = ExtResource("30_8sd4y")
@@ -769,7 +784,7 @@ shape = SubResource("RectangleShape2D_p8vlt")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D2" unique_id=1351690637]
 position = Vector2(797, 267)
-polygon = PackedVector2Array(1206, 25, 1211, 48, 794, 57, 720, 53, 581, 57, 525, 55, 445, 52, 378, 57, 309, 57, 206, 53, 108, 52, 13, 52, -353, 46, -437, 24, -459, 12, -463, -22, -744, -20, -797, 35, -798, 79, -804, 154, -822, 210, -807, 242, -822, 272, -808, 326, -803, 342, -804, 351, -801, 362, -796, 381, -763, 383, -719, 395, -640, 394, -541, 394, -483, 391, -466, 375, -454, 347, -461, 318, -425, 308, -381, 303, -361, 301, -162, 305, -37, 305, 107, 308, 230, 307, 560, 305, 616, 305, 751, 305, 834, 305, 927, 308, 1095, 310, 1122, 297, 1199, 289, 1205, 314, 1324, 427, 9355, 433, 9875, 491, 10209, 331, 10308, 318, 9907, 534, 9354, 553, 1257, 557, 1168, 319, 930, 327, 850, 320, 736, 323, 599, 322, 545, 321, 467, 321, 258, 326, 123, 320, -11, 320, -102, 319, -144, 315, -353, 310, -340, 484, -326, 498, -351.62885, 500.20645, -477, 511, -642, 509, -729, 513, -834, 479, -847, 477, -857.49506, 419.62714, -862, 395, -797, 27, -755, -26, -478, -46, -340, -5, 776.3998, 14.894714, 1181, 20, 1209, -251, 1391.7944, -251.31488, 2264.7373, -252.81865, 9336, -265, 9873, -245, 10270, -118, 10300, 317, 10210, 328, 10193, -112, 9927, -191, 9349, -71, 1322, -73)
+polygon = PackedVector2Array(1272, 66, 1211, 48, 794, 57, 720, 53, 581, 57, 525, 55, 445, 52, 378, 57, 309, 57, 206, 53, 108, 52, 13, 52, -353, 46, -437, 24, -459, 12, -463, -22, -744, -20, -797, 35, -798, 79, -804, 154, -822, 210, -807, 242, -822, 272, -808, 326, -803, 342, -804, 351, -801, 362, -796, 381, -763, 383, -719, 395, -640, 394, -541, 394, -483, 391, -466, 375, -454, 347, -461, 318, -425, 308, -381, 303, -361, 301, -162, 305, -37, 305, 107, 308, 230, 307, 560, 305, 616, 305, 751, 305, 834, 305, 927, 308, 1095, 310, 1122, 297, 1199, 289, 1327, 280, 1481, 271, 1479, 428, 9355, 433, 9875, 491, 10209, 331, 10308, 318, 9907, 534, 9354, 553, 1257, 557, 1168, 319, 930, 327, 850, 320, 736, 323, 599, 322, 545, 321, 467, 321, 258, 326, 123, 320, -11, 320, -102, 319, -144, 315, -353, 310, -340, 484, -326, 498, -351.62885, 500.20645, -477, 511, -642, 509, -729, 513, -834, 479, -847, 477, -857.49506, 419.62714, -862, 395, -797, 27, -755, -26, -478, -46, -340, -5, 776.3998, 14.894714, 1181, 20, 1209, -251, 1391.7944, -251.31488, 2264.7373, -252.81865, 9336, -265, 9873, -245, 10270, -118, 10300, 317, 10210, 328, 10193, -112, 9927, -191, 9349, -71, 1481, -75, 1478, 84)
 
 [node name="Node2D" type="Node2D" parent="StaticBody2D2" unique_id=1616108]
 
@@ -1788,6 +1803,12 @@ z_index = 1
 position = Vector2(1406, 664)
 texture = ExtResource("37_gltfu")
 
+[node name="Sprite2D18" type="Sprite2D" parent="StaticBody2D2/Node2D" unique_id=2065633918]
+z_index = 1
+position = Vector2(2185.9844, 637.43713)
+scale = Vector2(2.343263, 1.8574082)
+texture = ExtResource("39_ip3m0")
+
 [node name="Sprite2D11" type="Sprite2D" parent="StaticBody2D2/Node2D" unique_id=662828222]
 z_index = 1
 position = Vector2(1249, 929)
@@ -1826,6 +1847,12 @@ position = Vector2(555, 25)
 scale = Vector2(1.739766, 1.6451321)
 texture = ExtResource("41_njugo")
 
+[node name="Sprite2D19" type="Sprite2D" parent="StaticBody2D2/Node2D" unique_id=218356016]
+z_index = 1
+position = Vector2(2205, 279.99994)
+scale = Vector2(1.9954953, 1.7824863)
+texture = ExtResource("41_njugo")
+
 [node name="Sprite2D17" type="Sprite2D" parent="StaticBody2D2/Node2D" unique_id=1645812079]
 z_index = 1
 position = Vector2(1725.9496, 931.2638)
@@ -1851,6 +1878,40 @@ texture = ExtResource("37_gltfu")
 [node name="Sprite2D2" type="Sprite2D" parent="StaticBody2D2/Node2D" unique_id=460382732]
 position = Vector2(853, 234)
 texture = ExtResource("37_gltfu")
+
+[node name="Hada4" parent="." unique_id=1206352157 groups=["hadas"] instance=ExtResource("48_7hnus")]
+position = Vector2(10787, 235)
+
+[node name="Hada5" parent="." unique_id=233814077 groups=["hadas"] instance=ExtResource("48_7hnus")]
+position = Vector2(10691, 425)
+
+[node name="Hada3" parent="." unique_id=2119130342 groups=["hadas"] instance=ExtResource("48_7hnus")]
+z_index = 2
+position = Vector2(10680, 591)
+
+[node name="Hada6" parent="." unique_id=1940975083 groups=["hadas"] instance=ExtResource("48_7hnus")]
+position = Vector2(10513, 520)
+
+[node name="Hada7" parent="." unique_id=1686896957 groups=["hadas"] instance=ExtResource("48_7hnus")]
+position = Vector2(10584, 276)
+
+[node name="Hada8" parent="." unique_id=751588408 groups=["hadas"] instance=ExtResource("48_7hnus")]
+position = Vector2(10418, 231)
+
+[node name="Hada9" parent="." unique_id=598505288 groups=["hadas"] instance=ExtResource("48_7hnus")]
+position = Vector2(10292, 553)
+
+[node name="Hada2" parent="." unique_id=910725931 groups=["hadas"] instance=ExtResource("48_7hnus")]
+position = Vector2(10355, 370)
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1540258162 groups=["hadas"]]
+visible = false
+script = ExtResource("49_q13pp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=918933362]
+visible = false
+position = Vector2(10616, 445)
+shape = SubResource("RectangleShape2D_8tf0m")
 
 [connection signal="body_entered" from="NPC_1/Area2D" to="NPC_1" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="NPC_1/Area2D" to="NPC_1" method="_on_area_2d_body_exited"]
