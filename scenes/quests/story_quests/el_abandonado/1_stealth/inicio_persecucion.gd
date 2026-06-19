@@ -1,10 +1,21 @@
-# SPDX-FileCopyrightText: The Threadbare Authors
-# SPDX-License-Identifier: MPL-2.0
 extends Area2D
 
-@onready var camara = $"../Camera2D"
+@onready var lich = $"../Enemy"
+@onready var jugador = $"../Player"
+
+var activado := false
 
 func _on_body_entered(body):
 
+	if activado:
+		return
+
 	if body.name == "Player":
-		camara.persecucion_activa = true
+
+		activado = true
+
+		jugador.velocity = Vector2.ZERO
+
+		jugador.mode = Player.Mode.SYSTEM_CONTROLLED
+
+		lich.iniciar_entrada()
