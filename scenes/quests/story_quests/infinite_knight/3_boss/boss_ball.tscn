@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://dva2fghcv3eih"]
+
+[ext_resource type="Script" uid="uid://d2endyeclrrob" path="res://scenes/quests/story_quests/infinite_knight/3_boss/boss_ball.gd" id="1_p3udl"]
+[ext_resource type="Texture2D" uid="uid://cagyo41xspko" path="res://assets/first_party/templates/combat/NO_EDIT_projectile.png" id="2_aovk8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gx5d5"]
+radius = 16.0
+
+[node name="BossBall" type="CharacterBody2D" unique_id=361625686]
+collision_layer = 256
+collision_mask = 17
+script = ExtResource("1_p3udl")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1273433221]
+texture = ExtResource("2_aovk8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=922101369]
+shape = SubResource("CircleShape2D_gx5d5")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1401827441]
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
