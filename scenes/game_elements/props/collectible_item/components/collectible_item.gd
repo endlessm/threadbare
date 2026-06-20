@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 @tool
 class_name CollectibleItem extends Node2D
-signal item_collected(item: InventoryItem)  # <-- asegúrate que tenga el parámetro
+signal item_collected(item: InventoryItem)
 ## Overworld collectible that can be interacted with. When a player interacts
 ## with it, an [InventoryItem] is added to the [Inventory]
 
@@ -85,21 +85,6 @@ func reveal() -> void:
 ## When interacted with, the collectible will display a brief animation
 ## and when that finishes, a new [InventoryItem] will be added to the
 ## [GameState] and the interaction will have ended.
- #func _on_interacted(player: Player, _from_right: bool) -> void:
-#	z_index += 1
-#	animation_player.play("collected")
-#	await animation_player.animation_finished
-
-	#GameState.add_collected_item(item)
-
-#	if collected_dialogue:
-#		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])
-#		await DialogueManager.dialogue_ended
-
-#	interact_area.end_interaction()
-#	item_collected.emit(item)
-#	queue_free()
-
 func _on_interacted(player: Player, _from_right: bool) -> void:
 	z_index += 1
 	animation_player.play("collected")

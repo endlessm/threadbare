@@ -1,12 +1,14 @@
 [gd_scene format=4 uid="uid://63qby7mm8372"]
 
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="1_4eb8t"]
+[ext_resource type="Script" uid="uid://dy1dpagcisn5k" path="res://scenes/quests/story_quests/3_patitas/3_sequence_puzzle/3_patitas_sequence_puzzle.gd" id="1_y261o"]
 [ext_resource type="TileSet" uid="uid://craiqeeur86wl" path="res://scenes/quests/story_quests/3_patitas/tiles/3_patitas_water.tres" id="2_y261o"]
 [ext_resource type="TileSet" uid="uid://dxfnlmjv05d2l" path="res://scenes/quests/story_quests/3_patitas/tiles/3_patitas_foam_2.tres" id="3_igkeb"]
 [ext_resource type="TileSet" uid="uid://gpaqa6occfp6" path="res://scenes/quests/story_quests/3_patitas/tiles/3_patitas_exterior_floors.tres" id="4_31y0l"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_ksuck"]
 [ext_resource type="SpriteFrames" uid="uid://cfa0bj204vyea" path="res://scenes/quests/story_quests/3_patitas/player_components/3_patitas_player.tres" id="6_otn0r"]
 [ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="7_83anm"]
+[ext_resource type="Texture2D" uid="uid://dcwmaoqgu5t84" path="res://scenes/globals/scene_switcher/transitions/Radial.png" id="8_ksuck"]
 [ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/game_elements/props/sequence_puzzle_object/sequence_puzzle_object.tscn" id="8_u4cwb"]
 [ext_resource type="SpriteFrames" uid="uid://dpfvqmtq45a0p" path="res://scenes/quests/story_quests/3_patitas/3_sequence_puzzle/3_patitas_object.tres" id="9_3xkht"]
 [ext_resource type="AudioStream" uid="uid://cg57q82pb243w" path="res://assets/third_party/nepalese_hand_bells/handBells-c4.ogg" id="10_hx8xr"]
@@ -25,13 +27,21 @@
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="23_vqioq"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="24_div0k"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_5tn74"]
+[ext_resource type="Texture2D" uid="uid://cw330muutqql7" path="res://assets/third_party/tiny-swords/Deco/05.png" id="28_otn0r"]
+[ext_resource type="Texture2D" uid="uid://cnjpx01cqjl5d" path="res://scenes/quests/story_quests/3_patitas/player_components/cohete.png" id="29_ksuck"]
 
 [sub_resource type="Resource" id="Resource_5qyms"]
 script = ExtResource("21_wrpoo")
 type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_u4cwb"]
+
 [node name="3PatitasSequencePuzzle" type="Node2D" unique_id=217609538]
+script = ExtResource("1_y261o")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=536222165]
+color = Color(0.02984272, 0.02940555, 0.068938866, 1)
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=2088852286]
 
@@ -45,18 +55,20 @@ tile_map_data = PackedByteArray("AAACAAEAAgAAAAAAAAADAAEAAgAAAAAAAAAEAAEAAgAAAAA
 tile_set = ExtResource("3_igkeb")
 
 [node name="Grass" type="TileMapLayer" parent="TileMapLayers" unique_id=592819758]
+modulate = Color(0.4862745, 0, 0.1764706, 1)
 tile_map_data = PackedByteArray("AAANAAcAAQACAAIAAAANAAYAAQACAAEAAAANAAUAAQACAAEAAAANAAQAAQACAAEAAAANAAMAAQACAAEAAAANAAIAAQACAAAAAAAMAAcAAQABAAEAAAAMAAYAAQABAAEAAAAMAAUAAQABAAEAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQACAAAAAAALAAcAAQABAAEAAAALAAYAAQABAAEAAAALAAUAAQABAAEAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAAAAAAKAAcAAQABAAEAAAAKAAYAAQABAAEAAAAKAAUAAQABAAEAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAJAAcAAQABAAEAAAAJAAYAAQABAAEAAAAJAAUAAQABAAEAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAIAAcAAQABAAEAAAAIAAYAAQABAAEAAAAIAAUAAQABAAEAAAAIAAQAAQABAAEAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAHAAcAAQABAAEAAAAHAAYAAQABAAEAAAAHAAUAAQABAAEAAAAHAAQAAQABAAEAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAGAAcAAQABAAEAAAAGAAYAAQABAAEAAAAGAAUAAQABAAEAAAAGAAQAAQABAAEAAAAGAAMAAQABAAEAAAAGAAIAAQABAAEAAAAFAAcAAQABAAEAAAAFAAYAAQABAAEAAAAFAAUAAQABAAEAAAAFAAQAAQABAAEAAAAFAAMAAQABAAEAAAAFAAIAAQABAAEAAAAFAAEAAQABAAAAAAAEAAcAAQABAAEAAAAEAAYAAQABAAEAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAIAAQABAAEAAAAEAAEAAQABAAAAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAIAAQABAAEAAAADAAEAAQABAAAAAAACAAMAAQABAAEAAAACAAIAAQABAAEAAAACAAEAAQAAAAAAAAABAAMAAQAAAAEAAAABAAIAAQAAAAAAAAACAAQAAQABAAEAAAABAAQAAQAAAAEAAAACAAgAAQAAAAIAAAADAAgAAQABAAIAAAAEAAgAAQABAAIAAAAFAAgAAQABAAIAAAAGAAgAAQABAAIAAAAHAAgAAQABAAIAAAAIAAgAAQABAAIAAAAJAAgAAQABAAIAAAAKAAgAAQABAAIAAAAMAAgAAQACAAIAAAALAAgAAQABAAIAAAABAAUAAQAAAAEAAAACAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAEAAAADAAYAAQABAAEAAAACAAYAAQABAAEAAAABAAYAAQAAAAEAAAABAAcAAQAAAAIAAAACAAcAAQABAAEAAAADAAcAAQABAAEAAAAGAAEAAQABAAAAAAAHAAEAAQABAAAAAAAIAAEAAQABAAAAAAAJAAEAAQABAAAAAAAKAAEAAQABAAAAAAA=")
 tile_set = ExtResource("4_31y0l")
 
 [node name="Sand" type="TileMapLayer" parent="TileMapLayers" unique_id=2049231096]
-tile_map_data = PackedByteArray("AAACAAcAAQAFAAMAAAADAAcAAQAHAAIAAAADAAYAAQAIAAEAAAADAAUAAQAFAAAAAAAEAAUAAQAGAAMAAAAFAAUAAQAGAAMAAAAGAAUAAQAGAAMAAAAHAAUAAQAGAAMAAAAIAAUAAQAGAAMAAAAJAAUAAQAGAAMAAAAKAAUAAQAGAAMAAAALAAUAAQAHAAIAAAALAAQAAQAFAAAAAAAMAAQAAQAGAAMAAAANAAQAAQAHAAMAAAA=")
+modulate = Color(0.38039216, 0.03529412, 0, 1)
+tile_map_data = PackedByteArray("AAACAAcAAQAFAAMAAAADAAcAAQAHAAIAAAADAAYAAQAIAAEAAAADAAUAAQAFAAAAAAAEAAUAAQAGAAMAAAAFAAUAAQAGAAMAAAAGAAUAAQAGAAMAAAAHAAUAAQAGAAMAAAAIAAUAAQAGAAMAAAAJAAUAAQAGAAMAAAAKAAUAAQAGAAMAAAALAAUAAQAHAAIAAAALAAQAAQAFAAAAAAAMAAQAAQAGAAMAAAANAAQAAQAHAAAAAAANAAUAAQAIAAEAAAANAAYAAQAIAAEAAAANAAcAAQAIAAEAAAAMAAgAAQAGAAMAAAANAAgAAQAHAAIAAAALAAgAAQAGAAMAAAAKAAgAAQAGAAMAAAAJAAgAAQAGAAMAAAAIAAgAAQAGAAMAAAAHAAgAAQAGAAMAAAAGAAgAAQAGAAMAAAAFAAgAAQAFAAMAAAA=")
 tile_set = ExtResource("4_31y0l")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=1358184019]
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=747348360 instance=ExtResource("5_ksuck")]
-position = Vector2(383, 371)
+position = Vector2(115, 219)
 sprite_frames = ExtResource("6_otn0r")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1732237457]
@@ -67,7 +79,13 @@ limit_bottom = 704
 position_smoothing_enabled = true
 editor_draw_limits = true
 
+[node name="PointLight2D2" type="PointLight2D" parent="OnTheGround/Player" unique_id=1780138439]
+position = Vector2(34.000004, -23.999996)
+scale = Vector2(0.09479166, 0.099537045)
+texture = ExtResource("8_ksuck")
+
 [node name="SequencePuzzle" type="Node2D" parent="OnTheGround" unique_id=1771259982]
+visible = false
 y_sort_enabled = true
 position = Vector2(-1, 0)
 script = ExtResource("7_83anm")
@@ -113,6 +131,7 @@ sprite_modulate = Color(0.89, 0.2937, 0.2937, 1)
 audio_stream = ExtResource("15_vdtju")
 
 [node name="Signs" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=1795857144]
+visible = false
 y_sort_enabled = true
 
 [node name="HintSign1" parent="OnTheGround/SequencePuzzle/Signs" unique_id=948532428 instance=ExtResource("16_6cojf")]
@@ -136,6 +155,7 @@ sequence = [NodePath("../../Objects/Blue"), NodePath("../../Objects/Green"), Nod
 hint_sign = NodePath("../../Signs/HintSign2")
 
 [node name="CollectibleItem" parent="OnTheGround" unique_id=1678374994 instance=ExtResource("20_cjx16")]
+visible = false
 position = Vector2(861, 282)
 revealed = false
 next_scene = "uid://n7kguwobnsme"
@@ -144,6 +164,7 @@ collected_dialogue = ExtResource("22_jju0g")
 dialogue_title = &"well_done"
 
 [node name="Sign" parent="OnTheGround" unique_id=263994380 instance=ExtResource("23_vqioq")]
+visible = false
 position = Vector2(184, 434)
 direction = 1
 text = "First melody: yellow, green, blue."
@@ -155,6 +176,68 @@ text = "First melody: yellow, green, blue."
 [node name="Cinematic" type="Node2D" parent="." unique_id=1869940872]
 script = ExtResource("25_5tn74")
 dialogue = ExtResource("22_jju0g")
+next_scene = "uid://n7kguwobnsme"
+autostart = false
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="CristalLunar" type="Area2D" parent="." unique_id=548885863]
+position = Vector2(216, 474)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CristalLunar" unique_id=1956854469]
+shape = SubResource("CircleShape2D_u4cwb")
+
+[node name="CristalLunar" type="Sprite2D" parent="CristalLunar" unique_id=1423597993]
+position = Vector2(-1, 3)
+texture = ExtResource("28_otn0r")
+
+[node name="CristalLunar2" type="Area2D" parent="." unique_id=1863975257]
+position = Vector2(259, 509)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CristalLunar2" unique_id=292343084]
+position = Vector2(35, -151)
+shape = SubResource("CircleShape2D_u4cwb")
+
+[node name="CristalLunar" type="Sprite2D" parent="CristalLunar2" unique_id=805489657]
+position = Vector2(34, -151)
+texture = ExtResource("28_otn0r")
+
+[node name="CristalLunar3" type="Area2D" parent="." unique_id=79323654]
+position = Vector2(313, 525)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CristalLunar3" unique_id=703764475]
+position = Vector2(173, -173)
+shape = SubResource("CircleShape2D_u4cwb")
+
+[node name="CristalLunar" type="Sprite2D" parent="CristalLunar3" unique_id=1817369700]
+position = Vector2(173, -170)
+texture = ExtResource("28_otn0r")
+
+[node name="CristalLunar4" type="Area2D" parent="." unique_id=1519575142]
+position = Vector2(387, 528)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CristalLunar4" unique_id=837787840]
+position = Vector2(273, -173)
+shape = SubResource("CircleShape2D_u4cwb")
+
+[node name="CristalLunar" type="Sprite2D" parent="CristalLunar4" unique_id=147937676]
+position = Vector2(271, -171)
+texture = ExtResource("28_otn0r")
+
+[node name="CristalLunar5" type="Area2D" parent="." unique_id=1604191019]
+position = Vector2(314, 478)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CristalLunar5" unique_id=1162343717]
+position = Vector2(431, -187)
+shape = SubResource("CircleShape2D_u4cwb")
+
+[node name="CristalLunar" type="Sprite2D" parent="CristalLunar5" unique_id=923902177]
+position = Vector2(429, -184)
+texture = ExtResource("28_otn0r")
+
+[node name="CoheteDespegue" type="Sprite2D" parent="." unique_id=1322904382]
+visible = false
+position = Vector2(577, 272.00003)
+scale = Vector2(1.2382813, 1.123048)
+texture = ExtResource("29_ksuck")
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]
