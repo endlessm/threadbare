@@ -1,3 +1,47 @@
 [gd_scene format=3 uid="uid://dnn2vjkipg2to"]
 
+[ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="1_ys5mw"]
+[ext_resource type="SpriteFrames" uid="uid://p7xkypy2l6q2" path="res://scenes/quests/story_quests/voces_de_la_mina/1_stealth/stealth_components/checkpoint/sprite_CheckPoint.tres" id="2_lq1ju"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="3_2q2jh"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="4_lucoa"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uyo64"]
+radius = 48.0
+
 [node name="CheckpointVocesMina" type="Node2D" unique_id=1291602889]
+
+[node name="SpawnPoint" type="Marker2D" parent="." unique_id=1711143977 groups=["spawn_point"]]
+unique_name_in_owner = true
+position = Vector2(0, 1)
+script = ExtResource("1_ys5mw")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=39556747]
+unique_name_in_owner = true
+position = Vector2(5, -44)
+sprite_frames = ExtResource("2_lq1ju")
+animation = &"appear"
+frame_progress = 0.5636429
+
+[node name="InteractArea" type="Area2D" parent="." unique_id=62125737 node_paths=PackedStringArray("marker")]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("3_2q2jh")
+marker = NodePath("Marker")
+disabled = true
+action = "Admire"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape" type="CollisionShape2D" parent="InteractArea" unique_id=1347057873]
+position = Vector2(1, -4)
+shape = SubResource("CircleShape2D_uyo64")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="Marker" type="Marker2D" parent="InteractArea" unique_id=1761716851]
+position = Vector2(0, -128)
+
+[node name="TalkBehavior" type="Node" parent="." unique_id=393522054 node_paths=PackedStringArray("interact_area")]
+unique_name_in_owner = true
+script = ExtResource("4_lucoa")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
