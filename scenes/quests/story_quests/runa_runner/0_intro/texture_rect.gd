@@ -5,9 +5,10 @@ extends TextureRect
 var indice = 0
 
 var imagenes = [
-	preload("res://scenes/quests/story_quests/runa_runner/0_intro/Picture Intro/intro1.jpg"),
-	preload("res://scenes/quests/story_quests/runa_runner/0_intro/Picture Intro/intro2.jpg"),
-	preload("res://scenes/quests/story_quests/runa_runner/0_intro/Picture Intro/intro3.jpg")
+	preload("res://scenes/quests/story_quests/runa_runner/0_intro/Picture Intro/Gemini_Generated_Image_ywb85wywb85wywb8.png"),
+	preload("res://scenes/quests/story_quests/runa_runner/0_intro/Picture Intro/Gemini_Generated_Image_jau20ejau20ejau2.png"),
+	preload("res://scenes/quests/story_quests/runa_runner/0_intro/Picture Intro/Gemini_Generated_Image_nv0l4tnv0l4tnv0l.png"),
+	preload("res://scenes/quests/story_quests/runa_runner/0_intro/Picture Intro/Gemini_Generated_Image_p5kprip5kprip5kp.png")
 ]
 
 func _ready():
