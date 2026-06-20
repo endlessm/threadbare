@@ -143,6 +143,7 @@ func _ready() -> void:
 			player_awareness.value = 0.0
 
 	_set_sprite_frames(sprite_frames)
+	_connect_player_detected()
 
 	if detection_area:
 		detection_area.scale = Vector2.ONE * detection_area_scale
@@ -155,22 +156,18 @@ func _ready() -> void:
 	guard_movement.destination_reached.connect(self._on_destination_reached)
 	guard_movement.still_time_finished.connect(self._on_still_time_finished)
 	guard_movement.path_blocked.connect(self._on_path_blocked)
-
+	
 
 func _process(delta: float) -> void:
 	_update_debug_info()
-
 	if Engine.is_editor_hint() and not move_while_in_editor:
 		return
-
 	_process_state()
 	guard_movement.move()
-
 	if state != State.ALERTED:
 		_update_player_awareness(delta)
-
 	_update_animation()
-
+	_check_projectiles()  # ✅ agrega solo esta línea
 
 ## Updates the guard's movement behavior based on its current state.
 func _process_state() -> void:
@@ -480,3 +477,24 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
 	if state == State.DETECTING:
 		guard_movement.stop_moving()
 		state = State.INVESTIGATING
+
+# --- NUEVO: conectar la señal al iniciarse ---
+func _connect_player_detected() -> void:
+	if not player_detected.is_connected(_on_player_detected):
+		player_detected.connect(_on_player_detected)
+
+func _on_player_detected(player: Node2D) -> void:
+	if player.has_method("defeat"):
+		player.defeat()
+
+func _on_detection_area_area_entered(area: Area2D) -> void:
+	if area.is_in_group("projectiles"):
+		area.queue_free()
+		queue_free()
+
+func _check_projectiles() -> void:
+	for area in $DetectionArea.get_overlapping_areas():
+		if area.is_in_group("projectiles"):
+			area.queue_free()
+			queue_free()
+			return

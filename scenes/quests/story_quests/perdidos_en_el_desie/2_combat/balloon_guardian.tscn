@@ -1,26 +1,28 @@
-[gd_scene format=3 uid="uid://dhydhpp43urah"]
+[gd_scene format=3 uid="uid://2bk7xat4ut3x"]
 
-[ext_resource type="Script" uid="uid://n1guv6m28qbw" path="res://scenes/ui_elements/dialogue/components/balloon.gd" id="1_36de5"]
-[ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="2_a8ve6"]
-[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="2_pfnde"]
-[ext_resource type="Script" uid="uid://bb52rsfwhkxbn" path="res://addons/dialogue_manager/dialogue_responses_menu.gd" id="3_72ixx"]
-[ext_resource type="Texture2D" uid="uid://ctvutcaoqvftf" path="res://assets/first_party/icons/right_arrow.png" id="4_qmeow"]
-[ext_resource type="AudioStream" uid="uid://cs1bx2odpj6vm" path="res://scenes/ui_elements/dialogue/components/sounds/pencil.ogg" id="5_dbsi0"]
+[ext_resource type="Script" uid="uid://n1guv6m28qbw" path="res://scenes/ui_elements/dialogue/components/balloon.gd" id="1_lacdj"]
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="2_y1idb"]
+[ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="3_ek2mh"]
+[ext_resource type="Texture2D" uid="uid://ctvutcaoqvftf" path="res://assets/first_party/icons/right_arrow.png" id="4_m121r"]
+[ext_resource type="Script" uid="uid://bb52rsfwhkxbn" path="res://addons/dialogue_manager/dialogue_responses_menu.gd" id="5_i33wb"]
+[ext_resource type="AudioStream" uid="uid://cs1bx2odpj6vm" path="res://scenes/ui_elements/dialogue/components/sounds/pencil.ogg" id="6_ncshh"]
 
 [node name="DialogueBalloon" type="CanvasLayer" unique_id=308207015]
 layer = 100
-script = ExtResource("1_36de5")
+script = ExtResource("1_lacdj")
 
 [node name="Balloon" type="Control" parent="." unique_id=2032365240]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
-theme = ExtResource("2_pfnde")
+theme = ExtResource("2_y1idb")
 
 [node name="PanelContainer" type="PanelContainer" parent="Balloon" unique_id=58550594]
 layout_mode = 0
-offset_right = 480.0
-offset_bottom = 359.0
+offset_left = 318.0
+offset_top = 1.0
+offset_right = 798.0
+offset_bottom = 455.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Balloon/PanelContainer" unique_id=412895659]
 custom_minimum_size = Vector2(352, 128)
@@ -40,7 +42,7 @@ mouse_filter = 1
 text = "Guardián"
 horizontal_alignment = 1
 
-[node name="DialogueLabel" parent="Balloon/PanelContainer/VBoxContainer" unique_id=728821532 instance=ExtResource("2_a8ve6")]
+[node name="DialogueLabel" parent="Balloon/PanelContainer/VBoxContainer" unique_id=728821532 instance=ExtResource("3_ek2mh")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -53,7 +55,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 theme_type_variation = &"FlatNextButton"
 text = "next"
-icon = ExtResource("4_qmeow")
+icon = ExtResource("4_m121r")
 icon_alignment = 2
 
 [node name="ResponsesMenu" type="VBoxContainer" parent="Balloon/PanelContainer/VBoxContainer" unique_id=938619174 node_paths=PackedStringArray("response_template")]
@@ -62,7 +64,7 @@ visible = false
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 2
-script = ExtResource("3_72ixx")
+script = ExtResource("5_i33wb")
 response_template = NodePath("ResponseExample")
 
 [node name="ResponseExample" type="Button" parent="Balloon/PanelContainer/VBoxContainer/ResponsesMenu" unique_id=957333658]
@@ -71,7 +73,7 @@ theme_type_variation = &"FlatButton"
 text = "Response example"
 
 [node name="TalkSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1778551533]
-stream = ExtResource("5_dbsi0")
+stream = ExtResource("6_ncshh")
 volume_db = 2.0
 bus = &"SFX"
 parameters/looping = true
