@@ -1,7 +1,7 @@
 extends Area2D
 
-@export var velocidad := 500.0
-@export var tiempo_carga := 1
+@export var velocidad := 400.0
+@export var tiempo_carga := 1.5
 
 var disparado := false
 var lich: Node2D = null
