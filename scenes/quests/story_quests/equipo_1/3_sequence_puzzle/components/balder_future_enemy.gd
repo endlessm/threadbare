@@ -1,5 +1,5 @@
+class_name BalderFuturo
 extends ThrowingEnemy
-
 
 enum Tipo {
 	NORTE,
@@ -10,6 +10,30 @@ enum Tipo {
 	NOR_OESTE,   # Diagonal superior izquierda
 	SUR_ESTE,   # Diagonal inferior derecha
 	SUR_OESTE    # Diagonal inferior izquierda
+}
+enum Patron{
+	CRUZ,
+	EQUIS,
+	CIRCULO
+}
+const patron_direcciones: Dictionary={
+	Patron.CRUZ: [Tipo.NORTE,Tipo.ESTE,Tipo.SUR,Tipo.OESTE],
+	Patron.CIRCULO: [
+		Tipo.NORTE,    
+		Tipo.NOR_ESTE, 
+		Tipo.ESTE,      
+		Tipo.SUR_ESTE,  
+		Tipo.SUR,      
+		Tipo.SUR_OESTE,
+		Tipo.OESTE,     
+		Tipo.NOR_OESTE
+	],
+	Patron.EQUIS: [
+		Tipo.NOR_ESTE, 
+		Tipo.SUR_ESTE,  
+		Tipo.SUR_OESTE,
+		Tipo.NOR_OESTE
+	]
 }
 
 const COORDENADAS: Dictionary = {
@@ -30,8 +54,9 @@ const COORDENADAS: Dictionary = {
 @export var disparos:Array[Node2D]
 @export var targets:Array[Node2D]
 
+var espaciado = 1 ##VARIABLE QUE CONTROLARA EL ESPACIADO DE LOS PROYECTILES
 var velocidad_actual_projectil:int
-
+@export var fase2:bool = false
 func _atacar_efecto(ataques: int, casilla_a_mover: Vector2i, direccion: Tipo, es_barrido:bool) -> void:
 	global_position = mapa.map_to_local(casilla_a_mover)
 	##ejecuta su ataque por defecto (Disparo 1)
@@ -66,22 +91,13 @@ func _atacar_efecto(ataques: int, casilla_a_mover: Vector2i, direccion: Tipo, es
 		await get_tree().create_timer(0.1).timeout
 
 func ataque_barrido(direccion:Tipo):
-	ataque_direcciones(direccion)		
+	var direccion_enemigos = direccion_patron(direccion)
+	ataque_direcciones(direccion_enemigos)		
 
-func ataque_circular(es_barrido:bool, cantidad_ataques:int)->void:
-	var direcciones = [Tipo.NORTE,Tipo.ESTE,Tipo.SUR,Tipo.OESTE];
-	var direcciones_horarias: Array[Tipo] = [
-		Tipo.NORTE,    
-		Tipo.NOR_ESTE, 
-		Tipo.ESTE,      
-		Tipo.SUR_ESTE,  
-		Tipo.SUR,      
-		Tipo.SUR_OESTE,
-		Tipo.OESTE,     
-		Tipo.NOR_OESTE
-	]
-	for d in direcciones_horarias:
-		
+func ataque_circular(es_barrido:bool, cantidad_ataques:int, patron)->void:
+	
+	var direcciones = patron_direcciones[patron]
+	for d in direcciones:
 		var casilla_jugador: Vector2i = mapa.local_to_map(player.global_position)
 		
 		var casilla_inicial_boss: Vector2i = casilla_jugador + (Vector2i(5, 5)*COORDENADAS[d])
@@ -91,8 +107,7 @@ func ataque_circular(es_barrido:bool, cantidad_ataques:int)->void:
 		
 	animation_player.play(&"idle")
 	
-func ataque_direcciones(direccion:Tipo)->void:
-	var direccion_enemigos = direccion_patron(direccion)
+func ataque_direcciones(direccion:Vector2i)->void:
 	
 	##Seran 4 posiciones de enemigos para simular 5 disparos (4 + el boss)
 	##los enemigos se generaran alado del jefe y si la direccion es una diagonal
@@ -100,8 +115,8 @@ func ataque_direcciones(direccion:Tipo)->void:
 	var posicion_boss = mapa.local_to_map(mapa.to_local(global_position))
 	var posicion_player = mapa.local_to_map(mapa.to_local(player.global_position))
 	
-	var posiciones_disparos = patron_posiciones(posicion_boss,direccion_enemigos)
-	var posiciones_target = patron_posiciones(posicion_player,direccion_enemigos)
+	var posiciones_disparos = patron_posiciones(posicion_boss,direccion)
+	var posiciones_target = patron_posiciones(posicion_player,direccion)
 	
 	
 	##si o si deben ser 4 disparos y 4 targets, sino crashea xd
@@ -120,10 +135,6 @@ func colocar_nodos(posiciones:Array[Vector2i],nodos:Array[Node2D])->void:
 		var pos = mapa.to_global(mapa.map_to_local(posiciones[i]))
 		n.global_position = pos
 		i = i+1
-
-func reset_nodos(nodos:Array[Node2D], posicion_inicial:Vector2i):
-	for n:Node2D in nodos:
-		n.global_position = posicion_inicial
 		
 func direccion_patron(direccion:Tipo)->Vector2i:
 	var direccion_mover = Vector2i(0,0);
@@ -142,7 +153,6 @@ func patron_posiciones(posicion,direccion)->Array[Vector2i]:
 	##la posicion debe ser usando maptolocal
 	var posicion_iterada = posicion
 	var posiciones_nuevas : Array[Vector2i] = []
-	var espaciado = 4
 	for e in targets.size()/2:
 		##cambiar el 2 si queremos balas mas acumuladas o no
 		posicion_iterada = posicion_iterada+(direccion*espaciado)
@@ -165,11 +175,22 @@ func pausar_projectiles():
 	for p in get_tree().get_nodes_in_group("projectiles"):
 		p.process_mode = Node.PROCESS_MODE_DISABLED
 	
-
 func activar_projectiles():
 	for p in get_tree().get_nodes_in_group("projectiles"):
 		if p is Projectile:
 			p.process_mode = Node.PROCESS_MODE_INHERIT
+				
+func _on_timeout() -> void:
+	var player: Player = get_tree().get_first_node_in_group("player")
+	if not is_instance_valid(player):
+		return
+	_is_attacking = true
+	animation_player.play(&"attack")
+	if fase2:
+		await animation_player.animation_finished
+		var direccion = global_position.direction_to(player.global_position)
+		direccion = direccion.rotated(-PI / 2)
+		ataque_direcciones(direccion.round())
 		
-		
+	animation_player.queue(&"idle")		
 	

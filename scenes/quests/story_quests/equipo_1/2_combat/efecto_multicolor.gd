@@ -3,7 +3,6 @@ extends ColorRect
 @onready var animador_efectos = %AnimadorEfectos
 
 func arrancar_efecto():
-	print("animacion en curso")
 	
 	if is_instance_valid(enemigo):
 		# 1. Conseguimos la posición global del enemigo en ESTE milisegundo

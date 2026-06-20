@@ -11,6 +11,8 @@
 [ext_resource type="TileSet" uid="uid://ciq5guijvlyb0" path="res://tiles/void_chromakey.tres" id="7_terr3"]
 [ext_resource type="Script" uid="uid://d0xctfitu5bql" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/repel_bar.gd" id="10_5oqva"]
 [ext_resource type="Script" uid="uid://bwy7k76k2het6" path="res://scenes/game_elements/characters/player/components/equipo1_player_repel.gd" id="10_mcoxg"]
+[ext_resource type="Script" uid="uid://b7ijhjnlww2id" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/player_harm_balder.gd" id="11_4xrlu"]
+[ext_resource type="Script" uid="uid://bvh2mvxmo1uuy" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/vida_jefe.gd" id="13_0hr8e"]
 [ext_resource type="Texture2D" uid="uid://c1bhlrwm2ph6x" path="res://assets/third_party/tiny-swords/Factions/Goblins/Buildings/Wood_House/Goblin_House_Destroyed.png" id="14_84anw"]
 [ext_resource type="Texture2D" uid="uid://dl6o7vcf2fyc" path="res://assets/first_party/towers/Tower_Patchwork_Ruined1.png" id="14_ytvk6"]
 [ext_resource type="Texture2D" uid="uid://beat6rualotec" path="res://assets/third_party/tiny-swords-non-cc0/Terrain/Resources/Tools/Tool_03.png" id="15_terr3"]
@@ -26,6 +28,43 @@
 [ext_resource type="PackedScene" uid="uid://b8jgwcv4fenjt" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/animacion_time_stop_3.tscn" id="22_mcoxg"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="24_hss0q"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_kstbw"]
+[ext_resource type="Script" uid="uid://bnwwtarjg24os" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/final_3.gd" id="29_0532a"]
+[ext_resource type="Resource" uid="uid://cjspdqsp4hy5q" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/components/dialogue_final_3.dialogue" id="30_octjf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0hr8e"]
+bg_color = Color(0, 0, 0, 0.5882353)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4xrlu"]
+bg_color = Color(0.2505531, 0.030944379, 0.24643669, 0.84313726)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.6313726)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2hp60"]
+bg_color = Color(0.25480583, 0.8037578, 0.326183, 0.84313726)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.6313726)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aiutx"]
 size = Vector2(127, 174)
@@ -82,14 +121,21 @@ y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=747348360 instance=ExtResource("5_2hp60")]
 unique_name_in_owner = true
-position = Vector2(929, 267)
+position = Vector2(652, 374)
 sprite_frames = ExtResource("6_0532a")
+metadata/_edit_group_ = true
 
 [node name="PlayerSprite" parent="OnTheGround/Player" index="2" unique_id=1785485617]
 sprite_frames = ExtResource("6_0532a")
 
 [node name="PlayerRepel" parent="OnTheGround/Player" index="6" unique_id=1324972992]
 script = ExtResource("10_mcoxg")
+
+[node name="PlayerHarm" parent="OnTheGround/Player" index="10" unique_id=794226595]
+script = ExtResource("11_4xrlu")
+
+[node name="CollisionShape2D" parent="OnTheGround/Player/PlayerHarm/HitBox" parent_id_path=PackedInt32Array(747348360, 1910507610) index="0" unique_id=1807630823]
+position = Vector2(0.5, -14.5)
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1732237457]
 zoom = Vector2(0.8, 0.8)
@@ -116,6 +162,44 @@ one_shot = true
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1686505878]
 
 [node name="HUD" parent="." unique_id=1084128841 instance=ExtResource("24_hss0q")]
+visible = false
+
+[node name="BarrasVida" type="CanvasLayer" parent="." unique_id=1817566087 node_paths=PackedStringArray("boss", "barra_jefe", "barra_player")]
+script = ExtResource("13_0hr8e")
+boss = NodePath("../BalderBoss/BalderFuturo")
+barra_jefe = NodePath("BarraJefe")
+barra_player = NodePath("BarraPlayer")
+
+[node name="BarraJefe" type="ProgressBar" parent="BarrasVida" unique_id=290753195]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -67.0
+offset_top = -250.0
+offset_right = -35.0
+offset_bottom = 231.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_0hr8e")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4xrlu")
+fill_mode = 3
+show_percentage = false
+
+[node name="BarraPlayer" type="ProgressBar" parent="BarrasVida" unique_id=1572249298]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 65.0
+offset_top = -98.0
+offset_right = 97.0
+offset_bottom = 82.5
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_0hr8e")
+theme_override_styles/fill = SubResource("StyleBoxFlat_2hp60")
+fill_mode = 3
+show_percentage = false
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1869940872]
 script = ExtResource("25_kstbw")
@@ -235,31 +319,35 @@ shape = SubResource("RectangleShape2D_ytvk6")
 position = Vector2(134, 506)
 texture = ExtResource("15_terr3")
 
-[node name="BalderBoss" type="Node" parent="." unique_id=735473446 node_paths=PackedStringArray("animacion")]
+[node name="BalderBoss" type="Node" parent="." unique_id=735473446 node_paths=PackedStringArray("animacion", "timer_time_stop")]
 script = ExtResource("17_kn25j")
 animacion = NodePath("../EfectoTimeStop/EfectoMulticolor")
+timer_time_stop = NodePath("TimerAtaque")
 
 [node name="BalderFuturo" parent="BalderBoss" unique_id=1243855514 node_paths=PackedStringArray("mapa", "player", "disparos", "targets") instance=ExtResource("17_rkiqp")]
 unique_name_in_owner = true
-position = Vector2(990, -22)
+position = Vector2(497, 248)
 collision_layer = 0
-collision_mask = 0
+collision_mask = 16
 script = ExtResource("19_kn25j")
 mapa = NodePath("../../TileMapLayers/Sand")
 player = NodePath("../../OnTheGround/Player")
 disparos = [NodePath("../../EnemigosDisparos/Disparo1"), NodePath("../../EnemigosDisparos/Disparo2"), NodePath("../../EnemigosDisparos/Disparo3"), NodePath("../../EnemigosDisparos/Disparo4")]
 targets = [NodePath("../../PlayerTargets/Target1"), NodePath("../../PlayerTargets/Target2"), NodePath("../../PlayerTargets/Target3"), NodePath("../../PlayerTargets/Target4")]
-throwing_period = 1.0
-autostart = true
-projectile_speed = 75.0
+fase2 = false
+throwing_period = 2.0
+projectile_speed = 80.0
 projectile_duration = 30.0
-walking_time = 1.0
-walking_range = 800.0
-walking_speed = 150.0
+walking_time = 1.5
+walking_range = 600.0
+walking_speed = 300.0
 metadata/_edit_group_ = true
 
 [node name="Timer" parent="BalderBoss/BalderFuturo" index="2" unique_id=2084913349]
 wait_time = 1.0
+
+[node name="TimerAtaque" type="Timer" parent="BalderBoss" unique_id=743031596]
+wait_time = 12.0
 
 [node name="EfectoTimeStop" type="Node" parent="." unique_id=905338166]
 
@@ -273,9 +361,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1365.0
+offset_left = -1363.0
 offset_top = -849.0
-offset_right = 1000.0
+offset_right = 1002.0
 offset_bottom = 1024.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -289,36 +377,12 @@ unique_name_in_owner = true
 
 [node name="prueba" type="Node" parent="." unique_id=1098729123]
 
-[node name="atacar" type="Area2D" parent="prueba" unique_id=1034945084]
+[node name="empezar" type="Area2D" parent="prueba" unique_id=1034945084]
 script = ExtResource("20_8sc40")
 can_use = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="prueba/atacar" unique_id=323644234]
-position = Vector2(858, 282)
-shape = SubResource("RectangleShape2D_kn25j")
-
-[node name="atacar2" type="Area2D" parent="prueba" unique_id=28986686]
-script = ExtResource("20_8sc40")
-can_use = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="prueba/atacar2" unique_id=1473661248]
-position = Vector2(861, 350)
-shape = SubResource("RectangleShape2D_kn25j")
-
-[node name="parar" type="Area2D" parent="prueba" unique_id=398758717]
-script = ExtResource("20_8sc40")
-can_use = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="prueba/parar" unique_id=1092671956]
-position = Vector2(1071, 293)
-shape = SubResource("RectangleShape2D_kn25j")
-
-[node name="resumir" type="Area2D" parent="prueba" unique_id=1865594942]
-script = ExtResource("20_8sc40")
-can_use = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="prueba/resumir" unique_id=346859101]
-position = Vector2(222, 738)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="prueba/empezar" unique_id=323644234]
+position = Vector2(573, 428)
 shape = SubResource("RectangleShape2D_kn25j")
 
 [node name="EnemigosDisparos" type="Node" parent="." unique_id=217209903]
@@ -327,25 +391,25 @@ unique_name_in_owner = true
 [node name="Disparo1" parent="EnemigosDisparos" unique_id=316159835 instance=ExtResource("21_kn25j")]
 visible = false
 position = Vector2(-555, -89)
-projectile_speed = 75.0
+projectile_speed = 80.0
 projectile_duration = 30.0
 
 [node name="Disparo2" parent="EnemigosDisparos" unique_id=934165305 instance=ExtResource("21_kn25j")]
 visible = false
 position = Vector2(-547, -94)
-projectile_speed = 75.0
+projectile_speed = 80.0
 projectile_duration = 30.0
 
 [node name="Disparo3" parent="EnemigosDisparos" unique_id=623606772 instance=ExtResource("21_kn25j")]
 visible = false
 position = Vector2(-545, -86)
-projectile_speed = 75.0
+projectile_speed = 80.0
 projectile_duration = 30.0
 
 [node name="Disparo4" parent="EnemigosDisparos" unique_id=1189948498 instance=ExtResource("21_kn25j")]
 visible = false
 position = Vector2(-547, -91)
-projectile_speed = 75.0
+projectile_speed = 80.0
 projectile_duration = 30.0
 
 [node name="PlayerTargets" type="Node" parent="." unique_id=2117500013]
@@ -367,11 +431,23 @@ position = Vector2(-750, 205)
 visible = false
 position = Vector2(-750, 205)
 
+[node name="Final" type="Node" parent="." unique_id=961156261 node_paths=PackedStringArray("enemigo", "timer_time_stop")]
+script = ExtResource("29_0532a")
+dialogo_final = ExtResource("30_octjf")
+next_scene = "uid://c6jcw8wsvnwdn"
+enemigo = NodePath("../BalderBoss/BalderFuturo")
+timer_time_stop = NodePath("../BalderBoss/TimerAtaque")
+
+[connection signal="took_damage" from="OnTheGround/Player/PlayerHarm" to="BarrasVida" method="recibir_danio_player"]
+[connection signal="fase2" from="BarrasVida" to="BalderBoss" method="fase_2"]
+[connection signal="fase3" from="BarrasVida" to="BalderBoss" method="fase_3"]
+[connection signal="jefe_derrotado" from="BarrasVida" to="Final" method="enemigo_derrotado"]
+[connection signal="player_derrotado" from="BarrasVida" to="OnTheGround/Player" method="defeat"]
+[connection signal="player_derrotado" from="BarrasVida" to="EfectoTimeStop/EfectoMulticolor" method="resetear_efecto"]
+[connection signal="damage" from="BalderBoss" to="BarrasVida" method="recibir_danio"]
 [connection signal="body_entered" from="BalderBoss/BalderFuturo/HitBox" to="BalderBoss" method="_on_damaged"]
-[connection signal="event" from="prueba/atacar" to="BalderBoss" method="_time_stop"]
-[connection signal="event" from="prueba/atacar2" to="BalderBoss" method="_time_stop"]
-[connection signal="event" from="prueba/parar" to="BalderBoss" method="_pausar"]
-[connection signal="event" from="prueba/resumir" to="BalderBoss" method="_reanudar"]
+[connection signal="timeout" from="BalderBoss/TimerAtaque" to="BalderBoss" method="_time_stop"]
+[connection signal="event" from="prueba/empezar" to="BalderBoss" method="empezar_batalla"]
 
 [editable path="OnTheGround/Player"]
 [editable path="BalderBoss/BalderFuturo"]

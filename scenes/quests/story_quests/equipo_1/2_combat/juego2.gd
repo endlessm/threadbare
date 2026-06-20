@@ -3,6 +3,7 @@ extends Node
 var mi_timer: Timer
 @onready var is_stopped =false
 @export var tiempo_detenido = 6
+@export var animacion:AnimationPlayer
 func _ready() -> void:
 	mi_timer = Timer.new()
 	mi_timer.wait_time = 10.0
@@ -25,7 +26,7 @@ func _reset_animacion():
 	print("reseteando animacion...")
 	await get_tree().create_timer(2.5).timeout
 	print("animacion reseteada")
-	%AnimadorEfectos.play("RESET")
+	animacion.play("RESET")
 
 func _esta_detenido(estado:bool):
 	is_stopped = estado;
