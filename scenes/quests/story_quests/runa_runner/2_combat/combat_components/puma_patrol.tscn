@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/quests/story_quests/runa_runner/2_combat/combat_components/puma_patrol.gd" id="1_7wkka"]
+[ext_resource type="SpriteFrames" path="res://scenes/quests/story_quests/runa_runner/2_combat/combat_components/puma_spriteframes.tres" id="2_xg3d8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(46, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_danger"]
+size = Vector2(88, 58)
+
+[node name="PumaPatrol" type="CharacterBody2D" groups=["puma"]]
+collision_layer = 0
+collision_mask = 16
+motion_mode = 1
+script = ExtResource("1_7wkka")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -36)
+scale = Vector2(0.3, 0.3)
+sprite_frames = ExtResource("2_xg3d8")
+animation = &"walk_side"
+autoplay = "walk_side"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="DangerArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DangerArea"]
+position = Vector2(0, -28)
+shape = SubResource("RectangleShape2D_danger")
+debug_color = Color(0.94902, 0.231373, 0, 0.419608)
+
+[connection signal="body_entered" from="DangerArea" to="." method="_on_danger_area_body_entered"]

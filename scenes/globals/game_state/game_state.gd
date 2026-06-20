@@ -29,15 +29,18 @@ var persist_progress: bool
 ## Game-wide state.
 var global: GlobalState:
 	get():
-		return _saved_game.global if _saved_game else null
+		_ensure_saved_game()
+		return _saved_game.global
 	set(new_value):
 		push_error("Do not set GameState.global")
 
 ## State concerning the current quest, or [code]null[/code] if there is no current quest.
 var quest: QuestState:
 	get():
-		return _saved_game.quest if _saved_game else null
+		_ensure_saved_game()
+		return _saved_game.quest
 	set(new_value):
+		_ensure_saved_game()
 		var old_player_state := player
 		_saved_game.quest = new_value
 		player_changed.emit(old_player_state, player)
@@ -45,8 +48,10 @@ var quest: QuestState:
 ## State concerning the current scene, or [code]null[/code] if there is no current scene
 var scene: PerSceneState:
 	get():
-		return _saved_game.scene if _saved_game else null
+		_ensure_saved_game()
+		return _saved_game.scene
 	set(new_value):
+		_ensure_saved_game()
 		_saved_game.scene = new_value
 
 ## If the player is on a quest, the [member QuestState.player] of [member
@@ -54,11 +59,25 @@ var scene: PerSceneState:
 ## this rather than referring directly to those.
 var player: PlayerState:
 	get():
-		return quest.player if quest else global.player
+		_ensure_saved_game()
+		if _saved_game.quest:
+			if not _saved_game.quest.player:
+				_saved_game.quest.player = PlayerState.new()
+			return _saved_game.quest.player
+		if not _saved_game.global.player:
+			_saved_game.global.player = PlayerState.new()
+		return _saved_game.global.player
 	set(new_value):
 		push_error("Do not set GameState.player")
 
 var _saved_game: SavedGame
+
+
+func _ensure_saved_game() -> void:
+	if not _saved_game:
+		_saved_game = SavedGame.new()
+	if not _saved_game.global:
+		_saved_game.global = GlobalState.new()
 
 
 func _ready() -> void:

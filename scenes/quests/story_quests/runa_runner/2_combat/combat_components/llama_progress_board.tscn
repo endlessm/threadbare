@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scenes/quests/story_quests/runa_runner/2_combat/combat_components/llama_progress_board.gd" id="1_fh5dd"]
+[ext_resource type="Texture2D" uid="uid://r4u1t4ej41s" path="res://assets/first_party/templates/sequence_puzzle/NO_EDIT_sign.png" id="2_hokug"]
+[ext_resource type="Texture2D" path="res://scenes/quests/story_quests/runa_runner/2_combat/combat_components/llama_slot_filled.png" id="3_6r4v8"]
+[ext_resource type="Texture2D" path="res://scenes/quests/story_quests/runa_runner/2_combat/combat_components/llama_slot_silhouette.png" id="4_g7f2y"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_board"]
+atlas = ExtResource("2_hokug")
+region = Rect2(0, 0, 128, 192)
+
+[node name="LlamaProgressBoard" type="Node2D"]
+script = ExtResource("1_fh5dd")
+
+[node name="BoardSprite" type="Sprite2D" parent="."]
+position = Vector2(0, -57)
+texture = SubResource("AtlasTexture_board")
+
+[node name="Silhouettes" type="Node2D" parent="."]
+position = Vector2(0, -27)
+
+[node name="Silhouette1" type="Sprite2D" parent="Silhouettes"]
+position = Vector2(-18, 0)
+texture = ExtResource("4_g7f2y")
+
+[node name="Silhouette2" type="Sprite2D" parent="Silhouettes"]
+texture = ExtResource("4_g7f2y")
+
+[node name="Silhouette3" type="Sprite2D" parent="Silhouettes"]
+position = Vector2(18, 0)
+texture = ExtResource("4_g7f2y")
+
+[node name="Slots" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -27)
+
+[node name="Slot1" type="Sprite2D" parent="Slots"]
+visible = false
+position = Vector2(-18, 0)
+texture = ExtResource("3_6r4v8")
+
+[node name="Slot2" type="Sprite2D" parent="Slots"]
+visible = false
+texture = ExtResource("3_6r4v8")
+
+[node name="Slot3" type="Sprite2D" parent="Slots"]
+visible = false
+position = Vector2(18, 0)
+texture = ExtResource("3_6r4v8")
