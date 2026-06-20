@@ -1,45 +1,45 @@
-[gd_scene format=3 uid="uid://y8ha8abfyap2"]
+[gd_scene format=3 uid="uid://bfvfs0p3kn5pd"]
 
-[ext_resource type="Script" uid="uid://be17wk85qlu28" path="res://scenes/game_elements/props/filling_barrel/components/filling_barrel.gd" id="1_md0e3"]
-[ext_resource type="Texture2D" uid="uid://brranfy51i56n" path="res://scenes/quests/lore_quests/quest_003/2_ink_drinker_levels/components/barrel_glow/barrel_glow.png" id="3_8hqam"]
-[ext_resource type="SpriteFrames" uid="uid://dlsq0ke41s1yh" path="res://scenes/game_elements/props/filling_barrel/components/filling_barrel_sprite_frames.tres" id="3_o1oxn"]
-[ext_resource type="AudioStream" uid="uid://6tgopt072bfq" path="res://scenes/game_elements/props/filling_barrel/components/fill.wav" id="4_6inx0"]
-[ext_resource type="AudioStream" uid="uid://s7ne07cx0j72" path="res://scenes/game_elements/props/filling_barrel/components/complete.wav" id="5_3gtj0"]
+[ext_resource type="Script" uid="uid://be17wk85qlu28" path="res://scenes/game_elements/props/filling_barrel/components/filling_barrel.gd" id="1_fs7rw"]
+[ext_resource type="SpriteFrames" uid="uid://dlsq0ke41s1yh" path="res://scenes/game_elements/props/filling_barrel/components/filling_barrel_sprite_frames.tres" id="2_mmupx"]
+[ext_resource type="Texture2D" uid="uid://brranfy51i56n" path="res://scenes/quests/lore_quests/quest_003/2_ink_drinker_levels/components/barrel_glow/barrel_glow.png" id="3_mhqv6"]
+[ext_resource type="AudioStream" uid="uid://s7ne07cx0j72" path="res://scenes/game_elements/props/filling_barrel/components/complete.wav" id="4_mirwl"]
+[ext_resource type="AudioStream" uid="uid://6tgopt072bfq" path="res://scenes/game_elements/props/filling_barrel/components/fill.wav" id="5_1rbqp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ho6qg"]
-atlas = ExtResource("3_8hqam")
+atlas = ExtResource("3_mhqv6")
 region = Rect2(0, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ig56r"]
-atlas = ExtResource("3_8hqam")
+atlas = ExtResource("3_mhqv6")
 region = Rect2(128, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ompl8"]
-atlas = ExtResource("3_8hqam")
+atlas = ExtResource("3_mhqv6")
 region = Rect2(256, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0a20k"]
-atlas = ExtResource("3_8hqam")
+atlas = ExtResource("3_mhqv6")
 region = Rect2(384, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2evyj"]
-atlas = ExtResource("3_8hqam")
+atlas = ExtResource("3_mhqv6")
 region = Rect2(512, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i2u8c"]
-atlas = ExtResource("3_8hqam")
+atlas = ExtResource("3_mhqv6")
 region = Rect2(640, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fc6b6"]
-atlas = ExtResource("3_8hqam")
+atlas = ExtResource("3_mhqv6")
 region = Rect2(768, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_haw5m"]
-atlas = ExtResource("3_8hqam")
+atlas = ExtResource("3_mhqv6")
 region = Rect2(896, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j04m1"]
-atlas = ExtResource("3_8hqam")
+atlas = ExtResource("3_mhqv6")
 region = Rect2(1024, 0, 128, 128)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ftrfy"]
@@ -78,10 +78,11 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8tegq"]
-size = Vector2(52, 52)
+size = Vector2(58, 66.5)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
-height = 42.0
+radius = 15.000004
+height = 54.000042
 
 [sub_resource type="Animation" id="Animation_tu5xq"]
 length = 0.001
@@ -159,7 +160,7 @@ tracks/2/keys = {
 "clips": [{
 "end_offset": 0.0,
 "start_offset": 0.0,
-"stream": ExtResource("5_3gtj0")
+"stream": ExtResource("4_mirwl")
 }],
 "times": PackedFloat32Array(0)
 }
@@ -190,7 +191,7 @@ tracks/0/keys = {
 "clips": [{
 "end_offset": 0.0,
 "start_offset": 0.0,
-"stream": ExtResource("4_6inx0")
+"stream": ExtResource("5_1rbqp")
 }],
 "times": PackedFloat32Array(0)
 }
@@ -230,15 +231,15 @@ _data = {
 [node name="FillingBarrel" type="StaticBody2D" unique_id=1861594411 groups=["filling_barrels"]]
 collision_layer = 16
 collision_mask = 0
-script = ExtResource("1_md0e3")
+script = ExtResource("1_fs7rw")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1489807708]
 unique_name_in_owner = true
 position = Vector2(0, -21)
-sprite_frames = ExtResource("3_o1oxn")
+sprite_frames = ExtResource("2_mmupx")
 animation = &"filling"
 
-[node name="BarrelGlow" type="AnimatedSprite2D" parent="."]
+[node name="BarrelGlow" type="AnimatedSprite2D" parent="." unique_id=1203625413]
 visible = false
 sprite_frames = SubResource("SpriteFrames_ftrfy")
 animation = &"glowing"
@@ -252,11 +253,12 @@ collision_layer = 0
 collision_mask = 256
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=426954511]
-position = Vector2(-2, 5)
+position = Vector2(-3, -15.75)
 shape = SubResource("RectangleShape2D_8tegq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=320042935]
 unique_name_in_owner = true
+position = Vector2(1, -12)
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_3vyb7")
 
