@@ -100,7 +100,7 @@ func fase_3()->void:
 	timer_time_stop.stop()
 	print("AJUSTANDO ATAQUES")
 	cantidad_disparos = 2
-	boss.espaciado =1
+	##boss.espaciado =1
 	maximo=2
 	boss.fase3 = true
 	boss.fase2 =false

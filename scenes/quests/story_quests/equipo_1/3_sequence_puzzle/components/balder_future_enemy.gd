@@ -260,6 +260,25 @@ func _ataque_cardinales()->void:
 		iterador =iterador+1	
 		puntos = %PatronCircular.cardinales[iterador%2]
 
+func _ataque_final_()->void:
+	ataque_activo =true
+	%PatronCircular.global_position = self.global_position
+	
+	var iterador = 0
+	var puntos = %PatronCircular.cardinales[iterador]
+	var ndisparos=5
+	while ataque_activo:
+		for p in puntos:
+			if not ataque_activo:
+				break
+			shoot_projectile_at(p)
+		await get_tree().create_timer(0.05).timeout
+		ndisparos = ndisparos-1
+		if ndisparos<1:
+			iterador =iterador+1	
+			puntos = %PatronCircular.cardinales[iterador%2]
+			ndisparos=10
+
 func _ejecutar_ataque_espera()->void:
 	if fase1:
 		_ataque_cardinales()
@@ -267,6 +286,9 @@ func _ejecutar_ataque_espera()->void:
 	if fase2:
 		_ataque_espiral()
 		return	
+	if fase3:
+		_ataque_final_()
+		return		
 func _on_got_hit(body: Node2D) -> void:
 	if body is Projectile and not body.can_hit_enemy and not _is_defeated:
 		return
