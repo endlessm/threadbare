@@ -48,7 +48,8 @@ func _on_body_entered(body: Node2D) -> void:
 			timercaida.start()
 		elif estado == "hueco":
 			#el jugador camino hacia un hueco ya abierto
-			body.defeat(true)
+			print("pls work")
+			reiniciar_nivel(body)
 			
 			
 func _on_timer_timeout() -> void: 
@@ -70,7 +71,7 @@ func convertir_en_hueco() ->void:
 	#get_overlapping_bodies() devuelve todo lo q este dentro del area2d en ese instante
 	for cuerpo in get_overlapping_bodies(): 
 		if cuerpo.is_in_group("player"): 
-			cuerpo.defeat(true)
+			reiniciar_nivel(cuerpo)
 			
 func _on_timer_timeout_regen() -> void:
 #	$CollisionShape2D.set_deferred("disabled", false)
@@ -79,11 +80,23 @@ func _on_timer_timeout_regen() -> void:
 	tween.tween_property(sprite_baldosa, "scale", scale_original, 0.4).set_trans(Tween.TRANS_BOUNCE)
 	tween.parallel().tween_property(sprite_baldosa, "modulate", color_ori, 0.4)
 
-func reiniciar_nivel() -> void:
+func reiniciar_nivel(body: Node2D) -> void:
 	#reinicia la escena completa
+	var caidaChara = body.get_node_or_null("PlayerSprite") as AnimatedSprite2D
+
+	# desactivar los hijos del nodo pq molestaban al cambiar a idle, nomas se queda el playersprite
+	for hijo in body.get_children():
+		if hijo.name != "PlayerSprite":
+			hijo.process_mode = Node.PROCESS_MODE_DISABLED
 	
+	#se hace mas chiquito y desaparece
+	var tween= create_tween()
+	tween.parallel().tween_property(body, "scale", Vector2(0.1, 0.1), 2.0)
+	tween.parallel().tween_property(body, "modulate:a", 0.0, 2.0)
+
+	caidaChara.play("asustado")
+
+	await get_tree().create_timer(2.1).timeout
 	get_tree().call_deferred("reload_current_scene")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
