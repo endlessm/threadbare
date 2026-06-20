@@ -30,6 +30,7 @@
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_kstbw"]
 [ext_resource type="Script" uid="uid://bnwwtarjg24os" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/final_3.gd" id="29_0532a"]
 [ext_resource type="Resource" uid="uid://cjspdqsp4hy5q" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/components/dialogue_final_3.dialogue" id="30_octjf"]
+[ext_resource type="Script" uid="uid://bb0u7pox8uu4k" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/patron_circular.gd" id="31_octjf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0hr8e"]
 bg_color = Color(0, 0, 0, 0.5882353)
@@ -123,7 +124,6 @@ y_sort_enabled = true
 unique_name_in_owner = true
 position = Vector2(652, 374)
 sprite_frames = ExtResource("6_0532a")
-metadata/_edit_group_ = true
 
 [node name="PlayerSprite" parent="OnTheGround/Player" index="2" unique_id=1785485617]
 sprite_frames = ExtResource("6_0532a")
@@ -135,7 +135,8 @@ script = ExtResource("10_mcoxg")
 script = ExtResource("11_4xrlu")
 
 [node name="CollisionShape2D" parent="OnTheGround/Player/PlayerHarm/HitBox" parent_id_path=PackedInt32Array(747348360, 1910507610) index="0" unique_id=1807630823]
-position = Vector2(0.5, -14.5)
+position = Vector2(3.25, -19)
+scale = Vector2(0.8, 0.8)
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1732237457]
 zoom = Vector2(0.8, 0.8)
@@ -324,7 +325,7 @@ script = ExtResource("17_kn25j")
 animacion = NodePath("../EfectoTimeStop/EfectoMulticolor")
 timer_time_stop = NodePath("TimerAtaque")
 
-[node name="BalderFuturo" parent="BalderBoss" unique_id=1243855514 node_paths=PackedStringArray("mapa", "player", "disparos", "targets") instance=ExtResource("17_rkiqp")]
+[node name="BalderFuturo" parent="BalderBoss" unique_id=1243855514 node_paths=PackedStringArray("mapa", "player", "disparos", "targets", "contador_ataque_time_stop") instance=ExtResource("17_rkiqp")]
 unique_name_in_owner = true
 position = Vector2(497, 248)
 collision_layer = 0
@@ -334,7 +335,10 @@ mapa = NodePath("../../TileMapLayers/Sand")
 player = NodePath("../../OnTheGround/Player")
 disparos = [NodePath("../../EnemigosDisparos/Disparo1"), NodePath("../../EnemigosDisparos/Disparo2"), NodePath("../../EnemigosDisparos/Disparo3"), NodePath("../../EnemigosDisparos/Disparo4")]
 targets = [NodePath("../../PlayerTargets/Target1"), NodePath("../../PlayerTargets/Target2"), NodePath("../../PlayerTargets/Target3"), NodePath("../../PlayerTargets/Target4")]
+fase1 = true
 fase2 = false
+fase3 = false
+contador_ataque_time_stop = NodePath("../TimerAtaque")
 throwing_period = 2.0
 projectile_speed = 80.0
 projectile_duration = 30.0
@@ -347,12 +351,13 @@ metadata/_edit_group_ = true
 wait_time = 1.0
 
 [node name="TimerAtaque" type="Timer" parent="BalderBoss" unique_id=743031596]
-wait_time = 12.0
+wait_time = 10.0
 
 [node name="EfectoTimeStop" type="Node" parent="." unique_id=905338166]
 
 [node name="EfectoMulticolor" type="ColorRect" parent="EfectoTimeStop" unique_id=544038501 node_paths=PackedStringArray("enemigo")]
 unique_name_in_owner = true
+visible = false
 z_index = 2
 material = SubResource("ShaderMaterial_tx1nx")
 custom_minimum_size = Vector2(1000, 1000)
@@ -437,6 +442,11 @@ dialogo_final = ExtResource("30_octjf")
 next_scene = "uid://c6jcw8wsvnwdn"
 enemigo = NodePath("../BalderBoss/BalderFuturo")
 timer_time_stop = NodePath("../BalderBoss/TimerAtaque")
+
+[node name="PatronCircular" type="Node2D" parent="." unique_id=1138766474]
+unique_name_in_owner = true
+position = Vector2(825, 208)
+script = ExtResource("31_octjf")
 
 [connection signal="took_damage" from="OnTheGround/Player/PlayerHarm" to="BarrasVida" method="recibir_danio_player"]
 [connection signal="fase2" from="BarrasVida" to="BalderBoss" method="fase_2"]
