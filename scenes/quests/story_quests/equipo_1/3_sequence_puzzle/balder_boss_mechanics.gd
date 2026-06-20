@@ -4,11 +4,9 @@ extends Node
 @onready var player = %Player
 @export var animacion: ColorRect
 @export var timer_time_stop: Timer
-var es_barrido = true
+var es_barrido = false
 var cantidad_disparos=1
 var patron=0
-var espaciado = 3
-
 
 var maximo = 1##para poner aleatoriamente los patrones que lanzara
 ##empieza en 1 porque solo queremos los patrones cruz y equis, se cambia
@@ -23,11 +21,20 @@ func empezar_batalla()->void:
 	
 func _time_stop(numero_patron:int = -1)->void:
 	
+	##parar ambos timers
 	timer_time_stop.stop()
-	recibir_danio=false
 	boss.timer.stop()
+	
+	recibir_danio=false
 	animacion.arrancar_efecto()
+	boss._ejecutar_ataque_espera()
+	boss.is_stopping = true
 	await get_tree().create_timer(3).timeout	
+	
+	boss.is_stopping = false
+	boss.time_stop=true
+	boss.ataque_activo = false
+	boss.pausar_projectiles()
 	animacion.pausar_efecto()
 	player.process_mode = Node.PROCESS_MODE_DISABLED
 	##Los parametros son:
@@ -43,7 +50,7 @@ func _time_stop(numero_patron:int = -1)->void:
 	player.process_mode = Node.PROCESS_MODE_INHERIT
 	boss.activar_projectiles()
 	animacion.resetear_efecto()
-	
+	boss.time_stop=false
 	await get_tree().create_timer(3).timeout
 	boss.timer.start()
 	recibir_danio=true
@@ -67,27 +74,40 @@ func _on_damaged(body:Node2D)->void:
 			recibir_danio=true
 
 func fase_2()->void:
+	print("ENTRANDO A LA FASE 2")
+	
+	print("PARANDO TIMERS")	
 	boss.timer.stop()
 	timer_time_stop.stop()
+	print("AJUSTANDO ATAQUES")
 	es_barrido = true
-	cantidad_disparos = 2
+	cantidad_disparos = 1
 	maximo=1
 	boss.projectile_speed=100
 	boss.espaciado =2
+	
 	for d in boss.disparos:
 		d.projectile_speed=100
 	boss.fase2 =true
+	boss.fase1 =false
+	print("PARANDO EL TIEMPO")
 	_time_stop(1)
 
 func fase_3()->void:
+	
+	print("PARANDO TIMERS")		
 	boss.timer.stop()
 	timer_time_stop.stop()
-	cantidad_disparos = 3
+	print("AJUSTANDO ATAQUES")
+	cantidad_disparos = 2
 	boss.espaciado =1
 	maximo=2
+	boss.fase3 = true
+	boss.fase2 =false
 	boss.projectile_speed=120
 	for d in boss.disparos:
 		d.projectile_speed=120
+	print("PARANDO EL TIEMPO")	
 	_time_stop(2)
 	
 	
@@ -104,3 +124,5 @@ func _cambiar_patron(patron:int)->int:
 	else:
 		patron_random = patron
 	return patron_random
+	
+	

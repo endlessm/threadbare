@@ -56,7 +56,9 @@ const COORDENADAS: Dictionary = {
 
 var espaciado = 1 ##VARIABLE QUE CONTROLARA EL ESPACIADO DE LOS PROYECTILES
 var velocidad_actual_projectil:int
+@export var fase1:bool = false
 @export var fase2:bool = false
+@export var fase3:bool = false
 func _atacar_efecto(ataques: int, casilla_a_mover: Vector2i, direccion: Tipo, es_barrido:bool) -> void:
 	global_position = mapa.map_to_local(casilla_a_mover)
 	##ejecuta su ataque por defecto (Disparo 1)
@@ -90,21 +92,30 @@ func _atacar_efecto(ataques: int, casilla_a_mover: Vector2i, direccion: Tipo, es
 		# Esperamos el pequeño bache de tiempo antes del siguiente tiro
 		await get_tree().create_timer(0.1).timeout
 
+func _atacar_efecto_circular(casilla_a_mover: Vector2i,rafagas:int):
+	global_position = mapa.map_to_local(casilla_a_mover)
+	_is_attacking = true
+	animation_player.play(&"attack")
+	await animation_player.animation_finished
+	await _ataque_circular_rafaga(rafagas,true)
+	pausar_projectiles()		
+	await get_tree().create_timer(0.1).timeout	
+
+	
+
 func ataque_barrido(direccion:Tipo):
 	var direccion_enemigos = direccion_patron(direccion)
 	ataque_direcciones(direccion_enemigos)		
 
 func ataque_circular(es_barrido:bool, cantidad_ataques:int, patron)->void:
-	
+
 	var direcciones = patron_direcciones[patron]
 	for d in direcciones:
 		var casilla_jugador: Vector2i = mapa.local_to_map(player.global_position)
 		
 		var casilla_inicial_boss: Vector2i = casilla_jugador + (Vector2i(5, 5)*COORDENADAS[d])
 		
-		
 		await _atacar_efecto(cantidad_ataques, casilla_inicial_boss, d,es_barrido)	
-		
 	animation_player.play(&"idle")
 	
 func ataque_direcciones(direccion:Vector2i)->void:
@@ -179,18 +190,85 @@ func activar_projectiles():
 	for p in get_tree().get_nodes_in_group("projectiles"):
 		if p is Projectile:
 			p.process_mode = Node.PROCESS_MODE_INHERIT
-				
+	
+	
+signal termino_ataque				
+
+var time_stop = false
+var is_stopping = false
+@export var contador_ataque_time_stop: Timer
+
 func _on_timeout() -> void:
+	contador_ataque_time_stop.paused = true
 	var player: Player = get_tree().get_first_node_in_group("player")
 	if not is_instance_valid(player):
 		return
 	_is_attacking = true
 	animation_player.play(&"attack")
-	if fase2:
+	if fase2 && !fase3:
 		await animation_player.animation_finished
 		var direccion = global_position.direction_to(player.global_position)
 		direccion = direccion.rotated(-PI / 2)
 		ataque_direcciones(direccion.round())
-		
+	if fase3 &&!time_stop:
+		await animation_player.animation_finished
+		timer.paused = true
+		await _ataque_circular_rafaga(4,false)
+		if !is_stopping:
+			timer.paused = false
+			
 	animation_player.queue(&"idle")		
+	contador_ataque_time_stop.paused =false
+	termino_ataque.emit()
+
+
+
+func _ataque_circular_rafaga(ataques:int,es_espiral:bool)->void:
+	%PatronCircular.global_position = self.global_position
+	var puntos = %PatronCircular.get_children()
+	for i in ataques:
+		if !es_espiral:
+			for p in puntos:
+				shoot_projectile_at(p)
+			await get_tree().create_timer(0.8).timeout
+
+var ataque_activo = false			
+func _ataque_espiral()->void:
+	ataque_activo = true
+	%PatronCircular.global_position = self.global_position
+	var puntos = %PatronCircular.get_children()
+	while ataque_activo:
+		for p in puntos:
+			if not ataque_activo:
+				break
+			shoot_projectile_at(p)
+			%PatronCircular.rotation += 0.1
+			await get_tree().create_timer(0.05).timeout				
+
+func _ataque_cardinales()->void:
+	ataque_activo =true
+	%PatronCircular.global_position = self.global_position
 	
+	var iterador = 0
+	var puntos = %PatronCircular.cardinales[iterador]
+	while ataque_activo:
+		for p in puntos:
+			if not ataque_activo:
+				break
+			shoot_projectile_at(p)
+		await get_tree().create_timer(0.5).timeout
+		iterador =iterador+1	
+		puntos = %PatronCircular.cardinales[iterador%2]
+
+func _ejecutar_ataque_espera()->void:
+	if fase1:
+		_ataque_cardinales()
+		return
+	if fase2:
+		_ataque_espiral()
+		return	
+func _on_got_hit(body: Node2D) -> void:
+	if body is Projectile and not body.can_hit_enemy and not _is_defeated:
+		return
+	body.queue_free()
+	##animation_player.play(&"got hit")	
