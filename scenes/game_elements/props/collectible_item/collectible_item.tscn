@@ -2,105 +2,110 @@
 
 [ext_resource type="Script" uid="uid://be7lr8ty24cix" path="res://scenes/game_elements/props/collectible_item/components/collectible_item.gd" id="1_7ff3m"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="2_1kegn"]
+[ext_resource type="Texture2D" uid="uid://2ixryupsiheu" path="res://scenes/quests/story_quests/perdidos_en_el_desie/Sprites/pergaminoitem-sheet.png" id="3_hhgm5"]
 [ext_resource type="AudioStream" uid="uid://bhgpds38q0j4r" path="res://assets/third_party/sounds/collectibles/MemoryCollectable.ogg" id="5_hhgm5"]
 [ext_resource type="AudioStream" uid="uid://38xwdjm46478" path="res://assets/third_party/sounds/collectibles/CollectibleAppear.ogg" id="5_oh62b"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ghwae"]
 radius = 20.0
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_oh62b"]
+atlas = ExtResource("3_hhgm5")
+region = Rect2(0, 0, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_owoci"]
+atlas = ExtResource("3_hhgm5")
+region = Rect2(94, 0, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0m1fb"]
+atlas = ExtResource("3_hhgm5")
+region = Rect2(188, 0, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lwag0"]
+atlas = ExtResource("3_hhgm5")
+region = Rect2(282, 0, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jaiup"]
+atlas = ExtResource("3_hhgm5")
+region = Rect2(376, 0, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jlcv6"]
+atlas = ExtResource("3_hhgm5")
+region = Rect2(470, 0, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bystl"]
+atlas = ExtResource("3_hhgm5")
+region = Rect2(0, 92, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bwar0"]
+atlas = ExtResource("3_hhgm5")
+region = Rect2(94, 92, 94, 92)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4xihh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oh62b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_owoci")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0m1fb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lwag0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jaiup")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jlcv6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bystl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bwar0")
+}],
+"loop": true,
+"name": &"flotando",
+"speed": 5.0
+}]
+
 [sub_resource type="Animation" id="Animation_i0615"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, 0)]
+"values": [Vector2(1, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/path = NodePath("CollectedSound:volume_db")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1, 1)]
+"values": [0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/path = NodePath("InteractArea:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath(".:scale")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("CollectedSound:volume_db")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("InteractArea:disabled")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -113,82 +118,22 @@ length = 1.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.366667, 0.6),
-"transitions": PackedFloat32Array(-2, -2, -2, -2),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(1.1, 0.9), Vector2(0.95, 1.05), Vector2(1, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.566667, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [true, true, false]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D:modulate")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath(".:scale")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(0.5, 0.5),
 "update": 0,
 "values": [Vector2(1, 1), Vector2(1.5, 1.5)]
 }
-tracks/6/type = "audio"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("CollectedSound")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
+tracks/1/type = "audio"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollectedSound")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "clips": [{
 "end_offset": 1.23,
 "start_offset": 0.0,
@@ -196,26 +141,26 @@ tracks/6/keys = {
 }],
 "times": PackedFloat32Array(0)
 }
-tracks/6/use_blend = false
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("CollectedSound:volume_db")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
+tracks/1/use_blend = false
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollectedSound:volume_db")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.933333, 1.2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [0.0, 0.0, -12.0]
 }
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("InteractArea:disabled")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("InteractArea:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -226,66 +171,6 @@ tracks/8/keys = {
 resource_name = "reveal"
 length = 0.5
 step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [false, true, true]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:scale")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(0.5, 0.5),
-"update": 0,
-"values": [Vector2(0.8, 0.8), Vector2(1, 1)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.5),
-"transitions": PackedFloat32Array(-2, -2, -2, -2, -2),
-"update": 0,
-"values": [0.0, -0.122173, 0.122173, -0.0523599, 0.0]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_8dm1m"]
 _data = {
@@ -316,12 +201,13 @@ debug_color = Color(0.600391, 0.54335, 0, 0.42)
 [node name="Marker" type="Marker2D" parent="InteractArea" unique_id=1961850851]
 position = Vector2(0, -48)
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="InteractArea" unique_id=1681033942]
+sprite_frames = SubResource("SpriteFrames_4xihh")
+animation = &"flotando"
+frame_progress = 0.10390465
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1869284545]
 libraries/ = SubResource("AnimationLibrary_8dm1m")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1620327010]
-visible = false
-modulate = Color(1, 1, 1, 0)
 
 [node name="CollectedSound" type="AudioStreamPlayer" parent="." unique_id=420528907]
 unique_name_in_owner = true

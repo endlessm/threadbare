@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://cvsyfhrvu1new"]
+
+[ext_resource type="Script" uid="uid://b1rr84umr1q5g" path="res://scenes/quests/story_quests/perdidos_en_el_desie/1_stealth/stealth_components/pergamino.gd" id="1_g516a"]
+[ext_resource type="Texture2D" uid="uid://2ixryupsiheu" path="res://scenes/quests/story_quests/perdidos_en_el_desie/Sprites/pergaminoitem-sheet.png" id="2_5jk5c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y0rjb"]
+atlas = ExtResource("2_5jk5c")
+region = Rect2(0, 0, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1ui0"]
+atlas = ExtResource("2_5jk5c")
+region = Rect2(94, 0, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p580y"]
+atlas = ExtResource("2_5jk5c")
+region = Rect2(188, 0, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_687io"]
+atlas = ExtResource("2_5jk5c")
+region = Rect2(282, 0, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6tqe7"]
+atlas = ExtResource("2_5jk5c")
+region = Rect2(376, 0, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ps8sr"]
+atlas = ExtResource("2_5jk5c")
+region = Rect2(470, 0, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rtycq"]
+atlas = ExtResource("2_5jk5c")
+region = Rect2(0, 92, 94, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uhvf0"]
+atlas = ExtResource("2_5jk5c")
+region = Rect2(94, 92, 94, 92)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_36xbu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y0rjb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f1ui0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p580y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_687io")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6tqe7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ps8sr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rtycq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uhvf0")
+}],
+"loop": true,
+"name": &"flotando",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sm1ko"]
+size = Vector2(83.5, 71.5)
+
+[node name="Pergamino" type="Area2D" unique_id=306600642 groups=["interactive_object"]]
+script = ExtResource("1_g516a")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1074571563]
+sprite_frames = SubResource("SpriteFrames_36xbu")
+animation = &"flotando"
+frame_progress = 0.58688277
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2123054818]
+position = Vector2(2.25, 2.25)
+shape = SubResource("RectangleShape2D_sm1ko")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
