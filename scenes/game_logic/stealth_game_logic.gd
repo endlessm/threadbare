@@ -47,5 +47,5 @@ func _on_final_object_collected() -> void:
 		"res://scenes/quests/story_quests/runa_runner/2_combat/runa_runner_combat.tscn",
 		^"", Transition.Effect.FADE, Transition.Effect.FADE
 	)
-func _on_player_detected(player: Node2D) -> void:
+func _on_player_detected(_player: Node2D) -> void:
 	pass
