@@ -170,3 +170,11 @@ func reiniciar_dialogos():
 	indice_frase = 0
 	hablando = false
 	$Label.visible = false
+
+func terminar_persecucion():
+
+	persecucion_iniciada = false
+	orbe_timer.stop()
+	reiniciar_dialogos()
+
+	desaparecer()
