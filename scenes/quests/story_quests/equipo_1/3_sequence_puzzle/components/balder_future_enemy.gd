@@ -64,10 +64,10 @@ func _atacar_efecto(ataques: int, casilla_a_mover: Vector2i, direccion: Tipo, es
 	##ejecuta su ataque por defecto (Disparo 1)
 	_is_attacking = true
 	animation_player.play(&"attack")
-	await animation_player.animation_finished
-	
+	await atacar_sonido()
 	if es_barrido:##si queremos que sea ataque barrido le ponemos true
 		await ataque_barrido(direccion)
+	await get_tree().create_timer(0.3).timeout		
 	pausar_projectiles()		
 	var vector_direccion: Vector2i = COORDENADAS[direccion]
 	var casilla_actual: Vector2i = casilla_a_mover
@@ -88,6 +88,7 @@ func _atacar_efecto(ataques: int, casilla_a_mover: Vector2i, direccion: Tipo, es
 		shoot_projectile_at(player)
 		if es_barrido:##si queremos que sea ataque barrido le ponemos true
 			await ataque_barrido(direccion)
+		%DisparoPolyfonic.play_audio()	
 		pausar_projectiles()	
 		# Esperamos el pequeño bache de tiempo antes del siguiente tiro
 		await get_tree().create_timer(0.1).timeout
@@ -206,22 +207,28 @@ func _on_timeout() -> void:
 	_is_attacking = true
 	animation_player.play(&"attack")
 	if fase2 && !fase3:
-		await animation_player.animation_finished
+		await atacar_sonido()
+		
 		var direccion = global_position.direction_to(player.global_position)
 		direccion = direccion.rotated(-PI / 2)
 		ataque_direcciones(direccion.round())
-	if fase3 &&!time_stop:
-		await animation_player.animation_finished
+	elif fase3 &&!time_stop:
+		await atacar_sonido()
+		
 		timer.paused = true
 		await _ataque_circular_rafaga(4,false)
 		if !is_stopping:
 			timer.paused = false
-			
+	else:
+		await atacar_sonido()
+				
 	animation_player.queue(&"idle")		
 	contador_ataque_time_stop.paused =false
 	termino_ataque.emit()
 
-
+func atacar_sonido()->void:
+	await await get_tree().create_timer(0.7).timeout
+	%DisparoPolyfonic.play_audio()
 
 func _ataque_circular_rafaga(ataques:int,es_espiral:bool)->void:
 	%PatronCircular.global_position = self.global_position
@@ -230,9 +237,14 @@ func _ataque_circular_rafaga(ataques:int,es_espiral:bool)->void:
 		if !es_espiral:
 			for p in puntos:
 				shoot_projectile_at(p)
+			%PatronCircular.rotation += 0.1
+			%DisparoPolyfonic.play_audio()
 			await get_tree().create_timer(0.8).timeout
 
-var ataque_activo = false			
+var ataque_activo = false
+
+var tiempo_ultimo_sonido : float = 0.0
+const COOLDOWN_SONIDO : float = 0.12			
 func _ataque_espiral()->void:
 	ataque_activo = true
 	%PatronCircular.global_position = self.global_position
@@ -243,6 +255,11 @@ func _ataque_espiral()->void:
 				break
 			shoot_projectile_at(p)
 			%PatronCircular.rotation += 0.1
+			
+			var tiempo_actual = Time.get_ticks_msec() / 1000.0
+			if tiempo_actual - tiempo_ultimo_sonido >= COOLDOWN_SONIDO:
+				%DisparoPolyfonic.play_audio()
+				tiempo_ultimo_sonido = tiempo_actual
 			await get_tree().create_timer(0.05).timeout				
 
 func _ataque_cardinales()->void:
@@ -252,6 +269,7 @@ func _ataque_cardinales()->void:
 	var iterador = 0
 	var puntos = %PatronCircular.cardinales[iterador]
 	while ataque_activo:
+		%DisparoPolyfonic.play_audio()
 		for p in puntos:
 			if not ataque_activo:
 				break
@@ -267,6 +285,7 @@ func _ataque_final_()->void:
 	var iterador = 0
 	var puntos = %PatronCircular.cardinales[iterador]
 	var ndisparos=5
+	%DisparoPolyfonic.play_audio()
 	while ataque_activo:
 		for p in puntos:
 			if not ataque_activo:
@@ -278,6 +297,7 @@ func _ataque_final_()->void:
 			iterador =iterador+1	
 			puntos = %PatronCircular.cardinales[iterador%2]
 			ndisparos=10
+			%DisparoPolyfonic.play_audio()
 
 func _ejecutar_ataque_espera()->void:
 	if fase1:
