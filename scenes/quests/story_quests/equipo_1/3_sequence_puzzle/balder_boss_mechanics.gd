@@ -29,8 +29,10 @@ func _time_stop(numero_patron:int = -1)->void:
 	animacion.arrancar_efecto()
 	boss._ejecutar_ataque_espera()
 	boss.is_stopping = true
-	await get_tree().create_timer(3).timeout	
 	
+	%EfectoPararTiempo.play()
+	await get_tree().create_timer(3).timeout	
+	%MusicaBatalla.volume_db =-10
 	boss.is_stopping = false
 	boss.time_stop=true
 	boss.ataque_activo = false
@@ -47,6 +49,9 @@ func _time_stop(numero_patron:int = -1)->void:
 	
 	animacion.reanudar_efecto()
 	await get_tree().create_timer(1).timeout
+	
+	%MusicaBatalla.volume_db =0
+	
 	player.process_mode = Node.PROCESS_MODE_INHERIT
 	boss.activar_projectiles()
 	animacion.resetear_efecto()
@@ -105,6 +110,7 @@ func fase_3()->void:
 	boss.fase3 = true
 	boss.fase2 =false
 	boss.projectile_speed=120
+	timer_time_stop.wait_time = 6
 	for d in boss.disparos:
 		d.projectile_speed=120
 	print("PARANDO EL TIEMPO")	
