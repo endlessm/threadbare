@@ -54,6 +54,20 @@ _data = {
 &"fade_out": SubResource("Animation_yvteh")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4rwjr"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.24705882)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="FontVariation" id="FontVariation_3ppsf"]
+variation_embolden = 0.27
+
 [node name="IntroImagenes" type="Node2D" unique_id=2091495839]
 
 [node name="Control" type="Control" parent="." unique_id=447602899]
@@ -74,3 +88,20 @@ script = ExtResource("1_4vwd6")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Control" unique_id=2146173077]
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_ti67a")
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=191206384]
+
+[node name="controlsHint" type="PanelContainer" parent="ScreenOverlay" unique_id=413394965]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -49.0
+offset_right = 181.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4rwjr")
+
+[node name="Label" type="Label" parent="ScreenOverlay/controlsHint" unique_id=736240382]
+layout_mode = 2
+theme_override_fonts/font = SubResource("FontVariation_3ppsf")
+theme_override_font_sizes/font_size = 21
+text = "[Espacio]: Siguiente"

@@ -276,3 +276,11 @@ func _on_player_hook_aiming_changed(is_aiming: bool) -> void:
 		aiming_speed if is_aiming else _initial_speeds.walk_speed
 	)
 	input_walk_behavior.speeds.run_speed = aiming_speed if is_aiming else _initial_speeds.run_speed
+
+@onready var luz = $Light
+
+func _process(delta: float) -> void:
+	if not is_instance_valid(luz):
+		return
+	var objetivo := get_local_mouse_position().angle()
+	luz.rotation = lerp_angle(luz.rotation, objetivo, 0.1)
