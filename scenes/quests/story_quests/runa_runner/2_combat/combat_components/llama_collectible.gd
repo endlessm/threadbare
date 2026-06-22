@@ -34,7 +34,7 @@ func _on_body_entered(body: Node2D) -> void:
 
 	var rescue_state := _get_rescue_state()
 	if rescue_state and rescue_state.has_method("rescue_llama"):
-		_rescued = bool(rescue_state.call("rescue_llama", llama_id))
+		_rescued = rescue_state.call("rescue_llama", llama_id) == true
 	else:
 		_rescued = true
 

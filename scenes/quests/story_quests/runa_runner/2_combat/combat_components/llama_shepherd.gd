@@ -40,7 +40,7 @@ func _has_all_llamas() -> bool:
 	if not rescue_state or not rescue_state.has_method("has_all_llamas"):
 		return false
 
-	return bool(rescue_state.call("has_all_llamas"))
+	return rescue_state.call("has_all_llamas") == true
 
 
 func _get_rescue_state() -> Node:

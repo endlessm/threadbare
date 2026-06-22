@@ -32,6 +32,6 @@ func _input(event: InputEvent) -> void:
 			anim.play("fade_in")
 
 		else:
-			get_tree().change_scene_to_file(
+			SceneSwitcher.change_to_file(
 				"res://scenes/quests/story_quests/runa_runner/0_intro/jugable_intro.tscn"
 			)

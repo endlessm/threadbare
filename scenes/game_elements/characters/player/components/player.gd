@@ -209,7 +209,7 @@ func defeat(falling: bool = false) -> void:
 	GameState.player.decrement_lives()
 
 	if falling:
-		var tween := create_tween()
+		var tween: Tween = create_tween()
 		tween.tween_property(self, "scale", Vector2.ZERO, 2.0)
 
 	await get_tree().create_timer(2.0).timeout

@@ -4,10 +4,7 @@
 class_name StealthGameLogic
 extends Node
 
-@export var portal_item: CollectibleItem
-
-var _collected_count: int = 0
-var _total_objects: int = 0
+@export var portal_item: Node
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -15,37 +12,27 @@ func _ready() -> void:
 
 	# Ocultar portal al inicio
 	if portal_item:
-		portal_item.revealed = false
-
-	# Conectar los 4 coleccionables
-	var ritual_objects := get_tree().get_nodes_in_group(&"ritual_object")
-	_total_objects = ritual_objects.size()
-	for obj in ritual_objects:
-		if obj is CollectibleItem:
-			obj.tree_exiting.connect(_on_ritual_object_collected)
-
-	# Conectar portal SOLO después de los rituales
-	# No conectar tree_exiting del portal aquí, se conecta cuando aparece
+		portal_item.set("revealed", false)
 
 	await get_tree().physics_frame
 	await get_tree().physics_frame
-	for guard in get_tree().get_nodes_in_group(&"guard_enemy"):
-		if guard.has_signal("player_detected"):
-			if guard.player_detected.is_connected(self._on_player_detected):
-				guard.player_detected.disconnect(self._on_player_detected)
-			guard.player_detected.connect(self._on_player_detected)
-			
-func _on_ritual_object_collected() -> void:
-	_collected_count += 1
-	if _collected_count >= _total_objects:
-		if portal_item:
-			portal_item.reveal()
-			portal_item.tree_exiting.connect(_on_final_object_collected)
-			
-func _on_final_object_collected() -> void:
-	SceneSwitcher.change_to_file_with_transition(
-		"res://scenes/quests/story_quests/runa_runner/2_combat/runa_runner_combat.tscn",
-		^"", Transition.Effect.FADE, Transition.Effect.FADE
-	)
+
+	var player_detected_callback: Callable = Callable(self, "_on_player_detected")
+	var guards: Array[Node] = get_tree().get_nodes_in_group(&"guard_enemy")
+	for guard: Node in guards:
+		if guard.has_signal(&"player_detected"):
+			if guard.is_connected(&"player_detected", player_detected_callback):
+				guard.disconnect(&"player_detected", player_detected_callback)
+			guard.connect(&"player_detected", player_detected_callback)
+
+	# Guards inactivos hasta que termine el cinematic
+	Guard.game_started = false
+	var cinematic: Cinematic = get_node_or_null("../Cinematic") as Cinematic
+	if cinematic != null:
+		var start_guards_callback: Callable = func() -> void: Guard.game_started = true
+		cinematic.cinematic_finished.connect(start_guards_callback)
+	else:
+		Guard.game_started = true
+
 func _on_player_detected(_player: Node2D) -> void:
 	pass

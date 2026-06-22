@@ -24,6 +24,6 @@ func _iniciar_transicion() -> void:
 	)
 	
 	await tween.finished
-	get_tree().change_scene_to_file(
+	SceneSwitcher.change_to_file(
 		"res://scenes/quests/story_quests/runa_runner/1_stealth/runa_runner_stealth.tscn"
 	)

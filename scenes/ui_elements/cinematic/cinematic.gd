@@ -39,4 +39,3 @@ func start() -> void:
 		GameState.scene.intro_dialogue_shown = true
 
 	cinematic_finished.emit()
-	switch()

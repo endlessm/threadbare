@@ -26,6 +26,10 @@ const TRANSIENT_SCENES := [
 ## with a direct URL hash to a scene in the web build. In the latter cases, this variable is false.
 var persist_progress: bool
 
+## One-shot flag used when returning to the title screen from pause. It keeps the
+## development skip-splash setting from immediately continuing the saved game.
+var suppress_title_auto_continue: bool = false
+
 ## Game-wide state.
 var global: GlobalState:
 	get():
@@ -152,6 +156,9 @@ func guess_quest(scene_path_or_uid: String) -> void:
 func set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
 	if scene_path in TRANSIENT_SCENES:
 		return
+
+	if not quest:
+		guess_quest(scene_path)
 
 	if not scene or scene.path != scene_path:
 		scene = PerSceneState.new(scene_path)
