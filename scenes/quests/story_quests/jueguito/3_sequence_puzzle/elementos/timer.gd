@@ -3,9 +3,12 @@
 extends Timer
 
 @onready var time_label = $"../CanvasLayer/Label"
+@onready var audio_stream_player = $"../AudioStreamPlayer2D"
+@onready var cinematic = $"../Cinematic"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	cinematic.dialogue
 	timeout.connect(_on_minijuego3_timeout)
 	
 
@@ -22,3 +25,13 @@ func _process(delta: float) -> void:
 	var ms = int((time_left - int(time_left)) * 1000)
 	
 	time_label.text = "%02d:%02d:%03d" % [minutes, seconds, ms]
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.name == "Player":
+		if not autostart and not audio_stream_player.autoplay:
+			autostart = true
+			audio_stream_player.autoplay = true
+			start()
+			audio_stream_player.play()
+		
