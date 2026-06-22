@@ -24,6 +24,8 @@
 [ext_resource type="Script" uid="uid://ctq7ghxrjcfjp" path="res://scenes/quests/story_quests/lacasadelachina/2_combat/cuadro_5.gd" id="20_akxym"]
 [ext_resource type="Texture2D" uid="uid://drfnq08l2wbgy" path="res://assets/third_party/tiny-swords/Deco/03.png" id="22_qyfxk"]
 [ext_resource type="Script" uid="uid://brb1rqny2f18w" path="res://scenes/quests/story_quests/lacasadelachina/2_combat/llave.gd" id="22_s8xwi"]
+[ext_resource type="Script" uid="uid://dv26fwsygfnw8" path="res://scenes/quests/story_quests/lacasadelachina/2_combat/serpiente.gd" id="25_nsubp"]
+[ext_resource type="Texture2D" uid="uid://c6khhgic6yboq" path="res://scenes/quests/story_quests/stella/3_stella_sequence_puzzle/stella_sequence_components/stella_tortoise.png" id="26_5lvmq"]
 
 [sub_resource type="Resource" id="Resource_hlvfd"]
 script = ExtResource("16_uahid")
@@ -88,8 +90,13 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s8xwi"]
 size = Vector2(106, 76)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_5lvmq"]
+radius = 73.756355
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3eaa6"]
+radius = 80.0
+
 [node name="LacasadelachinaCombat" type="Node2D" unique_id=1610054737]
-y_sort_enabled = true
 position = Vector2(24, 0)
 script = ExtResource("1_xbsms")
 
@@ -193,12 +200,12 @@ scale = Vector2(1.0000006, 1.0000002)
 y_sort_enabled = true
 position = Vector2(-7, -7)
 
-[node name="Player" parent="OnTheGround" unique_id=1799818537 instance=ExtResource("8_nsubp")]
+[node name="Player" parent="OnTheGround" unique_id=1799818537 groups=["serpiente"] instance=ExtResource("8_nsubp")]
 position = Vector2(487, 1080)
 sprite_frames = ExtResource("9_5lvmq")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=881414767 groups=["player"]]
-position = Vector2(24, -211)
+position = Vector2(32, -209)
 zoom = Vector2(1.333, 1.333)
 limit_left = -414
 limit_top = -316
@@ -208,13 +215,12 @@ position_smoothing_enabled = true
 editor_draw_limits = true
 
 [node name="ThrowingNPC" parent="OnTheGround" unique_id=2065424633 instance=ExtResource("10_3eaa6")]
-position = Vector2(553, 819)
-sprite_frames = ExtResource("11_iktgn")
+position = Vector2(23, 535)
 projectile_scene = ExtResource("12_ye7cu")
 
 [node name="CollectibleItem" parent="OnTheGround" unique_id=1864193206 instance=ExtResource("15_4btu5")]
 unique_name_in_owner = true
-position = Vector2(548, 793)
+position = Vector2(367, 303)
 revealed = false
 next_scene = "uid://6o4woum5lyyj"
 item = SubResource("Resource_hlvfd")
@@ -252,7 +258,7 @@ shape = SubResource("RectangleShape2D_wmi42")
 script = ExtResource("19_jstna")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/cuadros/cuadro4" unique_id=809494176]
-position = Vector2(-85, 547)
+position = Vector2(-89, 543)
 shape = SubResource("RectangleShape2D_1ajsw")
 
 [node name="cuadro5" type="Area2D" parent="OnTheGround/cuadros" unique_id=981961083]
@@ -283,5 +289,35 @@ texture = ExtResource("22_qyfxk")
 position = Vector2(1279, -207)
 shape = SubResource("RectangleShape2D_s8xwi")
 
+[node name="Marker2D3" type="Marker2D" parent="llave" unique_id=447570018]
+position = Vector2(1273, 783)
+
+[node name="Marker2D2" type="Marker2D" parent="llave" unique_id=510209359]
+position = Vector2(1265, -201)
+
+[node name="Marker2D" type="Marker2D" parent="llave" unique_id=825793873]
+position = Vector2(-351, -209)
+
+[node name="Serpiente" type="CharacterBody2D" parent="." unique_id=1961156750 node_paths=PackedStringArray("player") groups=["serpiente"]]
+collision_mask = 0
+script = ExtResource("25_nsubp")
+player = NodePath("../OnTheGround/Player")
+
+[node name="Sprite2D" type="Sprite2D" parent="Serpiente" unique_id=1903244574]
+position = Vector2(344, 512)
+texture = ExtResource("26_5lvmq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Serpiente" unique_id=758000004]
+position = Vector2(344, 520)
+shape = SubResource("CircleShape2D_5lvmq")
+disabled = true
+
+[node name="Area2" type="Area2D" parent="Serpiente" unique_id=2036022265]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Serpiente/Area2" unique_id=1285914778]
+position = Vector2(344, 520)
+shape = SubResource("CircleShape2D_3eaa6")
+
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
+[connection signal="body_entered" from="Serpiente/Area2" to="Serpiente" method="_on_hitbox_body_entered"]
