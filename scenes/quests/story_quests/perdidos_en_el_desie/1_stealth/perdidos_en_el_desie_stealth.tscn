@@ -27,6 +27,8 @@
 [ext_resource type="Resource" uid="uid://dpaah7l1po27s" path="res://scenes/quests/story_quests/perdidos_en_el_desie/1_stealth/stealth_components/recoleccionsegundopergamino.dialogue" id="21_j3l6j"]
 [ext_resource type="Resource" uid="uid://b5do3qn4dyf6d" path="res://scenes/quests/story_quests/perdidos_en_el_desie/1_stealth/stealth_components/recoleccioncuartopergamino.dialogue" id="21_ki0ml"]
 [ext_resource type="Resource" uid="uid://d1dohm64u0e68" path="res://scenes/quests/story_quests/perdidos_en_el_desie/1_stealth/stealth_components/recolecciontercerpergamino.dialogue" id="22_j3l6j"]
+[ext_resource type="PackedScene" uid="uid://cqx8pergamino01" path="res://scenes/quests/story_quests/perdidos_en_el_desie/1_stealth/stealth_components/pergamino_collectible.tscn" id="23_pgrm"]
+[ext_resource type="Script" uid="uid://dyr1dil26ofj5" path="res://scenes/quests/story_quests/perdidos_en_el_desie/1_stealth/stealth_components/pergamino_tracker.gd" id="24_ptrk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l827d"]
 atlas = ExtResource("14_32p7r")
@@ -715,22 +717,6 @@ point_count = 13
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h1obb"]
 size = Vector2(168.25, 122)
 
-[sub_resource type="Resource" id="Resource_oy1xq"]
-script = ExtResource("13_j3l6j")
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
-
-[sub_resource type="Resource" id="Resource_f7wqp"]
-script = ExtResource("13_j3l6j")
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
-
-[sub_resource type="Resource" id="Resource_44d1h"]
-script = ExtResource("13_j3l6j")
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
-
-[sub_resource type="Resource" id="Resource_rjp71"]
-script = ExtResource("13_j3l6j")
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
-
 [sub_resource type="Resource" id="Resource_qxiwb"]
 script = ExtResource("13_j3l6j")
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
@@ -935,35 +921,36 @@ debug_color = Color(0, 0, 0, 0.42)
 
 [node name="HUD" parent="." unique_id=1994868895 instance=ExtResource("11_ncr8w")]
 
-[node name="pergamino4" parent="." unique_id=327991066 instance=ExtResource("12_ki0ml")]
+[node name="pergamino4" parent="." unique_id=327991066 instance=ExtResource("23_pgrm")]
 z_index = 20
 position = Vector2(2382, 1057)
-item = SubResource("Resource_oy1xq")
 collected_dialogue = ExtResource("21_ki0ml")
 
-[node name="pergamino3" parent="." unique_id=239842760 instance=ExtResource("12_ki0ml")]
+[node name="pergamino3" parent="." unique_id=239842760 instance=ExtResource("23_pgrm")]
 z_index = 20
 position = Vector2(2087, 60)
-item = SubResource("Resource_f7wqp")
 collected_dialogue = ExtResource("22_j3l6j")
 
-[node name="pergamino2" parent="." unique_id=1877900261 instance=ExtResource("12_ki0ml")]
+[node name="pergamino2" parent="." unique_id=1877900261 instance=ExtResource("23_pgrm")]
 z_index = 20
 position = Vector2(185, 818)
-item = SubResource("Resource_44d1h")
 collected_dialogue = ExtResource("21_j3l6j")
 
-[node name="pergamino" parent="." unique_id=1531032791 instance=ExtResource("12_ki0ml")]
+[node name="pergamino" parent="." unique_id=1531032791 instance=ExtResource("23_pgrm")]
 z_index = 19
 position = Vector2(96, -289)
-item = SubResource("Resource_rjp71")
 collected_dialogue = ExtResource("19_u4hvs")
 
 [node name="CollectibleItem" parent="." unique_id=1779229490 instance=ExtResource("12_ki0ml")]
 position = Vector2(2708, 1176)
+revealed = false
 next_scene = "uid://dxp6ywx0q1un4"
 item = SubResource("Resource_qxiwb")
 collected_dialogue = ExtResource("14_44d1h")
+
+[node name="PergaminoTracker" type="Node" parent="." unique_id=1888229491 node_paths=PackedStringArray("hilo_collectible")]
+script = ExtResource("24_ptrk")
+hilo_collectible = NodePath("../CollectibleItem")
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=859706882]
 position = Vector2(0, -1)
