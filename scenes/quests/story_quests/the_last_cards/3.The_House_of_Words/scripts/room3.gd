@@ -23,19 +23,27 @@ var puerta_instanciada = false
 var door = null
 
 # ------------------------------
-# REFERENCIAS A NODOS 
+# VARIABLES DE LA LLAVE
 # ------------------------------
-@onready var label_palabra = $CanvasGroup/Panel/LabelPalabra
-@onready var label_letras_usadas = $CanvasGroup/Panel/LabelLetrasUsadas
-@onready var label_tiempo = $CanvasGroup/LabelTiempo
-@onready var timer_principal = $Timer
-@onready var player = $Player
-@onready var dialogue_balloon = $Dialogue
-@onready var musica_fondo = $MusicaFondo
-@onready var teclado = $CanvasGroup/CanvasLayer/Teclado
+var partes_recogidas = 0
+const TOTAL_PARTES = 3
+var llave_completa = false
 
 # ------------------------------
-# ZOMBIES (
+# REFERENCIAS A NODOS
+# ------------------------------
+@onready var label_palabra        = $CanvasGroup/Panel/LabelPalabra
+@onready var label_letras_usadas  = $CanvasGroup/Panel/LabelLetrasUsadas
+@onready var label_tiempo         = $CanvasGroup/LabelTiempo
+@onready var label_llave          = $CanvasGroup/Panel/LabelLlave
+@onready var timer_principal      = $Timer
+@onready var player               = $Player
+@onready var dialogue_balloon     = $Dialogue
+@onready var musica_fondo         = $MusicaFondo
+@onready var teclado              = $CanvasGroup/CanvasLayer/Teclado
+
+# ------------------------------
+# ZOMBIES
 # ------------------------------
 @onready var zombie1 = $Zombie
 @onready var zombie2 = $Zombie2
@@ -45,22 +53,22 @@ var door = null
 # ------------------------------
 # PUERTAS
 # ------------------------------
-@onready var puerta_fija = $Puerta
+@onready var puerta_fija  = $Puerta
 @onready var puerta_fija2 = $Puerta2
 
 # ------------------------------
-# REFERENCIAS A LAS PARTES DEL AHORCADO
+# PARTES DEL AHORCADO
 # ------------------------------
 @onready var base_ahorcado = $PartesAhorcado/Soporte
-@onready var cabeza = $PartesAhorcado/Cabeza
-@onready var cuello = $PartesAhorcado/Cuello
-@onready var brazo_izq = $PartesAhorcado/BrazoIzquierdo
-@onready var brazo_der = $PartesAhorcado/BrazoDerecho
-@onready var tronco = $PartesAhorcado/Tronco
-@onready var pierna_izq = $PartesAhorcado/PiernaIzquierdo
-@onready var pierna_der = $PartesAhorcado/PiernaDerecho
+@onready var cabeza        = $PartesAhorcado/Cabeza
+@onready var cuello        = $PartesAhorcado/Cuello
+@onready var brazo_izq     = $PartesAhorcado/BrazoIzquierdo
+@onready var brazo_der     = $PartesAhorcado/BrazoDerecho
+@onready var tronco        = $PartesAhorcado/Tronco
+@onready var pierna_izq    = $PartesAhorcado/PiernaIzquierdo
+@onready var pierna_der    = $PartesAhorcado/PiernaDerecho
 
-var orden_partes = []
+var orden_partes      = []
 var escalas_originales = []
 
 # ------------------------------
@@ -70,7 +78,7 @@ func _ready():
 	randomize()
 	palabra_secreta = PALABRAS[randi() % PALABRAS.size()]
 
-	puerta_fija.global_position = Vector2(2573, 730)
+	puerta_fija.global_position  = Vector2(2573, 730)
 	puerta_fija2.global_position = Vector2(2573, 115)
 
 	orden_partes = [cabeza, cuello, brazo_izq, brazo_der, tronco, pierna_izq, pierna_der]
@@ -85,14 +93,14 @@ func _ready():
 	add_child(tick_timer)
 	tick_timer.timeout.connect(_on_timer_tick)
 
-	# Conectar los 4 zombies
+	# Conectar zombies
 	for zombie in [zombie1, zombie2, zombie3, zombie4]:
 		if zombie:
 			zombie.player_detected.connect(_on_player_detected)
 			zombie.set_activo(false)
 
-	# Por ahora las puertas se pueden abrir libremente, sin condición previa
-	_actualizar_estado_puertas_inicial()
+	# Puertas bloqueadas hasta tener la llave completa
+	_bloquear_puertas()
 
 	# Conectar teclado virtual
 	if teclado:
@@ -101,6 +109,7 @@ func _ready():
 
 	_actualizar_display()
 	_actualizar_timer_display()
+	_actualizar_label_llave()
 
 	if dialogue_balloon:
 		dialogue_balloon.tree_exited.connect(_on_dialogue_finished)
@@ -127,7 +136,7 @@ func _on_letra_teclado(letra: String) -> void:
 # ------------------------------
 # ZOMBIES
 # ------------------------------
-func _on_player_detected(player_node: Node2D) -> void:
+func _on_player_detected(_player_node: Node2D) -> void:
 	if not juego_activo:
 		return
 	_game_over()
@@ -135,12 +144,98 @@ func _on_player_detected(player_node: Node2D) -> void:
 # ------------------------------
 # PUERTAS
 # ------------------------------
-## Por ahora esta sala no tiene condición previa: ambas puertas se pueden abrir desde el inicio.
-func _actualizar_estado_puertas_inicial() -> void:
+func _bloquear_puertas() -> void:
 	for puerta in [puerta_fija, puerta_fija2]:
 		if puerta:
-			puerta.puede_abrirse = true
+			puerta.puede_abrirse   = false
+			puerta.mensaje_bloqueo = "Necesitas las 3 partes de la llave"
+
+func _desbloquear_puertas() -> void:
+	for puerta in [puerta_fija, puerta_fija2]:
+		if puerta:
+			puerta.puede_abrirse   = true
 			puerta.mensaje_bloqueo = ""
+
+# ------------------------------
+# SISTEMA DE LLAVE (3 partes)
+# ------------------------------
+func _setup_partes_llave() -> void:
+	# ⚠️ Ajusta estas posiciones según tu mapa
+	var posiciones = [
+		Vector2(800,  900),   # Parte 1 — dientes
+		Vector2(2200, 300),   # Parte 2 — mango
+		Vector2(3100, 1100),  # Parte 3 — cabeza
+	]
+	var texturas = [
+		"res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/sprites/llave_parte_1.png",
+		"res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/sprites/llave_parte_2.png",
+		"res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/sprites/llave_parte_3.png",
+	]
+
+	var llave_script = load("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scripts/LlaveParte.gd")
+	if not llave_script:
+		push_error("No se encontró LlaveParte.gd")
+		return
+
+	for i in range(TOTAL_PARTES):
+		var parte = Area2D.new()
+		parte.set_script(llave_script)
+
+		var sprite = Sprite2D.new()
+		sprite.name = "Sprite2D"
+		var tex = load(texturas[i])
+		if tex:
+			sprite.texture = tex
+		sprite.scale = Vector2(0.3, 0.3)
+		parte.add_child(sprite)
+
+		var col = CollisionShape2D.new()
+		var shape = CircleShape2D.new()
+		shape.radius = 40.0
+		col.shape = shape
+		parte.add_child(col)
+
+		add_child(parte)
+		parte.global_position = posiciones[i]
+		parte.parte_recogida.connect(_on_parte_llave_recogida)
+
+func _on_parte_llave_recogida() -> void:
+	partes_recogidas += 1
+	_actualizar_label_llave()
+	if partes_recogidas >= TOTAL_PARTES:
+		llave_completa = true
+		_desbloquear_puertas()
+		_mostrar_llave_completa()
+
+func _actualizar_label_llave() -> void:
+	if not label_llave:
+		return
+	if llave_completa:
+		label_llave.text = "🗝 ¡Llave completa!"
+	else:
+		label_llave.text = "🗝 Llave: %d / %d" % [partes_recogidas, TOTAL_PARTES]
+
+func _mostrar_llave_completa() -> void:
+	# Muestra la imagen de la llave completa brevemente en pantalla
+	var sprite_completa = Sprite2D.new()
+	sprite_completa.texture = load("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/sprites/llave_completa.png")
+	sprite_completa.scale   = Vector2(0.5, 0.5)
+	add_child(sprite_completa)
+	sprite_completa.global_position = player.global_position + Vector2(0, -80)
+
+	# Sube y desaparece
+	var tween = create_tween()
+	tween.tween_property(sprite_completa, "position:y", sprite_completa.position.y - 60, 0.8)
+	tween.parallel().tween_property(sprite_completa, "modulate:a", 0.0, 0.8)
+	await tween.finished
+	sprite_completa.queue_free()
+
+	# Parpadeo del label
+	if label_llave:
+		var t2 = create_tween()
+		t2.tween_property(label_llave, "modulate", Color(1, 1, 0), 0.25)
+		t2.tween_property(label_llave, "modulate", Color(1, 1, 1), 0.25)
+		t2.set_loops(5)
 
 # ------------------------------
 # DIÁLOGO
@@ -166,10 +261,13 @@ func _iniciar_juego():
 	tick_timer.start()
 	label_letras_usadas.text = "Errores: (0/7)"
 
-	# Los 4 zombies empiezan a moverse junto con el juego
+	# Zombies activos
 	for zombie in [zombie1, zombie2, zombie3, zombie4]:
 		if zombie:
 			zombie.set_activo(true)
+
+	# Aparecen las partes de la llave
+	_setup_partes_llave()
 
 # ------------------------------
 # LÓGICA DE LETRAS
@@ -186,7 +284,6 @@ func _on_letra_presionada(letra: String):
 		letras_falladas.append(letra)
 		fallos += 1
 		_mostrar_parte_ahorcado()
-		# Deshabilitar visualmente el botón presionado
 		_marcar_letra_usada(letra)
 
 	_actualizar_display()
@@ -201,13 +298,13 @@ func _marcar_letra_usada(letra: String) -> void:
 		for boton in fila.get_children():
 			if boton is Button and boton.text == letra:
 				var estilo_usado = StyleBoxFlat.new()
-				estilo_usado.bg_color = Color(0.4, 0.1, 0.1)  # Rojo oscuro = fallo
-				estilo_usado.corner_radius_top_left = 8
-				estilo_usado.corner_radius_top_right = 8
-				estilo_usado.corner_radius_bottom_left = 8
+				estilo_usado.bg_color = Color(0.4, 0.1, 0.1)
+				estilo_usado.corner_radius_top_left    = 8
+				estilo_usado.corner_radius_top_right   = 8
+				estilo_usado.corner_radius_bottom_left  = 8
 				estilo_usado.corner_radius_bottom_right = 8
 				boton.add_theme_stylebox_override("normal", estilo_usado)
-				boton.add_theme_stylebox_override("hover", estilo_usado)
+				boton.add_theme_stylebox_override("hover",  estilo_usado)
 				boton.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func _marcar_letra_correcta(letra: String) -> void:
@@ -219,13 +316,13 @@ func _marcar_letra_correcta(letra: String) -> void:
 		for boton in fila.get_children():
 			if boton is Button and boton.text == letra:
 				var estilo_correcto = StyleBoxFlat.new()
-				estilo_correcto.bg_color = Color(0.1, 0.5, 0.1)  # Verde = correcto
-				estilo_correcto.corner_radius_top_left = 8
-				estilo_correcto.corner_radius_top_right = 8
-				estilo_correcto.corner_radius_bottom_left = 8
+				estilo_correcto.bg_color = Color(0.1, 0.5, 0.1)
+				estilo_correcto.corner_radius_top_left    = 8
+				estilo_correcto.corner_radius_top_right   = 8
+				estilo_correcto.corner_radius_bottom_left  = 8
 				estilo_correcto.corner_radius_bottom_right = 8
 				boton.add_theme_stylebox_override("normal", estilo_correcto)
-				boton.add_theme_stylebox_override("hover", estilo_correcto)
+				boton.add_theme_stylebox_override("hover",  estilo_correcto)
 				boton.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func _mostrar_parte_ahorcado():
@@ -261,7 +358,7 @@ func _actualizar_timer_display():
 	label_tiempo.text = "%02d:%02d" % [minutos, segundos]
 
 # ------------------------------
-# CONDICIONES DE VICTORIA / DERROTA
+# VICTORIA / DERROTA
 # ------------------------------
 func _verificar_victoria():
 	var gano = true
@@ -292,12 +389,11 @@ func _verificar_victoria():
 		_game_over()
 
 # ------------------------------
-# MOVIMIENTO
+# PROCESO
 # ------------------------------
-func _process(delta):
+func _process(_delta):
 	if not juego_activo:
 		return
-
 
 # ------------------------------
 # TEMPORIZADORES

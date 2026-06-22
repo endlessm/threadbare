@@ -278,7 +278,7 @@ func _on_player_hook_aiming_changed(is_aiming: bool) -> void:
 # ------------------------------------------------------------
 # Ataque cuerpo a cuerpo (integrado)
 # ------------------------------------------------------------
-func _input(event):
+func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("attack") and can_attack and mode != Mode.DEFEATED:
 		_melee_attack()
 
