@@ -8,10 +8,12 @@ var enemigos:Array =[]
 signal derrota;
 
 func _ready() -> void:
-	enemigos = get_children() # Replace with function body.
+	enemigos = get_children()
+	
 
 func _activar_enemigos()->void:
 	viento._set_estado_viento(500,3)##fuerza de 500 hacia atras y se activa cada 3 segundos
+	
 	for e in enemigos:
 		e.visible= true
 		e.start();
