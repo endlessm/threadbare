@@ -8,6 +8,8 @@ signal combate_completado
 @export var camara_jugador: Camera2D
 @export var animacion: AnimatedSprite2D
 
+@export var oso: Sprite2D
+
 @export var interact_area: InteractArea
 @export var talk_behavior: TalkBehavior
 
@@ -90,6 +92,7 @@ func devolver_player() -> void:
 func _on_combate_ganado() -> void:
 	combate_ganado = true
 	combate_activo = false
+	oso.visible =true
 
 	if camara_jugador != null:
 		camara_jugador.enabled = true

@@ -9,6 +9,11 @@
 [ext_resource type="TileSet" uid="uid://cxpljndouwn3y" path="res://scenes/quests/story_quests/en_la_prondidad/tiles/en_la_prondidad_elevation_2.tres" id="7_1js3n"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="8_ybm8k"]
 [ext_resource type="SpriteFrames" uid="uid://ogvyoa4f8bcj" path="res://scenes/quests/story_quests/en_la_prondidad/player_components/en_la_prondidad_player.tres" id="9_78hw6"]
+[ext_resource type="AudioStream" uid="uid://biraf8k36brm6" path="res://scenes/quests/story_quests/en_la_prondidad/5_void_runner/components/515783__lilmati__retro-footstep (1).wav" id="10_78hw6"]
+[ext_resource type="Texture2D" uid="uid://bs8667723wtxt" path="res://scenes/quests/story_quests/en_la_prondidad/1_stealth/stealth_components/light.png" id="10_lqaim"]
+[ext_resource type="Texture2D" uid="uid://d2v30ogstrash" path="res://scenes/quests/story_quests/en_la_prondidad/asets/murciegalo.png" id="13_raop8"]
+[ext_resource type="Texture2D" uid="uid://htsxh2itbsg8" path="res://scenes/quests/story_quests/en_la_prondidad/asets/estalaesta.png" id="14_ovxkm"]
+[ext_resource type="Texture2D" uid="uid://bx1fye6uk3itq" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Osohilo.png" id="15_lbfcp"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="15_uueub"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="16_57h3s"]
 [ext_resource type="Texture2D" uid="uid://cm4cxksywnsfu" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Enemigo1.png" id="17_k1hun"]
@@ -20,6 +25,8 @@
 [ext_resource type="Resource" uid="uid://bkugpaaa74kam" path="res://scenes/quests/story_quests/en_la_prondidad/DialogoEnemyFinal.dialogue" id="21_ybm8k"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="22_lqaim"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="23_1js3n"]
+[ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="25_lbfcp"]
+[ext_resource type="AudioStream" uid="uid://c07ywidnkgymn" path="res://scenes/quests/story_quests/en_la_prondidad/musica/Controlled Chaos (1).mp3" id="26_78hw6"]
 
 [sub_resource type="Resource" id="Resource_w84lh"]
 script = ExtResource("16_57h3s")
@@ -64,6 +71,9 @@ radius = 48.0
 [node name="EnLaProndidadCombat" type="Node2D" unique_id=1610054737]
 y_sort_enabled = true
 
+[node name="CanvasModulate2" type="CanvasModulate" parent="." unique_id=1244129578]
+color = Color(0.49803922, 0.49803922, 0.49803922, 1)
+
 [node name="PlayerMode" type="Node" parent="." unique_id=969358735]
 script = ExtResource("1_d8hso")
 mode = 1
@@ -100,15 +110,21 @@ y_sort_enabled = true
 [node name="Player" parent="OnTheGround" unique_id=1799818537 instance=ExtResource("8_ybm8k")]
 position = Vector2(348, 335)
 sprite_frames = ExtResource("9_78hw6")
+walk_sound_stream = ExtResource("10_78hw6")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=415956383]
 zoom = Vector2(1.6, 1.6)
+
+[node name="PointLight2D2" type="PointLight2D" parent="OnTheGround/Player" unique_id=857053344]
+position = Vector2(4.999997, -14.000021)
+scale = Vector2(0.18994142, 0.15625004)
+texture = ExtResource("10_lqaim")
 
 [node name="CollectibleItem" parent="OnTheGround" unique_id=1864193206 instance=ExtResource("15_uueub")]
 unique_name_in_owner = true
 position = Vector2(1785, 499)
 revealed = false
-next_scene = "uid://cprri1wvtphad"
+next_scene = "uid://bsrxki3uvqybt"
 item = SubResource("Resource_w84lh")
 collected_dialogue = ExtResource("3_k1hun")
 dialogue_title = &"well_done"
@@ -117,11 +133,33 @@ dialogue_title = &"well_done"
 position = Vector2(252, 1773)
 highlight_color = Color(0, 0.4392157, 1, 1)
 
+[node name="Osohilo" type="Sprite2D" parent="OnTheGround" unique_id=885789403]
+visible = false
+z_index = 10
+position = Vector2(1785, 498)
+texture = ExtResource("15_lbfcp")
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1277924950]
+
+[node name="Control" type="Control" parent="ScreenOverlay" unique_id=1225955801]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Murciegalo" type="Sprite2D" parent="ScreenOverlay/Control" unique_id=33225356]
+position = Vector2(1182, 125.99999)
+scale = Vector2(1.6083335, 1.9531248)
+texture = ExtResource("13_raop8")
+
+[node name="Estalaesta" type="Sprite2D" parent="ScreenOverlay/Control" unique_id=576782399]
+position = Vector2(193.99998, 550.25)
+scale = Vector2(3.2333338, 2.6445315)
+texture = ExtResource("14_ovxkm")
 
 [node name="HUD" parent="." unique_id=1216951978 instance=ExtResource("18_gab03")]
 
-[node name="EnemigoHermano" type="CharacterBody2D" parent="." unique_id=1095555936 node_paths=PackedStringArray("contenedor_combate", "player", "camara_jugador", "animacion", "interact_area", "talk_behavior")]
+[node name="EnemigoHermano" type="CharacterBody2D" parent="." unique_id=1095555936 node_paths=PackedStringArray("contenedor_combate", "player", "camara_jugador", "animacion", "oso", "interact_area", "talk_behavior")]
 position = Vector2(1966, 445)
 scale = Vector2(1.0185953, 1)
 script = ExtResource("19_raop8")
@@ -130,6 +168,7 @@ contenedor_combate = NodePath("Node2D")
 player = NodePath("../OnTheGround/Player")
 camara_jugador = NodePath("../OnTheGround/Player/Camera2D")
 animacion = NodePath("AnimatedSprite2D")
+oso = NodePath("../OnTheGround/Osohilo")
 interact_area = NodePath("InteractArea")
 talk_behavior = NodePath("TalkBehavior")
 dialogo_final = ExtResource("21_ybm8k")
@@ -176,6 +215,11 @@ script = ExtResource("23_1js3n")
 dialogue = ExtResource("21_1js3n")
 interact_area = NodePath("../InteractArea")
 metadata/_custom_type_script = "uid://edcifob4jc4s"
+
+[node name="BackgroundMusic" type="Node" parent="." unique_id=964532200]
+script = ExtResource("25_lbfcp")
+stream = ExtResource("26_78hw6")
+metadata/_custom_type_script = "uid://c8405c212rbn6"
 
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]

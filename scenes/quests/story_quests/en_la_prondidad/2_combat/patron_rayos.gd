@@ -69,6 +69,6 @@ func spawn_laser(e: LaserEvent) -> void:
 			dir = Vector2.UP
 	
 	var laser = laser_scene.instantiate()
-	laser.setup(pos, dir, 1.0, 0.5)
+	laser.setup(pos, dir, 1.0, 2)
 	
 	add_child(laser)

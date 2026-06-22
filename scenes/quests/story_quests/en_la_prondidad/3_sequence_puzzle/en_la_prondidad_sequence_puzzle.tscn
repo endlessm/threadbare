@@ -9,6 +9,8 @@
 [ext_resource type="SpriteFrames" uid="uid://ogvyoa4f8bcj" path="res://scenes/quests/story_quests/en_la_prondidad/player_components/en_la_prondidad_player.tres" id="6_fghxx"]
 [ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="7_viyro"]
 [ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/game_elements/props/sequence_puzzle_object/sequence_puzzle_object.tscn" id="8_16nml"]
+[ext_resource type="AudioStream" uid="uid://d4ewrtc1101f4" path="res://scenes/quests/story_quests/en_la_prondidad/musica/384869__ali_6868__right-grassgrassy-footstep-4 (2).wav" id="8_33l0n"]
+[ext_resource type="Texture2D" uid="uid://bs8667723wtxt" path="res://scenes/quests/story_quests/en_la_prondidad/1_stealth/stealth_components/light.png" id="8_n1sqv"]
 [ext_resource type="SpriteFrames" uid="uid://d261cf1dj5wgu" path="res://scenes/quests/story_quests/en_la_prondidad/3_sequence_puzzle/componentes/en_la_prondidad_object.tres" id="9_7rmbv"]
 [ext_resource type="AudioStream" uid="uid://cg57q82pb243w" path="res://assets/third_party/nepalese_hand_bells/handBells-c4.ogg" id="10_3gah2"]
 [ext_resource type="AudioStream" uid="uid://b83x8h0ob5mpq" path="res://assets/third_party/nepalese_hand_bells/handBells-d4.ogg" id="11_2iy8g"]
@@ -37,6 +39,9 @@
 [ext_resource type="Script" uid="uid://c2if5i3iaujj3" path="res://scenes/quests/story_quests/en_la_prondidad/3_sequence_puzzle/npc_guardado.gd" id="36_vcekg"]
 [ext_resource type="Texture2D" uid="uid://cm4cxksywnsfu" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Enemigo1.png" id="37_rr44l"]
 [ext_resource type="Texture2D" uid="uid://bfi02c5khcie8" path="res://scenes/quests/story_quests/en_la_prondidad/3_sequence_puzzle/componentes/spites/cueva.png" id="38_n1sqv"]
+[ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="39_piwh5"]
+[ext_resource type="Script" uid="uid://c2lx7gvkonxaa" path="res://scenes/game_elements/props/background_music/components/clip_switcher.gd" id="40_33l0n"]
+[ext_resource type="AudioStream" uid="uid://dytrh23nvhmg3" path="res://scenes/quests/story_quests/en_la_prondidad/musica/Come Play with Me.mp3" id="40_piwh5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o1oyg"]
 radius = 16.03122
@@ -97,6 +102,9 @@ animations = [{
 [node name="EnLaProndidadSequencePuzzle" type="Node2D" unique_id=217609538]
 script = ExtResource("1_wybts")
 
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=407516161]
+color = Color(0.4817894, 0.48178953, 0.4817894, 1)
+
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=2088852286]
 position = Vector2(1, -1)
 
@@ -131,6 +139,7 @@ y_sort_enabled = true
 position = Vector2(-418, 495)
 scale = Vector2(1.2, 1.2)
 sprite_frames = ExtResource("6_fghxx")
+walk_sound_stream = ExtResource("8_33l0n")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1732237457]
 position = Vector2(24.444427, -35.555573)
@@ -142,6 +151,11 @@ limit_right = 1024
 limit_bottom = 704
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="PointLight2D2" type="PointLight2D" parent="OnTheGround/Player" unique_id=862398418]
+position = Vector2(4.999997, -14.000021)
+scale = Vector2(0.18994142, 0.15625004)
+texture = ExtResource("8_n1sqv")
 
 [node name="SequencePuzzle" type="Node2D" parent="OnTheGround" unique_id=1771259982]
 y_sort_enabled = true
@@ -332,6 +346,7 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 [node name="Puerta" type="Area2D" parent="." unique_id=397140162 groups=["puerta_principal"]]
 position = Vector2(-143, 324)
 script = ExtResource("27_o1oyg")
+siguiente_escena = "uid://cb7tqsakwhpgk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Puerta" unique_id=2095201964]
 position = Vector2(1178.5, 114)
@@ -374,5 +389,14 @@ animation = &"idle"
 frame_progress = 0.5011615
 
 [node name="Arboles" type="TileMapLayer" parent="." unique_id=1059347348]
+
+[node name="BackgroundMusic" type="Node" parent="." unique_id=1706151150]
+script = ExtResource("39_piwh5")
+stream = ExtResource("40_piwh5")
+metadata/_custom_type_script = "uid://c8405c212rbn6"
+
+[node name="ClipSwitcher" type="Node" parent="BackgroundMusic" unique_id=1482650518]
+script = ExtResource("40_33l0n")
+metadata/_custom_type_script = "uid://c2lx7gvkonxaa"
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/QuestItem2" method="reveal"]

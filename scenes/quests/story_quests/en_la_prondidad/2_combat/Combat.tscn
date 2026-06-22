@@ -23,13 +23,17 @@
 [ext_resource type="Texture2D" uid="uid://bopceyv286vqq" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Barra de vida/BarraDeVidaLlena.png" id="11_073lj"]
 [ext_resource type="Texture2D" uid="uid://j1kekmfrdukd" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Barra de vida/BarraUnder.png" id="12_y7e6j"]
 [ext_resource type="Texture2D" uid="uid://bkkeo3jqdag6o" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Barra de vida/barramonstruovacia.png" id="16_d5gat"]
-[ext_resource type="Texture2D" uid="uid://dcd8xqp00xouq" path="res://scenes/quests/story_quests/en_la_prondidad/asets/gameover.png" id="16_sod1r"]
+[ext_resource type="Texture2D" uid="uid://dcd8xqp00xouq" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Interfaz/gameover.png" id="16_sod1r"]
 [ext_resource type="Texture2D" uid="uid://dby6tm1j5bq25" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Barra de vida/barramonstruollena.png" id="17_3da5k"]
 [ext_resource type="Texture2D" uid="uid://c1lkrsgraa3tl" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Daño1-sheet.png" id="18_wvut1"]
 [ext_resource type="Texture2D" uid="uid://b7vd77ojtdxmr" path="res://scenes/quests/story_quests/en_la_prondidad/asets/idle.png" id="19_t5rwg"]
 [ext_resource type="Texture2D" uid="uid://dmgg2jsakjy07" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Victoria1-sheet.png" id="20_t5rwg"]
 [ext_resource type="PackedScene" uid="uid://btkw1vq4t1wnl" path="res://scenes/quests/story_quests/en_la_prondidad/2_combat/RashoLaser.tscn" id="21_y7e6j"]
 [ext_resource type="Script" uid="uid://y00adsfs6jo2" path="res://scenes/quests/story_quests/en_la_prondidad/2_combat/LaserEvent.gd" id="22_ctm2b"]
+[ext_resource type="Texture2D" uid="uid://chawi46246scj" path="res://scenes/quests/story_quests/en_la_prondidad/asets/mAtack.png" id="26_cjc4b"]
+[ext_resource type="Texture2D" uid="uid://bquk46ssnr8ot" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Mdaño.png" id="27_4a8km"]
+[ext_resource type="Texture2D" uid="uid://dcp1gopdhjne3" path="res://scenes/quests/story_quests/en_la_prondidad/asets/mIdle.png" id="28_yv6ed"]
+[ext_resource type="Texture2D" uid="uid://bphycg0hcfrm" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Transform1.png" id="29_4mwn2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qoptm"]
 texture = ExtResource("1_bp717")
@@ -147,36 +151,134 @@ size = Vector2(55, 53)
 radius = 21.0
 height = 42.0
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_hut6q"]
+atlas = ExtResource("26_cjc4b")
+region = Rect2(0, 0, 204, 164)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7l8pm"]
+atlas = ExtResource("27_4a8km")
+region = Rect2(0, 0, 172, 164)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5keh1"]
+atlas = ExtResource("27_4a8km")
+region = Rect2(172, 0, 172, 164)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x428x"]
+atlas = ExtResource("28_yv6ed")
+region = Rect2(0, 0, 204, 164)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_44bv2"]
+atlas = ExtResource("28_yv6ed")
+region = Rect2(0, 164, 204, 164)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qwxmk"]
+atlas = ExtResource("29_4mwn2")
+region = Rect2(0, 0, 169, 140)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7r1a3"]
+atlas = ExtResource("29_4mwn2")
+region = Rect2(169, 0, 169, 140)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wcnqe"]
+atlas = ExtResource("29_4mwn2")
+region = Rect2(338, 0, 169, 140)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_on7t2"]
+atlas = ExtResource("29_4mwn2")
+region = Rect2(507, 0, 169, 140)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7xaa0"]
+atlas = ExtResource("29_4mwn2")
+region = Rect2(676, 0, 169, 140)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d5gat"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hut6q")
+}],
+"loop": true,
+"name": &"atack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7l8pm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5keh1")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x428x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_44bv2")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qwxmk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7r1a3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wcnqe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_on7t2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xaa0")
+}],
+"loop": false,
+"name": &"transformacion",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"win",
+"speed": 5.0
+}]
+
 [sub_resource type="Resource" id="Resource_y7e6j"]
 script = ExtResource("22_ctm2b")
-tiempo = 5.0
+tiempo = 1.0
 lado = "arr"
-posicion = 810.0
+posicion = 783.0
 metadata/_custom_type_script = "uid://y00adsfs6jo2"
 
 [sub_resource type="Resource" id="Resource_ctm2b"]
 script = ExtResource("22_ctm2b")
-tiempo = 7.0
+tiempo = 4.0
 lado = "arr"
 posicion = 550.0
 metadata/_custom_type_script = "uid://y00adsfs6jo2"
 
 [sub_resource type="Resource" id="Resource_u0jul"]
 script = ExtResource("22_ctm2b")
-tiempo = 7.0
-posicion = 580.0
+tiempo = 4.0
+posicion = 600.0
 metadata/_custom_type_script = "uid://y00adsfs6jo2"
 
 [sub_resource type="Resource" id="Resource_a5aec"]
 script = ExtResource("22_ctm2b")
-tiempo = 9.0
+tiempo = 7.0
 lado = "der"
-posicion = 580.0
+posicion = 600.0
 metadata/_custom_type_script = "uid://y00adsfs6jo2"
 
 [sub_resource type="Resource" id="Resource_d5gat"]
 script = ExtResource("22_ctm2b")
-tiempo = 9.0
+tiempo = 7.0
 lado = "arr"
 posicion = 1050.0
 metadata/_custom_type_script = "uid://y00adsfs6jo2"
@@ -185,35 +287,62 @@ metadata/_custom_type_script = "uid://y00adsfs6jo2"
 script = ExtResource("22_ctm2b")
 tiempo = 11.0
 lado = "arr"
-posicion = 600.0
+posicion = 550.0
 metadata/_custom_type_script = "uid://y00adsfs6jo2"
 
 [sub_resource type="Resource" id="Resource_i6h36"]
 script = ExtResource("22_ctm2b")
 tiempo = 11.0
 lado = "arr"
-posicion = 1000.0
+posicion = 1050.0
 metadata/_custom_type_script = "uid://y00adsfs6jo2"
 
 [sub_resource type="Resource" id="Resource_k623y"]
 script = ExtResource("22_ctm2b")
-tiempo = 14.0
+tiempo = 15.0
 lado = "der"
 posicion = 730.0
 metadata/_custom_type_script = "uid://y00adsfs6jo2"
 
 [sub_resource type="Resource" id="Resource_cjc4b"]
 script = ExtResource("22_ctm2b")
-tiempo = 14.0
+tiempo = 15.0
 lado = "arr"
 posicion = 600.0
 metadata/_custom_type_script = "uid://y00adsfs6jo2"
 
 [sub_resource type="Resource" id="Resource_4a8km"]
 script = ExtResource("22_ctm2b")
-tiempo = 14.0
+tiempo = 15.0
 lado = "arr"
-posicion = 1000.0
+posicion = 1050.0
+metadata/_custom_type_script = "uid://y00adsfs6jo2"
+
+[sub_resource type="Resource" id="Resource_yv6ed"]
+script = ExtResource("22_ctm2b")
+tiempo = 19.0
+lado = "arr"
+posicion = 550.0
+metadata/_custom_type_script = "uid://y00adsfs6jo2"
+
+[sub_resource type="Resource" id="Resource_4mwn2"]
+script = ExtResource("22_ctm2b")
+tiempo = 19.0
+lado = "arr"
+posicion = 1050.0
+metadata/_custom_type_script = "uid://y00adsfs6jo2"
+
+[sub_resource type="Resource" id="Resource_hut6q"]
+script = ExtResource("22_ctm2b")
+tiempo = 19.0
+posicion = 600.0
+metadata/_custom_type_script = "uid://y00adsfs6jo2"
+
+[sub_resource type="Resource" id="Resource_7l8pm"]
+script = ExtResource("22_ctm2b")
+tiempo = 19.0
+lado = "der"
+posicion = 730.0
 metadata/_custom_type_script = "uid://y00adsfs6jo2"
 
 [node name="Combat" type="Node2D" unique_id=1538964242 node_paths=PackedStringArray("enemigo", "corazon", "sprite_derrota")]
@@ -338,7 +467,7 @@ texture = ExtResource("16_sod1r")
 position = Vector2(332, 291)
 scale = Vector2(2.5808108, 2.2578127)
 sprite_frames = SubResource("SpriteFrames_1ql74")
-animation = &"win"
+animation = &"atack"
 
 [node name="Corazon" type="CharacterBody2D" parent="arena" unique_id=116544548 node_paths=PackedStringArray("barra", "animacion", "enemigo")]
 position = Vector2(783, 677)
@@ -346,7 +475,6 @@ collision_layer = 3
 collision_mask = 19
 motion_mode = 1
 script = ExtResource("3_0e54m")
-vida = 6
 iframes = 0.5
 barra = NodePath("../../CanvasLayer/BarraVidaPlayer")
 animacion = NodePath("../animacionPlayer")
@@ -369,19 +497,21 @@ debug_color = Color(0.66750145, 0.31288427, 1, 0.41960785)
 
 [node name="Enemigo" type="Node2D" parent="arena" unique_id=1535804081 node_paths=PackedStringArray("patrones", "barra", "animacionPlayer", "animacionEnemy", "corazon")]
 script = ExtResource("5_qoptm")
-patrones = [NodePath("patronRayos"), NodePath("lluvia")]
+patrones = [NodePath("lluvia"), NodePath("patronRayos"), NodePath("lluvia")]
+vida_jefe = 3
 barra = NodePath("../../CanvasLayer/BarraVidaEnemy")
 animacionPlayer = NodePath("../animacionPlayer")
 animacionEnemy = NodePath("animacionEnemy")
 corazon = NodePath("../Corazon")
-tiempoEntrePatrones = 1.0
+tiempoEntrePatrones = 3.0
+tiempo_antes_pelea = 3.0
 
 [node name="animacionEnemy" type="AnimatedSprite2D" parent="arena/Enemigo" unique_id=1198485337]
-position = Vector2(1269, 290)
+position = Vector2(1290.0001, 257)
 rotation = 3.1415927
-scale = Vector2(2.581, -2.258)
-sprite_frames = SubResource("SpriteFrames_1ql74")
-animation = &"win"
+scale = Vector2(-2.7175794, -2.2168162)
+sprite_frames = SubResource("SpriteFrames_d5gat")
+animation = &"transformacion"
 
 [node name="lluvia" type="Node2D" parent="arena/Enemigo" unique_id=2122928820]
 script = ExtResource("6_qoptm")
@@ -392,14 +522,14 @@ ancho_fin = 1135.0
 espacio = 80.0
 offset_x = 40.0
 tiempo_entre_tandas = 0.8
-duracion = 1.0
+duracion = 14.0
 velocidad = 180.0
 
 [node name="patronRayos" type="Node2D" parent="arena/Enemigo" unique_id=304205546]
 position = Vector2(-1, 0)
 script = ExtResource("8_h5880")
 laser_scene = ExtResource("21_y7e6j")
-eventos = Array[ExtResource("22_ctm2b")]([SubResource("Resource_y7e6j"), SubResource("Resource_ctm2b"), SubResource("Resource_u0jul"), SubResource("Resource_a5aec"), SubResource("Resource_d5gat"), SubResource("Resource_3da5k"), SubResource("Resource_i6h36"), SubResource("Resource_k623y"), SubResource("Resource_cjc4b"), SubResource("Resource_4a8km")])
+eventos = Array[ExtResource("22_ctm2b")]([SubResource("Resource_y7e6j"), SubResource("Resource_ctm2b"), SubResource("Resource_u0jul"), SubResource("Resource_a5aec"), SubResource("Resource_d5gat"), SubResource("Resource_3da5k"), SubResource("Resource_i6h36"), SubResource("Resource_k623y"), SubResource("Resource_cjc4b"), SubResource("Resource_4a8km"), SubResource("Resource_yv6ed"), SubResource("Resource_4mwn2"), SubResource("Resource_hut6q"), SubResource("Resource_7l8pm")])
 x_izquierda = 440.0
 x_derecha = 1200.0
 y_arriba = 500.0
