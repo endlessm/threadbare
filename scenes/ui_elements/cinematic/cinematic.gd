@@ -2,15 +2,28 @@
 # SPDX-License-Identifier: MPL-2.0
 class_name Cinematic
 extends Node2D
- 
+## Shows a dialogue, then transitions to another scene.
+##
+## Intended for use in non-interactive cutscenes, such as the intro and outro to a quest.
+## It can also be used as an easy way to display dialogue at the beginning of a level.
+
+## Emitted when the cinematic has finished. Use it if not passing [member next_scene]
+## when you need to do something else after the cinematic.
 signal cinematic_finished
 
-@onready var fade_rect = $ColorRect
-@onready var anim = $AnimationPlayer
- 
+## Dialogue for cinematic scene.
 @export var dialogue: DialogueResource = preload("uid://b7ad8nar1hmfs")
-@export var dialogue_02: DialogueResource = preload("res://scenes/quests/story_quests/perdidos_en_el_desie/4_outro/outro_components/el_ultimo_adios.dialogue")
 
+## Optional animation player, to be used from [member dialogue] (if needed).
+@export var animation_player: AnimationPlayer
+
+## Optional scene to switch to once [member dialogue] is complete.
+@export_file("*.tscn") var next_scene: String
+
+## Optional path inside [member next_scene] where the player should appear.
+## If blank, player appears at default position in the scene. If in doubt,
+## leave this blank.
+@export var spawn_point_path: String
 
 ## Wether to automatically start the cinematic.
 @export var autostart: bool = true
@@ -22,39 +35,19 @@ func _ready() -> void:
 
 
 func start() -> void:
-	# Animación de cierre
-	fade_rect.self_modulate.a = 0
-	#Para la animación del personaje
-	var character:Node2D = get_node("../OnTheGround/Personaje")
-	# Pantalla en blanco
-	await mostrar_dialogo(dialogue,true)
-	await character.mover_a_recuerdos()
-	await mostrar_dialogo(dialogue_02,false)
-	await character.mover_a_salida()
-	GameState.intro_dialogue_shown = true
-	
-	# Función de cierre 
-	anim.play("fade_out")
-	await get_tree().create_timer(2.0).timeout
-	get_tree().quit()
-	
-func mostrar_dialogo(dialogo: DialogueResource,mover:bool)-> void:
-	@warning_ignore("untyped_declaration")
-	var diague = DialogueManager.show_dialogue_balloon(dialogo, "", [self])
-	var diague_ui:Control = diague.get_node("Balloon")
-	await get_tree().process_frame
-	var size_viewport:Vector2 = get_viewport().size
-	if(mover):
-		diague_ui.position = Vector2(
-			size_viewport.x - 500, 20
+	if not GameState.intro_dialogue_shown:
+		DialogueManager.show_dialogue_balloon(dialogue, "", [self])
+		await DialogueManager.dialogue_ended
+		cinematic_finished.emit()
+		GameState.intro_dialogue_shown = true
+
+	if next_scene:
+		(
+			SceneSwitcher
+			. change_to_file_with_transition(
+				next_scene,
+				spawn_point_path,
+				Transition.Effect.FADE,
+				Transition.Effect.FADE,
+			)
 		)
-	await DialogueManager.dialogue_ended
-	cinematic_finished.emit()
-	
-	# Función de cierre
- 
-		
-
- 
-
-	
