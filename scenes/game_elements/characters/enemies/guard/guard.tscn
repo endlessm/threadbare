@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="3_pnkgp"]
 [ext_resource type="Script" uid="uid://cxsi2xqcdyw7g" path="res://scenes/game_elements/characters/enemies/guard/components/light.gd" id="4_lptvm"]
 [ext_resource type="Script" uid="uid://bnbt0iw1a1w6" path="res://scenes/game_elements/characters/enemies/guard/components/detection_area.gd" id="4_mswbt"]
-[ext_resource type="SpriteFrames" uid="uid://ovu5wqo15s5g" path="res://scenes/quests/template_quests/NO_EDIT/1_NO_EDIT_stealth/NO_EDIT_stealth_components/NO_EDIT_guard_enemy.tres" id="5_mswbt"]
+[ext_resource type="SpriteFrames" uid="uid://8ttttqq7g18b" path="res://scenes/quests/story_quests/perdidos_en_el_desie/2_combat/combat_components/guardian_mini2_spriteframesNuevo.tres" id="6_8vt0k"]
 [ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="7_klpct"]
 [ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="9_8vt0k"]
 
@@ -14,7 +14,7 @@
 radius = 35.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nv25s"]
-radius = 15.0
+radius = 48.83646
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nv25s"]
 light_mode = 1
@@ -200,11 +200,13 @@ _data = {
 &"walk": SubResource("Animation_8vt0k")
 }
 
-[node name="Guard" type="CharacterBody2D" unique_id=689832587 groups=["guard_enemy"]]
+[node name="Guard" type="CharacterBody2D" unique_id=689832587 node_paths=PackedStringArray("patrol_path") groups=["guard_enemy"]]
 collision_layer = 0
 collision_mask = 528
 motion_mode = 1
 script = ExtResource("1_g173s")
+patrol_path = NodePath("../Guard-PatrolPath")
+move_speed = 200.0
 
 [node name="GuardMovement" type="Node2D" parent="." unique_id=1116278916]
 unique_name_in_owner = true
@@ -226,6 +228,7 @@ shape = SubResource("CircleShape2D_g173s")
 [node name="DetectionArea" type="Area2D" parent="." unique_id=885694991]
 unique_name_in_owner = true
 position = Vector2(0, -19)
+rotation = -1.5707964
 collision_layer = 0
 script = ExtResource("4_mswbt")
 
@@ -241,16 +244,30 @@ texture = ExtResource("3_0hjcv")
 offset = Vector2(377.88, 10.7686)
 script = ExtResource("4_lptvm")
 
+[node name="Light" type="PointLight2D" parent="DetectionArea/Light" unique_id=1279503915]
+position = Vector2(37.3333, 1.33333)
+scale = Vector2(0.340496, 0.340496)
+color = Color(1, 1, 0.796078, 1)
+blend_mode = 2
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.5
+texture = ExtResource("3_0hjcv")
+offset = Vector2(377.88, 10.7686)
+script = ExtResource("4_lptvm")
+
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea" unique_id=1176393945]
-position = Vector2(-29.3333, -132)
+position = Vector2(-46.99997, -138)
 polygon = PackedVector2Array(302, 48, 283, 52, 279, 52, 101, 114, 98, 114, 79, 124, 77, 124, 72, 131, 71, 131, 71, 138, 78, 145, 78, 146, 95, 154, 95, 155, 275, 226, 275, 227, 292, 231, 292, 232, 312, 230, 316, 230, 330, 222, 332, 222, 340, 214, 341, 214, 346, 205, 347, 205, 351, 185, 351, 100, 347, 82, 347, 79, 338, 67, 338, 65, 325, 55, 325, 54, 302, 47)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=616054452]
 unique_name_in_owner = true
-position = Vector2(0, -16)
-sprite_frames = ExtResource("5_mswbt")
+position = Vector2(-8, -14)
+scale = Vector2(-1, 1)
+sprite_frames = ExtResource("6_8vt0k")
 animation = &"walk"
 autoplay = "idle"
+flip_v = true
 
 [node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=971917766 node_paths=PackedStringArray("character", "sprite")]
 script = ExtResource("7_klpct")
@@ -260,6 +277,7 @@ sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2124818446]
+position = Vector2(-1, -2)
 shape = SubResource("CircleShape2D_nv25s")
 
 [node name="PlayerAwareness" type="TextureProgressBar" parent="." unique_id=578256400]

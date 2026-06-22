@@ -20,6 +20,9 @@ func _ready():
 
 func _process(delta):
 	if iniciado:
+		# ✅ Si el árbol ya no existe, eliminamos la bala silenciosamente
+		if not is_inside_tree():
+			return
 		global_position += direccion * velocidad * delta
 
 func _on_body_entered(body: Node2D) -> void:
@@ -28,3 +31,7 @@ func _on_body_entered(body: Node2D) -> void:
 	if body is Guard:
 		body.queue_free()
 	queue_free()
+
+func _exit_tree():
+	# ✅ Cuando la escena cambia, esto se llama automáticamente
+	pass
