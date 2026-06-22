@@ -19,14 +19,44 @@ func _ready():
 	nivel_apagandose = false
 	self.tree_exiting.connect(_activar_escudo)
 
+	# --- GESTIÓN INICIAL DE LAS ROCAS DEL HILO 3 ---
+	var rocas_3 = get_node_or_null("TileMapLayers/RocasBloqueoHilo3")
+	if rocas_3:
+		if not hilo3_tomado:
+			rocas_3.visible = false
+			rocas_3.position = Vector2(9999, 9999) 
+		else:
+			rocas_3.visible = true
+			rocas_3.position = Vector2(0, 0)
+			
+	# --- GESTIÓN INICIAL DE LOS PUENTES Y BLOQUEO INVISIBLE ---
+	var puente_roto = get_node_or_null("TileMapLayers/PuenteRoto")
+	var puente_normal = get_node_or_null("TileMapLayers/PuenteNormal")
+	var bloqueo_puente = get_node_or_null("TileMapLayers/BloqueoPuente") # <--- Referencia al muro
+	
+	if hilo3_tomado:
+		# Si ya se agarró el hilo 3, destruimos el puente roto y la pared invisible
+		if puente_roto: puente_roto.queue_free()
+		if bloqueo_puente: bloqueo_puente.queue_free()
+		
+		# Activamos el puente normal
+		if puente_normal:
+			puente_normal.visible = true
+			puente_normal.process_mode = Node.PROCESS_MODE_INHERIT
+	else:
+		if puente_normal:
+			puente_normal.visible = false
+			puente_normal.process_mode = Node.PROCESS_MODE_DISABLED
+
 	if hilo1_tomado and has_node("CollectibleItem"):
 		$CollectibleItem.queue_free()
 
-	if hilo2_tomado and has_node("CollectibleItem2"):
-		$CollectibleItem2.queue_free()
-		# Nos aseguramos de que las rocas no aparezcan al recargar si ya agarró el hilo 2
-		if has_node("TileMapLayers/SmallStones"):
-			$TileMapLayers/SmallStones.queue_free()
+	if hilo2_tomado:
+		if has_node("CollectibleItem2"):
+			$CollectibleItem2.queue_free()
+		var rocas_2 = get_node_or_null("TileMapLayers/RocasBloqueoHilo2")
+		if rocas_2:
+			rocas_2.queue_free()
 
 	if hilo3_tomado and has_node("CollectibleItem3"):
 		$CollectibleItem3.queue_free()
@@ -54,10 +84,9 @@ func _on_collectible_item_2_tree_exited() -> void:
 		hilos_totales += 1
 		verificar_progreso()
 		
-		# --- DESTRUCCIÓN DE LAS ROCAS ---
-		var rocas = get_node_or_null("TileMapLayers/SmallStones")
-		if rocas:
-			rocas.queue_free()
+		var rocas_2 = get_node_or_null("TileMapLayers/RocasBloqueoHilo2")
+		if rocas_2:
+			rocas_2.queue_free()
 
 func _on_collectible_item_3_tree_exited() -> void:
 	if nivel_apagandose: return
@@ -65,6 +94,24 @@ func _on_collectible_item_3_tree_exited() -> void:
 		hilo3_tomado = true
 		hilos_totales += 1
 		verificar_progreso()
+		
+		# --- APARICIÓN DE LAS ROCAS DEL HILO 3 ---
+		var rocas_3 = get_node_or_null("TileMapLayers/RocasBloqueoHilo3")
+		if rocas_3:
+			rocas_3.visible = true
+			rocas_3.position = Vector2(0, 0) 
+			
+		# --- TRANSICIÓN DEL PUENTE Y DESTRUCCIÓN DEL BLOQUEO ---
+		var puente_roto = get_node_or_null("TileMapLayers/PuenteRoto")
+		var puente_normal = get_node_or_null("TileMapLayers/PuenteNormal")
+		var bloqueo_puente = get_node_or_null("TileMapLayers/BloqueoPuente") # <--- Referencia al muro
+		
+		if puente_roto: puente_roto.queue_free() 
+		if bloqueo_puente: bloqueo_puente.queue_free() # Liberamos el paso destruyendo el muro
+			
+		if puente_normal:
+			puente_normal.visible = true
+			puente_normal.process_mode = Node.PROCESS_MODE_INHERIT 
 
 func _on_zona_climax_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
@@ -81,4 +128,4 @@ func _on_zona_climax_body_entered(body: Node2D) -> void:
 
 			DialogueManager.show_dialogue_balloon(DIALOGO_STEALTH, "arbol_climax")
 			await DialogueManager.dialogue_ended
-			SceneSwitcher.change_to_file_with_transition("res://scenes/quests/story_quests/el_hilo_que_no_teji/2_sequence_puzzle/el_hilo_que_no_teji_sequence_puzzle.tscn")
+			SceneSwitcher.change_to_file_with_transition("res://scenes/quests/story_quests/el_hilo_que_no_teji/2_sequence_puzzle/el_hilo_que_no_teji_combat.tscn")

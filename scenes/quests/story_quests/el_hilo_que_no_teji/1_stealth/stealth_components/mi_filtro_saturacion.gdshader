@@ -1,21 +1,20 @@
-	shader_type canvas_item;
+shader_type canvas_item;
 
-	// ESTA es la variable que tu script lee y modifica. 
-	// 0.0 es totalmente blanco y negro, 1.0 es color normal.
-	uniform float saturation : hint_range(0.0, 1.0) = 0.0;
+uniform float saturation : hint_range(0.0, 1.0) = 0.0;
+// Factor para restar luminosidad (0.6 reduce el brillo un 40%)
+uniform float darkness_factor : hint_range(0.0, 1.0) = 0.6; 
 
-	// Requerido para capturar lo que hay detrás del ColorRect
-	uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
-
-	void fragment() {
-	    // Tomar el color real del juego detrás del CanvasLayer
-	    vec4 current_color = texture(screen_texture, SCREEN_UV);
-	    
-	    // Calcular el nivel de gris (usando la fórmula de luminiscencia estándar)
-	    float gray = dot(current_color.rgb, vec3(0.299, 0.587, 0.114));
-	    vec3 grayscale = vec3(gray);
-	    
-	    // Mezclar el color en blanco y negro con el color original usando el estado de saturación global
-	    COLOR.rgb = mix(grayscale, current_color.rgb, saturation);
-	    COLOR.a = current_color.a;
-	}
+void fragment() {
+    // Tomar el color de la textura del objeto o pantalla
+    vec4 tex_color = texture(TEXTURE, UV);
+    
+    // Calcular el nivel de gris base
+    float gray = dot(tex_color.rgb, vec3(0.299, 0.587, 0.114));
+    
+    // Mezclar el gris con el color original según la saturación
+    vec3 mixed_color = mix(vec3(gray), tex_color.rgb, saturation);
+    
+    // Multiplicamos por el factor para oscurecer y quitar el efecto "lavado"
+    COLOR.rgb = mixed_color * darkness_factor;
+    COLOR.a = tex_color.a; // Mantener las transparencias perfectas
+}

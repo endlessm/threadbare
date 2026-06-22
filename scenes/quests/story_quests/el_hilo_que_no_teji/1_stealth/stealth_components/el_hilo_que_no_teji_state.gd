@@ -10,7 +10,7 @@ static var world_saturation: float = 0.0
 
 const MAX_HILOS_MUNDO: int = 9
 const PLAYER_SAT_INCREMENT: float = 16.66
-const WORLD_SAT_INCREMENT_SMALL: float = 3.15 # Aumento lento para los primeros 8 hilos
+const WORLD_SAT_INCREMENT_SMALL: float = 1.875 # Aumento lento para los primeros 8 hilos
 
 static func recolectar_hilo() -> void:
 	if hilos_recogidos < MAX_HILOS_MUNDO:

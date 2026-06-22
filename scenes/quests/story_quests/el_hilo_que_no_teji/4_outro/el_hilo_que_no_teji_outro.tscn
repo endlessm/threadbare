@@ -214,7 +214,7 @@ tracks/7/keys = {
 
 [sub_resource type="Animation" id="Animation_oclt6"]
 resource_name = "outro_cinematic"
-length = 24.0
+length = 55.0
 step = 24.0
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -223,10 +223,10 @@ tracks/0/path = NodePath("OnTheGround/Lino:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 4, 10, 12, 12.01, 17, 18, 20),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 4, 6, 6.01, 10.5, 11, 55),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [&"sleep", &"idle", &"confused", &"walk", &"walk", &"c_walk", &"cry", &"cry"]
+"values": [&"sleep", &"c_confused", &"c_confused", &"c_walk", &"c_walk", &"cry", &"cry"]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -235,10 +235,10 @@ tracks/1/path = NodePath("OnTheGround/Manchitas:animation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.1, 7.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.1, 7.5, 12, 55),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [&"s_bark", &"s_bark"]
+"values": [&"s_bark", &"s_bark", &"bark", &"bark"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -247,7 +247,7 @@ tracks/2/path = NodePath("TileMapLayers/Door:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 12),
+"times": PackedFloat32Array(0, 8.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -259,10 +259,34 @@ tracks/3/path = NodePath("OnTheGround/Lino:position")
 tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 4, 10, 12, 12.01, 14, 16, 17, 18, 23.654346),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 4, 6.01, 6.03, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 11.5, 12, 12.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [Vector2(256, 240), Vector2(256, 222), Vector2(256, 256), Vector2(256, 256), Vector2(384, 256), Vector2(384, 256), Vector2(536, 256), Vector2(544, 256), Vector2(563, 256), Vector2(384, 256)]
+"values": [Vector2(258, 225), Vector2(256, 256), Vector2(256, 256), Vector2(312, 256), Vector2(339, 256), Vector2(361, 256), Vector2(411, 256), Vector2(457, 256), Vector2(457, 256), Vector2(482, 256), Vector2(517, 256), Vector2(535, 256), Vector2(536, 256), Vector2(544, 256), Vector2(556, 256)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("OnTheGround/Lino:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 55),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("OnTheGround/Manchitas:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 55),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
 }
 
 [sub_resource type="Animation" id="Animation_gcv0h"]
@@ -330,7 +354,7 @@ _data = {
 &"walk_on": SubResource("Animation_n0k0s")
 }
 
-[node name="ElHiloQueNoTejiIntro" type="Node2D" unique_id=2049284984]
+[node name="ElHiloQueNoTejiOutro" type="Node2D" unique_id=2049284984]
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=591504591]
 
@@ -405,7 +429,7 @@ visible = false
 position = Vector2(562, 272)
 sprite_frames = ExtResource("5_ir6uh")
 animation = &"bark"
-autoplay = "bark"
+autoplay = "s_bark"
 flip_h = true
 
 [node name="Collar" type="Sprite2D" parent="OnTheGround" unique_id=1101409920]
@@ -415,8 +439,8 @@ texture = ExtResource("6_o8n81")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround" unique_id=49807179]
 root_node = NodePath("../..")
+root_motion_local = true
 libraries/ = SubResource("AnimationLibrary_bcjhu")
-autoplay = &"outro_cinematic"
 
 [node name="Arboles" type="Node2D" parent="OnTheGround" unique_id=1185808240]
 
@@ -540,12 +564,11 @@ position = Vector2(952, 64)
 sprite_frames = ExtResource("8_owpuo")
 autoplay = "default"
 
-[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
-
 [node name="OutroDirector" type="Node" parent="." unique_id=1536714581 groups=["outro_director"]]
 script = ExtResource("10_oclt6")
 
 [node name="FlashOverlay" parent="." unique_id=64455848 instance=ExtResource("11_0h0gv")]
+visible = false
 
 [node name="CameraPoints" type="Node2D" parent="." unique_id=2064986524]
 
@@ -559,3 +582,35 @@ position = Vector2(4000, 0)
 
 [node name="D_Collar_Empty" type="Node2D" parent="CameraPoints" unique_id=1219768364]
 position = Vector2(6000, 0)
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=245921379]
+
+[node name="ColorRect" type="ColorRect" parent="ScreenOverlay" unique_id=108816014]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0, 0, 0, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScreenOverlay/ColorRect" unique_id=1133277297]
+z_index = 5
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.002
+anchor_top = 0.001
+anchor_right = 0.998
+anchor_bottom = 0.9990001
+offset_left = 0.43999982
+offset_top = 0.27999997
+offset_right = -0.44006348
+offset_bottom = -0.2800293
+grow_horizontal = 2
+grow_vertical = 2
+text = "Gracias por tejer...
+
+el hilo que no tejí."
+horizontal_alignment = 1
+vertical_alignment = 1
