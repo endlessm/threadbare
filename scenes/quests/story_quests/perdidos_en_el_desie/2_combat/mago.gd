@@ -23,8 +23,6 @@ func _on_body_entered(_body: Node2D) -> void:
 		esta_hablando = false
 		
 		# --- ACTIVAMOS EL DISPARO Y DEVOLVEMOS EL CONTROL ---
-		var player = get_tree().current_scene.find_child("Player", true, false)
-		if player:
-			player.puede_disparar = true
-			player.mode = Player.Mode.USER_CONTROLLED # <--- ESTO ES LO QUE FALTA
-			print("¡Habilidad activada y control devuelto!")
+		var controller = get_tree().current_scene.get_node_or_null("CombatController")
+		if controller:
+			controller.activar_disparo()

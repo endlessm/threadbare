@@ -22,7 +22,9 @@ func _process(delta):
 	if iniciado:
 		global_position += direccion * velocidad * delta
 
-func _on_body_entered(body):
+func _on_body_entered(body: Node2D) -> void:
 	if body.name == "Player":
 		return
+	if body is Guard:
+		body.queue_free()
 	queue_free()

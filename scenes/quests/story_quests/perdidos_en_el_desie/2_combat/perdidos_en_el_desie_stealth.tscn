@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://dl7edklmupbfa"]
 
-[ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_3v85j"]
+[ext_resource type="Script" path="res://scenes/quests/story_quests/perdidos_en_el_desie/2_combat/perdidos_en_el_desie_combat_stealth_logic.gd" id="1_3v85j"]
 [ext_resource type="TileSet" uid="uid://naesvkwohu8c" path="res://scenes/quests/story_quests/perdidos_en_el_desie/tiles/perdidos_en_el_desie_exterior_floors.tres" id="2_vcb23"]
 [ext_resource type="TileSet" uid="uid://cylkdkb3qtsla" path="res://scenes/quests/story_quests/perdidos_en_el_desie/tiles/perdidos_en_el_desie_shadows.tres" id="3_0vipi"]
 [ext_resource type="TileSet" uid="uid://dkescqfo0gi3w" path="res://scenes/quests/story_quests/perdidos_en_el_desie/tiles/perdidos_en_el_desie_elevation_2.tres" id="4_5vx5e"]
@@ -19,7 +19,8 @@
 [ext_resource type="Texture2D" uid="uid://bledeu1ypl8u" path="res://scenes/quests/story_quests/perdidos_en_el_desie/tiles/pixilart-sprite (2).png" id="17_spqk1"]
 [ext_resource type="PackedScene" uid="uid://k52ggjyhoy4y" path="res://scenes/quests/story_quests/perdidos_en_el_desie/2_combat/mago.tscn" id="18_e18cq"]
 [ext_resource type="Resource" uid="uid://bxcurxmevla5h" path="res://scenes/quests/story_quests/perdidos_en_el_desie/2_combat/guardian.dialogue" id="19_wrdiq"]
-[ext_resource type="PackedScene" uid="uid://b57pbdr5lg02k" path="res://scenes/quests/story_quests/perdidos_en_el_desie/2_combat/proyectil.tscn" id="20_qa1g5"]
+[ext_resource type="Script" path="res://scenes/quests/story_quests/perdidos_en_el_desie/2_combat/perdidos_en_el_desie_combat_controller.gd" id="21_ctrl"]
+[ext_resource type="Script" path="res://scenes/quests/story_quests/perdidos_en_el_desie/2_combat/perdidos_en_el_desie_guard.gd" id="22_grd"]
 
 [sub_resource type="Curve2D" id="Curve2D_63p6l"]
 _data = {
@@ -74,13 +75,14 @@ size = Vector2(44, 47)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wrdiq"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ip5th"]
-
 [node name="PerdidosEnElDesieStealth" type="Node2D" unique_id=528815133]
 y_sort_enabled = true
 
 [node name="StealthGameLogic" type="Node" parent="." unique_id=1734695953]
 script = ExtResource("1_3v85j")
+
+[node name="CombatController" type="Node" parent="." unique_id=1734695954]
+script = ExtResource("21_ctrl")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=508226475]
 color = Color(0.481789, 0.48179, 0.481789, 1)
@@ -119,11 +121,10 @@ editor_draw_limits = true
 [node name="EnemyGuards" type="Node2D" parent="." unique_id=1997239040]
 y_sort_enabled = true
 
-[node name="Guard1-GoingBackAndForth" parent="EnemyGuards" unique_id=1357389645 node_paths=PackedStringArray("patrol_path") groups=["enemigo"] instance=ExtResource("7_32p7r")]
+[node name="Guard1-GoingBackAndForth" parent="EnemyGuards" unique_id=1357389645 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_32p7r")]
 position = Vector2(525.9997, 470.00003)
-collision_layer = 2
-collision_mask = 1
 sprite_frames = ExtResource("8_u4hvs")
+script = ExtResource("22_grd")
 patrol_path = NodePath("../Guard1-PatrolPath")
 move_speed = 200.0
 
@@ -133,11 +134,10 @@ position = Vector2(1022, 371.818)
 scale = Vector2(0.107143, 0.352768)
 curve = SubResource("Curve2D_63p6l")
 
-[node name="Guard2-RunningInCircles" parent="EnemyGuards" unique_id=478814464 node_paths=PackedStringArray("patrol_path") groups=["enemigo"] instance=ExtResource("7_32p7r")]
+[node name="Guard2-RunningInCircles" parent="EnemyGuards" unique_id=478814464 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_32p7r")]
 position = Vector2(2435, 382)
-collision_layer = 2
-collision_mask = 1
 sprite_frames = ExtResource("8_u4hvs")
+script = ExtResource("22_grd")
 patrol_path = NodePath("../Guard2-RunningPath")
 wait_time = 0.3
 move_speed = 1000.0
@@ -168,6 +168,7 @@ debug_color = Color(0, 0, 0, 0.42)
 position = Vector2(2335, 955)
 item = SubResource("Resource_qxiwb")
 collected_dialogue = ExtResource("14_44d1h")
+next_scene = "uid://gk0g0m1afj31"
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=859706882]
 position = Vector2(-13, 0)
@@ -191,14 +192,5 @@ recurso_dialogo = ExtResource("19_wrdiq")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="PixilartSprite(2)/Mago" unique_id=1556968732]
 shape = SubResource("CircleShape2D_wrdiq")
-
-[node name="Proyectil" parent="." unique_id=1156949769 instance=ExtResource("20_qa1g5")]
-collision_layer = 4
-collision_mask = 2
-
-[node name="Sprite2D2" type="Sprite2D" parent="Proyectil" unique_id=230065600]
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Proyectil" unique_id=1535712739]
-shape = SubResource("CircleShape2D_ip5th")
 
 [connection signal="body_entered" from="PixilartSprite(2)/Mago" to="PixilartSprite(2)/Mago" method="_on_body_entered"]

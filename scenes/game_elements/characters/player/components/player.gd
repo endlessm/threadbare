@@ -6,27 +6,60 @@ extends CharacterBody2D
 
 signal mode_changed(mode: Mode)
 
-# --- VARIABLES DE DISPARO ---
-var puede_disparar: bool = false
-var balas_restantes: int = 3
-var ultima_direccion: Vector2 = Vector2.RIGHT
-var escena_proyectil = preload("res://scenes/quests/story_quests/perdidos_en_el_desie/2_combat/proyectil.tscn") 
-
-enum Mode { USER_CONTROLLED, SYSTEM_CONTROLLED, DEFEATED }
-
-const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
-	&"idle": 10, &"walk": 6, &"attack_01": 4, &"attack_02": 4, &"defeated": 11,
+## The possible player states.
+enum Mode {
+	## Player is reacting to user input.
+	USER_CONTROLLED,
+	## Player is being controlled by other means: interacting,
+	## pulling the grappling hook, being put on rails, etc.
+	SYSTEM_CONTROLLED,
+	## Player can't be controlled anymore.
+	DEFEATED,
 }
 
-const OPTIONAL_ANIMATION_FRAMES: Dictionary[StringName, int] = { &"run": 6 }
+## The animations which must be provided by [member sprite_frames], each with the corresponding
+## number of frames.
+const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
+	&"idle": 10,
+	&"walk": 6,
+	&"attack_01": 4,
+	&"attack_02": 4,
+	&"defeated": 11,
+}
+
+## Optional animations which, if provided by [member sprite_frames], must have the corresponding
+## number of frames.
+const OPTIONAL_ANIMATION_FRAMES: Dictionary[StringName, int] = {
+	&"run": 6,
+}
+
 const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 
+## The character's name. This is used to highlight when the player's character
+## is speaking during dialogue.
 @export var player_name: String = "Player Name"
-@export var mode: Mode = Mode.USER_CONTROLLED: set = _set_mode
-@export var speeds: CharacterSpeeds: set = _set_speeds
+
+## The current player state.
+@export var mode: Mode = Mode.USER_CONTROLLED:
+	set = _set_mode
+
+## Parameters controlling the speed at which this player walks. If unset, the default values of
+## [CharacterSpeeds] are used.
+@export var speeds: CharacterSpeeds:
+	set = _set_speeds
+
+## The character speed when aiming with the grappling hook.
 @export_range(10, 100000, 10) var aiming_speed: float = 100.0
-@export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME: set = _set_sprite_frames
-@export var walk_sound_stream: AudioStream = preload("uid://cx6jv2cflrmqu"): set = _set_walk_sound_stream
+
+## The SpriteFrames must have specific animations with a certain amount of frames.
+## See [constant REQUIRED_ANIMATION_FRAMES] and [constant OPTIONAL_ANIMATION_FRAMES].
+@export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAME:
+	set = _set_sprite_frames
+
+@export_group("Sounds")
+## Sound that plays for each step during the walk animation
+@export var walk_sound_stream: AudioStream = preload("uid://cx6jv2cflrmqu"):
+	set = _set_walk_sound_stream
 
 var _initial_speeds: CharacterSpeeds
 
@@ -37,30 +70,12 @@ var _initial_speeds: CharacterSpeeds
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
-# --- CAPTURAR DIRECCIÓN DEL JUGADOR ---
-func _physics_process(delta: float) -> void:
-	var direccion = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	if direccion.length() > 0:
-		ultima_direccion = direccion.normalized()
 
-# --- LÓGICA DE DISPARO ---
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_accept"):
-		intentar_disparar()
-
-func intentar_disparar() -> void:
-	if puede_disparar and balas_restantes > 0 and mode == Mode.USER_CONTROLLED:
-		balas_restantes -= 1
-		var b = escena_proyectil.instantiate()
-		get_tree().current_scene.add_child(b)
-		b.iniciar(global_position, ultima_direccion)
-
-# --- CÓDIGO ORIGINAL Y SETTERS ---
 func _set_mode(new_mode: Mode) -> void:
 	var previous_mode: Mode = mode
 	mode = new_mode
-	if not is_node_ready(): return
-	
+	if not is_node_ready():
+		return
 	match mode:
 		Mode.USER_CONTROLLED:
 			_toggle_player_behavior(input_walk_behavior, true)
@@ -70,30 +85,60 @@ func _set_mode(new_mode: Mode) -> void:
 			_toggle_player_behavior(input_walk_behavior, false)
 			_toggle_player_behavior(player_interaction, true)
 			_toggle_abilities()
-			velocity = Vector2.ZERO 
 		Mode.DEFEATED:
 			_toggle_player_behavior(input_walk_behavior, false)
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_repel, false)
 			_toggle_player_behavior(player_hook, false)
-			velocity = Vector2.ZERO
-			
-	if mode != previous_mode: mode_changed.emit(mode)
+
+	if mode != previous_mode:
+		mode_changed.emit(mode)
+
 
 func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 	sprite_frames = new_sprite_frames
-	if not is_node_ready(): return
-	if new_sprite_frames == null: new_sprite_frames = DEFAULT_SPRITE_FRAME
+	if not is_node_ready():
+		return
+	if new_sprite_frames == null:
+		new_sprite_frames = DEFAULT_SPRITE_FRAME
 	player_sprite.sprite_frames = new_sprite_frames
+	update_configuration_warnings()
 
-func _set_walk_sound_stream(new_value: AudioStream) -> void:
-	walk_sound_stream = new_value
-	if not is_node_ready(): await ready
-	_walk_sound.stream = walk_sound_stream
 
 func _toggle_player_behavior(behavior_node: Node2D, is_active: bool) -> void:
 	behavior_node.visible = is_active
-	behavior_node.process_mode = ProcessMode.PROCESS_MODE_INHERIT if is_active else ProcessMode.PROCESS_MODE_DISABLED
+	behavior_node.process_mode = (
+		ProcessMode.PROCESS_MODE_INHERIT if is_active else ProcessMode.PROCESS_MODE_DISABLED
+	)
+
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray
+
+	for animation: StringName in REQUIRED_ANIMATION_FRAMES:
+		if not sprite_frames.has_animation(animation):
+			warnings.append("sprite_frames is missing the following animation: %s" % animation)
+
+	var animations: Dictionary[StringName, int] = REQUIRED_ANIMATION_FRAMES.merged(
+		OPTIONAL_ANIMATION_FRAMES
+	)
+	for animation: StringName in animations:
+		if not sprite_frames.has_animation(animation):
+			continue
+
+		var count := sprite_frames.get_frame_count(animation)
+		var expected_count := animations[animation]
+
+		if count != expected_count:
+			warnings.append(
+				(
+					"sprite_frames animation %s has %d frames, but should have %d"
+					% [animation, count, expected_count]
+				)
+			)
+
+	return warnings
+
 
 func _ready() -> void:
 	_set_speeds(speeds)
@@ -101,40 +146,120 @@ func _ready() -> void:
 	_set_sprite_frames(sprite_frames)
 	GameState.abilities_changed.connect(_on_abilities_changed)
 
+
 func _set_speeds(new_speeds: CharacterSpeeds) -> void:
 	speeds = new_speeds
 	_initial_speeds = new_speeds.duplicate()
-	if is_node_ready(): input_walk_behavior.speeds = speeds
+	if not is_node_ready():
+		return
+	input_walk_behavior.speeds = speeds
 
+
+func teleport_to(
+	tele_position: Vector2,
+	smooth_camera: bool = false,
+	look_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
+) -> void:
+	var camera: Camera2D = get_viewport().get_camera_2d()
+
+	if is_instance_valid(camera):
+		var smoothing_was_enabled: bool = camera.position_smoothing_enabled
+		camera.position_smoothing_enabled = smooth_camera
+		global_position = tele_position
+		%PlayerSprite.look_at_side(look_side)
+		await get_tree().process_frame
+		camera.position_smoothing_enabled = smoothing_was_enabled
+	else:
+		global_position = tele_position
+
+
+func _set_walk_sound_stream(new_value: AudioStream) -> void:
+	walk_sound_stream = new_value
+	if not is_node_ready():
+		await ready
+	_walk_sound.stream = walk_sound_stream
+
+
+## Sets the player's [member mode] to [constant DEFEATED], if it is
+## not already. Handles respawn logic based on remaining lives.
+## [br][br]
+## If [param falling] is [code]true[/code], scale the player to zero, as if they
+## are falling into the screen as they unravel.
 func defeat(falling: bool = false) -> void:
-	if mode == Player.Mode.DEFEATED: return
+	# Prevent multiple defeat calls
+	if mode == Player.Mode.DEFEATED:
+		return
+
 	mode = Player.Mode.DEFEATED
+
+	# Stop moving the player.
 	velocity = Vector2.ZERO
+
+	# Decrement lives and save the new count
 	GameState.decrement_lives()
+
 	if falling:
 		var tween := create_tween()
 		tween.tween_property(self, "scale", Vector2.ZERO, 2.0)
+
 	await get_tree().create_timer(2.0).timeout
+
+	# Check if player has lives remaining
 	if GameState.current_lives > 0:
+		# Still have lives - reload current scene/checkpoint
 		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
 	else:
+		# Game over - restart from challenge start
 		_handle_game_over()
+
+
+func take_control(_controlled_by: Node) -> void:
+	mode = Mode.SYSTEM_CONTROLLED
+
+
+func return_control(_controlled_by: Node) -> void:
+	mode = Mode.USER_CONTROLLED
+
 
 func _toggle_abilities() -> void:
 	var can_repel := GameState.has_ability(Enums.PlayerAbilities.ABILITY_A)
 	var can_grapple := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B)
 	_toggle_player_behavior(player_repel, can_repel)
 	_toggle_player_behavior(player_hook, can_grapple)
+	if can_grapple:
+		var has_longer_hook := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B_MODIFIER_1)
+		player_hook.string_throw_length = 400.0 if has_longer_hook else 200.0
+		player_hook.string_max_length = 450.0 if has_longer_hook else 250.0
+
 
 func _on_abilities_changed() -> void:
-	if mode != Mode.DEFEATED: _toggle_abilities()
+	if mode != Mode.DEFEATED:
+		_toggle_abilities()
 
+
+## Handles game over logic: restarts from the beginning of the current challenge
+## with lives reset to 3.
 func _handle_game_over() -> void:
+	# Reset lives to 3
 	GameState.reset_lives()
+
+	# Get the start of the current challenge
 	var challenge_start_scene: String = GameState.get_challenge_start_scene()
+
 	if challenge_start_scene.is_empty():
+		# Fallback: reload current scene if no challenge start is defined
+		# Clear spawn point to start from the beginning of the current scene
 		GameState.set_current_spawn_point(^"")
 		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
 	else:
-		SceneSwitcher.change_to_file_with_transition(challenge_start_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE)
-		
+		# Restart from the challenge start scene
+		SceneSwitcher.change_to_file_with_transition(
+			challenge_start_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		)
+
+
+func _on_player_hook_aiming_changed(is_aiming: bool) -> void:
+	input_walk_behavior.speeds.walk_speed = (
+		aiming_speed if is_aiming else _initial_speeds.walk_speed
+	)
+	input_walk_behavior.speeds.run_speed = aiming_speed if is_aiming else _initial_speeds.run_speed
