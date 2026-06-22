@@ -22,7 +22,7 @@ var alas_limpiadas: int = 0
 @onready var jugador = $OnTheGround/Player
 @onready var sprite_jugador = jugador.get_node("%PlayerSprite")
 @onready var hitbox_jugador = jugador.get_node("PlayerHarm/HitBox")
-@onready var panel_pensamiento = $HUD2/PanelContainer
+@onready var panel_pensamiento = $HUD/PanelContainer
 @onready var canvas_modulate = $CanvasModulate
 
 # 2. REFERENCIAS DE PUERTAS Y HILOS
