@@ -1,0 +1,132 @@
+[gd_scene format=3 uid="uid://cknm6g5dn5r3y"]
+
+[ext_resource type="Script" uid="uid://cymicmq2mf06w" path="res://scenes/quests/story_quests/dear_mother/extra_scripts/puerta.gd" id="1_1uoqd"]
+[ext_resource type="Texture2D" uid="uid://dqvwh7ppb7gvk" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/puerta/door1.png" id="2_yj8hx"]
+[ext_resource type="Texture2D" uid="uid://cvmhf1c4gydhq" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/puerta/door2.png" id="3_tky7m"]
+[ext_resource type="Texture2D" uid="uid://b1htl38sfqc1o" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/puerta/door3.png" id="4_ivgaw"]
+[ext_resource type="Texture2D" uid="uid://c5m5b7t2msbjl" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/puerta/door4.png" id="5_2ytue"]
+[ext_resource type="Texture2D" uid="uid://c5k1lw0iu5kbx" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/puerta/door5.png" id="6_pc44o"]
+[ext_resource type="Texture2D" uid="uid://drn1befahg7sm" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/puerta/door6.png" id="7_wfmyt"]
+[ext_resource type="Texture2D" uid="uid://whv83ghgyjo4" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/puerta/door7.png" id="8_ikwsh"]
+[ext_resource type="Texture2D" uid="uid://n8r3l36yo2kp" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/puerta/door8.png" id="9_lurfg"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q3lvt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_yj8hx")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_tky7m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ivgaw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_2ytue")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_pc44o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_wfmyt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ikwsh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_lurfg")
+}],
+"loop": false,
+"name": &"Open",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1uoqd"]
+size = Vector2(143, 129)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tky7m"]
+size = Vector2(103, 97)
+
+[node name="puerta" type="Area2D" unique_id=838752789]
+script = ExtResource("1_1uoqd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=21665988]
+position = Vector2(-3, 7)
+sprite_frames = SubResource("SpriteFrames_q3lvt")
+animation = &"Open"
+frame_progress = 0.44937697
+offset = Vector2(0, -43.8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=995479067]
+position = Vector2(-41.5, -21.5)
+shape = SubResource("RectangleShape2D_1uoqd")
+
+[node name="UIPopup" type="CanvasLayer" parent="." unique_id=529094761]
+visible = false
+
+[node name="Panel" type="Panel" parent="UIPopup" unique_id=2024239312]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -75.0
+offset_right = 150.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UIPopup/Panel" unique_id=1747347628]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 26.0
+offset_right = 20.0
+offset_bottom = 49.0
+grow_horizontal = 2
+text = "¿Estás segura de proceder?"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UIPopup/Panel" unique_id=1156674836]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -76.0
+offset_right = -20.0
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="BtnSi" type="Button" parent="UIPopup/Panel/HBoxContainer" unique_id=795384374]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sí"
+
+[node name="BtnNo" type="Button" parent="UIPopup/Panel/HBoxContainer" unique_id=2098472286]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Aún no..."
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=213220347]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=201874654]
+position = Vector2(-19.5, -37.5)
+shape = SubResource("RectangleShape2D_tky7m")
+
+[connection signal="body_entered" from="." to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_area_2d_body_exited"]
+[connection signal="pressed" from="UIPopup/Panel/HBoxContainer/BtnSi" to="." method="_on_btn_si_pressed"]
+[connection signal="pressed" from="UIPopup/Panel/HBoxContainer/BtnNo" to="." method="_on_btn_no_pressed"]

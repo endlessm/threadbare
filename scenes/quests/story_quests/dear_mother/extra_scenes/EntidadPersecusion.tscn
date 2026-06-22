@@ -1,20 +1,22 @@
 [gd_scene format=3 uid="uid://bowf433gj7xmk"]
 
 [ext_resource type="Script" uid="uid://bke8r5bs3h0e1" path="res://scenes/quests/story_quests/dear_mother/extra_scripts/entidad_persecusion.gd" id="1_0jffn"]
-[ext_resource type="Texture2D" uid="uid://doo7j7udcyygo" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/placeholder.png" id="1_tfj81"]
+[ext_resource type="SpriteFrames" uid="uid://bquxs513bkvys" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/monstruo/monstruo.tres" id="2_0jffn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tfj81"]
-radius = 73.061615
+radius = 127.01575
 
 [node name="EntidadPersecusion" type="Area2D" unique_id=1101065430]
 script = ExtResource("1_0jffn")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=485789084]
-scale = Vector2(7, 7)
-texture = ExtResource("1_tfj81")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1124429666]
+position = Vector2(1.0000019, -7.999998)
+scale = Vector2(6.671875, 6.53125)
+sprite_frames = ExtResource("2_0jffn")
+animation = &"walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=619928085 groups=["chasing_enemy"]]
-position = Vector2(-1, -8)
+position = Vector2(1, -1)
 shape = SubResource("CircleShape2D_tfj81")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

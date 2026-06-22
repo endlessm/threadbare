@@ -1,36 +1,46 @@
 extends Area2D
 
-## Escena a la que el jugador será transportado al hacer clic en "Sí".
 @export_file("*.tscn") var next_scene: String
+
+@export var entrada_directa: bool = false 
 
 @onready var ui_popup: CanvasLayer = $UIPopup
 @onready var btn_si: Button = $UIPopup/Panel/HBoxContainer/BtnSi
 @onready var btn_no: Button = $UIPopup/Panel/HBoxContainer/BtnNo
+@onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
-func _ready()-> void:
-	# Asegurarnos de que el popup esté oculto al iniciar el nivel
+func _ready() -> void:
 	ui_popup.hide()
 
-
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	print("La puerta está tocando a: ", body.name)
 	if body.name == "Player" or body.name == "Character": 
-		ui_popup.show()
-
+		if entrada_directa:
+			iniciar_transicion()
+		else:
+			ui_popup.show() 
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body.name == "Player" or body.name == "Character":
 		ui_popup.hide()
 
 func _on_btn_si_pressed() -> void:
+	ui_popup.hide()
+	iniciar_transicion()
+
+func _on_btn_no_pressed() -> void:
+	ui_popup.hide()
+
+func iniciar_transicion() -> void:
 	if next_scene != "":
-		# Ocultamos el menú
-		ui_popup.hide()
-		
-		# Apaga por completo el código (movimiento) y las colisiones de la entidad
 		get_tree().call_group("chasing_enemy", "set_process_mode", Node.PROCESS_MODE_DISABLED)
 		
-		# Usamos SceneSwitcher para cambiar de nivel de forma segura
+		set_deferred("monitoring", false)
+		
+		if anim_sprite:
+			anim_sprite.play("Open")
+		
+		await get_tree().create_timer(0.9).timeout
+		
 		SceneSwitcher.change_to_file_with_transition(
 			next_scene,
 			"",
@@ -39,7 +49,3 @@ func _on_btn_si_pressed() -> void:
 		)
 	else:
 		print("¡Error! No has asignado una escena destino a esta puerta en el Inspector.")
-
-func _on_btn_no_pressed() -> void:
-	# Si elige "Aún no", simplemente cerramos el popup
-	ui_popup.hide()

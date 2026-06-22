@@ -4,15 +4,16 @@
 [ext_resource type="TileSet" uid="uid://dwkusgfdn8ktb" path="res://scenes/quests/story_quests/dear_mother/tiles/dear_mother_shadows.tres" id="3_xo558"]
 [ext_resource type="TileSet" uid="uid://p21ogy6vusy" path="res://scenes/quests/story_quests/dear_mother/tiles/dear_mother_elevation_2.tres" id="4_gdgt2"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_g63lv"]
-[ext_resource type="SpriteFrames" uid="uid://51wnbci75sso" path="res://scenes/quests/story_quests/dear_mother/player_components/dear_mother_player.tres" id="6_db1lq"]
-[ext_resource type="PackedScene" uid="uid://qxj1gigeban0" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/Farolillo.tscn" id="6_h6j3f"]
+[ext_resource type="SpriteFrames" uid="uid://clnek4xc55py0" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/saori/saorifarol.tres" id="5_ykhkh"]
+[ext_resource type="PackedScene" uid="uid://qxj1gigeban0" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/objetos/Farolillo.tscn" id="6_h6j3f"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="9_g1hal"]
 [ext_resource type="Resource" uid="uid://d31xubcd7r5sm" path="res://scenes/quests/story_quests/dear_mother/2_stealth/stealth_components/dear_mother_checkpoint.dialogue" id="10_gfoio"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="11_l3g4n"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="12_ap8g6"]
-[ext_resource type="PackedScene" uid="uid://cknm6g5dn5r3y" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/puerta.tscn" id="13_53nqg"]
+[ext_resource type="PackedScene" uid="uid://cknm6g5dn5r3y" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/puerta/puerta.tscn" id="13_53nqg"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="13_mi2eh"]
 [ext_resource type="Resource" uid="uid://bft76ire6bp4h" path="res://scenes/quests/story_quests/dear_mother/2_stealth/stealth_components/dear_mother_collected.dialogue" id="14_rdh80"]
+[ext_resource type="PackedScene" uid="uid://cv4k3pog5n3ph" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/fantasmas/Fantasma.tscn" id="14_ykhkh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xbngx"]
 size = Vector2(168.25, 122)
@@ -20,12 +21,6 @@ size = Vector2(168.25, 122)
 [sub_resource type="Resource" id="Resource_i0bxs"]
 script = ExtResource("13_mi2eh")
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
-
-[sub_resource type="Curve2D" id="Curve2D_ykhkh"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, -133, -3, 0, 0, 0, 0, -133, 1064)
-}
-point_count = 2
 
 [node name="DearMotherStealth" type="Node2D" unique_id=528815133]
 y_sort_enabled = true
@@ -52,8 +47,12 @@ tile_map_data = PackedByteArray("AAD//wAABAAAAAAAAAD//wEABAABAAEAAQD//wIABAABAAE
 tile_set = ExtResource("4_gdgt2")
 
 [node name="Player" parent="." unique_id=1079296690 instance=ExtResource("5_g63lv")]
+unique_name_in_owner = true
 position = Vector2(131, 463)
-sprite_frames = ExtResource("6_db1lq")
+sprite_frames = ExtResource("5_ykhkh")
+
+[node name="PlayerSprite" parent="Player" index="2" unique_id=1785485617]
+sprite_frames = ExtResource("5_ykhkh")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1196891219]
 process_mode = 3
@@ -91,6 +90,44 @@ collected_dialogue = ExtResource("14_rdh80")
 position = Vector2(3016, 2341)
 next_scene = "uid://bv08t775g112c"
 
-[node name="Guard-PatrolPath" type="Path2D" parent="." unique_id=1935353461]
-position = Vector2(863, 479)
-curve = SubResource("Curve2D_ykhkh")
+[node name="Fantasma" parent="." unique_id=802264804 instance=ExtResource("14_ykhkh")]
+z_index = 10
+position = Vector2(825, 484)
+speed = 190.0
+
+[node name="Fantasma2" parent="." unique_id=2022163735 instance=ExtResource("14_ykhkh")]
+z_index = 10
+position = Vector2(1280, 925)
+speed = 190.0
+
+[node name="Fantasma3" parent="." unique_id=1949034201 instance=ExtResource("14_ykhkh")]
+z_index = 10
+position = Vector2(2267, 559)
+speed = 190.0
+
+[node name="Fantasma4" parent="." unique_id=1538950177 instance=ExtResource("14_ykhkh")]
+z_index = 10
+position = Vector2(904, 1973)
+speed = 190.0
+
+[node name="Fantasma5" parent="." unique_id=417541611 instance=ExtResource("14_ykhkh")]
+z_index = 10
+position = Vector2(439, 930)
+speed = 190.0
+
+[node name="Fantasma6" parent="." unique_id=1846277881 instance=ExtResource("14_ykhkh")]
+z_index = 10
+position = Vector2(2009, 1669)
+speed = 190.0
+
+[node name="Fantasma7" parent="." unique_id=991292061 instance=ExtResource("14_ykhkh")]
+z_index = 10
+position = Vector2(1461, 2347)
+speed = 190.0
+
+[node name="Fantasma8" parent="." unique_id=1719319408 instance=ExtResource("14_ykhkh")]
+z_index = 10
+position = Vector2(3248, 612)
+speed = 190.0
+
+[editable path="Player"]
