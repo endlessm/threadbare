@@ -9,13 +9,14 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D) -> void:
-	if not body is Player:
+	var player: Player = body as Player
+	if player == null:
 		return
-	await _check_all_collected(body)
+	await _check_all_collected(player)
 	queue_free()
 
 func _check_all_collected(player: Player) -> void:
-	var remaining := get_tree().get_nodes_in_group("ritual_object")
+	var remaining: Array[Node] = get_tree().get_nodes_in_group(&"ritual_object")
 	remaining.erase(self)
 
 	if remaining.is_empty():
@@ -24,7 +25,7 @@ func _check_all_collected(player: Player) -> void:
 			DialogueManager.show_dialogue_balloon(dialogue, "final_recogido", [self, player])
 			await DialogueManager.dialogue_ended
 
-		var finals := get_tree().get_nodes_in_group("final_collectible")
-		for f in finals:
-			if f.has_method("reveal"):
-				f.reveal()
+		var finals: Array[Node] = get_tree().get_nodes_in_group(&"final_collectible")
+		for final_item: Node in finals:
+			if final_item.has_method("reveal"):
+				final_item.call("reveal")

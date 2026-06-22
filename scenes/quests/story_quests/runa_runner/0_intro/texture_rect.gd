@@ -1,21 +1,21 @@
 extends TextureRect
 
-@onready var anim = $"../AnimationPlayer"
+@onready var anim: AnimationPlayer = $"../AnimationPlayer"
 
-var indice = 0
+var indice: int = 0
 
-var imagenes = [
+var imagenes: Array[Texture2D] = [
 	preload("res://scenes/quests/story_quests/runa_runner/0_intro/Picture Intro/Gemini_Generated_Image_ywb85wywb85wywb8.png"),
 	preload("res://scenes/quests/story_quests/runa_runner/0_intro/Picture Intro/Gemini_Generated_Image_jau20ejau20ejau2.png"),
 	preload("res://scenes/quests/story_quests/runa_runner/0_intro/Picture Intro/Gemini_Generated_Image_nv0l4tnv0l4tnv0l.png"),
 	preload("res://scenes/quests/story_quests/runa_runner/0_intro/Picture Intro/Gemini_Generated_Image_p5kprip5kprip5kp.png")
 ]
 
-func _ready():
+func _ready() -> void:
 	texture = imagenes[0]
 	anim.play("fade_in")
 
-func _input(event):
+func _input(event: InputEvent) -> void:
 
 	if event is InputEventKey and event.pressed:
 
@@ -32,6 +32,6 @@ func _input(event):
 			anim.play("fade_in")
 
 		else:
-			get_tree().change_scene_to_file(
+			SceneSwitcher.change_to_file(
 				"res://scenes/quests/story_quests/runa_runner/0_intro/jugable_intro.tscn"
 			)

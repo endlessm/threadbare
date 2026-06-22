@@ -30,6 +30,14 @@ func toggle_pause() -> void:
 	Input.set_default_cursor_shape(Input.CURSOR_ARROW if new_state else Input.CURSOR_CROSS)
 
 	if new_state:
+		var current_scene: Node = get_tree().current_scene
+		if (
+			not GameState.quest
+			and current_scene != null
+			and not current_scene.scene_file_path.is_empty()
+		):
+			GameState.guess_quest(current_scene.scene_file_path)
+
 		if not GameState.quest:
 			skip_tutorial_button.hide()
 			abandon_quest_button.hide()
@@ -77,7 +85,12 @@ func _on_resume_button_pressed() -> void:
 
 
 func _on_title_screen_button_pressed() -> void:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene != null and not current_scene.scene_file_path.is_empty():
+		GameState.set_scene(current_scene.scene_file_path)
+
 	toggle_pause()
+	GameState.suppress_title_auto_continue = true
 	SceneSwitcher.change_to_file_with_transition(
 		title_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 	)

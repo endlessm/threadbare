@@ -39,7 +39,8 @@ extends Resource
 
 func _init(q: Quest = null, p: PlayerState = null) -> void:
 	quest = q
-	player = p
+	if p:
+		player = p
 
 
 func _validate_property(property: Dictionary) -> void:

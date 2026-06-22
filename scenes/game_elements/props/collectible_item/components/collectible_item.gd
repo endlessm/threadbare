@@ -115,8 +115,8 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 		queue_free()
 func _update_based_on_revealed() -> void:
 	if interact_area:
-		interact_area.disabled = not revealed
+		interact_area.set_deferred("disabled", not revealed)
 	if sprite_2d:
 		sprite_2d.visible = revealed
 	if physical_collider:
-		physical_collider.disabled = not revealed
+		physical_collider.set_deferred("disabled", not revealed)

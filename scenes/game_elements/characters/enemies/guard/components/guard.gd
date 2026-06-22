@@ -212,7 +212,7 @@ func _shake_camera() -> void:
 		return
 	if camera.has_meta("shake_tween"):
 		return
-	var tween := create_tween().set_loops()
+	var tween: Tween = create_tween().set_loops()
 	tween.tween_property(camera, "offset", Vector2(4, 0), 0.05)
 	tween.tween_property(camera, "offset", Vector2(-4, 0), 0.05)
 	tween.tween_property(camera, "offset", Vector2(0, 3), 0.05)
@@ -225,7 +225,7 @@ func _stop_camera_shake() -> void:
 	if not camera:
 		return
 	if camera.has_meta("shake_tween"):
-		var tween = camera.get_meta("shake_tween")
+		var tween: Tween = camera.get_meta("shake_tween") as Tween
 		if tween:
 			tween.kill()
 		camera.remove_meta("shake_tween")

@@ -28,7 +28,7 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	fade.z_index = 4096
 	get_tree().root.add_child(fade)
 
-	var tween := create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(fade, "color:a", 1.0, 1.0)
 	await tween.finished
 
@@ -37,5 +37,5 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	await DialogueManager.dialogue_ended
 
 	# 4. Cambiar a la escena del outro
-	if next_scene:
-		get_tree().change_scene_to_file(next_scene)
+	if not next_scene.is_empty():
+		SceneSwitcher.change_to_file(next_scene)

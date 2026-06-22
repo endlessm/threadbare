@@ -1,5 +1,7 @@
 extends Node
 
+@export_file("*.tscn") var next_scene: String = "res://scenes/world_map/frays_end.tscn"
+
 @onready var label: RichTextLabel = $CanvasLayer/Control/RichTextLabel
 @onready var imagen: TextureRect = $CanvasLayer/Control/TextureRect
 
@@ -34,6 +36,8 @@ func _ready() -> void:
 	label.visible = false
 	await get_tree().create_timer(0.5).timeout
 	await reproducir_cinematica()
+	if not next_scene.is_empty():
+		SceneSwitcher.change_to_file(next_scene)
 
 
 func reproducir_cinematica() -> void:

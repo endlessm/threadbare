@@ -10,6 +10,10 @@ extends Control
 
 
 func _ready() -> void:
+	if GameState.suppress_title_auto_continue:
+		GameState.suppress_title_auto_continue = false
+		return
+
 	if ProjectSettings.get_setting(ThreadbareProjectSettings.SKIP_SPLASH):
 		if GameState.can_restore():
 			_on_main_menu_continue_pressed()
