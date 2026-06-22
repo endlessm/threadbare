@@ -33,7 +33,7 @@ func recoger_objeto():
 
 		# CAMBIAR POR TU SIGUIENTE ESCENA
 		SceneSwitcher.change_to_file_with_transition(
-			"res://scenes/quests/story_quests/phantom_toy/2_combat/phantom_toy_combat.tscn",
+			"res://scenes/quests/story_quests/phantom_toy/3.5_phantom_toy_corruption_defense/phantom_toy_corruption_defense.tscn",
 			"",
 			Transition.Effect.FADE,
 			Transition.Effect.FADE
