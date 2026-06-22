@@ -45,6 +45,9 @@ size = Vector2(458.25, 349)
 radius = 30.0
 height = 64.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k8d3p"]
+size = Vector2(62.75, 66.5)
+
 [node name="ElAbandonadoStealth" type="Node2D" unique_id=528815133]
 y_sort_enabled = true
 
@@ -3817,4 +3820,11 @@ metadata/_edit_use_anchors_ = true
 stream = ExtResource("22_1sish")
 autoplay = true
 
+[node name="Area2D" type="Area2D" parent="." unique_id=173225752]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1005358732]
+position = Vector2(735.625, 77)
+shape = SubResource("RectangleShape2D_k8d3p")
+
 [connection signal="timeout" from="Timer" to="ElAbandonadoLabyrinthRules" method="_on_timer_timeout"]
+[connection signal="body_entered" from="Area2D" to="ElAbandonadoLabyrinthRules" method="_on_area_2d_body_entered"]
