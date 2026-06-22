@@ -6,8 +6,8 @@
 [ext_resource type="TileSet" uid="uid://dxaop888qloow" path="res://scenes/quests/story_quests/echo_abyss/tiles/echo_abyss_cave.tres" id="4_jofah"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="5_787u5"]
 [ext_resource type="TileSet" uid="uid://bfm88b0buimbj" path="res://scenes/quests/story_quests/echo_abyss/tiles/echo_abyss_decoration.tres" id="6_cg8tc"]
-[ext_resource type="PackedScene" uid="uid://bxqqun8fikc1u" path="res://scenes/quests/story_quests/echo_abyss/Characters/azrael_player.tscn" id="6_shyqt"]
-[ext_resource type="SpriteFrames" uid="uid://b6pm0p3stv78r" path="res://scenes/quests/story_quests/echo_abyss/player_components/first_form_azrael.tres" id="7_cg8tc"]
+[ext_resource type="SpriteFrames" uid="uid://ur603spw7c67" path="res://scenes/quests/story_quests/echo_abyss/player_components/third_form_azrael.tres" id="8_cg8tc"]
+[ext_resource type="PackedScene" uid="uid://cjg55u6v0hbo1" path="res://scenes/quests/story_quests/echo_abyss/Characters/form_azrael_player.tscn" id="10_cg8tc"]
 [ext_resource type="PackedScene" uid="uid://c7xy485ug853k" path="res://scenes/quests/story_quests/echo_abyss/Characters/echo_abyss_boss.tscn" id="10_okide"]
 [ext_resource type="SpriteFrames" uid="uid://dnswfspgfmqo5" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_red.tres" id="10_shyqt"]
 [ext_resource type="Script" uid="uid://b1m2vj1c8co1y" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_cinematic.gd" id="11_okide"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://dp70jmxsf86kh" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/UI/pixel-heart-Empty.png" id="16_d2nhu"]
 [ext_resource type="Texture2D" uid="uid://bajunr7lyvujd" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/UI/healthbarUnder.png" id="17_268fp"]
 [ext_resource type="Texture2D" uid="uid://bx717x50vbm3e" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/UI/healthbarProgress.png" id="18_vwfsl"]
+[ext_resource type="AudioStream" uid="uid://b25ys7xjswtl5" path="res://scenes/quests/story_quests/echo_abyss/Assets/sfx_and_music/temas/temas niveles/Juhani Junkala - Epic Boss Battle [Seamlessly Looping].wav" id="20_cg8tc"]
 [ext_resource type="PackedScene" uid="uid://evb46lm6ssu2" path="res://scenes/game_elements/props/hookable_pin/hookable_pin.tscn" id="23_gtiuq"]
 
 [sub_resource type="Animation" id="Animation_ivd0k"]
@@ -101,22 +102,9 @@ y_sort_enabled = true
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_kll4l")
 
-[node name="AzarelPlayer" parent="OnTheGround" unique_id=296354958 instance=ExtResource("6_shyqt")]
-position = Vector2(464, 48.000004)
-sprite_frames = ExtResource("7_cg8tc")
-
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/AzarelPlayer" unique_id=611921364]
-position = Vector2(426.66666, 69.333336)
-scale = Vector2(0.6666667, 0.6666667)
-zoom = Vector2(0.8, 0.8)
-limit_left = -56
-limit_top = -432
-limit_right = 1344
-limit_bottom = 504
-
-[node name="TravelCreature" parent="OnTheGround" unique_id=1606149158 instance=ExtResource("11_tyrdj")]
-position = Vector2(980, 93)
-player_path = NodePath("../AzarelPlayer")
+[node name="TravelCreature" parent="OnTheGround" unique_id=775390554 instance=ExtResource("11_tyrdj")]
+position = Vector2(980, 80)
+player_path = NodePath("../AzraelPlayer")
 dialogue_title = "combat_exit"
 next_scene = "res://scenes/quests/story_quests/echo_abyss/4_outro/echo_abyss_outro.tscn"
 sprite_frames = ExtResource("10_shyqt")
@@ -141,11 +129,24 @@ position = Vector2(1456.4768, 568.72723)
 scale = Vector2(2.8721912, 5.9797993)
 curve = SubResource("Curve2D_shyqt")
 
+[node name="AzraelPlayer" parent="OnTheGround" unique_id=296354958 instance=ExtResource("10_cg8tc")]
+position = Vector2(472, 33)
+sprite_frames = ExtResource("8_cg8tc")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/AzraelPlayer" unique_id=611921364]
+position = Vector2(706.6666, 336.33334)
+scale = Vector2(0.6666667, 0.6666667)
+zoom = Vector2(0.8, 0.8)
+limit_left = -56
+limit_top = -432
+limit_right = 1344
+limit_bottom = 504
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1398238637 node_paths=PackedStringArray("animation_player")]
 script = ExtResource("11_okide")
-player_path = NodePath("../OnTheGround/AzarelPlayer")
+player_path = NodePath("../OnTheGround/AzraelPlayer")
 dialogue = ExtResource("13_tavui")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
@@ -164,7 +165,7 @@ color = Color(0.8348563, 0.81225747, 0.78731, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=73785874]
 script = ExtResource("14_kh5br")
-player_path = NodePath("../OnTheGround/AzarelPlayer")
+player_path = NodePath("../OnTheGround/AzraelPlayer")
 essence_progress_bar_path = NodePath("EssenceProgressBar")
 health_container_path = NodePath("HealthPlayer")
 full_heart_texture = ExtResource("15_kpa4k")
@@ -206,3 +207,8 @@ texture = ExtResource("15_kpa4k")
 [node name="Heart3" type="TextureRect" parent="CanvasLayer/HealthPlayer" unique_id=860148114]
 layout_mode = 2
 texture = ExtResource("15_kpa4k")
+
+[node name="theme3" type="AudioStreamPlayer" parent="." unique_id=562903611]
+stream = ExtResource("20_cg8tc")
+volume_db = -17.0
+autoplay = true

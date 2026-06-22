@@ -6,12 +6,12 @@
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="4_1a0nr"]
 [ext_resource type="TileSet" uid="uid://bfm88b0buimbj" path="res://scenes/quests/story_quests/echo_abyss/tiles/echo_abyss_decoration.tres" id="5_g3acg"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="7_1a0nr"]
-[ext_resource type="SpriteFrames" uid="uid://b6pm0p3stv78r" path="res://scenes/quests/story_quests/echo_abyss/player_components/first_form_azrael.tres" id="8_g3acg"]
 [ext_resource type="Resource" uid="uid://dhxdosogmtm5w" path="res://scenes/quests/story_quests/echo_abyss/1_stealth/stealth_components/echo_abyss_essence_npc.dialogue" id="8_iwhha"]
 [ext_resource type="PackedScene" uid="uid://b8dae6aib363j" path="res://scenes/quests/story_quests/echo_abyss/Characters/echo_abyss_essence_npc.tscn" id="10_g3acg"]
 [ext_resource type="SpriteFrames" uid="uid://uwont7hj7jtx" path="res://scenes/quests/story_quests/echo_abyss/player_components/contaminated_creature.tres" id="11_8er3d"]
 [ext_resource type="Resource" uid="uid://bn1gqt8tmqwm4" path="res://scenes/quests/story_quests/echo_abyss/1_stealth/stealth_components/echo_abyss_stealth.dialogue" id="11_do6nd"]
-[ext_resource type="PackedScene" uid="uid://bxqqun8fikc1u" path="res://scenes/quests/story_quests/echo_abyss/Characters/azrael_player.tscn" id="11_g3acg"]
+[ext_resource type="PackedScene" uid="uid://cjg55u6v0hbo1" path="res://scenes/quests/story_quests/echo_abyss/Characters/form_azrael_player.tscn" id="12_iwhha"]
+[ext_resource type="SpriteFrames" uid="uid://dylthf1omgq4c" path="res://scenes/quests/story_quests/echo_abyss/player_components/second_form_azrael.tres" id="13_gqts5"]
 [ext_resource type="SpriteFrames" uid="uid://dnswfspgfmqo5" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_red.tres" id="13_iwhha"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="15_3crhn"]
 [ext_resource type="Script" uid="uid://bdk4uhfdprt3t" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_hud.gd" id="15_vwco0"]
@@ -24,6 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://bw2m8i323f6lf" path="res://scenes/quests/story_quests/echo_abyss/Characters/echo_abyss_essence_exit.tscn" id="21_essence_exit"]
 [ext_resource type="Texture2D" uid="uid://dgci3qn52ul5r" path="res://assets/first_party/templates/guard_enemy/NO_EDIT_guard_enemy_idle.png" id="21_g3acg"]
 [ext_resource type="Texture2D" uid="uid://ylj56k2u3u6u" path="res://assets/first_party/templates/guard_enemy/NO_EDIT_guard_enemy_walk.png" id="22_8er3d"]
+[ext_resource type="AudioStream" uid="uid://dfyhayd5lkmb8" path="res://scenes/quests/story_quests/echo_abyss/Assets/sfx_and_music/temas/temas niveles/theme.ogg" id="25_iwhha"]
 
 [sub_resource type="Animation" id="Animation_ivd0k"]
 length = 0.001
@@ -264,19 +265,19 @@ dialogue_title = "character_5"
 essence_reward = 20
 sprite_frames = ExtResource("11_8er3d")
 
-[node name="TravelCreature" parent="OnTheGround" unique_id=1606149158 instance=ExtResource("21_essence_exit")]
+[node name="TravelCreature" parent="OnTheGround" unique_id=775390554 instance=ExtResource("21_essence_exit")]
 position = Vector2(32, 528)
 player_path = NodePath("../AzraelPlayer")
 dialogue_title = "stealth_exit"
 next_scene = "res://scenes/quests/story_quests/echo_abyss/2_flee/echo_abyss_flee.tscn"
 sprite_frames = ExtResource("13_iwhha")
 
-[node name="AzraelPlayer" parent="OnTheGround" unique_id=296354958 instance=ExtResource("11_g3acg")]
-position = Vector2(232, -296)
-sprite_frames = ExtResource("8_g3acg")
+[node name="AzraelPlayer" parent="OnTheGround" unique_id=296354958 instance=ExtResource("12_iwhha")]
+position = Vector2(200, -265)
+sprite_frames = ExtResource("13_gqts5")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/AzraelPlayer" unique_id=1605184833]
-position = Vector2(2.666687, 10.666658)
+position = Vector2(50.666687, -66.33334)
 scale = Vector2(1.5, 1.5)
 limit_left = -52
 limit_top = -428
@@ -368,7 +369,7 @@ scale = Vector2(2.0638454, 2.0273273)
 curve = SubResource("Curve2D_3p7aa")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=783616177]
-color = Color(0.55501574, 0.52019083, 0.4810639, 1)
+color = Color(0.46234012, 0.4297801, 0.39355978, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=73785874]
 script = ExtResource("15_vwco0")
@@ -414,3 +415,9 @@ texture = ExtResource("16_3crhn")
 [node name="Heart3" type="TextureRect" parent="CanvasLayer/HealthPlayer" unique_id=860148114]
 layout_mode = 2
 texture = ExtResource("16_3crhn")
+
+[node name="theme1" type="AudioStreamPlayer" parent="." unique_id=231190200]
+stream = ExtResource("25_iwhha")
+volume_db = -5.958
+autoplay = true
+parameters/looping = true

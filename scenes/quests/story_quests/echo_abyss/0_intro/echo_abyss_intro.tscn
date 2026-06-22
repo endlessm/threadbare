@@ -5,12 +5,11 @@
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_qd73m"]
 [ext_resource type="TileSet" uid="uid://bfm88b0buimbj" path="res://scenes/quests/story_quests/echo_abyss/tiles/echo_abyss_decoration.tres" id="5_5ljvx"]
 [ext_resource type="Resource" uid="uid://cgodcjob4lgdk" path="res://scenes/quests/story_quests/echo_abyss/0_intro/intro_components/echo_abyss_intro.dialogue" id="5_r1h08"]
-[ext_resource type="PackedScene" uid="uid://bxqqun8fikc1u" path="res://scenes/quests/story_quests/echo_abyss/Characters/azrael_player.tscn" id="6_s0x21"]
+[ext_resource type="PackedScene" uid="uid://bxqqun8fikc1u" path="res://scenes/quests/story_quests/echo_abyss/Characters/base_azrael_player.tscn" id="6_s0x21"]
 [ext_resource type="Resource" uid="uid://dci1ckhi662iq" path="res://scenes/quests/story_quests/echo_abyss/0_intro/intro_components/echo_abyss_essence_npc.dialogue" id="7_ackhe"]
 [ext_resource type="SpriteFrames" uid="uid://b6pm0p3stv78r" path="res://scenes/quests/story_quests/echo_abyss/player_components/first_form_azrael.tres" id="7_gcyiv"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="8_yyxck"]
 [ext_resource type="SpriteFrames" uid="uid://uwont7hj7jtx" path="res://scenes/quests/story_quests/echo_abyss/player_components/contaminated_creature.tres" id="10_ackhe"]
-[ext_resource type="SpriteFrames" uid="uid://dnswfspgfmqo5" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_red.tres" id="11_gcyiv"]
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="11_s0x21"]
 [ext_resource type="Texture2D" uid="uid://bajunr7lyvujd" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/UI/healthbarUnder.png" id="12_yyxck"]
 [ext_resource type="Texture2D" uid="uid://bx717x50vbm3e" path="res://scenes/quests/story_quests/echo_abyss/Assets/Art/UI/healthbarProgress.png" id="13_kll4l"]
@@ -19,6 +18,7 @@
 [ext_resource type="Script" uid="uid://bdk4uhfdprt3t" path="res://scenes/quests/story_quests/echo_abyss/Scripts/echo_abyss_hud.gd" id="17_echo_hud"]
 [ext_resource type="PackedScene" uid="uid://b8dae6aib363j" path="res://scenes/quests/story_quests/echo_abyss/Characters/echo_abyss_essence_npc.tscn" id="18_essence_npc"]
 [ext_resource type="PackedScene" uid="uid://bw2m8i323f6lf" path="res://scenes/quests/story_quests/echo_abyss/Characters/echo_abyss_essence_exit.tscn" id="19_essence_exit"]
+[ext_resource type="AudioStream" uid="uid://6s7uenjdvbs5" path="res://scenes/quests/story_quests/echo_abyss/Assets/sfx_and_music/temas/ambiental/Eye of the Storm.mp3" id="20_jrq58"]
 
 [sub_resource type="Animation" id="Animation_ivd0k"]
 length = 0.001
@@ -120,15 +120,14 @@ dialogue_title = "character_5"
 essence_reward = 20
 sprite_frames = ExtResource("10_ackhe")
 
-[node name="TravelCreature" parent="OnTheGround" unique_id=1606149158 instance=ExtResource("19_essence_exit")]
-position = Vector2(335, 432)
+[node name="CriatureTravel" parent="OnTheGround" unique_id=775390554 instance=ExtResource("19_essence_exit")]
+position = Vector2(312, 412)
 player_path = NodePath("../AzraelPlayer")
 dialogue_title = "intro_exit"
 next_scene = "res://scenes/quests/story_quests/echo_abyss/1_stealth/echo_abyss_stealth.tscn"
-sprite_frames = ExtResource("11_gcyiv")
 
 [node name="AzraelPlayer" parent="OnTheGround" unique_id=296354958 instance=ExtResource("6_s0x21")]
-position = Vector2(232, -112)
+position = Vector2(216, -152)
 sprite_frames = ExtResource("7_gcyiv")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/AzraelPlayer" unique_id=1311191200]
@@ -197,3 +196,9 @@ texture = ExtResource("14_r66nt")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=440090584]
 color = Color(0.22195864, 0.20377707, 0.18038458, 1)
+
+[node name="themeintro" type="AudioStreamPlayer" parent="." unique_id=36658338]
+stream = ExtResource("20_jrq58")
+volume_db = -14.083
+autoplay = true
+parameters/looping = true
