@@ -53,21 +53,6 @@ func has_spirit() -> bool:
 	return _has_magical_thread_of_type(InventoryItem.ItemType.SPIRIT)
 
 
-func memory_text() -> String:
-	var has_it := _has_magical_thread_of_type(InventoryItem.ItemType.MEMORY)
-	return "(Memory available!)" if has_it else ""
-
-
-func imagination_text() -> String:
-	var has_it := _has_magical_thread_of_type(InventoryItem.ItemType.IMAGINATION)
-	return "(Imagination available!)" if has_it else ""
-
-
-func spirit_text() -> String:
-	var has_it := _has_magical_thread_of_type(InventoryItem.ItemType.SPIRIT)
-	return "(Spirit available!)" if has_it else ""
-
-
 func _give_upgrade(type: InventoryItem.ItemType) -> void:
 	var has_it := _has_magical_thread_of_type(type)
 	if not has_it:
