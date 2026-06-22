@@ -94,3 +94,8 @@ func _run_mushroom_vision(
 	_mushroom_camera_tween.set_trans(Tween.TRANS_SINE)
 	_mushroom_camera_tween.set_ease(Tween.EASE_OUT)
 	_mushroom_camera_tween.tween_property(camera, "zoom", original_zoom, transition_time)
+
+
+func _on_area_2d_body_entered(body):
+	if body.name == "Player":
+		_timer.stop()
