@@ -10,6 +10,9 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
+	Guard.game_started = false
+	Guard.reset_chase_slots()
+
 	# Ocultar portal al inicio
 	if portal_item:
 		portal_item.set("revealed", false)
@@ -26,7 +29,6 @@ func _ready() -> void:
 			guard.connect(&"player_detected", player_detected_callback)
 
 	# Guards inactivos hasta que termine el cinematic
-	Guard.game_started = false
 	var cinematic: Cinematic = get_node_or_null("../Cinematic") as Cinematic
 	if cinematic != null:
 		var start_guards_callback: Callable = func() -> void: Guard.game_started = true

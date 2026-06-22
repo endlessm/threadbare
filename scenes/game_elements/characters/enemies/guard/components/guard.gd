@@ -9,6 +9,10 @@ static var game_started: bool = false
 static var max_chasers: int = 2  # cuántos guardias pueden perseguir a la vez (ajustable 1-3)
 static var _current_chasers: int = 0
 
+
+static func reset_chase_slots() -> void:
+	_current_chasers = 0
+
 @export_range(20, 600, 5, "or_greater", "suffix:m/s") var chase_speed: float = 380.0
 @export_range(50, 500, 10) var chase_distance: float = 300.0
 @export_range(0.5, 5.0, 0.5) var wander_wait: float = 2.0
@@ -58,11 +62,12 @@ var breadcrumbs: Array[Vector2] = []
 var state: State = State.PATROLLING:
 	set = _set_state
 
-var _player: Node2D
+var _player: Player
 var _is_chasing: bool = false
 var _wander_timer: float = 0.0
 
 @onready var detection_area: Area2D = %DetectionArea
+@onready var instant_detection_area: Area2D = %InstantDetectionArea
 @onready var player_awareness: TextureProgressBar = %PlayerAwareness
 @onready var sight_ray_cast: RayCast2D = %SightRayCast
 @onready var debug_info: Label = %DebugInfo
@@ -113,6 +118,7 @@ func _process(delta: float) -> void:
 	if not game_started:
 		return
 
+	_sync_overlapping_detection()
 	_process_state(delta)
 	guard_movement.move()
 
@@ -186,9 +192,7 @@ func _update_player_awareness(delta: float) -> void:
 	player_awareness.modulate.a = clamp(player_awareness.ratio, 0.5, 1.0)
 
 	if player_awareness.ratio >= 1.0 and _current_chasers < max_chasers:
-		_current_chasers += 1
-		state = State.ALERTED
-		player_detected.emit(_player)
+		_begin_chase(_player)
 	# Si no hay cupo, se queda con el awareness lleno pero no entra en
 	# ALERTED. Apenas otro guardia libere su cupo, el siguiente _process
 	# de este guardia (que sigue viendo al jugador con ratio = 1.0) lo
@@ -230,6 +234,51 @@ func _stop_camera_shake() -> void:
 			tween.kill()
 		camera.remove_meta("shake_tween")
 	camera.offset = Vector2.ZERO
+
+
+func _sync_overlapping_detection() -> void:
+	if state == State.ALERTED:
+		return
+
+	for body: Node2D in instant_detection_area.get_overlapping_bodies():
+		var instant_player: Player = body as Player
+		if instant_player != null:
+			_begin_chase(instant_player)
+			return
+
+	if _player != null and is_instance_valid(_player):
+		return
+
+	for body: Node2D in detection_area.get_overlapping_bodies():
+		var detected_player: Player = body as Player
+		if detected_player == null:
+			continue
+		_track_detected_player(detected_player)
+		return
+
+
+func _track_detected_player(player: Player) -> void:
+	_player = player
+	if _is_sight_to_point_blocked(player.global_position):
+		return
+	if player_instantly_detected_on_sight:
+		_begin_chase(player)
+	else:
+		state = State.DETECTING
+
+
+func _begin_chase(player: Player) -> void:
+	if player == null:
+		return
+	_player = player
+	last_seen_position = player.global_position
+	if not _is_chasing:
+		if _current_chasers >= max_chasers:
+			return
+		_current_chasers += 1
+		_is_chasing = true
+	state = State.ALERTED
+	player_detected.emit(player)
 
 
 func _update_debug_info() -> void:
@@ -353,21 +402,17 @@ func _set_alert_other_sound_stream(new_value: AudioStream) -> void:
 
 
 func _on_instant_detection_area_body_entered(body: Node2D) -> void:
-	state = State.ALERTED
-	player_detected.emit(body)
+	var player: Player = body as Player
+	if player == null:
+		return
+	_begin_chase(player)
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
-	if not body is Player:
+	var player: Player = body as Player
+	if player == null:
 		return
-	_player = body
-	if _is_sight_to_point_blocked(body.global_position):
-		return
-	if player_instantly_detected_on_sight:
-		state = State.ALERTED
-		player_detected.emit(_player)
-	else:
-		state = State.DETECTING
+	_track_detected_player(player)
 
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
