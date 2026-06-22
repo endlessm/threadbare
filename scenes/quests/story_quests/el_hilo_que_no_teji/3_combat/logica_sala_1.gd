@@ -2,15 +2,21 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node2D
 
+# --- VARIABLES ESTÁTICAS DE GUARDADO (SOBREVIVEN AL REINICIO) ---
+static var estado_hilo_izq: bool = false
+static var estado_hilo_der: bool = false
+static var estado_hilo_central: bool = false
+
 const MAX_GOLPES: int = 5
 var golpes_recibidos: int = 0
 var primer_golpe_recibido: bool = false
 var texto_central_mostrado: bool = false
+var lino_muerto: bool = false
 
 var jarrones_izq_completados: int = 0
 var jarrones_der_completados: int = 0
 var hilos_recogidos: int = 0
-var alas_limpiadas: int = 0 # NUEVO: El contador maestro de la ilusión de elección
+var alas_limpiadas: int = 0
 
 # 1. REFERENCIAS DE LINO Y UI
 @onready var jugador = $OnTheGround/Player
@@ -50,6 +56,8 @@ func _ready() -> void:
 	material_gris = ShaderMaterial.new()
 	material_gris.shader = shader
 	sprite_jugador.material = material_gris
+	sprite_jugador.sprite_frames.set_animation_loop("defeated", false)
+	
 	hitbox_jugador.body_entered.connect(_al_recibir_bolita)
 	
 	var color_tristeza = Color(0.6, 0.6, 0.6)
@@ -69,17 +77,53 @@ func _ready() -> void:
 	if is_instance_valid(jarron_central):
 		jarron_central.completed.connect(_al_completar_jarron_central)
 
-	if is_instance_valid(hilo_izq): 
+	# --- RECUPERAR EL PROGRESO GUARDADO AL REINICIAR ---
+	if estado_hilo_izq:
+		_limpiar_ala_izq_guardada()
+		if is_instance_valid(hilo_izq): hilo_izq.queue_free()
+		hilos_recogidos += 1
+		alas_limpiadas += 1
+	elif is_instance_valid(hilo_izq): 
 		hilo_izq.revealed = false
-		hilo_izq.tree_exited.connect(_al_recoger_hilo)
-	if is_instance_valid(hilo_der): 
+		hilo_izq.tree_exited.connect(_al_recoger_hilo.bind("izq"))
+
+	if estado_hilo_der:
+		_limpiar_ala_der_guardada()
+		if is_instance_valid(hilo_der): hilo_der.queue_free()
+		hilos_recogidos += 1
+		alas_limpiadas += 1
+	elif is_instance_valid(hilo_der): 
 		hilo_der.revealed = false
-		hilo_der.tree_exited.connect(_al_recoger_hilo)
-	if is_instance_valid(hilo_central): 
+		hilo_der.tree_exited.connect(_al_recoger_hilo.bind("der"))
+
+	if estado_hilo_central:
+		if is_instance_valid(jarron_central): jarron_central.queue_free()
+		if is_instance_valid(hilo_central): hilo_central.queue_free()
+		hilos_recogidos += 1
+	elif is_instance_valid(hilo_central): 
 		hilo_central.revealed = false
-		hilo_central.tree_exited.connect(_al_recoger_hilo)
+		hilo_central.tree_exited.connect(_al_recoger_hilo.bind("central"))
 
 	_actualizar_color_ambiente()
+	
+	# Restaurar estado de las puertas si ya teníamos los hilos
+	if hilos_recogidos >= 2 and is_instance_valid(puerta_central):
+		puerta_central.open()
+	if hilos_recogidos >= 3 and is_instance_valid(puerta_salida):
+		puerta_salida.open()
+
+# --- FUNCIONES PARA LIMPIAR ALAS YA COMPLETADAS ---
+func _limpiar_ala_izq_guardada() -> void:
+	if is_instance_valid(enemigo_1): enemigo_1.queue_free()
+	if is_instance_valid(enemigo_2): enemigo_2.queue_free()
+	for jarron in jarrones_izq:
+		if is_instance_valid(jarron): jarron.queue_free()
+
+func _limpiar_ala_der_guardada() -> void:
+	if is_instance_valid(enemigo_3): enemigo_3.queue_free()
+	if is_instance_valid(enemigo_4): enemigo_4.queue_free()
+	for jarron in jarrones_der:
+		if is_instance_valid(jarron): jarron.queue_free()
 
 # --- SISTEMA DEL MUNDO ---
 func _actualizar_color_ambiente() -> void:
@@ -98,8 +142,16 @@ func _sacudir_pantalla() -> void:
 			tween.tween_property(camara, "offset", Vector2(randf_range(-8, 8), randf_range(-8, 8)), 0.05)
 		tween.tween_property(camara, "offset", Vector2.ZERO, 0.05)
 
-func _al_recoger_hilo() -> void:
+# Se añadió el identificador para saber cuál hilo guardamos
+func _al_recoger_hilo(id_hilo: String = "") -> void:
 	if not is_inside_tree(): return
+	
+	# Guardamos el estado estático
+	match id_hilo:
+		"izq": estado_hilo_izq = true
+		"der": estado_hilo_der = true
+		"central": estado_hilo_central = true
+		
 	hilos_recogidos += 1
 	_actualizar_color_ambiente()
 	
@@ -117,6 +169,11 @@ func _al_recoger_hilo() -> void:
 
 # --- SISTEMA DE COMBATE ---
 func _al_recibir_bolita(body: Node2D) -> void:
+	if not body.is_in_group("projectiles") or lino_muerto:
+		return
+		
+	body.call_deferred("queue_free")
+	
 	golpes_recibidos += 1
 	var porcentaje = float(golpes_recibidos) / 4.0
 	porcentaje = clamp(porcentaje, 0.0, 1.0) 
@@ -127,12 +184,15 @@ func _al_recibir_bolita(body: Node2D) -> void:
 		panel_pensamiento.mostrar_pensamiento("Cada impacto me arrebata un recuerdo...\nSi dejo que la culpa me consuma, me perderé.")
 	
 	if golpes_recibidos >= MAX_GOLPES:
+		lino_muerto = true
+		hitbox_jugador.set_deferred("monitoring", false)
+		hitbox_jugador.set_deferred("monitorable", false)
 		jugador.defeat(false)
 
 # --- LIMPIEZA DE ALAS (CON ILUSIÓN DE ELECCIÓN) ---
 func _al_completar_jarron_izq() -> void:
 	jarrones_izq_completados += 1
-	if jarrones_izq_completados == 2: # Usamos == para que solo se active 1 vez
+	if jarrones_izq_completados == 2:
 		alas_limpiadas += 1
 		if is_instance_valid(enemigo_1): enemigo_1.queue_free()
 		if is_instance_valid(enemigo_2): enemigo_2.queue_free()
@@ -144,7 +204,7 @@ func _al_completar_jarron_izq() -> void:
 
 func _al_completar_jarron_der() -> void:
 	jarrones_der_completados += 1
-	if jarrones_der_completados == 2: # Usamos == para que solo se active 1 vez
+	if jarrones_der_completados == 2:
 		alas_limpiadas += 1
 		if is_instance_valid(enemigo_3): enemigo_3.queue_free()
 		if is_instance_valid(enemigo_4): enemigo_4.queue_free()

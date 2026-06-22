@@ -47,26 +47,29 @@ void vertex() {
 }
 
 void fragment() {
-	// Escalamos la posición para ajustar el tamaño en píxeles de la neblina
-	vec2 base_uv = world_position * 0.002 * density;
+	// Escalamos la posición base de forma fija para el tamaño de las nubes
+	vec2 base_uv = world_position * 0.0015;
 	
 	// Corrientes de aire cruzadas
 	vec2 wind_1 = vec2(TIME * speed, TIME * speed * 0.15);
 	vec2 wind_2 = vec2(-TIME * speed * 0.4, TIME * speed * 0.3);
 	
 	float layer1 = fbm(base_uv + wind_1);
-	float layer2 = fbm(base_uv * 1.8 + wind_2);
+	float layer2 = fbm((base_uv * 1.5) + wind_2);
 	
-	// AJUSTE DE CONTRASTE: Filtramos para que solo los picos más altos del ruido generen filamentos
-	// Pasamos de (0.2, 0.8) a (0.45, 0.75) para limpiar las áreas grises planas y dejar pasillos transparentes
-	float final_shredded_fog = smoothstep(0.45, 0.75, layer1 * layer2 * 1.5);
+	// MEZCLA SUAVE: En lugar de multiplicar, promediamos las capas para un resultado más orgánico
+	float mixed_noise = mix(layer1, layer2, 0.5);
 	
-	// Aplicamos el modificador exponencial para afilar y deshilachar drásticamente las motas
+	// FILTRO DE CONTRASTE AGRESIVO:
+	// Subimos el umbral inferior (0.55) para asegurarnos de que las zonas bajas se vuelvan COMPLETAMENTE transparentes.
+	// La densidad ahora actúa reduciendo la opacidad máxima de forma directa y correcta.
+	float final_shredded_fog = smoothstep(0.55, 0.85, mixed_noise);
+	
+	// Aplicamos el modificador exponencial para rasgar los bordes
 	final_shredded_fog = pow(final_shredded_fog, thread_shredding);
 	
-	// MULTIPLICADOR DE TRANSPARENCIA FINA: Forzamos a que la opacidad general responda de forma agresiva
-	// reduciendo drásticamente el "gris plano" de fondo y permitiendo ver el escenario con total claridad.
-	float alpha_mask = final_shredded_fog * fog_color.a;
+	// El parámetro 'density' ahora controla directamente el tope máximo de visibilidad (0.1 a 1.0 sugerido)
+	float alpha_mask = final_shredded_fog * fog_color.a * density;
 	
 	COLOR = vec4(fog_color.rgb, alpha_mask);
 }
