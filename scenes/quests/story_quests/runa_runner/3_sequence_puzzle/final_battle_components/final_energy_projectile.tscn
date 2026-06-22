@@ -1,0 +1,24 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://scenes/quests/story_quests/runa_runner/3_sequence_puzzle/final_battle_components/final_energy_projectile.gd" id="1_8yjnb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j2ofm"]
+radius = 11.0
+
+[node name="FinalEnergyProjectile" type="Area2D" groups=["final_energy_projectiles"]]
+collision_layer = 256
+collision_mask = 1
+script = ExtResource("1_8yjnb")
+
+[node name="Glow" type="Polygon2D" parent="."]
+color = Color(0.319, 0.776, 1, 0.35)
+polygon = PackedVector2Array(18, 0, 12, 12, 0, 18, -12, 12, -18, 0, -12, -12, 0, -18, 12, -12)
+
+[node name="Core" type="Polygon2D" parent="."]
+color = Color(0.72, 0.95, 1, 0.95)
+polygon = PackedVector2Array(11, 0, 7, 7, 0, 11, -7, 7, -11, 0, -7, -7, 0, -11, 7, -7)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_j2ofm")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
