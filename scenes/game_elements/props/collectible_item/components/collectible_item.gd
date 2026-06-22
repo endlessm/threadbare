@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 @tool
 class_name CollectibleItem
 extends SceneLink
@@ -48,36 +50,69 @@ func _set_item(new_value: InventoryItem) -> void:
 func _ready() -> void:
 	super._ready()
 	_set_item(item)
-	_update_based_on_revealed()
-	sprite_2d.modulate = Color.WHITE if revealed else Color.TRANSPARENT
+
+	if not Engine.is_editor_hint():
+		revealed = false
+		if sprite_2d:
+			sprite_2d.visible = false
+			sprite_2d.modulate = Color.TRANSPARENT
+		if interact_area:
+			interact_area.disabled = true
+		if physical_collider:
+			physical_collider.disabled = true
+	else:
+		_update_based_on_revealed()
+		sprite_2d.modulate = Color.WHITE if revealed else Color.TRANSPARENT
+
 	if Engine.is_editor_hint():
 		return
 	add_to_group("final_collectible")
 	interact_area.interaction_started.connect(self._on_interacted)
 
+## Llamado por RitualObject cuando ya se recogieron los 4 objetos rituales.
+## Solo hace que el objeto aparezca; el diálogo de cierre ocurre al interactuar.
 func reveal() -> void:
+	if revealed:
+		return
 	revealed = true
-	appear_sound.play()
-	animation_player.play("reveal")
-	await animation_player.animation_finished
+	if sprite_2d:
+		sprite_2d.visible = true
+		sprite_2d.modulate = Color.WHITE
+	_update_based_on_revealed()
+	if appear_sound:
+		appear_sound.play()
+	if animation_player and animation_player.has_animation("reveal"):
+		animation_player.play("reveal")
+		await animation_player.animation_finished
 
 func _on_interacted(player: Player, _from_right: bool) -> void:
 	z_index += 1
 	animation_player.play("collected")
 	await animation_player.animation_finished
+
 	GameState.global.add_collected_item(item)
+
+	# Diálogo de agradecimiento
 	if collected_dialogue:
-		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])
+		DialogueManager.show_dialogue_balloon(collected_dialogue, "npc_agradece", [self, player])
 		await DialogueManager.dialogue_ended
+
 	interact_area.end_interaction()
-	queue_free()
+
+	# Grito del protagonista (SceneLink se encarga del fade al cambiar)
+	if collected_dialogue:
+		DialogueManager.show_dialogue_balloon(collected_dialogue, "portal_susto", [self, player])
+		await DialogueManager.dialogue_ended
+
+	# Cambiar de escena - SceneLink ya hace el fade con su Exit Transition
 	if next_scene:
 		if GameState.quest:
 			GameState.quest.challenge_start_scene = next_scene
 		else:
 			push_warning("Collectible collected while not on a quest")
 		switch()
-
+	else:
+		queue_free()
 func _update_based_on_revealed() -> void:
 	if interact_area:
 		interact_area.disabled = not revealed
