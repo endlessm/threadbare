@@ -22,7 +22,6 @@ func _ready() -> void:
 		linterna_gato.scale = Vector2(ESCALA_INICIAL_X, ESCALA_INICIAL_Y)
 		linterna_gato.energy = 1.2
 		
-	
 	if cohete:
 		posicion_original_cohete = cohete.position
 
@@ -34,6 +33,13 @@ func _ready() -> void:
 		if area_real:
 			if not area_real.body_entered.is_connected(_on_cristal_recolectado):
 				area_real.body_entered.connect(_on_cristal_recolectado.bind(area_real))
+				
+
+	await get_tree().process_frame # Espera un milisegundo a que la pantalla cargue
+	var recurso_dialogo = load("res://scenes/quests/story_quests/3_patitas/3_sequence_puzzle/3_patitas_sequence_puzzle.dialogue")
+	if recurso_dialogo:
+		_desplegar_interfaz_dialogo(recurso_dialogo, "start")
+	# =========================================================================
 
 func _process(delta: float) -> void:
 	# Si la victoria se activó, el cohete vibrará cada fotograma
@@ -41,6 +47,7 @@ func _process(delta: float) -> void:
 		var desfase_x = randf_range(-intensidad_vibracion, intensidad_vibracion)
 		var desfase_y = randf_range(-intensidad_vibracion, intensidad_vibracion)
 		cohete.position = posicion_original_cohete + Vector2(desfase_x, desfase_y)
+
 func _on_cristal_recolectado(body: Node2D, cristal_nodo: Node2D) -> void:
 	if body.name == "Player" or body is CharacterBody2D:
 		var numero_cristal = 1
@@ -67,16 +74,14 @@ func _mostrar_aviso_orden() -> void:
 		_desplegar_interfaz_dialogo(recurso_dialogo, "advertencia")
 
 func _ejecutar_dialogo_final() -> void:
-	# Hacemos visible el cohete en la pantalla
 	if cohete:
 		cohete.visible = true
-		debe_vibrar = true # Activamos el temblor en el _process
+		debe_vibrar = true 
 		
 	var recurso_dialogo = load("res://scenes/quests/story_quests/3_patitas/3_sequence_puzzle/3_patitas_sequence_puzzle.dialogue")
 	if recurso_dialogo:
 		_desplegar_interfaz_dialogo(recurso_dialogo, "well_done")
 	
-	# Dejamos que vibre durante 5 segundos mientras se lee el diálogo y luego despega
 	await get_tree().create_timer(5.0).timeout
 	debe_vibrar = false
 	_cambiar_a_escena_espacial()
