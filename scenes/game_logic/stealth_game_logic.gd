@@ -24,9 +24,10 @@ var jugador_en_rango = false
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	jugador_en_rango = true
+	
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("throw"):
-		if jugador_en_rango: 
+	if jugador_en_rango: 
+		if Input.is_action_just_pressed("throw"):
 			if obstaculo: 
 				obstaculo.queue_free()
 				camara.visible=true
