@@ -6,37 +6,35 @@ extends PanelContainer
 @onready var timer = $Label/Timer
 
 func _ready() -> void:
-	# Reseteamos el texto y ocultamos todo el panel
-	label.visible_ratio = 0.0
+	# Ocultamos todo el panel al inicio
 	hide()
 	
 	if not timer.timeout.is_connected(_on_timer_timeout):
 		timer.timeout.connect(_on_timer_timeout)
 
+var texto_completo: String = ""
+
 func mostrar_pensamiento(nuevo_texto: String) -> void:
-	# 1. Inyectamos el texto
-	label.text = nuevo_texto
+	texto_completo = nuevo_texto
 	
-	# 2. Curamos cualquier ocultamiento previo
-	label.show() 
-	label.visible_characters = -1 # -1 significa "mostrar todo" en Godot
+	# 1. Aseguramos que el Label no esté ocultando nada por porcentaje
+	label.visible_ratio = 1.0 
+	label.text = "" 
 	
-	# 3. Mostramos el Panel negro
-	show() 
-	
-	# 4. Preparamos la animación
-	label.visible_ratio = 0.0
+	# 2. Mostramos el panel de forma opaca
+	show()
 	modulate.a = 1.0 
 	
-	# Escribe el texto gradualmente a lo largo de 1.5 segundos
+	# 3. Animamos el crecimiento inyectando letras una por una
 	var tween = create_tween()
-	tween.tween_property(label, "visible_ratio", 1, 5)
+	tween.tween_method(_escribir_letras, 0, texto_completo.length(), 5.0)
 	
-	# Arranca el cronómetro para que desaparezca después de 6.5 segundos
 	timer.start(6.0)
 
+func _escribir_letras(cantidad_actual: int) -> void:
+	label.text = texto_completo.substr(0, cantidad_actual)
+
 func _on_timer_timeout() -> void:
-	# Desvanece suavemente TODO (fondo y texto)
 	var fade_tween = create_tween()
 	fade_tween.tween_property(self, "modulate:a", 0.0, 0.5)
 	fade_tween.tween_callback(hide)
