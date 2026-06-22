@@ -128,4 +128,4 @@ func _on_zona_climax_body_entered(body: Node2D) -> void:
 
 			DialogueManager.show_dialogue_balloon(DIALOGO_STEALTH, "arbol_climax")
 			await DialogueManager.dialogue_ended
-			SceneSwitcher.change_to_file_with_transition("res://scenes/quests/story_quests/el_hilo_que_no_teji/2_sequence_puzzle/el_hilo_que_no_teji_combat.tscn")
+			SceneSwitcher.change_to_file_with_transition("res://scenes/quests/story_quests/el_hilo_que_no_teji/2_sequence_puzzle/el_hilo_que_no_teji_sequence_puzzle.tscn")
