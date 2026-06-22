@@ -28,12 +28,13 @@ func _ready() -> void:
 		_interact_area.action = interact_action
 		_interact_area.interaction_started.connect(_on_interaction_started)
 
-
 func _on_interaction_started(player: Player, _from_right: bool) -> void:
 	if dialogue:
 		DialogueManager.show_dialogue_balloon(dialogue, dialogue_title, [self, player])
 		await DialogueManager.dialogue_ended
-
+	
+	_animated_sprite.play("defeated")
+	
 	if _can_award_essence(player):
 		player.call("add_essence", essence_reward)
 		_has_awarded_essence = true
