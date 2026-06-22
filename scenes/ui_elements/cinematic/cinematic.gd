@@ -16,9 +16,6 @@ signal cinematic_finished
 
 ## Optional animation player, to be used from [member dialogue] (if needed).
 @export var animation_player: AnimationPlayer
-@export var animation_camera: AnimationPlayer
-@export var animation_environment: AnimationPlayer
-@export var animation_character: AnimationPlayer
 
 ## Optional scene to switch to once [member dialogue] is complete.
 @export_file("*.tscn") var next_scene: String
