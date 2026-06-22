@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cnbelm14rwcel" path="res://scenes/quests/story_quests/en_la_prondidad/2_combat/rasho_laser.gd" id="1_wa0rf"]
 [ext_resource type="Texture2D" uid="uid://dy0b4cf1rn11n" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Rasholaser.png" id="2_yrtvu"]
+[ext_resource type="Texture2D" uid="uid://d1pluc6u6ee71" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Sprite-0001.png" id="3_yrtvu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3d1go"]
 atlas = ExtResource("2_yrtvu")
@@ -78,10 +79,15 @@ region = Rect2(320, 64, 64, 32)
 [sub_resource type="SpriteFrames" id="SpriteFrames_olqpg"]
 animations = [{
 "frames": [{
-"duration": 0.1,
+"duration": 2.0,
 "texture": SubResource("AtlasTexture_3d1go")
+}],
+"loop": false,
+"name": &"carga",
+"speed": 5.0
 }, {
-"duration": 0.1,
+"frames": [{
+"duration": 2.0,
 "texture": SubResource("AtlasTexture_dgwm2")
 }, {
 "duration": 0.1,
@@ -128,17 +134,23 @@ animations = [{
 }, {
 "duration": 0.1,
 "texture": SubResource("AtlasTexture_cmdib")
-}],
-"loop": false,
-"name": &"carga",
-"speed": 5.0
 }, {
-"frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_wtvyq")
 }],
-"loop": true,
+"loop": false,
 "name": &"disparo",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3d1go"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_yrtvu")
+}],
+"loop": true,
+"name": &"activacion",
 "speed": 5.0
 }]
 
@@ -147,13 +159,23 @@ size = Vector2(1303, 86)
 
 [node name="RashoLaser" type="Node2D" unique_id=1410424108]
 script = ExtResource("1_wa0rf")
+tiempo_carga = 0.5
+duracion = 1.5
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=600874707]
+modulate = Color(0.7866657, 0, 0.05496026, 1)
 position = Vector2(640.5, 0)
 scale = Vector2(20.359373, 3.2499998)
 sprite_frames = SubResource("SpriteFrames_olqpg")
 animation = &"disparo"
-frame_progress = 0.91138506
+frame = 16
+frame_progress = 1.0
+
+[node name="cabeza" type="AnimatedSprite2D" parent="." unique_id=758094512]
+position = Vector2(-91, 0)
+scale = Vector2(1.6562501, 2.09375)
+sprite_frames = SubResource("SpriteFrames_3d1go")
+animation = &"activacion"
 
 [node name="Area2D" type="Area2D" parent="." unique_id=138532551 groups=["projectiles"]]
 collision_layer = 128

@@ -13,6 +13,8 @@ signal jefe_muerto
 @export var tiempoAnimacionDano: float = 0.6
 @export var tiempoAnimacionAtaque: float = 0.6
 
+@export var tiempo_antes_pelea: float = 2.0
+
 var indice_actual: int = 0
 var vida_total: int = 0
 var activo: bool = false
@@ -22,7 +24,7 @@ var enemigo_en_accion: bool = false
 
 func _ready() -> void:
 	vida_total = vida_jefe
-
+	
 	if barra != null:
 		barra.max_value = vida_total
 		barra.value = vida_jefe
@@ -40,6 +42,16 @@ func _ready() -> void:
 		var vida_actual_corazon = corazon.get("vida_actual")
 		if vida_actual_corazon != null:
 			vida_anterior_corazon = vida_actual_corazon
+
+	iniciar_con_delay()
+
+func iniciar_con_delay() -> void:
+	if animacionEnemy != null:
+		animacionEnemy.play("transformacion")
+
+	await get_tree().create_timer(tiempo_antes_pelea).timeout
+	if animacionEnemy !=null:
+		animacionEnemy.play("idle")
 
 	iniciar()
 
@@ -66,14 +78,12 @@ func loop_patrones() -> void:
 
 		patron.stop_pattern()
 
-		
 		if corazon != null and corazon.has_method("reproducir_ataque"):
 			corazon.reproducir_ataque()
 		else:
 			if animacionPlayer != null:
 				animacionPlayer.play("atack")
 
-		
 		reproducir_dano_enemigo()
 
 		await get_tree().create_timer(tiempoEntrePatrones).timeout

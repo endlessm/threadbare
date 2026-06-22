@@ -13,7 +13,8 @@ var activo: bool = false
 
 func _ready() -> void:
 	hitbox.set_meta("dano", dano)
-	hitbox.monitoring = false
+	hitbox.set_deferred("monitoring",false)
+	hitbox.set_deferred("monitorable",false)
 
 	rotation = direccion.angle()
 
@@ -22,7 +23,10 @@ func _ready() -> void:
 	await get_tree().create_timer(tiempo_carga).timeout
 	
 	activo = true
-	hitbox.monitoring = true
+	hitbox.set_deferred("monitoring",true)
+	hitbox.set_deferred("monitorable",true
+	)
+
 	sprite.play("disparo")
 
 	await get_tree().create_timer(duracion).timeout
