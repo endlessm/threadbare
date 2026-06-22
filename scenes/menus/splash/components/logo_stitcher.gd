@@ -26,7 +26,7 @@ signal finished
 @export_range(100, 500, 25, "or_greater") var stitch_count: int = 350
 
 ## Width of each stitch
-@export_range(0.1, 2.0, 0.1, "or_greater", "or_less", "suffix:px") var stitch_width: float = 1.2
+@export_range(0.1, 3.0, 0.1, "or_greater", "or_less", "suffix:px") var stitch_width: float = 2.2
 
 ## Duration of the animation. Ignored at runtime if [member audio] is set.
 @export_range(1.0, 20.0, 0.1, "or_greater", "suffix:s") var duration: float = 4.1

@@ -23,6 +23,7 @@ concurrency:
 
 env:
   PCK_NAME: threadbare
+  GODOT_VERSION: "4.7"
 
 jobs:
   web:
@@ -43,7 +44,7 @@ jobs:
       - name: Export web build
         uses: endlessm/godot-export-action@v2
         with:
-          godot_version: "4.6.3"
+          godot_version: ${{ env.GODOT_VERSION }}
           export_preset: "Web"
 
       - name: Upload web artifact
@@ -90,7 +91,7 @@ jobs:
       - name: Export Windows build
         uses: endlessm/godot-export-action@v2
         with:
-          godot_version: "4.6.2"
+          godot_version: ${{ env.GODOT_VERSION }}
           export_preset: "Windows x86_64"
 
       - name: Upload Windows artifact
