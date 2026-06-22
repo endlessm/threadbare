@@ -176,7 +176,3 @@ func uncover_all(duration: float) -> void:
 	await tween.finished
 	clear()
 	self.modulate.a = 1.0
-
-
-func start(body: Node2D) -> void:
-	pass # Replace with function body.
