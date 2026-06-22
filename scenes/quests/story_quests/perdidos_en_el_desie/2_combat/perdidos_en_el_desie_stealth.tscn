@@ -10,6 +10,7 @@
 [ext_resource type="SpriteFrames" uid="uid://8ttttqq7g18b" path="res://scenes/quests/story_quests/perdidos_en_el_desie/2_combat/combat_components/guardian_mini2_spriteframesNuevo.tres" id="8_ip5th"]
 [ext_resource type="Script" uid="uid://bon28g4w1ofne" path="res://scenes/quests/story_quests/perdidos_en_el_desie/2_combat/path_follow_2d.gd" id="9_ip5th"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="9_rjp71"]
+[ext_resource type="PackedScene" uid="uid://cjac30gcb37av" path="res://scenes/quests/story_quests/perdidos_en_el_desie/2_combat/combat_components/guard.tscn" id="10_cqrcn"]
 [ext_resource type="Resource" uid="uid://b83ae6bjwide1" path="res://scenes/quests/story_quests/perdidos_en_el_desie/1_stealth/stealth_components/perdidos_en_el_desie_checkpoint.dialogue" id="10_nk36n"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="11_ncr8w"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="12_ki0ml"]
@@ -24,12 +25,6 @@
 [ext_resource type="Script" path="res://scenes/quests/story_quests/perdidos_en_el_desie/2_combat/perdidos_en_el_desie_combat_controller.gd" id="21_ctrl"]
 [ext_resource type="Script" path="res://scenes/quests/story_quests/perdidos_en_el_desie/2_combat/perdidos_en_el_desie_guard.gd" id="22_grd"]
 
-[sub_resource type="Curve2D" id="Curve2D_mqevv"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 488, -91, 0, 0, 0, 0, 480, 106, 0, 0, 0, 0, 356, 208, 0, 0, 0, 0, 239, 131, 0, 0, 0, 0, 166, 26, 0, 0, 0, 0, 169, -97, 0, 0, 0, 0, 354, -101, 0, 0, 0, 0, 488, -91)
-}
-point_count = 8
-
 [sub_resource type="Curve2D" id="Curve2D_qa1g5"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, -450, 0, 0, 0, 0, -1, -317, 0, 0, 0, 0, 0, 50)
@@ -39,6 +34,12 @@ point_count = 3
 [sub_resource type="Curve2D" id="Curve2D_ip5th"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 1000, 679, 0, 0, 0, 0, 1000, 200)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_ierhd"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -300, -2, 0, 0, 0, 0, 168, 3)
 }
 point_count = 2
 
@@ -133,42 +134,54 @@ editor_draw_limits = true
 [node name="EnemyGuards" type="Node2D" parent="." unique_id=1997239040]
 y_sort_enabled = true
 
-[node name="Guard1-GoingBackAndForth" parent="EnemyGuards" unique_id=1357389645 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_32p7r")]
+[node name="Enemigo 1 personaje" parent="EnemyGuards" unique_id=1357389645 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_32p7r")]
 position = Vector2(590, 190)
 sprite_frames = ExtResource("8_ip5th")
 script = ExtResource("22_grd")
-patrol_path = NodePath("../Guard1-GoingBackAndForth-PatrolPath")
+patrol_path = NodePath("../Enemigo 1 ruta")
 
-[node name="Guard2-RunningInCircles" parent="EnemyGuards" unique_id=478814464 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_32p7r")]
+[node name="Enemigo 2 personaje" parent="EnemyGuards" unique_id=478814464 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_32p7r")]
 position = Vector2(1000, 679)
 sprite_frames = ExtResource("8_ip5th")
 script = ExtResource("22_grd")
-patrol_path = NodePath("../Guard2-RunningInCircles-Path")
+patrol_path = NodePath("../Enemigo2 ruta")
 
-[node name="Guard2-RunningPath" type="Path2D" parent="EnemyGuards" unique_id=1687817077]
-position = Vector2(1947, 473)
-curve = SubResource("Curve2D_mqevv")
-
-[node name="Guard1-GoingBackAndForth-PatrolPath" type="Path2D" parent="EnemyGuards" unique_id=1393560730]
+[node name="Enemigo 1 ruta" type="Path2D" parent="EnemyGuards" unique_id=1393560730]
 position = Vector2(590, 640)
 curve = SubResource("Curve2D_qa1g5")
 
-[node name="Guard2-RunningInCircles-Path" type="Path2D" parent="EnemyGuards" unique_id=447273884]
+[node name="Enemigo2 ruta" type="Path2D" parent="EnemyGuards" unique_id=447273884]
 curve = SubResource("Curve2D_ip5th")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="EnemyGuards/Guard2-RunningInCircles-Path" unique_id=1893937127]
+[node name="PathFollow2D" type="PathFollow2D" parent="EnemyGuards/Enemigo2 ruta" unique_id=1893937127]
 position = Vector2(1000, 679)
 rotation = -1.5707964
 script = ExtResource("9_ip5th")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="EnemyGuards/Guard2-RunningInCircles-Path/PathFollow2D" unique_id=152618011]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="EnemyGuards/Enemigo2 ruta/PathFollow2D" unique_id=152618011]
 sprite_frames = ExtResource("8_ip5th")
 
-[node name="Guard1-GoingBackAndForth2" parent="EnemyGuards" unique_id=689832587 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_32p7r")]
-position = Vector2(590, 190)
+[node name="Enemigo3 personaje" parent="EnemyGuards" unique_id=689832587 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_32p7r")]
+position = Vector2(1500, 190)
 sprite_frames = ExtResource("8_ip5th")
 script = ExtResource("22_grd")
-patrol_path = NodePath("../Guard1-GoingBackAndForth-PatrolPath")
+patrol_path = NodePath("../Enemigo3 ruta")
+move_speed = 100.0
+
+[node name="Enemigo3 ruta" type="Path2D" parent="EnemyGuards" unique_id=1398959863]
+position = Vector2(1500, 640)
+curve = SubResource("Curve2D_qa1g5")
+
+[node name="Enemigo4 personaje" parent="EnemyGuards" unique_id=1827575121 node_paths=PackedStringArray("patrol_path") instance=ExtResource("10_cqrcn")]
+position = Vector2(2003, 213)
+sprite_frames = ExtResource("8_ip5th")
+script = ExtResource("22_grd")
+patrol_path = NodePath("../Enemigo4 ruta")
+
+[node name="Enemigo4 ruta" type="Path2D" parent="EnemyGuards" unique_id=1309360655]
+position = Vector2(2001, 513)
+rotation = 1.5707964
+curve = SubResource("Curve2D_ierhd")
 
 [node name="Checkpoints" type="Node2D" parent="." unique_id=344631200]
 y_sort_enabled = true
