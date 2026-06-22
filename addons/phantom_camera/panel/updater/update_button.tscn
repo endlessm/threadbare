@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cuqkqsp3ikv5u"]
+[gd_scene format=3 uid="uid://cuqkqsp3ikv5u"]
 
 [ext_resource type="FontFile" uid="uid://c4mm3of2mc8o5" path="res://addons/phantom_camera/fonts/Nunito-Black.ttf" id="1_5e5k4"]
 [ext_resource type="Script" uid="uid://bwc42i46603qn" path="res://addons/phantom_camera/scripts/panel/updater/update_button.gd" id="1_xtaw5"]
@@ -21,6 +21,8 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_slf6e"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y83dj"]
 content_margin_left = 10.0
 content_margin_top = 4.0
@@ -37,8 +39,6 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_slf6e"]
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lekqh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dr4n4"]
@@ -50,7 +50,7 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.227451, 0.72549, 0.603922, 1)
 
-[node name="UpdateButton" type="Button"]
+[node name="UpdateButton" type="Button" unique_id=567215381]
 visible = false
 offset_left = 1.0
 offset_right = 149.0
@@ -62,17 +62,17 @@ theme_override_colors/icon_normal_color = Color(0.960784, 0.960784, 0.960784, 1)
 theme_override_fonts/font = ExtResource("1_5e5k4")
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_c7fd1")
-theme_override_styles/hover = SubResource("StyleBoxFlat_y83dj")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_slf6e")
+theme_override_styles/hover = SubResource("StyleBoxFlat_y83dj")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_lekqh")
 text = "Update available"
 icon = ExtResource("2_c4d83")
 script = ExtResource("1_xtaw5")
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=584185094]
 unique_name_in_owner = true
 
-[node name="DownloadDialog" type="AcceptDialog" parent="."]
+[node name="DownloadDialog" type="AcceptDialog" parent="." unique_id=922843113]
 unique_name_in_owner = true
 transparent_bg = true
 title = "New Update"
@@ -87,15 +87,15 @@ theme_override_constants/buttons_separation = 30
 theme_override_styles/panel = SubResource("StyleBoxFlat_dr4n4")
 ok_button_text = "Close"
 
-[node name="DownloadUpdatePanel" parent="DownloadDialog" instance=ExtResource("2_vtgcx")]
+[node name="DownloadUpdatePanel" parent="DownloadDialog" unique_id=1462433780 instance=ExtResource("2_vtgcx")]
 unique_name_in_owner = true
 offset_left = 2.0
 offset_top = 2.0
 offset_right = -2.0
 offset_bottom = -80.0
 
-[node name="NeedsReloadDialog" type="ConfirmationDialog" parent="."]
+[node name="NeedsReloadDialog" type="ConfirmationDialog" parent="." unique_id=1600300494]
 unique_name_in_owner = true
 
-[node name="UpdateFailedDialog" type="AcceptDialog" parent="."]
+[node name="UpdateFailedDialog" type="AcceptDialog" parent="." unique_id=278615992]
 unique_name_in_owner = true
