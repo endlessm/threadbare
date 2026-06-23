@@ -23,7 +23,7 @@ func reiniciar_nivel(body: Node2D) -> void:
 	var tween= create_tween()
 	tween.tween_property(body, "scale", Vector2.ZERO, 2.0)
 
-	caidaChara.play("asustado")
+	caidaChara.play("defeated")
 
 	await get_tree().create_timer(2.1).timeout
 	get_tree().call_deferred("reload_current_scene")
