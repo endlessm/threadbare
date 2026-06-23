@@ -4,12 +4,12 @@ extends Node2D
 @export var tile_size: int = 64 
 
 # NODOS DE LA ESCENA
-@onready var mapa_paredes: Node = $TileMapLayers
+@onready var mapa_paredes: Node2D = $TileMapLayers
 @onready var player_node: Node2D = $Jugador 
 @onready var contenedor_materiales: CharacterBody2D = $Materiales 
 
 # VARIABLES DE ESTADO DEL JUEGO
-var player_pos: Vector2
+var player_pos: Vector2i
 var items: Array[Dictionary] = []
 var historial: Array[Dictionary] = []
 var space_pressed: bool = false
@@ -17,11 +17,11 @@ var juego_terminado: bool = false
 
 # INICIALIZACIÓN DEL NIVEL
 func _ready() -> void:
-	player_pos = Vector2(round(player_node.position.x / tile_size), round(player_node.position.y / tile_size))
+	player_pos = Vector2i(round(player_node.position.x / tile_size), round(player_node.position.y / tile_size))
 	
 	for child in contenedor_materiales.get_children():
 		if child is Sprite2D:
-			var pos_grid: Vector2 = Vector2(round(child.position.x / tile_size), round(child.position.y / tile_size))
+			var pos_grid: Vector2i = Vector2i(round(child.position.x / tile_size), round(child.position.y / tile_size))
 			var nombre: String = child.name.to_lower()
 			var tipo: String = ""
 			
@@ -51,62 +51,50 @@ func _process(_delta: float) -> void:
 		deshacer()
 		return
 		
-	var dir: Vector2 = Vector2.ZERO
-	if Input.is_action_just_pressed("ui_up"): dir = Vector2.UP
-	elif Input.is_action_just_pressed("ui_down"): dir = Vector2.DOWN
-	elif Input.is_action_just_pressed("ui_left"): dir = Vector2.LEFT
-	elif Input.is_action_just_pressed("ui_right"): dir = Vector2.RIGHT
+	var dir: Vector2i = Vector2i.ZERO
+	if Input.is_action_just_pressed("ui_up"): dir = Vector2i.UP
+	elif Input.is_action_just_pressed("ui_down"): dir = Vector2i.DOWN
+	elif Input.is_action_just_pressed("ui_left"): dir = Vector2i.LEFT
+	elif Input.is_action_just_pressed("ui_right"): dir = Vector2i.RIGHT
 	
-	if dir != Vector2.ZERO:
+	if dir != Vector2i.ZERO:
 		mover(dir)
 
 # DETECCIÓN DE COLISIONES (PAREDES)
-func is_wall(pos: Vector2) -> bool:
-	var pos_entera: Vector2i = Vector2i(round(pos.x), round(pos.y))
-	
-	if mapa_paredes.get_child_count() > 0:
-		for child in mapa_paredes.get_children():
-			if "pared" in child.name.to_lower() and child.has_method("get_cell_source_id"):
-				return child.get_cell_source_id(pos_entera) != -1
-
-	if mapa_paredes is TileMap:
-		if mapa_paredes.get_layers_count() > 1:
-			return mapa_paredes.get_cell_source_id(1, pos_entera) != -1 
-		else:
-			return mapa_paredes.get_cell_source_id(0, pos_entera) != -1
-
-	if mapa_paredes.has_method("get_cell_source_id"):
-		return mapa_paredes.get_cell_source_id(pos_entera) != -1
-		
+func is_wall(pos: Vector2i) -> bool:
+	for child in mapa_paredes.get_children():
+		if "pared" in child.name.to_lower() and child.has_method("get_cell_source_id"):
+			if child.get_cell_source_id(pos) != -1:
+				return true
 	return false
 
 # GESTIÓN DE OBJETOS INTERACTIVOS
-func get_item_at(pos: Vector2) -> Dictionary:
+func get_item_at(pos: Vector2i) -> Dictionary:
 	for item: Dictionary in items:
 		if item["activo"] and item["pos"] == pos:
 			return item
 	return {}
 
-func is_item_inactive(pos: Vector2) -> bool:
+func is_item_inactive(pos: Vector2i) -> bool:
 	for item: Dictionary in items:
 		if not item["activo"] and item["pos"] == pos:
 			return true
 	return false
 
 # LÓGICA DE CONDICIÓN DE VICTORIA (EL ALTAR)
-func get_ritual_target(pos: Vector2) -> String:
-	if pos == Vector2(29, 13): return "vela"
-	if pos == Vector2(30, 13): return "espejo"
-	if pos == Vector2(31, 13): return "vela"
-	if pos == Vector2(29, 14): return "sal"
-	if pos == Vector2(30, 14): return "moneda"
-	if pos == Vector2(31, 14): return "sal"
-	if pos == Vector2(29, 15): return "vela"
-	if pos == Vector2(30, 15): return "mana"
-	if pos == Vector2(31, 15): return "vela"
+func get_ritual_target(pos: Vector2i) -> String:
+	if pos == Vector2i(29, 13): return "vela"
+	if pos == Vector2i(30, 13): return "espejo"
+	if pos == Vector2i(31, 13): return "vela"
+	if pos == Vector2i(29, 14): return "sal"
+	if pos == Vector2i(30, 14): return "moneda"
+	if pos == Vector2i(31, 14): return "sal"
+	if pos == Vector2i(29, 15): return "vela"
+	if pos == Vector2i(30, 15): return "mana"
+	if pos == Vector2i(31, 15): return "vela" 
 	return ""
 
-func intentar_mover_item(item: Dictionary, dest: Vector2) -> bool:
+func intentar_mover_item(item: Dictionary, dest: Vector2i) -> bool:
 	if is_wall(dest) or not get_item_at(dest).is_empty() or is_item_inactive(dest):
 		return false
 
@@ -122,6 +110,7 @@ func intentar_mover_item(item: Dictionary, dest: Vector2) -> bool:
 					break
 			if faltan_otros:
 				print("Rechazo: El Maná debe ir al final.")
+				
 				return false
 			else:
 				match_item = true
@@ -136,8 +125,8 @@ func intentar_mover_item(item: Dictionary, dest: Vector2) -> bool:
 	return true
 
 # LÓGICA PRINCIPAL DE MOVIMIENTO
-func mover(dir: Vector2) -> void:
-	var next_pos: Vector2 = player_pos + dir
+func mover(dir: Vector2i) -> void:
+	var next_pos: Vector2i = player_pos + dir
 	
 	if is_wall(next_pos) or is_item_inactive(next_pos): return
 	
@@ -151,9 +140,9 @@ func mover(dir: Vector2) -> void:
 	if space_pressed:
 		if not get_item_at(next_pos).is_empty(): return 
 		
-		var pos_atras: Vector2 = player_pos - dir
+		var pos_atras: Vector2i = player_pos - dir
 		var obj_jalado: Dictionary = get_item_at(pos_atras)
-		var pos_vieja: Vector2 = player_pos
+		var pos_vieja: Vector2i = player_pos
 		
 		player_pos = next_pos
 		accion_exitosa = true
@@ -166,12 +155,13 @@ func mover(dir: Vector2) -> void:
 		var obj_empujado: Dictionary = get_item_at(next_pos)
 		
 		if not obj_empujado.is_empty():
-			var dest: Vector2 = next_pos + dir
+			var dest: Vector2i = next_pos + dir
 			var movido: bool = intentar_mover_item(obj_empujado, dest)
 			
+			# Nota: Dejo esta sección por si es una mecánica de deslizamiento propia de tu juego
 			if not movido and is_wall(dest):
-				var alt1: Vector2 = next_pos + (Vector2.LEFT if dir.y != 0 else Vector2.UP)
-				var alt2: Vector2 = next_pos + (Vector2.RIGHT if dir.y != 0 else Vector2.DOWN)
+				var alt1: Vector2i = next_pos + (Vector2i.LEFT if dir.y != 0 else Vector2i.UP)
+				var alt2: Vector2i = next_pos + (Vector2i.RIGHT if dir.y != 0 else Vector2i.DOWN)
 				
 				var libre1: bool = not is_wall(alt1) and get_item_at(alt1).is_empty() and not is_item_inactive(alt1)
 				var libre2: bool = not is_wall(alt2) and get_item_at(alt2).is_empty() and not is_item_inactive(alt2)
@@ -210,21 +200,26 @@ func check_win() -> void:
 		print("¡RITUAL COMPLETADO!")
 
 func actualizar_posiciones_visuales(animar: bool = false) -> void:
+	var player_target_pixel: Vector2 = Vector2(player_pos * tile_size)
+	
 	if animar:
-		var tween: Tween = get_tree().create_tween()
-		tween.tween_property(player_node, "position", player_pos * tile_size, 0.1)
-	else:
-		player_node.position = player_pos * tile_size
+		# Creamos UN SOLO TWEEN y lo configuramos en paralelo
+		var tween: Tween = get_tree().create_tween().set_parallel(true)
+		tween.tween_property(player_node, "position", player_target_pixel, 0.1)
 		
-	for i: Dictionary in items:
-		var target_pos: Vector2 = i["pos"] * tile_size
-		if animar:
-			var tween: Tween = get_tree().create_tween()
+		for i: Dictionary in items:
+			var target_pos: Vector2 = Vector2(i["pos"] * tile_size)
 			tween.tween_property(i["node"], "position", target_pos, 0.1)
-		else:
-			i["node"].position = target_pos
 			
-		if not i["activo"]:
-			i["node"].modulate = Color(1.2, 1.2, 2.0) 
-		else:
-			i["node"].modulate = Color(1, 1, 1)
+			if not i["activo"]:
+				i["node"].modulate = Color(1.2, 1.2, 2.0) 
+			else:
+				i["node"].modulate = Color(1, 1, 1)
+	else:
+		player_node.position = player_target_pixel
+		for i: Dictionary in items:
+			i["node"].position = Vector2(i["pos"] * tile_size)
+			if not i["activo"]:
+				i["node"].modulate = Color(1.2, 1.2, 2.0) 
+			else:
+				i["node"].modulate = Color(1, 1, 1)
