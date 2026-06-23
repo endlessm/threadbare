@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Control
 
+@onready var touchscreen_warning: PanelContainer = $TouchscreenWarning
+
+
+
 @export var tutorial_quest: Quest
 
 @onready var main_menu: Control = %MainMenu
@@ -15,6 +19,10 @@ func _ready() -> void:
 			_on_main_menu_continue_pressed()
 		else:
 			_on_start_pressed()
+			
+	$TouchscreenWarning/VBoxContainer/DismissButton.pressed.connect(_on_dismiss_pressed)
+	if _should_show_touchscreen_warning():
+		touchscreen_warning.show()
 
 
 func _input(event: InputEvent) -> void:
@@ -57,3 +65,24 @@ func _on_credits_back() -> void:
 
 func _on_options_back() -> void:
 	main_menu.show()
+
+func _should_show_touchscreen_warning() -> bool:
+	if OS.has_feature("windows") or OS.has_feature("macos") or OS.has_feature("linuxbsd"):
+		return false
+
+	var has_touch: bool = DisplayServer.is_touchscreen_available()
+	
+	var has_keyboard: bool = false
+	
+	if OS.has_feature("web_android") or OS.has_feature("web_ios"):
+		has_keyboard = false
+	else:
+		has_keyboard = DisplayServer.has_hardware_keyboard()
+
+	if has_touch and not has_keyboard:
+		return true
+		
+	return false
+
+func _on_dismiss_pressed() -> void:
+	touchscreen_warning.hide()
