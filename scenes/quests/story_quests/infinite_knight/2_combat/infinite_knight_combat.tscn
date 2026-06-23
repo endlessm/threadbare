@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://bcy53c3sfhw28" path="res://scenes/quests/story_quests/infinite_knight/2_combat/combat_components/attack_input_hint.tscn" id="16_5kkom"]
 [ext_resource type="Texture2D" uid="uid://cs8dj6t3nq3kn" path="res://scenes/quests/story_quests/infinite_knight/2_combat/combat_components/background.png" id="17_oty0w"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="18_qvo8w"]
+[ext_resource type="AudioStream" uid="uid://dh4mwcunotua3" path="res://scenes/quests/story_quests/infinite_knight/player_components/combat.mp3" id="18_yk17o"]
 
 [sub_resource type="Resource" id="Resource_o0agx"]
 script = ExtResource("12_oty0w")
@@ -186,6 +187,11 @@ offset_right = 40.0
 offset_bottom = 562.0
 scale = Vector2(2, 2)
 texture = ExtResource("17_oty0w")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1174150427]
+stream = ExtResource("18_yk17o")
+volume_db = -10.0
+autoplay = true
 
 [connection signal="cinematic_finished" from="Cinematic" to="." method="_on_cinematic_cinematic_finished"]
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
