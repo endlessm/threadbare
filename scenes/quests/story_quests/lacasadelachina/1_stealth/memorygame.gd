@@ -20,9 +20,9 @@ const CARD_BACK = "res://scenes/quests/story_quests/lacasadelachina/1_stealth/st
 @onready var bloqueo2 = get_node("/root/LacasadelachinaStealth/TileMapLayers/bloqueo2")
 @onready var bloqueo3 = get_node("/root/LacasadelachinaStealth/TileMapLayers/bloqueo3")
 
-@onready var guardia1 = get_node("/root/LacasadelachinaStealth/EnemyGuards/Guard1-GoingBackAndForth")
-@onready var guardia2 = get_node("/root/LacasadelachinaStealth/EnemyGuards/Guard2-GoingBackAndForth2")
-@onready var guardia3 = get_node("/root/LacasadelachinaStealth/EnemyGuards/Guard3-GoingBackAndForth3")
+var guardia1 : Node = null
+var guardia2 : Node = null
+var guardia3 : Node = null
 
 var ronda_actual      : int   = 0
 var pares_encontrados : int   = 0
@@ -32,6 +32,7 @@ var puede_voltear     : bool  = true
 var cartas_en_juego   : Array = []
 
 signal minijuego_completado
+signal ronda_completada_signal(ronda: int)
 
 func _ready():
 	visible = false
@@ -40,6 +41,11 @@ func _ready():
 func iniciar():
 	if visible:
 		return
+
+	guardia1 = get_node_or_null("/root/LacasadelachinaStealth/EnemyGuards/Guard1-GoingBackAndForth")
+	guardia2 = get_node_or_null("/root/LacasadelachinaStealth/EnemyGuards/Guard2-GoingBackAndForth2")
+	guardia3 = get_node_or_null("/root/LacasadelachinaStealth/EnemyGuards/Guard3-GoingBackAndForth3")
+
 	visible = true
 	get_tree().paused = true
 	_cargar_ronda()
@@ -131,16 +137,18 @@ func _evaluar_par():
 	puede_voltear = true
 
 func _ronda_completada():
-	# Oculta bloqueo y guardián de la ronda que acaba de terminar
 	if ronda_actual == 0:
-		bloqueo1.visible = false
-		guardia1.visible = false
+		bloqueo1.queue_free()
+		if is_instance_valid(guardia1):
+			guardia1.queue_free()
 	elif ronda_actual == 1:
-		bloqueo2.visible = false
-		guardia2.visible = false
+		bloqueo2.queue_free()
+		if is_instance_valid(guardia2):
+			guardia2.queue_free()
 	elif ronda_actual == 2:
-		bloqueo3.visible = false
-		guardia3.visible = false
+		bloqueo3.queue_free()
+		if is_instance_valid(guardia3):
+			guardia3.queue_free()
 
 	ronda_actual += 1
 
@@ -150,6 +158,7 @@ func _ronda_completada():
 		await get_tree().create_timer(1.5).timeout
 		visible = false
 		get_tree().paused = false
+		emit_signal("ronda_completada_signal", ronda_actual)  # ← después del unpause
 	else:
 		lbl_mensaje.text = "¡El camino es tuyo!"
 		lbl_mensaje.visible = true
