@@ -1,6 +1,8 @@
 [gd_scene format=4 uid="uid://c8m3fntuvj2jl"]
 
 [ext_resource type="TileSet" uid="uid://b8khmw2s8xy0x" path="res://scenes/quests/story_quests/voces_de_la_mina/tiles/lala_elevation.tres" id="2_i8g41"]
+[ext_resource type="Texture2D" uid="uid://7mq07u8t0g2s" path="res://scenes/quests/story_quests/voces_de_la_mina/player_components/checkpoint.png" id="2_jdl5d"]
+[ext_resource type="Texture2D" uid="uid://dv2kqk8m8gax7" path="res://scenes/quests/story_quests/voces_de_la_mina/player_components/frame_idle.png" id="3_bi1rq"]
 [ext_resource type="Resource" uid="uid://dms5d2np573wk" path="res://scenes/quests/story_quests/voces_de_la_mina/3_sequence_puzzle/character_player.tres" id="4_e1bg5"]
 [ext_resource type="TileSet" uid="uid://cvwq8kj2cnovs" path="res://scenes/quests/story_quests/voces_de_la_mina/tiles/lala_exterior_floors.tres" id="4_r3jn3"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_hmec8"]
@@ -23,7 +25,81 @@
 [ext_resource type="Resource" uid="uid://bndbuhk8tkwim" path="res://scenes/quests/story_quests/voces_de_la_mina/3_sequence_puzzle/lala_sequence_puzzle.dialogue" id="22_ccavc"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="23_opy3e"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="24_v8p8x"]
+[ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="25_e63yp"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_gltsx"]
+[ext_resource type="Resource" uid="uid://cnyo1060umpmj" path="res://scenes/quests/story_quests/voces_de_la_mina/3_sequence_puzzle/dialogo_puzzless.dialogue" id="27_ict38"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k31ts"]
+atlas = ExtResource("2_jdl5d")
+region = Rect2(0, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_30qqy"]
+atlas = ExtResource("2_jdl5d")
+region = Rect2(144, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j82hq"]
+atlas = ExtResource("2_jdl5d")
+region = Rect2(288, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8aifc"]
+atlas = ExtResource("2_jdl5d")
+region = Rect2(432, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_duwab"]
+atlas = ExtResource("3_bi1rq")
+region = Rect2(0, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iuwix"]
+atlas = ExtResource("3_bi1rq")
+region = Rect2(144, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mgofv"]
+atlas = ExtResource("3_bi1rq")
+region = Rect2(288, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_psfbl"]
+atlas = ExtResource("3_bi1rq")
+region = Rect2(432, 0, 144, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b467q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k31ts")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_30qqy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j82hq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8aifc")
+}],
+"loop": true,
+"name": &"appear",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_duwab")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iuwix")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mgofv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_psfbl")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jdl5d"]
+size = Vector2(198, 191)
 
 [sub_resource type="Resource" id="Resource_kgkl7"]
 script = ExtResource("21_ula3y")
@@ -31,6 +107,19 @@ type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="LalaSequencePuzzle" type="Node2D" unique_id=217609538]
+
+[node name="Checkpoints" type="Node2D" parent="." unique_id=2025483674]
+y_sort_enabled = true
+
+[node name="Checkpoint" parent="Checkpoints" unique_id=1789892556 instance=ExtResource("25_e63yp")]
+position = Vector2(-678, 197)
+sprite_frames = SubResource("SpriteFrames_b467q")
+dialogue = ExtResource("27_ict38")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint" unique_id=2086965494]
+position = Vector2(16, -4)
+shape = SubResource("RectangleShape2D_jdl5d")
+debug_color = Color(0, 0, 0, 0.42)
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=2088852286]
 
@@ -51,7 +140,6 @@ y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=747348360 instance=ExtResource("5_hmec8")]
 position = Vector2(-170, 9)
-safe_margin = 9.152
 speeds = ExtResource("4_e1bg5")
 sprite_frames = ExtResource("6_kx2td")
 
