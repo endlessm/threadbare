@@ -1,6 +1,8 @@
 [gd_scene format=4 uid="uid://c8m3fntuvj2jl"]
 
 [ext_resource type="TileSet" uid="uid://b8khmw2s8xy0x" path="res://scenes/quests/story_quests/voces_de_la_mina/tiles/lala_elevation.tres" id="2_i8g41"]
+[ext_resource type="Texture2D" uid="uid://7mq07u8t0g2s" path="res://scenes/quests/story_quests/voces_de_la_mina/player_components/checkpoint.png" id="2_jdl5d"]
+[ext_resource type="Texture2D" uid="uid://dv2kqk8m8gax7" path="res://scenes/quests/story_quests/voces_de_la_mina/player_components/frame_idle.png" id="3_bi1rq"]
 [ext_resource type="Resource" uid="uid://dms5d2np573wk" path="res://scenes/quests/story_quests/voces_de_la_mina/3_sequence_puzzle/character_player.tres" id="4_e1bg5"]
 [ext_resource type="TileSet" uid="uid://cvwq8kj2cnovs" path="res://scenes/quests/story_quests/voces_de_la_mina/tiles/lala_exterior_floors.tres" id="4_r3jn3"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_hmec8"]
@@ -25,19 +27,79 @@
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="24_v8p8x"]
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="25_e63yp"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_gltsx"]
-[ext_resource type="SpriteFrames" uid="uid://p7xkypy2l6q2" path="res://scenes/quests/story_quests/voces_de_la_mina/1_stealth/stealth_components/checkpoint/sprite_CheckPoint.tres" id="26_b467q"]
 [ext_resource type="Resource" uid="uid://cnyo1060umpmj" path="res://scenes/quests/story_quests/voces_de_la_mina/3_sequence_puzzle/dialogo_puzzless.dialogue" id="27_ict38"]
-[ext_resource type="PackedScene" uid="uid://cjt0ow55ilv1g" path="res://scenes/quests/story_quests/voces_de_la_mina/scenes/guard_voces.tscn" id="28_ict38"]
-[ext_resource type="SpriteFrames" uid="uid://cmgjauw4847p5" path="res://scenes/quests/story_quests/voces_de_la_mina/1_stealth/stealth_components/Guard-Patrol/spriteframe_guard_enemy.tres" id="29_jdl5d"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k31ts"]
+atlas = ExtResource("2_jdl5d")
+region = Rect2(0, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_30qqy"]
+atlas = ExtResource("2_jdl5d")
+region = Rect2(144, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j82hq"]
+atlas = ExtResource("2_jdl5d")
+region = Rect2(288, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8aifc"]
+atlas = ExtResource("2_jdl5d")
+region = Rect2(432, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_duwab"]
+atlas = ExtResource("3_bi1rq")
+region = Rect2(0, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iuwix"]
+atlas = ExtResource("3_bi1rq")
+region = Rect2(144, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mgofv"]
+atlas = ExtResource("3_bi1rq")
+region = Rect2(288, 0, 144, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_psfbl"]
+atlas = ExtResource("3_bi1rq")
+region = Rect2(432, 0, 144, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b467q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k31ts")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_30qqy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j82hq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8aifc")
+}],
+"loop": true,
+"name": &"appear",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_duwab")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iuwix")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mgofv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_psfbl")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jdl5d"]
 size = Vector2(198, 191)
-
-[sub_resource type="Curve2D" id="Curve2D_bi1rq"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, -5539.6807, 234.47937, 0, 0, 0, 0, -256.11523, 231.61987, 0, 0, 0, 0, -256.11523, 1721.4214, 0, 0, 0, 0, -8802.778, 1715.7024)
-}
-point_count = 4
 
 [sub_resource type="Resource" id="Resource_kgkl7"]
 script = ExtResource("21_ula3y")
@@ -51,28 +113,13 @@ y_sort_enabled = true
 
 [node name="Checkpoint" parent="Checkpoints" unique_id=1789892556 instance=ExtResource("25_e63yp")]
 position = Vector2(-678, 197)
-sprite_frames = ExtResource("26_b467q")
+sprite_frames = SubResource("SpriteFrames_b467q")
 dialogue = ExtResource("27_ict38")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint" unique_id=2086965494]
 position = Vector2(16, -4)
 shape = SubResource("RectangleShape2D_jdl5d")
 debug_color = Color(0, 0, 0, 0.42)
-
-[node name="EnemyGuards" type="Node2D" parent="." unique_id=1979603916]
-y_sort_enabled = true
-
-[node name="Guard1-GoingBackAndForth" parent="EnemyGuards" unique_id=689832587 node_paths=PackedStringArray("patrol_path") instance=ExtResource("28_ict38")]
-position = Vector2(-363.00012, 476)
-sprite_frames = ExtResource("29_jdl5d")
-patrol_path = NodePath("../Guard1-PatrolPath")
-move_speed = 300.0
-
-[node name="Guard1-PatrolPath" type="Path2D" parent="EnemyGuards" unique_id=1184545777]
-top_level = true
-position = Vector2(221, 394)
-scale = Vector2(0.10542126, 0.349711)
-curve = SubResource("Curve2D_bi1rq")
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=2088852286]
 
