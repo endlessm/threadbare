@@ -3,6 +3,10 @@
 class_name SequencePuzzle
 extends Node2D
 
+## Emitted when the progress in the puzzle changes. This could be due to restoring saved state. For
+## the game change triggered by the player, see [member step_solved].
+signal progress_changed
+
 ## Emitted when the entire puzzle is solved
 signal solved
 
@@ -73,6 +77,7 @@ func _find_objects() -> void:
 
 
 func _update_current_step() -> void:
+	var previous_step := _current_step
 	for i in range(_current_step, steps.size()):
 		# We find the next fire that is not solved, and that's the _current_step
 		if steps[i].hint_sign.is_solved:
@@ -80,6 +85,9 @@ func _update_current_step() -> void:
 			_position = 0
 		else:
 			break
+
+	if _current_step != previous_step:
+		progress_changed.emit()
 
 	if interactive_hints and _current_step < steps.size():
 		steps[_current_step].hint_sign.interactive_hint = true
@@ -132,6 +140,14 @@ func _on_kicked(object: SequencePuzzleObject) -> void:
 
 func get_progress() -> int:
 	return _current_step
+
+
+func set_progress(step: int) -> void:
+	for i in range(steps.size()):
+		if i <= step:
+			steps[i].hint_sign.is_solved = true
+
+	_update_current_step()
 
 
 func is_solved() -> bool:

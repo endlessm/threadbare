@@ -22,6 +22,7 @@ func _ready() -> void:
 		return
 
 	puzzle.solved.connect(_on_puzzle_solved)
+	puzzle.progress_changed.connect(_on_puzzle_progress_changed)
 
 
 ## Call this method from dialogue to record that the player has been offered one more hint for the
@@ -45,6 +46,11 @@ func _get_configuration_warnings() -> PackedStringArray:
 		warnings.append("No puzzle assigned")
 
 	return warnings
+
+
+func _on_puzzle_progress_changed() -> void:
+	if puzzle.is_solved():
+		_on_puzzle_solved()
 
 
 func _on_puzzle_solved() -> void:
