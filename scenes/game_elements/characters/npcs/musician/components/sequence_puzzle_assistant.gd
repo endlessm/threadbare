@@ -15,10 +15,6 @@ extends Talker
 		puzzle = new_value
 		update_configuration_warnings()
 
-## The [member Talker.dialogue] configured on this node can check and modify this property to play
-## different dialogue for the player's first interaction with this NPC, if desired.
-var first_conversation: bool = true
-
 
 func _ready() -> void:
 	super._ready()
