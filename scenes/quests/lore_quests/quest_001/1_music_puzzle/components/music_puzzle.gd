@@ -13,19 +13,21 @@ func _ready() -> void:
 		sequence_puzzle.set_progress(GameState.quest.facts.music_puzzle_progress)
 
 
-func _change_music(step_index: int) -> void:
+func _get_next_clip_name(step_index: int) -> StringName:
 	# This assumes that the clip indexes correspond to the puzzle indexes.
 	var stream := background_music.stream as AudioStreamInteractive
-	var next_clip := stream.get_clip_name(step_index + 1)
-	MusicPlayer.switch_to_clip(next_clip)
+	return stream.get_clip_name(step_index)
 
 
 func _on_sequence_puzzle_step_solved(step_index: int) -> void:
 	# Persist the state:
 	GameState.quest.facts.music_puzzle_progress = step_index
 
-	_change_music(step_index)
+	var next_clip := _get_next_clip_name(step_index)
+	MusicPlayer.switch_to_clip(next_clip)
 
 
 func _on_sequence_puzzle_progress_changed() -> void:
-	_change_music(sequence_puzzle.get_progress())
+	var step_index := sequence_puzzle.get_progress()
+	var next_clip := _get_next_clip_name(step_index)
+	MusicPlayer.play_stream(background_music.stream as AudioStreamInteractive, next_clip)
