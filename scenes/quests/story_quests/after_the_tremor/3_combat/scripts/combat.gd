@@ -35,8 +35,12 @@ func _ready():
 			health_bar.value = boss_health.needed_amount
 	
 	if boss: boss.start()
+	# TODO: Make Charlie no longer a player class
 	if charlie: _setup_combat_player(charlie)
-	if bryan: _setup_combat_player(bryan)
+	if bryan:
+		_setup_combat_player(bryan)
+		for p in get_tree().get_nodes_in_group("player"):
+			p.remove_from_group("player")
 	if music and not music.playing: music.play()
 
 func _setup_combat_player(p_node):
@@ -67,5 +71,7 @@ func _on_boss_defeated():
 		if sprite: sprite.play("idle"); sprite.stop()
 
 	if bryan:
+		bryan.add_to_group("player")
+		InputHud.refresh_scene_status()
 		bryan.speeds.walk_speed = 300.0
 		bryan.speeds.run_speed = 500.0

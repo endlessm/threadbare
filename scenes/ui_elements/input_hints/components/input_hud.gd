@@ -108,3 +108,8 @@ func _on_dialogue_ended(_resource: DialogueResource) -> void:
 
 func _display_skip() -> void:
 	skip_input_hint.visible = true
+
+## Public function to force a refresh of input hints
+## This is useful when you want to manipulate events mid-scene
+func refresh_scene_status() -> void:
+	_on_scene_changed()
