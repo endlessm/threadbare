@@ -208,16 +208,16 @@ func _update_player_awareness(delta: float) -> void:
 		state = State.ALERTED
 		player_detected.emit(_player)
 
+
 func _update_animation() -> void:
 	if state == State.ALERTED:
 		return
-	animated_sprite_2d.flip_v = false
+
 	if velocity.is_zero_approx():
-		animated_sprite_2d.play(&"idle")
-	elif velocity.y > 0:
-		animated_sprite_2d.play(&"walk_down")
+		animation_player.play(&"idle")
 	else:
-		animated_sprite_2d.play(&"walk_up")
+		animation_player.play(&"walk")
+
 
 func _update_debug_info() -> void:
 	debug_info.visible = show_debug_info
@@ -464,8 +464,6 @@ func _on_instant_detection_area_body_entered(body: Node2D) -> void:
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
-	if body.is_in_group("npc"):  # ← ignora NPCs
-		return
 	_player = body
 	if _is_sight_to_point_blocked(body.global_position):
 		return
@@ -474,6 +472,7 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 		player_detected.emit(_player)
 	else:
 		state = State.DETECTING
+
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
 	_player = null
