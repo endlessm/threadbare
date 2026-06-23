@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dbkni3nqne6ys" path="res://scenes/quests/story_quests/infinite_knight/3_boss/boss.tscn" id="10_vrjp5"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="11_fwuqd"]
 [ext_resource type="Texture2D" uid="uid://cs8dj6t3nq3kn" path="res://scenes/quests/story_quests/infinite_knight/2_combat/combat_components/background.png" id="12_u7k86"]
+[ext_resource type="AudioStream" uid="uid://dh4mwcunotua3" path="res://scenes/quests/story_quests/infinite_knight/player_components/combat.mp3" id="13_u7k86"]
 
 [sub_resource type="Resource" id="Resource_3gar4"]
 script = ExtResource("8_nd104")
@@ -80,5 +81,10 @@ offset_right = 503.0
 offset_bottom = 362.0
 scale = Vector2(2, 2)
 texture = ExtResource("12_u7k86")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=969028947]
+stream = ExtResource("13_u7k86")
+volume_db = -10.0
+autoplay = true
 
 [connection signal="jefe_derrotado" from="OnTheGround/boss" to="OnTheGround/CollectibleItem" method="reveal"]
