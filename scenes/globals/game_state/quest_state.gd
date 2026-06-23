@@ -5,6 +5,10 @@ extends Resource
 
 @export var quest: Quest
 
+## Generic game state facts about the current quest. Outside quests, use [member GlobalState.facts]
+## instead.
+@export var facts: Dictionary[String, Variant]
+
 ## Resource path of [member quest], which is what is actually saved to disk.
 ## Use [member quest] instead.
 @export_storage var quest_path: String:

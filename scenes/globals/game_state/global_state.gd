@@ -36,6 +36,9 @@ signal helper_changed
 		completed_quests_changed.emit()
 		emit_changed()
 
+## Generic game state facts. For quests, use [member QuestState.facts] instead.
+@export var facts: Dictionary[String, Variant]
+
 ## Global player state. During a quest, [member QuestState.player] should be
 ## used instead. [GameState.player] always points to the correct instance.
 @export var player: PlayerState = PlayerState.new()
