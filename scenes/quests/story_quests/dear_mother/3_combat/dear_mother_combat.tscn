@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://bv08t775g112c"]
 
 [ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_tcaov"]
+[ext_resource type="Script" uid="uid://ci3aibvrk6ak3" path="res://scenes/quests/story_quests/dear_mother/extra_scripts/dear_mother_combat.gd" id="1_wktfi"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="2_gjwyc"]
 [ext_resource type="Resource" uid="uid://ddbaqxasxl1ja" path="res://scenes/quests/story_quests/dear_mother/3_combat/combat_components/dear_mother_combat.dialogue" id="3_y38hj"]
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="4_5pxk7"]
@@ -17,6 +18,7 @@
 [ext_resource type="SpriteFrames" uid="uid://bistc0115w5u2" path="res://scenes/quests/story_quests/dear_mother/3_combat/combat_components/dear_mother_target_spriteframes.tres" id="14_ttb70"]
 [ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="17_lsn22"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="18_iggd8"]
+[ext_resource type="PackedScene" uid="uid://cknm6g5dn5r3y" path="res://scenes/quests/story_quests/dear_mother/extra_scenes/puerta/puerta.tscn" id="18_scldq"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
 radius = 32.0
@@ -256,6 +258,7 @@ _data = {
 
 [node name="DearMotherCombat" type="Node2D" unique_id=1610054737]
 y_sort_enabled = true
+script = ExtResource("1_wktfi")
 
 [node name="PlayerMode" type="Node" parent="." unique_id=969358735]
 script = ExtResource("1_tcaov")
@@ -269,7 +272,6 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="FillGameLogic" type="Node" parent="." unique_id=1828019770]
 script = ExtResource("4_5pxk7")
-barrels_to_win = 4
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=738016104]
@@ -292,7 +294,7 @@ y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=1799818537 instance=ExtResource("8_4w22d")]
 unique_name_in_owner = true
-position = Vector2(348, 335)
+position = Vector2(-164, 375)
 player_name = "Saori"
 sprite_frames = ExtResource("9_vk7ks")
 
@@ -313,7 +315,7 @@ script = ExtResource("10_3ve5y")
 
 [node name="ThrowingNPC" type="CharacterBody2D" parent="OnTheGround" unique_id=2065424633 groups=["throwing_enemy"]]
 unique_name_in_owner = true
-position = Vector2(480, -8)
+position = Vector2(484, 417)
 collision_layer = 2
 collision_mask = 17
 motion_mode = 1
@@ -324,6 +326,9 @@ sprite_frames = ExtResource("11_vk7ks")
 projectile_scene = ExtResource("12_qgnua")
 projectile_speed = 70.0
 projectile_follows_player = true
+walking_time = 1.0
+walking_range = 310.0
+walking_speed = 100.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround/ThrowingNPC" unique_id=1865971466]
 unique_name_in_owner = true
@@ -376,25 +381,25 @@ max_distance = 1000.0
 bus = &"SFX"
 
 [node name="Target3" parent="OnTheGround" unique_id=1832726000 instance=ExtResource("13_vokn4")]
-position = Vector2(736, 40)
+position = Vector2(950, 90)
+sprite_frames = ExtResource("14_ttb70")
+label = ""
+color = Color(1, 1, 1, 1)
+
+[node name="Target5" parent="OnTheGround" unique_id=1861594411 instance=ExtResource("13_vokn4")]
+position = Vector2(950, 671)
 sprite_frames = ExtResource("14_ttb70")
 label = ""
 color = Color(1, 1, 1, 1)
 
 [node name="Target4" parent="OnTheGround" unique_id=857122250 instance=ExtResource("13_vokn4")]
-position = Vector2(224, 32)
+position = Vector2(31, 90)
 sprite_frames = ExtResource("14_ttb70")
 label = ""
 color = Color(1, 1, 1, 1)
 
-[node name="Target5" parent="OnTheGround" unique_id=1348280126 instance=ExtResource("13_vokn4")]
-position = Vector2(-224, 168)
-sprite_frames = ExtResource("14_ttb70")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target6" parent="OnTheGround" unique_id=1005497940 instance=ExtResource("13_vokn4")]
-position = Vector2(1184, 176)
+[node name="Target6" parent="OnTheGround" unique_id=919278201 instance=ExtResource("13_vokn4")]
+position = Vector2(31, 682)
 sprite_frames = ExtResource("14_ttb70")
 label = ""
 color = Color(1, 1, 1, 1)
@@ -403,11 +408,16 @@ color = Color(1, 1, 1, 1)
 position = Vector2(-216, 704)
 highlight_color = Color(0, 0.4392157, 1, 1)
 
+[node name="puerta" parent="OnTheGround" unique_id=838752789 instance=ExtResource("18_scldq")]
+position = Vector2(1203, 417)
+next_scene = "uid://7lyvjrlgowg0"
+
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1277924950]
 
 [node name="HUD" parent="." unique_id=1216951978 instance=ExtResource("18_iggd8")]
 
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
+[connection signal="goal_reached" from="FillGameLogic" to="." method="mostrar_puerta"]
 [connection signal="body_entered" from="OnTheGround/Player/PlayerHarm/HitBox" to="OnTheGround/Player/DetectorProyectiles" method="_on_hit_box_body_entered"]
 
 [editable path="OnTheGround/Player"]
