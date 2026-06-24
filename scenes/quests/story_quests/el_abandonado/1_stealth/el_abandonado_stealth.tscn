@@ -49,6 +49,8 @@
 [ext_resource type="Texture2D" uid="uid://b6vt2m1bh0x4a" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/Hongo Lab.png" id="47_q13pp"]
 [ext_resource type="PackedScene" uid="uid://4kx4ieskeshh" path="res://scenes/quests/story_quests/el_abandonado/1_stealth/stealth_components/Hada.tscn" id="48_7hnus"]
 [ext_resource type="Script" uid="uid://b3v4uldliajvk" path="res://scenes/quests/story_quests/el_abandonado/1_stealth/area_2d.gd" id="49_q13pp"]
+[ext_resource type="AudioStream" uid="uid://dq1ndq63dgqnm" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/MUSICA/SCP-x1x.mp3" id="50_5v5x2"]
+[ext_resource type="AudioStream" uid="uid://3tps34hnyey0" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/MUSICA/Night of Chaos.mp3" id="51_pcek2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5vl5k"]
 size = Vector2(170.125, 252)
@@ -1963,6 +1965,15 @@ script = ExtResource("49_q13pp")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=918933362]
 position = Vector2(10616, 445)
 shape = SubResource("RectangleShape2D_8tf0m")
+
+[node name="Persecucion" type="AudioStreamPlayer" parent="." unique_id=830257081]
+stream = ExtResource("50_5v5x2")
+volume_db = -39.374
+
+[node name="Fondo" type="AudioStreamPlayer" parent="." unique_id=1451661004]
+stream = ExtResource("51_pcek2")
+volume_db = -14.181
+autoplay = true
 
 [connection signal="body_entered" from="NPC_1/Area2D" to="NPC_1" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="NPC_1/Area2D" to="NPC_1" method="_on_area_2d_body_exited"]
