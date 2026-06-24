@@ -271,6 +271,7 @@ func _al_recibir_bolita(body: Node2D) -> void:
 		jugador.defeat(false)
 
 # --- LIMPIEZA DE ALAS (CON ILUSIÓN DE ELECCIÓN) ---
+# --- LIMPIEZA DE ALAS (CON ILUSIÓN DE ELECCIÓN) ---
 func _al_completar_jarron_izq() -> void:
 	jarrones_izq_completados += 1
 	if jarrones_izq_completados == 2:
@@ -279,6 +280,11 @@ func _al_completar_jarron_izq() -> void:
 		if is_instance_valid(enemigo_2): enemigo_2.queue_free()
 		get_tree().call_group("projectiles", "remove")
 		
+		# ¡AÑADIDO! Texto épico de superación
+		if is_instance_valid(panel_pensamiento):
+			var frases = ["La ira se desvanece...", "Aún tengo control sobre esto.", "Un peso menos."]
+			panel_pensamiento.mostrar_pensamiento(frases.pick_random())
+			
 		if is_instance_valid(hilo_izq): 
 			hilo_izq.dialogue_title = "hilo_1" if alas_limpiadas == 1 else "hilo_2"
 			hilo_izq.reveal()
@@ -290,6 +296,11 @@ func _al_completar_jarron_der() -> void:
 		if is_instance_valid(enemigo_3): enemigo_3.queue_free()
 		if is_instance_valid(enemigo_4): enemigo_4.queue_free()
 		get_tree().call_group("projectiles", "remove")
+		
+		# ¡AÑADIDO! Texto épico de superación
+		if is_instance_valid(panel_pensamiento):
+			var frases = ["No me dejaré arrastrar.", "Respiro de nuevo.", "Paso a paso, la culpa cede."]
+			panel_pensamiento.mostrar_pensamiento(frases.pick_random())
 		
 		if is_instance_valid(hilo_der): 
 			hilo_der.dialogue_title = "hilo_1" if alas_limpiadas == 1 else "hilo_2"
