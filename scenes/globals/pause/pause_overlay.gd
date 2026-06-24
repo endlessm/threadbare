@@ -50,7 +50,7 @@ func _on_abandon_quest_pressed() -> void:
 	abandon_quest()
 
 
-func abandon_quest() -> void:
+func abandon_quest(suspend: bool = true) -> void:
 	if not GameState.quest:
 		push_warning("No quest to abandon")
 		return
@@ -63,7 +63,7 @@ func abandon_quest() -> void:
 	else:
 		abandon_scene = frays_end
 
-	GameState.abandon_quest()
+	GameState.abandon_quest(suspend)
 	SceneSwitcher.change_to_file_with_transition(
 		abandon_scene, abandon_spawn_point, Transition.Effect.FADE, Transition.Effect.FADE
 	)

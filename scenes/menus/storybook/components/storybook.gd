@@ -4,23 +4,12 @@ class_name Storybook
 extends CanvasLayer
 ## Offers a choice of quests by scanning a given [member quest_directory].
 
-## Emitted when the player chooses a quest; or leaves the storybook without choosing a quest, in
-## which case [code]quest[/code] is [code]null[/code].
-signal selected(quest: Quest)
-
-## Template quest, which is expected to be blank and so is treated specially.
-const STORY_QUEST_TEMPLATE: Quest = preload("uid://ddxn14xw66ud8")
-
-## Replacement metadata for the template's blank metadata
-const TEMPLATE_QUEST_METADATA: Quest = preload("uid://dwl8letaanhhi")
-
-## Sprite frames for the template quest
-const TEMPLATE_PLAYER_FRAMES: SpriteFrames = preload("uid://vwf8e1v8brdp")
-
-## Animation for the template quest
-const TEMPLATE_ANIMATION_NAME: StringName = &"idle"
-
-const QUEST_RESOURCE_NAME := "quest.tres"
+## Emitted when the player chooses a quest from the storybook, with
+## [param restart] indicating whether the quest should be restarted
+## ([code]true[/code]) or continued ([code]false[/code]) if it is in progress.
+## When the player leaves the storybook without choosing a quest, emitted with
+## [param quest] set to [code]null[/code].
+signal selected(quest: Quest, restart: bool)
 
 ## Quests to show in the storybook.
 @export var quests: Array[Quest]
@@ -42,8 +31,6 @@ func _ready() -> void:
 	var previous_button: Button = null
 	for i in quests.size():
 		var quest: Quest = quests[i]
-		if quest == STORY_QUEST_TEMPLATE:
-			quest = TEMPLATE_QUEST_METADATA
 		var button := Button.new()
 		button.text = quest.get_title()
 		button.theme_type_variation = "FlatButton"
@@ -83,17 +70,36 @@ func _update_page_visibility() -> void:
 		var quest_index: int = _current_spread_index - 1
 		if quest_index >= 0 and quest_index < quests.size():
 			var quest: Quest = quests[quest_index]
-			if quest == STORY_QUEST_TEMPLATE:
-				quest = TEMPLATE_QUEST_METADATA
 			storybook_page.quest = quest
 
 			if storybook_page.play_button and is_instance_valid(storybook_page.play_button):
 				if not storybook_page.play_button.has_focus():
 					storybook_page.play_button.grab_focus()
 
+			# TODO: move the back button into the page scene &
+			# set the focus relationships in the inspector.
 			back_button.focus_previous = storybook_page.play_button.get_path()
 			storybook_page.play_button.focus_next = back_button.get_path()
-			storybook_page.play_button.focus_neighbor_left = back_button.get_path()
+
+			if storybook_page.restart_button.visible:
+				back_button.focus_next = storybook_page.restart_button.get_path()
+				back_button.focus_neighbor_right = storybook_page.restart_button.get_path()
+				storybook_page.restart_button.focus_previous = back_button.get_path()
+				storybook_page.restart_button.focus_neighbor_left = back_button.get_path()
+
+				storybook_page.restart_button.focus_next = storybook_page.play_button.get_path()
+				storybook_page.restart_button.focus_neighbor_right = (
+					storybook_page.play_button.get_path()
+				)
+				storybook_page.play_button.focus_previous = storybook_page.restart_button.get_path()
+				storybook_page.play_button.focus_neighbor_left = (
+					storybook_page.restart_button.get_path()
+				)
+			else:
+				back_button.focus_next = storybook_page.play_button.get_path()
+				back_button.focus_neighbor_right = storybook_page.play_button.get_path()
+				storybook_page.play_button.focus_neighbor_left = back_button.get_path()
+				storybook_page.play_button.focus_previous = back_button.get_path()
 
 
 func _switch_to_page(spread_index: int) -> void:
@@ -149,7 +155,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"ui_cancel"):
 		# Go back
 		get_viewport().set_input_as_handled()
-		selected.emit(null)
+		selected.emit(null, false)
 	elif event.is_action_pressed("next_tab"):
 		_on_right_button_pressed()
 	elif event.is_action_pressed("previous_tab"):
@@ -164,15 +170,12 @@ func _on_quest_button_pressed(button: Button) -> void:
 	_switch_to_page(quest_index + 1)
 
 
-func _on_storybook_page_selected(quest: Quest) -> void:
-	if quest == TEMPLATE_QUEST_METADATA:
-		selected.emit(STORY_QUEST_TEMPLATE)
-	else:
-		selected.emit(quest)
+func _on_storybook_page_selected(quest: Quest, restart: bool) -> void:
+	selected.emit(quest, restart)
 
 
 func _on_back_button_pressed() -> void:
-	selected.emit(null)
+	selected.emit(null, false)
 
 
 func reset_focus() -> void:

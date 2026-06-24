@@ -88,10 +88,34 @@ func _ready() -> void:
 		return
 
 
+## Restores [member quest] and [member scene] from the point where the quest was
+## previously suspended. [method can_restore_quest] must return
+## [code]true[/code] for this to be legal.
+func restore_quest() -> void:
+	if not quest:
+		push_error("restore_quest() but not on a quest")
+		return
+
+	var key := quest.quest.resource_path
+	if key not in global.suspended_quests:
+		push_error("Tried to restore %s but was not suspended" % key)
+		return
+
+	var suspended_quest := global.suspended_quests[key]
+	global.suspended_quests.erase(key)
+
+	quest = suspended_quest.quest
+	scene = suspended_quest.scene
+
+	if quest.quest is LoreQuest:
+		# Add any lore abilities that the player gained since suspending this
+		# quest.
+		quest.player.abilities |= global.player.abilities
+
+
 ## Sets [member quest], setting up a new [PlayerState] if necessary.
-## Note that this does not actually switch to the first scene of [param
-## new_quest].
-func start_quest(new_quest: Quest) -> void:
+## Note that this does not switch scenes into the quest.
+func set_quest(new_quest: Quest) -> void:
 	var quest_player_state: PlayerState
 	if new_quest is LoreQuest:
 		# Duplicate the current global player state. If the quest is completed,
@@ -152,7 +176,18 @@ func mark_quest_completed() -> void:
 
 
 ## Abandon the current [member quest] without marking it as completed.
-func abandon_quest() -> void:
+## If [param suspend] is [code]true[/code], progress in the quest will be saved
+## so that it can be resumed later.
+func abandon_quest(suspend: bool = true) -> void:
+	if not quest:
+		push_warning("abandon_quest(): no active quest")
+		return
+
+	# TODO: only suspend the quest if meaningful progress has been made, not if
+	# the player abandons it immediately.
+	if suspend:
+		global.suspended_quests[quest.quest.resource_path] = SuspendedQuestState.new(quest, scene)
+
 	quest = null
 
 
