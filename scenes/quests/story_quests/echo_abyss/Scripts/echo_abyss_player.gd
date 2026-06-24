@@ -119,12 +119,22 @@ func _trigger_transformation() -> void:
 
 	if transformation_sprite_frames:
 		sprite.sprite_frames = transformation_sprite_frames
+	
+	if sprite.sprite_frames.has_animation(&"transformation"):
+		sprite.sprite_frames.set_animation_loop(&"transformation", false)
 
 	sprite.play(&"transformation")
 	await sprite.animation_finished
-
-	if transformation_sprite_frames:
-		sprite.sprite_frames = original_frames
+	
+	# 2. CAMBIO DE FORMA CORRECTO:
+	# Cargamos el archivo .tres de la segunda forma que encontramos en tu carpeta
+	var second_form := load("res://scenes/quests/story_quests/echo_abyss/player_components/second_form_azrael.tres")
+	if second_form:
+		sprite.sprite_frames = second_form
+	else:
+		# Si la ruta cambia por algo, dejamos esto como respaldo de seguridad
+		if transformation_sprite_frames:
+			sprite.sprite_frames = original_frames
 
 	sprite.play(&"idle")
 	mode = Mode.USER_CONTROLLED
