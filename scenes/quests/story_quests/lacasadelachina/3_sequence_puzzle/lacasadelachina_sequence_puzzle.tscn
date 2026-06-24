@@ -14,11 +14,8 @@
 [ext_resource type="SpriteFrames" uid="uid://cdg57yxmyvupu" path="res://scenes/quests/story_quests/lacasadelachina/3_sequence_puzzle/lacasadelachina_sign.tres" id="17_0yttj"]
 [ext_resource type="SpriteFrames" uid="uid://djtwhv330xygi" path="res://scenes/quests/story_quests/lacasadelachina/3_sequence_puzzle/lacasadelachina_sign_2.tres" id="18_hfur3"]
 [ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="19_h2u56"]
-[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="20_jgr4j"]
 [ext_resource type="Script" uid="uid://do8s3iygtx15c" path="res://scenes/quests/story_quests/lacasadelachina/3_sequence_puzzle/llave.gd" id="21_dfgck"]
 [ext_resource type="Texture2D" uid="uid://bdhfcs6igu6di" path="res://assets/third_party/tiny-swords/Deco/14.png" id="21_leei8"]
-[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="21_wsqjl"]
-[ext_resource type="Resource" uid="uid://c054qmr6hgpcc" path="res://scenes/quests/story_quests/lacasadelachina/3_sequence_puzzle/lacasadelachina_sequence_puzzle.dialogue" id="22_6y471"]
 [ext_resource type="Script" uid="uid://fgjynva86oaj" path="res://scenes/quests/story_quests/lacasadelachina/3_sequence_puzzle/rigid_body_2d.gd" id="23_030t7"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="23_lwk7y"]
 [ext_resource type="Texture2D" uid="uid://u8wlv6s7l7tl" path="res://assets/first_party/rocks/Rock_Greyscale_Idle.png" id="24_0ay6k"]
@@ -37,18 +34,8 @@
 [ext_resource type="Texture2D" uid="uid://blp7lsvxltas7" path="res://assets/first_party/wildlife/butterfly/flower_2.png" id="35_tn7t8"]
 [ext_resource type="Script" uid="uid://dwqeskv2svysu" path="res://scenes/quests/story_quests/lacasadelachina/3_sequence_puzzle/area_2d_15.gd" id="35_v7706"]
 
-[sub_resource type="Resource" id="Resource_x6tun"]
-script = ExtResource("21_wsqjl")
-type = 2
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dfgck"]
-radius = 17.856506
-height = 59.713135
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lkvkv"]
-radius = 13.856445
-height = 57.569336
+[sub_resource type="CircleShape2D" id="CircleShape2D_v7706"]
+radius = 35.846973
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1a4pf"]
 radius = 35.76938
@@ -560,13 +547,6 @@ script = ExtResource("19_h2u56")
 sequence = [NodePath("../../Objects/Blue"), null, null, null]
 hint_sign = NodePath("../../Signs/HintSign2")
 
-[node name="CollectibleItem" parent="OnTheGround" unique_id=1678374994 instance=ExtResource("20_jgr4j")]
-position = Vector2(1128, 1624)
-next_scene = "uid://bas541onks7th"
-item = SubResource("Resource_x6tun")
-collected_dialogue = ExtResource("22_6y471")
-dialogue_title = &"well_done"
-
 [node name="Sign" parent="OnTheGround" unique_id=263994380 instance=ExtResource("23_lwk7y")]
 position = Vector2(-208, 656)
 direction = 1
@@ -615,27 +595,27 @@ position = Vector2(-24, 8)
 script = ExtResource("25_4j8e1")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
-[node name="Llave" type="CharacterBody2D" parent="." unique_id=672810619 node_paths=PackedStringArray("puntos", "label_mensaje")]
+[node name="Llave" type="CharacterBody2D" parent="." unique_id=672810619 node_paths=PackedStringArray("puntos")]
 position = Vector2(-8, 1783.9999)
 rotation = -0.5235988
 script = ExtResource("21_dfgck")
 puntos = [NodePath("../OnTheGround/puntollave/punto1"), NodePath("../OnTheGround/puntollave/punto2"), NodePath("../OnTheGround/puntollave/punto3"), NodePath("../OnTheGround/puntollave/punto4"), NodePath("../OnTheGround/puntollave/punto5")]
-label_mensaje = NodePath("../ScreenOverlay/MensajeLlave")
 
 [node name="Sprite2D" type="Sprite2D" parent="Llave" unique_id=256717006]
+position = Vector2(-4.901985, 14.490486)
 texture = ExtResource("21_leei8")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Llave" unique_id=834644822]
+[node name="Hitbox" type="Area2D" parent="Llave" unique_id=374370354 groups=["player"]]
+position = Vector2(-6.134035, 12.624457)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Llave/Hitbox" unique_id=834644822]
+position = Vector2(1720.9366, 543.25055)
 rotation = 1.0471976
-shape = SubResource("CapsuleShape2D_dfgck")
+shape = SubResource("CircleShape2D_v7706")
 disabled = true
 
-[node name="Hitbox" type="Area2D" parent="Llave" unique_id=374370354]
-position = Vector2(-1728.2047, -526.6619)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Llave/Hitbox" unique_id=976284652]
-rotation = 1.0471976
-shape = SubResource("CapsuleShape2D_lkvkv")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Llave" unique_id=1507058908]
+position = Vector2(-2.3039088, 15.990486)
 
 [node name="RigidBody2D2" type="Area2D" parent="." unique_id=1015841487]
 position = Vector2(447, 175)
@@ -867,7 +847,6 @@ texture = ExtResource("35_tn7t8")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Area2D10" unique_id=912236728]
 libraries/ = SubResource("AnimationLibrary_h64je")
 
-[connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]
 [connection signal="body_entered" from="Llave/Hitbox" to="Llave" method="_on_hitbox_body_entered"]
 [connection signal="body_entered" from="RigidBody2D2" to="RigidBody2D2" method="_on_body_entered"]
 [connection signal="body_entered" from="RigidBody2D3" to="RigidBody2D3" method="_on_body_entered"]
