@@ -45,4 +45,4 @@ func _on_corazon_murio() -> void:
 	await get_tree().create_timer(tiempo_reiniciar_al_perder).timeout
 
 	combate_perdido.emit()
-	get_tree().reload_current_scene()
+	queue_free()

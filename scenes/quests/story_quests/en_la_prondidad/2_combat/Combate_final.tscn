@@ -122,7 +122,7 @@ texture = ExtResource("10_lqaim")
 
 [node name="CollectibleItem" parent="OnTheGround" unique_id=1864193206 instance=ExtResource("15_uueub")]
 unique_name_in_owner = true
-position = Vector2(1785, 499)
+position = Vector2(2184, 467)
 revealed = false
 next_scene = "uid://bsrxki3uvqybt"
 item = SubResource("Resource_w84lh")
@@ -134,10 +134,15 @@ position = Vector2(252, 1773)
 highlight_color = Color(0, 0.4392157, 1, 1)
 
 [node name="Osohilo" type="Sprite2D" parent="OnTheGround" unique_id=885789403]
-visible = false
 z_index = 10
-position = Vector2(1785, 498)
+position = Vector2(2185, 463)
+scale = Vector2(0.93750155, 0.99999994)
 texture = ExtResource("15_lbfcp")
+
+[node name="PointLight2D2" type="PointLight2D" parent="OnTheGround/Osohilo" unique_id=456108307]
+scale = Vector2(0.18994142, 0.15625004)
+enabled = false
+texture = ExtResource("10_lqaim")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1277924950]
 
@@ -169,7 +174,7 @@ texture = ExtResource("13_raop8")
 
 [node name="HUD" parent="." unique_id=1216951978 instance=ExtResource("18_gab03")]
 
-[node name="EnemigoHermano" type="CharacterBody2D" parent="." unique_id=1095555936 node_paths=PackedStringArray("contenedor_combate", "player", "camara_jugador", "animacion", "oso", "interact_area", "talk_behavior")]
+[node name="EnemigoHermano" type="CharacterBody2D" parent="." unique_id=1095555936 node_paths=PackedStringArray("contenedor_combate", "player", "camara_jugador", "animacion", "oso", "luz", "text1", "text2", "interact_area", "talk_behavior")]
 position = Vector2(1966, 445)
 scale = Vector2(1.0185953, 1)
 script = ExtResource("19_raop8")
@@ -179,6 +184,9 @@ player = NodePath("../OnTheGround/Player")
 camara_jugador = NodePath("../OnTheGround/Player/Camera2D")
 animacion = NodePath("AnimatedSprite2D")
 oso = NodePath("../OnTheGround/Osohilo")
+luz = NodePath("../OnTheGround/Osohilo/PointLight2D2")
+text1 = NodePath("../ScreenOverlay/TextureRect")
+text2 = NodePath("../ScreenOverlay/TextureRect2")
 interact_area = NodePath("InteractArea")
 talk_behavior = NodePath("TalkBehavior")
 dialogo_final = ExtResource("21_ybm8k")

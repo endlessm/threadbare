@@ -9,6 +9,9 @@ signal combate_completado
 @export var animacion: AnimatedSprite2D
 
 @export var oso: Sprite2D
+@export var luz: PointLight2D
+@export var text1: TextureRect
+@export var text2: TextureRect
 
 @export var interact_area: InteractArea
 @export var talk_behavior: TalkBehavior
@@ -62,6 +65,9 @@ func iniciar_combate() -> void:
 	if combate_actual.has_signal("combate_ganado"):
 		combate_actual.combate_ganado.connect(_on_combate_ganado)
 
+	if combate_actual.has_signal("combate_perdido"):
+		combate_actual.combate_perdido.connect(_on_combate_perdido)
+
 	var camara_combate: Camera2D = combate_actual.get_node_or_null("Camera2D")
 
 	if camara_combate != null:
@@ -79,6 +85,8 @@ func bloquear_player() -> void:
 
 	if player is CharacterBody2D:
 		player.velocity = Vector2.ZERO
+	text1.visible= false
+	text2.visible= false
 
 func devolver_player() -> void:
 	if player == null:
@@ -88,11 +96,16 @@ func devolver_player() -> void:
 		player.mode = Player.Mode.USER_CONTROLLED
 	elif player.has_method("return_control"):
 		player.return_control(self)
+	
+	text1.visible= true
+	text2.visible= true
+
 
 func _on_combate_ganado() -> void:
 	combate_ganado = true
 	combate_activo = false
 	oso.visible =true
+	luz.enabled = true
 
 	if camara_jugador != null:
 		camara_jugador.enabled = true
@@ -104,3 +117,13 @@ func _on_combate_ganado() -> void:
 
 	devolver_player()
 	combate_completado.emit()
+
+
+func _on_combate_perdido() -> void:
+	combate_activo = false
+	
+	if is_instance_valid(combate_actual):
+		combate_actual.queue_free()
+		
+	await get_tree().process_frame
+	iniciar_combate()
