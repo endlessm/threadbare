@@ -11,12 +11,12 @@
 [ext_resource type="SpriteFrames" uid="uid://ogvyoa4f8bcj" path="res://scenes/quests/story_quests/en_la_prondidad/player_components/en_la_prondidad_player.tres" id="9_78hw6"]
 [ext_resource type="AudioStream" uid="uid://biraf8k36brm6" path="res://scenes/quests/story_quests/en_la_prondidad/5_void_runner/components/515783__lilmati__retro-footstep (1).wav" id="10_78hw6"]
 [ext_resource type="Texture2D" uid="uid://bs8667723wtxt" path="res://scenes/quests/story_quests/en_la_prondidad/1_stealth/stealth_components/light.png" id="10_lqaim"]
-[ext_resource type="Texture2D" uid="uid://d2v30ogstrash" path="res://scenes/quests/story_quests/en_la_prondidad/asets/murciegalo.png" id="13_raop8"]
-[ext_resource type="Texture2D" uid="uid://htsxh2itbsg8" path="res://scenes/quests/story_quests/en_la_prondidad/asets/estalaesta.png" id="14_ovxkm"]
-[ext_resource type="Texture2D" uid="uid://bx1fye6uk3itq" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Osohilo.png" id="15_lbfcp"]
+[ext_resource type="Texture2D" uid="uid://d2v30ogstrash" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Interfaz/murciegalo.png" id="13_raop8"]
+[ext_resource type="Texture2D" uid="uid://htsxh2itbsg8" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Interfaz/estalaesta.png" id="14_ovxkm"]
+[ext_resource type="Texture2D" uid="uid://bx1fye6uk3itq" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Interfaz/Osohilo.png" id="15_lbfcp"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="15_uueub"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="16_57h3s"]
-[ext_resource type="Texture2D" uid="uid://cm4cxksywnsfu" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Enemigo1.png" id="17_k1hun"]
+[ext_resource type="Texture2D" uid="uid://cm4cxksywnsfu" path="res://scenes/quests/story_quests/en_la_prondidad/asets/enemy/Enemigo1.png" id="17_k1hun"]
 [ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="17_pgafq"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="18_gab03"]
 [ext_resource type="Script" uid="uid://byqhsl85g32tv" path="res://scenes/quests/story_quests/en_la_prondidad/2_combat/combat_components/enemigo_hermano.gd" id="19_raop8"]
@@ -26,7 +26,7 @@
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="22_lqaim"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="23_1js3n"]
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="25_lbfcp"]
-[ext_resource type="AudioStream" uid="uid://c07ywidnkgymn" path="res://scenes/quests/story_quests/en_la_prondidad/musica/Controlled Chaos (1).mp3" id="26_78hw6"]
+[ext_resource type="AudioStream" uid="uid://b3k62tsgyot6b" path="res://scenes/quests/story_quests/en_la_prondidad/musica/Black Vortex.mp3" id="27_lbfcp"]
 
 [sub_resource type="Resource" id="Resource_w84lh"]
 script = ExtResource("16_57h3s")
@@ -143,19 +143,29 @@ texture = ExtResource("15_lbfcp")
 
 [node name="Control" type="Control" parent="ScreenOverlay" unique_id=1225955801]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Murciegalo" type="Sprite2D" parent="ScreenOverlay/Control" unique_id=33225356]
-position = Vector2(1182, 125.99999)
-scale = Vector2(1.6083335, 1.9531248)
-texture = ExtResource("13_raop8")
-
-[node name="Estalaesta" type="Sprite2D" parent="ScreenOverlay/Control" unique_id=576782399]
-position = Vector2(193.99998, 550.25)
-scale = Vector2(3.2333338, 2.6445315)
+[node name="TextureRect" type="TextureRect" parent="ScreenOverlay" unique_id=1419302188]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -314.0
+offset_right = 392.0
+grow_vertical = 0
 texture = ExtResource("14_ovxkm")
+
+[node name="TextureRect2" type="TextureRect" parent="ScreenOverlay" unique_id=630644527]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -202.0
+offset_bottom = 222.0
+grow_horizontal = 0
+texture = ExtResource("13_raop8")
 
 [node name="HUD" parent="." unique_id=1216951978 instance=ExtResource("18_gab03")]
 
@@ -218,7 +228,7 @@ metadata/_custom_type_script = "uid://edcifob4jc4s"
 
 [node name="BackgroundMusic" type="Node" parent="." unique_id=964532200]
 script = ExtResource("25_lbfcp")
-stream = ExtResource("26_78hw6")
+stream = ExtResource("27_lbfcp")
 metadata/_custom_type_script = "uid://c8405c212rbn6"
 
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
