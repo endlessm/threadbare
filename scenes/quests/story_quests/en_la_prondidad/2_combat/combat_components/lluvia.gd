@@ -61,11 +61,10 @@ func spawn_projectile(x: float) -> void:
 
 	var p = projectile_scene.instantiate()
 
-	p.setup(
-		Vector2(x, spawn_y),
-		Vector2.DOWN,
-		velocidad,
-		daño
-	)
-
+	var posicion = Vector2(x, spawn_y)
+	
+	p.setup(posicion)
+	
 	add_child(p)
+	
+	p.activar_movimiento(Vector2.DOWN, velocidad, daño)

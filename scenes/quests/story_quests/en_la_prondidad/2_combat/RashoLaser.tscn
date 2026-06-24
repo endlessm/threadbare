@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://btkw1vq4t1wnl"]
 
-[ext_resource type="Script" uid="uid://cnbelm14rwcel" path="res://scenes/quests/story_quests/en_la_prondidad/2_combat/rasho_laser.gd" id="1_wa0rf"]
+[ext_resource type="Script" uid="uid://cnbelm14rwcel" path="res://scenes/quests/story_quests/en_la_prondidad/2_combat/combat_components/rasho_laser.gd" id="1_wa0rf"]
 [ext_resource type="Texture2D" uid="uid://dy0b4cf1rn11n" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Rasholaser.png" id="2_yrtvu"]
-[ext_resource type="Texture2D" uid="uid://d1pluc6u6ee71" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Sprite-0001.png" id="3_yrtvu"]
+[ext_resource type="Texture2D" uid="uid://u88ue8ixpxdr" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Interfaz/manoata.png" id="3_3d1go"]
+[ext_resource type="Texture2D" uid="uid://dbjp656uknbke" path="res://scenes/quests/story_quests/en_la_prondidad/asets/Interfaz/mano cerrada.png" id="4_dgwm2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3d1go"]
 atlas = ExtResource("2_yrtvu")
@@ -79,7 +80,7 @@ region = Rect2(320, 64, 64, 32)
 [sub_resource type="SpriteFrames" id="SpriteFrames_olqpg"]
 animations = [{
 "frames": [{
-"duration": 2.0,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_3d1go")
 }],
 "loop": false,
@@ -87,55 +88,55 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 2.0,
+"duration": 0.1,
 "texture": SubResource("AtlasTexture_dgwm2")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_ec8g5")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_ea8mq")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_wbf13")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_uosmt")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_b87l4")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_506h4")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_nan7f")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_6n4xg")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_yn36r")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_qxkij")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_74qo4")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_5f7wf")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_6xv6h")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_4mpuf")
 }, {
-"duration": 0.1,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_cmdib")
 }, {
-"duration": 1.0,
+"duration": 0.01,
 "texture": SubResource("AtlasTexture_wtvyq")
 }],
 "loop": false,
@@ -147,20 +148,30 @@ animations = [{
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_yrtvu")
+"texture": ExtResource("3_3d1go")
 }],
 "loop": true,
 "name": &"activacion",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_dgwm2")
+}],
+"loop": true,
+"name": &"activado",
 "speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p6e1w"]
 size = Vector2(1303, 86)
 
-[node name="RashoLaser" type="Node2D" unique_id=1410424108]
+[node name="RashoLaser" type="Node2D" unique_id=1410424108 node_paths=PackedStringArray("mano", "hitbox2")]
 script = ExtResource("1_wa0rf")
 tiempo_carga = 0.5
 duracion = 1.5
+mano = NodePath("mano")
+hitbox2 = NodePath("Area2D/CollisionShape2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=600874707]
 modulate = Color(0.7866657, 0, 0.05496026, 1)
@@ -168,14 +179,13 @@ position = Vector2(640.5, 0)
 scale = Vector2(20.359373, 3.2499998)
 sprite_frames = SubResource("SpriteFrames_olqpg")
 animation = &"disparo"
-frame = 16
-frame_progress = 1.0
 
-[node name="cabeza" type="AnimatedSprite2D" parent="." unique_id=758094512]
-position = Vector2(-91, 0)
-scale = Vector2(1.6562501, 2.09375)
+[node name="mano" type="AnimatedSprite2D" parent="." unique_id=758094512]
+position = Vector2(-85, -9)
+scale = Vector2(-0.8420991, 1.1201361)
 sprite_frames = SubResource("SpriteFrames_3d1go")
 animation = &"activacion"
+frame_progress = 0.76659155
 
 [node name="Area2D" type="Area2D" parent="." unique_id=138532551 groups=["projectiles"]]
 collision_layer = 128
