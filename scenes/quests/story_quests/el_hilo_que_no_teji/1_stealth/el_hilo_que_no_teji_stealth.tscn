@@ -3,7 +3,9 @@
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_loqy2"]
 [ext_resource type="Script" uid="uid://cptwnb281n5nh" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/el_hilo_que_no_teji_stealth.gd" id="1_qshk0"]
 [ext_resource type="TileSet" uid="uid://32t5p1co051n" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_exterior_floors.tres" id="2_3ut71"]
+[ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="3_2owev"]
 [ext_resource type="TileSet" uid="uid://brtyjqpslh70g" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_shadows.tres" id="3_85ik4"]
+[ext_resource type="AudioStream" uid="uid://676ese8fg2qm" path="res://scenes/quests/story_quests/renya_beyond_sorrow/Complementos/music/7. Silent Longing (Loop).ogg" id="4_iekwq"]
 [ext_resource type="TileSet" uid="uid://ci0x5m62qamxl" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_cabana.tres" id="4_qshk0"]
 [ext_resource type="TileSet" uid="uid://d2mtxt1q8ymnc" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_elevation_2.tres" id="4_qxjpk"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="5_3ut71"]
@@ -27,8 +29,12 @@
 [ext_resource type="Material" uid="uid://bi6a51mic57oq" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/mat_lino.tres" id="18_ulphp"]
 [ext_resource type="Shader" uid="uid://bshbghjfja2xq" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/mi_filtro_saturacion.gdshader" id="23_t4hu1"]
 [ext_resource type="Script" uid="uid://i0dutk8883vb" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/2_sequence_puzzle/el_hilo_que_no_teji_collectible.gd" id="24_t4hu1"]
+[ext_resource type="SpriteFrames" uid="uid://bxo63gtawie3l" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/shadow_02/el_hilo_que_no_teji_shadow02_enemy.tres" id="24_vlrpm"]
 [ext_resource type="Resource" uid="uid://cfygswbl1532n" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/el_hilo_que_no_teji_collected.dialogue" id="25_4s4pt"]
+[ext_resource type="SpriteFrames" uid="uid://cs3d3dlkm2gqt" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/shadow_03/el_hilo_que_no_teji_shadow03_enemy.tres" id="25_4t4cg"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="25_ulphp"]
+[ext_resource type="SpriteFrames" uid="uid://b3c54mgad0o45" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/shadow_04/el_hilo_que_no_teji_shadow04_enemy.tres" id="26_w06gk"]
+[ext_resource type="SpriteFrames" uid="uid://crrr8ncum86vx" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/luto/luto.tres" id="27_4t4cg"]
 [ext_resource type="Texture2D" uid="uid://5wscjc8yqqts" path="res://assets/first_party/collectibles/world_memory.png" id="27_rtdyd"]
 [ext_resource type="Shader" uid="uid://dn6w5kifgeusk" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/el_hilo_que_no_teji_sequence_puzzle.gdshader" id="32_n2hsx"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="32_ulphp"]
@@ -115,6 +121,12 @@ _data = {
 }
 point_count = 2
 
+[sub_resource type="Curve2D" id="Curve2D_w06gk"]
+_data = {
+"points": PackedVector2Array(32.38555, 8.241545, -32.38555, -8.241545, 546.55585, -44.930603, 47.931313, -0.15036534, -47.931313, 0.15036534, 418.01044, -55.838043, -96.96232, -7.207595, 96.96232, 7.207595, 284.70416, -46.331573)
+}
+point_count = 3
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n2hsx"]
 shader = ExtResource("23_t4hu1")
 shader_parameter/saturation = 0.0
@@ -167,6 +179,9 @@ script = ExtResource("1_qshk0")
 
 [node name="StealthGameLogic" type="Node" parent="." unique_id=1734695953]
 script = ExtResource("1_loqy2")
+
+[node name="BackgroundMusic" parent="." unique_id=1461759951 instance=ExtResource("3_2owev")]
+stream = ExtResource("4_iekwq")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=508226475]
 position = Vector2(-166, -44)
@@ -311,7 +326,7 @@ shape = SubResource("RectangleShape2D_n2hsx")
 
 [node name="Player" parent="." unique_id=1079296690 instance=ExtResource("5_ac6ai")]
 material = ExtResource("18_ulphp")
-position = Vector2(619.00006, 1760)
+position = Vector2(619, 1757.0001)
 scale = Vector2(0.9, 0.9)
 speeds = SubResource("Resource_t4hu1")
 sprite_frames = ExtResource("16_3x148")
@@ -467,7 +482,7 @@ z_index = 9
 position = Vector2(1493, -1378)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("25_4t4cg")
 alert_others_sound_stream = ExtResource("14_qc1q3")
 patrol_path = NodePath("../GuardiaN3-ruta01")
 wait_time = 0.1
@@ -477,7 +492,7 @@ move_speed = 220.0
 collision_mask = 24
 
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaN3_01" index="4" unique_id=616054452]
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("25_4t4cg")
 
 [node name="TorchHitSound" parent="EnemyGuards/GuardiaN3_01/Sounds" parent_id_path=PackedInt32Array(1563096596, 787899072) index="3" unique_id=1573897868]
 stream = ExtResource("14_qc1q3")
@@ -507,7 +522,7 @@ z_index = 9
 position = Vector2(1682, -1745)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("15_l1c3l")
 alert_others_sound_stream = ExtResource("14_qc1q3")
 patrol_path = NodePath("../GuardiaN3-ruta03")
 wait_time = 0.1
@@ -517,7 +532,7 @@ move_speed = 225.0
 collision_mask = 24
 
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaN3_03" index="4" unique_id=616054452]
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("15_l1c3l")
 
 [node name="TorchHitSound" parent="EnemyGuards/GuardiaN3_03/Sounds" parent_id_path=PackedInt32Array(2030598548, 787899072) index="3" unique_id=1573897868]
 stream = ExtResource("14_qc1q3")
@@ -527,7 +542,7 @@ z_index = 9
 position = Vector2(-639, -1916)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("26_w06gk")
 alert_others_sound_stream = ExtResource("14_qc1q3")
 patrol_path = NodePath("../GuardiaN3-ruta04")
 wait_time = 0.1
@@ -537,7 +552,7 @@ move_speed = 245.0
 collision_mask = 24
 
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaN3_04" index="4" unique_id=616054452]
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("26_w06gk")
 
 [node name="TorchHitSound" parent="EnemyGuards/GuardiaN3_04/Sounds" parent_id_path=PackedInt32Array(2110988390, 787899072) index="3" unique_id=1573897868]
 stream = ExtResource("14_qc1q3")
@@ -594,10 +609,10 @@ curve = SubResource("Curve2D_4t4cg")
 
 [node name="GuardiaColina01" parent="EnemyGuards" unique_id=723983611 instance=ExtResource("7_l1c3l")]
 z_index = -1
-position = Vector2(381, -2939)
+position = Vector2(407, -2986)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("15_l1c3l")
 alert_others_sound_stream = ExtResource("14_qc1q3")
 wait_time = 0.1
 move_speed = 220.0
@@ -610,17 +625,17 @@ collision_mask = 24
 scale = Vector2(1e-05, 1e-05)
 
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaColina01" index="4" unique_id=616054452]
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("15_l1c3l")
 
 [node name="TorchHitSound" parent="EnemyGuards/GuardiaColina01/Sounds" parent_id_path=PackedInt32Array(723983611, 787899072) index="3" unique_id=1573897868]
 stream = ExtResource("14_qc1q3")
 
 [node name="GuardiaColina02" parent="EnemyGuards" unique_id=1946537184 instance=ExtResource("7_l1c3l")]
 z_index = -1
-position = Vector2(180, -3252)
+position = Vector2(232, -3252)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("24_vlrpm")
 alert_others_sound_stream = ExtResource("14_qc1q3")
 wait_time = 0.1
 move_speed = 235.0
@@ -633,17 +648,17 @@ collision_mask = 24
 scale = Vector2(1e-05, 1e-05)
 
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaColina02" index="4" unique_id=616054452]
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("24_vlrpm")
 
 [node name="TorchHitSound" parent="EnemyGuards/GuardiaColina02/Sounds" parent_id_path=PackedInt32Array(1946537184, 787899072) index="3" unique_id=1573897868]
 stream = ExtResource("14_qc1q3")
 
 [node name="GuardiaColina03" parent="EnemyGuards" unique_id=446983963 instance=ExtResource("7_l1c3l")]
 z_index = -1
-position = Vector2(416, -3553)
+position = Vector2(424, -3523)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("25_4t4cg")
 alert_others_sound_stream = ExtResource("14_qc1q3")
 wait_time = 0.1
 move_speed = 225.0
@@ -656,17 +671,17 @@ collision_mask = 24
 scale = Vector2(1e-05, 1e-05)
 
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaColina03" index="4" unique_id=616054452]
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("25_4t4cg")
 
 [node name="TorchHitSound" parent="EnemyGuards/GuardiaColina03/Sounds" parent_id_path=PackedInt32Array(446983963, 787899072) index="3" unique_id=1573897868]
 stream = ExtResource("14_qc1q3")
 
 [node name="GuardiaColina04" parent="EnemyGuards" unique_id=71074213 instance=ExtResource("7_l1c3l")]
 z_index = -1
-position = Vector2(863.99994, -3436)
+position = Vector2(845.00006, -3401)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("26_w06gk")
 alert_others_sound_stream = ExtResource("14_qc1q3")
 wait_time = 0.1
 move_speed = 245.0
@@ -679,7 +694,7 @@ collision_mask = 24
 scale = Vector2(1e-05, 1e-05)
 
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaColina04" index="4" unique_id=616054452]
-sprite_frames = ExtResource("17_pljot")
+sprite_frames = ExtResource("26_w06gk")
 flip_h = true
 
 [node name="TorchHitSound" parent="EnemyGuards/GuardiaColina04/Sounds" parent_id_path=PackedInt32Array(71074213, 787899072) index="3" unique_id=1573897868]
@@ -687,7 +702,7 @@ stream = ExtResource("14_qc1q3")
 
 [node name="GuardiaColina05" parent="EnemyGuards" unique_id=1635426362 instance=ExtResource("7_l1c3l")]
 z_index = -1
-position = Vector2(960.99994, -3091)
+position = Vector2(914.99994, -3105)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("17_pljot")
@@ -708,6 +723,35 @@ flip_h = true
 
 [node name="TorchHitSound" parent="EnemyGuards/GuardiaColina05/Sounds" parent_id_path=PackedInt32Array(1635426362, 787899072) index="3" unique_id=1573897868]
 stream = ExtResource("14_qc1q3")
+
+[node name="Luto-Guard" parent="EnemyGuards/GuardiaColina05" unique_id=2094220429 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_l1c3l")]
+z_index = 9
+position = Vector2(-194.99976, -1797.5)
+collision_mask = 512
+sprite_frames = ExtResource("27_4t4cg")
+alert_others_sound_stream = ExtResource("14_qc1q3")
+patrol_path = NodePath("../Luto-ruta01")
+wait_time = 0.0
+move_speed = 200.0
+detection_area_scale = 0.0
+
+[node name="SightRayCast" parent="EnemyGuards/GuardiaColina05/Luto-Guard" index="1" unique_id=1964699795]
+collision_mask = 24
+
+[node name="DetectionArea" parent="EnemyGuards/GuardiaColina05/Luto-Guard" index="3" unique_id=885694991]
+scale = Vector2(1e-05, 1e-05)
+
+[node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaColina05/Luto-Guard" index="4" unique_id=616054452]
+sprite_frames = ExtResource("27_4t4cg")
+
+[node name="TorchHitSound" parent="EnemyGuards/GuardiaColina05/Luto-Guard/Sounds" parent_id_path=PackedInt32Array(2094220429, 787899072) index="3" unique_id=1573897868]
+stream = ExtResource("14_qc1q3")
+
+[node name="Luto-ruta01" type="Path2D" parent="EnemyGuards/GuardiaColina05" unique_id=209732934]
+top_level = true
+position = Vector2(185.00002, -4992)
+scale = Vector2(1.050213, -9.99319)
+curve = SubResource("Curve2D_w06gk")
 
 [node name="CollectibleItem" parent="." unique_id=1779229490 groups=["ignorar_shader"] instance=ExtResource("12_pls6f")]
 modulate = Color(0.98039216, 0.8, 0.08235294, 1)
@@ -788,10 +832,10 @@ follow_viewport_enabled = true
 
 [node name="ColorRectNeblina" type="ColorRect" parent="Niebla" unique_id=1091306329]
 material = SubResource("ShaderMaterial_goofh")
-offset_left = -1774.0
-offset_top = -5583.0
-offset_right = 2925.0
-offset_bottom = 2775.0
+offset_left = -1787.0
+offset_top = -5603.0
+offset_right = 2912.0
+offset_bottom = 2755.0
 
 [node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("32_ulphp")]
 
@@ -834,6 +878,7 @@ material_jugador = ExtResource("18_ulphp")
 [editable path="EnemyGuards/GuardiaColina03"]
 [editable path="EnemyGuards/GuardiaColina04"]
 [editable path="EnemyGuards/GuardiaColina05"]
+[editable path="EnemyGuards/GuardiaColina05/Luto-Guard"]
 [editable path="CollectibleItem"]
 [editable path="CollectibleItem2"]
 [editable path="CollectibleItem3"]
