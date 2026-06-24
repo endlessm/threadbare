@@ -19,7 +19,7 @@ extends Node2D
 
 @onready var player_mode: PlayerMode = %PlayerMode
 
-func _ready():
+func _ready() -> void:
 	if collectible:
 		collectible.revealed = false
 		collectible.visible = false 
@@ -35,24 +35,22 @@ func _ready():
 			health_bar.value = boss_health.needed_amount
 	
 	if boss: boss.start()
-	# TODO: Make Charlie no longer a player class
-	if charlie: _setup_combat_player(charlie)
 	if bryan:
 		_setup_combat_player(bryan)
 		for p in get_tree().get_nodes_in_group("player"):
 			p.remove_from_group("player")
 	if music and not music.playing: music.play()
 
-func _setup_combat_player(p_node):
+func _setup_combat_player(p_node: Player) -> void:
 	p_node.speeds.walk_speed = 0.0
 	p_node.speeds.run_speed = 0.0
 
 
-func _update_health_bar(current_damage_taken):
+func _update_health_bar(current_damage_taken: float) -> void:
 	if health_bar:
 		health_bar.value = health_bar.max_value - current_damage_taken
 
-func _on_boss_defeated():
+func _on_boss_defeated() -> void:
 	print("¡Nivel completado!")
 	if music: music.stop()
 	if win_sound: win_sound.play()
@@ -66,12 +64,19 @@ func _on_boss_defeated():
 	if boss_info:
 		boss_info.visible = false
 	if charlie:
-		var sprite = charlie.get_node_or_null("PlayerSprite") 
+		var sprite : Node = charlie.get_node_or_null("PlayerSprite")
 		if not sprite: sprite = charlie.find_child("AnimatedSprite2D", true, false)
 		if sprite: sprite.play("idle"); sprite.stop()
+		var repelling : Node = charlie.get_node_or_null("PlayerRepel")
+		if repelling:
+			repelling.repelling = false
+			repelling.player_controlled = false
 
 	if bryan:
 		bryan.add_to_group("player")
+		var repelling : Node = bryan.get_node_or_null("PlayerRepel")
+		if repelling: repelling.repelling = false
+
 		InputHud.refresh_scene_status()
 		bryan.speeds.walk_speed = 300.0
 		bryan.speeds.run_speed = 500.0
