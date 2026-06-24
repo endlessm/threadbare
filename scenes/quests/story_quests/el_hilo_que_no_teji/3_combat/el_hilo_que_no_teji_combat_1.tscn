@@ -15,8 +15,8 @@
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="9_ffkbh"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="10_l1syf"]
 [ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="12_2gag6"]
-[ext_resource type="SpriteFrames" uid="uid://d1jsrwm2u7mfr" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/lino/el_hilo_que_no_teji_player.tres" id="13_2okvs"]
 [ext_resource type="SpriteFrames" uid="uid://bokxlhx5dswn2" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_combat/enemies_components/ira_enemy_spriteframes.tres" id="13_h1xba"]
+[ext_resource type="SpriteFrames" uid="uid://pe5f4oarex8m" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/lino/el_hilo_que_no_teji_player_collar.tres" id="14_flrxu"]
 [ext_resource type="PackedScene" uid="uid://dbh80jgmf2crw" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_combat/enemies_components/projectile.tscn" id="14_l7i8m"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="15_63ei4"]
 [ext_resource type="SpriteFrames" uid="uid://lt1fwrvd4a5h" path="res://scenes/quests/story_quests/renya_beyond_sorrow/1_combat/relleno/filling_spriteframes.tres" id="16_cmnhf"]
@@ -32,6 +32,12 @@
 [ext_resource type="Script" uid="uid://f56505k8qm17" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/saturacion_manager.gd" id="30_3e6us"]
 [ext_resource type="Material" uid="uid://cht88adq0hk3f" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/mat_mundo.tres" id="31_qh7ra"]
 [ext_resource type="Material" uid="uid://bi6a51mic57oq" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/mat_lino.tres" id="32_2gag6"]
+[ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="33_l7i8m"]
+[ext_resource type="SpriteFrames" uid="uid://b3c54mgad0o45" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/shadow_04/el_hilo_que_no_teji_shadow04_enemy.tres" id="34_cmnhf"]
+[ext_resource type="AudioStream" uid="uid://ceuqs1f1aw6no" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/sounds/Suspenso.wav" id="35_l7i8m"]
+[ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="36_flrxu"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="37_rhhq7"]
+[ext_resource type="Resource" uid="uid://cut4yag2eux0s" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/el_hilo_que_no_teji_stealth.dialogue" id="38_dv4q4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lmnu5"]
 size = Vector2(101, 49)
@@ -104,6 +110,12 @@ size = Vector2(189, 114.34375)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2okvs"]
 size = Vector2(28.5, 153.17188)
 
+[sub_resource type="Curve2D" id="Curve2D_flrxu"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 200.91139, -10.307037, 0, 0, 0, 0, 47.60913, -29.620178, 0, 0, 0, 0, 231.3814, -47.032043, 0, 0, 0, 0, 689.3838, -47.332245, 0, 0, 0, 0, 828.4032, -15.510559, 0, 0, 0, 0, 795.0766, 6.304291, 0, 0, 0, 0, 519.8943, 8.8059845, 0, 0, 0, 0, 307.55643, 17.211716, 0, 0, 0, 0, 7.6172485, 3.0020447, 0, 0, 0, 0, 199.9592, -10.20697)
+}
+point_count = 10
+
 [node name="InkCombat" type="Node2D" unique_id=1383576457]
 y_sort_enabled = true
 script = ExtResource("1_60hq5")
@@ -155,19 +167,16 @@ y_sort_enabled = true
 position = Vector2(66, 2221)
 
 [node name="BloqueTrampa" parent="OnTheGround" unique_id=269090497 instance=ExtResource("20_dkiai")]
-visible = false
 z_index = -1
-position = Vector2(1440, -504)
+position = Vector2(1533, -684)
 
 [node name="BloqueTrampa2" parent="OnTheGround" unique_id=1188504334 instance=ExtResource("20_dkiai")]
-visible = false
 z_index = -1
-position = Vector2(1567, -504)
+position = Vector2(1660, -684)
 
 [node name="BloqueTrampa3" parent="OnTheGround" unique_id=603476441 instance=ExtResource("20_dkiai")]
-visible = false
 z_index = -1
-position = Vector2(1503, -504)
+position = Vector2(1596, -684)
 
 [node name="LevelExit" type="Node2D" parent="OnTheGround" unique_id=1740681761]
 y_sort_enabled = true
@@ -191,16 +200,16 @@ position = Vector2(-383, 196)
 shape = SubResource("RectangleShape2D_lmnu5")
 
 [node name="Player" parent="OnTheGround" unique_id=1416564784 instance=ExtResource("10_l1syf")]
-position = Vector2(1595, -243)
+position = Vector2(1595, -151)
 player_name = "StoryWeaver"
 speeds = SubResource("Resource_60hq5")
-sprite_frames = ExtResource("13_2okvs")
+sprite_frames = ExtResource("14_flrxu")
 
 [node name="InputWalkBehavior" parent="OnTheGround/Player" index="0" unique_id=1817340985]
 speeds = SubResource("Resource_60hq5")
 
 [node name="PlayerSprite" parent="OnTheGround/Player" index="2" unique_id=1785485617]
-sprite_frames = ExtResource("13_2okvs")
+sprite_frames = ExtResource("14_flrxu")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1897581183]
 zoom = Vector2(1.1, 1.1)
@@ -463,8 +472,47 @@ script = ExtResource("30_3e6us")
 material_mundo = ExtResource("31_qh7ra")
 material_jugador = ExtResource("32_2gag6")
 
+[node name="GuardiaI2_01" parent="." unique_id=689832587 node_paths=PackedStringArray("patrol_path") instance=ExtResource("33_l7i8m")]
+z_index = 9
+position = Vector2(1420, 641.0002)
+scale = Vector2(0.8, 0.8)
+collision_mask = 512
+sprite_frames = ExtResource("34_cmnhf")
+alerted_sound_stream = ExtResource("35_l7i8m")
+patrol_path = NodePath("../GuardiaI2-ruta01")
+move_speed = 70.0
+detection_area_scale = 0.7999999999999999
+
+[node name="SightRayCast" parent="GuardiaI2_01" index="1" unique_id=1964699795]
+collision_mask = 24
+
+[node name="DetectionArea" parent="GuardiaI2_01" index="3" unique_id=885694991]
+scale = Vector2(0.8, 0.8)
+
+[node name="AnimatedSprite2D" parent="GuardiaI2_01" index="4" unique_id=616054452]
+sprite_frames = ExtResource("34_cmnhf")
+
+[node name="AlertSound" parent="GuardiaI2_01/Sounds" parent_id_path=PackedInt32Array(689832587, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("35_l7i8m")
+
+[node name="GuardiaI2-ruta01" type="Path2D" parent="." unique_id=2105867162]
+top_level = true
+position = Vector2(1209.0002, 538)
+scale = Vector2(1.050213, -9.99319)
+curve = SubResource("Curve2D_flrxu")
+
+[node name="StealthGameLogic" type="Node" parent="." unique_id=786531982]
+script = ExtResource("36_flrxu")
+
+[node name="Cinematic" type="Node2D" parent="." unique_id=1398446127]
+script = ExtResource("37_rhhq7")
+dialogue = ExtResource("38_dv4q4")
+autostart = false
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
 [connection signal="body_entered" from="OnTheGround/TriggerCentral" to="." method="_on_trigger_central_body_entered"]
 
 [editable path="OnTheGround/Player"]
 [editable path="OnTheGround/ThrowingEnemy"]
 [editable path="HUD"]
+[editable path="GuardiaI2_01"]

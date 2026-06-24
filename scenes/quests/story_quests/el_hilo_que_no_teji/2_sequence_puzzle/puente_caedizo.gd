@@ -1,21 +1,45 @@
 extends TileMapLayer
 
-@export var tiempo_caida: float = 0.7 # El tiempo que tarda en caer
-@export var jugador: Node2D # <-- Para que asignes a Lino directamente
-@export var ajuste_pies_y: float = 16.0 # <-- Desfase hacia abajo para buscar los zapatos
+@export var tiempo_caida: float = 0.7 
+@export var jugador: Node2D 
+@export var ajuste_pies_y: float = 16.0 
+
+# Variable para controlar el tiempo POST CINEMATICA
+@export var tiempo_respiro_post_cinematica: float = 1.25 
 
 var celdas_originales: Array[Vector2i] = []
 var celdas_cayendo: Dictionary = {}
 var lino_cayendo: bool = false
 
+# --- VARIABLES PARA PAUSA CINEMÁTICA ---
+var estaba_en_cinematica: bool = false
+var tiempo_respiro_restante: float = 0.0
+
 func _ready() -> void:
 	celdas_originales = get_used_cells()
 
 func _physics_process(delta: float) -> void:
-	# ---> SOLUCIÓN 1: Si el puente está invisible (no reparado), ignoramos todo el script
-	if not visible or not jugador or lino_cayendo: 
+	if not visible or not jugador or lino_cayendo:
 		return
+		
+	# 1. Comprobamos si Lino está congelado por el sistema (Cinemática activa)
+	var en_cinematica = (jugador.mode == jugador.Mode.SYSTEM_CONTROLLED)
+	
+	if en_cinematica:
+		estaba_en_cinematica = true
+		return # Abortamos el cálculo de caída. El puente se vuelve de piedra.
+		
+	# 2. Si Lino acaba de recuperar el control, activamos el "escudo temporal"
+	if estaba_en_cinematica:
+		estaba_en_cinematica = false
+		tiempo_respiro_restante = tiempo_respiro_post_cinematica 
+		
+	# 3. Consumimos el tiempo de respiro antes de volver a la normalidad
+	if tiempo_respiro_restante > 0.0:
+		tiempo_respiro_restante -= delta
+		return 
 
+	# --- LÓGICA NORMAL DE CAÍDA ---
 	var posicion_pies = jugador.global_position + Vector2(0, ajuste_pies_y)
 	var pos_local = to_local(posicion_pies)
 	var posicion_celda = local_to_map(pos_local)
@@ -41,7 +65,6 @@ func _physics_process(delta: float) -> void:
 func _matar_a_lino() -> void:
 	lino_cayendo = true
 	
-	# ---> SOLUCIÓN 2: Usamos take_control para congelarlo sin disparar la animación de hilo
 	if jugador.has_method("take_control"):
 		jugador.take_control(self)
 	
@@ -53,7 +76,6 @@ func _matar_a_lino() -> void:
 	
 	await animacion_caida.finished
 	
-	# Transición instantánea respetando las vidas del juego
 	GameState.decrement_lives()
 	
 	if GameState.current_lives > 0:
@@ -61,4 +83,4 @@ func _matar_a_lino() -> void:
 		SceneSwitcher.change_to_file_with_transition(ruta_actual)
 	else:
 		if jugador.has_method("_handle_game_over"):
-			jugador._handle_game_over()
+			jugador._
