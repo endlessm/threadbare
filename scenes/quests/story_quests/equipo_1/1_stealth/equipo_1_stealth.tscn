@@ -45,6 +45,7 @@
 [ext_resource type="SpriteFrames" uid="uid://8jofwg5c2cki" path="res://scenes/quests/story_quests/equipo_1/jugador_assets_USAR_SOLO_OK/Sprite_enemigo_dispara.tres" id="41_tecln"]
 [ext_resource type="AudioStream" uid="uid://bkket866kuteb" path="res://scenes/quests/story_quests/equipo_1/musica_juego/disparo1_bajo.wav" id="42_14iau"]
 [ext_resource type="AudioStream" uid="uid://jpn1u83qup5o" path="res://scenes/quests/story_quests/equipo_1/musica_juego/juego 1 suspenso.mp3" id="45_spavh"]
+[ext_resource type="Script" uid="uid://pvdwotpbsamc" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/musica_reducir.gd" id="46_cmauj"]
 
 [sub_resource type="Curve2D" id="Curve2D_gptje"]
 _data = {
@@ -441,6 +442,8 @@ max_polyphony = 50
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Musica" unique_id=419838024]
 stream = ExtResource("45_spavh")
 autoplay = true
+script = ExtResource("46_cmauj")
+volumen = -20.0
 
 [connection signal="input_event" from="Player" to="LogicaNPCProjectiles" method="_projectil_colisionado"]
 [connection signal="body_entered" from="Player/PlayerHarm/HitBox" to="LogicaNPCProjectiles" method="_reducir_vida_jugador"]
