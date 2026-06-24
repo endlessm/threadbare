@@ -1,14 +1,14 @@
 extends Node2D
 
-# 1. DEFINICIONES DE NODOS
+# DEFINICIONES DE NODOS
 @onready var gato = $OnTheGround/Character
 @onready var conejo = $OnTheGround/ConejoGame
 @onready var gato_sabio = $OnTheGround/GatoSabio
 
-# Dejamos la cámara libre aquí, la buscaremos de forma inteligente en el _ready
+
 var camara: Camera2D
 
-# 2. VARIABLES DE CONFIGURACIÓN Y POSICIÓN
+# VARIABLES DE CONFIGURACIÓN Y POSICIÓN
 var gato_base_pos: Vector2
 var conejo_base_pos: Vector2
 var gato_sabio_base_pos: Vector2
@@ -17,7 +17,7 @@ var tiempo = 0.0
 var velocidad_gato = 250.0 
 
 func _ready() -> void:
-	# 🔍 DETECTOR AUTOMÁTICO: Busca la cámara en toda la escena para evitar errores de rutas
+
 	camara = find_child("Camera2D", true, false) as Camera2D
 	
 	# Guardamos las posiciones iniciales del editor
@@ -32,10 +32,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	tiempo += delta
-	
-	# ====================================================
-	# CONTROL DEL GATO PRINCIPAL (FLECHAS + BRINCO AL PARAR)
-	# ====================================================
+	#control nox con teclas
 	var direccion = Vector2.ZERO
 	
 	if Input.is_action_pressed("ui_right"):
@@ -55,13 +52,9 @@ func _process(delta: float) -> void:
 		gato.position.x = gato_base_pos.x
 		gato.position.y = gato_base_pos.y + sin(tiempo * 8.0) * 15.0
 
-	# ====================================================
-	# 🎥 SEGUIMIENTO INCONDICIONAL DE CÁMARA (CÓDIGO PURO)
-	# ====================================================
+	
 	if camara:
-		# LERP hace que la cámara persiga al gato de forma fluida y elegante.
-		# No importa si la cámara está afuera, adentro o amarrada a otro lado;
-		# esta línea actualiza su posición global directamente hacia el gato naranja.
+		
 		camara.global_position = camara.global_position.lerp(gato.global_position, 8.0 * delta)
 
 	# ====================================================
