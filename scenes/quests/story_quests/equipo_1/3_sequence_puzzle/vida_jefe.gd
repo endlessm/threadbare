@@ -14,6 +14,9 @@ var vida_actual_player: int = 100
 signal jefe_derrotado
 signal player_derrotado
 
+var can_be_defeated:bool = true
+var player_can_be_damaged=true
+
 func _ready() -> void:
 	barra_jefe.max_value = vida_maxima
 	barra_jefe.value = vida_actual
@@ -32,12 +35,18 @@ func recibir_danio(cantidad:int)->void:
 		fase3.emit()	
 		
 	if vida_actual <= 0:
+		can_be_defeated=false
+		barra_jefe.visible=false
+		barra_player.visible=false
 		jefe_derrotado.emit()
 			
 
 func recibir_danio_player(cantidad:int)->void:
+	if !player_can_be_damaged:
+		return
+		
 	vida_actual_player -= cantidad
 	vida_actual_player = max(vida_actual_player, 0)
 	barra_player.value = vida_actual_player
-	if vida_actual_player <= 0:
+	if vida_actual_player <= 0 && can_be_defeated:
 		player_derrotado.emit()		
