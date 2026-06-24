@@ -76,7 +76,6 @@ func _on_boss_defeated() -> void:
 		bryan.add_to_group("player")
 		var repelling : Node = bryan.get_node_or_null("PlayerRepel")
 		if repelling: repelling.repelling = false
-
 		InputHud.refresh_scene_status()
 		bryan.speeds.walk_speed = 300.0
 		bryan.speeds.run_speed = 500.0
