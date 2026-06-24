@@ -3,17 +3,18 @@
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_16k44"]
 [ext_resource type="TileSet" uid="uid://c4gg2dpucvn6" path="res://scenes/quests/story_quests/equipo_1/tiles/equipo_1_exterior_floors.tres" id="2_jhc1e"]
 [ext_resource type="TileSet" uid="uid://41pk6xbhypue" path="res://tiles/fence.tres" id="3_jhc1e"]
-[ext_resource type="SpriteFrames" uid="uid://dc7pfg6wu2ffr" path="res://scenes/quests/story_quests/equipo_1/player_components/equipo_1_player.tres" id="3_qfo13"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="4_7wbef"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_gdbu6"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="5_7iu65"]
 [ext_resource type="Resource" uid="uid://b6cih1ryfl38t" path="res://scenes/quests/story_quests/equipo_1/4_outro/outro_components/equipo_1_outro.dialogue" id="5_7wbef"]
+[ext_resource type="SpriteFrames" uid="uid://vym04hqutbm2" path="res://scenes/quests/story_quests/equipo_1/jugador_assets_USAR_SOLO_OK/Sprite_frames_balder.tres" id="6_7iu65"]
 [ext_resource type="Texture2D" uid="uid://cxo3q1l7vjn23" path="res://assets/third_party/tiny-swords/Factions/Knights/Buildings/Castle/Castle_Yellow.png" id="9_7iu65"]
 [ext_resource type="Texture2D" uid="uid://droajuveqy5st" path="res://assets/third_party/tiny-swords/Factions/Knights/Buildings/Tower/Tower_Yellow.png" id="10_kv362"]
 [ext_resource type="Texture2D" uid="uid://dr32byouj3hlj" path="res://assets/third_party/tiny-swords/Factions/Knights/Buildings/House/House_Yellow.png" id="11_jvrm2"]
 [ext_resource type="Texture2D" uid="uid://d1wt3uoxdkd7x" path="res://assets/third_party/tiny-swords-non-cc0/Buildings/Yellow Buildings/Archery.png" id="12_tia16"]
 [ext_resource type="Texture2D" uid="uid://dj458cyasgo04" path="res://assets/third_party/tiny-swords-non-cc0/Buildings/Yellow Buildings/Monastery.png" id="13_kudyq"]
 [ext_resource type="Texture2D" uid="uid://b2redtm30u6kb" path="res://assets/third_party/tiny-swords-non-cc0/Buildings/Yellow Buildings/Barracks.png" id="14_6wyhc"]
+[ext_resource type="Script" uid="uid://pvdwotpbsamc" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/musica_reducir.gd" id="15_kv362"]
 
 [node name="Equipo1Outro" type="Node2D" unique_id=1273842832]
 
@@ -54,7 +55,7 @@ y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=1142153150]
 position = Vector2(400, 349)
-sprite_frames = ExtResource("3_qfo13")
+sprite_frames = ExtResource("6_7iu65")
 animation = &"idle"
 autoplay = "idle"
 
@@ -129,3 +130,9 @@ position = Vector2(635, 1)
 texture = ExtResource("14_6wyhc")
 
 [node name="Sprite2D2" type="Sprite2D" parent="Node2D" unique_id=989042164]
+
+[node name="Musica" type="Node" parent="." unique_id=2130251961]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Musica" unique_id=1251360051]
+script = ExtResource("15_kv362")
+volumen = -20.0
