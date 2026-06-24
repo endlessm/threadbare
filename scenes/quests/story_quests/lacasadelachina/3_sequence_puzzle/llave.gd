@@ -39,7 +39,7 @@ func _physics_process(delta: float) -> void:
 		visible = false
 		recogida.emit()
 		await _mostrar_mensaje_felicitacion()
-		get_tree().change_scene_to_file("C:/Kiwi/threadbare/scenes/quests/story_quests/lacasadelachina/4_outro/lacasadelachina_outro.tscn")
+		get_tree().change_scene_to_file("res://scenes/quests/story_quests/lacasadelachina/4_outro/lacasadelachina_outro.tscn")
 
 func _teletransportar_a_punto_aleatorio() -> void:
 	if puntos.is_empty():
