@@ -46,6 +46,7 @@
 [ext_resource type="Texture2D" uid="uid://cy3touqrkm3dr" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/escombros 3.png" id="39_ip3m0"]
 [ext_resource type="Texture2D" uid="uid://dufhbfpkflhn2" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/escombros 1.png" id="40_cyhd7"]
 [ext_resource type="Texture2D" uid="uid://112ed4xfn8k6" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/escombros 2.png" id="41_njugo"]
+[ext_resource type="Texture2D" uid="uid://b6vt2m1bh0x4a" path="res://scenes/quests/story_quests/el_abandonado/elementos_personajes/Hongo Lab.png" id="47_q13pp"]
 [ext_resource type="PackedScene" uid="uid://4kx4ieskeshh" path="res://scenes/quests/story_quests/el_abandonado/1_stealth/stealth_components/Hada.tscn" id="48_7hnus"]
 [ext_resource type="Script" uid="uid://b3v4uldliajvk" path="res://scenes/quests/story_quests/el_abandonado/1_stealth/area_2d.gd" id="49_q13pp"]
 
@@ -521,6 +522,42 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_5se50"]
+atlas = ExtResource("47_q13pp")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ofjnu"]
+atlas = ExtResource("47_q13pp")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xr28e"]
+atlas = ExtResource("47_q13pp")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wa56h"]
+atlas = ExtResource("47_q13pp")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mtnox"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5se50")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ofjnu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xr28e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wa56h")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8tf0m"]
 size = Vector2(796.75, 706.6875)
 
@@ -720,6 +757,7 @@ autoplay = "default"
 frame_progress = 0.5194422
 
 [node name="InicioPersecucion" type="Area2D" parent="." unique_id=2015570438]
+visible = false
 position = Vector2(1947, 439)
 script = ExtResource("27_18e3s")
 
@@ -1773,6 +1811,12 @@ sprite_frames = SubResource("SpriteFrames_mvuni")
 animation = &"tronco"
 autoplay = "tronco"
 
+[node name="AnimatedSprite2D143" type="AnimatedSprite2D" parent="StaticBody2D2/Node2D" unique_id=1865035458]
+position = Vector2(2309.0002, 450.3052)
+scale = Vector2(0.2422069, 0.11414353)
+sprite_frames = SubResource("SpriteFrames_mvuni")
+autoplay = "default"
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StaticBody2D2/Node2D" unique_id=669430394]
 z_index = 3
 position = Vector2(-30.999998, 516.00006)
@@ -1782,7 +1826,7 @@ autoplay = "default"
 
 [node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2/Node2D" unique_id=2085661672]
 z_index = 3
-position = Vector2(1059, 811.00006)
+position = Vector2(1059, 813.00006)
 scale = Vector2(0.41796887, 0.4074996)
 texture = ExtResource("33_5vl5k")
 
@@ -1882,6 +1926,12 @@ texture = ExtResource("37_gltfu")
 [node name="Sprite2D2" type="Sprite2D" parent="StaticBody2D2/Node2D" unique_id=460382732]
 position = Vector2(853, 234)
 texture = ExtResource("37_gltfu")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StaticBody2D2" unique_id=1397182605]
+modulate = Color(0.6943765, 0.3112722, 0.5137972, 1)
+position = Vector2(2309, 441)
+scale = Vector2(0.5468766, 0.52539027)
+sprite_frames = SubResource("SpriteFrames_mtnox")
 
 [node name="Hada4" parent="." unique_id=1206352157 groups=["hadas"] instance=ExtResource("48_7hnus")]
 position = Vector2(10787, 235)
