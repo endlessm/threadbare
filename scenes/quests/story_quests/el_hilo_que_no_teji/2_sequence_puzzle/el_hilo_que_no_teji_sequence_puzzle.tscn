@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://c2lx7gvkonxaa" path="res://scenes/game_elements/props/background_music/components/clip_switcher.gd" id="4_x4yb7"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_yvrou"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="6_2n7s7"]
+[ext_resource type="Script" uid="uid://d4kc8ssvew575" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/2_sequence_puzzle/puente_caedizo.gd" id="6_eta46"]
 [ext_resource type="Script" uid="uid://d1ly6uhh500xu" path="res://scenes/quests/lore_quests/quest_002/1_void_runner/components/tile_map_cover.gd" id="6_x6al5"]
 [ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="7_exxqa"]
 [ext_resource type="TileSet" uid="uid://6wyq888afw6m" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_void_chromakey_walkable.tres" id="7_k5kgv"]
@@ -19,6 +20,7 @@
 [ext_resource type="AudioStream" uid="uid://cmtiwg2cylmts" path="res://assets/third_party/nepalese_hand_bells/handBells-e4.ogg" id="12_4uxft"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="13_bobf1"]
 [ext_resource type="SpriteFrames" uid="uid://d1jsrwm2u7mfr" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/lino/el_hilo_que_no_teji_player.tres" id="13_fefvx"]
+[ext_resource type="Script" uid="uid://nr762t7eophr" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/2_sequence_puzzle/cinematica_persecucion.gd" id="15_dwwin"]
 [ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/game_elements/props/sequence_puzzle_hint_sign/sequence_puzzle_hint_sign.tscn" id="16_w47k6"]
 [ext_resource type="Script" uid="uid://i0dutk8883vb" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/2_sequence_puzzle/el_hilo_que_no_teji_collectible.gd" id="18_bobf1"]
 [ext_resource type="FontFile" uid="uid://c3bb7lmvdqc5e" path="res://assets/third_party/fonts/jersey/Jersey20-Regular.ttf" id="19_roplb"]
@@ -47,6 +49,9 @@
 [ext_resource type="Material" uid="uid://cht88adq0hk3f" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/mat_mundo.tres" id="37_1r7xj"]
 [ext_resource type="Material" uid="uid://bi6a51mic57oq" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/mat_lino.tres" id="38_5sbkm"]
 [ext_resource type="Resource" uid="uid://bk7dysnmnmv2" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/2_sequence_puzzle/el_hilo_que_no_teji_sequence_puzzle.dialogue" id="38_uqs7j"]
+[ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="48_uu1t5"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="49_2jb3d"]
+[ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="50_2jb3d"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_05yrb"]
 vertices = PackedVector2Array(3182.4297, 2989.211, 1670.1328, 5143.5313, -1245.6875, 4885.7813, -1511.2266, 1522.2734, 1665.1016, 1301.4609, 3337.7422, 1906.0703, 2578.7188, -154.53125, 1991.0391, -130.67188, 2259.8438, -371.32813)
@@ -79,7 +84,7 @@ point_count = 63
 
 [sub_resource type="Curve2D" id="Curve2D_fnr3q"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 200.91139, -10.307037, 0, 0, 0, 0, 47.60913, -29.620178, 0, 0, 0, 0, 231.3814, -47.032043, 0, 0, 0, 0, 689.3838, -47.332245, 0, 0, 0, 0, 828.4032, -15.510559, 0, 0, 0, 0, 795.0766, 6.304291, 0, 0, 0, 0, 519.8943, 8.8059845, 0, 0, 0, 0, 307.55643, 17.211716, 0, 0, 0, 0, 7.6172485, 3.0020447, 0, 0, 0, 0, 199.9592, -10.20697)
+"points": PackedVector2Array(0, 0, 0, 0, 200.91139, -10.307037, 0, 0, 0, 0, 47.60913, -29.620178, 0, 0, 0, 0, 231.3814, -47.032043, 0, 0, 0, 0, 689.3838, -47.332245, 0, 0, 0, 0, 828.4032, -15.510559, 0, 0, 0, 0, 795.0766, 6.304291, 0, 0, 0, 0, 519.8943, 8.8059845, 0, 0, 0, 0, 307.55643, 17.211716, 0, 0, 0, 0, 7.6172485, 3.0020447, 0, 0, 0, 0, 200.91162, -10.307007)
 }
 point_count = 10
 
@@ -124,6 +129,9 @@ outline_color = Color(0, 0, 0, 1)
 script = ExtResource("29_x6al5")
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eta46"]
+size = Vector2(100.75, 701)
+
 [node name="ElHiloQueNoTeji_Nivel2" type="Node2D" unique_id=506997450]
 script = ExtResource("1_5sbkm")
 metadata/_edit_lock_ = true
@@ -147,20 +155,26 @@ metadata/_custom_type_script = "uid://c2lx7gvkonxaa"
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=329261217]
 metadata/_edit_lock_ = true
 
-[node name="Puente1" type="TileMapLayer" parent="TileMapLayers" unique_id=1299204633]
+[node name="Puente1" type="TileMapLayer" parent="TileMapLayers" unique_id=1299204633 node_paths=PackedStringArray("jugador")]
 visible = false
 tile_map_data = PackedByteArray("AAABADsAAwAAAAIAAAABADwAAwABAAMAAAABAD0AAwAAAAIAAAABAD4AAwABAAMAAAABAD8AAwAAAAIAAAABAEAAAwAAAAIAAAABAEEAAwABAAMAAAABAEIAAwAAAAIAAAABAEMAAwAAAAIAAAABAEQAAwAAAAMAAAACADsAAwAAAAIAAAACADwAAwABAAMAAAACAD0AAwAAAAIAAAACAD4AAwAAAAIAAAACAD8AAwAAAAIAAAACAEAAAwABAAMAAAACAEEAAwAAAAIAAAACAEIAAwAAAAIAAAACAEMAAwAAAAIAAAACAEQAAwAAAAMAAAAAAEMAAwABAAMAAAAAAEIAAwAAAAIAAAAAAEEAAwAAAAIAAAAAAEAAAwAAAAIAAAAAAD8AAwABAAMAAAAAAD4AAwAAAAIAAAAAAD0AAwAAAAIAAAAAADwAAwAAAAIAAAAAADsAAwAAAAIAAAAAAEQAAwAAAAMAAAAAADUAAwAAAAEAAAABADUAAwAAAAEAAAACADUAAwAAAAEAAAAAADYAAwABAAMAAAABADYAAwABAAMAAAACADYAAwAAAAIAAAABADoAAwABAAMAAAABADkAAwAAAAIAAAABADgAAwABAAMAAAABADcAAwAAAAIAAAACADcAAwAAAAIAAAACADgAAwABAAMAAAACADkAAwAAAAIAAAACADoAAwAAAAIAAAAAADcAAwAAAAIAAAAAADgAAwAAAAIAAAAAADkAAwAAAAIAAAAAADoAAwABAAMAAAA=")
 tile_set = ExtResource("6_2n7s7")
+script = ExtResource("6_eta46")
+jugador = NodePath("../../OnTheGround/Player")
 
-[node name="Puente2" type="TileMapLayer" parent="TileMapLayers" unique_id=1733233953]
+[node name="Puente2" type="TileMapLayer" parent="TileMapLayers" unique_id=1733233953 node_paths=PackedStringArray("jugador")]
 visible = false
 tile_map_data = PackedByteArray("AAAMACoAAwAAAAAAAAAMACsAAwAAAAAAAAANACoAAwACAAIAAAANACsAAwABAAAAAAAOACoAAwABAAAAAAAOACsAAwABAAAAAAAPACoAAwABAAAAAAAPACsAAwACAAIAAAAQACoAAwACAAIAAAAQACsAAwABAAAAAAARACoAAwABAAAAAAARACsAAwABAAAAAAASACoAAwABAAAAAAASACsAAwABAAAAAAATACoAAwACAAIAAAATACsAAwABAAAAAAAUACoAAwABAAAAAAAUACsAAwABAAAAAAAVACoAAwACAAIAAAAVACsAAwACAAIAAAAWACoAAwABAAAAAAAWACsAAwABAAAAAAAXACoAAwABAAAAAAAXACsAAwABAAAAAAAYACoAAwACAAIAAAAYACsAAwABAAAAAAAZACoAAwABAAAAAAAZACsAAwABAAAAAAAaACoAAwACAAIAAAAaACsAAwACAAIAAAAbACoAAwABAAAAAAAbACsAAwABAAAAAAAcACoAAwABAAAAAAAcACsAAwABAAAAAAAdACoAAwACAAIAAAAdACsAAwABAAAAAAAeACoAAwABAAAAAAAeACsAAwABAAAAAAAfACoAAwACAAIAAAAfACsAAwACAAIAAAAMACkAAwAAAAAAAAAhACkAAwACAAAAAAAhACoAAwACAAAAAAAhACsAAwACAAAAAAAgACsAAwABAAAAAAAgACoAAwABAAAAAAAfACkAAwABAAAAAAAgACkAAwABAAAAAAAeACkAAwABAAAAAAAdACkAAwABAAAAAAAcACkAAwACAAIAAAAbACkAAwABAAAAAAAaACkAAwABAAAAAAAZACkAAwABAAAAAAAYACkAAwABAAAAAAAXACkAAwACAAIAAAAWACkAAwABAAAAAAAVACkAAwABAAAAAAAUACkAAwABAAAAAAATACkAAwABAAAAAAASACkAAwACAAIAAAARACkAAwABAAAAAAAQACkAAwABAAAAAAAPACkAAwABAAAAAAAOACkAAwACAAIAAAANACkAAwABAAAAAAA=")
 tile_set = ExtResource("6_2n7s7")
+script = ExtResource("6_eta46")
+jugador = NodePath("../../OnTheGround/Player")
 
-[node name="Puente3" type="TileMapLayer" parent="TileMapLayers" unique_id=1276090176]
+[node name="Puente3" type="TileMapLayer" parent="TileMapLayers" unique_id=1276090176 node_paths=PackedStringArray("jugador")]
 visible = false
 tile_map_data = PackedByteArray("AAAuAA0AAwABAAMAAAAuAA4AAwABAAMAAAAuAA8AAwAAAAIAAAAuABAAAwABAAMAAAAuABEAAwAAAAIAAAAuABIAAwABAAMAAAAuABMAAwABAAMAAAAuABQAAwAAAAIAAAAuABUAAwAAAAIAAAAuABYAAwABAAMAAAAuABcAAwAAAAIAAAAuABgAAwABAAMAAAAuABkAAwAAAAIAAAAuABoAAwAAAAIAAAAuABsAAwAAAAIAAAAuABwAAwAAAAMAAAAuAAwAAwAAAAIAAAAvAAwAAwAAAAIAAAAvAA0AAwABAAMAAAAvAA4AAwAAAAIAAAAvAA8AAwAAAAIAAAAvABAAAwABAAMAAAAvABEAAwAAAAIAAAAvABIAAwABAAMAAAAvABMAAwABAAMAAAAvABQAAwAAAAIAAAAvABUAAwABAAMAAAAvABYAAwAAAAIAAAAvABcAAwAAAAIAAAAvABgAAwABAAMAAAAvABkAAwAAAAIAAAAvABsAAwAAAAIAAAAvABwAAwAAAAMAAAAwABYAAwAAAAIAAAAwABcAAwABAAMAAAAwABgAAwAAAAIAAAAwABkAAwAAAAIAAAAwABoAAwAAAAIAAAAwABsAAwAAAAIAAAAwAA0AAwABAAMAAAAwAA4AAwABAAMAAAAwAA8AAwAAAAIAAAAwABAAAwABAAMAAAAwABEAAwAAAAIAAAAwABIAAwAAAAIAAAAwABMAAwAAAAIAAAAwABQAAwAAAAIAAAAwABUAAwABAAMAAAAwAAwAAwAAAAIAAAAwABwAAwAAAAMAAAAuAAoAAwABAAMAAAAuAAsAAwAAAAIAAAAvAAoAAwAAAAIAAAAvAAsAAwAAAAIAAAAwAAoAAwAAAAIAAAAwAAsAAwABAAMAAAAuAAgAAwAAAAIAAAAuAAkAAwAAAAIAAAAvAAgAAwAAAAIAAAAvAAkAAwABAAMAAAAwAAgAAwABAAMAAAAwAAkAAwABAAMAAAAtAA8AAwAAAAIAAAAtABAAAwAAAAIAAAAtABEAAwAAAAIAAAAtABIAAwABAAMAAAAtABMAAwAAAAIAAAAtABQAAwABAAMAAAAtABUAAwAAAAIAAAAtABYAAwAAAAIAAAAtABcAAwAAAAIAAAAxAAoAAwAAAAIAAAAxAAsAAwABAAMAAAAxAAwAAwAAAAIAAAAxAA0AAwAAAAIAAAAxAA4AAwAAAAIAAAAxAA8AAwAAAAIAAAAxABAAAwAAAAIAAAAxABEAAwABAAMAAAAxABIAAwAAAAIAAAAxABMAAwABAAMAAAAxABYAAwAAAAIAAAAxABcAAwAAAAIAAAAxABgAAwAAAAIAAAAxABkAAwABAAMAAAAtAAcAAwABAAMAAAAtAAgAAwABAAMAAAAtAAkAAwAAAAIAAAAtAAoAAwAAAAIAAAAtAAsAAwAAAAIAAAAxAAcAAwABAAMAAAAxAAgAAwAAAAIAAAAxAAkAAwAAAAIAAAAuAAYAAwAAAAIAAAAuAAcAAwABAAMAAAAvAAYAAwABAAMAAAAvAAcAAwAAAAIAAAAwAAYAAwAAAAIAAAAwAAcAAwAAAAIAAAAxAAYAAwABAAMAAAAvABoAAwABAAMAAAAxABUAAwABAAMAAAAxABQAAwABAAMAAAAtABgAAwABAAMAAAAtAA4AAwABAAMAAAAwAAUAAwAAAAIAAAAvAAUAAwAAAAIAAAAuAAUAAwAAAAIAAAAuAAMAAwAAAAEAAAAvAAMAAwAAAAEAAAAwAAMAAwAAAAEAAAAuAAQAAwAAAAIAAAAvAAQAAwAAAAIAAAAwAAQAAwAAAAIAAAA=")
 tile_set = ExtResource("6_2n7s7")
+script = ExtResource("6_eta46")
+jugador = NodePath("../../OnTheGround/Player")
 
 [node name="VacioVisual" type="TileMapLayer" parent="TileMapLayers" unique_id=1175846120 groups=["ignorar_shader"]]
 z_index = -3
@@ -281,14 +295,16 @@ visible = false
 position = Vector2(788, 481)
 navigation_polygon = SubResource("NavigationPolygon_05yrb")
 
-[node name="EnemyTrigger" type="Area2D" parent="." unique_id=869056008]
+[node name="EnemyTrigger" type="Area2D" parent="." unique_id=869056008 node_paths=PackedStringArray("enemigo_vacio")]
 editor_description = "Entering this area starts the enemy."
 z_index = 10
-position = Vector2(1767, 2225)
+position = Vector2(1759, 1998)
 collision_layer = 0
+script = ExtResource("15_dwwin")
+enemigo_vacio = NodePath("../OnTheGround/VoidSpreadingEnemy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyTrigger" unique_id=81474364]
-position = Vector2(1285, -533)
+position = Vector2(1293, -322)
 shape = SubResource("RectangleShape2D_lutqc")
 
 [node name="GoalReachedTrigger" type="Area2D" parent="." unique_id=724022793]
@@ -306,9 +322,16 @@ position = Vector2(607, 1073)
 
 [node name="Player" parent="OnTheGround" unique_id=1051216917 instance=ExtResource("5_yvrou")]
 z_index = 1
-position = Vector2(1036, 3878)
+material = ExtResource("38_5sbkm")
+position = Vector2(986, 3894)
 player_name = "StoryWeaver"
 speeds = SubResource("Resource_k5kgv")
+sprite_frames = ExtResource("13_fefvx")
+
+[node name="InputWalkBehavior" parent="OnTheGround/Player" index="0" unique_id=1817340985]
+speeds = SubResource("Resource_k5kgv")
+
+[node name="PlayerSprite" parent="OnTheGround/Player" index="2" unique_id=1785485617]
 sprite_frames = ExtResource("13_fefvx")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1988400368]
@@ -356,7 +379,7 @@ visible = false
 position = Vector2(-3142, 1595)
 polygon = PackedVector2Array(1701, 1960, 1897, 1975, 1894, 2235, 2017, 2260, 2017, 2329, 1804, 2333, 1755, 2363, 1768, 2590, 1693, 2567)
 
-[node name="Puzzle_Isla1" type="Node2D" parent="OnTheGround" unique_id=1542651651 node_paths=PackedStringArray("steps")]
+[node name="Puzzle_Isla1" type="Node2D" parent="OnTheGround" unique_id=1542651651 node_paths=PackedStringArray("steps") groups=["ignorar_shader"]]
 process_mode = 3
 position = Vector2(-607, -1073)
 script = ExtResource("7_exxqa")
@@ -414,7 +437,7 @@ position = Vector2(34, 4753)
 script = ExtResource("27_5sbkm")
 sprite_frames = ExtResource("26_urbuv")
 
-[node name="Puzzle_Isla2" type="Node2D" parent="OnTheGround" unique_id=36955158 node_paths=PackedStringArray("steps")]
+[node name="Puzzle_Isla2" type="Node2D" parent="OnTheGround" unique_id=36955158 node_paths=PackedStringArray("steps") groups=["ignorar_shader"]]
 process_mode = 3
 y_sort_enabled = true
 position = Vector2(-607, -1073)
@@ -474,7 +497,7 @@ position = Vector2(-229, 3030)
 script = ExtResource("27_5sbkm")
 sprite_frames = ExtResource("26_urbuv")
 
-[node name="Puzzle_Isla3" type="Node2D" parent="OnTheGround" unique_id=1390023867 node_paths=PackedStringArray("steps")]
+[node name="Puzzle_Isla3" type="Node2D" parent="OnTheGround" unique_id=1390023867 node_paths=PackedStringArray("steps") groups=["ignorar_shader"]]
 process_mode = 3
 y_sort_enabled = true
 position = Vector2(-607, -1073)
@@ -562,7 +585,7 @@ stream = ExtResource("31_x4yb7")
 
 [node name="GuardiaI2_01" parent="OnTheGround" unique_id=2097753642 node_paths=PackedStringArray("patrol_path") instance=ExtResource("29_odxnt")]
 z_index = 12
-position = Vector2(-812, 1566.0002)
+position = Vector2(-765.00024, 1621.0002)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("30_ptmxe")
@@ -658,7 +681,7 @@ stream = ExtResource("31_x4yb7")
 
 [node name="GuardiaI2-ruta01" type="Path2D" parent="OnTheGround" unique_id=1855490666]
 top_level = true
-position = Vector2(-415.99976, 2536)
+position = Vector2(-369, 2591)
 scale = Vector2(1.050213, -9.99319)
 curve = SubResource("Curve2D_fnr3q")
 
@@ -681,7 +704,7 @@ scale = Vector2(1.050213, -9.99319)
 curve = SubResource("Curve2D_uu1t5")
 
 [node name="Luto" type="AnimatedSprite2D" parent="OnTheGround" unique_id=1917759583]
-position = Vector2(2427, -1127)
+position = Vector2(3286, -207)
 sprite_frames = ExtResource("33_fnr3q")
 animation = &"bark"
 autoplay = "bark"
@@ -705,14 +728,15 @@ position = Vector2(-886.5, -581.25)
 shape = SubResource("RectangleShape2D_2jb3d")
 
 [node name="Niebla" type="CanvasLayer" parent="." unique_id=1404155658]
+visible = false
 follow_viewport_enabled = true
 
 [node name="ColorRectNeblina" type="ColorRect" parent="Niebla" unique_id=447500649]
 material = SubResource("ShaderMaterial_ptmxe")
-offset_left = -987.0
-offset_top = -1706.0
-offset_right = 4518.0
-offset_bottom = 6652.0
+offset_left = -653.0
+offset_top = -2691.0
+offset_right = 4852.0
+offset_bottom = 5667.0
 
 [node name="HUD" parent="." unique_id=1953354605 instance=ExtResource("24_p5ybv")]
 
@@ -737,7 +761,7 @@ label_settings = SubResource("LabelSettings_fnr3q")
 horizontal_alignment = 1
 script = ExtResource("36_x4yb7")
 
-[node name="CollectibleItem3" parent="." unique_id=1547732840 instance=ExtResource("28_roplb")]
+[node name="CollectibleItem3" parent="." unique_id=1547732840 groups=["ignorar_shader"] instance=ExtResource("28_roplb")]
 modulate = Color(0.98039216, 0.8, 0.08235294, 1)
 position = Vector2(3039, 1858)
 script = ExtResource("18_bobf1")
@@ -747,7 +771,7 @@ pause_game_during_dialogue = true
 collected_dialogue = ExtResource("38_uqs7j")
 dialogue_title = &"hilo_3"
 
-[node name="CollectibleItem2" parent="." unique_id=327991066 instance=ExtResource("28_roplb")]
+[node name="CollectibleItem2" parent="." unique_id=327991066 groups=["ignorar_shader"] instance=ExtResource("28_roplb")]
 modulate = Color(0.98039216, 0.8, 0.08235294, 1)
 position = Vector2(735, 2712)
 script = ExtResource("18_bobf1")
@@ -757,7 +781,7 @@ pause_game_during_dialogue = true
 collected_dialogue = ExtResource("38_uqs7j")
 dialogue_title = &"hilo_2"
 
-[node name="CollectibleItem1" parent="." unique_id=1922470313 instance=ExtResource("28_roplb")]
+[node name="CollectibleItem1" parent="." unique_id=1922470313 groups=["ignorar_shader"] instance=ExtResource("28_roplb")]
 modulate = Color(0.98039216, 0.8, 0.08235294, 1)
 position = Vector2(89, 4439)
 script = ExtResource("18_bobf1")
@@ -772,7 +796,23 @@ script = ExtResource("36_7541g")
 material_mundo = ExtResource("37_1r7xj")
 material_jugador = ExtResource("38_5sbkm")
 
-[connection signal="body_entered" from="EnemyTrigger" to="OnTheGround/VoidSpreadingEnemy" method="start" flags=6]
+[node name="StealthGameLogic" type="Node" parent="." unique_id=641973258]
+script = ExtResource("48_uu1t5")
+
+[node name="Cinematic" type="Node2D" parent="." unique_id=1631692868]
+script = ExtResource("49_2jb3d")
+autostart = false
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="Checkpoint" parent="." unique_id=1789892556 instance=ExtResource("50_2jb3d")]
+position = Vector2(655, 2714)
+dialogue = null
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoint" unique_id=958148335]
+shape = SubResource("RectangleShape2D_eta46")
+debug_color = Color(0, 0.0039459253, 0.0056523527, 0.41960785)
+
+[connection signal="body_entered" from="EnemyTrigger" to="EnemyTrigger" method="_on_body_entered"]
 [connection signal="body_entered" from="GoalReachedTrigger" to="OnTheGround/VoidSpreadingEnemy" method="defeat" flags=6 unbinds=1]
 [connection signal="solved" from="OnTheGround/Puzzle_Isla1" to="CollectibleItem1" method="reveal"]
 [connection signal="solved" from="OnTheGround/Puzzle_Isla2" to="CollectibleItem2" method="reveal"]
@@ -781,6 +821,7 @@ material_jugador = ExtResource("38_5sbkm")
 [connection signal="tree_exited" from="CollectibleItem2" to="." method="reparar_puente_2"]
 [connection signal="tree_exited" from="CollectibleItem1" to="." method="reparar_puente_1"]
 
+[editable path="OnTheGround/Player"]
 [editable path="OnTheGround/VoidSpreadingEnemy"]
 [editable path="OnTheGround/GuardiaI1_01"]
 [editable path="OnTheGround/GuardiaI2_01"]

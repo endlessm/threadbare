@@ -143,6 +143,7 @@ func _sacudir_pantalla() -> void:
 		tween.tween_property(camara, "offset", Vector2.ZERO, 0.05)
 
 # Se añadió el identificador para saber cuál hilo guardamos
+# Se añadió el identificador para saber cuál hilo guardamos
 func _al_recoger_hilo(id_hilo: String = "") -> void:
 	if not is_inside_tree(): return
 	
@@ -156,8 +157,8 @@ func _al_recoger_hilo(id_hilo: String = "") -> void:
 	_actualizar_color_ambiente()
 	
 	if hilos_recogidos == 2:
-		if is_instance_valid(puerta_central):
-			puerta_central.open()
+		# ---> ¡AQUÍ ESTÁ LA MAGIA! En vez de abrir de golpe, llamamos a la cinemática
+		_cinematica_apertura_puerta()
 			
 	elif hilos_recogidos == 3:
 		if is_instance_valid(particulas_perdon):
@@ -166,6 +167,86 @@ func _al_recoger_hilo(id_hilo: String = "") -> void:
 		
 		if is_instance_valid(puerta_salida):
 			puerta_salida.open()
+
+# =========================================================
+# CINEMÁTICA DEFINITIVA (CÁMARA FANTASMA + LÍMITES + VIBRACIÓN)
+# =========================================================
+func _cinematica_apertura_puerta() -> void:
+	var foco_camara = get_node_or_null("TileMapLayers/FocoCamaraPuerta")
+	var destino = foco_camara.global_position if foco_camara else puerta_central.global_position
+
+	# 1. Congelar a Lino
+	if jugador.has_method("take_control"):
+		jugador.take_control(self)
+	jugador.velocity = Vector2.ZERO
+
+	# 2. Obtener la cámara real de Lino
+	var cam_lino = get_viewport().get_camera_2d()
+
+	# 3. CREAR LA CÁMARA FANTASMA TEMPORAL
+	var cam_cinematica = Camera2D.new()
+	
+	# CLAVE 1: Usamos el centro real de la pantalla para evitar saltos si Lino está contra una pared
+	cam_cinematica.global_position = cam_lino.get_screen_center_position()
+	cam_cinematica.zoom = cam_lino.zoom
+	
+	# CLAVE 2: Heredamos los límites del mapa para que el viaje no exponga el vacío negro
+	cam_cinematica.limit_left = cam_lino.limit_left
+	cam_cinematica.limit_right = cam_lino.limit_right
+	cam_cinematica.limit_top = cam_lino.limit_top
+	cam_cinematica.limit_bottom = cam_lino.limit_bottom
+
+	add_child(cam_cinematica)
+	cam_cinematica.make_current()
+
+	# 4. LA CINEMÁTICA
+	var cinematica = create_tween()
+
+	# Fase A: Zoom dramático hacia la puerta (Acercamiento a 1.5)
+	cinematica.tween_property(cam_cinematica, "global_position", destino, 1.2).set_trans(Tween.TRANS_SINE)
+	cinematica.parallel().tween_property(cam_cinematica, "zoom", Vector2(1.5, 1.5), 1.2).set_trans(Tween.TRANS_SINE)
+	cinematica.tween_interval(0.2)
+
+	# =======================================================
+	# Fase B: TENSIÓN (La puerta tiembla antes de ceder)
+	# =======================================================
+	if is_instance_valid(puerta_central):
+		var pos_original_puerta = puerta_central.position
+		
+		# Vibra aumentando la fuerza progresivamente
+# Vibra aumentando la fuerza progresivamente por 1.2 segundos (30 iteraciones)
+		for i in range(30):
+			var intensidad = float(i) / 30.0
+			# Subimos el rango a 4.0 para que el temblor final se sienta más fuerte
+			var vibracion = Vector2(randf_range(-4.0, 4.0) * intensidad, randf_range(-4.0, 4.0) * intensidad)
+			cinematica.tween_property(puerta_central, "position", pos_original_puerta + vibracion, 0.04)
+
+		# La clavamos en su centro exacto justo para el impacto final
+		cinematica.tween_property(puerta_central, "position", pos_original_puerta, 0.05)
+	# =======================================================
+
+	# Fase C: ¡PUM! Se abre la puerta de golpe + Temblor de cámara
+	cinematica.tween_callback(func():
+		if is_instance_valid(puerta_central):
+			puerta_central.open()
+			_sacudir_pantalla() 
+	)
+
+	# Fase D: Pausa dramática para asimilar el impacto
+	cinematica.tween_interval(1.2)
+
+	# Fase E: Regreso fluido al centro de pantalla de Lino (NO a su cuerpo, evitando el salto)
+	cinematica.tween_property(cam_cinematica, "global_position", cam_lino.get_screen_center_position(), 0.8).set_trans(Tween.TRANS_QUAD)
+	cinematica.parallel().tween_property(cam_cinematica, "zoom", cam_lino.zoom, 0.8)
+
+	await cinematica.finished
+
+	# 5. RESTAURAR TODO Y DESTRUIR LA CÁMARA TEMPORAL
+	cam_lino.make_current() 
+	cam_cinematica.queue_free() 
+
+	if jugador.has_method("return_control"):
+		jugador.return_control(self)
 
 # --- SISTEMA DE COMBATE ---
 func _al_recibir_bolita(body: Node2D) -> void:
