@@ -45,6 +45,12 @@ signal helper_changed
 
 @export var helper: HelperCharacterState
 
+## Quests that were started & abandoned without being completed, keyed by
+## [member Resource.resource_path] of each [Quest].
+## Captures the [QuestState] and [PerSceneState] at point, so that the player
+## can later pick up where they left off.
+@export var suspended_quests: Dictionary[String, SuspendedQuestState]
+
 
 func _validate_property(property: Dictionary) -> void:
 	match property.name:

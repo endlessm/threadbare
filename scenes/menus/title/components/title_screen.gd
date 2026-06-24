@@ -37,7 +37,7 @@ func _on_main_menu_continue_pressed() -> void:
 func _on_start_pressed() -> void:
 	GameState.clear()
 
-	GameState.start_quest(tutorial_quest)
+	GameState.set_quest(tutorial_quest)
 	SceneSwitcher.change_to_file_with_transition(
 		tutorial_quest.first_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 	)

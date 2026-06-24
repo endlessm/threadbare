@@ -71,7 +71,7 @@ func _on_body_entered(body: Node2D) -> void:
 	if not body is Player:
 		return
 
-	GameState.start_quest(quest)
+	GameState.set_quest(quest)
 	var current_scene := get_tree().current_scene
 	GameState.quest.abandon_scene_path = current_scene.scene_file_path
 	GameState.quest.abandon_spawn_point = current_scene.get_path_to(abandon_point)

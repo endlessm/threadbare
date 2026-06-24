@@ -22,6 +22,9 @@ const STORYBOOK_SCENE := preload("uid://bhm7fdjvppt8b")
 ## The quest chosen by the player from the storybook
 var chosen_quest: Quest
 
+## Whether [member chosen_quest] should be restarted rather than resumed
+var restart: bool
+
 var _quests: Array[Quest]
 
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
@@ -74,7 +77,12 @@ func show_storybook() -> void:
 	storybook.quests = _quests
 
 	_storybook_layer.add_child(storybook)
-	chosen_quest = await storybook.selected
+
+	# GDScript doesn't support "x, y = await ...". Alas!
+	var args: Array = await storybook.selected
+	chosen_quest = args[0]
+	restart = args[1]
+
 	_storybook_layer.remove_child(storybook)
 	storybook.queue_free()
 
@@ -96,10 +104,22 @@ func _update_dialogue_title(_item: InventoryItem = null) -> void:
 func _on_interaction_ended() -> void:
 	if chosen_quest:
 		interact_area.disabled = true
-		GameState.start_quest(chosen_quest)
-		SceneSwitcher.change_to_file_with_transition(
-			chosen_quest.first_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
-		)
+		GameState.set_quest(chosen_quest)
+		if restart and chosen_quest.resource_path in GameState.global.suspended_quests:
+			GameState.global.suspended_quests.erase(chosen_quest.resource_path)
+
+		if chosen_quest.resource_path in GameState.global.suspended_quests:
+			GameState.restore_quest()
+			SceneSwitcher.change_to_file_with_transition(
+				GameState.scene.path,
+				GameState.scene.spawn_point,
+				Transition.Effect.FADE,
+				Transition.Effect.FADE
+			)
+		else:
+			SceneSwitcher.change_to_file_with_transition(
+				chosen_quest.first_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+			)
 		chosen_quest = null
 
 
