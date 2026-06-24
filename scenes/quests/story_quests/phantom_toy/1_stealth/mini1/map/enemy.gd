@@ -4,6 +4,9 @@ extends CharacterBody2D
 
 @export var speed := 150.0
 
+@onready var enemy = $Enemy
+@onready var sonido = get_node_or_null("Area2D_Sonido/AudioStreamPlayer2D")
+
 var player: Node2D
 var chasing := true
 var active := false
@@ -47,3 +50,7 @@ func behavior_loop() -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
 		body.defeat()
+		
+func _on_area_2d_sonido_body_entered(body: Node2D) -> void:
+	if body.name == "Player" and sonido:
+		sonido.play()
