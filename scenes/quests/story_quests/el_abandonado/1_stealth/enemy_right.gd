@@ -3,6 +3,8 @@ extends Node2D
 @onready var camara = $"../Camera2D"
 @onready var anim = $AnimatedSprite2D
 @onready var orbe_timer = $OrbeTimer
+@onready var musica_normal = $"../Fondo"
+@onready var musica_persecucion = $"../Persecucion"
 
 @export var offset_x := 300.0
 @export var offset_y := 0.0
@@ -86,6 +88,12 @@ func iniciar_persecucion():
 	camara.persecucion_activa = true
 	persecucion_iniciada = true
 
+	musica_persecucion.volume_db = -40
+	musica_persecucion.play()
+	var tween = create_tween()
+	tween.parallel().tween_property(musica_normal,"volume_db",-40,1.5)
+	tween.parallel().tween_property(musica_persecucion,"volume_db",-10,1.5)
+	
 	orbe_timer.start()
 	iniciar_dialogos()
 
@@ -176,5 +184,15 @@ func terminar_persecucion():
 	persecucion_iniciada = false
 	orbe_timer.stop()
 	reiniciar_dialogos()
+
+	var tween = create_tween()
+	tween.parallel().tween_property(musica_persecucion, "volume_db", -40, 1.5)
+	tween.parallel().tween_property(musica_normal, "volume_db", 0, 1.5)
+	await tween.finished
+	
+	musica_persecucion.stop()
+
+	if musica_normal:
+		musica_normal.play()
 
 	desaparecer()
