@@ -9,8 +9,6 @@ class_name CollectibleItem extends Node2D
 ## Wether the collectible can be seen or collected. This allows the collectible
 ## to be placed in the scene even when some condition has to be met for it to
 ## appear.
-
-
 @export var revealed: bool = true:
 	set(new_value):
 		revealed = new_value
@@ -39,6 +37,7 @@ class_name CollectibleItem extends Node2D
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var appear_sound: AudioStreamPlayer = %AppearSound
 @onready var physical_collider: CollisionShape2D = $StaticBody2D/CollisionShape2D
+
 
 func _validate_property(property: Dictionary) -> void:
 	match property.name:
@@ -74,6 +73,7 @@ func _ready() -> void:
 		return
 
 	interact_area.interaction_started.connect(self._on_interacted)
+
 
 ## Make the collectible appear
 func reveal() -> void:

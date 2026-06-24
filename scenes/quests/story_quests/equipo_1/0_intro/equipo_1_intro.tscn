@@ -3,17 +3,19 @@
 [ext_resource type="TileSet" uid="uid://c4gg2dpucvn6" path="res://scenes/quests/story_quests/equipo_1/tiles/equipo_1_exterior_floors.tres" id="1_j4suc"]
 [ext_resource type="TileSet" uid="uid://ciq5guijvlyb0" path="res://tiles/void_chromakey.tres" id="2_p6ywc"]
 [ext_resource type="TileSet" uid="uid://bdc7ucso7bx0s" path="res://tiles/shadows.tres" id="3_jpf8r"]
-[ext_resource type="SpriteFrames" uid="uid://dc7pfg6wu2ffr" path="res://scenes/quests/story_quests/equipo_1/player_components/equipo_1_player.tres" id="3_o3j47"]
 [ext_resource type="TileSet" uid="uid://dfp36ffpanjq2" path="res://tiles/elevation.tres" id="4_eb25u"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_p6ywc"]
 [ext_resource type="TileSet" uid="uid://41pk6xbhypue" path="res://tiles/fence.tres" id="5_468w5"]
 [ext_resource type="Resource" uid="uid://cjxjsprxapwhi" path="res://scenes/quests/story_quests/equipo_1/0_intro/intro_components/equipo_1_intro.dialogue" id="5_jpf8r"]
+[ext_resource type="SpriteFrames" uid="uid://vym04hqutbm2" path="res://scenes/quests/story_quests/equipo_1/jugador_assets_USAR_SOLO_OK/Sprite_frames_balder.tres" id="6_cnubl"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_eb25u"]
 [ext_resource type="Texture2D" uid="uid://c3l7lhhu5de88" path="res://assets/third_party/tiny-swords/Deco/16.png" id="11_468w5"]
 [ext_resource type="Texture2D" uid="uid://byk4bbqm4ajvc" path="res://assets/third_party/tiny-swords/Factions/Knights/Buildings/Tower/Tower_Destroyed.png" id="12_cnubl"]
 [ext_resource type="Texture2D" uid="uid://bacd67ic3n3o6" path="res://assets/third_party/tiny-swords/Factions/Knights/Buildings/Castle/Castle_Destroyed.png" id="13_r2eiw"]
 [ext_resource type="Texture2D" uid="uid://d4l4c57iqk20q" path="res://assets/third_party/tiny-swords/Factions/Knights/Buildings/House/House_Destroyed.png" id="14_ami2f"]
 [ext_resource type="Texture2D" uid="uid://b8t4t3n4syqli" path="res://assets/third_party/tiny-swords/Deco/15.png" id="14_cnubl"]
+[ext_resource type="AudioStream" uid="uid://b4jvsfy5eglvt" path="res://scenes/quests/story_quests/equipo_1/musica_juego/intro_triste.mp3" id="15_ami2f"]
+[ext_resource type="Script" uid="uid://pvdwotpbsamc" path="res://scenes/quests/story_quests/equipo_1/3_sequence_puzzle/musica_reducir.gd" id="16_8b7l2"]
 
 [sub_resource type="Animation" id="Animation_468w5"]
 length = 0.001
@@ -176,7 +178,7 @@ y_sort_enabled = true
 
 [node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=169229228]
 position = Vector2(-107, 417)
-sprite_frames = ExtResource("3_o3j47")
+sprite_frames = ExtResource("6_cnubl")
 animation = &"idle"
 autoplay = "idle"
 
@@ -312,3 +314,11 @@ texture = ExtResource("14_ami2f")
 [node name="casa_destruida6" type="Sprite2D" parent="Node2D" unique_id=814527885]
 position = Vector2(735, 160)
 texture = ExtResource("14_ami2f")
+
+[node name="Musica" type="Node" parent="." unique_id=2004564936]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Musica" unique_id=1678766313]
+stream = ExtResource("15_ami2f")
+autoplay = true
+script = ExtResource("16_8b7l2")
+volumen = -20.0

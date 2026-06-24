@@ -244,6 +244,7 @@ func _ataque_circular_rafaga(ataques:int,es_espiral:bool)->void:
 var ataque_activo = false
 
 var tiempo_ultimo_sonido : float = 0.0
+var tiempo_ultimo_sonido2 : float = 0.0
 const COOLDOWN_SONIDO : float = 0.12			
 func _ataque_espiral()->void:
 	ataque_activo = true
@@ -285,19 +286,22 @@ func _ataque_final_()->void:
 	var iterador = 0
 	var puntos = %PatronCircular.cardinales[iterador]
 	var ndisparos=5
-	%DisparoPolyfonic.play_audio()
 	while ataque_activo:
 		for p in puntos:
 			if not ataque_activo:
 				break
+				
 			shoot_projectile_at(p)
+			var tiempo_actual = Time.get_ticks_msec() / 1000.0
+			if tiempo_actual - tiempo_ultimo_sonido2 >= COOLDOWN_SONIDO:
+				%DisparoPolyfonic.play_audio()
+				tiempo_ultimo_sonido2= tiempo_actual
 		await get_tree().create_timer(0.05).timeout
 		ndisparos = ndisparos-1
 		if ndisparos<1:
 			iterador =iterador+1	
 			puntos = %PatronCircular.cardinales[iterador%2]
 			ndisparos=10
-			%DisparoPolyfonic.play_audio()
 
 func _ejecutar_ataque_espera()->void:
 	if fase1:

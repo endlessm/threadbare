@@ -4,6 +4,10 @@ extends Node
 @onready var player = %Player
 @export var animacion: ColorRect
 @export var timer_time_stop: Timer
+
+@export var barra_player: CanvasLayer
+
+@export var dialogos: Node
 var es_barrido = false
 var cantidad_disparos=1
 var patron=0
@@ -32,7 +36,7 @@ func _time_stop(numero_patron:int = -1)->void:
 	
 	%EfectoPararTiempo.play()
 	await get_tree().create_timer(3).timeout	
-	%MusicaBatalla.volume_db =-10
+	%MusicaBatalla.volume_db =-30
 	boss.is_stopping = false
 	boss.time_stop=true
 	boss.ataque_activo = false
@@ -50,7 +54,7 @@ func _time_stop(numero_patron:int = -1)->void:
 	animacion.reanudar_efecto()
 	await get_tree().create_timer(1).timeout
 	
-	%MusicaBatalla.volume_db =0
+	%MusicaBatalla.volume_db =-20
 	
 	player.process_mode = Node.PROCESS_MODE_INHERIT
 	boss.activar_projectiles()
@@ -75,16 +79,15 @@ func _on_damaged(body:Node2D)->void:
 			recibir_danio=false
 			damage.emit(20)
 			##segundos de invulnerabilidad
-			await get_tree().create_timer(3).timeout	
+			%JefeDamaged.play()
+			await get_tree().create_timer(2).timeout	
 			recibir_danio=true
 
 func fase_2()->void:
-	print("ENTRANDO A LA FASE 2")
 	
-	print("PARANDO TIMERS")	
+	
 	boss.timer.stop()
 	timer_time_stop.stop()
-	print("AJUSTANDO ATAQUES")
 	es_barrido = true
 	cantidad_disparos = 1
 	maximo=1
@@ -95,15 +98,18 @@ func fase_2()->void:
 		d.projectile_speed=100
 	boss.fase2 =true
 	boss.fase1 =false
-	print("PARANDO EL TIEMPO")
+	
+	barra_player.player_can_be_damaged = false
+	boss.pausar_projectiles()
+	await dialogos.fase_2()
+	boss.activar_projectiles()
+	barra_player.player_can_be_damaged = true
 	_time_stop(1)
 
 func fase_3()->void:
 	
-	print("PARANDO TIMERS")		
 	boss.timer.stop()
 	timer_time_stop.stop()
-	print("AJUSTANDO ATAQUES")
 	cantidad_disparos = 2
 	##boss.espaciado =1
 	maximo=2
@@ -113,7 +119,14 @@ func fase_3()->void:
 	timer_time_stop.wait_time = 6
 	for d in boss.disparos:
 		d.projectile_speed=120
-	print("PARANDO EL TIEMPO")	
+	
+	barra_player.player_can_be_damaged = false
+	boss.pausar_projectiles()
+	await dialogos.fase_3()
+	boss.activar_projectiles()
+	
+	barra_player.player_can_be_damaged = true
+	
 	_time_stop(2)
 	
 	
