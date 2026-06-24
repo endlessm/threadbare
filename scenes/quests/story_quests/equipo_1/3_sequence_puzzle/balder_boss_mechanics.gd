@@ -75,7 +75,7 @@ func _on_damaged(body:Node2D)->void:
 			recibir_danio=false
 			damage.emit(20)
 			##segundos de invulnerabilidad
-			await get_tree().create_timer(3).timeout	
+			await get_tree().create_timer(2).timeout	
 			recibir_danio=true
 
 func fase_2()->void:

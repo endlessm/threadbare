@@ -18,7 +18,7 @@ func _parar_tiempo(jugador_detectado:bool=false):
 	
 	%EfectoPararTiempo.play()
 	await get_tree().create_timer(3).timeout
-	%Musica.volume_db =-15
+	%Musica.volume_db =-35
 	##para aumentar la velocidad de balder
 	%Balder.move_speed = %Balder.move_speed+15
 	
@@ -59,7 +59,7 @@ func _atacar_jugador()->void:
 func _reanudar_mundo()->void:
 	efecto.reanudar_efecto()
 	await get_tree().create_timer(1).timeout
-	%Musica.volume_db =-5
+	%Musica.volume_db =-20
 	player.return_control(self)
 	_reanudar_jugador()
 	%DeteccionGuardian.global_position =deteccion_pos
