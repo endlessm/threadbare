@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://dunsvrhq42214" path="res://scenes/game_elements/fx/shaker/shaker.gd" id="3_pcfmk"]
 [ext_resource type="Script" uid="uid://djeshbrs3vwnb" path="res://scenes/game_elements/characters/npcs/components/pet_interaction.gd" id="4_pcfmk"]
 [ext_resource type="AudioStream" uid="uid://dtf82j11434vb" path="res://scenes/game_elements/props/decoration/sheep/components/sheep_baa.wav" id="5_5wm27"]
+[ext_resource type="Script" uid="uid://dxvv340yej4py" path="res://scenes/game_logic/achievement_counter/achievement_counter.gd" id="7_1k1ft"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hj6il"]
 radius = 6.0
@@ -58,12 +59,17 @@ position = Vector2(5, -28)
 shape = SubResource("RectangleShape2D_tsjbs")
 debug_color = Color(0.6290859, 0.52632225, 0.15803415, 0.41960785)
 
-[node name="PetInteraction" type="Node" parent="." unique_id=1162035923 node_paths=PackedStringArray("interact_area", "sound_effect_player", "shaker")]
+[node name="PetInteraction" type="Node" parent="." unique_id=1162035923 node_paths=PackedStringArray("interact_area", "sound_effect_player", "shaker", "achievement_counter")]
 script = ExtResource("4_pcfmk")
 interact_area = NodePath("../InteractArea")
 sound_effect_player = NodePath("AudioStreamPlayer2D")
 shaker = NodePath("../AnimatedSprite2D/Shaker")
+achievement_counter = NodePath("../AchievementCounter")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PetInteraction" unique_id=1930789457]
 stream = SubResource("AudioStreamRandomizer_3vki4")
 bus = &"SFX"
+
+[node name="AchievementCounter" type="Node" parent="." unique_id=2116673480]
+script = ExtResource("7_1k1ft")
+prefix = "sheeps_annoyed"
