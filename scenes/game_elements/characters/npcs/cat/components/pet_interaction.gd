@@ -3,7 +3,8 @@
 extends Node
 
 @export var interact_area: InteractArea
-@export var miaow_player: AudioStreamPlayer2D
+@export var sound_effect_player: AudioStreamPlayer2D
+@export var shaker: Shaker
 
 
 func _ready() -> void:
@@ -13,6 +14,8 @@ func _ready() -> void:
 func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -> void:
 	interact_area.end_interaction()
 	interact_area.disabled = true
-	miaow_player.play()
-	await miaow_player.finished
+	sound_effect_player.play()
+	if shaker:
+		shaker.shake()
+	await sound_effect_player.finished
 	interact_area.disabled = false
