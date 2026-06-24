@@ -20,11 +20,11 @@ enum Mode {
 ## The animations which must be provided by [member sprite_frames], each with the corresponding
 ## number of frames.
 const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
-	&"idle": 10,
-	&"walk": 6,
-	&"attack_01": 4,
-	&"attack_02": 4,
-	&"defeated": 11,
+	&"idle": 2,
+	&"walk": 9,
+	&"attack_01": 6,
+	&"attack_02": 13,
+	&"defeated": 6,
 }
 
 ## Optional animations which, if provided by [member sprite_frames], must have the corresponding

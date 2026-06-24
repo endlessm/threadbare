@@ -23,6 +23,7 @@
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="21_577bi"]
 [ext_resource type="Resource" uid="uid://cn5fjdfioisvr" path="res://scenes/quests/story_quests/nudo_rojo/3_sequence_puzzle/nudo_rojo_sequence_puzzle.dialogue" id="22_ml0i8"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="23_aaw3m"]
+[ext_resource type="Texture2D" uid="uid://jc28jlyg7jqm" path="res://scenes/quests/story_quests/nudo_rojo/assets/images/anciano/idle.png" id="24_2wydv"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="24_y0m7w"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="25_jnp2s"]
 
@@ -30,6 +31,28 @@
 script = ExtResource("21_577bi")
 type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ae021"]
+atlas = ExtResource("24_2wydv")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mvmba"]
+atlas = ExtResource("24_2wydv")
+region = Rect2(64, 64, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4f38i"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ae021")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mvmba")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="NudoRojoSequencePuzzle" type="Node2D" unique_id=217609538]
 
@@ -57,6 +80,7 @@ y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=747348360 instance=ExtResource("5_4f38i")]
 position = Vector2(383, 371)
+scale = Vector2(1.5, 1.5)
 sprite_frames = ExtResource("6_ovbwg")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1732237457]
@@ -78,36 +102,163 @@ y_sort_enabled = true
 position = Vector2(326, 489)
 
 [node name="Blue" parent="OnTheGround/SequencePuzzle/Objects" unique_id=288264421 instance=ExtResource("8_6sob7")]
+position = Vector2(-19, 41)
 sprite_frames = ExtResource("9_uke2x")
 sprite_modulate = Color(0, 0.4, 0.6, 1)
 audio_stream = ExtResource("10_vr3xs")
 
+[node name="Label" type="Label" parent="OnTheGround/SequencePuzzle/Objects/Blue" unique_id=499992417]
+offset_left = -25.0
+offset_top = 10.0
+offset_right = 29.0
+offset_bottom = 33.0
+text = "CUSCO"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="Pink" parent="OnTheGround/SequencePuzzle/Objects" unique_id=947200111 instance=ExtResource("8_6sob7")]
-position = Vector2(88, -10)
+position = Vector2(71, 40)
 sprite_frames = ExtResource("9_uke2x")
 sprite_modulate = Color(0.89, 0.2937, 0.804817, 1)
 audio_stream = ExtResource("11_kn3et")
 
+[node name="Label2" type="Label" parent="OnTheGround/SequencePuzzle/Objects/Pink" unique_id=646722943]
+offset_left = -30.0
+offset_top = 10.0
+offset_right = 33.0
+offset_bottom = 33.0
+text = "TROPAS"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="Yellow" parent="OnTheGround/SequencePuzzle/Objects" unique_id=883789242 instance=ExtResource("8_6sob7")]
-position = Vector2(176, -20)
+position = Vector2(165, 39)
 sprite_frames = ExtResource("9_uke2x")
 sprite_modulate = Color(0.89, 0.804817, 0.2937, 1)
 audio_stream = ExtResource("12_0flqh")
 
+[node name="Label3" type="Label" parent="OnTheGround/SequencePuzzle/Objects/Yellow" unique_id=1421089939]
+offset_left = -40.0
+offset_top = 10.0
+offset_right = 46.0
+offset_bottom = 33.0
+text = "MOVILIZAR"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="Green" parent="OnTheGround/SequencePuzzle/Objects" unique_id=472811334 instance=ExtResource("8_6sob7")]
-position = Vector2(264, -30)
+position = Vector2(254, 38)
 sprite_frames = ExtResource("9_uke2x")
 sprite_modulate = Color(0.188235, 0.717647, 0, 1)
 audio_stream = ExtResource("13_32u0u")
 
+[node name="Label4" type="Label" parent="OnTheGround/SequencePuzzle/Objects/Green" unique_id=1324610442]
+offset_left = -40.0
+offset_top = 10.0
+offset_right = 46.0
+offset_bottom = 33.0
+text = "EN"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="Purple" parent="OnTheGround/SequencePuzzle/Objects" unique_id=699569316 instance=ExtResource("8_6sob7")]
-position = Vector2(352, -40)
+position = Vector2(342, 35)
 sprite_frames = ExtResource("9_uke2x")
 sprite_modulate = Color(0.464066, 0.2937, 0.89, 1)
 audio_stream = ExtResource("14_41obn")
 
+[node name="Label5" type="Label" parent="OnTheGround/SequencePuzzle/Objects/Purple" unique_id=1484548589]
+offset_left = -15.0
+offset_top = 10.0
+offset_right = 11.0
+offset_bottom = 33.0
+text = "NO"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="Red" parent="OnTheGround/SequencePuzzle/Objects" unique_id=141148153 instance=ExtResource("8_6sob7")]
-position = Vector2(440, -50)
+position = Vector2(435, 33)
+sprite_frames = ExtResource("9_uke2x")
+sprite_modulate = Color(0.89, 0.2937, 0.2937, 1)
+audio_stream = ExtResource("15_y5s8f")
+
+[node name="Blue2" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1919458224 instance=ExtResource("8_6sob7")]
+position = Vector2(-31, -313)
+sprite_frames = ExtResource("9_uke2x")
+sprite_modulate = Color(0, 0.4, 0.6, 1)
+audio_stream = ExtResource("10_vr3xs")
+
+[node name="Label" type="Label" parent="OnTheGround/SequencePuzzle/Objects/Blue2" unique_id=64054380]
+offset_left = -25.0
+offset_top = 10.0
+offset_right = 29.0
+offset_bottom = 33.0
+text = "CUSCO"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Pink2" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1105741480 instance=ExtResource("8_6sob7")]
+position = Vector2(58, -313)
+sprite_frames = ExtResource("9_uke2x")
+sprite_modulate = Color(0.89, 0.2937, 0.804817, 1)
+audio_stream = ExtResource("11_kn3et")
+
+[node name="Label2" type="Label" parent="OnTheGround/SequencePuzzle/Objects/Pink2" unique_id=1007758436]
+offset_left = -30.0
+offset_top = 10.0
+offset_right = 33.0
+offset_bottom = 33.0
+text = "TROPAS"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Yellow2" parent="OnTheGround/SequencePuzzle/Objects" unique_id=190575346 instance=ExtResource("8_6sob7")]
+position = Vector2(152, -313)
+sprite_frames = ExtResource("9_uke2x")
+sprite_modulate = Color(0.89, 0.804817, 0.2937, 1)
+audio_stream = ExtResource("12_0flqh")
+
+[node name="Label3" type="Label" parent="OnTheGround/SequencePuzzle/Objects/Yellow2" unique_id=728342394]
+offset_left = -40.0
+offset_top = 10.0
+offset_right = 46.0
+offset_bottom = 33.0
+text = "REUNIR"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Green2" parent="OnTheGround/SequencePuzzle/Objects" unique_id=942774115 instance=ExtResource("8_6sob7")]
+position = Vector2(239, -313)
+sprite_frames = ExtResource("9_uke2x")
+sprite_modulate = Color(0.188235, 0.717647, 0, 1)
+audio_stream = ExtResource("13_32u0u")
+
+[node name="Label4" type="Label" parent="OnTheGround/SequencePuzzle/Objects/Green2" unique_id=637694493]
+offset_left = -40.0
+offset_top = 10.0
+offset_right = 46.0
+offset_bottom = 33.0
+text = "EN"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Purple2" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1248329250 instance=ExtResource("8_6sob7")]
+position = Vector2(329, -313)
+sprite_frames = ExtResource("9_uke2x")
+sprite_modulate = Color(0.464066, 0.2937, 0.89, 1)
+audio_stream = ExtResource("14_41obn")
+
+[node name="Red2" parent="OnTheGround/SequencePuzzle/Objects" unique_id=213261777 instance=ExtResource("8_6sob7")]
+position = Vector2(415, -313)
 sprite_frames = ExtResource("9_uke2x")
 sprite_modulate = Color(0.89, 0.2937, 0.2937, 1)
 audio_stream = ExtResource("15_y5s8f")
@@ -116,23 +267,23 @@ audio_stream = ExtResource("15_y5s8f")
 y_sort_enabled = true
 
 [node name="HintSign1" parent="OnTheGround/SequencePuzzle/Signs" unique_id=948532428 instance=ExtResource("16_58ehn")]
-position = Vector2(506, 210)
+position = Vector2(826, 413)
 sprite_frames = ExtResource("17_lckip")
 
 [node name="HintSign2" parent="OnTheGround/SequencePuzzle/Signs" unique_id=2039036310 instance=ExtResource("16_58ehn")]
-position = Vector2(593, 200)
+position = Vector2(819, 212)
 sprite_frames = ExtResource("18_k3mei")
 
 [node name="Steps" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=666035394]
 
 [node name="SequencePuzzleStep1" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" unique_id=202668807 node_paths=PackedStringArray("sequence", "hint_sign")]
 script = ExtResource("19_unru0")
-sequence = [NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), NodePath("../../Objects/Blue")]
+sequence = [NodePath("../../Objects/Purple"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Pink"), NodePath("../../Objects/Green"), NodePath("../../Objects/Blue")]
 hint_sign = NodePath("../../Signs/HintSign1")
 
 [node name="SequencePuzzleStep2" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" unique_id=17422018 node_paths=PackedStringArray("sequence", "hint_sign")]
 script = ExtResource("19_unru0")
-sequence = [NodePath("../../Objects/Blue"), NodePath("../../Objects/Green"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green")]
+sequence = [NodePath("../../Objects/Yellow2"), NodePath("../../Objects/Pink2"), NodePath("../../Objects/Green2"), NodePath("../../Objects/Blue2")]
 hint_sign = NodePath("../../Signs/HintSign2")
 
 [node name="CollectibleItem" parent="OnTheGround" unique_id=1678374994 instance=ExtResource("20_2ilc4")]
@@ -147,6 +298,12 @@ dialogue_title = &"well_done"
 position = Vector2(184, 434)
 direction = 1
 text = "First melody: yellow, green, blue."
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround" unique_id=335789425]
+position = Vector2(450, 350)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_4f38i")
+autoplay = "default"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1686505878]
 
