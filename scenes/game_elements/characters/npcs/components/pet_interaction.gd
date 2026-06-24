@@ -19,6 +19,6 @@ func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -
 	if shaker:
 		shaker.shake()
 	if achievement_counter:
-		achievement_counter.add_achievement()
+		achievement_counter.increment()
 	await sound_effect_player.finished
 	interact_area.disabled = false

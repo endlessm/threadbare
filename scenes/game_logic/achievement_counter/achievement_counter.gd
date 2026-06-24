@@ -6,7 +6,7 @@ extends Node
 @export var prefix: String
 
 
-func add_achievement() -> void:
+func increment() -> void:
 	if not prefix:
 		push_warning("AchievementCounter.add_achievement() was called without a prefix.")
 		return
