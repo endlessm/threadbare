@@ -3,11 +3,10 @@
 [ext_resource type="TileSet" uid="uid://dicqet1gqoig3" path="res://scenes/quests/story_quests/en_la_prondidad/tiles/en_la_prondidad_exterior_floors.tres" id="1_hlyd6"]
 [ext_resource type="Texture2D" uid="uid://07k43id4c81h" path="res://assets/first_party/templates/intro/NO_EDIT_intro_image.png" id="2_a3qv8"]
 [ext_resource type="SpriteFrames" uid="uid://ogvyoa4f8bcj" path="res://scenes/quests/story_quests/en_la_prondidad/player_components/en_la_prondidad_player.tres" id="3_gwile"]
-[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_mnxhk"]
+[ext_resource type="Script" uid="uid://c8k2mintrocmat01" path="res://scenes/quests/story_quests/en_la_prondidad/0_intro/en_la_prondidad_intro_cinematic.gd" id="4_mnxhk"]
 [ext_resource type="Resource" uid="uid://c58xoi0bwev4s" path="res://scenes/quests/story_quests/en_la_prondidad/0_intro/intro_components/en_la_prondidad_intro.dialogue" id="5_jj51b"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_ki58x"]
-[ext_resource type="Texture2D" uid="uid://dtuonvomlkv1k" path="res://scenes/quests/story_quests/en_la_prondidad/asets/slider 1.png" id="7_a3qv8"]
-[ext_resource type="Script" uid="uid://b0jvk3alwe672" path="res://scenes/quests/story_quests/en_la_prondidad/0_intro/control.gd" id="7_gwile"]
+[ext_resource type="SpriteFrames" uid="uid://dl2r24b4v1o4v" path="res://scenes/quests/story_quests/en_la_prondidad/0_intro/intro_components/intro_anim.tres" id="8_ki58x"]
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="9_jj51b"]
 [ext_resource type="AudioStream" uid="uid://bi6a74h0qh081" path="res://scenes/quests/story_quests/en_la_prondidad/musica/Shadowlands 5 - Antechamber.mp3" id="10_ki58x"]
 
@@ -101,28 +100,6 @@ _data = {
 &"walk_on": SubResource("Animation_qe0ij")
 }
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gwile"]
-atlas = ExtResource("7_a3qv8")
-region = Rect2(0, 0, 1360, 1080)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mnxhk"]
-atlas = ExtResource("7_a3qv8")
-region = Rect2(1360, 0, 1360, 1080)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_hlyd6"]
-animations = [{
-"frames": [{
-"duration": 20.0,
-"texture": SubResource("AtlasTexture_gwile")
-}, {
-"duration": 20.0,
-"texture": SubResource("AtlasTexture_mnxhk")
-}],
-"loop": true,
-"name": &"default",
-"speed": 1.0
-}]
-
 [node name="EnLaProndidadIntro" type="Node2D" unique_id=2049284984]
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=591504591]
@@ -166,32 +143,37 @@ libraries/ = SubResource("AnimationLibrary_e0bpw")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
 
-[node name="Cinematic" type="Node2D" parent="." unique_id=1398238637 node_paths=PackedStringArray("animation_player")]
+[node name="Cinematic" type="Node2D" parent="." unique_id=1398238637 node_paths=PackedStringArray("animation_player", "slider")]
 script = ExtResource("4_mnxhk")
 dialogue = ExtResource("5_jj51b")
 animation_player = NodePath("../OnTheGround/AnimationPlayer")
+slider = NodePath("../CanvasLayer/Control/CinematicAnimation")
+slider_frames = ExtResource("8_ki58x")
 next_scene = "uid://cprri1wvtphad"
-metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+metadata/_custom_type_script = "uid://c8k2mintrocmat01"
 
 [node name="Rock" parent="." unique_id=912112339 instance=ExtResource("6_ki58x")]
 position = Vector2(125, 403)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1768178738]
 
-[node name="Control" type="Control" parent="CanvasLayer" unique_id=1995866542 node_paths=PackedStringArray("animacion")]
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1995866542]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("7_gwile")
-animacion = NodePath("AnimatedSprite2D")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasLayer/Control" unique_id=2055474009]
-position = Vector2(640, 360)
-scale = Vector2(0.94117653, 0.66666657)
-sprite_frames = SubResource("SpriteFrames_hlyd6")
+[node name="CinematicAnimation" type="TextureRect" parent="CanvasLayer/Control" unique_id=1116323454]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
 
 [node name="BackgroundMusic" type="Node" parent="." unique_id=1550156792]
 script = ExtResource("9_jj51b")
