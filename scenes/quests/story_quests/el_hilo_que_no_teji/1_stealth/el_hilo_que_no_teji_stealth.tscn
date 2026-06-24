@@ -19,7 +19,7 @@
 [ext_resource type="TileSet" uid="uid://6wyq888afw6m" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_void_chromakey_walkable.tres" id="11_ujlnr"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="12_pls6f"]
 [ext_resource type="AudioStream" uid="uid://dfhy5ea7edbxf" path="res://scenes/quests/story_quests/el_ojo_revelador/el_ojo_revelador_audios/Suspenso.wav" id="14_qc1q3"]
-[ext_resource type="SpriteFrames" uid="uid://du2byrgblsd4o" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/environment/el_hilo_que_no_teji_arbol_chapas.tres" id="14_ulphp"]
+[ext_resource type="SpriteFrames" uid="uid://du2byrgblsd4o" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_arbol_chapas.tres" id="14_ulphp"]
 [ext_resource type="SpriteFrames" uid="uid://co8o888wc5oc7" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/shadow_01/el_hilo_que_no_teji_shadow01_enemy.tres" id="15_l1c3l"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="15_t4hu1"]
 [ext_resource type="SpriteFrames" uid="uid://pe5f4oarex8m" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/lino/el_hilo_que_no_teji_player_collar.tres" id="16_3x148"]
@@ -28,6 +28,7 @@
 [ext_resource type="SpriteFrames" uid="uid://c6sdvderulugs" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/shadow_05/el_hilo_que_no_teji_shadow05_enemy.tres" id="17_pljot"]
 [ext_resource type="Material" uid="uid://bi6a51mic57oq" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/mat_lino.tres" id="18_ulphp"]
 [ext_resource type="Shader" uid="uid://bshbghjfja2xq" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/mi_filtro_saturacion.gdshader" id="23_t4hu1"]
+[ext_resource type="AudioStream" uid="uid://ceuqs1f1aw6no" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/sounds/Suspenso.wav" id="24_iekwq"]
 [ext_resource type="Script" uid="uid://i0dutk8883vb" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/2_sequence_puzzle/el_hilo_que_no_teji_collectible.gd" id="24_t4hu1"]
 [ext_resource type="SpriteFrames" uid="uid://bxo63gtawie3l" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/shadow_02/el_hilo_que_no_teji_shadow02_enemy.tres" id="24_vlrpm"]
 [ext_resource type="Resource" uid="uid://cfygswbl1532n" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/1_stealth/stealth_components/el_hilo_que_no_teji_collected.dialogue" id="25_4s4pt"]
@@ -57,8 +58,8 @@ size = Vector2(255, 65)
 
 [sub_resource type="Resource" id="Resource_t4hu1"]
 script = ExtResource("16_goofh")
-walk_speed = 200.0
-run_speed = 250.0
+walk_speed = 180.0
+run_speed = 230.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [sub_resource type="Curve2D" id="Curve2D_wv1mv"]
@@ -327,7 +328,6 @@ shape = SubResource("RectangleShape2D_n2hsx")
 [node name="Player" parent="." unique_id=1079296690 instance=ExtResource("5_ac6ai")]
 material = ExtResource("18_ulphp")
 position = Vector2(619, 1757.0001)
-scale = Vector2(0.9, 0.9)
 speeds = SubResource("Resource_t4hu1")
 sprite_frames = ExtResource("16_3x148")
 
@@ -365,11 +365,20 @@ y_sort_enabled = true
 position = Vector2(357.56772, 1292.546)
 scale = Vector2(0.8, 0.8)
 sprite_frames = ExtResource("15_l1c3l")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 patrol_path = NodePath("../GuardiaN1-ruta")
 wait_time = 0.2
 move_speed = 115.0
 detection_area_scale = 0.9
+
+[node name="DetectionArea" parent="EnemyGuards/GuardiaN1" index="3" unique_id=885694991]
+scale = Vector2(0.9, 0.9)
+
+[node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaN1" index="4" unique_id=616054452]
+sprite_frames = ExtResource("15_l1c3l")
+
+[node name="AlertSound" parent="EnemyGuards/GuardiaN1/Sounds" parent_id_path=PackedInt32Array(689832587, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaN1-ruta" type="Path2D" parent="EnemyGuards" unique_id=1333181002]
 top_level = true
@@ -383,7 +392,7 @@ position = Vector2(-229, 283)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("17_pljot")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 patrol_path = NodePath("../GuardiaN2-ruta01")
 move_speed = 150.0
 
@@ -393,8 +402,8 @@ collision_mask = 24
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaN2_01" index="4" unique_id=616054452]
 sprite_frames = ExtResource("17_pljot")
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaN2_01/Sounds" parent_id_path=PackedInt32Array(2094375703, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaN2_01/Sounds" parent_id_path=PackedInt32Array(2094375703, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaN2_02" parent="EnemyGuards" unique_id=980593366 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_l1c3l")]
 z_index = 12
@@ -402,7 +411,7 @@ position = Vector2(978, 625.00006)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("17_pljot")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 patrol_path = NodePath("../GuardiaN2-ruta02")
 move_speed = 175.0
 
@@ -412,8 +421,8 @@ collision_mask = 24
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaN2_02" index="4" unique_id=616054452]
 sprite_frames = ExtResource("17_pljot")
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaN2_02/Sounds" parent_id_path=PackedInt32Array(980593366, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaN2_02/Sounds" parent_id_path=PackedInt32Array(980593366, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaN2_03" parent="EnemyGuards" unique_id=1449114647 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_l1c3l")]
 z_index = 12
@@ -421,7 +430,7 @@ position = Vector2(-264, -412)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("17_pljot")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 patrol_path = NodePath("../GuardiaN2-ruta03")
 move_speed = 175.0
 
@@ -431,8 +440,8 @@ collision_mask = 24
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaN2_03" index="4" unique_id=616054452]
 sprite_frames = ExtResource("17_pljot")
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaN2_03/Sounds" parent_id_path=PackedInt32Array(1449114647, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaN2_03/Sounds" parent_id_path=PackedInt32Array(1449114647, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaN2_04" parent="EnemyGuards" unique_id=1166428818 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_l1c3l")]
 z_index = 12
@@ -440,7 +449,7 @@ position = Vector2(1746.0001, -263)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("17_pljot")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 patrol_path = NodePath("../GuardiaN2-ruta04")
 move_speed = 175.0
 
@@ -450,8 +459,8 @@ collision_mask = 24
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaN2_04" index="4" unique_id=616054452]
 sprite_frames = ExtResource("17_pljot")
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaN2_04/Sounds" parent_id_path=PackedInt32Array(1166428818, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaN2_04/Sounds" parent_id_path=PackedInt32Array(1166428818, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaN2-ruta01" type="Path2D" parent="EnemyGuards" unique_id=54290807]
 top_level = true
@@ -483,7 +492,7 @@ position = Vector2(1493, -1378)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("25_4t4cg")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 patrol_path = NodePath("../GuardiaN3-ruta01")
 wait_time = 0.1
 move_speed = 220.0
@@ -494,8 +503,8 @@ collision_mask = 24
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaN3_01" index="4" unique_id=616054452]
 sprite_frames = ExtResource("25_4t4cg")
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaN3_01/Sounds" parent_id_path=PackedInt32Array(1563096596, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaN3_01/Sounds" parent_id_path=PackedInt32Array(1563096596, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaN3_02" parent="EnemyGuards" unique_id=102745443 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_l1c3l")]
 z_index = 9
@@ -503,7 +512,7 @@ position = Vector2(-46, -1569)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("17_pljot")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 patrol_path = NodePath("../GuardiaN3-ruta02")
 wait_time = 0.1
 move_speed = 235.0
@@ -514,8 +523,8 @@ collision_mask = 24
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaN3_02" index="4" unique_id=616054452]
 sprite_frames = ExtResource("17_pljot")
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaN3_02/Sounds" parent_id_path=PackedInt32Array(102745443, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaN3_02/Sounds" parent_id_path=PackedInt32Array(102745443, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaN3_03" parent="EnemyGuards" unique_id=2030598548 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_l1c3l")]
 z_index = 9
@@ -523,7 +532,7 @@ position = Vector2(1682, -1745)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("15_l1c3l")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 patrol_path = NodePath("../GuardiaN3-ruta03")
 wait_time = 0.1
 move_speed = 225.0
@@ -534,8 +543,8 @@ collision_mask = 24
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaN3_03" index="4" unique_id=616054452]
 sprite_frames = ExtResource("15_l1c3l")
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaN3_03/Sounds" parent_id_path=PackedInt32Array(2030598548, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaN3_03/Sounds" parent_id_path=PackedInt32Array(2030598548, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaN3_04" parent="EnemyGuards" unique_id=2110988390 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_l1c3l")]
 z_index = 9
@@ -543,7 +552,7 @@ position = Vector2(-639, -1916)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("26_w06gk")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 patrol_path = NodePath("../GuardiaN3-ruta04")
 wait_time = 0.1
 move_speed = 245.0
@@ -554,8 +563,8 @@ collision_mask = 24
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaN3_04" index="4" unique_id=616054452]
 sprite_frames = ExtResource("26_w06gk")
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaN3_04/Sounds" parent_id_path=PackedInt32Array(2110988390, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaN3_04/Sounds" parent_id_path=PackedInt32Array(2110988390, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaN3_05" parent="EnemyGuards" unique_id=1559744374 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_l1c3l")]
 z_index = 9
@@ -563,7 +572,7 @@ position = Vector2(1829, -2082)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("17_pljot")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 patrol_path = NodePath("../GuardiaN3-ruta05")
 wait_time = 0.0
 move_speed = 300.0
@@ -574,8 +583,8 @@ collision_mask = 24
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaN3_05" index="4" unique_id=616054452]
 sprite_frames = ExtResource("17_pljot")
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaN3_05/Sounds" parent_id_path=PackedInt32Array(1559744374, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaN3_05/Sounds" parent_id_path=PackedInt32Array(1559744374, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaN3-ruta01" type="Path2D" parent="EnemyGuards" unique_id=1424106796]
 top_level = true
@@ -613,7 +622,7 @@ position = Vector2(407, -2986)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("15_l1c3l")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 wait_time = 0.1
 move_speed = 220.0
 detection_area_scale = 0.0
@@ -627,8 +636,8 @@ scale = Vector2(1e-05, 1e-05)
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaColina01" index="4" unique_id=616054452]
 sprite_frames = ExtResource("15_l1c3l")
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaColina01/Sounds" parent_id_path=PackedInt32Array(723983611, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaColina01/Sounds" parent_id_path=PackedInt32Array(723983611, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaColina02" parent="EnemyGuards" unique_id=1946537184 instance=ExtResource("7_l1c3l")]
 z_index = -1
@@ -636,7 +645,7 @@ position = Vector2(232, -3252)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("24_vlrpm")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 wait_time = 0.1
 move_speed = 235.0
 detection_area_scale = 0.0
@@ -650,8 +659,8 @@ scale = Vector2(1e-05, 1e-05)
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaColina02" index="4" unique_id=616054452]
 sprite_frames = ExtResource("24_vlrpm")
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaColina02/Sounds" parent_id_path=PackedInt32Array(1946537184, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaColina02/Sounds" parent_id_path=PackedInt32Array(1946537184, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaColina03" parent="EnemyGuards" unique_id=446983963 instance=ExtResource("7_l1c3l")]
 z_index = -1
@@ -659,7 +668,7 @@ position = Vector2(424, -3523)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("25_4t4cg")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 wait_time = 0.1
 move_speed = 225.0
 detection_area_scale = 0.0
@@ -673,8 +682,8 @@ scale = Vector2(1e-05, 1e-05)
 [node name="AnimatedSprite2D" parent="EnemyGuards/GuardiaColina03" index="4" unique_id=616054452]
 sprite_frames = ExtResource("25_4t4cg")
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaColina03/Sounds" parent_id_path=PackedInt32Array(446983963, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaColina03/Sounds" parent_id_path=PackedInt32Array(446983963, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaColina04" parent="EnemyGuards" unique_id=71074213 instance=ExtResource("7_l1c3l")]
 z_index = -1
@@ -682,7 +691,7 @@ position = Vector2(845.00006, -3401)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("26_w06gk")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 wait_time = 0.1
 move_speed = 245.0
 detection_area_scale = 0.0
@@ -697,8 +706,8 @@ scale = Vector2(1e-05, 1e-05)
 sprite_frames = ExtResource("26_w06gk")
 flip_h = true
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaColina04/Sounds" parent_id_path=PackedInt32Array(71074213, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaColina04/Sounds" parent_id_path=PackedInt32Array(71074213, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="GuardiaColina05" parent="EnemyGuards" unique_id=1635426362 instance=ExtResource("7_l1c3l")]
 z_index = -1
@@ -706,7 +715,7 @@ position = Vector2(914.99994, -3105)
 scale = Vector2(0.8, 0.8)
 collision_mask = 512
 sprite_frames = ExtResource("17_pljot")
-alert_others_sound_stream = ExtResource("14_qc1q3")
+alerted_sound_stream = ExtResource("24_iekwq")
 wait_time = 0.0
 move_speed = 300.0
 detection_area_scale = 0.0
@@ -721,8 +730,8 @@ scale = Vector2(1e-05, 1e-05)
 sprite_frames = ExtResource("17_pljot")
 flip_h = true
 
-[node name="TorchHitSound" parent="EnemyGuards/GuardiaColina05/Sounds" parent_id_path=PackedInt32Array(1635426362, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("14_qc1q3")
+[node name="AlertSound" parent="EnemyGuards/GuardiaColina05/Sounds" parent_id_path=PackedInt32Array(1635426362, 787899072) index="0" unique_id=1366827513]
+stream = ExtResource("24_iekwq")
 
 [node name="Luto-Guard" parent="EnemyGuards/GuardiaColina05" unique_id=2094220429 node_paths=PackedStringArray("patrol_path") instance=ExtResource("7_l1c3l")]
 z_index = 9
@@ -864,6 +873,7 @@ material_jugador = ExtResource("18_ulphp")
 
 [editable path="Player"]
 [editable path="Sign"]
+[editable path="EnemyGuards/GuardiaN1"]
 [editable path="EnemyGuards/GuardiaN2_01"]
 [editable path="EnemyGuards/GuardiaN2_02"]
 [editable path="EnemyGuards/GuardiaN2_03"]
