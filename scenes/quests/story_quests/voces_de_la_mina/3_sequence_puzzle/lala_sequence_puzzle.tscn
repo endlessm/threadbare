@@ -3,12 +3,11 @@
 [ext_resource type="TileSet" uid="uid://b8khmw2s8xy0x" path="res://scenes/quests/story_quests/voces_de_la_mina/tiles/lala_elevation.tres" id="2_i8g41"]
 [ext_resource type="Texture2D" uid="uid://7mq07u8t0g2s" path="res://scenes/quests/story_quests/voces_de_la_mina/player_components/checkpoint.png" id="2_jdl5d"]
 [ext_resource type="Texture2D" uid="uid://dv2kqk8m8gax7" path="res://scenes/quests/story_quests/voces_de_la_mina/player_components/frame_idle.png" id="3_bi1rq"]
-[ext_resource type="Resource" uid="uid://dms5d2np573wk" path="res://scenes/quests/story_quests/voces_de_la_mina/3_sequence_puzzle/character_player.tres" id="4_e1bg5"]
 [ext_resource type="TileSet" uid="uid://cvwq8kj2cnovs" path="res://scenes/quests/story_quests/voces_de_la_mina/tiles/lala_exterior_floors.tres" id="4_r3jn3"]
-[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_hmec8"]
-[ext_resource type="SpriteFrames" uid="uid://bbdqx1dnpdrrf" path="res://scenes/quests/story_quests/voces_de_la_mina/player_components/elena_player.tres" id="6_kx2td"]
+[ext_resource type="PackedScene" uid="uid://b65dgyvkmjim" path="res://scenes/quests/story_quests/voces_de_la_mina/scenes/player_voces.tscn" id="7_vlyjs"]
 [ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="7_x2ly3"]
 [ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/game_elements/props/sequence_puzzle_object/sequence_puzzle_object.tscn" id="8_2osmy"]
+[ext_resource type="Resource" uid="uid://1niqwxe7m77e" path="res://scenes/quests/story_quests/voces_de_la_mina/3_sequence_puzzle/dialogo2_puzzles.dialogue" id="8_e63yp"]
 [ext_resource type="SpriteFrames" uid="uid://bnvfn26t3a5qp" path="res://scenes/quests/story_quests/voces_de_la_mina/3_sequence_puzzle/lala_object.tres" id="9_cidys"]
 [ext_resource type="AudioStream" uid="uid://cg57q82pb243w" path="res://assets/third_party/nepalese_hand_bells/handBells-c4.ogg" id="10_48vji"]
 [ext_resource type="AudioStream" uid="uid://b83x8h0ob5mpq" path="res://assets/third_party/nepalese_hand_bells/handBells-d4.ogg" id="11_6qmg2"]
@@ -20,6 +19,7 @@
 [ext_resource type="SpriteFrames" uid="uid://b38yoqiyqrcxr" path="res://scenes/quests/story_quests/voces_de_la_mina/3_sequence_puzzle/cartel_sign.tres" id="17_qw00r"]
 [ext_resource type="SpriteFrames" uid="uid://cptm7uasxeqx1" path="res://scenes/quests/story_quests/voces_de_la_mina/3_sequence_puzzle/cartel_sign_2.tres" id="18_qk3io"]
 [ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="19_2gc3q"]
+[ext_resource type="AudioStream" uid="uid://dup8xfathm4oa" path="res://scenes/quests/story_quests/voces_de_la_mina/sounds/solved_puzzle.mp3" id="20_b467q"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="20_n4kgs"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="21_ula3y"]
 [ext_resource type="Resource" uid="uid://bndbuhk8tkwim" path="res://scenes/quests/story_quests/voces_de_la_mina/3_sequence_puzzle/lala_sequence_puzzle.dialogue" id="22_ccavc"]
@@ -99,7 +99,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jdl5d"]
-size = Vector2(198, 191)
+size = Vector2(322.5, 335.75)
 
 [sub_resource type="Resource" id="Resource_kgkl7"]
 script = ExtResource("21_ula3y")
@@ -107,19 +107,6 @@ type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="LalaSequencePuzzle" type="Node2D" unique_id=217609538]
-
-[node name="Checkpoints" type="Node2D" parent="." unique_id=2025483674]
-y_sort_enabled = true
-
-[node name="Checkpoint" parent="Checkpoints" unique_id=1789892556 instance=ExtResource("25_e63yp")]
-position = Vector2(-678, 197)
-sprite_frames = SubResource("SpriteFrames_b467q")
-dialogue = ExtResource("27_ict38")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint" unique_id=2086965494]
-position = Vector2(16, -4)
-shape = SubResource("RectangleShape2D_jdl5d")
-debug_color = Color(0, 0, 0, 0.42)
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=2088852286]
 
@@ -138,19 +125,41 @@ tile_set = ExtResource("2_i8g41")
 [node name="OnTheGround" type="Node2D" parent="." unique_id=1358184019]
 y_sort_enabled = true
 
-[node name="Player" parent="OnTheGround" unique_id=747348360 instance=ExtResource("5_hmec8")]
-position = Vector2(-170, 9)
-speeds = ExtResource("4_e1bg5")
-sprite_frames = ExtResource("6_kx2td")
+[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("7_vlyjs")]
+position = Vector2(-144, -18)
+safe_margin = 3.128
 
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1732237457]
-zoom = Vector2(1.2, 1.2)
-limit_left = -1143
-limit_top = -631
-limit_right = 2041
-limit_bottom = 1280
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1992004500]
+process_mode = 3
+limit_left = -1160
+limit_top = -643
+limit_right = 2045
+limit_bottom = 1285
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="Checkpoints" type="Node2D" parent="OnTheGround" unique_id=2025483674]
+y_sort_enabled = true
+
+[node name="Checkpoint" parent="OnTheGround/Checkpoints" unique_id=1789892556 instance=ExtResource("25_e63yp")]
+position = Vector2(-678, 197)
+sprite_frames = SubResource("SpriteFrames_b467q")
+dialogue = ExtResource("27_ict38")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Checkpoints/Checkpoint" unique_id=2086965494]
+position = Vector2(103.5, -49.25)
+shape = SubResource("RectangleShape2D_jdl5d")
+debug_color = Color(0, 0, 0, 0.42)
+
+[node name="Checkpoint2" parent="OnTheGround/Checkpoints" unique_id=989798846 instance=ExtResource("25_e63yp")]
+position = Vector2(1505, 542)
+sprite_frames = SubResource("SpriteFrames_b467q")
+dialogue = ExtResource("8_e63yp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Checkpoints/Checkpoint2" unique_id=744045701]
+position = Vector2(-2.25, 69.125)
+shape = SubResource("RectangleShape2D_jdl5d")
+debug_color = Color(0, 0, 0, 0.42)
 
 [node name="SequencePuzzle" type="Node2D" parent="OnTheGround" unique_id=1771259982]
 y_sort_enabled = true
@@ -240,10 +249,12 @@ y_sort_enabled = true
 [node name="HintSign1" parent="OnTheGround/SequencePuzzle/Signs" unique_id=948532428 instance=ExtResource("16_evsg0")]
 position = Vector2(1365, -11)
 sprite_frames = ExtResource("17_qw00r")
+solved_sound_effect = ExtResource("20_b467q")
 
 [node name="HintSign2" parent="OnTheGround/SequencePuzzle/Signs" unique_id=2039036310 instance=ExtResource("16_evsg0")]
 position = Vector2(1278, 685)
 sprite_frames = ExtResource("18_qk3io")
+solved_sound_effect = ExtResource("20_b467q")
 
 [node name="Steps" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=666035394]
 
@@ -268,7 +279,7 @@ dialogue_title = &"well_done"
 [node name="Sign" parent="OnTheGround" unique_id=263994380 instance=ExtResource("23_opy3e")]
 position = Vector2(403, -228)
 direction = 1
-text = "Resuelve y encontrarás la verdad."
+text = "Pista: azul, rosa y amarillo."
 
 [node name="Sign2" parent="OnTheGround" unique_id=1579530966 instance=ExtResource("23_opy3e")]
 position = Vector2(805, 505)
