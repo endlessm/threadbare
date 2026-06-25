@@ -45,7 +45,16 @@ var alas_limpiadas: int = 0
 
 @onready var jarrones_izq = [$OnTheGround/FillingBarrel, $OnTheGround/FillingBarrel2]
 @onready var jarrones_der = [$OnTheGround/FillingBarrel3, $OnTheGround/FillingBarrel4]
-@onready var jarron_central = $OnTheGround/FillingBarrel5
+@onready var jarrones_boss = [
+	$OnTheGround/FillingBarrel5,
+	$OnTheGround/FillingBarrel6,
+	$OnTheGround/FillingBarrel7
+]
+
+var jarrones_boss_completados: int = 0
+var boss_derrotado: bool = false
+
+@onready var bloqueo_puente = $OnTheGround/BloqueoPuente
 
 @onready var particulas_perdon = $OnTheGround/ParticulasPerdon
 
@@ -74,8 +83,8 @@ func _ready() -> void:
 		if is_instance_valid(jarron): jarron.completed.connect(_al_completar_jarron_izq)
 	for jarron in jarrones_der:
 		if is_instance_valid(jarron): jarron.completed.connect(_al_completar_jarron_der)
-	if is_instance_valid(jarron_central):
-		jarron_central.completed.connect(_al_completar_jarron_central)
+	for jarron in jarrones_boss:
+		if is_instance_valid(jarron): jarron.completed.connect(_al_completar_jarron_boss)
 
 	# --- RECUPERAR EL PROGRESO GUARDADO AL REINICIAR ---
 	if estado_hilo_izq:
@@ -97,8 +106,16 @@ func _ready() -> void:
 		hilo_der.tree_exited.connect(_al_recoger_hilo.bind("der"))
 
 	if estado_hilo_central:
-		if is_instance_valid(jarron_central): jarron_central.queue_free()
-		if is_instance_valid(hilo_central): hilo_central.queue_free()
+		for jarron in jarrones_boss:
+			if is_instance_valid(jarron):
+				jarron.queue_free()
+
+		if is_instance_valid(enemigo_8):
+			enemigo_8.queue_free()
+
+		if is_instance_valid(hilo_central):
+			hilo_central.queue_free()
+
 		hilos_recogidos += 1
 	elif is_instance_valid(hilo_central): 
 		hilo_central.revealed = false
@@ -262,7 +279,7 @@ func _al_recibir_bolita(body: Node2D) -> void:
 	
 	if not primer_golpe_recibido and is_instance_valid(panel_pensamiento):
 		primer_golpe_recibido = true
-		panel_pensamiento.mostrar_pensamiento("Cada impacto me arrebata un recuerdo...\nSi dejo que la culpa me consuma, me perderé.")
+		panel_pensamiento.mostrar_pensamiento("Cada golpe… me hace pensar en Manchitas...\nComo si lo estuviera perdiendo otra vez...")
 	
 	if golpes_recibidos >= MAX_GOLPES:
 		lino_muerto = true
@@ -270,7 +287,6 @@ func _al_recibir_bolita(body: Node2D) -> void:
 		hitbox_jugador.set_deferred("monitorable", false)
 		jugador.defeat(false)
 
-# --- LIMPIEZA DE ALAS (CON ILUSIÓN DE ELECCIÓN) ---
 # --- LIMPIEZA DE ALAS (CON ILUSIÓN DE ELECCIÓN) ---
 func _al_completar_jarron_izq() -> void:
 	jarrones_izq_completados += 1
@@ -306,10 +322,45 @@ func _al_completar_jarron_der() -> void:
 			hilo_der.dialogue_title = "hilo_1" if alas_limpiadas == 1 else "hilo_2"
 			hilo_der.reveal()
 
-func _al_completar_jarron_central() -> void:
-	get_tree().call_group("throwing_enemy", "remove")
+# =========================================================
+# BOSS FINAL
+# El boss solo cae cuando los 3 jarrones han sido llenados.
+# =========================================================
+func _al_completar_jarron_boss() -> void:
+	if boss_derrotado:
+		return
+
+	jarrones_boss_completados += 1
+
+	print("Jarrones completados: ", jarrones_boss_completados, "/3")
+
+	if jarrones_boss_completados < 3:
+		return
+
+	boss_derrotado = true
+
+	# Destruir únicamente al boss final
+	if is_instance_valid(enemigo_8):
+		enemigo_8.queue_free()
+
+	# Limpiar proyectiles activos
 	get_tree().call_group("projectiles", "remove")
-	if is_instance_valid(hilo_central): hilo_central.reveal()
+
+	# Temblor de pantalla
+	_sacudir_pantalla()
+
+	# Mensaje narrativo
+	if is_instance_valid(panel_pensamiento):
+		panel_pensamiento.mostrar_pensamiento(
+			"Por fin... el telar recobra su calma."
+		)
+	# Desbloquear el puente
+	if is_instance_valid(bloqueo_puente):
+		bloqueo_puente.queue_free()
+		
+	# Revelar hilo central
+	if is_instance_valid(hilo_central):
+		hilo_central.reveal()
 
 # --- EL GATILLO DEL PASILLO (TEXTO FLOTANTE) ---
 func _on_trigger_central_body_entered(body: Node2D) -> void:
