@@ -8,4 +8,7 @@ func _ready() -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
-		get_tree().change_scene_to_file(siguiente_escena)
+		call_deferred("_cambiar_escena")
+
+func _cambiar_escena() -> void:
+	get_tree().change_scene_to_file(siguiente_escena)
