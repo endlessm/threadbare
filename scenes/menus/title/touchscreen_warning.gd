@@ -11,7 +11,7 @@ func _ready() -> void:
 
 	# Checking if the device works for the game
 	if not _should_show_touchscreen_warning():
-		# If their device is compatible and they don't need the warning, jump straight to the main menu
+		# If their device is compatible, jump straight to the main menu
 		_go_to_main_menu()
 
 
@@ -20,7 +20,7 @@ func _should_show_touchscreen_warning() -> bool:
 	var has_keyboard: bool
 	if OS.has_feature("web_android") or OS.has_feature("web_ios"):
 		# DisplayServer.has_hardware_keyboard() is not implemented on the web.
-		# Assume mobile web browsers have no hardware keyboard.
+		# Assuming mobile web browsers don't have a hardware keyboard.
 		has_keyboard = false
 	else:
 		has_keyboard = DisplayServer.has_hardware_keyboard()
@@ -32,8 +32,7 @@ func _on_dismiss_pressed() -> void:
 
 
 func _go_to_main_menu() -> void:
-	# Getting the parent TabContainer node ('Pages')
-	var pages_container = get_parent() as TabContainer
+	var pages_container: TabContainer = get_parent() as TabContainer
 
 	if pages_container:
 		# Tab 0 is this warning screen so tab 1 is the main menu scene right below it
