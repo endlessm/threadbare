@@ -77,6 +77,8 @@ var _player_name: String = ""
 
 @onready var talk_sound_player: AudioStreamPlayer = $TalkSoundPlayer
 
+@onready var writing_sound_player: AudioStreamPlayer = $WritingSoundPlayer
+
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -122,7 +124,6 @@ func start(
 	is_waiting_for_input = false
 	resource = dialogue_resource
 	self.dialogue_line = await resource.get_next_dialogue_line(title, temporary_game_states)
-	talk_sound_player.play()
 
 
 ## Apply any changes to the balloon given a new [DialogueLine].
@@ -167,9 +168,12 @@ func apply_dialogue_line() -> void:
 	dialogue_label.show()
 	if not dialogue_line.text.is_empty():
 		dialogue_label.type_out()
-		talk_sound_player.stream_paused = false
+		if dialogue_line.character.is_empty():
+			if not writing_sound_player.playing:
+				writing_sound_player.play()
+			writing_sound_player.stream_paused = false
 		await dialogue_label.finished_typing
-		talk_sound_player.stream_paused = true
+		writing_sound_player.stream_paused = true
 
 	# Wait for input
 	if dialogue_line.responses.size() > 0:
@@ -275,4 +279,14 @@ func _on_balloon_gui_input(event: InputEvent) -> void:
 func _on_responses_menu_response_selected(response: DialogueResponse) -> void:
 	next(response.next_id)
 
+
 #endregion
+
+
+func _on_dialogue_label_spoke(letter: String, _letter_index: int, _speed: float) -> void:
+	if (
+		dialogue_line.character
+		and not talk_sound_player.playing
+		and letter not in dialogue_label.pause_at_characters
+	):
+		talk_sound_player.play()
