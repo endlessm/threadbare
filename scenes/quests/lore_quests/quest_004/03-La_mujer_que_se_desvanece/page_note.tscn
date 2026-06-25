@@ -1,0 +1,84 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scenes/quests/lore_quests/quest_004/03-La_mujer_que_se_desvanece/readable_page.gd" id="1_p"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="2_ia"]
+[ext_resource type="Texture2D" path="res://scenes/menus/storybook/Textures/book_turn_right.png" id="3_book"]
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="4_theme"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_book"]
+atlas = ExtResource("3_book")
+region = Rect2(0, 0, 999, 720)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_p"]
+radius = 28.0
+
+[node name="PageNote" type="Node2D"]
+script = ExtResource("1_p")
+
+[node name="WorldIcon" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_book")
+scale = Vector2(0.08, 0.08)
+
+[node name="InteractArea" type="Area2D" parent="." node_paths=PackedStringArray("marker")]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("2_ia")
+marker = NodePath("Marker")
+action = "Read"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+shape = SubResource("CircleShape2D_p")
+
+[node name="Marker" type="Marker2D" parent="InteractArea"]
+position = Vector2(0, -40)
+
+[node name="Reader" type="CanvasLayer" parent="."]
+layer = 10
+visible = false
+
+[node name="Dim" type="ColorRect" parent="Reader"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Book" type="TextureRect" parent="Reader"]
+theme = ExtResource("4_theme")
+unique_name_in_owner = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = -260.0
+offset_right = 360.0
+offset_bottom = 260.0
+pivot_offset = Vector2(360, 260)
+texture = SubResource("AtlasTexture_book")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PageText" type="RichTextLabel" parent="Reader/Book"]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 140.0
+offset_top = 120.0
+offset_right = -140.0
+offset_bottom = -130.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+theme_override_colors/default_color = Color(0.2, 0.16, 0.12, 1)
+
+[node name="Hint" type="Label" parent="Reader"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -36.0
+text = "(interactuar / Esc para cerrar)"

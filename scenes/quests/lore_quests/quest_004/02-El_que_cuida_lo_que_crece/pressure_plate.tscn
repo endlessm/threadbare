@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://n4dlg3ybq6la"]
+
+[ext_resource type="Script" path="res://scenes/quests/lore_quests/quest_004/02-El_que_cuida_lo_que_crece/pressure_plate.gd" id="1_p"]
+[ext_resource type="Shader" path="res://scenes/quests/lore_quests/quest_004/02-El_que_cuida_lo_que_crece/plate_pulse.gdshader" id="2_pulse"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pulse"]
+shader = ExtResource("2_pulse")
+shader_parameter/glow_color = Color(0.55, 1, 0.65, 1)
+shader_parameter/speed = 2.5
+shader_parameter/strength = 0.4
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p"]
+size = Vector2(56, 40)
+
+[node name="PressurePlate" type="Area2D" unique_id=2132483023]
+collision_layer = 0
+collision_mask = 528
+script = ExtResource("1_p")
+
+[node name="Visual" type="Polygon2D" parent="." unique_id=446668086]
+material = SubResource("ShaderMaterial_pulse")
+color = Color(0.8, 0.8, 0.85, 1)
+polygon = PackedVector2Array(-28, -20, 28, -20, 28, 20, -28, 20)
+
+[node name="Inset" type="Polygon2D" parent="Visual" unique_id=1324658658]
+color = Color(0.55, 0.55, 0.62, 1)
+polygon = PackedVector2Array(-22, -14, 22, -14, 22, 14, -22, 14)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2062095743]
+shape = SubResource("RectangleShape2D_p")

@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://cqkw3ye4f0try"]
+
+[ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="1_g"]
+[ext_resource type="Texture2D" uid="uid://bm53ib8kyomex" path="res://scenes/quests/lore_quests/quest_004/assets/Muñeco_de_paja.png" id="2_t"]
+[ext_resource type="Shader" uid="uid://cptuiiq2m0fxr" path="res://scenes/quests/lore_quests/quest_004/menhir/menhir_tremble.gdshader" id="3_jshaj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_straw"]
+atlas = ExtResource("2_t")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_straw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_straw")
+}],
+"loop": true,
+"name": &"alerted",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_straw")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_straw")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m3r6h"]
+shader = ExtResource("3_jshaj")
+shader_parameter/amplitude = 1.5000000712500001
+shader_parameter/frequency = 25.0
+
+[node name="StrawDummy" unique_id=464039115 instance=ExtResource("1_g")]
+sprite_frames = SubResource("SpriteFrames_straw")
+move_speed = 120.0
+time_to_detect_player = 1.8
+detection_area_scale = 0.7
+
+[node name="DetectionArea" parent="." index="3" unique_id=885694991]
+scale = Vector2(0.7, 0.7)
+
+[node name="AnimatedSprite2D" parent="." index="4" unique_id=616054452]
+material = SubResource("ShaderMaterial_m3r6h")
+sprite_frames = SubResource("SpriteFrames_straw")

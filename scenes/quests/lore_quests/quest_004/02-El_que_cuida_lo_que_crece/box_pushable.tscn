@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://bboxpush00q01"]
+
+[ext_resource type="Script" path="res://scenes/quests/lore_quests/quest_004/02-El_que_cuida_lo_que_crece/box_pushable.gd" id="1_b"]
+[ext_resource type="Texture2D" uid="uid://bhqanyxhpxpm" path="res://assets/first_party/rocks/Rock_Idle.png" id="2_t"]
+[ext_resource type="Shader" uid="uid://cptuiiq2m0fxr" path="res://scenes/quests/lore_quests/quest_004/menhir/menhir_tremble.gdshader" id="3_sh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b"]
+shader = ExtResource("3_sh")
+shader_parameter/amplitude = 0.0
+shader_parameter/frequency = 22.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(44, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sensor"]
+size = Vector2(64, 50)
+
+[node name="Box" type="CharacterBody2D" unique_id=1697541390]
+collision_layer = 512
+collision_mask = 16
+script = ExtResource("1_b")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=437919106]
+material = SubResource("ShaderMaterial_b")
+position = Vector2(0, -14)
+texture = ExtResource("2_t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1358460841]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="PushSensor" type="Area2D" parent="." unique_id=1083185627]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PushSensor" unique_id=1670780157]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_sensor")
