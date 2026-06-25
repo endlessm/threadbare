@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://b8yn4tog2cnaw" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/personajes/estructuras(decoracion)/llave 1.png" id="24_j1buf"]
 [ext_resource type="Script" uid="uid://c7gk6dx58xqvg" path="res://scenes/quests/story_quests/lacasadelachina/2_combat/area_2d.gd" id="25_3eaa6"]
 [ext_resource type="Texture2D" uid="uid://5fatldiu7dd5" path="res://addons/phantom_camera/icons/phantom_camera_host.svg" id="25_nsubp"]
+[ext_resource type="AudioStream" uid="uid://djmaji4qqg2t4" path="res://scenes/quests/story_quests/lacasadelachina/2_combat/musica/BeepBox-Song (3).mp3" id="26_3eaa6"]
 [ext_resource type="Texture2D" uid="uid://ctwx8gghts62p" path="res://assets/third_party/tiny-swords/Deco/06.png" id="26_5lvmq"]
 [ext_resource type="Script" uid="uid://ca8hx5s3ry40v" path="res://scenes/quests/story_quests/lacasadelachina/2_combat/area_2d_2.gd" id="27_iktgn"]
 [ext_resource type="Script" uid="uid://vran15gsnvsl" path="res://scenes/quests/story_quests/lacasadelachina/2_combat/area_2d_3.gd" id="27_ye7cu"]
@@ -155,6 +156,8 @@ size = Vector2(126, 107.625)
 size = Vector2(73, 78)
 
 [node name="LacasadelachinaCombat" type="Node2D" unique_id=1610054737]
+modulate = Color(0.40392157, 0.6117647, 0.38431373, 1)
+self_modulate = Color(0.40784314, 0.28235295, 0.39215687, 1)
 position = Vector2(24, 0)
 script = ExtResource("1_xbsms")
 metadata/_edit_horizontal_guides_ = [-607.0]
@@ -419,5 +422,10 @@ shape = SubResource("RectangleShape2D_3eaa6")
 [node name="Sprite2D" type="Sprite2D" parent="Area2D4" unique_id=465499407]
 position = Vector2(174, 633)
 texture = ExtResource("26_5lvmq")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1277129650]
+stream = ExtResource("26_3eaa6")
+volume_db = -9.903
+autoplay = true
 
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]

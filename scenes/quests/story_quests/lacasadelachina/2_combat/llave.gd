@@ -13,7 +13,7 @@ var posiciones: Array = [
 ]
 
 # Tiempo en segundos entre cada teletransporte
-@export var tiempo_entre_teletransportes: float = 5.0
+@export var tiempo_entre_teletransportes: float = 3.0
 
 # Ruta de la escena a la que se cambia cuando el jugador agarra la llave
 @export var siguiente_escena: String = "res://scenes/quests/story_quests/lacasadelachina/3_sequence_puzzle/lacasadelachina_sequence_puzzle.tscn"
