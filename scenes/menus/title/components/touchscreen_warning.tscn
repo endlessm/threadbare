@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://cbf7ft3j4hemp"]
+
+[ext_resource type="Script" uid="uid://dx4alphqyxbwv" path="res://scenes/menus/title/components/touchscreen_warning.gd" id="1_smfbs"]
+
+[node name="TouchscreenWarning" type="Control" unique_id=2046863085]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_smfbs")
+metadata/_tab_index = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=479124586]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.5
+offset_top = -132.5
+offset_right = 150.5
+offset_bottom = 132.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1554237287]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer" unique_id=969003221]
+custom_minimum_size = Vector2(640, 0)
+layout_mode = 2
+text = "You need a gamepad or a keyboard to play Threadbare. Threadbare is not playable with a touchscreen only."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="DismissButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=1452001342]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Dismiss   "
+icon_alignment = 1
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/DismissButton" to="." method="_on_dismiss_button_pressed"]

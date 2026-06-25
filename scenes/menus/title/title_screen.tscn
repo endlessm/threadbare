@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://kc657macgib4" path="res://assets/first_party/music/Threadbare_Main_Loud.ogg" id="5_5uobg"]
 [ext_resource type="Texture2D" uid="uid://lg5dl13njsg3" path="res://assets/first_party/tiles/Grass_And_Sand_Tiles.png" id="5_c6kyi"]
 [ext_resource type="PackedScene" uid="uid://6s70kur03rjk" path="res://scenes/menus/title/components/credits.tscn" id="6_2ijyo"]
+[ext_resource type="PackedScene" uid="uid://cbf7ft3j4hemp" path="res://scenes/menus/title/components/touchscreen_warning.tscn" id="6_5uobg"]
 [ext_resource type="PackedScene" uid="uid://dkeb0yjgcfi86" path="res://scenes/menus/options/options.tscn" id="8_5uobg"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2ijyo"]
@@ -44,26 +45,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_2ijyo")
-current_tab = 0
+current_tab = 1
 tabs_visible = false
+
+[node name="TouchscreenWarning" parent="Pages" unique_id=2046863085 instance=ExtResource("6_5uobg")]
+visible = false
+layout_mode = 2
 
 [node name="MainMenu" parent="Pages" unique_id=422406702 instance=ExtResource("5_0vy2n")]
 unique_name_in_owner = true
 layout_mode = 2
-metadata/_tab_index = 0
+metadata/_tab_index = 1
 
 [node name="Credits" parent="Pages" unique_id=999256361 instance=ExtResource("6_2ijyo")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-metadata/_tab_index = 1
+metadata/_tab_index = 2
 
 [node name="Options" parent="Pages" unique_id=1924255406 instance=ExtResource("8_5uobg")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
-metadata/_tab_index = 2
+metadata/_tab_index = 3
 
 [connection signal="continue_pressed" from="Pages/MainMenu" to="." method="_on_main_menu_continue_pressed"]
 [connection signal="credits_pressed" from="Pages/MainMenu" to="." method="_on_main_menu_credits_pressed"]
