@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name AchievementCounter
+class_name FactCounter
 extends Node
 
 @export var prefix: String
@@ -8,7 +8,7 @@ extends Node
 
 func increment() -> void:
 	if not prefix:
-		push_warning("AchievementCounter.add_achievement() was called without a prefix.")
+		push_warning("FactCounter.increment() was called without a prefix.")
 		return
 	var fact_name := "%s_count" % prefix
 	if fact_name not in GameState.global.facts:

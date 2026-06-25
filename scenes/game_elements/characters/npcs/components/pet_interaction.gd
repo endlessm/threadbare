@@ -2,10 +2,17 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node
 
+## The area to interact with the pet.
 @export var interact_area: InteractArea
+
+## Sound effect to play when interacted.
 @export var sound_effect_player: AudioStreamPlayer2D
+
+## If set, it will shake when interacted.
 @export var shaker: Shaker
-@export var achievement_counter: AchievementCounter
+
+## If set, it will increment when interacted.
+@export var fact_counter: FactCounter
 
 
 func _ready() -> void:
@@ -18,7 +25,7 @@ func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -
 	sound_effect_player.play()
 	if shaker:
 		shaker.shake()
-	if achievement_counter:
-		achievement_counter.increment()
+	if fact_counter:
+		fact_counter.increment()
 	await sound_effect_player.finished
 	interact_area.disabled = false
