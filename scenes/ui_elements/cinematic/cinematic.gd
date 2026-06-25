@@ -1,30 +1,24 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name Cinematic
+class_name CasaDeLaChinaCinematic
 extends Node2D
 ## Shows a dialogue, then transitions to another scene.
 ##
 ## Intended for use in non-interactive cutscenes, such as the intro and outro to a quest.
 ## It can also be used as an easy way to display dialogue at the beginning of a level.
-
 ## Emitted when the cinematic has finished. Use it if not passing [member next_scene]
 ## when you need to do something else after the cinematic.
 signal cinematic_finished
-
 ## Dialogue for cinematic scene.
 @export var dialogue: DialogueResource = preload("uid://b7ad8nar1hmfs")
-
 ## Optional animation player, to be used from [member dialogue] (if needed).
 @export var animation_player: AnimationPlayer
-
 ## Optional scene to switch to once [member dialogue] is complete.
 @export_file("*.tscn") var next_scene: String
-
 ## Optional path inside [member next_scene] where the player should appear.
 ## If blank, player appears at default position in the scene. If in doubt,
 ## leave this blank.
 @export var spawn_point_path: String
-
 ## Wether to automatically start the cinematic.
 @export var autostart: bool = true
 
@@ -40,7 +34,6 @@ func start() -> void:
 		await DialogueManager.dialogue_ended
 		cinematic_finished.emit()
 		GameState.intro_dialogue_shown = true
-
 	if next_scene:
 		(
 			SceneSwitcher
@@ -51,3 +44,9 @@ func start() -> void:
 				Transition.Effect.FADE,
 			)
 		)
+
+
+## Used from dialogue (do wait_for_walk()) to pause until the current
+## animation on [member animation_player] finishes playing.
+func wait_for_walk() -> void:
+	await animation_player.animation_finished
