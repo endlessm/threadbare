@@ -16,6 +16,8 @@ static var hilo3_tomado = false
 var nivel_apagandose = false
 
 func _ready():
+	# Desactivamos el gancho (apuntar/lanzar) específicamente para este nivel
+	GameState.set_ability(Enums.PlayerAbilities.ABILITY_B, false)
 	nivel_apagandose = false
 	self.tree_exiting.connect(_activar_escudo)
 
