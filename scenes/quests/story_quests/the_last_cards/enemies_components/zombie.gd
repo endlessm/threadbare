@@ -27,7 +27,8 @@ var player: Player = null
 var can_attack: bool = true
 var is_repelled: bool = false
 
-func _ready():
+
+func _ready() -> void:
 	buscar_jugador_seguro()
 	add_to_group("enemies")
 
@@ -66,23 +67,25 @@ func _ready():
 	if player:
 		navigation_agent_2d.target_position = player.global_position
 
-func buscar_jugador_seguro():
+
+func buscar_jugador_seguro() -> void:
 	# Buscar el primer nodo de clase Player en el grupo "player" (ignora otros)
-	for nodo in get_tree().get_nodes_in_group("player"):
+	for nodo: Node in get_tree().get_nodes_in_group("player"):
 		if nodo is Player:
 			player = nodo
 			return
 	# Si no encuentra, busca por clase sin grupo
-	for nodo in get_tree().root.get_children():
+	for nodo: Node in get_tree().root.get_children():
 		if nodo is Player:
 			player = nodo
 			return
-		for hijo in nodo.get_children():
+		for hijo: Node in nodo.get_children():
 			if hijo is Player:
 				player = hijo
 				return
 
-func _physics_process(_delta):
+
+func _physics_process(_delta: float) -> void:
 	if not player or not is_instance_valid(player):
 		buscar_jugador_seguro()
 		return
@@ -98,8 +101,8 @@ func _physics_process(_delta):
 		_deal_damage_to_player()
 
 	# Moverse siempre hacia el siguiente punto del camino
-	var next_point = navigation_agent_2d.get_next_path_position()
-	var direction = global_position.direction_to(next_point)
+	var next_point: Vector2 = navigation_agent_2d.get_next_path_position()
+	var direction: Vector2 = global_position.direction_to(next_point)
 	velocity = direction * speed
 	move_and_slide()
 
@@ -108,23 +111,27 @@ func _physics_process(_delta):
 	if direction.x != 0:
 		sprite.flip_h = direction.x < 0
 
-func _deal_damage_to_player():
+
+func _deal_damage_to_player() -> void:
 	print("Zombi atacando al jugador ", player.name)
 	if player.has_method("take_damage"):
 		player.take_damage(damage)
 	can_attack = false
 	attack_timer.start(attack_cooldown)
 
-func _on_attack_cooldown_end():
+
+func _on_attack_cooldown_end() -> void:
 	can_attack = true
 
-func take_damage(amount: int):
+
+func take_damage(amount: int) -> void:
 	health -= amount
 	print("Zombie recibe daño. Vida restante:", health)
 	if health <= 0:
 		queue_free()
 
-func got_repelled(direction: Vector2):
+
+func got_repelled(direction: Vector2) -> void:
 	if is_repelled:
 		return
 	is_repelled = true
@@ -132,11 +139,13 @@ func got_repelled(direction: Vector2):
 	velocity = direction * repel_force
 	repel_timer.start(repel_stun_time)
 
-func _on_repel_end():
+
+func _on_repel_end() -> void:
 	is_repelled = false
 	can_attack = true
 	velocity = Vector2.ZERO
 
-func _on_timer_timeout():
+
+func _on_timer_timeout() -> void:
 	if player and is_instance_valid(player):
 		navigation_agent_2d.target_position = player.global_position

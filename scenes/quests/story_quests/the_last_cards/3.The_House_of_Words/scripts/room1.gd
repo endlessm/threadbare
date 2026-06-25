@@ -3,53 +3,54 @@ extends Node2D
 const PALABRAS = ["CARTA"]
 const LETRAS_NECESARIAS = 5
 
-var palabra_secreta = ""
-var intento_actual = 0
-var tiempo_restante = 120
-var juego_activo = false
-var puerta_instanciada = false
-var palabra_actual = ""
+var palabra_secreta: String = ""
+var intento_actual: int = 0
+var tiempo_restante: float = 120
+var juego_activo: bool = false
+var puerta_instanciada: bool = false
+var palabra_actual: String = ""
 
-# Conteo de letras ocultas reveladas por el jugador 
-var letras_reveladas = []
-var puertas_habilitadas = false
+# Conteo de letras ocultas reveladas por el jugador
+var letras_reveladas: Array[Node2D] = []
+var puertas_habilitadas: bool = false
 
-@onready var dialogue_balloon = $Dialogue
-@onready var input_letra = $CanvasGroup/InputLetra
-@onready var grid_letras = $CanvasGroup/Panel/GridLetras
-@onready var label_mensaje = $CanvasGroup/Panel/LabelMensaje
-@onready var label_tiempo = $CanvasGroup/LabelTiempo
-@onready var timer_principal = $Timer
-@onready var zombie = $Zombie
-@onready var player = $Player
-@onready var musica_fondo = $MusicaFondo
-@onready var teclado = $CanvasGroup/CanvasLayer/Teclado
-@onready var guardia1 = $Guard
-@onready var guardia2 = $Guard2
-@onready var guardia3 = $Guard3
-@onready var puerta_fija = $Puerta
-@onready var puerta_fija2 = $Puerta2
-var door = null
+@onready var dialogue_balloon: Node = $Dialogue
+@onready var input_letra: LineEdit = $CanvasGroup/InputLetra
+@onready var grid_letras: GridContainer = $CanvasGroup/Panel/GridLetras
+@onready var label_mensaje: Label = $CanvasGroup/Panel/LabelMensaje
+@onready var label_tiempo: Label = $CanvasGroup/LabelTiempo
+@onready var timer_principal: Timer = $Timer
+@onready var zombie: CharacterBody2D = $Zombie
+@onready var player: CharacterBody2D = $Player
+@onready var musica_fondo: AudioStreamPlayer2D = $MusicaFondo
+@onready var teclado: Node = $CanvasGroup/CanvasLayer/Teclado
+@onready var guardia1: Node2D = $Guard
+@onready var guardia2: Node2D = $Guard2
+@onready var guardia3: Node2D = $Guard3
+@onready var puerta_fija: Node2D = $Puerta
+@onready var puerta_fija2: Node2D = $Puerta2
+var door: Node2D = null
 
-func _ready():
+
+func _ready() -> void:
 	randomize()
 	palabra_secreta = PALABRAS[randi() % PALABRAS.size()]
 	puerta_fija.global_position = Vector2(2573, 730)
 	puerta_fija2.global_position = Vector2(2573, 115)
 
-	var dark_overlay = get_node_or_null("CanvasLayer/DarknessOverlay")
+	var dark_overlay: Node = get_node_or_null("CanvasLayer/DarknessOverlay")
 	if dark_overlay:
-		var color_rect = dark_overlay.get_node_or_null("ColorRect")
+		var color_rect: Node = dark_overlay.get_node_or_null("ColorRect")
 		if color_rect:
 			color_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	for i in range(30):
-		var label = grid_letras.get_child(i)
+		var label: Label = grid_letras.get_child(i)
 		label.custom_minimum_size = Vector2(70, 70)
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		label.add_theme_font_size_override("font_size", 28)
-		var sb = StyleBoxFlat.new()
+		var sb: StyleBoxFlat = StyleBoxFlat.new()
 		sb.bg_color = Color(0.15, 0.15, 0.25)
 		sb.border_width_left = 2
 		sb.border_width_right = 2
@@ -98,32 +99,34 @@ func _ready():
 	# Las puertas empiezan bloqueadas hasta que se revelen las 5 letras
 	_actualizar_estado_puertas_inicial()
 
-	var tick = Timer.new()
+	var tick: Timer = Timer.new()
 	tick.wait_time = 1.0
 	tick.autostart = false
 	add_child(tick)
 	tick.timeout.connect(_on_timer_tick)
 	set_meta("tick_timer", tick)
 
-func _on_player_detected(player_node: Node2D) -> void:
+
+func _on_player_detected(_player_node: Node2D) -> void:
 	_game_over()
+
 
 func _agregar_boton_borrar() -> void:
 	if not teclado:
 		return
-	var fila3 = teclado.get_node_or_null("Fila3")
+	var fila3: Node = teclado.get_node_or_null("Fila3")
 	if not fila3:
 		return
-	var boton_borrar = Button.new()
+	var boton_borrar: Button = Button.new()
 	boton_borrar.text = "⌫"
 	boton_borrar.custom_minimum_size = Vector2(80, 60)
-	var estilo_normal = StyleBoxFlat.new()
+	var estilo_normal: StyleBoxFlat = StyleBoxFlat.new()
 	estilo_normal.bg_color = Color(0.8, 0.2, 0.2)
 	estilo_normal.corner_radius_top_left = 8
 	estilo_normal.corner_radius_top_right = 8
 	estilo_normal.corner_radius_bottom_left = 8
 	estilo_normal.corner_radius_bottom_right = 8
-	var estilo_hover = StyleBoxFlat.new()
+	var estilo_hover: StyleBoxFlat = StyleBoxFlat.new()
 	estilo_hover.bg_color = Color(1.0, 0.3, 0.3)
 	estilo_hover.corner_radius_top_left = 8
 	estilo_hover.corner_radius_top_right = 8
@@ -132,8 +135,9 @@ func _agregar_boton_borrar() -> void:
 	boton_borrar.add_theme_stylebox_override("normal", estilo_normal)
 	boton_borrar.add_theme_stylebox_override("hover", estilo_hover)
 	boton_borrar.add_theme_color_override("font_color", Color.WHITE)
-	boton_borrar.pressed.connect(func(): _on_letra_teclado("BORRAR"))
+	boton_borrar.pressed.connect(func() -> void: _on_letra_teclado("BORRAR"))
 	fila3.add_child(boton_borrar)
+
 
 func _on_letra_teclado(letra: String) -> void:
 	if not juego_activo:
@@ -150,10 +154,11 @@ func _on_letra_teclado(letra: String) -> void:
 		_procesar_intento(palabra_actual)
 		palabra_actual = ""
 
+
 func _procesar_intento(texto: String) -> void:
 	if not juego_activo:
 		return
-	var intento = texto.to_upper().strip_edges()
+	var intento: String = texto.to_upper().strip_edges()
 	input_letra.text = ""
 	palabra_actual = ""
 	if intento.length() != 5:
@@ -161,18 +166,21 @@ func _procesar_intento(texto: String) -> void:
 		return
 	_evaluar_intento(intento)
 
-func _iniciar_dialogo():
-	var dialogue_resource = load("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/dialogues/acertijo.dialogue")
+
+func _iniciar_dialogo() -> void:
+	var dialogue_resource: Resource = load("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/dialogues/acertijo.dialogue")
 	if dialogue_resource:
 		dialogue_balloon.start(dialogue_resource, "start")
 	else:
 		_iniciar_juego()
 
-func _on_dialogue_finished():
+
+func _on_dialogue_finished() -> void:
 	await get_tree().process_frame
 	_iniciar_juego()
 
-func _iniciar_juego():
+
+func _iniciar_juego() -> void:
 	juego_activo = true
 	if musica_fondo and not musica_fondo.playing:
 		musica_fondo.play()
@@ -186,13 +194,14 @@ func _iniciar_juego():
 	_actualizar_timer_display()
 	timer_principal.start(120)
 	timer_principal.timeout.connect(_on_tiempo_agotado)
-	var tick = get_meta("tick_timer")
+	var tick: Timer = get_meta("tick_timer")
 	if tick:
 		tick.start()
 
 	# El zombi empieza a moverse junto con el juego
 	if zombie:
 		zombie.set_activo(true)
+
 
 func _on_letra_iluminada(nodo: Node2D) -> void:
 	if not juego_activo:
@@ -201,11 +210,13 @@ func _on_letra_iluminada(nodo: Node2D) -> void:
 		nodo.revelar_desde_player()
 	_registrar_letra_revelada(nodo)
 
+
 func _on_letra_oscurecida(nodo: Node2D) -> void:
 	if not juego_activo:
 		return
 	if nodo.has_method("oscurecer_desde_player"):
 		nodo.oscurecer_desde_player()
+
 
 ## Registra una letra como revelada de forma permanente (al menos una vez detectada).
 ## No cuenta duplicados aunque el jugador vuelva a iluminar la misma letra.
@@ -214,6 +225,7 @@ func _registrar_letra_revelada(nodo: Node2D) -> void:
 		return
 	letras_reveladas.append(nodo)
 	_verificar_letras_completas()
+
 
 ## Revisa si ya se alcanzó el número de letras necesarias y, si es así,
 ## habilita ambas puertas (solo se ejecuta una vez).
@@ -224,6 +236,7 @@ func _verificar_letras_completas() -> void:
 		puertas_habilitadas = true
 		habilitar_puertas()
 
+
 ## Marca ambas puertas como abribles. A partir de aquí, Puerta.gd permite
 ## que el jugador las abra con ui_accept.
 func habilitar_puertas() -> void:
@@ -231,6 +244,7 @@ func habilitar_puertas() -> void:
 		puerta_fija.puede_abrirse = true
 	if puerta_fija2:
 		puerta_fija2.puede_abrirse = true
+
 
 ## Llamado en _ready para dejar el mensaje inicial correcto en ambas puertas
 ## (bloqueadas mientras no se hayan revelado las 5 letras).
@@ -242,14 +256,16 @@ func _actualizar_estado_puertas_inicial() -> void:
 		puerta_fija2.puede_abrirse = false
 		puerta_fija2.mensaje_bloqueo = "No se puede abrir hasta encontrar las 5 letras"
 
-func _actualizar_timer_display():
-	var minutos = int(tiempo_restante) / 60
-	var segundos = int(tiempo_restante) % 60
+
+func _actualizar_timer_display() -> void:
+	var minutos: int = int(tiempo_restante) / 60
+	var segundos: int = int(tiempo_restante) % 60
 	label_tiempo.text = "%02d:%02d" % [minutos, segundos]
 
-func _evaluar_intento(intento: String):
+
+func _evaluar_intento(intento: String) -> void:
 	for i in range(5):
-		var label = grid_letras.get_child(intento_actual * 5 + i)
+		var label: Label = grid_letras.get_child(intento_actual * 5 + i)
 		label.text = intento[i]
 		if intento[i] == palabra_secreta[i]:
 			label.add_theme_color_override("font_color", Color.WHITE)
@@ -268,7 +284,7 @@ func _evaluar_intento(intento: String):
 		if musica_fondo and musica_fondo.playing:
 			musica_fondo.stop()
 		if not puerta_instanciada:
-			var door_scene = load("res://scenes/game_elements/props/door/door.tscn")
+			var door_scene: PackedScene = load("res://scenes/game_elements/props/door/door.tscn")
 			door = door_scene.instantiate()
 			add_child(door)
 			door.global_position = player.global_position + Vector2(100, 0)
@@ -285,36 +301,41 @@ func _evaluar_intento(intento: String):
 			label_mensaje.text = "Intento %d/6" % intento_actual
 			_rehabilitar_teclado()
 
+
 func _rehabilitar_teclado() -> void:
 	if not teclado:
 		return
-	for fila in [teclado.get_node_or_null("Fila1"), teclado.get_node_or_null("Fila2"), teclado.get_node_or_null("Fila3")]:
+	for fila: Node in [teclado.get_node_or_null("Fila1"), teclado.get_node_or_null("Fila2"), teclado.get_node_or_null("Fila3")]:
 		if fila:
-			for boton in fila.get_children():
+			for boton: Node in fila.get_children():
 				boton.mouse_filter = Control.MOUSE_FILTER_STOP
 
-func _mostrar_dialogo_victoria():
-	var balloon_scene = load("res://scenes/ui_elements/dialogue/balloon.tscn")
+
+func _mostrar_dialogo_victoria() -> void:
+	var balloon_scene: PackedScene = load("res://scenes/ui_elements/dialogue/balloon.tscn")
 	if not balloon_scene:
 		return
-	var victoria_balloon = balloon_scene.instantiate()
+	var victoria_balloon: Node = balloon_scene.instantiate()
 	add_child(victoria_balloon)
-	var dialogue_resource = load("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/dialogues/victoria.dialogue")
+	var dialogue_resource: Resource = load("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/dialogues/victoria.dialogue")
 	if dialogue_resource:
 		victoria_balloon.start(dialogue_resource, "start")
 		await victoria_balloon.tree_exited
 	else:
 		victoria_balloon.queue_free()
 
+
 func _crear_fondo(color: Color) -> StyleBoxFlat:
-	var sb = StyleBoxFlat.new()
+	var sb: StyleBoxFlat = StyleBoxFlat.new()
 	sb.bg_color = color
 	return sb
 
-func _on_tiempo_agotado():
+
+func _on_tiempo_agotado() -> void:
 	_game_over()
 
-func _on_timer_tick():
+
+func _on_timer_tick() -> void:
 	if not juego_activo:
 		return
 	tiempo_restante -= 1
@@ -322,7 +343,8 @@ func _on_timer_tick():
 	if tiempo_restante <= 0:
 		_game_over()
 
-func _game_over():
+
+func _game_over() -> void:
 	if musica_fondo and musica_fondo.playing:
 		musica_fondo.stop()
 	juego_activo = false
@@ -330,5 +352,6 @@ func _game_over():
 		zombie.set_activo(false)
 	get_tree().change_scene_to_file("res://scenes/quests/story_quests/the_last_cards/3.The_House_of_Words/scenes/Room1.tscn")
 
-func _input(_event: InputEvent):
+
+func _input(_event: InputEvent) -> void:
 	pass

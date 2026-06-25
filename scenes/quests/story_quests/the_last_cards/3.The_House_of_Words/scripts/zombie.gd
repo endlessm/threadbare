@@ -67,11 +67,10 @@ func _process(delta: float) -> void:
 
 
 func _mover(delta: float) -> void:
-	var distancia = global_position.distance_to(player.global_position)
-
+	var distancia: float = global_position.distance_to(player.global_position)
 	if distancia < detection_radius:
 		# Perseguir al player
-		var dir = (player.global_position - global_position).normalized()
+		var dir: Vector2 = (player.global_position - global_position).normalized()
 		global_position += dir * speed * delta
 		_detecta_player = true
 	else:
@@ -81,9 +80,7 @@ func _mover(delta: float) -> void:
 		if _cambio_dir_timer <= 0:
 			_cambio_dir_timer = randf_range(direction_change_min_time, direction_change_max_time)
 			_direccion = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
-
 		global_position += _direccion * speed * delta
-
 		# Rebotar en los límites de la sala
 		if global_position.x < patrol_min.x or global_position.x > patrol_max.x:
 			_direccion.x = -_direccion.x
@@ -91,7 +88,6 @@ func _mover(delta: float) -> void:
 		if global_position.y < patrol_min.y or global_position.y > patrol_max.y:
 			_direccion.y = -_direccion.y
 			global_position.y = clamp(global_position.y, patrol_min.y, patrol_max.y)
-
 	# Game over si toca al player
 	if distancia < kill_distance:
 		player_detected.emit(player)

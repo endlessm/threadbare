@@ -282,11 +282,11 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("attack") and can_attack and mode != Mode.DEFEATED:
 		_melee_attack()
 
-func _melee_attack():
+func _melee_attack() -> void:
 	can_attack = false
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if enemy.has_method("take_damage"):
-			var dist = global_position.distance_to(enemy.global_position)
+			var dist: float = global_position.distance_to(enemy.global_position)
 			if dist <= attack_range:
 				enemy.take_damage(attack_damage)
 				print("Golpe a ", enemy.name)
