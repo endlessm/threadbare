@@ -10,6 +10,8 @@ static var puente3_listo: bool = false
 var nivel_apagandose: bool = false
 
 func _ready() -> void:
+	# Desactivamos el gancho (apuntar/lanzar) para este nivel
+	GameState.set_ability(Enums.PlayerAbilities.ABILITY_B, false)
 	# 1. Preparamos el escudo para cuando Lino muera
 	nivel_apagandose = false
 	self.tree_exiting.connect(_activar_escudo)
