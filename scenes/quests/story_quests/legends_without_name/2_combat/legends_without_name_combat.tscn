@@ -117,14 +117,6 @@ region = Rect2(320, 0, 64, 64)
 atlas = ExtResource("15_bm7cx")
 region = Rect2(384, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_7xr0u"]
-atlas = ExtResource("12_sfbo4")
-region = Rect2(0, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5f650"]
-atlas = ExtResource("12_sfbo4")
-region = Rect2(64, 0, 64, 64)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_0misi"]
 atlas = ExtResource("22_6mil1")
 region = Rect2(0, 0, 85, 85)
@@ -169,9 +161,13 @@ region = Rect2(85, 0, 85, 85)
 atlas = ExtResource("22_6mil1")
 region = Rect2(0, 0, 85, 85)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_nrwlp"]
-atlas = ExtResource("22_6mil1")
-region = Rect2(85, 0, 85, 85)
+[sub_resource type="AtlasTexture" id="AtlasTexture_7xr0u"]
+atlas = ExtResource("12_sfbo4")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5f650"]
+atlas = ExtResource("12_sfbo4")
+region = Rect2(64, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ipmm0"]
 atlas = ExtResource("16_phfwe")
@@ -409,44 +405,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_7xr0u")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5f650")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_7xr0u")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5f650")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_7xr0u")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5f650")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_7xr0u")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5f650")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_7xr0u")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5f650")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_7xr0u")
-}],
-"loop": true,
-"name": &"defeated",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_0misi")
 }, {
 "duration": 1.0,
@@ -478,13 +436,48 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_fmbai")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_nrwlp")
 }],
 "loop": true,
-"name": &"defeated_1",
+"name": &"defeated",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xr0u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5f650")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xr0u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5f650")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xr0u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5f650")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xr0u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5f650")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xr0u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5f650")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xr0u")
+}],
+"loop": true,
+"name": &"defeated_1_1",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -1078,13 +1071,15 @@ tile_set = ExtResource("10_pfist")
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=1799818537 instance=ExtResource("8_df0rc")]
+z_index = 1
 position = Vector2(6, 320)
 scale = Vector2(1.25, 1.25)
 collision_layer = 5
 sprite_frames = SubResource("SpriteFrames_aj5o4")
 
 [node name="ThrowingNPC" parent="OnTheGround" unique_id=2065424633 instance=ExtResource("10_utt2q")]
-position = Vector2(472, 40)
+z_index = 2
+position = Vector2(472, 48)
 sprite_frames = SubResource("SpriteFrames_4bi70")
 projectile_scene = ExtResource("12_tv17d")
 projectile_speed = 25.0
@@ -1189,7 +1184,8 @@ position = Vector2(1024, 635)
 rotation = -3.1415927
 
 [node name="EstanteLaboratorio" type="Sprite2D" parent="." unique_id=1718148246]
-position = Vector2(304, 8)
+z_index = 1
+position = Vector2(312, -32)
 texture = ExtResource("39_aj5o4")
 
 [node name="EstanteLaboratorio2" type="Sprite2D" parent="EstanteLaboratorio" unique_id=1551041424]
@@ -1208,14 +1204,14 @@ position = Vector2(336, 0)
 texture = ExtResource("39_aj5o4")
 flip_h = true
 
-[node name="MesaPocionLaboratorio" type="Sprite2D" parent="." unique_id=455753815]
-position = Vector2(392, 8)
-texture = ExtResource("40_4bi70")
-
-[node name="MesaPocionLaboratorio" type="Sprite2D" parent="MesaPocionLaboratorio" unique_id=741295585]
-position = Vector2(160, 0)
+[node name="MesaPocionLaboratorio2" type="Sprite2D" parent="EstanteLaboratorio" unique_id=741295585]
+position = Vector2(248, 0)
 texture = ExtResource("40_4bi70")
 flip_h = true
+
+[node name="MesaPocionLaboratorio" type="Sprite2D" parent="EstanteLaboratorio" unique_id=455753815]
+position = Vector2(88, 0)
+texture = ExtResource("40_4bi70")
 
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
