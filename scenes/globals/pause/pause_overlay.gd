@@ -95,6 +95,7 @@ func _on_back_button_pressed() -> void:
 
 
 func _on_title_screen_button_pressed() -> void:
+	GameState.save()
 	toggle_pause()
 	SceneSwitcher.change_to_file_with_transition(
 		title_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
