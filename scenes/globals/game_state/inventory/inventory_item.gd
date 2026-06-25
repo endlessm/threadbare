@@ -29,7 +29,6 @@ const WORLD_TEXTURES: Dictionary[ItemType, Texture2D] = {
 	ItemType.SPIRIT: preload("uid://cepg1o3ihp055")
 }
 
-@export var name: String
 @export var type: ItemType
 
 
