@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scenes/quests/lore_quests/quest_004/02-El_que_cuida_lo_que_crece/straw_dummy_harmless.gd" id="1_d"]
+[ext_resource type="Texture2D" uid="uid://bm53ib8kyomex" path="res://scenes/quests/lore_quests/quest_004/assets/Muñeco_de_paja.png" id="2_t"]
+[ext_resource type="Shader" uid="uid://cptuiiq2m0fxr" path="res://scenes/quests/lore_quests/quest_004/menhir/menhir_tremble.gdshader" id="3_sh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d"]
+shader = ExtResource("3_sh")
+shader_parameter/amplitude = 0.0
+shader_parameter/frequency = 25.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d"]
+radius = 70.0
+
+[node name="StrawDummyHarmless" type="Node2D"]
+script = ExtResource("1_d")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_d")
+texture = ExtResource("2_t")
+
+[node name="TouchArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TouchArea"]
+shape = SubResource("CircleShape2D_d")
