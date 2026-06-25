@@ -18,7 +18,7 @@ var _current_spread_index: int = -1
 var _navigation_locked: bool = false
 
 @onready var quest_list: VBoxContainer = %QuestList
-@onready var quest_container: Control = %QuestContainer
+@onready var quest_container: ScrollContainer = %QuestContainer
 @onready var storybook_page: StorybookPage = %StorybookPage
 @onready var back_button: Button = %BackButton
 @onready var animated_book: AnimatedSprite2D = %AnimatedSprite2D
@@ -39,6 +39,8 @@ func _ready() -> void:
 
 		button.pressed.connect(_on_quest_button_pressed.bind(button))
 		button.focus_next = back_button.get_path()
+
+		button.focus_entered.connect(quest_container.ensure_control_visible.bind(button))
 
 		if previous_button:
 			button.focus_neighbor_top = previous_button.get_path()
