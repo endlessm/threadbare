@@ -7,8 +7,10 @@ var disparado := false
 var lich: Node2D = null
 var offset := Vector2(100, 0)
 
+	
 func _ready():
-
+	add_to_group("orbes")
+	
 	body_entered.connect(_on_body_entered)
 
 	$AnimatedSprite2D.play("idle")

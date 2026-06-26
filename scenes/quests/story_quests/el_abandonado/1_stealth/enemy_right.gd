@@ -57,7 +57,7 @@ func _process(delta):
 		global_position.x = move_toward(
 			global_position.x,
 			destino,
-			130 * delta
+			180 * delta
 		)
 
 		global_position.y = camara.global_position.y + offset_y
@@ -183,6 +183,10 @@ func terminar_persecucion():
 
 	persecucion_iniciada = false
 	orbe_timer.stop()
+	
+	for orbe in get_tree().get_nodes_in_group("orbes"):
+		orbe.queue_free()
+		
 	reiniciar_dialogos()
 
 	var tween = create_tween()
