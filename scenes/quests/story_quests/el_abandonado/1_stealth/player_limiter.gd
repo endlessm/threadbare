@@ -12,10 +12,8 @@ func _process(delta):
 	var borde_derecho = camara.global_position.x + (ancho * 0.5) - 60
 	var borde_izquierdo = camara.global_position.x - (ancho * 0.5) + 60
 
-	# 🔒 límite derecho
 	if jugador.global_position.x > borde_derecho:
 		jugador.global_position.x = borde_derecho
 
-	# 🔒 límite izquierdo
 	if jugador.global_position.x < borde_izquierdo:
 		jugador.global_position.x = borde_izquierdo

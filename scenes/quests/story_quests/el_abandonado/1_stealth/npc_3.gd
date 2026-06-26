@@ -35,7 +35,6 @@ func iniciar_dialogo() -> void:
 
 	await balloon.tree_exited
 
-	# Esperar a que el jugador suelte Espacio
 	while Input.is_action_pressed("ui_accept"):
 		await get_tree().process_frame
 
