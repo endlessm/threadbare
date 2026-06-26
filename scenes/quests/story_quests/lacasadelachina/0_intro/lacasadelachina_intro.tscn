@@ -1,9 +1,9 @@
 [gd_scene format=4 uid="uid://deuap4hf4lhga"]
 
 [ext_resource type="TileSet" uid="uid://bkcr0sk2q4cvt" path="res://scenes/quests/story_quests/lacasadelachina/tiles/lacasadelachina_exterior_floors.tres" id="1_82wni"]
+[ext_resource type="Texture2D" path="res://scenes/quests/story_quests/lacasadelachina/Dibujo/Fondo/Angle/woodWallEmptyCross_N.png" id="2_204ki"]
 [ext_resource type="SpriteFrames" uid="uid://cgryv7w3yygbq" path="res://scenes/quests/story_quests/lacasadelachina/player_components/lacasadelachina_player.tres" id="3_521m7"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_vjtpj"]
-[ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="5_82wni"]
 [ext_resource type="Resource" uid="uid://bd75fxvyeogr" path="res://scenes/quests/story_quests/lacasadelachina/0_intro/intro_components/lacasadelachina.dialogue" id="5_vjtpj"]
 [ext_resource type="Texture2D" uid="uid://dr32byouj3hlj" path="res://assets/third_party/tiny-swords/Factions/Knights/Buildings/House/House_Yellow.png" id="6_5hlqh"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="6_jvssr"]
@@ -12,6 +12,16 @@
 [ext_resource type="Texture2D" uid="uid://baelulw1inl6s" path="res://assets/third_party/tiny-swords/Deco/09.png" id="10_33k0e"]
 [ext_resource type="Texture2D" uid="uid://c3l7lhhu5de88" path="res://assets/third_party/tiny-swords/Deco/16.png" id="11_ebiyv"]
 [ext_resource type="Texture2D" uid="uid://drfnq08l2wbgy" path="res://assets/third_party/tiny-swords/Deco/03.png" id="12_wyaa8"]
+[ext_resource type="Texture2D" uid="uid://c1ujdt4af6ye1" path="res://scenes/quests/story_quests/lacasadelachina/0_intro/img/planta (1).png" id="13_ucgbo"]
+[ext_resource type="Texture2D" uid="uid://bdt2h2ql5epqk" path="res://scenes/quests/story_quests/lacasadelachina/0_intro/img/planta(2).png" id="14_oix0v"]
+[ext_resource type="Script" uid="uid://dy2holdiingt3" path="res://scenes/quests/story_quests/lacasadelachina/1_stealth/planta.gd" id="15_kba5d"]
+[ext_resource type="Texture2D" uid="uid://c78hfbunmxpo3" path="res://scenes/quests/story_quests/lacasadelachina/0_intro/img/palmera(1).png" id="16_7ncc6"]
+[ext_resource type="Texture2D" uid="uid://dixhh2bilsmjy" path="res://scenes/quests/story_quests/lacasadelachina/0_intro/img/palmera(2).png" id="17_asmmw"]
+[ext_resource type="Script" uid="uid://cqf5ryf580h0m" path="res://scenes/quests/story_quests/lacasadelachina/2_combat/animated_sprite_2d_11.gd" id="18_yxx2y"]
+[ext_resource type="Script" uid="uid://cn5i4bg1x7hs8" path="res://scenes/quests/story_quests/lacasadelachina/3_sequence_puzzle/q.gd" id="19_asmmw"]
+[ext_resource type="Texture2D" uid="uid://cur1aiqbkvo3r" path="res://scenes/quests/story_quests/lacasadelachina/2_combat/img/fantasma_arriba.png" id="20_yxx2y"]
+[ext_resource type="Texture2D" uid="uid://ftm0rtkjaeou" path="res://scenes/quests/story_quests/lacasadelachina/2_combat/img/fantasma_ abajo.png" id="21_1321j"]
+[ext_resource type="Texture2D" uid="uid://bfq0xkyeec5il" path="res://scenes/quests/story_quests/lacasadelachina/2_combat/img/fantasma(1).png" id="22_1gadg"]
 
 [sub_resource type="Animation" id="Animation_ebiyv"]
 length = 4.0333333
@@ -125,6 +135,40 @@ _data = {
 &"walk_on": SubResource("Animation_07ebr")
 }
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_1321j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_ucgbo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_oix0v")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1gadg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_7ncc6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_asmmw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s53fc"]
+radius = 41.19466
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_204ki"]
+radius = 39.0
+
 [node name="LacasadelachinaIntro" type="Node2D" unique_id=2049284984]
 modulate = Color(0.43917835, 0.44547725, 0.4565437, 1)
 self_modulate = Color(0.5254902, 0.53333336, 0.54901963, 1)
@@ -135,22 +179,26 @@ position = Vector2(0, 3)
 [node name="Ground" type="TileMapLayer" parent="TileMapLayers" unique_id=397514282]
 modulate = Color(0.1356734, 0.30955476, 0.11047868, 1)
 self_modulate = Color(0.5029961, 0.9161953, 0.40171376, 1)
-tile_map_data = PackedByteArray("AAAAAAUAAQABAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAEAAAAFAAUAAQABAAEAAAAGAAUAAQABAAEAAAAHAAUAAQABAAEAAAAIAAUAAQABAAEAAAAJAAUAAQABAAEAAAAKAAUAAQABAAEAAAALAAUAAQABAAEAAAAMAAUAAQABAAEAAAANAAUAAQABAAEAAAAOAAUAAQABAAEAAAAAAAYAAQABAAEAAAAAAAcAAQABAAEAAAAAAAgAAQABAAEAAAABAAYAAQABAAEAAAABAAcAAQABAAEAAAABAAgAAQABAAEAAAACAAYAAQABAAEAAAACAAcAAQABAAEAAAACAAgAAQABAAEAAAADAAYAAQABAAEAAAADAAcAAQABAAEAAAADAAgAAQABAAEAAAAEAAYAAQABAAEAAAAEAAcAAQABAAEAAAAEAAgAAQABAAEAAAAFAAYAAQABAAEAAAAFAAcAAQABAAEAAAAFAAgAAQABAAEAAAAGAAYAAQABAAEAAAAGAAcAAQABAAEAAAAGAAgAAQABAAEAAAAHAAYAAQABAAEAAAAHAAcAAQABAAEAAAAHAAgAAQABAAEAAAAIAAYAAQABAAEAAAAIAAcAAQABAAEAAAAIAAgAAQABAAEAAAAJAAYAAQABAAEAAAAJAAcAAQABAAEAAAAJAAgAAQABAAEAAAAKAAYAAQABAAEAAAAKAAcAAQABAAEAAAAKAAgAAQABAAEAAAALAAYAAQABAAEAAAALAAcAAQABAAEAAAALAAgAAQABAAEAAAAMAAYAAQABAAEAAAAMAAcAAQABAAEAAAAMAAgAAQABAAEAAAANAAYAAQABAAEAAAANAAcAAQABAAEAAAANAAgAAQABAAEAAAAOAAYAAQABAAEAAAAOAAcAAQABAAEAAAAOAAgAAQABAAEAAAAAAAEAAQABAAEAAAABAAEAAQABAAEAAAACAAEAAQABAAEAAAACAAIAAQABAAEAAAADAAIAAQABAAEAAAAEAAIAAQABAAEAAAAFAAIAAQABAAEAAAAFAAMAAQABAAEAAAAGAAMAAQABAAEAAAAHAAQAAQABAAEAAAAIAAQAAQABAAEAAAAOAAQAAQABAAEAAAAOAAMAAQABAAEAAAAOAAIAAQABAAEAAAAOAAEAAQABAAEAAAANAAQAAQABAAEAAAANAAMAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAEAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAEAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAKAAEAAQABAAEAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAJAAEAAQABAAEAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAIAAEAAQABAAEAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAEAAAAGAAQAAQABAAEAAAAGAAIAAQABAAEAAAAGAAEAAQABAAEAAAAFAAQAAQABAAEAAAAFAAEAAQABAAEAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAEAAQABAAEAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAEAAQABAAEAAAACAAQAAQABAAEAAAACAAMAAQABAAEAAAABAAQAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAAAAAQAAQABAAEAAAAAAAMAAQABAAEAAAAAAAIAAQABAAEAAAAAAAkAAQABAAEAAAABAAkAAQABAAEAAAACAAkAAQABAAEAAAADAAkAAQABAAEAAAAEAAkAAQABAAEAAAAFAAkAAQABAAEAAAAGAAkAAQABAAEAAAAHAAkAAQABAAEAAAAIAAkAAQABAAEAAAAJAAkAAQABAAEAAAAKAAkAAQABAAEAAAALAAkAAQABAAEAAAAMAAkAAQABAAEAAAANAAkAAQABAAEAAAAOAAkAAQABAAEAAAA=")
+tile_map_data = PackedByteArray("AAAAAAUAAQABAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAEAAAAFAAUAAQABAAEAAAAGAAUAAQABAAEAAAAHAAUAAQABAAEAAAAIAAUAAQABAAEAAAAJAAUAAQABAAEAAAAKAAUAAQABAAEAAAALAAUAAQABAAEAAAAMAAUAAQABAAEAAAANAAUAAQABAAEAAAAOAAUAAQABAAEAAAAAAAYAAQAKAAEAAAAAAAcAAQABAAEAAAAAAAgAAQAKAAEAAAABAAYAAQAKAAEAAAABAAcAAQABAAEAAAABAAgAAQABAAEAAAACAAYAAQAKAAEAAAACAAcAAQABAAEAAAACAAgAAQAKAAEAAAADAAYAAQAKAAEAAAADAAcAAQABAAEAAAADAAgAAQAKAAEAAAAEAAYAAQAKAAEAAAAEAAcAAQABAAEAAAAEAAgAAQAKAAEAAAAFAAYAAQAKAAEAAAAFAAcAAQAKAAEAAAAFAAgAAQAKAAEAAAAGAAYAAQAKAAEAAAAGAAcAAQAKAAEAAAAGAAgAAQAKAAEAAAAHAAYAAQAKAAEAAAAHAAcAAQAKAAEAAAAHAAgAAQAKAAEAAAAIAAYAAQAGAAEAAAAIAAcAAQABAAEAAAAIAAgAAQAKAAEAAAAJAAYAAQAGAAEAAAAJAAcAAQABAAEAAAAJAAgAAQAKAAEAAAAKAAYAAQAKAAEAAAAKAAcAAQABAAEAAAAKAAgAAQAKAAEAAAALAAYAAQAKAAEAAAALAAcAAQABAAEAAAALAAgAAQAKAAEAAAAMAAYAAQAKAAEAAAAMAAcAAQABAAEAAAAMAAgAAQAKAAEAAAANAAYAAQAKAAEAAAANAAcAAQABAAEAAAANAAgAAQAKAAEAAAAOAAYAAQAKAAEAAAAOAAcAAQABAAEAAAAOAAgAAQAKAAEAAAAAAAEAAQABAAEAAAABAAEAAQABAAEAAAACAAEAAQABAAEAAAACAAIAAQABAAEAAAADAAIAAQABAAEAAAAEAAIAAQABAAEAAAAFAAIAAQABAAEAAAAFAAMAAQABAAEAAAAGAAMAAQABAAEAAAAHAAQAAQABAAEAAAAIAAQAAQABAAEAAAAOAAQAAQABAAEAAAAOAAMAAQABAAEAAAAOAAIAAQABAAEAAAAOAAEAAQABAAEAAAANAAQAAQABAAEAAAANAAMAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAEAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAEAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAKAAEAAQABAAEAAAAJAAQAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAJAAEAAQABAAEAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAIAAEAAQABAAEAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAEAAAAGAAQAAQABAAEAAAAGAAIAAQABAAEAAAAGAAEAAQABAAEAAAAFAAQAAQABAAEAAAAFAAEAAQABAAEAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAEAAQABAAEAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAEAAQABAAEAAAACAAQAAQABAAEAAAACAAMAAQABAAEAAAABAAQAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAAAAAQAAQABAAEAAAAAAAMAAQABAAEAAAAAAAIAAQABAAEAAAAAAAkAAQABAAEAAAABAAkAAQABAAEAAAACAAkAAQABAAEAAAADAAkAAQABAAEAAAAEAAkAAQABAAEAAAAFAAkAAQABAAEAAAAGAAkAAQABAAEAAAAHAAkAAQABAAEAAAAIAAkAAQABAAEAAAAJAAkAAQABAAEAAAAKAAkAAQABAAEAAAALAAkAAQABAAEAAAAMAAkAAQABAAEAAAANAAkAAQABAAEAAAAOAAkAAQABAAEAAAAPAAgAAQAGAAEAAAA=")
 tile_set = ExtResource("1_82wni")
 
 [node name="Sand" type="TileMapLayer" parent="TileMapLayers" unique_id=874671513]
-modulate = Color(0.88492817, 0.20585671, 0.88679457, 1)
-self_modulate = Color(0.6, 0.23529412, 0.2509804, 1)
-tile_map_data = PackedByteArray("AAAKAAEABgAAAAAAAAAKAAIABgADAAEAAAAKAAMABgADAAEAAAAKAAQABgADAAEAAAANAAEABgACAAAAAAANAAIABgADAAEAAAANAAMABgADAAEAAAANAAQABgADAAEAAAAKAAUABgAAAAIAAAALAAEABgABAAMAAAALAAUABgABAAMAAAAMAAEABgABAAMAAAAMAAUABgABAAMAAAANAAUABgACAAIAAAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAA=")
+modulate = Color(0.5019608, 0.45882353, 0.7882353, 1)
+self_modulate = Color(0.48355204, 0.33001187, 0.27267164, 1)
+tile_map_data = PackedByteArray("AAAKAAEABgAAAAAAAAAKAAIABgADAAEAAAAKAAMABgADAAEAAAAKAAQABgADAAEAAAANAAEABgACAAAAAAANAAIABgADAAEAAAANAAMABgADAAEAAAANAAQABgADAAEAAAAKAAUABgAAAAIAAAALAAEABgABAAMAAAALAAUABgABAAMAAAAMAAEABgABAAMAAAAMAAUABgABAAMAAAANAAUABgACAAIAAAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAGAAMAAAAEAAcAAQAGAAMAAAAFAAcAAQAGAAMAAAAGAAcAAQAGAAMAAAAHAAcAAQAGAAMAAAAIAAcAAQAGAAMAAAAJAAcAAQAGAAMAAAAKAAcAAQAGAAMAAAALAAcAAQAGAAMAAAAMAAcAAQAGAAMAAAANAAcAAQAGAAMAAAAOAAcAAQAGAAMAAAAAAAgABQABAAEAAAABAAgABQABAAEAAAACAAgABQABAAEAAAADAAgABQABAAEAAAAEAAgABQABAAEAAAAFAAgABQABAAEAAAAGAAgABQABAAEAAAAHAAgABQABAAEAAAAIAAgABQABAAEAAAAJAAgABQABAAEAAAAKAAgABQABAAEAAAALAAgABQABAAEAAAAMAAgABQABAAEAAAANAAgABQABAAEAAAAOAAgABQABAAEAAAAOAAYABQABAAEAAAANAAYABQABAAEAAAAMAAYABQABAAEAAAALAAYABQABAAEAAAAKAAYABQABAAEAAAAJAAYABQABAAEAAAAIAAYABQABAAEAAAAHAAYABQABAAEAAAAGAAYABQABAAEAAAAFAAYABQABAAEAAAAEAAYABQABAAEAAAADAAYABQABAAEAAAACAAYABQABAAEAAAABAAYABQABAAEAAAAAAAYABQABAAEAAAA=")
 tile_set = ExtResource("1_82wni")
+
+[node name="WoodWallEmptyCrossN" type="Sprite2D" parent="TileMapLayers" unique_id=683566083]
+position = Vector2(769, 64)
+texture = ExtResource("2_204ki")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1064875179]
 position = Vector2(-177, 463)
 zoom = Vector2(1.333, 1.333)
-limit_left = 1
-limit_top = 64
-limit_right = 957
-limit_bottom = 643
+limit_left = 2
+limit_top = 67
+limit_right = 958
+limit_bottom = 646
 position_smoothing_enabled = true
 editor_draw_limits = true
 
@@ -181,41 +229,9 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 [node name="Rock" parent="." unique_id=912112339 instance=ExtResource("6_jvssr")]
 position = Vector2(129, 434)
 
-[node name="Tree14" parent="." unique_id=1182216860 instance=ExtResource("5_82wni")]
-position = Vector2(485, 253)
-scale = Vector2(0.93584895, 1.1082627)
-
-[node name="Tree12" parent="." unique_id=163059861 instance=ExtResource("5_82wni")]
-position = Vector2(56.999992, 312)
-scale = Vector2(0.978142, 1.0348583)
-
-[node name="Tree13" parent="." unique_id=2037351050 instance=ExtResource("5_82wni")]
-position = Vector2(216.00002, 267)
-scale = Vector2(0.95676184, 1.0709318)
-
-[node name="Tree15" parent="." unique_id=1134900880 instance=ExtResource("5_82wni")]
-position = Vector2(148.99997, 404)
-scale = Vector2(0.978142, 1.0348583)
-
-[node name="Tree16" parent="." unique_id=1586646542 instance=ExtResource("5_82wni")]
-position = Vector2(294, 359.00003)
-scale = Vector2(0.978142, 1.0348583)
-
-[node name="Tree17" parent="." unique_id=170398927 instance=ExtResource("5_82wni")]
-position = Vector2(139, 188.00002)
-scale = Vector2(0.978142, 1.0348583)
-
-[node name="Tree18" parent="." unique_id=1480584979 instance=ExtResource("5_82wni")]
-position = Vector2(370, 204.00002)
-scale = Vector2(0.978142, 1.0348583)
-
-[node name="Tree19" parent="." unique_id=753076311 instance=ExtResource("5_82wni")]
-position = Vector2(533, 327.00003)
-scale = Vector2(0.978142, 1.0348583)
-
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1732118765]
 modulate = Color(0.79607844, 0.81960785, 0.8980392, 1)
-position = Vector2(765.99994, 195.99998)
+position = Vector2(772, 163.99998)
 scale = Vector2(2.2773435, 2.2213542)
 texture = ExtResource("6_5hlqh")
 
@@ -265,3 +281,119 @@ texture = ExtResource("11_ebiyv")
 position = Vector2(530.5, 410.5)
 scale = Vector2(1.453125, 1.140625)
 texture = ExtResource("12_wyaa8")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=805958905]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2049749235]
+position = Vector2(325, 385)
+sprite_frames = SubResource("SpriteFrames_1321j")
+script = ExtResource("15_kba5d")
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="." unique_id=835411175]
+position = Vector2(444, 382)
+sprite_frames = SubResource("SpriteFrames_1321j")
+script = ExtResource("15_kba5d")
+
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="." unique_id=1656531909]
+position = Vector2(309, 551)
+sprite_frames = SubResource("SpriteFrames_1321j")
+script = ExtResource("15_kba5d")
+
+[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="." unique_id=972056253]
+position = Vector2(450, 548)
+sprite_frames = SubResource("SpriteFrames_1321j")
+script = ExtResource("15_kba5d")
+
+[node name="AnimatedSprite2D5" type="AnimatedSprite2D" parent="." unique_id=1325739198]
+position = Vector2(623, 545)
+sprite_frames = SubResource("SpriteFrames_1321j")
+script = ExtResource("15_kba5d")
+
+[node name="AnimatedSprite2D6" type="AnimatedSprite2D" parent="." unique_id=999644762]
+position = Vector2(808, 545)
+sprite_frames = SubResource("SpriteFrames_1321j")
+script = ExtResource("15_kba5d")
+
+[node name="AnimatedSprite2D7" type="AnimatedSprite2D" parent="." unique_id=881969102]
+position = Vector2(111, 303)
+sprite_frames = SubResource("SpriteFrames_1321j")
+script = ExtResource("15_kba5d")
+
+[node name="AnimatedSprite2D8" type="AnimatedSprite2D" parent="." unique_id=1882991628]
+position = Vector2(280, 297)
+sprite_frames = SubResource("SpriteFrames_1321j")
+script = ExtResource("15_kba5d")
+
+[node name="AnimatedSprite2D9" type="AnimatedSprite2D" parent="." unique_id=1146146864]
+position = Vector2(462, 291)
+sprite_frames = SubResource("SpriteFrames_1321j")
+script = ExtResource("15_kba5d")
+
+[node name="AnimatedSprite2D10" type="AnimatedSprite2D" parent="." unique_id=1394374239]
+position = Vector2(462, 291)
+sprite_frames = SubResource("SpriteFrames_1321j")
+script = ExtResource("15_kba5d")
+
+[node name="AnimatedSprite2D15" type="AnimatedSprite2D" parent="." unique_id=1114893390]
+position = Vector2(721, 488.00006)
+scale = Vector2(1.734375, 2.859375)
+sprite_frames = SubResource("SpriteFrames_1gadg")
+script = ExtResource("18_yxx2y")
+
+[node name="AnimatedSprite2D17" type="AnimatedSprite2D" parent="." unique_id=1016437058]
+position = Vector2(539.00006, 491.00003)
+scale = Vector2(1.734375, 2.859375)
+sprite_frames = SubResource("SpriteFrames_1gadg")
+script = ExtResource("18_yxx2y")
+
+[node name="AnimatedSprite2D18" type="AnimatedSprite2D" parent="." unique_id=1683824203]
+position = Vector2(376, 491.00003)
+scale = Vector2(1.734375, 2.859375)
+sprite_frames = SubResource("SpriteFrames_1gadg")
+script = ExtResource("18_yxx2y")
+
+[node name="AnimatedSprite2D19" type="AnimatedSprite2D" parent="." unique_id=640938617]
+position = Vector2(178, 155.00003)
+scale = Vector2(1.734375, 2.859375)
+sprite_frames = SubResource("SpriteFrames_1gadg")
+script = ExtResource("18_yxx2y")
+
+[node name="AnimatedSprite2D20" type="AnimatedSprite2D" parent="." unique_id=951144116]
+position = Vector2(341, 146.00002)
+scale = Vector2(1.734375, 2.859375)
+sprite_frames = SubResource("SpriteFrames_1gadg")
+script = ExtResource("18_yxx2y")
+
+[node name="AnimatedSprite2D21" type="AnimatedSprite2D" parent="." unique_id=131465548]
+position = Vector2(510, 152)
+scale = Vector2(1.734375, 2.859375)
+sprite_frames = SubResource("SpriteFrames_1gadg")
+script = ExtResource("18_yxx2y")
+
+[node name="AnimatedSprite2D16" type="AnimatedSprite2D" parent="." unique_id=1088089916]
+position = Vector2(768, 331.00006)
+scale = Vector2(1.734375, 2.859375)
+sprite_frames = SubResource("SpriteFrames_1gadg")
+script = ExtResource("18_yxx2y")
+
+[node name="CharacterBody2D9" type="CharacterBody2D" parent="." unique_id=666768587]
+modulate = Color(1, 0.7019608, 0.47843137, 1)
+position = Vector2(232, -178)
+script = ExtResource("19_asmmw")
+texture_left = ExtResource("20_yxx2y")
+texture_right = ExtResource("21_1321j")
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D9" unique_id=1272674829]
+position = Vector2(352, 338)
+texture = ExtResource("22_1gadg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D9" unique_id=511304352]
+position = Vector2(316, 348)
+shape = SubResource("CircleShape2D_s53fc")
+
+[node name="DetectionArea1" type="Area2D" parent="CharacterBody2D9" unique_id=1141570752]
+position = Vector2(298, 286)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D9/DetectionArea1" unique_id=423596490]
+position = Vector2(38, 58)
+shape = SubResource("CircleShape2D_204ki")
