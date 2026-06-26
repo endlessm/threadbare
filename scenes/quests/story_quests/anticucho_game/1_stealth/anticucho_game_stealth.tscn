@@ -15,6 +15,8 @@
 [ext_resource type="PackedScene" uid="uid://dv6mn2ppr3bvx" path="res://scenes/quests/story_quests/anticucho_game/cuchito.tscn" id="15_mbm8w"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="15_vgdv0"]
 [ext_resource type="Resource" uid="uid://dckr4a4a6hy3" path="res://scenes/quests/story_quests/anticucho_game/1_stealth/stealth_components/anticucho_game_stealth.dialogue" id="16_x0sv3"]
+[ext_resource type="Script" uid="uid://bgk8tc03et0kx" path="res://scenes/quests/story_quests/anticucho_game/1_stealth/stealth_components/anticucho_thread_collectible.gd" id="17_thread"]
+[ext_resource type="Script" uid="uid://capspyyxvj27a" path="res://scenes/quests/story_quests/anticucho_game/1_stealth/stealth_components/anticucho_stealth_thread_gate.gd" id="18_gate"]
 
 [sub_resource type="Curve2D" id="Curve2D_6a0hg"]
 _data = {
@@ -37,6 +39,7 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [sub_resource type="Resource" id="Resource_icchv"]
 script = ExtResource("13_vm2sb")
+type = 1
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="AnticuchoGameStealth" type="Node2D" unique_id=528815133]
@@ -120,14 +123,18 @@ debug_color = Color(0, 0, 0, 0.42)
 
 [node name="CollectibleItem" parent="." unique_id=1779229490 instance=ExtResource("12_p2fns")]
 position = Vector2(654, 3241)
+script = ExtResource("17_thread")
 item = SubResource("Resource_psdlf")
 collected_dialogue = ExtResource("14_fx1yx")
 
 [node name="CollectibleItem2" parent="." unique_id=327991066 instance=ExtResource("12_p2fns")]
 position = Vector2(4297, 640)
-next_scene = "uid://dfkvmn3d4xcw6"
+script = ExtResource("17_thread")
 item = SubResource("Resource_icchv")
 collected_dialogue = ExtResource("14_icchv")
+
+[node name="StealthThreadGate" type="Node" parent="." unique_id=981637405]
+script = ExtResource("18_gate")
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=859706882]
 script = ExtResource("15_vgdv0")
