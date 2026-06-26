@@ -19,10 +19,8 @@ func _on_body_entered(body):
 		jugador.velocity = Vector2.ZERO
 		jugador.mode = Player.Mode.SYSTEM_CONTROLLED
 
-		# Mostrar advertencia
 		if advertencia_dialogue:
 			DialogueManager.show_dialogue_balloon(advertencia_dialogue)
 			await DialogueManager.dialogue_ended
 
-		# Iniciar aparición del lich
 		lich.iniciar_entrada()
