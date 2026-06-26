@@ -13,7 +13,9 @@ func mover_a_recuerdos() -> void:
 	await mover_a(Vector2(300,170))
 	play("idle")
 	await get_tree().create_timer(1.0).timeout
-	play("attack_03") #Practica de batalla
+	play("attack_01") #Practica de batalla
+	await get_tree().create_timer(0.5).timeout
+	play("attack_01") #Practica de batalla
 	await get_tree().create_timer(0.5).timeout
 	play("idle")
 	await get_tree().create_timer(3.0).timeout
