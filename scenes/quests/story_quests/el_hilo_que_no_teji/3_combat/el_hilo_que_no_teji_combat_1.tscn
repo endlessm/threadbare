@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_m5pxr"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="2_end3x"]
 [ext_resource type="AudioStream" uid="uid://676ese8fg2qm" path="res://scenes/quests/story_quests/renya_beyond_sorrow/Complementos/music/7. Silent Longing (Loop).ogg" id="3_dkiai"]
+[ext_resource type="PackedScene" uid="uid://b2v6dyhgg16l4" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/4_outro/el_hilo_que_no_teji_outro1.tscn" id="3_tnbso"]
 [ext_resource type="TileSet" uid="uid://dmg13wgcc7so5" path="res://scenes/quests/story_quests/renya_beyond_sorrow/renya_tileset.tres" id="5_cscsh"]
 [ext_resource type="TileSet" uid="uid://32t5p1co051n" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_exterior_floors.tres" id="6_17vpv"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="6_60hq5"]
@@ -177,9 +178,13 @@ shader_parameter/density = 2.0
 shader_parameter/wind_direction = Vector2(-1, -0.05)
 shader_parameter/stretch_factor = 5.0
 
-[node name="InkCombat2" type="Node2D" unique_id=1383576457]
+[node name="InkCombat2" type="Node2D" unique_id=1383576457 node_paths=PackedStringArray("nodo_vacio")]
 y_sort_enabled = true
 script = ExtResource("1_60hq5")
+dialogo_boss = ExtResource("18_m5pxr")
+dialogo_lazaro = ExtResource("18_m5pxr")
+escena_outro = ExtResource("3_tnbso")
+nodo_vacio = NodePath("OnTheGround/VoidSpreadingEnemy")
 
 [node name="PlayerMode" type="Node" parent="." unique_id=1085376852]
 script = ExtResource("1_m5pxr")
@@ -299,7 +304,7 @@ tile_set = ExtResource("5_cscsh")
 
 [node name="ParedesReflectoras" type="TileMapLayer" parent="TileMapLayers" unique_id=1291156269 groups=["ignorar_shader"]]
 z_index = -1
-tile_map_data = PackedByteArray("AABiAOP/AAAJAAIAAABiAOf/AAAJAAIAAABlAOX/AAAJAAIAADBlAOT/AAAJAAIAADBlAOb/AAAJAAIAADBlAOf/AAAJAAIAADBlAOP/AAAJAAIAADBjAOf/AAAJAAIAAGBjAOP/AAAJAAIAAFBiAOX/AAAJAAIAAABSAOv/AAAJAAIAADBTAOz/AAAJAAIAAFBRAOj/AAAJAAIAAABUAOn/AAAJAAIAAFBVAOr/AAAJAAIAADBWAO3/AAAJAAIAAGBVAOv/AAAIAAAAAABTAOn/AAAIAAAAADBSAOz/AAAIAAAAAFBUAN3/AAAJAAIAAGBTAN//AAAJAAIAAGBUAN//AAAIAAAAAHBTAN3/AAAIAAAAAFBVAN3/AAAIAAAAAFBVAN7/AAAIAAAAAABUAOD/AAAIAAAAAGBUAO3/AAAJAAIAAGBRAOr/AAAJAAIAAABRAOn/AAAJAAIAAABVAO3/AAAJAAIAAGBCAAcAAAAJAAIAADBCAAYAAAAJAAIAADBCAAgAAAAJAAIAADBCAAkAAAAJAAIAADBIAPj/AAAJAAIAAGBIAPv/AAAJAAIAAGBJAPv/AAAJAAIAAGBKAPv/AAAJAAMAAGBHAPj/AAAJAAMAACBHAPn/AAAJAAIAAABHAPr/AAAJAAIAAABHAPv/AAAIAAAAAGBKAPr/AAAJAAIAAABzAPj/AAAJAAIAAFByAPj/AAAIAAAAAFBwAPj/AAAIAAAAAABvAPj/AAAJAAIAAFBrAAMAAAAJAAIAADBrAAQAAAAJAAIAADBrAAUAAAAJAAIAADBqAAYAAAAJAAIAAGBpAAYAAAAJAAIAAGBoAAYAAAAJAAIAAGBuAPj/AAAJAAIAAABuAPf/AAAJAAIAAABuAPb/AAAJAAIAAAA=")
+tile_map_data = PackedByteArray("AABiAOP/AAAJAAIAAABiAOf/AAAJAAIAAABlAOX/AAAJAAIAADBlAOT/AAAJAAIAADBlAOb/AAAJAAIAADBlAOf/AAAJAAIAADBlAOP/AAAJAAIAADBjAOf/AAAJAAIAAGBjAOP/AAAJAAIAAFBiAOX/AAAJAAIAAABSAOv/AAAJAAIAADBTAOz/AAAJAAIAAFBRAOj/AAAJAAIAAABUAOn/AAAJAAIAAFBVAOr/AAAJAAIAADBWAO3/AAAJAAIAAGBVAOv/AAAIAAAAAABTAOn/AAAIAAAAADBSAOz/AAAIAAAAAFBUAN3/AAAJAAIAAGBTAN//AAAJAAIAAGBTAN3/AAAIAAAAAFBUAOD/AAAIAAAAAGBUAO3/AAAJAAIAAGBRAOr/AAAJAAIAAABRAOn/AAAJAAIAAABVAO3/AAAJAAIAAGBCAAcAAAAJAAIAADBCAAYAAAAJAAIAADBCAAgAAAAJAAIAADBCAAkAAAAJAAIAADBIAPj/AAAJAAIAAGBIAPv/AAAJAAIAAGBJAPv/AAAJAAIAAGBKAPv/AAAJAAMAAGBHAPj/AAAJAAMAACBHAPn/AAAJAAIAAABHAPr/AAAJAAIAAABHAPv/AAAIAAAAAGBKAPr/AAAJAAIAAABzAPj/AAAJAAIAAFByAPj/AAAIAAAAAFBwAPj/AAAIAAAAAABvAPj/AAAJAAIAAFBrAAMAAAAJAAIAADBrAAQAAAAJAAIAADBrAAUAAAAJAAIAADBqAAYAAAAJAAIAAGBpAAYAAAAJAAIAAGBoAAYAAAAJAAIAAGBuAPj/AAAJAAIAAABuAPf/AAAJAAIAAABuAPb/AAAJAAIAAABXAN7/AAAIAAAAAABWAN3/AAAJAAIAAAA=")
 tile_set = ExtResource("6_irkwg")
 
 [node name="SubsueloPasto" type="TileMapLayer" parent="TileMapLayers" unique_id=2034772379]
@@ -353,7 +358,7 @@ shape = SubResource("RectangleShape2D_lmnu5")
 
 [node name="Player" parent="OnTheGround" unique_id=1416564784 instance=ExtResource("10_l1syf")]
 z_index = 1
-position = Vector2(5581, -243)
+position = Vector2(5578, -281)
 player_name = "StoryWeaver"
 speeds = SubResource("Resource_60hq5")
 sprite_frames = ExtResource("14_flrxu")
@@ -362,6 +367,7 @@ sprite_frames = ExtResource("14_flrxu")
 speeds = SubResource("Resource_60hq5")
 
 [node name="PlayerSprite" parent="OnTheGround/Player" index="2" unique_id=1785485617]
+material = ExtResource("32_2gag6")
 sprite_frames = ExtResource("14_flrxu")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1897581183]
@@ -539,7 +545,7 @@ dialogue_title = &"hilo_2"
 [node name="CollectibleItem_Centro" parent="OnTheGround" unique_id=234023605 groups=["ignorar_shader"] instance=ExtResource("6_60hq5")]
 modulate = Color(1, 0.98039216, 1, 1)
 z_index = 5
-position = Vector2(5594, -2583)
+position = Vector2(5594, -2588)
 script = ExtResource("20_2okvs")
 revealed = false
 item = SubResource("Resource_uaq6i")
