@@ -2,11 +2,10 @@ extends Control
 
 const RONDAS = [4, 6, 8]
 const SIMBOLOS = [
-	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/rana.png",
-	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/sol.jpg",
-	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/serpiente.png",
-	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/mariposa.png",
-	"res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/condor.png",
+	"res://scenes/quests/story_quests/lacasadelachina/2_combat/img/lanza.png",
+	"res://scenes/quests/story_quests/lacasadelachina/2_combat/img/plato.png",
+	"res://scenes/quests/story_quests/lacasadelachina/2_combat/img/telar.png",
+	"res://scenes/quests/story_quests/lacasadelachina/2_combat/img/vasija.png",
 ]
 
 const CARD_BACK = "res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/memory_cards/card_back.png"
