@@ -10,14 +10,13 @@
 [ext_resource type="SpriteFrames" uid="uid://i422yfvx6qvb" path="res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/lacasadelachina_guard_enemy.tres" id="8_ug4ra"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="11_d3s4k"]
 [ext_resource type="Script" uid="uid://dxhdb4t2m6mi" path="res://scenes/quests/story_quests/lacasadelachina/1_stealth/memorygame.gd" id="11_uxgcw"]
-[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="12_k8574"]
-[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="13_hjowb"]
-[ext_resource type="Resource" uid="uid://n1eu2hg6xngl" path="res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/lacasadelachina_collected.dialogue" id="14_v83p5"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="15_kr0n8"]
 [ext_resource type="Resource" uid="uid://cmqyp2njtmx3t" path="res://scenes/quests/story_quests/lacasadelachina/1_stealth/stealth_components/lacasadelachina_stealth.dialogue" id="16_ldag4"]
 [ext_resource type="Texture2D" uid="uid://baelulw1inl6s" path="res://assets/third_party/tiny-swords/Deco/09.png" id="17_egn6c"]
 [ext_resource type="AudioStream" uid="uid://br4uvri0shvx4" path="res://scenes/quests/story_quests/lacasadelachina/1_stealth/musica/BeepBox-Song (2).mp3" id="17_uxgcw"]
 [ext_resource type="Texture2D" uid="uid://drfnq08l2wbgy" path="res://assets/third_party/tiny-swords/Deco/03.png" id="18_ndtf1"]
+[ext_resource type="Script" uid="uid://brb1rqny2f18w" path="res://scenes/quests/story_quests/lacasadelachina/2_combat/llave.gd" id="19_nrjqt"]
+[ext_resource type="Texture2D" uid="uid://b8yn4tog2cnaw" path="res://scenes/quests/story_quests/shjourney/4_Laberinto/personajes/estructuras(decoracion)/llave 1.png" id="20_i6csd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_egn6c"]
 radius = 148.09795
@@ -40,9 +39,8 @@ _data = {
 }
 point_count = 5
 
-[sub_resource type="Resource" id="Resource_10b5k"]
-script = ExtResource("13_hjowb")
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ixlon"]
+size = Vector2(118, 104)
 
 [node name="LacasadelachinaStealth" type="Node2D" unique_id=528815133]
 y_sort_enabled = true
@@ -196,12 +194,6 @@ layout_mode = 2
 
 [node name="HUD" parent="." unique_id=1994868895 instance=ExtResource("11_d3s4k")]
 
-[node name="CollectibleItem" parent="." unique_id=1779229490 instance=ExtResource("12_k8574")]
-position = Vector2(2329, 2790)
-next_scene = "uid://dh1ik3vhemcea"
-item = SubResource("Resource_10b5k")
-collected_dialogue = ExtResource("14_v83p5")
-
 [node name="Cinematic" type="Node2D" parent="." unique_id=859706882]
 position = Vector2(20, 128)
 script = ExtResource("15_kr0n8")
@@ -281,5 +273,37 @@ texture = ExtResource("18_ndtf1")
 position = Vector2(446.00012, 2041)
 scale = Vector2(1, 1.5156251)
 texture = ExtResource("18_ndtf1")
+
+[node name="llave" type="Area2D" parent="." unique_id=138522673]
+position = Vector2(2163, 2718)
+script = ExtResource("19_nrjqt")
+
+[node name="Sprite2D" type="Sprite2D" parent="llave" unique_id=397322897]
+position = Vector2(166.99998, 78)
+texture = ExtResource("20_i6csd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="llave" unique_id=1200161833]
+position = Vector2(168, 76)
+shape = SubResource("RectangleShape2D_ixlon")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="llave" unique_id=1258237432]
+
+[node name="Label" type="Label" parent="llave/CanvasLayer" unique_id=895109191]
+modulate = Color(0.11372549, 0.16078432, 0.15294118, 1)
+self_modulate = Color(0.055146195, 0.13479945, 0.1343045, 1)
+offset_left = 856.0
+offset_top = 1918.0
+offset_right = 1453.0
+offset_bottom = 1968.0
+theme_override_font_sizes/font_size = 36
+text = "Feliciationes has pasado esta nivel"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Node2D" type="Node2D" parent="." unique_id=2141539236]
+position = Vector2(2342, 2795)
+
+[node name="Marker2D" type="Marker2D" parent="Node2D" unique_id=1546027768]
+position = Vector2(141, -1076)
 
 [connection signal="body_entered" from="EnemyGuards/Guard1-GoingBackAndForth/zonewar" to="." method="_on_zonewar_body_entered"]
