@@ -53,6 +53,23 @@ var hp: int
 @export var attack_cooldown: float = 0.5
 @export var attack_range: float = 80.0
 var can_attack: bool = true
+
+# ------------------------------------------------------------
+# Repeler (empuje en área)
+# ------------------------------------------------------------
+@export var repel_range: float = 200.0          # Radio del área de repulsión
+@export var repel_force: float = 400.0          # Fuerza con que se empuja a los enemigos
+@export var repel_cooldown: float = 2.0         # Tiempo entre repelentes
+var can_repel: bool = true
+
+# ------------------------------------------------------------
+# Resistencia para correr
+# ------------------------------------------------------------
+@export var max_stamina: float = 10.0            # Segundos que puedes correr
+@export var stamina_drain_rate: float = 1.0      # Por segundo (corriendo)
+@export var stamina_regen_rate: float = 2.0      # Por segundo (descansando, se recarga en 5s)
+var current_stamina: float
+
 # ------------------------------------------------------------
 
 @export_group("Sounds")
@@ -144,6 +161,7 @@ func _ready() -> void:
 	GameState.abilities_changed.connect(_on_abilities_changed)
 
 	hp = max_hp
+	current_stamina = max_stamina
 
 	# Inicializar la barra de vida
 	if health_bar:
@@ -276,11 +294,39 @@ func _on_player_hook_aiming_changed(is_aiming: bool) -> void:
 
 
 # ------------------------------------------------------------
+# Resistencia para correr
+# ------------------------------------------------------------
+func _process(delta: float) -> void:
+	if mode == Mode.DEFEATED:
+		return
+
+	var running_pressed: bool = Input.is_action_pressed("running")
+	if running_pressed and current_stamina > 0.0:
+		current_stamina -= stamina_drain_rate * delta
+		if current_stamina < 0.0:
+			current_stamina = 0.0
+		# Permitir velocidad de esprint completa
+		input_walk_behavior.speeds.run_speed = _initial_speeds.run_speed
+	else:
+		# Recuperar stamina si no se corre
+		current_stamina += stamina_regen_rate * delta
+		if current_stamina > max_stamina:
+			current_stamina = max_stamina
+		# Si no hay stamina, limitar la velocidad de correr a la de caminar
+		if current_stamina <= 0.0:
+			input_walk_behavior.speeds.run_speed = _initial_speeds.walk_speed
+		else:
+			input_walk_behavior.speeds.run_speed = _initial_speeds.run_speed
+
+
+# ------------------------------------------------------------
 # Ataque cuerpo a cuerpo (integrado)
 # ------------------------------------------------------------
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("attack") and can_attack and mode != Mode.DEFEATED:
 		_melee_attack()
+	if event.is_action_pressed("repel") and can_repel and mode != Mode.DEFEATED:
+		_do_repel()
 
 func _melee_attack() -> void:
 	can_attack = false
@@ -292,3 +338,19 @@ func _melee_attack() -> void:
 				print("Golpe a ", enemy.name)
 	await get_tree().create_timer(attack_cooldown).timeout
 	can_attack = true
+
+# ------------------------------------------------------------
+# Repeler (empuje en área circular)
+# ------------------------------------------------------------
+func _do_repel() -> void:
+	can_repel = false
+	var enemigos = get_tree().get_nodes_in_group("enemies")
+	for enemy in enemigos:
+		if enemy.has_method("got_repelled"):
+			var dist: float = global_position.distance_to(enemy.global_position)
+			if dist <= repel_range and dist > 0.0:
+				var dir: Vector2 = (enemy.global_position - global_position).normalized()
+				enemy.got_repelled(dir)
+	print("Repelente usado")
+	await get_tree().create_timer(repel_cooldown).timeout
+	can_repel = true
