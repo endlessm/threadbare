@@ -1,0 +1,273 @@
+[gd_scene format=4 uid="uid://dlbw0v6ey8bqk"]
+
+[ext_resource type="Script" uid="uid://qksm14anxos4" path="res://scenes/quests/story_quests/3_patitas/2_combat/3_patitas_combate.gd" id="1_ibsyb"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_paba0"]
+[ext_resource type="Resource" uid="uid://ducj5muk72baf" path="res://scenes/quests/story_quests/3_patitas/2_combat/combat_components/3_patitas_combat.dialogue" id="2_ibsyb"]
+[ext_resource type="Script" uid="uid://bw4fa311i7nv5" path="res://scenes/quests/story_quests/3_patitas/2_combat/target_limpio.gd" id="3_qq8jf"]
+[ext_resource type="SpriteFrames" uid="uid://boj3524khlfvk" path="res://scenes/quests/story_quests/3_patitas/2_combat/combat_components/3_patitas_target_spriteframes.tres" id="3_whj3t"]
+[ext_resource type="Texture2D" uid="uid://ctwx8gghts62p" path="res://assets/third_party/tiny-swords/Deco/06.png" id="6_3trrl"]
+[ext_resource type="Texture2D" uid="uid://dcwmaoqgu5t84" path="res://scenes/globals/scene_switcher/transitions/Radial.png" id="7_dwr3b"]
+[ext_resource type="TileSet" uid="uid://gpaqa6occfp6" path="res://scenes/quests/story_quests/3_patitas/tiles/3_patitas_exterior_floors.tres" id="8_l0vsm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qq8jf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qq8jf"]
+size = Vector2(1281.0625, 197)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ibsyb"]
+size = Vector2(96.5, 960)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yimxd"]
+size = Vector2(1272.5, 43)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4fyhu"]
+radius = 17.492855
+
+[sub_resource type="Animation" id="Animation_qchs6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+
+[sub_resource type="Animation" id="Animation_jighe"]
+resource_name = "brillar"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.5, 0.5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qr0qc"]
+_data = {
+&"RESET": SubResource("Animation_qchs6"),
+&"brillar": SubResource("Animation_jighe")
+}
+
+[node name="3PatitasCombate" type="Node2D" unique_id=1279300124]
+script = ExtResource("1_ibsyb")
+recurso_dialogo = ExtResource("2_ibsyb")
+
+[node name="VisualNucleo" type="ColorRect" parent="." unique_id=99368674]
+offset_left = 213.0
+offset_top = 30.0
+offset_right = 1090.0
+offset_bottom = 69.0
+color = Color(0.13469481, 0.38429812, 0.4174894, 1)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=651905484]
+
+[node name="BarraEmergencia" type="ProgressBar" parent="UI" unique_id=1318030725]
+offset_left = 220.0
+offset_top = 35.0
+offset_right = 1083.0
+offset_bottom = 62.0
+value = 50.0
+
+[node name="PanelFinal" type="Control" parent="UI" unique_id=537845300]
+visible = false
+z_index = 1
+layout_mode = 3
+anchors_preset = 0
+offset_left = 488.0
+offset_top = 265.0
+offset_right = 779.0
+offset_bottom = 374.0
+
+[node name="LabelMensaje" type="Label" parent="UI/PanelFinal" unique_id=689311440]
+z_index = 1
+layout_mode = 0
+offset_left = 75.0
+offset_top = 42.0
+offset_right = 225.0
+offset_bottom = 65.0
+text = "¡TEXTO DE PRUEBA!"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1479911764]
+position = Vector2(640, 356)
+
+[node name="Player" parent="." unique_id=296354958 instance=ExtResource("1_paba0")]
+z_index = 1
+position = Vector2(637, 565)
+
+[node name="ContenedorArcos" type="Node2D" parent="." unique_id=597964326]
+z_index = 1
+
+[node name="Target" type="Area2D" parent="ContenedorArcos" unique_id=2127172680]
+position = Vector2(322, -470)
+script = ExtResource("3_qq8jf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ContenedorArcos/Target" unique_id=1166084062]
+modulate = Color(0.101960786, 0, 0, 1)
+position = Vector2(74, 225)
+sprite_frames = ExtResource("3_whj3t")
+animation = &"filling"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContenedorArcos/Target" unique_id=374847757]
+position = Vector2(76, 228)
+shape = SubResource("CircleShape2D_qq8jf")
+
+[node name="Target2" type="Area2D" parent="ContenedorArcos" unique_id=1977634453]
+position = Vector2(361, -391)
+script = ExtResource("3_qq8jf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ContenedorArcos/Target2" unique_id=1120273319]
+modulate = Color(0.101960786, 0, 0, 1)
+position = Vector2(156, 227)
+sprite_frames = ExtResource("3_whj3t")
+animation = &"filling"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContenedorArcos/Target2" unique_id=1532122188]
+position = Vector2(158, 226)
+shape = SubResource("CircleShape2D_qq8jf")
+
+[node name="Target3" type="Area2D" parent="ContenedorArcos" unique_id=916982493]
+position = Vector2(388, -288)
+script = ExtResource("3_qq8jf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ContenedorArcos/Target3" unique_id=104352678]
+modulate = Color(0.101960786, 0, 0, 1)
+position = Vector2(241, 222)
+sprite_frames = ExtResource("3_whj3t")
+animation = &"filling"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContenedorArcos/Target3" unique_id=1775370801]
+position = Vector2(238, 220)
+shape = SubResource("CircleShape2D_qq8jf")
+
+[node name="Target4" type="Area2D" parent="ContenedorArcos" unique_id=1825280536]
+position = Vector2(444, -371)
+script = ExtResource("3_qq8jf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ContenedorArcos/Target4" unique_id=796142287]
+modulate = Color(0.101960786, 0, 0, 1)
+position = Vector2(314, 222)
+sprite_frames = ExtResource("3_whj3t")
+animation = &"filling"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContenedorArcos/Target4" unique_id=308541993]
+position = Vector2(316, 222)
+shape = SubResource("CircleShape2D_qq8jf")
+
+[node name="Target5" type="Area2D" parent="ContenedorArcos" unique_id=1206296917]
+position = Vector2(423, -478)
+script = ExtResource("3_qq8jf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ContenedorArcos/Target5" unique_id=313628578]
+modulate = Color(0.101960786, 0, 0, 1)
+position = Vector2(425, 229)
+sprite_frames = ExtResource("3_whj3t")
+animation = &"filling"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContenedorArcos/Target5" unique_id=1509828813]
+position = Vector2(423, 233)
+shape = SubResource("CircleShape2D_qq8jf")
+
+[node name="Target6" type="Area2D" parent="ContenedorArcos" unique_id=814869442]
+position = Vector2(-76, -117)
+script = ExtResource("3_qq8jf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ContenedorArcos/Target6" unique_id=12134883]
+modulate = Color(0.101960786, 0, 0, 1)
+position = Vector2(931, 57)
+sprite_frames = ExtResource("3_whj3t")
+animation = &"filling"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContenedorArcos/Target6" unique_id=2127566652]
+position = Vector2(933, 58)
+shape = SubResource("CircleShape2D_qq8jf")
+
+[node name="Escenario" type="Node2D" parent="." unique_id=387670260]
+
+[node name="Fondo" type="ColorRect" parent="Escenario" unique_id=875748450]
+offset_left = -2.0
+offset_top = 1.0
+offset_right = 1277.0
+offset_bottom = 514.0
+mouse_filter = 2
+color = Color(0.13, 0.0949, 0.10601499, 1)
+
+[node name="PisoFisico" type="StaticBody2D" parent="Escenario" unique_id=628388923]
+position = Vector2(1488, 152)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Escenario/PisoFisico" unique_id=1851934328]
+modulate = Color(0, 0, 0, 1)
+z_index = 1
+position = Vector2(-848, 623)
+shape = SubResource("RectangleShape2D_qq8jf")
+
+[node name="PisoFisico2" type="StaticBody2D" parent="Escenario" unique_id=2084895691]
+position = Vector2(1488, 152)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Escenario/PisoFisico2" unique_id=1226730109]
+position = Vector2(-848, 267.5)
+shape = SubResource("RectangleShape2D_qq8jf")
+
+[node name="MuroIzquierdo" type="StaticBody2D" parent="Escenario" unique_id=183673464]
+position = Vector2(-159, 273)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Escenario/MuroIzquierdo" unique_id=869059325]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(115, 169)
+shape = SubResource("RectangleShape2D_ibsyb")
+
+[node name="MuroDerecho" type="StaticBody2D" parent="Escenario" unique_id=178766806]
+modulate = Color(0.0035191667, 0.0035191681, 0.0035191672, 1)
+position = Vector2(-159, 273)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Escenario/MuroDerecho" unique_id=1501270613]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(1489, 162)
+shape = SubResource("RectangleShape2D_ibsyb")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Escenario" unique_id=1269118582]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Escenario/StaticBody2D" unique_id=52375086]
+position = Vector2(640.75, -24)
+shape = SubResource("RectangleShape2D_yimxd")
+
+[node name="Nucleo" type="Area2D" parent="." unique_id=1383925925]
+z_index = 1
+position = Vector2(622, 617)
+
+[node name="Sprite2D" type="Sprite2D" parent="Nucleo" unique_id=1582148247]
+position = Vector2(-106.499985, 33.999977)
+scale = Vector2(7.265625, 0.7812499)
+texture = ExtResource("6_3trrl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Nucleo" unique_id=362166289]
+position = Vector2(27, 5)
+shape = SubResource("CircleShape2D_4fyhu")
+
+[node name="PointLight2D" type="PointLight2D" parent="Nucleo" unique_id=1171538607]
+position = Vector2(18.499985, 31)
+scale = Vector2(0.66406244, 0.0462963)
+color = Color(0.91, 0.54903334, 0.2912, 1)
+energy = 0.5
+texture = ExtResource("7_dwr3b")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Nucleo/PointLight2D" unique_id=1288069404]
+libraries/ = SubResource("AnimationLibrary_qr0qc")
+autoplay = &"brillar"
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=583801957]
+modulate = Color(0.05882353, 0.050980393, 0.047058824, 1)
+z_index = -1
+tile_map_data = PackedByteArray("AAAAAAgAAQAGAAEAAAABAAgAAQAGAAEAAAACAAgAAQAGAAEAAAADAAgAAQAGAAEAAAAEAAgAAQAGAAEAAAAFAAgAAQAGAAEAAAAGAAgAAQAGAAEAAAAHAAgAAQAGAAEAAAAIAAgAAQAGAAEAAAAJAAgAAQAGAAEAAAAKAAgAAQAGAAEAAAALAAgAAQAGAAEAAAAMAAgAAQAGAAEAAAANAAgAAQAGAAEAAAAOAAgAAQAGAAEAAAAPAAgAAQAGAAEAAAAQAAgAAQAGAAEAAAARAAgAAQAGAAEAAAASAAgAAQAGAAEAAAATAAgAAQAGAAEAAAATAAkAAQAGAAEAAAASAAkAAQAGAAEAAAARAAkAAQAGAAEAAAAQAAkAAQAGAAEAAAAPAAkAAQAGAAEAAAAOAAkAAQAGAAEAAAANAAkAAQAGAAEAAAAMAAkAAQAGAAEAAAALAAkAAQAGAAEAAAAIAAkAAQAGAAEAAAAHAAkAAQAGAAEAAAAGAAkAAQAGAAEAAAAFAAkAAQAGAAEAAAAEAAkAAQAGAAEAAAADAAkAAQAGAAEAAAACAAkAAQAGAAEAAAABAAkAAQAGAAEAAAAAAAkAAQAGAAEAAAAAAAoAAQAGAAEAAAABAAoAAQAGAAEAAAACAAoAAQAGAAEAAAADAAoAAQAGAAEAAAAEAAoAAQAGAAEAAAAFAAoAAQAGAAEAAAAGAAoAAQAGAAEAAAAHAAoAAQAGAAEAAAAIAAoAAQAGAAEAAAAJAAoAAQAGAAEAAAAKAAoAAQAGAAEAAAALAAoAAQAGAAEAAAAMAAoAAQAGAAEAAAANAAoAAQAGAAEAAAAOAAoAAQAGAAEAAAAPAAoAAQAGAAEAAAAQAAoAAQAGAAEAAAARAAoAAQAGAAEAAAASAAoAAQAGAAEAAAATAAoAAQAGAAEAAAAAAAsAAQAGAAEAAAABAAsAAQAGAAEAAAACAAsAAQAGAAEAAAADAAsAAQAGAAEAAAAEAAsAAQAGAAEAAAAFAAsAAQAGAAEAAAAJAAsAAQAGAAEAAAAIAAsAAQAGAAEAAAAHAAsAAQAGAAEAAAAGAAsAAQAGAAEAAAAKAAsAAQAGAAEAAAALAAsAAQAGAAEAAAAMAAsAAQAGAAEAAAANAAsAAQAGAAEAAAAOAAsAAQAGAAEAAAAPAAsAAQAGAAEAAAAQAAsAAQAGAAEAAAARAAsAAQAGAAEAAAASAAsAAQAGAAEAAAATAAsAAQAGAAEAAAAJAAkAAQAGAAEAAAAKAAkAAQAGAAEAAAA=")
+tile_set = ExtResource("8_l0vsm")
