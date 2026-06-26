@@ -40,7 +40,15 @@ func _emit_shine_particles() -> void:
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	# TODO: This is not added to an inventory or anything, is just cosmetic.
+	# Although now is persisted in game state.
 	if area.owner.is_in_group(&"player"):
 		collected.emit()
 		_emit_shine_particles()
 		queue_free()
+
+
+## Called from [CollectibleFact] when the game state already has this button
+## marked as collected.
+func start_collected() -> void:
+	visible = false
+	queue_free()
