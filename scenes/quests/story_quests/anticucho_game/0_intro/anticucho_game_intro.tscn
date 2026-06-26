@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://cux628i8a652y"]
 
 [ext_resource type="TileSet" uid="uid://ckogurpadscgd" path="res://scenes/quests/story_quests/anticucho_game/tiles/anticucho_game_exterior_floors.tres" id="1_1owt6"]
-[ext_resource type="Texture2D" uid="uid://07k43id4c81h" path="res://assets/first_party/templates/intro/NO_EDIT_intro_image.png" id="2_stgou"]
+[ext_resource type="Texture2D" uid="uid://je55hl70cv5r" path="res://scenes/quests/story_quests/anticucho_game/asset/intro.png" id="2_stgou"]
 [ext_resource type="SpriteFrames" uid="uid://dhr141cg2w5kd" path="res://scenes/quests/story_quests/anticucho_game/player_components/anticucho_game_player.tres" id="3_kfvah"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_qu5ol"]
 [ext_resource type="Resource" uid="uid://qp64v2d1dvla" path="res://scenes/quests/story_quests/anticucho_game/0_intro/intro_components/anticucho_game_intro.dialogue" id="5_5dfkg"]
@@ -107,11 +107,6 @@ tile_map_data = PackedByteArray("AAAAAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAE
 tile_set = ExtResource("1_1owt6")
 metadata/_edit_lock_ = true
 
-[node name="IntroImage" type="Sprite2D" parent="TileMapLayers" unique_id=1406016146]
-position = Vector2(461.5, 328.50006)
-scale = Vector2(4.453125, 1.7812502)
-texture = ExtResource("2_stgou")
-
 [node name="Sand" type="TileMapLayer" parent="TileMapLayers" unique_id=874671513]
 tile_map_data = PackedByteArray("AAD7/wcAAQAGAAMAAAD6/wcAAQAGAAMAAAD5/wcAAQAGAAMAAAD4/wcAAQAFAAMAAAAVAAcAAQAGAAMAAAAWAAcAAQAHAAMAAAA=")
 tile_set = ExtResource("1_1owt6")
@@ -125,6 +120,23 @@ limit_right = 952
 limit_bottom = 589
 position_smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="IntroBackground" type="CanvasLayer" parent="." unique_id=1406016146]
+layer = 1
+
+[node name="BlackFill" type="ColorRect" parent="IntroBackground"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Background" type="Sprite2D" parent="IntroBackground"]
+position = Vector2(640, 480)
+scale = Vector2(0.884, 0.884)
+texture = ExtResource("2_stgou")
+centered = true
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=836096441]
 y_sort_enabled = true
