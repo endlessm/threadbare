@@ -78,11 +78,14 @@ var current_stamina: float
 
 var _initial_speeds: CharacterSpeeds
 
+var _system_controllers: Array[Node] = []
+
 @onready var input_walk_behavior: InputWalkBehavior = %InputWalkBehavior
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
 @onready var player_repel: Node2D = %PlayerRepel
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
+@onready var player_dust_particles: GPUParticles2D = %PlayerDustParticles
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
 # Referencias a la barra de vida y la etiqueta de texto
@@ -93,7 +96,7 @@ var _initial_speeds: CharacterSpeeds
 func _set_mode(new_mode: Mode) -> void:
 	var previous_mode: Mode = mode
 	mode = new_mode
-	if not is_node_ready():
+	if Engine.is_editor_hint() or not is_node_ready():
 		return
 	match mode:
 		Mode.USER_CONTROLLED:
@@ -158,7 +161,18 @@ func _ready() -> void:
 	_set_speeds(speeds)
 	_set_mode(mode)
 	_set_sprite_frames(sprite_frames)
-	GameState.abilities_changed.connect(_on_abilities_changed)
+
+	if Engine.is_editor_hint():
+		return
+
+	GameState.player.abilities_changed.connect(_on_abilities_changed)
+	GameState.player_changed.connect(_on_player_state_changed)
+
+
+func _on_player_state_changed(old: PlayerState, new: PlayerState) -> void:
+	old.abilities_changed.disconnect(_on_abilities_changed)
+	new.abilities_changed.connect(_on_abilities_changed)
+	_on_abilities_changed()
 
 	hp = max_hp
 	current_stamina = max_stamina
@@ -240,7 +254,7 @@ func defeat(falling: bool = false) -> void:
 
 	mode = Player.Mode.DEFEATED
 	velocity = Vector2.ZERO
-	GameState.decrement_lives()
+
 
 	if falling:
 		var tween := create_tween()
@@ -248,27 +262,31 @@ func defeat(falling: bool = false) -> void:
 
 	await get_tree().create_timer(2.0).timeout
 
-	if GameState.current_lives > 0:
-		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+
 	else:
 		_handle_game_over()
 
 
-func take_control(_controlled_by: Node) -> void:
+func take_control(controlled_by: Node) -> void:
+	_system_controllers.append(controlled_by)
 	mode = Mode.SYSTEM_CONTROLLED
 
 
-func return_control(_controlled_by: Node) -> void:
-	mode = Mode.USER_CONTROLLED
+func return_control(controlled_by: Node) -> void:
+	_system_controllers.erase(controlled_by)
+	if not _system_controllers:
+		mode = Mode.USER_CONTROLLED
 
 
 func _toggle_abilities() -> void:
-	var can_repel := GameState.has_ability(Enums.PlayerAbilities.ABILITY_A)
-	var can_grapple := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B)
+	var can_repel := GameState.player.has_ability(Enums.PlayerAbilities.ABILITY_A)
+	var can_grapple := GameState.player.has_ability(Enums.PlayerAbilities.ABILITY_B)
 	_toggle_player_behavior(player_repel, can_repel)
 	_toggle_player_behavior(player_hook, can_grapple)
 	if can_grapple:
-		var has_longer_hook := GameState.has_ability(Enums.PlayerAbilities.ABILITY_B_MODIFIER_1)
+		var has_longer_hook := GameState.player.has_ability(
+			Enums.PlayerAbilities.ABILITY_B_MODIFIER_1
+		)
 		player_hook.string_throw_length = 400.0 if has_longer_hook else 200.0
 		player_hook.string_max_length = 450.0 if has_longer_hook else 250.0
 
@@ -278,12 +296,7 @@ func _on_abilities_changed() -> void:
 		_toggle_abilities()
 
 
-func _handle_game_over() -> void:
-	GameState.reset_lives()
-	var challenge_start_scene: String = GameState.get_challenge_start_scene()
-	if challenge_start_scene.is_empty():
-		GameState.set_current_spawn_point(^"")
-		SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+
 	else:
 		SceneSwitcher.change_to_file_with_transition(challenge_start_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE)
 

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Label
 
-@onready var animation_player: AnimationPlayer = $"../../AnimationPlayer"
+@onready var animation_player: AnimationPlayer = %AnimationPlayer
 
 
 func _process(_delta: float) -> void:

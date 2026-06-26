@@ -1,44 +1,120 @@
 [gd_scene format=3 uid="uid://dkeb0yjgcfi86"]
 
-[ext_resource type="PackedScene" uid="uid://de6s2quemrmkf" path="res://scenes/menus/options/components/sound_settings.tscn" id="1_7hrlm"]
-[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_ptihp"]
 [ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="2_cw13b"]
-[ext_resource type="PackedScene" uid="uid://tahf2q1d3e74" path="res://scenes/menus/options/components/video_settings.tscn" id="4_cw13b"]
+[ext_resource type="PackedScene" uid="uid://de6s2quemrmkf" path="res://scenes/menus/options/components/sound_settings.tscn" id="3_sound"]
+[ext_resource type="PackedScene" uid="uid://tahf2q1d3e74" path="res://scenes/menus/options/components/video_settings.tscn" id="4_video"]
 [ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="5_qdq3g"]
 [ext_resource type="PackedScene" uid="uid://w0uscqwgsi4w" path="res://scenes/menus/options/components/language_settings.tscn" id="6_lang"]
+[ext_resource type="PackedScene" uid="uid://56ja3m4283wa" path="res://scenes/menus/debug/debug_settings.tscn" id="7_s7dil"]
 
-[node name="Options" type="CenterContainer" unique_id=2066163370 node_paths=PackedStringArray("back_button")]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_panel"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_s7dil"]
+action = &"ui_cancel"
+
+[sub_resource type="Shortcut" id="Shortcut_p4pyc"]
+events = [SubResource("InputEventAction_s7dil")]
+
+[node name="Options" type="CenterContainer" unique_id=810691496 node_paths=PackedStringArray("back_button", "default_page")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -221.0
+offset_top = -225.0
+offset_right = 221.0
+offset_bottom = 225.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_ptihp")
 script = ExtResource("2_cw13b")
-back_button = NodePath("PanelContainer/VBoxContainer/BackButton")
-metadata/_tab_index = 1
+back_button = NodePath("TabContainer/OptionsMenu/VBoxContainer/BackButton")
+default_page = NodePath("TabContainer/OptionsMenu")
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=280848008]
+[node name="TabContainer" type="TabContainer" parent="." unique_id=2066163370]
+auto_translate_mode = 2
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_panel")
+current_tab = 0
+tabs_visible = false
+
+[node name="OptionsMenu" type="PanelContainer" parent="TabContainer" unique_id=1100000001]
+unique_name_in_owner = true
+auto_translate_mode = 1
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/OptionsMenu" unique_id=1100000002]
 custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=924753986]
+[node name="SoundSettingsButton" type="Button" parent="TabContainer/OptionsMenu/VBoxContainer" unique_id=1100000005]
 layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+text = "Sound Settings"
 
-[node name="SoundSettingsPanel" parent="PanelContainer/VBoxContainer" unique_id=527494601 instance=ExtResource("1_7hrlm")]
+[node name="VideoSettingsButton" type="Button" parent="TabContainer/OptionsMenu/VBoxContainer" unique_id=1100000006]
 layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+text = "Video Settings"
 
-[node name="VideoSettings" parent="PanelContainer/VBoxContainer" unique_id=201104966 instance=ExtResource("4_cw13b")]
+[node name="LanguageSettingsButton" type="Button" parent="TabContainer/OptionsMenu/VBoxContainer" unique_id=1100000007]
 layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+text = "Language Settings"
 
-[node name="LanguageSettings" parent="PanelContainer/VBoxContainer" unique_id=1730937504 instance=ExtResource("6_lang")]
+[node name="DebugSettingsButton" type="Button" parent="TabContainer/OptionsMenu/VBoxContainer" unique_id=1520031485]
 layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+text = "Debug Settings"
 
-[node name="BackButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=200110196]
+[node name="BackButton" type="Button" parent="TabContainer/OptionsMenu/VBoxContainer" unique_id=200110196]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
+shortcut = SubResource("Shortcut_p4pyc")
 text = "Back"
 icon = ExtResource("5_qdq3g")
 flat = true
+
+[node name="SoundSettings" parent="TabContainer" unique_id=1100000010 instance=ExtResource("3_sound")]
+auto_translate_mode = 1
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="VideoSettings" parent="TabContainer" unique_id=1100000011 instance=ExtResource("4_video")]
+auto_translate_mode = 1
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="LanguageSettings" parent="TabContainer" unique_id=1100000012 instance=ExtResource("6_lang")]
+auto_translate_mode = 1
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="DebugSettings" parent="TabContainer" unique_id=35497477 instance=ExtResource("7_s7dil")]
+auto_translate_mode = 1
+visible = false
+layout_mode = 2
+metadata/_tab_index = 4
+
+[connection signal="pressed" from="TabContainer/OptionsMenu/VBoxContainer/SoundSettingsButton" to="TabContainer/SoundSettings" method="show"]
+[connection signal="pressed" from="TabContainer/OptionsMenu/VBoxContainer/VideoSettingsButton" to="TabContainer/VideoSettings" method="show"]
+[connection signal="pressed" from="TabContainer/OptionsMenu/VBoxContainer/LanguageSettingsButton" to="TabContainer/LanguageSettings" method="show"]
+[connection signal="pressed" from="TabContainer/OptionsMenu/VBoxContainer/DebugSettingsButton" to="TabContainer/DebugSettings" method="show"]
+[connection signal="back" from="TabContainer/SoundSettings" to="TabContainer/OptionsMenu" method="show"]
+[connection signal="back" from="TabContainer/SoundSettings" to="TabContainer/OptionsMenu/VBoxContainer/BackButton" method="grab_focus"]
+[connection signal="back" from="TabContainer/VideoSettings" to="TabContainer/OptionsMenu" method="show"]
+[connection signal="back" from="TabContainer/VideoSettings" to="TabContainer/OptionsMenu/VBoxContainer/BackButton" method="grab_focus"]
+[connection signal="back" from="TabContainer/LanguageSettings" to="TabContainer/OptionsMenu" method="show"]
+[connection signal="back" from="TabContainer/LanguageSettings" to="TabContainer/OptionsMenu/VBoxContainer/BackButton" method="grab_focus"]
+[connection signal="back" from="TabContainer/DebugSettings" to="TabContainer/OptionsMenu" method="show"]
+[connection signal="back" from="TabContainer/DebugSettings" to="TabContainer/OptionsMenu/VBoxContainer/BackButton" method="grab_focus"]

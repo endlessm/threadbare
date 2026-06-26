@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: 2022-present Nathan Hoad and Dialogue Manager contributors.
 # SPDX-License-Identifier: MIT
+@tool
 extends CanvasLayer
 ## A basic dialogue balloon for use with Dialogue Manager.
 
@@ -11,6 +12,9 @@ const NPC_RIBBON_TYPE_VARIATION := &"NPCRibbon"
 
 ## The action to use to skip typing the dialogue
 @export var skip_action: StringName = &"dialogue_skip"
+
+@export_tool_button("Anchor to top") var to_top_editor_button: Callable = anchor_to_top
+@export_tool_button("Anchor to bottom") var to_bottom_editor_button: Callable = anchor_to_bottom
 
 ## The dialogue resource
 var resource: DialogueResource
@@ -53,6 +57,9 @@ var _player_name: String = ""
 ## The base balloon anchor
 @onready var balloon: Control = %Balloon
 
+## The balloon container to anchor it to the top or bottom
+@onready var balloon_container: VBoxContainer = %BalloonContainer
+
 ## The panel holding the label showing the name of the currently-speaking character
 @onready var character_panel: PanelContainer = %CharacterPanel
 
@@ -70,8 +77,12 @@ var _player_name: String = ""
 
 @onready var talk_sound_player: AudioStreamPlayer = $TalkSoundPlayer
 
+@onready var writing_sound_player: AudioStreamPlayer = $WritingSoundPlayer
+
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
 	balloon.hide()
 	Engine.get_singleton("DialogueManager").mutated.connect(_on_mutated)
 
@@ -101,6 +112,8 @@ func _notification(what: int) -> void:
 		self.dialogue_line = await resource.get_next_dialogue_line(dialogue_line.id)
 		if visible_ratio < 1:
 			dialogue_label.skip_typing()
+	elif what == NOTIFICATION_EDITOR_PRE_SAVE:
+		anchor_to_bottom()
 
 
 ## Start some dialogue
@@ -111,7 +124,6 @@ func start(
 	is_waiting_for_input = false
 	resource = dialogue_resource
 	self.dialogue_line = await resource.get_next_dialogue_line(title, temporary_game_states)
-	talk_sound_player.play()
 
 
 ## Apply any changes to the balloon given a new [DialogueLine].
@@ -138,16 +150,30 @@ func apply_dialogue_line() -> void:
 
 	next_button.hide()
 
+	# Assumes that the balloon scene is anchored to the bottom by default:
+	if _is_player_at_bottom():
+		anchor_to_top()
+
 	# Show our balloon
 	balloon.show()
 	will_hide_balloon = false
 
+	# Add a squash-stretch effect when the dialogue appears.
+	balloon_container.scale = Vector2(1.15, 0.7)
+	var tween := create_tween().set_parallel(true)
+	tween.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(balloon_container, "scale:x", 1.0, 0.25)
+	tween.tween_property(balloon_container, "scale:y", 1.0, 0.25)
+
 	dialogue_label.show()
 	if not dialogue_line.text.is_empty():
 		dialogue_label.type_out()
-		talk_sound_player.stream_paused = false
+		if dialogue_line.character.is_empty():
+			if not writing_sound_player.playing:
+				writing_sound_player.play()
+			writing_sound_player.stream_paused = false
 		await dialogue_label.finished_typing
-		talk_sound_player.stream_paused = true
+		writing_sound_player.stream_paused = true
 
 	# Wait for input
 	if dialogue_line.responses.size() > 0:
@@ -166,6 +192,36 @@ func apply_dialogue_line() -> void:
 		balloon.focus_mode = Control.FOCUS_ALL
 		balloon.grab_focus()
 		next_button.show()
+
+
+## True if the player position is at the bottom vertical quarter of the screen.
+func _is_player_at_bottom() -> bool:
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+	if not player:
+		return false
+
+	var viewport := player.get_viewport()
+	var screen_pos: Vector2 = viewport.get_canvas_transform() * player.global_position
+	var viewport_size: Vector2 = viewport.get_visible_rect().size
+	return screen_pos.y > viewport_size.y * 3 / 4.0
+
+
+## Anchor container to top:
+func anchor_to_top() -> void:
+	balloon_container.anchor_top = 0
+	balloon_container.anchor_bottom = 0
+	balloon_container.offset_top = 0
+	balloon_container.offset_bottom = -4096
+	balloon_container.grow_vertical = Control.GROW_DIRECTION_END
+
+
+## Anchor container to bottom:
+func anchor_to_bottom() -> void:
+	balloon_container.anchor_top = 1
+	balloon_container.anchor_bottom = 1
+	balloon_container.offset_top = 4096
+	balloon_container.offset_bottom = 0
+	balloon_container.grow_vertical = Control.GROW_DIRECTION_BEGIN
 
 
 ## Go to the next line
@@ -223,4 +279,14 @@ func _on_balloon_gui_input(event: InputEvent) -> void:
 func _on_responses_menu_response_selected(response: DialogueResponse) -> void:
 	next(response.next_id)
 
+
 #endregion
+
+
+func _on_dialogue_label_spoke(letter: String, _letter_index: int, _speed: float) -> void:
+	if (
+		dialogue_line.character
+		and not talk_sound_player.playing
+		and letter not in dialogue_label.pause_at_characters
+	):
+		talk_sound_player.play()

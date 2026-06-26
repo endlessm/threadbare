@@ -1,14 +1,31 @@
 [gd_scene format=3 uid="uid://bo2gd4sehdugm"]
 
 [ext_resource type="Script" uid="uid://y88qplkioj1q" path="res://scenes/globals/pause/pause_overlay.gd" id="1_lf64b"]
-[ext_resource type="Texture2D" uid="uid://lg5dl13njsg3" path="res://assets/first_party/tiles/Grass_And_Sand_Tiles.png" id="2_1tcw0"]
-[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="2_sd5t1"]
+[ext_resource type="Resource" uid="uid://bm4xxsl17ho55" path="res://scenes/globals/pause/quest_abandoned.dialogue" id="2_xccck"]
+[ext_resource type="Script" uid="uid://5m2ugqcn640v" path="res://scenes/globals/pause/tab_container.gd" id="3_fh64e"]
 [ext_resource type="Script" uid="uid://i4urwefxrrdt" path="res://addons/threadbare_git_describe/version_label.gd" id="3_m62bn"]
 [ext_resource type="PackedScene" uid="uid://dkeb0yjgcfi86" path="res://scenes/menus/options/options.tscn" id="3_sd5t1"]
 [ext_resource type="Script" uid="uid://gntvq01vvati" path="res://scenes/globals/pause/report_bug_button.gd" id="4_mjd51"]
-[ext_resource type="PackedScene" uid="uid://56ja3m4283wa" path="res://scenes/menus/debug/debug_settings.tscn" id="5_ai8ue"]
+[ext_resource type="PackedScene" uid="uid://bjpyvet0x5dw8" path="res://scenes/menus/inventory/inventory.tscn" id="4_qydtk"]
+[ext_resource type="Shortcut" uid="uid://c5pwgp1w8p3y1" path="res://scenes/ui_elements/shortcuts/back_shortcut.tres" id="6_fh64e"]
+[ext_resource type="Material" uid="uid://cruf3tlajs4jo" path="res://scenes/ui_elements/input_hints/components/drop_shadow_material.tres" id="7_bwxj8"]
+[ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="8_ywskk"]
+[ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="9_fh64e"]
+[ext_resource type="Texture2D" uid="uid://dgfsrkr8a370h" path="res://assets/third_party/kenney_input_prompts/steam-deck_sheet_default.png" id="10_fh64e"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1tcw0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ywskk"]
+atlas = ExtResource("10_fh64e")
+region = Rect2(320, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fh64e"]
+atlas = ExtResource("10_fh64e")
+region = Rect2(512, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mn3wt"]
+atlas = ExtResource("10_fh64e")
+region = Rect2(576, 576, 64, 64)
 
 [node name="PauseOverlay" type="CanvasLayer" unique_id=102598744]
 process_mode = 3
@@ -16,105 +33,74 @@ layer = 2
 script = ExtResource("1_lf64b")
 title_scene = "uid://stdqc6ttomff"
 frays_end = "uid://cufkthb25mpxy"
+abandon_dialogue = ExtResource("2_xccck")
 
-[node name="FabricBackground" type="NinePatchRect" parent="." unique_id=37882440]
-modulate = Color(1, 1, 1, 0.498039)
+[node name="ColorRect" type="ColorRect" parent="." unique_id=694994481]
+modulate = Color(0, 0, 0, 0.70000005)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_1tcw0")
-region_rect = Rect2(384, 64, 64, 64)
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1289064546]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=746524343]
+process_mode = 2
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -33.0
-offset_top = -68.0
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("2_sd5t1")
-
-[node name="VersionLabel" type="Label" parent="MarginContainer" unique_id=494777321]
-layout_mode = 2
-script = ExtResource("3_m62bn")
-
-[node name="TabContainer" type="TabContainer" parent="." unique_id=877845808]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -237.0
-offset_top = -183.0
-offset_right = 237.0
-offset_bottom = 183.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_top = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=241125738]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/VBoxContainer" unique_id=877845808]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_1tcw0")
-current_tab = 0
-tabs_visible = false
+tab_alignment = 1
+current_tab = 2
+script = ExtResource("3_fh64e")
 
-[node name="PauseMenu" type="PanelContainer" parent="TabContainer" unique_id=158909332]
+[node name="Inventory" parent="MarginContainer/VBoxContainer/TabContainer" unique_id=1910667653 instance=ExtResource("4_qydtk")]
+visible = false
+layout_mode = 2
+
+[node name="Options" parent="MarginContainer/VBoxContainer/TabContainer" unique_id=2078715393 instance=ExtResource("3_sd5t1")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Menu" type="CenterContainer" parent="MarginContainer/VBoxContainer/TabContainer" unique_id=1341135248]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("2_sd5t1")
-metadata/_tab_index = 0
+metadata/_tab_index = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/PauseMenu" unique_id=113544093]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/TabContainer/Menu" unique_id=2049717971]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=1739655898]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer" unique_id=113544093]
+custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &"PlayerRibbon"
 
-[node name="Label" type="Label" parent="TabContainer/PauseMenu/VBoxContainer/PanelContainer" unique_id=502033901]
-layout_mode = 2
-text = "Game Paused"
-
-[node name="ResumeButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=1399677178]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &"FlatButton"
-text = "Resume"
-
-[node name="AbandonQuestButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=1859424584]
+[node name="AbandonQuestButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1859424584]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Abandon Quest"
 
-[node name="SkipTutorialButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=979952363]
+[node name="SkipTutorialButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=979952363]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Skip Tutorial"
 
-[node name="OptionsButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=117724427]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &"FlatButton"
-text = "Options"
-
-[node name="DebugButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=75453807]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &"FlatButton"
-text = "Debug Settings"
-
-[node name="ReportBugButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=1750937607]
+[node name="ReportBugButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1750937607]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -122,29 +108,100 @@ theme_type_variation = &"FlatButton"
 text = "Report a Problem"
 script = ExtResource("4_mjd51")
 
-[node name="TitleScreenButton" type="Button" parent="TabContainer/PauseMenu/VBoxContainer" unique_id=830702640]
+[node name="TitleScreenButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=830702640]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Exit to Title"
 
-[node name="Options" parent="TabContainer" unique_id=2078715393 instance=ExtResource("3_sd5t1")]
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer" unique_id=1399677178]
 unique_name_in_owner = true
-process_mode = 2
-visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+shortcut = ExtResource("6_fh64e")
+text = "Back"
+icon = ExtResource("8_ywskk")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=389756877]
+layout_mode = 2
+theme_override_constants/margin_right = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer" unique_id=1140765663]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="DebugSettings" parent="TabContainer" unique_id=1197092088 instance=ExtResource("5_ai8ue")]
-visible = false
+[node name="PauseContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=300043409]
 layout_mode = 2
-metadata/_tab_index = 2
 
-[connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
-[connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/AbandonQuestButton" to="." method="_on_abandon_quest_pressed"]
-[connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/SkipTutorialButton" to="." method="_on_skip_tutorial_pressed"]
-[connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
-[connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/DebugButton" to="TabContainer/DebugSettings" method="show"]
-[connection signal="pressed" from="TabContainer/PauseMenu/VBoxContainer/TitleScreenButton" to="." method="_on_title_screen_button_pressed"]
-[connection signal="back" from="TabContainer/Options" to="." method="_on_options_back"]
-[connection signal="back" from="TabContainer/DebugSettings" to="." method="_on_options_back"]
+[node name="PauseHint" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=1079672650]
+material = ExtResource("7_bwxj8")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = SubResource("AtlasTexture_ywskk")
+script = ExtResource("9_fh64e")
+action_name = &"pause"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=762214617]
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+theme_override_font_sizes/font_size = 25
+text = "Resume"
+
+[node name="PreviousTabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=165681227]
+layout_mode = 2
+
+[node name="PreviousTabHint" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer/PreviousTabContainer" unique_id=1994017251]
+material = ExtResource("7_bwxj8")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = SubResource("AtlasTexture_fh64e")
+script = ExtResource("9_fh64e")
+action_name = &"previous_tab"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer/PreviousTabContainer" unique_id=703188421]
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+theme_override_font_sizes/font_size = 25
+text = "Previous"
+
+[node name="NextTabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=2863309]
+layout_mode = 2
+
+[node name="NextTabHint" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=1788019381]
+material = ExtResource("7_bwxj8")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = SubResource("AtlasTexture_mn3wt")
+script = ExtResource("9_fh64e")
+action_name = &"next_tab"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=1814948712]
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+theme_override_font_sizes/font_size = 25
+text = "Next"
+
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=32192576]
+editor_description = "This empty control expands to fill the center of the hbox, pushing any controls packed after it to the right margin."
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VersionLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=283448683]
+auto_translate_mode = 2
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "0123456789"
+script = ExtResource("3_m62bn")
+
+[connection signal="back" from="MarginContainer/VBoxContainer/TabContainer/Inventory" to="." method="_on_inventory_back"]
+[connection signal="back" from="MarginContainer/VBoxContainer/TabContainer/Options" to="." method="_on_options_back"]
+[connection signal="visibility_changed" from="MarginContainer/VBoxContainer/TabContainer/Menu" to="." method="_on_menu_visibility_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/AbandonQuestButton" to="." method="_on_abandon_quest_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/SkipTutorialButton" to="." method="_on_skip_tutorial_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/TitleScreenButton" to="." method="_on_title_screen_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/Menu/PanelContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

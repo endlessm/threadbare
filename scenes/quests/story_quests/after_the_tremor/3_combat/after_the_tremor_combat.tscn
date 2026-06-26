@@ -5,8 +5,11 @@
 [ext_resource type="Script" uid="uid://da5eiigxh4x7e" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/scripts/combat.gd" id="1_omu5o"]
 [ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_pmsah"]
 [ext_resource type="TileSet" uid="uid://4ewcvb1sibsf" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/2_cinematicacombate/tile/tilestaller.tres" id="4_05iye"]
+[ext_resource type="Script" uid="uid://dajod2qsesqte" path="res://scenes/game_elements/characters/player/components/player_harm.gd" id="4_agvpq"]
 [ext_resource type="SpriteFrames" uid="uid://wdv3k3hudj1h" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/charliegato.tres" id="4_uft25"]
+[ext_resource type="PackedScene" uid="uid://cl06pid826dtg" path="res://scenes/game_elements/characters/player/components/player_repel.tscn" id="5_agvpq"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="5_aisso"]
+[ext_resource type="Script" uid="uid://barul34f1v8ad" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/non_player_animation_player.gd" id="6_hh6bx"]
 [ext_resource type="SpriteFrames" uid="uid://x5dyax1ulw8f" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/boss.tres" id="7_f4d1w"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="8_tmljt"]
 [ext_resource type="Resource" uid="uid://cblaldkf38re3" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/componentes/dialogocomienzo.dialogue" id="10_ilkny"]
@@ -25,9 +28,285 @@
 [ext_resource type="Script" uid="uid://d31cxd03praji" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/scripts/MusicFix.gd" id="22_ilkny"]
 [ext_resource type="AudioStream" uid="uid://bnnmm5oppg6nr" path="res://scenes/quests/story_quests/after_the_tremor/music/sounds/defeat.wav" id="23_ilkny"]
 
-[sub_resource type="Resource" id="Resource_cvb4d"]
-script = ExtResource("5_aisso")
-metadata/_custom_type_script = "uid://csev4hv57utxv"
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pp1gq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_je7p5"]
+size = Vector2(32, 47)
+
+[sub_resource type="Animation" id="Animation_wvgcx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../PlayerSprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_4ypcv"]
+resource_name = "got_hit"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../PlayerSprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1n58k"]
+_data = {
+&"RESET": SubResource("Animation_wvgcx"),
+&"got_hit": SubResource("Animation_4ypcv")
+}
+
+[sub_resource type="Animation" id="Animation_0owmy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [&"idle"]
+}
+
+[sub_resource type="Animation" id="Animation_blfj0"]
+resource_name = "defeated"
+length = 1.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [&"defeated"]
+}
+
+[sub_resource type="Animation" id="Animation_75vfm"]
+resource_name = "idle"
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [&"idle"]
+}
+
+[sub_resource type="Animation" id="Animation_u5klv"]
+resource_name = "repel"
+length = 0.6
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0, 0, 0, 1, 2, 3, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [&"attack_02"]
+}
+
+[sub_resource type="Animation" id="Animation_nrnyj"]
+resource_name = "run"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0, 1, 2, 3, 4, 5, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [&"run"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WalkSound:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, true, true]
+}
+
+[sub_resource type="Animation" id="Animation_4nivu"]
+resource_name = "throw_string"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [&"attack_01"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0, 1, 2, 3, 3]
+}
+
+[sub_resource type="Animation" id="Animation_qek5x"]
+resource_name = "walk"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0, 1, 2, 3, 4, 5, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [&"walk"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WalkSound:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.115043, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qek5x"]
+_data = {
+&"RESET": SubResource("Animation_0owmy"),
+&"defeated": SubResource("Animation_blfj0"),
+&"idle": SubResource("Animation_75vfm"),
+&"repel": SubResource("Animation_u5klv"),
+&"run": SubResource("Animation_nrnyj"),
+&"throw_string": SubResource("Animation_4nivu"),
+&"walk": SubResource("Animation_qek5x")
+}
 
 [sub_resource type="Resource" id="Resource_aisso"]
 script = ExtResource("5_aisso")
@@ -63,30 +342,50 @@ mode = 1
 [node name="PlayersContainer" type="Node2D" parent="." unique_id=1961030992]
 modulate = Color(0.7919991, 0.79199916, 0.7919991, 1)
 
-[node name="charlie" parent="PlayersContainer" unique_id=1453346405 instance=ExtResource("1_n5amm")]
+[node name="charlie" type="Node2D" parent="PlayersContainer" unique_id=1789763203]
 z_index = 1
 position = Vector2(472, 639)
 scale = Vector2(0.5, 0.5)
+
+[node name="PlayerSprite" type="AnimatedSprite2D" parent="PlayersContainer/charlie" unique_id=1178934455]
+unique_name_in_owner = true
 sprite_frames = ExtResource("4_uft25")
+animation = &"idle"
+autoplay = "idle"
 
-[node name="InputWalkBehavior" parent="PlayersContainer/charlie" index="0" unique_id=1817340985]
-speeds = SubResource("Resource_cvb4d")
+[node name="StaticBody2D" type="StaticBody2D" parent="PlayersContainer/charlie" unique_id=1618330224]
 
-[node name="PlayerSprite" parent="PlayersContainer/charlie" index="2" unique_id=1785485617]
-sprite_frames = ExtResource("4_uft25")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayersContainer/charlie/StaticBody2D" unique_id=472748605]
+shape = SubResource("CapsuleShape2D_pp1gq")
 
-[node name="PlayerInteraction" parent="PlayersContainer/charlie" index="5" unique_id=1260226520]
-position = Vector2(-126, 3554)
+[node name="PlayerHarm" type="Node2D" parent="PlayersContainer/charlie" unique_id=2062714455]
+script = ExtResource("4_agvpq")
 
-[node name="InteractLabel" parent="PlayersContainer/charlie/PlayerInteraction/InteractMarker" parent_id_path=PackedInt32Array(1453346405, 439387414) index="0" unique_id=554498577]
-visible = false
+[node name="HitBox" type="Area2D" parent="PlayersContainer/charlie/PlayerHarm" unique_id=438162651]
+unique_name_in_owner = true
+collision_layer = 64
+collision_mask = 256
 
-[node name="PlayerRepel" parent="PlayersContainer/charlie" index="6" unique_id=1745412343]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayersContainer/charlie/PlayerHarm/HitBox" unique_id=614581433]
+position = Vector2(0, -28.5)
+shape = SubResource("RectangleShape2D_je7p5")
+debug_color = Color(0.94902, 0.231373, 0, 0.419608)
+
+[node name="GotHitAnimation" type="AnimationPlayer" parent="PlayersContainer/charlie/PlayerHarm" unique_id=1607009509]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_1n58k")
+
+[node name="PlayerRepel" parent="PlayersContainer/charlie" unique_id=1324972992 instance=ExtResource("5_agvpq")]
 input_action = &"move_left"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlayersContainer/charlie" unique_id=1920733667]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_qek5x")
+script = ExtResource("6_hh6bx")
 
 [node name="bryan" parent="PlayersContainer" unique_id=1722313202 instance=ExtResource("1_n5amm")]
 z_index = 1
-position = Vector2(920, 638)
+position = Vector2(844, 646)
 scale = Vector2(0.5, 0.5)
 speeds = SubResource("Resource_aisso")
 sprite_frames = ExtResource("16_ilkny")
@@ -102,16 +401,7 @@ visible = false
 sprite_frames = ExtResource("16_ilkny")
 flip_h = true
 
-[node name="PlayerInteraction" parent="PlayersContainer/bryan" index="5" unique_id=1260226520]
-position = Vector2(2674, 182)
-
-[node name="LabelContainer" parent="PlayersContainer/bryan/PlayerInteraction/InteractMarker/InteractLabel" parent_id_path=PackedInt32Array(1722313202, 554498577) index="0" unique_id=640967064]
-offset_left = -68.0
-offset_top = -46.0
-offset_right = 0.0
-offset_bottom = 0.0
-
-[node name="PlayerRepel" parent="PlayersContainer/bryan" index="6" unique_id=1745412343]
+[node name="PlayerRepel" parent="PlayersContainer/bryan" index="6" unique_id=1324972992]
 input_action = &"move_right"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=609593329]
@@ -138,7 +428,7 @@ tile_set = ExtResource("4_05iye")
 
 [node name="Grass2" type="TileMapLayer" parent="TileMapLayers" unique_id=850587917]
 modulate = Color(0.61339027, 0.61339027, 0.61339027, 1)
-tile_map_data = PackedByteArray("AAANAAcAFAABAAkAABAMAAcAFAABAAkAABALAAcAFAABAAkAABAKAAcAFAABAAkAABAJAAcAFAABAAkAABAIAAcAFAABAAkAABAHAAcAFAABAAkAABAGAAcAFAABAAkAABAFAAcAFAABAAkAABAEAAcAFAABAAkAABADAAcAFAABAAkAABACAAcAFAABAAkAABABAAcAFAABAAkAABAAAAcAFAABAAkAABAGAAAAFAABAAkAACAHAAAAFAABAAkAACAFAAAAFAABAAkAACAIAAAAFAABAAkAACAJAAAAFAABAAkAACALAAAAFAABAAkAACAMAAAAFAABAAkAACAKAAAAFAABAAkAACANAAAAFAABAAkAACAEAAAAFAABAAkAACADAAAAFAABAAkAACACAAAAFAABAAkAACABAAAAFAABAAkAACAAAAAAFAABAAkAACAAAAgAFAAAAAsAAAABAAgAFAABAAsAAAACAAgAFAABAAsAAAADAAgAFAABAAsAAAAEAAgAFAABAAsAAAAFAAgAFAABAAsAAAAGAAgAFAABAAsAAAAHAAgAFAABAAsAAAAIAAgAFAABAAsAAAAJAAgAFAABAAsAAAAKAAgAFAABAAsAAAAMAAgAFAABAAsAAAALAAgAFAABAAsAAAANAAgAFAABAAsAAAAOAAgAFAACAAsAAAAOAAcAFAABAAkAAEAOAAYAFAABAAkAAEAOAAUAFAABAAkAAEAOAAQAFAABAAkAAEAOAAMAFAABAAkAAEAOAAIAFAABAAkAAEAOAAEAFAABAAkAAEAOAAAAFAABAAkAACAKAAYAFAABAAoAAAADAAYAFAABAAoAAAA=")
+tile_map_data = PackedByteArray("AAANAAcAFAABAAkAABAMAAcAFAABAAkAABALAAcAFAABAAkAABAKAAcAFAABAAkAABAJAAcAFAABAAkAABAIAAcAFAABAAkAABAHAAcAFAABAAkAABAGAAcAFAABAAkAABAFAAcAFAABAAkAABAEAAcAFAABAAkAABADAAcAFAABAAkAABACAAcAFAABAAkAABABAAcAFAABAAkAABAAAAcAFAABAAkAABAGAAAAFAABAAkAACAHAAAAFAABAAkAACAFAAAAFAABAAkAACAIAAAAFAABAAkAACAJAAAAFAABAAkAACALAAAAFAABAAkAACAMAAAAFAABAAkAACAKAAAAFAABAAkAACANAAAAFAABAAkAACAEAAAAFAABAAkAACADAAAAFAABAAkAACACAAAAFAABAAkAACABAAAAFAABAAkAACAAAAAAFAABAAkAACAAAAgAFAAAAAsAAAABAAgAFAABAAsAAAACAAgAFAABAAsAAAADAAgAFAABAAsAAAAEAAgAFAABAAsAAAAFAAgAFAABAAsAAAAGAAgAFAABAAsAAAAHAAgAFAABAAsAAAAIAAgAFAABAAsAAAAJAAgAFAABAAsAAAAKAAgAFAABAAsAAAAMAAgAFAABAAsAAAALAAgAFAABAAsAAAANAAgAFAABAAsAAAAOAAgAFAACAAsAAAAOAAcAFAABAAkAAEAOAAYAFAABAAkAAEAOAAUAFAABAAkAAEAOAAQAFAABAAkAAEAOAAMAFAABAAkAAEAOAAIAFAABAAkAAEAOAAEAFAABAAkAAEAOAAAAFAABAAkAACADAAYAFAABAAoAAAAJAAYAFAABAAoAAAA=")
 tile_set = ExtResource("4_05iye")
 
 [node name="Stones" type="TileMapLayer" parent="TileMapLayers" unique_id=1297552590]
@@ -174,9 +464,9 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 modulate = Color(1, 1, 1, 0)
 position = Vector2(794, 309)
 revealed = false
-next_scene = "uid://c0rr6ow3dhecj"
 item = SubResource("Resource_ilkny")
 collected_dialogue = ExtResource("13_ilkny")
+next_scene = "uid://c0rr6ow3dhecj"
 
 [node name="Boss" parent="." unique_id=1739684602 node_paths=PackedStringArray("target_charlie", "target_bryan", "health_barrel") instance=ExtResource("1_ine85")]
 position = Vector2(716, 392)
@@ -207,7 +497,6 @@ monitorable = false
 [node name="BossHealth" parent="." unique_id=1226340713 instance=ExtResource("8_tmljt")]
 position = Vector2(716, 392)
 script = ExtResource("18_fq20r")
-needed_amount = 50
 
 [node name="HitBox" parent="BossHealth" index="2" unique_id=1847617565]
 position = Vector2(-2, 54)
@@ -274,15 +563,16 @@ show_percentage = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = SubResource("SystemFont_fq20r")
 theme_override_font_sizes/font_size = 14
 text = " OSCURIDAD 
 INMENSA"
 horizontal_alignment = 1
 
-[editable path="PlayersContainer/charlie"]
+[connection signal="body_entered" from="PlayersContainer/charlie/PlayerHarm/HitBox" to="PlayersContainer/charlie/PlayerHarm" method="_on_hit_box_body_entered"]
+
 [editable path="PlayersContainer/bryan"]
-[editable path="PlayersContainer/bryan/PlayerInteraction/InteractMarker/InteractLabel"]
 [editable path="Boss"]
 [editable path="BossHealth"]
 [editable path="Sign"]

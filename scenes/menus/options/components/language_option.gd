@@ -4,6 +4,7 @@ extends HBoxContainer
 
 @onready var _english_button: Button = %EnglishButton
 @onready var _spanish_button: Button = %SpanishButton
+@onready var _french_button: Button = %FrenchButton
 
 
 func _ready() -> void:
@@ -18,6 +19,7 @@ func _refresh() -> void:
 	var current_locale := Settings.get_locale()
 	_english_button.set_pressed_no_signal(current_locale == "en")
 	_spanish_button.set_pressed_no_signal(current_locale == "es")
+	_french_button.set_pressed_no_signal(current_locale == "fr")
 
 
 func _on_button_pressed(language_code: String) -> void:

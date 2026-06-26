@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends PathFollow2D
 
-@onready var player: Player = get_tree().get_first_node_in_group("player")
+@onready var player := get_tree().get_first_node_in_group("player") as Node2D
 
 
 func _process(_delta: float) -> void:

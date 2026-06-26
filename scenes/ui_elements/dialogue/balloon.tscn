@@ -1,80 +1,191 @@
 [gd_scene format=3 uid="uid://dhydhpp43urah"]
 
-[ext_resource type="Script" uid="uid://n1guv6m28qbw" path="res://scenes/ui_elements/dialogue/components/balloon.gd" id="1_36de5"]
-[ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="2_a8ve6"]
-[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="2_pfnde"]
-[ext_resource type="Script" uid="uid://bb52rsfwhkxbn" path="res://addons/dialogue_manager/dialogue_responses_menu.gd" id="3_72ixx"]
-[ext_resource type="Texture2D" uid="uid://ctvutcaoqvftf" path="res://assets/first_party/icons/right_arrow.png" id="4_qmeow"]
-[ext_resource type="AudioStream" uid="uid://cs1bx2odpj6vm" path="res://scenes/ui_elements/dialogue/components/sounds/pencil.ogg" id="5_dbsi0"]
+[ext_resource type="Script" uid="uid://n1guv6m28qbw" path="res://scenes/ui_elements/dialogue/components/balloon.gd" id="1_oh0dh"]
+[ext_resource type="Texture2D" uid="uid://dh4tixu06hfwt" path="res://assets/third_party/tiny-swords/UI/Banners/Carved_9Slides.png" id="3_1s4ug"]
+[ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="4_3tiik"]
+[ext_resource type="Script" uid="uid://bb52rsfwhkxbn" path="res://addons/dialogue_manager/dialogue_responses_menu.gd" id="5_gjlrd"]
+[ext_resource type="Texture2D" uid="uid://brspc1u02oawt" path="res://assets/first_party/collectibles/memory.png" id="5_oh0dh"]
+[ext_resource type="Script" uid="uid://bj58s4f3rjsqs" path="res://scenes/ui_elements/dialogue/components/response_button.gd" id="5_u3aeq"]
+[ext_resource type="Material" uid="uid://cruf3tlajs4jo" path="res://scenes/ui_elements/input_hints/components/drop_shadow_material.tres" id="6_y5co6"]
+[ext_resource type="Texture2D" uid="uid://bbvedlx2ahdxk" path="res://assets/third_party/kenney_input_prompts/keyboard-&-mouse_sheet_default.png" id="7_u3aeq"]
+[ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="8_saw5e"]
+[ext_resource type="AudioStream" uid="uid://cs1bx2odpj6vm" path="res://scenes/ui_elements/dialogue/components/sounds/pencil.ogg" id="10_oyhl1"]
+[ext_resource type="AudioStream" uid="uid://b6jipqg6p5pah" path="res://scenes/ui_elements/dialogue/components/sounds/839822__tommylistens__bubble_0.wav" id="11_y5co6"]
+[ext_resource type="AudioStream" uid="uid://ctx1gif17l0t8" path="res://scenes/ui_elements/dialogue/components/sounds/839823__tommylistens__bubble_1.wav" id="12_qmj24"]
+[ext_resource type="AudioStream" uid="uid://btjeqyv3j0ig1" path="res://scenes/ui_elements/dialogue/components/sounds/839824__tommylistens__bubble_2.wav" id="13_saw5e"]
+[ext_resource type="AudioStream" uid="uid://dy0hk40s7ve8t" path="res://scenes/ui_elements/dialogue/components/sounds/839825__tommylistens__bubble_3.wav" id="14_j0m6q"]
+[ext_resource type="AudioStream" uid="uid://debf2ti8718n1" path="res://scenes/ui_elements/dialogue/components/sounds/839826__tommylistens__bubble_4.wav" id="15_oyhl1"]
+[ext_resource type="AudioStream" uid="uid://cp8c37rnfsumh" path="res://scenes/ui_elements/dialogue/components/sounds/839827__tommylistens__bubble_5.wav" id="16_w541t"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_beq22"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+texture = ExtResource("3_1s4ug")
+texture_margin_left = 64.0
+texture_margin_top = 64.0
+texture_margin_right = 64.0
+texture_margin_bottom = 64.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+modulate_color = Color(1.3807716, 1.3807716, 1.3807716, 0.83137256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oh0dh"]
+atlas = ExtResource("7_u3aeq")
+region = Rect2(128, 192, 64, 64)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ekiya"]
+random_pitch = 1.2599211
+streams_count = 6
+stream_0/stream = ExtResource("11_y5co6")
+stream_1/stream = ExtResource("12_qmj24")
+stream_2/stream = ExtResource("13_saw5e")
+stream_3/stream = ExtResource("14_j0m6q")
+stream_4/stream = ExtResource("15_oyhl1")
+stream_5/stream = ExtResource("16_w541t")
 
 [node name="DialogueBalloon" type="CanvasLayer" unique_id=308207015]
 layer = 100
-script = ExtResource("1_36de5")
+script = ExtResource("1_oh0dh")
 
 [node name="Balloon" type="Control" parent="." unique_id=2032365240]
 unique_name_in_owner = true
 layout_mode = 3
-anchors_preset = 0
-theme = ExtResource("2_pfnde")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Balloon" unique_id=58550594]
-layout_mode = 0
-offset_right = 480.0
-offset_bottom = 359.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Balloon/PanelContainer" unique_id=412895659]
-custom_minimum_size = Vector2(352, 128)
-layout_mode = 2
-
-[node name="CharacterPanel" type="PanelContainer" parent="Balloon/PanelContainer/VBoxContainer" unique_id=383126775]
+[node name="BalloonContainer" type="VBoxContainer" parent="Balloon" unique_id=701404412]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 64)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -384.0
+offset_top = 4096.0
+offset_right = 384.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_constants/separation = -38
+
+[node name="MarginContainer" type="MarginContainer" parent="Balloon/BalloonContainer" unique_id=344362871]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 8
+
+[node name="CharacterPanel" type="PanelContainer" parent="Balloon/BalloonContainer/MarginContainer" unique_id=737681563]
+unique_name_in_owner = true
+z_index = 1
 layout_mode = 2
 size_flags_horizontal = 0
+size_flags_vertical = 0
 theme_type_variation = &"NPCRibbon"
 
-[node name="CharacterLabel" type="Label" parent="Balloon/PanelContainer/VBoxContainer/CharacterPanel" unique_id=172265592]
+[node name="CharacterLabel" type="Label" parent="Balloon/BalloonContainer/MarginContainer/CharacterPanel" unique_id=1133007357]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 0
 mouse_filter = 1
 text = "Musician"
-horizontal_alignment = 1
 
-[node name="DialogueLabel" parent="Balloon/PanelContainer/VBoxContainer" unique_id=728821532 instance=ExtResource("2_a8ve6")]
+[node name="MarginContainer" type="MarginContainer" parent="Balloon/BalloonContainer/MarginContainer" unique_id=1972618856]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 27
+theme_override_constants/margin_right = 29
+theme_override_constants/margin_bottom = 29
+
+[node name="PanelContainer" type="PanelContainer" parent="Balloon/BalloonContainer/MarginContainer/MarginContainer" unique_id=58550594]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_beq22")
+
+[node name="MarginContainer" type="MarginContainer" parent="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer" unique_id=234873226]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer" unique_id=412895659]
+custom_minimum_size = Vector2(704, 0)
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="DialogueLabel" parent="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=728821532 instance=ExtResource("4_3tiik")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 text = "¡Ah! ¿Another wanderer? It’s been a while siñce aňyone çame löõkiŋ for  instead of «treaßure»."
+vertical_alignment = 1
 skip_action = &"dialogue_skip"
 
-[node name="NextButton" type="Button" parent="Balloon/PanelContainer/VBoxContainer" unique_id=110419078]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 8
-theme_type_variation = &"FlatNextButton"
-text = "next"
-icon = ExtResource("4_qmeow")
-icon_alignment = 2
-
-[node name="ResponsesMenu" type="VBoxContainer" parent="Balloon/PanelContainer/VBoxContainer" unique_id=938619174 node_paths=PackedStringArray("response_template")]
+[node name="ResponsesMenu" type="VBoxContainer" parent="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=938619174 node_paths=PackedStringArray("response_template")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_constants/separation = 2
-script = ExtResource("3_72ixx")
+script = ExtResource("5_gjlrd")
 response_template = NodePath("ResponseExample")
 
-[node name="ResponseExample" type="Button" parent="Balloon/PanelContainer/VBoxContainer/ResponsesMenu" unique_id=957333658]
+[node name="ResponseExample" type="Button" parent="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ResponsesMenu" unique_id=957333658]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Response example"
+icon = ExtResource("5_oh0dh")
+icon_alignment = 2
+script = ExtResource("5_u3aeq")
 
-[node name="TalkSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1778551533]
-stream = ExtResource("5_dbsi0")
-volume_db = 2.0
+[node name="NextButton" type="Button" parent="Balloon/BalloonContainer/MarginContainer" unique_id=1047703477]
+unique_name_in_owner = true
+z_index = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_type_variation = &"NextButton"
+
+[node name="InteractHint" type="TextureRect" parent="Balloon/BalloonContainer/MarginContainer/NextButton" unique_id=661213085]
+material = ExtResource("6_y5co6")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = SubResource("AtlasTexture_oh0dh")
+script = ExtResource("8_saw5e")
+action_name = &"dialogue_next"
+
+[node name="WritingSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1778551533]
+stream = ExtResource("10_oyhl1")
 bus = &"SFX"
 parameters/looping = true
 
+[node name="TalkSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1049502391]
+stream = SubResource("AudioStreamRandomizer_ekiya")
+bus = &"SFX"
+
 [connection signal="gui_input" from="Balloon" to="." method="_on_balloon_gui_input"]
-[connection signal="response_selected" from="Balloon/PanelContainer/VBoxContainer/ResponsesMenu" to="." method="_on_responses_menu_response_selected"]
+[connection signal="spoke" from="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/DialogueLabel" to="." method="_on_dialogue_label_spoke"]
+[connection signal="response_selected" from="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ResponsesMenu" to="." method="_on_responses_menu_response_selected"]

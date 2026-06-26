@@ -1,50 +1,13 @@
-# gdlint: disable=max-public-methods
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-@tool
 extends Node
 
-## Emitted when a new item is collected, even if it wasn't added to the
-## inventory due to it being already there.
-signal item_collected(item: InventoryItem)
+## Emitted when [member player] changes to a new [PlayerState] object, due to a
+## quest starting or ending. This is used by the [Player] scene to rebind to
+## signals like [signal PlayerState.abilities_changed].
+signal player_changed(old: PlayerState, new: PlayerState)
 
-## Emitted when a item is consumed, causing it to be removed from the
-## [member inventory].
-signal item_consumed(item: InventoryItem)
-
-## Emitted whenever the items in the inventory change, either by collecting
-## or consuming an item.
-signal collected_items_changed(updated_items: Array[InventoryItem])
-
-## Emitted when the player's lives change.
-signal lives_changed(new_lives: int)
-
-## Emitted when it becomes too dark that artificial lights can turn on, or
-## when darkness goes away so artificial lights should turn off.
-signal lights_changed(lights_on: bool, immediate: bool)
-
-## Emitted when a quest is added or removed from [member completed_quests].
-signal completed_quests_changed
-
-## Emitted when lore or StoryQuest player abilities change.
-signal abilities_changed
-
-const GAME_STATE_PATH := "user://game_state.cfg"
-const INVENTORY_SECTION := "inventory"
-const INVENTORY_ITEMS_KEY := "items_collected"
-const QUEST_SECTION := "quest"
-const QUEST_PATH_KEY := "resource_path"
-const QUEST_CHALLENGE_START_KEY := "challenge_start_scene"
-const QUEST_PLAYER_ABILITIES_KEY := "quest_player_abilities"
-const GLOBAL_SECTION := "global"
-const GLOBAL_INCORPORATING_THREADS_KEY := "incorporating_threads"
-const COMPLETED_QUESTS_KEY := "completed_quests"
-const CURRENTSCENE_KEY := "current_scene"
-const SPAWNPOINT_KEY := "current_spawn_point"
-const GAME_PLAYER_ABILITIES_KEY := "game_player_abilities"
-const LIVES_KEY := "current_lives"
-const MAX_LIVES := 2 ** 53
-const DEBUG_LIVES := false
+const SAVE_PATH := "user://saved_game.tres"
 
 ## The player abilities to have from the beginning
 ## when not running the game from the main scene.
@@ -56,74 +19,58 @@ const DEBUG_PLAYER_ABILITIES := [
 ## Scenes to skip from saving.
 const TRANSIENT_SCENES := [
 	"res://scenes/menus/title/title_screen.tscn",
-	"res://scenes/menus/intro/intro.tscn",
 ]
-
-## Global inventory, used to track the items the player obtains and that
-## can be added to the loom.
-@export var inventory: Array[InventoryItem] = []
-@export var current_spawn_point: NodePath
-
-## Player abilities for the whole game.
-## [br][br]
-## These are flags that enable systems or mechanics for the player progression
-## during the entire game.[br]
-## When involved in a quest, [member quest_player_abilities] are used instead.
-## After completing a lore quest, [member quest_player_abilities] are copied to this and persisted.
-@export var game_player_abilities: int = 0:
-	set = _set_game_player_abilities
-
-## Player abilities for the current quest.
-## [br][br]
-## These are flags that enable systems or mechanics for the quest progression[br]
-## When involved in a lore quest, [member game_player_abilities] are copied to this.
-## When involved in a StoryQuest, this starts in zero (without abilities).
-@export var quest_player_abilities: int = 0:
-	set = _set_quest_player_abilities
-
-## Current number of lives the player has.
-var current_lives: int = MAX_LIVES
-
-## Current state of artificial lights.
-var lights_on: bool
-
-## Set when the loom transports the player to a trio of Sokoban puzzles, so that
-## when the player returns to Fray's End the loom can trigger a brief cutscene.
-var incorporating_threads: bool = false
-
-## Set when any introductory dialogue has been played for the current scene.
-## Cleared when the scene changes.
-var intro_dialogue_shown: bool = false
-
-## The paths to the [Quest]s that the player has completed, in the order that they were completed.
-var completed_quests: Array[String] = []
-
-## The quest that the player is currently playing, or [code]null[/code] if they
-## are not playing a quest. Update this with [method start_quest], [method
-## mark_quest_completed] and [method abandon_quest].
-var current_quest: Quest
 
 ## The progress is persisted only if the game is run normally from the main scene.
 ## Otherwise, it means we are playing a specific scene: the current scene from the editor or
 ## with a direct URL hash to a scene in the web build. In the latter cases, this variable is false.
 var persist_progress: bool
 
-var _state := ConfigFile.new()
+## Game-wide state.
+var global: GlobalState:
+	get():
+		return _saved_game.global if _saved_game else null
+	set(new_value):
+		push_error("Do not set GameState.global")
 
+## State concerning the current quest, or [code]null[/code] if there is no current quest.
+var quest: QuestState:
+	get():
+		return _saved_game.quest if _saved_game else null
+	set(new_value):
+		var old_player_state := player
+		_saved_game.quest = new_value
+		player_changed.emit(old_player_state, player)
 
-func _validate_property(property: Dictionary) -> void:
-	match property["name"]:
-		# Treat the player abilities as bit flags.
-		# The @export_flags would be ideal but it expects constant
-		# strings, and we want to use the PlayerAbilities enum keys
-		# as hint strings.
-		# This also requires this script to be a @tool.
-		"lore_player_abilities", "storyquest_player_abilities":
-			property.hint = PROPERTY_HINT_FLAGS
-			property.hint_string = ",".join(Enums.PlayerAbilities.keys())
+## State concerning the current scene, or [code]null[/code] if there is no current scene
+var scene: PerSceneState:
+	get():
+		return _saved_game.scene if _saved_game else null
+	set(new_value):
+		_saved_game.scene = new_value
+
+## If the player is on a quest, the [member QuestState.player] of [member
+## quest]. Otherwise, the [member GlobalState.player] of [member global]. Use
+## this rather than referring directly to those.
+var player: PlayerState:
+	get():
+		return quest.player if quest else global.player
+	set(new_value):
+		push_error("Do not set GameState.player")
+
+var _saved_game: SavedGame
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+
+	if ResourceLoader.exists(SAVE_PATH):
+		_saved_game = ResourceLoader.load(SAVE_PATH, "", ResourceLoader.CACHE_MODE_REPLACE_DEEP)
+
+	if not _saved_game:
+		_saved_game = SavedGame.new()
+
 	var current_scene := get_tree().current_scene
 	var initial_scene_uid := (
 		ResourceLoader.get_resource_uid(current_scene.scene_file_path) if current_scene else -1
@@ -137,45 +84,49 @@ func _ready() -> void:
 			guess_quest(current_scene.scene_file_path)
 		# Grant all debug player abilities:
 		for ability: Enums.PlayerAbilities in DEBUG_PLAYER_ABILITIES:
-			set_ability(ability, true)
+			player.set_ability(ability, true)
 		return
 
-	var err := _state.load(GAME_STATE_PATH)
-	if err != OK and err != ERR_FILE_NOT_FOUND:
-		push_error("Failed to load %s: %s" % [GAME_STATE_PATH, err])
 
-	if DEBUG_LIVES:
-		prints("[LIVES DEBUG] GameState initialized with", current_lives, "lives")
+## Restores [member quest] and [member scene] from the point where the quest was
+## previously suspended. [method can_restore_quest] must return
+## [code]true[/code] for this to be legal.
+func restore_quest() -> void:
+	if not quest:
+		push_error("restore_quest() but not on a quest")
+		return
+
+	var key := quest.quest.resource_path
+	if key not in global.suspended_quests:
+		push_error("Tried to restore %s but was not suspended" % key)
+		return
+
+	var suspended_quest := global.suspended_quests[key]
+	global.suspended_quests.erase(key)
+
+	quest = suspended_quest.quest
+	scene = suspended_quest.scene
+
+	if quest.quest is LoreQuest:
+		# Add any lore abilities that the player gained since suspending this
+		# quest.
+		quest.player.abilities |= global.player.abilities
 
 
-## Set the [member incorporating_threads] flag.
-func set_incorporating_threads(new_incorporating_threads: bool) -> void:
-	incorporating_threads = new_incorporating_threads
-	_state.set_value(GLOBAL_SECTION, GLOBAL_INCORPORATING_THREADS_KEY, incorporating_threads)
-	_save()
-
-
-## Set [member current_quest] and clear the [member inventory].
-## Also resets lives to maximum when starting a quest.
-func start_quest(quest: Quest) -> void:
-	_do_clear_inventory()
-	_update_inventory_state()
-	current_quest = quest
-	_state.set_value(QUEST_SECTION, QUEST_PATH_KEY, quest.resource_path)
-	_do_set_scene(quest.first_scene, ^"")
-
-	# Set the challenge start scene to the first scene of the quest
-	_state.set_value(QUEST_SECTION, QUEST_CHALLENGE_START_KEY, quest.first_scene)
-
-	if current_quest.is_lore_quest:
-		quest_player_abilities = game_player_abilities
+## Sets [member quest], setting up a new [PlayerState] if necessary.
+## Note that this does not switch scenes into the quest.
+func set_quest(new_quest: Quest) -> void:
+	var quest_player_state: PlayerState
+	if new_quest is LoreQuest:
+		# Duplicate the current global player state. If the quest is completed,
+		# it will be copied back; if abandoned, it will be discarded.
+		quest_player_state = global.player.duplicate()
+		quest_player_state.reset_lives()
 	else:
-		quest_player_abilities = 0
-	_state.set_value(QUEST_SECTION, QUEST_PLAYER_ABILITIES_KEY, quest_player_abilities)
+		# Use a fresh player state for StoryQuests
+		quest_player_state = PlayerState.new()
 
-	# Reset lives when starting a new quest
-	reset_lives()
-	_save()
+	quest = QuestState.new(new_quest, quest_player_state)
 
 
 ## Guess which quest the given scene is part of, and set [member current_quest]
@@ -190,320 +141,71 @@ func guess_quest(scene_path_or_uid: String) -> void:
 	while dir_path != "res://":
 		var quest_path := dir_path.path_join("quest.tres")
 		if ResourceLoader.exists(quest_path, "Resource"):
-			current_quest = ResourceLoader.load(quest_path) as Quest
-			prints("Guessed quest", current_quest.resource_path, "from scene", scene_path)
+			var q := ResourceLoader.load(quest_path) as Quest
+			quest = QuestState.new(q, PlayerState.new())
+			quest.challenge_start_scene = scene_path
+			prints("Guessed quest", quest.resource_path, "from scene", scene_path)
 			return
 
 		dir_path = dir_path.get_base_dir()
 
-	current_quest = null
 
-
-## Set the scene path and [member current_spawn_point].
+## Set the scene path and [member current_spawn_point], and save the game.
 func set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
 	if scene_path in TRANSIENT_SCENES:
 		return
 
-	_do_set_scene(scene_path, spawn_point)
-	_save()
+	if not scene or scene.path != scene_path:
+		scene = PerSceneState.new(scene_path)
+
+	scene.spawn_point = spawn_point
+	save()
 
 
-## Set the current spawn point and save it.
-func set_current_spawn_point(spawn_point: NodePath = ^"") -> void:
-	current_spawn_point = spawn_point
-	_state.set_value(GLOBAL_SECTION, SPAWNPOINT_KEY, current_spawn_point)
-	_save()
-
-
-## Set the challenge start scene. This is the scene the player returns to
-## when they run out of lives.
-func set_challenge_start_scene(scene_path: String) -> void:
-	_state.set_value(QUEST_SECTION, QUEST_CHALLENGE_START_KEY, scene_path)
-
-	if DEBUG_LIVES:
-		prints("[LIVES DEBUG] Challenge start set to:", scene_path)
-
-	_save()
-
-
-## Get the challenge start scene, or the first scene of the current quest
-## if no challenge start has been set.
-func get_challenge_start_scene() -> String:
-	var challenge_start: String = _state.get_value(QUEST_SECTION, QUEST_CHALLENGE_START_KEY, "")
-
-	if challenge_start.is_empty() and current_quest:
-		challenge_start = current_quest.first_scene
-
-		if DEBUG_LIVES:
-			prints(
-				"[LIVES DEBUG] No challenge start set, using quest first scene:", challenge_start
-			)
-
-	return challenge_start
-
-
-## Returns [code]true[/code] if the player is currently on a quest; i.e. if
-## [member current_quest] is not [code]null[/code].
-func is_on_quest() -> bool:
-	return current_quest != null
-
-
-## Clear all quest-related state from the config file.
-func _clear_quest_state() -> void:
-	if _state.has_section(QUEST_SECTION):
-		_state.erase_section(QUEST_SECTION)
-
-
-## If [member current_quest] is set, record this quest as having been completed,
-## and unset it. Also resets lives to maximum.
+## Record [member quest] as completed, copying its player state to the global
+## state if it was a LoreQuest, and clear [member quest].
 func mark_quest_completed() -> void:
-	if current_quest:
-		if current_quest.is_lore_quest:
-			# Copy quest abilities to game abilities.
-			game_player_abilities = quest_player_abilities
-			_state.set_value(GLOBAL_SECTION, GAME_PLAYER_ABILITIES_KEY, game_player_abilities)
-		_do_set_quest_completed_state(current_quest, true)
-		current_quest = null
-		_clear_quest_state()
-		_save()
+	assert(quest)
+
+	if quest.quest is LoreQuest:
+		# Copy quest abilities to game abilities.
+		global.player = quest.player
+
+	global.set_quest_completed_state(quest.quest, true)
+	quest = null
 
 
-## Set the scene path and [member current_spawn_point] without triggering a save.
-func _do_set_scene(scene_path: String, spawn_point: NodePath = ^"") -> void:
-	if get_scene_to_restore() != scene_path:
-		intro_dialogue_shown = false
-
-	current_spawn_point = spawn_point
-	_state.set_value(GLOBAL_SECTION, CURRENTSCENE_KEY, scene_path)
-	_state.set_value(GLOBAL_SECTION, SPAWNPOINT_KEY, current_spawn_point)
-
-
-## Add the [InventoryItem] to the [member inventory].
-func add_collected_item(item: InventoryItem) -> void:
-	inventory.append(item)
-	item_collected.emit(item)
-	collected_items_changed.emit(items_collected())
-	_update_inventory_state()
-	_save()
-
-
-## If [member current_quest] is set, unset it, without recording the quest as
-## having been completed. Also resets lives to maximum.
-func abandon_quest() -> void:
-	set_incorporating_threads(false)
-	_clear_quest_state()
-	current_quest = null
-	quest_player_abilities = 0
-	clear_inventory()
-
-
-## Updates [member completed_quests] to include [param quest] if [param
-## is_completed] is true, or remove [param quest] if [param is_completed] is
-## false.
-func set_quest_completed_state(quest: Quest, is_completed: bool) -> void:
-	_do_set_quest_completed_state(quest, is_completed)
-	_save()
-
-
-func _do_set_quest_completed_state(quest: Quest, is_completed: bool) -> void:
-	var quest_name := quest.resource_path
-	if is_completed:
-		if quest_name not in completed_quests:
-			completed_quests.append(quest_name)
-			completed_quests_changed.emit()
-	else:
-		while quest_name in completed_quests:
-			completed_quests.erase(quest_name)
-			completed_quests_changed.emit()
-
-
-func _set_game_player_abilities(new_game_player_abilities: int) -> void:
-	if game_player_abilities == new_game_player_abilities:
+## Abandon the current [member quest] without marking it as completed.
+## If [param suspend] is [code]true[/code], progress in the quest will be saved
+## so that it can be resumed later.
+func abandon_quest(suspend: bool = true) -> void:
+	if not quest:
+		push_warning("abandon_quest(): no active quest")
 		return
-	game_player_abilities = new_game_player_abilities
-	abilities_changed.emit()
 
+	# TODO: only suspend the quest if meaningful progress has been made, not if
+	# the player abandons it immediately.
+	if suspend:
+		global.suspended_quests[quest.quest.resource_path] = SuspendedQuestState.new(quest, scene)
 
-func _set_quest_player_abilities(new_quest_player_abilities: int) -> void:
-	if quest_player_abilities == new_quest_player_abilities:
-		return
-	quest_player_abilities = new_quest_player_abilities
-	abilities_changed.emit()
-
-
-func _use_global_abilities() -> bool:
-	return current_quest == null
-
-
-## Clear player abilities.
-func clear_abilities() -> void:
-	if _use_global_abilities():
-		game_player_abilities = 0
-	else:
-		quest_player_abilities = 0
-
-
-## Enable or disable a player ability.
-## [br][br]
-## This behaves differently outside quests than when involved in a quest.
-func set_ability(ability: Enums.PlayerAbilities, is_enabled: bool) -> void:
-	if is_enabled:
-		if not has_ability(ability):
-			if _use_global_abilities():
-				game_player_abilities |= ability
-			else:
-				quest_player_abilities |= ability
-	else:
-		if has_ability(ability):
-			if _use_global_abilities():
-				game_player_abilities &= ~ability
-			else:
-				quest_player_abilities &= ~ability
-	if _use_global_abilities():
-		_state.set_value(GLOBAL_SECTION, GAME_PLAYER_ABILITIES_KEY, game_player_abilities)
-	else:
-		_state.set_value(QUEST_SECTION, QUEST_PLAYER_ABILITIES_KEY, quest_player_abilities)
-	_save()
-
-
-## Check if a player ability is enabled.
-## [br][br]
-## This will behave differently in the main "lore" game than in
-## StoryQuests: the lore has player progression that last the whole game,
-## while StoryQuests are narrative units and have their own player progression.
-func has_ability(ability: Enums.PlayerAbilities) -> bool:
-	if _use_global_abilities():
-		return game_player_abilities & ability
-	return quest_player_abilities & ability
-
-
-## Remove all [InventoryItem] from the [member inventory].
-func clear_inventory() -> void:
-	_do_clear_inventory()
-	_update_inventory_state()
-	_save()
-
-
-## Remove all [InventoryItem] from the [member inventory] without triggering a save.
-func _do_clear_inventory() -> void:
-	for item: InventoryItem in inventory.duplicate():
-		inventory.erase(item)
-		item_consumed.emit(item)
-	collected_items_changed.emit(items_collected())
-
-
-## Return all the items collected so far in the [member inventory].
-func items_collected() -> Array[InventoryItem]:
-	return inventory.duplicate()
-
-
-func _update_inventory_state() -> void:
-	_state.set_value(
-		INVENTORY_SECTION,
-		INVENTORY_ITEMS_KEY,
-		inventory.map(func(i: InventoryItem) -> InventoryItem.ItemType: return i.type)
-	)
-
-
-## Decrement the player's lives by 1. Does not go below 0.
-## Saves the new lives count.
-func decrement_lives() -> void:
-	current_lives = max(0, current_lives - 1)
-	_state.set_value(GLOBAL_SECTION, LIVES_KEY, current_lives)
-	_save()
-	lives_changed.emit(current_lives)
-	if DEBUG_LIVES:
-		prints("[LIVES DEBUG] Lives decremented to:", current_lives)
-
-
-## Reset the player's lives to maximum (3).
-## Saves the new lives count.
-func reset_lives() -> void:
-	current_lives = MAX_LIVES
-	_state.set_value(GLOBAL_SECTION, LIVES_KEY, current_lives)
-	_save()
-	lives_changed.emit(current_lives)
-	if DEBUG_LIVES:
-		prints("[LIVES DEBUG] Lives reset to:", current_lives)
-
-
-## Add one life to the player, up to the maximum.
-## This is for future "extra life" pickups.
-func add_life() -> void:
-	if current_lives < MAX_LIVES:
-		current_lives += 1
-		_state.set_value(GLOBAL_SECTION, LIVES_KEY, current_lives)
-		_save()
-		lives_changed.emit(current_lives)
-		if DEBUG_LIVES:
-			prints("[LIVES DEBUG] Life added. Lives now:", current_lives)
-
-
-func change_lights(new_lights_on: bool, immediate: bool = false) -> void:
-	lights_on = new_lights_on
-	lights_changed.emit(lights_on, immediate)
-
-
-## Clear the per-scene state.
-func clear_per_scene_state() -> void:
-	lights_on = false
+	quest = null
 
 
 ## Clear the persisted state.
 func clear() -> void:
-	_state.clear()
-	completed_quests = []
-	game_player_abilities = 0
-	current_lives = MAX_LIVES
-	if DEBUG_LIVES:
-		prints("[LIVES DEBUG] State cleared. Lives reset to:", current_lives)
-	_save()
+	_saved_game = SavedGame.new()
 
 
 ## Check if there is persisted state.
 func can_restore() -> bool:
-	return get_scene_to_restore() != ""
+	return scene != null
 
 
-## If there is a scene to restore, return it.
-func get_scene_to_restore() -> String:
-	return _state.get_value(GLOBAL_SECTION, CURRENTSCENE_KEY, "")
-
-
-## Restore the persisted state.
-func restore() -> Dictionary:
-	inventory.clear()
-	for item_type: InventoryItem.ItemType in _state.get_value(
-		INVENTORY_SECTION, INVENTORY_ITEMS_KEY, []
-	):
-		var item := InventoryItem.with_type(item_type)
-		inventory.append(item)
-
-	if _state.has_section_key(QUEST_SECTION, QUEST_PATH_KEY):
-		current_quest = load(_state.get_value(QUEST_SECTION, QUEST_PATH_KEY)) as Quest
-
-	var scene_path: String = _state.get_value(GLOBAL_SECTION, CURRENTSCENE_KEY, "")
-	current_spawn_point = _state.get_value(GLOBAL_SECTION, SPAWNPOINT_KEY, ^"")
-	incorporating_threads = _state.get_value(
-		GLOBAL_SECTION, GLOBAL_INCORPORATING_THREADS_KEY, false
-	)
-	completed_quests = _state.get_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, [] as Array[String])
-
-	game_player_abilities = _state.get_value(GLOBAL_SECTION, GAME_PLAYER_ABILITIES_KEY, 0)
-	quest_player_abilities = _state.get_value(QUEST_SECTION, QUEST_PLAYER_ABILITIES_KEY, 0)
-
-	# Restore lives from saved state, default to MAX_LIVES if not found
-	current_lives = _state.get_value(GLOBAL_SECTION, LIVES_KEY, MAX_LIVES)
-	if DEBUG_LIVES:
-		prints("[LIVES DEBUG] State restored. Lives:", current_lives)
-
-	return {"scene_path": scene_path, "spawn_point": current_spawn_point}
-
-
-func _save() -> void:
+## Save the game state (if [persist_progress] is [code]true[/code])
+func save() -> void:
 	if not persist_progress:
 		return
-	_state.set_value(GLOBAL_SECTION, COMPLETED_QUESTS_KEY, completed_quests)
-	var err := _state.save(GAME_STATE_PATH)
-	if err != OK:
-		push_error("Failed to save settings to %s: %s" % [GAME_STATE_PATH, err])
+
+	var e := ResourceSaver.save(_saved_game, SAVE_PATH)
+	if e != OK:
+		push_error("Failed to save state to %s: %d %s" % [SAVE_PATH, e, error_string(e)])

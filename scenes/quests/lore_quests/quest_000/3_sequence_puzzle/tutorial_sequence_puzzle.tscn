@@ -34,7 +34,7 @@
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="29_2be51"]
 [ext_resource type="Resource" uid="uid://bevp181alogxl" path="res://scenes/quests/lore_quests/quest_000/3_sequence_puzzle/components/tutorial_sequence_puzzle.dialogue" id="30_ypup5"]
 [ext_resource type="PackedScene" uid="uid://c4vbokn408f2c" path="res://scenes/game_elements/props/decoration/sheep/sheep.tscn" id="32_orron"]
-[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="34_2be51"]
+[ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="36_44bhx"]
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="37_545ss"]
 
 [sub_resource type="Curve2D" id="Curve2D_ewpk3"]
@@ -130,12 +130,12 @@ audio_stream = ExtResource("13_vdbd1")
 
 [node name="Green" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1073096074 instance=ExtResource("12_0nlel")]
 position = Vector2(96, -32)
-sprite_modulate = Color(0.2509804, 0.6745098, 0.3254902, 1)
+sprite_modulate = Color(0.37, 1, 0.48550004, 1)
 audio_stream = ExtResource("14_ixuqx")
 
 [node name="Blue" parent="OnTheGround/SequencePuzzle/Objects" unique_id=343711192 instance=ExtResource("12_0nlel")]
 position = Vector2(192, -64)
-sprite_modulate = Color(0.20392157, 0.62352943, 0.6117647, 1)
+sprite_modulate = Color(0.32999998, 1, 0.9776667, 1)
 audio_stream = ExtResource("15_2ja4k")
 
 [node name="Signs" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=1795857144]
@@ -238,16 +238,14 @@ metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 position = Vector2(-347, 289)
 curve = SubResource("Curve2D_ewpk3")
 
-[node name="Teleporter" type="Area2D" parent="." unique_id=409163531]
+[node name="Teleporter" parent="." unique_id=1779636661 instance=ExtResource("36_44bhx")]
 position = Vector2(927, -63)
-collision_layer = 4
-script = ExtResource("34_2be51")
 next_scene = "uid://bk7lmd8tmkdql"
-enter_transition = 4
+enter_transition = 5
 exit_transition = 5
-metadata/_custom_type_script = "uid://hqdquinbimce"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" unique_id=261368868]
 shape = SubResource("RectangleShape2D_ypup5")
 
 [connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/Door" method="open"]
+[connection signal="cinematic_finished" from="Cinematic" to="OnTheGround/TutorialNPC" method="walk_path"]

@@ -8,6 +8,13 @@ enum ItemType {
 	MEMORY,
 	IMAGINATION,
 	SPIRIT,
+	NONE,
+}
+
+const COLORS_PER_TYPE: Dictionary[ItemType, Color] = {
+	ItemType.MEMORY: Color(0.459, 0.867, 0.0, 1.0),
+	ItemType.IMAGINATION: Color(0.969, 0.792, 0.0, 1.0),
+	ItemType.SPIRIT: Color(0.929, 0.0, 0.0, 1.0)
 }
 
 const HUD_TEXTURES: Dictionary[ItemType, Texture2D] = {
@@ -22,7 +29,6 @@ const WORLD_TEXTURES: Dictionary[ItemType, Texture2D] = {
 	ItemType.SPIRIT: preload("uid://cepg1o3ihp055")
 }
 
-@export var name: String
 @export var type: ItemType
 
 

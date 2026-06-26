@@ -18,7 +18,7 @@ jobs:
     if: ${{ !github.event.repository.fork }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - uses: ./.github/actions/lfs-cached-checkout
     - uses: tox-dev/action-pre-commit-uv@v1
 
@@ -27,9 +27,9 @@ jobs:
     if: ${{ !github.event.repository.fork }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Install the latest version of uv
-      uses: astral-sh/setup-uv@v8.1.0
+      uses: astral-sh/setup-uv@v8.2.0
       with:
         cache-dependency-glob: ".github/workflows/checks.yaml"
     - name: Check REUSE compliance

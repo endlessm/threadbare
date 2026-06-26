@@ -1,37 +1,62 @@
 [gd_scene format=3 uid="uid://tahf2q1d3e74"]
 
-[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_qb52c"]
 [ext_resource type="Script" uid="uid://c63sfg6wgj2uy" path="res://scenes/menus/options/components/settings_toggle.gd" id="2_qb52c"]
+[ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="3_back"]
+[ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="4_arrow"]
+[ext_resource type="Shortcut" uid="uid://c5pwgp1w8p3y1" path="res://scenes/ui_elements/shortcuts/back_shortcut.tres" id="4_jbrqx"]
 
-[node name="VideoSettings" type="VBoxContainer" unique_id=1199621136]
-offset_left = 96.0
-offset_top = 64.0
-offset_right = 544.0
-offset_bottom = 254.0
-theme = ExtResource("1_qb52c")
+[node name="VideoSettings" type="PanelContainer" unique_id=150368892 node_paths=PackedStringArray("back_button")]
+custom_minimum_size = Vector2(640, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -224.0
+offset_top = -191.5
+offset_right = 224.0
+offset_bottom = 191.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_back")
+back_button = NodePath("VBoxContainer/BackButton")
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=2038282423]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1199621136]
+custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
-size_flags_horizontal = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=2038282423]
+layout_mode = 2
+size_flags_horizontal = 4
 theme_type_variation = &"PlayerRibbon"
 
-[node name="Label" type="Label" parent="PanelContainer" unique_id=1282877578]
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer" unique_id=1282877578]
 layout_mode = 2
 text = "Video Settings"
 
-[node name="GridContainer" type="GridContainer" parent="." unique_id=277212195]
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer" unique_id=277212195]
 layout_mode = 2
 theme_override_constants/v_separation = 0
 
-[node name="ShowControlsButton" type="CheckButton" parent="GridContainer" unique_id=153771304]
+[node name="ShowControlsButton" type="CheckButton" parent="VBoxContainer/GridContainer" unique_id=153771304]
 layout_mode = 2
 text = "Show Controls"
 script = ExtResource("2_qb52c")
 setting = &"show_input_hud"
 
-[node name="FullscreenButton" type="CheckButton" parent="GridContainer" unique_id=409098937]
+[node name="FullscreenButton" type="CheckButton" parent="VBoxContainer/GridContainer" unique_id=409098937]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Fullscreen"
 script = ExtResource("2_qb52c")
 setting = &"fullscreen"
+
+[node name="BackButton" type="Button" parent="VBoxContainer" unique_id=1300000002]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+shortcut = ExtResource("4_jbrqx")
+text = "Back"
+icon = ExtResource("4_arrow")
+flat = true

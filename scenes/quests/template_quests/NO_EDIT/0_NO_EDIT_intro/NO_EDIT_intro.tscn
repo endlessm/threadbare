@@ -128,24 +128,23 @@ editor_draw_limits = true
 [node name="OnTheGround" type="Node2D" parent="." unique_id=836096441]
 y_sort_enabled = true
 
-[node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=169229228]
+[node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=169229228 groups=["player"]]
 position = Vector2(400, 349)
 sprite_frames = ExtResource("3_bol4n")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround" unique_id=49807179]
-root_node = NodePath("../..")
-libraries/ = SubResource("AnimationLibrary_qdpvj")
+[node name="Rock" parent="OnTheGround" unique_id=912112339 instance=ExtResource("6_f3ghw")]
+position = Vector2(125, 403)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=1398238637 node_paths=PackedStringArray("animation_player")]
 script = ExtResource("1_o3x1t")
 dialogue = ExtResource("2_jlqtq")
-animation_player = NodePath("../OnTheGround/AnimationPlayer")
+animation_player = NodePath("../AnimationPlayer")
 next_scene = "uid://coi4lvxir542y"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
-[node name="Rock" parent="." unique_id=912112339 instance=ExtResource("6_f3ghw")]
-position = Vector2(125, 403)
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=49807179]
+libraries/ = SubResource("AnimationLibrary_qdpvj")

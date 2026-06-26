@@ -12,10 +12,6 @@ extends Node
 ## InteractArea.end_interaction].
 ## If the parent is an NPC, it sets the [member InteractArea.action] to "Talk to NAME",
 ## where NAME is the [member NPC.npc_name].[br][br]
-## Optionally, an awaitable function can be passed to [member before_dialogue] if
-## something needs to happen before the [member dialogue] is displayed. This can be used,
-## for example, to dynamically set the [member title] of the dialogue considering the
-## game state at the moment the interaction happens.
 
 @export var dialogue: DialogueResource = preload("uid://cc3paugq4mma4")
 @export var title: String = ""
@@ -27,8 +23,6 @@ extends Node
 ## Each node in this list can be accessed by its [member Node.name].
 ## Having multiple nodes in this list with the same name is not advised.
 @export var extra_context: Array[Node]
-
-var before_dialogue: Callable
 
 
 func _set_interact_area(new_interact_area: InteractArea) -> void:
@@ -54,8 +48,6 @@ func _ready() -> void:
 
 
 func _on_interaction_started(player: Player, _from_right: bool) -> void:
-	if before_dialogue:
-		await before_dialogue.call()
 	var extra: Dictionary[String, Node]
 	for node: Node in extra_context:
 		extra[node.name] = node

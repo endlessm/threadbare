@@ -23,6 +23,7 @@ concurrency:
 
 env:
   PCK_NAME: threadbare
+  GODOT_VERSION: "4.7"
 
 jobs:
   web:
@@ -33,7 +34,7 @@ jobs:
       windows-changed: ${{ steps.changes.outputs.windows }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           # Fetch full history of commits and tags so that git describe --tags works
           fetch-depth: 0
@@ -43,7 +44,7 @@ jobs:
       - name: Export web build
         uses: endlessm/godot-export-action@v2
         with:
-          godot_version: "4.6.3"
+          godot_version: ${{ env.GODOT_VERSION }}
           export_preset: "Web"
 
       - name: Upload web artifact
@@ -80,7 +81,7 @@ jobs:
     if: ${{ inputs.build_windows || github.event_name == 'release' || needs.web.outputs.windows-changed == 'true' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           # Fetch full history of commits and tags so that git describe --tags works
           fetch-depth: 0
@@ -90,7 +91,7 @@ jobs:
       - name: Export Windows build
         uses: endlessm/godot-export-action@v2
         with:
-          godot_version: "4.6.2"
+          godot_version: ${{ env.GODOT_VERSION }}
           export_preset: "Windows x86_64"
 
       - name: Upload Windows artifact
@@ -108,7 +109,7 @@ jobs:
       image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
       options: --privileged
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           lfs: true
           sparse-checkout: |
