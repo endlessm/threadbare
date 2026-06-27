@@ -367,10 +367,17 @@ func _cinematica_final_climax() -> void:
 		tween_final.tween_property(rect_fade, "color:a", 1.0, 3.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		await tween_final.finished
 
-		if escena_outro != null:
-			get_tree().change_scene_to_packed(escena_outro)
-		else:
-			push_error("¡Arrastra el OUTRO en el inspector!")	
+# Usamos el SceneSwitcher global en lugar del cambio bruto.
+		# Esto engaña al juego haciéndole creer que pisaste el Teleporter 
+		# y preserva todo tu inventario y misiones del juego completo.
+		var ruta_outro = "res://scenes/quests/story_quests/el_hilo_que_no_teji/4_outro/el_hilo_que_no_teji_outro1.tscn"
+		
+		SceneSwitcher.change_to_file_with_transition.call_deferred(
+			ruta_outro, 
+			"", 
+			Transition.Effect.LEFT_TO_RIGHT_WIPE, 
+			Transition.Effect.RIGHT_TO_LEFT_WIPE
+		)
 
 # =========================================================
 # FUNCIONES AUXILIARES RESTANTES

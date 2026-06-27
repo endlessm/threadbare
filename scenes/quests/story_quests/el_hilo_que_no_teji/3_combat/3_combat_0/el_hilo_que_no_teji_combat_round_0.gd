@@ -20,6 +20,12 @@ func _ready() -> void:
 	# Desactivamos el autostart de la cinemática por código para controlar el orden nosotros
 	cinematic.autostart = false
 	
+	# --- SOLUCIÓN DIRECTA SIN GRUPOS NI RUTAS ---
+	# propagate_call rastrea el árbol de la escena y le manda la orden de apagado 
+	# exclusivamente al nodo que tiene esta función (tu HUD).
+	get_tree().root.propagate_call("change_story_quest_progress_visibility", [false])
+	# --------------------------------------------
+	
 	# Al cargar la escena, Luto corre solo hacia arriba
 	hacer_que_luto_corra()
 
@@ -79,17 +85,15 @@ func comenzar_secuencia_cinematica() -> void:
 	await cinematic.cinematic_finished 
 
 	# 4. APERTURA BLINDADA POR GRUPO (Solución definitiva al error de rutas):
-	# Buscamos en el mapa el nodo que pertenece al grupo de la puerta
 	var puerta_secreta = get_tree().get_first_node_in_group("puerta_cinematica")
 	
 	if puerta_secreta != null:
 		if puerta_secreta.has_method("abrir_puerta_secreta"):
 			puerta_secreta.abrir_puerta_secreta()
-			print("¡Éxito! Se envió la orden de apertura a la puerta.")
 		else:
 			print("Error: El nodo encontrado no tiene la función abrir_puerta_secreta")
 	else:
-		print("Error Crítico: No se encontró la puerta. ¿Recordaste añadir 'DoorExit' al grupo 'puerta_cinematica'?")
+		print("Error Crítico: No se encontró la puerta.")
 
 	# 5. Le devolvemos el control completo del teclado al jugador para que continúe
 	jugador.set_physics_process(true)

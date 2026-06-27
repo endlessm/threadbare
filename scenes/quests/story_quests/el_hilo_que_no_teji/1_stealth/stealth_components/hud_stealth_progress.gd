@@ -23,7 +23,9 @@ func _ready() -> void:
 
 	for i: int in min(hilos_completos, slots_visuales):
 		if items_collected.size() > 0:
-			items_container.get_child(i).start_as_filled(items_collected[0])
+			var slot = items_container.get_child(i)
+			slot.start_as_filled(items_collected[0])
+			_pintar_hilo(slot)
 
 	GameState.item_collected.connect(self._on_item_collected)
 	GameState.item_consumed.connect(self._on_item_consumed)
@@ -36,6 +38,7 @@ func _on_item_collected(item: InventoryItem) -> void:
 			var item_slot := child as ItemSlot
 			if not item_slot.is_filled():
 				item_slot.fill(item)
+				_pintar_hilo(item_slot)
 				return
 
 func _on_item_consumed(item: InventoryItem) -> void:
@@ -43,3 +46,13 @@ func _on_item_consumed(item: InventoryItem) -> void:
 		var item_slot := child as ItemSlot
 		if item_slot.is_filled_with_same_item_type_as(item):
 			item_slot.free_slot()
+			item_slot.self_modulate = Color.WHITE
+
+# --- CONTROL NARRATIVO DEL COLOR ---
+func _pintar_hilo(slot: Node) -> void:
+	# Escalada emocional: Verde (Exploración) -> Naranja (Pánico/Urgencia) -> Rojo (Clímax)
+	var colores = [Color.GREEN, Color("ff6600"), Color.RED]
+	var indice = slot.get_index() 
+	
+	if indice < colores.size():
+		slot.self_modulate = colores[indice]
