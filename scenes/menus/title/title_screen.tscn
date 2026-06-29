@@ -45,29 +45,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_2ijyo")
-current_tab = 1
+current_tab = 0
 tabs_visible = false
-
-[node name="TouchscreenWarning" parent="Pages" unique_id=2046863085 instance=ExtResource("6_5uobg")]
-visible = false
-layout_mode = 2
 
 [node name="MainMenu" parent="Pages" unique_id=422406702 instance=ExtResource("5_0vy2n")]
 unique_name_in_owner = true
 layout_mode = 2
-metadata/_tab_index = 1
+metadata/_tab_index = 0
 
 [node name="Credits" parent="Pages" unique_id=999256361 instance=ExtResource("6_2ijyo")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-metadata/_tab_index = 2
+metadata/_tab_index = 1
 
 [node name="Options" parent="Pages" unique_id=1924255406 instance=ExtResource("8_5uobg")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+metadata/_tab_index = 2
+
+[node name="TouchscreenWarning" parent="Pages" unique_id=2046863085 instance=ExtResource("6_5uobg")]
+visible = false
+layout_mode = 2
 metadata/_tab_index = 3
 
 [connection signal="continue_pressed" from="Pages/MainMenu" to="." method="_on_main_menu_continue_pressed"]
@@ -76,3 +77,4 @@ metadata/_tab_index = 3
 [connection signal="start_pressed" from="Pages/MainMenu" to="." method="_on_start_pressed"]
 [connection signal="back" from="Pages/Credits" to="." method="_on_credits_back"]
 [connection signal="back" from="Pages/Options" to="." method="_on_options_back"]
+[connection signal="dismissed" from="Pages/TouchscreenWarning" to="Pages/MainMenu" method="show"]

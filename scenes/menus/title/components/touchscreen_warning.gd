@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Control
 
+signal dismissed
+
 
 func _ready() -> void:
 	if _should_show_touchscreen_warning():
@@ -21,4 +23,4 @@ func _should_show_touchscreen_warning() -> bool:
 
 
 func _on_dismiss_button_pressed() -> void:
-	hide()
+	dismissed.emit()
