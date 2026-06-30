@@ -55,10 +55,6 @@ func _get_fact_dict() -> Dictionary:
 
 
 func _on_collectible_ready() -> void:
-	if not GameState.persist_progress:
-		queue_free()
-		return
-
 	_fact_name = _get_fact_name()
 	_fact_value = collectible.get_path()
 	_facts = _get_fact_dict()
