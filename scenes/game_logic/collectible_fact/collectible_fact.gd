@@ -13,7 +13,7 @@ extends Node
 const COLLECTED_SIGNAL_NAME := "collected"
 
 ## A node with a signal named [constant COLLECTED_SIGNAL_NAME]. Also if the node has a method named
-## "start_collected", it may be called when restoring the game state.
+## [code]start_collected[/code], it may be called when restoring the game state.
 @export var collectible: Node2D:
 	set = _set_collectible
 
