@@ -56,7 +56,7 @@ func _get_fact_dict() -> Dictionary:
 
 func _on_collectible_ready() -> void:
 	_fact_name = _get_fact_name()
-	_fact_value = collectible.get_path()
+	_fact_value = get_tree().current_scene.get_path_to(collectible)
 	_facts = _get_fact_dict()
 
 	if _fact_value in _facts.get(_fact_name, []):
