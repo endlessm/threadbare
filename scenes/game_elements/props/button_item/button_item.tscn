@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://nejfw5t8xub5" path="res://scenes/game_elements/props/button_item/components/button_item.gd" id="1_14phb"]
 [ext_resource type="Texture2D" uid="uid://dpaqpkkj38f16" path="res://scenes/game_elements/props/button_item/components/button-yellow.png" id="1_i5psm"]
 [ext_resource type="Texture2D" uid="uid://dlpjjca2udf42" path="res://scenes/game_elements/props/button_item/components/button-shadow.png" id="2_14phb"]
+[ext_resource type="Script" uid="uid://cr6tdw8frg4a1" path="res://scenes/game_logic/collectible_fact/collectible_fact.gd" id="4_ympcj"]
+[ext_resource type="Script" uid="uid://dxvv340yej4py" path="res://scenes/game_logic/fact_counter/fact_counter.gd" id="5_7lbsr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_14phb"]
 atlas = ExtResource("1_i5psm")
@@ -235,4 +237,13 @@ unique_name_in_owner = true
 position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_i5psm")
 
+[node name="CollectibleFact" type="Node" parent="." unique_id=947240438 node_paths=PackedStringArray("collectible")]
+script = ExtResource("4_ympcj")
+collectible = NodePath("..")
+
+[node name="FactCounter" type="Node" parent="." unique_id=398358109]
+script = ExtResource("5_7lbsr")
+prefix = "buttons_collected"
+
+[connection signal="collected" from="." to="FactCounter" method="increment"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
