@@ -64,7 +64,6 @@ func _on_collectible_ready() -> void:
 		if collectible.has_method("start_collected"):
 			collectible.start_collected()
 		else:
-			collectible.visible = false
 			collectible.queue_free()
 		queue_free()
 	else:
