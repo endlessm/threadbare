@@ -19,6 +19,14 @@ const STORYBOOK_SCENE := preload("uid://bhm7fdjvppt8b")
 		eternal_loom = new_value
 		update_configuration_warnings()
 
+## Spawn point to place the player at if they abandon a quest started from this
+## elder. Should typically be just in front of the elder so that it is easy to
+## interact with the elder again.
+@export var abandon_point: SpawnPoint:
+	set(new_value):
+		abandon_point = new_value
+		update_configuration_warnings()
+
 ## The quest chosen by the player from the storybook
 var chosen_quest: Quest
 
@@ -105,6 +113,13 @@ func _on_interaction_ended() -> void:
 	if chosen_quest:
 		interact_area.disabled = true
 		GameState.set_quest(chosen_quest)
+
+		var current_scene := get_tree().current_scene
+		GameState.quest.abandon_scene_path = current_scene.scene_file_path
+		GameState.quest.abandon_spawn_point = (
+			current_scene.get_path_to(abandon_point) if abandon_point else ^""
+		)
+
 		if restart and chosen_quest.resource_path in GameState.global.suspended_quests:
 			GameState.global.suspended_quests.erase(chosen_quest.resource_path)
 
