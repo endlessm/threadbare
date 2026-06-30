@@ -64,7 +64,12 @@ func _on_collectible_ready() -> void:
 		if collectible.has_method("start_collected"):
 			collectible.start_collected()
 		else:
+			# Fallback to just free the collectible:
 			collectible.queue_free()
+		# If the game state indicates that the collectible was collected, we can safely free this
+		# node after applying the effects (calling start_collected() on them or its fallback).
+		# In the future, we may want to revisit this, if we add a way to bring back the collected
+		# items while the game is running.
 		queue_free()
 	else:
 		collectible.connect(COLLECTED_SIGNAL_NAME, _on_collectible_collected)
