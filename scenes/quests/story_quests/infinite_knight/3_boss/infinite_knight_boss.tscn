@@ -1,0 +1,90 @@
+[gd_scene format=4 uid="uid://dsksocaiqjfdm"]
+
+[ext_resource type="TileSet" uid="uid://haxvbtijkihu" path="res://scenes/quests/story_quests/infinite_knight/tiles/infinite_knight_elevation_2.tres" id="2_vrjp5"]
+[ext_resource type="TileSet" uid="uid://byr2ytqav02w5" path="res://scenes/quests/story_quests/infinite_knight/tiles/infinite_knight_exterior_floors.tres" id="4_r5a2l"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_hvhbb"]
+[ext_resource type="Script" uid="uid://vqou4ld2tal" path="res://scenes/quests/story_quests/infinite_knight/3_boss/on_the_ground.gd" id="5_u7k86"]
+[ext_resource type="SpriteFrames" uid="uid://7q17ox014opg" path="res://scenes/quests/story_quests/infinite_knight/player_components/infinite_knight_player.tres" id="6_6grsx"]
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="7_ici80"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="8_nd104"]
+[ext_resource type="Resource" uid="uid://ctqfe0ft872q8" path="res://scenes/quests/story_quests/infinite_knight/3_boss/boss_components/infinite_knight_boss.dialogue" id="9_52sfu"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="10_rxthf"]
+[ext_resource type="PackedScene" uid="uid://dbkni3nqne6ys" path="res://scenes/quests/story_quests/infinite_knight/3_boss/boss.tscn" id="10_vrjp5"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="11_fwuqd"]
+[ext_resource type="Texture2D" uid="uid://cs8dj6t3nq3kn" path="res://scenes/quests/story_quests/infinite_knight/2_combat/combat_components/background.png" id="12_u7k86"]
+[ext_resource type="AudioStream" uid="uid://dh4mwcunotua3" path="res://scenes/quests/story_quests/infinite_knight/player_components/combat.mp3" id="13_u7k86"]
+
+[sub_resource type="Resource" id="Resource_3gar4"]
+script = ExtResource("8_nd104")
+type = 2
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[node name="InfiniteKnightBoss" type="Node2D" unique_id=217609538]
+
+[node name="TileMapLayers" type="Node2D" parent="." unique_id=2088852286]
+
+[node name="Grass" type="TileMapLayer" parent="TileMapLayers" unique_id=592819758]
+tile_map_data = PackedByteArray("AAAMAAcABQACAAEAAAAMAAYABQACAAEAAAAMAAUABQACAAEAAAAMAAQABQACAAEAAAAMAAMABQACAAEAAAAMAAIABQACAAEAAAAMAAEABQACAAAAAAALAAcABQABAAEAAAALAAYABQABAAEAAAALAAUABQABAAEAAAALAAQABQABAAEAAAALAAMABQABAAEAAAALAAIABQABAAEAAAALAAEABQABAAAAAAAKAAcABQABAAEAAAAKAAYABQABAAEAAAAKAAUABQABAAEAAAAKAAQABQABAAEAAAAKAAMABQABAAEAAAAKAAIABQABAAEAAAAJAAcABQABAAEAAAAJAAYABQABAAEAAAAJAAUABQABAAEAAAAJAAQABQABAAEAAAAJAAMABQABAAEAAAAJAAIABQABAAEAAAAIAAcABQABAAEAAAAIAAYABQABAAEAAAAIAAUABQABAAEAAAAIAAQABQABAAEAAAAIAAMABQABAAEAAAAIAAIABQABAAEAAAAHAAcABQABAAEAAAAHAAYABQABAAEAAAAHAAUABQABAAEAAAAHAAQABQABAAEAAAAHAAMABQABAAEAAAAHAAIABQABAAEAAAAGAAcABQABAAEAAAAGAAYABQABAAEAAAAGAAUABQABAAEAAAAGAAQABQABAAEAAAAGAAMABQABAAEAAAAGAAIABQABAAEAAAAFAAcABQABAAEAAAAFAAYABQABAAEAAAAFAAUABQABAAEAAAAFAAQABQABAAEAAAAFAAMABQABAAEAAAAFAAIABQABAAEAAAAFAAEABQABAAAAAAAEAAcABQABAAEAAAAEAAYABQABAAEAAAAEAAQABQABAAEAAAAEAAMABQABAAEAAAAEAAIABQABAAEAAAAEAAEABQABAAAAAAADAAQABQABAAEAAAADAAMABQABAAEAAAADAAIABQABAAEAAAADAAEABQABAAAAAAACAAMABQABAAEAAAACAAIABQABAAEAAAACAAEABQABAAAAAAABAAMABQAAAAEAAAABAAIABQAAAAEAAAACAAQABQABAAEAAAABAAQABQAAAAEAAAACAAgABQABAAIAAAADAAgABQABAAIAAAAEAAgABQABAAIAAAAFAAgABQABAAIAAAAGAAgABQABAAIAAAAHAAgABQABAAIAAAAIAAgABQABAAIAAAAJAAgABQABAAIAAAAKAAgABQABAAIAAAAMAAgABQACAAIAAAALAAgABQABAAIAAAABAAUABQAAAAEAAAACAAUABQABAAEAAAADAAUABQABAAEAAAAEAAUABQABAAEAAAADAAYABQABAAEAAAACAAYABQABAAEAAAABAAYABQAAAAEAAAABAAcABQAAAAEAAAACAAcABQABAAEAAAADAAcABQABAAEAAAAGAAEABQABAAAAAAAHAAEABQABAAAAAAAIAAEABQABAAAAAAAJAAEABQABAAAAAAAKAAEABQABAAAAAAABAAgABQAAAAIAAAABAAkAAQAAAAMAAAACAAkAAQAAAAMAAAADAAkAAQAAAAMAAAAEAAkAAQAAAAMAAAAFAAkAAQAAAAMAAAAGAAkAAQAAAAMAAAAHAAkAAQAAAAMAAAAIAAkAAQAAAAMAAAAJAAkAAQAAAAMAAAAKAAkAAQAAAAMAAAALAAkAAQAAAAMAAAAMAAkAAQAAAAMAAAABAAEABQAAAAAAAAA=")
+tile_set = ExtResource("4_r5a2l")
+
+[node name="Stones" type="TileMapLayer" parent="TileMapLayers" unique_id=1445769646]
+visible = false
+tile_map_data = PackedByteArray("AAABAAkABAADAAQAAAACAAkABAADAAQAAAADAAkABAADAAQAAAAEAAkABAADAAQAAAAFAAkABAADAAQAAAAGAAkABAADAAQAAAAHAAkABAADAAQAAAAIAAkABAADAAQAAAAJAAkABAADAAQAAAAKAAkABAADAAQAAAALAAkABAADAAQAAAAMAAkABAADAAQAAAANAAkABAADAAQAAAANAAgABAADAAQAAAANAAcABAADAAQAAAANAAYABAADAAQAAAANAAUABAADAAQAAAANAAQABAADAAQAAAANAAMABAADAAQAAAANAAIABAADAAQAAAANAAEABAADAAQAAAAAAAAABAADAAQAAAAAAAEABAADAAQAAAAAAAIABAADAAQAAAAAAAMABAADAAQAAAAAAAQABAADAAQAAAAAAAUABAADAAQAAAAAAAYABAADAAQAAAAAAAcABAADAAQAAAAAAAgABAADAAQAAAAAAAkABAADAAQAAAANAP//BAADAAQAAAAMAP//BAADAAQAAAALAP//BAADAAQAAAAKAP//BAADAAQAAAAJAP//BAADAAQAAAAIAP//BAADAAQAAAAHAP//BAADAAQAAAAGAP//BAADAAQAAAAFAP//BAADAAQAAAAEAP//BAADAAQAAAADAP//BAADAAQAAAACAP//BAADAAQAAAABAP//BAADAAQAAAAAAP//BAADAAQAAAA=")
+tile_set = ExtResource("2_vrjp5")
+
+[node name="OnTheGround" type="Node2D" parent="." unique_id=1358184019]
+y_sort_enabled = true
+script = ExtResource("5_u7k86")
+
+[node name="Player" parent="OnTheGround" unique_id=747348360 instance=ExtResource("5_hvhbb")]
+position = Vector2(133, 345)
+sprite_frames = ExtResource("6_6grsx")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1732237457]
+limit_left = -64
+limit_top = 28
+limit_right = 1024
+limit_bottom = 704
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[node name="CollectibleItem" parent="OnTheGround" unique_id=1678374994 instance=ExtResource("7_ici80")]
+position = Vector2(451, 323)
+revealed = false
+next_scene = "uid://b1vvld0ypflg4"
+item = SubResource("Resource_3gar4")
+collected_dialogue = ExtResource("9_52sfu")
+dialogue_title = &"well_done"
+
+[node name="boss" parent="OnTheGround" unique_id=1581229532 instance=ExtResource("10_vrjp5")]
+position = Vector2(448, 317)
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1686505878]
+
+[node name="HUD" parent="." unique_id=1084128841 instance=ExtResource("10_rxthf")]
+
+[node name="Cinematic" type="Node2D" parent="." unique_id=1869940872]
+script = ExtResource("11_fwuqd")
+dialogue = ExtResource("9_52sfu")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=2122076549]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=140187179]
+motion_scale = Vector2(0.1, 0.1)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer" unique_id=1951897056]
+texture_filter = 1
+offset_left = -761.0
+offset_top = -395.0
+offset_right = 503.0
+offset_bottom = 362.0
+scale = Vector2(2, 2)
+texture = ExtResource("12_u7k86")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=969028947]
+stream = ExtResource("13_u7k86")
+volume_db = -10.0
+autoplay = true
+
+[connection signal="jefe_derrotado" from="OnTheGround/boss" to="OnTheGround/CollectibleItem" method="reveal"]
