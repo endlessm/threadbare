@@ -1,0 +1,617 @@
+[gd_scene format=4 uid="uid://b2v6dyhgg16l4"]
+
+[ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="1_f8tbp"]
+[ext_resource type="TileSet" uid="uid://ci0x5m62qamxl" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_cabana.tres" id="2_3exgg"]
+[ext_resource type="TileSet" uid="uid://bmxkk10m81ec5" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_furnitures.tres" id="3_nxib4"]
+[ext_resource type="SpriteFrames" uid="uid://d1jsrwm2u7mfr" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/lino/el_hilo_que_no_teji_player.tres" id="4_xyt4v"]
+[ext_resource type="SpriteFrames" uid="uid://cjx0qtpsps4pt" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/manchitas/manchitas_collar_bark.tres" id="5_ir6uh"]
+[ext_resource type="Texture2D" uid="uid://clda4eprvw2gr" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/manchitas/manchitas_collar.png" id="6_o8n81"]
+[ext_resource type="SpriteFrames" uid="uid://cyxi4gkgj3mt2" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_tree_spriteframes_blue.tres" id="7_hsrkj"]
+[ext_resource type="SpriteFrames" uid="uid://dk8csh47w54tt" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_tree_spriteframes_yellow.tres" id="8_owpuo"]
+[ext_resource type="SpriteFrames" uid="uid://dx33pybavawht" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/tiles/el_hilo_que_no_teji_tree_spriteframes_green.tres" id="9_liv05"]
+[ext_resource type="Script" uid="uid://byfgy3265rxn7" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/4_outro/OutroDirector.gd" id="10_oclt6"]
+[ext_resource type="PackedScene" uid="uid://3jye8tk0fbof" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/0_intro/intro_components/FlashOverlay.tscn" id="11_0h0gv"]
+
+[sub_resource type="Animation" id="Animation_ugj03"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Lino:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Lino:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(400, 349)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Manchitas:animation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"bark"]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("OnTheGround/Manchitas:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TileMapLayers/Door:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("OnTheGround/Collar:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("TileMapLayers/Agua:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("OnTheGround/Lino:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_filvl"]
+resource_name = "intro_cinematic"
+length = 24.0
+step = 24.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Lino:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4, 10, 12, 12.01, 17, 18, 20),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [&"idle", &"sleep", &"confused", &"walk", &"walk", &"c_walk", &"c_confused", &"cry"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Manchitas:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5, 7.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"bark", &"bark"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("OnTheGround/Manchitas:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TileMapLayers/Door:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 12),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("OnTheGround/Collar:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 8, 17),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("TileMapLayers/Agua:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("OnTheGround/Lino:position")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 4, 10, 12, 12.01, 14, 16, 17, 18, 23.654346),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(256, 240), Vector2(256, 222), Vector2(256, 256), Vector2(256, 256), Vector2(384, 256), Vector2(384, 256), Vector2(536, 256), Vector2(544, 256), Vector2(563, 256), Vector2(384, 256)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("OnTheGround/Lino:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 22),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_oclt6"]
+resource_name = "outro_cinematic"
+length = 55.0
+step = 24.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Lino:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4, 6, 6.01, 10.5, 11, 55),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [&"sleep", &"c_confused", &"c_confused", &"c_walk", &"c_walk", &"cry", &"cry"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Manchitas:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 7.5, 12, 55),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [&"s_bark", &"s_bark", &"bark", &"bark"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TileMapLayers/Door:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 8.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("OnTheGround/Lino:position")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 4, 6.01, 6.03, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 11.5, 12, 12.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(258, 225), Vector2(256, 256), Vector2(256, 256), Vector2(312, 256), Vector2(339, 256), Vector2(361, 256), Vector2(411, 256), Vector2(457, 256), Vector2(457, 256), Vector2(482, 256), Vector2(517, 256), Vector2(535, 256), Vector2(536, 256), Vector2(544, 256), Vector2(556, 256)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("OnTheGround/Lino:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 55),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("OnTheGround/Manchitas:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 55),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
+
+[sub_resource type="Animation" id="Animation_gcv0h"]
+resource_name = "walk_off"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Lino:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Lino:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(495, 478), Vector2(1010, 478)]
+}
+
+[sub_resource type="Animation" id="Animation_n0k0s"]
+resource_name = "walk_on"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Lino:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Lino:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-50, 478), Vector2(495, 478)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bcjhu"]
+_data = {
+&"RESET": SubResource("Animation_ugj03"),
+&"intro_cinematic": SubResource("Animation_filvl"),
+&"outro_cinematic": SubResource("Animation_oclt6"),
+&"walk_off": SubResource("Animation_gcv0h"),
+&"walk_on": SubResource("Animation_n0k0s")
+}
+
+[node name="ElHiloQueNoTejiOutro" type="Node2D" unique_id=2049284984]
+
+[node name="TileMapLayers" type="Node2D" parent="." unique_id=591504591]
+
+[node name="Sand" type="TileMapLayer" parent="TileMapLayers" unique_id=874671513]
+tile_map_data = PackedByteArray("AAAIAAQAAQABAAEAAAAJAAQAAQABAAEAAAAKAAQAAQABAAEAAAALAAQAAQABAAEAAAAMAAQAAQABAAEAAAANAAQAAQABAAEAAAAOAAQAAQABAAEAAAAPAAQAAQABAAEAAAA=")
+tile_set = ExtResource("1_f8tbp")
+
+[node name="Ground" type="TileMapLayer" parent="TileMapLayers" unique_id=397514282]
+tile_map_data = PackedByteArray("AAAAAAUAAQABAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAEAAAAFAAUAAQABAAEAAAAGAAUAAQABAAEAAAAHAAUAAQABAAEAAAAIAAUAAQABAAEAAAAJAAUAAQABAAEAAAAKAAUAAQABAAEAAAALAAUAAQABAAEAAAAMAAUAAQABAAEAAAANAAUAAQABAAEAAAAOAAUAAQABAAEAAAAAAAYAAQABAAEAAAAAAAcAAQABAAEAAAAAAAgAAQABAAEAAAABAAYAAQABAAEAAAABAAcAAQABAAEAAAABAAgAAQABAAEAAAACAAYAAQABAAEAAAACAAcAAQABAAEAAAACAAgAAQABAAEAAAADAAYAAQABAAEAAAADAAcAAQABAAEAAAADAAgAAQABAAEAAAAEAAYAAQABAAEAAAAEAAcAAQABAAEAAAAEAAgAAQABAAEAAAAFAAYAAQABAAEAAAAFAAcAAQABAAEAAAAFAAgAAQABAAEAAAAGAAYAAQABAAEAAAAGAAcAAQABAAEAAAAGAAgAAQABAAEAAAAHAAYAAQABAAEAAAAHAAcAAQABAAEAAAAHAAgAAQABAAEAAAAIAAYAAQABAAEAAAAIAAcAAQABAAEAAAAIAAgAAQABAAEAAAAJAAYAAQABAAEAAAAJAAcAAQABAAEAAAAJAAgAAQABAAEAAAAKAAYAAQABAAEAAAAKAAcAAQABAAEAAAAKAAgAAQABAAEAAAALAAYAAQABAAEAAAALAAcAAQABAAEAAAALAAgAAQABAAEAAAAMAAYAAQABAAEAAAAMAAcAAQABAAEAAAAMAAgAAQABAAEAAAANAAYAAQABAAEAAAANAAcAAQABAAEAAAANAAgAAQABAAEAAAAOAAYAAQABAAEAAAAOAAcAAQABAAEAAAAOAAgAAQABAAEAAAAAAAAAAQABAAEAAAAAAAEAAQABAAEAAAABAAEAAQABAAEAAAACAAEAAQABAAEAAAACAAIAAQABAAEAAAADAAIAAQABAAEAAAAEAAIAAQABAAEAAAAFAAIAAQABAAEAAAAFAAMAAQABAAEAAAAGAAMAAQABAAEAAAAHAAQAAQABAAEAAAAOAAQABgABAAMAAAAOAAMAAQABAAEAAAAOAAIAAQABAAEAAAAOAAEAAQABAAEAAAAOAAAAAQABAAEAAAANAAQABgABAAMAAAANAAMAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAANAAAAAQABAAEAAAAMAAQABgABAAMAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAEAAAAMAAAAAQABAAEAAAALAAQABgABAAMAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAEAAAALAAAAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAKAAEAAQABAAEAAAAKAAAAAQABAAEAAAAJAAMAAQABAAEAAAAJAAIAAQABAAEAAAAJAAEAAQABAAEAAAAJAAAAAQABAAEAAAAIAAMAAQABAAEAAAAIAAIAAQABAAEAAAAIAAEAAQABAAEAAAAIAAAAAQABAAEAAAAHAAMAAQABAAEAAAAHAAIAAQABAAEAAAAHAAEAAQABAAEAAAAHAAAAAQABAAEAAAAGAAQAAQABAAEAAAAGAAIAAQABAAEAAAAGAAEAAQABAAEAAAAGAAAAAQABAAEAAAAFAAQAAQABAAEAAAAFAAEAAQABAAEAAAAFAAAAAQABAAEAAAAEAAQAAQABAAEAAAAEAAMAAQABAAEAAAAEAAEAAQABAAEAAAAEAAAAAQABAAEAAAADAAQAAQABAAEAAAADAAMAAQABAAEAAAADAAEAAQABAAEAAAADAAAAAQABAAEAAAACAAQAAQABAAEAAAACAAMAAQABAAEAAAACAAAAAQABAAEAAAABAAQAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAABAAAAAQABAAEAAAAAAAQAAQABAAEAAAAAAAMAAQABAAEAAAAAAAIAAQABAAEAAAAFAAkAAQABAAEAAAAGAAkAAQABAAEAAAAHAAkAAQABAAEAAAAIAAkAAQABAAEAAAAJAAkAAQABAAEAAAAKAAkAAQABAAEAAAALAAkAAQABAAEAAAAMAAkAAQABAAEAAAANAAkAAQABAAEAAAAOAAkAAQABAAEAAAAAAP//AQABAAEAAAABAP//AQABAAEAAAACAP//AQABAAEAAAADAP//AQABAAEAAAAEAP//AQABAAEAAAAFAP//AQABAAEAAAAGAP//AQABAAEAAAAHAP//AQABAAEAAAAIAP//AQABAAEAAAAJAP//AQABAAEAAAAKAP//AQABAAEAAAALAP//AQABAAEAAAAMAP//AQABAAEAAAANAP//AQABAAEAAAAOAP//AQABAAEAAAAPAP//AQABAAEAAAAPAAAAAQABAAEAAAAPAAEAAQABAAEAAAAPAAkAAQABAAEAAAAPAAgAAQABAAEAAAAPAAcAAQABAAEAAAAPAAYAAQABAAEAAAAPAAUAAQABAAEAAAAPAAQABgACAAMAAAAPAAMAAQABAAEAAAAPAAIAAQABAAEAAAD/////AQABAAEAAAD//wAAAQABAAEAAAD//wEAAQABAAEAAAD//wIAAQABAAEAAAD//wMAAQABAAEAAAD//wQAAQABAAEAAAD//wUAAQABAAEAAAD//wYAAQABAAEAAAD//wcAAQABAAEAAAD//wgAAQABAAEAAAD+/wMAAQABAAEAAAD+/wIAAQABAAEAAAD+/wEAAQABAAEAAAD+/wAAAQABAAEAAAD+////AQABAAEAAAD+//7/AQABAAEAAAD///7/AQABAAEAAAAAAP7/AQABAAEAAAABAP7/AQABAAEAAAACAP7/AQABAAEAAAADAP7/AQABAAEAAAAEAP7/AQABAAEAAAAFAP7/AQABAAEAAAAGAP7/AQABAAEAAAAHAP7/AQABAAEAAAAIAP7/AQABAAEAAAAJAP7/AQABAAEAAAAKAP7/AQABAAEAAAALAP7/AQABAAEAAAAMAP7/AQABAAEAAAANAP7/AQABAAEAAAAOAP7/AQABAAEAAAAPAP7/AQABAAEAAAAQAP7/AQABAAEAAAAQAP//AQABAAEAAAAQAAAAAQABAAEAAAAQAAEAAQABAAEAAAAQAAIAAQABAAEAAAAQAAMAAQABAAEAAAAQAAQAAQABAAEAAAAQAAUAAQABAAEAAAAQAAYAAQABAAEAAAAQAAcAAQABAAEAAAAQAAgAAQABAAEAAAAQAAkAAQABAAEAAAAQAAoAAQABAAEAAAAPAAoAAQABAAEAAAAOAAoAAQABAAEAAAANAAoAAQABAAEAAAAMAAoAAQABAAEAAAALAAoAAQABAAEAAAAKAAoAAQABAAEAAAAJAAoAAQABAAEAAAAIAAoAAQABAAEAAAAHAAoAAQABAAEAAAAGAAoAAQABAAEAAAAFAAoAAQABAAEAAAD+/wkAAQABAAEAAAD+/wgAAQABAAEAAAD+/wcAAQABAAEAAAD+/wYAAQABAAEAAAD+/wUAAQABAAEAAAD+/wQAAQABAAEAAAD9/wQAAQABAAEAAAD9/wMAAQABAAEAAAD9/wIAAQABAAEAAAD9/wEAAQABAAEAAAD9/wAAAQABAAEAAAD9////AQABAAEAAAD9//7/AQABAAEAAAD9//3/AQABAAEAAAD+//3/AQABAAEAAAD///3/AQABAAEAAAAAAP3/AQABAAEAAAABAP3/AQABAAEAAAACAP3/AQABAAEAAAADAP3/AQABAAEAAAAEAP3/AQABAAEAAAAFAP3/AQABAAEAAAAGAP3/AQABAAEAAAAHAP3/AQABAAEAAAAIAP3/AQABAAEAAAAJAP3/AQABAAEAAAAKAP3/AQABAAEAAAALAP3/AQABAAEAAAAMAP3/AQABAAEAAAANAP3/AQABAAEAAAAOAP3/AQABAAEAAAAPAP3/AQABAAEAAAAQAP3/AQABAAEAAAARAP3/AQABAAEAAAARAP7/AQABAAEAAAARAP//AQABAAEAAAARAAAAAQABAAEAAAARAAEAAQABAAEAAAARAAIAAQABAAEAAAARAAMAAQABAAEAAAARAAQAAQABAAEAAAARAAUAAQABAAEAAAARAAYAAQABAAEAAAARAAcAAQABAAEAAAARAAgAAQABAAEAAAARAAkAAQABAAEAAAARAAoAAQABAAEAAAARAAsAAQABAAEAAAAQAAsAAQABAAEAAAAPAAsAAQABAAEAAAAOAAsAAQABAAEAAAANAAsAAQABAAEAAAAMAAsAAQABAAEAAAALAAsAAQABAAEAAAAKAAsAAQABAAEAAAAJAAsAAQABAAEAAAAIAAsAAQABAAEAAAAHAAsAAQABAAEAAAAGAAsAAQABAAEAAAAFAAsAAQABAAEAAAD9/wkAAQABAAEAAAD9/wgAAQABAAEAAAD9/wcAAQABAAEAAAD9/wYAAQABAAEAAAD9/wUAAQABAAEAAAD8/wkAAQABAAEAAAD8/wgAAQABAAEAAAD8/wcAAQABAAEAAAD8/wYAAQABAAEAAAD8/wUAAQABAAEAAAD8/wQAAQABAAEAAAD8/wMAAQABAAEAAAD8/wIAAQABAAEAAAD8/wEAAQABAAEAAAD8/wAAAQABAAEAAAD8////AQABAAEAAAD8//7/AQABAAEAAAD8//3/AQABAAEAAAD8//z/AQABAAEAAAD9//z/AQABAAEAAAD+//z/AQABAAEAAAD///z/AQABAAEAAAAAAPz/AQABAAEAAAABAPz/AQABAAEAAAACAPz/AQABAAEAAAADAPz/AQABAAEAAAAEAPz/AQABAAEAAAAFAPz/AQABAAEAAAAGAPz/AQABAAEAAAAHAPz/AQABAAEAAAAIAPz/AQABAAEAAAAJAPz/AQABAAEAAAAKAPz/AQABAAEAAAALAPz/AQABAAEAAAAMAPz/AQABAAEAAAANAPz/AQABAAEAAAAOAPz/AQABAAEAAAAPAPz/AQABAAEAAAAQAPz/AQABAAEAAAARAPz/AQABAAEAAAASAPz/AQABAAEAAAASAP3/AQABAAEAAAASAP7/AQABAAEAAAASAP//AQABAAEAAAASAAAAAQABAAEAAAASAAEAAQABAAEAAAASAAIAAQABAAEAAAASAAMAAQABAAEAAAASAAQAAQABAAEAAAASAAUAAQABAAEAAAASAAYAAQABAAEAAAASAAcAAQABAAEAAAASAAgAAQABAAEAAAASAAoAAQABAAEAAAASAAsAAQABAAEAAAASAAkAAQABAAEAAAASAAwAAQABAAEAAAARAAwAAQABAAEAAAAQAAwAAQABAAEAAAAPAAwAAQABAAEAAAAOAAwAAQABAAEAAAANAAwAAQABAAEAAAAMAAwAAQABAAEAAAALAAwAAQABAAEAAAAKAAwAAQABAAEAAAAJAAwAAQABAAEAAAAIAAwAAQABAAEAAAAHAAwAAQABAAEAAAAGAAwAAQABAAEAAAAFAAwAAQABAAEAAAD7/wUAAQABAAEAAAD7/wQAAQABAAEAAAD7/wMAAQABAAEAAAD7/wIAAQABAAEAAAD7/wEAAQABAAEAAAD7/wAAAQABAAEAAAD7////AQABAAEAAAD7//7/AQABAAEAAAD7//3/AQABAAEAAAD7//z/AQABAAEAAAD7//v/AQABAAAAAAD8//v/AQABAAAAAAD9//v/AQABAAAAAAD+//v/AQABAAAAAAD///v/AQABAAAAAAAAAPv/AQABAAAAAAABAPv/AQABAAAAAAACAPv/AQABAAAAAAADAPv/AQABAAAAAAAEAPv/AQABAAAAAAAFAPv/AQABAAAAAAAGAPv/AQABAAAAAAAHAPv/AQABAAAAAAAIAPv/AQABAAAAAAAJAPv/AQABAAAAAAAKAPv/AQABAAAAAAALAPv/AQABAAAAAAAMAPv/AQABAAAAAAANAPv/AQABAAAAAAAOAPv/AQABAAAAAAAPAPv/AQABAAAAAAAQAPv/AQABAAAAAAARAPv/AQABAAAAAAASAPv/AQABAAAAAAATAPv/AQABAAAAAAATAPz/AQABAAEAAAATAP3/AQABAAEAAAATAP7/AQABAAEAAAATAP//AQABAAEAAAATAAAAAQABAAEAAAATAAEAAQABAAEAAAATAAIAAQABAAEAAAATAAMAAQABAAEAAAATAAQAAQABAAEAAAATAAUAAQABAAEAAAATAAYAAQABAAEAAAATAAcAAQABAAEAAAATAAgAAQABAAEAAAATAAkAAQABAAEAAAATAAoAAQABAAEAAAATAAsAAQABAAEAAAATAAwAAQABAAEAAAASAA0AAQABAAIAAAATAA0AAQABAAIAAAARAA0AAQABAAIAAAAQAA0AAQABAAIAAAAPAA0AAQABAAIAAAAOAA0AAQABAAIAAAANAA0AAQABAAIAAAAMAA0AAQABAAIAAAALAA0AAQABAAIAAAAKAA0AAQABAAIAAAAJAA0AAQABAAIAAAAIAA0AAQABAAIAAAAHAA0AAQABAAIAAAAGAA0AAQABAAIAAAAFAA0AAQABAAIAAAAEAA0AAQABAAIAAAADAA0AAQABAAIAAAACAA0AAQABAAIAAAABAA0AAQABAAIAAAD7/wkAAQABAAEAAAD7/wgAAQABAAEAAAD7/wcAAQABAAEAAAD7/wYAAQABAAEAAAD6//v/AQABAAAAAAD5//v/AQABAAAAAAD4//v/AQAAAAAAAAD4//z/AQAAAAEAAAD4//3/AQAAAAEAAAD4//7/AQAAAAEAAAD4////AQAAAAEAAAD4/wAAAQAAAAEAAAD4/wEAAQAAAAEAAAD4/wIAAQAAAAEAAAD4/wMAAQAAAAEAAAD4/wQAAQAAAAEAAAD4/wUAAQAAAAEAAAD4/wYAAQAAAAEAAAD5/wYAAQABAAEAAAD5/wcAAQABAAEAAAD5/wgAAQABAAEAAAD5/wkAAQABAAEAAAD5/woAAQABAAEAAAD5/wsAAQABAAEAAAD5/wwAAQABAAEAAAD5/w0AAQABAAIAAAD4/w0AAQAAAAIAAAD6/w0AAQABAAIAAAD6/wwAAQABAAEAAAD6/wQAAQABAAEAAAD6/wMAAQABAAEAAAD6/wIAAQABAAEAAAD6/wEAAQABAAEAAAD6/wAAAQABAAEAAAD6////AQABAAEAAAD6//7/AQABAAEAAAD6//3/AQABAAEAAAD6//z/AQABAAEAAAD5//z/AQABAAEAAAD5//3/AQABAAEAAAD5//7/AQABAAEAAAD5////AQABAAEAAAD5/wAAAQABAAEAAAD5/wEAAQABAAEAAAD5/wIAAQABAAEAAAD5/wMAAQABAAEAAAD5/wQAAQABAAEAAAD5/wUAAQABAAEAAAD6/wUAAQABAAEAAAD6/wYAAQABAAEAAAD6/wcAAQABAAEAAAD6/wsAAQABAAEAAAD6/woAAQABAAEAAAD6/wkAAQABAAEAAAD6/wgAAQABAAEAAAD4/wwAAQAAAAEAAAD4/wsAAQAAAAEAAAD4/woAAQAAAAEAAAD4/wkAAQAAAAEAAAD4/wgAAQAAAAEAAAD4/wcAAQAAAAEAAAAUAPv/AQABAAAAAAAVAPv/AQABAAAAAAAWAPv/AQACAAAAAAAWAPz/AQACAAEAAAAWAP3/AQACAAEAAAAWAP7/AQACAAEAAAAWAAQAAQACAAEAAAAWAAUAAQACAAEAAAAWAAYAAQACAAEAAAAWAAcAAQACAAEAAAAWAAgAAQACAAEAAAAWAAkAAQACAAEAAAAWAAoAAQACAAEAAAAWAAsAAQACAAEAAAAVAAwAAQABAAEAAAAVAA0AAQABAAIAAAAUAA0AAQABAAIAAAAWAA0AAQACAAIAAAAWAAwAAQACAAEAAAAVAAYAAQABAAEAAAAVAAUAAQABAAEAAAAVAAQAAQABAAEAAAAVAAMAAQABAAEAAAAVAAIAAQABAAEAAAAVAAEAAQABAAEAAAAVAAAAAQABAAEAAAAWAAAAAQACAAEAAAAWAP//AQACAAEAAAAWAAEAAQACAAEAAAAWAAIAAQACAAEAAAAWAAMAAQACAAEAAAAVAP//AQABAAEAAAAVAP7/AQABAAEAAAAVAP3/AQABAAEAAAAUAP3/AQABAAEAAAAUAPz/AQABAAEAAAAUAP7/AQABAAEAAAAVAPz/AQABAAEAAAAVAAcAAQABAAEAAAAVAAgAAQABAAEAAAAVAAkAAQABAAEAAAAVAAoAAQABAAEAAAAVAAsAAQABAAEAAAAUAAsAAQABAAEAAAAUAAwAAQABAAEAAAAUAAoAAQABAAEAAAAUAAkAAQABAAEAAAAUAAgAAQABAAEAAAAUAAcAAQABAAEAAAAUAAYAAQABAAEAAAAUAAUAAQABAAEAAAAUAAQAAQABAAEAAAAUAAMAAQABAAEAAAAUAAIAAQABAAEAAAAUAAEAAQABAAEAAAAUAAAAAQABAAEAAAAUAP//AQABAAEAAAD7/woAAQABAAEAAAD7/wsAAQABAAEAAAD7/wwAAQABAAEAAAD7/w0AAQABAAIAAAD8/woAAQABAAEAAAD8/wsAAQABAAEAAAD8/wwAAQABAAEAAAD8/w0AAQABAAIAAAD9/woAAQABAAEAAAD9/wsAAQABAAEAAAD9/wwAAQABAAEAAAD9/w0AAQABAAIAAAD+/woAAQABAAEAAAD+/wsAAQABAAEAAAD+/wwAAQABAAEAAAD+/w0AAQABAAIAAAD//w0AAQABAAIAAAAAAA0AAQABAAIAAAD//wkAAQABAAEAAAD//woAAQABAAEAAAD//wsAAQABAAEAAAD//wwAAQABAAEAAAAAAAkAAQABAAEAAAAAAAoAAQABAAEAAAAAAAsAAQABAAEAAAAAAAwAAQABAAEAAAABAAkAAQABAAEAAAABAAoAAQABAAEAAAABAAsAAQABAAEAAAABAAwAAQABAAEAAAACAAkAAQABAAEAAAACAAoAAQABAAEAAAACAAsAAQABAAEAAAACAAwAAQABAAEAAAADAAkAAQABAAEAAAADAAoAAQABAAEAAAADAAsAAQABAAEAAAADAAwAAQABAAEAAAAEAAkAAQABAAEAAAAEAAoAAQABAAEAAAAEAAsAAQABAAEAAAAEAAwAAQABAAEAAAAKAAQABgABAAMAAAAJAAQABgABAAMAAAAIAAQABgAAAAMAAAA=")
+tile_set = ExtResource("1_f8tbp")
+
+[node name="Cabana" type="TileMapLayer" parent="TileMapLayers" unique_id=37110825]
+tile_map_data = PackedByteArray("AAABAAEAAAAKAAIAAAACAAEAAAALAAIAAAADAAEAAAAKAAIAAAAEAAEAAAALAAIAAAAFAAEAAAAKAAIAAAAGAAEAAAALAAIAAAAHAAEAAAAKAAIAAAAHAAIAAAALAAIAAAAHAAMAAAAKAAIAAAAHAAQAAAALAAIAAAAHAAUAAAAKAAIAAAAHAAYAAAALAAIAAAAGAAYAAAAKAAIAAAAFAAYAAAALAAIAAAAEAAYAAAAKAAIAAAADAAYAAAALAAIAAAACAAYAAAAKAAIAAAABAAYAAAALAAIAAAABAAUAAAAKAAIAAAABAAQAAAALAAIAAAABAAMAAAAKAAIAAAABAAIAAAALAAIAAAACAAIAAAAKAAIAAAACAAMAAAALAAIAAAACAAQAAAAKAAIAAAACAAUAAAALAAIAAAADAAUAAAAKAAIAAAADAAQAAAALAAIAAAADAAMAAAAKAAIAAAADAAIAAAALAAIAAAAEAAIAAAAKAAIAAAAEAAMAAAALAAIAAAAEAAQAAAAKAAIAAAAEAAUAAAALAAIAAAAFAAUAAAAKAAIAAAAFAAQAAAALAAIAAAAFAAMAAAAKAAIAAAAFAAIAAAALAAIAAAAGAAIAAAAKAAIAAAAGAAMAAAALAAIAAAAGAAQAAAAKAAIAAAAGAAUAAAALAAIAAAA=")
+tile_set = ExtResource("2_3exgg")
+
+[node name="CabanaParedes" type="TileMapLayer" parent="TileMapLayers" unique_id=1265530464]
+tile_map_data = PackedByteArray("AAACAAYAAAAJAAEAAAADAAYAAAAJAAEAAAAEAAYAAAAJAAEAAAAFAAYAAAAJAAEAAAAGAAYAAAAJAAEAAAAIAAYAAAAKAAEAAAAHAAYAAAAJAAEAAAAAAAYAAAAIAAEAAAABAAYAAAAJAAEAAAAAAAUAAAAJAAIAAAAAAAQAAAAJAAIAAAAAAAMAAAAJAAIAAAAAAAIAAAAJAAIAAAAAAAEAAAAJAAIAAAAIAAUAAAAJAAIAADAIAAQAAAAJAAIAADAIAAMAAAAJAAIAADAIAAIAAAAJAAIAADAIAAEAAAAJAAIAADAHAP//AAAIAAIAAAAGAP//AAAIAAIAAAAFAP//AAAIAAIAAAAEAP//AAAGAAIAAAADAP//AAAFAAIAAAACAP//AAAIAAIAAAABAP//AAAIAAIAAAAAAAAAAAAJAAIAAAAAAP//AAAJAAMAACAIAP//AAAJAAMAADAIAAAAAAAJAAIAADAEAAAAAAAGAAMAAAADAAAAAAAFAAMAAAAFAAAAAAAIAAMAAAAGAAAAAAAIAAMAAAAHAAAAAAAIAAMAAAACAAAAAAAIAAMAAAABAAAAAAAIAAMAAAA=")
+tile_set = ExtResource("2_3exgg")
+
+[node name="Door" type="TileMapLayer" parent="TileMapLayers" unique_id=124431564]
+visible = false
+tile_map_data = PackedByteArray("AAAHAAQAAAAGAAAAAAA=")
+tile_set = ExtResource("2_3exgg")
+
+[node name="Furnitures" type="TileMapLayer" parent="TileMapLayers" unique_id=1834649501]
+tile_map_data = PackedByteArray("AAABAAQAAAAAAAEAAAADAAUAAAAAAAMAAAAEAAUAAAABAAMAAAAFAP//AAACAAEAAAAFAAAAAAACAAIAAAAHAAAAAAADAAAAAAAHAAEAAAADAAEAAAACAP//AAADAAIAAAACAAAAAAADAAMAAAADAAQAAAAAAAIAAAAEAAQAAAABAAIAAAADAAMAAAAAAAAAAAAEAAMAAAABAAAAAAA=")
+tile_set = ExtResource("3_nxib4")
+
+[node name="SmallFurnitures" type="TileMapLayer" parent="TileMapLayers" unique_id=727720466]
+position = Vector2(-50.000008, 17.000002)
+scale = Vector2(0.85, 0.85)
+tile_map_data = PackedByteArray("AAAIAAAAAAACAAMAAAA=")
+tile_set = ExtResource("3_nxib4")
+
+[node name="Lamps" type="TileMapLayer" parent="TileMapLayers" unique_id=529739387]
+position = Vector2(142, -3)
+scale = Vector2(0.65, 0.65)
+tile_map_data = PackedByteArray("AAAGAAAAAAABAAEAAAA=")
+tile_set = ExtResource("3_nxib4")
+
+[node name="Agua" type="TileMapLayer" parent="TileMapLayers" unique_id=1225697994]
+visible = false
+modulate = Color(0.7642253, 1.1291975, 1.0913482, 0.85600007)
+scale = Vector2(0.6, 0.6)
+tile_map_data = PackedByteArray("AAATAAkAAAACAAMAAAAUAAQAAAACAAMAAAAQAAIAAAACAAMAAAATAAAAAAACAAMAAAAOAAcAAAACAAMAAAA=")
+tile_set = ExtResource("2_3exgg")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1064875179]
+position = Vector2(436, 190)
+zoom = Vector2(4, 4)
+limit_enabled = false
+limit_left = 0
+limit_top = 0
+limit_right = 1280
+limit_bottom = 720
+limit_smoothed = true
+position_smoothing_speed = 250.0
+editor_draw_limits = true
+
+[node name="OnTheGround" type="Node2D" parent="." unique_id=836096441]
+y_sort_enabled = true
+
+[node name="Lino" type="AnimatedSprite2D" parent="OnTheGround" unique_id=169229228]
+visible = false
+position = Vector2(400, 349)
+sprite_frames = ExtResource("4_xyt4v")
+animation = &"idle"
+autoplay = "sleep"
+
+[node name="Manchitas" type="AnimatedSprite2D" parent="OnTheGround" unique_id=1853963559]
+visible = false
+position = Vector2(562, 272)
+sprite_frames = ExtResource("5_ir6uh")
+animation = &"bark"
+autoplay = "s_bark"
+flip_h = true
+
+[node name="Collar" type="Sprite2D" parent="OnTheGround" unique_id=1101409920]
+visible = false
+position = Vector2(563, 288)
+texture = ExtResource("6_o8n81")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround" unique_id=49807179]
+root_node = NodePath("../..")
+root_motion_local = true
+libraries/ = SubResource("AnimationLibrary_bcjhu")
+
+[node name="Arboles" type="Node2D" parent="OnTheGround" unique_id=1185808240]
+
+[node name="Arbol01" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=1798206360]
+position = Vector2(184, -176)
+sprite_frames = ExtResource("7_hsrkj")
+autoplay = "default"
+
+[node name="Arbol02" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=620311886]
+position = Vector2(952, -96)
+sprite_frames = ExtResource("7_hsrkj")
+autoplay = "default"
+
+[node name="Arbol03" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=603258227]
+position = Vector2(600, -160)
+sprite_frames = ExtResource("8_owpuo")
+autoplay = "default"
+
+[node name="Arbol04" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=1310796836]
+position = Vector2(440, -176)
+sprite_frames = ExtResource("7_hsrkj")
+autoplay = "default"
+
+[node name="Arbol05" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=625873079]
+position = Vector2(304, -160)
+sprite_frames = ExtResource("9_liv05")
+autoplay = "default"
+
+[node name="Arbol09" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=1267865341]
+position = Vector2(116, 429)
+sprite_frames = ExtResource("8_owpuo")
+autoplay = "default"
+
+[node name="Arbol10" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=92706653]
+position = Vector2(384, 432)
+sprite_frames = ExtResource("7_hsrkj")
+autoplay = "default"
+
+[node name="Arbol11" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=843125706]
+position = Vector2(240, 472)
+sprite_frames = ExtResource("7_hsrkj")
+autoplay = "default"
+
+[node name="Arbol06" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=1312710800]
+position = Vector2(856, -176)
+sprite_frames = ExtResource("8_owpuo")
+autoplay = "default"
+
+[node name="Arbol07" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=137526513]
+position = Vector2(888, -8)
+sprite_frames = ExtResource("9_liv05")
+autoplay = "default"
+
+[node name="Arbol08" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=76896892]
+position = Vector2(736, -120)
+sprite_frames = ExtResource("7_hsrkj")
+autoplay = "default"
+
+[node name="Arbol12" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=531079247]
+position = Vector2(520, 472)
+sprite_frames = ExtResource("9_liv05")
+autoplay = "default"
+
+[node name="Arbol13" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=324297800]
+position = Vector2(928, 352)
+sprite_frames = ExtResource("8_owpuo")
+autoplay = "default"
+
+[node name="Arbol14" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=1266537714]
+position = Vector2(664, 440)
+sprite_frames = ExtResource("7_hsrkj")
+autoplay = "default"
+
+[node name="Arbol15" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=627630573]
+position = Vector2(-120, 336)
+sprite_frames = ExtResource("9_liv05")
+autoplay = "default"
+
+[node name="Arbol16" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=513911722]
+position = Vector2(816, 432)
+sprite_frames = ExtResource("7_hsrkj")
+autoplay = "default"
+
+[node name="Arbol17" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=571348691]
+position = Vector2(-40, 448)
+sprite_frames = ExtResource("8_owpuo")
+autoplay = "default"
+
+[node name="Arbol18" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=920529771]
+position = Vector2(-24, 40)
+sprite_frames = ExtResource("7_hsrkj")
+autoplay = "default"
+
+[node name="Arbol19" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=1536435050]
+position = Vector2(-32, 240)
+sprite_frames = ExtResource("9_liv05")
+autoplay = "default"
+
+[node name="Arbol20" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=730927865]
+position = Vector2(-96, 136)
+sprite_frames = ExtResource("7_hsrkj")
+autoplay = "default"
+
+[node name="Arbol21" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=1999207425]
+position = Vector2(-112, -24)
+sprite_frames = ExtResource("8_owpuo")
+autoplay = "default"
+
+[node name="Arbol22" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=199519980]
+position = Vector2(64, -160)
+sprite_frames = ExtResource("7_hsrkj")
+autoplay = "default"
+
+[node name="Arbol23" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=166030544]
+position = Vector2(-32, -120)
+sprite_frames = ExtResource("9_liv05")
+autoplay = "default"
+
+[node name="Arbol24" type="AnimatedSprite2D" parent="OnTheGround/Arboles" unique_id=1231216285]
+position = Vector2(952, 64)
+sprite_frames = ExtResource("8_owpuo")
+autoplay = "default"
+
+[node name="OutroDirector" type="Node" parent="." unique_id=1536714581 groups=["outro_director"]]
+script = ExtResource("10_oclt6")
+
+[node name="FlashOverlay" parent="." unique_id=64455848 instance=ExtResource("11_0h0gv")]
+visible = false
+
+[node name="CameraPoints" type="Node2D" parent="." unique_id=2064986524]
+
+[node name="A_Lino_Playing" type="Node2D" parent="CameraPoints" unique_id=534102250]
+
+[node name="B_Lino_Sleeping" type="Node2D" parent="CameraPoints" unique_id=2025955051]
+position = Vector2(2000, 0)
+
+[node name="C_Door_Open" type="Node2D" parent="CameraPoints" unique_id=2029292497]
+position = Vector2(4000, 0)
+
+[node name="D_Collar_Empty" type="Node2D" parent="CameraPoints" unique_id=1219768364]
+position = Vector2(6000, 0)
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=245921379]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="ScreenOverlay" unique_id=108816014]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0, 0, 0, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScreenOverlay/ColorRect" unique_id=1133277297]
+z_index = 5
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.002
+anchor_top = 0.001
+anchor_right = 0.998
+anchor_bottom = 0.9990001
+offset_left = 0.43999982
+offset_top = 0.27999997
+offset_right = -0.44006348
+offset_bottom = -0.2800293
+grow_horizontal = 2
+grow_vertical = 2
+text = "Gracias por tejer...
+
+el hilo que no tejí."
+horizontal_alignment = 1
+vertical_alignment = 1
