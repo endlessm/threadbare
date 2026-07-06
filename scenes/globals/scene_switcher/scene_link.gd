@@ -133,10 +133,14 @@ func _validate_property(property: Dictionary) -> void:
 	match property.name:
 		"open_next_scene":
 			var next_scene_path: String = _get_next_scene_path()
-			if not next_scene_path:
-				property.usage |= PROPERTY_USAGE_READ_ONLY
-			elif (
-				is_inside_tree() and next_scene_path == get_tree().edited_scene_root.scene_file_path
+			var edited_scene_root: Node = get_tree().edited_scene_root
+			if (
+				not next_scene_path
+				or (
+					is_inside_tree()
+					and edited_scene_root
+					and next_scene_path == edited_scene_root.scene_file_path
+				)
 			):
 				property.usage |= PROPERTY_USAGE_READ_ONLY
 
