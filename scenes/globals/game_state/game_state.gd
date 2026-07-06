@@ -129,8 +129,8 @@ func set_quest(new_quest: Quest) -> void:
 	quest = QuestState.new(new_quest, quest_player_state)
 
 
-## Guess which quest the given scene is part of, and set [member current_quest]
-## accordingly. If the quest cannot be determined, unset [member current_quest].
+## Guess which quest the given scene is part of, and set [member quest]
+## accordingly. If the quest cannot be determined, unset [member quest].
 ## [br][br]
 ## This is for use when jumping to a particular scene during development (e.g.
 ## with F6 in the editor, the URL hash in the browser, or in future if we add a
