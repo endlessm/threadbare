@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://bfr7svwx5hqkf"]
 
+[ext_resource type="Script" uid="uid://dr6xfnqute8a3" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_combat.gd" id="1_17ppw"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="1_ndyje"]
 [ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_pmuc0"]
 [ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="1_xf1x3"]
@@ -66,6 +67,7 @@ type = 1
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="StellaCombat" type="Node2D" unique_id=1263390013]
+script = ExtResource("1_17ppw")
 
 [node name="PlayerMode" type="Node" parent="." unique_id=1243977779]
 script = ExtResource("1_pmuc0")
@@ -75,9 +77,11 @@ metadata/_custom_type_script = "uid://pk3ucq7e2eah"
 [node name="Cinematic" type="Node2D" parent="." unique_id=554644145]
 script = ExtResource("1_ndyje")
 dialogue = ExtResource("2_awu4o")
+dialogue_title = "intro_narration"
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="FillGameLogic" type="Node" parent="." unique_id=987012318]
+unique_name_in_owner = true
 script = ExtResource("1_xf1x3")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
@@ -124,9 +128,16 @@ tile_set = ExtResource("9_ky4po")
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=999710366 instance=ExtResource("4_kirjo")]
-position = Vector2(1209, 283)
+position = Vector2(1112, 195)
 player_name = "Stella"
 sprite_frames = ExtResource("5_e46so")
+
+[node name="Fisherman" parent="OnTheGround" unique_id=1963412951 instance=ExtResource("14_asncp")]
+unique_name_in_owner = true
+position = Vector2(1319, 275)
+dialogue = ExtResource("2_awu4o")
+npc_name = "Fisherman"
+sprite_frames = ExtResource("14_e46so")
 
 [node name="ThrowingNPC" parent="OnTheGround" unique_id=1111990181 instance=ExtResource("5_1o8f3")]
 position = Vector2(1286, 652)
@@ -193,13 +204,6 @@ limit_bottom = 2048
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="Talker" parent="." unique_id=1963412951 instance=ExtResource("14_asncp")]
-position = Vector2(1319, 275)
-dialogue = ExtResource("2_awu4o")
-npc_name = "Fisherman"
-sprite_frames = ExtResource("14_e46so")
-
-[connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
 
 [editable path="OnTheGround/Target"]
