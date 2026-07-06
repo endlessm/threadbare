@@ -69,7 +69,6 @@ func _ready() -> void:
 
 	_set_item(item)
 	_update_based_on_revealed()
-	sprite_2d.modulate = Color.WHITE if revealed else Color.TRANSPARENT
 
 	if Engine.is_editor_hint():
 		return
@@ -115,5 +114,8 @@ func _update_based_on_revealed() -> void:
 		interact_area.disabled = not revealed
 	if sprite_2d:
 		sprite_2d.visible = revealed
+		# If we are playing the reveal animation, this will be set back to
+		# TRANSPARENT immediately then tweened to white.
+		sprite_2d.modulate = Color.WHITE if revealed else Color.TRANSPARENT
 	if physical_collider:
 		physical_collider.disabled = not revealed
