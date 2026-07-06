@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="1_gqxgg"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="1_stmf1"]
+[ext_resource type="Script" uid="uid://dly53ymp3a6hv" path="res://scenes/quests/lore_quests/song_sanctuary_2/1_stealth_sequence_combo/stealth_sequence_combo.gd" id="1_w6fk3"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="2_stmf1"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_82mjw"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="3_f4ekw"]
@@ -49,6 +50,7 @@ metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="StealthSequenceCombo" type="Node2D" unique_id=1761996320]
 y_sort_enabled = true
+script = ExtResource("1_w6fk3")
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1025468685]
 y_sort_enabled = true
@@ -83,6 +85,7 @@ tile_set = ExtResource("3_f4ekw")
 script = ExtResource("1_gqxgg")
 
 [node name="SequencePuzzle" type="Node2D" parent="." unique_id=1138211408]
+unique_name_in_owner = true
 y_sort_enabled = true
 script = ExtResource("14_qhjva")
 metadata/_custom_type_script = "uid://c68oh8dtr21ti"
@@ -204,6 +207,7 @@ position = Vector2(208, 2340)
 curve = SubResource("Curve2D_qhjva")
 
 [node name="CollectibleItem" parent="OnTheGround" unique_id=1864211007 instance=ExtResource("8_u3d8g")]
+unique_name_in_owner = true
 position = Vector2(2429, 1936)
 revealed = false
 item = SubResource("Resource_idy4y")
@@ -253,5 +257,3 @@ color = Color(0.481789, 0.48179, 0.481789, 1)
 [node name="HUD" parent="." unique_id=1968200192 instance=ExtResource("7_axovk")]
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1806885507]
-
-[connection signal="solved" from="SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]
