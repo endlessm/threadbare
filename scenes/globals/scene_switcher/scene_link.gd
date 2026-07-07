@@ -102,9 +102,7 @@ func _update_available_spawn_points() -> void:
 	var next_scene_path: String = _get_next_scene_path()
 	if not next_scene_path or next_scene_path == get_tree().edited_scene_root.scene_file_path:
 		var spawn_points := get_tree().get_nodes_in_group(SpawnPoint.GROUP_NAME)
-		_available_spawn_points.assign(
-			spawn_points.map(func(spawn_point: Node) -> String: return get_path_to(spawn_point))
-		)
+		_available_spawn_points.assign(spawn_points.map(get_path_to))
 	elif ResourceLoader.exists(next_scene, "PackedScene"):
 		var packed_scene: PackedScene = load(next_scene)
 		var paths: Array[NodePath] = []
