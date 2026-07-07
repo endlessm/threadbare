@@ -10,11 +10,13 @@ extends Marker2D
 ## which SpawnPoint was used (or if no SpawnPoint at all was used).
 signal player_teleported
 
+const GROUP_NAME := "spawn_point"
+
 @export var look_at_side_on_spawn: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
 
 
 func _init() -> void:
-	add_to_group("spawn_point", true)
+	add_to_group(GROUP_NAME, true)
 
 
 func _ready() -> void:
