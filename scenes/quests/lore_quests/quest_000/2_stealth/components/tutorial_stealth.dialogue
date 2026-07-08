@@ -5,13 +5,20 @@ Arun: The path to Fray's End is through these caves.
 Arun: The caves are full of StoryVores, I'm sorry to say.
 Arun: Move quickly, and don't let them spot you!
 Arun: I'll see you on the other side, StoryWeaver.
+do GameState.quest.facts.arun_stealth_hints = 0
 => END
 
 ~ walk_through
-% Arun: You can run by holding Shift or LB!
-% Arun: Go through the caves, and don't let the StoryVores spot you!
-% Arun: Watch how the StoryVores patrol, and find spaces to hide.
-% Arun: You might meet a KnitWitch along the way.
+match GameState.quest.facts.arun_stealth_hints % 4
+	when 0
+		Arun: You can run by holding [img color=#000000]{{ InputHud.get_node("MarginContainer/TabContainer/NormalControls/RunInputHint/RunHint").texture.resource_path }}[/img]!
+	when 1
+		Arun: Go through the caves, and don't let the StoryVores spot you!
+	when 2
+		Arun: Watch how the StoryVores patrol, and find spaces to hide.
+	when 3
+		Arun: You might meet a KnitWitch along the way.
+do GameState.quest.facts.arun_stealth_hints += 1
 => END
 
 ~ well_done
