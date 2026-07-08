@@ -5,6 +5,7 @@ extends Node2D
 # TODO: Change to item you want to walk past (in inspector)
 # TODO: we also would need tree to have a class_name or some other way to generalize this
 const TREE_SCENE = preload("res://scenes/game_elements/props/tree/components/tree.gd")
+const SECRET_PATH_MODULATION = Color(.6, .6, .6, 0.3)
 
 @export_range(10, 1000, 10) var width: float = 200.0:
 	set(val):
@@ -24,8 +25,8 @@ const TREE_SCENE = preload("res://scenes/game_elements/props/tree/components/tre
 			r_border.shape.size.y += (val - height) / 2
 			height = val
 
-var trees: Array[Node2D]
-var colliders: Array[Node2D]
+var trees: Array[Node2D]  # objects that should be modulated and not collide
+var colliders: Array[Node2D]  # objects that should not collide
 
 @onready var walkable_trees: Area2D = $WalkableTrees
 @onready var l_border: CollisionShape2D = $Borders/LeftBorder
@@ -38,7 +39,7 @@ func _on_body_entered(body: Node2D) -> void:
 	if body is Player:
 		for tree in trees:
 			tree.process_mode = Node.PROCESS_MODE_DISABLED
-			tree.get_parent().modulate = Color(.6, .6, .6, 0.3)
+			tree.get_parent().modulate = SECRET_PATH_MODULATION
 		audio_stream_player_2d.play()
 		for collider in colliders:
 			collider.process_mode = Node.PROCESS_MODE_DISABLED
@@ -52,6 +53,6 @@ func _on_body_exited(body: Node2D) -> void:
 	if body is Player:
 		for tree in trees:
 			tree.process_mode = Node.PROCESS_MODE_INHERIT
-			tree.get_parent().modulate = Color(1, 1, 1)
+			tree.get_parent().modulate = Color.WHITE
 		for collider in colliders:
 			collider.process_mode = Node.PROCESS_MODE_INHERIT
