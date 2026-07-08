@@ -8,8 +8,6 @@ extends Node2D
 ## This can be used directly, but acts primarily a base class for other
 ## components: [Cinematic], [CollectibleItem], and the Teleporter scene.
 
-const SPAWN_POINT_GROUP_NAME: String = "spawn_point"
-
 ## Scene to switch to when the player enters this teleport. If empty, the player
 ## will teleport within the current scene, to the position specified by [member
 ## spawn_point_path].
@@ -103,10 +101,8 @@ func _update_available_spawn_points() -> void:
 
 	var next_scene_path: String = _get_next_scene_path()
 	if not next_scene_path or next_scene_path == get_tree().edited_scene_root.scene_file_path:
-		var spawn_points := get_tree().get_nodes_in_group("spawn_point")
-		_available_spawn_points.assign(
-			spawn_points.map(func(spawn_point: Node) -> String: return get_path_to(spawn_point))
-		)
+		var spawn_points := get_tree().get_nodes_in_group(SpawnPoint.GROUP_NAME)
+		_available_spawn_points.assign(spawn_points.map(get_path_to))
 	elif ResourceLoader.exists(next_scene, "PackedScene"):
 		var packed_scene: PackedScene = load(next_scene)
 		var paths: Array[NodePath] = []
@@ -118,7 +114,7 @@ func _update_available_spawn_points() -> void:
 			var instance := scene_state.get_node_instance(i)
 			if instance:
 				node_groups.append_array(instance.get_state().get_node_groups(0))
-			if SPAWN_POINT_GROUP_NAME in node_groups:
+			if SpawnPoint.GROUP_NAME in node_groups:
 				var node_path_as_string := String(path)
 
 				paths.push_back(NodePath(node_path_as_string.replace("./", "")))
@@ -133,14 +129,10 @@ func _validate_property(property: Dictionary) -> void:
 	match property.name:
 		"open_next_scene":
 			var next_scene_path: String = _get_next_scene_path()
-			var edited_scene_root: Node = get_tree().edited_scene_root
+			var edited_scene_root := get_tree().edited_scene_root if is_inside_tree() else null
 			if (
 				not next_scene_path
-				or (
-					is_inside_tree()
-					and edited_scene_root
-					and next_scene_path == edited_scene_root.scene_file_path
-				)
+				or (edited_scene_root and next_scene_path == edited_scene_root.scene_file_path)
 			):
 				property.usage |= PROPERTY_USAGE_READ_ONLY
 
