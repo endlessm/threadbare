@@ -47,6 +47,7 @@
 [ext_resource type="PackedScene" uid="uid://7vg52qj6ude" path="res://scenes/world_map/components/retelling_townie.tscn" id="42_qgpx3"]
 [ext_resource type="PackedScene" uid="uid://vb5o7hh5an8j" path="res://scenes/game_elements/characters/npcs/elder/template_elder.tscn" id="43_ppslc"]
 [ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="45_cjmkx"]
+[ext_resource type="Resource" uid="uid://c4wb1jwjb8sg0" path="res://scenes/quests/lore_quests/dev_island/quest.tres" id="45_f3823"]
 [ext_resource type="PackedScene" uid="uid://b2mj4jggli0ci" path="res://scenes/quests/lore_quests/quest_000/tutorial_npc/tutorial_npc.tscn" id="50_qgpx3"]
 [ext_resource type="PackedScene" uid="uid://cr65lmm5b0ueo" path="res://scenes/game_elements/characters/npcs/cat/cat.tscn" id="52_ppslc"]
 [ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="53_2vvub"]
@@ -59,6 +60,7 @@
 [ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="59_qgpx3"]
 [ext_resource type="Resource" uid="uid://cgr54yigkbxp3" path="res://scenes/quests/lore_quests/quest_004/quest.tres" id="59_t7c6s"]
 [ext_resource type="Resource" uid="uid://t50glay2iqhg" path="res://scenes/quests/lore_quests/quest_002/quest.tres" id="60_6b07c"]
+[ext_resource type="PackedScene" uid="uid://conut7biwewd5" path="res://scenes/game_elements/props/tree/components/tree_parter.tscn" id="60_ulm71"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="61_6b07c"]
 [ext_resource type="Script" uid="uid://cmika1t1573xe" path="res://scenes/world_map/components/frays_end_exit_blocker.gd" id="62_t7c6s"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="64_uxfrp"]
@@ -104,6 +106,9 @@ _data = {
 "points": PackedVector2Array(-98.07021, 22.23685, 0, 0, 676.6666, 67.77789, 72.42304, 1.4143486, -72.42304, -1.4143486, 372.22217, -27.77771, -57.81142, 0.9386225, 57.81142, -0.9386225, 153.33325, -2.222107, 0, 0, 61.9745, 5.1265907, 0, 0)
 }
 point_count = 4
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pp1gq"]
+size = Vector2(219, 112)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qgpx3"]
 size = Vector2(320, 64)
@@ -603,6 +608,25 @@ enter_path = NodePath("../Path2D6")
 [node name="Path2D6" type="Path2D" parent="OnTheGround/RetellingManager" unique_id=1023192886]
 position = Vector2(172.22229, -60.00006)
 curve = SubResource("Curve2D_ulm71")
+
+[node name="TreeParter" parent="OnTheGround" unique_id=1011308445 instance=ExtResource("60_ulm71")]
+position = Vector2(1665.9999, 218.99998)
+scale = Vector2(1.10441, 1.00725)
+height = 310.0
+
+[node name="QuestTeleporter" parent="OnTheGround" unique_id=1779636661 node_paths=PackedStringArray("abandon_point") instance=ExtResource("58_6b07c")]
+position = Vector2(1564, 93)
+quest = ExtResource("45_f3823")
+abandon_point = NodePath("SpawnPoint")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/QuestTeleporter" unique_id=1153773099]
+position = Vector2(99.5, 46)
+shape = SubResource("RectangleShape2D_pp1gq")
+
+[node name="SpawnPoint" type="Marker2D" parent="OnTheGround/QuestTeleporter" unique_id=1373502050 groups=["spawn_point"]]
+position = Vector2(190, 318)
+script = ExtResource("61_6b07c")
+metadata/_custom_type_script = "uid://0enyu5v4ra34"
 
 [node name="NorthForestLimit" type="StaticBody2D" parent="OnTheGround" unique_id=1908977889]
 y_sort_enabled = true
@@ -1433,7 +1457,7 @@ script = ExtResource("61_6b07c")
 look_at_side_on_spawn = 1
 metadata/_custom_type_script = "uid://0enyu5v4ra34"
 
-[node name="QuestTeleporter" parent="OnTheGround/SouthPath" unique_id=1779636661 node_paths=PackedStringArray("abandon_point") instance=ExtResource("58_6b07c")]
+[node name="QuestTeleporter" parent="OnTheGround/SouthPath" unique_id=1703823953 node_paths=PackedStringArray("abandon_point") instance=ExtResource("58_6b07c")]
 position = Vector2(5, 7)
 quest = ExtResource("59_t7c6s")
 abandon_point = NodePath("../SpawnPoint")

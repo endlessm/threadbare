@@ -11,14 +11,10 @@
 [ext_resource type="SpriteFrames" uid="uid://d36eq8tqdaxdy" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_green.tres" id="9_2lcnx"]
 [ext_resource type="PackedScene" uid="uid://bcy28nucscyep" path="res://scenes/game_elements/props/teleporter/quest_teleporter.tscn" id="9_4fs26"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="11_2lcnx"]
-[ext_resource type="Script" uid="uid://b23ralr2qbarg" path="res://scenes/menus/storybook/components/lore_quest.gd" id="11_l2cuq"]
+[ext_resource type="Resource" uid="uid://c4wb1jwjb8sg0" path="res://scenes/quests/lore_quests/dev_island/quest.tres" id="11_l2cuq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pp1gq"]
 size = Vector2(1055, 206.5)
-
-[sub_resource type="Resource" id="Resource_pp1gq"]
-script = ExtResource("11_l2cuq")
-metadata/_custom_type_script = "uid://b23ralr2qbarg"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cdbf2"]
 size = Vector2(200, 134.5)
@@ -498,7 +494,7 @@ sprite_frames = ExtResource("7_l2cuq")
 position = Vector2(0, 1)
 
 [node name="TreeParter" parent="." unique_id=1011308445 instance=ExtResource("8_mke5t")]
-position = Vector2(316, 99)
+position = Vector2(316, -23)
 
 [node name="NorthForestLimit" type="StaticBody2D" parent="." unique_id=2130866244]
 y_sort_enabled = true
@@ -1123,17 +1119,17 @@ position = Vector2(715.0766, -1875.7319)
 scale = Vector2(0.8219381, 0.885252)
 
 [node name="TreeParter2" parent="." unique_id=1537131820 instance=ExtResource("8_mke5t")]
-position = Vector2(-517, -69)
+position = Vector2(-518, -54)
 
 [node name="QuestTeleporter" parent="." unique_id=1779636661 node_paths=PackedStringArray("abandon_point") instance=ExtResource("9_4fs26")]
 position = Vector2(-516, -187)
-quest = SubResource("Resource_pp1gq")
+quest = ExtResource("11_l2cuq")
 abandon_point = NodePath("../SpawnPoint")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="QuestTeleporter" unique_id=931610937]
 shape = SubResource("RectangleShape2D_cdbf2")
 
 [node name="SpawnPoint" type="Marker2D" parent="." unique_id=2008294674 groups=["spawn_point"]]
-position = Vector2(-491, 423)
+position = Vector2(-514, 255)
 script = ExtResource("11_2lcnx")
 metadata/_custom_type_script = "uid://0enyu5v4ra34"

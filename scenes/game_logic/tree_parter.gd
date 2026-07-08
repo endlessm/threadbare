@@ -8,22 +8,24 @@ const TREE_SCENE = preload("res://scenes/game_elements/props/tree/components/tre
 
 @export_range(10, 1000, 10) var width: float = 200.0:
 	set(val):
-		for shape in walkable_trees.get_children():
-			shape.shape.size.x = val
-		l_border.position.x -= (val - width) / 2
-		r_border.position.x += (val - width) / 2
-		width = val
+		if walkable_trees:
+			for shape in walkable_trees.get_children():
+				shape.shape.size.x = val
+			l_border.position.x -= (val - width) / 2
+			r_border.position.x += (val - width) / 2
+			width = val
 
 @export_range(10, 1000, 10) var height: float = 400.0:
 	set(val):
-		for shape in walkable_trees.get_children():
-			shape.shape.size.y = val
-		l_border.shape.size.y += (val - height) / 2
-		r_border.shape.size.y += (val - height) / 2
-		height = val
+		if walkable_trees:
+			for shape in walkable_trees.get_children():
+				shape.shape.size.y = val
+			l_border.shape.size.y += (val - height) / 2
+			r_border.shape.size.y += (val - height) / 2
+			height = val
 
 var trees: Array[Node2D]
-var colliders: Array[CollisionObject2D]
+var colliders: Array[Node2D]
 
 @onready var walkable_trees: Area2D = $WalkableTrees
 @onready var l_border: CollisionShape2D = $Borders/LeftBorder
