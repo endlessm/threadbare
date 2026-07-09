@@ -76,12 +76,22 @@ func _ready() -> void:
 	interact_area.interaction_started.connect(self._on_interacted)
 
 
-## Make the collectible appear
+## Make the collectible appear with an animation, ultimately setting [member revealed].
+##
+## This does nothing if [member revealed] is [code]true[/code], or if the collectible is already
+## being revealed.
+##
+## To reveal the collectible immediately without any animation or sound, set [member revealed]
+## directly.
 func reveal() -> void:
-	revealed = true
+	if revealed or animation_player.current_animation == &"reveal":
+		return
+
 	appear_sound.play()
 	animation_player.play("reveal")
 	await animation_player.animation_finished
+
+	revealed = true
 
 
 ## When interacted with, the collectible will display a brief animation
@@ -114,8 +124,6 @@ func _update_based_on_revealed() -> void:
 		interact_area.disabled = not revealed
 	if sprite_2d:
 		sprite_2d.visible = revealed
-		# If we are playing the reveal animation, this will be set back to
-		# TRANSPARENT immediately then tweened to white.
 		sprite_2d.modulate = Color.WHITE if revealed else Color.TRANSPARENT
 	if physical_collider:
 		physical_collider.disabled = not revealed
