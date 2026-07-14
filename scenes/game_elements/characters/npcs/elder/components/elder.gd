@@ -46,7 +46,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	if self not in eternal_loom.elders:
+	if eternal_loom and self not in eternal_loom.elders:
 		eternal_loom.elders.append(self)
 
 	interact_area.interaction_ended.connect(_on_interaction_ended)
@@ -72,9 +72,6 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 	if not quest_directory:
 		warnings.append("Quest Directory property should be set")
-
-	if not eternal_loom:
-		warnings.append("Eternal Loom property must be set")
 
 	return warnings
 
