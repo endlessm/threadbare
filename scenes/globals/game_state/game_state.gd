@@ -82,6 +82,7 @@ func _ready() -> void:
 	if not persist_progress:
 		if current_scene:
 			guess_quest(current_scene.scene_file_path)
+			set_scene(current_scene.scene_file_path)
 		# Grant all debug player abilities:
 		for ability: Enums.PlayerAbilities in DEBUG_PLAYER_ABILITIES:
 			player.set_ability(ability, true)
