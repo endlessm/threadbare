@@ -1,10 +1,12 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 extends Player
 class_name CorruptionPlayer
 
 var previous_positions := []
 
 
-func _physics_process(_delta):
+func physics_process(_delta):
 
 	previous_positions.push_front(global_position)
 
@@ -12,6 +14,6 @@ func _physics_process(_delta):
 		previous_positions.pop_back()
 
 
-func _toggle_abilities() -> void:
+func toggle_abilities() -> void:
 	_toggle_player_behavior(player_repel, false)
 	_toggle_player_behavior(player_hook, false)
