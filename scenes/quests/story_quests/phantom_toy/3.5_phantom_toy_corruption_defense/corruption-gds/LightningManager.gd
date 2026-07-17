@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 extends ColorRect
 
 @onready var thunder_sound: AudioStreamPlayer = $"../ThunderSound"
