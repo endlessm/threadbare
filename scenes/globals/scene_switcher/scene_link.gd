@@ -8,10 +8,29 @@ extends Node2D
 ## This can be used directly, but acts primarily a base class for other
 ## components: [Cinematic], [CollectibleItem], and the Teleporter scene.
 
+enum Target {
+	## The scene specified in [member SceneLink.next_scene].
+	SPECIFIED_SCENE,
+	## The scene from [constant ThreadbareProjectSettings.HOME_SCENE], typically
+	## Fray's End. Use this at the end of quests.
+	HOME_SCENE,
+}
+
+@export var target: Target = Target.SPECIFIED_SCENE:
+	set(new_value):
+		target = new_value
+		_update_available_spawn_points()
+
 ## Scene to switch to when the player enters this teleport. If empty, the player
 ## will teleport within the current scene, to the position specified by [member
 ## spawn_point_path].
 @export_file("*.tscn") var next_scene: String:
+	get():
+		if target == Target.HOME_SCENE:
+			return ThreadbareProjectSettings.get_setting(ThreadbareProjectSettings.HOME_SCENE)
+
+		return next_scene
+
 	set(new_value):
 		next_scene = new_value
 		_update_available_spawn_points()
@@ -127,6 +146,11 @@ func _update_available_spawn_points() -> void:
 
 func _validate_property(property: Dictionary) -> void:
 	match property.name:
+		"next_scene":
+			if target == Target.HOME_SCENE:
+				property.usage |= PROPERTY_USAGE_READ_ONLY
+				property.usage &= ~PROPERTY_USAGE_STORAGE
+
 		"open_next_scene":
 			var next_scene_path: String = _get_next_scene_path()
 			var edited_scene_root := get_tree().edited_scene_root if is_inside_tree() else null
