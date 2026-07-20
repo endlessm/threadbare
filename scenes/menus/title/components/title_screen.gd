@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Control
 
-@export var tutorial_quest: Quest
+var opening_quest: Quest
 
 @onready var main_menu: Control = %MainMenu
 @onready var options: Control = %Options
@@ -10,6 +10,10 @@ extends Control
 
 
 func _ready() -> void:
+	opening_quest = load(
+		ThreadbareProjectSettings.get_setting(ThreadbareProjectSettings.OPENING_QUEST)
+	)
+
 	if ProjectSettings.get_setting(ThreadbareProjectSettings.SKIP_SPLASH):
 		if GameState.can_restore():
 			_on_main_menu_continue_pressed()
@@ -37,9 +41,9 @@ func _on_main_menu_continue_pressed() -> void:
 func _on_start_pressed() -> void:
 	GameState.clear()
 
-	GameState.set_quest(tutorial_quest)
+	GameState.set_quest(opening_quest)
 	SceneSwitcher.change_to_file_with_transition(
-		tutorial_quest.first_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		opening_quest.first_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 	)
 
 
