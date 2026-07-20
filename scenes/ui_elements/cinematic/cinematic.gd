@@ -38,6 +38,7 @@ func _ready() -> void:
 
 
 func _validate_property(property: Dictionary) -> void:
+	super._validate_property(property)
 	match property.name:
 		"dialogue_title":
 			if dialogue:
