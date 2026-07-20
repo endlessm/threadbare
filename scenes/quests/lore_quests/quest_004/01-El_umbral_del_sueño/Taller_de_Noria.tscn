@@ -1,6 +1,5 @@
 [gd_scene format=4 uid="uid://b2f440w6arxpj"]
 
-[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="98_hud"]
 [ext_resource type="Material" uid="uid://jpl3v3f7elq6" path="res://scenes/eternal_loom_sokoban/components/floor/tiled_mat.tres" id="1_246rw"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="1_kqumg"]
 [ext_resource type="PackedScene" uid="uid://bqhlguj2qmwx4" path="res://scenes/game_elements/props/decoration/spool/spool.tscn" id="2_e5s83"]
@@ -13,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://cj62bpasgf643" path="res://scenes/game_elements/props/eternal_loom/components/eternal_loom_blue.png" id="7_xnujk"]
 [ext_resource type="AudioStream" uid="uid://dwkbxxoh57hht" path="res://assets/third_party/sewing-machine/746897__kzarkses__machantq_sewing-machine-running_cp_none_mke600.ogg" id="8_xnujk"]
 [ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="13_d8brw"]
-[ext_resource type="PackedScene" path="res://scenes/quests/lore_quests/quest_004/menhir/hum_ability.tscn" id="13_krxu7"]
+[ext_resource type="PackedScene" uid="uid://cwhx41hykg23b" path="res://scenes/quests/lore_quests/quest_004/menhir/hum_ability.tscn" id="13_krxu7"]
 [ext_resource type="Script" uid="uid://bnce40u3wgxxw" path="res://scenes/quests/lore_quests/quest_004/menhir/extra_ability.gd" id="13_n2343"]
 [ext_resource type="Resource" uid="uid://bu8sab18188qj" path="res://scenes/quests/lore_quests/quest_004/01-El_umbral_del_sueño/noria.dialogue" id="15_noria"]
 [ext_resource type="Script" uid="uid://ba7f2rw4pca5k" path="res://scenes/quests/lore_quests/quest_004/menhir/ability_exit.gd" id="16_exit"]
@@ -22,6 +21,7 @@
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="20_tkt3q"]
 [ext_resource type="AudioStream" uid="uid://ofn2fhr2a2n8" path="res://assets/first_party/music/Threadbare Loop_Main_Intro_01.ogg" id="21_q8elv"]
 [ext_resource type="PackedScene" uid="uid://tdvdp0jvbt2s" path="res://scenes/quests/lore_quests/quest_004/menhir/hum_hint.tscn" id="30_humhint"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="98_hud"]
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="900_lighttex"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d8brw"]
@@ -111,7 +111,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_f4ght")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 10.0
 }]
@@ -157,33 +157,13 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_n2343")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e5s83"]
 size = Vector2(116.37491, 64.467896)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
-size = Vector2(80, 220)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_carac"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("17_carac")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wallH"]
-size = Vector2(1140, 40)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wallV"]
-size = Vector2(40, 820)
 
 [sub_resource type="CanvasItemMaterial" id="CIM_mystic_z"]
 blend_mode = 1
@@ -200,15 +180,35 @@ emission_shape = 3
 emission_box_extents = Vector3(820, 480, 1)
 direction = Vector3(0, -1, 0)
 spread = 40.0
-gravity = Vector3(0, -5, 0)
 initial_velocity_min = 3.0
 initial_velocity_max = 14.0
+gravity = Vector3(0, -5, 0)
 scale_min = 0.03
 scale_max = 0.11
 color_ramp = SubResource("GradTex_mystic_z")
 turbulence_enabled = true
 turbulence_noise_strength = 3.0
 turbulence_noise_scale = 1.2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(80, 220)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_carac"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_carac")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wallH"]
+size = Vector2(1140, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wallV"]
+size = Vector2(40, 820)
 
 [node name="TallerDeNoria" type="Node2D" unique_id=902251589]
 
@@ -357,10 +357,9 @@ sprite_frames = ExtResource("6_n2343")
 [node name="MysticMotes" type="GPUParticles2D" parent="OnTheGround/Player" unique_id=840000001]
 material = SubResource("CIM_mystic_z")
 amount = 80
+texture = ExtResource("900_lighttex")
 lifetime = 7.0
 preprocess = 6.0
-local_coords = false
-texture = ExtResource("900_lighttex")
 process_material = SubResource("PPM_motes_z")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=562750652]
@@ -389,8 +388,6 @@ radius = 650.0
 [node name="LearnHumPowerup" parent="." unique_id=297202740 instance=ExtResource("13_d8brw")]
 position = Vector2(987, 222)
 ability = 256
-ability_name = "Tarareo"
-interact_action = "Aprender Tarareo"
 sprite_frames = SubResource("SpriteFrames_carac")
 highlight_color = Color(0.55, 0.85, 0.95, 1)
 
