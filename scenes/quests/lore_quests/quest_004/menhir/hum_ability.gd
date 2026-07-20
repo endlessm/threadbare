@@ -8,7 +8,9 @@ const HUM_WAVE := preload("res://scenes/quests/lore_quests/quest_004/menhir/hum_
 @export var hum_key: Key = KEY_Q
 @export var radius: float = 200.0
 @export var grow_time: float = 0.5
-@export var hum_sound: AudioStream = preload("res://scenes/quests/lore_quests/quest_004/assets/audio/humEffect.wav")
+@export var hum_sound: AudioStream = preload(
+	"res://scenes/quests/lore_quests/quest_004/assets/audio/humEffect.wav"
+)
 
 var _on_cooldown: bool = false
 
@@ -22,7 +24,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _try_hum() -> void:
 	if _on_cooldown:
 		return
-	if not GameState.has_ability(required_ability):
+	if not GameState.player.has_ability(required_ability):
 		return
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	if not is_instance_valid(player):

@@ -10,10 +10,10 @@ extends Node
 
 func _ready() -> void:
 	if grant_sword:
-		GameState.set_ability(Enums.PlayerAbilities.ABILITY_A, true)
+		GameState.player.set_ability(Enums.PlayerAbilities.ABILITY_A, true)
 	if grant_hook:
-		GameState.set_ability(Enums.PlayerAbilities.ABILITY_B, true)
+		GameState.player.set_ability(Enums.PlayerAbilities.ABILITY_B, true)
 	if grant_longer_hook:
-		GameState.set_ability(Enums.PlayerAbilities.ABILITY_B_MODIFIER_1, true)
+		GameState.player.set_ability(Enums.PlayerAbilities.ABILITY_B_MODIFIER_1, true)
 	if grant_tarareo:
-		GameState.set_ability(Enums.PlayerAbilities.ABILITY_C, true)
+		GameState.player.set_ability(Enums.PlayerAbilities.ABILITY_C, true)

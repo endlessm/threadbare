@@ -12,4 +12,4 @@ func _ready() -> void:
 
 
 func _on_parent_collected() -> void:
-	GameState.set_ability(extra_ability, true)
+	GameState.player.set_ability(extra_ability, true)

@@ -20,7 +20,7 @@ func _ready() -> void:
 	if aim:
 		controls.move_child(_hint, aim.get_index())
 
-	GameState.abilities_changed.connect(_refresh)
+	GameState.player.abilities_changed.connect(_refresh)
 	_refresh()
 
 
@@ -38,4 +38,4 @@ func _get_hud_controls() -> Node:
 
 func _refresh() -> void:
 	if is_instance_valid(_hint):
-		_hint.visible = GameState.has_ability(required_ability)
+		_hint.visible = GameState.player.has_ability(required_ability)

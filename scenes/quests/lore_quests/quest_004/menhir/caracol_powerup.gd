@@ -15,7 +15,7 @@ func _ready() -> void:
 	if sprite:
 		sprite.scale = Vector2(icon_scale, icon_scale)
 
-	if not GameState.has_ability(powerup.ability):
+	if not GameState.player.has_ability(powerup.ability):
 		_set_shown(powerup, false)
 		DialogueManager.dialogue_ended.connect(_on_dialogue_ended)
 
@@ -25,7 +25,7 @@ func _ready() -> void:
 
 func _on_dialogue_ended(_resource: Resource) -> void:
 	var powerup := get_parent()
-	if GameState.has_ability(powerup.ability):
+	if GameState.player.has_ability(powerup.ability):
 		return
 	_set_shown(powerup, true)
 
@@ -38,5 +38,15 @@ func _set_shown(powerup: Node, shown: bool) -> void:
 func _start_bob(sprite: Node2D) -> void:
 	var base_y := sprite.position.y
 	var t := create_tween().set_loops()
-	t.tween_property(sprite, "position:y", base_y - bob_amplitude, bob_period * 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	t.tween_property(sprite, "position:y", base_y, bob_period * 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	(
+		t
+		. tween_property(sprite, "position:y", base_y - bob_amplitude, bob_period * 0.5)
+		. set_trans(Tween.TRANS_SINE)
+		. set_ease(Tween.EASE_IN_OUT)
+	)
+	(
+		t
+		. tween_property(sprite, "position:y", base_y, bob_period * 0.5)
+		. set_trans(Tween.TRANS_SINE)
+		. set_ease(Tween.EASE_IN_OUT)
+	)
