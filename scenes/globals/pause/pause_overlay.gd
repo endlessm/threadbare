@@ -2,10 +2,13 @@
 # SPDX-License-Identifier: MPL-2.0
 extends CanvasLayer
 
+## The target for "Exit to Title"
 @export_file("*.tscn") var title_scene: String
-@export_file("*.tscn") var frays_end: String
+
+## Dialogue to play after abandoning a quest.
 @export var abandon_dialogue: DialogueResource
 
+var home_scene: String
 @onready var tab_container: TabContainer = %TabContainer
 @onready var pause_menu: Control = %Menu
 @onready var back_button: Button = %BackButton
@@ -15,6 +18,7 @@ extends CanvasLayer
 
 
 func _ready() -> void:
+	home_scene = ThreadbareProjectSettings.get_setting(ThreadbareProjectSettings.HOME_SCENE)
 	visible = false
 
 
@@ -61,7 +65,7 @@ func abandon_quest(suspend: bool = true) -> void:
 	if abandon_scene:
 		abandon_spawn_point = GameState.quest.abandon_spawn_point
 	else:
-		abandon_scene = frays_end
+		abandon_scene = home_scene
 
 	GameState.abandon_quest(suspend)
 	SceneSwitcher.change_to_file_with_transition(
@@ -82,7 +86,7 @@ func _on_skip_tutorial_pressed() -> void:
 		GameState.player.set_ability(ability, true)
 	GameState.mark_quest_completed()
 	SceneSwitcher.change_to_file_with_transition(
-		frays_end, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		home_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
 	)
 
 
