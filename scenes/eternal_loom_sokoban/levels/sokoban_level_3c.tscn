@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://dppvw2f8yh4vu" path="res://scenes/eternal_loom_sokoban/components/system/board/board_2d.gd" id="5_m5u3b"]
 [ext_resource type="TileSet" uid="uid://dand23uvn70pg" path="res://scenes/eternal_loom_sokoban/components/eternal_loom_tileset.tres" id="6_1qsr1"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="6_1s00a"]
+[ext_resource type="Script" uid="uid://d2vp62mjrf6gn" path="res://scenes/globals/scene_switcher/scene_link.gd" id="7_1s00a"]
 [ext_resource type="AudioStream" uid="uid://bbamdm6wtjjcn" path="res://assets/first_party/music/Threadbare_Bed.ogg" id="7_om8f1"]
 
 [node name="SokobanLevel3c" type="Node2D" unique_id=281329305]
@@ -49,7 +50,15 @@ tile_set = ExtResource("6_1qsr1")
 
 [node name="RuleEngine" parent="." unique_id=933094656 node_paths=PackedStringArray("board") instance=ExtResource("4_3v6fr")]
 board = NodePath("../Board2D")
-next_scene = "uid://cufkthb25mpxy"
 
 [node name="BackgroundMusic" parent="." unique_id=393111310 instance=ExtResource("6_1s00a")]
 stream = ExtResource("7_om8f1")
+
+[node name="SceneLink" type="Node2D" parent="." unique_id=426227306]
+script = ExtResource("7_1s00a")
+next_scene = "uid://cufkthb25mpxy"
+enter_transition = 1
+exit_transition = 3
+metadata/_custom_type_script = "uid://d2vp62mjrf6gn"
+
+[connection signal="goals_reached" from="RuleEngine" to="SceneLink" method="switch"]
