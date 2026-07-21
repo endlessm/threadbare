@@ -47,6 +47,9 @@ var include_singletons: bool = true
 ## Allow dialogue to call static methods/properties on classes
 var include_classes: bool = true
 
+## A runtime override for the project setting to ignore missing state values.
+var ignore_missing_state_values: bool = false
+
 ## Manage translation behaviour
 var translation_source: DMConstants.TranslationSource = DMConstants.TranslationSource.Guess
 
@@ -79,6 +82,8 @@ func _ready() -> void:
 	# Make the dialogue manager available as a singleton
 	if not Engine.has_singleton("DialogueManager"):
 		Engine.register_singleton("DialogueManager", self)
+
+	ignore_missing_state_values = DMSettings.get_setting(DMSettings.IGNORE_MISSING_STATE_VALUES, false)
 
 
 ## Step through lines and run any mutations until we either hit some dialogue or the end of the conversation
@@ -131,7 +136,7 @@ func _get_next_dialogue_line(resource: DialogueResource, key: String = "", extra
 		else:
 			return await _get_next_dialogue_line(resource, dialogue.next_id, extra_game_states, mutation_behaviour)
 	else:
-		got_dialogue.emit(dialogue)
+		got_dialogue.emit.call_deferred(dialogue)
 		return dialogue
 
 
@@ -190,7 +195,7 @@ func get_line(resource: DialogueResource, key: String, extra_game_states: Array)
 
 	# If next_id is an expression we need to resolve it.
 	if data.has(&"next_id_expression"):
-		data.next_id = await _resolve(data.next_id_expression, extra_game_states)
+		data.next_id = await _resolve(data.next_id_expression.duplicate(true), extra_game_states)
 
 	# This title key points to another title key so we should jump there instead
 	if data.type == DMConstants.TYPE_TITLE and data.next_id in resource.titles.values():
@@ -283,6 +288,7 @@ func get_line(resource: DialogueResource, key: String, extra_game_states: Array)
 			data.id = key
 
 	# Set up a line object.
+	data.resource = resource
 	var line: DialogueLine = await create_dialogue_line(data, extra_game_states)
 
 	# If the jump point somehow has no content then just end.
@@ -362,6 +368,8 @@ func get_resolved_line_data(data: Dictionary, extra_game_states: Array = []) -> 
 			# by special quotes while translating.
 			index = text.replace("“", "\"").replace("”", "\"").find(replacement.value_in_text)
 		if index > -1:
+			if value is Object and "_to_dialogue_string" in value:
+				value = value._to_dialogue_string()
 			text = text.substr(0, index) + str(value) + text.substr(index + replacement.value_in_text.length())
 
 	var compilation: DMCompilation = DMCompilation.new()
@@ -422,23 +430,20 @@ func _shift_markers(markers: DMResolvedLineData, removed_start: int, removed_end
 	# Calculate the offset for markers after the removed range
 	var after_offset: int = removed_end - removed_start - body_length
 
-	for key in [&"speeds", &"time"]:
-		if markers.get(key) == null: continue
-		var marker = markers.get(key)
-		var next_marker: Dictionary = {}
-		for index in marker:
-			if index < removed_start:
-				next_marker[index] = marker[index]
-			elif index >= removed_end:
-				next_marker[index - after_offset] = marker[index]
-			elif keep_inner:
-				# Marker is inside the conditional range and should be kept
-				# Shift it to account for the [if] tag being removed
-				next_marker[removed_start] = marker[index]
-			else:
-				# marker is inside a failed conditional, remove it
-				continue
-		markers.set(key, next_marker)
+	var next_speeds: Dictionary = {}
+	for index: int in markers.speeds:
+		if index < removed_start:
+			next_speeds[index] = markers.speeds[index]
+		elif index >= removed_end:
+			next_speeds[index - after_offset] = markers.speeds[index]
+		elif keep_inner:
+			# Marker is inside the conditional range and should be kept
+			# Shift it to account for the [if] tag being removed
+			next_speeds[removed_start] = markers.speeds[index]
+		else:
+			# marker is inside a failed conditional, remove it
+			continue
+	markers.speeds = next_speeds
 
 	var mutations: Array[Array] = markers.mutations
 	var next_mutations: Array[Array] = []
@@ -612,7 +617,7 @@ func _bridge_get_error_message(error: int) -> String:
 func show_error_for_missing_state_value(message: String, will_show: bool = true) -> void:
 	if not will_show: return
 
-	if DMSettings.get_setting(DMSettings.IGNORE_MISSING_STATE_VALUES, false):
+	if ignore_missing_state_values:
 		push_error(message)
 	elif will_show:
 		# If you're here then you're missing a method or property in your game state. The error
@@ -658,7 +663,7 @@ func create_dialogue_line(data: Dictionary, extra_game_states: Array) -> Dialogu
 		DMConstants.TYPE_DIALOGUE:
 			var resolved_data: DMResolvedLineData = await get_resolved_line_data(data, extra_game_states)
 			return DialogueLine.new({
-				id = data.get(&"id", ""),
+				id = _get_id_with_resource(data.resource, data.get(&"id", "")),
 				type = DMConstants.TYPE_DIALOGUE,
 				next_id = data.next_id,
 				character = await get_resolved_character(data, extra_game_states),
@@ -675,7 +680,7 @@ func create_dialogue_line(data: Dictionary, extra_game_states: Array) -> Dialogu
 
 		DMConstants.TYPE_RESPONSE:
 			return DialogueLine.new({
-				id = data.get(&"id", ""),
+				id = _get_id_with_resource(data.resource, data.get(&"id", "")),
 				type = DMConstants.TYPE_RESPONSE,
 				next_id = data.next_id,
 				tags = data.get(&"tags", []),
@@ -684,7 +689,7 @@ func create_dialogue_line(data: Dictionary, extra_game_states: Array) -> Dialogu
 
 		DMConstants.TYPE_MUTATION:
 			return DialogueLine.new({
-				id = data.get(&"id", ""),
+				id = _get_id_with_resource(data.resource, data.get(&"id", "")),
 				type = DMConstants.TYPE_MUTATION,
 				next_id = data.next_id,
 				mutation = data.mutation,

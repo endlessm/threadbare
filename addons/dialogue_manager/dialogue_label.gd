@@ -69,6 +69,7 @@ var _last_wait_index: int = -1
 var _last_mutation_index: int = -1
 var _waiting_seconds: float = 0
 var _is_awaiting_mutation: bool = false
+var _is_skipping_mutations: bool = false
 
 
 func _process(delta: float) -> void:
@@ -90,7 +91,10 @@ func _process(delta: float) -> void:
 ## Sets the label's text from the current dialogue line. Override if you want
 ## to do something more interesting in your subclass.
 func _update_text() -> void:
-	text = dialogue_line.text
+	if is_instance_valid(dialogue_line):
+		text = dialogue_line.text
+	else:
+		text = ""
 
 
 ## Start typing out the text
@@ -166,8 +170,10 @@ func _get_speed(at_index: int) -> float:
 
 # Run any inline mutations that haven't been run yet
 func _mutate_remaining_mutations() -> void:
+	_is_skipping_mutations = true
 	for i in range(visible_characters, get_total_character_count() + 1):
 		_mutate_inline_mutations(i)
+	_is_skipping_mutations = false
 
 
 # Run any mutations at the current typing position
@@ -177,10 +183,12 @@ func _mutate_inline_mutations(index: int) -> void:
 		if inline_mutation[0] > index:
 			return
 		if inline_mutation[0] == index and not _already_mutated_indices.has(index):
-			_is_awaiting_mutation = true
-			# The DialogueManager can't be referenced directly here so we need to get it by its path
-			await Engine.get_singleton("DialogueManager")._mutate(inline_mutation[1], dialogue_line.extra_game_states, true)
-			_is_awaiting_mutation = false
+			if _is_skipping_mutations:
+				Engine.get_singleton("DialogueManager")._mutate(inline_mutation[1], dialogue_line.extra_game_states, true)
+			else:
+				_is_awaiting_mutation = true
+				await Engine.get_singleton("DialogueManager")._mutate(inline_mutation[1], dialogue_line.extra_game_states, true)
+				_is_awaiting_mutation = false
 
 	_already_mutated_indices.append(index)
 
