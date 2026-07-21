@@ -118,7 +118,7 @@ func restore_quest() -> void:
 ## Note that this does not switch scenes into the quest.
 func set_quest(new_quest: Quest) -> void:
 	var quest_player_state: PlayerState
-	if new_quest is LoreQuest:
+	if new_quest is not StoryQuest:
 		# Duplicate the current global player state. If the quest is completed,
 		# it will be copied back; if abandoned, it will be discarded.
 		quest_player_state = global.player.duplicate()
