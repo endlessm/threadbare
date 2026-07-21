@@ -240,10 +240,7 @@ func _add_jump_completions(current_line: String, cursor: Vector2) -> void:
 
 	# Get all titles, including those in imports
 	for title: String in DMCompiler.get_titles_in_text(text, main_view.current_file_path):
-		# Ignore any imported titles that aren't resolved to human readable.
-		if title.to_int() > 0:
-			continue
-		elif "/" in title:
+		if "/" in title:
 			var bits: PackedStringArray = title.split("/")
 			if _matches_prompt(prompt, bits[0]) or _matches_prompt(prompt, bits[1]):
 				add_code_completion_option(CodeEdit.KIND_CLASS, title, title.substr(prompt.length()), theme_overrides.text_color, get_theme_icon("CombineLines", "EditorIcons"))
@@ -258,9 +255,9 @@ func _add_character_name_completions(current_line: String) -> void:
 		if current_line.strip_edges().begins_with(prefix):
 			return
 
-	var name_so_far: String = WEIGHTED_RANDOM_PREFIX.sub(current_line.strip_edges(), "")
-	if name_so_far == "" or name_so_far[0].to_upper() != name_so_far[0]:
-		return
+	var text_before_cursor: String = current_line.substr(0, get_caret_column(0))
+	var name_so_far: String = WEIGHTED_RANDOM_PREFIX.sub(text_before_cursor.strip_edges(), "")
+	if name_so_far == "": return
 
 	var names: PackedStringArray = get_character_names(name_so_far)
 	for character_name: String in names:
@@ -318,6 +315,15 @@ func _add_mutation_completions(current_line: String, cursor: Vector2) -> void:
 			add_code_completion_option(CodeEdit.KIND_CONSTANT, "true", "true".substr(prompt.length()), color, icon)
 		if "false".contains(prompt):
 			add_code_completion_option(CodeEdit.KIND_CONSTANT, "false", "false".substr(prompt.length()), color, icon)
+
+	# Remove duplicates
+	var unique_auto_completes: PackedStringArray = []
+	auto_completes = auto_completes.filter(func(auto_complete: Dictionary) -> bool:
+		if unique_auto_completes.has(auto_complete.text): return false
+
+		unique_auto_completes.append(auto_complete.text)
+		return true
+	)
 
 	auto_completes.sort_custom(func(a, b):
 		return a.text.to_lower().similarity(prompt) > b.text.to_lower().similarity(prompt)
@@ -605,23 +611,50 @@ func _find_definition_in_script(script: Script, member_name: String) -> int:
 
 	var lines: PackedStringArray = script.source_code.split("\n")
 
-	var method_regex: RegEx = RegEx.create_from_string("^\\s*func\\s+" + member_name + "\\s*\\(")
-	var property_regex: RegEx = RegEx.create_from_string("^\\s*var\\s+" + member_name + "\\s*[:\\s=]")
-	var signal_regex: RegEx = RegEx.create_from_string("^\\s*signal\\s+" + member_name + "\\s*[\\(\\s]")
-	var const_regex: RegEx = RegEx.create_from_string("^\\s*const\\s+" + member_name + "\\s*[:\\s=]")
-	var enum_regex: RegEx = RegEx.create_from_string("^\\s*enum\\s+" + member_name + "[\\s$]")
-	var inner_class_regex: RegEx = RegEx.create_from_string("^\\s*class\\s+" + member_name + ":")
+	if script is GDScript:
+		# Try to find the line in a GDScript file.
+		var method_regex: RegEx = RegEx.create_from_string("^\\s*func\\s+" + member_name + "\\s*\\(")
+		var property_regex: RegEx = RegEx.create_from_string("^(@.*\\s)?\\s*var\\s+" + member_name + "\\s*[:\\s=]")
+		var signal_regex: RegEx = RegEx.create_from_string("^\\s*signal\\s+" + member_name + "\\s*[\\(\\s]")
+		var const_regex: RegEx = RegEx.create_from_string("^\\s*const\\s+" + member_name + "\\s*[:\\s=]")
+		var enum_regex: RegEx = RegEx.create_from_string("^\\s*enum\\s+" + member_name + "[\\s$]")
+		var inner_class_regex: RegEx = RegEx.create_from_string("^\\s*class\\s+" + member_name + ":")
 
-	for i: int in range(lines.size()):
-		var line: String = lines[i]
-		if method_regex.search(line) \
-		or property_regex.search(line) \
-		or signal_regex.search(line) \
-		or const_regex.search(line) \
-		or enum_regex.search(line) \
-		or inner_class_regex.search(line):
-			# Editor line numbers start at 1
-			return i + 1
+		for i: int in range(lines.size()):
+			var line: String = lines[i]
+			if method_regex.search(line) \
+				or property_regex.search(line) \
+				or signal_regex.search(line) \
+				or const_regex.search(line) \
+				or enum_regex.search(line) \
+				or inner_class_regex.search(line):
+				# Editor line numbers start at 1
+				return i + 1
+
+		# Does the script extend another one?
+		var extends_regex: RegEx = RegEx.create_from_string("extends (?<extends>.*)")
+		var found_extends: RegExMatch = extends_regex.search(script.source_code)
+		if found_extends:
+			var extends_name: String = found_extends.get_string(found_extends.names.extends)
+			if not "\"" in extends_name:
+				script = _get_script_for_class_name(extends_name)
+				return _find_definition_in_script(script, member_name)
+
+	elif script.resource_path.ends_with(".cs"):
+		# Try to find the line in a C# file.
+		var method_regex: RegEx = RegEx.create_from_string("^\\s*public\\s+.*?" + member_name + "\\s*\\(")
+		var property_regex: RegEx = RegEx.create_from_string("^\\s*(\\[Export\\] )?public\\s+.*?" + member_name)
+		var const_regex: RegEx = RegEx.create_from_string("^\\s*const\\s+.*?" + member_name)
+		var enum_regex: RegEx = RegEx.create_from_string("^\\s*public enum\\s+" + member_name)
+
+		for i: int in range(lines.size()):
+			var line: String = lines[i]
+			if method_regex.search(line) \
+				or property_regex.search(line) \
+				or const_regex.search(line) \
+				or enum_regex.search(line):
+				# Editor line numbers start at 1
+				return i + 1
 
 	return -1
 
@@ -690,9 +723,6 @@ func _resolve_mutation_symbol_at_position(line_text: String, column: int) -> Dic
 			"member_name": segments.slice(0, -1)[segments.size() - 2],
 			"symbol": symbol
 		}
-	# C# symbol lookups aren't supported
-	if target_script is Script and target_script.resource_path.ends_with(".cs"):
-		return {}
 
 	return {
 		"script": target_script,
@@ -974,14 +1004,21 @@ func go_to_title(title: String, create_if_none: bool = false) -> void:
 
 ## Get all character names from the dialogue that match the given prefix.
 func get_character_names(beginning_with: String) -> PackedStringArray:
+	if beginning_with.is_empty(): return []
+
 	var names: PackedStringArray = []
 	var lines = text.split("\n")
 	for line: String in lines:
 		if line.strip_edges().begins_with("#"): continue # skip comments
 		if ": " in line:
 			var character_name: String = WEIGHTED_RANDOM_PREFIX.sub(line.split(": ")[0].strip_edges(), "")
-			if not character_name in names and _matches_prompt(beginning_with, character_name):
-				names.append(character_name)
+
+			if character_name.is_empty() or character_name in names: continue
+			if character_name.to_lower()[0] != beginning_with.to_lower()[0]: continue
+			if not _matches_prompt(beginning_with, character_name): continue
+
+			names.append(character_name)
+
 	return names
 
 

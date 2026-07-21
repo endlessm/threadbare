@@ -11,6 +11,7 @@ const TRANSLATIONS_GENERATE_LINE_IDS_FOR_FILE = 101
 const TRANSLATIONS_SAVE_CHARACTERS_TO_CSV = 201
 const TRANSLATIONS_SAVE_TO_CSV = 202
 const TRANSLATIONS_IMPORT_FROM_CSV = 203
+const TRANSLATIONS_SAVE_ALL_TO_CSV = 204
 
 const ITEM_SAVE = 100
 const ITEM_SAVE_AS = 101
@@ -22,7 +23,8 @@ const ITEM_SHOW_IN_FILESYSTEM = 201
 
 enum TranslationSource {
 	CharacterNames,
-	Lines
+	Lines,
+	AllLines
 }
 
 
@@ -426,13 +428,12 @@ func apply_theme() -> void:
 		search_button.tooltip_text = DMConstants.translate(&"search_for_text")
 
 		insert_button.icon = get_theme_icon("RichTextEffect", "EditorIcons")
-		insert_button.text = DMConstants.translate(&"insert")
+		insert_button.tooltip_text = DMConstants.translate(&"insert")
 
 		translations_button.icon = get_theme_icon("Translation", "EditorIcons")
-		translations_button.text = DMConstants.translate(&"translations")
+		translations_button.tooltip_text = DMConstants.translate(&"translations")
 
 		support_button.icon = get_theme_icon("Heart", "EditorIcons")
-		support_button.text = DMConstants.translate(&"sponsor")
 		support_button.tooltip_text = DMConstants.translate(&"show_support")
 
 		docs_button.icon = get_theme_icon("Help", "EditorIcons")
@@ -467,6 +468,7 @@ func apply_theme() -> void:
 		popup.add_separator()
 		popup.add_icon_item(get_theme_icon("FileList", "EditorIcons"), DMConstants.translate(&"save_characters_to_csv"), TRANSLATIONS_SAVE_CHARACTERS_TO_CSV)
 		popup.add_icon_item(get_theme_icon("FileList", "EditorIcons"), DMConstants.translate(&"save_to_csv"), TRANSLATIONS_SAVE_TO_CSV)
+		popup.add_icon_item(get_theme_icon("FileList", "EditorIcons"), DMConstants.translate(&"save_all_to_csv"), TRANSLATIONS_SAVE_ALL_TO_CSV)
 		popup.add_icon_item(get_theme_icon("AssetLib", "EditorIcons"), DMConstants.translate(&"import_from_csv"), TRANSLATIONS_IMPORT_FROM_CSV)
 
 		# Dialog sizes
@@ -563,6 +565,20 @@ func export_translations_to_csv(path: String) -> void:
 	call_deferred("add_path_to_project_translations", translation_path)
 
 
+# Export every dialogue file in the project to a single CSV
+func export_all_translations_to_csv(path: String) -> void:
+	DMTranslationUtilities.export_all_translations_to_csv(path)
+
+	EditorInterface.get_resource_filesystem().scan()
+	EditorInterface.get_file_system_dock().call_deferred("navigate_to_path", path)
+
+	# Add it to the project l10n settings if it's not already there
+	var default_locale: String = DMSettings.get_setting(DMSettings.DEFAULT_CSV_LOCALE, "en")
+	var language_code: RegExMatch = RegEx.create_from_string("^[a-z]{2,3}").search(default_locale)
+	var translation_path: String = path.replace(".csv", ".%s.translation" % language_code.get_string())
+	call_deferred("add_path_to_project_translations", translation_path)
+
+
 func export_character_names_to_csv(path: String) -> void:
 	DMTranslationUtilities.export_character_names_to_csv(path, code_edit.text, current_file_path)
 
@@ -617,8 +633,9 @@ func _on_cache_file_content_changed(path: String, new_content: String) -> void:
 		var buffer = open_buffers[path]
 		if buffer.text == buffer.pristine_text and buffer.text != new_content:
 			buffer.text = new_content
-			code_edit.text = new_content
-			title_list.titles = code_edit.get_titles()
+			if path == current_file_path:
+				code_edit.text = new_content
+				title_list.titles = code_edit.get_titles()
 		buffer.pristine_text = new_content
 
 
@@ -683,8 +700,13 @@ func _on_insert_button_menu_id_pressed(id: int) -> void:
 func _on_translations_button_menu_id_pressed(id: int) -> void:
 	match id:
 		TRANSLATIONS_GENERATE_LINE_IDS_FOR_FILE:
+			var scroll_vertical: float = code_edit.scroll_vertical
+			var cursor: Vector2i = code_edit.get_cursor()
 			code_edit.text = DMTranslationUtilities.generate_static_line_ids_for_text(code_edit.text, current_file_path)
-			
+			code_edit.set_cursor(cursor)
+			code_edit.set_deferred("scroll_vertical",scroll_vertical)
+			_on_code_edit_text_changed()
+
 		TRANSLATIONS_GENERATE_LINE_IDS_FOR_PROJECT:
 			generate_translations_keys()
 
@@ -696,6 +718,12 @@ func _on_translations_button_menu_id_pressed(id: int) -> void:
 
 		TRANSLATIONS_SAVE_TO_CSV:
 			translation_source = TranslationSource.Lines
+			export_dialog.filters = PackedStringArray(["*.csv ; Translation CSV"])
+			export_dialog.current_path = get_last_export_path("csv")
+			export_dialog.popup_centered()
+
+		TRANSLATIONS_SAVE_ALL_TO_CSV:
+			translation_source = TranslationSource.AllLines
 			export_dialog.filters = PackedStringArray(["*.csv ; Translation CSV"])
 			export_dialog.current_path = get_last_export_path("csv")
 			export_dialog.popup_centered()
@@ -714,6 +742,8 @@ func _on_export_dialog_file_selected(path: String) -> void:
 					export_character_names_to_csv(path)
 				TranslationSource.Lines:
 					export_translations_to_csv(path)
+				TranslationSource.AllLines:
+					export_all_translations_to_csv(path)
 
 
 func _on_import_dialog_file_selected(path: String) -> void:

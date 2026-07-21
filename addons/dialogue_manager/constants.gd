@@ -123,10 +123,12 @@ const ERR_GOTO_NOT_ALLOWED_ON_CONCURRECT_LINES = 140
 const ERR_UNEXPECTED_SYNTAX_ON_NESTED_DIALOGUE_LINE = 141
 const ERR_NESTED_DIALOGUE_INVALID_JUMP = 142
 const ERR_MISSING_RESOURCE_FOR_AUTOSTART = 143
+const ERR_LONELY_STATIC_ID = 144
 
 
 static var _current_locale: String = ""
 static var _current_translation: Translation
+static var _en_translation: Translation
 
 
 ## Get the error message
@@ -218,6 +220,8 @@ static func get_error_message(error: int) -> String:
 			return translate(&"errors.err_nested_dialogue_invalid_jump")
 		ERR_MISSING_RESOURCE_FOR_AUTOSTART:
 			return translate(&"errors.missing_resource_for_autostart")
+		ERR_LONELY_STATIC_ID:
+			return translate(&"Static ID can't be on a line with no other content.")
 
 	return translate(&"errors.unknown")
 
@@ -230,5 +234,7 @@ static func translate(string: String) -> String:
 		var fallback_translation_path: String = "%s/l10n/%s.po" % [base_path, locale.substr(0, 2)]
 		var en_translation_path: String = "%s/l10n/en.po" % base_path
 		_current_translation = load(translation_path if FileAccess.file_exists(translation_path) else (fallback_translation_path if FileAccess.file_exists(fallback_translation_path) else en_translation_path))
+		_en_translation = load(en_translation_path)
 		_current_locale = locale
-	return _current_translation.get_message(string)
+	var message: String = _current_translation.get_message(string)
+	return message if not message.is_empty() else _en_translation.get_message(string)
