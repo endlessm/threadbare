@@ -115,7 +115,7 @@ func restore_quest() -> void:
 	# TODO: There might be an edge case for resuming a dev quest that contains modifiers
 	elif quest.quest is not StoryQuest:
 		for ability: Enums.PlayerAbilities in DEBUG_PLAYER_ABILITIES:
-			player.set_ability(ability, true)
+			quest.player.set_ability(ability, true)
 
 
 ## Sets [member quest], setting up a new [PlayerState] if necessary.
