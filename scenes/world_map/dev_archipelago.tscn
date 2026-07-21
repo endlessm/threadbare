@@ -12,7 +12,6 @@
 [ext_resource type="PackedScene" uid="uid://djmdhrse34vgq" path="res://scenes/game_elements/props/decoration/bunny/bunny.tscn" id="7_8k5p4"]
 [ext_resource type="PackedScene" uid="uid://w50y4sa4xay2" path="res://scenes/game_elements/props/repellable_ball/repellable_ball.tscn" id="7_hwr35"]
 [ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="7_rb4ps"]
-[ext_resource type="Script" uid="uid://c0nbaisj38qn4" path="res://scenes/world_map/components/sheep_volleyball.gd" id="8_c0b46"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="8_ywhfi"]
 [ext_resource type="SpriteFrames" uid="uid://b6doys1c3yelx" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_red_small.tres" id="9_70beb"]
 [ext_resource type="PackedScene" uid="uid://c4vbokn408f2c" path="res://scenes/game_elements/props/decoration/sheep/sheep.tscn" id="9_ujbkd"]
@@ -138,7 +137,6 @@ sprite_frames = ExtResource("11_g3j73")
 y_sort_enabled = true
 
 [node name="SheepVolleyball" type="Node2D" parent="OnTheGround/Node2D" unique_id=827707614]
-script = ExtResource("8_c0b46")
 
 [node name="Sheep" parent="OnTheGround/Node2D/SheepVolleyball" unique_id=2063148848 instance=ExtResource("9_ujbkd")]
 position = Vector2(404, 129)
@@ -148,7 +146,6 @@ scale = Vector2(0.5, 0.5)
 player_controlled = false
 
 [node name="RepelTimer" type="Timer" parent="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel" unique_id=2058953735]
-unique_name_in_owner = true
 
 [node name="Sheep2" parent="OnTheGround/Node2D/SheepVolleyball" unique_id=736452734 instance=ExtResource("9_ujbkd")]
 position = Vector2(404, -256)
@@ -162,6 +159,11 @@ autostart = true
 
 [node name="RepellableBall" parent="OnTheGround/Node2D/SheepVolleyball" unique_id=916389317 instance=ExtResource("7_hwr35")]
 position = Vector2(404, -180)
+
+[node name="Timer" type="Timer" parent="OnTheGround/Node2D/SheepVolleyball" unique_id=1063617327]
+wait_time = 0.5
+one_shot = true
+autostart = true
 
 [node name="SheepTugOfWar" type="Node2D" parent="OnTheGround/Node2D" unique_id=1081008733]
 y_sort_enabled = true
@@ -200,4 +202,5 @@ position = Vector2(-1, -73)
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel/RepelTimer" to="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel" method="repel_once"]
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Sheep2/PlayerRepel2/RepelTimer2" to="OnTheGround/Node2D/SheepVolleyball" method="_on_repel_timer_2_timeout"]
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Sheep2/PlayerRepel2/RepelTimer2" to="OnTheGround/Node2D/SheepVolleyball/Sheep2/PlayerRepel2" method="repel_once"]
+[connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Timer" to="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel/RepelTimer" method="start"]
 [connection signal="timeout" from="OnTheGround/Node2D/SheepTugOfWar/TuggingSheep/Timer" to="OnTheGround/Node2D/SheepTugOfWar" method="_on_timer_timeout"]
