@@ -118,11 +118,16 @@ func restore_quest() -> void:
 ## Note that this does not switch scenes into the quest.
 func set_quest(new_quest: Quest) -> void:
 	var quest_player_state: PlayerState
-	if new_quest is not StoryQuest:
+	if new_quest is LoreQuest:
 		# Duplicate the current global player state. If the quest is completed,
 		# it will be copied back; if abandoned, it will be discarded.
 		quest_player_state = global.player.duplicate()
 		quest_player_state.reset_lives()
+	elif new_quest is not StoryQuest:
+		# For quests that are not LoreQuests or StoryQuests (e.g. dev archipelago quests)
+		# grant all debug player abilities.
+		for ability: Enums.PlayerAbilities in DEBUG_PLAYER_ABILITIES:
+			player.set_ability(ability, true)
 	else:
 		# Use a fresh player state for StoryQuests
 		quest_player_state = PlayerState.new()
