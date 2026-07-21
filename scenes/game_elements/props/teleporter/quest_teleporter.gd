@@ -6,7 +6,7 @@ extends Area2D
 ## Starts a quest when the player enters this area
 
 ## Quest to start when entering this area.
-@export var quest: LoreQuest:
+@export var quest: Quest:
 	set = set_quest
 
 ## Spawn point in the current scene to place the player at if they abandon the
@@ -43,7 +43,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 #region Setters
-func set_quest(new_value: LoreQuest) -> void:
+func set_quest(new_value: Quest) -> void:
 	quest = new_value
 	update_configuration_warnings()
 
