@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bp20cjimwi8l0" path="res://scenes/game_elements/props/buildings/house/house_2.tscn" id="5_eufof"]
 [ext_resource type="TileSet" uid="uid://b778cuoftt88r" path="res://tiles/elevation_2.tres" id="6_engfb"]
 [ext_resource type="Texture2D" uid="uid://0xceungm1p8a" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage2.png" id="7_70n28"]
-[ext_resource type="Script" uid="uid://ccbs1r87nbip6" path="res://scenes/world_map/components/bridge_toggle.gd" id="7_nf521"]
+[ext_resource type="Script" uid="uid://c5jp8y8mpge4w" path="res://scenes/game_elements/props/toggleable_tile_map_layer/toggleable_tile_map_layer.gd" id="7_bt13d"]
 [ext_resource type="Texture2D" uid="uid://cfkb8gpxylplg" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage3.png" id="8_m5r1s"]
 [ext_resource type="Texture2D" uid="uid://d2kjk3oiu5o6o" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Blue_02.png" id="9_ennvy"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="10_8vkdv"]
@@ -118,12 +118,22 @@ metadata/_edit_lock_ = true
 [node name="BridgesShadow" type="TileMapLayer" parent="TileMapLayers" unique_id=2105822926]
 tile_set = ExtResource("4_engfb")
 
-[node name="Bridges" type="TileMapLayer" parent="TileMapLayers" unique_id=71137771 node_paths=PackedStringArray("tile_map_layer")]
-tile_map_data = PackedByteArray("AAAJABMAAwAAAAIAAAAJABQAAwAAAAIAAAAJABUAAwAAAAIAAAAJABYAAwAAAAMAAAAJABIAAwAAAAEAAAAJAAoAAwAAAAMAAAAJAAkAAwAAAAIAAAAJAAgAAwAAAAIAAAAJAAcAAwAAAAEAAAAUAA0AAwAAAAMAAAAUAAwAAwABAAMAAAAUAAoAAwAAAAEAAAAUAAsAAwAAAAIAAAAhAAsAAwACAAAAAAAgAAsAAwABAAAAAAAfAAsAAwABAAAAAAAeAAsAAwABAAAAAAAdAAsAAwAAAAAAAAAhAAUAAwACAAAAAAAgAAUAAwABAAAAAAAfAAUAAwABAAAAAAAeAAUAAwAAAAAAAAA=")
+[node name="Bridges" type="TileMapLayer" parent="TileMapLayers" unique_id=71137771]
+tile_map_data = PackedByteArray("AAAJABMAAwAAAAIAAAAJABQAAwAAAAIAAAAJABUAAwAAAAIAAAAJABYAAwAAAAMAAAAJABIAAwAAAAEAAAAJAAoAAwAAAAMAAAAJAAkAAwAAAAIAAAAJAAgAAwAAAAIAAAAJAAcAAwAAAAEAAAAhAAsAAwACAAAAAAAgAAsAAwABAAAAAAAfAAsAAwABAAAAAAAeAAsAAwABAAAAAAAdAAsAAwAAAAAAAAAhAAUAAwACAAAAAAAgAAUAAwABAAAAAAAfAAUAAwABAAAAAAAeAAUAAwAAAAAAAAA=")
 tile_set = ExtResource("4_engfb")
-script = ExtResource("7_nf521")
-tile_map_layer = NodePath(".")
-metadata/_edit_lock_ = true
+
+[node name="SideQuestBridgeUnblocked" type="TileMapLayer" parent="TileMapLayers" unique_id=316654240 node_paths=PackedStringArray("target")]
+tile_map_data = PackedByteArray("AAAUAA0AAwAAAAMAAAAUAAwAAwAAAAIAAAAUAAoAAwAAAAEAAAAUAAsAAwAAAAIAAAA=")
+tile_set = ExtResource("4_engfb")
+script = ExtResource("7_bt13d")
+target = NodePath(".")
+invert = true
+
+[node name="SideQuestBridgeBlocked" type="TileMapLayer" parent="TileMapLayers" unique_id=1335870243 node_paths=PackedStringArray("target")]
+tile_map_data = PackedByteArray("AAAUAA0AAwAAAAMAAAAUAAwAAwABAAMAAAAUAAoAAwAAAAEAAAAUAAsAAwAAAAIAAAA=")
+tile_set = ExtResource("4_engfb")
+script = ExtResource("7_bt13d")
+target = NodePath(".")
 
 [node name="Shadows" type="TileMapLayer" parent="TileMapLayers" unique_id=452826713]
 tile_map_data = PackedByteArray("AAAWAA4AAAAAAAAAAAAWAA8AAAAAAAAAAAA=")
@@ -1202,20 +1212,22 @@ process_physics_priority = 300
 script = ExtResource("38_rk4u1")
 metadata/_custom_type_script = "uid://bd046eokvcnu2"
 
-[node name="MusicianQuestUnlocker" type="Node" parent="." unique_id=753716459 node_paths=PackedStringArray("targets")]
+[node name="Unlockers" type="Node" parent="." unique_id=533536039]
+
+[node name="MusicianQuestUnlocker" type="Node" parent="Unlockers" unique_id=753716459 node_paths=PackedStringArray("targets")]
 unique_name_in_owner = true
 script = ExtResource("40_bt13d")
-targets = [NodePath("../TileMapLayers/Bridges")]
+targets = [NodePath("../../TileMapLayers/SideQuestBridgeBlocked"), NodePath("../../TileMapLayers/SideQuestBridgeUnblocked")]
 required_quests = Array[ExtResource("41_nf521")]([ExtResource("24_jhhto")])
 metadata/_custom_type_script = "uid://uaaaiviytliw"
 
-[node name="GuardedStonesUnlocker" type="Node" parent="." unique_id=1113619478]
+[node name="GuardedStonesUnlocker" type="Node" parent="Unlockers" unique_id=1113619478]
 unique_name_in_owner = true
 script = ExtResource("40_bt13d")
 required_quests = Array[ExtResource("41_nf521")]([ExtResource("37_bt13d")])
 metadata/_custom_type_script = "uid://uaaaiviytliw"
 
-[node name="OopsAllInkDrinkersUnlocker" type="Node" parent="." unique_id=2069854196]
+[node name="OopsAllInkDrinkersUnlocker" type="Node" parent="Unlockers" unique_id=2069854196]
 unique_name_in_owner = true
 script = ExtResource("40_bt13d")
 required_quests = Array[ExtResource("41_nf521")]([ExtResource("37_nf521")])
