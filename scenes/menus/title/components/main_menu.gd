@@ -7,6 +7,7 @@ signal start_pressed
 signal options_pressed
 signal credits_pressed
 
+@onready var logo: AnimatedTextureRect = %Logo
 @onready var button_box: VBoxContainer = %ButtonBox
 @onready var continue_button: Button = %ContinueButton
 @onready var start_button: Button = %StartButton
@@ -53,6 +54,9 @@ func _on_quit_button_pressed() -> void:
 
 func _on_visibility_changed() -> void:
 	if visible and is_node_ready():
+		if not logo.is_playing():
+			logo.play()
+
 		if GameState.can_restore():
 			continue_button.grab_focus()
 		else:
