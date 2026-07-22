@@ -112,6 +112,9 @@ func restore_quest() -> void:
 		# Add any lore abilities that the player gained since suspending this
 		# quest.
 		quest.player.abilities |= global.player.abilities
+	elif quest.quest is not StoryQuest:
+		for ability: Enums.PlayerAbilities in DEBUG_PLAYER_ABILITIES:
+			quest.player.set_ability(ability, true)
 
 
 ## Sets [member quest], setting up a new [PlayerState] if necessary.
@@ -123,6 +126,12 @@ func set_quest(new_quest: Quest) -> void:
 		# it will be copied back; if abandoned, it will be discarded.
 		quest_player_state = global.player.duplicate()
 		quest_player_state.reset_lives()
+	elif new_quest is not StoryQuest:
+		# For quests that are not LoreQuests or StoryQuests (e.g. dev archipelago quests)
+		# use a fresh player state and grant all debug player abilities.
+		quest_player_state = PlayerState.new()
+		for ability: Enums.PlayerAbilities in DEBUG_PLAYER_ABILITIES:
+			quest_player_state.set_ability(ability, true)
 	else:
 		# Use a fresh player state for StoryQuests
 		quest_player_state = PlayerState.new()
