@@ -112,7 +112,6 @@ func restore_quest() -> void:
 		# Add any lore abilities that the player gained since suspending this
 		# quest.
 		quest.player.abilities |= global.player.abilities
-	# TODO: There might be an edge case for resuming a dev quest that contains modifiers
 	elif quest.quest is not StoryQuest:
 		for ability: Enums.PlayerAbilities in DEBUG_PLAYER_ABILITIES:
 			quest.player.set_ability(ability, true)
