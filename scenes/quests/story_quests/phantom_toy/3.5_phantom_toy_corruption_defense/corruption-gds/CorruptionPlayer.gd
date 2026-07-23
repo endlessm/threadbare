@@ -12,8 +12,3 @@ func physics_process(_delta):
 
 	if previous_positions.size() > 30:
 		previous_positions.pop_back()
-
-
-func toggle_abilities() -> void:
-	_toggle_player_behavior(player_repel, false)
-	_toggle_player_behavior(player_hook, false)
