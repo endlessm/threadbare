@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://cbiqgehjh5u17"]
+
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_pl"]
+[ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="2_sf"]
+[ext_resource type="PackedScene" path="res://scenes/quests/lore_quests/quest_004/menhir/hum_ability.tscn" id="3_ha"]
+[ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="4_pu"]
+[ext_resource type="SpriteFrames" uid="uid://cfgahyntmtfgu" path="res://scenes/game_elements/props/powerup/components/powerup_thread.tres" id="5_pus"]
+[ext_resource type="PackedScene" uid="uid://dwbpciysvjc2i" path="res://scenes/quests/lore_quests/quest_004/menhir/menhir.tscn" id="6_mh"]
+[ext_resource type="Script" path="res://scenes/quests/lore_quests/quest_004/menhir/extra_ability.gd" id="7_ea"]
+
+[node name="MenhirTest" type="Node2D" unique_id=1205957162]
+
+[node name="Player" parent="." unique_id=2140523787 instance=ExtResource("1_pl")]
+position = Vector2(200, 400)
+player_name = "Storyweaver"
+sprite_frames = ExtResource("2_sf")
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1381454111]
+position_smoothing_enabled = true
+
+[node name="HumAbility" parent="." unique_id=1564306999 instance=ExtResource("3_ha")]
+radius = 650.0
+
+[node name="LearnHumPowerup" parent="." unique_id=1935293443 instance=ExtResource("4_pu")]
+position = Vector2(360, 400)
+ability = 256
+ability_name = "Tarareo"
+interact_action = "Aprender Tarareo"
+sprite_frames = ExtResource("5_pus")
+highlight_color = Color(0.55, 0.85, 0.95, 1)
+
+[node name="ExtraAbility" type="Node" parent="LearnHumPowerup" unique_id=777111222]
+script = ExtResource("7_ea")
+
+[node name="Menhir1" parent="." unique_id=1402113019 instance=ExtResource("6_mh")]
+position = Vector2(620, 400)
+
+[node name="Menhir2" parent="." unique_id=1422118435 instance=ExtResource("6_mh")]
+position = Vector2(820, 320)
+pin_duration = 3.0

@@ -1,0 +1,168 @@
+[gd_scene format=4 uid="uid://c517klim6vbsg"]
+
+[ext_resource type="PackedScene" uid="uid://bgrantq0abil1" path="res://scenes/quests/lore_quests/quest_004/menhir/grant_quest_abilities.tscn" id="99_gqa"]
+[ext_resource type="PackedScene" uid="uid://tdvdp0jvbt2s" path="res://scenes/quests/lore_quests/quest_004/menhir/hum_hint.tscn" id="97_humhint"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="98_hud"]
+[ext_resource type="Material" uid="uid://jpl3v3f7elq6" path="res://scenes/eternal_loom_sokoban/components/floor/tiled_mat.tres" id="1_iv70w"]
+[ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="1_os2tr"]
+[ext_resource type="PackedScene" uid="uid://bqhlguj2qmwx4" path="res://scenes/game_elements/props/decoration/spool/spool.tscn" id="2_8jxpa"]
+[ext_resource type="TileSet" uid="uid://dand23uvn70pg" path="res://scenes/eternal_loom_sokoban/components/eternal_loom_tileset.tres" id="2_ka64f"]
+[ext_resource type="PackedScene" uid="uid://712saqgof3kf" path="res://scenes/game_elements/props/eternal_loom/eternal_loom.tscn" id="3_iv70w"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_ka64f"]
+[ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="5_441ed"]
+[ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="6_o45ai"]
+[ext_resource type="Texture2D" uid="uid://d1pkkoi4qabfc" path="res://scenes/quests/lore_quests/quest_004/assets/noria-Sprites.png" id="7_leuy1"]
+[ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="900_lighttex"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e5s83"]
+atlas = ExtResource("7_leuy1")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xnujk"]
+atlas = ExtResource("7_leuy1")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5tp6e"]
+atlas = ExtResource("7_leuy1")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_246rw"]
+atlas = ExtResource("7_leuy1")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n2343"]
+atlas = ExtResource("7_leuy1")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_u34jp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e5s83")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xnujk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5tp6e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_246rw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n2343")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o7tyi"]
+size = Vector2(116.37491, 64.467896)
+
+[sub_resource type="CanvasItemMaterial" id="CIM_mystic_z"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Grad_mystic_z"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.45, 0.7, 1, 0, 0.55, 0.82, 1, 0.9, 0.45, 0.7, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradTex_mystic_z"]
+gradient = SubResource("Grad_mystic_z")
+
+[sub_resource type="ParticleProcessMaterial" id="PPM_motes_z"]
+emission_shape = 3
+emission_box_extents = Vector3(820, 480, 1)
+direction = Vector3(0, -1, 0)
+spread = 40.0
+gravity = Vector3(0, -5, 0)
+initial_velocity_min = 3.0
+initial_velocity_max = 14.0
+scale_min = 0.03
+scale_max = 0.11
+color_ramp = SubResource("GradTex_mystic_z")
+turbulence_enabled = true
+turbulence_noise_strength = 3.0
+turbulence_noise_scale = 1.2
+
+[node name="ElHiloDelFlorecer" type="Node2D" unique_id=897411534]
+
+[node name="GrantQuestAbilities" parent="." unique_id=779613176 instance=ExtResource("99_gqa")]
+
+[node name="HumHint" parent="." unique_id=890567349 instance=ExtResource("97_humhint")]
+
+[node name="HUD" parent="." unique_id=155956920 instance=ExtResource("98_hud")]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1833858617]
+mouse_filter = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2000.0
+offset_top = -1000.0
+offset_right = 2000.0
+offset_bottom = 1000.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0740935, 0.0496062, 0.0467346, 1)
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1397443197]
+color = Color(1, 0.85, 0.62, 1)
+
+[node name="Floor" type="TileMapLayer" parent="." unique_id=78142309]
+material = ExtResource("1_iv70w")
+tile_map_data = PackedByteArray("AAADAAgAAgAAAAAAAAAEAAgAAgAAAAAAAAAFAAgAAgAAAAAAAAAGAAgAAgAAAAAAAAAHAAgAAgAAAAAAAAAIAAgAAgAAAAAAAAAJAAgAAgAAAAAAAAAKAAgAAgAAAAAAAAALAAgAAgAAAAAAAAAMAAgAAgAAAAAAAAANAAgAAgAAAAAAAAAOAAgAAgAAAAAAAAAPAAgAAgAAAAAAAAAQAAgAAgAAAAAAAAARAAgAAgAAAAAAAAADAAIAAgAAAAAAAAADAAMAAgAAAAAAAAADAAQAAgAAAAAAAAADAAUAAgAAAAAAAAADAAYAAgAAAAAAAAADAAcAAgAAAAAAAAAEAAIAAgAAAAAAAAAEAAMAAgAAAAAAAAAEAAQAAgAAAAAAAAAEAAUAAgAAAAAAAAAEAAYAAgAAAAAAAAAEAAcAAgAAAAAAAAAFAAIAAgAAAAAAAAAFAAMAAgAAAAAAAAAFAAQAAgAAAAAAAAAFAAUAAgAAAAAAAAAFAAYAAgAAAAAAAAAFAAcAAgAAAAAAAAAGAAIAAgAAAAAAAAAGAAMAAgAAAAAAAAAGAAQAAgAAAAAAAAAGAAUAAgAAAAAAAAAGAAYAAgAAAAAAAAAGAAcAAgAAAAAAAAAHAAIAAgAAAAAAAAAHAAMAAgAAAAAAAAAHAAQAAgAAAAAAAAAHAAUAAgAAAAAAAAAHAAYAAgAAAAAAAAAHAAcAAgAAAAAAAAAIAAIAAgAAAAAAAAAIAAMAAgAAAAAAAAAIAAQAAgAAAAAAAAAIAAUAAgAAAAAAAAAIAAYAAgAAAAAAAAAIAAcAAgAAAAAAAAAJAAIAAgAAAAAAAAAJAAMAAgAAAAAAAAAJAAQAAgAAAAAAAAAJAAUAAgAAAAAAAAAJAAYAAgAAAAAAAAAJAAcAAgAAAAAAAAAKAAIAAgAAAAAAAAAKAAMAAgAAAAAAAAAKAAQAAgAAAAAAAAAKAAUAAgAAAAAAAAAKAAYAAgAAAAAAAAAKAAcAAgAAAAAAAAALAAIAAgAAAAAAAAALAAMAAgAAAAAAAAALAAQAAgAAAAAAAAALAAUAAgAAAAAAAAALAAYAAgAAAAAAAAALAAcAAgAAAAAAAAAMAAIAAgAAAAAAAAAMAAMAAgAAAAAAAAAMAAQAAgAAAAAAAAAMAAUAAgAAAAAAAAAMAAYAAgAAAAAAAAAMAAcAAgAAAAAAAAANAAIAAgAAAAAAAAANAAMAAgAAAAAAAAANAAQAAgAAAAAAAAANAAUAAgAAAAAAAAANAAYAAgAAAAAAAAANAAcAAgAAAAAAAAAOAAIAAgAAAAAAAAAOAAMAAgAAAAAAAAAOAAQAAgAAAAAAAAAOAAUAAgAAAAAAAAAOAAYAAgAAAAAAAAAOAAcAAgAAAAAAAAAPAAIAAgAAAAAAAAAPAAMAAgAAAAAAAAAPAAQAAgAAAAAAAAAPAAUAAgAAAAAAAAAPAAYAAgAAAAAAAAAPAAcAAgAAAAAAAAAQAAIAAgAAAAAAAAAQAAMAAgAAAAAAAAAQAAQAAgAAAAAAAAAQAAUAAgAAAAAAAAAQAAYAAgAAAAAAAAAQAAcAAgAAAAAAAAARAAIAAgAAAAAAAAARAAMAAgAAAAAAAAARAAQAAgAAAAAAAAARAAUAAgAAAAAAAAARAAYAAgAAAAAAAAARAAcAAgAAAAAAAAADAAkAAgAAAAAAAAAEAAkAAgAAAAAAAAAFAAkAAgAAAAAAAAAGAAkAAgAAAAAAAAAHAAkAAgAAAAAAAAAIAAkAAgAAAAAAAAAJAAkAAgAAAAAAAAAKAAkAAgAAAAAAAAALAAkAAgAAAAAAAAAMAAkAAgAAAAAAAAANAAkAAgAAAAAAAAAOAAkAAgAAAAAAAAAPAAkAAgAAAAAAAAAQAAkAAgAAAAAAAAARAAkAAgAAAAAAAAASAAIAAgAAAAAAAAASAAMAAgAAAAAAAAASAAQAAgAAAAAAAAASAAUAAgAAAAAAAAASAAYAAgAAAAAAAAASAAcAAgAAAAAAAAASAAgAAgAAAAAAAAASAAkAAgAAAAAAAAATAAIAAgAAAAAAAAATAAMAAgAAAAAAAAATAAQAAgAAAAAAAAATAAUAAgAAAAAAAAATAAYAAgAAAAAAAAATAAcAAgAAAAAAAAATAAgAAgAAAAAAAAATAAkAAgAAAAAAAAA=")
+tile_set = ExtResource("2_ka64f")
+
+[node name="Dirt" type="TileMapLayer" parent="." unique_id=1080047941]
+visible = false
+tile_map_data = PackedByteArray("AAADAAIABgAAAAAAAAADAAMABgAAAAEAAAADAAQABgAAAAEAAAADAAUABgAAAAEAAAADAAYABgAAAAEAAAADAAcABgAAAAEAAAADAAgABgAAAAIAAAAEAAIABgABAAAAAAAEAAMABgABAAEAAAAEAAQABgABAAEAAAAEAAUABgABAAEAAAAEAAYABgABAAEAAAAEAAcABgABAAEAAAAEAAgABgABAAIAAAAFAAIABgABAAAAAAAFAAMABgABAAEAAAAFAAQABgABAAEAAAAFAAUABgABAAEAAAAFAAYABgABAAEAAAAFAAcABgABAAEAAAAFAAgABgABAAEAAAAGAAIABgABAAAAAAAGAAMABgABAAEAAAAGAAQABgABAAEAAAAGAAUABgABAAEAAAAGAAYABgABAAEAAAAGAAcABgABAAEAAAAGAAgABgABAAEAAAAHAAIABgABAAAAAAAHAAMABgABAAEAAAAHAAQABgABAAEAAAAHAAUABgABAAEAAAAHAAYABgABAAEAAAAHAAcABgABAAEAAAAHAAgABgABAAIAAAAIAAIABgABAAAAAAAIAAMABgABAAEAAAAIAAQABgABAAEAAAAIAAUABgABAAEAAAAIAAYABgABAAEAAAAIAAcABgABAAEAAAAIAAgABgABAAIAAAAJAAIABgABAAAAAAAJAAMABgABAAEAAAAJAAQABgABAAEAAAAJAAUABgABAAEAAAAJAAYABgABAAEAAAAJAAcABgABAAEAAAAJAAgABgABAAIAAAAKAAIABgABAAAAAAAKAAMABgABAAEAAAAKAAQABgABAAEAAAAKAAUABgABAAEAAAAKAAYABgABAAEAAAAKAAcABgABAAEAAAAKAAgABgABAAIAAAALAAIABgABAAAAAAALAAMABgABAAEAAAALAAQABgABAAEAAAALAAUABgABAAEAAAALAAYABgABAAEAAAALAAcABgABAAEAAAALAAgABgABAAIAAAAMAAIABgABAAAAAAAMAAMABgABAAEAAAAMAAQABgABAAEAAAAMAAUABgABAAEAAAAMAAYABgABAAEAAAAMAAcABgABAAEAAAAMAAgABgABAAIAAAANAAIABgABAAAAAAANAAMABgABAAEAAAANAAQABgABAAEAAAANAAUABgABAAEAAAANAAYABgABAAEAAAANAAcABgABAAEAAAANAAgABgABAAIAAAAOAAIABgABAAAAAAAOAAMABgABAAEAAAAOAAQABgABAAEAAAAOAAUABgABAAEAAAAOAAYABgABAAEAAAAOAAcABgABAAEAAAAOAAgABgABAAIAAAAPAAIABgABAAAAAAAPAAMABgABAAEAAAAPAAQABgABAAEAAAAPAAUABgABAAEAAAAPAAYABgABAAEAAAAPAAcABgABAAEAAAAPAAgABgABAAIAAAAQAAIABgABAAAAAAAQAAMABgABAAEAAAAQAAQABgABAAEAAAAQAAUABgABAAEAAAAQAAYABgABAAEAAAAQAAcABgABAAEAAAAQAAgABgABAAIAAAARAAIABgACAAAAAAARAAMABgACAAEAAAARAAQABgACAAEAAAARAAUABgACAAEAAAARAAYABgACAAEAAAARAAcABgACAAEAAAARAAgABgACAAIAAAA=")
+tile_set = ExtResource("1_os2tr")
+collision_enabled = false
+
+[node name="Spool2" parent="." unique_id=1815885271 instance=ExtResource("2_8jxpa")]
+position = Vector2(503, 204)
+scale = Vector2(1, 0.9882861)
+
+[node name="EternalLoom" parent="." unique_id=630179356 instance=ExtResource("3_iv70w")]
+position = Vector2(750, 118)
+
+[node name="OnTheGround" type="Node2D" parent="." unique_id=1205864825]
+y_sort_enabled = true
+
+[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("4_ka64f")]
+position = Vector2(387, 553)
+player_name = "StoryWeaver"
+sprite_frames = ExtResource("5_441ed")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=255595630]
+zoom = Vector2(1.35, 1.35)
+limit_left = 130
+limit_top = 0
+limit_right = 1200
+limit_bottom = 800
+editor_draw_limits = true
+
+[node name="MysticMotes" type="GPUParticles2D" parent="OnTheGround/Player" unique_id=840000001]
+material = SubResource("CIM_mystic_z")
+amount = 80
+lifetime = 7.0
+preprocess = 6.0
+local_coords = false
+texture = ExtResource("900_lighttex")
+process_material = SubResource("PPM_motes_z")
+
+[node name="Talker" parent="." unique_id=1086241914 instance=ExtResource("6_o45ai")]
+texture_filter = 1
+position = Vector2(1030, 216)
+scale = Vector2(0.76, 0.76)
+npc_name = "Noria NeedleNest"
+sprite_frames = SubResource("SpriteFrames_u34jp")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Talker" unique_id=2092589789]
+position = Vector2(5.9449463, -12.692322)
+rotation = -1.584232
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_o7tyi")

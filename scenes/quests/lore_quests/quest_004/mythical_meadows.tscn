@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://bsptn2yxyv22"]
+[gd_scene format=4 uid="uid://eru74ii6envf"]
 
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="1_ag7vv"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="1_elkht"]
@@ -16,11 +16,62 @@
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="13_33k3i"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="13_ag7vv"]
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="14_brig6"]
+[ext_resource type="Texture2D" uid="uid://coutmch2s4n34" path="res://scenes/quests/lore_quests/quest_004/noria-Sheet.png" id="17_jj505"]
 
 [sub_resource type="Resource" id="Resource_g27r7"]
 script = ExtResource("13_33k3i")
 type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8dhto"]
+atlas = ExtResource("17_jj505")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y5fl1"]
+atlas = ExtResource("17_jj505")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gejpg"]
+atlas = ExtResource("17_jj505")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q603x"]
+atlas = ExtResource("17_jj505")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1wq77"]
+atlas = ExtResource("17_jj505")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dfmc4"]
+atlas = ExtResource("17_jj505")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q0isu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8dhto")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y5fl1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gejpg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q603x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1wq77")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dfmc4")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}]
 
 [node name="MythicalMeadows" type="Node2D" unique_id=78806229]
 
@@ -97,4 +148,13 @@ z_index = -1
 y_sort_enabled = true
 
 [node name="WaterRock" parent="InTheWater" unique_id=200189883 instance=ExtResource("14_brig6")]
-position = Vector2(234, 607)
+position = Vector2(317, 716)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1303060757]
+position = Vector2(1117, 306)
+scale = Vector2(0.845, 0.845)
+sprite_frames = SubResource("SpriteFrames_q0isu")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.005409007
+flip_h = true
