@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://qd35enw2j47w" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/cabina_simple.png" id="5_6vfc7"]
 [ext_resource type="Texture2D" uid="uid://ba4bnsv4i8edi" path="res://scenes/quests/story_quests/phantom_toy/assets/grass y piedras/grass_11.png" id="5_07iaq"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="5_8iw7s"]
-[ext_resource type="Script" uid="uid://dg1w74uah8yft" path="res://scenes/quests/story_quests/phantom_toy/1_stealth/mini1/map/screen_overlay_2.gd" id="5_sbu7w"]
 [ext_resource type="Texture2D" uid="uid://bhg52evjw3irn" path="res://scenes/quests/story_quests/phantom_toy/assets/elementos_feria/cabina_ticket.png" id="6_83dqn"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="6_cywtb"]
 [ext_resource type="Texture2D" uid="uid://brn1iu8mbc2kf" path="res://scenes/quests/story_quests/phantom_toy/assets/grass y piedras/grass_12.png" id="6_l34yg"]
@@ -66,11 +65,11 @@
 [ext_resource type="Texture2D" uid="uid://bofjt1jp6jm55" path="res://scenes/quests/story_quests/phantom_toy/assets/sombra/crawl_sombra/crawl_sombra_crawl_sombra_0.png" id="62_6o8ve"]
 [ext_resource type="Texture2D" uid="uid://8pug4se450on" path="res://scenes/quests/story_quests/phantom_toy/assets/sombra/crawl_sombra/crawl_sombra_crawl_sombra_1.png" id="63_wyi20"]
 [ext_resource type="AudioStream" uid="uid://cb4suh0kr5ra" path="res://scenes/quests/story_quests/phantom_toy/1_stealth/mini1/musica/193811__geoneo0__four_voices_whispering_2.wav" id="65_ufxrk"]
-[ext_resource type="AudioStream" uid="uid://dv27klix7rnaw" path="res://scenes/quests/story_quests/phantom_toy/1_stealth/mini1/musica/610140__hellodarknesswhycomeits4pm__creepy-horror-ambience.wav" id="66_ufxrk"]
+[ext_resource type="AudioStream" uid="uid://dx0l0yuhm7qkb" path="res://scenes/quests/story_quests/phantom_toy/1_stealth/mini1/musica/AUDIO-CORREGIDO.ogg" id="66_ufxrk"]
 [ext_resource type="Texture2D" uid="uid://w2s50y2t2wda" path="res://scenes/quests/story_quests/phantom_toy/assets/fragmento/fragmento_steady_1_fragmento_steady_0.png" id="67_ufxrk"]
 [ext_resource type="Texture2D" uid="uid://b7pd1ejn8q464" path="res://scenes/quests/story_quests/phantom_toy/assets/fragmento/fragmento_steady_2_fragmento2_steady_0.png" id="68_k5vny"]
-[ext_resource type="Script" uid="uid://7dt0g7if5ioq" path="res://scenes/quests/story_quests/phantom_toy/1_stealth/mini1/map/control_sprint_2d.gd" id="68_wyi20"]
 [ext_resource type="Texture2D" uid="uid://e2xmjg7o04i" path="res://scenes/quests/story_quests/phantom_toy/assets/fragmento/fragmento_steady_3_fragmento3_steady_0.png" id="69_qqn4l"]
+[ext_resource type="Script" uid="uid://71x33v8j6nqq" path="res://scenes/quests/story_quests/phantom_toy/1_stealth/mini1/map/sprint_manager.gd" id="70_w8vjk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xvqqf"]
 texture = ExtResource("3_n76n8")
@@ -1107,6 +1106,25 @@ _data = {
 &"intro": SubResource("Animation_l7qks")
 }
 
+[sub_resource type="GDScript" id="GDScript_w8vjk"]
+script/source = "# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends CanvasLayer
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass  # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+	
+	# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+"
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_7yuat"]
 atlas = ExtResource("14_41nro")
 region = Rect2(0, 0, 192, 192)
@@ -1246,7 +1264,7 @@ size = Vector2(267, 163.5)
 size = Vector2(82.25, 143.875)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ahk08"]
-size = Vector2(252, 214)
+size = Vector2(192, 214)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w8vjk"]
 size = Vector2(124, 98.5)
@@ -1261,7 +1279,13 @@ size = Vector2(434, 272.5)
 size = Vector2(169, 282)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ayaw3"]
-size = Vector2(394.5, 134)
+size = Vector2(375.5, 134)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qqn4l"]
+size = Vector2(130, 143.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_28mox"]
+size = Vector2(122, 144)
 
 [node name="Esc1" type="Node2D" unique_id=104699385]
 position = Vector2(-190, 114)
@@ -1351,7 +1375,7 @@ script = ExtResource("3_u8lg3")
 script = ExtResource("4_l7qks")
 
 [node name="ScreenOverlay2" type="CanvasLayer" parent="." unique_id=126570427]
-script = ExtResource("5_sbu7w")
+script = SubResource("GDScript_w8vjk")
 
 [node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("6_cywtb")]
 
@@ -1503,13 +1527,12 @@ position = Vector2(2175.125, -452.9375)
 shape = SubResource("RectangleShape2D_wyi20")
 
 [node name="ControlSprint2D" type="Node2D" parent="." unique_id=158525800]
-visible = false
-script = ExtResource("68_wyi20")
+script = ExtResource("70_w8vjk")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1001968405]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=957716064]
-position = Vector2(1024, -109)
+position = Vector2(1021, -109)
 shape = SubResource("RectangleShape2D_ahk08")
 
 [node name="StaticBody2D5" type="StaticBody2D" parent="." unique_id=1378768056]
@@ -1541,8 +1564,20 @@ shape = SubResource("RectangleShape2D_ra78s")
 position = Vector2(3, 14)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D10" unique_id=599763865]
-position = Vector2(1231.75, -528)
+position = Vector2(1222.25, -528)
 shape = SubResource("RectangleShape2D_ayaw3")
+
+[node name="StaticBody2D8" type="StaticBody2D" parent="." unique_id=833285373]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D8" unique_id=1340331136]
+position = Vector2(1661, 509.25)
+shape = SubResource("RectangleShape2D_qqn4l")
+
+[node name="StaticBody2D11" type="StaticBody2D" parent="." unique_id=789323101]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D11" unique_id=1325749588]
+position = Vector2(1906, 511)
+shape = SubResource("RectangleShape2D_28mox")
 
 [connection signal="cinematic_finished" from="Cinematic" to="." method="_on_cinematic_cinematic_finished"]
 [connection signal="body_entered" from="Enemy/Area2D" to="Enemy" method="_on_area_2d_body_entered"]

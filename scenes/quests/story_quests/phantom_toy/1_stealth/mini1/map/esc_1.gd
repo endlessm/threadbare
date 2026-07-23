@@ -38,13 +38,6 @@ func recoger_objeto():
 			Transition.Effect.FADE,
 			Transition.Effect.FADE
 		)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
-
 func _on_cinematic_cinematic_finished() -> void:
 	$Enemy.visible = true
 	$Enemy.active = true
