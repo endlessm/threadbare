@@ -44,12 +44,15 @@ tile_set = ExtResource("1_a3qtv")
 [node name="SpawnPoint" type="Marker2D" parent="." unique_id=141313087 groups=["spawn_point"]]
 position = Vector2(1147, 94)
 script = ExtResource("7_ru1dy")
+look_at_side_on_spawn = -1
 metadata/_custom_type_script = "uid://0enyu5v4ra34"
 
 [node name="Teleporter" parent="." unique_id=1779636661 instance=ExtResource("8_b4723")]
 position = Vector2(1395, 97)
 next_scene = "uid://m0f3uc2tme4l"
 spawn_point_path = NodePath("SpawnPoints/StartingSpawnPoint")
+enter_transition = 2
+exit_transition = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" unique_id=1524987068]
 shape = SubResource("RectangleShape2D_pp1gq")
@@ -69,9 +72,17 @@ limit_right = 1500
 limit_bottom = 750
 
 [node name="Sign" parent="OnTheGround" unique_id=1579530966 instance=ExtResource("9_rqdwi")]
-position = Vector2(845, 39)
+position = Vector2(787, 47)
 direction = 1
 text = "Continue walking to teleport to another scene!"
+
+[node name="Sign2" parent="OnTheGround" unique_id=1006516294 instance=ExtResource("9_rqdwi")]
+position = Vector2(976, 174)
+direction = 1
+text = "Teleporting while walking east uses a
+\"Right to Left Wipe\" transition.
+When you return, notice how the transition changes
+to reflect the direction you walk!"
 
 [node name="Decorations" type="Node2D" parent="OnTheGround" unique_id=433253580]
 y_sort_enabled = true
