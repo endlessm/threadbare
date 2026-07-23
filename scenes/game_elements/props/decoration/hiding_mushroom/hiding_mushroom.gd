@@ -31,5 +31,5 @@ func _on_player_detector_body_entered(body: Node2D) -> void:
 
 
 func _on_player_detector_body_exited(body: Node2D) -> void:
-	if body.is_in_group(&"player"):
+	if body.is_in_group(&"player") and reveal_player.is_inside_tree():
 		_reveal()
