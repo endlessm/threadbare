@@ -6,9 +6,9 @@ extends TextureRect
 ## A [TextureRect] which shows a single animation from a [SpriteFrames].
 ##
 ## This is useful because the only built-in way to display an animation in a
-## TextureRect is to use an [AnimatedTexture], which is documented to be
+## plain [TextureRect] is to use an [AnimatedTexture], which is documented to be
 ## deprecated and broken; and because we use this to display an animation from
-## an in-game sprite, so an appropriate SpriteFrames will already exist.
+## an in-game sprite, so an appropriate [SpriteFrames] will already exist.
 
 ## A sprite frame library containing the animation. If unset, no texture is shown.
 @export var sprite_frames: SpriteFrames:
@@ -17,7 +17,7 @@ extends TextureRect
 		notify_property_list_changed()
 		update_configuration_warnings()
 		if is_node_ready():
-			_restart()
+			play()
 
 ## The animation from [member sprite_frames] to display. If this animation is
 ## not defined in [member sprite_frames], no texture is shown.
@@ -26,12 +26,14 @@ extends TextureRect
 		animation_name = new_value
 		update_configuration_warnings()
 		if is_node_ready():
-			_restart()
+			play()
 
-@export_tool_button("Restart Animation") var restart_animation := _restart
+@warning_ignore("unused_private_class_variable")
+@export_tool_button("Restart Animation") var _restart_animation := play
 
 var _frame: int = 0
 var _time_to_next_frame: float = 0.0
+var _is_playing: bool = false
 
 
 func _validate_property(property: Dictionary) -> void:
@@ -54,7 +56,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 func _ready() -> void:
-	_restart()
+	play()
 
 
 func _update_texture() -> void:
@@ -68,14 +70,19 @@ func _extend_next_frame_time() -> void:
 	)
 
 
-func _restart() -> void:
+func stop() -> void:
+	texture = null
+	set_process(false)
+	_is_playing = false
+
+
+func play() -> void:
 	if (
 		not sprite_frames
 		or not sprite_frames.has_animation(animation_name)
 		or not sprite_frames.get_frame_count(animation_name)
 	):
-		texture = null
-		set_process(false)
+		stop()
 		return
 
 	_frame = 0
@@ -83,11 +90,18 @@ func _restart() -> void:
 	_update_texture()
 	_extend_next_frame_time()
 	set_process(true)
+	_is_playing = true
+
+
+func is_playing() -> bool:
+	return _is_playing
 
 
 func _process(delta: float) -> void:
-	if not sprite_frames or not sprite_frames.has_animation(animation_name):
-		return
+	assert(
+		sprite_frames and sprite_frames.has_animation(animation_name),
+		"_process() should not have been called"
+	)
 
 	# It is unlikely but possible that an animation frame's duration may be so
 	# short that it should be skipped entirely.
@@ -100,6 +114,7 @@ func _process(delta: float) -> void:
 		else:
 			# Animation finished
 			set_process(false)
+			_is_playing = false
 			break
 
 		_extend_next_frame_time()
@@ -113,8 +128,7 @@ func _notification(what: int) -> void:
 		NOTIFICATION_EDITOR_PRE_SAVE:
 			# Don't persist whatever frame of the animation happens to be
 			# currently shown when saving the scene.
-			texture = null
-			set_process(false)
+			stop()
 
 		NOTIFICATION_EDITOR_POST_SAVE:
-			_restart()
+			play()
