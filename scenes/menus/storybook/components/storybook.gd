@@ -50,7 +50,7 @@ func _populate_quest_lists() -> void:
 		child.queue_free()
 
 	#Calculate the quest slices for this specific book spread
-	var left_start: int = _current_list_page * quests_per_spread
+	var left_start: int = _current_list_page * quests_per_page * 2
 	var left_end: int = left_start + quests_per_page
 	var right_start: int = left_end
 	var right_end: int = right_start + quests_per_page
