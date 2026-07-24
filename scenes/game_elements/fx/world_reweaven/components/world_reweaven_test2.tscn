@@ -48,6 +48,8 @@
 [ext_resource type="Script" uid="uid://dunsvrhq42214" path="res://scenes/game_elements/fx/shaker/shaker.gd" id="42_fkcmo"]
 [ext_resource type="PackedScene" uid="uid://c4vbokn408f2c" path="res://scenes/game_elements/props/decoration/sheep/sheep.tscn" id="42_htsf3"]
 [ext_resource type="Texture2D" uid="uid://ci1jhoa204fyw" path="res://scenes/game_elements/fx/shine_particles/components/sparks.png" id="43_4mvj1"]
+[ext_resource type="PackedScene" uid="uid://bs32ac1yj83ub" path="res://scenes/game_elements/fx/spirograph/spirograph.tscn" id="49_1ydj4"]
+[ext_resource type="Texture2D" uid="uid://756pdnslep0q" path="res://scenes/game_elements/fx/world_reweaven/components/string.png" id="49_vh5ya"]
 
 [sub_resource type="Gradient" id="Gradient_6muf5"]
 
@@ -280,10 +282,35 @@ tracks/6/keys = {
 "update": 0,
 "values": [Color(0.4661066, 0.4661066, 0.4661066, 0.37300003)]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("PathTest/Path2D/PathFollow2D:progress_ratio")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("PathTest/Path2D/PathFollow2D/Spirograph:max_vel")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1300.0]
+}
 
 [sub_resource type="Animation" id="Animation_e0bq6"]
 resource_name = "reweaven"
-length = 10.0
+length = 12.0
+step = 1.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -291,7 +318,7 @@ tracks/0/path = NodePath("WorldNew:material:shader_parameter/progress")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 5),
+"times": PackedFloat32Array(2, 7),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 1.0]
@@ -303,7 +330,7 @@ tracks/1/path = NodePath("WorldOld:material:shader_parameter/progress")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.43333334, 5.5666666),
+"times": PackedFloat32Array(2.4333334, 7.5666666),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [1.0, 0.0]
@@ -315,7 +342,7 @@ tracks/2/path = NodePath("Common/Water:modulate")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.33333334, 5.5333333),
+"times": PackedFloat32Array(2.3333335, 7.5333333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(0.6325955, 0.3162257, 0.40138388, 1), Color(1, 1, 1, 1)]
@@ -327,7 +354,7 @@ tracks/3/path = NodePath("ShineParticles:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 5.0000005),
+"times": PackedFloat32Array(2, 7.0000005),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(-90, 207), Vector2(-90, 90)]
@@ -339,7 +366,7 @@ tracks/4/path = NodePath("ShineParticles:process_material:emission_shape_scale")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 5.0000005),
+"times": PackedFloat32Array(2, 7.0000005),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(1, 0.5, 0), Vector3(12, 6, 0)]
@@ -351,7 +378,7 @@ tracks/5/path = NodePath("ShineParticles:emitting")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.20000002, 5.0000005, 6.0000005),
+"times": PackedFloat32Array(2, 2.2, 7.0000005, 8),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
 "values": [false, true, true, false]
@@ -363,10 +390,34 @@ tracks/6/path = NodePath("Common/Clouds:modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0.33333334, 5.533334),
+"times": PackedFloat32Array(2.3333335, 7.533334),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(0.4661066, 0.4661066, 0.4661066, 0.37300003), Color(1, 1, 1, 1)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("PathTest/Path2D/PathFollow2D:progress_ratio")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(0.5, -2, 0),
+"update": 0,
+"values": [0.0, 0.658435, 1.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("PathTest/Path2D/PathFollow2D/Spirograph:max_vel")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(1, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [900.0, 50.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_d870b"]
@@ -405,6 +456,17 @@ alpha_curve = SubResource("CurveTexture_tnibl")
 anim_speed_min = 1.0
 anim_speed_max = 1.0
 turbulence_enabled = true
+
+[sub_resource type="Curve" id="Curve_kgwwc"]
+_limits = [1.0, 1.5043478, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.49668872, 1.5043478), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve2D" id="Curve2D_5l8d3"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -671, 640, -149.3819, 0, 149.3819, 0, -294, -190, 0, 0, 0, 0, -90, 223)
+}
+point_count = 3
 
 [node name="WorldReweavenTest2" type="Node2D" unique_id=1244138831]
 script = ExtResource("1_lq5qh")
@@ -728,3 +790,27 @@ speed_scale = 2.0
 fixed_fps = 50
 visibility_rect = Rect2(-1000, -1000, 2000, 2000)
 process_material = SubResource("ParticleProcessMaterial_nbnht")
+
+[node name="PathTest" type="Node2D" parent="." unique_id=2112115349]
+
+[node name="Line2D" type="Line2D" parent="PathTest" unique_id=1582467123]
+texture_repeat = 2
+position = Vector2(3, -1)
+width_curve = SubResource("Curve_kgwwc")
+texture = ExtResource("49_vh5ya")
+texture_mode = 1
+joint_mode = 2
+
+[node name="Path2D" type="Path2D" parent="PathTest" unique_id=1487884503]
+curve = SubResource("Curve2D_5l8d3")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="PathTest/Path2D" unique_id=2140966178]
+position = Vector2(-671, 640)
+rotation = -1.4861017
+rotates = false
+
+[node name="Spirograph" parent="PathTest/Path2D/PathFollow2D" unique_id=760772735 node_paths=PackedStringArray("line") instance=ExtResource("49_1ydj4")]
+line = NodePath("../../../Line2D")
+radius = 49.99999739229679
+max_vel = 1300.0
+wheel_rotation = 0.5689773361501513

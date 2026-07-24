@@ -1,0 +1,212 @@
+[gd_scene format=3 uid="uid://c6mikotrke4mc"]
+
+[ext_resource type="Texture2D" uid="uid://756pdnslep0q" path="res://scenes/game_elements/fx/world_reweaven/components/string.png" id="1_k0a1w"]
+[ext_resource type="PackedScene" uid="uid://bs32ac1yj83ub" path="res://scenes/game_elements/fx/spirograph/spirograph.tscn" id="3_h26y6"]
+[ext_resource type="Script" uid="uid://c4oww6rkbqfxc" path="res://scenes/game_elements/fx/stitcher/components/stitcher.gd" id="4_5l8d3"]
+
+[sub_resource type="GDScript" id="GDScript_0e48y"]
+script/source = "extends Node2D
+
+@onready var spirograph_mouse: Spirograph = %SpirographMouse
+
+func _process(_delta: float) -> void:
+	var mouse_pos := get_global_mouse_position()
+	spirograph_mouse.global_position = lerp(spirograph_mouse.global_position, mouse_pos, 0.1)
+	#var new_pos := spirograph_mouse.global_position.move_toward(mouse_pos, 5.0)
+	#new_pos = lerp(new_pos, mouse_pos, 0.1)
+	#spirograph_mouse.global_position = new_pos
+"
+
+[sub_resource type="Animation" id="Animation_0hol4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SimpleTest/Spirograph:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(742, 340)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PathTest/Path2D/PathFollow2D:progress_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("StitchTest/Path2D/PathFollow2D:progress_ratio")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_epypp"]
+resource_name = "default"
+length = 6.0
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SimpleTest/Spirograph:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3, 6),
+"transitions": PackedFloat32Array(-2, -2, -2),
+"update": 0,
+"values": [Vector2(50, 640), Vector2(50, 40), Vector2(50, 640)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PathTest/Path2D/PathFollow2D:progress_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("StitchTest/Path2D/PathFollow2D:progress_ratio")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.6, 2.1, 3.2, 3.7, 4.6, 5.1, 6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.26666668, 0.26666668, 0.53333336, 0.53333336, 0.76666665, 0.76666665, 1.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0hol4"]
+_data = {
+&"RESET": SubResource("Animation_0hol4"),
+&"default": SubResource("Animation_epypp")
+}
+
+[sub_resource type="Curve" id="Curve_k0a1w"]
+_limits = [1.0, 1.5043478, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.49668872, 1.5043478), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve2D" id="Curve2D_5l8d3"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 505, 108, 0, 0, 0, 0, 856, 407, 0, 0, 0, 0, 492, 693, 0, 0, 0, 0, 210, 398, 0, 0, 0, 0, 505, 108)
+}
+point_count = 5
+
+[sub_resource type="Curve2D" id="Curve2D_k0a1w"]
+_data = {
+"points": PackedVector2Array(-7.061966, 82.04583, 7.061966, -82.04583, 307, 469, -102.17881, 1.5026295, 102.17881, -1.5026295, 483, 191, 46.01136, -86.5986, -46.01136, 86.5986, 725, 280, 39.068367, -60.856495, -39.068367, 60.856495, 276, 265, 58.519997, -59.695004, -58.519997, 59.695004, 540, 645, -7.3603706, 86.69717, 7.3603706, -86.69717, 307, 469)
+}
+point_count = 6
+
+[node name="SpirographTest" type="Node2D" unique_id=596574303]
+script = SubResource("GDScript_0e48y")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=480715457]
+libraries/ = SubResource("AnimationLibrary_0hol4")
+autoplay = &"default"
+
+[node name="MouseTest" type="Node2D" parent="." unique_id=1500786098]
+
+[node name="Line2D" type="Line2D" parent="MouseTest" unique_id=1593087933]
+texture_repeat = 2
+position = Vector2(3, -1)
+width_curve = SubResource("Curve_k0a1w")
+texture = ExtResource("1_k0a1w")
+texture_mode = 2
+joint_mode = 2
+
+[node name="SpirographMouse" parent="MouseTest" unique_id=812965254 node_paths=PackedStringArray("line") instance=ExtResource("3_h26y6")]
+unique_name_in_owner = true
+position = Vector2(742, 340)
+line = NodePath("../Line2D")
+radius = 44.0
+max_vel = 100.0
+radius_update = 0.03
+debug = true
+
+[node name="SimpleTest" type="Node2D" parent="." unique_id=1650676841]
+
+[node name="Line2D" type="Line2D" parent="SimpleTest" unique_id=625975575]
+texture_repeat = 2
+position = Vector2(3, -1)
+width_curve = SubResource("Curve_k0a1w")
+texture = ExtResource("1_k0a1w")
+texture_mode = 1
+joint_mode = 2
+
+[node name="Spirograph" parent="SimpleTest" unique_id=1097706612 node_paths=PackedStringArray("line") instance=ExtResource("3_h26y6")]
+position = Vector2(742, 340)
+line = NodePath("../Line2D")
+max_vel = 34.0
+debug = true
+
+[node name="StitchTest" type="Node2D" parent="." unique_id=1413279914]
+
+[node name="Line2D" type="Line2D" parent="StitchTest" unique_id=214318953]
+texture_repeat = 2
+position = Vector2(3, -1)
+texture = ExtResource("1_k0a1w")
+texture_mode = 1
+joint_mode = 2
+
+[node name="Path2D" type="Path2D" parent="StitchTest" unique_id=1459786898]
+curve = SubResource("Curve2D_5l8d3")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="StitchTest/Path2D" unique_id=1080902156]
+position = Vector2(505, 108)
+rotation = 0.70556813
+rotates = false
+
+[node name="Stitcher" type="Node2D" parent="StitchTest/Path2D/PathFollow2D" unique_id=1460959262 node_paths=PackedStringArray("line")]
+script = ExtResource("4_5l8d3")
+line = NodePath("../../../Line2D")
+metadata/_custom_type_script = "uid://c4oww6rkbqfxc"
+
+[node name="PathTest" type="Node2D" parent="." unique_id=1542033045]
+
+[node name="Line2D" type="Line2D" parent="PathTest" unique_id=479563041]
+texture_repeat = 2
+position = Vector2(3, -1)
+width_curve = SubResource("Curve_k0a1w")
+texture = ExtResource("1_k0a1w")
+texture_mode = 1
+joint_mode = 2
+
+[node name="Path2D" type="Path2D" parent="PathTest" unique_id=452573456]
+position = Vector2(-8, -6)
+curve = SubResource("Curve2D_k0a1w")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="PathTest/Path2D" unique_id=254145314]
+position = Vector2(307, 469)
+rotation = -1.4861017
+rotates = false
+
+[node name="Spirograph" parent="PathTest/Path2D/PathFollow2D" unique_id=760772735 node_paths=PackedStringArray("line") instance=ExtResource("3_h26y6")]
+line = NodePath("../../../Line2D")
+radius = 50.0
+max_vel = 150.0
+wheel_rotation = 0.6
+debug = true
