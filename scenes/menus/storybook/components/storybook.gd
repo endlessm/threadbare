@@ -200,7 +200,7 @@ func _on_right_button_pressed() -> void:
 
 	# If we are on the main index, check if there are more quests to reveal on a new page
 	if _current_spread_index == 0:
-		var max_visible_so_far: int = (_current_list_page + 1) * quests_per_spread
+		var max_visible_so_far: int = (_current_list_page + 1) * quests_per_page * 2
 		if quests.size() > max_visible_so_far:
 			_current_list_page += 1
 			animated_book.play("book_right")
