@@ -1,0 +1,167 @@
+[gd_scene format=4 uid="uid://cwvgojq5k7eta"]
+
+[ext_resource type="TileSet" uid="uid://byr2ytqav02w5" path="res://scenes/quests/story_quests/infinite_knight/tiles/infinite_knight_exterior_floors.tres" id="1_sgmv7"]
+[ext_resource type="Texture2D" uid="uid://dxeao6fu17xod" path="res://scenes/quests/story_quests/infinite_knight/0_intro/intro_components/Ojo.png" id="2_sgmv7"]
+[ext_resource type="SpriteFrames" uid="uid://7q17ox014opg" path="res://scenes/quests/story_quests/infinite_knight/player_components/infinite_knight_player.tres" id="3_wtq3u"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_363fn"]
+[ext_resource type="Resource" uid="uid://cu2kj2nnn0ha7" path="res://scenes/quests/story_quests/infinite_knight/0_intro/intro_components/infinite_knight_intro.dialogue" id="5_qs3vr"]
+[ext_resource type="Texture2D" uid="uid://cs8dj6t3nq3kn" path="res://scenes/quests/story_quests/infinite_knight/2_combat/combat_components/background.png" id="7_hvge8"]
+[ext_resource type="AudioStream" uid="uid://df38ngkb6wv5q" path="res://scenes/quests/story_quests/infinite_knight/player_components/intro.mp3" id="7_wtq3u"]
+
+[sub_resource type="Animation" id="Animation_y447m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(400, 349)]
+}
+
+[sub_resource type="Animation" id="Animation_p14yf"]
+resource_name = "walk_off"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(495, 478), Vector2(1010, 478)]
+}
+
+[sub_resource type="Animation" id="Animation_y11yo"]
+resource_name = "walk_on"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Character:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [&"walk", &"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Character:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-50, 478), Vector2(495, 478)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dphfl"]
+_data = {
+&"RESET": SubResource("Animation_y447m"),
+&"walk_off": SubResource("Animation_p14yf"),
+&"walk_on": SubResource("Animation_y11yo")
+}
+
+[node name="InfiniteKnightIntro" type="Node2D" unique_id=2049284984]
+
+[node name="TileMapLayers" type="Node2D" parent="." unique_id=591504591]
+
+[node name="Ground" type="TileMapLayer" parent="TileMapLayers" unique_id=397514282]
+tile_set = ExtResource("1_sgmv7")
+metadata/_edit_lock_ = true
+
+[node name="IntroImage" type="Sprite2D" parent="TileMapLayers" unique_id=1406016146]
+position = Vector2(770, 227)
+scale = Vector2(2, 2)
+texture = ExtResource("2_sgmv7")
+
+[node name="Sand" type="TileMapLayer" parent="TileMapLayers" unique_id=874671513]
+tile_map_data = PackedByteArray("AAAAAAcABQABAAMAAAABAAcABQABAAMAAAACAAcABQABAAMAAAAMAAcABQABAAMAAAANAAcABQABAAMAAAAOAAcABQABAAMAAAD//wcAAQAGAAMAAAD+/wcAAQAGAAMAAAD9/wcAAQAGAAMAAAD8/wcAAQAGAAMAAAD7/wcAAQAGAAMAAAD6/wcAAQAGAAMAAAD5/wcAAQAGAAMAAAD4/wcAAQAFAAMAAAAPAAcAAQAGAAMAAAAQAAcAAQAGAAMAAAARAAcAAQAGAAMAAAASAAcAAQAGAAMAAAATAAcAAQAGAAMAAAAUAAcAAQAGAAMAAAAVAAcAAQAGAAMAAAAWAAcAAQAHAAMAAAADAAcABQABAAMAAAAJAAcABQABAAMAAAAKAAcABQABAAMAAAALAAcABQABAAMAAAAEAAcABQABAAMAAAAFAAcABQABAAMAAAAGAAcABQABAAMAAAAHAAcABQABAAMAAAAIAAcABQABAAMAAAAAAAgAAQAAAAMAAAABAAgAAQAAAAMAAAACAAgAAQAAAAMAAAADAAgAAQAAAAMAAAAEAAgAAQAAAAMAAAAFAAgAAQAAAAMAAAAGAAgAAQAAAAMAAAAHAAgAAQAAAAMAAAAIAAgAAQAAAAMAAAAJAAgAAQAAAAMAAAAKAAgAAQAAAAMAAAALAAgAAQAAAAMAAAAMAAgAAQAAAAMAAAANAAgAAQAAAAMAAAAOAAgAAQAAAAMAAAA=")
+tile_set = ExtResource("1_sgmv7")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1064875179]
+position = Vector2(153, 366)
+zoom = Vector2(1.333, 1.333)
+limit_left = 0
+limit_top = 0
+limit_right = 960
+limit_bottom = 540
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[node name="OnTheGround" type="Node2D" parent="." unique_id=836096441]
+y_sort_enabled = true
+
+[node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=169229228]
+position = Vector2(400, 349)
+sprite_frames = ExtResource("3_wtq3u")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OnTheGround" unique_id=49807179]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_dphfl")
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=826076597]
+
+[node name="Cinematic" type="Node2D" parent="." unique_id=1398238637 node_paths=PackedStringArray("animation_player")]
+script = ExtResource("4_363fn")
+dialogue = ExtResource("5_qs3vr")
+animation_player = NodePath("../OnTheGround/AnimationPlayer")
+next_scene = "uid://c5jvk1n4s6bmd"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=171719096]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=473666825]
+motion_scale = Vector2(0.1, 0.1)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer" unique_id=1919095767]
+texture_filter = 1
+offset_left = -1411.0
+offset_top = -245.0
+offset_right = -147.0
+offset_bottom = 512.0
+scale = Vector2(2, 2)
+texture = ExtResource("7_hvge8")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=739703707]
+stream = ExtResource("7_wtq3u")
+volume_db = -10.0
+autoplay = true

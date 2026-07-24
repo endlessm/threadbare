@@ -1,0 +1,65 @@
+[gd_scene format=4 uid="uid://b1vvld0ypflg4"]
+
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_hqqqq"]
+[ext_resource type="TileSet" uid="uid://byr2ytqav02w5" path="res://scenes/quests/story_quests/infinite_knight/tiles/infinite_knight_exterior_floors.tres" id="2_2der0"]
+[ext_resource type="SpriteFrames" uid="uid://7q17ox014opg" path="res://scenes/quests/story_quests/infinite_knight/player_components/infinite_knight_player.tres" id="3_qaaad"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="4_ctao7"]
+[ext_resource type="Resource" uid="uid://bupoebuanpxka" path="res://scenes/quests/story_quests/infinite_knight/4_outro/outro_components/infinite_knight_outro.dialogue" id="5_h7u0d"]
+[ext_resource type="Texture2D" uid="uid://cs8dj6t3nq3kn" path="res://scenes/quests/story_quests/infinite_knight/2_combat/combat_components/background.png" id="6_t1rrv"]
+[ext_resource type="AudioStream" uid="uid://df38ngkb6wv5q" path="res://scenes/quests/story_quests/infinite_knight/player_components/intro.mp3" id="7_olb14"]
+
+[node name="InfiniteKnightOutro" type="Node2D" unique_id=1273842832]
+
+[node name="HUD" parent="." unique_id=260989644 instance=ExtResource("1_hqqqq")]
+
+[node name="TileMapLayers" type="Node2D" parent="." unique_id=874277128]
+
+[node name="Ground" type="TileMapLayer" parent="TileMapLayers" unique_id=2114459651]
+tile_map_data = PackedByteArray("AAAFAAUABQABAAEAAAAFAAQABQABAAEAAAAFAAMABQAAAAEAAAAGAAMABQABAAEAAAAIAAQABQABAAEAAAAIAAUABQABAAEAAAAHAAUABQABAAEAAAAHAAYABQABAAIAAAAGAAYABQABAAIAAAAFAAYABQAAAAIAAAAIAAYABQABAAIAAAAGAAUABQABAAEAAAAGAAQABQABAAEAAAAHAAQABQABAAEAAAAJAAYABQACAAIAAAAJAAUABQABAAEAAAAKAAUABQACAAIAAAAKAAQABQABAAEAAAAJAAQABQABAAEAAAAJAAMABQABAAEAAAAEAAUABQAAAAIAAAAFAAcAAQAAAAMAAAAGAAcAAQAAAAMAAAAHAAcAAQAAAAMAAAAIAAcAAQAAAAMAAAAJAAcAAQAAAAMAAAAKAAYAAQAAAAMAAAALAAUAAQAAAAMAAAALAAQABQACAAMAAAAEAAQABQAAAAAAAAAGAAIABQACAAEAAAAJAAIABQADAAAAAAAKAAMABQACAAAAAAAFAAIABQAAAAAAAAAHAAMABQABAAAAAAAIAAMABQABAAAAAAAGAAEABQADAAAAAAAEAAYAAQAAAAMAAAA=")
+tile_set = ExtResource("2_2der0")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1523556790]
+position = Vector2(153, 366)
+zoom = Vector2(1.333, 1.333)
+limit_left = 0
+limit_top = 0
+limit_right = 960
+limit_bottom = 540
+position_smoothing_enabled = true
+editor_draw_limits = true
+
+[node name="OnTheGround" type="Node2D" parent="." unique_id=2094226334]
+y_sort_enabled = true
+
+[node name="Character" type="AnimatedSprite2D" parent="OnTheGround" unique_id=1142153150]
+position = Vector2(400, 349)
+sprite_frames = ExtResource("3_qaaad")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1305410749]
+
+[node name="Cinematic" type="Node2D" parent="." unique_id=1957659485]
+script = ExtResource("4_ctao7")
+dialogue = ExtResource("5_h7u0d")
+next_scene = "uid://cufkthb25mpxy"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=402168502]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1719712008]
+motion_scale = Vector2(0.1, 0.1)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer" unique_id=998085426]
+texture_filter = 1
+offset_left = -1224.0
+offset_top = -195.0
+offset_right = 40.0
+offset_bottom = 562.0
+scale = Vector2(2, 2)
+texture = ExtResource("6_t1rrv")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=548266826]
+stream = ExtResource("7_olb14")
+volume_db = -10.0
+autoplay = true
