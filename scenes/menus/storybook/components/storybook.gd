@@ -25,7 +25,6 @@ var _current_spread_index: int = -1
 var _navigation_locked: bool = false
 var _current_list_page: int = 0
 
-# Node References
 @onready var left_quest_list: VBoxContainer = %LeftQuestList
 @onready var right_quest_list: VBoxContainer = %RightQuestList
 
