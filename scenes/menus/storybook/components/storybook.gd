@@ -63,6 +63,11 @@ func _populate_quest_lists() -> void:
 	#Building the right page
 	for i in range(right_start, min(right_end, quests.size())):
 		previous_button = _create_quest_button(i, right_quest_list, previous_button)
+	# If the right page is empty, add a blank Control spacer so it maintains its width
+	if right_quest_list.get_child_count() == 0:
+		var spacer: Control = Control.new()
+		spacer.custom_minimum_size.x = 500
+		right_quest_list.add_child(spacer)
 
 	#Connect UI Focus back to the back button safely
 	if previous_button:
