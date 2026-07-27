@@ -1,3 +1,30 @@
 [gd_scene format=3 uid="uid://m6krehsj0ew0"]
 
+[ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="1_2ftnb"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_05w84"]
+[ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="2_3g0tf"]
+[ext_resource type="TileSet" uid="uid://ciq5guijvlyb0" path="res://tiles/void_chromakey.tres" id="2_dd31k"]
+
 [node name="TreasureRoom" type="Node2D" unique_id=2055144060]
+
+[node name="TileMapLayers" type="Node2D" parent="." unique_id=583731283]
+
+[node name="Floor" type="TileMapLayer" parent="TileMapLayers" unique_id=842694951]
+
+[node name="Void" type="TileMapLayer" parent="TileMapLayers" unique_id=56441085]
+texture_filter = 1
+material = ExtResource("1_2ftnb")
+tile_set = ExtResource("2_dd31k")
+
+[node name="OnTheGround" type="Node2D" parent="." unique_id=1991035904]
+
+[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("1_05w84")]
+position = Vector2(-140, 73)
+sprite_frames = ExtResource("2_3g0tf")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1687472458]
+limit_left = 0
+limit_top = -320
+limit_right = 2772
+limit_bottom = 680
+editor_draw_limits = true

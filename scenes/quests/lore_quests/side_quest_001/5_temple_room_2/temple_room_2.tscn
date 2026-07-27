@@ -1,3 +1,58 @@
 [gd_scene format=3 uid="uid://42jla6rouvx3"]
 
+[ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="1_05c4q"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_m25v8"]
+[ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="2_my1xk"]
+[ext_resource type="TileSet" uid="uid://ciq5guijvlyb0" path="res://tiles/void_chromakey.tres" id="2_qjn5u"]
+[ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="3_my1xk"]
+[ext_resource type="PackedScene" uid="uid://ymcjwxrqt4e4" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/musical_rock.tscn" id="4_iiqlo"]
+
 [node name="TempleRoom2" type="Node2D" unique_id=1360898071]
+
+[node name="TileMapLayers" type="Node2D" parent="." unique_id=537940738]
+
+[node name="Floor" type="TileMapLayer" parent="TileMapLayers" unique_id=343875328]
+
+[node name="Void" type="TileMapLayer" parent="TileMapLayers" unique_id=12775337]
+texture_filter = 1
+material = ExtResource("1_05c4q")
+tile_set = ExtResource("2_qjn5u")
+
+[node name="OnTheGround" type="Node2D" parent="." unique_id=1876944702]
+
+[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("1_m25v8")]
+position = Vector2(-140, 73)
+sprite_frames = ExtResource("2_my1xk")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1105490654]
+limit_left = 0
+limit_top = -320
+limit_right = 2772
+limit_bottom = 680
+editor_draw_limits = true
+
+[node name="Door" parent="OnTheGround" unique_id=1860367584 instance=ExtResource("3_my1xk")]
+position = Vector2(-63, 363)
+rotation = 1.5707964
+
+[node name="Sequence Puzzle" type="Node2D" parent="OnTheGround" unique_id=2144803755]
+
+[node name="Objects" type="Node2D" parent="OnTheGround/Sequence Puzzle" unique_id=131164621]
+position = Vector2(-6, -157)
+
+[node name="MusicalRock" parent="OnTheGround/Sequence Puzzle/Objects" unique_id=704061639 instance=ExtResource("4_iiqlo")]
+sprite_modulate = Color(0.9859224, 0, 0.16460204, 1)
+
+[node name="MusicalRock2" parent="OnTheGround/Sequence Puzzle/Objects" unique_id=1294727724 instance=ExtResource("4_iiqlo")]
+position = Vector2(77, 1)
+sprite_modulate = Color(0.42008352, 0.8321971, 7.70092e-07, 1)
+
+[node name="MusicalRock3" parent="OnTheGround/Sequence Puzzle/Objects" unique_id=389463995 instance=ExtResource("4_iiqlo")]
+position = Vector2(3, 77)
+sprite_modulate = Color(0.33297247, 0.389915, 0.97399324, 1)
+
+[node name="MusicalRock4" parent="OnTheGround/Sequence Puzzle/Objects" unique_id=881430348 instance=ExtResource("4_iiqlo")]
+position = Vector2(82, 78)
+sprite_modulate = Color(0.79871076, 0.93741417, 0, 1)
+
+[node name="Steps" type="Node2D" parent="OnTheGround/Sequence Puzzle" unique_id=1139552625]
