@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://cqtrjqk6xxx84"]
+
+[ext_resource type="Texture2D" uid="uid://djpqmeu1t8pxk" path="res://scenes/game_elements/props/buildings/inn/components/inn.png" id="1_f08qg"]
+[ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="2_thw4m"]
+[ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="3_6v01s"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f08qg"]
+size = Vector2(102, 54)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mkj5x"]
+size = Vector2(54, 42)
+
+[node name="Inn" type="Node2D" unique_id=1528729065]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=880549347]
+position = Vector2(0, -71)
+texture = ExtResource("1_f08qg")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1966422159]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1898797309]
+position = Vector2(0, -25)
+shape = SubResource("RectangleShape2D_f08qg")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=1951487947]
+position = Vector2(78, -31)
+shape = SubResource("RectangleShape2D_mkj5x")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=2118406319 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(82, -32)
+scale = Vector2(0.384, 0.384)
+enabled = false
+color = Color(1, 1, 0, 1)
+energy = 0.5
+texture = ExtResource("2_thw4m")
+
+[node name="ArtificialLightBehavior" type="Node" parent="PointLight2D" unique_id=710365563 node_paths=PackedStringArray("light")]
+editor_description = "A random delay here adds variation to a stack of houses."
+script = ExtResource("3_6v01s")
+light = NodePath("..")
+random_delay = 3.0
+metadata/_custom_type_script = "uid://bk52qjv58locq"
+
+[node name="PointLight2D2" type="PointLight2D" parent="." unique_id=1269358253 groups=["night-lights"]]
+visibility_layer = 2
+position = Vector2(-71, -26)
+scale = Vector2(0.377, 0.377)
+enabled = false
+color = Color(1, 1, 0, 1)
+energy = 0.5
+texture = ExtResource("2_thw4m")
+
+[node name="ArtificialLightBehavior" type="Node" parent="PointLight2D2" unique_id=2047170713 node_paths=PackedStringArray("light")]
+editor_description = "A random delay here adds variation to a stack of houses."
+script = ExtResource("3_6v01s")
+light = NodePath("..")
+random_delay = 3.0
+metadata/_custom_type_script = "uid://bk52qjv58locq"

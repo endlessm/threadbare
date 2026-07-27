@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+@tool
+class_name StoryQuest
+extends Quest
+## A self-contained story that lives alongside Threadbare's main narrative.
+
+## The abilities names or verbs as they appear in game labels. For example: "You got a new
+## ability! Repel".
+@export var abilities_names: Dictionary[Enums.PlayerAbilities, String] = {
+	Enums.PlayerAbilities.ABILITY_A: "Repel",
+	Enums.PlayerAbilities.ABILITY_B: "Grapple",
+	Enums.PlayerAbilities.ABILITY_B_MODIFIER_1: "Longer Thread",
+}

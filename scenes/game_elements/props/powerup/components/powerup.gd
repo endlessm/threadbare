@@ -1,0 +1,125 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+@tool
+extends CharacterBody2D
+## A powerup that, when interacted, enables a player ability.
+##
+## By default it also displays a dialogue telling the player that an ability
+## has been obtained.
+
+## Emitted when this powerup is collected.
+signal collected
+
+## The player ability to enable.
+@export var ability: Enums.PlayerAbilities = Enums.PlayerAbilities.ABILITY_A:
+	set = _set_ability
+
+## Asset of this powerup.
+@export var sprite_frames: SpriteFrames = preload("uid://cualgrcaaggcm"):
+	set = _set_sprite_frames
+
+## The powerup shines with this color.
+@export var highlight_color: Color = Color.WHITE:
+	set = _set_highlight_color
+
+## Dialogue to display when collecting the powerup.
+@export var dialogue: DialogueResource = preload("uid://cj0i5jwlv8idi")
+
+## Name for the ability to display if using the default dialogue.
+var ability_name: String
+
+var _tween: Tween
+
+@onready var interact_area: InteractArea = %InteractArea
+@onready var highlight_effect: AnimatedSprite2D = %HighlightEffect
+@onready var sprite: AnimatedSprite2D = %Sprite
+@onready var interact_collision: CollisionShape2D = %InteractCollision
+@onready var ground_collision: CollisionShape2D = %GroundCollision
+@onready var hookable_collision: CollisionShape2D = %HookableCollision
+
+
+func _set_ability(new_ability: Enums.PlayerAbilities) -> void:
+	ability = new_ability
+	if not Engine.is_editor_hint() and is_node_ready():
+		_update_ability_name()
+		interact_area.action = "Collect " + ability_name if ability_name else "Collect"
+
+
+func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
+	sprite_frames = new_sprite_frames
+	if is_node_ready():
+		sprite.sprite_frames = sprite_frames
+		sprite.play("default")
+
+
+func _set_highlight_color(new_highlight_color: Color) -> void:
+	highlight_color = new_highlight_color
+	if is_node_ready():
+		highlight_effect.modulate = highlight_color
+
+
+func _update_ability_name() -> void:
+	if not ability:
+		ability_name = ""
+		return
+	var abilities_names: Dictionary[Enums.PlayerAbilities, String] = LoreInfo.ABILITIES_NAMES
+	if GameState.quest and GameState.quest.quest is StoryQuest:
+		var sq := GameState.quest.quest as StoryQuest
+		abilities_names = sq.abilities_names
+	ability_name = abilities_names.get(ability)
+
+
+func _ready() -> void:
+	_set_ability(ability)
+	_set_sprite_frames(sprite_frames)
+	_set_highlight_color(highlight_color)
+	if Engine.is_editor_hint():
+		return
+	GameState.player.abilities_changed.connect(_on_abilities_changed)
+	_on_abilities_changed()
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_EDITOR_PRE_SAVE:
+			# Since this is a tool script that plays the animations in the
+			# editor, reset the frame progress before saving the scene.
+			sprite.frame_progress = 0
+
+
+func _on_abilities_changed() -> void:
+	var has_ability := GameState.player.has_ability(ability)
+	ground_collision.disabled = has_ability
+	interact_collision.disabled = has_ability
+	hookable_collision.disabled = has_ability
+	highlight_effect.visible = not has_ability
+	var alpha: float = 0.5 if has_ability else 1.0
+	sprite.modulate = Color(Color.WHITE, alpha)
+	_set_highlight_color(highlight_color)
+	var highlight_material := highlight_effect.material as ShaderMaterial
+	if highlight_material:
+		highlight_material.set_shader_parameter(&"width", 0.4)
+
+
+func _on_interact_area_interaction_started(
+	_player: Player, _from_right: bool, source: InteractArea
+) -> void:
+	if _tween:
+		_tween.kill()
+	_tween = create_tween()
+	_tween.tween_property(highlight_effect, "modulate", Color.WHITE, 0.5)
+	await _tween.finished
+	if dialogue:
+		DialogueManager.show_dialogue_balloon(dialogue, "", [self])
+		await DialogueManager.dialogue_ended
+	source.end_interaction()
+	GameState.player.set_ability(ability, true)
+	collected.emit()
+
+
+func _on_interact_area_observers_changed() -> void:
+	if _tween:
+		_tween.kill()
+	_tween = create_tween()
+	var color: Color = Color.WHITE if interact_area.is_being_observed else highlight_color
+	_tween.tween_property(highlight_effect, "modulate", color, 0.5)

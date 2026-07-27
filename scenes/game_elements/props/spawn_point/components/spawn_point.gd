@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+@tool
+class_name SpawnPoint
+extends Marker2D
+
+## Emitted after the player position has been changed.
+## [br][br]
+## Level scenes can use this signal to behave differently depending on
+## which SpawnPoint was used (or if no SpawnPoint at all was used).
+signal player_teleported
+
+const GROUP_NAME := "spawn_point"
+
+@export var look_at_side_on_spawn: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
+
+
+func _init() -> void:
+	add_to_group(GROUP_NAME, true)
+
+
+func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+
+	if GameState.scene.spawn_point == get_tree().current_scene.get_path_to(self):
+		move_player_to_self_position()
+
+
+func move_player_to_self_position(smooth_camera: bool = false) -> void:
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+
+	if is_instance_valid(player):
+		player.teleport_to(self.global_position, smooth_camera, look_at_side_on_spawn)
+
+	player_teleported.emit()

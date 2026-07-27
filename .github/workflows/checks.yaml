@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+name: Checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+# Cancel any ongoing previous run if a PR is updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+
+jobs:
+  pre-commit:
+    name: Linting and Formatting
+    if: ${{ !github.event.repository.fork }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - uses: ./.github/actions/lfs-cached-checkout
+    - uses: tox-dev/action-pre-commit-uv@v1
+
+  reuse:
+    name: Licensing information
+    if: ${{ !github.event.repository.fork }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v8.3.2
+      with:
+        cache-dependency-glob: ".github/workflows/checks.yaml"
+    - name: Check REUSE compliance
+      shell: bash
+      run: |
+        set -o pipefail
+        uv run --with reuse reuse lint | tee $GITHUB_STEP_SUMMARY

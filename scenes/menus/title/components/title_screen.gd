@@ -1,0 +1,63 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends Control
+
+var opening_quest: Quest
+
+@onready var main_menu: Control = %MainMenu
+@onready var options: Control = %Options
+@onready var credits: Control = %Credits
+
+
+func _ready() -> void:
+	opening_quest = load(
+		ThreadbareProjectSettings.get_setting(ThreadbareProjectSettings.OPENING_QUEST)
+	)
+
+	if ProjectSettings.get_setting(ThreadbareProjectSettings.SKIP_SPLASH):
+		if GameState.can_restore():
+			_on_main_menu_continue_pressed()
+		else:
+			_on_start_pressed()
+
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"pause"):
+		get_viewport().set_input_as_handled()
+
+
+func _on_main_menu_continue_pressed() -> void:
+	(
+		SceneSwitcher
+		. change_to_file_with_transition(
+			GameState.scene.path,
+			GameState.scene.spawn_point,
+			Transition.Effect.FADE,
+			Transition.Effect.FADE,
+		)
+	)
+
+
+func _on_start_pressed() -> void:
+	GameState.clear()
+
+	GameState.set_quest(opening_quest)
+	SceneSwitcher.change_to_file_with_transition(
+		opening_quest.first_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+	)
+
+
+func _on_main_menu_options_pressed() -> void:
+	options.show()
+
+
+func _on_main_menu_credits_pressed() -> void:
+	credits.show()
+
+
+func _on_credits_back() -> void:
+	main_menu.show()
+
+
+func _on_options_back() -> void:
+	main_menu.show()

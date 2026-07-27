@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+~ start
+Townies: Tell us a story about your last adventure!
+StoryWeaver: I went on a quest with the monk and I...
+- Had to run! [#thread=spirit] => retell_spirit
+- Found inventive ways of moving [#thread=imagination] => retell_imagination
+- Delivered a story to the town [#thread=memory] => retell_memory
+
+~ retell_memory
+StoryWeaver: We saved the story from The Void...
+if has_memory()
+	do give_memory_upgrade()
+	Townie: Oh I remember now, the monk told it to me!
+=> END
+
+~ retell_imagination
+StoryWeaver: Using a grappling hook, pins and needles.
+if has_imagination()
+	do give_imagination_upgrade()
+	Townie: That really feeds my imagination!
+=> END
+
+~ retell_spirit
+StoryWeaver: The Void was eating the floor behind me, but I managed to escape!
+if has_spirit()
+	do give_spirit_upgrade()
+	Townie: Whoa. I feel brave now!
+=> END

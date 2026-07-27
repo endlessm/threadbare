@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+~ start
+Townies: Tell us a story about your last adventure!
+StoryWeaver: I went on a quest with the musician and I...
+- Learned a forgotten song [#thread=memory] => retell_memory
+- Slipped past the guards [#thread=imagination] => retell_imagination
+- Fought off some InkDrinkers [#thread=spirit] => retell_spirit
+
+~ retell_memory
+StoryWeaver: Let me whistle it to you...
+if has_memory()
+	do give_memory_upgrade()
+	Townie: Oh I remember it! That's the lullaby my mother used to sing!
+=> END
+
+~ retell_imagination
+StoryWeaver: Like I was a lizard, fast as a hare.
+if has_imagination()
+	do give_imagination_upgrade()
+	Townie: I start imagining it now!
+=> END
+
+~ retell_spirit
+StoryWeaver: Because they had stolen the ink!
+if has_spirit()
+	do give_spirit_upgrade()
+	Townie: Ha! I feel brave now!
+=> END

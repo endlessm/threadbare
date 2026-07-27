@@ -1,0 +1,108 @@
+[gd_scene format=3 uid="uid://wgmdsj1sbmja"]
+
+[ext_resource type="Script" uid="uid://bkl8j1as8ylag" path="res://scenes/menus/title/components/main_menu.gd" id="1_xuf5f"]
+[ext_resource type="Script" uid="uid://dfx8s2ybd11mt" path="res://scenes/menus/storybook/components/animated_texture_rect.gd" id="4_rpgwp"]
+[ext_resource type="Script" uid="uid://i4urwefxrrdt" path="res://addons/threadbare_git_describe/version_label.gd" id="4_snvmp"]
+[ext_resource type="SpriteFrames" uid="uid://bg538lufloka6" path="res://scenes/menus/title/components/logos/threadbare_logo_animation.tres" id="5_rpgwp"]
+
+[node name="MainMenu" type="Control" unique_id=1449128276]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xuf5f")
+
+[node name="LogoButtonSplit" type="HBoxContainer" parent="." unique_id=1272736296]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LogoContainer" type="MarginContainer" parent="LogoButtonSplit" unique_id=1693438990]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Logo" type="TextureRect" parent="LogoButtonSplit/LogoContainer" unique_id=253230428]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+stretch_mode = 4
+script = ExtResource("4_rpgwp")
+sprite_frames = ExtResource("5_rpgwp")
+animation_name = &"appear"
+metadata/_custom_type_script = "uid://dfx8s2ybd11mt"
+
+[node name="ButtonBoxMargins" type="MarginContainer" parent="LogoButtonSplit" unique_id=1837609029]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/margin_right = 16
+
+[node name="ButtonBox" type="VBoxContainer" parent="LogoButtonSplit/ButtonBoxMargins" unique_id=676283900]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ContinueButton" type="Button" parent="LogoButtonSplit/ButtonBoxMargins/ButtonBox" unique_id=1007458009]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BigFlatButton"
+text = "Continue"
+flat = true
+
+[node name="StartButton" type="Button" parent="LogoButtonSplit/ButtonBoxMargins/ButtonBox" unique_id=2118834876]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BigFlatButton"
+text = "Start"
+flat = true
+
+[node name="OptionsButton" type="Button" parent="LogoButtonSplit/ButtonBoxMargins/ButtonBox" unique_id=134964913]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BigFlatButton"
+text = "Options"
+flat = true
+
+[node name="CreditsButton" type="Button" parent="LogoButtonSplit/ButtonBoxMargins/ButtonBox" unique_id=964194643]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BigFlatButton"
+text = "Credits"
+flat = true
+
+[node name="QuitButton" type="Button" parent="LogoButtonSplit/ButtonBoxMargins/ButtonBox" unique_id=179304319]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BigFlatButton"
+text = "Exit Game"
+flat = true
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1805053906]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -33.0
+offset_top = -68.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 8
+
+[node name="VersionLabel" type="Label" parent="MarginContainer" unique_id=1444389869]
+auto_translate_mode = 2
+layout_mode = 2
+text = "0123456789"
+script = ExtResource("4_snvmp")
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="LogoButtonSplit/ButtonBoxMargins/ButtonBox/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="LogoButtonSplit/ButtonBoxMargins/ButtonBox/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="LogoButtonSplit/ButtonBoxMargins/ButtonBox/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="LogoButtonSplit/ButtonBoxMargins/ButtonBox/CreditsButton" to="." method="_on_credits_button_pressed"]
+[connection signal="pressed" from="LogoButtonSplit/ButtonBoxMargins/ButtonBox/QuitButton" to="." method="_on_quit_button_pressed"]

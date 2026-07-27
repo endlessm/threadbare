@@ -1,0 +1,223 @@
+[gd_scene format=3 uid="uid://bhm7fdjvppt8b"]
+
+[ext_resource type="Script" uid="uid://5bt5um5g1g3p" path="res://scenes/menus/storybook/components/storybook.gd" id="1_gw8hn"]
+[ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="3_21r2o"]
+[ext_resource type="PackedScene" uid="uid://cgtonist08yxn" path="res://scenes/menus/storybook/components/storybook_page.tscn" id="3_n2i2u"]
+[ext_resource type="SpriteFrames" uid="uid://dne3cxrhbjuno" path="res://scenes/menus/storybook/components/storybook_animation.tres" id="3_y0b3i"]
+[ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="5_m2ghf"]
+[ext_resource type="Resource" uid="uid://ddxn14xw66ud8" path="res://scenes/quests/template_quests/NO_EDIT/quest.tres" id="5_ywp77"]
+[ext_resource type="Material" uid="uid://cruf3tlajs4jo" path="res://scenes/ui_elements/input_hints/components/drop_shadow_material.tres" id="9_xkl6m"]
+[ext_resource type="Texture2D" uid="uid://dgfsrkr8a370h" path="res://assets/third_party/kenney_input_prompts/steam-deck_sheet_default.png" id="10_p0vqm"]
+[ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="11_nkrro"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mwfoq"]
+atlas = ExtResource("10_p0vqm")
+region = Rect2(320, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f7prj"]
+atlas = ExtResource("10_p0vqm")
+region = Rect2(512, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m2ghf"]
+atlas = ExtResource("10_p0vqm")
+region = Rect2(576, 576, 64, 64)
+
+[node name="Storybook" type="CanvasLayer" unique_id=438542807]
+script = ExtResource("1_gw8hn")
+quests = Array[ExtResource("3_21r2o")]([ExtResource("5_ywp77")])
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1792675940]
+modulate = Color(0, 0, 0, 0.70000005)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=80215308]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CenterContainer" unique_id=922518528]
+unique_name_in_owner = true
+texture_filter = 1
+texture_repeat = 1
+sprite_frames = ExtResource("3_y0b3i")
+animation = &"book_left"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1897898722]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer" unique_id=1247290202]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StoryBookContent" type="Control" parent="VBoxContainer/CenterContainer" unique_id=1009262260]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/CenterContainer/StoryBookContent" unique_id=448414689]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -105.0
+offset_top = -191.0
+offset_right = 333.0
+offset_bottom = 361.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+theme_override_constants/margin_top = -20
+
+[node name="QuestContainer" type="ScrollContainer" parent="VBoxContainer/CenterContainer/StoryBookContent/MarginContainer" unique_id=228770881]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="BookSpread" type="HBoxContainer" parent="VBoxContainer/CenterContainer/StoryBookContent/MarginContainer/QuestContainer" unique_id=1606272031]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 55
+
+[node name="LeftPage" type="MarginContainer" parent="VBoxContainer/CenterContainer/StoryBookContent/MarginContainer/QuestContainer/BookSpread" unique_id=103149296]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CenterContainer/StoryBookContent/MarginContainer/QuestContainer/BookSpread/LeftPage" unique_id=434752580]
+layout_mode = 2
+
+[node name="LeftQuestList" type="VBoxContainer" parent="VBoxContainer/CenterContainer/StoryBookContent/MarginContainer/QuestContainer/BookSpread/LeftPage/VBoxContainer" unique_id=887510218]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+
+[node name="RightPage" type="MarginContainer" parent="VBoxContainer/CenterContainer/StoryBookContent/MarginContainer/QuestContainer/BookSpread" unique_id=1947571017]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CenterContainer/StoryBookContent/MarginContainer/QuestContainer/BookSpread/RightPage" unique_id=687423957]
+layout_mode = 2
+
+[node name="RightQuestList" type="VBoxContainer" parent="VBoxContainer/CenterContainer/StoryBookContent/MarginContainer/QuestContainer/BookSpread/RightPage/VBoxContainer" unique_id=1110923687]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="StorybookPage" parent="VBoxContainer/CenterContainer/StoryBookContent" unique_id=1375899951 instance=ExtResource("3_n2i2u")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -372.0
+offset_top = -206.0
+offset_right = 418.0
+offset_bottom = 305.0
+theme_override_constants/margin_left = -5
+
+[node name="BackButton" type="Button" parent="VBoxContainer/CenterContainer/StoryBookContent" unique_id=633672164]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -298.0
+offset_top = 242.0
+offset_right = -88.0
+offset_bottom = 302.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+focus_next = NodePath("../StorybookPage/VBoxContainer/PlayButton")
+mouse_filter = 1
+theme_type_variation = &"FlatButton"
+text = "Back"
+icon = ExtResource("5_m2ghf")
+flat = true
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1971907031]
+layout_mode = 2
+theme_override_constants/margin_right = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=59792364]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="BackContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1752840391]
+layout_mode = 2
+
+[node name="BackHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HBoxContainer/BackContainer" unique_id=1694299884]
+material = ExtResource("9_xkl6m")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = SubResource("AtlasTexture_mwfoq")
+script = ExtResource("11_nkrro")
+action_name = &"ui_cancel"
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/BackContainer" unique_id=1130735496]
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+theme_override_font_sizes/font_size = 25
+text = "Back"
+
+[node name="PreviousTabContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HBoxContainer/BackContainer" unique_id=2058995622]
+layout_mode = 2
+
+[node name="PreviousTabHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HBoxContainer/BackContainer/PreviousTabContainer" unique_id=1517575812]
+material = ExtResource("9_xkl6m")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = SubResource("AtlasTexture_f7prj")
+script = ExtResource("11_nkrro")
+action_name = &"previous_tab"
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/BackContainer/PreviousTabContainer" unique_id=421872458]
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+theme_override_font_sizes/font_size = 25
+text = "Previous"
+
+[node name="NextTabContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1727455504]
+layout_mode = 2
+
+[node name="NextTabHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=859735797]
+material = ExtResource("9_xkl6m")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = SubResource("AtlasTexture_m2ghf")
+script = ExtResource("11_nkrro")
+action_name = &"next_tab"
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=1060314095]
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+theme_override_font_sizes/font_size = 25
+text = "Next"
+
+[node name="Spacer" type="Control" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1841759060]
+editor_description = "This empty control expands to fill the center of the hbox, pushing any controls packed after it to the right margin."
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="selected" from="VBoxContainer/CenterContainer/StoryBookContent/StorybookPage" to="." method="_on_storybook_page_selected"]
+[connection signal="pressed" from="VBoxContainer/CenterContainer/StoryBookContent/BackButton" to="." method="_on_back_button_pressed"]

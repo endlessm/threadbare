@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://cgtonist08yxn"]
+
+[ext_resource type="Script" uid="uid://csl2nw1r7fhpj" path="res://scenes/menus/storybook/components/storybook_page.gd" id="1_jl23h"]
+[ext_resource type="Script" uid="uid://dfx8s2ybd11mt" path="res://scenes/menus/storybook/components/animated_texture_rect.gd" id="3_rxv6h"]
+[ext_resource type="SpriteFrames" uid="uid://3elulifvmamm" path="res://scenes/game_elements/props/checkpoint/components/knitwitch_frames_blue.tres" id="4_0inj8"]
+
+[node name="StorybookPage" type="MarginContainer" unique_id=1074616947]
+anchors_preset = -1
+anchor_top = -0.048
+anchor_right = 0.61700004
+anchor_bottom = 0.674
+offset_top = 0.060001373
+offset_right = 0.2399292
+offset_bottom = 7.2199707
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+script = ExtResource("1_jl23h")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1525365547]
+layout_mode = 2
+theme_override_constants/separation = 45
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1729653525]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="TitleBox" type="PanelContainer" parent="HBoxContainer/VBoxContainer" unique_id=1942986177]
+custom_minimum_size = Vector2(370, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"PlayerRibbon"
+
+[node name="Title" type="Label" parent="HBoxContainer/VBoxContainer/TitleBox" unique_id=1799767777]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Title of the Quest"
+horizontal_alignment = 1
+
+[node name="Animation" type="TextureRect" parent="HBoxContainer/VBoxContainer" unique_id=1846719246]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 300)
+layout_mode = 2
+layout_direction = 1
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("3_rxv6h")
+sprite_frames = ExtResource("4_0inj8")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer" unique_id=1348374525]
+custom_minimum_size = Vector2(370, 80)
+layout_mode = 2
+size_flags_vertical = 4
+horizontal_scroll_mode = 0
+
+[node name="Authors" type="Label" parent="HBoxContainer/VBoxContainer/ScrollContainer" unique_id=1793676593]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(370, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 20
+text = "by Jane Bloggs, Erika Mustermann and Jóna Jónsdóttir"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer" unique_id=1647672364]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 15
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer2" unique_id=2080432782]
+custom_minimum_size = Vector2(360, 430)
+layout_mode = 2
+size_flags_horizontal = 4
+horizontal_scroll_mode = 0
+
+[node name="Description" type="Label" parent="HBoxContainer/VBoxContainer2/ScrollContainer" unique_id=872867887]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam pulvinar, erat non consectetur cursus, erat erat lobortis massa, quis mattis purus dolor ac lorem. In hac habitasse platea dictumst. Suspendisse vulputate felis purus, ac scelerisque mauris tristique sit amet. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2" unique_id=1013509902]
+layout_mode = 2
+alignment = 1
+
+[node name="RestartButton" type="Button" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1780055138]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"FlatButton"
+text = "Restart"
+
+[node name="PlayButton" type="Button" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1640820760]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_top = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_previous = NodePath("../../../LeftPage/VBoxContainer/BackButton")
+theme_type_variation = &"FlatButton"
+text = "Play"

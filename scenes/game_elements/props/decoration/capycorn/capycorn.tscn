@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://de2aceqqvj7dr"]
+
+[ext_resource type="Script" uid="uid://jllabtpjc46i" path="res://scenes/game_elements/props/decoration/animated_decoration.gd" id="1_o87cb"]
+[ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_logic/sprite_behaviors/random_frame_sprite_behavior.gd" id="2_71p58"]
+[ext_resource type="SpriteFrames" uid="uid://d0sqoy5x0tfum" path="res://scenes/game_elements/characters/components/sprite_frames/capycorn_light_brown.tres" id="2_o87cb"]
+
+[node name="Capycorn" type="Node2D" unique_id=398073521]
+script = ExtResource("1_o87cb")
+sprite_frames = ExtResource("2_o87cb")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1456881412]
+unique_name_in_owner = true
+sprite_frames = ExtResource("2_o87cb")
+animation = &"idle"
+offset = Vector2(2, -14)
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=63344388 node_paths=PackedStringArray("sprite")]
+script = ExtResource("2_71p58")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"

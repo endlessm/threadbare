@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://0ull24fvmhwk"]
+
+[ext_resource type="Script" uid="uid://d2vp62mjrf6gn" path="res://scenes/globals/scene_switcher/scene_link.gd" id="1_2wkov"]
+[ext_resource type="Script" uid="uid://0gr6vi3gxhcp" path="res://scenes/game_elements/props/teleporter/teleporter_logic.gd" id="2_2wkov"]
+
+[node name="Teleporter" type="Area2D" unique_id=1779636661]
+editor_description = "The player entering this area triggers either a scene switch to \"Next Scene\", or teleports the player within the current scene.
+
+Add a collision shape, and set the destination."
+collision_layer = 4
+script = ExtResource("1_2wkov")
+
+[node name="TeleporterLogic" type="Node" parent="." unique_id=713140263 node_paths=PackedStringArray("teleport_area", "scene_link")]
+script = ExtResource("2_2wkov")
+teleport_area = NodePath("..")
+scene_link = NodePath("..")

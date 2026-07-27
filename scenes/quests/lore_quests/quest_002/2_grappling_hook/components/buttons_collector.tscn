@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://mruqy04d0vl8"]
+
+[ext_resource type="SpriteFrames" uid="uid://dr08c1mmcybvn" path="res://scenes/game_elements/characters/components/sprite_frames/girl_with_button.tres" id="2_vnm58"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="3_bpxq8"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="4_tv1as"]
+[ext_resource type="Resource" uid="uid://ctbctlk6xcaja" path="res://scenes/quests/lore_quests/quest_002/2_grappling_hook/components/buttons_collector.dialogue" id="5_vnm58"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vnm58"]
+radius = 17.000008
+height = 68.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vnm58"]
+size = Vector2(102, 106)
+
+[node name="ButtonsCollector" type="CharacterBody2D" unique_id=1565485690]
+collision_layer = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1493156351]
+position = Vector2(0, -29)
+sprite_frames = ExtResource("2_vnm58")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1701488024]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_vnm58")
+
+[node name="InteractArea" type="Area2D" parent="." unique_id=1488513282 node_paths=PackedStringArray("marker")]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_bpxq8")
+marker = NodePath("Marker")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1253932590]
+position = Vector2(0, -33)
+shape = SubResource("RectangleShape2D_vnm58")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="Marker" type="Marker2D" parent="InteractArea" unique_id=2111856598]
+position = Vector2(0, -128)
+
+[node name="TalkBehavior" type="Node" parent="." unique_id=1124185946 node_paths=PackedStringArray("interact_area")]
+script = ExtResource("4_tv1as")
+dialogue = ExtResource("5_vnm58")
+interact_area = NodePath("../InteractArea")
+
+[connection signal="interaction_ended" from="InteractArea" to="." method="_on_interact_area_interaction_ended"]
+[connection signal="interaction_started" from="InteractArea" to="." method="_on_interact_area_interaction_started"]

@@ -1,0 +1,50 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+~ hotel_california
+# TODO: Uh oh, no ngettext() support in Dialogue Manager...
+match GameState.quest.inventory.items.size():
+	when 1:
+		{{player_name}}: I’d better take this thread to the Eternal Loom first.
+	else:
+		{{player_name}}: I’d better take these threads to the Eternal Loom first.
+=> END
+
+~ arun
+if not GameState.quest:
+	# Player is not on a quest ⇒ they finished the tutorial!
+	% Arun: It's so good to be in Fray's End again!
+	% Arun: Thank you for traveling here with me.
+# TODO: Use an object at the root of the scene rather than hardcoding this path?
+else:
+	if GameState.quest.quest_path == "res://scenes/quests/lore_quests/quest_000/quest.tres":
+		Arun: We made it, StoryWeaver! Fray's End is just across the bridge.
+	Arun: Take the threads you've collected to the Eternal Loom.
+=> END
+
+~ marie
+if void_quest_unlocker.is_satisfied():
+	Marie: You must have been to visit Moss!
+	Marie: We saw the Void retreating from the West End path!
+else:
+	Marie: Oh, are you trying to get to the West End?
+	Marie: That path has been blocked by the Void for years.
+	Marie: Our cat is really upset about it. She used to love going over there.
+	Marie: Please find Moss the Monk. She might be able to help you push back the Void!
+=> END
+
+~ farmer
+Farmer: Seeds have terrible dating lives...
+Farmer: They always get stood up!
+Farmer: Hahahahahaha!
+{{player_name}}: ...
+Farmer: Guess it was only funny in my head.
+=> END
+
+~ beach
+if mythical_meadows_unlocker.is_satisfied():
+	Dolores: Wow, where did this bridge come from?!
+	Dolores: Perhaps this is the way to the Mythical Meadows.
+else:
+	% Dolores: I love this little beach!
+	% Dolores: This beach is so peaceful!
+=> END

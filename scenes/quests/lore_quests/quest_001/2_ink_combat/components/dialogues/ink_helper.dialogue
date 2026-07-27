@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+~ start
+if FillBarrel.has_barrel_to_fill()
+	That jar is hard to reach!
+	May I fill it for you?
+	- Yes => help_accepted
+	- No => help_denied
+else
+	You did it! => END
+
+~ help_accepted
+do FillBarrel.fill_barrel()
+Bye!
+do GameState.global.clear_help()
+=> END
+
+~ help_denied
+OK, bye!
+=> END

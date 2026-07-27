@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://b0dehcnfo68j1"]
+
+[ext_resource type="Script" uid="uid://b2mu5bkiqrds3" path="res://scenes/game_elements/props/hook_control/components/hook_control.gd" id="1_bevaw"]
+[ext_resource type="Texture2D" uid="uid://cfyxgtc6bvss8" path="res://assets/first_party/user_interface/aim_indicator.png" id="2_q883k"]
+
+[node name="HookControl" type="Node2D" unique_id=1022482491]
+script = ExtResource("1_bevaw")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=444359890]
+unique_name_in_owner = true
+position = Vector2(51, 0)
+rotation = 1.5707964
+texture = ExtResource("2_q883k")
+
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=1829820383]
+unique_name_in_owner = true
+target_position = Vector2(300, 0)
+collision_mask = 4112
+collide_with_areas = true
+
+[node name="DPadTimer" type="Timer" parent="." unique_id=440426751]
+unique_name_in_owner = true
+wait_time = 0.2
+one_shot = true
+
+[node name="MouseAimingTimer" type="Timer" parent="." unique_id=405211158]
+unique_name_in_owner = true
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="DPadTimer" to="." method="_on_d_pad_timer_timeout"]

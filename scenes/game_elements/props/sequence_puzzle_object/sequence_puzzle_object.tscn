@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://b8sok264erfoc"]
+
+[ext_resource type="Script" uid="uid://bjl6cydoln71k" path="res://scenes/game_elements/props/sequence_puzzle_object/components/sequence_puzzle_object.gd" id="1_kw7av"]
+[ext_resource type="SpriteFrames" uid="uid://b41l3fs3yj2fc" path="res://scenes/quests/template_quests/NO_EDIT/3_NO_EDIT_sequence_puzzle/NO_EDIT_object.tres" id="2_cltuv"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="3_55nmp"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kw7av"]
+height = 46.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kw7av"]
+size = Vector2(45, 45)
+
+[node name="SequencePuzzleObject" type="StaticBody2D" unique_id=1919458224 groups=["sequence_object"]]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_kw7av")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=138838776]
+unique_name_in_owner = true
+position = Vector2(0, -20)
+sprite_frames = ExtResource("2_cltuv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=933922439]
+position = Vector2(0, -2)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_kw7av")
+
+[node name="InteractArea" type="Area2D" parent="." unique_id=412224390 node_paths=PackedStringArray("marker")]
+unique_name_in_owner = true
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_55nmp")
+marker = NodePath("Marker")
+action = "Tap"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1667228689]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_kw7av")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="Marker" type="Marker2D" parent="InteractArea" unique_id=858904951]
+position = Vector2(0, -64)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=558184317]
+unique_name_in_owner = true
+bus = &"SFX"
+
+[connection signal="interaction_started" from="InteractArea" to="." method="_on_interaction_started"]
