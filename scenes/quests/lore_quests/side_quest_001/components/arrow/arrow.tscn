@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://c0qk62k0hllpf"]
+
+[ext_resource type="Script" uid="uid://bofv3bcwj3rx2" path="res://scenes/game_elements/props/projectile/components/projectile.gd" id="1_eg1sp"]
+[ext_resource type="Texture2D" uid="uid://bdkjsmo81cwkk" path="res://assets/third_party/tiny-swords-non-cc0/Units/Red Units/Archer/Arrow.png" id="2_trvw8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_andwd"]
+size = Vector2(43, 12)
+
+[node name="Arrow" type="RigidBody2D" unique_id=702386345]
+script = ExtResource("1_eg1sp")
+metadata/_custom_type_script = "uid://bofv3bcwj3rx2"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=112681236]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_andwd")
+
+[node name="Appearance" type="Node2D" parent="." unique_id=721598150]
+
+[node name="Sprite2D" type="Sprite2D" parent="Appearance" unique_id=593920225]
+texture = ExtResource("2_trvw8")
+
+[node name="DurationTimer" type="Timer" parent="." unique_id=1641760652]
+unique_name_in_owner = true
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=367463346]
+unique_name_in_owner = true
+bus = &"SFX"
