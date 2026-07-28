@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Area2D
 
+@export var expected_symbol: String
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
