@@ -1,20 +1,32 @@
 [gd_scene format=3 uid="uid://c6mikotrke4mc"]
 
-[ext_resource type="Texture2D" uid="uid://756pdnslep0q" path="res://scenes/game_elements/fx/world_reweaven/components/string.png" id="1_k0a1w"]
 [ext_resource type="PackedScene" uid="uid://bs32ac1yj83ub" path="res://scenes/game_elements/fx/spirograph/spirograph.tscn" id="3_h26y6"]
 [ext_resource type="Script" uid="uid://c4oww6rkbqfxc" path="res://scenes/game_elements/fx/stitcher/components/stitcher.gd" id="4_5l8d3"]
 
 [sub_resource type="GDScript" id="GDScript_0e48y"]
 script/source = "extends Node2D
 
+@onready var mouse_tracker: Node2D = %MouseTracker
 @onready var spirograph_mouse: Spirograph = %SpirographMouse
+@onready var stitcher_mouse: Stitcher = %StitcherMouse
 
 func _process(_delta: float) -> void:
 	var mouse_pos := get_global_mouse_position()
-	spirograph_mouse.global_position = lerp(spirograph_mouse.global_position, mouse_pos, 0.1)
-	#var new_pos := spirograph_mouse.global_position.move_toward(mouse_pos, 5.0)
-	#new_pos = lerp(new_pos, mouse_pos, 0.1)
-	#spirograph_mouse.global_position = new_pos
+	mouse_tracker.global_position = lerp(mouse_tracker.global_position, mouse_pos, 0.1)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is not InputEventMouseButton:
+		return
+	if event.pressed:
+		spirograph_mouse.process_mode = Node.PROCESS_MODE_DISABLED
+		spirograph_mouse.visible = false
+		stitcher_mouse.process_mode = Node.PROCESS_MODE_INHERIT
+		stitcher_mouse.visible = true
+	else:
+		spirograph_mouse.process_mode = Node.PROCESS_MODE_INHERIT
+		spirograph_mouse.visible = true
+		stitcher_mouse.process_mode = Node.PROCESS_MODE_DISABLED
+		stitcher_mouse.visible = false
 "
 
 [sub_resource type="Animation" id="Animation_0hol4"]
@@ -43,17 +55,16 @@ tracks/1/keys = {
 "update": 0,
 "values": [0.0]
 }
-tracks/2/type = "value"
+tracks/2/type = "bezier"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("StitchTest/Path2D/PathFollow2D:progress_ratio")
+tracks/2/path = NodePath("StitchTest/Path2D/PathFollow2D:progress")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
 }
 
 [sub_resource type="Animation" id="Animation_epypp"]
@@ -85,17 +96,16 @@ tracks/1/keys = {
 "update": 0,
 "values": [0.0, 1.0]
 }
-tracks/2/type = "value"
+tracks/2/type = "bezier"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("StitchTest/Path2D/PathFollow2D:progress_ratio")
+tracks/2/path = NodePath("StitchTest/Path2D/PathFollow2D:progress")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.5, 1.6, 2.1, 3.2, 3.7, 4.6, 5.1, 6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [0.0, 0.26666668, 0.26666668, 0.53333336, 0.53333336, 0.76666665, 0.76666665, 1.0, 1.0]
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 338.0688, -0.25, 0, 0.25, 0, 338.0688, -0.25, 0, 0.25, 0, 702.7635, -0.25, 0, 0.25, 0, 702.7635, -0.25, 0, 0.25, 0, 1070.8698, -0.25, 0, 0.25, 0, 1070.8698, -0.25, 0, 0.25, 0, 1441.0135, -0.25, 0, 0.25, 0, 1441.0135, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1.1261708, 1.3764602, 2.6011987, 2.851488, 4.152527, 4.402816, 5.7497106, 6)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0hol4"]
@@ -111,7 +121,7 @@ point_count = 3
 
 [sub_resource type="Curve2D" id="Curve2D_5l8d3"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 505, 108, 0, 0, 0, 0, 856, 407, 0, 0, 0, 0, 492, 693, 0, 0, 0, 0, 210, 398, 0, 0, 0, 0, 505, 108)
+"points": PackedVector2Array(0, 0, 0, 0, 555, 253, 0, 0, 0, 0, 856, 407, 0, 0, 0, 0, 532, 571, 0, 0, 0, 0, 210, 398, 0, 0, 0, 0, 555, 253)
 }
 point_count = 5
 
@@ -132,29 +142,34 @@ autoplay = &"default"
 
 [node name="Line2D" type="Line2D" parent="MouseTest" unique_id=1593087933]
 texture_repeat = 2
-position = Vector2(3, -1)
+width = 3.0
 width_curve = SubResource("Curve_k0a1w")
-texture = ExtResource("1_k0a1w")
-texture_mode = 2
 joint_mode = 2
 
-[node name="SpirographMouse" parent="MouseTest" unique_id=812965254 node_paths=PackedStringArray("line") instance=ExtResource("3_h26y6")]
+[node name="MouseTracker" type="Node2D" parent="MouseTest" unique_id=1967144198]
 unique_name_in_owner = true
-position = Vector2(742, 340)
-line = NodePath("../Line2D")
+
+[node name="SpirographMouse" parent="MouseTest/MouseTracker" unique_id=812965254 node_paths=PackedStringArray("line") instance=ExtResource("3_h26y6")]
+unique_name_in_owner = true
+line = NodePath("../../Line2D")
 radius = 44.0
 max_vel = 100.0
-radius_update = 0.03
 debug = true
+
+[node name="StitcherMouse" type="Node2D" parent="MouseTest/MouseTracker" unique_id=782158258 node_paths=PackedStringArray("line")]
+unique_name_in_owner = true
+process_mode = 4
+script = ExtResource("4_5l8d3")
+line = NodePath("../../Line2D")
+stitches_per_second = 0.01
+metadata/_custom_type_script = "uid://c4oww6rkbqfxc"
 
 [node name="SimpleTest" type="Node2D" parent="." unique_id=1650676841]
 
 [node name="Line2D" type="Line2D" parent="SimpleTest" unique_id=625975575]
 texture_repeat = 2
-position = Vector2(3, -1)
+width = 3.0
 width_curve = SubResource("Curve_k0a1w")
-texture = ExtResource("1_k0a1w")
-texture_mode = 1
 joint_mode = 2
 
 [node name="Spirograph" parent="SimpleTest" unique_id=1097706612 node_paths=PackedStringArray("line") instance=ExtResource("3_h26y6")]
@@ -167,32 +182,34 @@ debug = true
 
 [node name="Line2D" type="Line2D" parent="StitchTest" unique_id=214318953]
 texture_repeat = 2
-position = Vector2(3, -1)
-texture = ExtResource("1_k0a1w")
-texture_mode = 1
+width = 3.0
+width_curve = SubResource("Curve_k0a1w")
 joint_mode = 2
 
 [node name="Path2D" type="Path2D" parent="StitchTest" unique_id=1459786898]
+position = Vector2(393, 118)
 curve = SubResource("Curve2D_5l8d3")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="StitchTest/Path2D" unique_id=1080902156]
-position = Vector2(505, 108)
+position = Vector2(555, 253)
 rotation = 0.70556813
 rotates = false
 
 [node name="Stitcher" type="Node2D" parent="StitchTest/Path2D/PathFollow2D" unique_id=1460959262 node_paths=PackedStringArray("line")]
 script = ExtResource("4_5l8d3")
 line = NodePath("../../../Line2D")
+stitches_per_second = 0.0
+direction_update = 0.09
+min_points_distance = 20
+max_points = 40
 metadata/_custom_type_script = "uid://c4oww6rkbqfxc"
 
 [node name="PathTest" type="Node2D" parent="." unique_id=1542033045]
 
 [node name="Line2D" type="Line2D" parent="PathTest" unique_id=479563041]
 texture_repeat = 2
-position = Vector2(3, -1)
+width = 3.0
 width_curve = SubResource("Curve_k0a1w")
-texture = ExtResource("1_k0a1w")
-texture_mode = 1
 joint_mode = 2
 
 [node name="Path2D" type="Path2D" parent="PathTest" unique_id=452573456]

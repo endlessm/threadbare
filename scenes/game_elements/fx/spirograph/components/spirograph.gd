@@ -52,12 +52,12 @@ func _process(_delta: float) -> void:
 
 func trail(global_pos: Vector2) -> void:
 	if not line.get_point_count():
-		line.add_point(global_pos)
+		line.add_point(line.to_local(global_pos))
 	else:
 		var last_p := line.points[-1]
 		if last_p.distance_squared_to(global_pos) < min_points_distance:
 			line.remove_point(0)
 			return
-		line.add_point(global_pos)
+		line.add_point(line.to_local(global_pos))
 	while line.get_point_count() > max_points:
 		line.remove_point(0)

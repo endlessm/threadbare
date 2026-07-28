@@ -4,9 +4,10 @@ class_name Stitcher
 extends Node2D
 
 @export var line: Line2D
-@export_range(50, 150, 1.0, "suffix:px") var width: float = 50
+@export_range(0, 150, 1.0, "suffix:px") var width: float = 50
 @export_range(0, 1, 0.01) var stitches_per_second: float = 0.03
 @export_range(0, 1, 0.01) var direction_update: float = 0.1
+@export var on_floor: bool = true
 @export var min_points_distance := 40
 @export var max_points := 100
 
@@ -18,27 +19,40 @@ var stitch_sign := 1
 
 func _process(delta: float) -> void:
 	var diff := Vector2.ZERO if not last_pos else last_pos - global_position
-	last_pos = global_position
 	var normal := diff.orthogonal().normalized()
-	stitch_direction = lerp(stitch_direction, normal * Vector2(1, 0.5), direction_update)
+	if on_floor:
+		normal *= Vector2(1, 0.5)
+	stitch_direction = lerp(stitch_direction, normal, direction_update)
 
 	if last_stitch_seconds < stitches_per_second:
 		last_stitch_seconds += delta
 		return
 	last_stitch_seconds = 0
 
-	trail(global_position + (stitch_direction * width / 2) * stitch_sign)
-	stitch_sign *= -1
+	trail(global_position)
 
 
 func trail(global_pos: Vector2) -> void:
+	var new_p := global_position + (stitch_direction * width / 2) * stitch_sign
 	if not line.get_point_count():
-		line.add_point(global_pos)
+		line.add_point(line.to_local(new_p))
+		stitch_sign *= -1
+		last_pos = global_position
 	else:
-		var last_p := line.points[-1]
-		if last_p.distance_squared_to(global_pos) < min_points_distance:
+		if last_pos.distance_squared_to(global_pos) < min_points_distance:
 			line.remove_point(0)
 			return
-		line.add_point(global_pos)
+		line.add_point(line.to_local(new_p))
+		stitch_sign *= -1
+		last_pos = global_position
 	while line.get_point_count() > max_points:
 		line.remove_point(0)
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_ENABLED:
+			last_pos = Vector2.ZERO
+			last_stitch_seconds = 0
+			stitch_direction = Vector2.ZERO
+			stitch_sign = 1
