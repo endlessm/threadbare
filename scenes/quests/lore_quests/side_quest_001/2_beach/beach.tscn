@@ -7,6 +7,10 @@
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="4_q76ot"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_n4bcg"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="6_4l85e"]
+[ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="8_t4cuw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_andwd"]
+size = Vector2(44, 929)
 
 [node name="Beach" type="Node2D" unique_id=1032320633]
 
@@ -41,3 +45,11 @@ limit_top = -320
 limit_right = 2772
 limit_bottom = 680
 editor_draw_limits = true
+
+[node name="Teleporter" parent="OnTheGround" unique_id=1779636661 instance=ExtResource("8_t4cuw")]
+position = Vector2(1632, 389)
+next_scene = "uid://b73brxwk8s6r4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Teleporter" unique_id=166448286]
+position = Vector2(12, -2.5)
+shape = SubResource("RectangleShape2D_andwd")
