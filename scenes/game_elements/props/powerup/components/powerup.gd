@@ -66,7 +66,7 @@ func _update_ability_name() -> void:
 	if GameState.quest and GameState.quest.quest is StoryQuest:
 		var sq := GameState.quest.quest as StoryQuest
 		abilities_names = sq.abilities_names
-	ability_name = abilities_names.get(ability)
+	ability_name = abilities_names.get(ability, "")
 
 
 func _ready() -> void:
