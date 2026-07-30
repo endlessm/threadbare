@@ -10,12 +10,12 @@ const HOOKABLE_PIN := preload("res://scenes/game_elements/props/hookable_pin/hoo
 @export var asleep_color: Color = Color(0.35, 0.38, 0.55)
 @export var awake_color: Color = Color(1.0, 1.0, 1.0)
 
-@onready var visual: AnimatedSprite2D = $Visual
-@onready var pin_marker: Marker2D = $PinMarker
-
 var _active: bool = false
 var _pin: Node2D
 var _rest_y: float
+
+@onready var visual: AnimatedSprite2D = $Visual
+@onready var pin_marker: Marker2D = $PinMarker
 
 
 func _ready() -> void:
@@ -41,7 +41,12 @@ func _awaken() -> void:
 		await visual.animation_finished
 	else:
 		var tw := create_tween().set_parallel(true)
-		tw.tween_property(visual, "position:y", _rest_y - rise_height, rise_time).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		(
+			tw
+			. tween_property(visual, "position:y", _rest_y - rise_height, rise_time)
+			. set_trans(Tween.TRANS_BACK)
+			. set_ease(Tween.EASE_OUT)
+		)
 		tw.tween_property(visual, "modulate", awake_color, rise_time)
 		await tw.finished
 
@@ -70,7 +75,12 @@ func _sleep() -> void:
 		visual.play_backwards(&"wake")
 	else:
 		var tw := create_tween().set_parallel(true)
-		tw.tween_property(visual, "position:y", _rest_y, rise_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		(
+			tw
+			. tween_property(visual, "position:y", _rest_y, rise_time)
+			. set_trans(Tween.TRANS_SINE)
+			. set_ease(Tween.EASE_IN)
+		)
 		tw.tween_property(visual, "modulate", asleep_color, rise_time)
 
 	_active = false

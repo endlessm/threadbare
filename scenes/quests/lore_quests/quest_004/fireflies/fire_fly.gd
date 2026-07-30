@@ -21,15 +21,15 @@ extends Node2D
 ## Firefly tint (body + light).
 @export var glow_color: Color = Color(0.95, 1.0, 0.5)
 
-@onready var _light: PointLight2D = $PointLight2D
-@onready var _sprite: Sprite2D = $Sprite2D
-
 var _home: Vector2
 var _direction: Vector2
 var _t: float = 0.0
 var _dir_timer: float = 0.0
 var _glow_t: float = 0.0
 var _cycle: float
+
+@onready var _light: PointLight2D = $PointLight2D
+@onready var _sprite: Sprite2D = $Sprite2D
 
 
 func _ready() -> void:
@@ -79,15 +79,15 @@ func _glow() -> void:
 	var p := _glow_t / _cycle
 	var b := 0.0
 	if p < 0.1:
-		b = p / 0.1                       # quick fade in
+		b = p / 0.1  # quick fade in
 	elif p < 0.3:
-		b = 1.0                           # full glow
+		b = 1.0  # full glow
 	elif p < 0.5:
-		b = 1.0 - (p - 0.3) / 0.2         # fade out
+		b = 1.0 - (p - 0.3) / 0.2  # fade out
 	else:
-		b = 0.0                           # dark most of the cycle
+		b = 0.0  # dark most of the cycle
 		if randf() < 0.04:
-			b = randf_range(0.1, 0.3)     # occasional faint sparkle
+			b = randf_range(0.1, 0.3)  # occasional faint sparkle
 
 	if _light:
 		_light.energy = b * glow_energy

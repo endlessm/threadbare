@@ -4,12 +4,12 @@ extends Node2D
 
 @export_multiline var text: String = ""
 
+var _open: bool = false
+
 @onready var interact_area: InteractArea = $InteractArea
 @onready var reader: CanvasLayer = $Reader
 @onready var book: Control = $Reader/Book
 @onready var page_text: RichTextLabel = $Reader/Book/PageText
-
-var _open: bool = false
 
 
 func _ready() -> void:
@@ -25,7 +25,9 @@ func _on_interacted(_player: Player, _from_right: bool) -> void:
 	get_tree().paused = true
 	book.scale = Vector2(0.85, 0.85)
 	var t := reader.create_tween()
-	t.tween_property(book, "scale", Vector2.ONE, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	t.tween_property(book, "scale", Vector2.ONE, 0.25).set_trans(Tween.TRANS_BACK).set_ease(
+		Tween.EASE_OUT
+	)
 
 
 func _unhandled_input(event: InputEvent) -> void:
