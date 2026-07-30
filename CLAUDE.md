@@ -1,0 +1,6 @@
+See `./AGENTS.md`.
+
+<!--
+SPDX-FileCopyrightText: The Threadbare Authors
+SPDX-License-Identifier: CC0-1.0
+-->
