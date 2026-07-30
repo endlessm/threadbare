@@ -17,10 +17,10 @@ extends CharacterBody2D
 ## Cuánto tiembla mientras se mueve.
 @export var tremble_amplitude: float = 1.0
 
+var _moving: bool = false
+
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var push_sensor: Area2D = $PushSensor
-
-var _moving: bool = false
 
 
 func _ready() -> void:

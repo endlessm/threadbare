@@ -18,10 +18,10 @@ extends Node2D
 ## Marca para dejarla ya abierta en el editor (previsualización / estado inicial).
 @export var start_bloomed: bool = false
 
+var _bloomed: bool = false
+
 @onready var petals: Node2D = $Petals
 @onready var trigger: Area2D = $BloomTrigger
-
-var _bloomed: bool = false
 
 
 func _ready() -> void:

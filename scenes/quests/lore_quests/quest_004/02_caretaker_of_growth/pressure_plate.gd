@@ -15,10 +15,10 @@ signal pressed(is_on: bool)
 ## (revelando la escalera que tapaban).
 @export var gates: Array[Node2D] = []
 
-@onready var visual: Polygon2D = $Visual
-
-var _boxes_on: int = 0
 var is_on: bool = false
+var _boxes_on: int = 0
+
+@onready var visual: Polygon2D = $Visual
 
 
 func _ready() -> void:
