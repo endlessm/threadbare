@@ -54,7 +54,7 @@ func go_to_the_loom() -> void:
 
 	# Randomize the speed of each townie, for variation:
 	path_walk_behavior.speeds = CharacterSpeeds.new()
-	path_walk_behavior.speeds.walk_speed = randf_range(100, 200)
+	path_walk_behavior.speeds.walk_speed = randf_range(200, 300)
 
 	townie.randomize_character()
 	townie.visible = true
