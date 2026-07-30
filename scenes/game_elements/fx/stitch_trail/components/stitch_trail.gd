@@ -1,7 +1,12 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name Stitcher
+class_name StitchTrail
 extends Node2D
+## @experimental
+##
+## MANUQ TODO
+##
+## MANUQ TODO
 
 @export var line: Line2D
 @export_range(0, 150, 1.0, "suffix:px") var width: float = 50

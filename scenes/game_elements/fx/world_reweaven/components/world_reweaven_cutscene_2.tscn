@@ -1,6 +1,5 @@
 [gd_scene format=4 uid="uid://ci5b3s8apl4ks"]
 
-[ext_resource type="Script" uid="uid://cbj61ovkg467j" path="res://scenes/game_elements/fx/world_reweaven/components/cutscene.gd" id="1_wh1pc"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="2_dec8y"]
 [ext_resource type="Texture2D" uid="uid://6spbplxd35oi" path="res://assets/third_party/tiny-swords-non-cc0/Terrain/Decorations/Clouds/Clouds_03.png" id="3_h0gxs"]
 [ext_resource type="Texture2D" uid="uid://c3b4n67rvd358" path="res://assets/third_party/tiny-swords-non-cc0/Terrain/Decorations/Clouds/Clouds_04.png" id="4_iqiqp"]
@@ -48,8 +47,274 @@
 [ext_resource type="PackedScene" uid="uid://c4vbokn408f2c" path="res://scenes/game_elements/props/decoration/sheep/sheep.tscn" id="46_ee1fc"]
 [ext_resource type="Script" uid="uid://dunsvrhq42214" path="res://scenes/game_elements/fx/shaker/shaker.gd" id="47_015wn"]
 [ext_resource type="Texture2D" uid="uid://ci1jhoa204fyw" path="res://scenes/game_elements/fx/shine_particles/components/sparks.png" id="48_qofm8"]
-[ext_resource type="PackedScene" uid="uid://bs32ac1yj83ub" path="res://scenes/game_elements/fx/spirograph/spirograph.tscn" id="50_2bs3d"]
-[ext_resource type="Script" uid="uid://c4oww6rkbqfxc" path="res://scenes/game_elements/fx/stitcher/components/stitcher.gd" id="50_wh1pc"]
+[ext_resource type="PackedScene" uid="uid://bs32ac1yj83ub" path="res://scenes/game_elements/fx/curly_trail/curly_trail.tscn" id="50_2bs3d"]
+[ext_resource type="Script" uid="uid://c4oww6rkbqfxc" path="res://scenes/game_elements/fx/stitch_trail/components/stitch_trail.gd" id="50_wh1pc"]
+
+[sub_resource type="Animation" id="Animation_d870b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WorldNew:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WorldOld:material:shader_parameter/progress")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Common/Water:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.6325955, 0.3162257, 0.40138388, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ShineParticles:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-1030, 1.0000038)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ShineParticles:process_material:emission_shape_scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("ShineParticles:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Common/Clouds:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.4661066, 0.4661066, 0.4661066, 0.37300003)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("LineEffect/Path2D/PathFollow2D/StitchTrail:process_mode")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("LineEffect/Path2D/PathFollow2D/CurlyTrail:process_mode")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/9/type = "bezier"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("LineEffect/Path2D/PathFollow2D:progress")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_e0bq6"]
+resource_name = "cutscene"
+length = 12.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WorldNew:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(3, 8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WorldOld:material:shader_parameter/progress")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(3.4333334, 8.566667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Common/Water:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(3.3333335, 8.533333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.6325955, 0.3162257, 0.40138388, 1), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ShineParticles:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(3, 8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-90, 207), Vector2(-90, 90)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ShineParticles:process_material:emission_shape_scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(3, 8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 0.5, 0), Vector3(12, 6, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("ShineParticles:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(3, 3.2, 8, 9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, true, true, false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Common/Clouds:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(3.3333335, 8.533334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.4661066, 0.4661066, 0.4661066, 0.37300003), Color(1, 1, 1, 1)]
+}
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Shaker")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"shake"
+}]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("LineEffect/Path2D/PathFollow2D/StitchTrail:process_mode")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0.4547998, 3, 4.6, 6.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [4, 0, 4, 0]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("LineEffect/Path2D/PathFollow2D/CurlyTrail:process_mode")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0.4547998, 3, 4.6, 6.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 4, 0, 4]
+}
+tracks/10/type = "bezier"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("LineEffect/Path2D/PathFollow2D:progress")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 2, 0, 1),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25588182, 617.6938, 930.521, -1.443213, -5.229248, 0.35203874, -1.4312744, 1417.2135, -0.029973865, -115.96826, 0.27495837, 114.663086, 2060.671, -0.36686134, -152.7008, 0.06565285, 155.11475, 2380.4412, -0.7012961, 0.9174659, 0.40906477, -0.53515625, 2719.2195, -0.023121834, -128.50293, 0.21695995, 106.2168, 3458.3772, 0, 0, 0, 0),
+"times": PackedFloat32Array(0.4547998, 2.4313989, 3, 4.6, 5.726514, 6.5, 8)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_d870b"]
+_data = {
+&"RESET": SubResource("Animation_d870b"),
+&"cutscene": SubResource("Animation_e0bq6")
+}
 
 [sub_resource type="Gradient" id="Gradient_6muf5"]
 
@@ -196,296 +461,6 @@ shader_parameter/new_colors = PackedVector3Array(0.824, 0.6296, 0.52, 0.78, 0.53
 [sub_resource type="ColorPalette" id="ColorPalette_byt3c"]
 colors = PackedColorArray(0.824, 0.6296, 0.52, 1, 0.78, 0.537, 0.4, 1, 0.624, 0.4296, 0.32000002, 1, 0.08627451, 0.10980392, 0.18039216, 1, 0.6784, 0.45920002, 0.4232, 1, 0.598, 0.324, 0.279, 1, 0.4784, 0.2592, 0.22320001, 1, 0.08627451, 0.10980392, 0.18039216, 1, 0.844, 0.7408, 0.5688, 1, 0.805, 0.676, 0.461, 1, 0.644, 0.54080003, 0.3688, 1, 0.08627451, 0.10980392, 0.18039216, 1)
 
-[sub_resource type="Animation" id="Animation_d870b"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("WorldNew:material:shader_parameter/progress")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("WorldOld:material:shader_parameter/progress")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Common/Water:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0.6325955, 0.3162257, 0.40138388, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("ShineParticles:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-1030, 1.0000038)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("ShineParticles:process_material:emission_shape_scale")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(1, 1, 0)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("ShineParticles:emitting")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("Common/Clouds:modulate")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0.4661066, 0.4661066, 0.4661066, 0.37300003)]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("LineEffect/Path2D/PathFollow2D/Spirograph:max_vel")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1300.0]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("LineEffect/Path2D/PathFollow2D/Stitcher:process_mode")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("LineEffect/Path2D/PathFollow2D/Spirograph:process_mode")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/10/type = "bezier"
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/path = NodePath("LineEffect/Path2D/PathFollow2D:progress")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-
-[sub_resource type="Animation" id="Animation_e0bq6"]
-resource_name = "reweaven"
-length = 12.0
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("WorldNew:material:shader_parameter/progress")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(3, 8),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 1.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("WorldOld:material:shader_parameter/progress")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(3.4333334, 8.566667),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [1.0, 0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Common/Water:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(3.3333335, 8.533333),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(0.6325955, 0.3162257, 0.40138388, 1), Color(1, 1, 1, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("ShineParticles:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(3, 8),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-90, 207), Vector2(-90, 90)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("ShineParticles:process_material:emission_shape_scale")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(3, 8),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(1, 0.5, 0), Vector3(12, 6, 0)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("ShineParticles:emitting")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(3, 3.2, 8, 9),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [false, true, true, false]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("Common/Clouds:modulate")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(3.3333335, 8.533334),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(0.4661066, 0.4661066, 0.4661066, 0.37300003), Color(1, 1, 1, 1)]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("LineEffect/Path2D/PathFollow2D/Spirograph:max_vel")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(),
-"transitions": PackedFloat32Array(),
-"update": 0,
-"values": []
-}
-tracks/8/type = "method"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("Shaker")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(3),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"shake"
-}]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("LineEffect/Path2D/PathFollow2D/Stitcher:process_mode")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0.4547998, 3, 4.6, 6.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [4, 0, 4, 0]
-}
-tracks/10/type = "value"
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/path = NodePath("LineEffect/Path2D/PathFollow2D/Spirograph:process_mode")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/keys = {
-"times": PackedFloat32Array(0.4547998, 3, 4.6, 6.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 4, 0, 4]
-}
-tracks/11/type = "bezier"
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/path = NodePath("LineEffect/Path2D/PathFollow2D:progress")
-tracks/11/interp = 1
-tracks/11/loop_wrap = true
-tracks/11/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0, 2, 0, 1),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25588182, 617.6938, 930.521, -1.443213, -5.229248, 0.35203874, -1.4312744, 1417.2135, -0.029973865, -115.96826, 0.27495837, 114.663086, 2060.671, -0.36686134, -152.7008, 0.06565285, 155.11475, 2362.4116, -0.7012961, 0.9174659, 0.40906477, -0.53515625, 2719.2195, -0.00533247, -173.9082, 0.21695995, 106.2168, 3458.3772, 0, 0, 0, 0),
-"times": PackedFloat32Array(0.4547998, 2.4313989, 3, 4.6, 5.5, 6.5, 8)
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_d870b"]
-_data = {
-&"RESET": SubResource("Animation_d870b"),
-&"reweaven": SubResource("Animation_e0bq6")
-}
-
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_tnibl"]
 blend_mode = 1
 particles_animation = true
@@ -503,7 +478,7 @@ curve = SubResource("Curve_8jhju")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nbnht"]
 lifetime_randomness = 0.5
 particle_flag_disable_z = true
-emission_shape_scale = Vector3(1, 1, 0)
+emission_shape_scale = Vector3(1, 0.5, 0)
 emission_shape = 2
 emission_sphere_radius = 64.0
 direction = Vector3(0, 0, 0)
@@ -528,215 +503,231 @@ _data = {
 }
 point_count = 18
 
-[node name="WorldReweavenTest2" type="Node2D" unique_id=1244138831]
-script = ExtResource("1_wh1pc")
+[node name="AnimationPlayer" type="AnimationPlayer" unique_id=2084375467]
+root_node = NodePath("AspectRatioContainer/Wrapper/WorldReweaven")
+libraries/ = SubResource("AnimationLibrary_d870b")
+autoplay = &"cutscene"
 
-[node name="Common" type="Node2D" parent="." unique_id=288379822]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="." unique_id=854605277]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Water" type="TileMapLayer" parent="Common" unique_id=1829302660]
+[node name="Wrapper" type="Control" parent="AspectRatioContainer" unique_id=1373439421]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="WorldReweaven" type="Node2D" parent="AspectRatioContainer/Wrapper" unique_id=1244138831]
+
+[node name="Common" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven" unique_id=288379822]
+
+[node name="Water" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/Common" unique_id=1829302660]
 modulate = Color(0.6325955, 0.3162257, 0.40138388, 1)
 tile_map_data = PackedByteArray("AADw//f/AAAAAAAAAADw//j/AAAAAAAAAADw//n/AAAAAAAAAADw//r/AAAAAAAAAADw//v/AAAAAAAAAADw//z/AAAAAAAAAADw//3/AAAAAAAAAADw//7/AAAAAAAAAADw////AAAAAAAAAADw/wAAAAAAAAAAAADw/wEAAAAAAAAAAADw/wIAAAAAAAAAAADw/wMAAAAAAAAAAADw/wQAAAAAAAAAAADw/wUAAAAAAAAAAADw/wYAAAAAAAAAAADw/wcAAAAAAAAAAADx//f/AAAAAAAAAADx//j/AAAAAAAAAADx//n/AAAAAAAAAADx//r/AAAAAAAAAADx//v/AAAAAAAAAADx//z/AAAAAAAAAADx//3/AAAAAAAAAADx//7/AAAAAAAAAADx////AAAAAAAAAADx/wAAAAAAAAAAAADx/wEAAAAAAAAAAADx/wIAAAAAAAAAAADx/wMAAAAAAAAAAADx/wQAAAAAAAAAAADx/wUAAAAAAAAAAADx/wYAAAAAAAAAAADx/wcAAAAAAAAAAADy//f/AAAAAAAAAADy//j/AAAAAAAAAADy//n/AAAAAAAAAADy//r/AAAAAAAAAADy//v/AAAAAAAAAADy//z/AAAAAAAAAADy//3/AAAAAAAAAADy//7/AAAAAAAAAADy////AAAAAAAAAADy/wAAAAAAAAAAAADy/wEAAAAAAAAAAADy/wIAAAAAAAAAAADy/wMAAAAAAAAAAADy/wQAAAAAAAAAAADy/wUAAAAAAAAAAADy/wYAAAAAAAAAAADy/wcAAAAAAAAAAADz//f/AAAAAAAAAADz//j/AAAAAAAAAADz//n/AAAAAAAAAADz//r/AAAAAAAAAADz//v/AAAAAAAAAADz//z/AAAAAAAAAADz//3/AAAAAAAAAADz//7/AAAAAAAAAADz////AAAAAAAAAADz/wAAAAAAAAAAAADz/wEAAAAAAAAAAADz/wIAAAAAAAAAAADz/wMAAAAAAAAAAADz/wQAAAAAAAAAAADz/wUAAAAAAAAAAADz/wYAAAAAAAAAAADz/wcAAAAAAAAAAAD0//f/AAAAAAAAAAD0//j/AAAAAAAAAAD0//n/AAAAAAAAAAD0//r/AAAAAAAAAAD0//v/AAAAAAAAAAD0//z/AAAAAAAAAAD0//3/AAAAAAAAAAD0//7/AAAAAAAAAAD0////AAAAAAAAAAD0/wAAAAAAAAAAAAD0/wEAAAAAAAAAAAD0/wIAAAAAAAAAAAD0/wMAAAAAAAAAAAD0/wQAAAAAAAAAAAD0/wUAAAAAAAAAAAD0/wYAAAAAAAAAAAD0/wcAAAAAAAAAAAD1//f/AAAAAAAAAAD1//j/AAAAAAAAAAD1//n/AAAAAAAAAAD1//r/AAAAAAAAAAD1//v/AAAAAAAAAAD1//z/AAAAAAAAAAD1//3/AAAAAAAAAAD1//7/AAAAAAAAAAD1////AAAAAAAAAAD1/wAAAAAAAAAAAAD1/wEAAAAAAAAAAAD1/wIAAAAAAAAAAAD1/wMAAAAAAAAAAAD1/wQAAAAAAAAAAAD1/wUAAAAAAAAAAAD1/wYAAAAAAAAAAAD1/wcAAAAAAAAAAAD2//f/AAAAAAAAAAD2//j/AAAAAAAAAAD2//n/AAAAAAAAAAD2//r/AAAAAAAAAAD2//v/AAAAAAAAAAD2//z/AAAAAAAAAAD2//3/AAAAAAAAAAD2//7/AAAAAAAAAAD2////AAAAAAAAAAD2/wAAAAAAAAAAAAD2/wEAAAAAAAAAAAD2/wIAAAAAAAAAAAD2/wMAAAAAAAAAAAD2/wQAAAAAAAAAAAD2/wUAAAAAAAAAAAD2/wYAAAAAAAAAAAD2/wcAAAAAAAAAAAD3//f/AAAAAAAAAAD3//j/AAAAAAAAAAD3//n/AAAAAAAAAAD3//r/AAAAAAAAAAD3//v/AAAAAAAAAAD3//z/AAAAAAAAAAD3//3/AAAAAAAAAAD3//7/AAAAAAAAAAD3////AAAAAAAAAAD3/wAAAAAAAAAAAAD3/wEAAAAAAAAAAAD3/wIAAAAAAAAAAAD3/wMAAAAAAAAAAAD3/wQAAAAAAAAAAAD3/wUAAAAAAAAAAAD3/wYAAAAAAAAAAAD3/wcAAAAAAAAAAAD4//f/AAAAAAAAAAD4//j/AAAAAAAAAAD4//n/AAAAAAAAAAD4//r/AAAAAAAAAAD4//v/AAAAAAAAAAD4//z/AAAAAAAAAAD4//3/AAAAAAAAAAD4//7/AAAAAAAAAAD4////AAAAAAAAAAD4/wAAAAAAAAAAAAD4/wEAAAAAAAAAAAD4/wIAAAAAAAAAAAD4/wMAAAAAAAAAAAD4/wQAAAAAAAAAAAD4/wUAAAAAAAAAAAD4/wYAAAAAAAAAAAD4/wcAAAAAAAAAAAD5//f/AAAAAAAAAAD5//j/AAAAAAAAAAD5//n/AAAAAAAAAAD5//r/AAAAAAAAAAD5//v/AAAAAAAAAAD5//z/AAAAAAAAAAD5//3/AAAAAAAAAAD5//7/AAAAAAAAAAD5////AAAAAAAAAAD5/wAAAAAAAAAAAAD5/wEAAAAAAAAAAAD5/wIAAAAAAAAAAAD5/wMAAAAAAAAAAAD5/wQAAAAAAAAAAAD5/wUAAAAAAAAAAAD5/wYAAAAAAAAAAAD5/wcAAAAAAAAAAAD6//f/AAAAAAAAAAD6//j/AAAAAAAAAAD6//n/AAAAAAAAAAD6//r/AAAAAAAAAAD6//v/AAAAAAAAAAD6//z/AAAAAAAAAAD6//3/AAAAAAAAAAD6//7/AAAAAAAAAAD6////AAAAAAAAAAD6/wAAAAAAAAAAAAD6/wEAAAAAAAAAAAD6/wIAAAAAAAAAAAD6/wMAAAAAAAAAAAD6/wQAAAAAAAAAAAD6/wUAAAAAAAAAAAD6/wYAAAAAAAAAAAD6/wcAAAAAAAAAAAD7//f/AAAAAAAAAAD7//j/AAAAAAAAAAD7//n/AAAAAAAAAAD7//r/AAAAAAAAAAD7//v/AAAAAAAAAAD7//z/AAAAAAAAAAD7//3/AAAAAAAAAAD7//7/AAAAAAAAAAD7////AAAAAAAAAAD7/wAAAAAAAAAAAAD7/wEAAAAAAAAAAAD7/wIAAAAAAAAAAAD7/wMAAAAAAAAAAAD7/wQAAAAAAAAAAAD7/wUAAAAAAAAAAAD7/wYAAAAAAAAAAAD7/wcAAAAAAAAAAAD8//f/AAAAAAAAAAD8//j/AAAAAAAAAAD8//n/AAAAAAAAAAD8//r/AAAAAAAAAAD8//v/AAAAAAAAAAD8//z/AAAAAAAAAAD8//3/AAAAAAAAAAD8//7/AAAAAAAAAAD8////AAAAAAAAAAD8/wAAAAAAAAAAAAD8/wEAAAAAAAAAAAD8/wIAAAAAAAAAAAD8/wMAAAAAAAAAAAD8/wQAAAAAAAAAAAD8/wUAAAAAAAAAAAD8/wYAAAAAAAAAAAD8/wcAAAAAAAAAAAD9//f/AAAAAAAAAAD9//j/AAAAAAAAAAD9//n/AAAAAAAAAAD9//r/AAAAAAAAAAD9//v/AAAAAAAAAAD9//z/AAAAAAAAAAD9//3/AAAAAAAAAAD9//7/AAAAAAAAAAD9////AAAAAAAAAAD9/wAAAAAAAAAAAAD9/wEAAAAAAAAAAAD9/wIAAAAAAAAAAAD9/wMAAAAAAAAAAAD9/wQAAAAAAAAAAAD9/wUAAAAAAAAAAAD9/wYAAAAAAAAAAAD9/wcAAAAAAAAAAAD+//f/AAAAAAAAAAD+//j/AAAAAAAAAAD+//n/AAAAAAAAAAD+//r/AAAAAAAAAAD+//v/AAAAAAAAAAD+//z/AAAAAAAAAAD+//3/AAAAAAAAAAD+//7/AAAAAAAAAAD+////AAAAAAAAAAD+/wAAAAAAAAAAAAD+/wEAAAAAAAAAAAD+/wIAAAAAAAAAAAD+/wMAAAAAAAAAAAD+/wQAAAAAAAAAAAD+/wUAAAAAAAAAAAD+/wYAAAAAAAAAAAD+/wcAAAAAAAAAAAD///f/AAAAAAAAAAD///j/AAAAAAAAAAD///n/AAAAAAAAAAD///r/AAAAAAAAAAD///v/AAAAAAAAAAD///z/AAAAAAAAAAD///3/AAAAAAAAAAD///7/AAAAAAAAAAD/////AAAAAAAAAAD//wAAAAAAAAAAAAD//wEAAAAAAAAAAAD//wIAAAAAAAAAAAD//wMAAAAAAAAAAAD//wQAAAAAAAAAAAD//wUAAAAAAAAAAAD//wYAAAAAAAAAAAD//wcAAAAAAAAAAAAAAPf/AAAAAAAAAAAAAPj/AAAAAAAAAAAAAPn/AAAAAAAAAAAAAPr/AAAAAAAAAAAAAPv/AAAAAAAAAAAAAPz/AAAAAAAAAAAAAP3/AAAAAAAAAAAAAP7/AAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAcAAAAAAAAAAAABAPf/AAAAAAAAAAABAPj/AAAAAAAAAAABAPn/AAAAAAAAAAABAPr/AAAAAAAAAAABAPv/AAAAAAAAAAABAPz/AAAAAAAAAAABAP3/AAAAAAAAAAABAP7/AAAAAAAAAAABAP//AAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAABAAYAAAAAAAAAAAABAAcAAAAAAAAAAAACAPf/AAAAAAAAAAACAPj/AAAAAAAAAAACAPn/AAAAAAAAAAACAPr/AAAAAAAAAAACAPv/AAAAAAAAAAACAPz/AAAAAAAAAAACAP3/AAAAAAAAAAACAP7/AAAAAAAAAAACAP//AAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAACAAQAAAAAAAAAAAACAAUAAAAAAAAAAAACAAYAAAAAAAAAAAACAAcAAAAAAAAAAAADAPf/AAAAAAAAAAADAPj/AAAAAAAAAAADAPn/AAAAAAAAAAADAPr/AAAAAAAAAAADAPv/AAAAAAAAAAADAPz/AAAAAAAAAAADAP3/AAAAAAAAAAADAP7/AAAAAAAAAAADAP//AAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAAAAAAAAAADAAUAAAAAAAAAAAADAAYAAAAAAAAAAAADAAcAAAAAAAAAAAAEAPf/AAAAAAAAAAAEAPj/AAAAAAAAAAAEAPn/AAAAAAAAAAAEAPr/AAAAAAAAAAAEAPv/AAAAAAAAAAAEAPz/AAAAAAAAAAAEAP3/AAAAAAAAAAAEAP7/AAAAAAAAAAAEAP//AAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAAAAAAAAAAEAAcAAAAAAAAAAAAFAPf/AAAAAAAAAAAFAPj/AAAAAAAAAAAFAPn/AAAAAAAAAAAFAPr/AAAAAAAAAAAFAPv/AAAAAAAAAAAFAPz/AAAAAAAAAAAFAP3/AAAAAAAAAAAFAP7/AAAAAAAAAAAFAP//AAAAAAAAAAAFAAAAAAAAAAAAAAAFAAEAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAAAAAAAAAAFAAYAAAAAAAAAAAAFAAcAAAAAAAAAAAAGAPf/AAAAAAAAAAAGAPj/AAAAAAAAAAAGAPn/AAAAAAAAAAAGAPr/AAAAAAAAAAAGAPv/AAAAAAAAAAAGAPz/AAAAAAAAAAAGAP3/AAAAAAAAAAAGAP7/AAAAAAAAAAAGAP//AAAAAAAAAAAGAAAAAAAAAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAUAAAAAAAAAAAAGAAYAAAAAAAAAAAAGAAcAAAAAAAAAAAAHAPf/AAAAAAAAAAAHAPj/AAAAAAAAAAAHAPn/AAAAAAAAAAAHAPr/AAAAAAAAAAAHAPv/AAAAAAAAAAAHAPz/AAAAAAAAAAAHAP3/AAAAAAAAAAAHAP7/AAAAAAAAAAAHAP//AAAAAAAAAAAHAAAAAAAAAAAAAAAHAAEAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAYAAAAAAAAAAAAHAAcAAAAAAAAAAAAIAPf/AAAAAAAAAAAIAPj/AAAAAAAAAAAIAPn/AAAAAAAAAAAIAPr/AAAAAAAAAAAIAPv/AAAAAAAAAAAIAPz/AAAAAAAAAAAIAP3/AAAAAAAAAAAIAP7/AAAAAAAAAAAIAP//AAAAAAAAAAAIAAAAAAAAAAAAAAAIAAEAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAAIAAUAAAAAAAAAAAAIAAYAAAAAAAAAAAAIAAcAAAAAAAAAAAAJAPf/AAAAAAAAAAAJAPj/AAAAAAAAAAAJAPn/AAAAAAAAAAAJAPr/AAAAAAAAAAAJAPv/AAAAAAAAAAAJAPz/AAAAAAAAAAAJAP3/AAAAAAAAAAAJAP7/AAAAAAAAAAAJAP//AAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAAJAAYAAAAAAAAAAAAJAAcAAAAAAAAAAAAKAPf/AAAAAAAAAAAKAPj/AAAAAAAAAAAKAPn/AAAAAAAAAAAKAPr/AAAAAAAAAAAKAPv/AAAAAAAAAAAKAPz/AAAAAAAAAAAKAP3/AAAAAAAAAAAKAP7/AAAAAAAAAAAKAP//AAAAAAAAAAAKAAAAAAAAAAAAAAAKAAEAAAAAAAAAAAAKAAIAAAAAAAAAAAAKAAMAAAAAAAAAAAAKAAQAAAAAAAAAAAAKAAUAAAAAAAAAAAAKAAYAAAAAAAAAAAAKAAcAAAAAAAAAAAALAPf/AAAAAAAAAAALAPj/AAAAAAAAAAALAPn/AAAAAAAAAAALAPr/AAAAAAAAAAALAPv/AAAAAAAAAAALAPz/AAAAAAAAAAALAP3/AAAAAAAAAAALAP7/AAAAAAAAAAALAP//AAAAAAAAAAALAAAAAAAAAAAAAAALAAEAAAAAAAAAAAALAAIAAAAAAAAAAAALAAMAAAAAAAAAAAALAAQAAAAAAAAAAAALAAUAAAAAAAAAAAALAAYAAAAAAAAAAAALAAcAAAAAAAAAAAAMAPf/AAAAAAAAAAAMAPj/AAAAAAAAAAAMAPn/AAAAAAAAAAAMAPr/AAAAAAAAAAAMAPv/AAAAAAAAAAAMAPz/AAAAAAAAAAAMAP3/AAAAAAAAAAAMAP7/AAAAAAAAAAAMAP//AAAAAAAAAAAMAAAAAAAAAAAAAAAMAAEAAAAAAAAAAAAMAAIAAAAAAAAAAAAMAAMAAAAAAAAAAAAMAAQAAAAAAAAAAAAMAAUAAAAAAAAAAAAMAAYAAAAAAAAAAAAMAAcAAAAAAAAAAAANAPf/AAAAAAAAAAANAPj/AAAAAAAAAAANAPn/AAAAAAAAAAANAPr/AAAAAAAAAAANAPv/AAAAAAAAAAANAPz/AAAAAAAAAAANAP3/AAAAAAAAAAANAP7/AAAAAAAAAAANAP//AAAAAAAAAAANAAAAAAAAAAAAAAANAAEAAAAAAAAAAAANAAIAAAAAAAAAAAANAAMAAAAAAAAAAAANAAQAAAAAAAAAAAANAAUAAAAAAAAAAAANAAYAAAAAAAAAAAANAAcAAAAAAAAAAAAOAPf/AAAAAAAAAAAOAPj/AAAAAAAAAAAOAPn/AAAAAAAAAAAOAPr/AAAAAAAAAAAOAPv/AAAAAAAAAAAOAPz/AAAAAAAAAAAOAP3/AAAAAAAAAAAOAP7/AAAAAAAAAAAOAP//AAAAAAAAAAAOAAAAAAAAAAAAAAAOAAEAAAAAAAAAAAAOAAIAAAAAAAAAAAAOAAMAAAAAAAAAAAAOAAQAAAAAAAAAAAAOAAUAAAAAAAAAAAAOAAYAAAAAAAAAAAAOAAcAAAAAAAAAAAAPAPf/AAAAAAAAAAAPAPj/AAAAAAAAAAAPAPn/AAAAAAAAAAAPAPr/AAAAAAAAAAAPAPv/AAAAAAAAAAAPAPz/AAAAAAAAAAAPAP3/AAAAAAAAAAAPAP7/AAAAAAAAAAAPAP//AAAAAAAAAAAPAAAAAAAAAAAAAAAPAAEAAAAAAAAAAAAPAAIAAAAAAAAAAAAPAAMAAAAAAAAAAAAPAAQAAAAAAAAAAAAPAAUAAAAAAAAAAAAPAAYAAAAAAAAAAAAPAAcAAAAAAAAAAADw/wgAAAAAAAAAAADx/wgAAAAAAAAAAADy/wgAAAAAAAAAAADz/wgAAAAAAAAAAAD0/wgAAAAAAAAAAAD1/wgAAAAAAAAAAAD2/wgAAAAAAAAAAAD3/wgAAAAAAAAAAAD4/wgAAAAAAAAAAAD5/wgAAAAAAAAAAAD6/wgAAAAAAAAAAAD7/wgAAAAAAAAAAAD8/wgAAAAAAAAAAAD9/wgAAAAAAAAAAAD+/wgAAAAAAAAAAAD//wgAAAAAAAAAAAAAAAgAAAAAAAAAAAABAAgAAAAAAAAAAAACAAgAAAAAAAAAAAADAAgAAAAAAAAAAAAEAAgAAAAAAAAAAAAFAAgAAAAAAAAAAAAGAAgAAAAAAAAAAAAHAAgAAAAAAAAAAAAIAAgAAAAAAAAAAAAJAAgAAAAAAAAAAAAKAAgAAAAAAAAAAAALAAgAAAAAAAAAAAAMAAgAAAAAAAAAAAANAAgAAAAAAAAAAAAOAAgAAAAAAAAAAAAPAAgAAAAAAAAAAAA=")
 tile_set = ExtResource("2_dec8y")
 collision_enabled = false
 
-[node name="Clouds" type="Node2D" parent="Common" unique_id=604162110]
+[node name="Clouds" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/Common" unique_id=604162110]
 modulate = Color(0.4661066, 0.4661066, 0.4661066, 0.37300003)
 y_sort_enabled = true
 
-[node name="Clouds03" type="Sprite2D" parent="Common/Clouds" unique_id=229245325]
+[node name="Clouds03" type="Sprite2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/Common/Clouds" unique_id=229245325]
 position = Vector2(440, -148)
 texture = ExtResource("3_h0gxs")
 
-[node name="Clouds04" type="Sprite2D" parent="Common/Clouds" unique_id=1118584198]
+[node name="Clouds04" type="Sprite2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/Common/Clouds" unique_id=1118584198]
 position = Vector2(294, -265)
 texture = ExtResource("4_iqiqp")
 
-[node name="Clouds07" type="Sprite2D" parent="Common/Clouds" unique_id=548288710]
+[node name="Clouds07" type="Sprite2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/Common/Clouds" unique_id=548288710]
 position = Vector2(-586, -142)
 texture = ExtResource("5_modc1")
 
-[node name="WorldOld" type="CanvasGroup" parent="." unique_id=1022548625]
+[node name="WorldOld" type="CanvasGroup" parent="AspectRatioContainer/Wrapper/WorldReweaven" unique_id=1022548625]
 modulate = Color(0.6640624, 0.6153957, 0.53584576, 1)
 material = SubResource("ShaderMaterial_36ifl")
 
-[node name="TileMapLayers" type="Node2D" parent="WorldOld" unique_id=848008410]
+[node name="TileMapLayers" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld" unique_id=848008410]
 
-[node name="Foam" type="TileMapLayer" parent="WorldOld/TileMapLayers" unique_id=1771626778]
+[node name="Foam" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/TileMapLayers" unique_id=1771626778]
 tile_map_data = PackedByteArray("AAD4/wQAAgAAAAAAAAD4/wUAAgAAAAAAAAD4/wYAAgAAAAAAAAD5/wQAAgAAAAAAAAD5/wUAAgAAAAAAAAD5/wYAAgAAAAAAAAD6/wQAAgAAAAAAAAD6/wUAAgAAAAAAAAD6/wYAAgAAAAAAAAD7/wQAAgAAAAAAAAD7/wUAAgAAAAAAAAD7/wYAAgAAAAAAAAD8/wQAAgAAAAAAAAD8/wUAAgAAAAAAAAD8/wYAAgAAAAAAAAD9/wQAAgAAAAAAAAD9/wUAAgAAAAAAAAD9/wYAAgAAAAAAAAD+/wQAAgAAAAAAAAD+/wUAAgAAAAAAAAD+/wYAAgAAAAAAAAD//wQAAgAAAAAAAAD//wUAAgAAAAAAAAD//wYAAgAAAAAAAAAAAAQAAgAAAAAAAAAAAAUAAgAAAAAAAAAAAAYAAgAAAAAAAAABAAQAAgAAAAAAAAABAAUAAgAAAAAAAAABAAYAAgAAAAAAAAACAAQAAgAAAAAAAAACAAUAAgAAAAAAAAACAAYAAgAAAAAAAAADAAQAAgAAAAAAAAADAAUAAgAAAAAAAAADAAYAAgAAAAAAAAAEAAQAAgAAAAAAAAAEAAUAAgAAAAAAAAAEAAYAAgAAAAAAAAAFAAQAAgAAAAAAAAAFAAUAAgAAAAAAAAAFAAYAAgAAAAAAAAA=")
 tile_set = SubResource("TileSet_p2pfq")
 collision_enabled = false
 
-[node name="Stone0" type="TileMapLayer" parent="WorldOld/TileMapLayers" unique_id=240891954]
+[node name="Stone0" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/TileMapLayers" unique_id=240891954]
 tile_map_data = PackedByteArray("AAD6/wUABAABAAIAAAD7/wUABAABAAQAAAD8/wUABAABAAQAAAD9/wUABAABAAQAAAD+/wUABAABAAQAAAD//wUABAABAAQAAAAAAAUABAABAAQAAAABAAUABAABAAQAAAACAAUABAABAAQAAAADAAUABAABAAIAAAD5/wUABAABAAIAAAAEAAUABAABAAIAAAD4/wUABAAAAAIAAAAFAAUABAACAAIAAAD4/wMABAAAAAAAAAD4/wQABAAAAAEAAAAFAAMABAACAAAAAAAFAAQABAACAAEAAAD5/wMABAABAAAAAAD5/wQABAABAAEAAAD6/wMABAACAAAAAAD6/wQABAACAAEAAAADAAMABAAAAAAAAAADAAQABAAAAAEAAAAEAAQABAABAAEAAAAEAAMABAABAAAAAAA=")
 tile_set = ExtResource("9_jwmae")
 collision_enabled = false
 
-[node name="Grass0" type="TileMapLayer" parent="WorldOld/TileMapLayers" unique_id=1653037848]
+[node name="Grass0" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/TileMapLayers" unique_id=1653037848]
 tile_map_data = PackedByteArray("AAD6/wQABgACAAEAAAD6/wMABgACAAAAAAD5/wUABgAAAAIAAAD5/wQABgABAAEAAAD5/wMABgABAAAAAAD4/wQABgAAAAIAAAD4/wMABgAAAAAAAAAFAAUABgACAAMAAAAEAAUABgABAAMAAAAEAAMABgACAAMAAAADAAUABgAAAAIAAAADAAQABgADAAEAAAADAAMABgAAAAAAAAD6/wUABgACAAIAAAA=")
 tile_set = ExtResource("10_a6mg3")
 collision_enabled = false
 
-[node name="Stone2" type="TileMapLayer" parent="WorldOld/TileMapLayers" unique_id=1769499909]
+[node name="Stone2" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/TileMapLayers" unique_id=1769499909]
 tile_map_data = PackedByteArray("AAACAAQABAABAAIAAAADAAQABAACAAIAAAACAAMABAABAAEAAAACAAIABAABAAEAAAADAAIABAABAAEAAAADAAMABAABAAEAAAD9/wIABAABAAEAAAD9/wMABAABAAEAAAD9/wQABAABAAIAAAD7/wQABAABAAIAAAD7/wMABAABAAEAAAD7/wIABAABAAEAAAD8/wIABAABAAEAAAD8/wMABAABAAEAAAD8/wQABAABAAIAAAD+/wIABAABAAEAAAD//wIABAABAAEAAAAAAAIABAABAAEAAAABAAIABAABAAEAAAABAAMABAABAAEAAAAAAAMABAABAAEAAAD//wMABAABAAEAAAD+/wMABAABAAEAAAD+/wQABAABAAIAAAD//wQABAABAAIAAAAAAAQABAABAAIAAAABAAQABAABAAIAAAD6/wQABAAAAAIAAAD6/wMABAABAAEAAAD6/wIABAABAAEAAAD6/wEABAAAAAAAAAD7/wEABAABAAAAAAD8/wEABAABAAAAAAD9/wEABAABAAAAAAD+/wEABAABAAAAAAD//wEABAABAAAAAAAAAAEABAABAAAAAAABAAEABAABAAAAAAACAAEABAABAAAAAAADAAEABAACAAAAAAD5/wIABAAAAAAAAAAEAAIABAACAAAAAAAEAAMABAACAAIAAAD5/wMABAAAAAIAAAA=")
 tile_set = ExtResource("9_jwmae")
 collision_enabled = false
 
-[node name="Grass2" type="TileMapLayer" parent="WorldOld/TileMapLayers" unique_id=1851860443]
+[node name="Grass2" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/TileMapLayers" unique_id=1851860443]
 tile_map_data = PackedByteArray("AAADAAQAAQACAAIAAAADAAMAAQALAAAAAAADAAIAAQAKAAAAAAADAAEAAQACAAAAAAACAAMAAQABAAEAAAACAAIAAQABAAEAAAACAAEAAQABAAAAAAABAAMAAQABAAIAAAABAAIAAQABAAEAAAABAAEAAQABAAAAAAAAAAMAAQABAAIAAAAAAAIAAQABAAEAAAAAAAEAAQABAAAAAAD//wQAAQACAAIAAAD//wMAAQABAAEAAAD//wIAAQABAAEAAAD//wEAAQABAAAAAAD+/wQAAQABAAIAAAD+/wMAAQAMAAAAAAD+/wIAAQABAAEAAAD+/wEAAQABAAAAAAD9/wMAAQABAAEAAAD9/wIAAQABAAEAAAD9/wEAAQABAAAAAAD8/wQAAQABAAIAAAD8/wMAAQALAAAAAAD8/wIAAQABAAEAAAD8/wEAAQABAAAAAAD7/wQAAQAAAAIAAAD7/wIAAQABAAEAAAD7/wEAAQABAAAAAAD6/wIAAQABAAIAAAD6/wEAAQAAAAAAAAD5/wIAAQAAAAMAAAAEAAIAAQACAAAAAAAEAAMAAQACAAIAAAD7/wMAAQAAAAEAAAD9/wQAAQABAAIAAAACAAQAAQAAAAIAAAA=")
 tile_set = ExtResource("10_a6mg3")
 collision_enabled = false
 
-[node name="Stone3" type="TileMapLayer" parent="WorldOld/TileMapLayers" unique_id=1558631934]
+[node name="Stone3" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/TileMapLayers" unique_id=1558631934]
 tile_map_data = PackedByteArray("AAD//wAABAAAAAAAAAAAAAAABAABAAAAAAABAAAABAABAAAAAAACAAAABAACAAAAAAACAAEABAACAAEAAAABAAEABAABAAEAAAAAAAEABAABAAEAAAD//wEABAAAAAEAAAD//wIABAAAAAIAAAAAAAIABAABAAIAAAABAAIABAABAAIAAAACAAIABAACAAIAAAD7/wAABAABAAEAAAD8/wAABAABAAEAAAD9/wAABAACAAEAAAD9/wEABAACAAIAAAD8/wEABAABAAIAAAD7/wEABAABAAEAAAD6/wEABAAAAAEAAAD6/wAABAAAAAEAAAD6/wIABAAAAAIAAAD7/wIABAACAAIAAAD9////BAACAAAAAAD8////BAABAAAAAAD7////BAABAAAAAAD6////BAAAAAAAAAA=")
 tile_set = ExtResource("9_jwmae")
 collision_enabled = false
 
-[node name="Grass3" type="TileMapLayer" parent="WorldOld/TileMapLayers" unique_id=1058555462]
+[node name="Grass3" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/TileMapLayers" unique_id=1058555462]
 tile_map_data = PackedByteArray("AAACAAIABgACAAIAAAACAAEABgACAAEAAAACAAAABgACAAAAAAABAAIABgAAAAIAAAABAAEABgAAAAEAAAABAAAABgABAAAAAAAAAAAABgABAAMAAAD//wAABgAAAAMAAAD9////BgACAAAAAAD9/wAABgACAAIAAAD8/wEABgACAAIAAAD7/wEABgAEAAAAAAD6/wEABgAAAAEAAAD6/wAABgAAAAEAAAD7/wAABgABAAEAAAD8/wAABgABAAEAAAD8////BgABAAAAAAD7////BgABAAAAAAD6////BgAAAAAAAAD7/wIABgACAAIAAAD6/wIABgAAAAIAAAA=")
 tile_set = ExtResource("10_a6mg3")
 collision_enabled = false
 
-[node name="Stone4" type="TileMapLayer" parent="WorldOld/TileMapLayers" unique_id=683158608]
+[node name="Stone4" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/TileMapLayers" unique_id=683158608]
 tile_map_data = PackedByteArray("AAACAAAABAACAAIAAAACAP//BAACAAAAAAABAAAABAABAAIAAAABAP//BAABAAAAAAAAAAAABAAAAAIAAAAAAP//BAAAAAAAAAD6////BAAAAAIAAAD7////BAABAAIAAAD8////BAACAAIAAAD8//7/BAACAAAAAAD7//7/BAABAAAAAAD6//7/BAAAAAAAAAA=")
 tile_set = ExtResource("9_jwmae")
 collision_enabled = false
 
-[node name="Grass4" type="TileMapLayer" parent="WorldOld/TileMapLayers" unique_id=1052632837]
+[node name="Grass4" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/TileMapLayers" unique_id=1052632837]
 tile_map_data = PackedByteArray("AAACAAAAAQACAAMAAAABAAAAAQAAAAIAAAABAP//AQACAAAAAAAAAP//AQAAAAMAAAD6//7/AQAAAAMAAAD7//7/AQABAAAAAAD8////AQACAAIAAAD7////AQAAAAIAAAD8//7/AQACAAAAAAA=")
 tile_set = ExtResource("10_a6mg3")
 collision_enabled = false
 
-[node name="Bridge" type="TileMapLayer" parent="WorldOld/TileMapLayers" unique_id=267199109]
+[node name="Bridge" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/TileMapLayers" unique_id=267199109]
 tile_map_data = PackedByteArray("AAD9/wAAAwACAAEAAAD+/wEAAwABAAIAAAA=")
 tile_set = ExtResource("11_mpfbp")
 collision_enabled = false
 
-[node name="TileMapLayer" type="TileMapLayer" parent="WorldOld/TileMapLayers" unique_id=858904449]
+[node name="TileMapLayer" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/TileMapLayers" unique_id=858904449]
 tile_map_data = PackedByteArray("AAABAAMAAAADAAMAAAD8/wIAAAADAAUAAAD8////AAABAAAAAAAAAAAAAAAAAAEAAAA=")
 tile_set = ExtResource("12_xwr68")
 collision_enabled = false
 
-[node name="OnTheGround" type="Node2D" parent="WorldOld" unique_id=851004040]
+[node name="OnTheGround" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld" unique_id=851004040]
 y_sort_enabled = true
 
-[node name="WaterRock" parent="WorldOld/OnTheGround" unique_id=200189883 instance=ExtResource("13_mfqmc")]
+[node name="WaterRock" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/OnTheGround" unique_id=200189883 instance=ExtResource("13_mfqmc")]
 position = Vector2(-562, 316)
 sprite_frames = SubResource("SpriteFrames_p2pfq")
 
-[node name="WaterRock2" parent="WorldOld/OnTheGround" unique_id=259739555 instance=ExtResource("13_mfqmc")]
+[node name="WaterRock2" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/OnTheGround" unique_id=259739555 instance=ExtResource("13_mfqmc")]
 position = Vector2(535, 252)
 sprite_frames = SubResource("SpriteFrames_p2pfq")
 
-[node name="WaterRock3" parent="WorldOld/OnTheGround" unique_id=1701159594 instance=ExtResource("13_mfqmc")]
+[node name="WaterRock3" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/OnTheGround" unique_id=1701159594 instance=ExtResource("13_mfqmc")]
 position = Vector2(575, 278)
 sprite_frames = SubResource("SpriteFrames_p2pfq")
 
-[node name="RuinedHouse" parent="WorldOld/OnTheGround" unique_id=2016829349 instance=ExtResource("16_vlbvg")]
+[node name="RuinedHouse" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/OnTheGround" unique_id=2016829349 instance=ExtResource("16_vlbvg")]
 position = Vector2(71, -32)
 texture = ExtResource("17_noo7i")
 
-[node name="RuinedHouse2" parent="WorldOld/OnTheGround" unique_id=1369110295 instance=ExtResource("16_vlbvg")]
+[node name="RuinedHouse2" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldOld/OnTheGround" unique_id=1369110295 instance=ExtResource("16_vlbvg")]
 position = Vector2(-335, -59)
 texture = ExtResource("18_xl184")
 
-[node name="WorldNew" type="CanvasGroup" parent="." unique_id=1449698380]
+[node name="WorldNew" type="CanvasGroup" parent="AspectRatioContainer/Wrapper/WorldReweaven" unique_id=1449698380]
 material = SubResource("ShaderMaterial_hrqc3")
 position = Vector2(2, 0)
 
-[node name="TileMapLayers" type="Node2D" parent="WorldNew" unique_id=1973521633]
+[node name="TileMapLayers" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew" unique_id=1973521633]
 
-[node name="Foam" type="TileMapLayer" parent="WorldNew/TileMapLayers" unique_id=2120033452]
+[node name="Foam" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/TileMapLayers" unique_id=2120033452]
 tile_map_data = PackedByteArray("AAD4/wQAAgAAAAAAAAD4/wUAAgAAAAAAAAD4/wYAAgAAAAAAAAD5/wQAAgAAAAAAAAD5/wUAAgAAAAAAAAD5/wYAAgAAAAAAAAD6/wQAAgAAAAAAAAD6/wUAAgAAAAAAAAD6/wYAAgAAAAAAAAD7/wQAAgAAAAAAAAD7/wUAAgAAAAAAAAD7/wYAAgAAAAAAAAD8/wQAAgAAAAAAAAD8/wUAAgAAAAAAAAD8/wYAAgAAAAAAAAD9/wQAAgAAAAAAAAD9/wUAAgAAAAAAAAD9/wYAAgAAAAAAAAD+/wQAAgAAAAAAAAD+/wUAAgAAAAAAAAD+/wYAAgAAAAAAAAD//wQAAgAAAAAAAAD//wUAAgAAAAAAAAD//wYAAgAAAAAAAAAAAAQAAgAAAAAAAAAAAAUAAgAAAAAAAAAAAAYAAgAAAAAAAAABAAQAAgAAAAAAAAABAAUAAgAAAAAAAAABAAYAAgAAAAAAAAACAAQAAgAAAAAAAAACAAUAAgAAAAAAAAACAAYAAgAAAAAAAAADAAQAAgAAAAAAAAADAAUAAgAAAAAAAAADAAYAAgAAAAAAAAAEAAQAAgAAAAAAAAAEAAUAAgAAAAAAAAAEAAYAAgAAAAAAAAAFAAQAAgAAAAAAAAAFAAUAAgAAAAAAAAAFAAYAAgAAAAAAAAA=")
 tile_set = ExtResource("19_40nfu")
 collision_enabled = false
 
-[node name="Stone0" type="TileMapLayer" parent="WorldNew/TileMapLayers" unique_id=1680355502]
+[node name="Stone0" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/TileMapLayers" unique_id=1680355502]
 tile_map_data = PackedByteArray("AAD6/wUABAABAAIAAAD7/wUABAABAAQAAAD8/wUABAABAAQAAAD9/wUABAABAAQAAAD+/wUABAABAAQAAAD//wUABAABAAQAAAAAAAUABAABAAQAAAABAAUABAABAAQAAAACAAUABAABAAQAAAADAAUABAABAAIAAAD5/wUABAABAAIAAAAEAAUABAABAAIAAAD4/wUABAAAAAIAAAAFAAUABAACAAIAAAD4/wMABAAAAAAAAAD4/wQABAAAAAEAAAAFAAMABAACAAAAAAAFAAQABAACAAEAAAD5/wMABAABAAAAAAD5/wQABAABAAEAAAD6/wMABAACAAAAAAD6/wQABAACAAEAAAADAAMABAAAAAAAAAADAAQABAAAAAEAAAAEAAQABAABAAEAAAAEAAMABAABAAAAAAA=")
 tile_set = ExtResource("9_jwmae")
 collision_enabled = false
 
-[node name="Grass0" type="TileMapLayer" parent="WorldNew/TileMapLayers" unique_id=1912439059]
+[node name="Grass0" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/TileMapLayers" unique_id=1912439059]
 tile_map_data = PackedByteArray("AAD6/wQABQACAAEAAAD6/wMABQACAAAAAAD5/wUABQABAAIAAAD5/wQABQABAAEAAAD5/wMABQABAAAAAAD4/wUABQAAAAIAAAD4/wQABQAAAAEAAAD4/wMABQAAAAAAAAAFAAUABQACAAIAAAAFAAQABQACAAEAAAAFAAMABQACAAAAAAAEAAUABQABAAIAAAAEAAQABQABAAEAAAAEAAMABQABAAAAAAADAAUABQAAAAIAAAADAAQABQAAAAEAAAADAAMABQAAAAAAAAD6/wUABQACAAIAAAA=")
 tile_set = ExtResource("10_a6mg3")
 collision_enabled = false
 
-[node name="Stone" type="TileMapLayer" parent="WorldNew/TileMapLayers" unique_id=106427919]
+[node name="Stone" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/TileMapLayers" unique_id=106427919]
 tile_map_data = PackedByteArray("AAACAAQABAABAAIAAAADAAQABAACAAIAAAACAAMABAABAAEAAAACAAIABAABAAEAAAADAAIABAABAAEAAAADAAMABAABAAEAAAD9/wIABAABAAEAAAD9/wMABAABAAEAAAD9/wQABAABAAIAAAD7/wQABAABAAIAAAD7/wMABAABAAEAAAD7/wIABAABAAEAAAD8/wIABAABAAEAAAD8/wMABAABAAEAAAD8/wQABAABAAIAAAD+/wIABAABAAEAAAD//wIABAABAAEAAAAAAAIABAABAAEAAAABAAIABAABAAEAAAABAAMABAABAAEAAAAAAAMABAABAAEAAAD//wMABAABAAEAAAD+/wMABAABAAEAAAD+/wQABAABAAIAAAD//wQABAABAAIAAAAAAAQABAABAAIAAAABAAQABAABAAIAAAD6/wQABAAAAAIAAAD6/wMABAABAAEAAAD6/wIABAABAAEAAAD6/wEABAAAAAAAAAD7/wEABAABAAAAAAD8/wEABAABAAAAAAD9/wEABAABAAAAAAD+/wEABAABAAAAAAD//wEABAABAAAAAAAAAAEABAABAAAAAAABAAEABAABAAAAAAACAAEABAABAAAAAAADAAEABAACAAAAAAD5/wIABAAAAAAAAAAEAAIABAACAAAAAAAEAAMABAACAAIAAAD5/wMABAAAAAIAAAA=")
 tile_set = ExtResource("9_jwmae")
 collision_enabled = false
 
-[node name="Grass" type="TileMapLayer" parent="WorldNew/TileMapLayers" unique_id=460997004]
+[node name="Grass" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/TileMapLayers" unique_id=460997004]
 tile_map_data = PackedByteArray("AAADAAQAAQACAAIAAAADAAMAAQABAAEAAAADAAIAAQABAAEAAAADAAEAAQACAAAAAAACAAQAAQABAAIAAAACAAMAAQABAAEAAAACAAIAAQABAAEAAAACAAEAAQABAAAAAAABAAQAAQABAAIAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAABAAEAAQABAAAAAAAAAAQAAQABAAIAAAAAAAMAAQABAAEAAAAAAAIAAQABAAEAAAAAAAEAAQABAAAAAAD//wQAAQABAAIAAAD//wMAAQABAAEAAAD//wIAAQABAAEAAAD//wEAAQABAAAAAAD+/wQAAQABAAIAAAD+/wMAAQABAAEAAAD+/wIAAQABAAEAAAD+/wEAAQABAAAAAAD9/wQAAQABAAIAAAD9/wMAAQABAAEAAAD9/wIAAQABAAEAAAD9/wEAAQABAAAAAAD8/wQAAQABAAIAAAD8/wMAAQABAAEAAAD8/wIAAQABAAEAAAD8/wEAAQABAAAAAAD7/wQAAQABAAIAAAD7/wMAAQABAAEAAAD7/wIAAQABAAEAAAD7/wEAAQABAAAAAAD6/wQAAQAAAAIAAAD6/wMAAQABAAEAAAD6/wIAAQABAAEAAAD6/wEAAQAAAAAAAAD5/wIAAQAAAAAAAAD5/wMAAQAAAAIAAAAEAAIAAQACAAAAAAAEAAMAAQACAAIAAAA=")
 tile_set = ExtResource("10_a6mg3")
 collision_enabled = false
 
-[node name="Stone2" type="TileMapLayer" parent="WorldNew/TileMapLayers" unique_id=1435874831]
+[node name="Stone2" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/TileMapLayers" unique_id=1435874831]
 tile_map_data = PackedByteArray("AAD//wAABAAAAAAAAAAAAAAABAABAAAAAAABAAAABAABAAAAAAACAAAABAACAAAAAAACAAEABAACAAEAAAABAAEABAABAAEAAAAAAAEABAABAAEAAAD//wEABAAAAAEAAAD//wIABAAAAAIAAAAAAAIABAABAAIAAAABAAIABAABAAIAAAACAAIABAACAAIAAAD7/wAABAABAAEAAAD8/wAABAABAAEAAAD9/wAABAACAAEAAAD9/wEABAACAAIAAAD8/wEABAABAAIAAAD7/wEABAABAAEAAAD6/wEABAAAAAEAAAD6/wAABAAAAAEAAAD6/wIABAAAAAIAAAD7/wIABAACAAIAAAD9////BAACAAAAAAD8////BAABAAAAAAD7////BAABAAAAAAD6////BAAAAAAAAAA=")
 tile_set = ExtResource("9_jwmae")
 collision_enabled = false
 
-[node name="Grass2" type="TileMapLayer" parent="WorldNew/TileMapLayers" unique_id=184461333]
+[node name="Grass2" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/TileMapLayers" unique_id=184461333]
 tile_map_data = PackedByteArray("AAACAAIABQACAAIAAAACAAEABQACAAEAAAACAAAABQACAAAAAAABAAIABQABAAIAAAABAAEABQABAAEAAAABAAAABQABAAAAAAAAAAIABQABAAIAAAAAAAEABQABAAEAAAAAAAAABQABAAAAAAD//wIABQAAAAIAAAD//wEABQAAAAEAAAD//wAABQAAAAAAAAD9////BQACAAAAAAD9/wAABQACAAEAAAD9/wEABQACAAIAAAD8/wEABQABAAIAAAD7/wEABQABAAEAAAD6/wEABQAAAAEAAAD6/wAABQAAAAEAAAD7/wAABQABAAEAAAD8/wAABQABAAEAAAD8////BQABAAAAAAD7////BQABAAAAAAD6////BQAAAAAAAAD7/wIABQACAAIAAAD6/wIABQAAAAIAAAA=")
 tile_set = ExtResource("10_a6mg3")
 collision_enabled = false
 
-[node name="Stone3" type="TileMapLayer" parent="WorldNew/TileMapLayers" unique_id=871106572]
+[node name="Stone3" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/TileMapLayers" unique_id=871106572]
 tile_map_data = PackedByteArray("AAACAAAABAACAAIAAAACAP//BAACAAAAAAABAAAABAABAAIAAAABAP//BAABAAAAAAAAAAAABAAAAAIAAAAAAP//BAAAAAAAAAD6////BAAAAAIAAAD7////BAABAAIAAAD8////BAACAAIAAAD8//7/BAACAAAAAAD7//7/BAABAAAAAAD6//7/BAAAAAAAAAA=")
 tile_set = ExtResource("9_jwmae")
 collision_enabled = false
 
-[node name="Grass3" type="TileMapLayer" parent="WorldNew/TileMapLayers" unique_id=2113029408]
+[node name="Grass3" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/TileMapLayers" unique_id=2113029408]
 tile_map_data = PackedByteArray("AAACAAAAAQACAAIAAAACAP//AQACAAAAAAABAAAAAQABAAIAAAABAP//AQABAAAAAAAAAAAAAQAAAAIAAAAAAP//AQAAAAAAAAD6//7/AQAAAAAAAAD7//7/AQABAAAAAAD8//7/AQACAAAAAAD8////AQACAAIAAAD7////AQABAAIAAAD6////AQAAAAIAAAA=")
 tile_set = ExtResource("10_a6mg3")
 collision_enabled = false
 
-[node name="Bridge" type="TileMapLayer" parent="WorldNew/TileMapLayers" unique_id=3855097]
+[node name="Bridge" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/TileMapLayers" unique_id=3855097]
 tile_map_data = PackedByteArray("AAD9/wAAAwAAAAAAAAD+/wAAAwABAAAAAAD//wAAAwACAAAAAAA=")
 tile_set = ExtResource("11_mpfbp")
 collision_enabled = false
 
-[node name="TileMapLayer" type="TileMapLayer" parent="WorldNew/TileMapLayers" unique_id=983292641]
+[node name="TileMapLayer" type="TileMapLayer" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/TileMapLayers" unique_id=983292641]
 tile_map_data = PackedByteArray("AAABAAMAAAABAAMAAAD8/wIAAAACAAUAAAA=")
 tile_set = ExtResource("12_xwr68")
 collision_enabled = false
 
-[node name="OnTheGround" type="Node2D" parent="WorldNew" unique_id=1173952061]
+[node name="OnTheGround" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew" unique_id=1173952061]
 y_sort_enabled = true
 
-[node name="Tree" parent="WorldNew/OnTheGround" unique_id=1182216860 instance=ExtResource("20_sspdu")]
+[node name="Tree" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=1182216860 instance=ExtResource("20_sspdu")]
 position = Vector2(-230.00003, -106.99999)
 scale = Vector2(0.7886536, 0.80978966)
 
-[node name="Tree2" parent="WorldNew/OnTheGround" unique_id=186600742 instance=ExtResource("20_sspdu")]
+[node name="Tree2" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=186600742 instance=ExtResource("20_sspdu")]
 position = Vector2(163, 32)
 scale = Vector2(0.7886536, 0.80978966)
 
-[node name="Tree3" parent="WorldNew/OnTheGround" unique_id=66371706 instance=ExtResource("20_sspdu")]
+[node name="Tree3" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=66371706 instance=ExtResource("20_sspdu")]
 position = Vector2(-331, 162)
 scale = Vector2(0.7886536, 0.80978966)
 
-[node name="WaterRock" parent="WorldNew/OnTheGround" unique_id=1408545713 instance=ExtResource("13_mfqmc")]
+[node name="WaterRock" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=1408545713 instance=ExtResource("13_mfqmc")]
 position = Vector2(-562, 316)
 
-[node name="WaterRock2" parent="WorldNew/OnTheGround" unique_id=206386520 instance=ExtResource("13_mfqmc")]
+[node name="WaterRock2" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=206386520 instance=ExtResource("13_mfqmc")]
 position = Vector2(535, 252)
 
-[node name="WaterRock3" parent="WorldNew/OnTheGround" unique_id=218636896 instance=ExtResource("13_mfqmc")]
+[node name="WaterRock3" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=218636896 instance=ExtResource("13_mfqmc")]
 position = Vector2(575, 278)
 
-[node name="House_1" parent="WorldNew/OnTheGround" unique_id=593509202 instance=ExtResource("21_ssi2h")]
+[node name="House_1" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=593509202 instance=ExtResource("21_ssi2h")]
 position = Vector2(71, -32)
 texture = ExtResource("22_bibhe")
 
-[node name="House_2" parent="WorldNew/OnTheGround" unique_id=1006657527 instance=ExtResource("21_ssi2h")]
+[node name="House_2" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=1006657527 instance=ExtResource("21_ssi2h")]
 position = Vector2(-335, -59)
 texture = ExtResource("23_06py2")
 
-[node name="Townie" parent="WorldNew/OnTheGround" unique_id=1098678013 instance=ExtResource("24_vm3vv")]
+[node name="Townie" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=1098678013 instance=ExtResource("24_vm3vv")]
 position = Vector2(-260, -29)
 character_seed = 2795412966
 
-[node name="Townie2" type="CharacterBody2D" parent="WorldNew/OnTheGround" unique_id=657622856 node_paths=PackedStringArray("cel_shading_recolor")]
+[node name="Townie2" type="CharacterBody2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=657622856 node_paths=PackedStringArray("cel_shading_recolor")]
 position = Vector2(112, 41)
 scale = Vector2(-1, 1)
 collision_layer = 2
@@ -745,47 +736,47 @@ script = ExtResource("25_h118v")
 cel_shading_recolor = NodePath("CelShadingRecolor")
 look_at_side = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldNew/OnTheGround/Townie2" unique_id=752289315]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2" unique_id=752289315]
 rotation = -1.5707964
 shape = SubResource("CapsuleShape2D_qs15o")
 
-[node name="AnimatedSprite2DLegs" type="AnimatedSprite2D" parent="WorldNew/OnTheGround/Townie2" unique_id=857498918]
+[node name="AnimatedSprite2DLegs" type="AnimatedSprite2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2" unique_id=857498918]
 material = SubResource("ShaderMaterial_pg372")
 position = Vector2(-3, -31)
 sprite_frames = ExtResource("27_6n8tg")
 animation = &"idle"
 
-[node name="RandomTextureSpriteBehavior" type="Node2D" parent="WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs" unique_id=29355732 node_paths=PackedStringArray("sprite")]
+[node name="RandomTextureSpriteBehavior" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs" unique_id=29355732 node_paths=PackedStringArray("sprite")]
 script = ExtResource("28_t33bk")
 sprite_frames = Array[SpriteFrames]([ExtResource("27_6n8tg"), ExtResource("29_tfhfm"), ExtResource("30_x8n7n")])
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://boyesrjdix688"
 
-[node name="CharacterSpriteBehavior" type="Node2D" parent="WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs" unique_id=251614972 node_paths=PackedStringArray("character", "sprite")]
+[node name="CharacterSpriteBehavior" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs" unique_id=251614972 node_paths=PackedStringArray("character", "sprite")]
 position = Vector2(3, 30)
 script = ExtResource("31_n24vj")
 character = NodePath("../..")
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
-[node name="AnimatedSprite2DBody" type="AnimatedSprite2D" parent="WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs" unique_id=146114806]
+[node name="AnimatedSprite2DBody" type="AnimatedSprite2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs" unique_id=146114806]
 material = SubResource("ShaderMaterial_pg372")
 sprite_frames = ExtResource("32_12lvb")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="RandomTextureSpriteBehavior" type="Node2D" parent="WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=1026721959 node_paths=PackedStringArray("sprite")]
+[node name="RandomTextureSpriteBehavior" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=1026721959 node_paths=PackedStringArray("sprite")]
 script = ExtResource("28_t33bk")
 sprite_frames = Array[SpriteFrames]([ExtResource("33_3j7dk"), ExtResource("34_tvln7"), ExtResource("32_12lvb")])
 sprite = NodePath("..")
 
-[node name="CharacterSpriteBehavior" type="Node2D" parent="WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=312816672 node_paths=PackedStringArray("character", "sprite")]
+[node name="CharacterSpriteBehavior" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=312816672 node_paths=PackedStringArray("character", "sprite")]
 script = ExtResource("31_n24vj")
 character = NodePath("../../..")
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
-[node name="AnimatedSprite2DHead" type="AnimatedSprite2D" parent="WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=44872592]
+[node name="AnimatedSprite2DHead" type="AnimatedSprite2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=44872592]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_pg372")
 position = Vector2(-4, -16)
@@ -793,78 +784,71 @@ sprite_frames = ExtResource("35_t5kgm")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="RandomTextureSpriteBehavior" type="Node2D" parent="WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=450161531 node_paths=PackedStringArray("sprite")]
+[node name="RandomTextureSpriteBehavior" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=450161531 node_paths=PackedStringArray("sprite")]
 script = ExtResource("28_t33bk")
 sprite_frames = Array[SpriteFrames]([ExtResource("36_qy0ur"), ExtResource("37_ggirs"), ExtResource("38_rdqsy"), ExtResource("35_t5kgm"), ExtResource("39_tqjpk")])
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://boyesrjdix688"
 
-[node name="CharacterSpriteBehavior" type="Node2D" parent="WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=771689525 node_paths=PackedStringArray("character", "sprite")]
+[node name="CharacterSpriteBehavior" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=771689525 node_paths=PackedStringArray("character", "sprite")]
 script = ExtResource("31_n24vj")
 character = NodePath("../../../..")
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
-[node name="AnimatedSprite2DHair" type="AnimatedSprite2D" parent="WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=1709026527]
+[node name="AnimatedSprite2DHair" type="AnimatedSprite2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=1709026527]
 material = SubResource("ShaderMaterial_pg372")
 sprite_frames = ExtResource("40_4vig3")
 animation = &"idle"
 autoplay = "idle"
 metadata/_edit_lock_ = true
 
-[node name="RandomTextureSpriteBehavior" type="Node2D" parent="WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHair" unique_id=1348604064 node_paths=PackedStringArray("sprite")]
+[node name="RandomTextureSpriteBehavior" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHair" unique_id=1348604064 node_paths=PackedStringArray("sprite")]
 script = ExtResource("28_t33bk")
 sprite_frames = Array[SpriteFrames]([ExtResource("41_honk7"), ExtResource("42_aqgdt"), ExtResource("43_c010m"), ExtResource("40_4vig3"), ExtResource("44_e0s53")])
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://boyesrjdix688"
 
-[node name="CharacterSpriteBehavior" type="Node2D" parent="WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHair" unique_id=761435199 node_paths=PackedStringArray("character", "sprite")]
+[node name="CharacterSpriteBehavior" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2/AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHair" unique_id=761435199 node_paths=PackedStringArray("character", "sprite")]
 script = ExtResource("31_n24vj")
 character = NodePath("../../../../..")
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
-[node name="CelShadingRecolor" type="Node" parent="WorldNew/OnTheGround/Townie2" unique_id=1660334104]
+[node name="CelShadingRecolor" type="Node" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround/Townie2" unique_id=1660334104]
 script = ExtResource("45_pgcsg")
 shader_material = SubResource("ShaderMaterial_pg372")
 new_colors_palette = SubResource("ColorPalette_byt3c")
 metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"
 
-[node name="Townie3" parent="WorldNew/OnTheGround" unique_id=1124645302 instance=ExtResource("24_vm3vv")]
+[node name="Townie3" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=1124645302 instance=ExtResource("24_vm3vv")]
 position = Vector2(-72, 15)
 character_seed = 2999255987
 
-[node name="Sheep" parent="WorldNew/OnTheGround" unique_id=2063148848 instance=ExtResource("46_ee1fc")]
+[node name="Sheep" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=2063148848 instance=ExtResource("46_ee1fc")]
 position = Vector2(-418, 191)
 
-[node name="Sheep2" parent="WorldNew/OnTheGround" unique_id=260542345 instance=ExtResource("46_ee1fc")]
+[node name="Sheep2" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=260542345 instance=ExtResource("46_ee1fc")]
 position = Vector2(-479, 219)
 
-[node name="Sheep3" parent="WorldNew/OnTheGround" unique_id=1802073178 instance=ExtResource("46_ee1fc")]
+[node name="Sheep3" parent="AspectRatioContainer/Wrapper/WorldReweaven/WorldNew/OnTheGround" unique_id=1802073178 instance=ExtResource("46_ee1fc")]
 position = Vector2(269, 161)
 scale = Vector2(-1, 1)
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=465117091]
-position = Vector2(-73, 0)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2084375467]
-unique_name_in_owner = true
-libraries/ = SubResource("AnimationLibrary_d870b")
-autoplay = &"RESET"
-
-[node name="Shaker" type="Node2D" parent="." unique_id=1389467069 node_paths=PackedStringArray("target")]
+[node name="Shaker" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven" unique_id=1389467069 node_paths=PackedStringArray("target")]
 unique_name_in_owner = true
 script = ExtResource("47_015wn")
-target = NodePath("../Camera2D")
+target = NodePath("..")
+rotate_target = false
 shake_intensity = 20.0
 duration = 4.0
 frequency = 15.0
 metadata/_custom_type_script = "uid://dunsvrhq42214"
 
-[node name="ShineParticles" type="GPUParticles2D" parent="." unique_id=1370188511]
+[node name="ShineParticles" type="GPUParticles2D" parent="AspectRatioContainer/Wrapper/WorldReweaven" unique_id=1370188511]
 modulate = Color(1, 1, 0, 1)
 material = SubResource("CanvasItemMaterial_tnibl")
-position = Vector2(-1030, 1.0000038)
+position = Vector2(-90, 207)
 emitting = false
 amount = 100
 texture = ExtResource("48_qofm8")
@@ -874,9 +858,9 @@ fixed_fps = 50
 visibility_rect = Rect2(-1000, -1000, 2000, 2000)
 process_material = SubResource("ParticleProcessMaterial_nbnht")
 
-[node name="LineEffect" type="Node2D" parent="." unique_id=2112115349]
+[node name="LineEffect" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven" unique_id=2112115349]
 
-[node name="Line2D" type="Line2D" parent="LineEffect" unique_id=1582467123]
+[node name="Line2D" type="Line2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/LineEffect" unique_id=1582467123]
 texture_repeat = 2
 width = 3.0
 width_curve = SubResource("Curve_kgwwc")
@@ -884,20 +868,20 @@ default_color = Color(1, 1, 0.7953644, 1)
 texture_mode = 1
 joint_mode = 2
 
-[node name="Path2D" type="Path2D" parent="LineEffect" unique_id=1487884503]
+[node name="Path2D" type="Path2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/LineEffect" unique_id=1487884503]
 curve = SubResource("Curve2D_ah750")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="LineEffect/Path2D" unique_id=2140966178]
+[node name="PathFollow2D" type="PathFollow2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/LineEffect/Path2D" unique_id=2140966178]
 position = Vector2(-671, 640)
 rotation = -1.4861017
 rotates = false
 
-[node name="Spirograph" parent="LineEffect/Path2D/PathFollow2D" unique_id=760772735 node_paths=PackedStringArray("line") instance=ExtResource("50_2bs3d")]
+[node name="CurlyTrail" parent="AspectRatioContainer/Wrapper/WorldReweaven/LineEffect/Path2D/PathFollow2D" unique_id=760772735 node_paths=PackedStringArray("line") instance=ExtResource("50_2bs3d")]
 line = NodePath("../../../Line2D")
 radius = 49.99999739229679
-max_vel = 1300.0
+max_vel = 80.0
 
-[node name="Stitcher" type="Node2D" parent="LineEffect/Path2D/PathFollow2D" unique_id=374919940 node_paths=PackedStringArray("line")]
+[node name="StitchTrail" type="Node2D" parent="AspectRatioContainer/Wrapper/WorldReweaven/LineEffect/Path2D/PathFollow2D" unique_id=374919940 node_paths=PackedStringArray("line")]
 process_mode = 4
 script = ExtResource("50_wh1pc")
 line = NodePath("../../../Line2D")

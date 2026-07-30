@@ -1,7 +1,12 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name Spirograph
+class_name CurlyTrail
 extends Node2D
+## @experimental
+##
+## MANUQ TODO
+##
+## MANUQ TODO
 
 @export var line: Line2D
 @export_range(10, 50, 1, "or_greater", "or_less") var radius: float = 30
@@ -12,7 +17,6 @@ extends Node2D
 @export var max_points := 100
 @export var debug := false
 
-var rot := 0.0
 var d := 0.0
 var last_pos: Vector2
 var noise := FastNoiseLite.new()
@@ -23,7 +27,6 @@ var noise := FastNoiseLite.new()
 
 func _ready() -> void:
 	tip.position.x = radius
-	rot = wheel_rotation
 	noise.seed = 123
 	noise.frequency = 0.0005
 
@@ -44,7 +47,7 @@ func _process(_delta: float) -> void:
 	# var dx: float = noise.get_noise_1d(Time.get_ticks_msec() * 1) * 50 * d
 	tip.position.x = radius * d  #  + dx
 
-	wheel.rotate(rot * d * d)
+	wheel.rotate(wheel_rotation * d * d)
 	trail(tip.global_position)
 	if debug:
 		queue_redraw()

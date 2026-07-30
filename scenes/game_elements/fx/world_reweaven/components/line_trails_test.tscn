@@ -1,40 +1,15 @@
 [gd_scene format=3 uid="uid://c6mikotrke4mc"]
 
-[ext_resource type="PackedScene" uid="uid://bs32ac1yj83ub" path="res://scenes/game_elements/fx/spirograph/spirograph.tscn" id="3_h26y6"]
-[ext_resource type="Script" uid="uid://c4oww6rkbqfxc" path="res://scenes/game_elements/fx/stitcher/components/stitcher.gd" id="4_5l8d3"]
-
-[sub_resource type="GDScript" id="GDScript_0e48y"]
-script/source = "extends Node2D
-
-@onready var mouse_tracker: Node2D = %MouseTracker
-@onready var spirograph_mouse: Spirograph = %SpirographMouse
-@onready var stitcher_mouse: Stitcher = %StitcherMouse
-
-func _process(_delta: float) -> void:
-	var mouse_pos := get_global_mouse_position()
-	mouse_tracker.global_position = lerp(mouse_tracker.global_position, mouse_pos, 0.1)
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event is not InputEventMouseButton:
-		return
-	if event.pressed:
-		spirograph_mouse.process_mode = Node.PROCESS_MODE_DISABLED
-		spirograph_mouse.visible = false
-		stitcher_mouse.process_mode = Node.PROCESS_MODE_INHERIT
-		stitcher_mouse.visible = true
-	else:
-		spirograph_mouse.process_mode = Node.PROCESS_MODE_INHERIT
-		spirograph_mouse.visible = true
-		stitcher_mouse.process_mode = Node.PROCESS_MODE_DISABLED
-		stitcher_mouse.visible = false
-"
+[ext_resource type="Script" uid="uid://cc08dqkf7umf5" path="res://scenes/game_elements/fx/world_reweaven/components/line_trails_test.gd" id="1_5vwnp"]
+[ext_resource type="PackedScene" uid="uid://bs32ac1yj83ub" path="res://scenes/game_elements/fx/curly_trail/curly_trail.tscn" id="1_fynpo"]
+[ext_resource type="Script" uid="uid://c4oww6rkbqfxc" path="res://scenes/game_elements/fx/stitch_trail/components/stitch_trail.gd" id="2_5vwnp"]
 
 [sub_resource type="Animation" id="Animation_0hol4"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SimpleTest/Spirograph:position")
+tracks/0/path = NodePath("CurlyTest/CurlyTrail:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -75,7 +50,7 @@ step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SimpleTest/Spirograph:position")
+tracks/0/path = NodePath("CurlyTest/CurlyTrail:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -131,8 +106,8 @@ _data = {
 }
 point_count = 6
 
-[node name="SpirographTest" type="Node2D" unique_id=596574303]
-script = SubResource("GDScript_0e48y")
+[node name="LineTrailsTest" type="Node2D" unique_id=596574303]
+script = ExtResource("1_5vwnp")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=480715457]
 libraries/ = SubResource("AnimationLibrary_0hol4")
@@ -149,30 +124,30 @@ joint_mode = 2
 [node name="MouseTracker" type="Node2D" parent="MouseTest" unique_id=1967144198]
 unique_name_in_owner = true
 
-[node name="SpirographMouse" parent="MouseTest/MouseTracker" unique_id=812965254 node_paths=PackedStringArray("line") instance=ExtResource("3_h26y6")]
+[node name="CurlyMouse" parent="MouseTest/MouseTracker" unique_id=812965254 node_paths=PackedStringArray("line") instance=ExtResource("1_fynpo")]
 unique_name_in_owner = true
 line = NodePath("../../Line2D")
 radius = 44.0
 max_vel = 100.0
 debug = true
 
-[node name="StitcherMouse" type="Node2D" parent="MouseTest/MouseTracker" unique_id=782158258 node_paths=PackedStringArray("line")]
+[node name="StitchMouse" type="Node2D" parent="MouseTest/MouseTracker" unique_id=782158258 node_paths=PackedStringArray("line")]
 unique_name_in_owner = true
 process_mode = 4
-script = ExtResource("4_5l8d3")
+script = ExtResource("2_5vwnp")
 line = NodePath("../../Line2D")
 stitches_per_second = 0.01
 metadata/_custom_type_script = "uid://c4oww6rkbqfxc"
 
-[node name="SimpleTest" type="Node2D" parent="." unique_id=1650676841]
+[node name="CurlyTest" type="Node2D" parent="." unique_id=1650676841]
 
-[node name="Line2D" type="Line2D" parent="SimpleTest" unique_id=625975575]
+[node name="Line2D" type="Line2D" parent="CurlyTest" unique_id=625975575]
 texture_repeat = 2
 width = 3.0
 width_curve = SubResource("Curve_k0a1w")
 joint_mode = 2
 
-[node name="Spirograph" parent="SimpleTest" unique_id=1097706612 node_paths=PackedStringArray("line") instance=ExtResource("3_h26y6")]
+[node name="CurlyTrail" parent="CurlyTest" unique_id=1097706612 node_paths=PackedStringArray("line") instance=ExtResource("1_fynpo")]
 position = Vector2(742, 340)
 line = NodePath("../Line2D")
 max_vel = 34.0
@@ -195,8 +170,8 @@ position = Vector2(555, 253)
 rotation = 0.70556813
 rotates = false
 
-[node name="Stitcher" type="Node2D" parent="StitchTest/Path2D/PathFollow2D" unique_id=1460959262 node_paths=PackedStringArray("line")]
-script = ExtResource("4_5l8d3")
+[node name="StitchTrail" type="Node2D" parent="StitchTest/Path2D/PathFollow2D" unique_id=1460959262 node_paths=PackedStringArray("line")]
+script = ExtResource("2_5vwnp")
 line = NodePath("../../../Line2D")
 stitches_per_second = 0.0
 direction_update = 0.09
@@ -221,7 +196,7 @@ position = Vector2(307, 469)
 rotation = -1.4861017
 rotates = false
 
-[node name="Spirograph" parent="PathTest/Path2D/PathFollow2D" unique_id=760772735 node_paths=PackedStringArray("line") instance=ExtResource("3_h26y6")]
+[node name="CurlyTrail" parent="PathTest/Path2D/PathFollow2D" unique_id=760772735 node_paths=PackedStringArray("line") instance=ExtResource("1_fynpo")]
 line = NodePath("../../../Line2D")
 radius = 50.0
 max_vel = 150.0
