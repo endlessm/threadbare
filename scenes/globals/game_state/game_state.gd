@@ -151,10 +151,10 @@ func guess_quest(scene_path_or_uid: String) -> void:
 	while dir_path != "res://":
 		var quest_path := dir_path.path_join("quest.tres")
 		if ResourceLoader.exists(quest_path, "Resource"):
+			prints("Guessed quest", quest_path, "from scene", scene_path)
 			var q := ResourceLoader.load(quest_path) as Quest
 			quest = QuestState.new(q, PlayerState.new())
 			quest.challenge_start_scene = scene_path
-			prints("Guessed quest", quest.resource_path, "from scene", scene_path)
 			return
 
 		dir_path = dir_path.get_base_dir()
