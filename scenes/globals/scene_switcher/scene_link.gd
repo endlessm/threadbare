@@ -71,12 +71,13 @@ func _ready() -> void:
 
 
 ## Trigger the scene-switch or teleport described by [member next_scene] and
-## [member spawn_point_path], with the configured transition.
+## [member spawn_point_path], with the configured transition, and awaits the end
+## of the transition (if any).
 func switch() -> void:
 	var next_scene_path := _get_next_scene_path()
 	if next_scene_path and next_scene_path != get_tree().current_scene.scene_file_path:
 		if use_transition:
-			SceneSwitcher.change_to_file_with_transition(
+			await SceneSwitcher.change_to_file_with_transition(
 				next_scene, spawn_point_path, enter_transition, exit_transition
 			)
 		else:
