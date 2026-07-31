@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends Node2D
+
+var zoom_tween: Tween
+@onready var bridges_unlocked: TileMapLayer = $TileMapLayers/BridgesUnlocked
+@onready var water_unlocked: TileMapLayer = $TileMapLayers/WaterUnlocked
+@onready var camera_2d: Camera2D = $OnTheGround/Player/Camera2D
+
+
+func _ready() -> void:
+	GameState.player.abilities_changed.connect(_on_abilities_changed)
+	_on_abilities_changed()
+
+
+func _on_abilities_changed() -> void:
+	var has_longer_thread := GameState.player.has_ability(
+		Enums.PlayerAbilities.ABILITY_B_MODIFIER_1
+	)
+	var camera_zoom := Vector2(0.5, 0.5) if has_longer_thread else Vector2(1.0, 1.0)
+	# Zoom out when the player can throw a longer thread:
+	if zoom_tween:
+		zoom_tween.kill()
+	zoom_tween = create_tween()
+	zoom_tween.tween_property(camera_2d, "zoom", camera_zoom, 1.0)
+	#var cameras: Array[PhantomCamera2D] = PhantomCameraManager.get_phantom_camera_2ds()
+	#for cam: PhantomCamera2D in cameras:
+	#zoom_tween.tween_property(cam, "zoom", camera_zoom, 1.0)
+
+
+func _on_all_hooked_all_hooked() -> void:
+	bridges_unlocked.enabled = true
+	water_unlocked.enabled = false
