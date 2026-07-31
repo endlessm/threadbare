@@ -16,19 +16,18 @@ extends Node
 @export var teleport_area: Area2D
 @export var scene_link: SceneLink
 
-
-func _connect() -> void:
-	# ONE_SHOT to avoid triggering the same teleporter while the transition is running.
-	# DEFERRED because otherwise if use_transition is false, switching scene
-	# would delete Area2D during a physics callback - bad!
-	var flags := CONNECT_ONE_SHOT | CONNECT_DEFERRED
-	teleport_area.body_entered.connect(_on_teleport_area_body_entered, flags)
-
-
-func _on_teleport_area_body_entered(_body: Node2D) -> void:
-	await scene_link.switch()
-	_connect()
+var _switching := false
 
 
 func _ready() -> void:
-	_connect()
+	# DEFERRED because otherwise if use_transition is false, switching scene
+	# would delete Area2D during a physics callback - bad!
+	teleport_area.body_entered.connect(_on_teleport_area_body_entered, CONNECT_DEFERRED)
+
+
+func _on_teleport_area_body_entered(_body: Node2D) -> void:
+	if not _switching:
+		# Don't allow the same teleporter to trigger while the transition is running.
+		_switching = true
+		await scene_link.switch()
+		_switching = false
