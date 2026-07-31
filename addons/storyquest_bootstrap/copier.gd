@@ -263,5 +263,14 @@ func create_storyquest() -> void:
 	copy_tilesets()
 
 	var quest: StoryQuest = load(TEMPLATE_PATH.path_join(QUEST_FILENAME))
-	await copy_resource(quest)
+	var copied: StoryQuest = await copy_resource(quest)
 	EditorInterface.save_all_scenes()
+
+	var opening_quest := ThreadbareProjectSettings.get_setting(
+		ThreadbareProjectSettings.OPENING_QUEST
+	)
+	if ResourceUID.ensure_path(opening_quest) == ResourceUID.ensure_path(quest.resource_path):
+		ProjectSettings.set(
+			ThreadbareProjectSettings.OPENING_QUEST, ResourceUID.path_to_uid(copied.resource_path)
+		)
+		ProjectSettings.save()
