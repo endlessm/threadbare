@@ -27,9 +27,7 @@ func _connect() -> void:
 
 func _on_teleport_area_body_entered(_body: Node2D) -> void:
 	await scene_link.switch()
-	if not scene_link.next_scene:
-		# We didn't change scene - re-enable the teleporter
-		_connect()
+	_connect()
 
 
 func _ready() -> void:
