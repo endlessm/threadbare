@@ -1,18 +1,13 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 extends Area2D
-## Placa de presión: cuando una caja del grupo "pushable_box" queda ENCIMA, "abre"
-## sus [member gates] (p. ej. el portón de la escalera) para dejar pasar al jugador.
-## Al quitar la caja, se vuelven a cerrar. Emite [signal pressed].
-##
-## No toca archivos base. Detecta solo cajas (filtra por grupo), así que aunque su
-## máscara incluya la capa de muros, los muros estáticos no la activan.
+## Pressure plate: triggers [member gates] when a "pushable_box" is placed on top.
+## Closes gates when the box is removed. Emits [signal pressed].
 
 signal pressed(is_on: bool)
 
-## Nodos a abrir cuando hay una caja encima. Si tienen un método [code]set_open(bool)[/code]
-## se llama; si son [StaticBody2D] se les desactiva la colisión y se ocultan
-## (revelando la escalera que tapaban).
+## Nodes to open/close when pressed. Calls set_open(bool) if available,
+## or toggles collision/visibility if the gate is a StaticBody2D.
 @export var gates: Array[Node2D] = []
 
 var is_on: bool = false

@@ -1,20 +1,15 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 extends CharacterBody2D
-## Roca EMPUJABLE estilo Sokoban: se mueve CUBO POR CUBO (una casilla por empujón)
-## cuando el jugador la empuja con el cuerpo. Mientras se desliza "tiembla" (shader
-## menhir_tremble) dando sensación de movimiento.
-##
-## Está en el grupo "pushable_box" para que la [PressurePlate] la detecte encima.
-## No toca al jugador ni a ningún script base: solo lee la intención de movimiento
-## (las teclas) y comprueba con [method PhysicsBody2D.test_move] si la casilla
-## destino está libre.
+## Pushable Sokoban rock: moves cell by cell when pushed by the player.
+## Shakes while sliding (via menhir_tremble shader) for visual feedback.
+## Grouped in "pushable_box" so [PressurePlate] can detect it.
 
-## Tamaño de la casilla en px (cuánto avanza la roca por paso).
+## Grid cell size in pixels.
 @export var cell_size: float = 64.0
-## Duración del deslizamiento de un paso, en segundos.
+## Step duration in seconds.
 @export var step_time: float = 0.12
-## Cuánto tiembla mientras se mueve.
+## Shake intensity during movement.
 @export var tremble_amplitude: float = 1.0
 
 var _moving: bool = false
@@ -25,7 +20,7 @@ var _moving: bool = false
 
 func _ready() -> void:
 	add_to_group(&"pushable_box")
-	# Material propio (si no, varias rocas temblarían a la vez).
+	# Duplicate material to prevent all rocks from shaking at once.
 	if sprite.material:
 		sprite.material = sprite.material.duplicate()
 	_set_tremble(0.0)
@@ -39,25 +34,25 @@ func _physics_process(_delta: float) -> void:
 	if player == null or not push_sensor.overlaps_body(player):
 		return
 
-	# Intención de movimiento (las teclas), no la velocidad ya frenada por chocar.
+	# Read directional input intent.
 	var input := Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 	if input.length() < 0.5:
 		return
 
 	var dir := _cardinal(input)
-	# Solo empuja si el jugador está del lado opuesto (presiona HACIA la roca).
+	# Only push if player presses TOWARDS the rock.
 	if (global_position - player.global_position).dot(dir) <= 0.0:
 		return
 
 	var step := dir * cell_size
-	# No avanzar si la casilla destino está bloqueada (muro / portón cerrado).
+	# Cancel if target cell is blocked.
 	if test_move(global_transform, step):
 		return
 
 	_step_to(global_position + step)
 
 
-## Reduce el vector de entrada a una sola dirección cardinal (la dominante).
+## Reduces input vector to the main cardinal direction.
 func _cardinal(v: Vector2) -> Vector2:
 	if absf(v.x) >= absf(v.y):
 		return Vector2(signf(v.x), 0.0)

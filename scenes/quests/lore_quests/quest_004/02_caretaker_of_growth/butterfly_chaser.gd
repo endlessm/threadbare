@@ -1,13 +1,12 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 extends Node2D
-## Mariposa ENEMIGA que vuela LENTO hacia el jugador y lo derrota al tocarlo.
-## Vuela libre (ignora paredes y el vacío), así que persigue por toda la sala.
-## No toca al jugador base: solo lee su posición y, al contacto, llama defeat().
+## Flying enemy butterfly that slowly pursues the player, ignoring walls.
+## Defeats the player on contact via body.defeat().
 
-## Velocidad de vuelo (px/s). Baja = el jugador puede correr más rápido.
+## Flight speed in px/s.
 @export var speed: float = 48.0
-## Si está activo, al tocar al jugador lo derrota.
+## Kills the player upon collision if true.
 @export var defeat_on_touch: bool = true
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D

@@ -79,7 +79,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_12kud")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 10.0
 }]
@@ -93,7 +93,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("CompressedTexture2D_w6wg6")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
@@ -294,8 +294,8 @@ position = Vector2(1773, 2246)
 
 [node name="PORTAL DE ARCOIRIS" parent="." unique_id=327991066 instance=ExtResource("17_hdtk1")]
 position = Vector2(8907, 1896)
-next_scene = "uid://cufkthb25mpxy"
 item = SubResource("Resource_jbfg2")
+next_scene = "uid://cufkthb25mpxy"
 
 [node name="Menhir1" parent="." unique_id=1527961051 instance=ExtResource("18_hdtk1")]
 position = Vector2(550, 930)
@@ -910,12 +910,12 @@ position = Vector2(1554, -1528)
 shape = SubResource("Rect_void_trig")
 
 [node name="ChaseVignette" parent="." unique_id=399136466 instance=ExtResource("207_vig")]
+visible = false
 
-[node name="ChaseCameraZoom" type="Node" parent="." unique_id=820000040 node_paths=PackedStringArray("chase_start_area", "chase_end_area", "vignette_rect")]
+[node name="ChaseCameraZoom" type="Node" parent="." unique_id=820000040 node_paths=PackedStringArray("chase_start_area", "chase_end_area")]
 script = ExtResource("206_ccz")
 chase_start_area = NodePath("../EnemyChaseTrigger")
 chase_end_area = NodePath("../EnemyDefeatTrigger")
-vignette_rect = NodePath("../ChaseVignette/Vignette")
 
 [connection signal="body_entered" from="EnemyChaseTrigger" to="OnTheGroundVoid/VoidChasing" method="start"]
 [connection signal="body_entered" from="EnemyDefeatTrigger" to="OnTheGroundVoid/VoidChasing" method="defeat" unbinds=1]

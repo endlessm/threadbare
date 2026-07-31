@@ -1,14 +1,13 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 extends Node
-## Abre uno o varios objetivos SOLO cuando TODAS las placas tienen una roca encima.
-## Para el puzzle "pon las 3 rocas en las 3 placas para abrir la puerta".
-## Cuélgalo en la escena y asígnale las placas y los objetivos.
+## Triggers one or more targets ONLY when ALL assigned pressure plates are pressed.
+## Used for "place all rocks on all plates to open the path" puzzles.
 
-## Las placas ([PressurePlate]) que hay que pisar todas con una roca.
+## Array of pressure plates ([PressurePlate]) required to trigger the targets.
 @export var plates: Array[Node]
-## Objetivos a abrir cuando estén las 3: si tienen open()/close() se usan (Door, con
-## su sonido); si no, set_toggled(bool); si son StaticBody2D se ocultan (portón/escalera).
+## Target nodes to activate. Uses open()/close() if available (Doors with sound),
+## falls back to set_toggled(bool), or toggles collision/visibility for StaticBody2D.
 @export var targets: Array[Node]
 
 var _is_open: bool = false
@@ -18,7 +17,7 @@ func _ready() -> void:
 	for plate in plates:
 		if plate and plate.has_signal(&"pressed"):
 			plate.pressed.connect(_on_plate_pressed)
-	# Estado inicial sin sonido.
+	# Initial state without playing sound.
 	_is_open = _all_on()
 	for target in targets:
 		_apply_initial(target, _is_open)

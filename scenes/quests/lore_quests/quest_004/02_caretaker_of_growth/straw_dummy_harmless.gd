@@ -1,11 +1,10 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 extends Node2D
-## Muñeco de paja INOFENSIVO (decorativo). No patrulla ni te detecta: solo
-## TIEMBLA cuando el jugador lo toca / se acerca, y se queda quieto al alejarse.
-## Para la sala 1 del invernadero (Sable advierte de ellos, pero no hacen daño).
+## Harmless straw dummy (decorative).
+## Shakes when the player touches or approaches it, and stops when the player leaves.
 
-## Cuánto tiembla al tocarlo (px). El temblor está apagado mientras nadie lo toca.
+## Shake intensity on contact (px).
 @export var tremble_amplitude: float = 1.5
 
 @onready var sprite: Sprite2D = $Sprite2D
@@ -13,7 +12,7 @@ extends Node2D
 
 
 func _ready() -> void:
-	# Material propio por muñeco (si no, temblarían todos a la vez).
+	# Duplicate material to prevent all dummies from shaking simultaneously.
 	if sprite.material:
 		sprite.material = sprite.material.duplicate()
 	_set_tremble(0.0)

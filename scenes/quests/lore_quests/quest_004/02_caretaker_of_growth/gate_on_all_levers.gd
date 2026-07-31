@@ -1,13 +1,12 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 extends Node
-## Abre un objetivo (Door / cualquier Toggleable) SOLO cuando TODAS las palancas
-## de la lista están encendidas. Para el puzzle "activa las 3 palancas para abrir
-## el paso". Cuélgalo en la escena, asígnale las palancas y la puerta.
+## Opens a target (Door / Toggleable) ONLY when ALL assigned levers are active.
+## Used for "turn on all levers to open the gate" puzzles.
 
-## Las palancas (nodos lever.tscn) que hay que encender todas.
+## Array of levers (lever.tscn) that must be turned on.
 @export var levers: Array[Node]
-## El objetivo a abrir (un Door u otro Toggleable con set_toggled).
+## Target node to trigger (a Door or Toggleable with set_toggled).
 @export var target: Node
 
 

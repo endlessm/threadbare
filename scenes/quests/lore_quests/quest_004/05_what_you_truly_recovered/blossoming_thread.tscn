@@ -1,8 +1,5 @@
 [gd_scene format=4 uid="uid://c517klim6vbsg"]
 
-[ext_resource type="PackedScene" uid="uid://bgrantq0abil1" path="res://scenes/quests/lore_quests/quest_004/menhir/grant_quest_abilities.tscn" id="99_gqa"]
-[ext_resource type="PackedScene" uid="uid://tdvdp0jvbt2s" path="res://scenes/quests/lore_quests/quest_004/menhir/hum_hint.tscn" id="97_humhint"]
-[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="98_hud"]
 [ext_resource type="Material" uid="uid://jpl3v3f7elq6" path="res://scenes/eternal_loom_sokoban/components/floor/tiled_mat.tres" id="1_iv70w"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="1_os2tr"]
 [ext_resource type="PackedScene" uid="uid://bqhlguj2qmwx4" path="res://scenes/game_elements/props/decoration/spool/spool.tscn" id="2_8jxpa"]
@@ -12,7 +9,35 @@
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="5_441ed"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="6_o45ai"]
 [ext_resource type="Texture2D" uid="uid://d1pkkoi4qabfc" path="res://scenes/quests/lore_quests/quest_004/assets/noria-Sprites.png" id="7_leuy1"]
+[ext_resource type="PackedScene" uid="uid://tdvdp0jvbt2s" path="res://scenes/quests/lore_quests/quest_004/menhir/hum_hint.tscn" id="97_humhint"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="98_hud"]
+[ext_resource type="PackedScene" uid="uid://bgrantq0abil1" path="res://scenes/quests/lore_quests/quest_004/menhir/grant_quest_abilities.tscn" id="99_gqa"]
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="900_lighttex"]
+
+[sub_resource type="CanvasItemMaterial" id="CIM_mystic_z"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Grad_mystic_z"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.45, 0.7, 1, 0, 0.55, 0.82, 1, 0.9, 0.45, 0.7, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradTex_mystic_z"]
+gradient = SubResource("Grad_mystic_z")
+
+[sub_resource type="ParticleProcessMaterial" id="PPM_motes_z"]
+emission_shape = 3
+emission_box_extents = Vector3(820, 480, 1)
+direction = Vector3(0, -1, 0)
+spread = 40.0
+initial_velocity_min = 3.0
+initial_velocity_max = 14.0
+gravity = Vector3(0, -5, 0)
+scale_min = 0.03
+scale_max = 0.11
+color_ramp = SubResource("GradTex_mystic_z")
+turbulence_enabled = true
+turbulence_noise_strength = 3.0
+turbulence_noise_scale = 1.2
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e5s83"]
 atlas = ExtResource("7_leuy1")
@@ -52,38 +77,13 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_n2343")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o7tyi"]
 size = Vector2(116.37491, 64.467896)
-
-[sub_resource type="CanvasItemMaterial" id="CIM_mystic_z"]
-blend_mode = 1
-
-[sub_resource type="Gradient" id="Grad_mystic_z"]
-offsets = PackedFloat32Array(0, 0.5, 1)
-colors = PackedColorArray(0.45, 0.7, 1, 0, 0.55, 0.82, 1, 0.9, 0.45, 0.7, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradTex_mystic_z"]
-gradient = SubResource("Grad_mystic_z")
-
-[sub_resource type="ParticleProcessMaterial" id="PPM_motes_z"]
-emission_shape = 3
-emission_box_extents = Vector3(820, 480, 1)
-direction = Vector3(0, -1, 0)
-spread = 40.0
-gravity = Vector3(0, -5, 0)
-initial_velocity_min = 3.0
-initial_velocity_max = 14.0
-scale_min = 0.03
-scale_max = 0.11
-color_ramp = SubResource("GradTex_mystic_z")
-turbulence_enabled = true
-turbulence_noise_strength = 3.0
-turbulence_noise_scale = 1.2
 
 [node name="ElHiloDelFlorecer" type="Node2D" unique_id=897411534]
 
@@ -94,7 +94,6 @@ turbulence_noise_scale = 1.2
 [node name="HUD" parent="." unique_id=155956920 instance=ExtResource("98_hud")]
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1833858617]
-mouse_filter = 2
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -106,6 +105,7 @@ offset_right = 2000.0
 offset_bottom = 1000.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.0740935, 0.0496062, 0.0467346, 1)
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1397443197]
@@ -148,10 +148,9 @@ editor_draw_limits = true
 [node name="MysticMotes" type="GPUParticles2D" parent="OnTheGround/Player" unique_id=840000001]
 material = SubResource("CIM_mystic_z")
 amount = 80
+texture = ExtResource("900_lighttex")
 lifetime = 7.0
 preprocess = 6.0
-local_coords = false
-texture = ExtResource("900_lighttex")
 process_material = SubResource("PPM_motes_z")
 
 [node name="Talker" parent="." unique_id=1086241914 instance=ExtResource("6_o45ai")]
