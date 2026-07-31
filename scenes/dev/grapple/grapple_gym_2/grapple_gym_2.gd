@@ -23,9 +23,6 @@ func _on_abilities_changed() -> void:
 		zoom_tween.kill()
 	zoom_tween = create_tween()
 	zoom_tween.tween_property(camera_2d, "zoom", camera_zoom, 1.0)
-	#var cameras: Array[PhantomCamera2D] = PhantomCameraManager.get_phantom_camera_2ds()
-	#for cam: PhantomCamera2D in cameras:
-	#zoom_tween.tween_property(cam, "zoom", camera_zoom, 1.0)
 
 
 func _on_all_hooked_all_hooked() -> void:
