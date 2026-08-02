@@ -19,9 +19,11 @@ uniform sampler2D mask_texture : hint_default_white;
 uniform sampler2D fabric_texture : repeat_enable;
 
 /**
- * Downscale the fabric pattern texture.
+ * Scale of the fabric pattern texture, in world units per texel. At 1.0 the
+ * fabric is sampled at the same resolution as the world, so one texel of the
+ * texture covers exactly one world pixel.
  */
-uniform float fabric_downscale : hint_range(0.0, 30.0) = 12.0;
+uniform float fabric_scale : hint_range(0.01, 30.0) = 1.0;
 
 /**
  * Fade progress: 0.0 is fully hidden, 1.0 is fully visible
@@ -48,17 +50,17 @@ uniform vec4 burn_color : source_color = vec4(1.0, 1.0, 0.58, 1.0);
  */
 uniform float gray_intensity : hint_range(0.0, 1.0) = 0.0;
 
-varying vec2 textile_uv;
+/**
+ * Position of the fragment in world space, so the fabric pattern is anchored to
+ * the world instead of to the screen.
+ */
+varying vec2 world_position;
 
 void vertex() {
-	textile_uv.x = UV.x * fabric_downscale;
-	textile_uv.y = UV.y * fabric_downscale;
+	world_position = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
 }
 
 void fragment() {
-	vec2 screen_uv = SCREEN_UV;
-	screen_uv.x *= SCREEN_PIXEL_SIZE.y / SCREEN_PIXEL_SIZE.x;
-
 	// Sample the main texture color of the node
 	vec4 main_color = textureLod(screen_texture, SCREEN_UV, 0.0);
 	if (main_color.a > 0.0001) {
@@ -71,8 +73,13 @@ void fragment() {
 	// Sample the mask texture value (taking the red channel)
 	float mask_value = texture(mask_texture, UV).r;
 
-	// Sample the fabric pattern texture (taking the red channel)
-	float fabric_value = 1. - texture(fabric_texture, screen_uv * fabric_downscale).r;
+	// Sample the fabric pattern texture (taking the red channel). Sampling by
+	// world position gives the pattern a fixed size in world units, so it grows
+	// when zooming in and scrolls along with the camera. Dividing by the texture
+	// size turns world units into UVs, so at fabric_scale 1.0 one texel covers
+	// one world pixel.
+	vec2 fabric_uv = world_position / (vec2(textureSize(fabric_texture, 0)) * fabric_scale);
+	float fabric_value = 1. - texture(fabric_texture, fabric_uv).r;
 
 	// Calculate a clean alpha cutoff based on progress using smoothness.
 	float alpha = smoothstep(1.0 - progress, 1.0 - progress + smoothness, mask_value);
