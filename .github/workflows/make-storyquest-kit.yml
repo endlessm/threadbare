@@ -3,6 +3,10 @@
 name: "Make StoryQuest Kit"
 on:
   workflow_dispatch:
+    inputs:
+      push_tag:
+        description: "Push Git tag for kit"
+        type: boolean
   pull_request:
     paths:
       - 'tools/sqckck.*'
@@ -10,6 +14,10 @@ on:
   release:
     types:
       - published
+
+permissions:
+  # Need to be able to push the bundle back to a Git tag and/or branch
+  contents: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -59,6 +67,12 @@ jobs:
         with:
           path: ${{ steps.sqckck.outputs.zip_file }}
           archive: false
+
+      - name: Push git tag
+        if: ${{ github.event_name == 'release' || inputs.push_tag }}
+        shell: bash
+        run: |
+          git push origin "${{ steps.sqckck.outputs.tag_name }}"
 
       - name: Attach to release
         if: ${{ github.event_name == 'release' }}
