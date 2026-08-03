@@ -6,12 +6,19 @@ set -ex
 pushd $(dirname "$(dirname "$0")")
 
 VERSION=$(git describe --tags)
+declare -a PRUNE_FOLDERS=(
+	"assets/third_party/tiny-swords-non-cc0"
+	"scenes/quests/lore_quests"
+	"scenes/quests/story_quests"
+	"scenes/world_map"
+)
 
 echo "::group::Importing project"
 $GODOT --headless --import
 echo "::endgroup::"
 
 echo "::group::Pruning project"
+rm -r "${PRUNE_FOLDERS[@]}"
 $GODOT --headless --script tools/sqckck.gd
 rm -r .godot
 echo "::endgroup::"

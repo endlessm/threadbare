@@ -13,23 +13,6 @@ const HOME_SCENE := "res://scenes/dev/dev_archipelago.tscn"
 
 const TEMPLATE_QUEST := "res://scenes/quests/template_quests/NO_EDIT/quest.tres"
 
-const DELETE_PATHS := [
-	"res://assets/third_party/tiny-swords-non-cc0",
-	"res://scenes/quests/lore_quests",
-	"res://scenes/quests/story_quests",
-	"res://scenes/world_map",
-]
-
-
-func rm_rf(path: String) -> void:
-	# You can only delete empty folders, so using DirAccess.remove() means
-	# traversing the whole folder tree and deleting each leaf before its parent
-	# folder. But you can trash a non-empty folder in a single step!
-	var global_path := ProjectSettings.globalize_path(path)
-	var ret := OS.move_to_trash(global_path)
-	if ret != OK:
-		push_error("Failed to trash ", global_path, ": ", error_string(ret))
-
 
 func _process(_delta: float) -> bool:
 	var home_scene := ResourceUID.path_to_uid(HOME_SCENE)
@@ -43,8 +26,5 @@ func _process(_delta: float) -> bool:
 
 	if ProjectSettings.save() != OK:
 		push_error("Failed to save project settings")
-
-	for path: String in DELETE_PATHS:
-		rm_rf(path)
 
 	return true  # End the main loop
