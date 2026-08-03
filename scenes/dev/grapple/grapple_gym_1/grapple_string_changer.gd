@@ -4,8 +4,8 @@ extends Node2D
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.get_node("%PlayerHook"):
-		var hook: PlayerHook = body.get_node("%PlayerHook")
+	var hook := body.get_node("%PlayerHook") as PlayerHook
+	if hook:
 		hook.hook_string_texture = preload(
 			"res://scenes/game_elements/characters/player/components/hook-string-2.png"
 		)
