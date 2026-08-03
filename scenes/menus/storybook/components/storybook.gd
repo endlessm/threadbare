@@ -36,10 +36,10 @@ var _current_list_page: int = 0
 @onready var ui_container: Control = %StoryBookContent
 
 
-func _fade_out_ui():
+func _fade_out_ui() -> void:
+	ui_container.visible = false
 	var tween := create_tween()
 	tween.tween_property(ui_container, "modulate:a", 0.0, fade_duration)
-	return tween.finished
 
 
 func _fade_in_ui() -> void:
@@ -180,7 +180,6 @@ func _switch_to_page(spread_index: int) -> void:
 
 	if old_index != -1:
 		await _fade_out_ui()
-		ui_container.visible = false
 
 		if spread_index > old_index or (spread_index == 0 and old_index == total_spreads - 1):
 			animated_book.play("book_right")
