@@ -37,9 +37,10 @@ var _current_list_page: int = 0
 
 
 func _fade_out_ui() -> void:
-	ui_container.visible = false
 	var tween := create_tween()
 	tween.tween_property(ui_container, "modulate:a", 0.0, fade_duration)
+	await tween.finished
+	ui_container.visible = false
 
 
 func _fade_in_ui() -> void:
