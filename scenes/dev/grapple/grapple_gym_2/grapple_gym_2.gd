@@ -4,9 +4,9 @@ extends Node2D
 
 var zoom_tween: Tween
 
-@onready var bridges_unlocked: TileMapLayer = $TileMapLayers/BridgesUnlocked
-@onready var water_unlocked: TileMapLayer = $TileMapLayers/WaterUnlocked
-@onready var camera_2d: Camera2D = $OnTheGround/Player/Camera2D
+@onready var bridges_unlocked: TileMapLayer = %BridgesUnlocked
+@onready var water_unlocked: TileMapLayer = %WaterUnlocked
+@onready var camera_2d: Camera2D = %Camera2D
 
 
 func _ready() -> void:
