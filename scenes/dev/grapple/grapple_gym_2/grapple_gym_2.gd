@@ -4,8 +4,6 @@ extends Node2D
 
 var zoom_tween: Tween
 
-@onready var bridges_unlocked: TileMapLayer = %BridgesUnlocked
-@onready var water_unlocked: TileMapLayer = %WaterUnlocked
 @onready var camera_2d: Camera2D = %Camera2D
 
 
@@ -24,8 +22,3 @@ func _on_abilities_changed() -> void:
 		zoom_tween.kill()
 	zoom_tween = create_tween()
 	zoom_tween.tween_property(camera_2d, "zoom", camera_zoom, 1.0)
-
-
-func _on_all_hooked_all_hooked() -> void:
-	bridges_unlocked.enabled = true
-	water_unlocked.enabled = false
