@@ -23,7 +23,7 @@ var _cutscene_path: String
 var _load_error: Error
 
 ## The Eternal Loom, for listening to signals and calling
-## [member EternalLoom.on_cinematic_finished()].
+## [member EternalLoom.on_cinematic_finished].
 @onready var eternal_loom: EternalLoom = %EternalLoom
 
 
