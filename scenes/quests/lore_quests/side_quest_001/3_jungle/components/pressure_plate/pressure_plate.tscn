@@ -1,18 +1,25 @@
 [gd_scene format=3 uid="uid://40hvccw4duu1"]
 
 [ext_resource type="Texture2D" uid="uid://bhqanyxhpxpm" path="res://assets/first_party/rocks/Rock_Idle.png" id="1_06fav"]
-[ext_resource type="Script" uid="uid://r86lutp0wa2a" path="res://scenes/quests/lore_quests/side_quest_001/3_jungle/components/pressure_plate/pressure_plate.gd" id="1_jg0wb"]
+[ext_resource type="Script" uid="uid://4r5x8t086yga" path="res://scenes/quests/lore_quests/side_quest_001/3_jungle/components/pressure_plate/pressure_plate.gd" id="1_jg0wb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spiih"]
-size = Vector2(60.14433, 35.34638)
+size = Vector2(67.41524, 41.83857)
 
-[node name="PressurePlate" type="Area2D" unique_id=829716878]
+[node name="PressurePlate" type="Node2D" unique_id=1433187978]
 script = ExtResource("1_jg0wb")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=508264202]
-position = Vector2(-1.6565714, -1.4999981)
-scale = Vector2(0.91967344, 1.3862807)
-shape = SubResource("RectangleShape2D_spiih")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=703200589]
 texture = ExtResource("1_06fav")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=105748918]
+collision_layer = 512
+collision_mask = 769
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=508264202]
+position = Vector2(-1.0000002, -0.99999905)
+scale = Vector2(0.91967344, 1.3862807)
+shape = SubResource("RectangleShape2D_spiih")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
