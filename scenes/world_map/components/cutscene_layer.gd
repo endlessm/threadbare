@@ -14,8 +14,8 @@ extends CanvasLayer
 
 ## Paths to scenes that will be shown as overlay. Their root node must be an AnimationPlayer.
 @export var cutscene_paths: Array[String] = [
-	"res://scenes/game_elements/fx/world_reweaven/components/world_reweaven_cutscene_1.tscn",
-	"res://scenes/game_elements/fx/world_reweaven/components/world_reweaven_cutscene_2.tscn",
+	"res://scenes/game_elements/fx/world_rewoven/components/world_rewoven_cutscene_1.tscn",
+	"res://scenes/game_elements/fx/world_rewoven/components/world_rewoven_cutscene_2.tscn",
 ]
 
 ## The picked cutscene. Used to preload it.
