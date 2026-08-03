@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node2D
 
+const COLOR_STORY_VORE = Color("879261")
+const COLOR_INK_DRINKER = Color("7C70B6")
 const STARTING_OFFSET = Vector2(10, 0)
 const ENDING_OFFSET = Vector2(100, 0)
 const WIDTH = 3
@@ -29,14 +31,14 @@ func _draw() -> void:
 	draw_line(
 		ink_drinker.global_position + STARTING_OFFSET,
 		ink_drinker.global_position + ENDING_OFFSET,
-		Color.PURPLE,
+		COLOR_INK_DRINKER,
 		WIDTH
 	)
 	draw_circle(ink_drinker.global_position, WIDTH, Color.WHITE)
 	draw_line(
 		story_vore.global_position + STARTING_OFFSET,
 		story_vore.global_position + ENDING_OFFSET,
-		Color.GREEN,
+		COLOR_STORY_VORE,
 		WIDTH
 	)
 	draw_circle(story_vore.global_position, WIDTH, Color.WHITE)
