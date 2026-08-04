@@ -204,11 +204,15 @@ func _on_left_button_pressed() -> void:
 
 	# If we are on the main index, turn pages back inside the list
 	if _current_spread_index == 0 and _current_list_page > 0:
+		_navigation_locked = true
 		_current_list_page -= 1
+		await _fade_out_ui()
 		animated_book.play("book_left")
-		ui_container.visible = false
 		await animated_book.animation_finished
 		_populate_quest_lists()
+		_update_page_visibility()
+		_fade_in_ui()
+		_navigation_locked = false
 		return
 
 	_switch_to_page(_current_spread_index - 1)
@@ -222,11 +226,15 @@ func _on_right_button_pressed() -> void:
 	if _current_spread_index == 0:
 		var max_visible_so_far: int = (_current_list_page + 1) * quests_per_page * 2
 		if quests.size() > max_visible_so_far:
+			_navigation_locked = true
 			_current_list_page += 1
+			await _fade_out_ui()
 			animated_book.play("book_right")
-			ui_container.visible = false
 			await animated_book.animation_finished
 			_populate_quest_lists()
+			_update_page_visibility()
+			_fade_in_ui()
+			_navigation_locked = false
 			return
 
 	_switch_to_page(_current_spread_index + 1)
