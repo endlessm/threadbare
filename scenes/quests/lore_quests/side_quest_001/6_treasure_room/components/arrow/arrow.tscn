@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://bnfp1palo46hr"]
+
+[ext_resource type="Script" uid="uid://bow0vkm32s6wi" path="res://scenes/quests/lore_quests/side_quest_001/6_treasure_room/components/arrow/arrow.gd" id="1_jbnkx"]
+[ext_resource type="Texture2D" uid="uid://bdkjsmo81cwkk" path="res://assets/third_party/tiny-swords-non-cc0/Units/Red Units/Archer/Arrow.png" id="5_xki3h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_andwd"]
+size = Vector2(43, 12)
+
+[node name="Arrow" type="CharacterBody2D" unique_id=1469016414]
+rotation = 1.5707964
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_jbnkx")
+speed = 1000.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=618447001]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_andwd")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1255900075]
+texture = ExtResource("5_xki3h")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1307985004]
+collision_layer = 256
+collision_mask = 467
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Hitbox" unique_id=44833048]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_andwd")
+
+[node name="DurationTimer" type="Timer" parent="." unique_id=2124210006]
+wait_time = 10.0
+autostart = true
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="timeout" from="DurationTimer" to="." method="_on_duration_timer_timeout"]
