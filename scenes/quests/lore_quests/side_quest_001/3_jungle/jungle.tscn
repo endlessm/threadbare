@@ -11,12 +11,13 @@
 [ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="5_nvg6t"]
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="6_0yjtq"]
 [ext_resource type="PackedScene" uid="uid://bbbiime33dauo" path="res://scenes/quests/lore_quests/side_quest_001/3_jungle/components/hookable_statue/hookable_statue.tscn" id="6_47a3f"]
+[ext_resource type="PackedScene" uid="uid://40hvccw4duu1" path="res://scenes/quests/lore_quests/side_quest_001/3_jungle/components/pressure_plate/pressure_plate.tscn" id="6_j28dd"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="6_wc2uc"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="9_y3opp"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="10_myuc4"]
 [ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="11_nvg6t"]
 [ext_resource type="PackedScene" uid="uid://cuu65vogubwxd" path="res://scenes/game_elements/props/repellable_lever/repellable_lever.tscn" id="12_myuc4"]
-[ext_resource type="AudioStream" uid="uid://dbwjolg3xlntq" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/template_intro_components/EffectSounds/amazon-rainforest.ogg" id="17_47a3f"]
+[ext_resource type="Script" uid="uid://civ76mpbwk7e7" path="res://scenes/quests/lore_quests/side_quest_001/3_jungle/components/statue_puzzle.gd" id="18_j28dd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_andwd"]
 size = Vector2(79, 50)
@@ -63,13 +64,13 @@ script = ExtResource("1_thv8q")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=1803621563]
 
-[node name="HookableStatue" parent="OnTheGround" unique_id=1805651676 node_paths=PackedStringArray("constrain_layer") instance=ExtResource("6_47a3f")]
-position = Vector2(149, 232)
-constrain_layer = NodePath("../../TileMapLayers/Grass")
+[node name="PressurePlate" parent="OnTheGround" unique_id=829716878 instance=ExtResource("6_j28dd")]
+position = Vector2(1572, -156)
+expected_symbol = "square"
 
-[node name="HookableStatue2" parent="OnTheGround" unique_id=795405695 node_paths=PackedStringArray("constrain_layer") instance=ExtResource("6_47a3f")]
-position = Vector2(1295, 174)
-constrain_layer = NodePath("../../TileMapLayers/Grass")
+[node name="PressurePlate2" parent="OnTheGround" unique_id=1433187978 instance=ExtResource("6_j28dd")]
+position = Vector2(1570, 345)
+expected_symbol = "circle"
 
 [node name="Sign" parent="OnTheGround" unique_id=1579530966 instance=ExtResource("5_3r23x")]
 position = Vector2(823, -190)
@@ -123,14 +124,30 @@ position = Vector2(85, 313)
 position = Vector2(727, -190)
 
 [node name="RepellableLever2" parent="OnTheGround" unique_id=382052136 instance=ExtResource("12_myuc4")]
-position = Vector2(1369, 375)
+position = Vector2(1143, 230)
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1741857626]
-stream = ExtResource("17_47a3f")
-volume_db = -9.0
-autoplay = true
+[node name="Statues" type="Node2D" parent="OnTheGround" unique_id=155629743]
 
+[node name="HookableStatue" parent="OnTheGround/Statues" unique_id=1805651676 node_paths=PackedStringArray("constrain_layer") groups=["statues"] instance=ExtResource("6_47a3f")]
+position = Vector2(149, 232)
+constrain_layer = NodePath("../../../TileMapLayers/Grass")
+symbol = "square"
+
+[node name="HookableStatue2" parent="OnTheGround/Statues" unique_id=795405695 node_paths=PackedStringArray("constrain_layer") groups=["statues"] instance=ExtResource("6_47a3f")]
+position = Vector2(1295, -168)
+constrain_layer = NodePath("../../../TileMapLayers/Grass")
+symbol = "circle"
+
+[node name="Statue Puzzle" type="Node2D" parent="OnTheGround" unique_id=948042774]
+script = ExtResource("18_j28dd")
+num_of_entries = 2
+
+[connection signal="exited" from="OnTheGround/PressurePlate" to="OnTheGround/Statue Puzzle" method="_on_exit"]
+[connection signal="matching" from="OnTheGround/PressurePlate" to="OnTheGround/Statue Puzzle" method="_on_matched"]
+[connection signal="exited" from="OnTheGround/PressurePlate2" to="OnTheGround/Statue Puzzle" method="_on_exit"]
+[connection signal="matching" from="OnTheGround/PressurePlate2" to="OnTheGround/Statue Puzzle" method="_on_matched"]
 [connection signal="toggled" from="OnTheGround/RepellableLever" to="TileMapLayers/VoidUnderBridge1" method="_on_repellable_lever_toggled"]
 [connection signal="toggled" from="OnTheGround/RepellableLever" to="TileMapLayers/Bridge1" method="_on_repellable_lever_toggled"]
 [connection signal="toggled" from="OnTheGround/RepellableLever2" to="TileMapLayers/VoidUnderBridge2" method="_on_repellable_lever_toggled"]
 [connection signal="toggled" from="OnTheGround/RepellableLever2" to="TileMapLayers/Bridge2" method="_on_repellable_lever_toggled"]
+[connection signal="solved" from="OnTheGround/Statue Puzzle" to="OnTheGround/Door" method="open"]
