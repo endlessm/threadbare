@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bhvlqxguk8mt8" path="res://scenes/quests/lore_quests/quest_004/02_caretaker_of_growth/box_pushable.gd" id="1_b"]
 [ext_resource type="Texture2D" uid="uid://bhqanyxhpxpm" path="res://assets/first_party/rocks/Rock_Idle.png" id="2_t"]
 [ext_resource type="Shader" uid="uid://cptuiiq2m0fxr" path="res://scenes/quests/lore_quests/quest_004/menhir/menhir_tremble.gdshader" id="3_sh"]
+[ext_resource type="Script" uid="uid://dabvr3pqmyya4" path="res://scenes/game_elements/props/hookable_area/components/hookable_area.gd" id="4_hook"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b"]
 shader = ExtResource("3_sh")
@@ -15,9 +16,12 @@ size = Vector2(44, 30)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sensor"]
 size = Vector2(64, 50)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hook"]
+size = Vector2(56, 44)
+
 [node name="Box" type="CharacterBody2D" unique_id=1697541390]
 collision_layer = 512
-collision_mask = 16
+collision_mask = 528
 script = ExtResource("1_b")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=437919106]
@@ -31,8 +35,20 @@ shape = SubResource("RectangleShape2D_body")
 
 [node name="PushSensor" type="Area2D" parent="." unique_id=1083185627]
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PushSensor" unique_id=1670780157]
 position = Vector2(0, -6)
 shape = SubResource("RectangleShape2D_sensor")
+
+[node name="HookableArea" type="Area2D" parent="." unique_id=1670780158 node_paths=PackedStringArray("controlled_entity", "anchor_point")]
+script = ExtResource("4_hook")
+controlled_entity = NodePath("..")
+anchor_point = NodePath("Marker2D")
+weight = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea" unique_id=1670780159]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_hook")
+
+[node name="Marker2D" type="Marker2D" parent="HookableArea" unique_id=1670780160]
+position = Vector2(0, -6)

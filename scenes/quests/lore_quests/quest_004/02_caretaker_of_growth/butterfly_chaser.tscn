@@ -6,11 +6,18 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_b"]
 radius = 14.0
 
-[node name="ButterflyChaser" type="Node2D" unique_id=578265269]
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 14.0
+
+[node name="ButterflyChaser" type="CharacterBody2D" unique_id=578265269]
+collision_mask = 16
 script = ExtResource("1_b")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1502087872]
 sprite_frames = ExtResource("2_sf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=435099013]
+shape = SubResource("CircleShape2D_body")
 
 [node name="TouchArea" type="Area2D" parent="." unique_id=1895063277]
 collision_layer = 0
