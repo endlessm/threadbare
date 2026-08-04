@@ -1,28 +1,97 @@
-[gd_scene format=3 uid="uid://42jla6rouvx3"]
+[gd_scene format=4 uid="uid://42jla6rouvx3"]
 
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="1_05c4q"]
+[ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="1_by2b3"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_m25v8"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="2_my1xk"]
 [ext_resource type="TileSet" uid="uid://ciq5guijvlyb0" path="res://tiles/void_chromakey.tres" id="2_qjn5u"]
+[ext_resource type="Script" uid="uid://c762b74kv0cqu" path="res://scenes/quests/lore_quests/side_quest_001/5_temple_room_2/bridge_controller.gd" id="3_cfaos"]
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="3_my1xk"]
+[ext_resource type="Script" uid="uid://cg7uxjk6mhykc" path="res://scenes/quests/lore_quests/side_quest_001/3_jungle/components/bridge_builder.gd" id="3_wrty7"]
 [ext_resource type="PackedScene" uid="uid://ymcjwxrqt4e4" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/musical_rock.tscn" id="4_iiqlo"]
+[ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="6_fwn4i"]
+[ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="6_tf5gs"]
+[ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="7_gauri"]
 [ext_resource type="AudioStream" uid="uid://bvq56m78f2v7g" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/musicas/2 The Veil of Night Loop 1 Start .ogg" id="7_qjn5u"]
+[ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/game_elements/props/sequence_puzzle_hint_sign/sequence_puzzle_hint_sign.tscn" id="8_fwn4i"]
+[ext_resource type="SpriteFrames" uid="uid://pabpxy4b51t2" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign_forward.tres" id="9_wrty7"]
+[ext_resource type="AudioStream" uid="uid://ctty20c12j0f5" path="res://assets/third_party/sounds/bonfire_sign/FireStart.ogg" id="10_cfaos"]
+[ext_resource type="AudioStream" uid="uid://c7om8kdork2rx" path="res://assets/third_party/sounds/characters/enemies/guard/Torch.ogg" id="11_by2b3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7plr7"]
+size = Vector2(81, 58)
 
 [node name="TempleRoom2" type="Node2D" unique_id=1360898071]
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=537940738]
+
+[node name="Grass" type="TileMapLayer" parent="TileMapLayers" unique_id=799225495]
+tile_map_data = PackedByteArray("AAAAAPv/BgABAAEAAAAAAPz/BgABAAEAAAAAAP3/BgABAAEAAAAAAAEABgAAAAIAAAAAAAIABgABAAEAAAAAAAMABgABAAEAAAAAAAQABgABAAEAAAAAAAUABgABAAEAAAAAAAYABgABAAEAAAAAAAcABgABAAEAAAABAPv/BgABAAEAAAABAPz/BgABAAEAAAABAP3/BgABAAEAAAABAAAABgABAAEAAAABAAEABgABAAIAAAABAAIABgABAAEAAAABAAMABgABAAEAAAABAAQABgABAAEAAAABAAUABgABAAEAAAABAAYABgABAAEAAAABAAcABgABAAEAAAACAPv/BgABAAEAAAACAPz/BgABAAEAAAACAP3/BgABAAEAAAACAAAABgABAAEAAAACAAEABgABAAIAAAACAAIABgABAAEAAAACAAMABgABAAEAAAACAAQABgABAAEAAAACAAUABgABAAEAAAACAAYABgABAAEAAAACAAcABgABAAEAAAADAPv/BgABAAEAAAADAPz/BgABAAEAAAADAP3/BgABAAEAAAADAP7/BgABAAAAAAADAP//BgABAAEAAAADAAAABgABAAEAAAADAAEABgABAAIAAAADAAIABgABAAEAAAADAAMABgABAAEAAAADAAQABgABAAEAAAADAAUABgABAAEAAAADAAYABgABAAEAAAADAAcABgABAAEAAAAIAPv/BgABAAEAAAAIAPz/BgABAAEAAAAIAP3/BgABAAEAAAAIAP7/BgABAAAAAAAIAP//BgABAAEAAAAIAAAABgABAAEAAAAIAAEABgABAAIAAAAIAAIABgABAAEAAAAIAAMABgABAAEAAAAIAAQABgABAAEAAAAIAAUABgABAAEAAAAIAAYABgABAAEAAAAIAAcABgABAAEAAAAJAPv/BgABAAEAAAAJAPz/BgABAAEAAAAJAP3/BgABAAEAAAAJAP7/BgABAAAAAAAJAP//BgABAAEAAAAJAAAABgABAAEAAAAJAAEABgABAAIAAAAJAAIABgABAAEAAAAJAAMABgABAAEAAAAJAAQABgABAAEAAAAJAAUABgABAAEAAAAJAAYABgABAAEAAAAJAAcABgABAAEAAAAKAPv/BgABAAEAAAAKAPz/BgABAAEAAAAKAP3/BgABAAEAAAAKAP7/BgABAAAAAAAKAP//BgABAAEAAAAKAAAABgABAAEAAAAKAAEABgABAAIAAAAKAAIABgABAAEAAAAKAAMABgABAAEAAAAKAAQABgABAAEAAAAKAAUABgABAAEAAAAKAAYABgABAAEAAAAKAAcABgABAAEAAAALAPv/BgABAAEAAAALAPz/BgABAAEAAAALAP3/BgABAAEAAAALAP7/BgABAAAAAAALAP//BgABAAEAAAALAAAABgABAAEAAAALAAEABgABAAIAAAALAAIABgABAAEAAAALAAMABgABAAEAAAALAAQABgABAAEAAAALAAUABgABAAEAAAALAAYABgABAAEAAAALAAcABgABAAEAAAAMAPv/BgABAAEAAAAMAPz/BgABAAEAAAAMAP3/BgABAAEAAAAMAP7/BgABAAAAAAAMAP//BgABAAEAAAAMAAAABgABAAEAAAAMAAEABgABAAIAAAAMAAIABgABAAEAAAAMAAMABgABAAEAAAAMAAQABgABAAEAAAAMAAUABgABAAEAAAAMAAYABgABAAEAAAAMAAcABgABAAEAAAANAPv/BgABAAEAAAANAPz/BgABAAEAAAANAP3/BgABAAEAAAANAP7/BgABAAAAAAANAP//BgABAAEAAAANAAAABgABAAEAAAANAAEABgABAAIAAAANAAIABgABAAEAAAANAAMABgABAAEAAAANAAQABgABAAEAAAANAAUABgABAAEAAAANAAYABgABAAEAAAANAAcABgABAAEAAAASAPv/BgABAAEAAAASAPz/BgABAAEAAAASAP3/BgABAAEAAAASAP7/BgABAAAAAAASAP//BgABAAEAAAASAAAABgABAAEAAAASAAEABgABAAIAAAASAAIABgABAAEAAAASAAMABgABAAEAAAASAAQABgABAAEAAAASAAUABgABAAEAAAASAAYABgABAAEAAAASAAcABgABAAEAAAATAPv/BgAAAAEAAAATAPz/BgAAAAEAAAATAP3/BgABAAEAAAATAP7/BgABAAAAAAATAP//BgABAAEAAAATAAAABgABAAEAAAATAAEABgABAAIAAAATAAIABgABAAEAAAATAAMABgABAAEAAAATAAQABgABAAEAAAATAAUABgABAAEAAAATAAYABgABAAEAAAATAAcABgABAAEAAAAUAPv/BgAAAAEAAAAUAPz/BgAAAAEAAAAUAP3/BgAAAAEAAAAUAP7/BgABAAEAAAAUAP//BgABAAEAAAAUAAAABgABAAEAAAAUAAEABgABAAEAAAAUAAIABgAAAAEAAAAUAAMABgAAAAEAAAAUAAQABgAAAAEAAAAUAAUABgAAAAEAAAAUAAYABgAAAAEAAAAUAAcABgAAAAIAAAAVAPv/BgABAAEAAAAVAPz/BgABAAEAAAAVAP3/BgABAAEAAAAVAP7/BgABAAEAAAAVAP//BgABAAEAAAAVAAAABgABAAEAAAAVAAEABgABAAEAAAAVAAIABgABAAEAAAAVAAMABgABAAEAAAAVAAQABgABAAEAAAAVAAUABgABAAEAAAAVAAYABgABAAEAAAAVAAcABgABAAIAAAAWAPv/BgABAAEAAAAWAPz/BgABAAEAAAAWAP3/BgABAAEAAAAWAP7/BgABAAEAAAAWAP//BgABAAEAAAAWAAAABgABAAEAAAAWAAEABgABAAEAAAAWAAIABgABAAEAAAAWAAMABgABAAEAAAAWAAQABgABAAEAAAAWAAUABgABAAEAAAAWAAYABgABAAEAAAAWAAcABgABAAIAAAAXAPv/BgABAAEAAAAXAPz/BgABAAEAAAAXAP3/BgABAAEAAAAXAP7/BgABAAEAAAAXAP//BgABAAEAAAAXAAAABgABAAEAAAAXAAEABgABAAEAAAAXAAIABgABAAEAAAAXAAMABgABAAEAAAAXAAQABgABAAEAAAAXAAUABgABAAEAAAAXAAYABgABAAEAAAAXAAcABgABAAIAAAAYAPv/BgABAAEAAAAYAPz/BgABAAEAAAAYAP3/BgABAAEAAAAYAP7/BgABAAEAAAAYAP//BgABAAEAAAAYAAAABgABAAEAAAAYAAEABgABAAEAAAAYAAIABgABAAEAAAAYAAMABgABAAEAAAAYAAQABgABAAEAAAAYAAUABgABAAEAAAAYAAYABgABAAEAAAAYAAcABgABAAIAAAAZAPv/BgABAAEAAAAZAPz/BgABAAEAAAAZAP3/BgABAAEAAAAZAP7/BgABAAEAAAAZAP//BgABAAEAAAAZAAAABgABAAEAAAAZAAEABgABAAEAAAAZAAIABgABAAEAAAAZAAMABgABAAEAAAAZAAQABgABAAEAAAAZAAUABgABAAEAAAAZAAYABgABAAEAAAAZAAcABgABAAIAAAAaAPv/BgACAAEAAAAaAPz/BgACAAEAAAAaAP3/BgACAAEAAAAaAP7/BgACAAEAAAAaAP//BgACAAEAAAAaAAAABgACAAEAAAAaAAEABgACAAEAAAAaAAIABgACAAEAAAAaAAMABgACAAEAAAAaAAQABgACAAEAAAAaAAUABgACAAEAAAAaAAYABgACAAEAAAAaAAcABgACAAIAAAAHAPv/BgABAAEAAAAHAPz/BgABAAEAAAAHAP3/BgABAAEAAAAHAP7/BgABAAAAAAAHAP//BgABAAEAAAAHAAAABgABAAEAAAAHAAEABgABAAIAAAAHAAIABgABAAEAAAAHAAMABgABAAEAAAAHAAQABgABAAEAAAAHAAUABgABAAEAAAAHAAYABgABAAEAAAAHAAcABgABAAEAAAARAPv/BgABAAEAAAARAPz/BgABAAEAAAARAP3/BgABAAEAAAARAP7/BgABAAAAAAARAP//BgABAAEAAAARAAAABgABAAEAAAARAAEABgABAAIAAAARAAIABgABAAEAAAARAAMABgABAAEAAAARAAQABgABAAEAAAARAAUABgABAAEAAAARAAYABgABAAEAAAARAAcABgABAAEAAAAEAAEABgABAAIAAAAOAAIABgABAAEAAAAEAP7/BgABAAAAAAAFAP7/BgABAAAAAAAGAP7/BgABAAAAAAAPAAUABgABAAEAAAAQAAUABgABAAEAAAAOAAUABgABAAEAAAAAAP7/BgAAAAAAAAABAP7/BgABAAAAAAACAP7/BgABAAAAAAACAP//BgABAAEAAAABAP//BgABAAEAAAAAAP//BgAAAAEAAAAAAAAABgAAAAEAAAAFAAEABgABAAIAAAAGAAEABgABAAIAAAAOAAEABgABAAIAAAAPAAEABgABAAIAAAAAAPr/BgABAAEAAAABAPr/BgABAAEAAAACAPr/BgABAAEAAAADAPr/BgABAAEAAAAEAPr/BgABAAEAAAAEAPv/BgABAAEAAAAEAPz/BgABAAEAAAAEAP3/BgABAAEAAAAEAP//BgABAAEAAAAEAAAABgABAAEAAAAEAAIABgABAAEAAAAEAAMABgABAAEAAAAEAAQABgABAAEAAAAEAAUABgABAAEAAAAEAAYABgABAAEAAAAEAAcABgABAAEAAAAFAPr/BgABAAEAAAAFAPv/BgABAAEAAAAFAPz/BgABAAEAAAAFAP3/BgABAAEAAAAFAP//BgABAAEAAAAFAAAABgABAAEAAAAFAAIABgABAAEAAAAFAAMABgABAAEAAAAFAAQABgABAAEAAAAFAAUABgABAAEAAAAFAAYABgABAAEAAAAFAAcABgABAAEAAAAGAPr/BgABAAEAAAAGAPv/BgABAAEAAAAGAPz/BgABAAEAAAAGAP3/BgABAAEAAAAGAP//BgABAAEAAAAGAAAABgABAAEAAAAGAAIABgABAAEAAAAGAAMABgABAAEAAAAGAAQABgABAAEAAAAGAAUABgABAAEAAAAGAAYABgABAAEAAAAGAAcABgABAAEAAAAHAPr/BgABAAEAAAAIAPr/BgABAAEAAAAJAPr/BgABAAEAAAAKAPr/BgABAAEAAAALAPr/BgABAAEAAAAMAPr/BgABAAEAAAANAPr/BgABAAEAAAAOAPr/BgABAAEAAAAOAPv/BgABAAEAAAAOAPz/BgABAAEAAAAOAP3/BgABAAEAAAAOAP7/BgABAAAAAAAOAP//BgABAAEAAAAOAAAABgABAAEAAAAOAAMABgABAAEAAAAOAAQABgABAAEAAAAOAAYABgABAAEAAAAOAAcABgABAAEAAAAPAPr/BgABAAEAAAAPAPv/BgABAAEAAAAPAPz/BgABAAEAAAAPAP3/BgABAAEAAAAPAP7/BgABAAAAAAAPAP//BgABAAEAAAAPAAAABgABAAEAAAAPAAIABgABAAEAAAAPAAMABgABAAEAAAAPAAQABgABAAEAAAAPAAYABgABAAEAAAAPAAcABgABAAEAAAAQAPr/BgABAAEAAAAQAPv/BgABAAEAAAAQAPz/BgABAAEAAAAQAP3/BgABAAEAAAAQAP7/BgABAAAAAAAQAP//BgABAAEAAAAQAAAABgABAAEAAAAQAAEABgABAAIAAAAQAAIABgABAAEAAAAQAAMABgABAAEAAAAQAAQABgABAAEAAAAQAAYABgABAAEAAAAQAAcABgABAAEAAAARAPr/BgABAAEAAAASAPr/BgABAAEAAAATAPr/BgABAAEAAAAUAPr/BgAAAAAAAAAVAPr/BgABAAAAAAAWAPr/BgABAAAAAAAXAPr/BgABAAAAAAAYAPr/BgABAAAAAAAZAPr/BgABAAAAAAAaAPr/BgACAAAAAAA=")
+tile_set = ExtResource("1_by2b3")
 
 [node name="Floor" type="TileMapLayer" parent="TileMapLayers" unique_id=343875328]
 
 [node name="Void" type="TileMapLayer" parent="TileMapLayers" unique_id=12775337]
 texture_filter = 1
 material = ExtResource("1_05c4q")
+tile_map_data = PackedByteArray("AAAAAPv/DQAAAAEAAAABAPv/DQABAAEAAAACAPv/DQABAAEAAAADAPv/DQABAAEAAAAAAPz/DQAAAAEAAAAAAP3/DQAAAAIAAAABAPz/DQABAAEAAAABAP3/DQABAAIAAAACAPz/DQABAAEAAAADAPz/DQABAAEAAAADAP3/DQABAAIAAAAEAPv/DQABAAEAAAAEAPz/DQABAAEAAAAEAP3/DQABAAIAAAAFAPz/DQABAAEAAAAGAPz/DQABAAEAAAAHAPz/DQABAAEAAAAIAPz/DQABAAEAAAAJAPz/DQABAAEAAAAKAPz/DQABAAEAAAALAPz/DQABAAEAAAAMAPz/DQABAAEAAAANAPz/DQABAAEAAAAOAPz/DQABAAEAAAAPAPz/DQABAAEAAAAQAPz/DQABAAEAAAARAPz/DQABAAEAAAASAPz/DQABAAEAAAATAPz/DQACAAEAAAAGAP3/DQABAAIAAAAHAP3/DQABAAIAAAAIAP3/DQABAAIAAAAJAP3/DQABAAIAAAAKAP3/DQABAAIAAAALAP3/DQABAAIAAAAMAP3/DQABAAIAAAANAP3/DQABAAIAAAAOAP3/DQABAAIAAAAPAP3/DQABAAIAAAAQAP3/DQABAAIAAAARAP3/DQABAAIAAAASAP3/DQABAAIAAAATAP3/DQACAAIAAAATAPv/DQACAAEAAAASAPv/DQABAAEAAAARAPv/DQABAAEAAAAQAPv/DQABAAEAAAAPAPv/DQABAAEAAAAOAPv/DQABAAEAAAANAPv/DQABAAEAAAAMAPv/DQABAAEAAAALAPv/DQABAAEAAAAKAPv/DQABAAEAAAAJAPv/DQABAAEAAAAIAPv/DQABAAEAAAAHAPv/DQABAAEAAAAGAPv/DQABAAEAAAAFAPv/DQABAAEAAAAAAAIADQAAAAAAAAABAAIADQABAAAAAAACAAIADQABAAAAAAADAAIADQABAAAAAAAEAAIADQABAAAAAAAFAAIADQABAAAAAAAGAAIADQABAAAAAAAHAAIADQABAAAAAAAIAAIADQABAAAAAAAJAAIADQABAAAAAAAKAAIADQABAAAAAAALAAIADQABAAAAAAAQAAIADQABAAAAAAARAAIADQABAAAAAAAMAAIADQABAAAAAAANAAIADQABAAAAAAAOAAIADQABAAAAAAAPAAIADQABAAAAAAASAAIADQABAAAAAAATAAIADQACAAAAAAATAAMADQACAAEAAAATAAQADQACAAEAAAATAAUADQACAAEAAAATAAYADQACAAEAAAASAAYADQABAAEAAAARAAYADQABAAEAAAAQAAYADQABAAEAAAAPAAYADQABAAEAAAAOAAYADQABAAEAAAANAAYADQABAAEAAAAMAAYADQABAAEAAAALAAYADQABAAEAAAAKAAYADQABAAEAAAAJAAYADQABAAEAAAAIAAYADQABAAEAAAAHAAYADQABAAEAAAAGAAYADQABAAEAAAAFAAYADQABAAEAAAAEAAYADQABAAEAAAADAAYADQABAAEAAAACAAYADQABAAEAAAABAAYADQABAAEAAAAAAAYADQAAAAEAAAAAAAUADQAAAAEAAAAAAAQADQAAAAEAAAAAAAMADQAAAAEAAAABAAMADQABAAEAAAACAAMADQABAAEAAAADAAMADQABAAEAAAAEAAMADQABAAEAAAAFAAMADQABAAEAAAAGAAMADQABAAEAAAAHAAMADQABAAEAAAAIAAMADQABAAEAAAAJAAMADQABAAEAAAAKAAMADQABAAEAAAALAAMADQABAAEAAAAMAAMADQABAAEAAAANAAMADQABAAEAAAAOAAMADQABAAEAAAAPAAMADQABAAEAAAAQAAMADQABAAEAAAARAAMADQABAAEAAAARAAQADQABAAEAAAASAAQADQABAAEAAAAQAAQADQABAAEAAAASAAMADQABAAEAAAASAAUADQABAAEAAAARAAUADQABAAEAAAAPAAQADQABAAEAAAAOAAQADQABAAEAAAANAAQADQABAAEAAAAMAAQADQABAAEAAAALAAQADQABAAEAAAAKAAQADQABAAEAAAAJAAQADQABAAEAAAAIAAQADQABAAEAAAAIAAUADQABAAEAAAAJAAUADQABAAEAAAAKAAUADQABAAEAAAALAAUADQABAAEAAAAMAAUADQABAAEAAAANAAUADQABAAEAAAAOAAUADQABAAEAAAAPAAUADQABAAEAAAAQAAUADQABAAEAAAAHAAUADQABAAEAAAAGAAUADQABAAEAAAAGAAQADQABAAEAAAAFAAQADQABAAEAAAAEAAQADQABAAEAAAADAAQADQABAAEAAAACAAQADQABAAEAAAACAAUADQABAAEAAAABAAUADQABAAEAAAABAAQADQABAAEAAAADAAUADQABAAEAAAAEAAUADQABAAEAAAAFAAUADQABAAEAAAAHAAQADQABAAEAAAACAP3/DQABAAIAAAAAAPr/DQAAAAAAAAABAPr/DQABAAAAAAACAPr/DQABAAAAAAADAPr/DQABAAAAAAAEAPr/DQABAAAAAAAFAPr/DQABAAAAAAAGAPr/DQABAAAAAAAHAPr/DQABAAAAAAAIAPr/DQABAAAAAAAJAPr/DQABAAAAAAAKAPr/DQABAAAAAAALAPr/DQABAAAAAAAMAPr/DQABAAAAAAANAPr/DQABAAAAAAAOAPr/DQABAAAAAAAPAPr/DQABAAAAAAAQAPr/DQABAAAAAAARAPr/DQABAAAAAAASAPr/DQABAAAAAAATAPr/DQACAAAAAAAAAAcADQAAAAIAAAATAAcADQACAAIAAAASAAcADQABAAIAAAARAAcADQABAAIAAAAQAAcADQABAAIAAAAPAAcADQABAAIAAAAOAAcADQABAAIAAAANAAcADQABAAIAAAAMAAcADQABAAIAAAALAAcADQABAAIAAAAKAAcADQABAAIAAAAJAAcADQABAAIAAAAIAAcADQABAAIAAAAHAAcADQABAAIAAAAGAAcADQABAAIAAAAFAAcADQABAAIAAAAEAAcADQABAAIAAAADAAcADQABAAIAAAACAAcADQABAAIAAAABAAcADQABAAIAAAAFAP3/DQABAAIAAAAUAPr/DQABAAIAAAAVAPr/DQABAAIAAAAWAPr/DQABAAIAAAAXAPr/DQABAAIAAAAYAPr/DQABAAIAAAAZAPr/DQABAAIAAAAaAPr/DQABAAIAAAAbAPv/DQAAAAEAAAAbAPz/DQAAAAEAAAAbAP3/DQAAAAEAAAAbAP7/DQAAAAEAAAAbAP//DQAAAAEAAAAbAAAADQAAAAEAAAAbAAEADQAAAAEAAAAbAAIADQAAAAEAAAAbAAMADQAAAAEAAAAbAAQADQAAAAEAAAAbAAUADQAAAAEAAAAUAAcADQABAAAAAAAVAAcADQABAAAAAAAWAAcADQABAAAAAAAXAAcADQABAAAAAAAYAAcADQABAAAAAAAZAAcADQABAAAAAAAaAAcADQABAAAAAAAbAAYADQAAAAEAAAAbAAcADQABAAEAAAAbAPr/DQABAAEAAAD///r/DQADAAAAAAD///v/DQADAAEAAAD///z/DQADAAEAAAD///3/DQADAAEAAAD///7/DQADAAEAAAD/////DQADAAEAAAD//wAADQADAAEAAAD//wEADQADAAEAAAD//wIADQADAAEAAAD//wMADQADAAEAAAD//wQADQADAAEAAAD//wUADQADAAEAAAD//wYADQADAAEAAAD//wcADQADAAIAAAA=")
 tile_set = ExtResource("2_qjn5u")
+
+[node name="BridgeController" type="Node2D" parent="TileMapLayers" unique_id=806815600 node_paths=PackedStringArray("bridge_1", "bridge_2", "bridge_3", "bridge_4")]
+script = ExtResource("3_cfaos")
+bridge_1 = NodePath("VoidUnderBridge1")
+bridge_2 = NodePath("VoidUnderBridge2")
+bridge_3 = NodePath("VoidUnderBridge3")
+bridge_4 = NodePath("VoidUnderBridge4")
+
+[node name="VoidUnderBridge1" type="TileMapLayer" parent="TileMapLayers/BridgeController" unique_id=661213998]
+texture_filter = 1
+material = ExtResource("1_05c4q")
+tile_map_data = PackedByteArray("AAADAP7/DQADAAAAAAADAP//DQADAAEAAAADAAAADQADAAEAAAADAAEADQADAAIAAAA=")
+tile_set = ExtResource("2_qjn5u")
+script = ExtResource("3_wrty7")
+
+[node name="VoidUnderBridge2" type="TileMapLayer" parent="TileMapLayers/BridgeController" unique_id=1926084421]
+texture_filter = 1
+material = ExtResource("1_05c4q")
+position = Vector2(256, 0)
+tile_map_data = PackedByteArray("AAADAP7/DQADAAAAAAADAP//DQADAAEAAAADAAAADQADAAEAAAADAAEADQADAAIAAAA=")
+tile_set = ExtResource("2_qjn5u")
+script = ExtResource("3_wrty7")
+
+[node name="VoidUnderBridge3" type="TileMapLayer" parent="TileMapLayers/BridgeController" unique_id=1162777817]
+texture_filter = 1
+material = ExtResource("1_05c4q")
+position = Vector2(504, 0)
+tile_map_data = PackedByteArray("AAADAP7/DQADAAAAAAADAP//DQADAAEAAAADAAAADQADAAEAAAADAAEADQADAAIAAAA=")
+tile_set = ExtResource("2_qjn5u")
+script = ExtResource("3_wrty7")
+
+[node name="VoidUnderBridge4" type="TileMapLayer" parent="TileMapLayers/BridgeController" unique_id=368882971]
+texture_filter = 1
+material = ExtResource("1_05c4q")
+position = Vector2(776, 0)
+tile_map_data = PackedByteArray("AAADAP7/DQADAAAAAAADAP//DQADAAEAAAADAAAADQADAAEAAAADAAEADQADAAIAAAA=")
+tile_set = ExtResource("2_qjn5u")
+script = ExtResource("3_wrty7")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=1876944702]
 
+[node name="Teleporter" parent="OnTheGround" unique_id=1779636661 instance=ExtResource("6_tf5gs")]
+position = Vector2(1672, 8)
+rotation = 3.1274123
+next_scene = "uid://m6krehsj0ew0"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Teleporter" unique_id=166099333]
+position = Vector2(30.5, 1)
+shape = SubResource("RectangleShape2D_7plr7")
+
+[node name="Door" parent="OnTheGround" unique_id=1860367584 instance=ExtResource("3_my1xk")]
+position = Vector2(1648, 8)
+rotation = 1.5707964
+
 [node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("1_m25v8")]
-position = Vector2(-140, 73)
+position = Vector2(40, 24)
 sprite_frames = ExtResource("2_my1xk")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1105490654]
@@ -32,32 +101,129 @@ limit_right = 2772
 limit_bottom = 680
 editor_draw_limits = true
 
-[node name="Door" parent="OnTheGround" unique_id=1860367584 instance=ExtResource("3_my1xk")]
-position = Vector2(-63, 363)
-rotation = 1.5707964
+[node name="SequencePuzzle" type="Node2D" parent="OnTheGround" unique_id=1557777817]
+unique_name_in_owner = true
+y_sort_enabled = true
+script = ExtResource("6_fwn4i")
+metadata/_custom_type_script = "uid://c68oh8dtr21ti"
 
-[node name="Sequence Puzzle" type="Node2D" parent="OnTheGround" unique_id=2144803755]
+[node name="Objects" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=131164621]
+position = Vector2(39, -155)
 
-[node name="Objects" type="Node2D" parent="OnTheGround/Sequence Puzzle" unique_id=131164621]
-position = Vector2(-6, -157)
-
-[node name="MusicalRock" parent="OnTheGround/Sequence Puzzle/Objects" unique_id=704061639 instance=ExtResource("4_iiqlo")]
+[node name="RedRock" parent="OnTheGround/SequencePuzzle/Objects" unique_id=704061639 instance=ExtResource("4_iiqlo")]
+position = Vector2(129, 75)
 sprite_modulate = Color(0.9859224, 0, 0.16460204, 1)
 
-[node name="MusicalRock2" parent="OnTheGround/Sequence Puzzle/Objects" unique_id=1294727724 instance=ExtResource("4_iiqlo")]
-position = Vector2(77, 1)
+[node name="GreenRock" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1294727724 instance=ExtResource("4_iiqlo")]
+position = Vector2(129, 139)
 sprite_modulate = Color(0.42008352, 0.8321971, 7.70092e-07, 1)
 
-[node name="MusicalRock3" parent="OnTheGround/Sequence Puzzle/Objects" unique_id=389463995 instance=ExtResource("4_iiqlo")]
-position = Vector2(3, 77)
+[node name="BlueRock" parent="OnTheGround/SequencePuzzle/Objects" unique_id=389463995 instance=ExtResource("4_iiqlo")]
+position = Vector2(129, 203)
 sprite_modulate = Color(0.33297247, 0.389915, 0.97399324, 1)
 
-[node name="MusicalRock4" parent="OnTheGround/Sequence Puzzle/Objects" unique_id=881430348 instance=ExtResource("4_iiqlo")]
-position = Vector2(82, 78)
+[node name="YellowRock" parent="OnTheGround/SequencePuzzle/Objects" unique_id=881430348 instance=ExtResource("4_iiqlo")]
+position = Vector2(129, 267)
 sprite_modulate = Color(0.79871076, 0.93741417, 0, 1)
 
-[node name="Steps" type="Node2D" parent="OnTheGround/Sequence Puzzle" unique_id=1139552625]
+[node name="RedRock2" parent="OnTheGround/SequencePuzzle/Objects" unique_id=2139218844 instance=ExtResource("4_iiqlo")]
+position = Vector2(377, 75)
+sprite_modulate = Color(0.9859224, 0, 0.16460204, 1)
+
+[node name="GreenRock2" parent="OnTheGround/SequencePuzzle/Objects" unique_id=529895857 instance=ExtResource("4_iiqlo")]
+position = Vector2(377, 139)
+sprite_modulate = Color(0.42008352, 0.8321971, 7.70092e-07, 1)
+
+[node name="BlueRock2" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1904253719 instance=ExtResource("4_iiqlo")]
+position = Vector2(377, 203)
+sprite_modulate = Color(0.33297247, 0.389915, 0.97399324, 1)
+
+[node name="YellowRock2" parent="OnTheGround/SequencePuzzle/Objects" unique_id=314279827 instance=ExtResource("4_iiqlo")]
+position = Vector2(377, 267)
+sprite_modulate = Color(0.79871076, 0.93741417, 0, 1)
+
+[node name="RedRock3" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1686707830 instance=ExtResource("4_iiqlo")]
+position = Vector2(625, 75)
+sprite_modulate = Color(0.9859224, 0, 0.16460204, 1)
+
+[node name="GreenRock3" parent="OnTheGround/SequencePuzzle/Objects" unique_id=190747534 instance=ExtResource("4_iiqlo")]
+position = Vector2(625, 139)
+sprite_modulate = Color(0.42008352, 0.8321971, 7.70092e-07, 1)
+
+[node name="BlueRock3" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1613148376 instance=ExtResource("4_iiqlo")]
+position = Vector2(625, 203)
+sprite_modulate = Color(0.33297247, 0.389915, 0.97399324, 1)
+
+[node name="YellowRock3" parent="OnTheGround/SequencePuzzle/Objects" unique_id=262382665 instance=ExtResource("4_iiqlo")]
+position = Vector2(625, 267)
+sprite_modulate = Color(0.79871076, 0.93741417, 0, 1)
+
+[node name="RedRock4" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1111278224 instance=ExtResource("4_iiqlo")]
+position = Vector2(897, 75)
+sprite_modulate = Color(0.9859224, 0, 0.16460204, 1)
+
+[node name="GreenRock4" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1063778512 instance=ExtResource("4_iiqlo")]
+position = Vector2(897, 139)
+sprite_modulate = Color(0.42008352, 0.8321971, 7.70092e-07, 1)
+
+[node name="BlueRock4" parent="OnTheGround/SequencePuzzle/Objects" unique_id=2053616892 instance=ExtResource("4_iiqlo")]
+position = Vector2(897, 203)
+sprite_modulate = Color(0.33297247, 0.389915, 0.97399324, 1)
+
+[node name="YellowRock4" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1024662382 instance=ExtResource("4_iiqlo")]
+position = Vector2(897, 267)
+sprite_modulate = Color(0.79871076, 0.93741417, 0, 1)
+
+[node name="Steps" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=1139552625]
+
+[node name="SequencePuzzleStep1" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" unique_id=1499178217 node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("7_gauri")
+sequence = [NodePath("../../Objects/YellowRock"), NodePath("../../Objects/GreenRock")]
+hint_sign = NodePath("../../Signs/BonfireSign1")
+
+[node name="SequencePuzzleStep2" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" unique_id=48356712 node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("7_gauri")
+sequence = [NodePath("../../Objects/BlueRock2"), NodePath("../../Objects/RedRock2"), NodePath("../../Objects/GreenRock2")]
+hint_sign = NodePath("../../Signs/BonfireSign2")
+
+[node name="SequencePuzzleStep3" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" unique_id=1318295917 node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("7_gauri")
+sequence = [NodePath("../../Objects/RedRock3"), NodePath("../../Objects/GreenRock3"), NodePath("../../Objects/YellowRock3"), NodePath("../../Objects/BlueRock3")]
+hint_sign = NodePath("../../Signs/BonfireSign3")
+
+[node name="SequencePuzzleStep4" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" unique_id=210135277 node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("7_gauri")
+sequence = [NodePath("../../Objects/YellowRock4"), NodePath("../../Objects/RedRock4"), NodePath("../../Objects/YellowRock4"), NodePath("../../Objects/BlueRock4"), NodePath("../../Objects/GreenRock4")]
+hint_sign = NodePath("../../Signs/BonfireSign4")
+
+[node name="Signs" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=1265998933]
+
+[node name="BonfireSign1" parent="OnTheGround/SequencePuzzle/Signs" unique_id=370730553 instance=ExtResource("8_fwn4i")]
+position = Vector2(40, -80)
+sprite_frames = ExtResource("9_wrty7")
+solved_sound_effect = ExtResource("10_cfaos")
+solved_ambient_sound = ExtResource("11_by2b3")
+
+[node name="BonfireSign2" parent="OnTheGround/SequencePuzzle/Signs" unique_id=1844776733 instance=ExtResource("8_fwn4i")]
+position = Vector2(288, -88)
+sprite_frames = ExtResource("9_wrty7")
+solved_sound_effect = ExtResource("10_cfaos")
+solved_ambient_sound = ExtResource("11_by2b3")
+
+[node name="BonfireSign3" parent="OnTheGround/SequencePuzzle/Signs" unique_id=436229437 instance=ExtResource("8_fwn4i")]
+position = Vector2(544, -88)
+sprite_frames = ExtResource("9_wrty7")
+solved_sound_effect = ExtResource("10_cfaos")
+solved_ambient_sound = ExtResource("11_by2b3")
+
+[node name="BonfireSign4" parent="OnTheGround/SequencePuzzle/Signs" unique_id=882415895 instance=ExtResource("8_fwn4i")]
+position = Vector2(792, -88)
+sprite_frames = ExtResource("9_wrty7")
+solved_sound_effect = ExtResource("10_cfaos")
+solved_ambient_sound = ExtResource("11_by2b3")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=920132428]
 stream = ExtResource("7_qjn5u")
 autoplay = true
+
+[connection signal="step_solved" from="OnTheGround/SequencePuzzle" to="TileMapLayers/BridgeController" method="_on_sequence_puzzle_step_solved"]
