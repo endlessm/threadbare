@@ -92,9 +92,9 @@ func _show_page(i: int) -> void:
 	left_body.text = pages[i]
 	right_body.text = pages_right[i] if i < pages_right.size() else ""
 	if i < pages.size() - 1:
-		hint.text = "▶  clic / Enter    ·    Esc para saltar"
+		hint.text = "▶  click / Enter    ·    Esc to skip"
 	else:
-		hint.text = "▶  clic / Enter para terminar"
+		hint.text = "▶  click / Enter to finish"
 
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -17,6 +17,7 @@
 [ext_resource type="Resource" uid="uid://bu8sab18188qj" path="res://scenes/quests/lore_quests/quest_004/01_dream_threshold/noria.dialogue" id="15_noria"]
 [ext_resource type="Script" uid="uid://ba7f2rw4pca5k" path="res://scenes/quests/lore_quests/quest_004/menhir/ability_exit.gd" id="16_exit"]
 [ext_resource type="Script" uid="uid://2u0dkcuoogj4" path="res://scenes/quests/lore_quests/quest_004/menhir/caracol_powerup.gd" id="18_carjuice"]
+[ext_resource type="SpriteFrames" uid="uid://cfgahyntmtfgu" path="res://scenes/game_elements/props/powerup/components/powerup_thread.tres" id="19_xfrwg"]
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="20_tkt3q"]
 [ext_resource type="AudioStream" uid="uid://ofn2fhr2a2n8" path="res://assets/first_party/music/Threadbare Loop_Main_Intro_01.ogg" id="21_q8elv"]
 [ext_resource type="PackedScene" uid="uid://tdvdp0jvbt2s" path="res://scenes/quests/lore_quests/quest_004/menhir/hum_hint.tscn" id="30_humhint"]
@@ -192,8 +193,6 @@ turbulence_noise_scale = 1.2
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
 size = Vector2(80, 220)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_carac"]
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wallH"]
 size = Vector2(1140, 40)
 
@@ -364,7 +363,7 @@ editor_draw_limits = true
 [node name="AbilityExit" type="Area2D" parent="." unique_id=777222333]
 position = Vector2(1205, 385)
 script = ExtResource("16_exit")
-next_scene = "res://scenes/quests/lore_quests/quest_004/01-El_umbral_del_sueño/la_pradera_dorada.tscn"
+next_scene = "res://scenes/quests/lore_quests/quest_004/01_dream_threshold/the_golden_meadow.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AbilityExit" unique_id=777222334]
 position = Vector2(-30, -29)
@@ -378,7 +377,7 @@ radius = 650.0
 [node name="LearnHumPowerup" parent="." unique_id=297202740 instance=ExtResource("13_d8brw")]
 position = Vector2(987, 222)
 ability = 256
-sprite_frames = SubResource("SpriteFrames_carac")
+sprite_frames = ExtResource("19_xfrwg")
 highlight_color = Color(0.55, 0.85, 0.95, 1)
 
 [node name="ExtraAbility" type="Node" parent="LearnHumPowerup" unique_id=133561057]
@@ -386,6 +385,7 @@ script = ExtResource("13_n2343")
 
 [node name="CaracolPowerup" type="Node" parent="LearnHumPowerup" unique_id=777444001]
 script = ExtResource("18_carjuice")
+icon_scale = 1.0
 
 [node name="Walls" type="StaticBody2D" parent="." unique_id=777444002]
 collision_layer = 16
