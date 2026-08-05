@@ -42,7 +42,7 @@ echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
 echo "::endgroup::"
 
 echo "::group::Creating zip file"
-git archive --format=zip --prefix=threadbare-storyquest/ --output="threadbare-storyquest-$VERSION.zip" @
+git archive --format=zip --prefix=threadbare-storyquest/ --output="threadbare-storyquest-kit.zip" @
 echo "::endgroup::"
 
-echo "zip_file=threadbare-storyquest-$VERSION.zip" >> "$GITHUB_OUTPUT"
+echo "zip_file=threadbare-storyquest-kit.zip" >> "$GITHUB_OUTPUT"
