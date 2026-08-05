@@ -35,6 +35,9 @@ extends Node
 ## this value.
 @export_range(16.0, 256.0, 1.0, "suffix:px", "or_more") var minimum_separation: float = 64.0
 
+## Enable this to modify the fillable area while the game is running.
+@export var in_game_filler: bool = false
+
 @warning_ignore("unused_private_class_variable")
 @export_tool_button("Refill") var _fill_button: Callable = fill
 
@@ -55,6 +58,8 @@ func _exit_tree() -> void:
 
 
 func _ready() -> void:
+	if in_game_filler:
+		return
 	if not Engine.is_editor_hint():
 		self.queue_free()
 		return
@@ -232,3 +237,31 @@ func fill() -> void:
 		_undoredo.add_undo_property(child, "owner", scene)
 
 	_undoredo.commit_action()
+
+
+## Similar to [method AreaFiller.fill], but works during runtime.
+## Clears [member area] (except for this node and any collision shapes),
+## generate a new set of points according to the current
+## parameters, and fill [member area] with instances of [member scenes]
+## at those points.
+func in_game_fill() -> void:
+	var scene := get_tree().edited_scene_root
+
+	var old_children: Array[Node]
+	var new_children: Array[Node]
+
+	for child: Node in _area.get_children():
+		if child != self and child is not CollisionPolygon2D and child is not CollisionShape2D:
+			old_children.append(child)
+
+	var points := _generate_points()
+	for point in points:
+		new_children.append(_prepare_child(point))
+
+	# When performing the action in either direction, we want to remove, then add.
+	for child in old_children:
+		_area.remove_child(child)
+
+	for child in new_children:
+		_area.add_child(child, true)
+		child.owner = scene
