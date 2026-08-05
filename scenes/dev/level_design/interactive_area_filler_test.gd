@@ -7,7 +7,7 @@ extends Node2D
 
 ## Refill the FlowerBed on interaction with the FabricRock.
 func _on_interact_area_interaction_started(area: InteractArea) -> void:
-	area_filler.in_game_fill()
+	area_filler.fill()
 	area.end_interaction()
 
 
