@@ -17,11 +17,17 @@
 [ext_resource type="SpriteFrames" uid="uid://pabpxy4b51t2" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign_forward.tres" id="9_wrty7"]
 [ext_resource type="AudioStream" uid="uid://ctty20c12j0f5" path="res://assets/third_party/sounds/bonfire_sign/FireStart.ogg" id="10_cfaos"]
 [ext_resource type="AudioStream" uid="uid://c7om8kdork2rx" path="res://assets/third_party/sounds/characters/enemies/guard/Torch.ogg" id="11_by2b3"]
+[ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="17_7plr7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7plr7"]
 size = Vector2(81, 58)
 
 [node name="TempleRoom2" type="Node2D" unique_id=1360898071]
+
+[node name="BackgroundMusic" type="Node" parent="." unique_id=1395602256]
+script = ExtResource("17_7plr7")
+stream = ExtResource("7_qjn5u")
+metadata/_custom_type_script = "uid://c8405c212rbn6"
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=537940738]
 
@@ -76,30 +82,6 @@ tile_set = ExtResource("2_qjn5u")
 script = ExtResource("3_wrty7")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=1876944702]
-
-[node name="Teleporter" parent="OnTheGround" unique_id=1779636661 instance=ExtResource("6_tf5gs")]
-position = Vector2(1672, 8)
-rotation = 3.1274123
-next_scene = "uid://m6krehsj0ew0"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Teleporter" unique_id=166099333]
-position = Vector2(30.5, 1)
-shape = SubResource("RectangleShape2D_7plr7")
-
-[node name="Door" parent="OnTheGround" unique_id=1860367584 instance=ExtResource("3_my1xk")]
-position = Vector2(1648, 8)
-rotation = 1.5707964
-
-[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("1_m25v8")]
-position = Vector2(40, 24)
-sprite_frames = ExtResource("2_my1xk")
-
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1105490654]
-limit_left = 0
-limit_top = -320
-limit_right = 2772
-limit_bottom = 680
-editor_draw_limits = true
 
 [node name="SequencePuzzle" type="Node2D" parent="OnTheGround" unique_id=1557777817]
 unique_name_in_owner = true
@@ -222,8 +204,28 @@ sprite_frames = ExtResource("9_wrty7")
 solved_sound_effect = ExtResource("10_cfaos")
 solved_ambient_sound = ExtResource("11_by2b3")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=920132428]
-stream = ExtResource("7_qjn5u")
-autoplay = true
+[node name="Teleporter" parent="OnTheGround" unique_id=1779636661 instance=ExtResource("6_tf5gs")]
+position = Vector2(1672, 8)
+rotation = 3.1274123
+next_scene = "uid://m6krehsj0ew0"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Teleporter" unique_id=166099333]
+position = Vector2(30.5, 1)
+shape = SubResource("RectangleShape2D_7plr7")
+
+[node name="Door" parent="OnTheGround" unique_id=1860367584 instance=ExtResource("3_my1xk")]
+position = Vector2(1648, 8)
+rotation = 1.5707964
+
+[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("1_m25v8")]
+position = Vector2(40, 24)
+sprite_frames = ExtResource("2_my1xk")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1105490654]
+limit_left = 0
+limit_top = -320
+limit_right = 2772
+limit_bottom = 680
+editor_draw_limits = true
 
 [connection signal="step_solved" from="OnTheGround/SequencePuzzle" to="TileMapLayers/BridgeController" method="_on_sequence_puzzle_step_solved"]
