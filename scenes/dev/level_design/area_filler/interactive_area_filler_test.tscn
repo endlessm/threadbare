@@ -19,14 +19,14 @@
 [ext_resource type="SpriteFrames" uid="uid://d36eq8tqdaxdy" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_green.tres" id="17_k42vi"]
 [ext_resource type="SpriteFrames" uid="uid://2ek86nvw6y28" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_yellow.tres" id="18_ttg0x"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_5l5sl"]
-radius = 64.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_pp1gq"]
+radius = 61.2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cdbf2"]
 radius = 64.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_pp1gq"]
-radius = 61.2
+[sub_resource type="CircleShape2D" id="CircleShape2D_5l5sl"]
+radius = 64.0
 
 [node name="InteractiveAreaFillerTest" type="Node2D" unique_id=60120374]
 script = ExtResource("1_0t1s1")
@@ -52,17 +52,17 @@ tile_set = ExtResource("4_1ddpu")
 [node name="OnTheGround" type="Node2D" parent="." unique_id=1769700087]
 y_sort_enabled = true
 
-[node name="FabricRock3" parent="OnTheGround" unique_id=1534237650 instance=ExtResource("5_s5eon")]
-position = Vector2(931, -214)
+[node name="FabricRock" parent="OnTheGround" unique_id=1319147835 instance=ExtResource("5_s5eon")]
+position = Vector2(801, 234)
 
-[node name="InteractAreaIncrease" type="Area2D" parent="OnTheGround/FabricRock3" unique_id=861073601]
+[node name="InteractArea" type="Area2D" parent="OnTheGround/FabricRock" unique_id=296319862]
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("6_e7oi0")
 metadata/_custom_type_script = "uid://du8wfijr35r35"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FabricRock3/InteractAreaIncrease" unique_id=1688650151]
-shape = SubResource("CircleShape2D_5l5sl")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FabricRock/InteractArea" unique_id=1977446241]
+shape = SubResource("CircleShape2D_pp1gq")
 
 [node name="FabricRock2" parent="OnTheGround" unique_id=345844557 instance=ExtResource("5_s5eon")]
 position = Vector2(672, -214)
@@ -75,6 +75,18 @@ metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FabricRock2/InteractAreaDecrease" unique_id=876564450]
 shape = SubResource("CircleShape2D_cdbf2")
+
+[node name="FabricRock3" parent="OnTheGround" unique_id=1534237650 instance=ExtResource("5_s5eon")]
+position = Vector2(931, -214)
+
+[node name="InteractAreaIncrease" type="Area2D" parent="OnTheGround/FabricRock3" unique_id=861073601]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("6_e7oi0")
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FabricRock3/InteractAreaIncrease" unique_id=1688650151]
+shape = SubResource("CircleShape2D_5l5sl")
 
 [node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("7_yosnh")]
 position = Vector2(154, 614)
@@ -108,18 +120,6 @@ scenes = Array[PackedScene]([ExtResource("10_8w2fp"), ExtResource("11_8txvc")])
 minimum_separation = 94.0
 in_game_filler = true
 metadata/_custom_type_script = "uid://bdhjixygupit1"
-
-[node name="FabricRock" parent="OnTheGround" unique_id=1319147835 instance=ExtResource("5_s5eon")]
-position = Vector2(801, 234)
-
-[node name="InteractArea" type="Area2D" parent="OnTheGround/FabricRock" unique_id=296319862]
-collision_layer = 32
-collision_mask = 0
-script = ExtResource("6_e7oi0")
-metadata/_custom_type_script = "uid://du8wfijr35r35"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FabricRock/InteractArea" unique_id=1977446241]
-shape = SubResource("CircleShape2D_pp1gq")
 
 [node name="DenseForest" type="StaticBody2D" parent="OnTheGround" unique_id=253598070]
 y_sort_enabled = true
@@ -787,6 +787,6 @@ scale = Vector2(1.2156825, 1.1554841)
 position = Vector2(1773.8765, -605.02686)
 scale = Vector2(1.0236987, 1.1152642)
 
-[connection signal="interaction_started" from="OnTheGround/FabricRock3/InteractAreaIncrease" to="." method="_on_interact_area_min_separation_interaction_started" flags=18 unbinds=2 binds= [25.0]]
-[connection signal="interaction_started" from="OnTheGround/FabricRock2/InteractAreaDecrease" to="." method="_on_interact_area_min_separation_interaction_started" flags=18 unbinds=2 binds= [-25.0]]
 [connection signal="interaction_started" from="OnTheGround/FabricRock/InteractArea" to="." method="_on_interact_area_interaction_started" flags=18 unbinds=2]
+[connection signal="interaction_started" from="OnTheGround/FabricRock2/InteractAreaDecrease" to="." method="_on_interact_area_min_separation_interaction_started" flags=18 unbinds=2 binds= [-25.0]]
+[connection signal="interaction_started" from="OnTheGround/FabricRock3/InteractAreaIncrease" to="." method="_on_interact_area_min_separation_interaction_started" flags=18 unbinds=2 binds= [25.0]]
