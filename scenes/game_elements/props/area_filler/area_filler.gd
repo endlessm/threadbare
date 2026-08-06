@@ -17,7 +17,9 @@ extends Node
 ## scenes], adjust other parameters to taste, then click [b]Refill[/b] in the
 ## inspector to fill the area with a new random arrangement of instances of
 ## [member scenes]. These children are saved to the owning scene: no random
-## generation occurs at runtime.
+## [member scenes]. These children are saved to the owning scene.
+##
+## By default, this node is only used in the editor and frees itself when the game is running. Enabling [member in_game_filler] allows you to use it in-game. But beware: the whole game freezes while the area is being filled, and it can be slow!
 
 ## Scenes that will be randomly placed into [member area]. There is an equal
 ## probability of each scene being used each time. This list must not be
