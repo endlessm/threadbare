@@ -22,5 +22,6 @@ func _capture(message: String, data: Array, _session_id: int) -> bool:
 			var file_path := data[0] as String
 			if file_path and file_path.ends_with(".tscn"):
 				EditorInterface.open_scene_from_path(file_path)
+				EditorInterface.set_main_screen_editor("2D")
 			return true
 	return false
