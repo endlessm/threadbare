@@ -16,8 +16,12 @@ extends Node
 ## [CircleShape2D], or [CapsuleShape2D]. Assign at least one scene to [member
 ## scenes], adjust other parameters to taste, then click [b]Refill[/b] in the
 ## inspector to fill the area with a new random arrangement of instances of
-## [member scenes]. These children are saved to the owning scene: no random
-## generation occurs at runtime.
+## [member scenes].
+## [br][br]
+## By default, this node is only used in the editor and frees itself when the
+## game is running. Enabling [member in_game_filler] allows you to use it
+## in-game. But beware: the whole game freezes while the area is being filled,
+## and it can be slow!
 
 ## Scenes that will be randomly placed into [member area]. There is an equal
 ## probability of each scene being used each time. This list must not be
@@ -34,6 +38,10 @@ extends Node
 ## Minimum separation between placed scenes. The maximum separation is twice
 ## this value.
 @export_range(16.0, 256.0, 1.0, "suffix:px", "or_more") var minimum_separation: float = 64.0
+
+## Enable this to modify the fillable area while the game is running.
+## If not enabled, this node will remove itself from the tree at runtime.
+@export var in_game_filler: bool = false
 
 @warning_ignore("unused_private_class_variable")
 @export_tool_button("Refill") var _fill_button: Callable = fill
@@ -55,13 +63,12 @@ func _exit_tree() -> void:
 
 
 func _ready() -> void:
-	if not Engine.is_editor_hint():
+	if Engine.is_editor_hint():
+		var plugin: Node = ClassDB.instantiate("EditorPlugin")
+		_undoredo = plugin.get_undo_redo()
+		plugin.queue_free()
+	elif not in_game_filler:
 		self.queue_free()
-		return
-
-	var plugin: Node = ClassDB.instantiate("EditorPlugin")
-	_undoredo = plugin.get_undo_redo()
-	plugin.queue_free()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -203,10 +210,6 @@ func _prepare_child(pos: Vector2) -> Node2D:
 ## parameters, and fill [member area] with instances of [member scenes]
 ## at those points.
 func fill() -> void:
-	var scene := get_tree().edited_scene_root
-
-	_undoredo.create_action("Refill area", UndoRedo.MergeMode.MERGE_DISABLE, scene, false)
-
 	var old_children: Array[Node]
 	var new_children: Array[Node]
 
@@ -218,17 +221,30 @@ func fill() -> void:
 	for point in points:
 		new_children.append(_prepare_child(point))
 
-	# When performing the action in either direction, we want to remove, then add.
-	for child in old_children:
-		_undoredo.add_do_method(_area, "remove_child", child)
+	if Engine.is_editor_hint():
+		# Filling in editor; add methods to _undoredo object
+		var scene := get_tree().edited_scene_root
 
-	for child in new_children:
-		_undoredo.add_do_method(_area, "add_child", child, true)
-		_undoredo.add_do_property(child, "owner", scene)
-		_undoredo.add_undo_method(_area, "remove_child", child)
+		_undoredo.create_action("Refill area", UndoRedo.MergeMode.MERGE_DISABLE, scene, false)
 
-	for child in old_children:
-		_undoredo.add_undo_method(_area, "add_child", child, true)
-		_undoredo.add_undo_property(child, "owner", scene)
+		# When performing the action in either direction, we want to remove, then add.
+		for child in old_children:
+			_undoredo.add_do_method(_area, "remove_child", child)
 
-	_undoredo.commit_action()
+		for child in new_children:
+			_undoredo.add_do_method(_area, "add_child", child, true)
+			_undoredo.add_do_property(child, "owner", scene)
+			_undoredo.add_undo_method(_area, "remove_child", child)
+
+		for child in old_children:
+			_undoredo.add_undo_method(_area, "add_child", child, true)
+			_undoredo.add_undo_property(child, "owner", scene)
+
+		_undoredo.commit_action()
+	else:
+		# Filling at runtime; apply methods directly to nodes
+		for child in old_children:
+			_area.remove_child(child)
+
+		for child in new_children:
+			_area.add_child(child)
