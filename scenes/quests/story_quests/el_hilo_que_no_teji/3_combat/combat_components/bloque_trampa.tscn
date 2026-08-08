@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://doim5xbi5nf4l"]
+
+[ext_resource type="Script" uid="uid://b44ejawr2aba" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/3_combat/combat_components/bloque_trampa.gd" id="1_a53py"]
+[ext_resource type="Texture2D" uid="uid://cont08r8f2lwe" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/3_combat/combat_components/Grass_And_Sand_Tiles.png" id="1_pmbs0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a53py"]
+size = Vector2(64, 64)
+
+[node name="BloqueTrampa" type="Area2D" unique_id=269090497]
+script = ExtResource("1_a53py")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1705139506]
+texture = ExtResource("1_pmbs0")
+hframes = 3
+frame = 2
+region_enabled = true
+region_rect = Rect2(640, 0, 192, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=312178692]
+shape = SubResource("RectangleShape2D_a53py")
+
+[node name="Timer" type="Timer" parent="." unique_id=584433387]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
