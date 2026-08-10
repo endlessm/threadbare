@@ -19,9 +19,10 @@ func _ready() -> void:
 	bridge_to_frays_end.set_toggled(is_storyquest_kit)
 	bridge_to_frays_end_broken.set_toggled(not is_storyquest_kit)
 
-	if is_storyquest_kit and GameState.quest:
-		# The player has returned here after completing a quest. Silently mark
-		# it as completed.
+	if GameState.quest:
+		# The player has returned here after completing a quest. There is no
+		# loom to interact with: just have an elder congratulate the player.
+		await story_quest_elder.congratulate_player()
 		GameState.mark_quest_completed()
 		GameState.save()
 
