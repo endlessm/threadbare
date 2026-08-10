@@ -39,14 +39,18 @@
 [ext_resource type="PackedScene" uid="uid://de2aceqqvj7dr" path="res://scenes/game_elements/props/decoration/capycorn/capycorn.tscn" id="27_r7ypx"]
 [ext_resource type="SpriteFrames" uid="uid://djwymcffy83" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_red.tres" id="28_fho73"]
 [ext_resource type="PackedScene" uid="uid://cfvr32bp2achm" path="res://scenes/game_elements/props/decoration/rock/fabric_rock.tscn" id="29_c5osl"]
-[ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="30_vcjda"]
-[ext_resource type="SpriteFrames" uid="uid://cy47injh7y40w" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_yellow.tres" id="31_qjme4"]
-[ext_resource type="Resource" uid="uid://crsabyoqr7jo5" path="res://scenes/dev/components/dev_archipelago_intro_npc.dialogue" id="32_2k3nx"]
+[ext_resource type="Resource" uid="uid://crsabyoqr7jo5" path="res://scenes/dev/components/dev_archipelago_intro_islander.dialogue" id="32_2k3nx"]
 [ext_resource type="SpriteFrames" uid="uid://br4k784ht8hh0" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_yellow_large.tres" id="32_c5osl"]
 [ext_resource type="SpriteFrames" uid="uid://bj1ic15slii3s" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_projectile_starfish_spriteframes.tres" id="33_vcjda"]
+[ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="37_4vl6q"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="38_7hftp"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="39_rjphr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pp1gq"]
 size = Vector2(64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cdbf2"]
+size = Vector2(47, 71)
 
 [node name="DevArchipelago" type="Node2D" unique_id=213943313]
 script = ExtResource("1_kt7u4")
@@ -236,11 +240,6 @@ sprite_frames = ExtResource("28_fho73")
 [node name="FabricRock" parent="OnTheGround/Decorations" unique_id=1319147835 instance=ExtResource("29_c5osl")]
 position = Vector2(-339, 1196)
 
-[node name="Talker" parent="OnTheGround/Decorations" unique_id=1086241914 instance=ExtResource("30_vcjda")]
-position = Vector2(-410, 1210)
-dialogue = ExtResource("32_2k3nx")
-sprite_frames = ExtResource("31_qjme4")
-
 [node name="FabricRock2" parent="OnTheGround/Decorations" unique_id=414875242 instance=ExtResource("29_c5osl")]
 position = Vector2(-473, 1495)
 
@@ -257,6 +256,29 @@ autoplay = "default"
 position = Vector2(-293, 1560)
 scale = Vector2(1.2518243, 1.1741086)
 sprite_frames = ExtResource("10_vcjda")
+
+[node name="ImagineIslander" parent="OnTheGround/Decorations" unique_id=1098678013 instance=ExtResource("37_4vl6q")]
+position = Vector2(-411, 1211)
+scale = Vector2(-1, 1)
+character_seed = 1055784306
+look_at_side = 1
+
+[node name="TalkBehavior" type="Node" parent="OnTheGround/Decorations/ImagineIslander" unique_id=581301322 node_paths=PackedStringArray("interact_area")]
+script = ExtResource("38_7hftp")
+dialogue = ExtResource("32_2k3nx")
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Decorations/ImagineIslander" unique_id=287141236]
+position = Vector2(-1, -27)
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("39_rjphr")
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Decorations/ImagineIslander/InteractArea" unique_id=179014338]
+visible = false
+shape = SubResource("RectangleShape2D_cdbf2")
 
 [node name="Node2D" type="Node2D" parent="OnTheGround" unique_id=196322635]
 y_sort_enabled = true
