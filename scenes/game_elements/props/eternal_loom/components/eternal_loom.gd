@@ -21,7 +21,8 @@ func _find_elder(quest: Quest) -> Elder:
 		if quest.resource_path.begins_with(elder.quest_directory):
 			return elder
 
-	return null
+	# No matching elder. This was probably a quest launched from Dev Island.
+	return elders[-1]
 
 
 ## Called from the dialogue when retelling is possible.
@@ -89,8 +90,6 @@ func on_cinematic_finished() -> void:
 	var elder: Elder = _find_elder(GameState.quest.quest)
 	if elder:
 		await elder.congratulate_player()
-	else:
-		push_warning("Could not find elder for %s" % [GameState.quest.quest.resource_path])
 
 	GameState.mark_quest_completed()
 	GameState.save()
