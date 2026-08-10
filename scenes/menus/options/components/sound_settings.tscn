@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="4_back"]
 [ext_resource type="Shortcut" uid="uid://c5pwgp1w8p3y1" path="res://scenes/ui_elements/shortcuts/back_shortcut.tres" id="4_k547c"]
 [ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="5_arrow"]
+[ext_resource type="AudioStream" uid="uid://c5doiohor3tr7" path="res://scenes/menus/options/components/test_sfx.tres" id="5_k547c"]
 
 [node name="SoundSettings" type="PanelContainer" unique_id=1536122933 node_paths=PackedStringArray("back_button")]
 anchors_preset = 8
@@ -43,7 +44,6 @@ text = "Music"
 horizontal_alignment = 2
 
 [node name="MusicSlider" parent="VBoxContainer/GridContainer" unique_id=72306828 instance=ExtResource("3_ntmw0")]
-unique_name_in_owner = true
 layout_mode = 2
 bus_name = "Music"
 
@@ -65,3 +65,10 @@ shortcut = ExtResource("4_k547c")
 text = "Back"
 icon = ExtResource("5_arrow")
 flat = true
+
+[node name="TestSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1300034183]
+stream = ExtResource("5_k547c")
+max_polyphony = 10
+bus = &"SFX"
+
+[connection signal="value_changed" from="VBoxContainer/GridContainer/SFXSlider" to="TestSFXPlayer" method="play" flags=3 unbinds=1]
