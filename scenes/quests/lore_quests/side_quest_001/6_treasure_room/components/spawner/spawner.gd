@@ -3,6 +3,13 @@
 extends Node2D
 
 @export var arrow: PackedScene
+@export var time: float = 1.0
+
+@onready var cooldown: Timer = $Cooldown
+
+
+func _ready() -> void:
+	cooldown.wait_time = time
 
 
 func shoot():
