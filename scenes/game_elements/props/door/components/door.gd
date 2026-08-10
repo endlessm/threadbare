@@ -16,8 +16,9 @@ func open() -> void:
 	if play_victory_fanfare_on_open:
 		ring_sound.play()
 	door_sound.play()
+	
 	set_toggled(true)
-
+	
 
 func close() -> void:
 	set_toggled(false)
