@@ -9,11 +9,6 @@ const VERSION_KEY := "Version"
 const VERSION := 1
 
 const VOLUME_SECTION := "Volume"
-const MIN_VOLUME := 0.0
-const MAX_VOLUME := 1.0
-const DEFAULT_VOLUMES: Dictionary[String, float] = {
-	"Music": 0.5,
-}
 
 const DISPLAY_SECTION := "Display"
 const SHOW_HUD_KEY := "Show HUD"
@@ -44,6 +39,8 @@ var _settings := ConfigFile.new()
 var _overrides_path: String
 var _overrides := ConfigFile.new()
 
+var _default_volumes: Dictionary[String, float]
+
 
 func _ready() -> void:
 	var err := _settings.load(SETTINGS_PATH)
@@ -64,11 +61,11 @@ func _ready() -> void:
 func _restore_volumes() -> void:
 	for bus_idx in AudioServer.bus_count:
 		var bus := AudioServer.get_bus_name(bus_idx)
-		var volume_linear: float = _settings.get_value(
-			VOLUME_SECTION, bus, DEFAULT_VOLUMES.get(bus, MAX_VOLUME)
-		)
-
-		_set_volume(bus_idx, volume_linear)
+		# The default bus layout volumes double as the max volumes
+		var max_volume_linear := AudioServer.get_bus_volume_linear(bus_idx)
+		_default_volumes[bus] = max_volume_linear
+		var volume_linear: float = _settings.get_value(VOLUME_SECTION, bus, max_volume_linear)
+		_set_volume(bus_idx, clampf(volume_linear, 0.0, max_volume_linear))
 
 
 func _load_project_settings_overrides() -> void:
@@ -97,8 +94,11 @@ func _set_minimum_window_size() -> void:
 
 func get_volume(bus: String) -> float:
 	var bus_idx := AudioServer.get_bus_index(bus)
-
 	return AudioServer.get_bus_volume_linear(bus_idx)
+
+
+func get_max_volume(bus: String) -> float:
+	return _default_volumes.get(bus, 1.0)
 
 
 func set_volume(bus: String, volume_linear: float) -> void:
