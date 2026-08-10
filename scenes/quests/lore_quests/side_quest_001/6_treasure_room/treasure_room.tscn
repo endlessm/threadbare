@@ -1,16 +1,28 @@
-[gd_scene format=3 uid="uid://m6krehsj0ew0"]
+[gd_scene format=4 uid="uid://m6krehsj0ew0"]
 
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="1_2ftnb"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_05w84"]
+[ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="1_s4op0"]
+[ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="1_sbb37"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="2_3g0tf"]
+[ext_resource type="AudioStream" uid="uid://676ese8fg2qm" path="res://scenes/quests/story_quests/renya_beyond_sorrow/Complementos/music/7. Silent Longing (Loop).ogg" id="2_25lrc"]
 [ext_resource type="TileSet" uid="uid://ciq5guijvlyb0" path="res://tiles/void_chromakey.tres" id="2_dd31k"]
-[ext_resource type="AudioStream" uid="uid://676ese8fg2qm" path="res://scenes/quests/story_quests/renya_beyond_sorrow/Complementos/music/7. Silent Longing (Loop).ogg" id="5_dd31k"]
+[ext_resource type="PackedScene" uid="uid://dqo4d6mp4hwhi" path="res://scenes/game_elements/props/repellable_box/repellable_box.tscn" id="3_vdtrm"]
+[ext_resource type="PackedScene" uid="uid://bnfp1palo46hr" path="res://scenes/quests/lore_quests/side_quest_001/6_treasure_room/components/arrow/arrow.tscn" id="4_sabig"]
+[ext_resource type="PackedScene" uid="uid://dxl6j7uc7o0nu" path="res://scenes/quests/lore_quests/side_quest_001/6_treasure_room/components/spawner/spawner.tscn" id="5_dd31k"]
 
 [node name="TreasureRoom" type="Node2D" unique_id=2055144060]
+
+[node name="BackgroundMusic" type="Node" parent="." unique_id=303419665]
+script = ExtResource("1_sbb37")
+stream = ExtResource("2_25lrc")
+metadata/_custom_type_script = "uid://c8405c212rbn6"
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=583731283]
 
 [node name="Floor" type="TileMapLayer" parent="TileMapLayers" unique_id=842694951]
+tile_map_data = PackedByteArray("AAABAP3/AQAGAAEAAAABAP7/AQAGAAEAAAABAP//AQAGAAEAAAABAAAAAQAGAAEAAAABAAEAAQAGAAEAAAABAAIAAQAGAAEAAAABAAMAAQAGAAEAAAABAAQAAQAGAAEAAAABAAUAAQAGAAEAAAABAAYAAQAGAAEAAAABAAcAAQAGAAEAAAABAAgAAQAGAAEAAAACAP3/AQAGAAEAAAACAP7/AQAGAAEAAAACAP//AQAGAAEAAAACAAAAAQAGAAEAAAACAAEAAQAGAAEAAAACAAIAAQAGAAEAAAACAAMAAQAGAAEAAAACAAQAAQAGAAEAAAACAAUAAQAGAAEAAAACAAYAAQAGAAEAAAACAAcAAQAGAAEAAAACAAgAAQAGAAEAAAADAP3/AQAGAAEAAAADAP7/AQAGAAEAAAADAP//AQAGAAEAAAADAAAAAQAGAAEAAAADAAEAAQAGAAEAAAADAAIAAQAGAAEAAAADAAMAAQAGAAEAAAADAAQAAQAGAAEAAAADAAUAAQAGAAEAAAADAAYAAQAGAAEAAAADAAcAAQAGAAEAAAADAAgAAQAGAAEAAAAEAP3/AQAGAAEAAAAEAP7/AQAGAAEAAAAEAP//AQAGAAEAAAAEAAAAAQAGAAEAAAAEAAEAAQAGAAEAAAAEAAIAAQAGAAEAAAAEAAMAAQAGAAEAAAAEAAQAAQAGAAEAAAAEAAUAAQAGAAEAAAAEAAYAAQAGAAEAAAAEAAcAAQAGAAEAAAAEAAgAAQAGAAEAAAAFAP3/AQAGAAEAAAAFAP7/AQAGAAEAAAAFAP//AQAGAAEAAAAFAAAAAQAGAAEAAAAFAAEAAQAGAAEAAAAFAAIAAQAGAAEAAAAFAAMAAQAGAAEAAAAFAAQAAQAGAAEAAAAFAAUAAQAGAAEAAAAFAAYAAQAGAAEAAAAFAAcAAQAGAAEAAAAFAAgAAQAGAAEAAAAGAP3/AQAGAAEAAAAGAP7/AQAGAAEAAAAGAP//AQAGAAEAAAAGAAAAAQAGAAEAAAAGAAEAAQAGAAEAAAAGAAIAAQAGAAEAAAAGAAMAAQAGAAEAAAAGAAQAAQAGAAEAAAAGAAUAAQAGAAEAAAAGAAYAAQAGAAEAAAAGAAcAAQAGAAEAAAAGAAgAAQAGAAEAAAAHAP3/AQAGAAEAAAAHAP7/AQAGAAEAAAAHAP//AQAGAAEAAAAHAAAAAQAGAAEAAAAHAAEAAQAGAAEAAAAHAAIAAQAGAAEAAAAHAAMAAQAGAAEAAAAHAAQAAQAGAAEAAAAHAAUAAQAGAAEAAAAHAAYAAQAGAAEAAAAHAAcAAQAGAAEAAAAHAAgAAQAGAAEAAAAIAP3/AQAGAAEAAAAIAP7/AQAGAAEAAAAIAP//AQAGAAEAAAAIAAAAAQAGAAEAAAAIAAEAAQAGAAEAAAAIAAIAAQAGAAEAAAAIAAMAAQAGAAEAAAAIAAQAAQAGAAEAAAAIAAUAAQAGAAEAAAAIAAYAAQAGAAEAAAAIAAcAAQAGAAEAAAAIAAgAAQAGAAEAAAAJAP3/AQAGAAEAAAAJAP7/AQAGAAEAAAAJAP//AQAGAAEAAAAJAAAAAQAGAAEAAAAJAAEAAQAGAAEAAAAJAAIAAQAGAAEAAAAJAAMAAQAGAAEAAAAJAAQAAQAGAAEAAAAJAAUAAQAGAAEAAAAJAAYAAQAGAAEAAAAJAAcAAQAGAAEAAAAJAAgAAQAGAAEAAAAKAP3/AQAGAAEAAAAKAP7/AQAGAAEAAAAKAP//AQAGAAEAAAAKAAAAAQAGAAEAAAAKAAEAAQAGAAEAAAAKAAIAAQAGAAEAAAAKAAMAAQAGAAEAAAAKAAQAAQAGAAEAAAAKAAUAAQAGAAEAAAAKAAYAAQAGAAEAAAAKAAcAAQAGAAEAAAAKAAgAAQAGAAEAAAALAP3/AQAGAAEAAAALAP7/AQAGAAEAAAALAP//AQAGAAEAAAALAAAAAQAGAAEAAAALAAEAAQAGAAEAAAALAAIAAQAGAAEAAAALAAMAAQAGAAEAAAALAAQAAQAGAAEAAAALAAUAAQAGAAEAAAALAAYAAQAGAAEAAAALAAcAAQAGAAEAAAALAAgAAQAGAAEAAAAMAP3/AQAGAAEAAAAMAP7/AQAGAAEAAAAMAP//AQAGAAEAAAAMAAAAAQAGAAEAAAAMAAEAAQAGAAEAAAAMAAIAAQAGAAEAAAAMAAMAAQAGAAEAAAAMAAQAAQAGAAEAAAAMAAUAAQAGAAEAAAAMAAYAAQAGAAEAAAAMAAcAAQAGAAEAAAAMAAgAAQAGAAEAAAA=")
+tile_set = ExtResource("1_s4op0")
 
 [node name="Void" type="TileMapLayer" parent="TileMapLayers" unique_id=56441085]
 texture_filter = 1
@@ -19,8 +31,33 @@ tile_set = ExtResource("2_dd31k")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=1991035904]
 
+[node name="RepellableBox" parent="OnTheGround" unique_id=1805651676 node_paths=PackedStringArray("constrain_layer") instance=ExtResource("3_vdtrm")]
+position = Vector2(346, 181)
+constrain_layer = NodePath("../../TileMapLayers/Floor")
+
+[node name="RepellableBox2" parent="OnTheGround" unique_id=2132553235 node_paths=PackedStringArray("constrain_layer") instance=ExtResource("3_vdtrm")]
+position = Vector2(449, 414)
+constrain_layer = NodePath("../../TileMapLayers/Floor")
+
+[node name="Traps" type="Node2D" parent="OnTheGround" unique_id=1257288532]
+
+[node name="Spawner2" parent="OnTheGround/Traps" unique_id=1728168118 instance=ExtResource("5_dd31k")]
+position = Vector2(481, -120)
+arrow = ExtResource("4_sabig")
+time = 0.3
+
+[node name="Spawner3" parent="OnTheGround/Traps" unique_id=2080948772 instance=ExtResource("5_dd31k")]
+position = Vector2(672, -120)
+arrow = ExtResource("4_sabig")
+time = 0.3
+
+[node name="Spawner4" parent="OnTheGround/Traps" unique_id=465126110 instance=ExtResource("5_dd31k")]
+position = Vector2(887, -120)
+arrow = ExtResource("4_sabig")
+time = 0.5
+
 [node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("1_05w84")]
-position = Vector2(-140, 73)
+position = Vector2(127, 238)
 sprite_frames = ExtResource("2_3g0tf")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1687472458]
@@ -29,7 +66,3 @@ limit_top = -320
 limit_right = 2772
 limit_bottom = 680
 editor_draw_limits = true
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=433648341]
-stream = ExtResource("5_dd31k")
-autoplay = true
