@@ -58,9 +58,9 @@ func _ready() -> void:
 func _populate_quest_lists() -> void:
 	#Clear out any existing buttons from previous views
 	for child in left_quest_list.get_children():
-		child.queue_free()
+		child.free()
 	for child in right_quest_list.get_children():
-		child.queue_free()
+		child.free()
 
 	#Calculate the quest slices for this specific book spread
 	var left_start: int = _current_list_page * quests_per_page * 2
