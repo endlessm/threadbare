@@ -18,11 +18,18 @@
 [ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="11_nvg6t"]
 [ext_resource type="PackedScene" uid="uid://cuu65vogubwxd" path="res://scenes/game_elements/props/repellable_lever/repellable_lever.tscn" id="12_myuc4"]
 [ext_resource type="Script" uid="uid://civ76mpbwk7e7" path="res://scenes/quests/lore_quests/side_quest_001/3_jungle/components/statue_puzzle.gd" id="18_j28dd"]
+[ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="19_6vnpo"]
+[ext_resource type="AudioStream" uid="uid://dbwjolg3xlntq" path="res://scenes/quests/story_quests/shjourney/2_shjourney_intro/template_intro_components/EffectSounds/amazon-rainforest.ogg" id="20_ujono"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_andwd"]
 size = Vector2(79, 50)
 
 [node name="Jungle" type="Node2D" unique_id=950317485]
+
+[node name="BackgroundMusic" type="Node" parent="." unique_id=416448248]
+script = ExtResource("19_6vnpo")
+stream = ExtResource("20_ujono")
+metadata/_custom_type_script = "uid://c8405c212rbn6"
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1915810066]
 
@@ -99,17 +106,6 @@ position = Vector2(927, 167)
 position = Vector2(1723, 52)
 rotation = 1.5706949
 
-[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("5_lcn3x")]
-position = Vector2(73, 56)
-sprite_frames = ExtResource("6_wc2uc")
-
-[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1292273495]
-limit_left = 0
-limit_top = -320
-limit_right = 2772
-limit_bottom = 680
-editor_draw_limits = true
-
 [node name="Bush" parent="OnTheGround" unique_id=1924859315 instance=ExtResource("9_y3opp")]
 position = Vector2(108, -221)
 
@@ -141,6 +137,17 @@ symbol = "circle"
 [node name="Statue Puzzle" type="Node2D" parent="OnTheGround" unique_id=948042774]
 script = ExtResource("18_j28dd")
 num_of_entries = 2
+
+[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("5_lcn3x")]
+position = Vector2(73, 56)
+sprite_frames = ExtResource("6_wc2uc")
+
+[node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1292273495]
+limit_left = 0
+limit_top = -320
+limit_right = 2772
+limit_bottom = 680
+editor_draw_limits = true
 
 [connection signal="exited" from="OnTheGround/PressurePlate" to="OnTheGround/Statue Puzzle" method="_on_exit"]
 [connection signal="matching" from="OnTheGround/PressurePlate" to="OnTheGround/Statue Puzzle" method="_on_matched"]
