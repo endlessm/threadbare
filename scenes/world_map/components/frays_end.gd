@@ -5,7 +5,7 @@ extends Node2D
 @onready var hud: CanvasLayer = %HUD
 @onready var eternal_loom: EternalLoom = %EternalLoom
 @onready var void_quest_unlocker: QuestProgressUnlocker = %VoidQuestUnlocker
-@onready var mythical_meadows_unlocker: QuestProgressUnlocker = %MythicalMeadowsUnlocker
+@onready var dev_island_unlocker: QuestProgressUnlocker = %DevIslandUnlocker
 @onready var exit_blocker: Area2D = %ExitBlocker
 
 

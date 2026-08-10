@@ -25,35 +25,24 @@
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="13_otyi0"]
 [ext_resource type="Texture2D" uid="uid://d2kjk3oiu5o6o" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Blue_02.png" id="13_qm4wv"]
 [ext_resource type="Resource" uid="uid://d4kkr5cifitfm" path="res://scenes/world_map/components/sigurd.dialogue" id="14_otyi0"]
+[ext_resource type="PackedScene" uid="uid://bcy28nucscyep" path="res://scenes/game_elements/props/teleporter/quest_teleporter.tscn" id="17_kxo1k"]
+[ext_resource type="Resource" uid="uid://cgr54yigkbxp3" path="res://scenes/quests/lore_quests/quest_004/quest.tres" id="18_k2nu1"]
 [ext_resource type="SpriteFrames" uid="uid://7yx2vrxg6ytx" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_blue_large.tres" id="22_y5day"]
 [ext_resource type="SpriteFrames" uid="uid://c4da2w5tt3u7j" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_blue_small.tres" id="23_5eaun"]
 [ext_resource type="PackedScene" uid="uid://c4vbokn408f2c" path="res://scenes/game_elements/props/decoration/sheep/sheep.tscn" id="23_8o6qx"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kxo1k"]
+size = Vector2(52, 61)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8hv4q"]
 size = Vector2(128, 128)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kxo1k"]
-size = Vector2(52, 61)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jbkpe"]
+size = Vector2(128, 128)
 
 [node name="FraysEndWest" type="Node2D" unique_id=1575051889]
 metadata/_edit_vertical_guides_ = [1281.0]
 metadata/_edit_horizontal_guides_ = [772.0]
-
-[node name="Teleporter" parent="." unique_id=1779636661 instance=ExtResource("1_ovokv")]
-position = Vector2(1349, 705)
-next_scene = "uid://cufkthb25mpxy"
-spawn_point_path = NodePath("OnTheGround/WestPath/SpawnPointWestPath")
-enter_transition = 1
-exit_transition = 1
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" unique_id=1496141142]
-shape = SubResource("RectangleShape2D_8hv4q")
-
-[node name="SpawnPoint" type="Marker2D" parent="." unique_id=1903956882 groups=["spawn_point"]]
-position = Vector2(1223, 706)
-script = ExtResource("7_q3i8o")
-look_at_side_on_spawn = -1
-metadata/_custom_type_script = "uid://0enyu5v4ra34"
 
 [node name="BackgroundMusic" parent="." unique_id=1461759951 instance=ExtResource("8_svupf")]
 stream = ExtResource("9_8d0tu")
@@ -65,7 +54,7 @@ tile_map_data = PackedByteArray("AAATAAoAAQABAAEAAAATAAkAAQABAAEAAAATAAgAAQABAAE
 tile_set = ExtResource("1_6wkkr")
 
 [node name="Paths" type="TileMapLayer" parent="TileMapLayers" unique_id=1663042993]
-tile_map_data = PackedByteArray("AAAVAAsABQACAAIAAAAVAAoABQACAAAAAAAUAAsABQABAAIAAAAUAAoABQABAAAAAAATAAsABQABAAIAAAATAAoABQABAAAAAAASAAsABQAAAAIAAAASAAoABQABAAAAAAARAAoABQABAAMAAAAQAAoABQABAAMAAAAPAAoABQABAAMAAAAOAAoABQAAAAIAAAAOAAkABQADAAEAAAAOAAgABQACAAEAAAAOAAcABQADAAEAAAAOAAYABQADAAEAAAAOAAUABQADAAEAAAANAAQABQABAAMAAAAOAAQABQACAAEAAAAMAAQABQABAAMAAAALAAQABQABAAMAAAAKAAQABQABAAMAAAAJAAQABQABAAMAAAAIAAQABQABAAMAAAAHAAQABQAAAAIAAAAHAAMABQADAAAAAAAEAAgABQAAAAEAAAAEAAcABQADAAAAAAAGAAgABQABAAMAAAAFAAgABQABAAMAAAAHAAgABQABAAMAAAAIAAgABQABAAMAAAAJAAgABQABAAMAAAAKAAgABQABAAMAAAALAAgABQABAAMAAAAMAAgABQABAAMAAAANAAgABQABAAMAAAAOAAMABQADAAAAAAAMAAIABQADAAIAAAAMAAEABQABAAAAAAALAAEABQAAAAMAAAANAAEABQACAAMAAAAQAAIABQADAAAAAAAQAAMABQADAAIAAAAEAAkABQADAAEAAAAEAAoABQAAAAIAAAAFAAoABQACAAAAAAAFAAsABQAAAAIAAAAGAAsABQACAAAAAAAIAAsABQADAAMAAAAKAAoABQADAAAAAAAKAAsABQAAAAEAAAALAAsABQABAAAAAAALAAwABQACAAIAAAAKAAwABQAAAAIAAAAMAAsABQACAAMAAAAGAAwABQADAAIAAAA=")
+tile_map_data = PackedByteArray("AAAVAAsABQACAAIAAAAVAAoABQACAAAAAAAUAAsABQABAAIAAAAUAAoABQABAAAAAAATAAsABQABAAIAAAATAAoABQABAAAAAAASAAsABQAAAAIAAAASAAoABQABAAAAAAARAAoABQABAAMAAAAQAAoABQABAAMAAAAPAAoABQABAAMAAAAOAAoABQAAAAIAAAAOAAkABQADAAEAAAAOAAgABQACAAEAAAAOAAcABQADAAEAAAAOAAYABQADAAEAAAAOAAUABQADAAEAAAANAAQABQABAAMAAAAOAAQABQACAAEAAAAMAAQABQABAAMAAAALAAQABQABAAMAAAAKAAQABQABAAMAAAAJAAQABQABAAMAAAAIAAQABQABAAMAAAAHAAQABQAAAAIAAAAHAAMABQADAAAAAAAEAAgABQABAAEAAAAEAAcABQADAAAAAAAGAAgABQABAAMAAAAFAAgABQABAAMAAAAHAAgABQABAAMAAAAIAAgABQABAAMAAAAJAAgABQABAAMAAAAKAAgABQABAAMAAAALAAgABQABAAMAAAAMAAgABQABAAMAAAANAAgABQABAAMAAAAOAAMABQADAAAAAAAMAAIABQADAAIAAAAMAAEABQABAAAAAAALAAEABQAAAAMAAAANAAEABQACAAMAAAAQAAIABQADAAAAAAAQAAMABQADAAIAAAAEAAkABQADAAEAAAAEAAoABQAAAAIAAAAFAAoABQACAAAAAAAFAAsABQAAAAIAAAAGAAsABQACAAAAAAAIAAsABQADAAMAAAAKAAoABQADAAAAAAAKAAsABQAAAAEAAAALAAsABQABAAAAAAALAAwABQACAAIAAAAKAAwABQAAAAIAAAAMAAsABQACAAMAAAAGAAwABQADAAIAAAD1/wgABQAAAAMAAAD2/wgABQABAAMAAAD3/wgABQABAAMAAAD4/wgABQABAAMAAAD5/wgABQABAAMAAAD6/wgABQABAAMAAAD7/wgABQABAAMAAAD8/wgABQABAAMAAAD9/wgABQABAAMAAAD+/wgABQABAAMAAAD//wgABQABAAMAAAAAAAgABQABAAMAAAABAAgABQABAAMAAAACAAgABQABAAMAAAADAAgABQABAAMAAAA=")
 tile_set = ExtResource("1_6wkkr")
 
 [node name="Paths2" type="TileMapLayer" parent="TileMapLayers" unique_id=1400951136]
@@ -92,7 +81,7 @@ tile_set = ExtResource("1_6wkkr")
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("3_7dntp")]
-position = Vector2(1216, 720)
+position = Vector2(622, 429)
 player_name = "StoryWeaver"
 sprite_frames = ExtResource("4_ltemt")
 
@@ -158,10 +147,51 @@ debug_color = Color(0.600391, 0.54335, 0, 0.42)
 [node name="Marker" type="Marker2D" parent="OnTheGround/Sigurd/InteractArea" unique_id=2031504100]
 position = Vector2(0, -100)
 
-[node name="Sign" parent="OnTheGround" unique_id=1579530966 instance=ExtResource("6_eitnf")]
+[node name="FraysEndPath" type="Node2D" parent="OnTheGround" unique_id=1315134038]
+y_sort_enabled = true
+
+[node name="Teleporter" parent="OnTheGround/FraysEndPath" unique_id=1779636661 instance=ExtResource("1_ovokv")]
+position = Vector2(1349, 705)
+next_scene = "uid://cufkthb25mpxy"
+spawn_point_path = NodePath("OnTheGround/WestPath/SpawnPointWestPath")
+enter_transition = 1
+exit_transition = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/FraysEndPath/Teleporter" unique_id=1496141142]
+shape = SubResource("RectangleShape2D_8hv4q")
+
+[node name="SpawnPoint" type="Marker2D" parent="OnTheGround/FraysEndPath" unique_id=1903956882 groups=["spawn_point"]]
+position = Vector2(1223, 706)
+script = ExtResource("7_q3i8o")
+look_at_side_on_spawn = -1
+metadata/_custom_type_script = "uid://0enyu5v4ra34"
+
+[node name="Sign" parent="OnTheGround/FraysEndPath" unique_id=1579530966 instance=ExtResource("6_eitnf")]
 position = Vector2(1171, 621)
 direction = 1
 text = "Eternal Loom"
+
+[node name="MythicalMeadowsPath" type="Node2D" parent="OnTheGround" unique_id=1092443977]
+y_sort_enabled = true
+position = Vector2(-280, 563)
+
+[node name="Sign" parent="OnTheGround/MythicalMeadowsPath" unique_id=20492704 instance=ExtResource("6_eitnf")]
+position = Vector2(186, -62)
+text = "Mythical Meadows"
+
+[node name="SpawnPoint" type="Marker2D" parent="OnTheGround/MythicalMeadowsPath" unique_id=634037126 groups=["spawn_point"]]
+position = Vector2(296, -19)
+script = ExtResource("7_q3i8o")
+look_at_side_on_spawn = 1
+metadata/_custom_type_script = "uid://0enyu5v4ra34"
+
+[node name="QuestTeleporter" parent="OnTheGround/MythicalMeadowsPath" unique_id=960490707 node_paths=PackedStringArray("abandon_point") instance=ExtResource("17_kxo1k")]
+quest = ExtResource("18_k2nu1")
+abandon_point = NodePath("../SpawnPoint")
+enter_transition = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/MythicalMeadowsPath/QuestTeleporter" unique_id=1742306982]
+shape = SubResource("RectangleShape2D_jbkpe")
 
 [node name="Houses" type="Node2D" parent="OnTheGround" unique_id=1443466890]
 y_sort_enabled = true
@@ -217,6 +247,8 @@ scale = Vector2(1.0253335, 1.0274945)
 
 [node name="Forest" type="StaticBody2D" parent="OnTheGround" unique_id=2126418376]
 y_sort_enabled = true
+collision_layer = 16
+collision_mask = 0
 
 [node name="AreaFiller" type="Node" parent="OnTheGround/Forest" unique_id=940815448]
 script = ExtResource("7_ltemt")
@@ -225,12 +257,11 @@ sprite_frames = Array[SpriteFrames]([ExtResource("9_htidp"), ExtResource("10_wps
 metadata/_custom_type_script = "uid://bdhjixygupit1"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="OnTheGround/Forest" unique_id=1547085708]
-polygon = PackedVector2Array(1192, -36, 1192, -542, -688, -554, -688, 763, 82, 753, 150, 465, 241, 214, 507, -48)
+polygon = PackedVector2Array(1192, -36, 1192, -542, -688, -554, -701, 511, 99, 483, 241, 214, 507, -48)
 
-[node name="Tree" parent="OnTheGround/Forest" unique_id=778491064 instance=ExtResource("8_wf3xu")]
-position = Vector2(159.66095, 438.35275)
-scale = Vector2(0.86004066, 0.8585061)
-sprite_frames = ExtResource("9_htidp")
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="OnTheGround/Forest" unique_id=1574986777]
+position = Vector2(-3, 0)
+polygon = PackedVector2Array(-689, 634, -688, 763, 83, 772, -143.73969, 629.2645)
 
 [node name="Tree2" parent="OnTheGround/Forest" unique_id=1938107775 instance=ExtResource("8_wf3xu")]
 position = Vector2(63.55966, 373.05328)
@@ -267,19 +298,9 @@ position = Vector2(200.88316, 123.31611)
 scale = Vector2(1.0491804, 1.0788546)
 sprite_frames = ExtResource("9_htidp")
 
-[node name="Tree10" parent="OnTheGround/Forest" unique_id=735177379 instance=ExtResource("8_wf3xu")]
-position = Vector2(5.2201004, 519.5328)
-scale = Vector2(1.0297824, 1.111391)
-sprite_frames = ExtResource("9_htidp")
-
 [node name="Tree11" parent="OnTheGround/Forest" unique_id=715555394 instance=ExtResource("8_wf3xu")]
 position = Vector2(-25.772491, 401.56238)
 scale = Vector2(0.9176795, 0.86824113)
-
-[node name="Tree12" parent="OnTheGround/Forest" unique_id=1185100400 instance=ExtResource("8_wf3xu")]
-position = Vector2(121.005424, 519.8536)
-scale = Vector2(0.8746478, 0.85931814)
-sprite_frames = ExtResource("9_htidp")
 
 [node name="Tree13" parent="OnTheGround/Forest" unique_id=991622759 instance=ExtResource("8_wf3xu")]
 position = Vector2(-4.3438034, 231.73775)
@@ -290,29 +311,10 @@ sprite_frames = ExtResource("9_htidp")
 position = Vector2(-106.33467, 394.45755)
 scale = Vector2(1.1203755, 1.1090813)
 
-[node name="Tree15" parent="OnTheGround/Forest" unique_id=562926490 instance=ExtResource("8_wf3xu")]
-position = Vector2(60.95576, 569.45557)
-scale = Vector2(0.9682841, 1.0287123)
-sprite_frames = ExtResource("9_htidp")
-
 [node name="Tree16" parent="OnTheGround/Forest" unique_id=1013473017 instance=ExtResource("8_wf3xu")]
 position = Vector2(-56.364113, 295.68915)
 scale = Vector2(0.98004043, 1.0875492)
 sprite_frames = ExtResource("9_htidp")
-
-[node name="Tree17" parent="OnTheGround/Forest" unique_id=1283098914 instance=ExtResource("8_wf3xu")]
-position = Vector2(177.71082, 376.40372)
-scale = Vector2(0.8049863, 0.8435616)
-sprite_frames = ExtResource("9_htidp")
-
-[node name="Tree18" parent="OnTheGround/Forest" unique_id=1299769062 instance=ExtResource("8_wf3xu")]
-position = Vector2(-2.5057487, 660.71783)
-scale = Vector2(1.1869736, 1.1872046)
-sprite_frames = ExtResource("9_htidp")
-
-[node name="Tree19" parent="OnTheGround/Forest" unique_id=1107992244 instance=ExtResource("8_wf3xu")]
-position = Vector2(113.17438, 611.66583)
-scale = Vector2(1.0590259, 0.9668085)
 
 [node name="Tree20" parent="OnTheGround/Forest" unique_id=1207124401 instance=ExtResource("8_wf3xu")]
 position = Vector2(262.2728, 88.045944)
@@ -332,11 +334,6 @@ scale = Vector2(1.1271391, 1.1321772)
 position = Vector2(67.78522, 134.8357)
 scale = Vector2(0.81823385, 0.83547723)
 
-[node name="Tree24" parent="OnTheGround/Forest" unique_id=730022136 instance=ExtResource("8_wf3xu")]
-position = Vector2(74.708595, 688.29376)
-scale = Vector2(1.1668999, 1.1999096)
-sprite_frames = ExtResource("9_htidp")
-
 [node name="Tree25" parent="OnTheGround/Forest" unique_id=1189821976 instance=ExtResource("8_wf3xu")]
 position = Vector2(-79.49761, 226.4905)
 scale = Vector2(0.9658169, 0.961374)
@@ -353,10 +350,6 @@ scale = Vector2(0.9012564, 0.9869385)
 [node name="Tree28" parent="OnTheGround/Forest" unique_id=1538345739 instance=ExtResource("8_wf3xu")]
 position = Vector2(-181.0192, 283.941)
 scale = Vector2(0.95756996, 0.88214576)
-
-[node name="Tree29" parent="OnTheGround/Forest" unique_id=891701431 instance=ExtResource("8_wf3xu")]
-position = Vector2(-90.43895, 574.3589)
-scale = Vector2(0.9726088, 1.0570283)
 
 [node name="Tree30" parent="OnTheGround/Forest" unique_id=2047740994 instance=ExtResource("8_wf3xu")]
 position = Vector2(-185.50992, 155.80466)
@@ -376,18 +369,9 @@ sprite_frames = ExtResource("9_htidp")
 position = Vector2(214.44485, 188.53206)
 scale = Vector2(0.9207478, 0.8952641)
 
-[node name="Tree34" parent="OnTheGround/Forest" unique_id=821865987 instance=ExtResource("8_wf3xu")]
-position = Vector2(-27.159573, 591.47754)
-scale = Vector2(0.96917874, 0.9369299)
-
 [node name="Tree35" parent="OnTheGround/Forest" unique_id=1275780068 instance=ExtResource("8_wf3xu")]
 position = Vector2(-270.43466, 248.71716)
 scale = Vector2(0.9640548, 1.0460645)
-sprite_frames = ExtResource("9_htidp")
-
-[node name="Tree36" parent="OnTheGround/Forest" unique_id=440892032 instance=ExtResource("8_wf3xu")]
-position = Vector2(-92.34378, 659.5833)
-scale = Vector2(0.93796676, 0.9271841)
 sprite_frames = ExtResource("9_htidp")
 
 [node name="Tree37" parent="OnTheGround/Forest" unique_id=1841828016 instance=ExtResource("8_wf3xu")]
@@ -419,7 +403,7 @@ scale = Vector2(0.927422, 0.9725865)
 sprite_frames = ExtResource("9_htidp")
 
 [node name="Tree43" parent="OnTheGround/Forest" unique_id=1975478779 instance=ExtResource("8_wf3xu")]
-position = Vector2(-195.85342, 659.556)
+position = Vector2(-237, 475.00006)
 scale = Vector2(1.1427575, 1.0466622)
 
 [node name="Tree44" parent="OnTheGround/Forest" unique_id=279827484 instance=ExtResource("8_wf3xu")]
@@ -474,19 +458,10 @@ scale = Vector2(1.0417728, 1.044542)
 position = Vector2(75.757324, -188.97379)
 scale = Vector2(1.1672541, 1.1650103)
 
-[node name="Tree56" parent="OnTheGround/Forest" unique_id=14323794 instance=ExtResource("8_wf3xu")]
-position = Vector2(-202.1153, 533.60596)
-scale = Vector2(0.9136242, 0.92887527)
-sprite_frames = ExtResource("9_htidp")
-
 [node name="Tree57" parent="OnTheGround/Forest" unique_id=1635512029 instance=ExtResource("8_wf3xu")]
 position = Vector2(-205.91428, 216.81686)
 scale = Vector2(1.0478795, 1.1543453)
 sprite_frames = ExtResource("9_htidp")
-
-[node name="Tree58" parent="OnTheGround/Forest" unique_id=366609224 instance=ExtResource("8_wf3xu")]
-position = Vector2(-292.8856, 568.73285)
-scale = Vector2(1.1434621, 1.1572684)
 
 [node name="Tree59" parent="OnTheGround/Forest" unique_id=55067559 instance=ExtResource("8_wf3xu")]
 position = Vector2(-322.3988, 148.60309)
@@ -543,16 +518,12 @@ position = Vector2(-461.54102, 339.81036)
 scale = Vector2(1.1469421, 1.1706853)
 sprite_frames = ExtResource("9_htidp")
 
-[node name="Tree71" parent="OnTheGround/Forest" unique_id=138570486 instance=ExtResource("8_wf3xu")]
-position = Vector2(-160.01115, 583.8489)
-scale = Vector2(0.91745675, 0.85779595)
-
 [node name="Tree72" parent="OnTheGround/Forest" unique_id=954196433 instance=ExtResource("8_wf3xu")]
 position = Vector2(247.73032, -166.29639)
 scale = Vector2(0.81203824, 0.89562)
 
 [node name="Tree73" parent="OnTheGround/Forest" unique_id=596357014 instance=ExtResource("8_wf3xu")]
-position = Vector2(-278.59, 662.2422)
+position = Vector2(-278.99997, 662)
 scale = Vector2(0.9450697, 1.0143555)
 sprite_frames = ExtResource("9_htidp")
 
@@ -608,10 +579,6 @@ scale = Vector2(0.8261287, 0.8644027)
 [node name="Tree85" parent="OnTheGround/Forest" unique_id=386394853 instance=ExtResource("8_wf3xu")]
 position = Vector2(59.94814, -252.675)
 scale = Vector2(1.0823563, 0.9916571)
-
-[node name="Tree86" parent="OnTheGround/Forest" unique_id=2147367693 instance=ExtResource("8_wf3xu")]
-position = Vector2(-389.206, 508.98914)
-scale = Vector2(0.90620834, 0.99545646)
 
 [node name="Tree87" parent="OnTheGround/Forest" unique_id=1146670212 instance=ExtResource("8_wf3xu")]
 position = Vector2(-534.2535, 412.56204)
@@ -775,10 +742,6 @@ position = Vector2(294.22266, -468.33685)
 scale = Vector2(1.019808, 1.1055074)
 sprite_frames = ExtResource("9_htidp")
 
-[node name="Tree123" parent="OnTheGround/Forest" unique_id=1295176787 instance=ExtResource("8_wf3xu")]
-position = Vector2(-389.76965, 619.55023)
-scale = Vector2(1.1142632, 1.1170062)
-
 [node name="Tree124" parent="OnTheGround/Forest" unique_id=1337864966 instance=ExtResource("8_wf3xu")]
 position = Vector2(651.5775, -131.62259)
 scale = Vector2(0.863071, 0.8595984)
@@ -819,11 +782,6 @@ sprite_frames = ExtResource("9_htidp")
 position = Vector2(202.7413, -357.45203)
 scale = Vector2(0.9685279, 1.0547076)
 
-[node name="Tree133" parent="OnTheGround/Forest" unique_id=975836812 instance=ExtResource("8_wf3xu")]
-position = Vector2(-487.37463, 558.6925)
-scale = Vector2(0.88220054, 0.9762977)
-sprite_frames = ExtResource("9_htidp")
-
 [node name="Tree134" parent="OnTheGround/Forest" unique_id=682232896 instance=ExtResource("8_wf3xu")]
 position = Vector2(603.9319, -344.06586)
 scale = Vector2(1.0129429, 0.99818194)
@@ -841,11 +799,6 @@ sprite_frames = ExtResource("9_htidp")
 position = Vector2(620.1231, -189.00049)
 scale = Vector2(1.1427251, 1.1419003)
 
-[node name="Tree138" parent="OnTheGround/Forest" unique_id=2086202020 instance=ExtResource("8_wf3xu")]
-position = Vector2(-595.51434, 552.19385)
-scale = Vector2(0.7385148, 0.80113375)
-sprite_frames = ExtResource("9_htidp")
-
 [node name="Tree139" parent="OnTheGround/Forest" unique_id=2075789172 instance=ExtResource("8_wf3xu")]
 position = Vector2(-412.5889, -68.88965)
 scale = Vector2(0.8093304, 0.85747534)
@@ -854,10 +807,6 @@ scale = Vector2(0.8093304, 0.85747534)
 position = Vector2(468.95737, -278.5318)
 scale = Vector2(0.76800364, 0.80820346)
 sprite_frames = ExtResource("9_htidp")
-
-[node name="Tree141" parent="OnTheGround/Forest" unique_id=742426867 instance=ExtResource("8_wf3xu")]
-position = Vector2(-552.4863, 619.2237)
-scale = Vector2(1.0980862, 1.0047947)
 
 [node name="Tree142" parent="OnTheGround/Forest" unique_id=214794748 instance=ExtResource("8_wf3xu")]
 position = Vector2(461.70886, -397.9583)
@@ -884,11 +833,6 @@ scale = Vector2(0.902344, 0.84449595)
 [node name="Tree147" parent="OnTheGround/Forest" unique_id=1992823677 instance=ExtResource("8_wf3xu")]
 position = Vector2(-461.91858, 108.52306)
 scale = Vector2(1.0462632, 1.0540217)
-sprite_frames = ExtResource("9_htidp")
-
-[node name="Tree148" parent="OnTheGround/Forest" unique_id=513534376 instance=ExtResource("8_wf3xu")]
-position = Vector2(-631.00024, 621.80365)
-scale = Vector2(0.83060926, 0.85345364)
 sprite_frames = ExtResource("9_htidp")
 
 [node name="Tree149" parent="OnTheGround/Forest" unique_id=1316426674 instance=ExtResource("8_wf3xu")]
@@ -979,10 +923,6 @@ sprite_frames = ExtResource("9_htidp")
 [node name="Tree168" parent="OnTheGround/Forest" unique_id=295699534 instance=ExtResource("8_wf3xu")]
 position = Vector2(-226.40677, -323.12476)
 scale = Vector2(1.1661963, 1.1495479)
-
-[node name="Tree169" parent="OnTheGround/Forest" unique_id=1113283464 instance=ExtResource("8_wf3xu")]
-position = Vector2(-671.32794, 561.1299)
-scale = Vector2(0.88806766, 0.9821287)
 
 [node name="Tree170" parent="OnTheGround/Forest" unique_id=1441880985 instance=ExtResource("8_wf3xu")]
 position = Vector2(-299.95956, -317.12558)
@@ -1460,6 +1400,15 @@ scale = Vector2(1.0555549, 1.0745053)
 position = Vector2(-687.12573, -241.89369)
 scale = Vector2(0.9058032, 0.91305906)
 sprite_frames = ExtResource("9_htidp")
+
+[node name="Tree17" parent="OnTheGround/Forest" unique_id=1283098914 instance=ExtResource("8_wf3xu")]
+position = Vector2(177.71082, 376.40372)
+scale = Vector2(0.8049863, 0.8435616)
+sprite_frames = ExtResource("9_htidp")
+
+[node name="Tree86" parent="OnTheGround/Forest" unique_id=2147367693 instance=ExtResource("8_wf3xu")]
+position = Vector2(-382, 481)
+scale = Vector2(0.90620834, 0.99545646)
 
 [node name="Fauna" type="Node2D" parent="OnTheGround" unique_id=785049589]
 y_sort_enabled = true

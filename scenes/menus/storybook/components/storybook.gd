@@ -18,6 +18,7 @@ signal selected(quest: Quest, restart: bool)
 	set(value):
 		quests_per_page = value
 		quests_per_spread = value * 2
+@export var fade_duration: float = 0.15
 
 var quests_per_spread: int = 16
 
@@ -33,6 +34,19 @@ var _current_list_page: int = 0
 @onready var back_button: Button = %BackButton
 @onready var animated_book: AnimatedSprite2D = %AnimatedSprite2D
 @onready var ui_container: Control = %StoryBookContent
+
+
+func _fade_out_ui() -> void:
+	var tween := create_tween()
+	tween.tween_property(ui_container, "modulate:a", 0.0, fade_duration)
+	await tween.finished
+	ui_container.visible = false
+
+
+func _fade_in_ui() -> void:
+	ui_container.visible = true
+	var tween := create_tween()
+	tween.tween_property(ui_container, "modulate:a", 1.0, fade_duration)
 
 
 func _ready() -> void:
@@ -166,6 +180,8 @@ func _switch_to_page(spread_index: int) -> void:
 	_current_spread_index = spread_index
 
 	if old_index != -1:
+		await _fade_out_ui()
+
 		if spread_index > old_index or (spread_index == 0 and old_index == total_spreads - 1):
 			animated_book.play("book_right")
 		else:
@@ -177,9 +193,9 @@ func _switch_to_page(spread_index: int) -> void:
 
 
 func _on_animation_finished() -> void:
-	_navigation_locked = false
-	ui_container.visible = true
+	_fade_in_ui()
 	_update_page_visibility()
+	_navigation_locked = false
 
 
 func _on_left_button_pressed() -> void:
@@ -188,11 +204,15 @@ func _on_left_button_pressed() -> void:
 
 	# If we are on the main index, turn pages back inside the list
 	if _current_spread_index == 0 and _current_list_page > 0:
+		_navigation_locked = true
 		_current_list_page -= 1
+		await _fade_out_ui()
 		animated_book.play("book_left")
-		ui_container.visible = false
 		await animated_book.animation_finished
 		_populate_quest_lists()
+		_update_page_visibility()
+		_fade_in_ui()
+		_navigation_locked = false
 		return
 
 	_switch_to_page(_current_spread_index - 1)
@@ -206,11 +226,15 @@ func _on_right_button_pressed() -> void:
 	if _current_spread_index == 0:
 		var max_visible_so_far: int = (_current_list_page + 1) * quests_per_page * 2
 		if quests.size() > max_visible_so_far:
+			_navigation_locked = true
 			_current_list_page += 1
+			await _fade_out_ui()
 			animated_book.play("book_right")
-			ui_container.visible = false
 			await animated_book.animation_finished
 			_populate_quest_lists()
+			_update_page_visibility()
+			_fade_in_ui()
+			_navigation_locked = false
 			return
 
 	_switch_to_page(_current_spread_index + 1)

@@ -1,0 +1,84 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+name: "Make StoryQuest Kit"
+on:
+  workflow_dispatch:
+    inputs:
+      push_tag:
+        description: "Push Git tag for kit"
+        type: boolean
+  pull_request:
+    paths:
+      - 'tools/sqckck.*'
+      - '.github/workflows/make-storyquest-kit.yml'
+  release:
+    types:
+      - published
+
+permissions:
+  # Need to be able to push the bundle back to a Git tag and/or branch
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+env:
+  GODOT_VERSION: "4.7.1"
+
+jobs:
+  make-storyquest-kit:
+    name: Make StoryQuest Kit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          # Fetch full history of commits and tags so that git describe --tags works
+          fetch-depth: 0
+
+      - uses: ./.github/actions/lfs-cached-checkout
+
+      - name: Install Godot
+        uses: endlessm/godot-export-action/download-godot@v3
+        with:
+          godot_version: ${{ env.GODOT_VERSION }}
+
+      - name: Restore .godot directory cache
+        uses: actions/cache/restore@v6
+        with:
+          path: |
+            .godot
+          key: ${{ runner.os }}-dotgodot-${{ inputs.godot_version }}.${{ inputs.godot_flavor }}-${{ hashFiles('**/*.import') }}
+          restore-keys: |
+            ${{ runner.os }}-dotgodot-${{ inputs.godot_version }}.${{ inputs.godot_flavor }}-
+
+      - name: Make StoryQuest Kit
+        id: sqckck
+        run: ./tools/sqckck.sh
+        env:
+          GODOT: build/godot
+          GIT_AUTHOR_NAME: Threadbare StoryQuest Kit Maker
+          GIT_COMMITTER_NAME: Threadbare StoryQuest Kit Maker
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+
+      - name: Upload kit artifact
+        uses: actions/upload-artifact@v7
+        with:
+          path: ${{ steps.sqckck.outputs.zip_file }}
+          archive: false
+
+      - name: Push git tag
+        if: ${{ github.event_name == 'release' || inputs.push_tag }}
+        shell: bash
+        run: |
+          git push origin "${{ steps.sqckck.outputs.tag_name }}"
+
+      - name: Attach to release
+        if: ${{ github.event_name == 'release' }}
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -ex
+          gh release upload '${{ github.ref_name }}' "${{ steps.sqckck.outputs.zip_file }}" --repo '${{ github.repository }}'
