@@ -20,6 +20,7 @@ signal interaction_ended
 ## Emitted when characters start or stop seeing this area for interaction.
 signal observers_changed
 
+const SHAPE_DEBUG_COLOR := Color(0.6, 0.545, 0.0, 0.42)
 const INDICATOR_SCENE := preload("uid://d252j2mhya0kq")
 
 ## Position at which to show an arrow when this area is being observed. This
@@ -74,6 +75,18 @@ func remove_observer(character_sight: CharacterSight) -> void:
 
 func _get_is_being_observed() -> bool:
 	return bool(_observers.size())
+
+
+func _recolor_shapes() -> void:
+	for child: Node in get_children():
+		if child is CollisionShape2D:
+			child.debug_color = SHAPE_DEBUG_COLOR
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_CHILD_ORDER_CHANGED when Engine.is_editor_hint():
+			_recolor_shapes()
 
 
 func _ready() -> void:
