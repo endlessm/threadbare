@@ -54,13 +54,16 @@ func _ready() -> void:
 	_populate_quest_lists()
 
 
-## Clears and regenerates the quest buttons based on the current page view
+func _clear_list(quest_list: Node) -> void:
+	for child: Node in quest_list.get_children():
+		quest_list.remove_child(child)
+		child.queue_free()
+
+
+# Clears and regenerates the quest buttons based on the current page view
 func _populate_quest_lists() -> void:
-	#Clear out any existing buttons from previous views
-	for child in left_quest_list.get_children():
-		child.queue_free()
-	for child in right_quest_list.get_children():
-		child.queue_free()
+	_clear_list(left_quest_list)
+	_clear_list(right_quest_list)
 
 	#Calculate the quest slices for this specific book spread
 	var left_start: int = _current_list_page * quests_per_page * 2
