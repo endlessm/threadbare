@@ -1,8 +1,13 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+@tool
 extends Node2D
 
 @export var expected_symbol: String
+@export var sprite: Texture2D:
+	set = _set_sprite
+
+@onready var appearance: Sprite2D = $Sprite2D
 
 signal matching
 signal exited(matches: bool)
@@ -12,12 +17,8 @@ var something_in: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	_set_sprite(sprite)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 ## Checks if a statue is on the pressure plate and if it matches the corresponding symbol
 func _on_area_2d_body_entered(body: Node2D) -> void:
@@ -47,3 +48,9 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 			print("out")
 		else:
 			print("nah 2")
+
+
+func _set_sprite(look: Texture2D):
+	sprite = look
+	if appearance:
+		appearance.texture = look
