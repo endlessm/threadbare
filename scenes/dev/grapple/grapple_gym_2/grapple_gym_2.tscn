@@ -12,7 +12,10 @@
 [ext_resource type="SpriteFrames" uid="uid://cfgahyntmtfgu" path="res://scenes/game_elements/props/powerup/components/powerup_thread.tres" id="4_xhlcu"]
 [ext_resource type="PackedScene" uid="uid://evb46lm6ssu2" path="res://scenes/game_elements/props/hookable_pin/hookable_pin.tscn" id="5_t21wp"]
 [ext_resource type="Script" uid="uid://c5jp8y8mpge4w" path="res://scenes/game_elements/props/toggleable_tile_map_layer/toggleable_tile_map_layer.gd" id="7_3w461"]
+[ext_resource type="Shader" uid="uid://dui35fhf12sp5" path="res://scenes/game_elements/fx/world_rewoven/components/world_rewoven.gdshader" id="8_k57dq"]
+[ext_resource type="Texture2D" uid="uid://drlsbgxh5e6vv" path="res://scenes/game_elements/fx/world_rewoven/components/fabric_texture.png" id="9_6pxnx"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="9_ctt8w"]
+[ext_resource type="Script" uid="uid://dpw8lcjx68p3o" path="res://scenes/game_elements/fx/world_rewoven/components/tile_map_mask_bounds.gd" id="10_woov4"]
 [ext_resource type="PackedScene" uid="uid://dohb701lxbe5s" path="res://scenes/game_elements/props/hookable_needle/hookable_needle.tscn" id="14_5qe2l"]
 [ext_resource type="PackedScene" uid="uid://cvtty6np3dcv4" path="res://scenes/game_elements/props/all_hooked/all_hooked.tscn" id="15_0xn1s"]
 [ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="15_qjdbk"]
@@ -26,6 +29,27 @@
 [ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="23_solnv"]
 [ext_resource type="PackedScene" uid="uid://cfvr32bp2achm" path="res://scenes/game_elements/props/decoration/rock/fabric_rock.tscn" id="24_j21no"]
 [ext_resource type="PackedScene" uid="uid://dttyvh6kyru5y" path="res://scenes/game_elements/props/decoration/butterfly/butterfly.tscn" id="25_3a52b"]
+
+[sub_resource type="Gradient" id="Gradient_wymun"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7vm8y"]
+gradient = SubResource("Gradient_wymun")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kjrmi"]
+shader = ExtResource("8_k57dq")
+shader_parameter/mask_texture = SubResource("GradientTexture2D_7vm8y")
+shader_parameter/mask_origin = Vector2(1024, -1344)
+shader_parameter/mask_size = Vector2(576, 64)
+shader_parameter/fabric_texture = ExtResource("9_6pxnx")
+shader_parameter/fabric_scale = 1.0
+shader_parameter/progress = 1.0
+shader_parameter/target_canvas_group = false
+shader_parameter/smoothness = 0.3230000153425
+shader_parameter/burn_size = 0.3430000162925
+shader_parameter/burn_color = Color(1.353, 1.353, 0.777, 1)
+shader_parameter/canvas_modulate = Color(1, 1, 1, 1)
+shader_parameter/gray_intensity = 0.0
 
 [node name="GrappleGym2" type="Node2D" unique_id=129556927]
 script = ExtResource("1_4arhg")
@@ -59,10 +83,17 @@ tile_map_data = PackedByteArray("AAALAAAAAwAAAAMAAAALAP//AwAAAAIAAAALAP7/AwAAAAI
 tile_set = ExtResource("3_75dn2")
 
 [node name="BridgesUnlocked" type="TileMapLayer" parent="TileMapLayers" unique_id=1341990576]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_kjrmi")
 tile_map_data = PackedByteArray("AAAQAOv/AwAAAAAAAAARAOv/AwABAAAAAAASAOv/AwABAAAAAAATAOv/AwABAAAAAAAUAOv/AwABAAAAAAAVAOv/AwABAAAAAAAWAOv/AwABAAAAAAAXAOv/AwABAAAAAAAYAOv/AwACAAAAAAA=")
-enabled = false
 tile_set = ExtResource("3_75dn2")
 script = ExtResource("7_3w461")
+invert = true
+
+[node name="TileMapMaskBounds" type="Node" parent="TileMapLayers/BridgesUnlocked" unique_id=448833223 node_paths=PackedStringArray("canvas_item")]
+script = ExtResource("10_woov4")
+canvas_item = NodePath("..")
+metadata/_custom_type_script = "uid://dpw8lcjx68p3o"
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=1706163952]
 y_sort_enabled = true
@@ -485,4 +516,4 @@ position = Vector2(1336, 48)
 position = Vector2(-158, 1375)
 
 [connection signal="all_hooked" from="OnTheGround/AllHooked" to="TileMapLayers/WaterUnlocked" method="set_toggled" binds= [false]]
-[connection signal="all_hooked" from="OnTheGround/AllHooked" to="TileMapLayers/BridgesUnlocked" method="set_toggled" binds= [false]]
+[connection signal="all_hooked" from="OnTheGround/AllHooked" to="TileMapLayers/BridgesUnlocked" method="set_toggled" binds= [true]]
