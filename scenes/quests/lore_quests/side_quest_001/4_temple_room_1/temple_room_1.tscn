@@ -9,7 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://bvcoanplwqpfv" path="res://scenes/quests/lore_quests/side_quest_001/4_temple_room_1/components/lever_light/lever_light.tscn" id="3_mtx7r"]
 [ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="3_q6xbn"]
 [ext_resource type="PackedScene" uid="uid://c47lkkvljrsg" path="res://scenes/game_elements/props/hookable_lever/hookable_lever.tscn" id="4_2w3su"]
+[ext_resource type="PackedScene" uid="uid://ei57s5k8ibov" path="res://scenes/quests/lore_quests/side_quest_001/components/skeleton/skeleton.tscn" id="6_yr783"]
 [ext_resource type="PackedScene" uid="uid://evb46lm6ssu2" path="res://scenes/game_elements/props/hookable_pin/hookable_pin.tscn" id="7_ilnic"]
+[ext_resource type="Resource" uid="uid://djc6og5qr4fg1" path="res://scenes/quests/lore_quests/side_quest_001/4_temple_room_1/components/hint.dialogue" id="7_tjeo8"]
+[ext_resource type="Resource" uid="uid://c23431ecaj7jh" path="res://scenes/quests/lore_quests/side_quest_001/4_temple_room_1/components/memory_unlocked.dialogue" id="8_yr783"]
 [ext_resource type="Script" uid="uid://ba44mdk6tmkay" path="res://scenes/quests/lore_quests/side_quest_001/4_temple_room_1/components/lever_sequence.gd" id="9_3lamy"]
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="9_lixwc"]
 [ext_resource type="AudioStream" uid="uid://bvq56m78f2v7g" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/musicas/2 The Veil of Night Loop 1 Start .ogg" id="10_waxgu"]
@@ -44,6 +47,13 @@ tile_set = ExtResource("3_8f2c7")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=1575550118]
 position = Vector2(0, -21)
+
+[node name="Skeleton" parent="OnTheGround" unique_id=1366328255 instance=ExtResource("6_yr783")]
+position = Vector2(1509, 279)
+start_position = Vector2(110, 279)
+end_position = Vector2(1509, 279)
+start_dialogue = ExtResource("7_tjeo8")
+end_dialogue = ExtResource("8_yr783")
 
 [node name="Teleporter" parent="OnTheGround" unique_id=1779636661 instance=ExtResource("3_q6xbn")]
 position = Vector2(1685, 352)
@@ -134,4 +144,5 @@ editor_draw_limits = true
 [connection signal="toggled" from="OnTheGround/Lever Sequence/Levers/HookableLever" to="OnTheGround/Lever Sequence/Lights/LeverLight" method="_on_hookable_lever_toggled"]
 [connection signal="toggled" from="OnTheGround/Lever Sequence/Levers/HookableLever2" to="OnTheGround/Lever Sequence/Lights/LeverLight2" method="_on_hookable_lever_toggled"]
 [connection signal="toggled" from="OnTheGround/Lever Sequence/Levers/HookableLever3" to="OnTheGround/Lever Sequence/Lights/LeverLight3" method="_on_hookable_lever_toggled"]
+[connection signal="solved" from="OnTheGround/Lever Sequence/Logic" to="OnTheGround/Skeleton" method="puzzle_solved"]
 [connection signal="solved" from="OnTheGround/Lever Sequence/Logic" to="OnTheGround/Door" method="open"]
