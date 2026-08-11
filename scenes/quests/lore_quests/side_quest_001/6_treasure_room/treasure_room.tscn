@@ -13,6 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="6_b0wwu"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="7_u1grp"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="13_u1grp"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="14_53ojm"]
+[ext_resource type="Resource" uid="uid://cx6v6n1guhxyo" path="res://scenes/quests/lore_quests/side_quest_001/6_treasure_room/components/intro.dialogue" id="15_4cswt"]
 
 [sub_resource type="Resource" id="Resource_mxhht"]
 script = ExtResource("7_u1grp")
@@ -88,5 +90,10 @@ editor_draw_limits = true
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1340139656]
 
 [node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("13_u1grp")]
+
+[node name="Cinematic" type="Node2D" parent="." unique_id=6203695]
+script = ExtResource("14_53ojm")
+dialogue = ExtResource("15_4cswt")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [connection signal="book_read" from="OnTheGround/Book" to="OnTheGround/CollectibleItem" method="reveal"]
