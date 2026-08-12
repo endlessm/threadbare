@@ -6,7 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="4_gxitq"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="5_i7gc6"]
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="6_pbpsr"]
+[ext_resource type="Texture2D" uid="uid://y7wsrnifch5y" path="res://scenes/quests/lore_quests/side_quest_001/1_intro/components/playerBoat.png" id="6_rfbrd"]
 [ext_resource type="AudioStream" uid="uid://dstsop5iw77sd" path="res://scenes/quests/story_quests/after_the_tremor/music/sounds/beach.ogg" id="7_rfbrd"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="9_w2uri"]
 
 [node name="Intro" type="Node2D" unique_id=457370851]
 
@@ -28,8 +30,14 @@ tile_set = ExtResource("3_gxitq")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=1651604208]
 
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround" unique_id=645411518]
+position = Vector2(610, 257)
+texture = ExtResource("6_rfbrd")
+
 [node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("4_gxitq")]
-position = Vector2(-140, 73)
+visible = false
+position = Vector2(527, 335)
+mode = 1
 sprite_frames = ExtResource("5_i7gc6")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=456507996]
@@ -38,3 +46,15 @@ limit_top = -320
 limit_right = 2772
 limit_bottom = 680
 editor_draw_limits = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="OnTheGround" unique_id=1303919436]
+position = Vector2(525, 318)
+sprite_frames = ExtResource("5_i7gc6")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.49836096
+
+[node name="Cinematic" type="Node2D" parent="." unique_id=1433162388]
+script = ExtResource("9_w2uri")
+next_scene = "uid://btol04dlus5ri"
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
