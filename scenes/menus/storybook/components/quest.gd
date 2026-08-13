@@ -21,7 +21,7 @@ const FILENAME := "quest.tres"
 ## The development status of this quest.
 @export var status: Status = Status.WORK_IN_PROGRESS
 
-## The 2-letter ISO language code for the quest.
+## The 2-letter ISO 639 language code for the quest.
 @export_enum("en", "es") var language: String = "en"
 
 ## The quest's title. This should be short, like the title of a novel.
