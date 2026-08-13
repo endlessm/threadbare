@@ -31,6 +31,7 @@
 [ext_resource type="PackedScene" uid="uid://c4vbokn408f2c" path="res://scenes/game_elements/props/decoration/sheep/sheep.tscn" id="20_o36d1"]
 [ext_resource type="PackedScene" uid="uid://cl06pid826dtg" path="res://scenes/game_elements/characters/player/components/player_repel.tscn" id="21_3ig8o"]
 [ext_resource type="PackedScene" uid="uid://w50y4sa4xay2" path="res://scenes/game_elements/props/repellable_ball/repellable_ball.tscn" id="22_puqku"]
+[ext_resource type="Resource" uid="uid://cr1w6x3b6qkte" path="res://scenes/dev/components/dev_archipelago_enemy_interaction_elder.dialogue" id="23_3pnmx"]
 [ext_resource type="Script" uid="uid://chf6ixk63ntro" path="res://scenes/dev/components/sheep_tug_of_war.gd" id="23_ghn8a"]
 [ext_resource type="PackedScene" uid="uid://b3111eergq5yg" path="res://scenes/game_elements/characters/player/components/player_hook.tscn" id="24_rlmtm"]
 [ext_resource type="Texture2D" uid="uid://clndtrncpdxl5" path="res://scenes/game_elements/characters/player/components/hook-string-2.png" id="25_b05ck"]
@@ -43,14 +44,35 @@
 [ext_resource type="SpriteFrames" uid="uid://br4k784ht8hh0" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_yellow_large.tres" id="32_c5osl"]
 [ext_resource type="SpriteFrames" uid="uid://bj1ic15slii3s" path="res://scenes/quests/story_quests/stella/2_stella_combat/stella_combat_components/stella_projectile_starfish_spriteframes.tres" id="33_vcjda"]
 [ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="37_4vl6q"]
+[ext_resource type="SpriteFrames" uid="uid://k4jucjwkxxhc" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_purple_small.tres" id="38_3pnmx"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="38_7hftp"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="39_rjphr"]
+[ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="39_rs1iu"]
+[ext_resource type="Script" uid="uid://cn28bsw3midik" path="res://scenes/dev/components/sheep_chase.gd" id="46_rjphr"]
+[ext_resource type="Script" uid="uid://id28maao3vdy" path="res://scenes/game_logic/walk_behaviors/path_walk_behavior.gd" id="47_uerno"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="48_sqpij"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pp1gq"]
 size = Vector2(64, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cdbf2"]
 size = Vector2(47, 71)
+
+[sub_resource type="Curve2D" id="Curve2D_rs1iu"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1922, -187, 0, 0, 0, 0, 2006, -198, 0, 0, 0, 0, 2085, -207, 0, 0, 0, 0, 2148, -210, 0, 0, 0, 0, 2225, -208, 0, 0, 0, 0, 2303, -198, 0, 0, 0, 0, 2365, -185, 0, 0, 0, 0, 2419, -159, 0, 0, 0, 0, 2476, -124, 0, 0, 0, 0, 2509, -92, 0, 0, 0, 0, 2558, -43, 0, 0, 0, 0, 2613, 21, 0, 0, 0, 0, 2689, 103, 0, 0, 0, 0, 2815, 223, 0, 0, 0, 0, 2680, 280, 0, 0, 0, 0, 2562, 284, 0, 0, 0, 0, 2502, 284, 0, 0, 0, 0, 2425, 284, 0, 0, 0, 0, 2280, 279, 0, 0, 0, 0, 2137, 281, 0, 0, 0, 0, 2066, 285, 0, 0, 0, 0, 1906, 284, 0, 0, 0, 0, 1687, 272, 0, 0, 0, 0, 1778, 116, 0, 0, 0, 0, 1843, -81, 0, 0, 0, 0, 1894, -138, 0, 0, 0, 0, 1922, -187)
+}
+point_count = 27
+
+[sub_resource type="Resource" id="Resource_pp1gq"]
+script = ExtResource("48_sqpij")
+walk_speed = 10.0
+metadata/_custom_type_script = "uid://csev4hv57utxv"
+
+[sub_resource type="Resource" id="Resource_m30mx"]
+script = ExtResource("48_sqpij")
+walk_speed = 10.0
+metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [node name="DevArchipelago" type="Node2D" unique_id=213943313]
 script = ExtResource("1_kt7u4")
@@ -86,7 +108,7 @@ tile_map_data = PackedByteArray("AAAEAPv/AQAFAAAAAAAFAPv/AQAGAAAAAAAGAPv/AQAGAAA
 tile_set = ExtResource("4_pr8dh")
 
 [node name="Paths" type="TileMapLayer" parent="TileMapLayers" unique_id=1538165868]
-tile_map_data = PackedByteArray("AAALAAcABQADAAIAAAALAAYABQADAAEAAAALAAUABQAAAAAAAAAMAAUABQACAAIAAAAMAAQABQAAAAAAAAANAAQABQACAAIAAAANAAMABQADAAEAAAANAAIABQADAAEAAAANAAEABQADAAEAAAANAAAABQADAAEAAAANAP//BQADAAEAAAANAP7/BQADAAEAAAANAP3/BQAAAAEAAAANAPz/BQADAAEAAAANAPv/BQADAAEAAAANAPr/BQADAAEAAAANAPn/BQACAAAAAAAMAPn/BQABAAMAAAALAPn/BQAAAAIAAAALAPj/BQADAAEAAAALAPf/BQADAAAAAAALAO3/AQAGAAEAAAAMAO3/AQAGAAEAAAANAO3/AQAGAAEAAAAOAO3/AQAGAAEAAAAPAO3/AQAGAAEAAAAQAO3/AQAGAAEAAAARAO3/AQAGAAEAAAASAO3/AQAGAAEAAAATAO3/AQAGAAEAAAAUAO3/BgABAAEAAAAVAO3/BgABAAEAAAAWAO3/BgACAAEAAAAWAO7/BgACAAIAAAAVAO7/BgABAAIAAAAUAO7/BgABAAIAAAAKAO7/BgABAAIAAAAJAO7/BgABAAIAAAAIAO7/BgAAAAIAAAAIAO3/BgAAAAEAAAAJAO3/BgABAAEAAAAKAO3/BgABAAEAAAALAO7/AQAGAAIAAAAMAO7/AQAGAAIAAAANAO7/AQAGAAIAAAAOAO7/AQAGAAIAAAAPAO7/AQAGAAIAAAAQAO7/AQAGAAIAAAARAO7/AQAGAAIAAAASAO7/AQAGAAIAAAATAO7/AQAGAAIAAAALAPP/BQADAAIAAAALAPL/BQADAAEAAAALAPH/BQAAAAAAAAAMAPH/BQABAAMAAAANAPH/BQABAAMAAAAOAPH/BQABAAMAAAAPAPH/BQACAAAAAAAPAPL/BQAAAAIAAAAQAPL/BQABAAMAAAARAPL/BQABAAMAAAASAPL/BQABAAMAAAATAPL/BQABAAMAAAAUAPL/BQABAAMAAAAVAPL/BQABAAMAAAAWAPL/BQACAAIAAAAWAPH/BQAAAAAAAAAXAPH/BQACAAIAAAAXAPD/BQAAAAAAAAAYAPD/BQABAAMAAAAZAPD/BQABAAMAAAAaAPD/BQACAAIAAAAaAO//BQAAAAEAAAAbAO//BQABAAMAAAAaAO7/BQADAAEAAAAaAO3/BQADAAEAAAAaAOz/BQADAAEAAAAaAOv/BQADAAEAAAAaAOr/BQADAAEAAAAcAO//BQABAAMAAAAdAO//BQACAAMAAAAOAP3/BQABAAMAAAAPAP3/BQABAAMAAAAQAP3/BQABAAMAAAARAP3/BQABAAMAAAASAP3/BQACAAMAAAAIAOz/BgAAAAAAAAAJAOz/BgABAAAAAAAKAOz/BgABAAAAAAALAOz/AQAGAAAAAAAMAOz/AQAGAAAAAAANAOz/AQAGAAAAAAAOAOz/AQAGAAAAAAAPAOz/AQAGAAAAAAAQAOz/AQAGAAAAAAARAOz/AQAGAAAAAAASAOz/AQAGAAAAAAATAOz/AQAGAAAAAAAUAOz/BgABAAAAAAAVAOz/BgABAAAAAAAWAOz/BgACAAAAAAD1/xEAAQAIAAAAAAD1/xIAAQAIAAEAAAD1/xMAAQAFAAIAAAD2/xMAAQAGAAMAAAD3/xMAAQAGAAMAAAD4/xMAAQAGAAMAAAD5/xMAAQAGAAMAAAD6/xMAAQAGAAMAAAD7/xQAAQAFAAIAAAD7/xMAAQAHAAAAAAD8/xQAAQAHAAMAAAA=")
+tile_map_data = PackedByteArray("AAALAAcABQADAAIAAAALAAYABQADAAEAAAALAAUABQAAAAAAAAAMAAUABQACAAIAAAAMAAQABQAAAAAAAAANAAQABQACAAIAAAANAAMABQADAAEAAAANAAIABQADAAEAAAANAAEABQADAAEAAAANAAAABQADAAEAAAANAP//BQADAAEAAAANAP7/BQADAAEAAAANAP3/BQAAAAEAAAANAPz/BQADAAEAAAANAPv/BQADAAEAAAANAPr/BQADAAEAAAANAPn/BQACAAAAAAAMAPn/BQABAAMAAAALAPn/BQAAAAIAAAALAPj/BQADAAEAAAALAPf/BQADAAAAAAALAO3/AQAGAAEAAAAMAO3/AQAGAAEAAAANAO3/AQAGAAEAAAAOAO3/AQAGAAEAAAAPAO3/AQAGAAEAAAAQAO3/AQAGAAEAAAARAO3/AQAGAAEAAAASAO3/AQAGAAEAAAATAO3/AQAGAAEAAAAUAO3/BgABAAEAAAAVAO3/BgABAAEAAAAWAO3/BgACAAEAAAAWAO7/BgACAAIAAAAVAO7/BgABAAIAAAAUAO7/BgABAAIAAAAKAO7/BgABAAIAAAAJAO7/BgABAAIAAAAIAO7/BgAAAAIAAAAIAO3/BgAAAAEAAAAJAO3/BgABAAEAAAAKAO3/BgABAAEAAAALAO7/AQAGAAIAAAAMAO7/AQAGAAIAAAANAO7/AQAGAAIAAAAOAO7/AQAGAAIAAAAPAO7/AQAGAAIAAAAQAO7/AQAGAAIAAAARAO7/AQAGAAIAAAASAO7/AQAGAAIAAAATAO7/AQAGAAIAAAALAPP/BQADAAIAAAALAPL/BQADAAEAAAALAPH/BQAAAAAAAAAMAPH/BQABAAMAAAANAPH/BQABAAMAAAAOAPH/BQABAAMAAAAPAPH/BQACAAAAAAAPAPL/BQAAAAIAAAAQAPL/BQABAAMAAAARAPL/BQABAAMAAAASAPL/BQABAAMAAAATAPL/BQABAAMAAAAUAPL/BQABAAMAAAAVAPL/BQABAAMAAAAWAPL/BQACAAIAAAAWAPH/BQAAAAAAAAAXAPH/BQACAAIAAAAXAPD/BQAAAAAAAAAYAPD/BQABAAMAAAAZAPD/BQABAAMAAAAaAPD/BQACAAIAAAAaAO//BQAAAAEAAAAbAO//BQABAAMAAAAaAO7/BQADAAEAAAAaAO3/BQADAAEAAAAaAOz/BQADAAEAAAAaAOv/BQADAAEAAAAaAOr/BQADAAEAAAAcAO//BQABAAMAAAAdAO//BQACAAMAAAAOAP3/BQABAAMAAAAPAP3/BQABAAMAAAAQAP3/BQABAAMAAAARAP3/BQABAAMAAAASAP3/BQACAAMAAAAIAOz/BgAAAAAAAAAJAOz/BgABAAAAAAAKAOz/BgABAAAAAAALAOz/AQAGAAAAAAAMAOz/AQAGAAAAAAANAOz/AQAGAAAAAAAOAOz/AQAGAAAAAAAPAOz/AQAGAAAAAAAQAOz/AQAGAAAAAAARAOz/AQAGAAAAAAASAOz/AQAGAAAAAAATAOz/AQAGAAAAAAAUAOz/BgABAAAAAAAVAOz/BgABAAAAAAAWAOz/BgACAAAAAAD1/xEAAQAIAAAAAAD1/xIAAQAIAAEAAAD1/xMAAQAFAAIAAAD2/xMAAQAGAAMAAAD3/xMAAQAGAAMAAAD4/xMAAQAGAAMAAAD5/xMAAQAGAAMAAAD6/xMAAQAGAAMAAAD7/xQAAQAFAAIAAAD7/xMAAQAHAAAAAAD8/xQAAQAHAAMAAAAcAPj/BQAAAAAAAAAhAPj/BQACAAAAAAAhAPr/BQACAAIAAAAcAPr/BQAAAAIAAAAYAP3/BQAAAAMAAAAZAP3/BQABAAMAAAAaAP3/BQACAAIAAAAaAPz/BQAAAAAAAAAbAPz/BQACAAIAAAAbAPv/BQADAAAAAAAdAPr/BQABAAIAAAAeAPr/BQABAAIAAAAfAPr/BQABAAIAAAAgAPr/BQABAAIAAAAhAPn/BQACAAEAAAAgAPj/BQABAAAAAAAfAPj/BQABAAAAAAAeAPj/BQABAAAAAAAdAPj/BQABAAAAAAAcAPn/BQAAAAEAAAAdAPn/BQABAAEAAAAeAPn/BQABAAEAAAAfAPn/BQABAAEAAAAgAPn/BQABAAEAAAA=")
 tile_set = ExtResource("4_pr8dh")
 
 [node name="Bridges" type="TileMapLayer" parent="TileMapLayers" unique_id=498682731]
@@ -110,7 +132,7 @@ tile_map_data = PackedByteArray("AAAEAP//AQAJAAAAADAFAP//AQAJAAAAADAGAP//AQAJAAA
 tile_set = ExtResource("4_pr8dh")
 
 [node name="Fence" type="TileMapLayer" parent="TileMapLayers" unique_id=1796323791]
-tile_map_data = PackedByteArray("AAAEAPr/AAABAAAAAAAFAPr/AAABAAAAAAAGAPr/AAABAAAAAAAHAPr/AAABAAAAAAAIAPr/AAABAAAAAAAJAPv/AAACAAEAAAAJAPz/AAACAAEAAAAJAP3/AAACAAEAAAAJAP7/AAACAAEAAAAJAP//AAACAAEAAAAJAAAAAAACAAEAAAAJAAEAAAACAAEAAAAJAAIAAAACAAEAAAAIAAMAAAABAAIAAAAHAAMAAAABAAIAAAAGAAMAAAABAAIAAAAFAAMAAAABAAIAAAAEAAMAAAABAAIAAAAJAAMAAAACAAIAAAAJAPr/AAACAAAAAAADAPr/AAAAAAAAAAADAPv/AAAAAAEAAAADAPz/AAAAAAEAAAADAP3/AAAAAAEAAAADAP7/AAAAAAEAAAADAP//AAAAAAEAAAADAAAAAAAAAAEAAAADAAEAAAAAAAEAAAADAAIAAAAAAAEAAAADAAMAAAAAAAIAAAA=")
+tile_map_data = PackedByteArray("AAAEAPr/AAABAAAAAAAFAPr/AAABAAAAAAAGAPr/AAABAAAAAAAHAPr/AAABAAAAAAAIAPr/AAABAAAAAAAJAPv/AAACAAEAAAAJAPz/AAACAAEAAAAJAP3/AAACAAEAAAAJAP7/AAACAAEAAAAJAP//AAACAAEAAAAJAAAAAAACAAEAAAAJAAEAAAACAAEAAAAJAAIAAAACAAEAAAAIAAMAAAABAAIAAAAHAAMAAAABAAIAAAAGAAMAAAABAAIAAAAFAAMAAAABAAIAAAAEAAMAAAABAAIAAAAJAAMAAAACAAIAAAAJAPr/AAACAAAAAAADAPr/AAAAAAAAAAADAPv/AAAAAAEAAAADAPz/AAAAAAEAAAADAP3/AAAAAAEAAAADAP7/AAAAAAEAAAADAP//AAAAAAEAAAADAAAAAAAAAAEAAAADAAEAAAAAAAEAAAADAAIAAAAAAAEAAAADAAMAAAAAAAIAAAAcAPr/AAAAAAIAAAAdAPr/AAABAAAAAAAeAPr/AAABAAAAAAAfAPr/AAABAAIAAAAgAPr/AAABAAIAAAAhAPr/AAACAAIAAAAhAPn/AAACAAEAAAAhAPj/AAACAAAAAAAgAPj/AAABAAAAAAAfAPj/AAABAAIAAAAeAPj/AAABAAAAAAAdAPj/AAABAAAAAAAcAPj/AAAAAAAAAAAcAPn/AAAAAAEAAAA=")
 tile_set = ExtResource("6_qihih")
 
 [node name="Teleporters" type="Node2D" parent="." unique_id=1582359205]
@@ -212,6 +234,17 @@ position = Vector2(-4, 99)
 script = ExtResource("14_jo5uf")
 metadata/_custom_type_script = "uid://0enyu5v4ra34"
 
+[node name="EnemyInteractionElder" parent="OnTheGround" unique_id=141731937 node_paths=PackedStringArray("abandon_point") instance=ExtResource("11_ui3i3")]
+position = Vector2(1692, -289)
+quest_directory = "res://scenes/dev/enemy_interaction"
+abandon_point = NodePath("SpawnPoint")
+dialogue = ExtResource("23_3pnmx")
+
+[node name="SpawnPoint" type="Marker2D" parent="OnTheGround/EnemyInteractionElder" unique_id=1101596752 groups=["spawn_point"]]
+position = Vector2(5, 65)
+script = ExtResource("14_jo5uf")
+metadata/_custom_type_script = "uid://0enyu5v4ra34"
+
 [node name="Decorations" type="Node2D" parent="OnTheGround" unique_id=298894377]
 y_sort_enabled = true
 
@@ -279,6 +312,32 @@ metadata/_custom_type_script = "uid://du8wfijr35r35"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Decorations/ImagineIslander/InteractArea" unique_id=179014338]
 visible = false
 shape = SubResource("RectangleShape2D_cdbf2")
+debug_color = Color(0.6, 0.545, 0, 0.42)
+
+[node name="Bush4" parent="OnTheGround/Decorations" unique_id=624931699 instance=ExtResource("16_0w3ee")]
+position = Vector2(2203, 34)
+
+[node name="Bush5" parent="OnTheGround/Decorations" unique_id=1550452812 instance=ExtResource("16_0w3ee")]
+position = Vector2(2331, -77)
+sprite_frames = ExtResource("38_3pnmx")
+
+[node name="Bunny2" parent="OnTheGround/Decorations" unique_id=106061509 instance=ExtResource("15_cx2s0")]
+position = Vector2(1578, 285)
+
+[node name="Flower" parent="OnTheGround/Decorations" unique_id=967436623 instance=ExtResource("39_rs1iu")]
+position = Vector2(1942, 157)
+
+[node name="Flower2" parent="OnTheGround/Decorations" unique_id=2000323206 instance=ExtResource("39_rs1iu")]
+position = Vector2(2009, -71)
+
+[node name="Flower3" parent="OnTheGround/Decorations" unique_id=1214106868 instance=ExtResource("39_rs1iu")]
+position = Vector2(2075, 55)
+
+[node name="Flower4" parent="OnTheGround/Decorations" unique_id=1518054361 instance=ExtResource("39_rs1iu")]
+position = Vector2(2570, 143)
+
+[node name="Flower5" parent="OnTheGround/Decorations" unique_id=999030775 instance=ExtResource("39_rs1iu")]
+position = Vector2(2495, 46)
 
 [node name="Node2D" type="Node2D" parent="OnTheGround" unique_id=196322635]
 y_sort_enabled = true
@@ -345,6 +404,51 @@ constrain_layer = NodePath("../../../../TileMapLayers/Paths")
 
 [node name="Capycorn" parent="OnTheGround/Node2D/SheepTugOfWar/HookableBox" unique_id=185649690 instance=ExtResource("27_r7ypx")]
 position = Vector2(-1, -73)
+
+[node name="SheepChase" type="Node2D" parent="OnTheGround/Node2D" unique_id=967034121]
+y_sort_enabled = true
+script = ExtResource("46_rjphr")
+
+[node name="Sheep" parent="OnTheGround/Node2D/SheepChase" unique_id=501983565 instance=ExtResource("20_o36d1")]
+position = Vector2(1880, -408)
+
+[node name="Sheep2" parent="OnTheGround/Node2D/SheepChase" unique_id=1255851460 instance=ExtResource("20_o36d1")]
+position = Vector2(2089, -429)
+
+[node name="Sheep3" parent="OnTheGround/Node2D/SheepChase" unique_id=41145641 instance=ExtResource("20_o36d1")]
+position = Vector2(1987, -382)
+
+[node name="Path2D" type="Path2D" parent="OnTheGround/Node2D/SheepChase" unique_id=880767226]
+unique_name_in_owner = true
+curve = SubResource("Curve2D_rs1iu")
+
+[node name="SheepPathFollow" parent="OnTheGround/Node2D/SheepChase" unique_id=841677767 instance=ExtResource("20_o36d1")]
+unique_name_in_owner = true
+position = Vector2(1922, -187)
+collision_layer = 0
+collision_mask = 0
+motion_mode = 1
+
+[node name="SheepPathWalkBehavior" type="Node2D" parent="OnTheGround/Node2D/SheepChase/SheepPathFollow" unique_id=369337444 node_paths=PackedStringArray("walking_path", "character")]
+unique_name_in_owner = true
+script = ExtResource("47_uerno")
+speeds = SubResource("Resource_pp1gq")
+walking_path = NodePath("../../Path2D")
+character = NodePath("..")
+metadata/_custom_type_script = "uid://id28maao3vdy"
+
+[node name="Townie" parent="OnTheGround/Node2D/SheepChase" unique_id=122374363 instance=ExtResource("37_4vl6q")]
+position = Vector2(1922, -187)
+motion_mode = 1
+character_seed = 1734990661
+
+[node name="TowniePathWalkBehavior" type="Node2D" parent="OnTheGround/Node2D/SheepChase/Townie" unique_id=1160455745 node_paths=PackedStringArray("walking_path", "character")]
+unique_name_in_owner = true
+script = ExtResource("47_uerno")
+speeds = SubResource("Resource_m30mx")
+walking_path = NodePath("../../Path2D")
+character = NodePath("..")
+metadata/_custom_type_script = "uid://id28maao3vdy"
 
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel/RepelTimer" to="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel" method="repel_once"]
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Sheep2/PlayerRepel2/RepelTimer2" to="OnTheGround/Node2D/SheepVolleyball" method="_on_repel_timer_2_timeout"]
