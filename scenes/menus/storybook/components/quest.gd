@@ -15,8 +15,17 @@ enum Status {
 	BROKEN = 2,
 }
 
+##The language of a quest.
+enum Language {
+	ENGLISH,
+	SPANISH,
+}
+
 ## [Quest] resources must have this filename to be found by the game.
 const FILENAME := "quest.tres"
+
+## The language of this quest.
+@export var language: Language = Language.ENGLISH
 
 ## The development status of this quest.
 @export var status: Status = Status.WORK_IN_PROGRESS
