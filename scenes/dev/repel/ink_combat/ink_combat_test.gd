@@ -37,6 +37,7 @@ func set_section(selection: int) -> void:
 		barrel_unlock_sequence.barrels = []
 		for barrel in get_tree().get_nodes_in_group("filling_barrels"):
 			barrel_unlock_sequence.barrels.append(barrel)
+		barrel_unlock_sequence.current_target_index = 0
 		barrel_unlock_sequence.start_sequence()
 
 	# Start up the throwing enemies remaining in the group
