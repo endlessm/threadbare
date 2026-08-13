@@ -29,6 +29,11 @@
 [ext_resource type="SpriteFrames" uid="uid://3ujiuhj7wpm2" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_red.tres" id="24_voedl"]
 [ext_resource type="SpriteFrames" uid="uid://bs0idpewu2plj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_yellow.tres" id="25_4ui8b"]
 [ext_resource type="SpriteFrames" uid="uid://b3r84ksew5djp" path="res://scenes/game_elements/characters/enemies/throwing_enemy/components/ink_drinker_frames_purple.tres" id="27_k5l4n"]
+[ext_resource type="Script" uid="uid://bo32nb0omxbr" path="res://scenes/dev/repel/ink_combat/ink_combat_fragile_section.gd" id="27_vu2xn"]
+[ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="28_n43l1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cdbf2"]
+size = Vector2(250, 156)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pp1gq"]
 size = Vector2(168, 195)
@@ -115,7 +120,8 @@ text = "Each barrel can require a different color!"
 [node name="Sign4" parent="OnTheGround/Signs" unique_id=1469782916 instance=ExtResource("3_ewv17")]
 position = Vector2(2467, -1175)
 direction = 1
-text = "Some barrels are fragile, the wrong color can crack them!"
+text = "Some barrels are fragile, the wrong color can crack them!
+You won't need all 3 to beat the section."
 
 [node name="Sign5" parent="OnTheGround/Signs" unique_id=1883056817 instance=ExtResource("3_ewv17")]
 position = Vector2(3660, -330)
@@ -263,6 +269,17 @@ color = Color(1, 0.972549, 0, 1)
 
 [node name="RepellableLever" parent="OnTheGround/Sections/Section3" unique_id=1991745249 instance=ExtResource("19_6hva2")]
 position = Vector2(2618, -1450)
+
+[node name="FragileLogic" type="Node2D" parent="OnTheGround/Sections/Section3" unique_id=2036572026 node_paths=PackedStringArray("fill_game_logic")]
+unique_name_in_owner = true
+script = ExtResource("27_vu2xn")
+fill_game_logic = NodePath("../../../../FillGameLogic")
+
+[node name="Checkpoint" parent="OnTheGround/Sections/Section3" unique_id=1789892556 instance=ExtResource("28_n43l1")]
+position = Vector2(2432, -768)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Sections/Section3/Checkpoint" unique_id=1519117444]
+shape = SubResource("RectangleShape2D_cdbf2")
 
 [node name="Section4" type="Node2D" parent="OnTheGround/Sections" unique_id=2109401697]
 y_sort_enabled = true

@@ -1,12 +1,17 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+## This logic is *not* needed to add Ink Combat to your level. Simply
+## grab the ThrowingEnemy and FillingBarrel nodes and copy them to
+## your scene. This logic helps with sectioning off each part of Ink Combat.
 extends Node2D
 
+## Index representing the section of Ink Combat currently active.
 var _current_section: Node2D
 
 @onready var sections: Node2D = %Sections
 @onready var fill_game_logic: FillGameLogic = %FillGameLogic
 @onready var barrel_unlock_sequence: BarrelUnlockSequence = %BarrelUnlockSequence
+@onready var fragile_logic: Node2D = %FragileLogic
 
 
 ## Start the fill game of the first section
@@ -31,6 +36,10 @@ func set_section(selection: int) -> void:
 
 	fill_game_logic.call_deferred("_update_allowed_colors")
 	_set_group()
+
+	# The third section (index 2) uses Fragile Barrels
+	if _current_section == sections.get_child(2):
+		fragile_logic.setup()
 
 	# The last section (index 3) uses BarrelUnlockSequence
 	if _current_section == sections.get_child(3):
