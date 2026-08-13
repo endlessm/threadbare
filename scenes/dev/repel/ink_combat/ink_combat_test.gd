@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+
 ## This logic is *not* needed to add Ink Combat to your level. Simply
 ## grab the ThrowingEnemy and FillingBarrel nodes and copy them to
 ## your scene. This logic helps with sectioning off each part of Ink Combat.
