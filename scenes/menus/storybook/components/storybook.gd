@@ -39,7 +39,7 @@ var _current_tab_index: int = 0  # 0: TOC, 1: EN, 2: ES
 @onready var animated_book: AnimatedSprite2D = %AnimatedSprite2D
 @onready var ui_container: Control = %StoryBookContent
 
-#Bookmark button references
+# Bookmark button references
 @onready var toc_bookmark_button: Button = %TOCBookmark
 @onready var en_bookmark_button: Button = %ENBookmark
 @onready var es_bookmark_button: Button = %ESBookmark
