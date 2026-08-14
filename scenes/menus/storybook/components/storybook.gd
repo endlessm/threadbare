@@ -26,6 +26,10 @@ var _current_spread_index: int = -1
 var _navigation_locked: bool = false
 var _current_list_page: int = 0
 
+## A copy of all quests loaded on ready (before filtering)
+var _all_quests: Array[Quest] = []
+var _current_tab_index: int = 0  # 0: TOC, 1: EN, 2: ES
+
 @onready var left_quest_list: VBoxContainer = %LeftQuestList
 @onready var right_quest_list: VBoxContainer = %RightQuestList
 
@@ -34,6 +38,11 @@ var _current_list_page: int = 0
 @onready var back_button: Button = %BackButton
 @onready var animated_book: AnimatedSprite2D = %AnimatedSprite2D
 @onready var ui_container: Control = %StoryBookContent
+
+#Bookmark button references
+@onready var toc_bookmark_button: Button = %TOCBookmark
+@onready var en_bookmark_button: Button = %ENBookmark
+@onready var es_bookmark_button: Button = %ESBookmark
 
 
 func _fade_out_ui() -> void:
@@ -51,6 +60,18 @@ func _fade_in_ui() -> void:
 
 func _ready() -> void:
 	animated_book.animation_finished.connect(_on_animation_finished)
+
+	# Saving a copy of all quests
+	_all_quests = quests.duplicate()
+
+	# Connecting the bookmark buttons
+	if toc_bookmark_button:
+		toc_bookmark_button.pressed.connect(_on_toc_bookmark_pressed)
+	if en_bookmark_button:
+		en_bookmark_button.pressed.connect(_on_en_bookmark_pressed)
+	if es_bookmark_button:
+		es_bookmark_button.pressed.connect(_on_es_bookmark_pressed)
+
 	_populate_quest_lists()
 
 
@@ -206,16 +227,21 @@ func _on_left_button_pressed() -> void:
 		return
 
 	# If we are on the main index, turn pages back inside the list
-	if _current_spread_index == 0 and _current_list_page > 0:
-		_navigation_locked = true
-		_current_list_page -= 1
-		await _fade_out_ui()
-		animated_book.play("book_left")
-		await animated_book.animation_finished
-		_populate_quest_lists()
-		_update_page_visibility()
-		_fade_in_ui()
-		_navigation_locked = false
+	if _current_spread_index == 0:
+		if _current_list_page > 0:
+			_navigation_locked = true
+			_current_list_page -= 1
+			await _fade_out_ui()
+			animated_book.play("book_left")
+			await animated_book.animation_finished
+			_populate_quest_lists()
+			_update_page_visibility()
+			_fade_in_ui()
+			_navigation_locked = false
+			return
+
+		# Flipping back from the first page returns to full table of contents
+		_switch_bookmark_tab(0, "")
 		return
 
 	_switch_to_page(_current_spread_index - 1)
@@ -271,3 +297,69 @@ func _on_back_button_pressed() -> void:
 
 func reset_focus() -> void:
 	_switch_to_page(0)
+
+
+func _on_toc_bookmark_pressed() -> void:
+	_switch_bookmark_tab(0, "")
+
+
+func _on_en_bookmark_pressed() -> void:
+	_switch_bookmark_tab(1, "en")
+
+
+func _on_es_bookmark_pressed() -> void:
+	_switch_bookmark_tab(2, "es")
+
+
+func _show_table_of_contents() -> void:
+	quests = _all_quests.duplicate()
+	_reset_storybook_list_view()
+
+
+func _filter_quests_by_language(lang_code: String) -> void:
+	quests = _all_quests.filter(func(quest: Quest) -> bool: return quest.language == lang_code)
+	_reset_storybook_list_view()
+
+
+func _reset_storybook_list_view() -> void:
+	_current_list_page = 0
+	_current_spread_index = 0
+	_populate_quest_lists()
+	_update_page_visibility()
+
+
+func _switch_bookmark_tab(target_tab_index: int, lang_code: String) -> void:
+	if _navigation_locked or target_tab_index == _current_tab_index:
+		return
+
+	_navigation_locked = true
+	var old_tab_index: int = _current_tab_index
+	_current_tab_index = target_tab_index
+
+	# Fade out UI
+	await _fade_out_ui()
+
+	# Flip forward if target > current, otherwise flip backward
+	if target_tab_index > old_tab_index:
+		animated_book.play("book_right")
+	else:
+		animated_book.play("book_left")
+
+	# Wait for animation to finish before rebuilding list
+	await animated_book.animation_finished
+
+	# Filter quests array
+	if lang_code == "":
+		quests = _all_quests.duplicate()
+	else:
+		quests = _all_quests.filter(func(quest: Quest) -> bool: return quest.language == lang_code)
+
+	# Reset page counters and reload UI
+	_current_list_page = 0
+	_current_spread_index = 0
+	_populate_quest_lists()
+	_update_page_visibility()
+
+	# Fade back in
+	_fade_in_ui()
+	_navigation_locked = false
