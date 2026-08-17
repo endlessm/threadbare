@@ -72,6 +72,7 @@ func _ready() -> void:
 	if es_bookmark_button:
 		es_bookmark_button.pressed.connect(_on_es_bookmark_pressed)
 
+	_update_bookmark_visibility()
 	_populate_quest_lists()
 
 
@@ -363,3 +364,22 @@ func _switch_bookmark_tab(target_tab_index: int, lang_code: String) -> void:
 	# Fade back in
 	_fade_in_ui()
 	_navigation_locked = false
+
+
+func _update_bookmark_visibility() -> void:
+	var unique_languages := []
+	for q in _all_quests:
+		if q.language != "" and q.language not in unique_languages:
+			unique_languages.append(q.language)
+
+	# Only show language bookmarks if there is more than 1 language
+	var show_language_tabs: bool = unique_languages.size() > 1
+
+	# Check if at least one quest exists for each language
+	var has_en: bool = _all_quests.any(func(q: Quest) -> bool: return q.language == "en")
+	var has_es: bool = _all_quests.any(func(q: Quest) -> bool: return q.language == "es")
+
+	if en_bookmark_button:
+		en_bookmark_button.visible = show_language_tabs and has_en
+	if es_bookmark_button:
+		es_bookmark_button.visible = show_language_tabs and has_es
