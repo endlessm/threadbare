@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://foolusgqshyi"]
+
+[ext_resource type="Texture2D" uid="uid://d6pbs8f4m55o" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/Beach Art/shipwreck.png" id="1_c2nbw"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="2_8pckk"]
+[ext_resource type="Resource" uid="uid://c1vgsbsxx20jl" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/ShipWrecksdio.dialogue" id="3_c2nbw"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="4_aq03t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bgb60"]
+size = Vector2(52, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qk4ac"]
+size = Vector2(195.2733, 41.036476)
+
+[node name="ShipWreck" type="Area2D" unique_id=353678631]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1981455494]
+position = Vector2(0, -24)
+texture = ExtResource("1_c2nbw")
+
+[node name="TalkBehavior" type="Node" parent="." unique_id=263479407 node_paths=PackedStringArray("interact_area")]
+unique_name_in_owner = true
+script = ExtResource("2_8pckk")
+dialogue = ExtResource("3_c2nbw")
+title = "ShipWreck"
+interact_area = NodePath("../InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
+
+[node name="InteractArea" type="Area2D" parent="." unique_id=129390305]
+unique_name_in_owner = true
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("4_aq03t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=465943458]
+position = Vector2(0, -29)
+scale = Vector2(7.799999, 4.52)
+shape = SubResource("RectangleShape2D_bgb60")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1757028909]
+light_mask = 7
+position = Vector2(3.9999964, 24)
+scale = Vector2(1.5158243, -2.3393822)
+shape = SubResource("RectangleShape2D_qk4ac")

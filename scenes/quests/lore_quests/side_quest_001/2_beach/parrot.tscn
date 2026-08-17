@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://dsctdr3u8q2xf"]
+
+[ext_resource type="Script" uid="uid://k0wddli2xajo" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/parrot.gd" id="1_4j31g"]
+[ext_resource type="PackedScene" uid="uid://d3cj7hwkxcja6" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/pirate_hat.tscn" id="2_wfv5i"]
+[ext_resource type="Texture2D" uid="uid://cxebgfxx0xd10" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/Beach Art/parrotWithHatWithShadow.png" id="2_yxlus"]
+[ext_resource type="Script" uid="uid://dabvr3pqmyya4" path="res://scenes/game_elements/props/hookable_area/components/hookable_area.gd" id="4_dxqkc"]
+[ext_resource type="Texture2D" uid="uid://bfpjc20trnauv" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/Beach Art/parrotIdleNoHat.png" id="4_wfv5i"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qk4ac"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_wfv5i")
+}],
+"loop": 1,
+"name": &"no_hat",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_yxlus")
+}],
+"loop": 1,
+"name": &"with_hat",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wfv5i"]
+size = Vector2(96, 160)
+
+[node name="Parrot" type="Area2D" unique_id=1910679806]
+script = ExtResource("1_4j31g")
+hat_scene = ExtResource("2_wfv5i")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1067763320]
+scale = Vector2(0.35033226, 0.35033226)
+sprite_frames = SubResource("SpriteFrames_qk4ac")
+animation = &"with_hat"
+
+[node name="HookableArea" type="Area2D" parent="." unique_id=1204573480 node_paths=PackedStringArray("controlled_entity", "anchor_point", "indicator_point")]
+unique_name_in_owner = true
+collision_layer = 4096
+collision_mask = 0
+script = ExtResource("4_dxqkc")
+controlled_entity = NodePath("..")
+anchor_point = NodePath("AnchorMarker")
+indicator_point = NodePath("IndicatorMarker")
+weight = 0.0
+metadata/_custom_type_script = "uid://dabvr3pqmyya4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea" unique_id=1757735727]
+position = Vector2(0, -32)
+shape = SubResource("RectangleShape2D_wfv5i")
+debug_color = Color(0.689707, 0.288376, 1, 0.42)
+
+[node name="AnchorMarker" type="Marker2D" parent="HookableArea" unique_id=1978060129]
+position = Vector2(0, -16)
+
+[node name="IndicatorMarker" type="Marker2D" parent="HookableArea" unique_id=996467047]
+position = Vector2(0, -96)
+
+[node name="HatSpawnPoint" type="Marker2D" parent="." unique_id=1529092765]
+position = Vector2(0, 80)

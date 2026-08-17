@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://cii1e4n5annct"]
+
+[ext_resource type="Script" uid="uid://d1ukocroowwa4" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/skeleton_pirate.gd" id="1_1ewha"]
+[ext_resource type="Texture2D" uid="uid://b2ng6qgpcyrpe" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/Beach Art/skeletonTestSpriteNoShadow01.png" id="1_nrmci"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="1_u6w37"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="2_nrmci"]
+[ext_resource type="Texture2D" uid="uid://cwyj8hqovd1md" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/Beach Art/skeletonTestSpriteNoShadow02.png" id="3_uivxm"]
+[ext_resource type="Resource" uid="uid://cne5vo2wh4hnc" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/SkeletonPirate.dialogue" id="4_2blv1"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0bf00"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_nrmci")
+}],
+"loop": 1,
+"name": &"Skeleton_Nohat",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_uivxm")
+}],
+"loop": 1,
+"name": &"Skeleton_withhat",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lamb0"]
+size = Vector2(52, 50)
+
+[node name="SkeletonPirate" type="Area2D" unique_id=557614525]
+script = ExtResource("1_1ewha")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1138130497]
+sprite_frames = SubResource("SpriteFrames_0bf00")
+animation = &"Skeleton_Nohat"
+
+[node name="InteractArea" type="Area2D" parent="." unique_id=1740044931]
+unique_name_in_owner = true
+position = Vector2(0, 40)
+scale = Vector2(1.7873648, 1.967568)
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("1_u6w37")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=54589182]
+position = Vector2(0, -29)
+shape = SubResource("RectangleShape2D_lamb0")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="." unique_id=2097537654 node_paths=PackedStringArray("interact_area", "extra_context")]
+unique_name_in_owner = true
+script = ExtResource("2_nrmci")
+dialogue = ExtResource("4_2blv1")
+title = "PirateNPC"
+interact_area = NodePath("../InteractArea")
+extra_context = [NodePath("..")]
+metadata/_custom_type_script = "uid://edcifob4jc4s"
