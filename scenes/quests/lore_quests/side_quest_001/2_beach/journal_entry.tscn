@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://ccqmhljlblxv"]
+
+[ext_resource type="Texture2D" uid="uid://c25ivgkejagoc" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/Beach Art/journalEntryTattered.png" id="1_10ggn"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="2_3hr8u"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="3_hqkyr"]
+[ext_resource type="Resource" uid="uid://sq6cwdll3llb" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/journal_entry.dialogue" id="4_koq8w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2x2dk"]
+size = Vector2(52, 49.45163)
+
+[node name="JournalEntry" type="Node2D" unique_id=1652672898]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=15591240]
+texture = ExtResource("1_10ggn")
+
+[node name="InteractArea" type="Area2D" parent="." unique_id=1170026743]
+unique_name_in_owner = true
+position = Vector2(0, 16)
+scale = Vector2(0.73374677, 0.647097)
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("2_3hr8u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1811495207]
+position = Vector2(0, -24.725815)
+scale = Vector2(0.9999999, 1)
+shape = SubResource("RectangleShape2D_2x2dk")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="TalkBehavior" type="Node" parent="." unique_id=1398953044 node_paths=PackedStringArray("interact_area", "extra_context")]
+unique_name_in_owner = true
+script = ExtResource("3_hqkyr")
+dialogue = ExtResource("4_koq8w")
+title = "JournalPage"
+interact_area = NodePath("../InteractArea")
+extra_context = [NodePath("..")]
+metadata/_custom_type_script = "uid://edcifob4jc4s"

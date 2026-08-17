@@ -1,40 +1,15 @@
 [gd_scene format=3 uid="uid://b8hje84ld36o5"]
 
-[ext_resource type="Script" uid="uid://ompfuw82ctb2" path="res://scenes/quests/lore_quests/side_quest_001/6_treasure_room/components/book/book.gd" id="1_fmb8s"]
 [ext_resource type="Texture2D" uid="uid://bhqanyxhpxpm" path="res://assets/first_party/rocks/Rock_Idle.png" id="1_g276n"]
-[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="2_g705x"]
-[ext_resource type="Resource" uid="uid://bo4uavbp0al61" path="res://scenes/quests/lore_quests/side_quest_001/6_treasure_room/components/book/outro.dialogue" id="3_fmb8s"]
-[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="4_5lx86"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kkask"]
-size = Vector2(60, 55)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spiih"]
 size = Vector2(53, 45)
 
 [node name="Book" type="StaticBody2D" unique_id=1091175077]
-script = ExtResource("1_fmb8s")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1054940245]
 texture = ExtResource("1_g276n")
 
-[node name="TalkBehavior" type="Node" parent="." unique_id=2026477836 node_paths=PackedStringArray("interact_area")]
-script = ExtResource("2_g705x")
-dialogue = ExtResource("3_fmb8s")
-interact_area = NodePath("../Interact Area")
-metadata/_custom_type_script = "uid://edcifob4jc4s"
-
-[node name="Interact Area" type="Area2D" parent="." unique_id=1349640596]
-collision_layer = 32
-collision_mask = 0
-script = ExtResource("4_5lx86")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interact Area" unique_id=1724627938]
-position = Vector2(-2, -16.5)
-shape = SubResource("RectangleShape2D_kkask")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=110530989]
 position = Vector2(-1.5, -0.5)
 shape = SubResource("RectangleShape2D_spiih")
-
-[connection signal="interaction_ended" from="Interact Area" to="." method="reveal_thread"]
