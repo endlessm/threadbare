@@ -29,6 +29,7 @@
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="27_b0sp0"]
 [ext_resource type="AudioStream" uid="uid://qnqpd21qyfnc" path="res://assets/first_party/music/Threadbare_Stealth.ogg" id="28_38fce"]
 [ext_resource type="PackedScene" uid="uid://dpn6binisc4u4" path="res://scenes/quests/lore_quests/quest_004/02_caretaker_of_growth/butterfly_chaser.tscn" id="29_f5k4o"]
+[ext_resource type="Script" uid="uid://b54gx2nwrpnkl" path="res://scenes/quests/lore_quests/quest_004/02_caretaker_of_growth/level_camera_tour.gd" id="30_5qa58"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fwsoq"]
 texture = ExtResource("11_sjbvd")
@@ -421,6 +422,91 @@ _data = {
 }
 point_count = 33
 
+[sub_resource type="Animation" id="Animation_u2tt3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Player/Camera2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Player/Camera2D:zoom")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ScreenFader/FadeOverlay:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_x1wxu"]
+resource_name = "intro_tour"
+length = 22.166666
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OnTheGround/Player/Camera2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5, 2.4333334, 4.3, 6.3, 7.766667, 9.166667, 10.666667, 12.366667, 14.2, 15.966666, 17.233334, 19.955954),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(635, -291), Vector2(1103, -67.00003), Vector2(1507, -377.99997), Vector2(1761, 96), Vector2(1756, 668), Vector2(694, 692), Vector2(180, 760), Vector2(141, 1210), Vector2(1036, 1278), Vector2(2274, 1249), Vector2(2338, -578)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OnTheGround/Player/Camera2D:zoom")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(17.198198, 18.766666),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(2.08, 2.08)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ScreenFader/FadeOverlay:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.47043303, 20.733334, 21.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0), Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5tv7k"]
+_data = {
+&"RESET": SubResource("Animation_u2tt3"),
+&"intro_tour": SubResource("Animation_x1wxu")
+}
+
 [node name="CasaConPatas" type="Node2D" unique_id=426930924]
 
 [node name="GrantQuestAbilities" parent="." unique_id=75280383 instance=ExtResource("1_ogreo")]
@@ -628,3 +714,20 @@ curve = SubResource("Curve2D_ogreo")
 [node name="PathFollow2D" type="PathFollow2D" parent="ButterflyPatrolPath" unique_id=321128990]
 position = Vector2(4.3333435, 5.6666565)
 rotation = 1.1620022
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=277233053]
+libraries/ = SubResource("AnimationLibrary_5tv7k")
+script = ExtResource("30_5qa58")
+
+[node name="ScreenFader" type="CanvasLayer" parent="." unique_id=2017892341]
+layer = 100
+
+[node name="FadeOverlay" type="ColorRect" parent="ScreenFader" unique_id=1169554976]
+modulate = Color(0, 0, 0, 1)
+anchors_preset = -1
+anchor_right = 2.3370001
+anchor_bottom = 3.2580001
+offset_right = 0.6398926
+offset_bottom = 0.23999023
+grow_horizontal = 2
+grow_vertical = 2
