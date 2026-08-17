@@ -11,13 +11,19 @@
 [ext_resource type="PackedScene" uid="uid://b8hje84ld36o5" path="res://scenes/quests/lore_quests/side_quest_001/6_treasure_room/components/book/book.tscn" id="5_b0wwu"]
 [ext_resource type="PackedScene" uid="uid://dxl6j7uc7o0nu" path="res://scenes/quests/lore_quests/side_quest_001/6_treasure_room/components/spawner/spawner.tscn" id="5_dd31k"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="6_b0wwu"]
+[ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="6_cvvx4"]
+[ext_resource type="Resource" uid="uid://bo4uavbp0al61" path="res://scenes/quests/lore_quests/side_quest_001/6_treasure_room/components/book/outro.dialogue" id="7_7uw37"]
 [ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="7_u1grp"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="8_sy1lo"]
 [ext_resource type="PackedScene" uid="uid://ei57s5k8ibov" path="res://scenes/quests/lore_quests/side_quest_001/components/skeleton/skeleton.tscn" id="11_4cswt"]
 [ext_resource type="Resource" uid="uid://rphgyd7morsi" path="res://scenes/quests/lore_quests/side_quest_001/6_treasure_room/components/ready_treasure.dialogue" id="12_q5kb8"]
 [ext_resource type="Resource" uid="uid://xendamkquh6t" path="res://scenes/quests/lore_quests/side_quest_001/6_treasure_room/components/hint_treasure.dialogue" id="12_yvyvq"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="13_u1grp"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="14_53ojm"]
 [ext_resource type="Resource" uid="uid://cx6v6n1guhxyo" path="res://scenes/quests/lore_quests/side_quest_001/6_treasure_room/components/intro_treasure.dialogue" id="15_4cswt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_andwd"]
+size = Vector2(59, 50)
 
 [sub_resource type="Resource" id="Resource_mxhht"]
 script = ExtResource("7_u1grp")
@@ -42,13 +48,30 @@ tile_set = ExtResource("3_b0wwu")
 [node name="Walls" type="TileMapLayer" parent="TileMapLayers" unique_id=56441085]
 texture_filter = 1
 material = ExtResource("1_2ftnb")
-tile_map_data = PackedByteArray("AAABAP7/BAABAAEAAAABAP//BAABAAEAAAABAAAABAABAAEAAAABAAEABAABAAEAAAABAAIABAABAAEAAAABAAMABAABAAEAAAABAAQABAABAAEAAAABAAUABAABAAEAAAABAAYABAABAAEAAAABAAcABAABAAEAAAABAAkABAAAAAMAAAABAAgABAAAAAIAAAACAAgABAABAAQAAAADAAgABAABAAQAAAAEAAgABAABAAQAAAAFAAgABAABAAQAAAAGAAgABAABAAQAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAABAAQAAAAOAAgABAABAAQAAAAPAAgABAABAAQAAAAQAAgABAABAAQAAAARAAgABAABAAQAAAASAAgABAABAAQAAAATAAgABAABAAQAAAAUAAgABAABAAQAAAAVAAgABAABAAQAAAAWAAgABAABAAQAAAAXAAgABAABAAQAAAAYAAgABAACAAIAAAACAAkABAABAAUAAAADAAkABAABAAUAAAAEAAkABAABAAUAAAAFAAkABAABAAUAAAAGAAkABAABAAUAAAAHAAkABAABAAUAAAAIAAkABAABAAUAAAAJAAkABAABAAUAAAAKAAkABAABAAUAAAALAAkABAABAAUAAAAMAAkABAABAAUAAAANAAkABAABAAUAAAAOAAkABAABAAUAAAAPAAkABAABAAUAAAAQAAkABAABAAUAAAARAAkABAABAAUAAAASAAkABAABAAUAAAATAAkABAABAAUAAAAUAAkABAABAAUAAAAVAAkABAABAAUAAAAWAAkABAABAAUAAAAXAAkABAABAAUAAAAYAAkABAACAAMAAAAYAP3/BAADAAEAAAAYAP7/BAADAAEAAAAYAP//BAADAAEAAAAYAAAABAADAAEAAAAYAAEABAADAAEAAAAYAAIABAADAAEAAAAYAAMABAADAAEAAAAYAAQABAADAAEAAAAYAAUABAADAAEAAAAYAAYABAADAAEAAAAYAAcABAADAAEAAAABAP3/BAADAAEAAAABAPz/BAAAAAAAAAAYAPz/BAACAAAAAAACAPz/BAABAAQAAAADAPz/BAABAAQAAAAEAPz/BAABAAQAAAAFAPz/BAABAAQAAAAGAPz/BAABAAQAAAAHAPz/BAABAAQAAAAIAPz/BAABAAQAAAAJAPz/BAABAAQAAAAKAPz/BAABAAQAAAALAPz/BAABAAQAAAAMAPz/BAABAAQAAAANAPz/BAABAAQAAAAOAPz/BAABAAQAAAAPAPz/BAABAAQAAAAQAPz/BAABAAQAAAARAPz/BAABAAQAAAASAPz/BAABAAQAAAATAPz/BAABAAQAAAAUAPz/BAABAAQAAAAVAPz/BAABAAQAAAAWAPz/BAABAAQAAAAXAPz/BAABAAQAAAACAP3/BAABAAUAAAADAP3/BAABAAUAAAAEAP3/BAABAAUAAAAFAP3/BAABAAUAAAAGAP3/BAABAAUAAAAHAP3/BAABAAUAAAAIAP3/BAABAAUAAAAJAP3/BAABAAUAAAAKAP3/BAABAAUAAAALAP3/BAABAAUAAAAMAP3/BAABAAUAAAANAP3/BAABAAUAAAAOAP3/BAABAAUAAAAPAP3/BAABAAUAAAAQAP3/BAABAAUAAAARAP3/BAABAAUAAAASAP3/BAABAAUAAAATAP3/BAABAAUAAAAUAP3/BAABAAUAAAAVAP3/BAABAAUAAAAWAP3/BAABAAUAAAAXAP3/BAABAAUAAAA=")
+tile_map_data = PackedByteArray("AAABAP7/BAADAAEAAAABAP//BAADAAEAAAABAAAABAADAAEAAAABAAEABAADAAEAAAABAAIABAADAAEAAAABAAMABAADAAEAAAABAAQABAADAAEAAAABAAUABAADAAEAAAABAAYABAADAAEAAAABAAcABAADAAEAAAABAAkABAAAAAMAAAABAAgABAAAAAIAAAACAAgABAABAAQAAAADAAgABAABAAQAAAAEAAgABAABAAQAAAAFAAgABAABAAQAAAAGAAgABAABAAQAAAAHAAgABAABAAQAAAAIAAgABAABAAQAAAAJAAgABAABAAQAAAAKAAgABAABAAQAAAALAAgABAABAAQAAAAMAAgABAABAAQAAAANAAgABAABAAQAAAAOAAgABAABAAQAAAAPAAgABAABAAQAAAAQAAgABAABAAQAAAARAAgABAABAAQAAAASAAgABAABAAQAAAATAAgABAABAAQAAAAUAAgABAABAAQAAAAVAAgABAABAAQAAAAWAAgABAABAAQAAAAXAAgABAABAAQAAAAYAAgABAACAAIAAAACAAkABAABAAUAAAADAAkABAABAAUAAAAEAAkABAABAAUAAAAFAAkABAABAAUAAAAGAAkABAABAAUAAAAHAAkABAABAAUAAAAIAAkABAABAAUAAAAJAAkABAABAAUAAAAKAAkABAABAAUAAAALAAkABAABAAUAAAAMAAkABAABAAUAAAANAAkABAABAAUAAAAOAAkABAABAAUAAAAPAAkABAABAAUAAAAQAAkABAABAAUAAAARAAkABAABAAUAAAASAAkABAABAAUAAAATAAkABAABAAUAAAAUAAkABAABAAUAAAAVAAkABAABAAUAAAAWAAkABAABAAUAAAAXAAkABAABAAUAAAAYAAkABAACAAMAAAAYAP3/BAADAAEAAAAYAP7/BAADAAEAAAAYAP//BAADAAEAAAAYAAAABAADAAEAAAAYAAEABAADAAEAAAAYAAIABAADAAEAAAAYAAMABAADAAEAAAAYAAQABAADAAEAAAAYAAUABAADAAEAAAAYAAYABAADAAEAAAAYAAcABAADAAEAAAABAP3/BAADAAEAAAABAPz/BAAAAAAAAAAYAPz/BAACAAAAAAACAPz/BAABAAQAAAADAPz/BAABAAQAAAAEAPz/BAABAAQAAAAFAPz/BAABAAQAAAAGAPz/BAABAAQAAAAHAPz/BAABAAQAAAAIAPz/BAABAAQAAAAJAPz/BAABAAQAAAAKAPz/BAABAAQAAAALAPz/BAABAAQAAAAMAPz/BAABAAQAAAANAPz/BAABAAQAAAAOAPz/BAABAAQAAAAPAPz/BAABAAQAAAAQAPz/BAABAAQAAAARAPz/BAABAAQAAAASAPz/BAABAAQAAAATAPz/BAABAAQAAAAUAPz/BAABAAQAAAAVAPz/BAABAAQAAAAWAPz/BAABAAQAAAAXAPz/BAABAAQAAAACAP3/BAABAAUAAAADAP3/BAABAAUAAAAEAP3/BAABAAUAAAAFAP3/BAABAAUAAAAGAP3/BAABAAUAAAAHAP3/BAABAAUAAAAIAP3/BAABAAUAAAAJAP3/BAABAAUAAAAKAP3/BAABAAUAAAALAP3/BAABAAUAAAAMAP3/BAABAAUAAAANAP3/BAABAAUAAAAOAP3/BAABAAUAAAAPAP3/BAABAAUAAAAQAP3/BAABAAUAAAARAP3/BAABAAUAAAASAP3/BAABAAUAAAATAP3/BAABAAUAAAAUAP3/BAABAAUAAAAVAP3/BAABAAUAAAAWAP3/BAABAAUAAAAXAP3/BAABAAUAAAA=")
 tile_set = ExtResource("3_b0wwu")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=1991035904]
 
 [node name="Book" parent="OnTheGround" unique_id=1091175077 instance=ExtResource("5_b0wwu")]
-position = Vector2(1186, 218)
+position = Vector2(1188, 218)
+
+[node name="TalkBehavior2" type="Node" parent="OnTheGround/Book" unique_id=1114742180 node_paths=PackedStringArray("interact_area")]
+script = ExtResource("6_cvvx4")
+dialogue = ExtResource("7_7uw37")
+interact_area = NodePath("InteractArea")
+metadata/_custom_type_script = "uid://edcifob4jc4s"
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Book/TalkBehavior2" unique_id=101004925]
+position = Vector2(1188, 218)
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("8_sy1lo")
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Book/TalkBehavior2/InteractArea" unique_id=1623743238]
+position = Vector2(-2.5, -15)
+shape = SubResource("RectangleShape2D_andwd")
 
 [node name="CollectibleItem" parent="OnTheGround" unique_id=327991066 instance=ExtResource("6_b0wwu")]
 position = Vector2(1315, 210)
@@ -82,9 +105,9 @@ arrow = ExtResource("4_sabig")
 time = 0.5
 
 [node name="Skeleton" parent="OnTheGround" unique_id=1366328255 instance=ExtResource("11_4cswt")]
-position = Vector2(227, 22)
+position = Vector2(1024, 147)
 start_position = Vector2(228, 22)
-end_position = Vector2(975, 150)
+end_position = Vector2(1024, 147)
 start_dialogue = ExtResource("12_yvyvq")
 end_dialogue = ExtResource("12_q5kb8")
 
@@ -108,4 +131,5 @@ script = ExtResource("14_53ojm")
 dialogue = ExtResource("15_4cswt")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
-[connection signal="book_read" from="OnTheGround/Book" to="OnTheGround/Skeleton" method="_on_book_book_read"]
+[connection signal="interaction_ended" from="OnTheGround/Book/TalkBehavior2/InteractArea" to="OnTheGround/CollectibleItem" method="reveal"]
+[connection signal="interaction_started" from="OnTheGround/Book/TalkBehavior2/InteractArea" to="OnTheGround/Skeleton" method="_on_interaction_started"]
