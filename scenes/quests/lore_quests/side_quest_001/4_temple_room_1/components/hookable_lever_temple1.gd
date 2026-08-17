@@ -20,6 +20,7 @@ signal toggled(is_on: bool)
 @onready var hookable_area: HookableArea = %HookableArea
 @onready var lever_sprite: Sprite2D = %LeverSprite
 @onready var shaker: Shaker = %Shaker
+@export var lever_sound: AudioStreamPlayer2D
 
 func update_appearance() -> void:
 	if not is_node_ready():
@@ -62,4 +63,6 @@ func got_pulled(direction: Vector2) -> void:
 func toggle(new_val: bool = not is_on) -> void:
 	is_on = new_val
 	
-	toggled.emit(is_on)
+	if lever_sound != null:
+		lever_sound.play()
+		toggled.emit(is_on)
