@@ -9,7 +9,6 @@ pushd "$(readlink -f "$(dirname "$0")/..")"
 VERSION=$(git describe --tags)
 declare -a PRUNE_FOLDERS=(
 	"assets/third_party/tiny-swords-non-cc0"
-	"scenes/quests/lore_quests"
 	"scenes/quests/story_quests"
 	"scenes/world_map"
 )
