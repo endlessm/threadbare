@@ -28,6 +28,8 @@ var _current_list_page: int = 0
 
 ## A copy of all quests loaded on ready (before filtering)
 var _all_quests: Array[Quest] = []
+var _filtered_quests: Array[Quest] = []
+
 var _current_tab_index: int = 0  # 0: TOC, 1: EN, 2: ES
 
 @onready var left_quest_list: VBoxContainer = %LeftQuestList
@@ -62,7 +64,8 @@ func _ready() -> void:
 	animated_book.animation_finished.connect(_on_animation_finished)
 
 	# Saving a copy of all quests
-	_all_quests = quests.duplicate()
+	_all_quests = quests
+	_filtered_quests = quests
 
 	# Connecting the bookmark buttons
 	if toc_bookmark_button:
@@ -96,11 +99,11 @@ func _populate_quest_lists() -> void:
 	var previous_button: Button = null
 
 	# Building the left page
-	for i in range(left_start, min(left_end, quests.size())):
+	for i in range(left_start, min(left_end, _filtered_quests.size())):
 		previous_button = _create_quest_button(i, left_quest_list, previous_button)
 
 	#Building the right page
-	for i in range(right_start, min(right_end, quests.size())):
+	for i in range(right_start, min(right_end, _filtered_quests.size())):
 		previous_button = _create_quest_button(i, right_quest_list, previous_button)
 	# If the right page is empty, add a blank Control spacer so it maintains its width
 	if right_quest_list.get_child_count() == 0:
@@ -120,7 +123,7 @@ func _populate_quest_lists() -> void:
 func _create_quest_button(
 	quest_index: int, parent_container: VBoxContainer, prev_btn: Button
 ) -> Button:
-	var quest: Quest = quests[quest_index]
+	var quest: Quest = _filtered_quests[quest_index]
 	var button := Button.new()
 	button.text = quest.get_title()
 	button.theme_type_variation = "FlatButton"
@@ -154,8 +157,8 @@ func _update_page_visibility() -> void:
 		storybook_page.visible = true
 
 		var quest_index: int = _current_spread_index - 1
-		if quest_index >= 0 and quest_index < quests.size():
-			var quest: Quest = quests[quest_index]
+		if quest_index >= 0 and quest_index < _filtered_quests.size():
+			var quest: Quest = _filtered_quests[quest_index]
 			storybook_page.quest = quest
 
 			if storybook_page.play_button and is_instance_valid(storybook_page.play_button):
@@ -190,7 +193,7 @@ func _switch_to_page(spread_index: int) -> void:
 	if _navigation_locked:
 		return
 
-	var total_spreads: int = quests.size() + 1
+	var total_spreads: int = _filtered_quests.size() + 1
 	if total_spreads <= 1:
 		return
 
@@ -255,7 +258,7 @@ func _on_right_button_pressed() -> void:
 	# If we are on the main index, check if there are more quests to reveal on a new page
 	if _current_spread_index == 0:
 		var max_visible_so_far: int = (_current_list_page + 1) * quests_per_page * 2
-		if quests.size() > max_visible_so_far:
+		if _filtered_quests.size() > max_visible_so_far:
 			_navigation_locked = true
 			_current_list_page += 1
 			await _fade_out_ui()
@@ -313,12 +316,14 @@ func _on_es_bookmark_pressed() -> void:
 
 
 func _show_table_of_contents() -> void:
-	quests = _all_quests.duplicate()
+	_filtered_quests = _all_quests
 	_reset_storybook_list_view()
 
 
 func _filter_quests_by_language(lang_code: String) -> void:
-	quests = _all_quests.filter(func(quest: Quest) -> bool: return quest.language == lang_code)
+	_filtered_quests = _all_quests.filter(
+		func(quest: Quest) -> bool: return quest.language == lang_code
+	)
 	_reset_storybook_list_view()
 
 
@@ -351,9 +356,11 @@ func _switch_bookmark_tab(target_tab_index: int, lang_code: String) -> void:
 
 	# Filter quests array
 	if lang_code == "":
-		quests = _all_quests.duplicate()
+		_filtered_quests = _all_quests
 	else:
-		quests = _all_quests.filter(func(quest: Quest) -> bool: return quest.language == lang_code)
+		_filtered_quests = _all_quests.filter(
+			func(quest: Quest) -> bool: return quest.language == lang_code
+		)
 
 	# Reset page counters and reload UI
 	_current_list_page = 0
