@@ -20,3 +20,20 @@ func _ready() -> void:
 func puzzle_solved():
 	position = end_position
 	talk_behavior.dialogue = end_dialogue
+
+
+func _on_statue_puzzle_solved() -> void:
+	pass # Replace with function body.
+	position = end_position
+	talk_behavior.dialogue = end_dialogue
+
+func _hidden() -> void:
+	pass # Replace with function body.
+	position = end_position
+	talk_behavior.dialogue = end_dialogue
+
+
+func _on_sequence_puzzle_step_4_hidden() -> void:
+	pass # Replace with function body.
+	position = end_position
+	talk_behavior.dialogue = end_dialogue
