@@ -9,6 +9,7 @@ extends StaticBody2D
 
 @onready var talk_behavior: TalkBehavior = $TalkBehavior
 
+var already_teleported: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,22 +19,11 @@ func _ready() -> void:
 
 ## When a puzzle is solved, this changes the skeleton's position and their dialogue
 func puzzle_solved():
-	position = end_position
-	talk_behavior.dialogue = end_dialogue
+	if not already_teleported:
+		position = end_position
+		talk_behavior.dialogue = end_dialogue
+		already_teleported = true
 
 
-func _on_statue_puzzle_solved() -> void:
-	pass # Replace with function body.
-	position = end_position
-	talk_behavior.dialogue = end_dialogue
-
-func _hidden() -> void:
-	pass # Replace with function body.
-	position = end_position
-	talk_behavior.dialogue = end_dialogue
-
-
-func _on_sequence_puzzle_step_4_hidden() -> void:
-	pass # Replace with function body.
-	position = end_position
-	talk_behavior.dialogue = end_dialogue
+func _on_interaction_started(player: Player, from_right: bool) -> void:
+	puzzle_solved()

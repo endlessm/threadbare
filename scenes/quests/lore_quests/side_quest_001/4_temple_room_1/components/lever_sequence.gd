@@ -4,7 +4,7 @@ extends Node
 
 @export var num_of_entries: int = 3
 
-var _objects: Array[SequencePuzzleObject]
+var _objects: Array[ToggableLight]
 var _sequence: Dictionary[int, int]
 var current_step: int = 0
 var done: bool = false
