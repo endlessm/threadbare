@@ -14,9 +14,14 @@
 [ext_resource type="PackedScene" uid="uid://cii1e4n5annct" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/skeleton_pirate.tscn" id="13_4shau"]
 [ext_resource type="PackedScene" uid="uid://foolusgqshyi" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/ship_wreck.tscn" id="13_6ebfs"]
 [ext_resource type="PackedScene" uid="uid://dsctdr3u8q2xf" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/parrot.tscn" id="14_ui6ug"]
+[ext_resource type="PackedScene" uid="uid://ccqmhljlblxv" path="res://scenes/quests/lore_quests/side_quest_001/2_beach/journal_entry.tscn" id="15_4w5hq"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="16_lq7j7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_andwd"]
 size = Vector2(44, 929)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qk4ac"]
+size = Vector2(64, 896)
 
 [node name="Beach" type="Node2D" unique_id=1032320633]
 script = ExtResource("1_6ebfs")
@@ -43,6 +48,7 @@ tile_set = ExtResource("5_wenvd")
 [node name="Void" type="TileMapLayer" parent="TileMapLayers" unique_id=360323217]
 texture_filter = 1
 material = ExtResource("6_i43dg")
+tile_map_data = PackedByteArray("AAD/////DQADAAMAAAD//wAADQADAAMAAAD//wEADQADAAMAAAD//wIADQADAAMAAAD//wMADQADAAMAAAD//wQADQADAAMAAAD//wcADQADAAMAAAD//wUADQADAAMAAAD//wYADQADAAMAAAD//wgADQADAAMAAAD//wkADQADAAMAAAD//woADQADAAMAAAD//wsADQADAAMAAAD//wwADQADAAMAAAD//w0ADQADAAMAAAAAAA0ADQADAAMAAAABAA0ADQADAAMAAAACAA0ADQADAAMAAAADAA0ADQADAAMAAAAEAA0ADQADAAMAAAAFAA0ADQADAAMAAAAGAA0ADQADAAMAAAAHAA0ADQADAAMAAAAIAA0ADQADAAMAAAAJAA0ADQADAAMAAAAKAA0ADQADAAMAAAALAA0ADQADAAMAAAAMAA0ADQADAAMAAAANAA0ADQADAAMAAAAOAA0ADQADAAMAAAAPAA0ADQADAAMAAAAQAA0ADQADAAMAAAARAA0ADQADAAMAAAASAA0ADQADAAMAAAATAA0ADQADAAMAAAAUAA0ADQADAAMAAAAVAA0ADQADAAMAAAAWAA0ADQADAAMAAAAXAA0ADQADAAMAAAAYAA0ADQADAAMAAAAZAA0ADQADAAMAAAAaAA0ADQADAAMAAAAaAAwADQADAAMAAAAaAAsADQADAAMAAAAaAAoADQADAAMAAAAaAAkADQADAAMAAAAaAAgADQADAAMAAAAaAAcADQADAAMAAAAaAAYADQADAAMAAAAaAAUADQADAAMAAAAaAAQADQADAAMAAAAaAAMADQADAAMAAAAaAAIADQADAAMAAAAaAAEADQADAAMAAAAaAAAADQADAAMAAAAaAP//DQADAAMAAAD///7/DQADAAMAAAAAAP7/DQADAAMAAAABAP7/DQADAAMAAAACAP7/DQADAAMAAAADAP7/DQADAAMAAAAEAP7/DQADAAMAAAAFAP7/DQADAAMAAAAGAP7/DQADAAMAAAAHAP7/DQADAAMAAAAIAP7/DQADAAMAAAAJAP7/DQADAAMAAAAKAP7/DQADAAMAAAALAP7/DQADAAMAAAAMAP7/DQADAAMAAAANAP7/DQADAAMAAAAOAP7/DQADAAMAAAAPAP7/DQADAAMAAAAQAP7/DQADAAMAAAARAP7/DQADAAMAAAASAP7/DQADAAMAAAATAP7/DQADAAMAAAAUAP7/DQADAAMAAAAVAP7/DQADAAMAAAAWAP7/DQADAAMAAAAXAP7/DQADAAMAAAAYAP7/DQADAAMAAAAZAP7/DQADAAMAAAAaAP7/DQADAAMAAAA=")
 tile_set = ExtResource("7_c4ums")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=908085594]
@@ -75,5 +81,20 @@ position = Vector2(544, 112)
 move_distance = 400.0
 speed = 200.0
 
-[node name="SkeletonPirate" parent="." unique_id=557614525 instance=ExtResource("13_4shau")]
+[node name="SkeletonPirate" parent="." unique_id=557614525 node_paths=PackedStringArray("exit_blocker") instance=ExtResource("13_4shau")]
 position = Vector2(1200, 264)
+exit_blocker = NodePath("../ExitBlocker")
+
+[node name="JournalEntry" parent="." unique_id=1652672898 instance=ExtResource("15_4w5hq")]
+position = Vector2(864, 424)
+
+[node name="ExitBlocker" type="StaticBody2D" parent="." unique_id=367072975]
+position = Vector2(1328, 160)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitBlocker" unique_id=795855433]
+position = Vector2(24, 224)
+shape = SubResource("RectangleShape2D_qk4ac")
+
+[node name="Cinematic" type="Node2D" parent="." unique_id=1749248576]
+script = ExtResource("16_lq7j7")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
