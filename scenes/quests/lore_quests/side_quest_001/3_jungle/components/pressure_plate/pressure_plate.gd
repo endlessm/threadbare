@@ -3,24 +3,28 @@
 @tool
 extends Node2D
 
+signal matching
+signal exited(matches: bool)
+
+## Expected symbol is the symbol the statue must have in order to match.
 @export var expected_symbol: String
 @export var sprite: Texture2D:
 	set = _set_sprite
 
-@onready var appearance: Sprite2D = $Sprite2D
-
-signal matching
-signal exited(matches: bool)
-
+## Keeps track of whether the statue that is on it has a matching symbol.
 var matched: bool = false
+## Keeps track of whether there is something on the pressure plate.
 var something_in: bool = false
 
-# Called when the node enters the scene tree for the first time.
+@onready var appearance: Sprite2D = $Sprite2D
+
+
+## Automatically sets the sprite.
 func _ready() -> void:
 	_set_sprite(sprite)
 
 
-## Checks if a statue is on the pressure plate and if it matches the corresponding symbol
+## Checks if a statue is on the pressure plate and if it matches the corresponding symbol.
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	# Must check if something is not inside first to avoid multiple items changing the values
 	if not something_in:
@@ -30,14 +34,11 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 			if sym == expected_symbol:
 				matching.emit()
 				matched = true
-				print("matches")
 			else:
 				matched = false
-				print("not matches")
-		else:
-			print("nah")
 
-## Checks if a statue is off the pressure plate
+
+## Checks if a statue is off the pressure plate.
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	# Must check if something is not inside first to avoid multiple items changing the values
 	if something_in:
@@ -45,12 +46,10 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 			something_in = false
 			exited.emit(matched)
 			matched = false
-			print("out")
-		else:
-			print("nah 2")
 
 
-func _set_sprite(look: Texture2D):
+## The actual method that sets up the sprite chosen in the editor.
+func _set_sprite(look: Texture2D) -> void:
 	sprite = look
 	if appearance:
 		appearance.texture = look

@@ -2,22 +2,26 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node
 
+signal solved
+
 @export var num_of_entries: int = 3
 
-var _objects: Array[ToggableLight]
-var _sequence: Dictionary[int, int]
 var current_step: int = 0
 var done: bool = false
 
-signal solved
+var _objects: Array[ToggableLight]
+var _sequence: Dictionary[int, int]
 
-# Called when the node enters the scene tree for the first time.
+
+## At the start, calls the function that finds all lights in the puzzle.
 func _ready() -> void:
 	_find_objects()
 
+
+## Finds all lights in the puzzle.
 func _find_objects() -> void:
 	_objects.clear()
-	var num = 0
+	var num: int = 0
 
 	for o: Node in get_tree().get_nodes_in_group("lights"):
 		if o is ToggableLight:
@@ -30,24 +34,29 @@ func _find_objects() -> void:
 			num += 1
 
 
-func _on_enabled(num: int):
+## When the lever is turned on, it saves in what order its corresponding light was toggled.
+## If all lights are toggled, it calls the function that checks if the lights were toggled in
+## the right order.
+func _on_enabled(num: int) -> void:
 	_sequence[num] = current_step
 	current_step += 1
 	if current_step >= num_of_entries:
 		check()
 
 
-func _on_disabled(num: int):
+## When the lever is disabled, its placement in the saved order is reset.
+func _on_disabled(num: int) -> void:
 	_sequence[num] = -1
 	current_step -= 1
 
 
-func check():
+## Check whether all lights were toggled in the correct order based on their saved order.
+func check() -> void:
 	var correct: bool = true
 	for light in _sequence:
 		if light != _sequence[light]:
 			correct = false
-	
+
 	if correct:
 		done = true
 		solved.emit()
