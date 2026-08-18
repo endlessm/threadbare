@@ -9,6 +9,9 @@ extends Node2D
 var _barrels: Array[FillingBarrel]
 var _enemies: Array[ThrowingEnemy]
 
+@onready var enemy_container: Node2D = $Enemies
+@onready var barrel_container: Node2D = $Barrels
+
 
 func _ready() -> void:
 	_update_barrels()
@@ -18,7 +21,7 @@ func _ready() -> void:
 ## Store a copy of the FillinBarrel nodes before
 ## any changes occur during ink combat.
 func _update_barrels() -> void:
-	for barrel: FillingBarrel in get_child(1).get_children():
+	for barrel: FillingBarrel in barrel_container.get_children():
 		var barrel_copy := barrel.duplicate()
 		_barrels.append(barrel_copy)
 
@@ -27,7 +30,7 @@ func _update_barrels() -> void:
 ## any changes occur during ink combat.
 func _update_enemies() -> void:
 	_enemies = []
-	for enemy: ThrowingEnemy in get_child(0).get_children():
+	for enemy: ThrowingEnemy in enemy_container.get_children():
 		var enemy_copy := enemy.duplicate()
 		_enemies.append(enemy_copy)
 
@@ -36,20 +39,20 @@ func _update_enemies() -> void:
 ## corresponding groups to replace the ones depleted
 ## in ink combat.
 func reset() -> void:
-	for enemy: ThrowingEnemy in get_child(0).get_children():
+	for enemy: ThrowingEnemy in enemy_container.get_children():
 		if is_instance_valid(enemy):
 			enemy.call_deferred("free")
 
 	for enemy: ThrowingEnemy in _enemies:
-		get_child(0).call_deferred("add_child", enemy)
+		enemy_container.call_deferred("add_child", enemy)
 		enemy.add_to_group("throwing_enemy")
 
-	for barrel: FillingBarrel in get_child(1).get_children():
+	for barrel: FillingBarrel in barrel_container.get_children():
 		if is_instance_valid(barrel):
 			barrel.free()
 
 	for barrel: FillingBarrel in _barrels:
-		get_child(1).add_child(barrel)
+		barrel_container.add_child(barrel)
 		barrel.add_to_group("filling_barrels")
 
 	_barrels = []
