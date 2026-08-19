@@ -13,8 +13,14 @@ extends Node
 ## If the parent is an NPC, it sets the [member InteractArea.action] to "Talk to NAME",
 ## where NAME is the [member NPC.npc_name].[br][br]
 
+## The dialogue to display.
 @export var dialogue: DialogueResource = preload("uid://cc3paugq4mma4")
+
+## If set, it should match one of [member dialogue]'s [member DialogueResource.titles].
 @export var title: String = ""
+
+## The area that the player-character should interact to display the dialogue.
+## The interaction will last until the dialogue ends.
 @export var interact_area: InteractArea:
 	set = _set_interact_area
 
