@@ -8,15 +8,18 @@ extends Node2D
 @onready var cooldown: Timer = $Cooldown
 
 
+## Sets the cooldown timer.
 func _ready() -> void:
 	cooldown.wait_time = time
 
 
-func shoot():
+## Spawns in the arrows.
+func shoot() -> void:
 	var arr = arrow.instantiate()
 	arr.spawn_pos = global_position
 	owner.add_child(arr)
 
 
+## When the timer runs out, spawn an arrow.
 func _on_cooldown_timeout() -> void:
 	shoot()

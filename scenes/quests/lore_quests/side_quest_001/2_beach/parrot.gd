@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 extends Area2D
 
 @export var move_distance: float = 100.0
@@ -12,6 +14,7 @@ var hat_dropped: bool = false
 @onready var hat_spawn_point: Marker2D = $HatSpawnPoint
 @onready var hookable_area: HookableArea = %HookableArea
 @onready var hookable_collision: CollisionShape2D = %HookableArea/CollisionShape2D
+
 
 func _ready() -> void:
 	start_x = global_position.x
@@ -70,9 +73,9 @@ func drop_hat() -> void:
 	var target_position: Vector2 = hat.global_position + Vector2(0, 40)
 
 	var tween := create_tween()
-	tween.tween_property(
-		hat,
-		"global_position",
-		target_position,
-		0.4
-	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	(
+		tween
+		. tween_property(hat, "global_position", target_position, 0.4)
+		. set_trans(Tween.TRANS_QUAD)
+		. set_ease(Tween.EASE_IN)
+	)
