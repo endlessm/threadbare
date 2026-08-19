@@ -16,8 +16,9 @@ extends Node
 ## The dialogue to display.
 @export var dialogue: DialogueResource = preload("uid://cc3paugq4mma4")
 
-## If set, it should match one of [member dialogue]'s [member DialogueResource.titles].
-@export var title: String = ""
+## Title within [member dialogue] to play. If empty, start at the top of [member dialogue].
+@export var title: String = "":
+	set = _set_title
 
 ## The area that the player-character should interact to display the dialogue.
 ## The interaction will last until the dialogue ends.
@@ -30,16 +31,28 @@ extends Node
 ## Having multiple nodes in this list with the same name is not advised.
 @export var extra_context: Array[Node]
 
+#region Setters
+
+
+func _set_title(new_value: String) -> void:
+	title = new_value
+	update_configuration_warnings()
+
 
 func _set_interact_area(new_interact_area: InteractArea) -> void:
 	interact_area = new_interact_area
 	update_configuration_warnings()
 
 
+#endregion
+
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
 	if not interact_area:
 		warnings.append("Interact Area property must be set.")
+	if dialogue and title and title not in dialogue.get_titles():
+		warnings.append("Dialogue Title '%s' does not exist" % title)
 	return warnings
 
 
