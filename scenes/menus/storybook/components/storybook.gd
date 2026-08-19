@@ -379,8 +379,8 @@ func _update_bookmark_visibility() -> void:
 	var show_language_tabs: bool = unique_languages.size() > 1
 
 	# Check if at least one quest exists for each language
-	var has_en: bool = _all_quests.any(func(q: Quest) -> bool: return q.language == "en")
-	var has_es: bool = _all_quests.any(func(q: Quest) -> bool: return q.language == "es")
+	var has_en: bool = quests.any(func(q: Quest) -> bool: return q.language == "en")
+	var has_es: bool = quests.any(func(q: Quest) -> bool: return q.language == "es")
 
 	if en_bookmark_button:
 		en_bookmark_button.visible = show_language_tabs and has_en
