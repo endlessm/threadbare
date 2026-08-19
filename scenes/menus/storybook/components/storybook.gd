@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 class_name Storybook
 extends CanvasLayer
+
 ## Offers a choice of quests by scanning a given [member quest_directory].
 
 ## Emitted when the player chooses a quest from the storybook, with
@@ -13,11 +14,21 @@ signal selected(quest: Quest, restart: bool)
 
 ## Quests to show in the storybook.
 @export var quests: Array[Quest]
+@export var quests_per_page: int = 8:
+	set(value):
+		quests_per_page = value
+		quests_per_spread = value * 2
+@export var fade_duration: float = 0.15
+
+var quests_per_spread: int = 16
 
 var _current_spread_index: int = -1
 var _navigation_locked: bool = false
+var _current_list_page: int = 0
 
-@onready var quest_list: VBoxContainer = %QuestList
+@onready var left_quest_list: VBoxContainer = %LeftQuestList
+@onready var right_quest_list: VBoxContainer = %RightQuestList
+
 @onready var quest_container: ScrollContainer = %QuestContainer
 @onready var storybook_page: StorybookPage = %StorybookPage
 @onready var back_button: Button = %BackButton
@@ -25,34 +36,84 @@ var _navigation_locked: bool = false
 @onready var ui_container: Control = %StoryBookContent
 
 
+func _fade_out_ui() -> void:
+	var tween := create_tween()
+	tween.tween_property(ui_container, "modulate:a", 0.0, fade_duration)
+	await tween.finished
+	ui_container.visible = false
+
+
+func _fade_in_ui() -> void:
+	ui_container.visible = true
+	var tween := create_tween()
+	tween.tween_property(ui_container, "modulate:a", 1.0, fade_duration)
+
+
 func _ready() -> void:
 	animated_book.animation_finished.connect(_on_animation_finished)
+	_populate_quest_lists()
+
+
+func _clear_list(quest_list: Node) -> void:
+	for child: Node in quest_list.get_children():
+		quest_list.remove_child(child)
+		child.queue_free()
+
+
+# Clears and regenerates the quest buttons based on the current page view
+func _populate_quest_lists() -> void:
+	_clear_list(left_quest_list)
+	_clear_list(right_quest_list)
+
+	#Calculate the quest slices for this specific book spread
+	var left_start: int = _current_list_page * quests_per_page * 2
+	var left_end: int = left_start + quests_per_page
+	var right_start: int = left_end
+	var right_end: int = right_start + quests_per_page
 
 	var previous_button: Button = null
-	for i in quests.size():
-		var quest: Quest = quests[i]
-		var button := Button.new()
-		button.text = quest.get_title()
-		button.theme_type_variation = "FlatButton"
-		quest_list.add_child(button)
-		button.set_meta("quest_index", i)
 
-		button.pressed.connect(_on_quest_button_pressed.bind(button))
-		button.focus_next = back_button.get_path()
+	# Building the left page
+	for i in range(left_start, min(left_end, quests.size())):
+		previous_button = _create_quest_button(i, left_quest_list, previous_button)
 
-		button.focus_entered.connect(quest_container.ensure_control_visible.bind(button))
+	#Building the right page
+	for i in range(right_start, min(right_end, quests.size())):
+		previous_button = _create_quest_button(i, right_quest_list, previous_button)
+	# If the right page is empty, add a blank Control spacer so it maintains its width
+	if right_quest_list.get_child_count() == 0:
+		var spacer: Control = Control.new()
+		spacer.custom_minimum_size.x = 500
+		right_quest_list.add_child(spacer)
 
-		if previous_button:
-			button.focus_neighbor_top = previous_button.get_path()
-			previous_button.focus_neighbor_bottom = button.get_path()
-
-		previous_button = button
-
+	#Connect UI Focus back to the back button safely
 	if previous_button:
 		previous_button.focus_neighbor_bottom = back_button.get_path()
 		back_button.focus_neighbor_top = previous_button.get_path()
 
 	reset_focus()
+
+
+## Method to build individual buttons (StoryQuests) and manage the focus chains
+func _create_quest_button(
+	quest_index: int, parent_container: VBoxContainer, prev_btn: Button
+) -> Button:
+	var quest: Quest = quests[quest_index]
+	var button := Button.new()
+	button.text = quest.get_title()
+	button.theme_type_variation = "FlatButton"
+	parent_container.add_child(button)
+	button.set_meta("quest_index", quest_index)
+
+	button.pressed.connect(_on_quest_button_pressed.bind(button))
+	button.focus_next = back_button.get_path()
+	button.focus_entered.connect(quest_container.ensure_control_visible.bind(button))
+
+	if prev_btn:
+		button.focus_neighbor_top = prev_btn.get_path()
+		prev_btn.focus_neighbor_bottom = button.get_path()
+
+	return button
 
 
 ## Show/hide index or detail pages
@@ -61,8 +122,9 @@ func _update_page_visibility() -> void:
 		quest_container.visible = true
 		storybook_page.visible = false
 
-		if quest_list.get_child_count() > 0:
-			var first_button: Button = quest_list.get_child(0)
+		# Grab focus on the first visible item of the left page
+		if left_quest_list.get_child_count() > 0:
+			var first_button: Button = left_quest_list.get_child(0)
 			if first_button and is_instance_valid(first_button) and not first_button.has_focus():
 				first_button.grab_focus()
 	else:
@@ -78,8 +140,6 @@ func _update_page_visibility() -> void:
 				if not storybook_page.play_button.has_focus():
 					storybook_page.play_button.grab_focus()
 
-			# TODO: move the back button into the page scene &
-			# set the focus relationships in the inspector.
 			back_button.focus_previous = storybook_page.play_button.get_path()
 			storybook_page.play_button.focus_next = back_button.get_path()
 
@@ -123,39 +183,68 @@ func _switch_to_page(spread_index: int) -> void:
 	_current_spread_index = spread_index
 
 	if old_index != -1:
+		await _fade_out_ui()
+
 		if spread_index > old_index or (spread_index == 0 and old_index == total_spreads - 1):
 			animated_book.play("book_right")
 		else:
 			animated_book.play("book_left")
 		ui_container.visible = false
-
 	else:
 		_update_page_visibility()
 		_navigation_locked = false
 
 
 func _on_animation_finished() -> void:
-	_navigation_locked = false
-	ui_container.visible = true
-
+	_fade_in_ui()
 	_update_page_visibility()
+	_navigation_locked = false
 
 
 func _on_left_button_pressed() -> void:
 	if _navigation_locked:
 		return
+
+	# If we are on the main index, turn pages back inside the list
+	if _current_spread_index == 0 and _current_list_page > 0:
+		_navigation_locked = true
+		_current_list_page -= 1
+		await _fade_out_ui()
+		animated_book.play("book_left")
+		await animated_book.animation_finished
+		_populate_quest_lists()
+		_update_page_visibility()
+		_fade_in_ui()
+		_navigation_locked = false
+		return
+
 	_switch_to_page(_current_spread_index - 1)
 
 
 func _on_right_button_pressed() -> void:
 	if _navigation_locked:
 		return
+
+	# If we are on the main index, check if there are more quests to reveal on a new page
+	if _current_spread_index == 0:
+		var max_visible_so_far: int = (_current_list_page + 1) * quests_per_page * 2
+		if quests.size() > max_visible_so_far:
+			_navigation_locked = true
+			_current_list_page += 1
+			await _fade_out_ui()
+			animated_book.play("book_right")
+			await animated_book.animation_finished
+			_populate_quest_lists()
+			_update_page_visibility()
+			_fade_in_ui()
+			_navigation_locked = false
+			return
+
 	_switch_to_page(_current_spread_index + 1)
 
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"ui_cancel"):
-		# Go back
 		get_viewport().set_input_as_handled()
 		selected.emit(null, false)
 	elif event.is_action_pressed("next_tab"):

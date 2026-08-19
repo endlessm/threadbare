@@ -23,7 +23,7 @@ concurrency:
 
 env:
   PCK_NAME: threadbare
-  GODOT_VERSION: "4.7"
+  GODOT_VERSION: "4.7.1"
 
 jobs:
   web:
@@ -42,7 +42,7 @@ jobs:
       - uses: ./.github/actions/lfs-cached-checkout
 
       - name: Export web build
-        uses: endlessm/godot-export-action@v2
+        uses: endlessm/godot-export-action@v3
         with:
           godot_version: ${{ env.GODOT_VERSION }}
           export_preset: "Web"
@@ -89,7 +89,7 @@ jobs:
       - uses: ./.github/actions/lfs-cached-checkout
 
       - name: Export Windows build
-        uses: endlessm/godot-export-action@v2
+        uses: endlessm/godot-export-action@v3
         with:
           godot_version: ${{ env.GODOT_VERSION }}
           export_preset: "Windows x86_64"

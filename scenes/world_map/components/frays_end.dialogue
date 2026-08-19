@@ -41,10 +41,47 @@ Farmer: Guess it was only funny in my head.
 => END
 
 ~ beach
-if mythical_meadows_unlocker.is_satisfied():
-	Dolores: Wow, where did this bridge come from?!
-	Dolores: Perhaps this is the way to the Mythical Meadows.
-else:
-	% Dolores: I love this little beach!
-	% Dolores: This beach is so peaceful!
+if not dev_island_unlocker.is_satisfied():
+	=> beach_dev_island_intro
+
+Dolores: Tell me about Dev Archipelago!
+- I haven't been there yet.
+	=> beach_go_to_dev_island
+- I didn't know sheep could do that!
+	% Dolores: Maybe my mum was telling the truth about the annual ovine volleyball competition.
+	% Dolores: We all have hidden talents.
+	=> END
+- Can you close the path again?
+	Dolores: I'll do my best.
+	do wait(0.5)
+	set GameState.global.facts.dev_island_unlocked = false
+	# TODO: no change notification for facts :(
+	do dev_island_unlocker.refresh()
+	do wait(0.5)
+	Dolores: Talk to me again if you change your mind.
+	=> END
+
+~ beach_dev_island_intro
+Dolores: My mother used to tell me about the people who created this world.
+Dolores: I think she called them “Threadbare contributors”.
+Dolores: She said they’re still out there, even if I can’t see them... and that they always welcomed newcomers.
+Dolores: Supposedly, they created a special area for themselves, as a playground to try out new things.
+Dolores: It was called “Dev Archipelago”.
+Dolores: Do you want to see it for yourself?
+- Not right now...
+	Dolores: OK! There are lots of other places to explore.
+	Dolores: Talk to me again if you change your mind.
+	=> END
+- Yes, I'm ready!
+	Dolores: That's the spirit!
+	do wait(0.5)
+	set GameState.global.facts.dev_island_unlocked = true
+	# TODO: no change notification for facts :(
+	do dev_island_unlocker.refresh()
+	do wait(0.5)
+	Dolores: Wow, how did that bridge fix itself?
+	=> beach_go_to_dev_island
+
+~ beach_go_to_dev_island
+Dolores: Go on! Go across the bridge to Dev Archipelago.
 => END
