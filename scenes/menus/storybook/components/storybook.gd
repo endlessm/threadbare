@@ -363,7 +363,7 @@ func _switch_bookmark_tab(target_tab_index: int, lang_code: String) -> void:
 	if lang_code == "":
 		_filtered_quests = quests
 	else:
-		_filtered_quests = _all_quests.filter(
+		_filtered_quests = quests.filter(
 			func(quest: Quest) -> bool: return quest.language == lang_code
 		)
 
