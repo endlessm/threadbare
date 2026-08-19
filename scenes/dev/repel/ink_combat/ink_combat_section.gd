@@ -30,7 +30,6 @@ func reset() -> void:
 		if is_instance_valid(enemy):
 			enemy_container.remove_child(enemy)
 			enemy.queue_free()
-			enemy.call_deferred("free")
 
 	for enemy: ThrowingEnemy in _enemies:
 		var new_enemy := enemy.duplicate()
