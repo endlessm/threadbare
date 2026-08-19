@@ -312,7 +312,7 @@ func _on_es_bookmark_pressed() -> void:
 
 
 func _show_table_of_contents() -> void:
-	_filtered_quests = _all_quests
+	_filtered_quests = quests
 	_reset_storybook_list_view()
 
 
