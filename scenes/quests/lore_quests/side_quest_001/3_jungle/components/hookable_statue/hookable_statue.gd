@@ -84,7 +84,7 @@ func get_symbol() -> String:
 	return symbol
 
 
-func _set_sprite(look: Texture2D):
+func _set_sprite(look: Texture2D) -> void:
 	sprite = look
 	if appearance:
 		appearance.texture = look
