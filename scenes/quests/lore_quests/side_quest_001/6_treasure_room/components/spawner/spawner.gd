@@ -15,7 +15,7 @@ func _ready() -> void:
 
 ## Spawns in the arrows.
 func shoot() -> void:
-	var arr = arrow.instantiate()
+	var arr: Node = arrow.instantiate()
 	arr.spawn_pos = global_position
 	owner.add_child(arr)
 
