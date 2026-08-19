@@ -380,7 +380,7 @@ func _switch_bookmark_tab(target_tab_index: int, lang_code: String) -> void:
 
 func _update_bookmark_visibility() -> void:
 	var unique_languages := []
-	for q in _all_quests:
+	for q in quests:
 		if q.language != "" and q.language not in unique_languages:
 			unique_languages.append(q.language)
 
