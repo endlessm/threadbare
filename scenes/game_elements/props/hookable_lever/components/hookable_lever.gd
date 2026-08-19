@@ -21,6 +21,7 @@ signal toggled(is_on: bool)
 @onready var lever_sprite: Sprite2D = %LeverSprite
 @onready var shaker: Shaker = %Shaker
 
+
 func update_appearance() -> void:
 	if not is_node_ready():
 		return
@@ -61,5 +62,4 @@ func got_pulled(direction: Vector2) -> void:
 
 func toggle(new_val: bool = not is_on) -> void:
 	is_on = new_val
-	
 	toggled.emit(is_on)
