@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+@tool
 extends AnimatableBody2D
 
 const NEIGHBORS_FOR_AXIS: Dictionary[Vector2i, TileSet.CellNeighbor] = {
@@ -11,11 +12,14 @@ const NEIGHBORS_FOR_AXIS: Dictionary[Vector2i, TileSet.CellNeighbor] = {
 
 @export var constrain_layer: TileMapLayer
 @export var symbol: String
+@export var sprite: Texture2D:
+	set = _set_sprite
 
 var tween: Tween
 
 @onready var hookable_area: HookableArea = %HookableArea
 @onready var shaker: Shaker = %Shaker
+@onready var appearance: Sprite2D = $Sprite2D
 
 
 func global_position_to_tile_coordinate(global_pos: Vector2) -> Vector2i:
@@ -30,6 +34,7 @@ func _ready() -> void:
 	# Put this object on the grid:
 	var coord := global_position_to_tile_coordinate(global_position)
 	global_position = tile_coordinate_to_global_position(coord)
+	_set_sprite(sprite)
 
 
 func get_closest_axis(vector: Vector2) -> Vector2i:
@@ -74,5 +79,12 @@ func got_pulled(direction: Vector2) -> void:
 	await tween.finished
 	hookable_area.release_from_pull()
 
+
 func get_symbol() -> String:
 	return symbol
+
+
+func _set_sprite(look: Texture2D):
+	sprite = look
+	if appearance:
+		appearance.texture = look
