@@ -26,8 +26,6 @@ var _current_spread_index: int = -1
 var _navigation_locked: bool = false
 var _current_list_page: int = 0
 
-## A copy of all quests loaded on ready (before filtering)
-var _all_quests: Array[Quest] = []
 var _filtered_quests: Array[Quest] = []
 
 var _current_tab_index: int = 0  # 0: TOC, 1: EN, 2: ES
