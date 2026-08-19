@@ -51,6 +51,8 @@
 [ext_resource type="Script" uid="uid://cn28bsw3midik" path="res://scenes/dev/components/sheep_chase.gd" id="46_rjphr"]
 [ext_resource type="Script" uid="uid://id28maao3vdy" path="res://scenes/game_logic/walk_behaviors/path_walk_behavior.gd" id="47_uerno"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="48_sqpij"]
+[ext_resource type="AudioStream" uid="uid://c1pdyoycgyb7t" path="res://scenes/dev/components/oi.wav" id="52_rs1iu"]
+[ext_resource type="Script" uid="uid://djeshbrs3vwnb" path="res://scenes/game_elements/characters/npcs/components/pet_interaction.gd" id="53_a3fwm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pp1gq"]
 size = Vector2(64, 64)
@@ -73,6 +75,14 @@ metadata/_custom_type_script = "uid://csev4hv57utxv"
 script = ExtResource("48_sqpij")
 walk_speed = 10.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sfy7j"]
+size = Vector2(52.5, 58)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_pchcg"]
+random_pitch = 1.15
+streams_count = 1
+stream_0/stream = ExtResource("52_rs1iu")
 
 [node name="DevArchipelago" type="Node2D" unique_id=213943313]
 script = ExtResource("1_kt7u4")
@@ -447,6 +457,29 @@ speeds = SubResource("Resource_m30mx")
 walking_path = NodePath("../../Path2D")
 character = NodePath("..")
 metadata/_custom_type_script = "uid://id28maao3vdy"
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/Node2D/SheepChase/Townie" unique_id=1112628569]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("39_rjphr")
+action = "Annoy"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Node2D/SheepChase/Townie/InteractArea" unique_id=1906089914]
+visible = false
+position = Vector2(5, -28)
+shape = SubResource("RectangleShape2D_sfy7j")
+debug_color = Color(0.6, 0.545, 0, 0.42)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="OnTheGround/Node2D/SheepChase/Townie" unique_id=917036142]
+stream = SubResource("AudioStreamRandomizer_pchcg")
+pitch_scale = 0.8
+bus = &"SFX"
+
+[node name="PetInteraction" type="Node" parent="OnTheGround/Node2D/SheepChase/Townie" unique_id=1237483956 node_paths=PackedStringArray("interact_area", "sound_effect_player")]
+script = ExtResource("53_a3fwm")
+interact_area = NodePath("../InteractArea")
+sound_effect_player = NodePath("../AudioStreamPlayer2D")
 
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel/RepelTimer" to="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel" method="repel_once"]
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Sheep2/PlayerRepel2/RepelTimer2" to="OnTheGround/Node2D/SheepVolleyball" method="_on_repel_timer_2_timeout"]
