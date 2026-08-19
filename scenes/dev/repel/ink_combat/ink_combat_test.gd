@@ -34,8 +34,6 @@ func set_section(selection: int) -> void:
 	await get_tree().create_timer(2).timeout
 
 	_refresh_fill_logic()
-
-	fill_game_logic.call_deferred("_update_allowed_colors")
 	_set_group()
 
 	# The third section (index 2) uses Fragile Barrels
@@ -50,9 +48,7 @@ func set_section(selection: int) -> void:
 		barrel_unlock_sequence.current_target_index = 0
 		barrel_unlock_sequence.start_sequence()
 
-	# Start up the throwing enemies remaining in the group
-	for enemy in get_tree().get_nodes_in_group("throwing_enemy"):
-		enemy.start()
+	fill_game_logic.call_deferred("start")
 
 
 ## Connect all "fresh" FillingBarrels to the FillGameLogic.
