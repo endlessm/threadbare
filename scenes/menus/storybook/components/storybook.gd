@@ -317,7 +317,7 @@ func _show_table_of_contents() -> void:
 
 
 func _filter_quests_by_language(lang_code: String) -> void:
-	_filtered_quests = _all_quests.filter(
+	_filtered_quests = quests.filter(
 		func(quest: Quest) -> bool: return quest.language == lang_code
 	)
 	_reset_storybook_list_view()
