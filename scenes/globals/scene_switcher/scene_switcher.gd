@@ -116,7 +116,7 @@ func change_to_file_with_transition(
 		push_error("Failed to start loading %s: %s" % [scene_path, error_string(err)])
 		return
 
-	Transitions.do_transition(
+	await Transitions.do_transition(
 		func() -> void: change_to_packed(ResourceLoader.load_threaded_get(scene_path), spawn_point),
 		enter_transition,
 		exit_transition

@@ -112,6 +112,9 @@ func restore_quest() -> void:
 		# Add any lore abilities that the player gained since suspending this
 		# quest.
 		quest.player.abilities |= global.player.abilities
+	elif quest.quest is not StoryQuest:
+		for ability: Enums.PlayerAbilities in DEBUG_PLAYER_ABILITIES:
+			quest.player.set_ability(ability, true)
 
 
 ## Sets [member quest], setting up a new [PlayerState] if necessary.
@@ -123,6 +126,12 @@ func set_quest(new_quest: Quest) -> void:
 		# it will be copied back; if abandoned, it will be discarded.
 		quest_player_state = global.player.duplicate()
 		quest_player_state.reset_lives()
+	elif new_quest is not StoryQuest:
+		# For quests that are not LoreQuests or StoryQuests (e.g. dev archipelago quests)
+		# use a fresh player state and grant all debug player abilities.
+		quest_player_state = PlayerState.new()
+		for ability: Enums.PlayerAbilities in DEBUG_PLAYER_ABILITIES:
+			quest_player_state.set_ability(ability, true)
 	else:
 		# Use a fresh player state for StoryQuests
 		quest_player_state = PlayerState.new()
@@ -142,10 +151,10 @@ func guess_quest(scene_path_or_uid: String) -> void:
 	while dir_path != "res://":
 		var quest_path := dir_path.path_join("quest.tres")
 		if ResourceLoader.exists(quest_path, "Resource"):
+			prints("Guessed quest", quest_path, "from scene", scene_path)
 			var q := ResourceLoader.load(quest_path) as Quest
 			quest = QuestState.new(q, PlayerState.new())
 			quest.challenge_start_scene = scene_path
-			prints("Guessed quest", quest.resource_path, "from scene", scene_path)
 			return
 
 		dir_path = dir_path.get_base_dir()

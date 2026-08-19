@@ -14,10 +14,17 @@ extends Node
 ## [CollisionObject2D]). Define the collisions shapes as normal, either with
 ## [CollisionPolygon2D], or with [CollisionShape2D] with a [RectangleShape2D],
 ## [CircleShape2D], or [CapsuleShape2D]. Assign at least one scene to [member
-## scenes], adjust other parameters to taste, then click [b]Refill[/b] in the
-## inspector to fill the area with a new random arrangement of instances of
-## [member scenes]. These children are saved to the owning scene: no random
-## generation occurs at runtime.
+## scenes], adjust other parameters to taste, then click [b]Update[/b] in the
+## inspector to fill the area with a random arrangement of instances of
+## [member scenes]. If you don't like the arrangement, click [b]Clear[/b] then
+## [b]Update[/b] to try again. If you want to adjust the shapes, click
+## [b]Update[/b] after you do so to remove any out-of-bounds children and fill
+## any new regions.
+## [br][br]
+## By default, this node is only used in the editor and frees itself when the
+## game is running. Enabling [member in_game_filler] allows you to use it
+## in-game. But beware: the whole game freezes while the area is being filled,
+## and it can be slow!
 
 ## Scenes that will be randomly placed into [member area]. There is an equal
 ## probability of each scene being used each time. This list must not be
@@ -35,8 +42,15 @@ extends Node
 ## this value.
 @export_range(16.0, 256.0, 1.0, "suffix:px", "or_more") var minimum_separation: float = 64.0
 
+## Enable this to modify the fillable area while the game is running.
+## If not enabled, this node will remove itself from the tree at runtime.
+@export var in_game_filler: bool = false
+
 @warning_ignore("unused_private_class_variable")
-@export_tool_button("Refill") var _fill_button: Callable = fill
+@export_tool_button("Clear") var _clear_button: Callable = clear
+
+@warning_ignore("unused_private_class_variable")
+@export_tool_button("Update") var _update_button: Callable = update
 
 var _area: CollisionObject2D
 var _undoredo: Object  # EditorUndoRedoManager
@@ -55,13 +69,12 @@ func _exit_tree() -> void:
 
 
 func _ready() -> void:
-	if not Engine.is_editor_hint():
+	if Engine.is_editor_hint():
+		var plugin: Node = ClassDB.instantiate("EditorPlugin")
+		_undoredo = plugin.get_undo_redo()
+		plugin.queue_free()
+	elif not in_game_filler:
 		self.queue_free()
-		return
-
-	var plugin: Node = ClassDB.instantiate("EditorPlugin")
-	_undoredo = plugin.get_undo_redo()
-	plugin.queue_free()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -151,11 +164,7 @@ func _merge_into(
 	return result
 
 
-## Generate random points that fill the shapes of [param area], at least
-## [param minimum_separation] px apart.
-func _generate_points() -> PackedVector2Array:
-	var points: PackedVector2Array
-
+func _generate_polygons() -> Array[PackedVector2Array]:
 	# Collect polygons from all shape owners, converting as needed.
 	# If the polygon has a transform we have to apply it here so that
 	# minimum_separation is interpreted in the parent's coordinate space.
@@ -179,14 +188,7 @@ func _generate_points() -> PackedVector2Array:
 	for polygon in polygons:
 		merged = _merge_into(polygon, merged)
 
-	# Sample each disjoint polygon region.
-	for polygon in merged:
-		var sampler := PoissonDiscSampler.new()
-		sampler.initialise(polygon, minimum_separation)
-		sampler.fill()
-		points.append_array(sampler.points)
-
-	return points
+	return merged
 
 
 func _prepare_child(pos: Vector2) -> Node2D:
@@ -198,37 +200,76 @@ func _prepare_child(pos: Vector2) -> Node2D:
 	return child
 
 
-## Clears [member area] (except for this node and any collision shapes),
-## generate a new set of points according to the current
-## parameters, and fill [member area] with instances of [member scenes]
-## at those points.
-func fill() -> void:
-	var scene := get_tree().edited_scene_root
+func _apply(action_name: String, old_children: Array[Node], new_children: Array[Node]) -> void:
+	if Engine.is_editor_hint():
+		# Filling in editor; add methods to _undoredo object
+		var scene := get_tree().edited_scene_root
 
-	_undoredo.create_action("Refill area", UndoRedo.MergeMode.MERGE_DISABLE, scene, false)
+		_undoredo.create_action(action_name, UndoRedo.MergeMode.MERGE_DISABLE, scene, false)
 
-	var old_children: Array[Node]
-	var new_children: Array[Node]
+		# When performing the action in either direction, we want to remove, then add.
+		for child in old_children:
+			_undoredo.add_do_method(_area, "remove_child", child)
+
+		for child in new_children:
+			_undoredo.add_do_method(_area, "add_child", child, true)
+			_undoredo.add_do_property(child, "owner", scene)
+			_undoredo.add_undo_method(_area, "remove_child", child)
+
+		for child in old_children:
+			_undoredo.add_undo_method(_area, "add_child", child, true)
+			_undoredo.add_undo_property(child, "owner", scene)
+
+		_undoredo.commit_action()
+	else:
+		# Filling at runtime; apply methods directly to nodes
+		for child in old_children:
+			_area.remove_child(child)
+
+		for child in new_children:
+			_area.add_child(child)
+
+
+func _find_existing_children() -> Array[Node]:
+	var children: Array[Node]
 
 	for child: Node in _area.get_children():
 		if child != self and child is not CollisionPolygon2D and child is not CollisionShape2D:
+			children.append(child)
+
+	return children
+
+
+## Clears [member area], except for this node and any collision shapes.
+func clear() -> void:
+	_apply("Clear area", _find_existing_children(), [])
+
+
+## Removes any nodes that are outside the current bounds of [member area], and
+## fills in new regions with instances of [member scenes].
+func update() -> void:
+	var polygons: Array[PackedVector2Array] = _generate_polygons()
+	var old_children: Array[Node]
+	var current_points: Array[Vector2]
+	var new_children: Array[Node]
+
+	for child: Node in _find_existing_children():
+		if polygons.any(
+			func(polygon: PackedVector2Array) -> bool:
+				return Geometry2D.is_point_in_polygon(child.position, polygon)
+		):
+			current_points.append(child.position)
+		else:
 			old_children.append(child)
 
-	var points := _generate_points()
+	var points: PackedVector2Array
+	var sampler := PoissonDiscSampler.new()
+	sampler.initialise(polygons, current_points, minimum_separation)
+	var i := sampler.points.size()
+	sampler.fill()
+	points.append_array(sampler.points.slice(i))
+
 	for point in points:
 		new_children.append(_prepare_child(point))
 
-	# When performing the action in either direction, we want to remove, then add.
-	for child in old_children:
-		_undoredo.add_do_method(_area, "remove_child", child)
-
-	for child in new_children:
-		_undoredo.add_do_method(_area, "add_child", child, true)
-		_undoredo.add_do_property(child, "owner", scene)
-		_undoredo.add_undo_method(_area, "remove_child", child)
-
-	for child in old_children:
-		_undoredo.add_undo_method(_area, "add_child", child, true)
-		_undoredo.add_undo_property(child, "owner", scene)
-
-	_undoredo.commit_action()
+	_apply("Refill area", old_children, new_children)

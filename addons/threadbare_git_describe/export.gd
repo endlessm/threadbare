@@ -9,12 +9,16 @@ func _get_name() -> String:
 	return "threadbare_git_describe_exporter"
 
 
-func _export_begin(
-	_features: PackedStringArray, _is_debug: bool, _path: String, _flags: int
-) -> void:
+static func set_versions() -> void:
 	var describe := Version.git_describe(true)
 	ProjectSettings.set_setting(Version.FULL_VERSION_KEY, describe)
 	ProjectSettings.set_setting(Version.VERSION_KEY, Version.simplify(describe))
+
+
+func _export_begin(
+	_features: PackedStringArray, _is_debug: bool, _path: String, _flags: int
+) -> void:
+	set_versions()
 	var err := ProjectSettings.save()
 	if err != OK:
 		printerr("Failed to save project settings: %s" % error_string(err))
