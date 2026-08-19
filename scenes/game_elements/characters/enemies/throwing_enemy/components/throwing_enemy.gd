@@ -350,6 +350,9 @@ func remove() -> void:
 	animation_player.play(&"defeated")
 	await animation_player.animation_finished
 	queue_free()
+	var nodo_barrera := get_tree().get_first_node_in_group("barrera")
+	if is_instance_valid(nodo_barrera) and nodo_barrera.has_method("ocultar_y_desactivar"):
+		nodo_barrera.ocultar_y_desactivar()
 
 
 func _set_idle_sound_stream(new_value: AudioStream) -> void:
