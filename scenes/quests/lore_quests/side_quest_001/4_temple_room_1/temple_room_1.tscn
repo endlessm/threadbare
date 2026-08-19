@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="3_lkprm"]
 [ext_resource type="PackedScene" uid="uid://bvcoanplwqpfv" path="res://scenes/quests/lore_quests/side_quest_001/4_temple_room_1/components/lever_light/lever_light.tscn" id="3_mtx7r"]
 [ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="3_q6xbn"]
-[ext_resource type="PackedScene" uid="uid://c47lkkvljrsg" path="res://scenes/game_elements/props/hookable_lever/hookable_lever.tscn" id="4_2w3su"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="6_cyi2i"]
 [ext_resource type="PackedScene" uid="uid://ei57s5k8ibov" path="res://scenes/quests/lore_quests/side_quest_001/components/skeleton/skeleton.tscn" id="6_yr783"]
 [ext_resource type="PackedScene" uid="uid://evb46lm6ssu2" path="res://scenes/game_elements/props/hookable_pin/hookable_pin.tscn" id="7_ilnic"]
@@ -17,6 +16,8 @@
 [ext_resource type="Script" uid="uid://ba44mdk6tmkay" path="res://scenes/quests/lore_quests/side_quest_001/4_temple_room_1/components/lever_sequence.gd" id="9_3lamy"]
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="9_lixwc"]
 [ext_resource type="AudioStream" uid="uid://bvq56m78f2v7g" path="res://scenes/quests/story_quests/shjourney/Otros_componentes/musicas/2 The Veil of Night Loop 1 Start .ogg" id="10_waxgu"]
+[ext_resource type="AudioStream" uid="uid://b6loocmbmb4sb" path="res://assets/third_party/nepalese_hand_bells/handBells-c5.ogg" id="13_7llt8"]
+[ext_resource type="PackedScene" uid="uid://byf4lpo5klbyc" path="res://scenes/quests/lore_quests/side_quest_001/4_temple_room_1/components/hookable_lever_temple1.tscn" id="13_lg0ei"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="17_r17np"]
 [ext_resource type="Resource" uid="uid://4u8orowyb4xp" path="res://scenes/quests/lore_quests/side_quest_001/4_temple_room_1/components/intro_temple1.dialogue" id="18_cyi2i"]
 
@@ -79,14 +80,21 @@ rotation = 1.5707964
 
 [node name="Levers" type="Node2D" parent="OnTheGround/Lever Sequence" unique_id=893408355]
 
-[node name="HookableLever" parent="OnTheGround/Lever Sequence/Levers" unique_id=37452001 instance=ExtResource("4_2w3su")]
+[node name="LeverSound" type="AudioStreamPlayer2D" parent="OnTheGround/Lever Sequence/Levers" unique_id=136831817]
 position = Vector2(128, 1164)
+stream = ExtResource("13_7llt8")
 
-[node name="HookableLever2" parent="OnTheGround/Lever Sequence/Levers" unique_id=430448745 instance=ExtResource("4_2w3su")]
+[node name="HookableLever" parent="OnTheGround/Lever Sequence/Levers" unique_id=37452001 node_paths=PackedStringArray("lever_sound") instance=ExtResource("13_lg0ei")]
+position = Vector2(128, 1185)
+lever_sound = NodePath("../LeverSound")
+
+[node name="HookableLever2" parent="OnTheGround/Lever Sequence/Levers" unique_id=192312781 node_paths=PackedStringArray("lever_sound") instance=ExtResource("13_lg0ei")]
 position = Vector2(869, 57)
+lever_sound = NodePath("../LeverSound")
 
-[node name="HookableLever3" parent="OnTheGround/Lever Sequence/Levers" unique_id=1987582634 instance=ExtResource("4_2w3su")]
+[node name="HookableLever3" parent="OnTheGround/Lever Sequence/Levers" unique_id=1986577583 node_paths=PackedStringArray("lever_sound") instance=ExtResource("13_lg0ei")]
 position = Vector2(1027, 1257)
+lever_sound = NodePath("../LeverSound")
 
 [node name="Lights" type="Node2D" parent="OnTheGround/Lever Sequence" unique_id=1789316480]
 
