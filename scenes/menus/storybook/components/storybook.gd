@@ -61,8 +61,6 @@ func _fade_in_ui() -> void:
 func _ready() -> void:
 	animated_book.animation_finished.connect(_on_animation_finished)
 
-	# Saving a copy of all quests
-	_all_quests = quests
 	_filtered_quests = quests
 
 	# Connecting the bookmark buttons
