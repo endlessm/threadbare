@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bp20cjimwi8l0" path="res://scenes/game_elements/props/buildings/house/house_2.tscn" id="5_eufof"]
 [ext_resource type="TileSet" uid="uid://b778cuoftt88r" path="res://tiles/elevation_2.tres" id="6_engfb"]
 [ext_resource type="Texture2D" uid="uid://0xceungm1p8a" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage2.png" id="7_70n28"]
-[ext_resource type="Script" uid="uid://ccbs1r87nbip6" path="res://scenes/world_map/components/bridge_toggle.gd" id="7_nf521"]
+[ext_resource type="Script" uid="uid://c5jp8y8mpge4w" path="res://scenes/game_elements/props/toggleable_tile_map_layer/toggleable_tile_map_layer.gd" id="7_bt13d"]
 [ext_resource type="Texture2D" uid="uid://cfkb8gpxylplg" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage3.png" id="8_m5r1s"]
 [ext_resource type="Texture2D" uid="uid://d2kjk3oiu5o6o" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Blue_02.png" id="9_ennvy"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="10_8vkdv"]
@@ -118,12 +118,20 @@ metadata/_edit_lock_ = true
 [node name="BridgesShadow" type="TileMapLayer" parent="TileMapLayers" unique_id=2105822926]
 tile_set = ExtResource("4_engfb")
 
-[node name="Bridges" type="TileMapLayer" parent="TileMapLayers" unique_id=71137771 node_paths=PackedStringArray("tile_map_layer")]
-tile_map_data = PackedByteArray("AAAJABMAAwAAAAIAAAAJABQAAwAAAAIAAAAJABUAAwAAAAIAAAAJABYAAwAAAAMAAAAJABIAAwAAAAEAAAAJAAoAAwAAAAMAAAAJAAkAAwAAAAIAAAAJAAgAAwAAAAIAAAAJAAcAAwAAAAEAAAAUAA0AAwAAAAMAAAAUAAwAAwABAAMAAAAUAAoAAwAAAAEAAAAUAAsAAwAAAAIAAAAhAAsAAwACAAAAAAAgAAsAAwABAAAAAAAfAAsAAwABAAAAAAAeAAsAAwABAAAAAAAdAAsAAwAAAAAAAAAhAAUAAwACAAAAAAAgAAUAAwABAAAAAAAfAAUAAwABAAAAAAAeAAUAAwAAAAAAAAA=")
+[node name="Bridges" type="TileMapLayer" parent="TileMapLayers" unique_id=71137771]
+tile_map_data = PackedByteArray("AAAJABMAAwAAAAIAAAAJABQAAwAAAAIAAAAJABUAAwAAAAIAAAAJABYAAwAAAAMAAAAJABIAAwAAAAEAAAAJAAoAAwAAAAMAAAAJAAkAAwAAAAIAAAAJAAgAAwAAAAIAAAAJAAcAAwAAAAEAAAAhAAsAAwACAAAAAAAgAAsAAwABAAAAAAAfAAsAAwABAAAAAAAeAAsAAwABAAAAAAAdAAsAAwAAAAAAAAAhAAUAAwACAAAAAAAgAAUAAwABAAAAAAAfAAUAAwABAAAAAAAeAAUAAwAAAAAAAAA=")
 tile_set = ExtResource("4_engfb")
-script = ExtResource("7_nf521")
-tile_map_layer = NodePath(".")
-metadata/_edit_lock_ = true
+
+[node name="SideQuestBridgeUnblocked" type="TileMapLayer" parent="TileMapLayers" unique_id=316654240]
+tile_map_data = PackedByteArray("AAAUAA0AAwAAAAMAAAAUAAwAAwAAAAIAAAAUAAoAAwAAAAEAAAAUAAsAAwAAAAIAAAA=")
+tile_set = ExtResource("4_engfb")
+script = ExtResource("7_bt13d")
+invert = true
+
+[node name="SideQuestBridgeBlocked" type="TileMapLayer" parent="TileMapLayers" unique_id=1335870243]
+tile_map_data = PackedByteArray("AAAUAA0AAwAAAAMAAAAUAAwAAwABAAMAAAAUAAoAAwAAAAEAAAAUAAsAAwAAAAIAAAA=")
+tile_set = ExtResource("4_engfb")
+script = ExtResource("7_bt13d")
 
 [node name="Shadows" type="TileMapLayer" parent="TileMapLayers" unique_id=452826713]
 tile_map_data = PackedByteArray("AAAWAA4AAAAAAAAAAAAWAA8AAAAAAAAAAAA=")
@@ -203,7 +211,7 @@ metadata/_custom_type_script = "uid://du8wfijr35r35"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Townie/InteractArea" unique_id=1636031978]
 position = Vector2(0, -23.5)
 shape = SubResource("RectangleShape2D_fgnem")
-debug_color = Color(0.600391, 0.54335, 0, 0.42)
+debug_color = Color(0.6, 0.545, 0, 0.42)
 
 [node name="PointLight2D" type="PointLight2D" parent="OnTheGround/Townie" unique_id=296062278 groups=["night-lights"]]
 visible = false
@@ -1132,55 +1140,57 @@ stream = ExtResource("18_b6uih")
 
 [node name="TimeAndWeather" parent="." unique_id=1446545037 instance=ExtResource("19_d6ijo")]
 
-[node name="MusicianQuestTeleporter" parent="." unique_id=1779636661 node_paths=PackedStringArray("abandon_point") instance=ExtResource("23_e3yub")]
+[node name="Teleporters" type="Node2D" parent="." unique_id=741093267]
+
+[node name="MusicianQuestTeleporter" parent="Teleporters" unique_id=1779636661 node_paths=PackedStringArray("abandon_point") instance=ExtResource("23_e3yub")]
 position = Vector2(571, 56)
 quest = ExtResource("24_jhhto")
 abandon_point = NodePath("SpawnPoint")
 enter_transition = 5
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MusicianQuestTeleporter" unique_id=1318641544]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporters/MusicianQuestTeleporter" unique_id=1318641544]
 shape = SubResource("RectangleShape2D_4mhqc")
 
-[node name="SpawnPoint" parent="MusicianQuestTeleporter" unique_id=2047736206 instance=ExtResource("25_xhekw")]
+[node name="SpawnPoint" parent="Teleporters/MusicianQuestTeleporter" unique_id=2047736206 instance=ExtResource("25_xhekw")]
 position = Vector2(0, 134)
 
-[node name="GuardedStonesTeleporter" parent="." unique_id=595600516 node_paths=PackedStringArray("abandon_point") instance=ExtResource("23_e3yub")]
+[node name="GuardedStonesTeleporter" parent="Teleporters" unique_id=595600516 node_paths=PackedStringArray("abandon_point") instance=ExtResource("23_e3yub")]
 position = Vector2(2015, 734)
 quest = ExtResource("37_bt13d")
 abandon_point = NodePath("SpawnPoint")
 enter_transition = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GuardedStonesTeleporter" unique_id=441493068]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporters/GuardedStonesTeleporter" unique_id=441493068]
 shape = SubResource("RectangleShape2D_b6uih")
 
-[node name="SpawnPoint" parent="GuardedStonesTeleporter" unique_id=261649224 instance=ExtResource("25_xhekw")]
+[node name="SpawnPoint" parent="Teleporters/GuardedStonesTeleporter" unique_id=261649224 instance=ExtResource("25_xhekw")]
 position = Vector2(-227, 1)
 look_at_side_on_spawn = -1
 
-[node name="OopsAllInkDrinkersTeleporter" parent="." unique_id=1246749698 node_paths=PackedStringArray("abandon_point") instance=ExtResource("23_e3yub")]
+[node name="OopsAllInkDrinkersTeleporter" parent="Teleporters" unique_id=1246749698 node_paths=PackedStringArray("abandon_point") instance=ExtResource("23_e3yub")]
 position = Vector2(2058, 346)
 quest = ExtResource("37_nf521")
 abandon_point = NodePath("SpawnPoint")
 enter_transition = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OopsAllInkDrinkersTeleporter" unique_id=1881698876]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporters/OopsAllInkDrinkersTeleporter" unique_id=1881698876]
 shape = SubResource("RectangleShape2D_b6uih")
 
-[node name="SpawnPoint" parent="OopsAllInkDrinkersTeleporter" unique_id=718497102 instance=ExtResource("25_xhekw")]
+[node name="SpawnPoint" parent="Teleporters/OopsAllInkDrinkersTeleporter" unique_id=718497102 instance=ExtResource("25_xhekw")]
 position = Vector2(-225, 14)
 look_at_side_on_spawn = -1
 
-[node name="FraysEndTeleporter" parent="." unique_id=803429812 instance=ExtResource("26_e3isv")]
+[node name="FraysEndTeleporter" parent="Teleporters" unique_id=803429812 instance=ExtResource("26_e3isv")]
 position = Vector2(546, 2016)
 next_scene = "uid://cufkthb25mpxy"
 spawn_point_path = NodePath("OnTheGround/NorthPath/SpawnPoint")
 enter_transition = 4
 exit_transition = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FraysEndTeleporter" unique_id=1120104693]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporters/FraysEndTeleporter" unique_id=1120104693]
 shape = SubResource("RectangleShape2D_pvf7f")
 
-[node name="SpawnPoint" type="Marker2D" parent="FraysEndTeleporter" unique_id=1508270956 groups=["spawn_point"]]
+[node name="SpawnPoint" type="Marker2D" parent="Teleporters/FraysEndTeleporter" unique_id=1508270956 groups=["spawn_point"]]
 position = Vector2(-13, -135)
 script = ExtResource("27_1eg4n")
 metadata/_custom_type_script = "uid://0enyu5v4ra34"
@@ -1202,20 +1212,22 @@ process_physics_priority = 300
 script = ExtResource("38_rk4u1")
 metadata/_custom_type_script = "uid://bd046eokvcnu2"
 
-[node name="MusicianQuestUnlocker" type="Node" parent="." unique_id=753716459 node_paths=PackedStringArray("targets")]
+[node name="Unlockers" type="Node" parent="." unique_id=533536039]
+
+[node name="MusicianQuestUnlocker" type="Node" parent="Unlockers" unique_id=753716459 node_paths=PackedStringArray("targets")]
 unique_name_in_owner = true
 script = ExtResource("40_bt13d")
-targets = [NodePath("../TileMapLayers/Bridges")]
+targets = [NodePath("../../TileMapLayers/SideQuestBridgeBlocked"), NodePath("../../TileMapLayers/SideQuestBridgeUnblocked")]
 required_quests = Array[ExtResource("41_nf521")]([ExtResource("24_jhhto")])
 metadata/_custom_type_script = "uid://uaaaiviytliw"
 
-[node name="GuardedStonesUnlocker" type="Node" parent="." unique_id=1113619478]
+[node name="GuardedStonesUnlocker" type="Node" parent="Unlockers" unique_id=1113619478]
 unique_name_in_owner = true
 script = ExtResource("40_bt13d")
 required_quests = Array[ExtResource("41_nf521")]([ExtResource("37_bt13d")])
 metadata/_custom_type_script = "uid://uaaaiviytliw"
 
-[node name="OopsAllInkDrinkersUnlocker" type="Node" parent="." unique_id=2069854196]
+[node name="OopsAllInkDrinkersUnlocker" type="Node" parent="Unlockers" unique_id=2069854196]
 unique_name_in_owner = true
 script = ExtResource("40_bt13d")
 required_quests = Array[ExtResource("41_nf521")]([ExtResource("37_nf521")])

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends CharacterBody2D
 
-@export var speed = 300.0
+@export var speed: float = 300.0
 
 var spawn_pos: Vector2
 

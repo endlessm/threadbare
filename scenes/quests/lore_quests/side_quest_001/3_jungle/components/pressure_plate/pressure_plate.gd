@@ -30,7 +30,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if not something_in:
 		if body.is_in_group("statues"):
 			something_in = true
-			var sym = body.get_symbol()
+			var sym: String = body.get_symbol()
 			if sym == expected_symbol:
 				matching.emit()
 				matched = true

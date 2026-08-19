@@ -45,21 +45,18 @@
 [ext_resource type="PackedScene" uid="uid://ccpgw7k4rlmea" path="res://scenes/game_elements/props/decoration/crops/barley.tscn" id="42_eodqy"]
 [ext_resource type="PackedScene" uid="uid://c78fj5em5tpm5" path="res://scenes/game_elements/props/decoration/crops/carrot.tscn" id="42_ljovl"]
 [ext_resource type="PackedScene" uid="uid://7vg52qj6ude" path="res://scenes/world_map/components/retelling_townie.tscn" id="42_qgpx3"]
-[ext_resource type="PackedScene" uid="uid://vb5o7hh5an8j" path="res://scenes/game_elements/characters/npcs/elder/template_elder.tscn" id="43_ppslc"]
 [ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="45_cjmkx"]
 [ext_resource type="PackedScene" uid="uid://b2mj4jggli0ci" path="res://scenes/quests/lore_quests/quest_000/tutorial_npc/tutorial_npc.tscn" id="50_qgpx3"]
 [ext_resource type="PackedScene" uid="uid://cr65lmm5b0ueo" path="res://scenes/game_elements/characters/npcs/cat/cat.tscn" id="52_ppslc"]
 [ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="53_2vvub"]
 [ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="54_duxxr"]
-[ext_resource type="Resource" uid="uid://doovydomib7rj" path="res://scenes/quests/lore_quests/quest_001/quest.tres" id="55_6fau3"]
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="55_ojao8"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="56_ojao8"]
-[ext_resource type="PackedScene" uid="uid://bcy28nucscyep" path="res://scenes/game_elements/props/teleporter/quest_teleporter.tscn" id="58_6b07c"]
 [ext_resource type="Script" uid="uid://uaaaiviytliw" path="res://scenes/world_map/components/quest_progress_unlocker.gd" id="58_ojao8"]
 [ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="59_qgpx3"]
-[ext_resource type="Resource" uid="uid://cgr54yigkbxp3" path="res://scenes/quests/lore_quests/quest_004/quest.tres" id="59_t7c6s"]
 [ext_resource type="Resource" uid="uid://t50glay2iqhg" path="res://scenes/quests/lore_quests/quest_002/quest.tres" id="60_6b07c"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="61_6b07c"]
+[ext_resource type="Script" uid="uid://b8pt5e5ec6hgx" path="res://scenes/world_map/components/cutscene_layer.gd" id="61_ulm71"]
 [ext_resource type="Script" uid="uid://cmika1t1573xe" path="res://scenes/world_map/components/frays_end_exit_blocker.gd" id="62_t7c6s"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="64_uxfrp"]
 
@@ -101,7 +98,7 @@ point_count = 4
 
 [sub_resource type="Curve2D" id="Curve2D_ulm71"]
 _data = {
-"points": PackedVector2Array(-98.07021, 22.23685, 0, 0, 676.6666, 67.77789, 72.42304, 1.4143486, -72.42304, -1.4143486, 372.22217, -27.77771, -57.81142, 0.9386225, 57.81142, -0.9386225, 153.33325, -2.222107, 0, 0, 61.9745, 5.1265907, 0, 0)
+"points": PackedVector2Array(-98.07021, 22.23685, 0, 0, 676.6666, 67.77789, 72.42304, 1.4143486, -72.42304, -1.4143486, 372.22217, -27.77771, 39.5706, -6.678895, -39.5706, 6.678895, 150, -3.333252, 0, 0, 61.9745, 5.1265907, 0, 0)
 }
 point_count = 4
 
@@ -121,7 +118,7 @@ size = Vector2(128, 128)
 size = Vector2(640, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f3823"]
-size = Vector2(64, 20)
+size = Vector2(194, 33)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7kfal"]
 size = Vector2(20, 256)
@@ -221,31 +218,23 @@ tile_set = ExtResource("6_5j6h7")
 tile_map_data = PackedByteArray("AAAEAP//AQAAAAMAAAAFAP//AQABAAMAAAAGAP//AQABAAMAAAAHAP//AQACAAMAAAA=")
 tile_set = ExtResource("7_r1ek1")
 
-[node name="WestPathBarrierVoid" type="TileMapLayer" parent="TileMapLayers" unique_id=1715727017 node_paths=PackedStringArray("target")]
+[node name="WestPathBarrierVoid" type="TileMapLayer" parent="TileMapLayers" unique_id=1715727017]
 y_sort_enabled = true
 material = ExtResource("11_wymun")
 tile_map_data = PackedByteArray("AAAAAAsADQACAAEAAAD//wsADQAAAAEAAAD//woADQAAAAEAAAAAAAoADQACAAEAAAAAAAkADQACAAEAAAD//wkADQAAAAEAAAD//wgADQAAAAEAAAAAAAgADQACAAEAAAAAAAcADQACAAEAAAD//wcADQAAAAEAAAD//wYADQAAAAEAAAAAAAYADQACAAEAAAAAAAUADQABAAAAAAABAAUADQACAAMAAAD//wUADQAAAAAAAAAAAAwADQACAAEAAAD//wwADQAAAAEAAAAAAA0ADQACAAEAAAAAAA4ADQACAAIAAAD//w4ADQAAAAIAAAD//w0ADQAAAAEAAAA=")
 tile_set = ExtResource("12_f3823")
 script = ExtResource("14_f3823")
-target = NodePath(".")
 
-[node name="MythicalMeadowsBridgeWater" type="TileMapLayer" parent="TileMapLayers" unique_id=1161187540 node_paths=PackedStringArray("target")]
-tile_map_data = PackedByteArray("AAApABwAAAAAAAAAAAApAB0AAAAAAAAAAAApAB4AAAAAAAAAAAApAB8AAAAAAAAAAAA=")
-tile_set = ExtResource("4_6ss6a")
-script = ExtResource("14_f3823")
-target = NodePath(".")
-
-[node name="ModulateAsSkyBehavior" type="Node" parent="TileMapLayers/MythicalMeadowsBridgeWater" unique_id=1849846621 node_paths=PackedStringArray("canvas_item")]
-script = ExtResource("5_duxxr")
-canvas_item = NodePath("..")
-metadata/_custom_type_script = "uid://ctko5bdas16ah"
-
-[node name="MythicalMeadowsBridge" type="TileMapLayer" parent="TileMapLayers" unique_id=2088215943 node_paths=PackedStringArray("target")]
+[node name="DevIslandBridgeFixed" type="TileMapLayer" parent="TileMapLayers" unique_id=12215457]
 tile_map_data = PackedByteArray("AAApACAAAwAAAAMAAAApAB8AAwAAAAIAAAApAB4AAwAAAAIAAAApAB0AAwAAAAIAAAApABwAAwAAAAIAAAApABsAAwAAAAEAAAA=")
 tile_set = ExtResource("8_ns5r3")
 script = ExtResource("14_f3823")
-target = NodePath(".")
 invert = true
+
+[node name="DevIslandBridgeBroken" type="TileMapLayer" parent="TileMapLayers" unique_id=2088215943]
+tile_map_data = PackedByteArray("AAApACAAAwAAAAMAAAApAB8AAwAAAAIAAAApAB4AAwAAAAIAAAApAB0AAwAAAAIAAAApABwAAwABAAMAAAApABsAAwAAAAEAAAA=")
+tile_set = ExtResource("8_ns5r3")
+script = ExtResource("14_f3823")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=444049774]
 y_sort_enabled = true
@@ -441,14 +430,6 @@ abandon_point = NodePath("SpawnPoint")
 [node name="SpawnPoint" parent="OnTheGround/NPCs/StoryQuestElder" unique_id=747361445 instance=ExtResource("37_thm8h")]
 position = Vector2(0, 64)
 
-[node name="TemplateElder" parent="OnTheGround/NPCs" unique_id=45322364 node_paths=PackedStringArray("eternal_loom", "abandon_point") instance=ExtResource("43_ppslc")]
-position = Vector2(1455, 485)
-eternal_loom = NodePath("../../EternalLoom")
-abandon_point = NodePath("SpawnPoint")
-
-[node name="SpawnPoint" parent="OnTheGround/NPCs/TemplateElder" unique_id=679077598 instance=ExtResource("37_thm8h")]
-position = Vector2(0, 64)
-
 [node name="Axeman" parent="OnTheGround/NPCs" unique_id=1020611644 instance=ExtResource("17_0a1i7")]
 position = Vector2(1506, 1255)
 
@@ -478,7 +459,7 @@ metadata/_custom_type_script = "uid://du8wfijr35r35"
 visible = false
 position = Vector2(0, -23.5)
 shape = SubResource("RectangleShape2D_duxxr")
-debug_color = Color(0.600391, 0.54335, 0, 0.42)
+debug_color = Color(0.6, 0.545, 0, 0.42)
 
 [node name="FarmersPartner" parent="OnTheGround/NPCs" unique_id=1246028381 instance=ExtResource("54_duxxr")]
 position = Vector2(1638, 833)
@@ -508,7 +489,7 @@ metadata/_custom_type_script = "uid://du8wfijr35r35"
 visible = false
 position = Vector2(0, -23.5)
 shape = SubResource("RectangleShape2D_duxxr")
-debug_color = Color(0.600391, 0.54335, 0, 0.42)
+debug_color = Color(0.6, 0.545, 0, 0.42)
 
 [node name="GardenerB" parent="OnTheGround/NPCs" unique_id=514890698 instance=ExtResource("54_duxxr")]
 position = Vector2(268, 886)
@@ -542,7 +523,7 @@ metadata/_custom_type_script = "uid://du8wfijr35r35"
 visible = false
 position = Vector2(0, -23.5)
 shape = SubResource("RectangleShape2D_t7c6s")
-debug_color = Color(0.600391, 0.54335, 0, 0.42)
+debug_color = Color(0.6, 0.545, 0, 0.42)
 
 [node name="EternalLoom" parent="OnTheGround" unique_id=17061783 instance=ExtResource("16_ojp30")]
 unique_name_in_owner = true
@@ -1417,29 +1398,25 @@ text = "LinenVille"
 position = Vector2(-270, 31)
 look_at_side_on_spawn = -1
 
-[node name="SouthPath" type="Node2D" parent="OnTheGround" unique_id=1017604237]
+[node name="DevIslandPath" type="Node2D" parent="OnTheGround" unique_id=1017604237]
 y_sort_enabled = true
 position = Vector2(2651, 1910)
 
-[node name="MythicalMeadowsUnlocker" type="Node" parent="OnTheGround/SouthPath" unique_id=974922506 node_paths=PackedStringArray("targets")]
+[node name="DevIslandUnlocker" type="Node" parent="OnTheGround/DevIslandPath" unique_id=974922506 node_paths=PackedStringArray("targets")]
 unique_name_in_owner = true
 script = ExtResource("58_ojao8")
-targets = [NodePath("../../../TileMapLayers/MythicalMeadowsBridgeWater"), NodePath("../../../TileMapLayers/MythicalMeadowsBridge")]
-required_quests = Array[ExtResource("59_qgpx3")]([ExtResource("55_6fau3"), ExtResource("60_6b07c")])
+targets = [NodePath("../../../TileMapLayers/DevIslandBridgeBroken"), NodePath("../../../TileMapLayers/DevIslandBridgeFixed")]
+required_facts = Array[String](["dev_island_unlocked"])
 
-[node name="SpawnPoint" type="Marker2D" parent="OnTheGround/SouthPath" unique_id=1082798107 groups=["spawn_point"]]
-position = Vector2(0, -151)
-script = ExtResource("61_6b07c")
-look_at_side_on_spawn = 1
-metadata/_custom_type_script = "uid://0enyu5v4ra34"
+[node name="SpawnPoint" parent="OnTheGround/DevIslandPath" unique_id=1551543155 instance=ExtResource("37_thm8h")]
+position = Vector2(4, -154)
 
-[node name="QuestTeleporter" parent="OnTheGround/SouthPath" unique_id=1779636661 node_paths=PackedStringArray("abandon_point") instance=ExtResource("58_6b07c")]
-position = Vector2(5, 7)
-quest = ExtResource("59_t7c6s")
-abandon_point = NodePath("../SpawnPoint")
+[node name="Teleporter" parent="OnTheGround/DevIslandPath" unique_id=1779636661 instance=ExtResource("53_2vvub")]
+next_scene = "uid://bhdpwut7lgfnm"
 enter_transition = 4
+exit_transition = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/SouthPath/QuestTeleporter" unique_id=2120778996]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/DevIslandPath/Teleporter" unique_id=1907127794]
 shape = SubResource("RectangleShape2D_uxfrp")
 
 [node name="WestPath" type="Node2D" parent="OnTheGround" unique_id=2042146768]
@@ -1460,7 +1437,7 @@ metadata/_custom_type_script = "uid://0enyu5v4ra34"
 [node name="Teleporter" parent="OnTheGround/WestPath" unique_id=1239083044 instance=ExtResource("53_2vvub")]
 position = Vector2(-63, 704)
 next_scene = "uid://c3pi5sjiy5tlg"
-spawn_point_path = NodePath("SpawnPoint")
+spawn_point_path = NodePath("OnTheGround/FraysEndPath/SpawnPoint")
 enter_transition = 2
 exit_transition = 2
 
@@ -1475,6 +1452,10 @@ text = "West End"
 
 [node name="HUD" parent="." unique_id=1876437396 instance=ExtResource("27_aj6tp")]
 unique_name_in_owner = true
+
+[node name="CutsceneLayer" type="CanvasLayer" parent="." unique_id=2031218370]
+unique_name_in_owner = true
+script = ExtResource("61_ulm71")
 
 [node name="SpawnPointAfterIntro" parent="." unique_id=69976262 instance=ExtResource("37_thm8h")]
 position = Vector2(62, 1747)
@@ -1501,7 +1482,7 @@ shape = SubResource("RectangleShape2D_wymun")
 debug_color = Color(0.9610079, 0, 0.5155429, 0.41960785)
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="ExitBlocker" unique_id=1923277754]
-position = Vector2(1671, 986)
+position = Vector2(1607, 639)
 shape = SubResource("RectangleShape2D_f3823")
 debug_color = Color(0.9610079, 0, 0.5155429, 0.41960785)
 

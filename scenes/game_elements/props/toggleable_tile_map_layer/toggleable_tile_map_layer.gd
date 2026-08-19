@@ -40,6 +40,7 @@ func _validate_property(property: Dictionary) -> void:
 		"target":
 			if target == self:
 				property.usage |= PROPERTY_USAGE_READ_ONLY
+				property.usage &= ~PROPERTY_USAGE_STORAGE
 
 
 func _set_target(value: TileMapLayer) -> void:
