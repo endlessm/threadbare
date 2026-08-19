@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: los autores de Threadbare
+# Identificador de licencia SPDX: MPL-2.0
 extends Node2D
 
 # CONFIGURACIÓN GENERAL
