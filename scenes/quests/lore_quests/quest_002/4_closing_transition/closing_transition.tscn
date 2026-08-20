@@ -14,8 +14,11 @@
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="7_tn5hb"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="7_y3es2"]
 [ext_resource type="Texture2D" uid="uid://cy66l5b3uox84" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage2.png" id="9_g6oum"]
+[ext_resource type="Shader" uid="uid://dui35fhf12sp5" path="res://scenes/game_elements/fx/world_rewoven/components/world_rewoven.gdshader" id="9_pditp"]
+[ext_resource type="Texture2D" uid="uid://drlsbgxh5e6vv" path="res://scenes/game_elements/fx/world_rewoven/components/fabric_texture.png" id="10_tje2f"]
 [ext_resource type="Texture2D" uid="uid://c8xgl7dcju5h7" path="res://scenes/game_elements/props/buildings/house/components/House_Patch_Blue_03.png" id="11_tn5hb"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="12_6i34l"]
+[ext_resource type="Script" uid="uid://dpw8lcjx68p3o" path="res://scenes/game_elements/fx/world_rewoven/components/tile_map_mask_bounds.gd" id="13_e2p5u"]
 [ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="13_wty5d"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="14_5uden"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="14_pditp"]
@@ -32,6 +35,30 @@
 [ext_resource type="SpriteFrames" uid="uid://bq7qvwju02mtx" path="res://scenes/game_elements/characters/components/sprite_frames/bunny_brown.tres" id="25_o57pd"]
 [ext_resource type="PackedScene" uid="uid://djmdhrse34vgq" path="res://scenes/game_elements/props/decoration/bunny/bunny.tscn" id="26_sxtjt"]
 [ext_resource type="PackedScene" uid="uid://c4vbokn408f2c" path="res://scenes/game_elements/props/decoration/sheep/sheep.tscn" id="27_5uden"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pditp"]
+seed = 5566989
+frequency = 0.041
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xq5un"]
+width = 64
+height = 64
+noise = SubResource("FastNoiseLite_pditp")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3tl30"]
+shader = ExtResource("9_pditp")
+shader_parameter/mask_texture = SubResource("NoiseTexture2D_xq5un")
+shader_parameter/mask_origin = Vector2(-256, 448)
+shader_parameter/mask_size = Vector2(1792, 1024)
+shader_parameter/fabric_texture = ExtResource("10_tje2f")
+shader_parameter/fabric_scale = 1.0
+shader_parameter/progress = 1.0
+shader_parameter/target_canvas_group = true
+shader_parameter/smoothness = 0.4910000233225
+shader_parameter/burn_size = 0.4470000212325
+shader_parameter/burn_color = Color(1.1281133, 0.7659265, 1.353256, 1)
+shader_parameter/canvas_modulate = Color(1, 1, 1, 1)
+shader_parameter/gray_intensity = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2p5u"]
 size = Vector2(90, 86)
@@ -101,55 +128,55 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("TileMapLayers/Void:modulate")
+tracks/5/path = NodePath("OnTheGround/StoryWeaver-NonPlayable!:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Vector2(757, 404)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("OnTheGround/StoryWeaver-NonPlayable!:position")
+tracks/6/path = NodePath("OnTheGround/StoryWeaver-NonPlayable!:animation")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(757, 404)]
+"update": 1,
+"values": [&"idle"]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("OnTheGround/StoryWeaver-NonPlayable!:animation")
+tracks/7/path = NodePath("OnTheGround/PropsHidden:modulate")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"idle"]
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("OnTheGround/PropsHidden:modulate")
+tracks/8/path = NodePath("OnTheGround/Townie3:visible")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
+"update": 1,
+"values": [false]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("OnTheGround/Townie3:visible")
+tracks/9/path = NodePath("OnTheGround/Townie4:visible")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -161,7 +188,7 @@ tracks/9/keys = {
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("OnTheGround/Townie4:visible")
+tracks/10/path = NodePath("OnTheGround/Townie5:visible")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
@@ -173,14 +200,14 @@ tracks/10/keys = {
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("OnTheGround/Townie5:visible")
+tracks/11/path = NodePath("TileMapLayers/CanvasGroup:material:shader_parameter/progress")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [1.0]
 }
 
 [sub_resource type="Animation" id="Animation_8lys0"]
@@ -251,7 +278,7 @@ tracks/0/path = NodePath("Camera2D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2, 3.9, 5.9),
+"times": PackedFloat32Array(0, 2, 7.6634636, 9.663464),
 "transitions": PackedFloat32Array(-2, -2, -2, -2),
 "update": 0,
 "values": [Vector2(0, 0), Vector2(0, 600), Vector2(0, 600), Vector2(0, 0)]
@@ -259,26 +286,26 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("TileMapLayers/Void:modulate")
+tracks/1/path = NodePath("OnTheGround/PropsHidden:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1.6, 3.3),
+"times": PackedFloat32Array(3.8370202, 4.63702),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("OnTheGround/PropsHidden:modulate")
+tracks/2/path = NodePath("TileMapLayers/CanvasGroup:material:shader_parameter/progress")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(2.5, 3.3),
+"times": PackedFloat32Array(0.14870083, 7.3312035),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+"values": [1.0, 0.0]
 }
 
 [sub_resource type="Animation" id="Animation_t5n3s"]
@@ -411,11 +438,19 @@ tile_map_data = PackedByteArray("AAAIAAgABQABAAIAAAAIAAcABQABAAEAAAAIAAYABQABAAE
 tile_set = ExtResource("5_51bq3")
 metadata/_edit_lock_ = true
 
-[node name="Void" type="TileMapLayer" parent="TileMapLayers" unique_id=1625093177]
+[node name="CanvasGroup" type="CanvasGroup" parent="TileMapLayers" unique_id=2099800963]
+material = SubResource("ShaderMaterial_3tl30")
+
+[node name="Void" type="TileMapLayer" parent="TileMapLayers/CanvasGroup" unique_id=1625093177]
 material = ExtResource("7_tn5hb")
 tile_map_data = PackedByteArray("AAAUABMADQABAAEAAAAUABIADQABAAEAAAAUABEADQABAAEAAAAUABAADQABAAEAAAAUAA8ADQABAAEAAAAUAA4ADQABAAEAAAAUAA0ADQABAAEAAAAUAAwADQABAAEAAAAUAAsADQABAAEAAAAUAAoADQABAAEAAAATABMADQABAAEAAAATABIADQABAAEAAAATABEADQABAAEAAAATABAADQABAAEAAAATAA8ADQABAAEAAAATAA4ADQABAAEAAAATAA0ADQABAAEAAAATAAwADQABAAEAAAATAAsADQABAAEAAAATAAoADQABAAEAAAASABMADQABAAEAAAASABIADQABAAEAAAASABEADQABAAEAAAASABAADQABAAEAAAASAA8ADQABAAEAAAASAA4ADQABAAEAAAASAA0ADQABAAEAAAASAAwADQABAAEAAAASAAsADQABAAEAAAASAAoADQABAAEAAAARABMADQABAAEAAAARABIADQABAAEAAAARABEADQABAAEAAAARABAADQABAAEAAAARAA8ADQABAAEAAAARAA4ADQABAAEAAAARAA0ADQABAAEAAAARAAwADQABAAEAAAARAAsADQABAAEAAAARAAoADQABAAEAAAAQABMADQABAAEAAAAQABIADQABAAEAAAAQABEADQABAAEAAAAQABAADQABAAEAAAAQAA8ADQABAAEAAAAQAA4ADQABAAEAAAAQAA0ADQABAAEAAAAQAAwADQABAAEAAAAQAAsADQABAAEAAAAQAAoADQABAAEAAAAPABMADQABAAEAAAAPABIADQABAAEAAAAPABEADQABAAEAAAAPABAADQABAAEAAAAPAA8ADQABAAEAAAAPAA4ADQABAAEAAAAPAA0ADQABAAEAAAAPAAwADQABAAEAAAAPAAsADQABAAEAAAAPAAoADQABAAEAAAAOABMADQABAAEAAAAOABIADQABAAEAAAAOABEADQABAAEAAAAOABAADQABAAEAAAAOAA8ADQABAAEAAAAOAA4ADQABAAEAAAAOAA0ADQABAAEAAAAOAAwADQABAAEAAAAOAAsADQABAAEAAAAOAAoADQABAAEAAAANABMADQABAAEAAAANABIADQABAAEAAAANABEADQABAAEAAAANABAADQABAAEAAAANAA8ADQABAAEAAAANAA4ADQABAAEAAAANAA0ADQABAAEAAAANAAwADQABAAEAAAANAAsADQABAAEAAAANAAoADQABAAAAAAAMABMADQABAAEAAAAMABIADQABAAEAAAAMABEADQABAAEAAAAMABAADQABAAEAAAAMAA8ADQABAAEAAAAMAA4ADQABAAEAAAAMAA0ADQABAAEAAAAMAAwADQABAAEAAAAMAAsADQABAAEAAAALABMADQABAAEAAAALABIADQABAAEAAAALABEADQABAAEAAAALABAADQABAAEAAAALAA8ADQABAAEAAAALAA4ADQABAAEAAAALAA0ADQABAAEAAAALAAwADQABAAEAAAALAAsADQABAAEAAAALAAoADQABAAAAAAAKABMADQABAAEAAAAKABIADQABAAEAAAAKABEADQABAAEAAAAKABAADQABAAEAAAAKAA8ADQABAAEAAAAKAA4ADQABAAEAAAAKAA0ADQABAAEAAAAKAAwADQABAAEAAAAKAAsADQABAAEAAAAKAAoADQABAAAAAAAJABMADQABAAEAAAAJABIADQABAAEAAAAJABEADQABAAEAAAAJABAADQABAAEAAAAJAA8ADQABAAEAAAAJAA4ADQABAAEAAAAJAA0ADQABAAEAAAAJAAwADQABAAEAAAAJAAsADQABAAEAAAAJAAoADQABAAAAAAAIABMADQABAAEAAAAIABIADQABAAEAAAAIABEADQABAAEAAAAIABAADQABAAEAAAAIAA8ADQABAAEAAAAIAA4ADQABAAEAAAAIAA0ADQABAAEAAAAIAAwADQABAAEAAAAIAAsADQABAAEAAAAIAAoADQABAAAAAAAHABMADQABAAEAAAAHABIADQABAAEAAAAHABEADQABAAEAAAAHABAADQABAAEAAAAHAA8ADQABAAEAAAAHAA4ADQABAAEAAAAHAA0ADQABAAEAAAAHAAwADQABAAEAAAAHAAsADQABAAEAAAAHAAoADQABAAEAAAAGABMADQABAAEAAAAGABIADQABAAEAAAAGABEADQABAAEAAAAGABAADQABAAEAAAAGAA8ADQABAAEAAAAGAA4ADQABAAEAAAAGAA0ADQABAAEAAAAGAAwADQABAAEAAAAGAAsADQABAAEAAAAGAAoADQABAAEAAAAFABMADQABAAEAAAAFABIADQABAAEAAAAFABEADQABAAEAAAAFABAADQABAAEAAAAFAA8ADQABAAEAAAAFAA4ADQABAAEAAAAFAA0ADQABAAEAAAAFAAwADQABAAEAAAAFAAsADQABAAEAAAAFAAoADQABAAEAAAAEABMADQABAAEAAAAEABIADQABAAEAAAAEABEADQABAAEAAAAEABAADQABAAEAAAAEAA8ADQABAAEAAAAEAA4ADQABAAEAAAAEAA0ADQABAAEAAAAEAAwADQABAAEAAAAEAAsADQABAAEAAAAEAAoADQABAAEAAAADABMADQABAAEAAAADABIADQABAAEAAAADABEADQABAAEAAAADABAADQABAAEAAAADAA8ADQABAAEAAAADAA4ADQABAAEAAAADAA0ADQABAAEAAAADAAwADQABAAEAAAADAAsADQABAAEAAAADAAoADQABAAAAAAACABMADQABAAEAAAACABIADQABAAEAAAACABEADQABAAEAAAACABAADQABAAEAAAACAA8ADQABAAEAAAACAA4ADQABAAEAAAACAA0ADQABAAEAAAACAAwADQABAAEAAAACAAsADQABAAEAAAACAAoADQABAAAAAAABABMADQABAAEAAAABABIADQABAAEAAAABABEADQABAAEAAAABABAADQABAAEAAAABAA8ADQABAAEAAAABAA4ADQABAAEAAAABAA0ADQABAAEAAAABAAwADQABAAEAAAABAAsADQABAAEAAAABAAoADQABAAEAAAAAABMADQABAAEAAAAAABIADQABAAEAAAAAABEADQABAAEAAAAAABAADQABAAEAAAAAAA8ADQABAAEAAAAAAA4ADQABAAEAAAAAAA0ADQABAAEAAAAAAAwADQABAAEAAAAAAAsADQABAAEAAAAAAAoADQABAAEAAAD//xMADQABAAEAAAD//xIADQABAAEAAAD//xEADQABAAEAAAD//xAADQABAAEAAAD//w8ADQABAAEAAAD//w4ADQABAAEAAAD//w0ADQABAAEAAAD//wwADQABAAEAAAD//wsADQABAAEAAAD//woADQABAAEAAAAXABMADQACAAEAAAAXABIADQACAAEAAAAXABEADQACAAEAAAAXABAADQACAAEAAAAXAA8ADQACAAEAAAAXAA4ADQACAAEAAAAXAA0ADQACAAEAAAAXAAwADQACAAEAAAAXAAsADQACAAEAAAAXAAoADQACAAEAAAAWABMADQABAAEAAAAWABIADQABAAEAAAAWABEADQABAAEAAAAWABAADQABAAEAAAAWAA8ADQABAAEAAAAWAA4ADQABAAEAAAAWAA0ADQABAAEAAAAWAAwADQABAAEAAAAWAAsADQABAAEAAAAWAAoADQABAAEAAAAVABMADQABAAEAAAAVABIADQABAAEAAAAVABEADQABAAEAAAAVABAADQABAAEAAAAVAA8ADQABAAEAAAAVAA4ADQABAAEAAAAVAA0ADQABAAEAAAAVAAwADQABAAEAAAAVAAsADQABAAEAAAAVAAoADQABAAEAAAD+/xMADQABAAEAAAD+/xIADQABAAEAAAD+/xEADQABAAEAAAD+/xAADQABAAEAAAD+/w8ADQABAAEAAAD+/w4ADQABAAEAAAD+/w0ADQABAAEAAAD+/wwADQABAAEAAAD+/wsADQABAAEAAAD+/woADQABAAEAAAD9/xMADQABAAEAAAD9/xIADQABAAEAAAD9/xEADQABAAEAAAD9/xAADQABAAEAAAD9/w8ADQABAAEAAAD9/w4ADQABAAEAAAD9/w0ADQABAAEAAAD9/wwADQABAAEAAAD9/wsADQABAAEAAAD9/woADQABAAEAAAD8/xMADQAAAAEAAAD8/xIADQAAAAEAAAD8/xEADQAAAAEAAAD8/xAADQAAAAEAAAD8/w8ADQAAAAEAAAD8/w4ADQAAAAEAAAD8/w0ADQAAAAEAAAD8/wwADQAAAAEAAAD8/wsADQAAAAEAAAD8/woADQAAAAEAAAAPAAkADQABAAAAAAAOAAkADQAAAAAAAAAGAAkADQABAAEAAAAFAAgADQAAAAAAAAAGAAcADQADAAAAAAAEAAkADQAAAAAAAAAQAAgADQAAAAAAAAARAAkADQABAAEAAAARAAcADQADAAAAAAAMAAoADQABAAAAAAAGAAgADQACAAEAAAATAAkADQABAAEAAAATAAgADQAAAAAAAAAUAAgADQABAAAAAAAUAAkADQABAAEAAAAVAAgADQABAAAAAAAVAAkADQABAAEAAAAWAAgADQABAAAAAAAWAAkADQABAAEAAAAXAAgADQACAAAAAAAXAAkADQACAAEAAAAAAAkADQABAAEAAAD//wgADQABAAAAAAD//wkADQABAAEAAAD+/wgADQABAAAAAAD+/wkADQABAAEAAAD9/wgADQABAAAAAAD9/wkADQABAAEAAAD8/wgADQAAAAAAAAD8/wkADQAAAAEAAAABAAkADQACAAAAAAAAAAgADQACAAAAAAASAAkADQABAAAAAAAQAAkADQABAAEAAAARAAgADQACAAEAAAAFAAkADQABAAEAAAAHAAkADQACAAAAAAARABYADQABAAIAAAARABUADQABAAEAAAARABQADQABAAEAAAAQABYADQABAAIAAAAQABUADQABAAEAAAAQABQADQABAAEAAAAPABYADQABAAIAAAAPABUADQABAAEAAAAPABQADQABAAEAAAAOABYADQABAAIAAAAOABUADQABAAEAAAAOABQADQABAAEAAAANABYADQABAAIAAAANABUADQABAAEAAAANABQADQABAAEAAAAMABYADQABAAIAAAAMABUADQABAAEAAAAMABQADQABAAEAAAALABYADQABAAIAAAALABUADQABAAEAAAALABQADQABAAEAAAAKABYADQABAAIAAAAKABUADQABAAEAAAAKABQADQABAAEAAAAJABYADQABAAIAAAAJABUADQABAAEAAAAJABQADQABAAEAAAAIABYADQABAAIAAAAIABUADQABAAEAAAAIABQADQABAAEAAAAHABYADQABAAIAAAAHABUADQABAAEAAAAHABQADQABAAEAAAAGABYADQABAAIAAAAGABUADQABAAEAAAAGABQADQABAAEAAAAFABYADQABAAIAAAAFABUADQABAAEAAAAFABQADQABAAEAAAAEABYADQABAAIAAAAEABUADQABAAEAAAAEABQADQABAAEAAAADABYADQABAAIAAAADABUADQABAAEAAAADABQADQABAAEAAAACABYADQABAAIAAAACABUADQABAAEAAAACABQADQABAAEAAAABABYADQABAAIAAAABABUADQABAAEAAAABABQADQABAAEAAAAAABYADQABAAIAAAAAABUADQABAAEAAAAAABQADQABAAEAAAD//xYADQABAAIAAAD//xUADQABAAEAAAD//xQADQABAAEAAAD+/xYADQABAAIAAAD+/xUADQABAAEAAAD+/xQADQABAAEAAAD9/xYADQABAAIAAAD9/xUADQABAAEAAAD9/xQADQABAAEAAAD8/xYADQAAAAIAAAD8/xUADQAAAAEAAAD8/xQADQAAAAEAAAAXABYADQACAAIAAAAXABUADQACAAEAAAAXABQADQACAAEAAAAWABYADQABAAIAAAAWABUADQABAAEAAAAWABQADQABAAEAAAAVABYADQABAAIAAAAVABUADQABAAEAAAAVABQADQABAAEAAAAUABYADQABAAIAAAAUABUADQABAAEAAAAUABQADQABAAEAAAATABYADQABAAIAAAATABUADQABAAEAAAATABQADQABAAEAAAASABYADQABAAIAAAASABUADQABAAEAAAASABQADQABAAEAAAA=")
 tile_set = ExtResource("7_s5mdo")
 metadata/_edit_lock_ = true
+
+[node name="TileMapMaskBounds" type="Node" parent="TileMapLayers/CanvasGroup" unique_id=1546558266 node_paths=PackedStringArray("canvas_item")]
+script = ExtResource("13_e2p5u")
+canvas_item = NodePath("..")
+metadata/_custom_type_script = "uid://dpw8lcjx68p3o"
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=773564026]
 y_sort_enabled = true
