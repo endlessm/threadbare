@@ -1,6 +1,5 @@
 [gd_scene format=4 uid="uid://d02db8ykyyos0"]
 
-[ext_resource type="Script" uid="uid://k3q1kntww4eb" path="res://scenes/game_elements/fx/world_rewoven/components/world_rewoven_cutscene.gd" id="1_0crk3"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="2_yewlk"]
 [ext_resource type="Texture2D" uid="uid://cexg7otw5enpu" path="res://assets/third_party/tiny-swords/Terrain/Water/Foam/Foam.png" id="3_3d5w8"]
 [ext_resource type="Texture2D" uid="uid://8mupkacbuxpr" path="res://assets/third_party/tiny-swords-non-cc0/Terrain/Decorations/Clouds/Clouds_01.png" id="3_3mcre"]
@@ -50,6 +49,7 @@
 [ext_resource type="Script" uid="uid://c4oww6rkbqfxc" path="res://scenes/game_elements/fx/stitch_trail/components/stitch_trail.gd" id="48_po6pk"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="49_mxhwh"]
 [ext_resource type="AudioStream" uid="uid://bbamdm6wtjjcn" path="res://assets/first_party/music/Threadbare_Bed.ogg" id="50_4dxuy"]
+[ext_resource type="Script" uid="uid://d2vp62mjrf6gn" path="res://scenes/globals/scene_switcher/scene_link.gd" id="50_mxhwh"]
 
 [sub_resource type="Animation" id="Animation_d870b"]
 length = 0.001
@@ -455,7 +455,6 @@ point_count = 12
 root_node = NodePath("AspectRatioContainer/Wrapper/WorldRewoven")
 libraries/ = SubResource("AnimationLibrary_d870b")
 autoplay = &"cutscene"
-script = ExtResource("1_0crk3")
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="." unique_id=767205030]
 anchors_preset = 15
@@ -785,3 +784,10 @@ metadata/_custom_type_script = "uid://c4oww6rkbqfxc"
 
 [node name="BackgroundMusic" parent="." unique_id=1461759951 instance=ExtResource("49_mxhwh")]
 stream = ExtResource("50_4dxuy")
+
+[node name="SceneLink" type="Node2D" parent="." unique_id=346303937]
+script = ExtResource("50_mxhwh")
+target = 1
+metadata/_custom_type_script = "uid://d2vp62mjrf6gn"
+
+[connection signal="animation_finished" from="." to="SceneLink" method="switch" unbinds=1]
