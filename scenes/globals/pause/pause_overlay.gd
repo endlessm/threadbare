@@ -34,6 +34,8 @@ func toggle_pause() -> void:
 	get_tree().paused = new_state
 
 	Input.set_default_cursor_shape(Input.CURSOR_ARROW if new_state else Input.CURSOR_CROSS)
+	# TODO: does this really live here?
+	AudioServer.set_bus_effect_enabled(AudioServer.get_bus_index(&"Music"), 0, new_state)
 
 	if new_state:
 		if not GameState.quest:
