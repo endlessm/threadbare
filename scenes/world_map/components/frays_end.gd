@@ -15,6 +15,11 @@ func _ready() -> void:
 		GameState.quest.inventory.item_collected.connect(_update_story_quest_progress_visibility)
 		GameState.quest.inventory.item_consumed.connect(_update_story_quest_progress_visibility)
 
+	# Back to Fray's End after finishing playing all cutscenes.
+	if GameState.global.facts.has("rewoven_cutscenes"):
+		GameState.global.facts.erase("rewoven_cutscenes")
+		eternal_loom.on_rewoven_finished()
+
 
 func _update_story_quest_progress_visibility(_item: InventoryItem = null) -> void:
 	var end_of_quest := eternal_loom.is_item_offering_possible()
