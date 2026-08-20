@@ -53,6 +53,8 @@
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="48_sqpij"]
 [ext_resource type="AudioStream" uid="uid://c1pdyoycgyb7t" path="res://scenes/dev/components/oi.wav" id="52_rs1iu"]
 [ext_resource type="Script" uid="uid://djeshbrs3vwnb" path="res://scenes/game_elements/characters/npcs/components/pet_interaction.gd" id="53_a3fwm"]
+[ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="54_m30mx"]
+[ext_resource type="AudioStream" uid="uid://bxck4xpi66onr" path="res://scenes/dev/components/music/dev_archipelago_music.tres" id="55_sfy7j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pp1gq"]
 size = Vector2(64, 64)
@@ -480,6 +482,11 @@ bus = &"SFX"
 script = ExtResource("53_a3fwm")
 interact_area = NodePath("../InteractArea")
 sound_effect_player = NodePath("../AudioStreamPlayer2D")
+
+[node name="BackgroundMusic" type="Node" parent="." unique_id=541098766]
+script = ExtResource("54_m30mx")
+stream = ExtResource("55_sfy7j")
+metadata/_custom_type_script = "uid://c8405c212rbn6"
 
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel/RepelTimer" to="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel" method="repel_once"]
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Sheep2/PlayerRepel2/RepelTimer2" to="OnTheGround/Node2D/SheepVolleyball" method="_on_repel_timer_2_timeout"]
