@@ -6,25 +6,24 @@ const STORYBOOK_SCENE := preload("uid://bhm7fdjvppt8b")
 
 @export_range(0, 100, 1, "or_greater") var quests_amount: int = 30
 
-var titles := [
-	"El Señor de las Agujas",
+var english_titles := [
 	"The Secret of Crochet",
-	"El tejido oscurot",
 	"The Needle and the Sorcerer",
 	"Conan the Weaver",
 	"Return to Fray's End",
 	"The Little HushRoom",
-	"Le Seigneur des Aiguilles",
 ]
 
 var spanish_titles := [
-	"El Señor de las Agujas",
 	"El tejido oscurot",
+	"El Señor de las Agujas",
 ]
 
 var french_titles := [
 	"Le Seigneur des Aiguilles",
 ]
+
+var titles := english_titles + spanish_titles + french_titles
 
 
 func _ready() -> void:
