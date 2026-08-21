@@ -17,6 +17,7 @@ extends SceneLink
 
 ## [InventoryItem] provided by this collectible when interacted with.
 @export var item: InventoryItem:
+	get = _get_item,
 	set = _set_item
 
 @export_category("Dialogue")
@@ -52,11 +53,19 @@ func _get_configuration_warnings() -> PackedStringArray:
 	return warnings
 
 
+func _get_item() -> InventoryItem:
+	# Replace anonymous resource stored in scene file with separately-stored resource.
+	# Can be removed when we don't expect to have to rewrite any new quests being merged.
+	if item and item.is_built_in():
+		item = InventoryItem.with_type(item.type)
+	return item
+
+
 func _set_item(new_value: InventoryItem) -> void:
 	item = new_value
 
 	if sprite_2d:
-		sprite_2d.texture = item.get_world_texture() if item else null
+		sprite_2d.texture = item.world_texture if item else null
 
 	if interact_area:
 		interact_area.action = "Collect " + item.type_name() if item else "Collect"

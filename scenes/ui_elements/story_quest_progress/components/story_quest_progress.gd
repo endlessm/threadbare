@@ -51,7 +51,9 @@ func _on_helper_state_changed() -> void:
 		head.reparent(helper_container)
 		head.process_mode = Node.PROCESS_MODE_DISABLED
 		remove_child(helper_character)
-		helper_color.color = InventoryItem.COLORS_PER_TYPE[GameState.global.helper.helper_type]
+		# TODO: store item in game state instead?
+		var item := InventoryItem.with_type(GameState.global.helper.helper_type)
+		helper_color.color = item.color
 
 
 func _on_item_collected(item: InventoryItem) -> void:
