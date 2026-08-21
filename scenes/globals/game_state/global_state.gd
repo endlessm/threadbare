@@ -45,6 +45,8 @@ signal helper_changed
 
 @export var helper: HelperCharacterState
 
+@export var inventory: InventoryState = InventoryState.new()
+
 ## Quests that were started & abandoned without being completed, keyed by
 ## [member Resource.resource_path] of each [Quest].
 ## Captures the [QuestState] and [PerSceneState] at point, so that the player

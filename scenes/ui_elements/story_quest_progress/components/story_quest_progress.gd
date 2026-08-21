@@ -31,7 +31,10 @@ func _ready() -> void:
 	# far in the quest.
 	var items_collected := GameState.quest.inventory.items
 	for i: int in min(items_collected.size(), n):
-		items_container.get_child(i).start_as_filled(items_collected[i])
+		var ti := items_collected[i]
+		var ghost := GameState.global.inventory._has(ti)
+		var slot := items_container.get_child(i) as ItemSlot
+		slot.start_as_filled(ti.item, ghost)
 
 	# Then, when each new item is collected, it is added to the progress UI
 	GameState.quest.inventory.item_collected.connect(self._on_item_collected)
@@ -56,17 +59,19 @@ func _on_helper_state_changed() -> void:
 		helper_color.color = item.color
 
 
-func _on_item_collected(item: InventoryItem) -> void:
+func _on_item_collected(item: TaggedItem) -> void:
+	var ghost := GameState.global.inventory._has(item)
 	for child in items_container.get_children():
 		var item_slot := child as ItemSlot
 		if not item_slot.is_filled():
-			item_slot.fill(item)
+			item_slot.fill(item.item, ghost)
 			return
 
 
-func _on_item_consumed(item: InventoryItem) -> void:
+func _on_item_consumed(item: TaggedItem) -> void:
+	# TODO: backwards
 	for child in items_container.get_children():
 		var item_slot := child as ItemSlot
-		if item_slot.is_filled_with_same_item_type_as(item):
+		if item_slot.is_filled_with_same_item_type_as(item.item):
 			item_slot.free_slot()
 			return

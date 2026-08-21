@@ -61,8 +61,8 @@ func _ready() -> void:
 	animated_sprite_2d.connect("frame_changed", _on_frame_changed)
 
 	if GameState.quest:
-		GameState.quest.inventory.item_collected.connect(_update_dialogue_title)
-		GameState.quest.inventory.item_consumed.connect(_update_dialogue_title)
+		GameState.quest.inventory.item_collected.connect(_update_dialogue_title.unbind(1))
+		GameState.quest.inventory.item_consumed.connect(_update_dialogue_title.unbind(1))
 	_update_dialogue_title()
 
 
@@ -105,7 +105,7 @@ func congratulate_player() -> void:
 	await DialogueManager.dialogue_ended
 
 
-func _update_dialogue_title(_item: InventoryItem = null) -> void:
+func _update_dialogue_title() -> void:
 	if eternal_loom and eternal_loom.is_item_offering_possible():
 		talk_behavior.title = "go_to_loom"
 	elif not _quests:

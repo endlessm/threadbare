@@ -22,6 +22,8 @@ func _ready() -> void:
 
 
 func _update_story_quest_progress_visibility(_item: InventoryItem = null) -> void:
+	# TODO: if 0-item offerings are possible then we need to monitor for the quest being unset.
+	# Currently no change signal for that.
 	var end_of_quest := eternal_loom.is_item_offering_possible()
 	hud.change_story_quest_progress_visibility(end_of_quest)
 	exit_blocker.set_deferred(&"monitoring", end_of_quest)
