@@ -12,6 +12,13 @@ extends CanvasLayer
 ## [param quest] set to [code]null[/code].
 signal selected(quest: Quest, restart: bool)
 
+enum ContentTab { TOC, EN, ES }
+const TAB_LANGUAGES := {
+	ContentTab.TOC: "",
+	ContentTab.EN: "en",
+	ContentTab.ES: "es",
+}
+
 ## Quests to show in the storybook.
 @export var quests: Array[Quest]
 @export var quests_per_page: int = 8:
@@ -22,13 +29,12 @@ signal selected(quest: Quest, restart: bool)
 
 var quests_per_spread: int = 16
 
+var _current_tab: ContentTab = ContentTab.TOC
 var _current_spread_index: int = -1
 var _navigation_locked: bool = false
 var _current_list_page: int = 0
 
 var _filtered_quests: Array[Quest] = []
-
-var _current_tab_index: int = 0  # 0: TOC, 1: EN, 2: ES
 
 @onready var left_quest_list: VBoxContainer = %LeftQuestList
 @onready var right_quest_list: VBoxContainer = %RightQuestList
@@ -250,7 +256,7 @@ func _on_left_button_pressed() -> void:
 			return
 
 		# Flipping back from the first page returns to full table of contents
-		_switch_bookmark_tab(0, "")
+		_switch_bookmark_tab(ContentTab.TOC)
 		return
 
 	_switch_to_page(_current_spread_index - 1)
@@ -309,15 +315,15 @@ func reset_focus() -> void:
 
 
 func _on_toc_bookmark_pressed() -> void:
-	_switch_bookmark_tab(0, "")
+	_switch_bookmark_tab(ContentTab.TOC)
 
 
 func _on_en_bookmark_pressed() -> void:
-	_switch_bookmark_tab(1, "en")
+	_switch_bookmark_tab(ContentTab.EN)
 
 
 func _on_es_bookmark_pressed() -> void:
-	_switch_bookmark_tab(2, "es")
+	_switch_bookmark_tab(ContentTab.ES)
 
 
 func _show_table_of_contents() -> void:
@@ -326,9 +332,7 @@ func _show_table_of_contents() -> void:
 
 
 func _filter_quests_by_language(lang_code: String) -> void:
-	_filtered_quests = quests.filter(
-		func(quest: Quest) -> bool: return quest.language == lang_code
-	)
+	_filtered_quests = quests.filter(func(quest: Quest) -> bool: return quest.language == lang_code)
 	_reset_storybook_list_view()
 
 
@@ -339,19 +343,20 @@ func _reset_storybook_list_view() -> void:
 	_update_page_visibility()
 
 
-func _switch_bookmark_tab(target_tab_index: int, lang_code: String) -> void:
-	if _navigation_locked or target_tab_index == _current_tab_index:
+func _switch_bookmark_tab(target_tab: ContentTab) -> void:
+	if _navigation_locked or (target_tab == _current_tab and _current_spread_index == 0):
 		return
 
 	_navigation_locked = true
-	var old_tab_index: int = _current_tab_index
-	_current_tab_index = target_tab_index
+	var old_tab: ContentTab = _current_tab
+	_current_tab = target_tab
+	var lang_code: String = TAB_LANGUAGES.get(target_tab, "")
 
 	# Fade out UI
 	await _fade_out_ui()
 
 	# Flip forward if target > current, otherwise flip backward
-	if target_tab_index > old_tab_index:
+	if target_tab > old_tab:
 		animated_book.play("book_right")
 	else:
 		animated_book.play("book_left")
