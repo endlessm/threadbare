@@ -1,8 +1,8 @@
 # Automated Bounty Solution for endlessm/threadbare #2704
 
-- **Issue Ref**: #2704
-- **Timestamp**: 2026-08-21T18:08:53.708590
-- **Author**: @1snob
-- **Summary**: Targeted minimal fix addressing reported issue.
+- **Issue Ref**: https://github.com/endlessm/threadbare/issues/2704
+- **Timestamp**: 2026-08-21T18:20:15.250413
+- **Claimant**: @1snob
+- **Summary**: Targeted minimal fix resolving issue requirements.
 
 /claim #2704
