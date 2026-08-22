@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://e5ctfgct4qs2"]
+
+[ext_resource type="Script" uid="uid://k6j0kcn8lb1d" path="res://temp/area_name.gd" id="1_pcrcb"]
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="2_xc7pf"]
+
+[node name="areaName" type="CanvasLayer" unique_id=1997186402]
+visible = false
+script = ExtResource("1_pcrcb")
+ZonaName = "frays_end"
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=300748333]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -132.0
+offset_right = 132.0
+offset_bottom = 139.0
+grow_horizontal = 2
+
+[node name="ZonaText" type="Label" parent="PanelContainer" unique_id=2083994115]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_xc7pf")
+theme_override_font_sizes/font_size = 70
+text = "Name Zone"
+horizontal_alignment = 1
+
+[node name="AutoCloseTimer" type="Timer" parent="." unique_id=1463808003]
+wait_time = 2.5
+one_shot = true
+
+[connection signal="timeout" from="AutoCloseTimer" to="." method="_on_auto_close_timer"]
