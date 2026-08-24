@@ -51,7 +51,6 @@ type = 2
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="StealthSequenceCombo" type="Node2D" unique_id=1761996320]
-y_sort_enabled = true
 script = ExtResource("1_w6fk3")
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1025468685]
@@ -86,71 +85,6 @@ tile_set = ExtResource("3_f4ekw")
 [node name="StealthGameLogic" type="Node" parent="." unique_id=567289061]
 script = ExtResource("1_gqxgg")
 
-[node name="SequencePuzzle" type="Node2D" parent="." unique_id=1138211408]
-unique_name_in_owner = true
-y_sort_enabled = true
-script = ExtResource("14_qhjva")
-metadata/_custom_type_script = "uid://c68oh8dtr21ti"
-metadata/_edit_lock_ = true
-
-[node name="Steps" type="Node2D" parent="SequencePuzzle" unique_id=1148835857]
-
-[node name="SequencePuzzleStep1" type="Node2D" parent="SequencePuzzle/Steps" unique_id=11865420 node_paths=PackedStringArray("sequence", "hint_sign")]
-script = ExtResource("15_aaq2u")
-sequence = [NodePath("../../Objects/Rock1"), NodePath("../../Objects/Rock2")]
-hint_sign = NodePath("../../Hints/SequencePuzzleHintSign1")
-metadata/_custom_type_script = "uid://ccc78coj2b1li"
-
-[node name="SequencePuzzleStep2" type="Node2D" parent="SequencePuzzle/Steps" unique_id=2066508082 node_paths=PackedStringArray("sequence", "hint_sign")]
-script = ExtResource("15_aaq2u")
-sequence = [NodePath("../../Objects/Rock2"), NodePath("../../Objects/Rock3"), NodePath("../../Objects/Rock1")]
-hint_sign = NodePath("../../Hints/SequencePuzzleHintSign2")
-metadata/_custom_type_script = "uid://ccc78coj2b1li"
-
-[node name="SequencePuzzleStep3" type="Node2D" parent="SequencePuzzle/Steps" unique_id=2018775464 node_paths=PackedStringArray("sequence", "hint_sign")]
-script = ExtResource("15_aaq2u")
-sequence = [NodePath("../../Objects/Rock3"), NodePath("../../Objects/Rock2"), NodePath("../../Objects/Rock4")]
-hint_sign = NodePath("../../Hints/SequencePuzzleHintSign3")
-metadata/_custom_type_script = "uid://ccc78coj2b1li"
-
-[node name="Objects" type="Node2D" parent="SequencePuzzle" unique_id=16608040]
-y_sort_enabled = true
-
-[node name="Rock1" parent="SequencePuzzle/Objects" unique_id=1453563311 instance=ExtResource("15_lxyj7")]
-position = Vector2(352, 1597)
-sprite_modulate = Color(1, 0.13999999, 0.6416664, 1)
-audio_stream = ExtResource("17_qhjva")
-
-[node name="Rock2" parent="SequencePuzzle/Objects" unique_id=2009407394 instance=ExtResource("15_lxyj7")]
-position = Vector2(672, 1597)
-sprite_modulate = Color(0.16862746, 0.14117648, 1, 1)
-audio_stream = ExtResource("20_46vvk")
-
-[node name="Rock3" parent="SequencePuzzle/Objects" unique_id=1849358100 instance=ExtResource("15_lxyj7")]
-position = Vector2(992, 1592)
-sprite_modulate = Color(0.14, 0.971333, 1, 1)
-audio_stream = ExtResource("18_0cbql")
-
-[node name="Rock4" parent="SequencePuzzle/Objects" unique_id=346315264 instance=ExtResource("15_lxyj7")]
-position = Vector2(1315, 1593)
-sprite_modulate = Color(0.670333, 1, 0.14, 1)
-audio_stream = ExtResource("20_lxyj7")
-
-[node name="Hints" type="Node2D" parent="SequencePuzzle" unique_id=1225714164]
-y_sort_enabled = true
-
-[node name="SequencePuzzleHintSign1" parent="SequencePuzzle/Hints" unique_id=139831640 instance=ExtResource("22_4t55h")]
-position = Vector2(505, 1881)
-sprite_frames = ExtResource("20_5dmi6")
-
-[node name="SequencePuzzleHintSign2" parent="SequencePuzzle/Hints" unique_id=235311166 instance=ExtResource("22_4t55h")]
-position = Vector2(832, 1879)
-sprite_frames = ExtResource("20_5dmi6")
-
-[node name="SequencePuzzleHintSign3" parent="SequencePuzzle/Hints" unique_id=918020071 instance=ExtResource("22_4t55h")]
-position = Vector2(1157, 1877)
-sprite_frames = ExtResource("20_5dmi6")
-
 [node name="OnTheGround" type="Node2D" parent="." unique_id=188079393]
 y_sort_enabled = true
 
@@ -171,7 +105,7 @@ editor_draw_limits = true
 
 [node name="Musician" parent="OnTheGround" unique_id=1639969919 node_paths=PackedStringArray("puzzle") instance=ExtResource("18_gwj3x")]
 position = Vector2(-301, 2213)
-puzzle = NodePath("../../SequencePuzzle")
+puzzle = NodePath("../SequencePuzzle")
 dialogue = ExtResource("19_gwj3x")
 
 [node name="EnemyGuards" type="Node2D" parent="OnTheGround" unique_id=253806268]
@@ -216,6 +150,71 @@ item = SubResource("Resource_idy4y")
 collected_dialogue = ExtResource("19_gwj3x")
 dialogue_title = &"collected"
 target = 1
+
+[node name="SequencePuzzle" type="Node2D" parent="OnTheGround" unique_id=1138211408]
+unique_name_in_owner = true
+y_sort_enabled = true
+script = ExtResource("14_qhjva")
+metadata/_custom_type_script = "uid://c68oh8dtr21ti"
+metadata/_edit_lock_ = true
+
+[node name="Steps" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=1148835857]
+
+[node name="SequencePuzzleStep1" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" unique_id=11865420 node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("15_aaq2u")
+sequence = [NodePath("../../Objects/Rock1"), NodePath("../../Objects/Rock2")]
+hint_sign = NodePath("../../Hints/SequencePuzzleHintSign1")
+metadata/_custom_type_script = "uid://ccc78coj2b1li"
+
+[node name="SequencePuzzleStep2" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" unique_id=2066508082 node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("15_aaq2u")
+sequence = [NodePath("../../Objects/Rock2"), NodePath("../../Objects/Rock3"), NodePath("../../Objects/Rock1")]
+hint_sign = NodePath("../../Hints/SequencePuzzleHintSign2")
+metadata/_custom_type_script = "uid://ccc78coj2b1li"
+
+[node name="SequencePuzzleStep3" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" unique_id=2018775464 node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("15_aaq2u")
+sequence = [NodePath("../../Objects/Rock3"), NodePath("../../Objects/Rock2"), NodePath("../../Objects/Rock4")]
+hint_sign = NodePath("../../Hints/SequencePuzzleHintSign3")
+metadata/_custom_type_script = "uid://ccc78coj2b1li"
+
+[node name="Objects" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=16608040]
+y_sort_enabled = true
+
+[node name="Rock1" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1453563311 instance=ExtResource("15_lxyj7")]
+position = Vector2(352, 1597)
+sprite_modulate = Color(1, 0.13999999, 0.6416664, 1)
+audio_stream = ExtResource("17_qhjva")
+
+[node name="Rock2" parent="OnTheGround/SequencePuzzle/Objects" unique_id=2009407394 instance=ExtResource("15_lxyj7")]
+position = Vector2(672, 1597)
+sprite_modulate = Color(0.16862746, 0.14117648, 1, 1)
+audio_stream = ExtResource("20_46vvk")
+
+[node name="Rock3" parent="OnTheGround/SequencePuzzle/Objects" unique_id=1849358100 instance=ExtResource("15_lxyj7")]
+position = Vector2(992, 1592)
+sprite_modulate = Color(0.14, 0.971333, 1, 1)
+audio_stream = ExtResource("18_0cbql")
+
+[node name="Rock4" parent="OnTheGround/SequencePuzzle/Objects" unique_id=346315264 instance=ExtResource("15_lxyj7")]
+position = Vector2(1315, 1593)
+sprite_modulate = Color(0.670333, 1, 0.14, 1)
+audio_stream = ExtResource("20_lxyj7")
+
+[node name="Hints" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=1225714164]
+y_sort_enabled = true
+
+[node name="SequencePuzzleHintSign1" parent="OnTheGround/SequencePuzzle/Hints" unique_id=139831640 instance=ExtResource("22_4t55h")]
+position = Vector2(505, 1881)
+sprite_frames = ExtResource("20_5dmi6")
+
+[node name="SequencePuzzleHintSign2" parent="OnTheGround/SequencePuzzle/Hints" unique_id=235311166 instance=ExtResource("22_4t55h")]
+position = Vector2(832, 1879)
+sprite_frames = ExtResource("20_5dmi6")
+
+[node name="SequencePuzzleHintSign3" parent="OnTheGround/SequencePuzzle/Hints" unique_id=918020071 instance=ExtResource("22_4t55h")]
+position = Vector2(1157, 1877)
+sprite_frames = ExtResource("20_5dmi6")
 
 [node name="InTheWater" type="Node2D" parent="." unique_id=921358741]
 z_index = -1
