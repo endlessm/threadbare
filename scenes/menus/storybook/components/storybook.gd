@@ -49,9 +49,6 @@ func _fade_in_ui() -> void:
 	tween.tween_property(ui_container, "modulate:a", 1.0, fade_duration)
 
 
-#func _ready() -> void:
-	#animated_book.animation_finished.connect(_on_animation_finished)
-	#_populate_quest_lists()
 func _ready() -> void:
 	animated_book.animation_finished.connect(_on_animation_finished)
 	_populate_quest_lists()
@@ -105,16 +102,14 @@ func _create_quest_button(
 	var button := Button.new()
 	button.text = quest.get_title()
 	button.theme_type_variation = "FlatButton"
-	
-	##Verification of completed quests <3
+
 	if quest in GameState.global.completed_quests:
 		button.icon = button.get_theme_icon("checked", "CheckBox")
 	else:
 		button.icon = button.get_theme_icon("unchecked", "CheckBox")
+
 	parent_container.add_child(button)
-	
-	
-	
+
 	button.set_meta("quest_index", quest_index)
 
 	button.pressed.connect(_on_quest_button_pressed.bind(button))
