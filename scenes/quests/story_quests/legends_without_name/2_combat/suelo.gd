@@ -8,12 +8,12 @@ extends Area2D
 @onready var timerregen= $Timer2
 
 #vars para que se regenere el suelo
-#var regen_timer: Timer
 var scale_original: Vector2
 var color_ori: Color
 
 #estado de la trampa
-var estado= "intacto" #podria ser: "intacto", "cayendo", "hueco"
+enum Estados { INTACTO, CAYENDO, HUECO }
+var estado := Estados.INTACTO
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -27,26 +27,24 @@ func _ready() -> void:
 	timercaida.one_shot= true
 	
 	#baldosa timer regen
-	#regen_timer= Timer.new()
 	timerregen.wait_time= 2.5
 	timerregen.one_shot= true
 	timerregen.timeout.connect(_on_timer_timeout_regen)
-	#add_child(regen_timer)
+	
 	
 	body_entered.connect(_on_body_entered)
 	timercaida.timeout.connect(_on_timer_timeout)
 	
-	  # Replace with function body.
 
 func _on_body_entered(body: Node2D) -> void: 
 	if body.is_in_group("player"):
-		if estado == "intacto":
+		if estado == Estados.INTACTO:
 			#el jugador pisa por primera vez
-			estado= "cayendo"
+			estado= Estados.CAYENDO
 			#se puede cambiar un poco el color
 			sprite_baldosa.modulate= Color(0.8, 0.6, 0.6)
 			timercaida.start()
-		elif estado == "hueco":
+		elif estado == Estados.HUECO:
 			#el jugador camino hacia un hueco ya abierto
 			print("pls work")
 			reiniciar_nivel(body)
@@ -54,7 +52,7 @@ func _on_body_entered(body: Node2D) -> void:
 			
 func _on_timer_timeout() -> void: 
 	#ilusion optica de q la baldosa se cae al fondo
-	var tween= create_tween()
+	var tween: Tween= create_tween()
 	
 	#perspectiva cenital, achicar el sprite y hacerlo transparente para simular profundidad
 	tween.tween_property(sprite_baldosa, "scale", Vector2(0.2, 0.2), 0.3).set_trans(Tween.TRANS_QUAD)
@@ -64,25 +62,22 @@ func _on_timer_timeout() -> void:
 	tween.tween_callback(convertir_en_hueco)
 
 func convertir_en_hueco() ->void: 
-	estado= "hueco"
-	#$CollisionShape2D.set_deferred("disabled", true)
+	estado= Estados.HUECO
 	timerregen.start()
 	#se revisa si el player se quedo parado esperando a q cayera, 
-	#get_overlapping_bodies() devuelve todo lo q este dentro del area2d en ese instante
 	for cuerpo in get_overlapping_bodies(): 
 		if cuerpo.is_in_group("player"): 
 			reiniciar_nivel(cuerpo)
 			
 func _on_timer_timeout_regen() -> void:
-#	$CollisionShape2D.set_deferred("disabled", false)
-	estado= "intacto"
-	var tween= create_tween()
+	estado= Estados.INTACTO
+	var tween: Tween = create_tween()
 	tween.tween_property(sprite_baldosa, "scale", scale_original, 0.4).set_trans(Tween.TRANS_BOUNCE)
 	tween.parallel().tween_property(sprite_baldosa, "modulate", color_ori, 0.4)
 
 func reiniciar_nivel(body: Node2D) -> void:
 	#reinicia la escena completa
-	var caidaChara = body.get_node_or_null("PlayerSprite") as AnimatedSprite2D
+	var caidaChara := body.get_node_or_null("PlayerSprite") as AnimatedSprite2D
 
 	# desactivar los hijos del nodo pq molestaban al cambiar a idle, nomas se queda el playersprite
 	for hijo in body.get_children():
@@ -94,9 +89,8 @@ func reiniciar_nivel(body: Node2D) -> void:
 	tween.parallel().tween_property(body, "scale", Vector2(0.1, 0.1), 2.0)
 	tween.parallel().tween_property(body, "modulate:a", 0.0, 2.0)
 
+
 	caidaChara.play("defeated")
 
 	await get_tree().create_timer(2.1).timeout
 	get_tree().call_deferred("reload_current_scene")
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
