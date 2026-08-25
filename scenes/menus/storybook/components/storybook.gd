@@ -107,6 +107,7 @@ func _create_quest_button(
 		button.icon = button.get_theme_icon("checked", "CheckBox")
 	else:
 		button.icon = button.get_theme_icon("unchecked", "CheckBox")
+	button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 	parent_container.add_child(button)
 
