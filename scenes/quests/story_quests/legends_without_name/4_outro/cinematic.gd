@@ -1,6 +1,5 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name Cinematic1
 extends Node2D
 ## Shows a dialogue, then transitions to another scene.
 ##

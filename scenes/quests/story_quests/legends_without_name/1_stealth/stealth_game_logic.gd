@@ -1,14 +1,14 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name StealthGameLogic1
+
 extends Node
 
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
-	for guard: Guard1 in get_tree().get_nodes_in_group(&"guard_enemy"):
+	for guard: LegendWNGuard in get_tree().get_nodes_in_group(&"guard_enemy"):
 		guard.player_detected.connect(self._on_player_detected)
 
 
