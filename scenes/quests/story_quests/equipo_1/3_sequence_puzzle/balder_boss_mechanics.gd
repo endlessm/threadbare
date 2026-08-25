@@ -19,7 +19,10 @@ var maximo = 1##para poner aleatoriamente los patrones que lanzara
 var recibir_danio = true
 signal damage(cantidad:int)
 
+signal battle_started
 func empezar_batalla()->void:
+	await dialogos.fase_1()
+	battle_started.emit()
 	boss.start()
 	timer_time_stop.start()
 	
