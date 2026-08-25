@@ -1,15 +1,8 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name Guard1 extends CharacterBody2D
-## Enemy type that patrols along a path and raises an alert if the player is detected.
+class_name LegendWNGuard extends CharacterBody2D
 
-## Emitted when the player is detected.
-## [br][br]
-## As the name suggests, this is typically a [Player], but may be some
-## other [PhysicsBody2D] (or even a [TileMapLayer]) that is in the
-## collision layer(s) detected by the guard's detection areas' [member
-## Area2D.collision_mask].
 signal player_detected(player: Node2D)
 
 enum State {
