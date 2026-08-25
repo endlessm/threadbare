@@ -102,6 +102,7 @@ func _create_quest_button(
 	var button := Button.new()
 	button.text = quest.get_title()
 	button.theme_type_variation = "FlatButton"
+	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 
 	if quest in GameState.global.completed_quests:
 		button.icon = button.get_theme_icon("checked", "CheckBox")
