@@ -22,6 +22,10 @@ func _ready() -> void:
 	barra_jefe.value = vida_actual
 	barra_player.max_value = vida_maxima_player
 	barra_player.value = vida_actual_player
+
+func _show_bars()->void:
+	barra_jefe.visible = true
+	barra_player.visible = true
 	
 func recibir_danio(cantidad:int)->void:
 	vida_actual -= cantidad

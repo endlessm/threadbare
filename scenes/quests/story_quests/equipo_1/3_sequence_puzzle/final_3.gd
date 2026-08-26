@@ -6,6 +6,19 @@ extends Node
 @export var timer_time_stop:Timer
 @export var player:Player
 
+func inicio()->void:
+	player.take_control(self)
+	DialogueManager.show_dialogue_balloon(dialogo_final, "inicio", [self])
+	await DialogueManager.dialogue_ended	
+	player.return_control(self)	
+
+func fase_1()->void:
+	player.take_control(self)
+	DialogueManager.show_dialogue_balloon(dialogo_final, "fase1", [self])
+	await DialogueManager.dialogue_ended	
+	player.return_control(self)	
+	return
+
 func fase_2()->void:
 	player.take_control(self)
 	DialogueManager.show_dialogue_balloon(dialogo_final, "fase2", [self])
@@ -16,6 +29,7 @@ func fase_3()->void:
 	DialogueManager.show_dialogue_balloon(dialogo_final, "fase3", [self])
 	await DialogueManager.dialogue_ended
 	player.return_control(self)	
+	
 func enemigo_derrotado()->void:
 	enemigo.timer.stop()
 	timer_time_stop.stop()

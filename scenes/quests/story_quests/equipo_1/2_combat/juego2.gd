@@ -30,6 +30,14 @@ func _reset_animacion():
 
 func _esta_detenido(estado:bool):
 	is_stopped = estado;
+	
+func _parar_timer()->void:
+	mi_timer.stop()
+	if is_stopped:
+		tiempo._reanudar_mundo()		
+	else:
+		_reset_animacion()
+	tiempo.queue_free()	
 
 func _activar_timer()->void:
 	mi_timer.call_deferred("start")
