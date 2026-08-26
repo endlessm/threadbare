@@ -1,3 +1,5 @@
+//SPDX-FileCopyrightText: The Threadbare Authors
+//SPDX-License-Identifier: MPL-2.0
  shader_type canvas_item;
 
 uniform vec4 color_actual : source_color = vec4(0.5, 0.0, 0.5, 1.0); 

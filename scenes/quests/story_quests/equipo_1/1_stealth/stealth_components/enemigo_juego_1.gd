@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 extends ThrowingEnemy
 @export var reproduce_sonido:bool
 @export var audio_disparo:AudioStreamPlayer

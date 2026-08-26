@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
 extends "res://scenes/game_elements/characters/player/components/player_harm.gd"
 var can_take_damage = true
 signal  took_damage(cantidad:int)
