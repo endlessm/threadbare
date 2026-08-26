@@ -51,6 +51,9 @@ func _fade_in_ui() -> void:
 
 func _ready() -> void:
 	animated_book.animation_finished.connect(_on_animation_finished)
+
+	GameState.global.completed_quests = quests.slice(0, 3)
+
 	_populate_quest_lists()
 
 
@@ -105,9 +108,9 @@ func _create_quest_button(
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 
 	if quest in GameState.global.completed_quests:
-		button.icon = button.get_theme_icon("checked", "CheckBox")
+		button.icon = preload("res://assets/first_party/icons/checked.png")
 	else:
-		button.icon = button.get_theme_icon("unchecked", "CheckBox")
+		button.icon = preload("res://assets/first_party/icons/unchecked.png")
 	button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 	parent_container.add_child(button)
