@@ -108,9 +108,9 @@ func _create_quest_button(
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 
 	if quest in GameState.global.completed_quests:
-		button.icon = preload("res://assets/first_party/icons/checked.png")
+		button.icon = button.get_theme_icon("checked", "CheckBox")
 	else:
-		button.icon = preload("res://assets/first_party/icons/unchecked.png")
+		button.icon = button.get_theme_icon("unchecked", "CheckBox")
 	button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 	parent_container.add_child(button)
