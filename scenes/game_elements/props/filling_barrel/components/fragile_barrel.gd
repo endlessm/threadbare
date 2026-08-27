@@ -11,8 +11,8 @@ signal barrel_destroyed(barrel_instance: FragileBarrel)
 @onready var crack_sound: AudioStreamPlayer2D = %CrackSound
 @onready var shatter_sound: AudioStreamPlayer2D = %ShatterSound
 @onready var health_component: HealthComponent = %HealthComponent
-
 @onready var hit_box_collision_shape_2d: CollisionShape2D = %HitBoxCollisionShape2D
+
 
 func _ready() -> void:
 	super._ready()
