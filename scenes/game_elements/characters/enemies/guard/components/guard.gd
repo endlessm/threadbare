@@ -68,6 +68,7 @@ const DEFAULT_SPRITE_FRAMES = preload("uid://ovu5wqo15s5g")
 		detection_area_scale = new_value
 		if detection_area:
 			detection_area.scale = Vector2.ONE * detection_area_scale
+			detection_area.get_node("Light").visible = detection_area_scale > 0.1
 
 @export_category("Debug")
 ## Enables movement in the editor for debugging.
@@ -151,6 +152,7 @@ func _ready() -> void:
 	# patrol path.
 	if patrol_path:
 		global_position = _patrol_point_position(0)
+		detection_area.get_node("Light").visible = detection_area_scale > 0.1
 
 	guard_movement.destination_reached.connect(self._on_destination_reached)
 	guard_movement.still_time_finished.connect(self._on_still_time_finished)
