@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://70wae2cbe5qr" path="res://scenes/quests/story_quests/legends_without_name/1_stealth/stealth_game_logic.gd" id="1_tbrv3"]
 [ext_resource type="TileSet" uid="uid://cyjslu6qmt6mg" path="res://scenes/quests/story_quests/legends_without_name/tiles/legends_without_name_exterior_floors.tres" id="2_ewy4b"]
 [ext_resource type="TileSet" uid="uid://c0wdevcf3i8rq" path="res://scenes/quests/story_quests/legends_without_name/tiles/legends_without_name_shadows.tres" id="3_p7xgw"]
+[ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="4_tbrv3"]
 [ext_resource type="TileSet" uid="uid://bgir3ff151nrc" path="res://scenes/quests/story_quests/legends_without_name/tiles/legends_without_name_elevation_2.tres" id="4_vd6bu"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_pxvy8"]
 [ext_resource type="SpriteFrames" uid="uid://bwkgg4cx1qwd5" path="res://scenes/quests/story_quests/legends_without_name/player_components/legends_without_name_player.tres" id="6_d1b77"]
@@ -11,20 +12,19 @@
 [ext_resource type="PackedScene" uid="uid://dua6mynlw2ptw" path="res://scenes/game_elements/props/checkpoint/checkpoint.tscn" id="9_w40ce"]
 [ext_resource type="Script" uid="uid://bqxotda35x28v" path="res://scenes/quests/story_quests/legends_without_name/1_stealth/follow_walk_behavior.gd" id="10_d1b77"]
 [ext_resource type="Resource" uid="uid://bc7oj6pcixeq3" path="res://scenes/quests/story_quests/legends_without_name/1_stealth/stealth_components/legends_without_name_checkpoint.dialogue" id="10_tbrv3"]
-[ext_resource type="Texture2D" uid="uid://qdi8iybp4ga3" path="res://scenes/quests/story_quests/legends_without_name/agregado/enemig/alerta.png" id="10_w40ce"]
+[ext_resource type="Texture2D" uid="uid://qdi8iybp4ga3" path="res://scenes/quests/story_quests/legends_without_name/png/enemig/alerta.png" id="10_w40ce"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="11_3taup"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="11_gwnuj"]
-[ext_resource type="Texture2D" uid="uid://dsdl8t537cjsx" path="res://scenes/quests/story_quests/legends_without_name/agregado/enemig/idl.png" id="11_tbrv3"]
-[ext_resource type="Texture2D" uid="uid://bh0kwsbf4runr" path="res://scenes/quests/story_quests/legends_without_name/agregado/enemig/nwalk.png" id="12_gwnuj"]
+[ext_resource type="Texture2D" uid="uid://dsdl8t537cjsx" path="res://scenes/quests/story_quests/legends_without_name/png/enemig/idl.png" id="11_tbrv3"]
+[ext_resource type="Texture2D" uid="uid://bh0kwsbf4runr" path="res://scenes/quests/story_quests/legends_without_name/png/enemig/nwalk.png" id="12_gwnuj"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="15_kpvn1"]
 [ext_resource type="Resource" uid="uid://bmjtamrcfsg1r" path="res://scenes/quests/story_quests/legends_without_name/1_stealth/stealth_components/legends_without_name_stealth.dialogue" id="16_mqa5n"]
 [ext_resource type="PackedScene" uid="uid://c48ldov3ptcx" path="res://scenes/quests/story_quests/legends_without_name/1_stealth/lampara_nvl_2Wlight.tscn" id="16_p7xgw"]
 [ext_resource type="PackedScene" uid="uid://dg1fpkm17n6xx" path="res://scenes/quests/story_quests/legends_without_name/1_stealth/antorchas_2Wlight.tscn" id="17_vd6bu"]
 [ext_resource type="PackedScene" uid="uid://bekyv1lwurkdn" path="res://scenes/quests/story_quests/legends_without_name/1_stealth/antorchas_2Wlightside.tscn" id="18_pxvy8"]
 [ext_resource type="PackedScene" uid="uid://cxyhs8xhgrgo4" path="res://scenes/quests/story_quests/legends_without_name/1_stealth/antorchasblue_3Wlight.tscn" id="19_pxvy8"]
-[ext_resource type="Texture2D" uid="uid://478ekg68j8dl" path="res://scenes/quests/story_quests/legends_without_name/agregado/Advertencia_nvl1.png" id="19_vd6bu"]
+[ext_resource type="Texture2D" uid="uid://478ekg68j8dl" path="res://scenes/quests/story_quests/legends_without_name/png/minijuego_1/Advertencia_nvl1.png" id="19_vd6bu"]
 [ext_resource type="PackedScene" uid="uid://nuky1a5qko1u" path="res://scenes/quests/story_quests/legends_without_name/1_stealth/antorchasbluesideWlight.tscn" id="20_d1b77"]
-[ext_resource type="Script" uid="uid://hqdquinbimce" path="res://scenes/game_elements/props/teleporter/teleporter.gd" id="21_d1b77"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3taup"]
 size = Vector2(126.125, 61)
@@ -107,7 +107,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_k24gk")
 }],
-"loop": true,
+"loop": 1,
 "name": &"alerted",
 "speed": 10.0
 }, {
@@ -136,7 +136,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qkrta")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle",
 "speed": 10.0
 }, {
@@ -159,7 +159,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xsrx6")
 }],
-"loop": true,
+"loop": 1,
 "name": &"walk",
 "speed": 10.0
 }]
@@ -189,7 +189,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_k24gk")
 }],
-"loop": true,
+"loop": 1,
 "name": &"alerted",
 "speed": 10.0
 }, {
@@ -218,7 +218,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qkrta")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle",
 "speed": 10.0
 }, {
@@ -241,7 +241,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xsrx6")
 }],
-"loop": true,
+"loop": 1,
 "name": &"walk",
 "speed": 10.0
 }]
@@ -265,7 +265,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_k24gk")
 }],
-"loop": true,
+"loop": 1,
 "name": &"alerted",
 "speed": 10.0
 }, {
@@ -294,7 +294,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qkrta")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle",
 "speed": 10.0
 }, {
@@ -317,7 +317,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xsrx6")
 }],
-"loop": true,
+"loop": 1,
 "name": &"walk",
 "speed": 10.0
 }]
@@ -341,7 +341,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_k24gk")
 }],
-"loop": true,
+"loop": 1,
 "name": &"alerted",
 "speed": 10.0
 }, {
@@ -370,7 +370,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qkrta")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle",
 "speed": 10.0
 }, {
@@ -393,7 +393,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xsrx6")
 }],
-"loop": true,
+"loop": 1,
 "name": &"walk",
 "speed": 10.0
 }]
@@ -422,13 +422,10 @@ limit_bottom = 1791
 position_smoothing_enabled = true
 editor_draw_limits = true
 
-[node name="Teleporter" type="Area2D" parent="." unique_id=1529662080]
-disable_mode = 1
-collision_layer = 4
-monitorable = false
-script = ExtResource("21_d1b77")
+[node name="Teleporter" parent="." unique_id=1779636661 instance=ExtResource("4_tbrv3")]
+position = Vector2(7.6293945e-06, 3.0517578e-05)
+scale = Vector2(0.99999994, 0.99999994)
 next_scene = "uid://bxhnb0jex3gxv"
-metadata/_custom_type_script = "uid://hqdquinbimce"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" unique_id=1713822705]
 position = Vector2(2109, 1698)
