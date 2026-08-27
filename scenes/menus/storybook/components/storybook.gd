@@ -51,9 +51,6 @@ func _fade_in_ui() -> void:
 
 func _ready() -> void:
 	animated_book.animation_finished.connect(_on_animation_finished)
-
-	GameState.global.completed_quests = quests.slice(0, 3)
-
 	_populate_quest_lists()
 
 
