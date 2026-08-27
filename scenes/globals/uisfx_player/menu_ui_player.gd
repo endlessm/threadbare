@@ -10,9 +10,9 @@ extends Node
 ## The sound reproduced depends on the type of interactable clicked
 
 @onready var slider_sfx_player: AudioStreamPlayer = %SliderSFXPlayer
-@onready var button_sfx_player: AudioStreamPlayer = $ButtonSFXPlayer
-@onready var toggle_on_sfx_player: AudioStreamPlayer = $ToggleOnSFXPlayer
-@onready var toggle_off_sfx_player: AudioStreamPlayer = $ToggleOffSFXPlayer
+@onready var button_sfx_player: AudioStreamPlayer = %ButtonSFXPlayer
+@onready var toggle_on_sfx_player: AudioStreamPlayer = %ToggleOnSFXPlayer
+@onready var toggle_off_sfx_player: AudioStreamPlayer = %ToggleOffSFXPlayer
 
 
 func _enter_tree() -> void:
