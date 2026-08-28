@@ -136,6 +136,12 @@ _data = {
 }
 point_count = 2
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_so0j7"]
+size = Vector2(88.74951, 83.75012)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_so0j7"]
+polygon = PackedVector2Array(-50, 76.25, 44.99951, 76.25, 47.49951, -72.5, -46.25, -78.75)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_idy4y"]
 size = Vector2(115, 379)
 
@@ -977,6 +983,18 @@ texture = ExtResource("21_foy1n")
 position = Vector2(6114, 900)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("22_djpoe")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="EnemyGuards/TowerPatchworkRuined1" unique_id=76656145]
+collision_layer = 10
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyGuards/TowerPatchworkRuined1/StaticBody2D" unique_id=1060067993]
+position = Vector2(-0.625, 35.624878)
+scale = Vector2(0.99999946, 0.99999946)
+shape = SubResource("RectangleShape2D_so0j7")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="EnemyGuards/TowerPatchworkRuined1" unique_id=1308666785]
+occluder = SubResource("OccluderPolygon2D_so0j7")
 
 [node name="Checkpoints" type="Node2D" parent="." unique_id=1706243097]
 y_sort_enabled = true
