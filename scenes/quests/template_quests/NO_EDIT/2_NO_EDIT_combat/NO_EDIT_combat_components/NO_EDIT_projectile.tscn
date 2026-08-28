@@ -10,6 +10,43 @@ bounce = 1.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o6xl0"]
 size = Vector2(44, 44)
 
+[sub_resource type="Animation" id="Animation_w1dj1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VisibleThings/AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_lrx48"]
+resource_name = "dissapear"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VisibleThings/AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 0.19607843)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_us7pj"]
+_data = {
+&"RESET": SubResource("Animation_w1dj1"),
+&"dissapear": SubResource("Animation_lrx48")
+}
+
 [node name="NoEditProjectile" type="RigidBody2D" unique_id=1611529190 groups=["projectiles"]]
 collision_layer = 256
 collision_mask = 80
@@ -44,6 +81,10 @@ unique_name_in_owner = true
 [node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=1862098516]
 unique_name_in_owner = true
 bus = &"SFX"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=902059992]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_us7pj")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="DurationTimer" to="." method="_on_duration_timer_timeout"]
