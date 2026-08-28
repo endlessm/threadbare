@@ -68,11 +68,14 @@ var _trail_particles: GPUParticles2D
 @onready var visible_things: Node2D = %VisibleThings
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var trail_fx_marker: Marker2D = %TrailFXMarker
-@onready var animation_player: AnimationPlayer = %AnimationPlayer
 
-var time_passed:float = 0.0
-var time_to_dissapear:float = 0.0
-var is_dissapearing:bool = false
+#Attributes that control the blinking effect
+var time_passed: float = 0.0
+var time_to_dissapear: float = 0.0
+var is_dissapearing: bool = false
+var blink_effect: bool = true
+var blink_timer: Timer
+
 ## How long the projectile lives in the scene.
 ## [br][br]
 ## This timer is restarted each time the projectile collides with anything.
@@ -115,8 +118,19 @@ func _ready() -> void:
 	duration_timer.start()
 	var impulse: Vector2 = direction * speed
 	apply_impulse(impulse)
-	time_to_dissapear = duration*0.8
-
+	
+	##the effect will start when the projectile has spent 70% of its lifetime
+	time_to_dissapear = duration * 0.7
+	
+	blink_timer = Timer.new()
+	#each 0.25 seconds the blink effect will show
+	blink_timer.wait_time = 0.25
+	blink_timer.one_shot = false
+	blink_timer.timeout.connect(_on_blink_timer_timeout)
+	
+	add_child(blink_timer)
+	
+	
 
 func _process(_delta: float) -> void:
 	visible_things.rotation = linear_velocity.angle()
@@ -127,10 +141,11 @@ func _process(_delta: float) -> void:
 		var force: Vector2 = direction_to_target * speed
 		constant_force = force
 	
-	time_passed+=_delta	
-	if time_passed>= time_to_dissapear && not is_dissapearing:
-		is_dissapearing=true
-		animation_player.play("dissapear")
+	time_passed += _delta	
+	if time_passed >= time_to_dissapear && not is_dissapearing:
+		is_dissapearing = true
+		blink_timer.start()
+		
 
 
 ## Add a small effect scene to the current scene in the current position.
@@ -151,7 +166,7 @@ func _on_body_entered(body: Node2D) -> void:
 	# When the proyectile is dissapearing, the duration_timer will not reset
 	if not is_dissapearing:
 		duration_timer.start()
-		time_passed=0.0
+		time_passed = 0.0
 
 	# Logic for Fragile Barrel
 	# We must check for the specific subclass first because it inherits from FillingBarrel
@@ -172,9 +187,12 @@ func _on_body_entered(body: Node2D) -> void:
 ## enters the repel area.
 func got_repelled(repel_direction: Vector2) -> void:
 	add_small_fx()
+	
+	# When the proyectile is dissapearing, the duration_timer will not reset
 	if not is_dissapearing:
 		duration_timer.start()
-		time_passed=0.0
+		time_passed = 0.0
+		
 	var hit_vector: Vector2 = repel_direction * hit_speed
 	hit_sound.play()
 	animated_sprite_2d.speed_scale = 2
@@ -203,3 +221,11 @@ func _on_duration_timer_timeout() -> void:
 func remove() -> void:
 	await get_tree().create_timer(randf_range(0., 3.)).timeout
 	explode()
+
+func _on_blink_timer_timeout() -> void:
+	if blink_effect:
+		animated_sprite_2d.modulate.a = 0.2
+		blink_effect = false
+	else:
+		animated_sprite_2d.modulate.a = 0.8
+		blink_effect = true	
