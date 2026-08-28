@@ -78,9 +78,9 @@ func _ready() -> void:
 		else:
 			_quests_per_language[language].append(q)
 
-	toc_bookmark_button.pressed.connect(_on_toc_bookmark_pressed)
-	en_bookmark_button.pressed.connect(_on_en_bookmark_pressed)
-	es_bookmark_button.pressed.connect(_on_es_bookmark_pressed)
+	toc_bookmark_button.pressed.connect(_switch_bookmark_tab.bind(ContentTab.TOC))
+	en_bookmark_button.pressed.connect(_switch_bookmark_tab.bind(ContentTab.EN))
+	es_bookmark_button.pressed.connect(_switch_bookmark_tab.bind(ContentTab.ES))
 
 	_update_bookmark_visibility()
 	_populate_quest_lists()
@@ -317,18 +317,6 @@ func _on_back_button_pressed() -> void:
 
 func reset_focus() -> void:
 	_switch_to_page(0)
-
-
-func _on_toc_bookmark_pressed() -> void:
-	_switch_bookmark_tab(ContentTab.TOC)
-
-
-func _on_en_bookmark_pressed() -> void:
-	_switch_bookmark_tab(ContentTab.EN)
-
-
-func _on_es_bookmark_pressed() -> void:
-	_switch_bookmark_tab(ContentTab.ES)
 
 
 func _show_table_of_contents() -> void:
