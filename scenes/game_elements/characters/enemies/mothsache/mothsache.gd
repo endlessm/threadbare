@@ -37,6 +37,9 @@ const MAX_SPEED: float = 300
 ## Sound played when entering DETECTING or ALERTED states.
 @export var alert_sound_stream: AudioStream:
 	set = _set_alert_sound_stream
+## Sound played when entering ATTACKING state.
+@export var attack_sound_stream: AudioStream:
+	set = _set_attack_sound_stream
 
 var state: State = State.IDLE:
 	set = _set_state
@@ -61,7 +64,7 @@ var _previous_non_detecting_state: State = State.IDLE
 @onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
 @onready var char_sprite_behavior: CharacterSpriteBehavior = %CharacterSpriteBehavior
 @onready var _alert_sound: AudioStreamPlayer = %AlertSound
-
+@onready var _attack_sound: AudioStreamPlayer = %AttackSound
 
 func _ready() -> void:
 	if is_instance_valid(debug_label):
@@ -71,6 +74,7 @@ func _ready() -> void:
 	awareness_bar.value = 0.0
 	awareness_bar.visible = false
 	_set_alert_sound_stream(alert_sound_stream)
+	_set_attack_sound_stream(attack_sound_stream)
 	_initial_position = global_position
 
 	state = State.IDLE
@@ -233,6 +237,7 @@ func _set_state(new_state: State) -> void:
 	match state:
 		State.IDLE:
 			_alert_sound.stop()
+			_attack_sound.stop()
 			behavior_timer.start(idle_wait_time)
 			awareness_bar.tint_progress = Color.WHITE
 			_reached_max_speed = false
@@ -245,6 +250,7 @@ func _set_state(new_state: State) -> void:
 			_can_burst = false
 
 		State.RETURNING:
+			_attack_sound.stop()
 			_return_direction = global_position.direction_to(_initial_position)
 			_return_start_position = global_position
 			_stuck_timer = 0.0
@@ -264,6 +270,8 @@ func _set_state(new_state: State) -> void:
 		State.ALERTED:
 			if not _alert_sound.playing:
 				_alert_sound.play()
+			if not _attack_sound.playing:
+				_attack_sound.play()
 			awareness_bar.value = awareness_bar.max_value
 			awareness_bar.tint_progress = Color.RED
 			awareness_bar.modulate.a = 1.0
@@ -286,6 +294,8 @@ func _set_state(new_state: State) -> void:
 				velocity = direction_to_player * _current_chase_speed
 
 		State.ATTACKING:
+			if not _attack_sound.playing:
+				_attack_sound.play()
 			if char_sprite_behavior:
 				char_sprite_behavior.play_animations = false
 			animated_sprite.play("attack")
@@ -296,6 +306,12 @@ func _set_alert_sound_stream(new_value: AudioStream) -> void:
 	if not is_node_ready():
 		await ready
 	_alert_sound.stream = new_value
+
+func _set_attack_sound_stream(new_value: AudioStream) -> void:
+	attack_sound_stream = new_value
+	if not is_node_ready():
+		await ready
+	_attack_sound.stream = new_value
 
 
 ## Called when a body enters the detection area.
