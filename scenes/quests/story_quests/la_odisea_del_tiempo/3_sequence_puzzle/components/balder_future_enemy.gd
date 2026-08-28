@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name BalderFuturo
+class_name OdiseaTiempoBalderFuturo
 extends ThrowingEnemy
 
 enum Tipo {
@@ -319,4 +319,3 @@ func _on_got_hit(body: Node2D) -> void:
 	if body is Projectile and not body.can_hit_enemy and not _is_defeated:
 		return
 	body.queue_free()
-	##animation_player.play(&"got hit")	

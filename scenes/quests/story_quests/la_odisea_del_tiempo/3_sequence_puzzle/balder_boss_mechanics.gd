@@ -72,10 +72,6 @@ func _time_stop(numero_patron:int = -1)->void:
 	
 func _on_damaged(body:Node2D)->void:
 	if body is Projectile:
-		##POR ALGUNA RAZON, ESTO NO FUNCIONABA BIEN, DETECTABA
-		##AUNQUE LA COLISION SEA FALSA
-		##UN RATO DESPUES FUNCIONO NORMAL PERO LUEGO SE ME CRASHEO
-		## Y YA NO FUNCIONO XDD, ASI QUE LO DEJO ASI
 		
 		if not body.get_collision_mask_value(8): 
 			return 
@@ -116,7 +112,6 @@ func fase_3()->void:
 	boss.timer.stop()
 	timer_time_stop.stop()
 	cantidad_disparos = 2
-	##boss.espaciado =1
 	maximo=2
 	boss.fase3 = true
 	boss.fase2 =false
