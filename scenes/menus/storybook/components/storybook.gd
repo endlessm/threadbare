@@ -34,6 +34,7 @@ var _current_spread_index: int = -1
 var _navigation_locked: bool = false
 var _current_list_page: int = 0
 
+var _quests_per_language: Dictionary[String, Array] = {}
 var _filtered_quests: Array[Quest] = []
 
 @onready var left_quest_list: VBoxContainer = %LeftQuestList
@@ -68,14 +69,18 @@ func _ready() -> void:
 	animated_book.animation_finished.connect(_on_animation_finished)
 
 	_filtered_quests = quests
+	_quests_per_language = {}
+	for q in quests:
+		# If language is not defined, assume English:
+		var language: String = q.language if q.language else "en"
+		if language not in _quests_per_language:
+			_quests_per_language[language] = [q]
+		else:
+			_quests_per_language[language].append(q)
 
-	# Connecting the bookmark buttons
-	if toc_bookmark_button:
-		toc_bookmark_button.pressed.connect(_on_toc_bookmark_pressed)
-	if en_bookmark_button:
-		en_bookmark_button.pressed.connect(_on_en_bookmark_pressed)
-	if es_bookmark_button:
-		es_bookmark_button.pressed.connect(_on_es_bookmark_pressed)
+	toc_bookmark_button.pressed.connect(_on_toc_bookmark_pressed)
+	en_bookmark_button.pressed.connect(_on_en_bookmark_pressed)
+	es_bookmark_button.pressed.connect(_on_es_bookmark_pressed)
 
 	_update_bookmark_visibility()
 	_populate_quest_lists()
@@ -384,19 +389,8 @@ func _switch_bookmark_tab(target_tab: ContentTab) -> void:
 
 
 func _update_bookmark_visibility() -> void:
-	var unique_languages := []
-	for q in quests:
-		if q.language != "" and q.language not in unique_languages:
-			unique_languages.append(q.language)
-
-	# Only show language bookmarks if there is more than 1 language
-	var show_language_tabs: bool = unique_languages.size() > 1
-
-	# Check if at least one quest exists for each language
-	var has_en: bool = quests.any(func(q: Quest) -> bool: return q.language == "en")
-	var has_es: bool = quests.any(func(q: Quest) -> bool: return q.language == "es")
-
-	if en_bookmark_button:
-		en_bookmark_button.visible = show_language_tabs and has_en
-	if es_bookmark_button:
-		es_bookmark_button.visible = show_language_tabs and has_es
+	# Only show language bookmarks if there are quests for both English and Spanish, which are the
+	# existing bookmarks so far.
+	var show_language_bookmarks := "en" in _quests_per_language and "es" in _quests_per_language
+	en_bookmark_button.visible = show_language_bookmarks
+	es_bookmark_button.visible = show_language_bookmarks
