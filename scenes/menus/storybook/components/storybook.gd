@@ -12,30 +12,22 @@ extends CanvasLayer
 ## [param quest] set to [code]null[/code].
 signal selected(quest: Quest, restart: bool)
 
-enum ContentTab { TOC, EN, ES }
+enum ContentTab { TOC, EN, ES, QUESTS }
 const TAB_LANGUAGES := {
-	ContentTab.TOC: "",
 	ContentTab.EN: "en",
 	ContentTab.ES: "es",
 }
 
 ## Quests to show in the storybook.
 @export var quests: Array[Quest]
-@export var quests_per_page: int = 8:
-	set(value):
-		quests_per_page = value
-		quests_per_spread = value * 2
+@export var quests_per_page: int = 8
 @export var fade_duration: float = 0.15
 
-var quests_per_spread: int = 16
-
-var _current_tab: ContentTab = ContentTab.TOC
 var _current_spread_index: int = -1
 var _navigation_locked: bool = false
-var _current_list_page: int = 0
 
 var _quests_per_language: Dictionary[String, Array] = {}
-var _filtered_quests: Array[Quest] = []
+var _bookmark_indexes: Dictionary[ContentTab, int] = {}
 
 @onready var left_quest_list: VBoxContainer = %LeftQuestList
 @onready var right_quest_list: VBoxContainer = %RightQuestList
@@ -68,7 +60,6 @@ func _fade_in_ui() -> void:
 func _ready() -> void:
 	animated_book.animation_finished.connect(_on_animation_finished)
 
-	_filtered_quests = quests
 	_quests_per_language = {}
 	for q in quests:
 		# If language is not defined, assume English:
@@ -78,12 +69,23 @@ func _ready() -> void:
 		else:
 			_quests_per_language[language].append(q)
 
-	toc_bookmark_button.pressed.connect(_switch_bookmark_tab.bind(ContentTab.TOC))
-	en_bookmark_button.pressed.connect(_switch_bookmark_tab.bind(ContentTab.EN))
-	es_bookmark_button.pressed.connect(_switch_bookmark_tab.bind(ContentTab.ES))
+	_bookmark_indexes[ContentTab.TOC] = 0
+	_bookmark_indexes[ContentTab.EN] = ceil(quests.size() / float(quests_per_page * 2))
+	_bookmark_indexes[ContentTab.ES] = (
+		_bookmark_indexes[ContentTab.EN]
+		+ ceil(_quests_per_language.get("en", []).size() / float(quests_per_page * 2))
+	)
+	_bookmark_indexes[ContentTab.QUESTS] = (
+		_bookmark_indexes[ContentTab.ES]
+		+ ceil(_quests_per_language.get("es", []).size() / float(quests_per_page * 2))
+	)
+
+	toc_bookmark_button.pressed.connect(_switch_to_bookmark.bind(ContentTab.TOC))
+	en_bookmark_button.pressed.connect(_switch_to_bookmark.bind(ContentTab.EN))
+	es_bookmark_button.pressed.connect(_switch_to_bookmark.bind(ContentTab.ES))
 
 	_update_bookmark_visibility()
-	_populate_quest_lists()
+	_update_page_visibility()
 
 
 func _clear_list(quest_list: Node) -> void:
@@ -97,21 +99,32 @@ func _populate_quest_lists() -> void:
 	_clear_list(left_quest_list)
 	_clear_list(right_quest_list)
 
-	#Calculate the quest slices for this specific book spread
-	var left_start: int = _current_list_page * quests_per_page * 2
-	var left_end: int = left_start + quests_per_page
-	var right_start: int = left_end
-	var right_end: int = right_start + quests_per_page
-
 	var previous_button: Button = null
 
-	# Building the left page
-	for i in range(left_start, min(left_end, _filtered_quests.size())):
-		previous_button = _create_quest_button(i, left_quest_list, previous_button)
+	var spread_quests: Array[Quest]
 
-	#Building the right page
-	for i in range(right_start, min(right_end, _filtered_quests.size())):
-		previous_button = _create_quest_button(i, right_quest_list, previous_button)
+	if _current_spread_index < _bookmark_indexes[ContentTab.EN]:
+		var i := _current_spread_index - _bookmark_indexes[ContentTab.TOC]
+		var start := i * quests_per_page * 2
+		var end := start + quests_per_page * 2
+		spread_quests.assign(quests.slice(start, end))
+	elif _current_spread_index < _bookmark_indexes[ContentTab.ES]:
+		var i := _current_spread_index - _bookmark_indexes[ContentTab.EN]
+		var start := i * quests_per_page * 2
+		var end := start + quests_per_page * 2
+		spread_quests.assign(_quests_per_language.get("en", []).slice(start, end))
+	elif _current_spread_index < _bookmark_indexes[ContentTab.QUESTS]:
+		var i := _current_spread_index - _bookmark_indexes[ContentTab.ES]
+		var start := i * quests_per_page * 2
+		var end := start + quests_per_page * 2
+		spread_quests.assign(_quests_per_language.get("es", []).slice(start, end))
+
+	for q: Quest in spread_quests.slice(0, quests_per_page):
+		previous_button = _create_quest_button(q, left_quest_list, previous_button)
+
+	for q: Quest in spread_quests.slice(quests_per_page):
+		previous_button = _create_quest_button(q, right_quest_list, previous_button)
+
 	# If the right page is empty, add a blank Control spacer so it maintains its width
 	if right_quest_list.get_child_count() == 0:
 		var spacer: Control = Control.new()
@@ -128,9 +141,8 @@ func _populate_quest_lists() -> void:
 
 ## Method to build individual buttons (StoryQuests) and manage the focus chains
 func _create_quest_button(
-	quest_index: int, parent_container: VBoxContainer, prev_btn: Button
+	quest: Quest, parent_container: VBoxContainer, prev_btn: Button
 ) -> Button:
-	var quest: Quest = _filtered_quests[quest_index]
 	var button := Button.new()
 	button.text = quest.get_title()
 	button.theme_type_variation = "FlatButton"
@@ -143,8 +155,7 @@ func _create_quest_button(
 	button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 	parent_container.add_child(button)
-
-	button.set_meta("quest_index", quest_index)
+	button.set_meta("quest", quest)
 
 	button.pressed.connect(_on_quest_button_pressed.bind(button))
 	button.focus_next = back_button.get_path()
@@ -159,9 +170,11 @@ func _create_quest_button(
 
 ## Show/hide index or detail pages
 func _update_page_visibility() -> void:
-	if _current_spread_index == 0:
+	if _current_spread_index < _bookmark_indexes[ContentTab.QUESTS]:
 		quest_container.visible = true
 		storybook_page.visible = false
+
+		_populate_quest_lists()
 
 		# Grab focus on the first visible item of the left page
 		if left_quest_list.get_child_count() > 0:
@@ -172,9 +185,9 @@ func _update_page_visibility() -> void:
 		quest_container.visible = false
 		storybook_page.visible = true
 
-		var quest_index: int = _current_spread_index - 1
-		if quest_index >= 0 and quest_index < _filtered_quests.size():
-			var quest: Quest = _filtered_quests[quest_index]
+		var quest_index := _current_spread_index - _bookmark_indexes[ContentTab.QUESTS]
+		if quest_index >= 0 and quest_index < quests.size():
+			var quest := quests[quest_index]
 			storybook_page.quest = quest
 
 			if storybook_page.play_button and is_instance_valid(storybook_page.play_button):
@@ -209,24 +222,22 @@ func _switch_to_page(spread_index: int) -> void:
 	if _navigation_locked:
 		return
 
-	var total_spreads: int = _filtered_quests.size() + 1
-	if total_spreads <= 1:
-		return
-
-	if spread_index < 0 or spread_index >= total_spreads:
-		return
-
 	if spread_index == _current_spread_index:
 		return
 
+	var total_spreads: int = _bookmark_indexes[ContentTab.QUESTS] + quests.size()
+	if spread_index < 0 or spread_index > total_spreads:
+		return
+
 	_navigation_locked = true
-	var old_index: int = _current_spread_index
+
+	var old_index := _current_spread_index
 	_current_spread_index = spread_index
 
 	if old_index != -1:
 		await _fade_out_ui()
 
-		if spread_index > old_index or (spread_index == 0 and old_index == total_spreads - 1):
+		if spread_index > old_index:
 			animated_book.play("book_right")
 		else:
 			animated_book.play("book_left")
@@ -243,49 +254,10 @@ func _on_animation_finished() -> void:
 
 
 func _on_left_button_pressed() -> void:
-	if _navigation_locked:
-		return
-
-	# If we are on the main index, turn pages back inside the list
-	if _current_spread_index == 0:
-		if _current_list_page > 0:
-			_navigation_locked = true
-			_current_list_page -= 1
-			await _fade_out_ui()
-			animated_book.play("book_left")
-			await animated_book.animation_finished
-			_populate_quest_lists()
-			_update_page_visibility()
-			_fade_in_ui()
-			_navigation_locked = false
-			return
-
-		# Flipping back from the first page returns to full table of contents
-		_switch_bookmark_tab(ContentTab.TOC)
-		return
-
 	_switch_to_page(_current_spread_index - 1)
 
 
 func _on_right_button_pressed() -> void:
-	if _navigation_locked:
-		return
-
-	# If we are on the main index, check if there are more quests to reveal on a new page
-	if _current_spread_index == 0:
-		var max_visible_so_far: int = (_current_list_page + 1) * quests_per_page * 2
-		if _filtered_quests.size() > max_visible_so_far:
-			_navigation_locked = true
-			_current_list_page += 1
-			await _fade_out_ui()
-			animated_book.play("book_right")
-			await animated_book.animation_finished
-			_populate_quest_lists()
-			_update_page_visibility()
-			_fade_in_ui()
-			_navigation_locked = false
-			return
-
 	_switch_to_page(_current_spread_index + 1)
 
 
@@ -300,11 +272,9 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_quest_button_pressed(button: Button) -> void:
-	if not button.has_meta("quest_index"):
-		return
-
-	var quest_index: int = button.get_meta("quest_index")
-	_switch_to_page(quest_index + 1)
+	var quest: Quest = button.get_meta("quest")
+	var quest_index := quests.find(quest)
+	_switch_to_page(_bookmark_indexes[ContentTab.QUESTS] + quest_index)
 
 
 func _on_storybook_page_selected(quest: Quest, restart: bool) -> void:
@@ -319,61 +289,8 @@ func reset_focus() -> void:
 	_switch_to_page(0)
 
 
-func _show_table_of_contents() -> void:
-	_filtered_quests = quests
-	_reset_storybook_list_view()
-
-
-func _filter_quests_by_language(lang_code: String) -> void:
-	_filtered_quests = quests.filter(func(quest: Quest) -> bool: return quest.language == lang_code)
-	_reset_storybook_list_view()
-
-
-func _reset_storybook_list_view() -> void:
-	_current_list_page = 0
-	_current_spread_index = 0
-	_populate_quest_lists()
-	_update_page_visibility()
-
-
-func _switch_bookmark_tab(target_tab: ContentTab) -> void:
-	if _navigation_locked or (target_tab == _current_tab and _current_spread_index == 0):
-		return
-
-	_navigation_locked = true
-	var old_tab: ContentTab = _current_tab
-	_current_tab = target_tab
-	var lang_code: String = TAB_LANGUAGES.get(target_tab, "")
-
-	# Fade out UI
-	await _fade_out_ui()
-
-	# Flip forward if target > current, otherwise flip backward
-	if target_tab > old_tab:
-		animated_book.play("book_right")
-	else:
-		animated_book.play("book_left")
-
-	# Wait for animation to finish before rebuilding list
-	await animated_book.animation_finished
-
-	# Filter quests array
-	if lang_code == "":
-		_filtered_quests = quests
-	else:
-		_filtered_quests = quests.filter(
-			func(quest: Quest) -> bool: return quest.language == lang_code
-		)
-
-	# Reset page counters and reload UI
-	_current_list_page = 0
-	_current_spread_index = 0
-	_populate_quest_lists()
-	_update_page_visibility()
-
-	# Fade back in
-	_fade_in_ui()
-	_navigation_locked = false
+func _switch_to_bookmark(target_tab: ContentTab) -> void:
+	_switch_to_page(_bookmark_indexes[target_tab])
 
 
 func _update_bookmark_visibility() -> void:
