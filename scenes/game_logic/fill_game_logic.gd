@@ -21,6 +21,9 @@ extends Node
 ## Emited when [member barrels_completed] reaches [member barrels_to_win].
 signal goal_reached
 
+## Emitted when [member barrels_completed] changes.
+signal barrels_completed_changed
+
 ## How many barrels to complete for winning.
 @export var barrels_to_win: int = 1
 
@@ -65,6 +68,7 @@ func _update_allowed_colors() -> void:
 
 func _on_barrel_completed() -> void:
 	barrels_completed += 1
+	barrels_completed_changed.emit()
 	_update_allowed_colors()
 	if barrels_completed < barrels_to_win:
 		return
