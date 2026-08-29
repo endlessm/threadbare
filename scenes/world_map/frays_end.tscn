@@ -53,7 +53,7 @@
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="55_ojao8"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="56_ojao8"]
 [ext_resource type="Script" uid="uid://uaaaiviytliw" path="res://scenes/world_map/components/quest_progress_unlocker.gd" id="58_ojao8"]
-[ext_resource type="PackedScene" uid="uid://e5ctfgct4qs2" path="res://temp/areaName.tscn" id="59_6fau3"]
+[ext_resource type="PackedScene" uid="uid://bjin4sdopq7rn" path="res://temp/area_name.tscn" id="59_6fau3"]
 [ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="59_qgpx3"]
 [ext_resource type="Resource" uid="uid://t50glay2iqhg" path="res://scenes/quests/lore_quests/quest_002/quest.tres" id="60_6b07c"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="61_6b07c"]
@@ -126,9 +126,13 @@ size = Vector2(20, 256)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7n6eg"]
 size = Vector2(20, 256)
 
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_i2ic8"]
-a = Vector2(1077, 1369)
-b = Vector2(930, 1369)
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_6fau3"]
+a = Vector2(940, 1429)
+b = Vector2(1050, 1429)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_qgpx3"]
+a = Vector2(940, 1375)
+b = Vector2(1050, 1375)
 
 [node name="FraysEnd" type="Node2D" unique_id=1849947277]
 script = ExtResource("1_4gse6")
@@ -244,7 +248,7 @@ script = ExtResource("14_f3823")
 y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=322121009 instance=ExtResource("3_tp7qs")]
-position = Vector2(985, 863)
+position = Vector2(625, 1659)
 player_name = "StoryWeaver"
 sprite_frames = ExtResource("6_06x6x")
 
@@ -1496,19 +1500,18 @@ position = Vector2(-955, -95)
 shape = SubResource("RectangleShape2D_7n6eg")
 debug_color = Color(0.9610079, 0, 0.5155429, 0.41960785)
 
-[node name="TextNameArea" type="Node2D" parent="." unique_id=1152806283]
-
-[node name="areaName" parent="TextNameArea" unique_id=1997186402 instance=ExtResource("59_6fau3")]
+[node name="TextNameArea" parent="." unique_id=1184526213 instance=ExtResource("59_6fau3")]
 ZonaName = "Frays End"
 
-[node name="Area2D" type="Area2D" parent="TextNameArea" unique_id=927450571]
+[node name="CollisionShape2D" parent="TextNameArea/detect" parent_id_path=PackedInt32Array(1184526213, 1821875710) index="0" unique_id=1113950690]
+shape = SubResource("SegmentShape2D_6fau3")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TextNameArea/Area2D" unique_id=148310279]
-position = Vector2(-10, 1)
-shape = SubResource("SegmentShape2D_i2ic8")
+[node name="CollisionShape2D" parent="TextNameArea/detect_active" parent_id_path=PackedInt32Array(1184526213, 900921903) index="0" unique_id=1875152056]
+shape = SubResource("SegmentShape2D_qgpx3")
 
 [connection signal="interaction_ended" from="OnTheGround/NPCs/Farmer/InteractArea" to="OnTheGround/NPCs/Farmer" method="_on_interact_area_interaction_ended"]
 [connection signal="interaction_started" from="OnTheGround/NPCs/Farmer/InteractArea" to="OnTheGround/NPCs/Farmer" method="_on_interact_area_interaction_started"]
 [connection signal="interaction_ended" from="OnTheGround/NPCs/GardenerA/InteractArea" to="OnTheGround/NPCs/GardenerA" method="_on_interact_area_interaction_ended"]
 [connection signal="interaction_started" from="OnTheGround/NPCs/GardenerA/InteractArea" to="OnTheGround/NPCs/GardenerA" method="_on_interact_area_interaction_started"]
-[connection signal="body_entered" from="TextNameArea/Area2D" to="TextNameArea/areaName" method="_on_area_2d_body_entered"]
+
+[editable path="TextNameArea"]

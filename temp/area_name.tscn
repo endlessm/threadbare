@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bjin4sdopq7rn"]
+
+[ext_resource type="Script" uid="uid://k6j0kcn8lb1d" path="res://temp/area_name.gd" id="1_j0vm2"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_j3cuy"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_l1xe8"]
+
+[node name="TextNameArea" type="Node2D" unique_id=1184526213]
+script = ExtResource("1_j0vm2")
+ZonaName = "hola soy pepe
+gracias"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1997186402]
+
+[node name="detect" type="Area2D" parent="." unique_id=1821875710]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detect" unique_id=1113950690]
+shape = SubResource("SegmentShape2D_j3cuy")
+
+[node name="detect_active" type="Area2D" parent="." unique_id=900921903]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detect_active" unique_id=1875152056]
+shape = SubResource("SegmentShape2D_l1xe8")
+
+[node name="Timer" type="Timer" parent="." unique_id=53937746]
+wait_time = 2.5
+one_shot = true
+
+[connection signal="body_entered" from="detect" to="." method="detect_entered"]
+[connection signal="body_entered" from="detect_active" to="." method="detect_active_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
