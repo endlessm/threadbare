@@ -65,16 +65,16 @@ extends RigidBody2D
 
 var _trail_particles: GPUParticles2D
 
-@onready var visible_things: Node2D = %VisibleThings
-@onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
-@onready var trail_fx_marker: Marker2D = %TrailFXMarker
-
 #Attributes that control the blinking effect
 var time_passed: float = 0.0
 var time_to_dissapear: float = 0.0
 var is_dissapearing: bool = false
 var blink_effect: bool = true
 var blink_timer: Timer
+
+@onready var visible_things: Node2D = %VisibleThings
+@onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
+@onready var trail_fx_marker: Marker2D = %TrailFXMarker
 
 ## How long the projectile lives in the scene.
 ## [br][br]
@@ -228,4 +228,4 @@ func _on_blink_timer_timeout() -> void:
 		blink_effect = false
 	else:
 		animated_sprite_2d.modulate.a = 0.8
-		blink_effect = true	
+		blink_effect = true
