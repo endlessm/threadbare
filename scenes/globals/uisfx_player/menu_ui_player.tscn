@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://q3dc07xy31ty"]
+
+[ext_resource type="Script" uid="uid://bpti2tbv1ufco" path="res://scenes/globals/uisfx_player/menu_ui_player.gd" id="1_08877"]
+[ext_resource type="AudioStream" uid="uid://pk4mvg05n0uo" path="res://assets/first_party/sounds/ui/Click_single.wav" id="2_a0vny"]
+[ext_resource type="AudioStream" uid="uid://cba2ckeb3gxu1" path="res://assets/first_party/sounds/ui/Click.wav" id="3_73s60"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7me2p"]
+random_pitch = 1.122462
+streams_count = 1
+stream_0/stream = ExtResource("2_a0vny")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_a0vny"]
+random_pitch = 1.122462
+streams_count = 1
+stream_0/stream = ExtResource("3_73s60")
+
+[node name="MenuSFXPlayer" type="Node" unique_id=1818340025]
+script = ExtResource("1_08877")
+
+[node name="SliderSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=818033647]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamRandomizer_7me2p")
+bus = &"SFX"
+
+[node name="ButtonSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1487510413]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamRandomizer_a0vny")
+bus = &"SFX"
+
+[node name="ToggleOnSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1221647971]
+unique_name_in_owner = true
+stream = ExtResource("3_73s60")
+pitch_scale = 1.2
+bus = &"SFX"
+
+[node name="ToggleOffSFXPlayer" type="AudioStreamPlayer" parent="." unique_id=179480757]
+unique_name_in_owner = true
+stream = ExtResource("3_73s60")
+pitch_scale = 0.8
+bus = &"SFX"
