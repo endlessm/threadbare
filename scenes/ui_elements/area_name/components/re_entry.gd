@@ -10,8 +10,10 @@ extends PanelContainer
 var _base_target_y: float = 0.0
 var _is_target_saved: bool = false
 
+
 func _ready() -> void:
 	modulate.a = 0.0
+
 
 func animate_re_entry(text_content: String, time: int) -> void:
 	show()

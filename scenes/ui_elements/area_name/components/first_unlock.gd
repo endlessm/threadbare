@@ -13,6 +13,8 @@ func _is_player_at_bottom() -> bool:
 	var viewport_size: Vector2 = viewport.get_visible_rect().size
 
 	return screen_pos.y > viewport_size.y * 3.0 / 4.0
+
+
 func animate_first_unlock(text_content: String, time: int) -> void:
 	var label = $Label
 
