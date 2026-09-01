@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bhm7fdjvppt8b"]
 
 [ext_resource type="Script" uid="uid://5bt5um5g1g3p" path="res://scenes/menus/storybook/components/storybook.gd" id="1_gw8hn"]
-[ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="3_21r2o"]
+[ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="2_ofgxb"]
 [ext_resource type="PackedScene" uid="uid://cgtonist08yxn" path="res://scenes/menus/storybook/components/storybook_page.tscn" id="3_n2i2u"]
 [ext_resource type="SpriteFrames" uid="uid://dne3cxrhbjuno" path="res://scenes/menus/storybook/components/storybook_animation.tres" id="3_y0b3i"]
 [ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="5_m2ghf"]
@@ -24,7 +24,7 @@ region = Rect2(576, 576, 64, 64)
 
 [node name="Storybook" type="CanvasLayer" unique_id=438542807]
 script = ExtResource("1_gw8hn")
-quests = Array[ExtResource("3_21r2o")]([ExtResource("5_ywp77")])
+quests = Array[ExtResource("2_ofgxb")]([ExtResource("5_ywp77")])
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1792675940]
 modulate = Color(0, 0, 0, 0.70000005)
@@ -224,6 +224,27 @@ text = "Next"
 editor_description = "This empty control expands to fill the center of the hbox, pushing any controls packed after it to the right margin."
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="BookmarkContainer" type="HBoxContainer" parent="." unique_id=1654245298]
+offset_left = 474.0
+offset_top = 14.0
+offset_right = 805.0
+offset_bottom = 89.0
+
+[node name="TOCBookmark" type="Button" parent="BookmarkContainer" unique_id=460814141]
+unique_name_in_owner = true
+layout_mode = 2
+text = "TOC"
+
+[node name="ENBookmark" type="Button" parent="BookmarkContainer" unique_id=399694213]
+unique_name_in_owner = true
+layout_mode = 2
+text = "EN"
+
+[node name="ESBookmark" type="Button" parent="BookmarkContainer" unique_id=278781945]
+unique_name_in_owner = true
+layout_mode = 2
+text = "ES"
 
 [connection signal="selected" from="VBoxContainer/CenterContainer/StoryBookContent/StorybookPage" to="." method="_on_storybook_page_selected"]
 [connection signal="pressed" from="VBoxContainer/CenterContainer/StoryBookContent/BackButton" to="." method="_on_back_button_pressed"]
