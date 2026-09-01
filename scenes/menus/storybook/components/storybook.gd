@@ -13,10 +13,6 @@ extends CanvasLayer
 signal selected(quest: Quest, restart: bool)
 
 enum ContentTab { TOC, EN, ES, QUESTS }
-const TAB_LANGUAGES := {
-	ContentTab.EN: "en",
-	ContentTab.ES: "es",
-}
 
 ## Quests to show in the storybook.
 @export var quests: Array[Quest]
@@ -99,25 +95,24 @@ func _populate_quest_lists() -> void:
 	_clear_list(left_quest_list)
 	_clear_list(right_quest_list)
 
-	var previous_button: Button = null
-
-	var spread_quests: Array[Quest]
+	var content_quests: Array[Quest]
+	var spread_index: int
 
 	if _current_spread_index < _bookmark_indexes[ContentTab.EN]:
-		var i := _current_spread_index - _bookmark_indexes[ContentTab.TOC]
-		var start := i * quests_per_page * 2
-		var end := start + quests_per_page * 2
-		spread_quests.assign(quests.slice(start, end))
+		spread_index = _current_spread_index - _bookmark_indexes[ContentTab.TOC]
+		content_quests.assign(quests)
 	elif _current_spread_index < _bookmark_indexes[ContentTab.ES]:
-		var i := _current_spread_index - _bookmark_indexes[ContentTab.EN]
-		var start := i * quests_per_page * 2
-		var end := start + quests_per_page * 2
-		spread_quests.assign(_quests_per_language.get("en", []).slice(start, end))
+		spread_index = _current_spread_index - _bookmark_indexes[ContentTab.EN]
+		content_quests.assign(_quests_per_language.get("en", []))
 	elif _current_spread_index < _bookmark_indexes[ContentTab.QUESTS]:
-		var i := _current_spread_index - _bookmark_indexes[ContentTab.ES]
-		var start := i * quests_per_page * 2
-		var end := start + quests_per_page * 2
-		spread_quests.assign(_quests_per_language.get("es", []).slice(start, end))
+		spread_index = _current_spread_index - _bookmark_indexes[ContentTab.ES]
+		content_quests.assign(_quests_per_language.get("es", []))
+
+	var start := spread_index * quests_per_page * 2
+	var end := start + quests_per_page * 2
+	var spread_quests: Array[Quest] = content_quests.slice(start, end)
+
+	var previous_button: Button = null
 
 	for q: Quest in spread_quests.slice(0, quests_per_page):
 		previous_button = _create_quest_button(q, left_quest_list, previous_button)
