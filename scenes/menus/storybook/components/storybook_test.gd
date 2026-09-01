@@ -15,7 +15,7 @@ var english_titles := [
 ]
 
 var spanish_titles := [
-	"El tejido oscurot",
+	"El tejido oscuro",
 	"El Señor de las Agujas",
 ]
 
