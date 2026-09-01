@@ -34,7 +34,7 @@ func detect_active_entered(body: Node2D) -> void:
 		
 		if use == -1:
 			use = 0 # Bloqueamos ejecuciones simultáneas
-			var temp: Control = preload('res://temp/first_unlock.tscn').instantiate()
+			var temp: Control = preload("res://scenes/ui_elements/area_name/first_unlock.tscn").instantiate()
 			$CanvasLayer.add_child(temp)
 			await temp.animate_first_unlock(ZonaName, time)
 			temp.queue_free()
