@@ -29,6 +29,11 @@ var titles := english_titles + spanish_titles + french_titles
 func _ready() -> void:
 	var quests: Array[Quest] = []
 	var titles_count: Dictionary[String, int] = {}
+	var debug_info := {
+		"en": 0,
+		"es": 0,
+		"fr": 0,
+	}
 	for t: String in titles:
 		titles_count[t] = 0
 
@@ -40,12 +45,17 @@ func _ready() -> void:
 
 		if t in spanish_titles:
 			q.language = "es"
+			debug_info["es"] += 1
 		elif t in french_titles:
 			q.language = "fr"
+			debug_info["fr"] += 1
 		else:
 			q.language = "en"
+			debug_info["en"] += 1
 
 		quests.append(q)
 	var storybook := STORYBOOK_SCENE.instantiate()
 	storybook.quests = quests
 	add_child(storybook)
+	debug_info["total"] = quests_amount
+	prints(debug_info)

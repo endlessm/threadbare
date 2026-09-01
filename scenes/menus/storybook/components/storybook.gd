@@ -24,6 +24,7 @@ var _navigation_locked: bool = false
 
 var _quests_per_language: Dictionary[String, Array] = {}
 var _bookmark_indexes: Dictionary[ContentTab, int] = {}
+var _show_language_bookmarks: bool
 
 @onready var left_quest_list: VBoxContainer = %LeftQuestList
 @onready var right_quest_list: VBoxContainer = %RightQuestList
@@ -65,22 +66,38 @@ func _ready() -> void:
 		else:
 			_quests_per_language[language].append(q)
 
-	_bookmark_indexes[ContentTab.TOC] = 0
-	_bookmark_indexes[ContentTab.EN] = ceil(quests.size() / float(quests_per_page * 2))
-	_bookmark_indexes[ContentTab.ES] = (
-		_bookmark_indexes[ContentTab.EN]
-		+ ceil(_quests_per_language.get("en", []).size() / float(quests_per_page * 2))
-	)
-	_bookmark_indexes[ContentTab.QUESTS] = (
-		_bookmark_indexes[ContentTab.ES]
-		+ ceil(_quests_per_language.get("es", []).size() / float(quests_per_page * 2))
-	)
+	# Only show language bookmarks if there are quests for both English and Spanish, which are the
+	# existing bookmarks so far.
+	_show_language_bookmarks = "en" in _quests_per_language and "es" in _quests_per_language
+
+	var last_index := 0
+	_bookmark_indexes[ContentTab.TOC] = last_index
+	if _show_language_bookmarks:
+		_bookmark_indexes[ContentTab.EN] = (
+			last_index + ceil(quests.size() / float(quests_per_page * 2))
+		)
+		last_index = _bookmark_indexes[ContentTab.EN]
+		_bookmark_indexes[ContentTab.ES] = (
+			last_index
+			+ ceil(_quests_per_language.get("en", []).size() / float(quests_per_page * 2))
+		)
+		last_index = _bookmark_indexes[ContentTab.ES]
+		_bookmark_indexes[ContentTab.QUESTS] = (
+			last_index
+			+ ceil(_quests_per_language.get("es", []).size() / float(quests_per_page * 2))
+		)
+	else:
+		_bookmark_indexes[ContentTab.QUESTS] = (
+			last_index + ceil(quests.size() / float(quests_per_page * 2))
+		)
 
 	toc_bookmark_button.pressed.connect(_switch_to_bookmark.bind(ContentTab.TOC))
 	en_bookmark_button.pressed.connect(_switch_to_bookmark.bind(ContentTab.EN))
 	es_bookmark_button.pressed.connect(_switch_to_bookmark.bind(ContentTab.ES))
 
-	_update_bookmark_visibility()
+	en_bookmark_button.visible = _show_language_bookmarks
+	es_bookmark_button.visible = _show_language_bookmarks
+
 	_update_page_visibility()
 
 
@@ -98,7 +115,7 @@ func _populate_quest_lists() -> void:
 	var content_quests: Array[Quest]
 	var spread_index: int
 
-	if _current_spread_index < _bookmark_indexes[ContentTab.EN]:
+	if not _show_language_bookmarks or _current_spread_index < _bookmark_indexes[ContentTab.EN]:
 		spread_index = _current_spread_index - _bookmark_indexes[ContentTab.TOC]
 		content_quests.assign(quests)
 	elif _current_spread_index < _bookmark_indexes[ContentTab.ES]:
@@ -286,11 +303,3 @@ func reset_focus() -> void:
 
 func _switch_to_bookmark(target_tab: ContentTab) -> void:
 	_switch_to_page(_bookmark_indexes[target_tab])
-
-
-func _update_bookmark_visibility() -> void:
-	# Only show language bookmarks if there are quests for both English and Spanish, which are the
-	# existing bookmarks so far.
-	var show_language_bookmarks := "en" in _quests_per_language and "es" in _quests_per_language
-	en_bookmark_button.visible = show_language_bookmarks
-	es_bookmark_button.visible = show_language_bookmarks
