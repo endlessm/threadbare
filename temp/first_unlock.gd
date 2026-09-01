@@ -19,46 +19,43 @@ func animate_first_unlock(text_content: String, time: int) -> void:
 	show()
 	label.text = text_content
 
-	# Centrar horizontalmente en la pantalla
-	anchor_left = 0.5
-	anchor_right = 0.5
-	grow_horizontal = Control.GROW_DIRECTION_BOTH
-
-	# Determinar posición Y exacta según el jugador
-	if !_is_player_at_bottom():
-		# Jugador abajo → banner arriba (evita HUD)
-		position.y = 92.0
+	# Posicionar centrado y pegado a los bordes con su tamaño original
+	if _is_player_at_bottom():
+		# Jugador abajo → Pegado ARRIBA, centrado
+		set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+		grow_vertical = Control.GROW_DIRECTION_END
+		offset_top = 20.0 # Margen desde el borde superior
+		offset_bottom = 20.0
 	else:
-		# Jugador arriba/centro → banner abajo (arriba de la barra de acciones)
-		position.y = 450.0
+		# Jugador arriba → Pegado ABAJO, centrado (sobre el HUD)
+		set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+		grow_vertical = Control.GROW_DIRECTION_BEGIN
+		offset_bottom = -45.0 # Distancia desde la parte inferior (ajusta según el HUD)
+		offset_top = -45.0
 
-	# Resetear puntos de pivote y visibilidad inicial
+	# Esperar un frame para calcular el tamaño real del pergamino según el texto
+	await get_tree().process_frame
+
 	pivot_offset = size / 2.0
 	scale = Vector2(1.0, 1.0)
 	modulate.a = 0.0
 
-	# FADE + Pequeño movimiento/escalado
+	# FADE IN
 	var tween_in := create_tween().set_parallel(true)
-
 	tween_in.tween_property(self, "modulate:a", 1.0, 0.3)\
-		.set_trans(Tween.TRANS_QUAD)\
-		.set_ease(Tween.EASE_OUT)
-
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween_in.tween_property(self, "scale", Vector2(1.0, 1.0), 0.3)\
-		.set_trans(Tween.TRANS_BACK)\
-		.set_ease(Tween.EASE_OUT)
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 	await tween_in.finished
 
-	# Mantener visible durante el tiempo configurado
+	# Mantener visible
 	await get_tree().create_timer(time).timeout
 
 	# FADE OUT
 	var tween_out := create_tween().set_parallel(true)
-
 	tween_out.tween_property(self, "modulate:a", 0.0, 0.35)\
-		.set_trans(Tween.TRANS_QUAD)\
-		.set_ease(Tween.EASE_IN)
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 
 	await tween_out.finished
 

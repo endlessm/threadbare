@@ -42,6 +42,8 @@
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="38_rk4u1"]
 [ext_resource type="Script" uid="uid://uaaaiviytliw" path="res://scenes/world_map/components/quest_progress_unlocker.gd" id="40_bt13d"]
 [ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="41_nf521"]
+[ext_resource type="PackedScene" uid="uid://bjin4sdopq7rn" path="res://temp/area_name.tscn" id="43_nf521"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="44_b6uih"]
 
 [sub_resource type="Resource" id="Resource_ftxxi"]
 script = ExtResource("17_ubsr8")
@@ -60,6 +62,14 @@ size = Vector2(64, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pvf7f"]
 size = Vector2(320, 64)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_b6uih"]
+a = Vector2(555, 1344)
+b = Vector2(654, 1344)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_d6ijo"]
+a = Vector2(555, 1295)
+b = Vector2(654, 1295)
 
 [node name="SongSanctuaryPath" type="Node2D" unique_id=1049570333]
 script = ExtResource("1_ftxxi")
@@ -1232,3 +1242,17 @@ unique_name_in_owner = true
 script = ExtResource("40_bt13d")
 required_quests = Array[ExtResource("41_nf521")]([ExtResource("37_nf521")])
 metadata/_custom_type_script = "uid://uaaaiviytliw"
+
+[node name="TextNameArea" parent="." unique_id=1184526213 instance=ExtResource("43_nf521")]
+ZonaName = "Song Sanctuary"
+
+[node name="CollisionShape2D" parent="TextNameArea/detect" parent_id_path=PackedInt32Array(1184526213, 1821875710) index="0" unique_id=1113950690]
+shape = SubResource("SegmentShape2D_b6uih")
+
+[node name="CollisionShape2D" parent="TextNameArea/detect_active" parent_id_path=PackedInt32Array(1184526213, 900921903) index="0" unique_id=1875152056]
+shape = SubResource("SegmentShape2D_d6ijo")
+
+[node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("44_b6uih")]
+unique_name_in_owner = true
+
+[editable path="TextNameArea"]
