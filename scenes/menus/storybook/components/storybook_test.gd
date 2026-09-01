@@ -28,13 +28,19 @@ var titles := english_titles + spanish_titles + french_titles
 
 func _ready() -> void:
 	var quests: Array[Quest] = []
+	var titles_count: Dictionary[String, int] = {}
+	for t: String in titles:
+		titles_count[t] = 0
+
 	for i in range(quests_amount):
 		var q := Quest.new()
-		q.title = titles.pick_random()
+		var t: String = titles.pick_random()
+		titles_count[t] += 1
+		q.title = "%s %d" % [t, titles_count[t]] if titles_count[t] > 1 else t
 
-		if q.title in spanish_titles:
+		if t in spanish_titles:
 			q.language = "es"
-		elif q.title in french_titles:
+		elif t in french_titles:
 			q.language = "fr"
 		else:
 			q.language = "en"
