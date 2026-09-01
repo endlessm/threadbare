@@ -19,7 +19,7 @@ enum ContentTab { TOC, EN, ES, QUESTS }
 @export var quests_per_page: int = 8
 @export var fade_duration: float = 0.15
 
-var _current_spread_index: int = -1
+var _current_spread_index: int
 var _navigation_locked: bool = false
 
 var _quests_per_language: Dictionary[String, Array] = {}
@@ -246,17 +246,13 @@ func _switch_to_page(spread_index: int) -> void:
 	var old_index := _current_spread_index
 	_current_spread_index = spread_index
 
-	if old_index != -1:
-		await _fade_out_ui()
+	await _fade_out_ui()
 
-		if spread_index > old_index:
-			animated_book.play("book_right")
-		else:
-			animated_book.play("book_left")
-		ui_container.visible = false
+	if spread_index > old_index:
+		animated_book.play("book_right")
 	else:
-		_update_page_visibility()
-		_navigation_locked = false
+		animated_book.play("book_left")
+	ui_container.visible = false
 
 
 func _on_animation_finished() -> void:
