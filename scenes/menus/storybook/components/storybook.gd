@@ -237,7 +237,7 @@ func _switch_to_page(spread_index: int) -> void:
 	if spread_index == _current_spread_index:
 		return
 
-	var total_spreads: int = _bookmark_indexes[ContentTab.QUESTS] + quests.size()
+	var total_spreads: int = _bookmark_indexes[ContentTab.QUESTS] + quests.size() - 1
 	if spread_index < 0 or spread_index > total_spreads:
 		return
 
