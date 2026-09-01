@@ -16,7 +16,7 @@ enum ContentTab { TOC, EN, ES, QUESTS }
 
 ## Quests to show in the storybook.
 @export var quests: Array[Quest]
-@export var quests_per_page: int = 8
+@export var quests_per_page: int = 7
 @export var fade_duration: float = 0.15
 
 var _current_spread_index: int
