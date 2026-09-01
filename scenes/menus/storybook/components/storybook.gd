@@ -148,8 +148,6 @@ func _populate_quest_lists() -> void:
 		previous_button.focus_neighbor_bottom = back_button.get_path()
 		back_button.focus_neighbor_top = previous_button.get_path()
 
-	reset_focus()
-
 
 ## Method to build individual buttons (StoryQuests) and manage the focus chains
 func _create_quest_button(
@@ -291,10 +289,6 @@ func _on_storybook_page_selected(quest: Quest, restart: bool) -> void:
 
 func _on_back_button_pressed() -> void:
 	selected.emit(null, false)
-
-
-func reset_focus() -> void:
-	_switch_to_page(0)
 
 
 func _switch_to_bookmark(target_tab: ContentTab) -> void:
