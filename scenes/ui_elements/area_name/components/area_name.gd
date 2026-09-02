@@ -6,6 +6,8 @@ const MAX_LINEAS: int = 3
 const MAX_CARACTERES_POR_LINEA: int = 10
 
 var _zone_name: String = ""
+var use: int = -1
+var entered: bool = false
 
 @export_multiline var zone_name: String:
 	set(valor):
@@ -23,11 +25,6 @@ var _zone_name: String = ""
 		return _zone_name
 
 @export_range(1, 3) var time: int = 2
-
-# Guardamos la posición original del editor fija desde el arranque
-var use: int = -1
-var entered: bool = false
-
 
 func detect_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
