@@ -23,11 +23,11 @@ func _on_timed_lever_toggled(is_on: bool) -> void:
 		lever_timer.start()
 
 
-func _on_combined_lever_toggled(_is_on: bool) -> void:
-	if combined_lever_1.is_on and combined_lever_2.is_on:
-		for t in combined_toggleables:
-			t.set_toggled(true)
-
-
 func _lever_timer_timeout() -> void:
 	timed_lever.toggle(false)
+
+
+func _on_combined_lever_toggled(_is_on: bool) -> void:
+	var toggled := combined_lever_1.is_on and combined_lever_2.is_on
+	for t in combined_toggleables:
+		t.set_toggled(toggled)
