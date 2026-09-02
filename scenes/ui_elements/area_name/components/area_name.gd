@@ -5,10 +5,6 @@ extends Node2D
 const MAX_LINEAS: int = 3
 const MAX_CARACTERES_POR_LINEA: int = 10
 
-var _zone_name: String = ""
-var use: int = -1
-var entered: bool = false
-
 @export_multiline var zone_name: String:
 	set(valor):
 		var lineas: PackedStringArray = valor.split("\n")
@@ -26,10 +22,13 @@ var entered: bool = false
 
 @export_range(1, 3) var time: int = 2
 
+var _zone_name: String = ""
+var use: int = -1
+var entered: bool = false
+
 func detect_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		entered = true
-
 
 func detect_active_entered(body: Node2D) -> void:
 	if body.is_in_group("player") and entered:
@@ -47,7 +46,6 @@ func detect_active_entered(body: Node2D) -> void:
 			use = 0 # Bloqueamos ejecuciones simultáneas
 			await %HUD.show_re_entry_zone(zone_name, time)
 			$Timer.start() # Reinicia el temporizador para habilitar la siguiente reentrada
-
 
 func _on_timer_timeout() -> void:
 	use = 1
