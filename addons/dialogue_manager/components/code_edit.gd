@@ -2,9 +2,9 @@
 class_name DMCodeEdit extends CodeEdit
 
 
-signal active_title_change(title: String)
+signal active_cue_changed(cue: String)
 signal error_clicked(line_number: int)
-signal external_file_requested(path: String, title: String)
+signal external_file_requested(path: String, cue: String)
 
 
 const MUTATION_PREFIXES: PackedStringArray = ["$>", "$>>", "do ", "do! ", "set ", "if ", "elif ", "else if ", "match ", "when "]
@@ -14,7 +14,7 @@ const INLINE_MUTATION_PREFIXES: PackedStringArray = ["$> ", "$>> ", "do ", "do! 
 var main_view: Control
 
 # Theme overrides for syntax highlighting, etc
-var theme_overrides: Dictionary:
+var theme_overrides: DMThemeValues:
 	set(value):
 		theme_overrides = value
 
@@ -25,24 +25,25 @@ var theme_overrides: Dictionary:
 		add_theme_color_override("background_color", theme_overrides.background_color)
 		add_theme_color_override("current_line_color", theme_overrides.current_line_color)
 		add_theme_font_override("font", get_theme_font("source", "EditorFonts"))
-		add_theme_font_size_override("font_size", theme_overrides.font_size * theme_overrides.scale)
+		add_theme_font_size_override("font_size", int(theme_overrides.font_size * theme_overrides.scale))
 		font_size = round(theme_overrides.font_size)
 	get:
 		return theme_overrides
 
 # Any parse errors
 var errors: Array:
-	set(next_errors):
-		errors = next_errors
-		for i in range(0, get_line_count()):
-			var is_error: bool = false
-			for error in errors:
-				if error.line_number == i:
-					is_error = true
-			mark_line_as_error(i, is_error)
-		_on_code_edit_caret_changed()
+	set(value):
+		errors = value
+		_update_errors()
 	get:
 		return errors
+
+var runtime_error: DMError = null:
+	set(value):
+		runtime_error = value
+		_update_errors()
+	get:
+		return runtime_error
 
 # The last selection (if there was one) so we can remember it for refocusing
 var last_selected_text: String
@@ -50,7 +51,7 @@ var last_selected_text: String
 var font_size: int:
 	set(value):
 		font_size = value
-		add_theme_font_size_override("font_size", font_size * theme_overrides.scale)
+		add_theme_font_size_override("font_size", int(font_size * theme_overrides.scale))
 	get:
 		return font_size
 
@@ -60,7 +61,10 @@ var STATIC_CONTENT_REGEX: RegEx = RegEx.create_from_string("static (var|func)")
 
 var compiler_regex: DMCompilerRegEx = DMCompilerRegEx.new()
 var _autoloads: Dictionary[String, String] = {}
-var _autoload_member_cache: Dictionary[String, Dictionary] = {}
+var _member_cache: Dictionary[String, Dictionary] = {}
+
+var _current_edited_scene_root: Node
+var _context_cache: Dictionary = {}
 
 
 func _ready() -> void:
@@ -122,7 +126,7 @@ func _gui_input(event: InputEvent) -> void:
 				get_viewport().set_input_as_handled()
 
 
-func _can_drop_data(at_position: Vector2, data) -> bool:
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	if typeof(data) != TYPE_DICTIONARY: return false
 	if data.type != "files": return false
 
@@ -162,7 +166,7 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 					set_caret_line(i)
 					break
 		else:
-			var cursor: Vector2 = get_line_column_at_pos(at_position)
+			var cursor: Vector2i = get_line_column_at_pos(at_position)
 			if cursor.x > -1 and cursor.y > -1:
 				set_cursor(cursor)
 				remove_secondary_carets()
@@ -183,8 +187,8 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	grab_focus()
 
 
-func _request_code_completion(force: bool) -> void:
-	var cursor: Vector2 = get_cursor()
+func _request_code_completion(_force: bool) -> void:
+	var cursor: Vector2i = get_cursor()
 	var current_line: String = get_line(cursor.y)
 
 	_add_jump_completions(current_line, cursor)
@@ -201,7 +205,7 @@ func _filter_code_completion_candidates(candidates: Array) -> Array:
 	return candidates
 
 
-func _confirm_code_completion(replace: bool) -> void:
+func _confirm_code_completion(_replace: bool) -> void:
 	var completion: Dictionary = get_code_completion_option(get_code_completion_selected_index())
 	begin_complex_operation()
 	# Delete any part of the text that we've already typed
@@ -212,10 +216,22 @@ func _confirm_code_completion(replace: bool) -> void:
 	end_complex_operation()
 
 	if completion.display_text.ends_with("()"):
-		set_cursor(get_cursor() - Vector2.RIGHT)
+		set_cursor(get_cursor() - Vector2i.RIGHT)
 
 	# Close the autocomplete menu on the next tick
 	call_deferred("cancel_code_completion")
+
+
+func _update_errors() -> void:
+	for i: int in range(0, get_line_count()):
+		var is_error: bool = false
+		for error: DMError in errors:
+			if error.line_number == i:
+				is_error = true
+		if runtime_error != null and runtime_error.line_number == i:
+			is_error = true
+		mark_line_as_error(i, is_error)
+	_on_code_edit_caret_changed()
 
 
 #region Completion Helpers
@@ -238,14 +254,14 @@ func _add_jump_completions(current_line: String, cursor: Vector2) -> void:
 		if _matches_prompt(prompt, "end!"):
 			add_code_completion_option(CodeEdit.KIND_CLASS, "END!", "END!".substr(prompt.length()), theme_overrides.text_color, get_theme_icon("Stop", "EditorIcons"))
 
-	# Get all titles, including those in imports
-	for title: String in DMCompiler.get_titles_in_text(text, main_view.current_file_path):
-		if "/" in title:
-			var bits: PackedStringArray = title.split("/")
-			if _matches_prompt(prompt, bits[0]) or _matches_prompt(prompt, bits[1]):
-				add_code_completion_option(CodeEdit.KIND_CLASS, title, title.substr(prompt.length()), theme_overrides.text_color, get_theme_icon("CombineLines", "EditorIcons"))
-		elif _matches_prompt(prompt, title):
-			add_code_completion_option(CodeEdit.KIND_CLASS, title, title.substr(prompt.length()), theme_overrides.text_color, get_theme_icon("ArrowRight", "EditorIcons"))
+	# Get all cues, including those in imports
+	for cue: String in DMCompiler.get_cues_in_text(text, main_view.current_file_path):
+		if "/" in cue:
+			var bits: PackedStringArray = cue.split("/")
+			if _matches_prompt(prompt, cue) or _matches_prompt(prompt, bits[0]) or _matches_prompt(prompt, bits[1]):
+				add_code_completion_option(CodeEdit.KIND_CLASS, cue, cue.substr(prompt.length()), theme_overrides.text_color, get_theme_icon("CombineLines", "EditorIcons"))
+		elif _matches_prompt(prompt, cue):
+			add_code_completion_option(CodeEdit.KIND_CLASS, cue, cue.substr(prompt.length()), theme_overrides.text_color, get_theme_icon("ArrowRight", "EditorIcons"))
 
 
 # Add completions for character names at the start of dialogue lines.
@@ -257,7 +273,8 @@ func _add_character_name_completions(current_line: String) -> void:
 
 	var text_before_cursor: String = current_line.substr(0, get_caret_column(0))
 	var name_so_far: String = WEIGHTED_RANDOM_PREFIX.sub(text_before_cursor.strip_edges(), "")
-	if name_so_far == "": return
+	if name_so_far == "":
+		return
 
 	var names: PackedStringArray = get_character_names(name_so_far)
 	for character_name: String in names:
@@ -265,24 +282,28 @@ func _add_character_name_completions(current_line: String) -> void:
 
 
 # Add state/mutation completions.
-func _add_mutation_completions(current_line: String, cursor: Vector2) -> void:
+func _add_mutation_completions(current_line: String, cursor: Vector2i) -> void:
 	# Check for inline mutation context first (e.g., "Nathan: Hello [$> SomeGlobal.")
 	var inline_context: Dictionary = _get_inline_mutation_context(current_line, cursor.x)
+	var replacement_context: Dictionary = {} if not inline_context.is_empty() else _get_replacement_context(current_line, cursor.x)
 	var mutation_expression: String = ""
 	var is_inline_mutation: bool = not inline_context.is_empty()
+	var is_replacement: bool = not replacement_context.is_empty()
 	var is_using_line: bool = false
 
 	if is_inline_mutation:
 		mutation_expression = inline_context.get("expression", "")
+	elif is_replacement:
+		mutation_expression = replacement_context.get("expression", "")
 	else:
 		# Match autoloads on full mutation lines (MUTATION_PREFIXES + "using ")
-		for prefix in MUTATION_PREFIXES + PackedStringArray(["using "]):
+		for prefix: String in MUTATION_PREFIXES + PackedStringArray(["using "]):
 			if current_line.strip_edges().begins_with(prefix) and cursor.x > current_line.find(prefix):
 				mutation_expression = current_line.substr(0, cursor.x).strip_edges().substr(3)
 				is_using_line = current_line.strip_edges().begins_with("using ")
 				break
 
-	if mutation_expression == "" and not is_inline_mutation:
+	if mutation_expression == "" and not is_inline_mutation and not is_replacement:
 		return
 
 	# Find the last token (the part being typed)
@@ -295,13 +316,14 @@ func _add_mutation_completions(current_line: String, cursor: Vector2) -> void:
 
 	if segments.size() == 1:
 		# Suggest autoloads and state shortcuts
-		auto_completes = _get_autoload_completions(segments[0])
+		auto_completes = _get_top_level_completions(segments[0])
 	elif not is_using_line:
 		if not segments[0] in _autoloads.keys():
 			# See if the first segment is a property of a shortcut
 			var shortcut: String = _find_shortcut_with_member(segments[0])
 			if not shortcut.is_empty():
 				segments.insert(0, shortcut)
+
 		# Suggest members of an autoload or nested property
 		auto_completes = _get_member_completions(segments)
 
@@ -309,12 +331,11 @@ func _add_mutation_completions(current_line: String, cursor: Vector2) -> void:
 
 	# Add true/false
 	if prompt.length() > 1:
-		var icon: Texture2D = _get_icon_for_type("keyword")
-		var color: Color = theme_overrides.conditions_color
+		var icon: Texture2D = _get_icon_for_type("bool")
 		if "true".contains(prompt):
-			add_code_completion_option(CodeEdit.KIND_CONSTANT, "true", "true".substr(prompt.length()), color, icon)
+			add_code_completion_option(CodeEdit.KIND_CONSTANT, "true", "true".substr(prompt.length()), Color.WHITE, icon)
 		if "false".contains(prompt):
-			add_code_completion_option(CodeEdit.KIND_CONSTANT, "false", "false".substr(prompt.length()), color, icon)
+			add_code_completion_option(CodeEdit.KIND_CONSTANT, "false", "false".substr(prompt.length()), Color.WHITE, icon)
 
 	# Remove duplicates
 	var unique_auto_completes: PackedStringArray = []
@@ -325,7 +346,7 @@ func _add_mutation_completions(current_line: String, cursor: Vector2) -> void:
 		return true
 	)
 
-	auto_completes.sort_custom(func(a, b):
+	auto_completes.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		return a.text.to_lower().similarity(prompt) > b.text.to_lower().similarity(prompt)
 	)
 	for auto_complete: Dictionary in auto_completes:
@@ -347,7 +368,7 @@ func _find_shortcut_with_member(member_name: String) -> String:
 
 
 # Get completions for autoload names and state shortcut members.
-func _get_autoload_completions(prompt: String) -> Array[Dictionary]:
+func _get_top_level_completions(prompt: String) -> Array[Dictionary]:
 	var completions: Array[Dictionary] = []
 	for autoload: String in _autoloads.keys():
 		if _matches_prompt(prompt, autoload):
@@ -356,6 +377,12 @@ func _get_autoload_completions(prompt: String) -> Array[Dictionary]:
 		for member: Dictionary in _get_members_for_base_script(autoload):
 			if _matches_prompt(prompt, member.name):
 				completions.append({ prompt = prompt, text = member.name, type = member.type })
+
+	# Check for state context aliases.
+	for alias: String in _context_cache.keys():
+		if _matches_prompt(prompt, alias):
+			completions.append({ prompt = prompt, text = alias, type = "context" })
+
 	return completions
 
 
@@ -374,6 +401,9 @@ func _get_member_completions(segments: PackedStringArray) -> Array[Dictionary]:
 		var resolved_script: Variant = _resolve_script_for_property_chain(chain_segments)
 		if resolved_script != null:
 			members = _get_members_for_script(resolved_script)
+		else:
+			# GDScript chain resolution failed, try C# fallback
+			members = _get_cs_chain_members(chain_segments)
 
 	for member: Dictionary in members:
 		if _matches_prompt(prompt, member.name):
@@ -384,6 +414,10 @@ func _get_member_completions(segments: PackedStringArray) -> Array[Dictionary]:
 # Get the appropriate icon for a member type.
 func _get_icon_for_type(type: String) -> Texture2D:
 	match type:
+		"context":
+			return load("uid://c22t5famre1yo")
+		"bool":
+			return get_theme_icon("bool", "EditorIcons")
 		"keyword":
 			return get_theme_icon("CodeHighlighter", "EditorIcons")
 		"script":
@@ -407,12 +441,12 @@ func _get_icon_for_type(type: String) -> Texture2D:
 
 
 ## Get the current caret position as a Vector2 (x=column, y=line).
-func get_cursor() -> Vector2:
-	return Vector2(get_caret_column(), get_caret_line())
+func get_cursor() -> Vector2i:
+	return Vector2i(get_caret_column(), get_caret_line())
 
 
 ## Set the caret position from a Vector2 (x=column, y=line).
-func set_cursor(from_cursor: Vector2) -> void:
+func set_cursor(from_cursor: Vector2i) -> void:
 	set_caret_line(from_cursor.y, false)
 	set_caret_column(from_cursor.x, false)
 
@@ -425,8 +459,8 @@ func _matches_prompt(prompt: String, candidate: String) -> bool:
 	# Fuzzy match characters in order
 	candidate = candidate.to_lower()
 	var next_index: int = 0
-	for char: String in prompt.to_lower():
-		next_index = candidate.find(char, next_index) + 1
+	for c: String in prompt.to_lower():
+		next_index = candidate.find(c, next_index) + 1
 		if next_index == 0:
 			return false
 	return true
@@ -441,49 +475,78 @@ func _matches_prompt(prompt: String, candidate: String) -> bool:
 func _get_state_shortcuts() -> PackedStringArray:
 	# Get any shortcuts defined in settings
 	var shortcuts: PackedStringArray = DMSettings.get_setting(DMSettings.STATE_AUTOLOAD_SHORTCUTS, [])
+
 	# Check for "using" clauses
 	for line: String in text.split("\n"):
 		var found: RegExMatch = compiler_regex.USING_REGEX.search(line)
 		if found:
 			shortcuts.append(found.strings[found.names.state])
+
 	# Check for any other script sources
 	for extra_script_source: String in DMSettings.get_setting(DMSettings.EXTRA_AUTO_COMPLETE_SCRIPT_SOURCES, []):
 		if extra_script_source:
 			shortcuts.append(extra_script_source)
 
+	var edited_scene_root: Node = EditorInterface.get_edited_scene_root()
+
+	# Check for current open scene
+	if DMSettings.get_user_value("autocomplete_current_scene", false) and is_instance_valid(edited_scene_root):
+		var script: Script = edited_scene_root.get_script()
+		if is_instance_valid(script):
+			shortcuts.append(script.resource_path)
+
+	# Autocomplete from any context nodes in the edited scene tree
+	if edited_scene_root != _current_edited_scene_root:
+		_context_cache.clear()
+		_current_edited_scene_root = edited_scene_root
+		if is_instance_valid(edited_scene_root):
+			var context_nodes: Array = edited_scene_root.find_children("*", "DialogueStateContext", true, false)
+			for context_node: DialogueStateContext in context_nodes:
+				if context_node.target.get_script():
+					_context_cache[context_node.alias] = context_node.target.get_script()
+
 	return shortcuts
 
 
-# Get all members (methods, properties, signals, constants) for an autoload.
-func _get_members_for_base_script(base_script_name: String) -> Array[Dictionary]:
-	# Debounce method list lookups
-	if _autoload_member_cache.has(base_script_name) \
-	and _autoload_member_cache.get(base_script_name).get("at") > Time.get_ticks_msec() - 10000:
-		return _autoload_member_cache.get(base_script_name).get("members")
+# Get all members (methods, properties, signals, constants) for an top level object.
+func _get_members_for_base_script(base_script: Variant) -> Array[Dictionary]:
+	var script: Script
 
-	if not _autoloads.has(base_script_name) \
-	and not base_script_name.begins_with("res://") \
-	and not base_script_name.begins_with("uid://"):
-		return []
+	if base_script is String:
+		# Debounce method list lookups
+		if _member_cache.has(base_script) \
+		and _member_cache.get(base_script).get("at") > Time.get_ticks_msec() - 10000:
+			return _member_cache.get(base_script).get("members")
 
-	var autoload: Variant = load(_autoloads.get(base_script_name, base_script_name))
-	if autoload is PackedScene:
-		var node: Node = autoload.instantiate()
-		autoload = node.get_script()
-		node.free()
+		if _context_cache.has(base_script):
+			script = _context_cache.get(base_script)
+		else:
+			if not _autoloads.has(base_script) \
+			and not base_script.begins_with("res://") \
+			and not base_script.begins_with("uid://"):
+				return []
 
-	if autoload == null: return []
+			var autoload: Variant = load(_autoloads.get(base_script, base_script))
+			if autoload is PackedScene:
+				var node: Node = autoload.instantiate()
+				autoload = node.get_script()
+				node.free()
 
-	var script: Script = autoload if autoload is Script else autoload.get_script()
+			if autoload == null: return []
+
+			script = autoload if autoload is Script else autoload.get_script()
+	else:
+		script = base_script
 
 	if not is_instance_valid(script): return []
 
 	var members: Array[Dictionary] = _get_members_for_script(script)
 
-	_autoload_member_cache[base_script_name] = {
-		at = Time.get_ticks_msec(),
-		members = members
-	}
+	if base_script is String:
+		_member_cache[base_script] = {
+			at = Time.get_ticks_msec(),
+			members = members
+		}
 
 	return members
 
@@ -600,14 +663,67 @@ func _format_method_hint(method_info: Dictionary) -> String:
 	return ", ".join(hint_parts)
 
 
+# Resolve the C# script for an autoload name.
+func _resolve_cs_script_for_autoload(base_name: String) -> Script:
+	if not _autoloads.has(base_name): return null
+
+	var autoload: Variant = load(_autoloads[base_name])
+	if autoload is PackedScene:
+		var node: Node = autoload.instantiate()
+		autoload = node.get_script()
+		node.free()
+
+	if autoload == null: return null
+
+	var script: Script = autoload if autoload is Script else autoload.get_script()
+
+	if not is_instance_valid(script): return null
+	if not script.resource_path.ends_with(".cs"): return null
+
+	return script
+
+
+# Resolve members for a C# property chain via reflection fallback.
+func _get_cs_chain_members(chain_segments: PackedStringArray) -> Array[Dictionary]:
+	if chain_segments.size() < 2: return []
+
+	var script: Script = _resolve_cs_script_for_autoload(chain_segments[0])
+	if script == null: return []
+
+	var remaining: Array[String] = []
+	for i: int in range(1, chain_segments.size()):
+		remaining.append(chain_segments[i])
+
+	var dotnet: RefCounted = load(DMPlugin.get_plugin_path() + "/DialogueManager.cs").new()
+	var result: Array[Dictionary] = []
+	for m: Dictionary in dotnet.GetMembersForPropertyChain(script, remaining):
+		result.append(m)
+	return result
+
+
+# Get method info for a C# property chain via reflection fallback.
+func _get_cs_chain_method_info(chain_segments: PackedStringArray, method_name: String) -> Dictionary:
+	if chain_segments.size() < 2: return {}
+
+	var script: Script = _resolve_cs_script_for_autoload(chain_segments[0])
+	if script == null: return {}
+
+	var remaining: Array[String] = []
+	for i: int in range(1, chain_segments.size()):
+		remaining.append(chain_segments[i])
+
+	var dotnet: RefCounted = load(DMPlugin.get_plugin_path() + "/DialogueManager.cs").new()
+	return dotnet.GetMethodInfoForPropertyChain(script, remaining, method_name)
+
+
 #endregion
 
 #region Symbol Resolution Helpers
 
 
 # Find the line number where a member is defined in a script's source code.
-func _find_definition_in_script(script: Script, member_name: String) -> int:
-	if not is_instance_valid(script): return -1
+func _find_definition_in_script(script: Script, member_name: String) -> Dictionary:
+	if not is_instance_valid(script): return { script = script, line_number = -1 }
 
 	var lines: PackedStringArray = script.source_code.split("\n")
 
@@ -629,7 +745,10 @@ func _find_definition_in_script(script: Script, member_name: String) -> int:
 				or enum_regex.search(line) \
 				or inner_class_regex.search(line):
 				# Editor line numbers start at 1
-				return i + 1
+				return {
+					script = script,
+					line_number = i + 1
+				}
 
 		# Does the script extend another one?
 		var extends_regex: RegEx = RegEx.create_from_string("extends (?<extends>.*)")
@@ -654,9 +773,15 @@ func _find_definition_in_script(script: Script, member_name: String) -> int:
 				or const_regex.search(line) \
 				or enum_regex.search(line):
 				# Editor line numbers start at 1
-				return i + 1
+				return {
+					script = script,
+					line_number = i + 1
+				}
 
-	return -1
+	return {
+		script = script,
+		line_number = -1
+	}
 
 
 # Resolve the symbol at a given position in a mutation line for definition lookup.
@@ -669,7 +794,8 @@ func _resolve_mutation_symbol_at_position(line_text: String, column: int) -> Dic
 
 	# Find the full chain by looking backwards from the token start for dots and identifiers
 	var token_start: int = column
-	while token_start > 0 and line_text[token_start - 1].is_valid_ascii_identifier():
+	# NOTE: "a" prefix is so that numbers are counted as valid identifiers.
+	while token_start > 0 and ("a" + line_text[token_start - 1]).is_valid_ascii_identifier():
 		token_start -= 1
 
 	var chain_start: int = token_start
@@ -678,12 +804,13 @@ func _resolve_mutation_symbol_at_position(line_text: String, column: int) -> Dic
 		if prev_char == ".":
 			chain_start -= 1
 			# Continue backwards to get the identifier before the dot
-			while chain_start > 0 and line_text[chain_start - 1].is_valid_ascii_identifier():
+			while chain_start > 0 and ("a" + line_text[chain_start - 1]).is_valid_ascii_identifier():
 				chain_start -= 1
 		else:
 			break
 
 	var full_chain: String = line_text.substr(chain_start, token_start + symbol.length() - chain_start)
+
 	# Remove any trailing parentheses content
 	if "(" in full_chain:
 		full_chain = full_chain.substr(0, full_chain.find("("))
@@ -691,7 +818,7 @@ func _resolve_mutation_symbol_at_position(line_text: String, column: int) -> Dic
 	var segments: PackedStringArray = full_chain.split(".")
 
 	# Check if it starts with an autoload
-	if not segments[0] in _autoloads.keys():
+	if not segments[0] in _autoloads.keys() and not segments[0] in _context_cache.keys():
 		var shortcut: String = _find_shortcut_with_member(segments[0])
 		if shortcut.is_empty():
 			return {}
@@ -711,6 +838,12 @@ func _resolve_mutation_symbol_at_position(line_text: String, column: int) -> Dic
 			target = node.get_script()
 			node.free()
 		target_script = target if target is Script else target.get_script()
+	elif segments.size() == 1 and _context_cache.has(segments[0]):
+		return {
+			"script": _context_cache.get(segments[0]),
+			"member_name": "class_name",
+			"symbol": symbol
+		}
 	else:
 		var object_segments: PackedStringArray = segments.slice(0, segments.size() - 1)
 		target_script = _resolve_script_for_property_chain(object_segments)
@@ -733,21 +866,25 @@ func _resolve_mutation_symbol_at_position(line_text: String, column: int) -> Dic
 
 # Update the code hint to show method parameter information.
 func _update_code_hint() -> void:
-	var cursor: Vector2 = get_cursor()
+	var cursor: Vector2i = get_cursor()
 	var current_line: String = get_line(cursor.y)
 	var text_before_cursor: String = current_line.substr(0, cursor.x)
 
-	# Check if we're in a mutation context (inline or full line)
+	# Check if we're in a mutation context (inline, replacement, or full line)
 	var inline_context: Dictionary = _get_inline_mutation_context(current_line, cursor.x)
+	var replacement_context: Dictionary = {} if not inline_context.is_empty() else _get_replacement_context(current_line, cursor.x)
 	if not _is_in_mutation_context(current_line, cursor.x):
 		set_code_hint("")
 		return
 
-	# For inline mutations, scope to the bracket content
+	# For inline mutations or replacements, scope to the bracket content
 	var expression_text: String = text_before_cursor
 	if not inline_context.is_empty():
 		var bracket_start: int = inline_context.get("bracket_start", 0)
 		expression_text = current_line.substr(bracket_start + 1, cursor.x - bracket_start - 1)
+	elif not replacement_context.is_empty():
+		var bracket_start: int = replacement_context.get("bracket_start", 0)
+		expression_text = current_line.substr(bracket_start + 2, cursor.x - bracket_start - 2)
 
 	# Check if cursor is inside parentheses by counting unmatched opening parens
 	var paren_depth: int = 0
@@ -802,12 +939,18 @@ func _update_code_hint() -> void:
 	var object_segments: PackedStringArray = segments.slice(0, segments.size() - 1)
 	var target_script: Variant = _resolve_script_for_property_chain(object_segments)
 
-	if target_script == null or not target_script is Script:
+	var method_info: Dictionary = {}
+	if target_script != null and target_script is Script:
+		method_info = _get_method_info_from_script(target_script, method_name)
+	else:
+		# GDScript chain resolution failed, try C# fallback
+		method_info = _get_cs_chain_method_info(object_segments, method_name)
+
+	if method_info.is_empty():
 		set_code_hint("")
 		return
 
 	# Get the method info and format the hint
-	var method_info: Dictionary = _get_method_info_from_script(target_script, method_name)
 	var hint: String = _format_method_hint(method_info)
 
 	set_code_hint(hint)
@@ -859,9 +1002,28 @@ func _get_inline_mutation_context(line: String, cursor_x: int) -> Dictionary:
 	return {}
 
 
-# Check if the cursor is in a mutation context (either inline or full mutation line).
+# Get the replacement context if the cursor is inside a {{ }} replacement.
+# Returns a dictionary with "expression" key containing the text to autocomplete,
+# or an empty dictionary if not in a replacement context.
+func _get_replacement_context(line: String, cursor_x: int) -> Dictionary:
+	var search_text: String = line.substr(0, cursor_x)
+	var last_open: int = search_text.rfind("{{")
+	if last_open == -1:
+		return {}
+
+	# Check if there's a "}}" between the "{{" and the cursor
+	var between: String = search_text.substr(last_open + 2)
+	if "}}" in between:
+		return {}
+
+	return { "expression": between, "bracket_start": last_open }
+
+
+# Check if the cursor is in a mutation context (either inline, replacement, or full mutation line).
 func _is_in_mutation_context(line: String, cursor_x: int) -> bool:
 	if not _get_inline_mutation_context(line, cursor_x).is_empty():
+		return true
+	if not _get_replacement_context(line, cursor_x).is_empty():
 		return true
 	for prefix: String in MUTATION_PREFIXES:
 		if line.strip_edges().begins_with(prefix):
@@ -873,25 +1035,27 @@ func _is_in_mutation_context(line: String, cursor_x: int) -> bool:
 func _resolve_script_for_property_chain(segments: PackedStringArray) -> Variant:
 	if segments.size() == 0: return null
 
-	var autoload: Variant = null
+	var thing: Variant = null
 
 	if segments[0].begins_with("uid://") or segments[0].begins_with("res://"):
-		autoload = load(segments[0])
+		thing = load(segments[0])
 	elif _autoloads.has(segments[0]):
-		autoload = load(_autoloads.get(segments[0]))
+		thing = load(_autoloads.get(segments[0]))
+	elif _context_cache.has(segments[0]):
+		thing = _context_cache.get(segments[0])
 	else:
 		return null
 
-	if autoload is PackedScene:
-		var node: Node = autoload.instantiate()
-		autoload = node.get_script()
+	if thing is PackedScene:
+		var node: Node = thing.instantiate()
+		thing = node.get_script()
 		node.free()
-	elif autoload == null:
+	elif thing == null:
 		return null
-	elif not autoload is Script:
-		autoload = autoload.get_script()
+	elif not thing is Script:
+		thing = thing.get_script()
 
-	var current_script: Variant = autoload
+	var current_script: Variant = thing
 
 	if not is_instance_valid(current_script): return null
 	if (segments.size() == 1): return current_script
@@ -958,67 +1122,75 @@ func _resolve_script_for_property_chain(segments: PackedStringArray) -> Variant:
 
 #endregion
 
-#region Title and Character Helpers
+#region Label and Character Helpers
 
 
-## Get a list of titles from the current text.
-func get_titles() -> PackedStringArray:
-	var titles: PackedStringArray = PackedStringArray([])
+## Get a list of cues from the current text.
+func get_cues(include_regions: bool = false) -> PackedStringArray:
+	var cues: PackedStringArray = PackedStringArray([])
 	var lines: PackedStringArray = text.split("\n")
 	for line: String in lines:
 		if line.strip_edges().begins_with("~ "):
-			titles.append(line.strip_edges().substr(2))
+			cues.append(line.strip_edges().substr(2))
+		elif include_regions and line.strip_edges().begins_with("#region "):
+			cues.append("#" + line.strip_edges().replace("#region ", ""))
 
-	return titles
+	return cues
 
 
-## Work out what the next title above the current line is
-func check_active_title() -> void:
+## Work out what the next cue above the current line is
+func check_active_cue() -> void:
 	var line_number: int = get_caret_line()
 	var lines: PackedStringArray = text.split("\n")
-	# Look at each line above this one to find the next title line
+	# Look at each line above this one to find the next cue line
 	for i: int in range(line_number, -1, -1):
-		if lines[i].begins_with("~ "):
-			active_title_change.emit(lines[i].replace("~ ", ""))
+		if lines[i].begins_with("~ ") and "cues" in DMSettings.get_user_value("cue_list_view", "regions+cues"):
+			active_cue_changed.emit(lines[i].replace("~ ", ""))
+			return
+		elif lines[i].begins_with("#region ") and "regions" in DMSettings.get_user_value("cue_list_view", "regions+cues"):
+			active_cue_changed.emit(lines[i].replace("#region ", ""))
 			return
 
-	active_title_change.emit("")
+	active_cue_changed.emit("")
 
 
-## Move the caret line to match a given title.
-func go_to_title(title: String, create_if_none: bool = false) -> void:
-	var found_title: bool = false
+## Move the caret line to match a given cue.
+func go_to_cue(cue: String, create_if_none: bool = false) -> void:
+	var found_cue: bool = false
 
-	var lines = text.split("\n")
+	var lines: PackedStringArray = text.split("\n")
 	for i: int in range(0, lines.size()):
-		if lines[i].strip_edges() == "~ " + title:
-			found_title = true
+		if lines[i].strip_edges() == "~ " + cue or lines[i].strip_edges() == "#region " + cue:
+			found_cue = true
 			set_caret_line(i)
-			center_viewport_to_caret()
+			set_caret_column(0)
+			center_viewport_to_caret.call_deferred()
 
-	if create_if_none and not found_title:
-		text += "\n\n\n~ %s\n\n=> END" % [title]
+	if create_if_none and not found_cue:
+		text += "\n\n\n~ %s\n\n=> END" % [cue]
 		set_caret_line(text.split("\n").size() - 2)
-		center_viewport_to_caret()
+		center_viewport_to_caret.call_deferred()
+
+
+## Go to a given line number.
+func go_to_line_number(line_number: int) -> void:
+	set_caret_line(line_number)
+	center_viewport_to_caret.call_deferred()
 
 
 ## Get all character names from the dialogue that match the given prefix.
 func get_character_names(beginning_with: String) -> PackedStringArray:
-	if beginning_with.is_empty(): return []
-
 	var names: PackedStringArray = []
-	var lines = text.split("\n")
+	var lines: PackedStringArray = text.split("\n")
 	for line: String in lines:
 		if line.strip_edges().begins_with("#"): continue # skip comments
 		if ": " in line:
 			var character_name: String = WEIGHTED_RANDOM_PREFIX.sub(line.split(": ")[0].strip_edges(), "")
-
-			if character_name.is_empty() or character_name in names: continue
-			if character_name.to_lower()[0] != beginning_with.to_lower()[0]: continue
-			if not _matches_prompt(beginning_with, character_name): continue
-
-			names.append(character_name)
-
+			# Checks for first-letter match before doing fuzzy matching
+			if not character_name in names and character_name.length() > 0 and beginning_with.length() > 0 \
+			and character_name.to_lower()[0] == beginning_with.to_lower()[0] \
+			and _matches_prompt(beginning_with, character_name):
+				names.append(character_name)
 	return names
 
 
@@ -1074,7 +1246,7 @@ func toggle_comment() -> void:
 	var selections: Array = []
 	var line_offsets: Dictionary = {}
 
-	for caret_index in range(0, get_caret_count()):
+	for caret_index: int in range(0, get_caret_count()):
 		var from_line: int = get_caret_line(caret_index)
 		var from_column: int = get_caret_column(caret_index)
 		var to_line: int = get_caret_line(caret_index)
@@ -1113,7 +1285,7 @@ func toggle_comment() -> void:
 			else:
 				line_offsets[line_number] = 0
 
-	for caret_index in range(0, get_caret_count()):
+	for caret_index: int in range(0, get_caret_count()):
 		var selection: Dictionary = selections[caret_index]
 		select(
 			selection.from_line,
@@ -1132,7 +1304,7 @@ func toggle_comment() -> void:
 
 ## Remove the current line.
 func delete_current_line() -> void:
-	var cursor: Vector2 = get_cursor()
+	var cursor: Vector2i = get_cursor()
 	if get_line_count() == 1:
 		select_all()
 	elif cursor.y == 0:
@@ -1148,7 +1320,7 @@ func move_line(offset: int) -> void:
 	offset = clamp(offset, -1, 1)
 
 	var starting_scroll: float = scroll_vertical
-	var cursor: Vector2 = get_cursor()
+	var cursor: Vector2i = get_cursor()
 	var reselect: bool = false
 	var from: int = cursor.y
 	var to: int = cursor.y
@@ -1181,6 +1353,23 @@ func move_line(offset: int) -> void:
 	scroll_vertical = starting_scroll + offset
 
 
+## Open a given script.
+func open_script(script: Script, line_number: int) -> void:
+	var settings: EditorSettings = EditorInterface.get_editor_settings()
+	var will_open_externally: bool = false
+
+	if script.resource_path.get_extension().to_lower() == "cs":
+		will_open_externally = settings.get_setting("dotnet/editor/external_editor") > 0
+	else:
+		var use_external: bool = settings.get_setting("text_editor/external/use_external_editor")
+		var exec_path: String = settings.get_setting("text_editor/external/exec_path")
+		will_open_externally = use_external and not exec_path.is_empty()
+
+	EditorInterface.edit_script(script, line_number, 0, true)
+
+	if not will_open_externally:
+		EditorInterface.set_main_screen_editor.call_deferred("Script")
+
 #endregion
 
 #region Signals
@@ -1190,7 +1379,7 @@ func _on_project_settings_changed() -> void:
 	_autoloads = {}
 
 	# Add any actual autoloads
-	var project = ConfigFile.new()
+	var project: ConfigFile = ConfigFile.new()
 	project.load("res://project.godot")
 	if project.has_section("autoload"):
 		for autoload: String in project.get_section_keys("autoload"):
@@ -1203,9 +1392,13 @@ func _on_project_settings_changed() -> void:
 		for script_info: Dictionary in ProjectSettings.get_global_class_list():
 			if not script_info.path.begins_with(plugin_path):
 				var script: Script = load(script_info.path)
-				var static_match: RegExMatch = STATIC_CONTENT_REGEX.search(script.source_code)
-				if static_match:
-					_autoloads[script_info.class] = script_info.path
+				if script_info.path.ends_with(".cs"):
+					if "public static" in script.source_code:
+						_autoloads[script_info.class] = script_info.path
+				else:
+					var static_match: RegExMatch = STATIC_CONTENT_REGEX.search(script.source_code)
+					if static_match:
+						_autoloads[script_info.class] = script_info.path
 
 
 func _on_code_edit_symbol_validate(symbol: String) -> void:
@@ -1213,24 +1406,34 @@ func _on_code_edit_symbol_validate(symbol: String) -> void:
 		set_symbol_lookup_word_as_valid(true)
 		return
 
-	for title: String in get_titles():
-		if symbol == title:
+	for cue: String in get_cues():
+		if symbol == cue:
 			set_symbol_lookup_word_as_valid(true)
 			return
 
-	# Check if it's a mutation line symbol
-	var cursor: Vector2 = get_line_column_at_pos(get_local_mouse_pos())
+	var cursor: Vector2i = get_line_column_at_pos(get_local_mouse_pos())
 	var line_text: String = get_line(cursor.y)
+
+	# Check if it's an imported cue (eg. "alias/cue")
+	if "/" in line_text and "=>" in line_text:
+		var goto_marker: String = "=>< " if "=><" in line_text else "=> "
+		var actual_symbol: String = line_text.substr(line_text.find(goto_marker) + goto_marker.length())
+		for cue: String in DMCompiler.get_cues_in_text(text, main_view.current_file_path):
+			if cue == actual_symbol:
+				set_symbol_lookup_word_as_valid(true)
+				return
+
+	# Check if it's a mutation line symbol
 	var symbol_info: Dictionary = _resolve_mutation_symbol_at_position(line_text, cursor.x)
-	if not symbol_info.is_empty() and symbol_info.get("symbol") == symbol:
-		var script: Script = symbol_info.get("script")
+	if not symbol_info.is_empty() and symbol_info.symbol == symbol:
+		var script: Script = symbol_info.script
 		var member_name: String = symbol_info.get("member_name")
 		if member_name == "class_name":
 			set_symbol_lookup_word_as_valid(true)
 			return
 		else:
-			var line_number: int = _find_definition_in_script(script, member_name)
-			if line_number > 0:
+			var definition: Dictionary = _find_definition_in_script(script, member_name)
+			if definition.line_number > 0:
 				set_symbol_lookup_word_as_valid(true)
 				return
 
@@ -1242,28 +1445,39 @@ func _on_code_edit_symbol_lookup(symbol: String, line: int, column: int) -> void
 		external_file_requested.emit(symbol, "")
 		return
 
-	# Check if it's a title
-	for title: String in get_titles():
-		if symbol == title:
-			go_to_title(symbol)
+	var line_text: String = get_line(line)
+
+	# Check if it's an imported cue (eg. "alias/cue")
+	if "/" in line_text and "=>" in line_text:
+		var goto_marker: String = "=>< " if "=><" in line_text else "=> "
+		var actual_symbol: String = line_text.substr(line_text.find(goto_marker) + goto_marker.length())
+		var prefix: String = actual_symbol.split("/")[0]
+		var cue_name: String = actual_symbol.split("/")[1]
+		var lines: PackedStringArray = text.split("\n")
+		for l: String in lines:
+			if not l.begins_with("import "): continue
+			var found: RegExMatch = compiler_regex.IMPORT_REGEX.search(l)
+			if found and found.strings[found.names.prefix] == prefix:
+				external_file_requested.emit(found.strings[found.names.path], cue_name)
+				return
+
+	# Check if it's a cue
+	for cue: String in get_cues():
+		if symbol == cue:
+			go_to_cue(symbol)
 			return
 
 	# Check if it's a mutation line symbol
-	var line_text: String = get_line(line)
 	var symbol_info: Dictionary = _resolve_mutation_symbol_at_position(line_text, column)
-	if not symbol_info.is_empty() and symbol_info.get("symbol") == symbol:
-		var script: Script = symbol_info.get("script")
-		var member_name: String = symbol_info.get("member_name")
+	if not symbol_info.is_empty() and symbol_info.symbol == symbol:
+		var script: Script = symbol_info.script
+		var member_name: String = symbol_info.member_name
 		if member_name == "class_name":
-			EditorInterface.edit_script(script, 1, 0, true)
-			EditorInterface.set_main_screen_editor.call_deferred("Script")
+			open_script(script, 1)
 		else:
-			var line_number: int = _find_definition_in_script(script, member_name)
-			if line_number > 0:
-				# Open the script in the editor
-				EditorInterface.edit_script(script, line_number, 0, true)
-				EditorInterface.set_main_screen_editor.call_deferred("Script")
-				return
+			var definition: Dictionary = _find_definition_in_script(script, member_name)
+			if definition.line_number > -1:
+				open_script(definition.script, definition.line_number)
 
 
 func _on_code_edit_text_changed() -> void:
@@ -1276,13 +1490,13 @@ func _on_code_edit_text_set() -> void:
 
 
 func _on_code_edit_caret_changed() -> void:
-	check_active_title()
+	check_active_cue()
 	last_selected_text = get_selected_text()
 	_update_code_hint()
 
 
-func _on_code_edit_gutter_clicked(line: int, gutter: int) -> void:
-	var line_errors = errors.filter(func(error): return error.line_number == line)
+func _on_code_edit_gutter_clicked(line: int, _gutter: int) -> void:
+	var line_errors: Array = errors.filter(func(error: Dictionary) -> bool: return error.line_number == line)
 	if line_errors.size() > 0:
 		error_clicked.emit(line)
 
