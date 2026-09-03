@@ -13,6 +13,7 @@ func set_response(value: DialogueResponse) -> void:
 
 	var thread_type := response.get_tag_value("thread")
 	if thread_type and thread_type.to_upper() in InventoryItem.ItemType:
-		icon = InventoryItem.HUD_TEXTURES[InventoryItem.ItemType[thread_type.to_upper()]]
+		var item_type: InventoryItem.ItemType = InventoryItem.ItemType[thread_type.to_upper()]
+		icon = InventoryItem.with_type(item_type).hud_texture
 	else:
 		icon = null
