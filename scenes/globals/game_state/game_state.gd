@@ -137,6 +137,9 @@ func set_quest(new_quest: Quest) -> void:
 		quest_player_state = PlayerState.new()
 
 	quest = QuestState.new(new_quest, quest_player_state)
+	quest.inventory.items = global.inventory.items.filter(
+		func(i: TaggedItem) -> bool: return i.quest_path == new_quest.resource_path
+	)
 
 
 ## Guess which quest the given scene is part of, and set [member quest]
