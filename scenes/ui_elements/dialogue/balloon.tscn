@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://n1guv6m28qbw" path="res://scenes/ui_elements/dialogue/components/balloon.gd" id="1_oh0dh"]
 [ext_resource type="Texture2D" uid="uid://dh4tixu06hfwt" path="res://assets/third_party/tiny-swords/UI/Banners/Carved_9Slides.png" id="3_1s4ug"]
-[ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="4_3tiik"]
-[ext_resource type="Script" uid="uid://bb52rsfwhkxbn" path="res://addons/dialogue_manager/dialogue_responses_menu.gd" id="5_gjlrd"]
+[ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/nodes/dialogue_label/dialogue_label.tscn" id="4_3tiik"]
+[ext_resource type="Script" uid="uid://bb52rsfwhkxbn" path="res://addons/dialogue_manager/nodes/responses_menu/dialogue_responses_menu.gd" id="5_gjlrd"]
 [ext_resource type="Texture2D" uid="uid://brspc1u02oawt" path="res://assets/first_party/collectibles/memory.png" id="5_oh0dh"]
 [ext_resource type="Script" uid="uid://bj58s4f3rjsqs" path="res://scenes/ui_elements/dialogue/components/response_button.gd" id="5_u3aeq"]
 [ext_resource type="Material" uid="uid://cruf3tlajs4jo" path="res://scenes/ui_elements/input_hints/components/drop_shadow_material.tres" id="6_y5co6"]
@@ -48,6 +48,8 @@ stream_5/stream = ExtResource("16_w541t")
 [node name="DialogueBalloon" type="CanvasLayer" unique_id=308207015]
 layer = 100
 script = ExtResource("1_oh0dh")
+next_action = &"dialogue_next"
+skip_action = &"dialogue_skip"
 
 [node name="Balloon" type="Control" parent="." unique_id=2032365240]
 unique_name_in_owner = true
@@ -148,7 +150,7 @@ icon = ExtResource("5_oh0dh")
 icon_alignment = 2
 script = ExtResource("5_u3aeq")
 
-[node name="NextButton" type="Button" parent="Balloon/BalloonContainer/MarginContainer" unique_id=1047703477]
+[node name="ProgressButton" type="Button" parent="Balloon/BalloonContainer/MarginContainer" unique_id=1047703477]
 unique_name_in_owner = true
 z_index = 1
 custom_minimum_size = Vector2(64, 64)
@@ -157,7 +159,7 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_type_variation = &"NextButton"
 
-[node name="InteractHint" type="TextureRect" parent="Balloon/BalloonContainer/MarginContainer/NextButton" unique_id=661213085]
+[node name="InteractHint" type="TextureRect" parent="Balloon/BalloonContainer/MarginContainer/ProgressButton" unique_id=661213085]
 material = ExtResource("6_y5co6")
 layout_mode = 1
 anchors_preset = 8
@@ -185,6 +187,9 @@ parameters/looping = true
 [node name="TalkSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1049502391]
 stream = SubResource("AudioStreamRandomizer_ekiya")
 bus = &"SFX"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1968773366]
+unique_name_in_owner = true
 
 [connection signal="gui_input" from="Balloon" to="." method="_on_balloon_gui_input"]
 [connection signal="spoke" from="Balloon/BalloonContainer/MarginContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/DialogueLabel" to="." method="_on_dialogue_label_spoke"]
