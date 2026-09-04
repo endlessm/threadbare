@@ -9,10 +9,10 @@ extends Node2D
 ##
 ## Coordinate an array of townies to join the StoryWeaver at the Eternal Loom
 ## for listening the retelling.
-## Call RetellingTownie.go_to_the_loom() on each townie so they join.
-## Call EternalLoom.show_retelling_dialogue() when all townies have joined.
-## May call RetellingTownie.become_helper() on one townie (at random).
-## Call RetellingTownie.leave_the_loom() on each townie so they leave.
+## Call [method RetellingTownie.go_to_the_loom]on each townie so they join.
+## Call [method EternalLoom.show_retelling_dialogue] when all townies have joined.
+## May call [method RetellingTownie.become_helper] on one townie (at random).
+## Call [method RetellingTownie.leave_the_loom] on each townie so they leave.
 
 ## The array of retelling townies in Fray's End.
 @export var townies: Array[RetellingTownie] = []
@@ -20,7 +20,7 @@ extends Node2D
 var _waiting_for_townies: Array[RetellingTownie] = []
 
 ## The Eternal Loom, for listening to signals and calling
-## EternalLoom.show_retelling_dialogue().
+## [method EternalLoom.show_retelling_dialogue].
 @onready var eternal_loom: EternalLoom = %EternalLoom
 
 
@@ -28,17 +28,10 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	eternal_loom.retelling_started.connect(
-		_on_eternal_loom_retelling_started
-	)
-	eternal_loom.retelling_finished.connect(
-		_on_eternal_loom_retelling_finished
-	)
-	eternal_loom.give_retelling_upgrade.connect(
-		_on_eternal_loom_give_retelling_upgrade
-	)
-
-
+	eternal_loom.retelling_started.connect(_on_eternal_loom_retelling_started)
+	eternal_loom.retelling_finished.connect(_on_eternal_loom_retelling_finished)
+	eternal_loom.give_retelling_upgrade.connect(_on_eternal_loom_give_retelling_upgrade)
+	
 func _on_eternal_loom_retelling_started() -> void:
 	_waiting_for_townies = townies.duplicate()
 
