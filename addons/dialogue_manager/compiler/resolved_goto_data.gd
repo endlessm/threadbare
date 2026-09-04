@@ -2,8 +2,8 @@
 class_name DMResolvedGotoData extends RefCounted
 
 
-## The title that was specified
-var title: String = ""
+## The cue that was specified
+var cue: String = ""
 ## The target line's ID
 var next_id: String = ""
 ## An expression to determine the target line at runtime.
@@ -21,7 +21,7 @@ var index: int = 0
 var regex: DMCompilerRegEx = DMCompilerRegEx.new()
 
 
-func _init(text: String, titles: Dictionary) -> void:
+func _init(text: String, cues: Dictionary) -> void:
 	if not "=> " in text and not "=>< " in text: return
 
 	if "=> " in text:
@@ -34,37 +34,37 @@ func _init(text: String, titles: Dictionary) -> void:
 	if found == null:
 		return
 
-	title = found.strings[found.names.goto].strip_edges()
+	cue = found.strings[found.names.goto].strip_edges()
 	index = found.get_start(0)
 
-	if title == "":
-		error = DMConstants.ERR_UNKNOWN_TITLE
+	if cue == "":
+		error = DMConstants.ERR_UNKNOWN_CUE
 		return
 
 	# "=> END!" means end the conversation, ignoring any "=><" chains.
-	if title == "END!":
+	if cue == "END!":
 		next_id = DMConstants.ID_END_CONVERSATION
 
-	# "=> END" means end the current title (and go back to the previous one if there is one
+	# "=> END" means end the current cue (and go back to the previous one if there is one
 	# in the stack)
-	elif title == "END":
+	elif cue == "END":
 		next_id = DMConstants.ID_END
 
-	elif titles.has(title):
-		next_id = titles.get(title)
-	elif title.begins_with("{{"):
+	elif cues.has(cue):
+		next_id = cues.get(cue)
+	elif cue.begins_with("{{"):
 		var expression_parser: DMExpressionParser = DMExpressionParser.new()
-		var title_expression: Array[Dictionary] = expression_parser.extract_replacements(title, 0)
-		if title_expression.size() == 0:
+		var cue_expression: Array[Dictionary] = expression_parser.extract_replacements(cue, 0)
+		if cue_expression.size() == 0:
 			error = DMConstants.ERR_INCOMPLETE_EXPRESSION
-		elif title_expression[0].has("error"):
-			error = title_expression[0].error
+		elif cue_expression[0].has("error"):
+			error = cue_expression[0].error
 		else:
-			expression = title_expression[0].expression
+			expression = cue_expression[0].expression
 	else:
-		next_id = title
-		error = DMConstants.ERR_UNKNOWN_TITLE
+		next_id = cue
+		error = DMConstants.ERR_UNKNOWN_CUE
 
 
 func _to_string() -> String:
-	return "%s =>%s %s (%s)" % [text_without_goto, "<" if is_snippet else "", title, next_id]
+	return "%s =>%s %s (%s)" % [text_without_goto, "<" if is_snippet else "", cue, next_id]

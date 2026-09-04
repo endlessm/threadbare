@@ -5,37 +5,32 @@
 class_name DialogueResource extends Resource
 
 
-const DialogueLine = preload("./dialogue_line.gd")
-
 ## A list of state shortcuts
 @export var using_states: PackedStringArray = []
 
-## A map of titles and the lines they point to.
-@export var titles: Dictionary = {}
+## A map of cues and the lines they point to.
+@export var cues: Dictionary = {}
 
 ## A list of character names.
 @export var character_names: PackedStringArray = []
 
-## The first title in the file.
-@export var first_title: String = ""
+## The first cue in the file.
+@export var first_cue: String = ""
 
 ## A map of the encoded lines of dialogue.
 @export var lines: Dictionary = {}
 
-## raw version of the text
-@export var raw_text: String
 
-
-## Get the next printable line of dialogue, starting from a referenced line ([code]title[/code] can
-## be a title string or a stringified line number). Runs any mutations along the way and then returns
+## Get the next printable line of dialogue, starting from a referenced line ([code]cue[/code] can
+## be a cues string or a stringified line number). Runs any mutations along the way and then returns
 ## the first dialogue line encountered.
-func get_next_dialogue_line(title: String = "", extra_game_states: Array = [], mutation_behaviour: DMConstants.MutationBehaviour = DMConstants.MutationBehaviour.Wait) -> DialogueLine:
-	return await Engine.get_singleton("DialogueManager").get_next_dialogue_line(self, title, extra_game_states, mutation_behaviour)
+func get_next_dialogue_line(cue: String = "", extra_game_states: Array = [], mutation_behaviour: DMConstants.MutationBehaviour = DMConstants.MutationBehaviour.Wait) -> DialogueLine:
+	return await Engine.get_singleton("DialogueManager").get_next_dialogue_line(self, cue, extra_game_states, mutation_behaviour)
 
 
-## Get the list of any titles found in the file.
-func get_titles() -> PackedStringArray:
-	return titles.keys()
+## Get the list of any cues found in the file.
+func get_cues() -> PackedStringArray:
+	return cues.keys()
 
 
 func _to_string() -> String:
