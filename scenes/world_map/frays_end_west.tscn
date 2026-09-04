@@ -30,6 +30,8 @@
 [ext_resource type="SpriteFrames" uid="uid://7yx2vrxg6ytx" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_blue_large.tres" id="22_y5day"]
 [ext_resource type="SpriteFrames" uid="uid://c4da2w5tt3u7j" path="res://scenes/game_elements/props/decoration/bush/components/bush_spriteframes_blue_small.tres" id="23_5eaun"]
 [ext_resource type="PackedScene" uid="uid://c4vbokn408f2c" path="res://scenes/game_elements/props/decoration/sheep/sheep.tscn" id="23_8o6qx"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="31_jbkpe"]
+[ext_resource type="PackedScene" uid="uid://bjin4sdopq7rn" path="res://scenes/ui_elements/area_name/area_name.tscn" id="32_v5vj4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kxo1k"]
 size = Vector2(52, 61)
@@ -39,6 +41,14 @@ size = Vector2(128, 128)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jbkpe"]
 size = Vector2(128, 128)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_dxxva"]
+a = Vector2(1244, 651)
+b = Vector2(1244, 775)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_1aiuh"]
+a = Vector2(1177, 641)
+b = Vector2(1177, 775)
 
 [node name="FraysEndWest" type="Node2D" unique_id=1575051889]
 metadata/_edit_vertical_guides_ = [1281.0]
@@ -1447,3 +1457,16 @@ sprite_frames = ExtResource("23_5eaun")
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=459703015]
 
 [node name="TimeAndWeather" parent="." unique_id=1446545037 instance=ExtResource("13_ltemt")]
+
+[node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("31_jbkpe")]
+
+[node name="TextNameArea" parent="." unique_id=1184526213 instance=ExtResource("32_v5vj4")]
+zone_name = "West End"
+
+[node name="CollisionShape2D" parent="TextNameArea/detect" parent_id_path=PackedInt32Array(1184526213, 1821875710) index="0" unique_id=1113950690]
+shape = SubResource("SegmentShape2D_dxxva")
+
+[node name="CollisionShape2D" parent="TextNameArea/detect_active" parent_id_path=PackedInt32Array(1184526213, 900921903) index="0" unique_id=1875152056]
+shape = SubResource("SegmentShape2D_1aiuh")
+
+[editable path="TextNameArea"]
