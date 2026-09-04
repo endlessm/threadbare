@@ -15,9 +15,9 @@ func _ready() -> void:
 	modulate.a = 0.0
 
 
-func animate_re_entry(text_content: String, time: int) -> void:
+func animate_re_entry(zona_name: String, time: int) -> void:
 	show()
-	label.text = text_content
+	label.text = zona_name
 	
 	# Guardar posición base si no se ha guardado
 	if not _is_target_saved:
@@ -49,3 +49,4 @@ func animate_re_entry(text_content: String, time: int) -> void:
 	await tween_out.finished
 	position.y = target_y
 	hide()
+	

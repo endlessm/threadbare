@@ -23,29 +23,48 @@ const MAX_CARACTERES_POR_LINEA: int = 10
 @export_range(1, 3) var time: int = 2
 
 var _zone_name: String = ""
-var use: int = -1
+var is_area = null 
 var entered: bool = false
+
+func _ready() -> void:
+	# Consultamos el estado real una vez cargadas las variables
+	is_area = GameState.global.is_area_unlocked(_zone_name)
+
 
 func detect_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		entered = true
 
+
 func detect_active_entered(body: Node2D) -> void:
+	is_area = GameState.global.is_area_unlocked(_zone_name)
 	if body.is_in_group("player") and entered:
-		entered = false # Se desmarca inmediatamente para evitar reentradas continuas en este frame
+		# Si is_area es null, significa que ya hay una animación ejecutándose. Bloqueamos.
+		if is_area == null:
+			return 
+
+		entered = false 
 		
-		if use == -1:
-			use = 0 # Bloqueamos ejecuciones simultáneas
+		if is_area == false:
+			is_area = null 
+			
 			var temp: Control = preload("res://scenes/ui_elements/area_name/first_unlock.tscn").instantiate()
 			$CanvasLayer.add_child(temp)
+			
+			# Desbloqueamos en el GameState global
+			GameState.global.set_unlock_area(_zone_name)
+			GameState.save()
+			
 			await temp.animate_first_unlock(zone_name, time)
 			temp.queue_free()
-			$Timer.start() # Inicia el temporizador para habilitar el re-entry (pasa use a 1)
+			
+			$Timer.start()
 
-		elif use == 1:
-			use = 0 # Bloqueamos ejecuciones simultáneas
+		elif is_area == true:
+			is_area = null # Bloqueamos ejecuciones simultáneas
 			await %HUD.show_re_entry_zone(zone_name, time)
 			$Timer.start() # Reinicia el temporizador para habilitar la siguiente reentrada
 
+
 func _on_timer_timeout() -> void:
-	use = 1
+	is_area = true
