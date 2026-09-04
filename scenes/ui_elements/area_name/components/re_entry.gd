@@ -6,7 +6,6 @@ extends PanelContainer
 
 @onready var label: Label = $Label
 
-# Variable para guardar la posición Y real calculada por la UI
 var _base_target_y: float = 0.0
 var _is_target_saved: bool = false
 
@@ -18,7 +17,7 @@ func _ready() -> void:
 func animate_re_entry(zona_name: String, time: int) -> void:
 	show()
 	label.text = zona_name
-	
+
 	# Guardar posición base si no se ha guardado
 	if not _is_target_saved:
 		_base_target_y = position.y
@@ -26,10 +25,10 @@ func animate_re_entry(zona_name: String, time: int) -> void:
 
 	var target_y: float = _base_target_y
 	var start_y: float = target_y - abs(slide_offset_y)
-	
+
 	position.y = start_y
 	modulate.a = 0.0
-	
+
 	# ENTRADA
 	var tween_in := create_tween().set_parallel(true)
 	tween_in.tween_property(self, "position:y", target_y, 0.35)\
@@ -45,8 +44,7 @@ func animate_re_entry(zona_name: String, time: int) -> void:
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween_out.tween_property(self, "modulate:a", 0.0, 0.3)\
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-		
+
 	await tween_out.finished
 	position.y = target_y
 	hide()
-	
