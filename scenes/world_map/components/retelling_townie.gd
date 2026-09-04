@@ -30,8 +30,14 @@ static func reverse_path(path: Path2D) -> Path2D:
 	var reversed_path := Path2D.new()
 	var curve := Curve2D.new()
 	var src := path.curve
+
 	for i in range(src.point_count - 1, -1, -1):
-		curve.add_point(src.get_point_position(i), src.get_point_out(i), src.get_point_in(i))
+		curve.add_point(
+			src.get_point_position(i),
+			src.get_point_out(i),
+			src.get_point_in(i)
+		)
+
 	reversed_path.curve = curve
 	return reversed_path
 
@@ -39,6 +45,7 @@ static func reverse_path(path: Path2D) -> Path2D:
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+
 	hide_townie()
 
 
@@ -48,18 +55,34 @@ func hide_townie() -> void:
 	townie.process_mode = Node.PROCESS_MODE_DISABLED
 
 
-## Walk the path to the loom and then emit [member loom_reached].
-func go_to_the_loom() -> void:
+## Prepare the townie's walking speed and calculate its travel time.
+func prepare_walk() -> float:
 	path_walk_behavior.walking_path = enter_path
 
-	# Randomize the speed of each townie, for variation:
+	# Randomize the speed of each townie.
 	path_walk_behavior.speeds = CharacterSpeeds.new()
-	path_walk_behavior.speeds.walk_speed = randf_range(100, 200)
+	path_walk_behavior.speeds.walk_speed = randf_range(175, 264)
 
+	var path_distance: float = enter_path.curve.get_baked_length()
+	var walk_speed: float = path_walk_behavior.speeds.walk_speed
+	var travel_time: float = path_distance / walk_speed
+
+	print("Townie: ", name)
+	print("Distancia: ", path_distance, " px")
+	print("Velocidad: ", walk_speed, " px/s")
+	print("Tiempo estimado: ", travel_time, " s")
+
+	return travel_time
+
+
+## Walk the path to the loom and then emit loom_reached.
+func go_to_the_loom() -> void:
 	townie.randomize_character()
 	townie.visible = true
 	townie.process_mode = Node.PROCESS_MODE_INHERIT
+
 	await path_walk_behavior.ending_reached
+
 	path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 	townie.velocity = Vector2.ZERO
 	loom_reached.emit()
@@ -72,16 +95,23 @@ func become_helper(type: InventoryItem.ItemType) -> void:
 	var closer_path := Path2D.new()
 	enter_path.add_sibling(closer_path)
 	closer_path.global_position = enter_path.global_position
+
 	var curve := Curve2D.new()
 	curve.add_point(Vector2.ZERO)
+
 	var player := get_tree().get_first_node_in_group("player") as Node2D
-	_closer_to_player_position = townie.global_position.direction_to(player.global_position) * 100.0
+	_closer_to_player_position = townie.global_position.direction_to(
+		player.global_position
+	) * 100.0
+
 	curve.add_point(_closer_to_player_position)
 	closer_path.curve = curve
 
 	path_walk_behavior.walking_path = closer_path
 	path_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+
 	await path_walk_behavior.ending_reached
+
 	path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 	townie.velocity = Vector2.ZERO
 
@@ -94,9 +124,16 @@ func leave_the_loom() -> void:
 	leave_path.global_position = enter_path.global_position
 
 	if _closer_to_player_position:
-		leave_path.curve.add_point(_closer_to_player_position, Vector2.ZERO, Vector2.ZERO, 0)
+		leave_path.curve.add_point(
+			_closer_to_player_position,
+			Vector2.ZERO,
+			Vector2.ZERO,
+			0
+		)
 
 	path_walk_behavior.walking_path = leave_path
 	path_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
+
 	await path_walk_behavior.ending_reached
+
 	hide_townie()
