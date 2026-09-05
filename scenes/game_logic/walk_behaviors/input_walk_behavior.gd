@@ -21,6 +21,9 @@ var input_vector: Vector2
 var is_running: bool:
 	set = _set_is_running
 
+var _is_stuck: bool
+var _last_safe_position: Vector2
+
 
 func _set_is_running(new_is_running: bool) -> void:
 	if is_running == new_is_running:
@@ -52,6 +55,15 @@ func _physics_process(delta: float) -> void:
 	)
 	character.velocity = character.velocity.move_toward(input_vector, step * delta)
 	character.move_and_slide()
+
+	# Check if the player got stuck (is colliding after the move_and_slide).
+	var collision := character.move_and_collide(Vector2.ZERO, true)
+	_is_stuck = collision != null
+	if _is_stuck:
+		character.velocity = Vector2.ZERO
+		character.position = _last_safe_position
+	else:
+		_last_safe_position = character.global_position
 
 	# When using an analogue joystick, this can be false even if the player is
 	# holding the "run" button, because the joystick may be inclined only slightly.
