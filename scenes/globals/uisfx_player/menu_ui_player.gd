@@ -20,17 +20,19 @@ func _enter_tree() -> void:
 
 
 func _on_node_added(node: Node) -> void:
-	if node is CheckButton and !node.is_connected("toggled", _on_toggle_pressed):
-		node.toggled.connect(_on_toggle_pressed)
+	if node is CheckButton:
+		_connect_once(node.toggled, _on_toggle_pressed)
+	elif node is Button:
+		_connect_once(node.pressed, _on_button_pressed)
+	elif node is Slider:
+		_connect_once(node.value_changed, _on_slider_value_changed)
+	elif node is TabBar:
+		_connect_once(node.tab_clicked, _on_tab_clicked)
 
-	elif node is Button and !node.is_connected("pressed", _on_button_pressed):
-		node.pressed.connect(_on_button_pressed)
 
-	elif node is Slider and !node.is_connected("value_changed", _on_slider_value_changed):
-		node.value_changed.connect(_on_slider_value_changed)
-
-	elif node is TabBar and !node.is_connected("tab_clicked", _on_slider_value_changed):
-		node.tab_clicked.connect(_on_tab_clicked)
+func _connect_once(sig: Signal, callable: Callable) -> void:
+	if not sig.is_connected(callable):
+		sig.connect(callable)
 
 
 func _on_toggle_pressed(toggled_on: bool) -> void:

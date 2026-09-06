@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
+class_name Lever
 extends Node2D
 
 signal toggled(is_on: bool)

@@ -37,7 +37,7 @@
 [ext_resource type="AudioStream" uid="uid://dgpeb1dtmfqud" path="res://assets/third_party/sounds/characters/enemies/guard/AlertSound.ogg" id="24_h5xg2"]
 [ext_resource type="Texture2D" uid="uid://drfnq08l2wbgy" path="res://assets/third_party/tiny-swords/Deco/03.png" id="24_wtfsj"]
 [ext_resource type="AudioStream" uid="uid://4ec6e2alns71" path="res://assets/third_party/sounds/characters/enemies/guard/GrassFoot.ogg" id="25_5i2s8"]
-[ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="25_ulxtw"]
+[ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/vertical_door.tscn" id="25_ulxtw"]
 [ext_resource type="AudioStream" uid="uid://c7om8kdork2rx" path="res://assets/third_party/sounds/characters/enemies/guard/Torch.ogg" id="26_8dune"]
 [ext_resource type="AudioStream" uid="uid://bwif2oo6ymiu2" path="res://assets/third_party/sounds/characters/enemies/guard/TorchHit.ogg" id="27_4r48p"]
 [ext_resource type="SpriteFrames" uid="uid://3elulifvmamm" path="res://scenes/game_elements/props/checkpoint/components/knitwitch_frames_blue.tres" id="27_lp8w2"]
@@ -136,6 +136,12 @@ _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 553.81, 50.264, 0, 0, 0, 0, 570, 620)
 }
 point_count = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_so0j7"]
+size = Vector2(87.499756, 85)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_6ihr4"]
+polygon = PackedVector2Array(-48.75, 78.75, -51.25, -80, 51.24951, -75, 41.24951, 81.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_idy4y"]
 size = Vector2(115, 379)
@@ -854,6 +860,18 @@ texture = ExtResource("21_foy1n")
 position = Vector2(6114, 900)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("22_djpoe")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="EnemyGuards/TowerPatchworkRuined1" unique_id=350946213]
+collision_layer = 10
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyGuards/TowerPatchworkRuined1/StaticBody2D" unique_id=1222164061]
+position = Vector2(-2.5, 33.75)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_so0j7")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="EnemyGuards/TowerPatchworkRuined1" unique_id=1547249159]
+occluder = SubResource("OccluderPolygon2D_6ihr4")
 
 [node name="Checkpoints" type="Node2D" parent="." unique_id=1706243097]
 y_sort_enabled = true
