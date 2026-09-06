@@ -53,7 +53,7 @@ var is_area = null
 var tolerancia_grados: float = 60.0
 
 func _ready() -> void:
-	is_area = GameState.global.is_area_unlocked(_zone_name)
+	is_area = GameState.global.is_area_unlocked(_zone_name.replace("\n", "").replace(" ","").to_lower())
 
 
 func _on_detect_body_exited(body: Node2D) -> void:
@@ -83,7 +83,7 @@ func _on_detect_body_exited(body: Node2D) -> void:
 
 
 func _ejecutar_transicion() -> void:
-	is_area = GameState.global.is_area_unlocked(_zone_name)
+	is_area = GameState.global.is_area_unlocked(_zone_name.replace("\n", "").replace(" ","").to_lower())
 	
 	if is_area == null:
 		return 
@@ -94,7 +94,7 @@ func _ejecutar_transicion() -> void:
 		var temp: Control = preload("res://scenes/ui_elements/area_name/first_unlock.tscn").instantiate()
 		$CanvasLayer.add_child(temp)
 		
-		GameState.global.set_unlock_area(_zone_name)
+		GameState.global.set_unlock_area(_zone_name.replace("\n", "").replace(" ","").to_lower())
 		GameState.save()
 		
 		await temp.animate_first_unlock(zone_name, time)
