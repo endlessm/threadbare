@@ -61,6 +61,8 @@
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="48_sqpij"]
 [ext_resource type="AudioStream" uid="uid://c1pdyoycgyb7t" path="res://scenes/dev/components/oi.wav" id="52_rs1iu"]
 [ext_resource type="Script" uid="uid://djeshbrs3vwnb" path="res://scenes/game_elements/characters/npcs/components/pet_interaction.gd" id="53_a3fwm"]
+[ext_resource type="PackedScene" uid="uid://bjin4sdopq7rn" path="res://scenes/ui_elements/area_name/area_name.tscn" id="62_rl8sd"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="63_71pqi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pp1gq"]
 size = Vector2(64, 64)
@@ -915,8 +917,21 @@ script = ExtResource("53_a3fwm")
 interact_area = NodePath("../InteractArea")
 sound_effect_player = NodePath("../AudioStreamPlayer2D")
 
+[node name="TextNameArea" parent="." unique_id=1184526213 instance=ExtResource("62_rl8sd")]
+direcciones_salida = 194
+zone_name = "Dev 
+Archipelago"
+
+[node name="CollisionPolygon2D" parent="TextNameArea/detect" parent_id_path=PackedInt32Array(1184526213, 1821875710) index="0" unique_id=1009866314]
+polygon = PackedVector2Array(-828, 1210, -558, 1204, -556, 1079, -826, 1094)
+
+[node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("63_71pqi")]
+unique_name_in_owner = true
+
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel/RepelTimer" to="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel" method="repel_once"]
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Sheep2/PlayerRepel2/RepelTimer2" to="OnTheGround/Node2D/SheepVolleyball" method="_on_repel_timer_2_timeout"]
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Sheep2/PlayerRepel2/RepelTimer2" to="OnTheGround/Node2D/SheepVolleyball/Sheep2/PlayerRepel2" method="repel_once"]
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Timer" to="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel/RepelTimer" method="start"]
 [connection signal="timeout" from="OnTheGround/Node2D/SheepTugOfWar/TuggingSheep/Timer" to="OnTheGround/Node2D/SheepTugOfWar" method="_on_timer_timeout"]
+
+[editable path="TextNameArea"]

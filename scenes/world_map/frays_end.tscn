@@ -126,14 +126,6 @@ size = Vector2(20, 256)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7n6eg"]
 size = Vector2(20, 256)
 
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_6fau3"]
-a = Vector2(951, 1339)
-b = Vector2(1039, 1339)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_qgpx3"]
-a = Vector2(951, 1426)
-b = Vector2(1035, 1426)
-
 [node name="FraysEnd" type="Node2D" unique_id=1849947277]
 script = ExtResource("1_4gse6")
 metadata/_edit_lock_ = true
@@ -1500,20 +1492,52 @@ position = Vector2(-955, -95)
 shape = SubResource("RectangleShape2D_7n6eg")
 debug_color = Color(0.9610079, 0, 0.5155429, 0.41960785)
 
-[node name="TextNameArea" parent="." unique_id=1184526213 instance=ExtResource("59_6fau3")]
+[node name="LineVillePath" parent="." unique_id=1184526213 instance=ExtResource("59_6fau3")]
+direcciones_salida = 87
 zone_name = "Frays end"
 
-[node name="CollisionShape2D" parent="TextNameArea/detect" parent_id_path=PackedInt32Array(1184526213, 1821875710) index="0" unique_id=1113950690]
-position = Vector2(-3, 104)
-shape = SubResource("SegmentShape2D_6fau3")
+[node name="CollisionPolygon2D" parent="LineVillePath/detect" parent_id_path=PackedInt32Array(1184526213, 1821875710) index="0" unique_id=1009866314]
+polygon = PackedVector2Array(2937, 765, 2943, 961, 2700, 1108, 2684, 648)
 
-[node name="CollisionShape2D" parent="TextNameArea/detect_active" parent_id_path=PackedInt32Array(1184526213, 900921903) index="0" unique_id=1875152056]
-position = Vector2(-2, -81)
-shape = SubResource("SegmentShape2D_qgpx3")
+[node name="StartPath" parent="." unique_id=1388956016 instance=ExtResource("59_6fau3")]
+direcciones_salida = 49
+zone_name = "Frays end"
+
+[node name="CollisionPolygon2D" parent="StartPath/detect" parent_id_path=PackedInt32Array(1388956016, 1821875710) index="0" unique_id=1009866314]
+position = Vector2(-1, 12)
+polygon = PackedVector2Array(953, 1344, 1033, 1345, 1033, 1374, 951, 1374)
+
+[node name="SongSanctuaryPath" parent="." unique_id=234964131 instance=ExtResource("59_6fau3")]
+direcciones_salida = 194
+zone_name = "Frays end"
+
+[node name="CollisionPolygon2D" parent="SongSanctuaryPath/detect" parent_id_path=PackedInt32Array(234964131, 1821875710) index="0" unique_id=1009866314]
+position = Vector2(-1, 12)
+polygon = PackedVector2Array(2175, 280, 2834, 283, 2682, -9, 2363, -16, 2166, 164)
+
+[node name="DevArchipelagoPath" parent="." unique_id=1511301874 instance=ExtResource("59_6fau3")]
+direcciones_salida = 49
+zone_name = "Frays end"
+
+[node name="CollisionPolygon2D" parent="DevArchipelagoPath/detect" parent_id_path=PackedInt32Array(1511301874, 1821875710) index="0" unique_id=1009866314]
+position = Vector2(-1, 12)
+polygon = PackedVector2Array(2810, 1772, 2574, 1766, 2573, 1717, 2810, 1716)
+
+[node name="WestEndPath" parent="." unique_id=681218199 instance=ExtResource("59_6fau3")]
+direcciones_salida = 168
+zone_name = "Frays end"
+
+[node name="CollisionPolygon2D" parent="WestEndPath/detect" parent_id_path=PackedInt32Array(681218199, 1821875710) index="0" unique_id=1009866314]
+position = Vector2(-1, 12)
+polygon = PackedVector2Array(68, 615, 67, 898, 22, 895, 23, 614)
 
 [connection signal="interaction_ended" from="OnTheGround/NPCs/Farmer/InteractArea" to="OnTheGround/NPCs/Farmer" method="_on_interact_area_interaction_ended"]
 [connection signal="interaction_started" from="OnTheGround/NPCs/Farmer/InteractArea" to="OnTheGround/NPCs/Farmer" method="_on_interact_area_interaction_started"]
 [connection signal="interaction_ended" from="OnTheGround/NPCs/GardenerA/InteractArea" to="OnTheGround/NPCs/GardenerA" method="_on_interact_area_interaction_ended"]
 [connection signal="interaction_started" from="OnTheGround/NPCs/GardenerA/InteractArea" to="OnTheGround/NPCs/GardenerA" method="_on_interact_area_interaction_started"]
 
-[editable path="TextNameArea"]
+[editable path="LineVillePath"]
+[editable path="StartPath"]
+[editable path="SongSanctuaryPath"]
+[editable path="DevArchipelagoPath"]
+[editable path="WestEndPath"]
