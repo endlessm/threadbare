@@ -51,7 +51,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
 	if not interact_area:
 		warnings.append("Interact Area property must be set.")
-	if dialogue and title and title not in dialogue.get_titles():
+	if dialogue and title and title not in dialogue.get_cues():
 		warnings.append("Dialogue Title '%s' does not exist" % title)
 	return warnings
 

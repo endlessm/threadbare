@@ -12,14 +12,14 @@ var file_path: String
 var imported_paths: PackedStringArray = []
 ## A list of state names from "using" clauses.
 var using_states: PackedStringArray = []
-## A map of titles in this file.
-var titles: Dictionary = {}
-## The first encountered title in this file.
-var first_title: String = ""
+## A map of cues in this file.
+var cues: Dictionary = {}
+## The first encountered cue in this file.
+var first_cue: String = ""
 ## A list of character names in this file.
 var character_names: PackedStringArray = []
 ## A list of any compilation errors.
-var errors: Array[Dictionary] = []
+var errors: Array[DMError] = []
 ## A map of all compiled lines.
 var lines: Dictionary = {}
 ## A flattened and simplified map of compiled lines for storage in a resource.
@@ -45,9 +45,9 @@ var regex: DMCompilerRegEx = DMCompilerRegEx.new()
 var expression_parser: DMExpressionParser = DMExpressionParser.new()
 
 # A noop for retrieving the next line without conditions.
-var _first: Callable = func(_s): return true
+var _first: Callable = func(_s: Variant) -> bool: return true
 
-# Title jumps are adjusted as they are parsed so any goto lines might need to be adjusted after they are first seen.
+# Cue jumps are adjusted as they are parsed so any goto lines might need to be adjusted after they are first seen.
 var _goto_lines: Dictionary = {}
 
 
@@ -59,7 +59,7 @@ var _goto_lines: Dictionary = {}
 ## Compile some text.
 func compile(text: String, path: String = ".") -> Error:
 	file_path = path
-	titles = {}
+	cues = {}
 	character_names = []
 
 	text += "\n=> END"
@@ -69,7 +69,7 @@ func compile(text: String, path: String = ".") -> Error:
 		if DMCache.known_static_ids.get(key) == file_path:
 			DMCache.known_static_ids.erase(key)
 
-	find_imported_titles(text, file_path)
+	find_imported_cues(text, file_path)
 	parse_line_tree(build_line_tree(text.split("\n")))
 
 	# Convert the compiles lines to a Dictionary so they can be stored.
@@ -84,7 +84,7 @@ func compile(text: String, path: String = ".") -> Error:
 
 
 ## Inject any imported files
-func find_imported_titles(text: String, path: String) -> void:
+func find_imported_cues(text: String, path: String) -> void:
 	# Work out imports
 	var known_imports: Dictionary = {}
 
@@ -107,8 +107,7 @@ func find_imported_titles(text: String, path: String) -> void:
 		elif known_imports.values().has(import_data.prefix):
 			add_error(id, 0, DMConstants.ERR_DUPLICATE_IMPORT_NAME)
 		else:
-			# Get titles from other file and map them to the known list of titles.
-			var imported_resource: DialogueResource = ResourceLoader.load(import_data.path, "", ResourceLoader.CACHE_MODE_REPLACE)
+			# Get cues from other file and map them to the known list of cues.
 			var cached_file_data: Dictionary = DMCache.get_file_data(import_data.path)
 
 			# Guard against failed loads -- namely during reimport cascade.
@@ -117,21 +116,21 @@ func find_imported_titles(text: String, path: String) -> void:
 				add_error(id, 0, DMConstants.ERR_ERRORS_IN_IMPORTED_FILE)
 				continue
 
-			var external_titles: Dictionary = cached_file_data.titles
-			if external_titles.is_empty():
+			var external_cues: Dictionary = cached_file_data.cues
+			if external_cues.is_empty():
 				var content: PackedStringArray = FileAccess.get_file_as_string(import_data.path).split("\n")
-				for i in range(0, content.size()):
+				for i: int in range(0, content.size()):
 					var l: String = content[i]
-					if not "/" in l and get_line_type(l) == DMConstants.TYPE_TITLE:
-						external_titles[l.substr(2).strip_edges()] = str(i)
+					if not "/" in l and get_line_type(l) == DMConstants.TYPE_CUE:
+						external_cues[l.substr(2).strip_edges()] = str(i)
 
-			var uid: String = ResourceUID.id_to_text(ResourceLoader.get_resource_uid(import_data.path)).replace("uid://", "")
-			for title_key: String in external_titles:
-				# Ignore any titles that are already a reference
-				if "/" in title_key: continue
-				# Create "alias/title" to "uid@id" mappig
-				var title_reference: String = "%s/%s" % [import_data.prefix, title_key]
-				titles[title_reference] = "%s@%s" % [uid, external_titles.get(title_key)]
+			var uid: String = ResourceUID.path_to_uid(import_data.path).replace("uid://", "")
+			for cue_key: String in external_cues:
+				# Ignore any cues that are already a reference
+				if "/" in cue_key: continue
+				# Create "alias/cue" to "uid@id" mappig
+				var cue_reference: String = "%s/%s" % [import_data.prefix, cue_key]
+				cues[cue_reference] = "%s@%s" % [uid, external_cues.get(cue_key)]
 
 			imported_paths.append(import_data.path)
 			known_imports[import_data.path] = import_data.prefix
@@ -141,7 +140,7 @@ func find_imported_titles(text: String, path: String) -> void:
 func build_line_tree(raw_lines: PackedStringArray) -> DMTreeLine:
 	var root: DMTreeLine = DMTreeLine.new("")
 	var parent_chain: Array[DMTreeLine] = [root]
-	var previous_line: DMTreeLine
+	var previous_line: DMTreeLine = null
 	var doc_comments: PackedStringArray = []
 
 	# Get list of known autoloads
@@ -201,17 +200,17 @@ func build_line_tree(raw_lines: PackedStringArray) -> DMTreeLine:
 		elif tree_line.indent < parent_chain.size() - 1:
 			parent_chain.resize(tree_line.indent + 1)
 
-		# Add any titles to the list of known titles
-		if tree_line.type == DMConstants.TYPE_TITLE:
-			var title: String = tree_line.text.substr(2)
-			if title == "":
-				add_error(i, 2, DMConstants.ERR_EMPTY_TITLE)
-			elif titles.has(title):
-				add_error(i + 1, 2, DMConstants.ERR_DUPLICATE_TITLE)
+		# Add any cues to the list of known cues
+		if tree_line.type == DMConstants.TYPE_CUE:
+			var cue: String = tree_line.text.substr(2)
+			if cue == "":
+				add_error(i, 2, DMConstants.ERR_EMPTY_CUE)
+			elif cues.has(cue):
+				add_error(i + 1, 2, DMConstants.ERR_DUPLICATE_CUE)
 			else:
-				titles[title] = tree_line.id
-				if first_title == "":
-					first_title = tree_line.id
+				cues[cue] = tree_line.id
+				if first_cue == "":
+					first_cue = tree_line.id
 
 		# Append the current line to the current parent (note: the root is the most basic parent).
 		var parent: DMTreeLine = parent_chain[parent_chain.size() - 1]
@@ -239,8 +238,8 @@ func parse_line_tree(root: DMTreeLine, parent: DMCompiledLine = null) -> Array[D
 			DMConstants.TYPE_UNKNOWN:
 				line.next_id = get_next_matching_sibling_id(root.children, i, parent, _first)
 
-			DMConstants.TYPE_TITLE:
-				parse_title_line(tree_line, line, root.children, i, parent)
+			DMConstants.TYPE_CUE:
+				parse_cue_line(tree_line, line, root.children, i, parent)
 
 			DMConstants.TYPE_CONDITION:
 				parse_condition_line(tree_line, line, root.children, i, parent)
@@ -287,32 +286,32 @@ func parse_line_tree(root: DMTreeLine, parent: DMCompiledLine = null) -> Array[D
 	return compiled_lines
 
 
-## Parse a title and apply it to the given line
-func parse_title_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> Error:
-	var result: Error = OK
+## Parse a cue and apply it to the given line
+func parse_cue_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> int:
+	var result: int = OK
 
-	# Titles should never have child lines
+	# Cues should never have child lines
 	if tree_line.children.size() > 0:
 		for invalid_child: DMTreeLine in tree_line.children:
 			add_error(invalid_child.line_number, invalid_child.indent, DMConstants.ERR_INVALID_INDENTATION)
 
 	line.text = tree_line.text.substr(tree_line.text.find("~ ") + 2).strip_edges()
 
-	# Titles can't have numbers as the first letter
+	# Labels can't have numbers as the first letter
 	if regex.BEGINS_WITH_NUMBER_REGEX.search(line.text):
-		result = add_error(tree_line.line_number, 2, DMConstants.ERR_TITLE_BEGINS_WITH_NUMBER)
+		result = add_error(tree_line.line_number, 2, DMConstants.ERR_CUE_BEGINS_WITH_NUMBER)
 
-	# Only import titles are allowed to have "/" in them
-	var valid_title: RegExMatch = regex.VALID_TITLE_REGEX.search(line.text.replace("/", ""))
-	if not valid_title:
-		result = add_error(tree_line.line_number, 2, DMConstants.ERR_TITLE_INVALID_CHARACTERS)
+	# Only import cues are allowed to have "/" in them
+	var valid_cue: RegExMatch = regex.VALID_CUE_REGEX.search(line.text.replace("/", ""))
+	if not valid_cue:
+		result = add_error(tree_line.line_number, 2, DMConstants.ERR_CUE_INVALID_CHARACTERS)
 
 	line.next_id = get_next_matching_sibling_id(siblings, sibling_index, parent, _first)
 
-	## Update the titles reference to point to the actual first line
-	titles[line.text] = line.next_id
+	## Update the cues reference to point to the actual first line
+	cues[line.text] = line.next_id
 
-	## Update any lines that point to this title
+	## Update any lines that point to this cue
 	if _goto_lines.has(line.text):
 		for goto_line: DMCompiledLine in _goto_lines[line.text]:
 			goto_line.next_id = line.next_id
@@ -321,16 +320,16 @@ func parse_title_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Arr
 
 
 ## Parse a goto and apply it to the given line.
-func parse_goto_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> Error:
+func parse_goto_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> int:
 	# Work out where this line is jumping to.
-	var goto_data: DMResolvedGotoData = DMResolvedGotoData.new(tree_line.text, titles)
+	var goto_data: DMResolvedGotoData = DMResolvedGotoData.new(tree_line.text, cues)
 
 	if goto_data.error:
 		return add_error(tree_line.line_number, tree_line.indent + 2, goto_data.error)
 	if goto_data.next_id or goto_data.expression:
 		line.next_id = goto_data.next_id
 		line.next_id_expression = goto_data.expression
-		add_reference_to_title(goto_data.title, line)
+		add_reference_to_cue(goto_data.cue, line)
 
 	if goto_data.is_snippet:
 		line.is_snippet = true
@@ -340,7 +339,7 @@ func parse_goto_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Arra
 
 
 ## Parse a condition line and apply to the given line
-func parse_condition_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> Error:
+func parse_condition_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> int:
 	# Work out the next IDs before parsing the condition line itself so that the last
 	# child can inherit from the chain.
 
@@ -355,13 +354,13 @@ func parse_condition_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings:
 			else:
 				break
 
-	line.next_id_after = get_next_matching_sibling_id(siblings, sibling_index, parent, func(s: DMTreeLine):
+	line.next_id_after = get_next_matching_sibling_id(siblings, sibling_index, parent, func(s: DMTreeLine) -> bool:
 		# The next line that isn't a conditional or is a new "if"
 		return s.type != DMConstants.TYPE_CONDITION or s.text.begins_with("if ")
 	)
 	# Any empty IDs should end the conversation.
 	if line.next_id_after == DMConstants.ID_NULL:
-		line.next_id_after = parent.next_id_after if parent != null and parent.next_id_after else DMConstants.ID_END
+		line.next_id_after = parent.next_id_after if parent != null and parent.next_id_after else str(DMConstants.ID_END)
 
 	# Having no nested body is an immediate failure.
 	if tree_line.children.size() == 0:
@@ -382,7 +381,7 @@ func parse_condition_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings:
 
 
 ## Parse a while loop and apply it to the given line.
-func parse_while_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> Error:
+func parse_while_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> int:
 	line.next_id_after = get_next_matching_sibling_id(siblings, sibling_index, parent, _first)
 
 	# Parse the while condition
@@ -398,8 +397,8 @@ func parse_while_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Arr
 	return OK
 
 
-func parse_match_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> Error:
-	var result: Error = OK
+func parse_match_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> int:
+	var result: int = OK
 
 	# The next line after is the next sibling
 	line.next_id_after = get_next_matching_sibling_id(siblings, sibling_index, parent, _first)
@@ -435,7 +434,7 @@ func parse_match_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Arr
 			})
 		# "else" case
 		elif child.type == DMConstants.TYPE_CONDITION:
-			if line.siblings.any(func(s): return s.has("is_else")):
+			if line.siblings.any(func(s: Dictionary) -> bool: return s.has("is_else")):
 				result = add_error(child.line_number, child.indent, DMConstants.ERR_ONLY_ONE_ELSE_ALLOWED)
 			else:
 				line.siblings.append({
@@ -448,11 +447,12 @@ func parse_match_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Arr
 	return result
 
 
-func parse_when_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> Error:
-	var result: Error = OK
+@warning_ignore("unused_parameter")
+func parse_when_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> int:
+	var result: int = OK
 
 	# This when line should be found inside a match line
-	if parent.type != DMConstants.TYPE_MATCH:
+	if parent == null or parent.type != DMConstants.TYPE_MATCH:
 		result = add_error(tree_line.line_number, tree_line.indent, DMConstants.ERR_WHEN_MUST_BELONG_TO_MATCH)
 
 	# When lines should have children
@@ -460,7 +460,8 @@ func parse_when_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Arra
 		result = add_error(tree_line.line_number, tree_line.indent, DMConstants.ERR_INVALID_CONDITION_INDENTATION)
 
 	# The next line after a when is the same as its parent match line
-	line.next_id_after = parent.next_id_after
+	if parent != null:
+		line.next_id_after = parent.next_id_after
 
 	# Extract the condition to match to
 	var condition: Dictionary = extract_condition(tree_line.text, false, tree_line.indent)
@@ -475,7 +476,7 @@ func parse_when_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Arra
 
 
 ## Parse a mutation line and apply it to the given line
-func parse_mutation_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> Error:
+func parse_mutation_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> int:
 	var mutation: Dictionary = extract_mutation(tree_line.text)
 	if mutation.has("error"):
 		return add_error(tree_line.line_number, mutation.index, mutation.error)
@@ -488,8 +489,8 @@ func parse_mutation_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: 
 
 
 ## Parse a response and apply it to the given line.
-func parse_response_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> Error:
-	var result: Error = OK
+func parse_response_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> int:
+	var result: int = OK
 
 	# Remove the "- "
 	tree_line.text = tree_line.text.substr(2)
@@ -505,10 +506,10 @@ func parse_response_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: 
 		else:
 			DMCache.known_static_ids[static_line_id] = file_path
 		tree_line.text = tree_line.text.replace("[ID:%s]" % [static_line_id], "")
-		line.translation_key = static_line_id
+		line.static_id = static_line_id
 
 	# Handle conditional responses and remove them from the prompt text.
-	if " [if " in tree_line.text:
+	if "[if " in tree_line.text and " /]" in tree_line.text:
 		var condition: Dictionary = extract_condition(tree_line.text, true, tree_line.indent)
 		if condition.has("error"):
 			result = add_error(tree_line.line_number, condition.index, condition.error)
@@ -530,7 +531,7 @@ func parse_response_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: 
 
 	# If it's the original response then set up an original line.
 	if original_response == tree_line:
-		line.next_id_after = get_next_matching_sibling_id(siblings, sibling_index, parent, (func(s: DMTreeLine):
+		line.next_id_after = get_next_matching_sibling_id(siblings, sibling_index, parent, (func(s: DMTreeLine) -> bool:
 			# The next line that isn't a response.
 			return not s.type in [DMConstants.TYPE_RESPONSE, DMConstants.TYPE_UNKNOWN]
 		), true)
@@ -556,7 +557,7 @@ func parse_response_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: 
 
 	parse_character_and_dialogue(tree_line, line, siblings, sibling_index, parent)
 
-	return OK
+	return result
 
 
 ## Parse a randomised line
@@ -569,7 +570,7 @@ func parse_random_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Ar
 		if found.names.has("weight"):
 			weight = found.strings[found.names.weight].to_float()
 		if found.names.has("condition"):
-			condition = extract_condition(tree_line.text, true, tree_line.indent)
+			condition = extract_condition("if " + found.strings[found.names.condition], false, tree_line.indent)
 
 	# Find the original random sibling. It will be the jump off point.
 	var original_sibling: DMTreeLine = tree_line
@@ -583,7 +584,7 @@ func parse_random_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Ar
 
 	# If it's the original sibling then set up an original line.
 	if original_sibling == tree_line:
-		line.next_id_after = get_next_matching_sibling_id(siblings, sibling_index, parent, (func(s: DMTreeLine):
+		line.next_id_after = get_next_matching_sibling_id(siblings, sibling_index, parent, (func(s: DMTreeLine) -> bool:
 			# The next line that isn't a randomised line.
 			# NOTE: DMTreeLine.is_random won't be set at this point so we need to check for the "%" prefix.
 			return not s.text.begins_with("%")
@@ -617,23 +618,8 @@ func parse_random_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Ar
 
 
 ## Parse some dialogue and apply it to the given line.
-func parse_dialogue_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> Error:
-	var result: Error = OK
-
-	# Remove escape character
-	if tree_line.text.begins_with("\\using"): tree_line.text = tree_line.text.substr(1)
-	if tree_line.text.begins_with("\\if"): tree_line.text = tree_line.text.substr(1)
-	if tree_line.text.begins_with("\\elif"): tree_line.text = tree_line.text.substr(1)
-	if tree_line.text.begins_with("\\else"): tree_line.text = tree_line.text.substr(1)
-	if tree_line.text.begins_with("\\while"): tree_line.text = tree_line.text.substr(1)
-	if tree_line.text.begins_with("\\match"): tree_line.text = tree_line.text.substr(1)
-	if tree_line.text.begins_with("\\when"): tree_line.text = tree_line.text.substr(1)
-	if tree_line.text.begins_with("\\do"): tree_line.text = tree_line.text.substr(1)
-	if tree_line.text.begins_with("\\set"): tree_line.text = tree_line.text.substr(1)
-	if tree_line.text.begins_with("\\-"): tree_line.text = tree_line.text.substr(1)
-	if tree_line.text.begins_with("\\~"): tree_line.text = tree_line.text.substr(1)
-	if tree_line.text.begins_with("\\=>"): tree_line.text = tree_line.text.substr(1)
-	if tree_line.text.begins_with("\\%"): tree_line.text = tree_line.text.substr(1)
+func parse_dialogue_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> int:
+	var result: int = OK
 
 	# Append any further dialogue
 	for i: int in range(0, tree_line.children.size()):
@@ -655,7 +641,7 @@ func parse_dialogue_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: 
 			if i == 0 and " =>" in tree_line.text:
 				add_error(tree_line.line_number, tree_line.indent, DMConstants.ERR_NESTED_DIALOGUE_INVALID_JUMP)
 
-			tree_line.text += "\n" + child.text
+			tree_line.text += "\n" + child_line.text
 		elif child.type == DMConstants.TYPE_UNKNOWN:
 			tree_line.text += "\n"
 		else:
@@ -673,7 +659,7 @@ func parse_dialogue_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: 
 			DMCache.known_static_ids[static_line_id] = file_path
 
 		tree_line.text = tree_line.text.replace(" [ID:", "[ID:").replace("[ID:%s]" % [static_line_id], "")
-		line.translation_key = static_line_id
+		line.static_id = static_line_id
 
 	# Check for simultaneous lines
 	if tree_line.text.begins_with("| "):
@@ -695,8 +681,7 @@ func parse_dialogue_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: 
 	parse_character_and_dialogue(tree_line, line, siblings, sibling_index, parent)
 
 	# Check for any inline expression errors
-	var resolved_line_data: DMResolvedLineData = DMResolvedLineData.new("")
-	var bbcodes: Array[Dictionary] = resolved_line_data.find_bbcode_positions_in_string(tree_line.text, true, true)
+	var bbcodes: Array[Dictionary] = DMResolvedLineData.find_bbcode_positions_in_string(tree_line.text, true, true)
 	for bbcode: Dictionary in bbcodes:
 		var tag: String = bbcode.code
 		var code: String = bbcode.raw_args
@@ -710,7 +695,7 @@ func parse_dialogue_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: 
 	# If the line isn't part of a weighted random group then make it point to the next
 	# available sibling.
 	if line.next_id == DMConstants.ID_NULL and line.siblings.size() == 0:
-		line.next_id = get_next_matching_sibling_id(siblings, sibling_index, parent, func(s: DMTreeLine):
+		line.next_id = get_next_matching_sibling_id(siblings, sibling_index, parent, func(s: DMTreeLine) -> bool:
 			# Ignore concurrent lines.
 			return not s.text.begins_with("| ")
 		)
@@ -719,10 +704,25 @@ func parse_dialogue_line(tree_line: DMTreeLine, line: DMCompiledLine, siblings: 
 
 
 ## Parse the character name and dialogue and apply it to a given line.
-func parse_character_and_dialogue(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> Error:
-	var result: Error = OK
+func parse_character_and_dialogue(tree_line: DMTreeLine, line: DMCompiledLine, siblings: Array[DMTreeLine], sibling_index: int, parent: DMCompiledLine) -> int:
+	var result: int = OK
 
 	var text: String = tree_line.text
+
+	# Remove escape character
+	if text.begins_with("\\using"): text = text.substr(1)
+	if text.begins_with("\\if"): text = text.substr(1)
+	if text.begins_with("\\elif"): text = text.substr(1)
+	if text.begins_with("\\else"): text = text.substr(1)
+	if text.begins_with("\\while"): text = text.substr(1)
+	if text.begins_with("\\match"): text = text.substr(1)
+	if text.begins_with("\\when"): text = text.substr(1)
+	if text.begins_with("\\do"): text = text.substr(1)
+	if text.begins_with("\\set"): text = text.substr(1)
+	if text.begins_with("\\-"): text = text.substr(1)
+	if text.begins_with("\\~"): text = text.substr(1)
+	if text.begins_with("\\=>"): text = text.substr(1)
+	if text.begins_with("\\%"): text = text.substr(1)
 
 	# Attach any doc comments.
 	line.notes = tree_line.notes
@@ -736,7 +736,7 @@ func parse_character_and_dialogue(tree_line: DMTreeLine, line: DMCompiledLine, s
 	if " =><" in text:
 		# Because of when the return point needs to be known at runtime we need to split
 		# this line into two (otherwise the return point would be dependent on the balloon).
-		var goto_data: DMResolvedGotoData = DMResolvedGotoData.new(text, titles)
+		var goto_data: DMResolvedGotoData = DMResolvedGotoData.new(text, cues)
 		if goto_data.error:
 			result = add_error(tree_line.line_number, tree_line.indent + 3, goto_data.error)
 		if goto_data.next_id or goto_data.expression:
@@ -745,7 +745,7 @@ func parse_character_and_dialogue(tree_line: DMTreeLine, line: DMCompiledLine, s
 			goto_line.next_id = goto_data.next_id
 			line.next_id_expression = goto_data.expression
 			if line.type == DMConstants.TYPE_RESPONSE:
-				goto_line.next_id_after = get_next_matching_sibling_id(siblings, sibling_index, parent, func(s: DMTreeLine):
+				goto_line.next_id_after = get_next_matching_sibling_id(siblings, sibling_index, parent, func(s: DMTreeLine) -> bool:
 					# If this is coming from a response then we want the next non-response line.
 					return s.type != DMConstants.TYPE_RESPONSE
 				)
@@ -754,22 +754,22 @@ func parse_character_and_dialogue(tree_line: DMTreeLine, line: DMCompiledLine, s
 			goto_line.is_snippet = true
 			lines[goto_line.id] = goto_line
 			line.next_id = goto_line.id
-			add_reference_to_title(goto_data.title, goto_line)
+			add_reference_to_cue(goto_data.cue, goto_line)
 	elif " =>" in text:
-		var goto_data: DMResolvedGotoData = DMResolvedGotoData.new(text, titles)
+		var goto_data: DMResolvedGotoData = DMResolvedGotoData.new(text, cues)
 		if goto_data.error:
 			result = add_error(tree_line.line_number, tree_line.indent + 2, goto_data.error)
 		if goto_data.next_id or goto_data.expression:
 			text = goto_data.text_without_goto
 			line.next_id = goto_data.next_id
 			line.next_id_expression = goto_data.expression
-			add_reference_to_title(goto_data.title, line)
+			add_reference_to_cue(goto_data.cue, line)
 
 	# Handle the dialogue.
 	text = text.replace("\\:", "!ESCAPED_COLON!")
 	if ": " in text:
 		# If a character was given then split it out.
-		var bits: Array = Array(text.strip_edges().split(": "))
+		var bits: Array = Array(text.split(": "))
 		line.character = bits.pop_front().strip_edges().replace("!ESCAPED_COLON!", ":")
 		if not line.character in character_names:
 			character_names.append(line["character"])
@@ -792,14 +792,11 @@ func parse_character_and_dialogue(tree_line: DMTreeLine, line: DMCompiledLine, s
 	# Replace any newlines.
 	text = text.replace("\\n", "\n").strip_edges()
 
-	# If there was no manual translation key then just use the text itself (unless this is a
-	# child dialogue below another dialogue line).
-	if not tree_line.is_nested_dialogue and line.translation_key == "":
-		# Show an error if missing translations is enabled
-		if DMSettings.get_setting(DMSettings.MISSING_TRANSLATIONS_ARE_ERRORS, false):
-			result = add_error(tree_line.line_number, tree_line.indent, DMConstants.ERR_MISSING_ID)
-		else:
-			line.translation_key = text
+	# If there was no manual static ID and we have errors enabled then show an error
+	if not tree_line.is_nested_dialogue \
+		and line.static_id == "" \
+		and DMSettings.get_setting(DMSettings.MISSING_TRANSLATIONS_ARE_ERRORS, false):
+		result = add_error(tree_line.line_number, tree_line.indent, DMConstants.ERR_MISSING_ID)
 
 	line.text = text
 
@@ -812,12 +809,12 @@ func parse_character_and_dialogue(tree_line: DMTreeLine, line: DMCompiledLine, s
 
 
 ## Add a compilation error to the list. Returns the given error code.
-func add_error(line_number: int, column_number: int, error: int) -> Error:
-	errors.append({
+func add_error(line_number: int, column_number: int, error: int) -> int:
+	errors.append(DMError.new({
 		line_number = line_number,
 		column_number = column_number,
 		error = error
-	})
+	}))
 	return error
 
 
@@ -833,7 +830,7 @@ func get_autoload_names() -> PackedStringArray:
 	var project: ConfigFile = ConfigFile.new()
 	project.load("res://project.godot")
 	if project.has_section("autoload"):
-		return Array(project.get_section_keys("autoload")).filter(func(key): return key != "DialogueManager")
+		return Array(project.get_section_keys("autoload")).filter(func(key: String) -> bool: return key != "DialogueManager")
 
 	return autoloads
 
@@ -913,7 +910,7 @@ func get_line_type(raw_line: String) -> String:
 		return DMConstants.TYPE_COMMENT
 
 	if text.begins_with("~ "):
-		return DMConstants.TYPE_TITLE
+		return DMConstants.TYPE_CUE
 
 	if text.begins_with("if ") or text.begins_with("elif") or text.begins_with("else"):
 		return DMConstants.TYPE_CONDITION
@@ -967,7 +964,7 @@ func get_next_matching_sibling_id(siblings: Array[DMTreeLine], from_index: int, 
 
 ## Extract a static line ID from some text.
 func extract_static_line_id(text: String) -> String:
-		# Find a static translation key, eg. [ID:something]
+	# Find a static ID, eg. [ID:something]
 	var found: RegExMatch = regex.STATIC_LINE_ID_REGEX.search(text)
 	if found:
 		return found.strings[found.names.id]
@@ -977,8 +974,8 @@ func extract_static_line_id(text: String) -> String:
 
 ## Extract a condition (or inline condition) from some text.
 func extract_condition(text: String, is_wrapped: bool, index: int) -> Dictionary:
-	var regex: RegEx = regex.WRAPPED_CONDITION_REGEX if is_wrapped else regex.CONDITION_REGEX
-	var found: RegExMatch = regex.search(text)
+	var condition_regex: RegEx = regex.WRAPPED_CONDITION_REGEX if is_wrapped else regex.CONDITION_REGEX
+	var found: RegExMatch = condition_regex.search(text)
 
 	if found == null:
 		return {
@@ -1043,18 +1040,18 @@ func extract_mutation(text: String) -> Dictionary:
 		}
 
 
-## Keep track of lines referencing titles because their own next_id might not have been resolved yet.
-func add_reference_to_title(title: String, line: DMCompiledLine) -> void:
-	if title in [DMConstants.ID_END, DMConstants.ID_END_CONVERSATION, DMConstants.ID_NULL]: return
+## Keep track of lines referencing cues because their own next_id might not have been resolved yet.
+func add_reference_to_cue(cue: String, line: DMCompiledLine) -> void:
+	if cue in [DMConstants.ID_END, DMConstants.ID_END_CONVERSATION, DMConstants.ID_NULL]: return
 
-	if not _goto_lines.has(title):
-		_goto_lines[title] = []
-	_goto_lines[title].append(line)
+	if not _goto_lines.has(cue):
+		_goto_lines[cue] = []
+	_goto_lines[cue].append(line)
 
 
 ## Parse a nested block of child lines
 func parse_children(tree_line: DMTreeLine, line: DMCompiledLine) -> Array[DMCompiledLine]:
-	var children = parse_line_tree(tree_line, line)
+	var children: Array[DMCompiledLine] = parse_line_tree(tree_line, line)
 	if children.size() > 0:
 		line.next_id = children.front().id
 		# The last child should jump to the next line after its parent condition group
