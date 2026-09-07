@@ -757,10 +757,16 @@ func translate(data: Dictionary) -> String:
 		return data.text
 
 	var static_id: String = data.get(&"static_id", data.text)
-	if static_id.is_empty() or static_id == data.text:
-		return tr(data.text, "dialogue")
+	if DMSettings.get_setting(DMSettings.USE_STATIC_IDS_AS_TRANSLATION_KEYS, true):
+		if static_id.is_empty() or static_id == data.text:
+			return tr(data.text, "dialogue")
+		else:
+			return tr(static_id, "dialogue")
 	else:
-		return tr(static_id, "dialogue")
+		if static_id.is_empty() or static_id == data.text:
+			return tr(data.text)
+		else:
+			return tr(data.text, static_id)
 
 
 # Create a line of dialogue
@@ -860,16 +866,18 @@ func _send_state_to_debugger() -> void:
 
 	var serialised_context: Dictionary = {}
 	for key: String in _registered_contexts.keys():
-		serialised_context[key] = _get_serialised_state_node(
-			key,
-			_registered_contexts.get(key)
-		)
+		if is_instance_valid(_registered_contexts.get(key)):
+			serialised_context[key] = _get_serialised_state_node(
+				key,
+				_registered_contexts.get(key)
+			)
 	var serialised_autoloads: Dictionary = {}
 	for key: String in _autoloads.keys():
-		serialised_autoloads[key] = _get_serialised_state_node(
-			key,
-			_autoloads.get(key)
-		)
+		if is_instance_valid(_autoloads.get(key)):
+			serialised_autoloads[key] = _get_serialised_state_node(
+				key,
+				_autoloads.get(key)
+			)
 	EngineDebugger.send_message("dm:state", [serialised_context, serialised_autoloads])
 
 
