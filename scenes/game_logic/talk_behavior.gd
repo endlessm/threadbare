@@ -7,7 +7,7 @@ extends Node
 ##
 ## It displays the [member dialogue] passing the parent node and the player as the extra game
 ## state.
-## If [member title] is set, it will display the dialogue at that title.[br][br]
+## If [member title] is set, it will display the dialogue at that cue.[br][br]
 ## When the dialogue ends, it finishes the interaction by calling [method
 ## InteractArea.end_interaction].
 ## If the parent is an NPC, it sets the [member InteractArea.action] to "Talk to NAME",
@@ -16,7 +16,8 @@ extends Node
 ## The dialogue to display.
 @export var dialogue: DialogueResource = preload("uid://cc3paugq4mma4")
 
-## Title within [member dialogue] to play. If empty, start at the top of [member dialogue].
+# TODO: Rename to cue
+## Cue within [member dialogue] to play. If empty, start at the top of [member dialogue].
 @export var title: String = "":
 	set = _set_title
 
@@ -52,7 +53,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if not interact_area:
 		warnings.append("Interact Area property must be set.")
 	if dialogue and title and title not in dialogue.get_cues():
-		warnings.append("Dialogue Title '%s' does not exist" % title)
+		warnings.append("Dialogue Cue '%s' does not exist" % title)
 	return warnings
 
 
