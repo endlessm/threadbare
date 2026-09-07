@@ -27,8 +27,7 @@ var _valid := false
 
 
 func _ready() -> void:
-	var style := StyleBoxFlat.new()
-	style.bg_color = get_theme_color("dark_color_2", "Editor")
+	var style := get_theme_stylebox("PanelForeground", "EditorStyles")
 	panel.add_theme_stylebox_override("panel", style)
 	title_edit.grab_focus()
 	errors_label.add_theme_color_override(
@@ -118,4 +117,5 @@ func _revalidate() -> void:
 
 	errors_label.text = "\n".join(errors)
 	_valid = errors.size() == 0
+	errors_label.visible = not _valid
 	create_button.disabled = not _valid
