@@ -30,14 +30,7 @@ var _valid := false
 
 
 func _ready() -> void:
-	guide_button.icon = EditorInterface.get_editor_theme().get_icon("ExternalLink", "EditorIcons")
-
-	var style := get_theme_stylebox("PanelForeground", "EditorStyles")
-	panel.add_theme_stylebox_override("panel", style)
 	title_edit.grab_focus()
-	errors_label.add_theme_color_override(
-		"default_color", get_theme_color("warning_color", "Editor")
-	)
 
 	_invalid_char_regex = RegEx.new()
 	var error := _invalid_char_regex.compile("\\W+", true)
@@ -45,13 +38,42 @@ func _ready() -> void:
 
 	full_path_control.text = storyquests_path
 
+	_apply_theming()
+
+
+# Apply styles that match the current editor theme, whether we are editing this
+# dialog or showing it.
+func _apply_theming() -> void:
+	# When showing the dialog, this will be inherited; but when editing, without
+	# this the dialog will be shown with the game's theme rather than the
+	# editor's.
+	theme = EditorInterface.get_editor_theme()
+
+	guide_button.icon = get_theme_icon("ExternalLink", "EditorIcons")
+
+	var style := get_theme_stylebox("PanelForeground", "EditorStyles")
+	panel.add_theme_stylebox_override("panel", style)
+
+	errors_label.add_theme_color_override(
+		"default_color", get_theme_color("warning_color", "Editor")
+	)
+
+
+# Don't persist resources from the editor theme of whomever happens to be
+# editing this dialog.
+func _clear_theming() -> void:
+	theme = null
+	guide_button.icon = null
+	panel.remove_theme_stylebox_override("panel")
+	errors_label.remove_theme_color_override("default_color")
+
 
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_EDITOR_PRE_SAVE:
-			guide_button.icon = null
-			panel.remove_theme_stylebox_override("panel")
-			errors_label.remove_theme_color_override("default_color")
+			_clear_theming()
+		NOTIFICATION_EDITOR_POST_SAVE:
+			_apply_theming()
 
 
 func _input(event: InputEvent) -> void:
