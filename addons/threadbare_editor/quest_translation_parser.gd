@@ -13,7 +13,7 @@ const DESCRIPTION_COMMENT := "Quest description"
 
 
 func _get_recognized_extensions() -> PackedStringArray:
-	return ["tres"]
+	return ResourceLoader.get_recognized_extensions_for_type("Quest")
 
 
 func _parse_file(path: String) -> Array[PackedStringArray]:
