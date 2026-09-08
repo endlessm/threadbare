@@ -9,7 +9,7 @@ extends Node2D
 ##
 ## Coordinate an array of townies to join the StoryWeaver at the Eternal Loom
 ## for listening the retelling.
-## Call [method RetellingTownie.go_to_the_loom]on each townie so they join.
+## Call [method RetellingTownie.go_to_the_loom] on each townie so they join.
 ## Call [method EternalLoom.show_retelling_dialogue] when all townies have joined.
 ## May call [method RetellingTownie.become_helper] on one townie (at random).
 ## Call [method RetellingTownie.leave_the_loom] on each townie so they leave.
