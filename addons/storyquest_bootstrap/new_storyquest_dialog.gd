@@ -6,6 +6,8 @@ extends Window
 signal create_storyquest(title: String, description: String, filename: String)
 signal cancel
 
+const HELP_URL := "https://github.com/endlessm/threadbare/discussions/599"
+
 @export var storyquests_path: String
 @export var validate_title: Callable
 @export var validate_filename: Callable
@@ -20,13 +22,16 @@ var _valid := false
 @onready var panel: Panel = %Panel
 @onready var title_edit: LineEdit = %TitleEdit
 @onready var folder_edit: LineEdit = %FolderEdit
-@onready var full_path_label: Label = %FullPathLabel
+@onready var full_path_control: Control = %FullPath
 @onready var errors_label: RichTextLabel = %ErrorsLabel
 @onready var description_edit: TextEdit = %DescriptionEdit
+@onready var guide_button: Button = %GuideButton
 @onready var progress_bar: ProgressBar = %ProgressBar
 
 
 func _ready() -> void:
+	guide_button.icon = EditorInterface.get_editor_theme().get_icon("ExternalLink", "EditorIcons")
+
 	var style := get_theme_stylebox("PanelForeground", "EditorStyles")
 	panel.add_theme_stylebox_override("panel", style)
 	title_edit.grab_focus()
@@ -37,6 +42,16 @@ func _ready() -> void:
 	_invalid_char_regex = RegEx.new()
 	var error := _invalid_char_regex.compile("\\W+", true)
 	assert(error == OK, error_string(error))
+
+	full_path_control.text = storyquests_path
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_EDITOR_PRE_SAVE:
+			guide_button.icon = null
+			panel.remove_theme_stylebox_override("panel")
+			errors_label.remove_theme_color_override("default_color")
 
 
 func _input(event: InputEvent) -> void:
@@ -89,7 +104,7 @@ func _on_title_edit_text_changed(new_text: String) -> void:
 
 func _on_folder_edit_text_changed(new_text: String) -> void:
 	_filename = new_text
-	full_path_label.text = storyquests_path.path_join(_filename)
+	full_path_control.text = storyquests_path.path_join(_filename)
 	_revalidate()
 
 
@@ -119,3 +134,7 @@ func _revalidate() -> void:
 	_valid = errors.size() == 0
 	errors_label.visible = not _valid
 	create_button.disabled = not _valid
+
+
+func _on_guide_button_pressed() -> void:
+	OS.shell_open(HELP_URL)
