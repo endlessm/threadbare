@@ -18,7 +18,8 @@ var elders: Array[Elder]
 
 @onready var interact_area: InteractArea = %InteractArea
 @onready var talk_behavior: TalkBehavior = %TalkBehavior
-@onready var loom_offering_animation_player: AnimationPlayer = %LoomOfferingAnimationPlayer
+@onready var loom_offering_animation: LoomOfferingAnimation = %LoomOfferingAnimation
+
 
 
 func _find_elder(quest: Quest) -> Elder:
@@ -90,8 +91,8 @@ func on_offering_succeeded() -> void:
 	if load_error != OK:
 		push_error("Failed to start loading %s: %s" % [cutscene_path, error_string(load_error)])
 
-	loom_offering_animation_player.play(&"loom_offering")
-	await loom_offering_animation_player.animation_finished
+	loom_offering_animation.play_loom_animation()
+	await loom_offering_animation.animation_finished
 	GameState.quest.inventory.clear_inventory()
 
 	if load_error != OK:
