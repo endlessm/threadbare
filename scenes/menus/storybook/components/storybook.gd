@@ -21,6 +21,7 @@ enum ContentTab { TOC, EN, ES, QUESTS }
 
 var _current_spread_index: int
 var _navigation_locked: bool = false
+var _previous_content_spread_index: int = 0
 
 var _quests_per_language: Dictionary[String, Array] = {}
 var _bookmark_indexes: Dictionary[ContentTab, int] = {}
@@ -31,7 +32,6 @@ var _show_language_bookmarks: bool
 
 @onready var quest_container: ScrollContainer = %QuestContainer
 @onready var storybook_page: StorybookPage = %StorybookPage
-@onready var back_button: Button = %BackButton
 @onready var animated_book: AnimatedSprite2D = %AnimatedSprite2D
 @onready var ui_container: Control = %StoryBookContent
 
@@ -143,11 +143,6 @@ func _populate_quest_lists() -> void:
 		spacer.custom_minimum_size.x = 500
 		right_quest_list.add_child(spacer)
 
-	#Connect UI Focus back to the back button safely
-	if previous_button:
-		previous_button.focus_neighbor_bottom = back_button.get_path()
-		back_button.focus_neighbor_top = previous_button.get_path()
-
 
 ## Method to build individual buttons (StoryQuests) and manage the focus chains
 func _create_quest_button(
@@ -168,7 +163,6 @@ func _create_quest_button(
 	button.set_meta("quest", quest)
 
 	button.pressed.connect(_on_quest_button_pressed.bind(button))
-	button.focus_next = back_button.get_path()
 	button.focus_entered.connect(quest_container.ensure_control_visible.bind(button))
 
 	if prev_btn:
@@ -204,15 +198,7 @@ func _update_page_visibility() -> void:
 				if not storybook_page.play_button.has_focus():
 					storybook_page.play_button.grab_focus()
 
-			back_button.focus_previous = storybook_page.play_button.get_path()
-			storybook_page.play_button.focus_next = back_button.get_path()
-
 			if storybook_page.restart_button.visible:
-				back_button.focus_next = storybook_page.restart_button.get_path()
-				back_button.focus_neighbor_right = storybook_page.restart_button.get_path()
-				storybook_page.restart_button.focus_previous = back_button.get_path()
-				storybook_page.restart_button.focus_neighbor_left = back_button.get_path()
-
 				storybook_page.restart_button.focus_next = storybook_page.play_button.get_path()
 				storybook_page.restart_button.focus_neighbor_right = (
 					storybook_page.play_button.get_path()
@@ -221,11 +207,6 @@ func _update_page_visibility() -> void:
 				storybook_page.play_button.focus_neighbor_left = (
 					storybook_page.restart_button.get_path()
 				)
-			else:
-				back_button.focus_next = storybook_page.play_button.get_path()
-				back_button.focus_neighbor_right = storybook_page.play_button.get_path()
-				storybook_page.play_button.focus_neighbor_left = back_button.get_path()
-				storybook_page.play_button.focus_previous = back_button.get_path()
 
 
 func _switch_to_page(spread_index: int) -> void:
@@ -270,7 +251,12 @@ func _on_right_button_pressed() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"ui_cancel"):
 		get_viewport().set_input_as_handled()
-		selected.emit(null, false)
+
+		if _current_spread_index >= _bookmark_indexes[ContentTab.QUESTS]:
+			_switch_to_page(_previous_content_spread_index)
+		else:
+			selected.emit(null, false)
+
 	elif event.is_action_pressed("next_tab"):
 		_on_right_button_pressed()
 	elif event.is_action_pressed("previous_tab"):
@@ -280,15 +266,12 @@ func _input(event: InputEvent) -> void:
 func _on_quest_button_pressed(button: Button) -> void:
 	var quest: Quest = button.get_meta("quest")
 	var quest_index := quests.find(quest)
+	_previous_content_spread_index = _current_spread_index
 	_switch_to_page(_bookmark_indexes[ContentTab.QUESTS] + quest_index)
 
 
 func _on_storybook_page_selected(quest: Quest, restart: bool) -> void:
 	selected.emit(quest, restart)
-
-
-func _on_back_button_pressed() -> void:
-	selected.emit(null, false)
 
 
 func _switch_to_bookmark(target_tab: ContentTab) -> void:

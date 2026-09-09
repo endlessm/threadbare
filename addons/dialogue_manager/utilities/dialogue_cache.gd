@@ -1,15 +1,14 @@
 class_name DMCache extends RefCounted
 
 
-# Keep track of errors and dependencies
-# {
-# 	<dialogue file path> = {
-# 		path = <dialogue file path>,
-#		titles = {}
-# 		dependencies = [<dialogue file path>, <dialogue file path>],
-# 		errors = [<error>, <error>]
-# 	}
-# }
+## Keep track of errors and dependencies
+## {
+## 	<dialogue file path> = {
+## 		path = <dialogue file path>,
+## 		dependencies = [<dialogue file path>, <dialogue file path>],
+## 		errors = [<error>, <error>]
+## 	}
+## }
 static var _cache: Dictionary = {}
 
 static var _update_dependency_timer: Timer
@@ -17,16 +16,16 @@ static var _update_dependency_paths: PackedStringArray = []
 
 static var _files_marked_for_reimport: PackedStringArray = []
 
-# Keep track of used static IDs
-# {
-# 	<static ID> = <file path>
-# }
-# Before compiling a file, remove any static IDs with a file path that matches
-# the file
+## Keep track of used static IDs
+## {
+## 	<static ID> = <file path>
+## }
+## Before compiling a file, remove any static IDs with a file path that matches
+## the file
 static var known_static_ids: Dictionary = {}
 
 
-# Build the initial cache for dialogue files
+## Build the initial cache for dialogue files
 static func prepare() -> void:
 	_update_dependency_timer = Timer.new()
 	_update_dependency_timer.timeout.connect(_on_dependency_timer_timeout)
@@ -42,18 +41,25 @@ static func prepare() -> void:
 		var text: String = FileAccess.get_file_as_string(file_path)
 		var lines: PackedStringArray = text.split("\n")
 		for i: int in range(0, lines.size()):
-			var line = lines[i]
-			var found = key_regex.search(line)
+			var line: String = lines[i]
+			var found: RegExMatch = key_regex.search(line)
 			if found:
 				known_static_ids[found.strings[found.names.get("key")]] = file_path
 
 
+## Add some files to the queue for reimporting.
 static func mark_files_for_reimport(files: PackedStringArray) -> void:
 	for file: String in files:
 		if not _files_marked_for_reimport.has(file):
 			_files_marked_for_reimport.append(file)
 
 
+## Attempt to reimport all known dialogue files.
+static func reimport_all_files() -> void:
+	reimport_files(_get_dialogue_files_in_filesystem())
+
+
+## Attempt to reimport any files marked for reimporting.
 static func reimport_files(and_files: PackedStringArray = []) -> void:
 	for file: String in and_files:
 		if not _files_marked_for_reimport.has(file):
@@ -93,36 +99,36 @@ static func _schedule_deferred_reimport() -> void:
 static func add_file(path: String, compile_result: DMCompilerResult = null) -> void:
 	_cache[path] = {
 		path = path,
-		titles = {},
+		cues = {},
 		dependencies = [],
 		errors = []
 	}
 
 	if compile_result != null:
-		_cache[path].titles = compile_result.titles
-		_cache[path].dependencies = Array(compile_result.imported_paths).filter(func(d): return d != path)
+		_cache[path].cues = compile_result.cues
+		_cache[path].dependencies = Array(compile_result.imported_paths).filter(func(d: String) -> bool: return d != path)
 		_cache[path].compiled_at = Time.get_ticks_msec()
 
 	queue_updating_dependencies(path)
 
 
-## Get the file paths in the cache
+## Get the file paths in the cache.
 static func get_files() -> PackedStringArray:
 	return _cache.keys()
 
 
-## Get the data for a file path
+## Get the data for a file path.
 static func get_file_data(key: String) -> Dictionary:
 	return _cache.get(key, {})
 
 
-## Check if a file is known to the cache
+## Check if a file is known to the cache.
 static func has_file(path: String) -> bool:
 	return _cache.has(path)
 
 
-## Remember any errors in a dialogue file
-static func add_errors_to_file(path: String, errors: Array[Dictionary]) -> void:
+## Remember any errors in a dialogue file.
+static func add_errors_to_file(path: String, errors: Array[DMError]) -> void:
 	if _cache.has(path):
 		_cache[path].errors = errors
 	else:
@@ -134,26 +140,29 @@ static func add_errors_to_file(path: String, errors: Array[Dictionary]) -> void:
 		}
 
 
-## Get a list of files that have errors
+## Get a list of files that have errors.
 static func get_files_with_errors() -> Array[Dictionary]:
 	var files_with_errors: Array[Dictionary] = []
-	for dialogue_file in _cache.values():
+	for dialogue_file: Dictionary in _cache.values():
 		if dialogue_file and dialogue_file.errors.size() > 0:
 			files_with_errors.append(dialogue_file)
 	return files_with_errors
 
 
-## Queue a file to have its dependencies checked
+## Queue a file to have its dependencies checked.
 static func queue_updating_dependencies(of_path: String) -> void:
 	if _update_dependency_paths.has(of_path): return
+	if is_instance_valid(_update_dependency_timer):
+		_update_dependency_timer.stop()
 
-	_update_dependency_timer.stop()
 	if not _update_dependency_paths.has(of_path):
 		_update_dependency_paths.append(of_path)
-	_update_dependency_timer.start(0.5)
+
+	if is_instance_valid(_update_dependency_timer):
+		_update_dependency_timer.start(0.5)
 
 
-## Update any references to a file path that has moved
+## Update any references to a file path that has moved.
 static func move_file_path(from_path: String, to_path: String) -> void:
 	if not _cache.has(from_path): return
 
@@ -162,19 +171,19 @@ static func move_file_path(from_path: String, to_path: String) -> void:
 	_cache.erase(from_path)
 
 
-## Get every dialogue file that imports on a file of a given path
+## Get every dialogue file that imports on a file of a given path.
 static func get_files_with_dependency(imported_path: String) -> Array:
-	return _cache.values().filter(func(d): return d.dependencies.has(imported_path))
+	return _cache.values().filter(func(d: Dictionary) -> bool: return d.dependencies.has(imported_path))
 
 
-## Get any paths that are dependent on a given path
+## Get any paths that are dependent on a given path.
 static func get_dependent_paths_for_reimport(on_path: String) -> PackedStringArray:
 	return get_files_with_dependency(on_path) \
-		.filter(func(d): return Time.get_ticks_msec() - d.get("compiled_at", 0) > 3000) \
-		.map(func(d): return d.path)
+		.filter(func(d: Dictionary) -> bool: return Time.get_ticks_msec() - d.get("compiled_at", 0) > 3000) \
+		.map(func(d: Dictionary) -> String: return d.path)
 
 
-# Recursively find any dialogue files in a directory
+# Recursively find any dialogue files in a directory.
 static func _get_dialogue_files_in_filesystem(path: String = "res://") -> PackedStringArray:
 	var files: PackedStringArray = []
 
@@ -204,12 +213,12 @@ static func _on_dependency_timer_timeout() -> void:
 	var import_regex: RegEx = RegEx.create_from_string("import \"(?<path>.*?)\"")
 	var file: FileAccess
 	var found_imports: Array[RegExMatch]
-	for path in _update_dependency_paths:
+	for path: String in _update_dependency_paths:
 		# Open the file and check for any "import" lines
 		file = FileAccess.open(path, FileAccess.READ)
 		found_imports = import_regex.search_all(file.get_as_text())
 		var dependencies: PackedStringArray = []
-		for found in found_imports:
+		for found: RegExMatch in found_imports:
 			dependencies.append(found.strings[found.names.path])
 		_cache[path].dependencies = dependencies
 	_update_dependency_paths.clear()

@@ -11,11 +11,10 @@ static func compile_string(text: String, path: String) -> DMCompilerResult:
 	result.imported_paths = compilation.imported_paths
 	result.using_states = compilation.using_states
 	result.character_names = compilation.character_names
-	result.titles = compilation.titles
-	result.first_title = compilation.first_title
+	result.cues = compilation.cues
+	result.first_cue = compilation.first_cue
 	result.errors = compilation.errors
 	result.lines = compilation.data
-	result.raw_text = text
 
 	return result
 
@@ -36,7 +35,7 @@ static func get_static_line_id(text: String) -> String:
 static func extract_translatable_string(text: String) -> String:
 	var compilation: DMCompilation = DMCompilation.new()
 
-	var tree_line = DMTreeLine.new("")
+	var tree_line: DMTreeLine = DMTreeLine.new("")
 	tree_line.text = text
 	var line: DMCompiledLine = DMCompiledLine.new("", compilation.get_line_type(text))
 	compilation.parse_character_and_dialogue(tree_line, line, [tree_line], 0, null)
@@ -50,9 +49,9 @@ static func extract_mutation(text: String) -> Dictionary:
 	return compilation.extract_mutation(text)
 
 
-## Get the known titles in a dialogue script.
-static func get_titles_in_text(text: String, path: String) -> Dictionary:
+## Get the known cues in a dialogue script.
+static func get_cues_in_text(text: String, path: String) -> Dictionary:
 	var compilation: DMCompilation = DMCompilation.new()
-	compilation.find_imported_titles(text, path)
+	compilation.find_imported_cues(text, path)
 	compilation.build_line_tree(text.split("\n"))
-	return compilation.titles
+	return compilation.cues
