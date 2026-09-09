@@ -21,7 +21,6 @@ var elders: Array[Elder]
 @onready var loom_offering_animation: LoomOfferingAnimation = %LoomOfferingAnimation
 
 
-
 func _find_elder(quest: Quest) -> Elder:
 	for elder in elders:
 		if quest.resource_path.begins_with(elder.quest_directory):
