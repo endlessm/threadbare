@@ -32,6 +32,8 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 ## [GPUParticles2D] scene to spawn when tiles are consumed.
 @export var void_particles: PackedScene
 
+@export var state_sounds: Dictionary[State, AudioStream] = {}
+
 var node_to_follow: Node2D:
 	set = _set_node_to_follow
 
@@ -46,6 +48,7 @@ var _live_particles: int = 0
 @onready var follow_walk_behavior: NavigationFollowWalkBehavior = %NavigationFollowWalkBehavior
 @onready var alert_animation: AnimationPlayer = %AlertAnimation
 @onready var particles_canvas_group: CanvasGroup = %ParticlesCanvasGroup
+@onready var void_sfx: AudioStreamPlayer = $Void_SFX
 
 
 func _set_idle_patrol_path(new_path: Path2D) -> void:
@@ -66,6 +69,9 @@ func _set_state(new_state: State) -> void:
 	if not is_node_ready():
 		return
 
+	void_sfx.stream = state_sounds[state]
+	void_sfx.play()
+
 	match state:
 		State.IDLE:
 			path_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
@@ -77,6 +83,7 @@ func _set_state(new_state: State) -> void:
 		State.DEFEATED:
 			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			follow_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			await void_sfx.finished
 
 
 func _ready() -> void:
