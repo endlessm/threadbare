@@ -13,6 +13,7 @@ extends Node
 @onready var button_sfx_player: AudioStreamPlayer = %ButtonSFXPlayer
 @onready var toggle_on_sfx_player: AudioStreamPlayer = %ToggleOnSFXPlayer
 @onready var toggle_off_sfx_player: AudioStreamPlayer = %ToggleOffSFXPlayer
+@onready var hover_sfx_player: AudioStreamPlayer = %HoverSFXPlayer
 
 
 func _enter_tree() -> void:
@@ -20,6 +21,9 @@ func _enter_tree() -> void:
 
 
 func _on_node_added(node: Node) -> void:
+	if node is BaseButton and !node.is_connected("mouse_entered", _on_button_hovered):
+		node.mouse_entered.connect(_on_button_hovered)
+
 	if node is CheckButton and !node.is_connected("toggled", _on_toggle_pressed):
 		node.toggled.connect(_on_toggle_pressed)
 
@@ -29,8 +33,12 @@ func _on_node_added(node: Node) -> void:
 	elif node is Slider and !node.is_connected("value_changed", _on_slider_value_changed):
 		node.value_changed.connect(_on_slider_value_changed)
 
-	elif node is TabBar and !node.is_connected("tab_clicked", _on_slider_value_changed):
+	elif node is TabBar and !node.is_connected("tab_clicked", _on_tab_clicked):
 		node.tab_clicked.connect(_on_tab_clicked)
+
+
+func _on_button_hovered() -> void:
+	hover_sfx_player.play()
 
 
 func _on_toggle_pressed(toggled_on: bool) -> void:
