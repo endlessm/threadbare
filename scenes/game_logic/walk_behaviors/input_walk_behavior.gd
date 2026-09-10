@@ -10,6 +10,9 @@ extends BaseCharacterBehavior
 ## Emitted when the character starts or stops running.
 signal running_changed(is_running: bool)
 
+## Emitted when the character stuck state changes.
+signal stuck_changed(is_stuck: bool)
+
 ## Parameters controlling the speed at which this character walks. If unset, the default values of
 ## [CharacterSpeeds] are used.
 @export var speeds: CharacterSpeeds
@@ -21,8 +24,9 @@ var input_vector: Vector2
 var is_running: bool:
 	set = _set_is_running
 
-var _is_stuck: bool
-var _last_safe_position: Vector2
+## True if the character still collides after moving.
+var is_stuck: bool:
+	set = _set_is_stuck
 
 
 func _set_is_running(new_is_running: bool) -> void:
@@ -30,6 +34,13 @@ func _set_is_running(new_is_running: bool) -> void:
 		return
 	is_running = new_is_running
 	running_changed.emit(is_running)
+
+
+func _set_is_stuck(new_is_stuck: bool) -> void:
+	if is_stuck == new_is_stuck:
+		return
+	is_stuck = new_is_stuck
+	stuck_changed.emit(is_stuck)
 
 
 func _ready() -> void:
@@ -58,12 +69,7 @@ func _physics_process(delta: float) -> void:
 
 	# Check if the player got stuck (is colliding after the move_and_slide).
 	var collision := character.move_and_collide(Vector2.ZERO, true)
-	_is_stuck = collision != null
-	if _is_stuck:
-		character.velocity = Vector2.ZERO
-		character.position = _last_safe_position
-	else:
-		_last_safe_position = character.global_position
+	is_stuck = collision != null
 
 	# When using an analogue joystick, this can be false even if the player is
 	# holding the "run" button, because the joystick may be inclined only slightly.
