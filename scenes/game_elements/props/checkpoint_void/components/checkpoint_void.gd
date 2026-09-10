@@ -14,6 +14,9 @@ static var saved_consumed_tiles: Array[Vector2i] = []
 static var pending_consumed_tiles: Array[Vector2i] = []
 static var _tracker_instance: Node = null
 
+# Global array to combine persistent enemies from ALL checkpoints in the current scene.
+static var _all_tracked_enemies: Array[CharacterBody2D] = []
+
 ## Specific enemies that should retain their position and state across scene reloads.
 @export var persistent_enemies: Array[CharacterBody2D]
 
@@ -33,23 +36,27 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 		
-	# Designate a single instance as the tracker to avoid repeating calculations
-	# when multiple checkpoints exist in the same level.
+	# Designate a single instance as the tracker and reset global arrays upon scene reload.
 	if _tracker_instance == null or not is_instance_valid(_tracker_instance):
 		_tracker_instance = self
 		pending_consumed_tiles.clear()
+		_all_tracked_enemies.clear()
+		
+	# Compile all persistent enemies from every checkpoint into a single global tracker.
+	for enemy: CharacterBody2D in persistent_enemies:
+		if is_instance_valid(enemy) and not _all_tracked_enemies.has(enemy):
+			_all_tracked_enemies.append(enemy)
 		
 	if saved_consumed_tiles.size() > 0 and shared_void_layer != null:
 		if shared_void_layer.has_method("consume_cells"):
 			shared_void_layer.consume_cells(saved_consumed_tiles)
 			
-	# Deferring this call ensures that any initialization in the enemy's _ready
-	# function finishes before overwriting its variables.
 	call_deferred("_restore_enemies")
 
 
 func _restore_enemies() -> void:
-	for enemy: CharacterBody2D in persistent_enemies:
+	# Iterate over the global pool to restore everyone.
+	for enemy: CharacterBody2D in _all_tracked_enemies:
 		if not is_instance_valid(enemy):
 			continue
 			
@@ -57,18 +64,15 @@ func _restore_enemies() -> void:
 		if saved_enemy_states.has(path_key):
 			var data: Dictionary = saved_enemy_states[path_key]
 			
-			# Only the void-spreading enemies will trigger this, since guards are never saved as defeated.
 			if data.get("is_defeated", false):
 				enemy.queue_free()
 				continue
 				
 			enemy.global_position = data["position"]
 			
-			# Prevent a massive particle burst upon reload by syncing the last recorded position.
 			if "_last_position" in enemy:
 				enemy.set("_last_position", data["position"])
 			
-			# Restore specific patrol variables if the enemy acts as a guard.
 			if data.get("is_guard", false):
 				enemy.set("current_patrol_point_idx", data["current_idx"])
 				enemy.set("previous_patrol_point_idx", data["prev_idx"])
@@ -83,19 +87,17 @@ func _process(_delta: float) -> void:
 	if _tracker_instance != self or shared_void_layer == null:
 		return
 		
-	for enemy: CharacterBody2D in persistent_enemies:
+	# The tracker instance now tracks ALL enemies from ALL checkpoints.
+	for enemy: CharacterBody2D in _all_tracked_enemies:
 		if not is_instance_valid(enemy):
 			continue
 			
 		var is_guard: bool = "current_patrol_point_idx" in enemy
 		var state: int = enemy.get("state")
 		
-		# Ignore defeated enemies. VoidSpreadingEnemy uses state 3 for DEFEATED.
-		# Guards do not have a defeated state, so we skip this check for them.
 		if not is_guard and state == 3:
 			continue
 			
-		# Replicate the void calculation logic for living enemies.
 		if shared_void_layer.has_method("coord_for") and shared_void_layer.has_method("get_neighbor_cell"):
 			var coord: Vector2i = shared_void_layer.coord_for(enemy)
 			var coords: Array[Vector2i] = [coord]
@@ -114,25 +116,22 @@ func activate() -> void:
 			saved_consumed_tiles.append(c)
 	pending_consumed_tiles.clear()
 	
-	for enemy: CharacterBody2D in persistent_enemies:
-		var path_key := str(enemy.get_path())
+	# Save the snapshot of ALL tracked enemies, regardless of which checkpoint is activated.
+	for enemy: CharacterBody2D in _all_tracked_enemies:
 		if not is_instance_valid(enemy):
 			continue
 			
+		var path_key := str(enemy.get_path())
 		var is_guard: bool = "current_patrol_point_idx" in enemy
 		var state: int = enemy.get("state")
-		
-		# Guards are never defeated, only void-spreading enemies (state 3) can be.
 		var is_defeated: bool = not is_guard and state == 3
 		
-		# Base dictionary data shared across all supported enemy types.
 		var enemy_data := {
 			"position": enemy.global_position,
 			"is_guard": is_guard,
 			"is_defeated": is_defeated
 		}
 		
-		# Save additional patrol data if the enemy acts as a guard.
 		if is_guard and not is_defeated:
 			var movement: Node = enemy.get_node_or_null("%GuardMovement")
 			var dest: Vector2 = movement.get("destination") if movement else enemy.global_position
