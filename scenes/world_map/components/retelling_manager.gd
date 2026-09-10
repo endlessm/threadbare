@@ -45,10 +45,6 @@ func _on_eternal_loom_retelling_started() -> void:
 	# The slowest townie determines the target arrival time.
 	var target_time: float = float(travel_times.max())
 
-	print("================================")
-	print("Tiempo objetivo: ", target_time, " s")
-	print("================================")
-
 	# Start each townie with a delay so they arrive together.
 	for i in range(townies.size()):
 		var townie: RetellingTownie = townies[i]
