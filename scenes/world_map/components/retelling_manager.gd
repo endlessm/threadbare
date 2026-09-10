@@ -54,14 +54,6 @@ func _on_eternal_loom_retelling_started() -> void:
 		var townie: RetellingTownie = townies[i]
 		var delay: float = target_time - travel_times[i]
 
-		print(
-			"Townie: ",
-			townie.name,
-			" | Retraso: ",
-			delay,
-			" s"
-		)
-
 		_start_townie_after_delay(townie, delay)
 
 
