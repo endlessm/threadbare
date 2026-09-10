@@ -30,12 +30,16 @@ func play_loom_animation_debug() -> void:
 	var arr: Array[InventoryItem]
 	for i in range(debug_thread_count):
 		var temp_item := InventoryItem.new()
-		temp_item.type = InventoryItem.ItemType.MEMORY
+		temp_item.type = InventoryItem.ItemType.values().pick_random()
 		arr.append(temp_item)
 	_loom_animation_play(arr)
 
 
 func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
+	if thread_list.is_empty():
+		animation_finished.emit()
+		return
+
 	var animation_points := animation_path.curve.get_baked_points()
 
 	loom_offering_sound.play()
