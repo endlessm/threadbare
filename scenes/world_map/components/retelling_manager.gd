@@ -69,9 +69,7 @@ func _start_townie_after_delay(
 	townie: RetellingTownie,
 	delay: float
 ) -> void:
-	# Connect before starting the townie so the arrival signal is captured.
-	if not townie.loom_reached.is_connected(_on_loom_reached.bind(townie)):
-		townie.loom_reached.connect(_on_loom_reached.bind(townie))
+	townie.loom_reached.connect(_on_loom_reached, CONNECT_ONE_SHOT | CONNECT_APPEND_SOURCE_OBJECT)
 
 	if delay > 0.0:
 		await get_tree().create_timer(delay).timeout
