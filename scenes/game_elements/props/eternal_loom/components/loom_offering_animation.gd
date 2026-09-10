@@ -30,7 +30,9 @@ func play_loom_animation_debug() -> void:
 	var arr: Array[InventoryItem]
 	for i in range(debug_thread_count):
 		var temp_item := InventoryItem.new()
-		temp_item.type = InventoryItem.ItemType.values().pick_random()
+		var item_types := InventoryItem.ItemType.values()
+		item_types.remove_at(3)  ## Remove the 'None' Item Type
+		temp_item.type = item_types.pick_random()
 		arr.append(temp_item)
 	_loom_animation_play(arr)
 
@@ -40,7 +42,15 @@ func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
 		animation_finished.emit()
 		return
 
-	var animation_points := animation_path.curve.get_baked_points()
+	## Calculating the animation points
+	var animation_points: Array[Vector2]
+
+	var curve_length := animation_path.curve.get_baked_length()
+	var separation := curve_length / thread_list.size()
+	for i in thread_list.size():
+		var offset := separation * i
+		var point := animation_path.curve.sample_baked(offset)
+		animation_points.append(point)
 
 	loom_offering_sound.play()
 
@@ -52,6 +62,7 @@ func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
 	var counter: int = 0
 	for thread in thread_list:
 		var sprite := Sprite2D.new()
+
 		sprite.texture = thread.get_world_texture()
 
 		sprite.position = animation_points[counter * separator]
