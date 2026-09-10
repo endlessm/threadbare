@@ -9,13 +9,13 @@ class_name CheckpointVoid
 ## (like guards or void-spreading enemies) and prevents them, along with consumed tiles, 
 ## from resetting when the scene is reloaded.
 
+# Store everything including position, paths, and consumed tiles in a single dictionary 
+# bound strictly to each enemy to prevent synchronization issues.
 static var saved_enemy_states: Dictionary = {}
-static var saved_consumed_tiles: Array[Vector2i] = []
-static var pending_consumed_tiles: Array[Vector2i] = []
-static var _tracker_instance: Node = null
 
-# Global array to combine persistent enemies from ALL checkpoints in the current scene.
-static var _all_tracked_enemies: Array[CharacterBody2D] = []
+# Temporary dictionary to track tiles for each enemy individually.
+var pending_consumed_tiles: Dictionary = {}
+var _is_restoring: bool = false
 
 ## Specific enemies that should retain their position and state across scene reloads.
 @export var persistent_enemies: Array[CharacterBody2D]
@@ -36,27 +36,28 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 		
-	# Designate a single instance as the tracker and reset global arrays upon scene reload.
-	if _tracker_instance == null or not is_instance_valid(_tracker_instance):
-		_tracker_instance = self
-		pending_consumed_tiles.clear()
-		_all_tracked_enemies.clear()
+	pending_consumed_tiles.clear()
 		
-	# Compile all persistent enemies from every checkpoint into a single global tracker.
-	for enemy: CharacterBody2D in persistent_enemies:
-		if is_instance_valid(enemy) and not _all_tracked_enemies.has(enemy):
-			_all_tracked_enemies.append(enemy)
-		
-	if saved_consumed_tiles.size() > 0 and shared_void_layer != null:
+	# Gather all saved tiles from all active enemies assigned to this checkpoint.
+	var all_saved_tiles: Array[Vector2i] = []
+	for path_key: String in saved_enemy_states:
+		var data: Dictionary = saved_enemy_states[path_key]
+		if data.has("tiles"):
+			for c: Vector2i in data["tiles"]:
+				if not all_saved_tiles.has(c):
+					all_saved_tiles.append(c)
+					
+	# Consume the TileMap cells before placing the enemies to prevent visual glitches.
+	if all_saved_tiles.size() > 0 and shared_void_layer != null:
 		if shared_void_layer.has_method("consume_cells"):
-			shared_void_layer.consume_cells(saved_consumed_tiles)
+			shared_void_layer.consume_cells(all_saved_tiles)
 			
+	_is_restoring = true
 	call_deferred("_restore_enemies")
 
 
 func _restore_enemies() -> void:
-	# Iterate over the global pool to restore everyone.
-	for enemy: CharacterBody2D in _all_tracked_enemies:
+	for enemy: CharacterBody2D in persistent_enemies:
 		if not is_instance_valid(enemy):
 			continue
 			
@@ -68,32 +69,44 @@ func _restore_enemies() -> void:
 				enemy.queue_free()
 				continue
 				
+			# Restore the global position for the world.
 			enemy.global_position = data["position"]
 			
+			# Inject the local position instead of the global one.
 			if "_last_position" in enemy:
-				enemy.set("_last_position", data["position"])
+				enemy.set("_last_position", enemy.position)
+				
+			if data.has("state"):
+				enemy.set("state", data["state"])
+			
+			var path_behavior: Node = enemy.get_node_or_null("%PathWalkBehavior")
+			if path_behavior and data.has("path_behavior"):
+				var pb_data: Dictionary = data["path_behavior"]
+				for prop: String in pb_data:
+					path_behavior.set(prop, pb_data[prop])
 			
 			if data.get("is_guard", false):
 				enemy.set("current_patrol_point_idx", data["current_idx"])
 				enemy.set("previous_patrol_point_idx", data["prev_idx"])
-				enemy.set("state", data["state"])
 				
 				var movement: Node = enemy.get_node_or_null("%GuardMovement")
 				if movement and movement.has_method("set_destination"):
 					movement.set_destination(data["movement_dest"])
+					
+	_is_restoring = false
 
 
-func _process(_delta: float) -> void:
-	if _tracker_instance != self or shared_void_layer == null:
+func _track_tiles() -> void:
+	if Engine.is_editor_hint() or shared_void_layer == null or _is_restoring:
 		return
 		
-	# The tracker instance now tracks ALL enemies from ALL checkpoints.
-	for enemy: CharacterBody2D in _all_tracked_enemies:
+	for enemy: CharacterBody2D in persistent_enemies:
 		if not is_instance_valid(enemy):
 			continue
 			
 		var is_guard: bool = "current_patrol_point_idx" in enemy
-		var state: int = enemy.get("state")
+		var raw_state: Variant = enemy.get("state")
+		var state: int = raw_state if raw_state != null else -1
 		
 		if not is_guard and state == 3:
 			continue
@@ -105,32 +118,70 @@ func _process(_delta: float) -> void:
 			for neighbor: int in _NEIGHBORS:
 				coords.append(shared_void_layer.get_neighbor_cell(coord, neighbor))
 				
+			if not pending_consumed_tiles.has(enemy):
+				pending_consumed_tiles[enemy] = []
+				
 			for c: Vector2i in coords:
-				if not pending_consumed_tiles.has(c) and not saved_consumed_tiles.has(c):
-					pending_consumed_tiles.append(c)
+				if not pending_consumed_tiles[enemy].has(c):
+					pending_consumed_tiles[enemy].append(c)
+
+
+func _process(_delta: float) -> void:
+	_track_tiles()
+
+
+func _physics_process(_delta: float) -> void:
+	_track_tiles()
 
 
 func activate() -> void:
-	for c: Vector2i in pending_consumed_tiles:
-		if not saved_consumed_tiles.has(c):
-			saved_consumed_tiles.append(c)
-	pending_consumed_tiles.clear()
+	if _is_restoring:
+		super.activate()
+		return
+		
+	# Make a copy of the old states before clearing them to retain previous progress.
+	var old_states: Dictionary = saved_enemy_states.duplicate()
+	saved_enemy_states.clear()
 	
-	# Save the snapshot of ALL tracked enemies, regardless of which checkpoint is activated.
-	for enemy: CharacterBody2D in _all_tracked_enemies:
+	for enemy: CharacterBody2D in persistent_enemies:
+		var path_key := str(enemy.get_path())
 		if not is_instance_valid(enemy):
 			continue
 			
-		var path_key := str(enemy.get_path())
 		var is_guard: bool = "current_patrol_point_idx" in enemy
-		var state: int = enemy.get("state")
+		var raw_state: Variant = enemy.get("state")
+		var state: int = raw_state if raw_state != null else -1
 		var is_defeated: bool = not is_guard and state == 3
 		
+		# Retrieve the tiles that the enemy had already destroyed in past lives.
+		var old_tiles: Array = []
+		if old_states.has(path_key):
+			old_tiles = old_states[path_key].get("tiles", [])
+			
+		# Add the newly destroyed tiles from the current run.
+		var new_tiles: Array = pending_consumed_tiles.get(enemy, [])
+		var combined_tiles: Array = old_tiles.duplicate()
+		
+		for c: Vector2i in new_tiles:
+			if not combined_tiles.has(c):
+				combined_tiles.append(c)
+		
+		# Save the complete snapshot for this specific enemy.
 		var enemy_data := {
 			"position": enemy.global_position,
 			"is_guard": is_guard,
-			"is_defeated": is_defeated
+			"is_defeated": is_defeated,
+			"state": state,
+			"tiles": combined_tiles
 		}
+		
+		var path_behavior: Node = enemy.get_node_or_null("%PathWalkBehavior")
+		if path_behavior:
+			var pb_data := {}
+			for prop: String in ["progress", "progress_ratio", "current_point_index", "current_point", "target_position"]:
+				if prop in path_behavior:
+					pb_data[prop] = path_behavior.get(prop)
+			enemy_data["path_behavior"] = pb_data
 		
 		if is_guard and not is_defeated:
 			var movement: Node = enemy.get_node_or_null("%GuardMovement")
@@ -138,9 +189,11 @@ func activate() -> void:
 			
 			enemy_data["current_idx"] = enemy.get("current_patrol_point_idx")
 			enemy_data["prev_idx"] = enemy.get("previous_patrol_point_idx")
-			enemy_data["state"] = state
 			enemy_data["movement_dest"] = dest
 			
 		saved_enemy_states[path_key] = enemy_data
+		
+	# Clear the temporary list once the state is securely saved.
+	pending_consumed_tiles.clear()
 			
 	super.activate()
