@@ -10,12 +10,12 @@ const WORLD_IMAGINATION = preload("uid://6bf8rum68wq3")
 const WORLD_MEMORY = preload("uid://5wscjc8yqqts")
 const WORLD_SPIRIT = preload("uid://cepg1o3ihp055")
 
-@export var _play_animation: bool = false:
-	set(value):
-		play_loom_animation_debug()
-
+## The time in seconds it takes for the animation to finish, determines the speed of threads
 @export var animation_time: float = 5.0
+## Number of threads in the animation for the in-editor preview
 @export var debug_thread_count: int = 6
+
+@export_tool_button("Play") var play_animation: Callable = play_loom_animation_debug
 
 @onready var animation_path: Path2D = %AnimationPath
 @onready var loom_offering_sound: AudioStreamPlayer2D = $LoomOfferingSound
@@ -48,16 +48,7 @@ func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
 	var counter: int = 0
 	for thread in thread_list:
 		var sprite := Sprite2D.new()
-
-		match thread.type:
-			InventoryItem.ItemType.MEMORY:
-				sprite.texture = WORLD_MEMORY
-			InventoryItem.ItemType.IMAGINATION:
-				sprite.texture = WORLD_IMAGINATION
-			InventoryItem.ItemType.SPIRIT:
-				sprite.texture = WORLD_SPIRIT
-			_:
-				sprite.texture = WORLD_SPIRIT
+		sprite.texture = thread.get_world_texture()
 
 		sprite.position = animation_points[counter * separator]
 		add_child(sprite)
