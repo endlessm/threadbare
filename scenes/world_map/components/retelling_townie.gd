@@ -67,11 +67,6 @@ func prepare_walk() -> float:
 	var walk_speed: float = path_walk_behavior.speeds.walk_speed
 	var travel_time: float = path_distance / walk_speed
 
-	print("Townie: ", name)
-	print("Distancia: ", path_distance, " px")
-	print("Velocidad: ", walk_speed, " px/s")
-	print("Tiempo estimado: ", travel_time, " s")
-
 	return travel_time
 
 
