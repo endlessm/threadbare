@@ -32,11 +32,7 @@ static func reverse_path(path: Path2D) -> Path2D:
 	var src := path.curve
 
 	for i in range(src.point_count - 1, -1, -1):
-		curve.add_point(
-			src.get_point_position(i),
-			src.get_point_out(i),
-			src.get_point_in(i)
-		)
+		curve.add_point(src.get_point_position(i), src.get_point_out(i), src.get_point_in(i))
 
 	reversed_path.curve = curve
 	return reversed_path
@@ -95,9 +91,7 @@ func become_helper(type: InventoryItem.ItemType) -> void:
 	curve.add_point(Vector2.ZERO)
 
 	var player := get_tree().get_first_node_in_group("player") as Node2D
-	_closer_to_player_position = townie.global_position.direction_to(
-		player.global_position
-	) * 100.0
+	_closer_to_player_position = townie.global_position.direction_to(player.global_position) * 100.0
 
 	curve.add_point(_closer_to_player_position)
 	closer_path.curve = curve
@@ -119,12 +113,7 @@ func leave_the_loom() -> void:
 	leave_path.global_position = enter_path.global_position
 
 	if _closer_to_player_position:
-		leave_path.curve.add_point(
-			_closer_to_player_position,
-			Vector2.ZERO,
-			Vector2.ZERO,
-			0
-		)
+		leave_path.curve.add_point(_closer_to_player_position, Vector2.ZERO, Vector2.ZERO, 0)
 
 	path_walk_behavior.walking_path = leave_path
 	path_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT

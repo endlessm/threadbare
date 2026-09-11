@@ -31,7 +31,8 @@ func _ready() -> void:
 	eternal_loom.retelling_started.connect(_on_eternal_loom_retelling_started)
 	eternal_loom.retelling_finished.connect(_on_eternal_loom_retelling_finished)
 	eternal_loom.give_retelling_upgrade.connect(_on_eternal_loom_give_retelling_upgrade)
-	
+
+
 func _on_eternal_loom_retelling_started() -> void:
 	_waiting_for_townies = townies.duplicate()
 
@@ -53,10 +54,7 @@ func _on_eternal_loom_retelling_started() -> void:
 		_start_townie_after_delay(townie, delay)
 
 
-func _start_townie_after_delay(
-	townie: RetellingTownie,
-	delay: float
-) -> void:
+func _start_townie_after_delay(townie: RetellingTownie, delay: float) -> void:
 	townie.loom_reached.connect(_on_loom_reached, CONNECT_ONE_SHOT | CONNECT_APPEND_SOURCE_OBJECT)
 
 	if delay > 0.0:
@@ -77,8 +75,6 @@ func _on_eternal_loom_retelling_finished() -> void:
 		t.leave_the_loom()
 
 
-func _on_eternal_loom_give_retelling_upgrade(
-	type: InventoryItem.ItemType
-) -> void:
+func _on_eternal_loom_give_retelling_upgrade(type: InventoryItem.ItemType) -> void:
 	var t: RetellingTownie = townies.pick_random()
 	t.become_helper(type)
