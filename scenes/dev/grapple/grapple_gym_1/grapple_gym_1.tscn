@@ -9,11 +9,17 @@
 [ext_resource type="PackedScene" uid="uid://evb46lm6ssu2" path="res://scenes/game_elements/props/hookable_pin/hookable_pin.tscn" id="6_pxkjf"]
 [ext_resource type="PackedScene" uid="uid://dohb701lxbe5s" path="res://scenes/game_elements/props/hookable_needle/hookable_needle.tscn" id="7_03fs2"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="8_m27j3"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="9_r0mdl"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="9_wdla0"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="10_ov5qs"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="10_pxkjf"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="11_03fs2"]
 [ext_resource type="PackedScene" uid="uid://dvj15pnuqr2ua" path="res://scenes/game_elements/props/hookable_button_item/hookable_button_item.tscn" id="11_kr3dm"]
 [ext_resource type="Script" uid="uid://cgxplvvlehoge" path="res://scenes/dev/grapple/grapple_gym_1/grapple_string_changer.gd" id="12_k1rkh"]
 [ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="13_0vkgw"]
+
+[sub_resource type="Resource" id="Resource_m27j3"]
+script = ExtResource("11_03fs2")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pp1gq"]
 size = Vector2(64, 64)
@@ -57,10 +63,38 @@ position = Vector2(81, 496)
 sprite_frames = ExtResource("10_ov5qs")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=233125897]
+physics_interpolation_mode = 1
+top_level = true
+position = Vector2(384, 496)
+limit_left = -256
+limit_top = -704
+limit_right = 4160
+limit_bottom = 1600
+editor_draw_limits = true
+
+[node name="PhantomCameraHost" type="Node" parent="OnTheGround/Player/Camera2D" unique_id=1307401125]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("9_r0mdl")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="PhantomCamera2D" type="Node2D" parent="OnTheGround/Player" unique_id=1740473627 node_paths=PackedStringArray("follow_target")]
+top_level = true
+position = Vector2(81, 496)
+script = ExtResource("10_pxkjf")
+priority = 10
+follow_mode = 2
+follow_target = NodePath("..")
+tween_resource = SubResource("Resource_m27j3")
+tween_on_load = false
+follow_damping = true
+draw_limits = true
 limit_left = -250
 limit_top = -700
 limit_right = 4150
 limit_bottom = 1550
+limit_target = NodePath("../../../TileMapLayers/Water")
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 
 [node name="Pins" type="Node2D" parent="OnTheGround" unique_id=1481323347]
 y_sort_enabled = true
