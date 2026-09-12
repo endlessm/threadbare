@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://pned7h04ghxy"]
+
+[ext_resource type="Script" uid="uid://dv11604x2etuq" path="res://scenes/game_elements/characters/npcs/components/npc.gd" id="1_24u5q"]
+[ext_resource type="SpriteFrames" uid="uid://cpm5o35ede3qs" path="res://scenes/game_elements/characters/npcs/npc_prop/sprite_frames/fray_idle_purple.tres" id="2_4pxrc"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="3_ro2oe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0ljm5"]
+size = Vector2(32, 40)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dcf4l"]
+radius = 51.0392
+
+[node name="NPC" type="CharacterBody2D" unique_id=305145076]
+script = ExtResource("1_24u5q")
+metadata/_custom_type_script = "uid://dv11604x2etuq"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=362109606]
+position = Vector2(2, 10)
+shape = SubResource("RectangleShape2D_0ljm5")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=860586171]
+unique_name_in_owner = true
+sprite_frames = ExtResource("2_4pxrc")
+animation = &"idle"
+flip_h = true
+
+[node name="GuardArea" type="Area2D" parent="." unique_id=1811920695]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_ro2oe")
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GuardArea" unique_id=910688737]
+shape = SubResource("CircleShape2D_dcf4l")
