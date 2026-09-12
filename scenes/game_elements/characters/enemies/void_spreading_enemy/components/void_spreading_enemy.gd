@@ -32,8 +32,6 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 ## [GPUParticles2D] scene to spawn when tiles are consumed.
 @export var void_particles: PackedScene
 
-@export var state_sounds: Dictionary[State, AudioStream] = {}
-
 var node_to_follow: Node2D:
 	set = _set_node_to_follow
 
@@ -48,7 +46,10 @@ var _live_particles: int = 0
 @onready var follow_walk_behavior: NavigationFollowWalkBehavior = %NavigationFollowWalkBehavior
 @onready var alert_animation: AnimationPlayer = %AlertAnimation
 @onready var particles_canvas_group: CanvasGroup = %ParticlesCanvasGroup
-@onready var void_sfx: AudioStreamPlayer = $Void_SFX
+@onready var idle_sfx: AudioStreamPlayer2D = %IdleSFX
+@onready var chasing_sfx: AudioStreamPlayer2D = %ChasingSFX
+@onready var caught_sfx: AudioStreamPlayer2D = %CaughtSFX
+@onready var defeated_sfx: AudioStreamPlayer2D = %DefeatedSFX
 
 
 func _set_idle_patrol_path(new_path: Path2D) -> void:
@@ -63,27 +64,37 @@ func _set_node_to_follow(new_node_to_follow: Node2D) -> void:
 		follow_walk_behavior.target = node_to_follow
 
 
+func _stop_positional_sfx() -> void:
+	idle_sfx.stop()
+	chasing_sfx.stop()
+	caught_sfx.stop()
+
+
 func _set_state(new_state: State) -> void:
 	state = new_state
 
 	if not is_node_ready():
 		return
 
-	void_sfx.stream = state_sounds[state]
-	void_sfx.play()
+	_stop_positional_sfx()
 
 	match state:
 		State.IDLE:
 			path_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
 			follow_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			idle_sfx.play()
 		State.CHASING:
 			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			follow_walk_behavior.process_mode = Node.PROCESS_MODE_INHERIT
 			alert_animation.play(&"alert")
+			chasing_sfx.play()
+		State.CAUGHT:
+			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			follow_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
+			caught_sfx.play()
 		State.DEFEATED:
 			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			follow_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
-			await void_sfx.finished
 
 
 func _ready() -> void:
@@ -99,6 +110,10 @@ func start(detected_node: Node2D) -> void:
 
 func defeat() -> void:
 	state = State.DEFEATED
+	defeated_sfx.reparent(get_parent())
+	defeated_sfx.finished.connect(defeated_sfx.queue_free)
+	defeated_sfx.play()
+
 	if _live_particles == 0:
 		queue_free()
 	# else wait for `_emit_particles` to free this node after all particles are finished.

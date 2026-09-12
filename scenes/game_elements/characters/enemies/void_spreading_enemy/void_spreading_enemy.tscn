@@ -7,7 +7,11 @@
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="3_45we0"]
 [ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="6_pumxu"]
 [ext_resource type="Shader" uid="uid://dvyec12fgsuta" path="res://scenes/game_elements/characters/enemies/void_spreading_enemy/components/particles_canvasgroup_outline.gdshader" id="7_o4sxw"]
-[ext_resource type="AudioStream" uid="uid://cwyu3s6xc33sn" path="res://assets/third_party/sounds/void_enemy/void_sfx_alert.wav" id="7_r8oqq"]
+[ext_resource type="AudioStream" uid="uid://c2pfkx2vienra" path="res://assets/third_party/sounds/void_enemy/void_sfx_alert.wav" id="7_r8oqq"]
+[ext_resource type="AudioStream" uid="uid://csevqvuqab3qj" path="res://assets/third_party/sounds/void_enemy/void_sfx_idle.wav" id="9_0hsyu"]
+[ext_resource type="AudioStream" uid="uid://bwisruph7dfqy" path="res://assets/third_party/sounds/void_enemy/void_sfx_chasing.wav" id="10_y5848"]
+[ext_resource type="AudioStream" uid="uid://mr0rpxerdk5m" path="res://assets/third_party/sounds/void_enemy/void_sfx_caught.wav" id="11_hvuix"]
+[ext_resource type="AudioStream" uid="uid://d2igcapd8ppob" path="res://assets/third_party/sounds/void_enemy/void_sfx_defeated.wav" id="12_vsrfg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8g3pn"]
 size = Vector2(68, 20)
@@ -64,8 +68,8 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "clips": [{
-"end_offset": 0.2373,
-"start_offset": 0.0,
+"end_offset": 0.0,
+"start_offset": 0.2768,
 "stream": ExtResource("7_r8oqq")
 }],
 "times": PackedFloat32Array(0)
@@ -171,5 +175,37 @@ libraries/ = SubResource("AnimationLibrary_gwqur")
 [node name="ParticlesCanvasGroup" type="CanvasGroup" parent="." unique_id=574273484]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_gwqur")
+
+[node name="IdleSFX" type="AudioStreamPlayer2D" parent="." unique_id=48455543]
+unique_name_in_owner = true
+stream = ExtResource("9_0hsyu")
+volume_db = 6.0
+attenuation = 0.5
+panning_strength = 0.6
+bus = &"SFX"
+
+[node name="ChasingSFX" type="AudioStreamPlayer2D" parent="." unique_id=415597456]
+unique_name_in_owner = true
+stream = ExtResource("10_y5848")
+volume_db = 6.0
+attenuation = 0.5
+panning_strength = 0.6
+bus = &"SFX"
+
+[node name="CaughtSFX" type="AudioStreamPlayer2D" parent="." unique_id=439508576]
+unique_name_in_owner = true
+stream = ExtResource("11_hvuix")
+volume_db = 6.0
+attenuation = 0.5
+panning_strength = 0.6
+bus = &"SFX"
+
+[node name="DefeatedSFX" type="AudioStreamPlayer2D" parent="." unique_id=1554448787]
+unique_name_in_owner = true
+stream = ExtResource("12_vsrfg")
+volume_db = 6.0
+attenuation = 0.5
+panning_strength = 0.6
+bus = &"SFX"
 
 [connection signal="body_entered" from="PlayerCaptureArea" to="." method="_on_player_capture_area_body_entered"]
