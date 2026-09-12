@@ -136,21 +136,20 @@ tracks/4/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.456), Color(1, 1, 1, 0)]
 }
-tracks/5/type = "audio"
+tracks/5/type = "method"
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/path = NodePath("AirStream/AudioStreamPlayer2D")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"clips": [{
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": ExtResource("3_bvany")
-}],
-"times": PackedFloat32Array(0.3)
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
 }
-tracks/5/use_blend = true
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ubfef"]
 _data = {
@@ -178,6 +177,10 @@ scale = Vector2(0.12577, 0.12577)
 texture = ExtResource("2_ochor")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="AirStream" unique_id=1428086503]
+stream = ExtResource("3_bvany")
+max_distance = 1200.0
+attenuation = 0.25
+panning_strength = 0.5
 bus = &"SFX"
 
 [node name="RepelAnimation" type="AnimationPlayer" parent="." unique_id=2103763625]

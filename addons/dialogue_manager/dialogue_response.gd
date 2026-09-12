@@ -33,7 +33,7 @@ var text_replacements: Array[Dictionary] = []
 var tags: PackedStringArray = []
 
 ## The key to use for translating the text.
-var translation_key: String = ""
+var static_id: String = ""
 
 
 func _init(data: Dictionary = {}) -> void:
@@ -47,7 +47,7 @@ func _init(data: Dictionary = {}) -> void:
 		text = data.text
 		text_replacements = data.text_replacements
 		tags = data.tags
-		translation_key = data.translation_key
+		static_id = data.static_id
 		condition_as_text = data.condition_as_text
 
 
@@ -55,9 +55,22 @@ func _to_string() -> String:
 	return "<DialogueResponse text=\"%s\">" % text
 
 
+## Check if a dialogue line has a given tag.
+func has_tag(tag_name: String) -> bool:
+	if tags.has(tag_name):
+		return true
+	else:
+		var wrapped: String = "%s=" % tag_name
+		for t: String in tags:
+			if t.begins_with(wrapped):
+				return true
+	return false
+
+
+## Get the value of a tag if the tag is in the form of [code]tag=value[/code]
 func get_tag_value(tag_name: String) -> String:
-	var wrapped := "%s=" % tag_name
-	for t in tags:
+	var wrapped: String = "%s=" % tag_name
+	for t: String in tags:
 		if t.begins_with(wrapped):
 			return t.replace(wrapped, "").strip_edges()
 	return ""

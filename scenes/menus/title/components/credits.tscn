@@ -372,32 +372,35 @@ texture = ExtResource("8_1fvwr")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=586483173]
+[node name="CenterContainer" type="CenterContainer" parent="Control" unique_id=361753202]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -325.0
-offset_top = -715.0
-offset_right = 325.0
-offset_bottom = -62.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 
-[node name="CreditsContainer" type="MarginContainer" parent="PanelContainer" unique_id=1062325119]
+[node name="MarginContainer" type="MarginContainer" parent="Control/CenterContainer" unique_id=43269335]
+layout_mode = 2
+theme_override_constants/margin_bottom = 60
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/CenterContainer/MarginContainer" unique_id=586483173]
+custom_minimum_size = Vector2(650, 653)
+custom_maximum_size = Vector2(-1, 800)
+layout_mode = 2
+
+[node name="CreditsContainer" type="MarginContainer" parent="Control/CenterContainer/MarginContainer/PanelContainer" unique_id=1062325119]
 layout_mode = 2
 theme_override_constants/margin_top = 7
 theme_override_constants/margin_bottom = 0
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/CreditsContainer" unique_id=1462727122]
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/CenterContainer/MarginContainer/PanelContainer/CreditsContainer" unique_id=1462727122]
 unique_name_in_owner = true
 layout_mode = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 3
 
-[node name="ScrollContent" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer" unique_id=1660805166]
+[node name="ScrollContent" type="VBoxContainer" parent="Control/CenterContainer/MarginContainer/PanelContainer/CreditsContainer/ScrollContainer" unique_id=1660805166]
 unique_name_in_owner = true
 clip_contents = true
 layout_mode = 2
@@ -405,31 +408,31 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Header" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent" unique_id=1605193793 instance=ExtResource("8_3srqy")]
+[node name="Header" parent="Control/CenterContainer/MarginContainer/PanelContainer/CreditsContainer/ScrollContainer/ScrollContent" unique_id=1605193793 instance=ExtResource("8_3srqy")]
 layout_mode = 2
 studio = SubResource("Resource_gevvw")
 
-[node name="CreditsList" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent" unique_id=1237146002 instance=ExtResource("8_rcvat")]
+[node name="CreditsList" parent="Control/CenterContainer/MarginContainer/PanelContainer/CreditsContainer/ScrollContainer/ScrollContent" unique_id=1237146002 instance=ExtResource("8_rcvat")]
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent" unique_id=540233107]
+[node name="HSeparator" type="HSeparator" parent="Control/CenterContainer/MarginContainer/PanelContainer/CreditsContainer/ScrollContainer/ScrollContent" unique_id=540233107]
 layout_mode = 2
 theme_override_constants/separation = 175
 theme_override_styles/separator = SubResource("StyleBoxEmpty_rcvat")
 
-[node name="CreditsFooter" type="VBoxContainer" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent" unique_id=1665563151]
+[node name="CreditsFooter" type="VBoxContainer" parent="Control/CenterContainer/MarginContainer/PanelContainer/CreditsContainer/ScrollContainer/ScrollContent" unique_id=1665563151]
 custom_minimum_size = Vector2(429.47, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Title" type="Label" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CreditsFooter" unique_id=2059254920]
+[node name="Title" type="Label" parent="Control/CenterContainer/MarginContainer/PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CreditsFooter" unique_id=2059254920]
 layout_mode = 2
 mouse_filter = 1
 text = "Thank you for playing!"
 horizontal_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CreditsFooter" unique_id=1561664229]
+[node name="TextureRect" type="TextureRect" parent="Control/CenterContainer/MarginContainer/PanelContainer/CreditsContainer/ScrollContainer/ScrollContent/CreditsFooter" unique_id=1561664229]
 custom_minimum_size = Vector2(0, 124.395)
 clip_contents = true
 layout_mode = 2
@@ -437,7 +440,7 @@ texture = ExtResource("12_3srqy")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="HSeparator2" type="HSeparator" parent="PanelContainer/CreditsContainer/ScrollContainer/ScrollContent" unique_id=1850801655]
+[node name="HSeparator2" type="HSeparator" parent="Control/CenterContainer/MarginContainer/PanelContainer/CreditsContainer/ScrollContainer/ScrollContent" unique_id=1850801655]
 layout_mode = 2
 theme_override_constants/separation = 175
 theme_override_styles/separator = SubResource("StyleBoxEmpty_rcvat")

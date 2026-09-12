@@ -31,6 +31,14 @@ rm .gitignore.template
 git add backstitch-launcher-*
 echo "::endgroup::"
 
+echo "::group::Preconfiguring Backstitch server"
+cat >backstitch.cfg <<EOF
+[backstitch]
+available_servers = "https://alpha.backstitch.dev/"
+server_url = "https://alpha.backstitch.dev/"
+EOF
+echo "::endgroup::"
+
 echo "::group::Committing pruned project"
 git switch --detach
 git add --update
@@ -41,7 +49,7 @@ echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
 echo "::endgroup::"
 
 echo "::group::Creating zip file"
-git archive --format=zip --prefix=threadbare-storyquest/ --output="threadbare-storyquest-kit.zip" @
+git archive --prefix=threadbare-storyquest/ --add-file=backstitch.cfg --format=zip --output="threadbare-storyquest-kit.zip" @
 echo "::endgroup::"
 
 echo "zip_file=threadbare-storyquest-kit.zip" >> "$GITHUB_OUTPUT"

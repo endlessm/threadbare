@@ -2,15 +2,13 @@
 
 [ext_resource type="Script" uid="uid://bpu023hmmkkdp" path="res://addons/storyquest_bootstrap/new_storyquest_dialog.gd" id="1_1ir5d"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_euw8d"]
-bg_color = Color(0, 0, 0, 1)
-
 [node name="StoryQuestDialogue" type="Window" unique_id=1241427116]
 oversampling_override = 1.0
 title = "Create StoryQuest"
 initial_position = 1
 size = Vector2i(600, 400)
 transient = true
+min_size = Vector2i(600, 400)
 script = ExtResource("1_1ir5d")
 
 [node name="Panel" type="Panel" parent="." unique_id=693475436]
@@ -20,7 +18,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_euw8d")
 
 [node name="PanelContainer" type="MarginContainer" parent="." unique_id=1479415195]
 anchors_preset = 15
@@ -38,63 +35,52 @@ theme_override_constants/margin_bottom = 10
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1753499528]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" unique_id=482250441]
-layout_mode = 2
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="LinkButton" type="LinkButton" parent="PanelContainer/VBoxContainer/MarginContainer" unique_id=1232284304]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-text = "Open guide with instructions."
-uri = "https://github.com/endlessm/threadbare/discussions/599"
-
 [node name="GridContainer" type="GridContainer" parent="PanelContainer/VBoxContainer" unique_id=1146920114]
 layout_mode = 2
 columns = 2
 
 [node name="TitleLabel" type="Label" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=2129724723]
 layout_mode = 2
-text = "Title:"
+text = "Working Title"
 
 [node name="TitleEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=530857268]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "House of the Dragon"
+placeholder_text = "Project Green"
 
 [node name="FolderLabel" type="Label" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=638259626]
 layout_mode = 2
-text = "Folder Name:"
+text = "Folder Name"
 
 [node name="FolderEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=146935302]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "dragonhouse"
+placeholder_text = "project_green"
 max_length = 20
 emoji_menu_enabled = false
 
-[node name="FullPathLabelLabel" type="Label" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=1324173742]
+[node name="FullPathLabel" type="Label" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=1324173742]
 layout_mode = 2
-text = "Full Path:"
+text = "Full Path"
 
-[node name="FullPathLabel" type="Label" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=1163985931]
+[node name="FullPath" type="LineEdit" parent="PanelContainer/VBoxContainer/GridContainer" unique_id=137652133]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-autowrap_mode = 1
+editable = false
 
 [node name="ErrorsLabel" type="RichTextLabel" parent="PanelContainer/VBoxContainer" unique_id=855513329]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 fit_content = true
 
 [node name="DescriptionLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1242171709]
 layout_mode = 2
-text = "Description:"
+text = "Description"
 
 [node name="DescriptionEdit" type="TextEdit" parent="PanelContainer/VBoxContainer" unique_id=1383665589]
 unique_name_in_owner = true
@@ -105,6 +91,13 @@ placeholder_text = "This quest is about..."
 wrap_mode = 1
 tab_input_mode = false
 
+[node name="TipsLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1470208228]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+text = "You can change your quest's title and description later!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
 [node name="ProgressBar" type="ProgressBar" parent="PanelContainer/VBoxContainer" unique_id=110944402]
 unique_name_in_owner = true
 visible = false
@@ -114,7 +107,20 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/margin_top = 10
 
-[node name="CreateButton" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer2" unique_id=1336755490]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer2" unique_id=570432884]
+layout_mode = 2
+
+[node name="GuideButton" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=762514911]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Online Guide"
+
+[node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=1252825542]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CreateButton" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=1336755490]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
@@ -130,4 +136,5 @@ text = "Create"
 [connection signal="text_submitted" from="PanelContainer/VBoxContainer/GridContainer/FolderEdit" to="." method="submit" unbinds=1]
 [connection signal="gui_input" from="PanelContainer/VBoxContainer/DescriptionEdit" to="." method="_on_description_edit_gui_input"]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/DescriptionEdit" to="." method="_on_description_edit_text_changed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer2/CreateButton" to="." method="submit"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer/GuideButton" to="." method="_on_guide_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer/CreateButton" to="." method="submit"]
