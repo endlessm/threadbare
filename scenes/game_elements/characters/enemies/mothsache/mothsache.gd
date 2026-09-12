@@ -37,6 +37,8 @@ const MAX_SPEED: float = 300
 ## Sound played when entering DETECTING or ALERTED states.
 @export var alert_sound_stream: AudioStream:
 	set = _set_alert_sound_stream
+## Sound played when entering ATTACKING state.
+@export var attack_sound_stream: AudioStream
 
 var state: State = State.IDLE:
 	set = _set_state
@@ -61,6 +63,7 @@ var _previous_non_detecting_state: State = State.IDLE
 @onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
 @onready var char_sprite_behavior: CharacterSpriteBehavior = %CharacterSpriteBehavior
 @onready var _alert_sound: AudioStreamPlayer = %AlertSound
+@onready var _attack_sound: AudioStreamPlayer2D = %AttackSound
 
 
 func _ready() -> void:
@@ -72,7 +75,6 @@ func _ready() -> void:
 	awareness_bar.visible = false
 	_set_alert_sound_stream(alert_sound_stream)
 	_initial_position = global_position
-
 	state = State.IDLE
 
 
@@ -264,6 +266,8 @@ func _set_state(new_state: State) -> void:
 		State.ALERTED:
 			if not _alert_sound.playing:
 				_alert_sound.play()
+			if not _attack_sound.playing:
+				_attack_sound.play()
 			awareness_bar.value = awareness_bar.max_value
 			awareness_bar.tint_progress = Color.RED
 			awareness_bar.modulate.a = 1.0

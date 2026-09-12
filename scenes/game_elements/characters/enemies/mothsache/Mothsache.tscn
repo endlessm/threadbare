@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://cx0sk4uhvnii0" path="res://scenes/game_logic/walk_behaviors/erratic_walk_behavior.gd" id="3_xxd2s"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="4_xxd2s"]
 [ext_resource type="Texture2D" uid="uid://c75ofhy3swhj3" path="res://scenes/game_elements/characters/enemies/guard/components/exclamation_mark.png" id="7_8q7cb"]
+[ext_resource type="AudioStream" uid="uid://c5nln8i3amtlt" path="res://assets/first_party/sounds/throwing_enemy/attackSound.wav" id="8_e2qj4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0607a"]
 
@@ -149,6 +150,12 @@ unique_name_in_owner = true
 visible = false
 volume_db = -2.0
 max_distance = 500.0
+bus = &"SFX"
+
+[node name="AttackSound" type="AudioStreamPlayer2D" parent="Sounds" unique_id=441928978]
+unique_name_in_owner = true
+stream = ExtResource("8_e2qj4")
+volume_db = 5.0
 bus = &"SFX"
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_animation_finished"]
