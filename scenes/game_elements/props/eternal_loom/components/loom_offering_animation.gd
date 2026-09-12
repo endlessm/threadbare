@@ -42,60 +42,50 @@ func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
 		animation_finished.emit()
 		return
 
-	## Calculating the animation points
-	var animation_points: Array[Vector2]
-
-	var curve_length := animation_path.curve.get_baked_length()
-	var separation := curve_length / thread_list.size()
-	for i in thread_list.size():
-		var offset := separation * i
-		var point := animation_path.curve.sample_baked(offset)
-		animation_points.append(point)
+	var separation := 1.0 / thread_list.size()
 
 	loom_offering_sound.play()
 
-	# Time between each animation_point
-	var timer: float = animation_time / (animation_points.size() * 2.8)
-	# Separation between threads
-	var separator: int = animation_points.size() / floor(thread_list.size())
-
 	var counter: int = 0
 	for thread in thread_list:
+		var path_follow := PathFollow2D.new()
+		path_follow.rotates = false
 		var sprite := Sprite2D.new()
 
 		sprite.texture = thread.get_world_texture()
+		path_follow.add_child(sprite)
 
-		sprite.position = animation_points[counter * separator]
-		add_child(sprite)
+		animation_path.add_child(path_follow)
+		## Starting point
+		path_follow.progress_ratio = counter * separation
 
-		var tween := sprite.create_tween()
+		var thign := 3.5 / (2.0 * thread_list.size())
 
-		## The first thread is the last to enter the loom
-		if counter == 0:
-			tween.finished.connect(_on_animation_finished)
+		var tween := path_follow.create_tween()
 
-		# Animation Start
+		## Animation Start
 		tween.tween_property(sprite, "scale", Vector2(0, 0), 0)
 
-		tween.tween_property(sprite, "scale", Vector2(1, 1), timer)
-		tween.parallel().tween_property(
-			sprite,
-			"position",
-			animation_points[(counter * separator + 1) % animation_points.size()],
-			timer
+		tween.tween_property(sprite, "scale", Vector2(1, 1), 0.5)
+		## Loop around
+		tween.parallel().tween_property(path_follow, "progress_ratio", 2.0, 3.5 - thign * counter)
+
+		## Animation end
+		(
+			tween
+			. tween_property(sprite, "global_position", animation_path.global_position, 3)
+			. set_trans(Tween.TRANS_ELASTIC)
+			. set_ease(Tween.EASE_OUT)
 		)
-
-		# Thread Cycle
-		for i in range(animation_points.size() - 1 + (thread_list.size() - counter) * separator):
-			var position_index: int = (counter * separator + i + 2) % animation_points.size()
-			tween.tween_property(sprite, "position", animation_points[position_index], timer)
-
-		# Final animation
-		tween.tween_property(sprite, "position", Vector2(0, 0), timer * 2)
-		tween.tween_property(sprite, "modulate", Color(0, 0, 0, 0), 0.5)
+		tween.parallel().tween_property(sprite, "modulate", Color(0, 0, 0, 0), 0.5)
 		tween.parallel().tween_property(sprite, "scale", Vector2(3, 3), 0.5)
-
+		tween.tween_callback(_thread_free.bind(sprite))
 		counter = counter + 1
+
+
+## Remove thread once animation finishes
+func _thread_free(thread: Sprite2D) -> void:
+	thread.queue_free()
 
 
 func _on_animation_finished() -> void:
