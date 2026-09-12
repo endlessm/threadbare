@@ -44,6 +44,9 @@ func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
 
 	var separation := 1.0 / thread_list.size()
 
+	# time it takes for all threads to loop
+	var loop_time := animation_time * 0.7
+
 	loom_offering_sound.play()
 
 	var counter: int = 0
@@ -56,25 +59,32 @@ func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
 		path_follow.add_child(sprite)
 
 		animation_path.add_child(path_follow)
-		## Starting point
+
+		## Starting point for each thread
 		path_follow.progress_ratio = counter * separation
 
-		var thign := 3.5 / (2.0 * thread_list.size())
+		## Time variation between threads
+		var time_variation := loop_time / (2.0 * thread_list.size())
 
 		var tween := path_follow.create_tween()
+
+		## The first thread is the last to end
+		if counter == 0:
+			tween.finished.connect(_on_animation_finished)
 
 		## Animation Start
 		tween.tween_property(sprite, "scale", Vector2(0, 0), 0)
 
 		tween.tween_property(sprite, "scale", Vector2(1, 1), 0.5)
 		## Loop around
-		tween.parallel().tween_property(path_follow, "progress_ratio", 2.0, 3.5 - thign * counter)
+		tween.parallel().tween_property(
+			path_follow, "progress_ratio", 2.0, loop_time - time_variation * counter
+		)
 
 		## Animation end
 		(
 			tween
-			. tween_property(sprite, "global_position", animation_path.global_position, 3)
-			. set_trans(Tween.TRANS_ELASTIC)
+			. tween_property(sprite, "global_position", animation_path.global_position, 0.25)
 			. set_ease(Tween.EASE_OUT)
 		)
 		tween.parallel().tween_property(sprite, "modulate", Color(0, 0, 0, 0), 0.5)
