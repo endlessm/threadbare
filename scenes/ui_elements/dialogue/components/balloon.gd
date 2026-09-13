@@ -7,17 +7,26 @@ extends CanvasLayer
 const PLAYER_RIBBON_TYPE_VARIATION := &"PlayerRibbon"
 const NPC_RIBBON_TYPE_VARIATION := &"NPCRibbon"
 
+## The dialogue resource
+@export var dialogue_resource: DialogueResource
+
+## Start from a given cue when using balloon as a [Node] in a scene.
+@export var start_from_cue: String = ""
+
+## If running as a [Node] in a scene then auto start the dialogue.
+@export var auto_start: bool = false
+
+## If all other input is blocked as long as dialogue is shown.
+@export var will_block_other_input: bool = true
+
 ## The action to use for advancing the dialogue
-@export var next_action: StringName = &"dialogue_next"
+@export var next_action: StringName = &"ui_accept"
 
 ## The action to use to skip typing the dialogue
-@export var skip_action: StringName = &"dialogue_skip"
+@export var skip_action: StringName = &"ui_cancel"
 
 @export_tool_button("Anchor to top") var to_top_editor_button: Callable = anchor_to_top
 @export_tool_button("Anchor to bottom") var to_bottom_editor_button: Callable = anchor_to_bottom
-
-## The dialogue resource
-var resource: DialogueResource
 
 ## Temporary game states
 var temporary_game_states: Array = []:
@@ -25,7 +34,7 @@ var temporary_game_states: Array = []:
 		temporary_game_states = new_value
 		for state: Variant in new_value:
 			if state is Player:
-				_player_name = (state as Player).player_name
+				locals["player_name"] = (state as Player).player_name
 
 ## See if we are waiting for the player
 var is_waiting_for_input: bool = false
@@ -52,7 +61,9 @@ var dialogue_line: DialogueLine:
 var mutation_cooldown: Timer = Timer.new()
 
 var _locale: String = TranslationServer.get_locale()
-var _player_name: String = ""
+
+## A sound player for voice lines (if they exist).
+@onready var audio_stream_player: AudioStreamPlayer = %AudioStreamPlayer
 
 ## The base balloon anchor
 @onready var balloon: Control = %Balloon
@@ -69,11 +80,11 @@ var _player_name: String = ""
 ## The label showing the currently spoken dialogue
 @onready var dialogue_label: DialogueLabel = %DialogueLabel
 
-## The “Next” button, to connect signals.
-@onready var next_button: Button = %NextButton
-
 ## The menu of responses
 @onready var responses_menu: DialogueResponsesMenu = %ResponsesMenu
+
+## Clickable indicator to show that player can progress dialogue.
+@onready var progress_button: Button = %ProgressButton
 
 @onready var talk_sound_player: AudioStreamPlayer = $TalkSoundPlayer
 
@@ -91,13 +102,21 @@ func _ready() -> void:
 		responses_menu.next_action = next_action
 
 	mutation_cooldown.timeout.connect(_on_mutation_cooldown_timeout)
-	next_button.pressed.connect(func() -> void: next(dialogue_line.next_id))
+	progress_button.pressed.connect(func() -> void: next(dialogue_line.next_id))
 	add_child(mutation_cooldown)
+
+	if auto_start:
+		if not is_instance_valid(dialogue_resource):
+			assert(
+				false, DMConstants.get_error_message(DMConstants.ERR_MISSING_RESOURCE_FOR_AUTOSTART)
+			)
+		start()
 
 
 func _unhandled_input(_event: InputEvent) -> void:
 	# Only the balloon is allowed to handle input while it's showing
-	get_viewport().set_input_as_handled()
+	if will_block_other_input:
+		get_viewport().set_input_as_handled()
 
 
 func _notification(what: int) -> void:
@@ -108,8 +127,8 @@ func _notification(what: int) -> void:
 		and is_instance_valid(dialogue_label)
 	):
 		_locale = TranslationServer.get_locale()
-		var visible_ratio := dialogue_label.visible_ratio
-		self.dialogue_line = await resource.get_next_dialogue_line(dialogue_line.id)
+		var visible_ratio: float = dialogue_label.visible_ratio
+		await dialogue_line.refresh()
 		if visible_ratio < 1:
 			dialogue_label.skip_typing()
 	elif what == NOTIFICATION_EDITOR_PRE_SAVE:
@@ -118,18 +137,25 @@ func _notification(what: int) -> void:
 
 ## Start some dialogue
 func start(
-	dialogue_resource: DialogueResource, title: String, extra_game_states: Array = []
+	with_dialogue_resource: DialogueResource = null, cue: String = "", extra_game_states: Array = []
 ) -> void:
 	temporary_game_states = [self] + extra_game_states
 	is_waiting_for_input = false
-	resource = dialogue_resource
-	self.dialogue_line = await resource.get_next_dialogue_line(title, temporary_game_states)
+	if is_instance_valid(with_dialogue_resource):
+		dialogue_resource = with_dialogue_resource
+	if not cue.is_empty():
+		start_from_cue = cue
+	dialogue_line = await dialogue_resource.get_next_dialogue_line(
+		start_from_cue, temporary_game_states
+	)
+	show()
 
 
 ## Apply any changes to the balloon given a new [DialogueLine].
 func apply_dialogue_line() -> void:
 	mutation_cooldown.stop()
 
+	progress_button.hide()
 	is_waiting_for_input = false
 	balloon.focus_mode = Control.FOCUS_ALL
 	balloon.grab_focus()
@@ -137,7 +163,7 @@ func apply_dialogue_line() -> void:
 	character_panel.visible = not dialogue_line.character.is_empty()
 	character_panel.theme_type_variation = (
 		PLAYER_RIBBON_TYPE_VARIATION
-		if _player_name == dialogue_line.character
+		if locals.get("player_name") == dialogue_line.character
 		else NPC_RIBBON_TYPE_VARIATION
 	)
 	character_label.text = tr(dialogue_line.character, "dialogue")
@@ -147,8 +173,6 @@ func apply_dialogue_line() -> void:
 
 	responses_menu.hide()
 	responses_menu.responses = dialogue_line.responses
-
-	next_button.hide()
 
 	# Assumes that the balloon scene is anchored to the bottom by default:
 	if _is_player_at_bottom():
@@ -175,8 +199,13 @@ func apply_dialogue_line() -> void:
 		await dialogue_label.finished_typing
 		writing_sound_player.stream_paused = true
 
-	# Wait for input
-	if dialogue_line.responses.size() > 0:
+	# Wait for next line
+	if dialogue_line.has_tag("voice"):
+		audio_stream_player.stream = load(dialogue_line.get_tag_value("voice"))
+		audio_stream_player.play()
+		await audio_stream_player.finished
+		next(dialogue_line.next_id)
+	elif dialogue_line.responses.size() > 0:
 		balloon.focus_mode = Control.FOCUS_NONE
 		responses_menu.show()
 	elif dialogue_line.time != "":
@@ -191,7 +220,7 @@ func apply_dialogue_line() -> void:
 		is_waiting_for_input = true
 		balloon.focus_mode = Control.FOCUS_ALL
 		balloon.grab_focus()
-		next_button.show()
+		progress_button.show()
 
 
 ## True if the player position is at the bottom vertical quarter of the screen.
@@ -226,7 +255,7 @@ func anchor_to_bottom() -> void:
 
 ## Go to the next line
 func next(next_id: String) -> void:
-	self.dialogue_line = await resource.get_next_dialogue_line(next_id, temporary_game_states)
+	dialogue_line = await dialogue_resource.get_next_dialogue_line(next_id, temporary_game_states)
 
 
 #region Signals
@@ -238,10 +267,11 @@ func _on_mutation_cooldown_timeout() -> void:
 		balloon.hide()
 
 
-func _on_mutated(_mutation: Dictionary) -> void:
-	is_waiting_for_input = false
-	will_hide_balloon = true
-	mutation_cooldown.start(0.1)
+func _on_mutated(mutation: Dictionary) -> void:
+	if not mutation.is_inline:
+		is_waiting_for_input = false
+		will_hide_balloon = true
+		mutation_cooldown.start(0.1)
 
 
 func _on_balloon_gui_input(event: InputEvent) -> void:
@@ -280,9 +310,6 @@ func _on_responses_menu_response_selected(response: DialogueResponse) -> void:
 	next(response.next_id)
 
 
-#endregion
-
-
 func _on_dialogue_label_spoke(letter: String, _letter_index: int, _speed: float) -> void:
 	if (
 		dialogue_line.character
@@ -290,3 +317,5 @@ func _on_dialogue_label_spoke(letter: String, _letter_index: int, _speed: float)
 		and letter not in dialogue_label.pause_at_characters
 	):
 		talk_sound_player.play()
+
+#endregion

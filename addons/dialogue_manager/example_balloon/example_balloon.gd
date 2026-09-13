@@ -5,8 +5,8 @@ class_name DialogueManagerExampleBalloon extends CanvasLayer
 ## The dialogue resource
 @export var dialogue_resource: DialogueResource
 
-## Start from a given title when using balloon as a [Node] in a scene.
-@export var start_from_title: String = ""
+## Start from a given cue when using balloon as a [Node] in a scene.
+@export var start_from_cue: String = ""
 
 ## If running as a [Node] in a scene then auto start the dialogue.
 @export var auto_start: bool = false
@@ -87,8 +87,17 @@ func _ready() -> void:
 			assert(false, DMConstants.get_error_message(DMConstants.ERR_MISSING_RESOURCE_FOR_AUTOSTART))
 		start()
 
+	# EXAMPLE MESSAGE
+	var warning: Button = Button.new()
+	warning.text = DMConstants.translate("This is an example balloon. Create your own balloon in 'Project > Tools > Dialogue > Create Balloon...'")
+	warning.disabled = true
+	warning.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	balloon.add_child(warning)
+	balloon.move_child(warning, 0)
+	# /EXAMPLE MESSAGE
 
-func _process(delta: float) -> void:
+
+func _process(_delta: float) -> void:
 	if is_instance_valid(dialogue_line):
 		progress.visible = not dialogue_label.is_typing and dialogue_line.responses.size() == 0 and not dialogue_line.has_tag("voice")
 
@@ -104,20 +113,20 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and _locale != TranslationServer.get_locale() and is_instance_valid(dialogue_label):
 		_locale = TranslationServer.get_locale()
 		var visible_ratio: float = dialogue_label.visible_ratio
-		dialogue_line = await dialogue_resource.get_next_dialogue_line(dialogue_line.id)
+		await dialogue_line.refresh()
 		if visible_ratio < 1:
 			dialogue_label.skip_typing()
 
 
 ## Start some dialogue
-func start(with_dialogue_resource: DialogueResource = null, title: String = "", extra_game_states: Array = []) -> void:
+func start(with_dialogue_resource: DialogueResource = null, cue: String = "", extra_game_states: Array = []) -> void:
 	temporary_game_states = [self] + extra_game_states
 	is_waiting_for_input = false
 	if is_instance_valid(with_dialogue_resource):
 		dialogue_resource = with_dialogue_resource
-	if not title.is_empty():
-		start_from_title = title
-	dialogue_line = await dialogue_resource.get_next_dialogue_line(start_from_title, temporary_game_states)
+	if not cue.is_empty():
+		start_from_cue = cue
+	dialogue_line = await dialogue_resource.get_next_dialogue_line(start_from_cue, temporary_game_states)
 	show()
 
 

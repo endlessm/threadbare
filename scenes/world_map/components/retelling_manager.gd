@@ -9,10 +9,10 @@ extends Node2D
 ##
 ## Coordinate an array of townies to join the StoryWeaver at the Eternal Loom
 ## for listening the retelling.
-## Call [member RetellingTownie.go_to_the_loom()] on each townie so they join.
-## Call [member EternalLoom.show_retelling_dialogue()] when all townies have joined.
-## May call [member RetellingTownie.become_helper()] on one townie (at random).
-## Call [member RetellingTownie.leave_the_loom()] on each townie so they leave.
+## Call [method RetellingTownie.go_to_the_loom] on each townie so they join.
+## Call [method EternalLoom.show_retelling_dialogue] when all townies have joined.
+## May call [method RetellingTownie.become_helper] on one townie (at random).
+## Call [method RetellingTownie.leave_the_loom] on each townie so they leave.
 
 ## The array of retelling townies in Fray's End.
 @export var townies: Array[RetellingTownie] = []
@@ -20,13 +20,14 @@ extends Node2D
 var _waiting_for_townies: Array[RetellingTownie] = []
 
 ## The Eternal Loom, for listening to signals and calling
-## [member EternalLoom.show_retelling_dialogue()].
+## [method EternalLoom.show_retelling_dialogue].
 @onready var eternal_loom: EternalLoom = %EternalLoom
 
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+
 	eternal_loom.retelling_started.connect(_on_eternal_loom_retelling_started)
 	eternal_loom.retelling_finished.connect(_on_eternal_loom_retelling_finished)
 	eternal_loom.give_retelling_upgrade.connect(_on_eternal_loom_give_retelling_upgrade)
@@ -34,13 +35,37 @@ func _ready() -> void:
 
 func _on_eternal_loom_retelling_started() -> void:
 	_waiting_for_townies = townies.duplicate()
+
+	var travel_times: Array[float] = []
+
+	# Prepare each townie and calculate its travel time.
 	for t: RetellingTownie in townies:
-		t.go_to_the_loom()
-		t.loom_reached.connect(_on_loom_reached.bind(t))
+		var travel_time: float = t.prepare_walk()
+		travel_times.append(travel_time)
+
+	# The slowest townie determines the target arrival time.
+	var target_time: float = float(travel_times.max())
+
+	# Start each townie with a delay so they arrive together.
+	for i in range(townies.size()):
+		var townie: RetellingTownie = townies[i]
+		var delay: float = target_time - travel_times[i]
+
+		_start_townie_after_delay(townie, delay)
+
+
+func _start_townie_after_delay(townie: RetellingTownie, delay: float) -> void:
+	townie.loom_reached.connect(_on_loom_reached, CONNECT_ONE_SHOT | CONNECT_APPEND_SOURCE_OBJECT)
+
+	if delay > 0.0:
+		await get_tree().create_timer(delay).timeout
+
+	townie.go_to_the_loom()
 
 
 func _on_loom_reached(townie: RetellingTownie) -> void:
 	_waiting_for_townies.erase(townie)
+
 	if _waiting_for_townies.size() == 0:
 		eternal_loom.show_retelling_dialogue()
 
