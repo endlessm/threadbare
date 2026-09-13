@@ -5,9 +5,11 @@ extends Node2D
 var zoom_tween: Tween
 
 @onready var camera_2d: Camera2D = %Camera2D
+@onready var bridges_unlocked: ToggleableTileMapLayer = %BridgesUnlocked
 
 
 func _ready() -> void:
+	bridges_unlocked.initialize_with_value(false)
 	GameState.player.abilities_changed.connect(_on_abilities_changed)
 	_on_abilities_changed()
 

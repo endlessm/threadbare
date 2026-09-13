@@ -47,7 +47,7 @@ func close() -> void:
 	set_toggled(false)
 
 
-func set_toggled(value: bool) -> void:
+func set_toggled(value: bool, _immediate: bool = false) -> void:
 	opened = value
 	update_opened_state()
 

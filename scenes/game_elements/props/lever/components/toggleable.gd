@@ -15,7 +15,7 @@ extends Node2D
 ##
 ## Subclasses can override for other behaviours.
 func initialize_with_value(value: bool) -> void:
-	set_toggled(value)
+	set_toggled(value, true)
 
 
-@abstract func set_toggled(value: bool) -> void
+@abstract func set_toggled(value: bool, immediate: bool = false) -> void
