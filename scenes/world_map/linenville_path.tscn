@@ -7,13 +7,16 @@
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="4_34mct"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="5_lpwsl"]
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="6_puq78"]
+[ext_resource type="Shader" uid="uid://dui35fhf12sp5" path="res://scenes/game_elements/fx/world_rewoven/components/world_rewoven.gdshader" id="7_2w05u"]
 [ext_resource type="TileSet" uid="uid://ciq5guijvlyb0" path="res://tiles/void_chromakey.tres" id="7_a75xw"]
 [ext_resource type="Script" uid="uid://c5jp8y8mpge4w" path="res://scenes/game_elements/props/toggleable_tile_map_layer/toggleable_tile_map_layer.gd" id="8_4hkh2"]
+[ext_resource type="Texture2D" uid="uid://drlsbgxh5e6vv" path="res://scenes/game_elements/fx/world_rewoven/components/fabric_texture.png" id="8_lpwsl"]
 [ext_resource type="TileSet" uid="uid://b778cuoftt88r" path="res://tiles/elevation_2.tres" id="9_ddlt2"]
 [ext_resource type="TileSet" uid="uid://bdc7ucso7bx0s" path="res://tiles/shadows.tres" id="10_34mct"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="10_b2puy"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="11_a8wu3"]
 [ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="12_dssa7"]
+[ext_resource type="Script" uid="uid://dpw8lcjx68p3o" path="res://scenes/game_elements/fx/world_rewoven/components/tile_map_mask_bounds.gd" id="12_lpwsl"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="13_o6gg0"]
 [ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="14_lown6"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="15_8k5o1"]
@@ -39,6 +42,31 @@
 [ext_resource type="AudioStream" uid="uid://bbamdm6wtjjcn" path="res://assets/first_party/music/Threadbare_Bed.ogg" id="36_7iwyg"]
 [ext_resource type="Script" uid="uid://uaaaiviytliw" path="res://scenes/world_map/components/quest_progress_unlocker.gd" id="37_6k2xc"]
 [ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="38_2vyp4"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_puq78"]
+seed = 5566423
+frequency = 0.0117
+offset = Vector3(1.5, -7, 0)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lpwsl"]
+width = 64
+height = 64
+noise = SubResource("FastNoiseLite_puq78")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_puq78"]
+shader = ExtResource("7_2w05u")
+shader_parameter/mask_texture = SubResource("NoiseTexture2D_lpwsl")
+shader_parameter/mask_origin = Vector2(320, 640)
+shader_parameter/mask_size = Vector2(640, 384)
+shader_parameter/fabric_texture = ExtResource("8_lpwsl")
+shader_parameter/fabric_scale = 1.0
+shader_parameter/progress = 1.0
+shader_parameter/target_canvas_group = true
+shader_parameter/smoothness = 0.4910000233225
+shader_parameter/burn_size = 0.4470000212325
+shader_parameter/burn_color = Color(1.1281133, 0.7659265, 1.353256, 1)
+shader_parameter/canvas_modulate = Color(1, 1, 1, 1)
+shader_parameter/gray_intensity = 0.0
 
 [sub_resource type="Resource" id="Resource_64vrm"]
 script = ExtResource("13_o6gg0")
@@ -90,12 +118,20 @@ tile_set = ExtResource("4_2w05u")
 tile_map_data = PackedByteArray("AAAxABQAAwACAAAAAAAwABQAAwABAAAAAAAvABQAAwABAAAAAAAuABQAAwABAAAAAAAtABQAAwAAAAAAAAATABQAAwACAAEAAAAaABQAAwABAAIAAAAKAAwAAwAAAAIAAAAKAA0AAwABAAMAAAAKAA4AAwAAAAIAAAAKABAAAwAAAAMAAAAKAA8AAwAAAAIAAAAKAAsAAwAAAAEAAAA=")
 tile_set = ExtResource("5_lpwsl")
 
-[node name="LinenVilleBarrierVoid" type="TileMapLayer" parent="TileMapLayers" unique_id=1599072802]
+[node name="CanvasGroup" type="CanvasGroup" parent="TileMapLayers" unique_id=1934188017]
+material = SubResource("ShaderMaterial_puq78")
+
+[node name="LinenVilleBarrierVoid" type="TileMapLayer" parent="TileMapLayers/CanvasGroup" unique_id=1599072802]
 y_sort_enabled = true
 material = ExtResource("6_puq78")
 tile_map_data = PackedByteArray("AAAIAA0ADQABAAEAAAAJAAwADQABAAEAAAAJAA0ADQABAAEAAAAKAAwADQABAAEAAAAKAA0ADQABAAEAAAAKAA4ADQABAAEAAAALAAwADQABAAEAAAALAA0ADQABAAEAAAALAA4ADQABAAEAAAAMAAsADQABAAEAAAAMAAwADQABAAEAAAAMAA0ADQABAAEAAAAMAA4ADQABAAEAAAANAAsADQABAAEAAAAGAAwAAAAAAAEAAAAHAA0AAAACAAEAAAAIAAwAAAACAAIAAAAJAAsAAAABAAIAAAAKAAsAAAABAAIAAAALAAsAAAACAAIAAAAMAAoAAAABAAIAAAANAAoAAAABAAIAAAAOAAsAAAAAAAEAAAANAAwABQAAAAAAAAANAA0AAAAAAAEAAAANAA4ABAAAAAAAAAAMAA8AAAABAAAAAAALAA8ABgAAAAAAAAAJAA4AAAACAAAAAAAKAA8AAAABAAAAAAAIAA4ABgAAAAAAAAAFAAwAAAACAAEAAAA=")
 tile_set = ExtResource("7_a75xw")
 script = ExtResource("8_4hkh2")
+
+[node name="TileMapMaskBounds" type="Node" parent="TileMapLayers/CanvasGroup" unique_id=1376873320 node_paths=PackedStringArray("canvas_item")]
+script = ExtResource("12_lpwsl")
+canvas_item = NodePath("..")
+metadata/_custom_type_script = "uid://dpw8lcjx68p3o"
 
 [node name="Void" type="TileMapLayer" parent="TileMapLayers" unique_id=1337861538]
 y_sort_enabled = true
@@ -780,6 +816,6 @@ stream = ExtResource("36_7iwyg")
 [node name="LinenVilleUnlocker" type="Node" parent="." unique_id=1744151706 node_paths=PackedStringArray("targets")]
 unique_name_in_owner = true
 script = ExtResource("37_6k2xc")
-targets = [NodePath("../TileMapLayers/LinenVilleBarrierVoid")]
+targets = [NodePath("../TileMapLayers/CanvasGroup/LinenVilleBarrierVoid")]
 required_quests = Array[ExtResource("38_2vyp4")]([ExtResource("30_hq8vv")])
 metadata/_custom_type_script = "uid://uaaaiviytliw"

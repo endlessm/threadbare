@@ -7,9 +7,12 @@
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="5_o0gav"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="6_743bw"]
 [ext_resource type="TileSet" uid="uid://41pk6xbhypue" path="res://tiles/fence.tres" id="7_thbog"]
+[ext_resource type="Shader" uid="uid://dui35fhf12sp5" path="res://scenes/game_elements/fx/world_rewoven/components/world_rewoven.gdshader" id="8_4mh5g"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="8_d53c5"]
 [ext_resource type="SpriteFrames" uid="uid://cxjwwgm86d6it" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_red.tres" id="9_qo67l"]
+[ext_resource type="Texture2D" uid="uid://drlsbgxh5e6vv" path="res://scenes/game_elements/fx/world_rewoven/components/fabric_texture.png" id="9_rxnop"]
 [ext_resource type="PackedScene" uid="uid://dqo4d6mp4hwhi" path="res://scenes/game_elements/props/repellable_box/repellable_box.tscn" id="10_s3xwn"]
+[ext_resource type="Script" uid="uid://dpw8lcjx68p3o" path="res://scenes/game_elements/fx/world_rewoven/components/tile_map_mask_bounds.gd" id="11_au3ml"]
 [ext_resource type="PackedScene" uid="uid://w50y4sa4xay2" path="res://scenes/game_elements/props/repellable_ball/repellable_ball.tscn" id="11_uqwf7"]
 [ext_resource type="PackedScene" uid="uid://cuu65vogubwxd" path="res://scenes/game_elements/props/repellable_lever/repellable_lever.tscn" id="12_576oi"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="13_rqpd2"]
@@ -17,6 +20,30 @@
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="15_gm52s"]
 [ext_resource type="PackedScene" uid="uid://cl06pid826dtg" path="res://scenes/game_elements/characters/player/components/player_repel.tscn" id="16_bya72"]
 [ext_resource type="Script" uid="uid://c5jp8y8mpge4w" path="res://scenes/game_elements/props/toggleable_tile_map_layer/toggleable_tile_map_layer.gd" id="17_xwlxp"]
+
+[sub_resource type="Gradient" id="Gradient_lq5qh"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_au3ml"]
+gradient = SubResource("Gradient_lq5qh")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fhnvg"]
+shader = ExtResource("8_4mh5g")
+shader_parameter/mask_texture = SubResource("GradientTexture2D_au3ml")
+shader_parameter/mask_origin = Vector2(896, 192)
+shader_parameter/mask_size = Vector2(128, 320)
+shader_parameter/fabric_texture = ExtResource("9_rxnop")
+shader_parameter/fabric_scale = 1.0
+shader_parameter/progress = 0.5990000284525
+shader_parameter/target_canvas_group = false
+shader_parameter/smoothness = 1.0
+shader_parameter/burn_size = 1.0
+shader_parameter/burn_color = Color(1.353, 1.353, 0.777, 1)
+shader_parameter/canvas_modulate = Color(1, 1, 1, 1)
+shader_parameter/gray_intensity = 0.0
 
 [node name="CustomRepellableObjectsTest" type="Node2D" unique_id=324172432]
 script = ExtResource("1_hfxxd")
@@ -50,12 +77,18 @@ tile_map_data = PackedByteArray("AAAGAAkAAwAAAAEAAAAGAAoAAwAAAAIAAAAGAAsAAwAAAAI
 tile_set = ExtResource("6_743bw")
 
 [node name="Fence" type="TileMapLayer" parent="TileMapLayers" unique_id=1482788515]
-tile_map_data = PackedByteArray("AAAPAAcAAAACAAEAAAASAAcAAAAAAAEAAAASAAYAAAAAAAEAAAASAAUAAAACAAEAAAASAAQAAAACAAEAAAASAAMAAAACAAEAAAAPAAMAAAAAAAEAAAAPAAIAAAAAAAAAAAAQAAIAAAABAAAAAAARAAIAAAABAAAAAAASAAIAAAACAAAAAAAPAAgAAAAAAAIAAAAQAAgAAAABAAIAAAARAAgAAAABAAIAAAASAAgAAAACAAIAAAAPAAQAAAADAAIAAAAPAAYAAAADAAEAAAA=")
+tile_map_data = PackedByteArray("AAAPAAcAAAADAAEAAAASAAcAAAAAAAEAAAASAAYAAAAAAAEAAAASAAUAAAACAAEAAAASAAQAAAACAAEAAAASAAMAAAACAAEAAAAPAAMAAAADAAIAAAAPAAIAAAAAAAAAAAAQAAIAAAABAAAAAAARAAIAAAABAAAAAAASAAIAAAACAAAAAAAPAAgAAAAAAAIAAAAQAAgAAAABAAIAAAARAAgAAAABAAIAAAASAAgAAAACAAIAAAA=")
 tile_set = ExtResource("7_thbog")
 
-[node name="FenceDoor" type="TileMapLayer" parent="TileMapLayers" unique_id=1123335364]
-tile_map_data = PackedByteArray("AAAPAAQAAAAEAAAAAAAOAAQAAAAAAAAAAAAOAAYAAAAAAAIAAAAPAAYAAAAEAAAAAAAOAAUAAAAAAAEAAAA=")
+[node name="FenceDoorClosed" type="TileMapLayer" parent="TileMapLayers" unique_id=1123335364]
+material = SubResource("ShaderMaterial_fhnvg")
+tile_map_data = PackedByteArray("AAAOAAQAAAACAAEAAAAOAAYAAAAAAAEAAAAOAAUAAAAAAAEAAAAOAAMAAAAAAAAAAAAPAAMAAAAEAAAAAAAOAAcAAAAAAAIAAAAPAAcAAAAEAAAAAAA=")
 tile_set = ExtResource("7_thbog")
+script = ExtResource("17_xwlxp")
+
+[node name="TileMapMaskBounds" type="Node" parent="TileMapLayers/FenceDoorClosed" unique_id=203908000 node_paths=PackedStringArray("canvas_item")]
+script = ExtResource("11_au3ml")
+canvas_item = NodePath("..")
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=888515986]
 y_sort_enabled = true
@@ -100,7 +133,7 @@ position = Vector2(512, 1088)
 
 [node name="RepellableLever" parent="OnTheGround" unique_id=37452001 node_paths=PackedStringArray("targets") instance=ExtResource("12_576oi")]
 position = Vector2(726, 107)
-targets = [NodePath("../../ToggleableTileMapLayer")]
+targets = [NodePath("../../TileMapLayers/FenceDoorClosed")]
 
 [node name="RepellableLever2" parent="OnTheGround" unique_id=632125149 instance=ExtResource("12_576oi")]
 position = Vector2(1090, 614)
@@ -175,11 +208,6 @@ player_controlled = false
 [node name="RepelTimer" type="Timer" parent="OnTheGround/PlayerRepel" unique_id=894830500]
 unique_name_in_owner = true
 wait_time = 1.5
-
-[node name="ToggleableTileMapLayer" type="Node2D" parent="." unique_id=374995496 node_paths=PackedStringArray("target")]
-script = ExtResource("17_xwlxp")
-target = NodePath("../TileMapLayers/FenceDoor")
-metadata/_custom_type_script = "uid://c5jp8y8mpge4w"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=789862376]
 
