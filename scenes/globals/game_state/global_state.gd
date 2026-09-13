@@ -10,6 +10,9 @@ signal completed_quests_changed
 ## Emitted when the [member helper] changes.
 signal helper_changed
 
+## Emitted when an area's unlock status changes.
+signal area_changed(area_name: String, is_unlocked: bool)
+
 ## [Quest]s which the player has previously completed. Modify this with
 ## [method set_quest_completed_state].
 @export var completed_quests: Array[Quest]
@@ -51,6 +54,8 @@ signal helper_changed
 ## can later pick up where they left off.
 @export var suspended_quests: Dictionary[String, SuspendedQuestState]
 
+## Areas unlock
+@export var area: Dictionary[String, bool]
 
 func _validate_property(property: Dictionary) -> void:
 	match property.name:
@@ -88,3 +93,14 @@ func clear_help() -> void:
 	helper = null
 	helper_changed.emit()
 	emit_changed()
+
+## Create or unlock an area.
+func set_unlock_area(area_name: String):
+	if not area.get(area_name,false):
+		area[area_name] = true
+		area_changed.emit(area_name, true)
+		emit_changed()
+
+## Checks if an area is currently unlocked.
+func is_area_unlocked(area_name: String) -> bool:
+	return area.get(area_name, false)
