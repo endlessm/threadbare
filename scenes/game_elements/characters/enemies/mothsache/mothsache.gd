@@ -38,7 +38,6 @@ const MAX_SPEED: float = 300
 @export var alert_sound_stream: AudioStream:
 	set = _set_alert_sound_stream
 ## Sound played when entering ATTACKING state.
-@export var attack_sound_stream: AudioStream
 
 var state: State = State.IDLE:
 	set = _set_state
