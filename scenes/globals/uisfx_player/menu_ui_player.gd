@@ -23,6 +23,7 @@ func _enter_tree() -> void:
 func _on_node_added(node: Node) -> void:
 	if node is BaseButton:
 		_connect_once(node.mouse_entered, _on_button_hovered)
+		_connect_once(node.focus_entered, _on_button_hovered)
 
 	if node is CheckButton:
 		_connect_once(node.toggled, _on_toggle_pressed)
@@ -34,15 +35,13 @@ func _on_node_added(node: Node) -> void:
 		_connect_once(node.tab_clicked, _on_tab_clicked)
 
 
+func _connect_once(sig: Signal, callable: Callable) -> void:
+	if not sig.is_connected(callable):
+		sig.connect(callable)
+
+
 func _on_button_hovered() -> void:
 	hover_sfx_player.play()
-
-
-func _on_toggle_pressed(toggled_on: bool) -> void:
-	if toggled_on:
-		toggle_on_sfx_player.play()
-	else:
-		toggle_off_sfx_player.play()
 
 
 func _on_button_pressed() -> void:
@@ -55,3 +54,10 @@ func _on_slider_value_changed(_value: float) -> void:
 
 func _on_tab_clicked(_tab: int) -> void:
 	button_sfx_player.play()
+
+
+func _on_toggle_pressed(toggled_on: bool) -> void:
+	if toggled_on:
+		toggle_on_sfx_player.play()
+	else:
+		toggle_off_sfx_player.play()
