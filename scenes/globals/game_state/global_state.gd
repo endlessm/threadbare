@@ -54,8 +54,11 @@ signal area_changed(area_name: String, is_unlocked: bool)
 ## can later pick up where they left off.
 @export var suspended_quests: Dictionary[String, SuspendedQuestState]
 
-## Areas unlock
+## Areas unlock status
 @export var area: Dictionary[String, bool]
+
+## Current area where the player is located
+@export var current_area_name: String = ""
 
 func _validate_property(property: Dictionary) -> void:
 	match property.name:
@@ -94,12 +97,14 @@ func clear_help() -> void:
 	helper_changed.emit()
 	emit_changed()
 
+
 ## Create or unlock an area.
-func set_unlock_area(area_name: String):
-	if not area.get(area_name,false):
+func set_unlock_area(area_name: String) -> void:
+	if not area.get(area_name, false):
 		area[area_name] = true
 		area_changed.emit(area_name, true)
 		emit_changed()
+
 
 ## Checks if an area is currently unlocked.
 func is_area_unlocked(area_name: String) -> bool:

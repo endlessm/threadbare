@@ -18,30 +18,30 @@ func animate_first_unlock(zona_name: String, time: int) -> void:
 	var label = $Label
 	label.text = zona_name
 	
-	# Asegurarnos de que el panel sea visible
+	# Ensure the panel is visible
 	show()
 	modulate.a = 0.0
 
-	# 1. Posicionar según el jugador
+	# 1. Position based on the player
 	if _is_player_at_bottom():
-		# Pegado ARRIBA, centrado
+		# Stuck to the TOP, centered
 		set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 		grow_vertical = Control.GROW_DIRECTION_END
 		position.y = 20.0
 	else:
-		# Pegado ABAJO, centrado (sobre el HUD)
+		# Stuck to the BOTTOM, centered (above the HUD)
 		set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 		grow_vertical = Control.GROW_DIRECTION_BEGIN
 		position.y = get_viewport_rect().size.y - size.y - 45.0
 
-	# Esperar 1 frame para que la UI calcule su nuevo tamaño en base al texto
+	# Wait 1 frame for the UI to calculate its new size based on the text
 	await get_tree().process_frame
 
-	# 2. Configurar el Pivot en el centro para que escale bonito
+	# 2. Set the pivot at the center so it scales nicely
 	pivot_offset = size / 2.0
-	scale = Vector2(0.6, 0.6) # Empieza un poco más pequeño para escalar al aparecer
+	scale = Vector2(0.6, 0.6) # Starts slightly smaller to scale up when appearing
 
-	# 3. FADE IN (Aparecer)
+	# 3. FADE IN
 	var tween_in := create_tween().set_parallel(true)
 	tween_in.tween_property(self, "modulate:a", 1.0, 0.35)\
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
@@ -50,10 +50,10 @@ func animate_first_unlock(zona_name: String, time: int) -> void:
 
 	await tween_in.finished
 
-	# 4. Mantener visible el tiempo solicitado
+	# 4. Keep visible for the requested time
 	await get_tree().create_timer(time).timeout
 
-	# 5. FADE OUT (Desaparecer)
+	# 5. FADE OUT
 	var tween_out := create_tween().set_parallel(true)
 	tween_out.tween_property(self, "modulate:a", 0.0, 0.3)\
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)

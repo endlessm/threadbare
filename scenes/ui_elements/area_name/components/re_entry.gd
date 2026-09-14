@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 extends PanelContainer
 
-@export var slide_offset_y: float = 150.0 # Cantidad de píxeles para el desplazamiento
+@export var slide_offset_y: float = 150.0 # Amount of pixels for the slide offset[cite: 5]
 
 @onready var label: Label = $Label
 
@@ -18,7 +18,7 @@ func animate_re_entry(zona_name: String, time: int) -> void:
 	show()
 	label.text = zona_name
 
-	# Guardar posición base si no se ha guardado
+	# Save base position if it hasn't been saved yet
 	if not _is_target_saved:
 		_base_target_y = position.y
 		_is_target_saved = true
@@ -29,7 +29,7 @@ func animate_re_entry(zona_name: String, time: int) -> void:
 	position.y = start_y
 	modulate.a = 0.0
 
-	# ENTRADA
+	# ENTRY
 	var tween_in := create_tween().set_parallel(true)
 	tween_in.tween_property(self, "position:y", target_y, 0.35)\
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
@@ -38,7 +38,7 @@ func animate_re_entry(zona_name: String, time: int) -> void:
 
 	await get_tree().create_timer(time).timeout
 
-	# SALIDA
+	# EXIT
 	var tween_out := create_tween().set_parallel(true)
 	tween_out.tween_property(self, "position:y", start_y, 0.35)\
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
