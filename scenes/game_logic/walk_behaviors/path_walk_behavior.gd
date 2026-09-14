@@ -72,6 +72,9 @@ func _set_walking_path(new_walking_path: Path2D) -> void:
 		character.global_position = initial_position
 		is_path_closed = _is_path_closed()
 		_setup_pointy_offsets()
+		set_physics_process(true)
+	else:
+		set_physics_process(false)
 
 
 func _set_direction(new_direction: int) -> void:
