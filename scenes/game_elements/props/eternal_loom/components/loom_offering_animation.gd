@@ -27,14 +27,14 @@ func play_loom_animation() -> void:
 
 ## Only used for the in-editor preview
 func play_loom_animation_debug() -> void:
-	var arr: Array[InventoryItem]
+	var debug_items: Array[InventoryItem]
+	# TODO: InventoryItem needs a utility function to obtain all types except NONE.
+	var item_types := InventoryItem.COLORS_PER_TYPE.keys()
 	for i in range(debug_thread_count):
-		var temp_item := InventoryItem.new()
-		var item_types := InventoryItem.ItemType.values()
-		item_types.remove_at(3)  ## Remove the 'None' Item Type
-		temp_item.type = item_types.pick_random()
-		arr.append(temp_item)
-	_loom_animation_play(arr)
+		var item := InventoryItem.new()
+		item.type = item_types.pick_random()
+		debug_items.append(item)
+	_loom_animation_play(debug_items)
 
 
 func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
@@ -44,7 +44,7 @@ func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
 
 	var separation := 1.0 / thread_list.size()
 
-	# time it takes for all threads to loop
+	# Time it takes for all threads to loop
 	var loop_time := animation_time * 0.7
 
 	loom_offering_sound.play()
@@ -60,28 +60,28 @@ func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
 
 		animation_path.add_child(path_follow)
 
-		## Starting point for each thread
+		# Starting point for each thread
 		path_follow.progress_ratio = counter * separation
 
-		## Time variation between threads
+		# Time variation between threads
 		var time_variation := loop_time / (2.0 * thread_list.size())
 
 		var tween := path_follow.create_tween()
 
-		## The first thread is the last to end
+		# The first thread is the last to end
 		if counter == 0:
 			tween.finished.connect(_on_animation_finished)
 
-		## Animation Start
+		# Animation Start
 		tween.tween_property(sprite, "scale", Vector2(0, 0), 0)
 
 		tween.tween_property(sprite, "scale", Vector2(1, 1), 0.5)
-		## Loop around
+		# Loop around
 		tween.parallel().tween_property(
 			path_follow, "progress_ratio", 2.0, loop_time - time_variation * counter
 		)
 
-		## Animation end
+		# Animation end
 		(
 			tween
 			. tween_property(sprite, "global_position", animation_path.global_position, 0.25)
@@ -90,10 +90,10 @@ func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
 		tween.parallel().tween_property(sprite, "modulate", Color(0, 0, 0, 0), 0.5)
 		tween.parallel().tween_property(sprite, "scale", Vector2(3, 3), 0.5)
 		tween.tween_callback(_thread_free.bind(sprite))
-		counter = counter + 1
+		counter += 1
 
 
-## Remove thread once animation finishes
+# Remove thread once animation finishes
 func _thread_free(thread: Sprite2D) -> void:
 	thread.queue_free()
 
