@@ -131,6 +131,7 @@ func _ready() -> void:
 	idle_patrol_path = idle_patrol_path
 	state = state
 	_last_position = position
+	_init_persistence()
 
 	if Engine.is_editor_hint():
 		set_process(false)
@@ -203,3 +204,58 @@ func _on_player_capture_area_body_entered(body: Node2D) -> void:
 
 	var player := body as Player
 	player.defeat(true)
+
+
+## Hooks into the global scene state to monitor for spawn point updates.
+func _init_persistence() -> void:
+	if GameState.scene == null or not "facts" in GameState.scene:
+		return
+		
+	if not GameState.scene.changed.is_connected(_on_checkpoint_activated):
+		GameState.scene.changed.connect(_on_checkpoint_activated)
+			
+	_load_state()
+
+
+## Packages the enemy's positional data and path progress into the global facts dictionary.
+## Verifies the persistence flag of the active checkpoint before saving.
+func _on_checkpoint_activated() -> void:
+	var spawn_path: NodePath = GameState.scene.spawn_point
+	if spawn_path.is_empty(): 
+		return
+	
+	var node: Node = get_tree().current_scene.get_node_or_null(spawn_path)
+	var checkpoint: Node = node
+	
+	while checkpoint and not checkpoint is Checkpoint:
+		checkpoint = checkpoint.get_parent()
+		
+	if not checkpoint or not checkpoint.get("save_void_and_enemies"):
+		return 
+		
+	var save_key := str(get_path())
+	var data := {
+		"position": global_position,
+		"last_position": _last_position,
+		"state": state
+	}
+	
+	if path_walk_behavior:
+		data["path_progress"] = path_walk_behavior.get("progress_ratio")
+		
+	GameState.scene.facts[save_key] = data
+
+
+## Restores the enemy to its exact state from the previous save.
+## Overrides the internal last_position variable to prevent massive particle bursts caused by global teleportation.
+func _load_state() -> void:
+	var save_key := str(get_path())
+	if GameState.scene.facts.has(save_key):
+		var data: Dictionary = GameState.scene.facts[save_key]
+		
+		global_position = data["position"]
+		_last_position = data["last_position"]
+		state = data["state"]
+		
+		if path_walk_behavior and data.has("path_progress"):
+			path_walk_behavior.set("progress_ratio", data["path_progress"])
