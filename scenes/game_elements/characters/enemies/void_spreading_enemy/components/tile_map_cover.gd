@@ -110,6 +110,7 @@ func _ready() -> void:
 
 	for coord: Vector2i in get_used_cells():
 		consume(coord, true)
+	_init_persistence()
 
 
 ## Cover all [param cells] with [member terrain_name], hiding any nodes in those cells which are
@@ -174,3 +175,46 @@ func uncover_all(duration: float) -> void:
 	await tween.finished
 	clear()
 	self.modulate.a = 1.0
+	
+## Initializes the connection to the global scene state to listen for checkpoint activations.
+## Falls back safely if testing the scene in isolation without the GameState singleton.
+func _init_persistence() -> void:
+	if GameState.scene == null or not "facts" in GameState.scene:
+		return
+		
+	if not GameState.scene.changed.is_connected(_on_checkpoint_activated):
+		GameState.scene.changed.connect(_on_checkpoint_activated)
+			
+	_load_state()
+
+
+## Captures the current state of consumed tiles when the scene spawn point changes.
+## Validates the active checkpoint's persistence configuration before committing data.
+func _on_checkpoint_activated() -> void:
+	var spawn_path: NodePath = GameState.scene.spawn_point
+	if spawn_path.is_empty(): 
+		return
+	
+	# Traverse the scene tree upwards from the spawn point to find the parent Checkpoint node.
+	# NOTE: Not sure on how to access the checkpoints in one scene apart from this method
+	var node: Node = get_tree().current_scene.get_node_or_null(spawn_path)
+	var checkpoint: Node = node
+	
+	while checkpoint and not checkpoint is Checkpoint:
+		checkpoint = checkpoint.get_parent()
+		
+	# Abort the save process if the checkpoint lacks the persistence flag.
+	if not checkpoint or not checkpoint.get("save_void_and_enemies"):
+		return 
+		
+	var save_key := str(get_path())
+	GameState.scene.facts[save_key] = get_used_cells()
+
+
+## Retrieves and applies the historically consumed tiles from the global state.
+## Executes immediately without animation to prevent visual glitches upon scene reload.
+func _load_state() -> void:
+	var save_key := str(get_path())
+	if GameState.scene.facts.has(save_key):
+		var saved_tiles: Array = GameState.scene.facts[save_key]
+		consume_cells(saved_tiles, true)

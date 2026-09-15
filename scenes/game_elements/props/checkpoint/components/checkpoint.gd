@@ -3,6 +3,7 @@
 @tool
 class_name Checkpoint
 extends Area2D
+signal activated
 ## A place where the player respawns if the current scene is reloaded.
 ##
 ## A checkpoint is initially invisible. It becomes visible when the player enters the area, which
@@ -28,6 +29,10 @@ const REQUIRED_ANIMATIONS := [&"idle", &"appear"]
 ## Dialogue to trigger when the player interacts with the checkpoint. If empty, the player will not
 ## be able to interact with the checkpoint.
 @export var dialogue: DialogueResource = preload("uid://bug2aqd47jgyu")
+
+## Determines if the enemies and the void layer should save their state when 
+## the player activates this checkpoint.
+@export var save_void_and_enemies: bool = false
 
 ## The point where the player will spawn.
 @onready var spawn_point: SpawnPoint = %SpawnPoint
@@ -72,6 +77,7 @@ func _ready() -> void:
 
 ## Makes this the active checkpoint.
 func activate() -> void:
+	activated.emit()
 	GameState.scene.spawn_point = owner.get_path_to(spawn_point)
 	GameState.save()
 
