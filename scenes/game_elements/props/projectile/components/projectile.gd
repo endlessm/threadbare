@@ -79,13 +79,6 @@ var blink_effect_time: float
 
 var _trail_particles: GPUParticles2D
 
-#Attributes that control the blinking effect
-var time_passed: float = 0.0
-var time_to_dissapear: float = 0.0
-var is_dissapearing: bool = false
-var blink_effect: bool = true
-var blink_timer: Timer
-
 @onready var visible_things: Node2D = %VisibleThings
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var trail_fx_marker: Marker2D = %TrailFXMarker
@@ -190,7 +183,7 @@ func _on_body_entered(body: Node2D) -> void:
 ## enters the repel area.
 func got_repelled(repel_direction: Vector2) -> void:
 	add_small_fx()
-	
+
 	# When the proyectile is dissapearing, the duration_timer will not reset
 	if not is_dissapearing:
 		duration_timer.start()
@@ -222,11 +215,3 @@ func _on_duration_timer_timeout() -> void:
 func remove() -> void:
 	await get_tree().create_timer(randf_range(0., 3.)).timeout
 	explode()
-
-func _on_blink_timer_timeout() -> void:
-	if blink_effect:
-		animated_sprite_2d.modulate.a = 0.2
-		blink_effect = false
-	else:
-		animated_sprite_2d.modulate.a = 0.8
-		blink_effect = true
