@@ -61,9 +61,9 @@ func _ready() -> void:
 	animated_sprite_2d.connect("frame_changed", _on_frame_changed)
 
 	if GameState.quest:
-		GameState.quest.inventory.item_collected.connect(_update_dialogue_title)
-		GameState.quest.inventory.item_consumed.connect(_update_dialogue_title)
-	_update_dialogue_title()
+		GameState.quest.inventory.item_collected.connect(_update_dialogue_cue)
+		GameState.quest.inventory.item_consumed.connect(_update_dialogue_cue)
+	_update_dialogue_cue()
 
 
 func _set_quest_directory(new_value: String) -> void:
@@ -72,7 +72,7 @@ func _set_quest_directory(new_value: String) -> void:
 		return
 	_quests = Quest.enumerate(quest_directory)
 	if is_node_ready():
-		_update_dialogue_title()
+		_update_dialogue_cue()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -105,7 +105,7 @@ func congratulate_player() -> void:
 	await DialogueManager.dialogue_ended
 
 
-func _update_dialogue_title(_item: InventoryItem = null) -> void:
+func _update_dialogue_cue(_item: InventoryItem = null) -> void:
 	if eternal_loom and eternal_loom.is_item_offering_possible():
 		talk_behavior.title = "go_to_loom"
 	elif not _quests:

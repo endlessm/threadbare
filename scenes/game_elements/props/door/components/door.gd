@@ -8,14 +8,12 @@ extends Toggleable
 	set(new_val):
 		opened = new_val
 		update_opened_state()
-@onready var ring_sound: AudioStreamPlayer = $RingSound
-@onready var door_sound: AudioStreamPlayer2D = $DoorSound
+
+@onready var door_open_sound: AudioStreamPlayer2D = %DoorOpenSound
+@onready var victory_sound: AudioStreamPlayer = %VictorySound
 
 
 func open() -> void:
-	if play_victory_fanfare_on_open:
-		ring_sound.play()
-	door_sound.play()
 	set_toggled(true)
 
 
@@ -25,6 +23,10 @@ func close() -> void:
 
 func set_toggled(value: bool) -> void:
 	opened = value
+	if opened:
+		door_open_sound.play()
+		if play_victory_fanfare_on_open:
+			victory_sound.play()
 
 
 func update_opened_state() -> void:
