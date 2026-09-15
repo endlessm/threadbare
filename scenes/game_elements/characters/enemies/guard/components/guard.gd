@@ -66,8 +66,8 @@ const DEFAULT_SPRITE_FRAMES = preload("uid://ovu5wqo15s5g")
 @export_range(0.1, 5, 0.1, "or_greater", "or_less") var detection_area_scale: float = 1.0:
 	set(new_value):
 		detection_area_scale = new_value
-		if detection_area:
-			detection_area.scale = Vector2.ONE * detection_area_scale
+		_set_detection_area_scale()
+		_set_detection_light()
 
 @export_category("Debug")
 ## Enables movement in the editor for debugging.
@@ -118,7 +118,7 @@ var character_animation_player_behavior: CharacterAnimationPlayerBehavior = %Cha
 @onready var _foot_sound: AudioStreamPlayer2D = %FootSound
 @onready var _fire_sound: AudioStreamPlayer2D = %FireSound
 @onready var _torch_hit_sound: AudioStreamPlayer2D = %TorchHitSound
-
+@onready var _light: PointLight2D = %Light
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
@@ -143,6 +143,9 @@ func _ready() -> void:
 			player_awareness.value = 0.0
 
 	_set_sprite_frames(sprite_frames)
+	
+	_set_detection_area_scale()
+	_set_detection_light()
 
 	if detection_area:
 		detection_area.scale = Vector2.ONE * detection_area_scale
@@ -428,6 +431,16 @@ func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 		return
 	animated_sprite_2d.sprite_frames = sprite_frames
 	update_configuration_warnings()
+	
+func _set_detection_area_scale() -> void:
+	if not is_node_ready():
+		return
+	detection_area.scale = Vector2.ONE * detection_area_scale
+
+func _set_detection_light() -> void:
+	if not is_node_ready():
+		return
+	_light.visible = detection_area_scale > 0.1
 
 
 func _set_alerted_sound_stream(new_value: AudioStream) -> void:
