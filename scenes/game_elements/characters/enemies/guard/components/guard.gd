@@ -459,6 +459,8 @@ func _set_alert_other_sound_stream(new_value: AudioStream) -> void:
 
 
 func _on_instant_detection_area_body_entered(body: Node2D) -> void:
+	if _is_sight_to_point_blocked(body.global_position):
+		return
 	state = State.ALERTED
 	player_detected.emit(body)
 
