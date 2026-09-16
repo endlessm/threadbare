@@ -11,6 +11,7 @@ signal barrel_destroyed(barrel_instance: FragileBarrel)
 @onready var crack_sound: AudioStreamPlayer2D = %CrackSound
 @onready var shatter_sound: AudioStreamPlayer2D = %ShatterSound
 @onready var health_component: HealthComponent = %HealthComponent
+@onready var hit_box_collision_shape_2d: CollisionShape2D = %HitBoxCollisionShape2D
 
 
 func _ready() -> void:
@@ -46,6 +47,9 @@ func _on_health_component_health_depleted() -> void:
 	crack_overlay_node.visible = false
 
 	shatter_sound.play()
+
+	hit_box_collision_shape_2d.set_deferred("disabled", true)
+	collision_shape_2d.set_deferred("disabled", true)
 
 	# Play destruction animation directly
 	animated_sprite_2d.play("shatter")
