@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-class_name BalderFuturo
+class_name OdiseaTiempoBalderFuturo
 extends ThrowingEnemy
 
 enum Tipo {
@@ -61,14 +61,18 @@ var velocidad_actual_projectil:int
 @export var fase1:bool = false
 @export var fase2:bool = false
 @export var fase3:bool = false
+
 func _atacar_efecto(ataques: int, casilla_a_mover: Vector2i, direccion: Tipo, es_barrido:bool) -> void:
 	global_position = mapa.map_to_local(casilla_a_mover)
 	##ejecuta su ataque por defecto (Disparo 1)
 	_is_attacking = true
 	animation_player.play(&"attack")
+	if es_barrido:
+		_iniciar_animacion_disparos(false)
+		mover_secuaces_y_targets(direccion_patron(direccion))
 	await atacar_sonido()
 	if es_barrido:##si queremos que sea ataque barrido le ponemos true
-		await ataque_barrido(direccion)
+		await atacar_a_targets()
 	await get_tree().create_timer(0.3).timeout		
 	pausar_projectiles()		
 	var vector_direccion: Vector2i = COORDENADAS[direccion]
@@ -89,7 +93,8 @@ func _atacar_efecto(ataques: int, casilla_a_mover: Vector2i, direccion: Tipo, es
 		# El jefe hace el siguiente disparo de la ráfaga
 		shoot_projectile_at(player)
 		if es_barrido:##si queremos que sea ataque barrido le ponemos true
-			await ataque_barrido(direccion)
+			mover_nodos_en_direccion(global_position,direccion_patron(direccion),disparos)
+			await atacar_a_targets()
 		%DisparoPolyfonic.play_audio()	
 		pausar_projectiles()	
 		# Esperamos el pequeño bache de tiempo antes del siguiente tiro
@@ -104,11 +109,6 @@ func _atacar_efecto_circular(casilla_a_mover: Vector2i,rafagas:int):
 	pausar_projectiles()		
 	await get_tree().create_timer(0.1).timeout	
 
-	
-
-func ataque_barrido(direccion:Tipo):
-	var direccion_enemigos = direccion_patron(direccion)
-	ataque_direcciones(direccion_enemigos)		
 
 func ataque_circular(es_barrido:bool, cantidad_ataques:int, patron)->void:
 
@@ -121,34 +121,28 @@ func ataque_circular(es_barrido:bool, cantidad_ataques:int, patron)->void:
 		await _atacar_efecto(cantidad_ataques, casilla_inicial_boss, d,es_barrido)	
 	animation_player.play(&"idle")
 	
-func ataque_direcciones(direccion:Vector2i)->void:
 	
-	##Seran 4 posiciones de enemigos para simular 5 disparos (4 + el boss)
-	##los enemigos se generaran alado del jefe y si la direccion es una diagonal
-	##como diagonal
-	var posicion_boss = mapa.local_to_map(mapa.to_local(global_position))
-	var posicion_player = mapa.local_to_map(mapa.to_local(player.global_position))
-	
-	var posiciones_disparos = patron_posiciones(posicion_boss,direccion)
-	var posiciones_target = patron_posiciones(posicion_player,direccion)
-	
-	
-	##si o si deben ser 4 disparos y 4 targets, sino crashea xd
-	colocar_nodos(posiciones_disparos,disparos)
-	colocar_nodos(posiciones_target,targets)
-	
-	##una vez colocado disparamos
-	var i = 0
-	for d in disparos:
-		d.shoot_projectile_at(targets[i])
-		i = i+1
-		
 func colocar_nodos(posiciones:Array[Vector2i],nodos:Array[Node2D])->void:
 	var i = 0
 	for n:Node2D in nodos:
 		var pos = mapa.to_global(mapa.map_to_local(posiciones[i]))
 		n.global_position = pos
 		i = i+1
+		
+func mover_secuaces_y_targets(direccion:Vector2)->void:
+	mover_nodos_en_direccion(global_position,direccion,disparos)
+	mover_nodos_en_direccion(player.global_position,direccion,targets)
+	
+func mover_nodos_en_direccion(posicion_nodo_referencia,direccion:Vector2,nodos_a_mover:Array[Node2D])->void:
+	var posicion_referencia = mapa.local_to_map(mapa.to_local(posicion_nodo_referencia))
+	var posiciones_nodos = patron_posiciones(posicion_referencia,direccion)
+	colocar_nodos(posiciones_nodos,nodos_a_mover)
+	
+func atacar_a_targets()->void:
+	var i = 0
+	for d in disparos:
+		d.shoot_projectile_at(targets[i])
+		i = i+1		
 		
 func direccion_patron(direccion:Tipo)->Vector2i:
 	var direccion_mover = Vector2i(0,0);
@@ -163,7 +157,7 @@ func direccion_patron(direccion:Tipo)->Vector2i:
 			direccion_mover = Vector2i(-1, 1)
 	return direccion_mover		
 
-func patron_posiciones(posicion,direccion)->Array[Vector2i]:
+func patron_posiciones(posicion,direccion:Vector2i)->Array[Vector2i]:
 	##la posicion debe ser usando maptolocal
 	var posicion_iterada = posicion
 	var posiciones_nuevas : Array[Vector2i] = []
@@ -209,12 +203,17 @@ func _on_timeout() -> void:
 	_is_attacking = true
 	animation_player.play(&"attack")
 	if fase2 && !fase3:
+		_iniciar_animacion_disparos(true)
 		await atacar_sonido()
-		
 		var direccion = global_position.direction_to(player.global_position)
 		direccion = direccion.rotated(-PI / 2)
-		ataque_direcciones(direccion.round())
+		
+		mover_nodos_en_direccion(player.global_position,direccion.round(),targets)
+		for i in targets:
+			shoot_projectile_at(i)
+
 	elif fase3 &&!time_stop:
+		_iniciar_animacion_disparos(true)	
 		await atacar_sonido()
 		
 		timer.paused = true
@@ -222,6 +221,7 @@ func _on_timeout() -> void:
 		if !is_stopping:
 			timer.paused = false
 	else:
+		_iniciar_animacion_disparos(true)
 		await atacar_sonido()
 				
 	animation_player.queue(&"idle")		
@@ -241,6 +241,8 @@ func _ataque_circular_rafaga(ataques:int,es_espiral:bool)->void:
 				shoot_projectile_at(p)
 			%PatronCircular.rotation += 0.1
 			%DisparoPolyfonic.play_audio()
+			for n in disparos:
+				n.shoot_projectile_at(player)
 			await get_tree().create_timer(0.8).timeout
 
 var ataque_activo = false
@@ -319,4 +321,12 @@ func _on_got_hit(body: Node2D) -> void:
 	if body is Projectile and not body.can_hit_enemy and not _is_defeated:
 		return
 	body.queue_free()
-	##animation_player.play(&"got hit")	
+
+func _iniciar_animacion_disparos(shoot:bool)->void:
+	for d in disparos:
+		d._is_attacking = true
+		if shoot:
+			d.animation_player.play(&"attack")
+		else:
+			d.animation_player.play(&"attack_no_shot")	
+		d.animation_player.queue(&"idle")

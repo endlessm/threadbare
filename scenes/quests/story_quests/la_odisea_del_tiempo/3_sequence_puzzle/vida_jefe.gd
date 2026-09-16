@@ -10,8 +10,8 @@ signal fase3
 var vida_maxima: int = 360
 var vida_actual: int = 360
 
-var vida_maxima_player: int = 100
-var vida_actual_player: int = 100
+var vida_maxima_player: int = 180
+var vida_actual_player: int = 180
 
 signal jefe_derrotado
 signal player_derrotado

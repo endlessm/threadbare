@@ -4,7 +4,7 @@ extends Node
 
 @export var dialogo_final: DialogueResource
 @export_file("*.tscn") var next_scene: String
-@export var enemigo:BalderFuturo
+@export var enemigo:OdiseaTiempoBalderFuturo
 @export var timer_time_stop:Timer
 @export var player:Player
 

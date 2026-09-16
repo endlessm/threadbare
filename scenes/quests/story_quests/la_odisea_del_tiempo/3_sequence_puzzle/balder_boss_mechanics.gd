@@ -4,6 +4,7 @@ extends Node
 
 @onready var boss = %BalderFuturo
 @onready var player = %Player
+@onready var secuaces = %EnemigosDisparos
 @export var animacion: ColorRect
 @export var timer_time_stop: Timer
 
@@ -57,6 +58,8 @@ func _time_stop(numero_patron:int = -1)->void:
 	await boss.ataque_circular(es_barrido,cantidad_disparos,patron)
 	
 	animacion.reanudar_efecto()
+	secuaces.mover_a_posiciones_iniciales()
+	
 	await get_tree().create_timer(1).timeout
 	
 	%MusicaBatalla.volume_db =-20
@@ -65,6 +68,9 @@ func _time_stop(numero_patron:int = -1)->void:
 	boss.activar_projectiles()
 	animacion.resetear_efecto()
 	boss.time_stop=false
+	
+	
+	
 	await get_tree().create_timer(3).timeout
 	boss.timer.start()
 	recibir_danio=true
@@ -72,10 +78,6 @@ func _time_stop(numero_patron:int = -1)->void:
 	
 func _on_damaged(body:Node2D)->void:
 	if body is Projectile:
-		##POR ALGUNA RAZON, ESTO NO FUNCIONABA BIEN, DETECTABA
-		##AUNQUE LA COLISION SEA FALSA
-		##UN RATO DESPUES FUNCIONO NORMAL PERO LUEGO SE ME CRASHEO
-		## Y YA NO FUNCIONO XDD, ASI QUE LO DEJO ASI
 		
 		if not body.get_collision_mask_value(8): 
 			return 
@@ -116,7 +118,6 @@ func fase_3()->void:
 	boss.timer.stop()
 	timer_time_stop.stop()
 	cantidad_disparos = 2
-	##boss.espaciado =1
 	maximo=2
 	boss.fase3 = true
 	boss.fase2 =false

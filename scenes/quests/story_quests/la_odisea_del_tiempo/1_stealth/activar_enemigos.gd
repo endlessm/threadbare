@@ -24,7 +24,7 @@ func _desactivar_enemigos()->void:
 		e.remove();
 
 func _reducir_vida_jugador(body:Node2D)->void:
-	if(!can_take_damage):
+	if not can_take_damage:
 		return
 	body = body as Projectile   
 	if not body:
