@@ -25,9 +25,12 @@
 [ext_resource type="TileSet" uid="uid://ciq5guijvlyb0" path="res://tiles/void_chromakey.tres" id="12_f3823"]
 [ext_resource type="Texture2D" uid="uid://cyvi71ryavsld" path="res://scenes/game_elements/props/decoration/books/components/Books_2.png" id="13_xt3dw"]
 [ext_resource type="Script" uid="uid://c5jp8y8mpge4w" path="res://scenes/game_elements/props/toggleable_tile_map_layer/toggleable_tile_map_layer.gd" id="14_f3823"]
+[ext_resource type="Shader" uid="uid://dui35fhf12sp5" path="res://scenes/game_elements/fx/world_rewoven/components/world_rewoven.gdshader" id="15_t7c6s"]
 [ext_resource type="PackedScene" uid="uid://bp20cjimwi8l0" path="res://scenes/game_elements/props/buildings/house/house_2.tscn" id="15_uhynt"]
 [ext_resource type="PackedScene" uid="uid://712saqgof3kf" path="res://scenes/game_elements/props/eternal_loom/eternal_loom.tscn" id="16_ojp30"]
+[ext_resource type="Texture2D" uid="uid://drlsbgxh5e6vv" path="res://scenes/game_elements/fx/world_rewoven/components/fabric_texture.png" id="16_ulm71"]
 [ext_resource type="PackedScene" uid="uid://cpaplgh708bc3" path="res://scenes/game_elements/characters/npcs/npc_prop/fray_axeman.tscn" id="17_0a1i7"]
+[ext_resource type="Script" uid="uid://dpw8lcjx68p3o" path="res://scenes/game_elements/fx/world_rewoven/components/tile_map_mask_bounds.gd" id="17_uxfrp"]
 [ext_resource type="PackedScene" uid="uid://v3usqiwy5wpr" path="res://scenes/game_elements/props/decoration/rock/rock.tscn" id="18_jbsab"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="18_yntpr"]
 [ext_resource type="PackedScene" uid="uid://n8dhed3nvf50" path="res://scenes/game_elements/characters/npcs/npc_prop/fray_hammerman.tscn" id="19_yntpr"]
@@ -58,6 +61,228 @@
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="61_6b07c"]
 [ext_resource type="Script" uid="uid://cmika1t1573xe" path="res://scenes/world_map/components/frays_end_exit_blocker.gd" id="62_t7c6s"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="64_uxfrp"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_t7c6s"]
+seed = 5566801
+frequency = 0.0148
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ulm71"]
+width = 32
+height = 64
+noise = SubResource("FastNoiseLite_t7c6s")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uxfrp"]
+shader = ExtResource("15_t7c6s")
+shader_parameter/mask_texture = SubResource("NoiseTexture2D_ulm71")
+shader_parameter/mask_origin = Vector2(-64, 320)
+shader_parameter/mask_size = Vector2(192, 640)
+shader_parameter/fabric_texture = ExtResource("16_ulm71")
+shader_parameter/fabric_scale = 1.0
+shader_parameter/progress = 1.0
+shader_parameter/target_canvas_group = true
+shader_parameter/smoothness = 0.4910000233225
+shader_parameter/burn_size = 0.4470000212325
+shader_parameter/burn_color = Color(1.1281133, 0.7659265, 1.353256, 1)
+shader_parameter/canvas_modulate = Color(1, 1, 1, 1)
+shader_parameter/gray_intensity = 0.0
+
+[sub_resource type="Gradient" id="Gradient_wymun"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f3823"]
+gradient = SubResource("Gradient_wymun")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7kfal"]
+shader = ExtResource("15_t7c6s")
+shader_parameter/mask_texture = SubResource("GradientTexture2D_f3823")
+shader_parameter/mask_origin = Vector2(2624, 1728)
+shader_parameter/mask_size = Vector2(64, 384)
+shader_parameter/fabric_texture = ExtResource("16_ulm71")
+shader_parameter/fabric_scale = 1.0
+shader_parameter/progress = 1.0
+shader_parameter/target_canvas_group = false
+shader_parameter/smoothness = 0.3230000153425
+shader_parameter/burn_size = 0.3430000162925
+shader_parameter/burn_color = Color(1.353, 1.353, 0.777, 1)
+shader_parameter/canvas_modulate = Color(1, 1, 1, 1)
+shader_parameter/gray_intensity = 0.0
+
+[sub_resource type="Shader" id="Shader_t7c6s"]
+code = "/**
+ * This is intended to be applied to a CanvasGroup material.
+ * SPDX-FileCopyrightText: The Threadbare Authors
+ * SPDX-License-Identifier: MPL-2.0
+ */
+shader_type canvas_item;
+// Not unshaded: the engine only applies the color of a CanvasModulate, and 2D
+// lights, to canvas items that are not unshaded. Without this, a node using this
+// shader stays untinted while the rest of the scene is tinted.
+
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
+
+/**
+ * Grayscale texture with the pattern of the fade.
+ */
+uniform sampler2D mask_texture : hint_default_white, repeat_disable;
+
+/**
+ * Origin, in world units, of the region the fade mask is stretched across.
+ */
+uniform vec2 mask_origin = vec2(0.0);
+
+/**
+ * Size, in world units, of the region the fade mask is stretched across. Set
+ * this together with [member mask_origin] to the bounds of the affected area,
+ * so the mask spans it exactly once whether this material is applied to a
+ * [CanvasGroup] or to a single [CanvasItem] such as a [TileMapLayer].
+ */
+uniform vec2 mask_size = vec2(1920.0, 1080.0);
+
+/**
+ * Grayscale texture with a fabric pattern to multiply the fade mask.
+ */
+uniform sampler2D fabric_texture : repeat_enable;
+
+/**
+ * Scale of the fabric pattern texture, in world units per texel. At 1.0 the
+ * fabric is sampled at the same resolution as the world, so one texel of the
+ * texture covers exactly one world pixel.
+ */
+uniform float fabric_scale : hint_range(0.01, 30.0) = 1.0;
+
+/**
+ * Fade progress: 0.0 is fully hidden, 1.0 is fully visible
+ */
+uniform float progress : hint_range(0.0, 1.0) = 0.0;
+
+/**
+ * Wether to target a CanvasGroup node or a single CanvasItem.
+ */
+uniform bool target_canvas_group = true;
+
+/**
+ * How smooth is the edge of the fade.
+ */
+uniform float smoothness : hint_range(0.0, 1.0) = 0.1;
+
+/**
+ * How long is the edge of the fade.
+ */
+uniform float burn_size : hint_range(0.0, 1.0) = 0.15;
+
+/**
+ * The burn color. Brighter than white, so that it reads as light.
+ */
+uniform vec4 burn_color : source_color = vec4(1.353, 1.353, 0.777, 1.0);
+
+/**
+ * Color of the [CanvasModulate] of the scene, if there is one. The burn is
+ * divided by it, so that the multiplication the engine does afterwards cancels
+ * out and the burn keeps its full brightness, as if it was made of light.
+ */
+uniform vec4 canvas_modulate : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+
+/**
+ * How gray is the existing color (not the burn).
+ */
+uniform float gray_intensity : hint_range(0.0, 1.0) = 0.0;
+
+/**
+ * Position of the fragment in world space, so the fabric pattern is anchored to
+ * the world instead of to the screen.
+ */
+varying vec2 world_position;
+
+void vertex() {
+	world_position = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
+}
+
+void fragment() {
+	// Sample the main texture color of the node
+	vec4 main_color;
+	if (target_canvas_group) {
+		main_color = textureLod(screen_texture, SCREEN_UV, 0.0);
+		if (main_color.a > 0.0001) {
+			main_color.rgb /= main_color.a;
+		}
+	} else {
+		// COLOR already holds the texture multiplied by the node's modulate, so
+		// sampling TEXTURE again here would apply the texture twice and darken
+		// the result.
+		main_color = COLOR;
+	}
+
+	// A gray version of the main color.
+	float gray = dot(main_color.rgb, vec3(0.299, 0.587, 0.114));
+
+	// Sample the mask texture value (taking the red channel). Using world
+	// position instead of UV, because on a TileMapLayer UV is the coordinate
+	// into the tileset atlas of each individual tile, not a coordinate across
+	// the whole node, which would repeat the mask on every tile.
+	vec2 mask_uv = (world_position - mask_origin) / mask_size;
+	float mask_value = texture(mask_texture, mask_uv).r;
+
+	// Sample the fabric pattern texture (taking the red channel). Sampling by
+	// world position gives the pattern a fixed size in world units, so it grows
+	// when zooming in and scrolls along with the camera. Dividing by the texture
+	// size turns world units into UVs, so at fabric_scale 1.0 one texel covers
+	// one world pixel.
+	vec2 fabric_uv = world_position / (vec2(textureSize(fabric_texture, 0)) * fabric_scale);
+	float fabric_value = 1. - texture(fabric_texture, fabric_uv).r;
+
+	// Sweep the threshold slightly past the 0.0 to 1.0 range of the mask, by the
+	// width of the widest edge, so that progress 0.0 hides every pixel and
+	// progress 1.0 shows every pixel, whatever the mask texture contains. In
+	// between, the mask still drives the shape of the transition.
+	float edge_size = max(smoothness, burn_size);
+	float threshold = 1.0 - progress * (1.0 + edge_size);
+
+	// Calculate a clean alpha cutoff based on progress using smoothness.
+	float alpha = smoothstep(threshold, threshold + smoothness, mask_value);
+
+	// Calculate the burn, using burn_size.
+	float burn = smoothstep(threshold + burn_size, threshold, mask_value);
+
+	vec3 final_color = main_color.rgb;
+	// Apply gray:
+	final_color = mix(final_color, vec3(gray), gray_intensity);
+	// Apply burn, undoing the canvas modulate so that it looks unshaded:
+	if (burn_size != 0.0) {
+		vec3 unshaded_burn = burn_color.rgb / max(canvas_modulate.rgb, vec3(0.001));
+		final_color = mix(final_color, unshaded_burn, burn * burn_color.a);
+	}
+	// Apply the fabric texture.
+	alpha *=  2.2 * smoothstep(0., fabric_value, alpha);
+
+	COLOR = vec4(final_color, main_color.a * alpha);
+}
+"
+
+[sub_resource type="Gradient" id="Gradient_lq5qh"]
+offsets = PackedFloat32Array(0, 0.8095238, 1)
+colors = PackedColorArray(0.37413925, 0.37413928, 0.37413922, 1, 0, 0, 0, 1, 0.37254903, 0.37254903, 0.37254903, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jm52i"]
+gradient = SubResource("Gradient_lq5qh")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7n6eg"]
+shader = SubResource("Shader_t7c6s")
+shader_parameter/mask_texture = SubResource("GradientTexture2D_jm52i")
+shader_parameter/mask_origin = Vector2(2624, 1728)
+shader_parameter/mask_size = Vector2(64, 384)
+shader_parameter/fabric_texture = ExtResource("16_ulm71")
+shader_parameter/fabric_scale = 1.0
+shader_parameter/progress = 1.0
+shader_parameter/target_canvas_group = false
+shader_parameter/smoothness = 0.3230000153425
+shader_parameter/burn_size = 0.3430000162925
+shader_parameter/burn_color = Color(1.353, 1.353, 0.777, 1)
+shader_parameter/canvas_modulate = Color(1, 1, 1, 1)
+shader_parameter/gray_intensity = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_duxxr"]
 size = Vector2(52, 61)
@@ -217,23 +442,43 @@ tile_set = ExtResource("6_5j6h7")
 tile_map_data = PackedByteArray("AAAEAP//AQAAAAMAAAAFAP//AQABAAMAAAAGAP//AQABAAMAAAAHAP//AQACAAMAAAA=")
 tile_set = ExtResource("7_r1ek1")
 
-[node name="WestPathBarrierVoid" type="TileMapLayer" parent="TileMapLayers" unique_id=1715727017]
+[node name="CanvasGroup" type="CanvasGroup" parent="TileMapLayers" unique_id=402749041]
+material = SubResource("ShaderMaterial_uxfrp")
+
+[node name="WestPathBarrierVoid" type="TileMapLayer" parent="TileMapLayers/CanvasGroup" unique_id=1715727017]
 y_sort_enabled = true
 material = ExtResource("11_wymun")
 tile_map_data = PackedByteArray("AAAAAAsADQACAAEAAAD//wsADQAAAAEAAAD//woADQAAAAEAAAAAAAoADQACAAEAAAAAAAkADQACAAEAAAD//wkADQAAAAEAAAD//wgADQAAAAEAAAAAAAgADQACAAEAAAAAAAcADQACAAEAAAD//wcADQAAAAEAAAD//wYADQAAAAEAAAAAAAYADQACAAEAAAAAAAUADQABAAAAAAABAAUADQACAAMAAAD//wUADQAAAAAAAAAAAAwADQACAAEAAAD//wwADQAAAAEAAAAAAA0ADQACAAEAAAAAAA4ADQACAAIAAAD//w4ADQAAAAIAAAD//w0ADQAAAAEAAAA=")
 tile_set = ExtResource("12_f3823")
 script = ExtResource("14_f3823")
 
+[node name="TileMapMaskBounds" type="Node" parent="TileMapLayers/CanvasGroup" unique_id=1716818937 node_paths=PackedStringArray("canvas_item")]
+script = ExtResource("17_uxfrp")
+canvas_item = NodePath("..")
+metadata/_custom_type_script = "uid://dpw8lcjx68p3o"
+
 [node name="DevIslandBridgeFixed" type="TileMapLayer" parent="TileMapLayers" unique_id=12215457]
+material = SubResource("ShaderMaterial_7kfal")
 tile_map_data = PackedByteArray("AAApACAAAwAAAAMAAAApAB8AAwAAAAIAAAApAB4AAwAAAAIAAAApAB0AAwAAAAIAAAApABwAAwAAAAIAAAApABsAAwAAAAEAAAA=")
 tile_set = ExtResource("8_ns5r3")
 script = ExtResource("14_f3823")
 invert = true
 
+[node name="TileMapMaskBounds" type="Node" parent="TileMapLayers/DevIslandBridgeFixed" unique_id=2125450515 node_paths=PackedStringArray("canvas_item")]
+script = ExtResource("17_uxfrp")
+canvas_item = NodePath("..")
+metadata/_custom_type_script = "uid://dpw8lcjx68p3o"
+
 [node name="DevIslandBridgeBroken" type="TileMapLayer" parent="TileMapLayers" unique_id=2088215943]
+material = SubResource("ShaderMaterial_7n6eg")
 tile_map_data = PackedByteArray("AAApACAAAwAAAAMAAAApAB8AAwAAAAIAAAApAB4AAwAAAAIAAAApAB0AAwAAAAIAAAApABwAAwABAAMAAAApABsAAwAAAAEAAAA=")
 tile_set = ExtResource("8_ns5r3")
 script = ExtResource("14_f3823")
+
+[node name="TileMapMaskBounds" type="Node" parent="TileMapLayers/DevIslandBridgeBroken" unique_id=393070780 node_paths=PackedStringArray("canvas_item")]
+script = ExtResource("17_uxfrp")
+canvas_item = NodePath("..")
+metadata/_custom_type_script = "uid://dpw8lcjx68p3o"
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=444049774]
 y_sort_enabled = true
@@ -1424,7 +1669,7 @@ y_sort_enabled = true
 [node name="VoidQuestUnlocker" type="Node" parent="OnTheGround/WestPath" unique_id=1461023268 node_paths=PackedStringArray("targets")]
 unique_name_in_owner = true
 script = ExtResource("58_ojao8")
-targets = [NodePath("../../../TileMapLayers/WestPathBarrierVoid")]
+targets = [NodePath("../../../TileMapLayers/CanvasGroup/WestPathBarrierVoid")]
 required_quests = Array[ExtResource("59_qgpx3")]([ExtResource("60_6b07c")])
 
 [node name="SpawnPointWestPath" type="Marker2D" parent="OnTheGround/WestPath" unique_id=730185770 groups=["spawn_point"]]

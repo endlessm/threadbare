@@ -6,7 +6,10 @@
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="5_717he"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="6_obhrw"]
 [ext_resource type="TileSet" uid="uid://41pk6xbhypue" path="res://tiles/fence.tres" id="7_5lu30"]
+[ext_resource type="Shader" uid="uid://dui35fhf12sp5" path="res://scenes/game_elements/fx/world_rewoven/components/world_rewoven.gdshader" id="7_mwlmc"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="8_2l846"]
+[ext_resource type="Texture2D" uid="uid://drlsbgxh5e6vv" path="res://scenes/game_elements/fx/world_rewoven/components/fabric_texture.png" id="8_50s3p"]
+[ext_resource type="Script" uid="uid://dpw8lcjx68p3o" path="res://scenes/game_elements/fx/world_rewoven/components/tile_map_mask_bounds.gd" id="8_ssbsc"]
 [ext_resource type="SpriteFrames" uid="uid://cxjwwgm86d6it" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_red.tres" id="9_powm1"]
 [ext_resource type="PackedScene" uid="uid://dkpelgxwtvcxd" path="res://scenes/game_elements/props/hookable_box/hookable_box.tscn" id="11_b1u67"]
 [ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="13_rna1f"]
@@ -20,6 +23,29 @@
 [ext_resource type="AudioStream" uid="uid://bwif2oo6ymiu2" path="res://assets/third_party/sounds/characters/enemies/guard/TorchHit.ogg" id="18_obhrw"]
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="20_rna1f"]
 [ext_resource type="Script" uid="uid://c5jp8y8mpge4w" path="res://scenes/game_elements/props/toggleable_tile_map_layer/toggleable_tile_map_layer.gd" id="20_tbxxm"]
+
+[sub_resource type="Gradient" id="Gradient_lq5qh"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_au3ml"]
+gradient = SubResource("Gradient_lq5qh")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5hkkv"]
+shader = ExtResource("7_mwlmc")
+shader_parameter/mask_texture = SubResource("GradientTexture2D_au3ml")
+shader_parameter/mask_origin = Vector2(896, 128)
+shader_parameter/mask_size = Vector2(128, 448)
+shader_parameter/fabric_texture = ExtResource("8_50s3p")
+shader_parameter/fabric_scale = 1.0
+shader_parameter/progress = 1.0
+shader_parameter/target_canvas_group = false
+shader_parameter/smoothness = 0.250000011875
+shader_parameter/burn_size = 0.250000011875
+shader_parameter/burn_color = Color(1.353, 1.353, 0.777, 1)
+shader_parameter/canvas_modulate = Color(0.481789, 0.48179, 0.481789, 1)
+shader_parameter/gray_intensity = 0.0
 
 [sub_resource type="Gradient" id="Gradient_5j6h7"]
 interpolation_mode = 2
@@ -84,8 +110,15 @@ tile_map_data = PackedByteArray("AAACAAMAAAAAAAAAAAADAAMAAAABAAIAAAAEAAMAAAABAAI
 tile_set = ExtResource("7_5lu30")
 
 [node name="FenceDoor" type="TileMapLayer" parent="TileMapLayers" unique_id=1123335364]
+material = SubResource("ShaderMaterial_5hkkv")
 tile_map_data = PackedByteArray("AAAHAAQAAAADAAEAAAAHAAUAAAACAAEAAAAHAAYAAAADAAIAAAA=")
 tile_set = ExtResource("7_5lu30")
+script = ExtResource("20_tbxxm")
+
+[node name="TileMapMaskBounds" type="Node" parent="TileMapLayers/FenceDoor" unique_id=1792441067 node_paths=PackedStringArray("canvas_item")]
+script = ExtResource("8_ssbsc")
+canvas_item = NodePath("..")
+metadata/_custom_type_script = "uid://dpw8lcjx68p3o"
 
 [node name="OnTheGround" type="Node2D" parent="." unique_id=888515986]
 y_sort_enabled = true
@@ -107,7 +140,7 @@ constrain_layer = NodePath("../../TileMapLayers/Paths")
 
 [node name="HookableLever" parent="OnTheGround" unique_id=653701664 node_paths=PackedStringArray("targets") instance=ExtResource("14_esoiq")]
 position = Vector2(703, 448)
-targets = [NodePath("../../ToggleableTileMapLayer")]
+targets = [NodePath("../../TileMapLayers/FenceDoor")]
 
 [node name="HookableNeedle" parent="OnTheGround" unique_id=1182662384 instance=ExtResource("15_bhn5g")]
 position = Vector2(64, 96)
@@ -269,11 +302,6 @@ alert_others_sound_stream = ExtResource("18_obhrw")
 [node name="Guard-PatrolPath" type="Path2D" parent="OnTheGround" unique_id=165237872]
 position = Vector2(207, 349.042)
 curve = SubResource("Curve2D_rna1f")
-
-[node name="ToggleableTileMapLayer" type="Node2D" parent="." unique_id=374995496 node_paths=PackedStringArray("target")]
-script = ExtResource("20_tbxxm")
-target = NodePath("../TileMapLayers/FenceDoor")
-metadata/_custom_type_script = "uid://c5jp8y8mpge4w"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=789862376]
 
