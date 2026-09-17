@@ -83,7 +83,8 @@ func _ready() -> void:
 	idle_patrol_path = idle_patrol_path
 	state = state
 	_last_position = position
-	_init_persistence()
+	add_to_group("persistence_listeners")
+	_load_state()
 
 
 func start(detected_node: Node2D) -> void:
@@ -144,32 +145,13 @@ func _on_player_capture_area_body_entered(body: Node2D) -> void:
 	player.defeat(true)
 
 
-## Hooks into the global scene state to monitor for spawn point updates.
-func _init_persistence() -> void:
+## Responds to the checkpoint's activated signal and records position and path progress.
+func _on_checkpoint_activated(checkpoint: Checkpoint) -> void:
+	if not checkpoint.save_void_and_enemies:
+		return 
+		
 	if GameState.scene == null or not "facts" in GameState.scene:
 		return
-		
-	if not GameState.scene.changed.is_connected(_on_checkpoint_activated):
-		GameState.scene.changed.connect(_on_checkpoint_activated)
-			
-	_load_state()
-
-
-## Packages the enemy's positional data and path progress into the global facts dictionary.
-## Verifies the persistence flag of the active checkpoint before saving.
-func _on_checkpoint_activated() -> void:
-	var spawn_path: NodePath = GameState.scene.spawn_point
-	if spawn_path.is_empty(): 
-		return
-	
-	var node: Node = get_tree().current_scene.get_node_or_null(spawn_path)
-	var checkpoint: Node = node
-	
-	while checkpoint and not checkpoint is Checkpoint:
-		checkpoint = checkpoint.get_parent()
-		
-	if not checkpoint or not checkpoint.get("save_void_and_enemies"):
-		return 
 		
 	var save_key := str(get_path())
 	var data := {
@@ -184,9 +166,12 @@ func _on_checkpoint_activated() -> void:
 	GameState.scene.facts[save_key] = data
 
 
-## Restores the enemy to its exact state from the previous save.
-## Overrides the internal last_position variable to prevent massive particle bursts caused by global teleportation.
+## Reconstructs the enemy's exact position and path progress on scene load.
+## Overrides the internal last_position variable to prevent massive particle bursts caused by teleportation.
 func _load_state() -> void:
+	if GameState.scene == null or not "facts" in GameState.scene:
+		return
+		
 	var save_key := str(get_path())
 	if GameState.scene.facts.has(save_key):
 		var data: Dictionary = GameState.scene.facts[save_key]

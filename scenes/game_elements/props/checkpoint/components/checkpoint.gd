@@ -77,7 +77,10 @@ func _ready() -> void:
 
 ## Makes this the active checkpoint.
 func activate() -> void:
-	activated.emit()
+	for listener: Node in get_tree().get_nodes_in_group("persistence_listeners"):
+		if listener.has_method("_on_checkpoint_activated") and not activated.is_connected(listener._on_checkpoint_activated):
+			activated.connect(listener._on_checkpoint_activated)
+	activated.emit(self)
 	GameState.scene.spawn_point = owner.get_path_to(spawn_point)
 	GameState.save()
 
