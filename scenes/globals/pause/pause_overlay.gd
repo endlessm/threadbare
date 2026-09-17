@@ -16,6 +16,16 @@ var home_scene: String
 @onready var abandon_quest_button: Button = %AbandonQuestButton
 @onready var skip_tutorial_button: Button = %SkipTutorialButton
 
+const _IGNORED_MEDIA_KEYS: Array[Key] = [
+	Key.KEY_VOLUMEMUTE,
+	Key.KEY_VOLUMEDOWN,
+	Key.KEY_VOLUMEUP,
+	Key.KEY_MEDIAPLAY,
+	Key.KEY_MEDIASTOP,
+	Key.KEY_MEDIAPREVIOUS,
+	Key.KEY_MEDIANEXT,
+]
+
 
 func _ready() -> void:
 	home_scene = ThreadbareProjectSettings.get_setting(ThreadbareProjectSettings.HOME_SCENE)
@@ -23,9 +33,19 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _is_ignored_media_key(event):
+		return
 	if event.is_action_pressed(&"pause"):
 		toggle_pause()
 		get_viewport().set_input_as_handled()
+
+
+func _is_ignored_media_key(event: InputEvent) -> bool:
+	if event is not InputEventKey:
+		return false
+	return (
+		event.keycode in _IGNORED_MEDIA_KEYS or event.physical_keycode in _IGNORED_MEDIA_KEYS
+	)
 
 
 func toggle_pause() -> void:
