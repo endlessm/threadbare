@@ -40,8 +40,8 @@ echo "::endgroup::"
 echo "::group::Preconfiguring Backstitch server"
 cat >backstitch.cfg <<EOF
 [backstitch]
-available_servers = "https://alpha.backstitch.dev/"
-server_url = "https://alpha.backstitch.dev/"
+available_servers = "https://backstitch.endlessstudios.com/"
+server_url = "https://backstitch.endlessstudios.com/"
 EOF
 echo "::endgroup::"
 
