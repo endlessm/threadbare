@@ -9,6 +9,11 @@ extends BaseSpriteBehavior
 
 
 func _ready() -> void:
+	randomize_frame()
+	sprite.sprite_frames_changed.connect(randomize_frame)
+
+
+func randomize_frame() -> void:
 	var frames_length: int = sprite.sprite_frames.get_frame_count(sprite.animation)
 	# TODO: weight the choice of frame by the relative lengths of frames.
 	# i.e. if an animation has one frame lasting 800ms, and four frames lasting 100ms each,
@@ -20,3 +25,5 @@ func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_EDITOR_PRE_SAVE:
 			sprite.frame = 0
+		NOTIFICATION_EDITOR_POST_SAVE:
+			randomize_frame()

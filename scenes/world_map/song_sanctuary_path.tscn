@@ -11,8 +11,11 @@
 [ext_resource type="TileSet" uid="uid://b778cuoftt88r" path="res://tiles/elevation_2.tres" id="6_engfb"]
 [ext_resource type="Texture2D" uid="uid://0xceungm1p8a" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Red_Stage2.png" id="7_70n28"]
 [ext_resource type="Script" uid="uid://c5jp8y8mpge4w" path="res://scenes/game_elements/props/toggleable_tile_map_layer/toggleable_tile_map_layer.gd" id="7_bt13d"]
+[ext_resource type="Shader" uid="uid://dui35fhf12sp5" path="res://scenes/game_elements/fx/world_rewoven/components/world_rewoven.gdshader" id="7_d6ijo"]
+[ext_resource type="Texture2D" uid="uid://drlsbgxh5e6vv" path="res://scenes/game_elements/fx/world_rewoven/components/fabric_texture.png" id="8_jm52i"]
 [ext_resource type="Texture2D" uid="uid://cfkb8gpxylplg" path="res://scenes/game_elements/props/buildings/house/components/House_Patches_Red_Stage3.png" id="8_m5r1s"]
 [ext_resource type="Texture2D" uid="uid://d2kjk3oiu5o6o" path="res://scenes/game_elements/props/buildings/house/components/House_Wool_Blue_02.png" id="9_ennvy"]
+[ext_resource type="Script" uid="uid://dpw8lcjx68p3o" path="res://scenes/game_elements/fx/world_rewoven/components/tile_map_mask_bounds.gd" id="10_0wbtx"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="10_8vkdv"]
 [ext_resource type="PackedScene" uid="uid://b31v66516y4lg" path="res://scenes/game_elements/props/buildings/house/ruined_house.tscn" id="10_70n28"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="11_ibyt1"]
@@ -42,6 +45,52 @@
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="38_rk4u1"]
 [ext_resource type="Script" uid="uid://uaaaiviytliw" path="res://scenes/world_map/components/quest_progress_unlocker.gd" id="40_bt13d"]
 [ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="41_nf521"]
+
+[sub_resource type="Gradient" id="Gradient_d6ijo"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_au3ml"]
+gradient = SubResource("Gradient_d6ijo")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bmevf"]
+shader = ExtResource("7_d6ijo")
+shader_parameter/mask_texture = SubResource("GradientTexture2D_au3ml")
+shader_parameter/mask_origin = Vector2(1280, 640)
+shader_parameter/mask_size = Vector2(64, 256)
+shader_parameter/fabric_texture = ExtResource("8_jm52i")
+shader_parameter/fabric_scale = 1.0
+shader_parameter/progress = 1.0
+shader_parameter/target_canvas_group = false
+shader_parameter/smoothness = 0.3230000153425
+shader_parameter/burn_size = 0.3430000162925
+shader_parameter/burn_color = Color(1.353, 1.353, 0.777, 1)
+shader_parameter/canvas_modulate = Color(1, 1, 1, 1)
+shader_parameter/gray_intensity = 0.0
+
+[sub_resource type="Gradient" id="Gradient_lq5qh"]
+offsets = PackedFloat32Array(0, 0.3697479, 1)
+colors = PackedColorArray(0.37413925, 0.37413928, 0.37413922, 1, 0, 0, 0, 1, 0.37254903, 0.37254903, 0.37254903, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jm52i"]
+gradient = SubResource("Gradient_lq5qh")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d6ijo"]
+shader = ExtResource("7_d6ijo")
+shader_parameter/mask_texture = SubResource("GradientTexture2D_jm52i")
+shader_parameter/mask_origin = Vector2(1280, 640)
+shader_parameter/mask_size = Vector2(64, 256)
+shader_parameter/fabric_texture = ExtResource("8_jm52i")
+shader_parameter/fabric_scale = 1.0
+shader_parameter/progress = 1.0
+shader_parameter/target_canvas_group = false
+shader_parameter/smoothness = 0.3230000153425
+shader_parameter/burn_size = 0.3430000162925
+shader_parameter/burn_color = Color(1.353, 1.353, 0.777, 1)
+shader_parameter/canvas_modulate = Color(1, 1, 1, 1)
+shader_parameter/gray_intensity = 0.0
 
 [sub_resource type="Resource" id="Resource_ftxxi"]
 script = ExtResource("17_ubsr8")
@@ -123,15 +172,27 @@ tile_map_data = PackedByteArray("AAAJABMAAwAAAAIAAAAJABQAAwAAAAIAAAAJABUAAwAAAAI
 tile_set = ExtResource("4_engfb")
 
 [node name="SideQuestBridgeUnblocked" type="TileMapLayer" parent="TileMapLayers" unique_id=316654240]
+material = SubResource("ShaderMaterial_bmevf")
 tile_map_data = PackedByteArray("AAAUAA0AAwAAAAMAAAAUAAwAAwAAAAIAAAAUAAoAAwAAAAEAAAAUAAsAAwAAAAIAAAA=")
 tile_set = ExtResource("4_engfb")
 script = ExtResource("7_bt13d")
 invert = true
 
+[node name="TileMapMaskBounds" type="Node" parent="TileMapLayers/SideQuestBridgeUnblocked" unique_id=803624483 node_paths=PackedStringArray("canvas_item")]
+script = ExtResource("10_0wbtx")
+canvas_item = NodePath("..")
+metadata/_custom_type_script = "uid://dpw8lcjx68p3o"
+
 [node name="SideQuestBridgeBlocked" type="TileMapLayer" parent="TileMapLayers" unique_id=1335870243]
+material = SubResource("ShaderMaterial_d6ijo")
 tile_map_data = PackedByteArray("AAAUAA0AAwAAAAMAAAAUAAwAAwABAAMAAAAUAAoAAwAAAAEAAAAUAAsAAwAAAAIAAAA=")
 tile_set = ExtResource("4_engfb")
 script = ExtResource("7_bt13d")
+
+[node name="TileMapMaskBounds" type="Node" parent="TileMapLayers/SideQuestBridgeBlocked" unique_id=266432187 node_paths=PackedStringArray("canvas_item")]
+script = ExtResource("10_0wbtx")
+canvas_item = NodePath("..")
+metadata/_custom_type_script = "uid://dpw8lcjx68p3o"
 
 [node name="Shadows" type="TileMapLayer" parent="TileMapLayers" unique_id=452826713]
 tile_map_data = PackedByteArray("AAAWAA4AAAAAAAAAAAAWAA8AAAAAAAAAAAA=")
