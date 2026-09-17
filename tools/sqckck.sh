@@ -27,15 +27,21 @@ echo "::group::Adding Backstitch launcher"
 gh release download -R inkandswitch/backstitch-launcher --pattern 'backstitch-launcher-*.zip'
 unzip backstitch-launcher-*.zip
 rm backstitch-launcher-*.zip
-rm .gitignore.template
+
+# Threadbare's .gitignore contains rules for backstitch, but append any new ones
+# in case they have changed.
+comm -23 <(sort -u .gitignore.template) <(sort -u .gitignore) > .gitignore.add
+cat .gitignore.add >> .gitignore
+rm .gitignore.add .gitignore.template
+
 git add backstitch-launcher-*
 echo "::endgroup::"
 
 echo "::group::Preconfiguring Backstitch server"
 cat >backstitch.cfg <<EOF
 [backstitch]
-available_servers = "https://alpha.backstitch.dev/"
-server_url = "https://alpha.backstitch.dev/"
+available_servers = "https://backstitch.endlessstudios.com/"
+server_url = "https://backstitch.endlessstudios.com/"
 EOF
 echo "::endgroup::"
 
