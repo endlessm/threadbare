@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_logic/sprite_behaviors/random_frame_sprite_behavior.gd" id="2_t04tf"]
 [ext_resource type="SpriteFrames" uid="uid://caou2u7vffhei" path="res://scenes/game_elements/characters/npcs/cat/components/cat.tres" id="3_qosq0"]
+[ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="3_ymecv"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="4_8kxh7"]
 [ext_resource type="Script" uid="uid://djeshbrs3vwnb" path="res://scenes/game_elements/characters/npcs/components/pet_interaction.gd" id="4_t04tf"]
 [ext_resource type="AudioStream" uid="uid://di2b2rgca1udv" path="res://scenes/game_elements/characters/npcs/cat/components/412017__skymary__cat-meow-short.wav" id="5_t04tf"]
@@ -122,7 +123,7 @@ metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [node name="Cat" type="CharacterBody2D" unique_id=1950923165]
 collision_layer = 34
-collision_mask = 1041
+collision_mask = 19
 motion_mode = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=556665806]
@@ -138,6 +139,12 @@ position = Vector2(0, 30)
 script = ExtResource("2_t04tf")
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=750356762 node_paths=PackedStringArray("character", "sprite")]
+script = ExtResource("3_ymecv")
+character = NodePath("../..")
+play_animations = false
+sprite = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=557938036]
 rotation = -1.5708
