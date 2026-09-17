@@ -71,6 +71,8 @@ var _system_controllers: Array[Node] = []
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var player_dust_particles: GPUParticles2D = %PlayerDustParticles
+@onready var stuck_shaker: Shaker = %StuckShaker
+@onready var stuck_timer: Timer = %StuckTimer
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
 
@@ -151,6 +153,9 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
+	input_walk_behavior.stuck_changed.connect(_on_input_walk_behavior_stuck_changed)
+	stuck_timer.timeout.connect(defeat)
+
 	GameState.player.abilities_changed.connect(_on_abilities_changed)
 	GameState.player_changed.connect(_on_player_state_changed)
 
@@ -159,6 +164,14 @@ func _on_player_state_changed(old: PlayerState, new: PlayerState) -> void:
 	old.abilities_changed.disconnect(_on_abilities_changed)
 	new.abilities_changed.connect(_on_abilities_changed)
 	_on_abilities_changed()
+
+
+func _on_input_walk_behavior_stuck_changed(is_stuck: bool) -> void:
+	if is_stuck:
+		stuck_shaker.shake()
+		stuck_timer.start()
+	else:
+		stuck_timer.stop()
 
 
 func _set_speeds(new_speeds: CharacterSpeeds) -> void:

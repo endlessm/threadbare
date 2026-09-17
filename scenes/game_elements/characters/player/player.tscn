@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="3_cvb4d"]
 [ext_resource type="Script" uid="uid://bpu6jo4kvehlg" path="res://scenes/game_elements/characters/player/components/player_interaction.gd" id="3_dqkch"]
 [ext_resource type="Script" uid="uid://qro4uo83ba8f" path="res://scenes/game_elements/characters/player/components/player_sprite.gd" id="3_qlg0r"]
+[ext_resource type="Script" uid="uid://dunsvrhq42214" path="res://scenes/game_elements/fx/shaker/shaker.gd" id="4_ecbbk"]
 [ext_resource type="Script" uid="uid://necvar42rnih" path="res://scenes/game_elements/props/character_sight/character_sight.gd" id="6_3in67"]
 [ext_resource type="Script" uid="uid://e78f8iq448e1" path="res://scenes/game_elements/characters/player/components/animation_player.gd" id="7_0owmy"]
 [ext_resource type="AudioStream" uid="uid://cx6jv2cflrmqu" path="res://assets/third_party/sounds/characters/player/Foot.ogg" id="11_blfj0"]
@@ -363,6 +364,19 @@ script = ExtResource("2_5lbww")
 speeds = SubResource("Resource_cvb4d")
 character = NodePath("..")
 metadata/_custom_type_script = "uid://c8xbryhknipab"
+
+[node name="StuckTimer" type="Timer" parent="InputWalkBehavior" unique_id=383350805]
+unique_name_in_owner = true
+wait_time = 2.0
+
+[node name="StuckShaker" type="Node2D" parent="InputWalkBehavior" unique_id=1890601821 node_paths=PackedStringArray("target")]
+unique_name_in_owner = true
+script = ExtResource("4_ecbbk")
+target = NodePath("../../PlayerSprite")
+shake_intensity = 20.0
+duration = 2.0
+frequency = 20.0
+metadata/_custom_type_script = "uid://dunsvrhq42214"
 
 [node name="PlayerDustParticles" type="GPUParticles2D" parent="." unique_id=785276606]
 unique_name_in_owner = true

@@ -161,12 +161,15 @@ func consume(coord: Vector2i, immediate: bool = false) -> void:
 	_consumed_nodes[coord] = nodes
 
 
-## Clear this layer, and reveal all previously-"consumed" nodes, with an animation.
-func uncover_all(duration: float) -> void:
+## Reveal all previously-"consumed" nodes, with a fade animation.
+## Optionally, fade out the tiles too.
+## Then, clear all the tiles of this layer.
+func uncover_all(duration: float, animate_modulate: bool = false) -> void:
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	tween.set_parallel(true)
-	tween.tween_property(self, "modulate:a", 0.0, duration / 2)
+	if animate_modulate:
+		tween.tween_property(self, "modulate:a", 0.0, duration / 2)
 	for nodes: Array in _consumed_nodes.values():
 		for node: Node2D in nodes:
 			tween.tween_property(node, "modulate:a", 1.0, duration)
