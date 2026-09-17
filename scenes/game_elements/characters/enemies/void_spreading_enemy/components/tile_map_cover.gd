@@ -176,4 +176,5 @@ func uncover_all(duration: float, animate_modulate: bool = false) -> void:
 
 	await tween.finished
 	clear()
-	self.modulate.a = 1.0
+	if animate_modulate:
+		self.modulate.a = 1.0
