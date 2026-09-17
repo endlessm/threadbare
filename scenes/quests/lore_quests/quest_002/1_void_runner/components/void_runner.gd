@@ -17,6 +17,7 @@ func is_enemy_defeated() -> bool:
 func repel_void() -> void:
 	whole_scene_camera.priority += 20
 	animation_player.play(&"retreat")
+	void_layer.uncover_all(3.0)
 	await animation_player.animation_finished
 	await collectible_thread.reveal()
 	whole_scene_camera.priority -= 20
