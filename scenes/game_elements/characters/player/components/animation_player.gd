@@ -25,10 +25,13 @@ func _process(_delta: float) -> void:
 		return
 
 	if player.velocity.is_zero_approx():
+		player_sprite.animation = &"idle"
 		play(&"idle")
 	elif player_sprite.sprite_frames.has_animation(&"run") and _is_player_running:
+		player_sprite.animation = &"run"
 		play(&"run")
 	else:
+		player_sprite.animation = &"walk"
 		play(&"walk")
 
 	var double_speed: bool = current_animation == &"walk" and _is_player_running
@@ -45,6 +48,7 @@ func _on_player_mode_changed(mode: Player.Mode) -> void:
 	match player.mode:
 		Player.Mode.DEFEATED:
 			speed_scale = original_speed_scale
+			player_sprite.animation = &"defeated"
 			play(&"defeated")
 
 
@@ -59,6 +63,7 @@ func _on_player_repel_repelling_changed(repelling: bool) -> void:
 	# Repel animation is being played for the first time. So skip the anticipation and go
 	# directly to the action.
 	speed_scale = original_speed_scale
+	player_sprite.animation = &"attack_02"
 	play(&"repel")
 	seek(player_repel.REPEL_ANTICIPATION_TIME, false, false)
 
@@ -69,6 +74,7 @@ func _on_player_hook_string_thrown() -> void:
 	if current_animation in [&"repel", &"throw_string"]:
 		stop()
 	speed_scale = original_speed_scale
+	player_sprite.animation = &"attack_01"
 	play(&"throw_string")
 
 
