@@ -3,12 +3,12 @@
 [ext_resource type="Script" uid="uid://pk3ucq7e2eah" path="res://scenes/game_logic/player_mode.gd" id="1_3xkku"]
 [ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="2_sy5nn"]
 [ext_resource type="Resource" uid="uid://f8vsfloiyqyx" path="res://scenes/quests/story_quests/EDIT1/2_NO_EDIT_combat/NO_EDIT_combat_components/NO_EDIT_combat.dialogue" id="3_64a35"]
-[ext_resource type="Script" uid="uid://cp54mgi54nywo" path="res://scenes/game_logic/fill_game_logic.gd" id="4_x8fgg"]
+[ext_resource type="Script" uid="uid://c6fm5u3ysyfk6" path="res://scenes/quests/story_quests/EDIT1/2_NO_EDIT_combat/NO_EDIT_combat_components/game_logic_edit1.gd" id="4_b86eh"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="5_cvikx"]
 [ext_resource type="TileSet" uid="uid://bdc7ucso7bx0s" path="res://tiles/shadows.tres" id="6_ugqc4"]
 [ext_resource type="TileSet" uid="uid://b778cuoftt88r" path="res://tiles/elevation_2.tres" id="7_spddq"]
 [ext_resource type="PackedScene" uid="uid://0fw52gxsgctd" path="res://scenes/quests/story_quests/EDIT1/NO_EDIT_player_components/player_edit1.tscn" id="8_umwwp"]
-[ext_resource type="PackedScene" uid="uid://b82nsrh332syj" path="res://scenes/game_elements/characters/enemies/throwing_enemy/throwing_enemy.tscn" id="9_6t7u8"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="9_b86eh"]
 [ext_resource type="PackedScene" uid="uid://b70gjwjtl0lwh" path="res://scenes/quests/story_quests/EDIT1/2_NO_EDIT_combat/NO_EDIT_combat_components/EDIT1_projectile.tscn" id="10_b86eh"]
 [ext_resource type="PackedScene" uid="uid://y8ha8abfyap2" path="res://scenes/game_elements/props/filling_barrel/filling_barrel.tscn" id="10_xpe6c"]
 [ext_resource type="SpriteFrames" uid="uid://dtf34hurxtseh" path="res://scenes/quests/story_quests/EDIT1/2_NO_EDIT_combat/NO_EDIT_combat_components/NO_EDIT_target_spriteframes.tres" id="11_itxix"]
@@ -17,11 +17,18 @@
 [ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="14_2q2re"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="15_t58pb"]
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="16_vt2la"]
+[ext_resource type="Resource" uid="uid://3vrn5jdxov37" path="res://scenes/quests/template_quests/NO_EDIT/2_NO_EDIT_combat/NO_EDIT_combat_components/NO_EDIT_combat.dialogue" id="17_f505o"]
+[ext_resource type="PackedScene" uid="uid://c0ruec5th11do" path="res://scenes/quests/story_quests/EDIT1/2_NO_EDIT_combat/NO_EDIT_combat_components/throwing_enemy_EDIT1.tscn" id="17_reh25"]
 [ext_resource type="AudioStream" uid="uid://dfitae2w1528p" path="res://scenes/quests/story_quests/EDIT1/2_NO_EDIT_combat/NO_EDIT_combat_components/stage_5.ogg" id="17_umwwp"]
 [ext_resource type="AudioStream" uid="uid://bbamdm6wtjjcn" path="res://assets/first_party/music/Threadbare_Bed.ogg" id="18_1jmgj"]
 [ext_resource type="Script" uid="uid://c2lx7gvkonxaa" path="res://scenes/game_elements/props/background_music/components/clip_switcher.gd" id="19_g7x6g"]
 
-[sub_resource type="Resource" id="Resource_a51xm"]
+[sub_resource type="Resource" id="Resource_umwwp"]
+script = ExtResource("9_b86eh")
+stopping_step = 4000.0
+metadata/_custom_type_script = "uid://csev4hv57utxv"
+
+[sub_resource type="Resource" id="Resource_5noxs"]
 script = ExtResource("13_hk8i0")
 type = 1
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
@@ -56,7 +63,7 @@ dialogue = ExtResource("3_64a35")
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
 [node name="FillGameLogic" type="Node" parent="." unique_id=1828019770]
-script = ExtResource("4_x8fgg")
+script = ExtResource("4_b86eh")
 metadata/_custom_type_script = "uid://cp54mgi54nywo"
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=738016104]
@@ -78,61 +85,36 @@ y_sort_enabled = true
 
 [node name="Player2" parent="OnTheGround" unique_id=296354958 instance=ExtResource("8_umwwp")]
 position = Vector2(351, 338)
+speeds = SubResource("Resource_umwwp")
 
-[node name="ThrowingNPC" parent="OnTheGround" unique_id=2065424633 instance=ExtResource("9_6t7u8")]
-position = Vector2(857, 300)
+[node name="ThrowingEnemy" parent="OnTheGround" unique_id=1243855514 instance=ExtResource("17_reh25")]
+position = Vector2(846, 337)
+distance = 1.0
 throwing_period = 0.1
+bullet_count = 15
+separation = 3.6
 projectile_scene = ExtResource("10_b86eh")
-projectile_speed = 100.0
-
-[node name="Target" parent="OnTheGround" unique_id=1718603548 instance=ExtResource("10_xpe6c")]
-position = Vector2(502, 164)
-sprite_frames = ExtResource("11_itxix")
-label = ""
-color = Color(1, 1, 1, 1)
+projectile_speed = 145.0
+projectile_duration = 2.8
 
 [node name="Target2" parent="OnTheGround" unique_id=711725062 instance=ExtResource("10_xpe6c")]
-position = Vector2(758, 164)
+position = Vector2(1141, 154)
+collision_layer = 0
 sprite_frames = ExtResource("11_itxix")
 label = ""
 color = Color(1, 1, 1, 1)
-
-[node name="Target3" parent="OnTheGround" unique_id=1832726000 instance=ExtResource("10_xpe6c")]
-position = Vector2(761, 497)
-sprite_frames = ExtResource("11_itxix")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target4" parent="OnTheGround" unique_id=857122250 instance=ExtResource("10_xpe6c")]
-position = Vector2(632, 497)
-sprite_frames = ExtResource("11_itxix")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target5" parent="OnTheGround" unique_id=1348280126 instance=ExtResource("10_xpe6c")]
-position = Vector2(633, 164)
-sprite_frames = ExtResource("11_itxix")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="Target6" parent="OnTheGround" unique_id=1005497940 instance=ExtResource("10_xpe6c")]
-position = Vector2(501, 497)
-sprite_frames = ExtResource("11_itxix")
-label = ""
-color = Color(1, 1, 1, 1)
-
-[node name="CollectibleItem" parent="OnTheGround" unique_id=1864193206 instance=ExtResource("12_1a5s3")]
-unique_name_in_owner = true
-position = Vector2(868, 303)
-revealed = false
-item = SubResource("Resource_a51xm")
-collected_dialogue = ExtResource("3_64a35")
-dialogue_title = &"well_done"
-next_scene = "uid://x3wm2ce0ax8i"
 
 [node name="RepelPowerup" parent="OnTheGround" unique_id=1795462717 instance=ExtResource("14_2q2re")]
 position = Vector2(114, 488)
 highlight_color = Color(0, 0.4392157, 1, 1)
+
+[node name="CollectibleItem" parent="OnTheGround" unique_id=327991066 instance=ExtResource("12_1a5s3")]
+unique_name_in_owner = true
+position = Vector2(835, 339)
+item = SubResource("Resource_5noxs")
+collected_dialogue = ExtResource("17_f505o")
+dialogue_title = &"well_done"
+next_scene = "uid://x3wm2ce0ax8i"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1277924950]
 
@@ -158,5 +140,4 @@ clip = &"cozy"
 metadata/_custom_type_script = "uid://c2lx7gvkonxaa"
 
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
-[connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
 [connection signal="goal_reached" from="FillGameLogic" to="BackgroundMusic/ClipSwitcher" method="switch"]
