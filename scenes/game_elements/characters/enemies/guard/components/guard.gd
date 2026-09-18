@@ -155,6 +155,8 @@ func _ready() -> void:
 	guard_movement.destination_reached.connect(self._on_destination_reached)
 	guard_movement.still_time_finished.connect(self._on_still_time_finished)
 	guard_movement.path_blocked.connect(self._on_path_blocked)
+	add_to_group("persistence_listeners")
+	call_deferred("_load_state")
 
 
 func _process(delta: float) -> void:
@@ -480,3 +482,45 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
 	if state == State.DETECTING:
 		guard_movement.stop_moving()
 		state = State.INVESTIGATING
+
+## Responds to the checkpoint's activated signal and records patrol parameters.
+func _on_checkpoint_activated(checkpoint: Checkpoint) -> void:
+	if not checkpoint.save_void_and_enemies:
+		return 
+		
+	if GameState.scene == null or not "facts" in GameState.scene:
+		return
+		
+	var save_key := str(get_path())
+	var data := {
+		"position": global_position,
+		"state": state,
+		"current_idx": current_patrol_point_idx,
+		"prev_idx": previous_patrol_point_idx
+	}
+	
+	if guard_movement:
+		data["movement_dest"] = guard_movement.destination
+		
+	GameState.scene.facts[save_key] = data
+
+
+## Reconstructs the guard's patrol route context upon scene load.
+func _load_state() -> void:
+	if GameState.scene == null or not "facts" in GameState.scene:
+		return
+		
+	var save_key := str(get_path())
+	if GameState.scene.facts.has(save_key):
+		var data: Dictionary = GameState.scene.facts[save_key]
+		
+		global_position = data["position"]
+		if "_last_position" in self:
+			set("_last_position", data["position"])
+			
+		state = data["state"]
+		current_patrol_point_idx = data["current_idx"]
+		previous_patrol_point_idx = data["prev_idx"]
+		
+		if guard_movement and data.has("movement_dest"):
+			guard_movement.set_destination(data["movement_dest"])
