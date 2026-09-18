@@ -28,6 +28,8 @@ static func _chadify(author_name: String) -> String:
 		author_name,
 		"Chad Bourque",
 		"Eric Bourque",
+		"Gerald Bourque",
+		"Jason Bourque",
 	]
 	return options.pick_random()
 

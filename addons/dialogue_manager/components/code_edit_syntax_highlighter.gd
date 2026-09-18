@@ -3,8 +3,7 @@ class_name DMSyntaxHighlighter extends SyntaxHighlighter
 
 
 var regex: DMCompilerRegEx = DMCompilerRegEx.new()
-var compilation: DMCompilation = DMCompilation.new()
-var expression_parser = DMExpressionParser.new()
+var expression_parser: DMExpressionParser = DMExpressionParser.new()
 
 var cache: Dictionary = {}
 
@@ -21,14 +20,14 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 	var text: String = text_edit.get_line(line)
 
 	# Prevent an error from popping up while developing
-	if not is_instance_valid(text_edit) or text_edit.theme_overrides.is_empty():
+	if not is_instance_valid(text_edit):
 		return colors
 
 	# Disable this, as well as the line at the bottom of this function to remove the cache.
 	if text in cache:
 		return cache[text]
 
-	var theme: Dictionary = text_edit.theme_overrides
+	var theme: DMThemeValues = text_edit.theme_overrides
 
 	var index: int = 0
 
@@ -48,8 +47,8 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 		DMConstants.TYPE_COMMENT:
 			colors[index] = { color = theme.comments_color }
 
-		DMConstants.TYPE_TITLE:
-			colors[index] = { color = theme.titles_color }
+		DMConstants.TYPE_CUE:
+			colors[index] = { color = theme.cues_color }
 
 		DMConstants.TYPE_CONDITION, DMConstants.TYPE_WHILE, DMConstants.TYPE_MATCH, DMConstants.TYPE_WHEN:
 			colors[0] = { color = theme.conditions_color }
@@ -72,16 +71,20 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 
 		DMConstants.TYPE_GOTO:
 			if text.strip_edges().begins_with("%"):
-				colors[index] = { color = theme.symbols_color }
+				colors[index] = { color = theme.numbers_color }
 				index = text.find(" ")
 			_highlight_goto(text, colors, index)
 
 		DMConstants.TYPE_RANDOM:
-			colors[index] = { color = theme.symbols_color }
+			colors[index] = { color = theme.numbers_color }
 
 		DMConstants.TYPE_DIALOGUE, DMConstants.TYPE_RESPONSE:
+			if text.strip_edges().begins_with("- "):
+				colors[index] = { color = theme.cues_color }
+				index = text.find(" ", text.find("- "))
+
 			if text.strip_edges().begins_with("%"):
-				colors[index] = { color = theme.symbols_color }
+				colors[index] = { color = theme.numbers_color }
 				index = text.find(" ", text.find("%"))
 			colors[index] = { color = theme.text_color.lerp(theme.symbols_color, 0.5) }
 
@@ -89,7 +92,7 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 
 			# Highlight character name (but ignore ":" within line ID reference)
 			var split_index: int = dialogue_text.replace("\\:", "??").find(":")
-			if text.substr(split_index - 3, 3) != "[ID":
+			if dialogue_text.substr(split_index - 3, 3) != "[ID":
 				colors[index + split_index + 1] = { color = theme.text_color }
 			else:
 				# If there's no character name then just highlight the text as dialogue.
@@ -109,28 +112,42 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 				colors[expression_index + expression_text.length() + 2] = { color = theme.symbols_color }
 				colors[expression_index + expression_text.length() + 4] = { color = theme.text_color }
 			# Tags (and inline mutations)
-			var resolved_line_data: DMResolvedLineData = DMResolvedLineData.new("")
-			var bbcodes: Array[Dictionary] = resolved_line_data.find_bbcode_positions_in_string(dialogue_text, true, true)
+			var bbcodes: Array[Dictionary] = DMResolvedLineData.find_bbcode_positions_in_string(dialogue_text, true, true)
 			for bbcode: Dictionary in bbcodes:
 				var tag: String = bbcode.code
 				var code: String = bbcode.raw_args
 				if code.begins_with("["):
-					colors[index + bbcode.start] = { color = theme.symbols_color }
+					colors[index + bbcode.start] = { color = theme.tags_color }
 					colors[index + bbcode.start + 2] = { color = theme.text_color }
 					var pipe_cursor: int = code.find("|")
 					while pipe_cursor > -1:
-						colors[index + bbcode.start + pipe_cursor + 1] = { color = theme.symbols_color }
+						colors[index + bbcode.start + pipe_cursor + 1] = { color = theme.tags_color }
 						colors[index + bbcode.start + pipe_cursor + 2] = { color = theme.text_color }
 						pipe_cursor = code.find("|", pipe_cursor + 1)
-					colors[index + bbcode.end - 1] = { color = theme.symbols_color }
+					colors[index + bbcode.end - 1] = { color = theme.tags_color }
 					colors[index + bbcode.end + 1] = { color = theme.text_color }
 				else:
-					colors[index + bbcode.start] = { color = theme.symbols_color }
+					colors[index + bbcode.start] = { color = theme.tags_color }
+					colors[index + bbcode.end] = { color = theme.tags_color }
+					if bbcode.bbcode.ends_with(" /]"):
+						colors[index + bbcode.end - 1] = { color = theme.tags_color }
+						colors[index + bbcode.end + 1] = { color = theme.text_color }
+					else:
+						colors[index + bbcode.end + 1] = { color = theme.text_color }
+
 					if tag.begins_with("$>") or tag.begins_with("do") or tag.begins_with("set") or tag.begins_with("if"):
 						if tag.begins_with("if"):
-							colors[index + bbcode.start + 1] = { color = theme.conditions_color }
+							colors[index + bbcode.start] = { color = theme.conditions_color }
+							if bbcode.bbcode.ends_with(" /]"):
+								colors[index + bbcode.end - 1] = { color = theme.conditions_color }
+								colors[index + bbcode.end] = { color = theme.conditions_color }
+								colors[index + bbcode.end + 1] = { color = theme.conditions_color }
+								colors[index + bbcode.end + 1] = { color = theme.text_color }
+							else:
+								colors[index + bbcode.end] = { color = theme.conditions_color }
 						else:
-							colors[index + bbcode.start + 1] = { color = theme.mutations_line_color }
+							colors[index + bbcode.start] = { color = theme.mutations_line_color }
+							colors[index + bbcode.end] = { color = theme.mutations_line_color }
 						var expression: Array = expression_parser.tokenise(code, DMConstants.TYPE_MUTATION, bbcode.start + bbcode.code.length())
 						if expression.size() == 0 or expression[0].type == DMConstants.TYPE_ERROR:
 							colors[index + bbcode.start + tag.length() + 1] = { color = theme.critical_color }
@@ -138,9 +155,9 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 							_highlight_expression(expression, colors, index + 2)
 					# else and closing if have no expression
 					elif tag.begins_with("else") or tag.begins_with("/if"):
-						colors[index + bbcode.start + 1] = { color = theme.conditions_color }
-					colors[index + bbcode.end] = { color = theme.symbols_color }
-					colors[index + bbcode.end + 1] = { color = theme.text_color }
+						colors[index + bbcode.start] = { color = theme.conditions_color }
+						colors[index + bbcode.end] = { color = theme.conditions_color }
+
 			# Jumps
 			if "=> " in text or "=>< " in text:
 				_highlight_goto(text, colors, index)
@@ -157,7 +174,7 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 
 
 func _highlight_expression(tokens: Array, colors: Dictionary, index: int) -> int:
-	var theme: Dictionary = get_text_edit().theme_overrides
+	var theme: DMThemeValues = get_text_edit().theme_overrides
 	var last_index: int = index
 	for token: Dictionary in tokens:
 		last_index = token.i
@@ -221,7 +238,7 @@ func _highlight_expression(tokens: Array, colors: Dictionary, index: int) -> int
 
 
 func _highlight_goto(text: String, colors: Dictionary, index: int) -> int:
-	var theme: Dictionary = get_text_edit().theme_overrides
+	var theme: DMThemeValues = get_text_edit().theme_overrides
 	var goto_data: DMResolvedGotoData = DMResolvedGotoData.new(text, {})
 	colors[goto_data.index] = { color = theme.jumps_color }
 	if "{{" in text:
