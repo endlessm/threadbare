@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+class_name StoryQuestProgress
 extends PanelContainer
 
 const ITEM_SLOT: PackedScene = preload("uid://1mjm4atk2j6e")
@@ -15,6 +16,9 @@ func _ready() -> void:
 	GameState.global.helper_changed.connect(_on_helper_state_changed)
 	_on_helper_state_changed()
 
+
+## Rebuild slots from [member GameState.quest] when the scene changes.
+func refresh() -> void:
 	var n := 0
 	if GameState.quest:
 		n = GameState.quest.quest.threads_to_collect
@@ -23,19 +27,30 @@ func _ready() -> void:
 		visible = false
 		return
 
-	# Add one slot for each item in the current quest
-	for _i: int in n:
-		items_container.add_child(ITEM_SLOT.instantiate())
+	# Rebuild slots only when the quest needs a different number of them.
+	if items_container.get_child_count() != n:
+		for child in items_container.get_children():
+			items_container.remove_child(child)
+			child.free()
 
-	# On ready, the HUD is populated with the items that were collected so
-	# far in the quest.
-	var items_collected := GameState.quest.inventory.items
+		# Add one slot for each item in the current quest
+		for _i: int in n:
+			items_container.add_child(ITEM_SLOT.instantiate())
+
+	var inventory := GameState.quest.inventory
+	if inventory.item_collected.is_connected(_on_item_collected):
+		inventory.item_collected.disconnect(_on_item_collected)
+	if inventory.item_consumed.is_connected(_on_item_consumed):
+		inventory.item_consumed.disconnect(_on_item_consumed)
+
+	# Populate the HUD with the items that were collected so far in the quest.
+	var items_collected := inventory.items
 	for i: int in min(items_collected.size(), n):
 		items_container.get_child(i).start_as_filled(items_collected[i])
 
 	# Then, when each new item is collected, it is added to the progress UI
-	GameState.quest.inventory.item_collected.connect(self._on_item_collected)
-	GameState.quest.inventory.item_consumed.connect(self._on_item_consumed)
+	inventory.item_collected.connect(self._on_item_collected)
+	inventory.item_consumed.connect(self._on_item_consumed)
 
 
 func _on_helper_state_changed() -> void:

@@ -1,9 +1,22 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-extends CanvasLayer
+class_name Hud extends CanvasLayer
 
-@onready var story_quest_progress: PanelContainer = %StoryQuestProgress
+@onready var story_quest_progress: StoryQuestProgress = %StoryQuestProgress
 
 
-func change_story_quest_progress_visibility(visibility: bool) -> void:
-	story_quest_progress.visible = visibility
+func _ready() -> void:
+	hide_story_quest_progress()
+
+
+func refresh_story_quest_progress() -> void:
+	story_quest_progress.refresh()
+
+
+func show_story_quest_progress() -> void:
+	refresh_story_quest_progress()
+	story_quest_progress.visible = true
+
+
+func hide_story_quest_progress() -> void:
+	story_quest_progress.visible = false

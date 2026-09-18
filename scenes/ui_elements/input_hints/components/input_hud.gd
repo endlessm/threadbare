@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-extends CanvasLayer
+class_name InputHud extends CanvasLayer
 
 var player: CharacterBody2D
 var player_interaction: PlayerInteraction
