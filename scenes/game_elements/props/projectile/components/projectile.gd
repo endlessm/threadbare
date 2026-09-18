@@ -63,6 +63,18 @@ extends RigidBody2D
 ## root node. When the projectile gets hit, the [member GPUParticles2D.amount_ratio] is set to 1.
 @export var trail_fx_scene: PackedScene
 
+@export var blink_animation_player: AnimationPlayer
+
+@export_group("Dissapear Clue")
+
+## The time in seconds to show the disappear animation.
+@export_range(0.0, 10.0, 0.5) var blink_duration: float = 3.0
+
+## The number of times the projectile blinks before disappearing.
+@export_range(1, 10, 1) var blink_times: int = 3
+
+var blink_effect_time: float
+var blink_timer: Timer
 var _trail_particles: GPUParticles2D
 
 @onready var visible_things: Node2D = %VisibleThings
@@ -71,7 +83,7 @@ var _trail_particles: GPUParticles2D
 
 ## How long the projectile lives in the scene.
 ## [br][br]
-## This timer is restarted each time the projectile collides with anything.
+## This timer is restarted each time the projectile collies with anything.
 ## So the life of the projectile is extended in each collision.
 @onready var duration_timer: Timer = %DurationTimer
 
@@ -112,6 +124,19 @@ func _ready() -> void:
 	var impulse: Vector2 = direction * speed
 	apply_impulse(impulse)
 
+	if blink_animation_player:
+		#If the blink duration is greater than the duration
+		#The minimun time the animation will spend is 3 seconds.
+		var time_to_dissapear: float = max(3.0, duration - blink_duration)
+		blink_timer = Timer.new()
+		blink_timer.wait_time = time_to_dissapear
+		blink_timer.one_shot = true
+		blink_timer.timeout.connect(_on_blink_timer_timeout)
+		add_child(blink_timer)
+		blink_timer.start()
+
+		blink_effect_time = (duration - time_to_dissapear) / blink_times
+
 
 func _process(_delta: float) -> void:
 	visible_things.rotation = linear_velocity.angle()
@@ -135,8 +160,7 @@ func add_small_fx() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	add_small_fx()
-	duration_timer.start()
+	_on_projectile_hit()
 
 	# Logic for Fragile Barrel
 	# We must check for the specific subclass first because it inherits from FillingBarrel
@@ -156,8 +180,7 @@ func _on_body_entered(body: Node2D) -> void:
 ## Called from the Repel component when this body
 ## enters the repel area.
 func got_repelled(repel_direction: Vector2) -> void:
-	add_small_fx()
-	duration_timer.start()
+	_on_projectile_hit()
 	var hit_vector: Vector2 = repel_direction * hit_speed
 	hit_sound.play()
 	animated_sprite_2d.speed_scale = 2
@@ -186,3 +209,23 @@ func _on_duration_timer_timeout() -> void:
 func remove() -> void:
 	await get_tree().create_timer(randf_range(0., 3.)).timeout
 	explode()
+
+
+func _on_blink_timer_timeout() -> void:
+	var animation_duration: float = blink_animation_player.get_animation("dissapear").length
+	blink_animation_player.play("dissapear", -1, animation_duration / blink_effect_time)
+
+
+func _on_projectile_hit() -> void:
+	add_small_fx()
+
+	# Reset timers and blink animation:
+	duration_timer.start()
+
+	if blink_animation_player:
+		#If the projectile collides with another object or is repelled the animation and timer will reset
+		if blink_timer.is_stopped():
+			blink_animation_player.play("RESET")
+			blink_timer.start()
+		else:
+			blink_timer.start()
