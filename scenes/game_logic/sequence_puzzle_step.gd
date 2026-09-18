@@ -16,6 +16,8 @@ extends Node2D
 		hint_sign = new_value
 		update_configuration_warnings()
 
+## Whether this step has been solved.
+var is_solved: bool = false 
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
@@ -24,8 +26,5 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 	if sequence.find(null) != -1:
 		warnings.append("Sequence contains unset elements")
-
-	if not hint_sign:
-		warnings.append("Hint Sign not set")
 
 	return warnings
