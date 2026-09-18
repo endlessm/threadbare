@@ -36,4 +36,4 @@ func update_opened_state() -> void:
 	%ColliderWhenClosed.set_collision_layer_value(Enums.CollisionLayers.WALLS, not opened)
 	%ColliderWhenClosed.set_collision_layer_value(Enums.CollisionLayers.SIGHT_OCCLUDERS, not opened)
 	%ColliderWhenClosed.set_collision_mask_value(Enums.CollisionLayers.PLAYERS, not opened)
-	$LightOccluder2D.visible = not opened
+	%LightOccluder2D.visible = not opened
