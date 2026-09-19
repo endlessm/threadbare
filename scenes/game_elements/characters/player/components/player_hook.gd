@@ -100,6 +100,9 @@ var hook_string: Line2D
 ## A [PhantomCamera2D] at the tip of the string.
 @onready var phantom_camera_2d: PhantomCamera2D = %PhantomCamera2D
 
+## Plays a sound effect when the string is thrown.
+@onready var throw_audio_player: AudioStreamPlayer2D = $ThrowAudioPlayer
+
 
 func _enter_tree() -> void:
 	if not character and get_parent() is CharacterBody2D:
@@ -141,6 +144,7 @@ func _new_hook_string() -> Line2D:
 	character.add_sibling(new_hook_string)
 	new_hook_string.owner = character.owner
 	string_thrown.emit()
+	throw_audio_player.play()
 	return new_hook_string
 
 
