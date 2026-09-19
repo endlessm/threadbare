@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://b3111eergq5yg" path="res://scenes/game_elements/characters/player/components/player_hook.tscn" id="13_ecbbk"]
 [ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="16_ecbbk"]
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="16_tnibl"]
+[ext_resource type="Script" uid="uid://cvjpavggqssir" path="res://scenes/game_elements/characters/player/components/footstep_sound.gd" id="17_tnibl"]
 
 [sub_resource type="Resource" id="Resource_cvb4d"]
 script = ExtResource("3_cvb4d")
@@ -293,10 +294,27 @@ tracks/2/path = NodePath("WalkSound:playing")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.115043, 0.4),
+"times": PackedFloat32Array(0.115, 0.4),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [true, true]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("FootstepSound")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.115, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"play_footstep"
+}, {
+"args": [],
+"method": &"play_footstep"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qek5x"]
@@ -472,6 +490,9 @@ debug_color = Color(0.95, 0.2375, 0, 0)
 unique_name_in_owner = true
 root_node = NodePath("../../PlayerRepel")
 libraries/ = SubResource("AnimationLibrary_1n58k")
+
+[node name="FootstepSound" type="Node2D" parent="." unique_id=1578687431]
+script = ExtResource("17_tnibl")
 
 [connection signal="running_changed" from="InputWalkBehavior" to="PlayerDustParticles" method="set_emitting"]
 [connection signal="running_changed" from="InputWalkBehavior" to="AnimationPlayer" method="_on_input_walk_behavior_running_changed"]
