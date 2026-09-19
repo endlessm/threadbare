@@ -21,7 +21,7 @@ func _enter_tree() -> void:
 
 
 func _on_node_added(node: Node) -> void:
-	if node is BaseButton:
+	if node is BaseButton or node is Slider:
 		_connect_once(node.mouse_entered, _on_button_hovered)
 		_connect_once(node.focus_entered, _on_button_hovered)
 
