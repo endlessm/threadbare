@@ -8,42 +8,26 @@ enum ItemType {
 	MEMORY,
 	IMAGINATION,
 	SPIRIT,
-	NONE,
-}
-
-const COLORS_PER_TYPE: Dictionary[ItemType, Color] = {
-	ItemType.MEMORY: Color(0.459, 0.867, 0.0, 1.0),
-	ItemType.IMAGINATION: Color(0.969, 0.792, 0.0, 1.0),
-	ItemType.SPIRIT: Color(0.929, 0.0, 0.0, 1.0)
-}
-
-const HUD_TEXTURES: Dictionary[ItemType, Texture2D] = {
-	ItemType.MEMORY: preload("uid://brspc1u02oawt"),
-	ItemType.IMAGINATION: preload("uid://wyiamtqmp4gk"),
-	ItemType.SPIRIT: preload("uid://c4fefrg0tfkpl")
-}
-
-const WORLD_TEXTURES: Dictionary[ItemType, Texture2D] = {
-	ItemType.MEMORY: preload("uid://5wscjc8yqqts"),
-	ItemType.IMAGINATION: preload("uid://6bf8rum68wq3"),
-	ItemType.SPIRIT: preload("uid://cepg1o3ihp055")
 }
 
 @export var type: ItemType
+@export var color: Color
+@export var hud_texture: Texture2D
+@export var world_texture: Texture2D
 
 
-func get_hud_texture() -> Texture2D:
-	return HUD_TEXTURES[type]
-
-
-func get_world_texture() -> Texture2D:
-	return WORLD_TEXTURES[type]
-
-
+# TODO: can we eliminate this?
 static func with_type(a_type: ItemType) -> InventoryItem:
-	var item := new()
-	item.type = a_type
-	return item
+	match a_type:
+		ItemType.MEMORY:
+			return load("res://scenes/globals/game_state/inventory/memory.tres")
+		ItemType.IMAGINATION:
+			return load("res://scenes/globals/game_state/inventory/imagination.tres")
+		ItemType.SPIRIT:
+			return load("res://scenes/globals/game_state/inventory/spirit.tres")
+		_:
+			push_error("Unknown ItemType %d" % a_type)
+			return null
 
 
 func type_name() -> String:

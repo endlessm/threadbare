@@ -8,7 +8,7 @@ var filled_with_item: InventoryItem = null:
 	set(new_item):
 		filled_with_item = new_item
 		if filled_with_item:
-			texture = filled_with_item.get_hud_texture()
+			texture = filled_with_item.hud_texture
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
@@ -32,7 +32,7 @@ func fill(inventory_item: InventoryItem) -> void:
 		return
 
 	filled_with_item = inventory_item
-	texture = inventory_item.get_hud_texture()
+	texture = inventory_item.hud_texture
 	pivot_offset = size / 2.0
 	animation_player.play(&"item_collected")
 	await animation_player.animation_finished
