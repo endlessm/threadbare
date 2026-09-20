@@ -27,7 +27,12 @@ func _ready() -> void:
 
 
 func update_appearance() -> void:
-	$Appearance.flip_h = direction == Enums.LookAtSide.RIGHT
+	if direction == Enums.LookAtSide.UNSPECIFIED:
+		$Appearance.frame = 0
+		$Appearance.flip_h = false
+	else:
+		$Appearance.frame = 1
+		$Appearance.flip_h = direction == Enums.LookAtSide.RIGHT
 
 
 func _on_area_2d_body_entered(_body: Node2D) -> void:
