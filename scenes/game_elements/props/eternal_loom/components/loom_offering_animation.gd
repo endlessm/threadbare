@@ -18,7 +18,10 @@ signal animation_finished
 
 
 func play_loom_animation() -> void:
-	_loom_animation_play(GameState.quest.inventory.items)
+	var items: Array[InventoryItem]
+	for ti: TaggedItem in GameState.quest.inventory.items:
+		items.append(ti.item)
+	_loom_animation_play(items)
 
 
 ## Only used for the in-editor preview

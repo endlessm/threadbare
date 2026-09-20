@@ -43,8 +43,8 @@ func show_retelling_dialogue() -> void:
 
 
 func _has_magical_thread_of_type(type: InventoryItem.ItemType) -> bool:
-	for item: InventoryItem in GameState.quest.inventory.items:
-		if item.type == type:
+	for ci: TaggedItem in GameState.quest.inventory.items:
+		if ci.item.type == type:
 			return true
 	return false
 
@@ -92,7 +92,7 @@ func on_offering_succeeded() -> void:
 
 	loom_offering_animation.play_loom_animation()
 	await loom_offering_animation.animation_finished
-	GameState.quest.inventory.clear_inventory()
+	GameState.global.inventory.merge(GameState.quest.inventory)
 
 	if load_error != OK:
 		on_rewoven_finished()
@@ -121,7 +121,6 @@ func is_item_offering_possible() -> bool:
 	if not GameState.quest:
 		return false
 
-	if GameState.quest.quest.threads_to_collect <= 0:
-		return false
-
-	return GameState.quest.inventory.items.size() >= GameState.quest.quest.threads_to_collect
+	# TODO: only if there are *new* threads collected. Problem is - what
+	# triggers the end-of-quest cutscene if there are no new threads?
+	return true

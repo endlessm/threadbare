@@ -60,6 +60,7 @@ func _ready() -> void:
 	interact_area.interaction_ended.connect(_on_interaction_ended)
 	animated_sprite_2d.connect("frame_changed", _on_frame_changed)
 
+	GameState.quest_changed.connect(_update_dialogue_cue)
 	if GameState.quest:
 		GameState.quest.inventory.item_collected.connect(_update_dialogue_cue)
 		GameState.quest.inventory.item_consumed.connect(_update_dialogue_cue)
