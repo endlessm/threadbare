@@ -84,7 +84,7 @@ var _trail_particles: GPUParticles2D
 
 ## How long the projectile lives in the scene.
 ## [br][br]
-## This timer is restarted each time the projectile collies with anything.
+## This timer is restarted each time the projectile collides with anything.
 ## So the life of the projectile is extended in each collision.
 @onready var duration_timer: Timer = %DurationTimer
 
