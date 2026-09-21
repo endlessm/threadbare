@@ -17,7 +17,7 @@ extends Node2D
 		update_configuration_warnings()
 
 ## Whether this step has been solved.
-var is_solved: bool = false 
+var is_solved: bool = false
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
