@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
+class_name UpdateTranslatableFiles
 extends EditorScript
 ## Maintains the list to files to translate from [const SOURCES]
 ##
