@@ -63,9 +63,11 @@ extends RigidBody2D
 ## root node. When the projectile gets hit, the [member GPUParticles2D.amount_ratio] is set to 1.
 @export var trail_fx_scene: PackedScene
 
-@export var blink_animation_player: AnimationPlayer
-
 @export_group("Dissapear Clue")
+
+## The projectile will blink for a certain amount of times before dissapering. For that, this
+## AnimationPlayer should have an animation named "blink".
+@export var blink_animation_player: AnimationPlayer
 
 ## The time in seconds to show the disappear animation.
 @export_range(0.0, 10.0, 0.5) var blink_duration: float = 3.0
@@ -212,8 +214,8 @@ func remove() -> void:
 
 
 func _on_blink_timer_timeout() -> void:
-	var animation_duration: float = blink_animation_player.get_animation("dissapear").length
-	blink_animation_player.play("dissapear", -1, animation_duration / blink_effect_time)
+	var animation_duration: float = blink_animation_player.get_animation(&"blink").length
+	blink_animation_player.play(&"blink", -1, animation_duration / blink_effect_time)
 
 
 func _on_projectile_hit() -> void:
