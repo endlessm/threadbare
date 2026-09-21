@@ -5,10 +5,10 @@ extends Node2D
 @export var sound_for_material: Dictionary[String, AudioStream]
 
 var _footstep_layers: Array[TileMapLayer] = []
+var _default_walk_sound: AudioStream
 
 @onready var walk_sound: AudioStreamPlayer2D = %WalkSound
 
-var _default_walk_sound: AudioStream
 
 ## Stores the default footstep sound and caches TileMapLayers whose TileSets
 ## define a "material" custom data layer.
@@ -42,9 +42,7 @@ func play_footstep() -> void:
 	var current_footstep_material: String = ""
 
 	for layer in _footstep_layers:
-		var coord := layer.local_to_map(
-			layer.to_local(global_position)
-		)
+		var coord := layer.local_to_map(layer.to_local(global_position))
 		var tile_data := layer.get_cell_tile_data(coord)
 
 		if not tile_data:
@@ -55,8 +53,7 @@ func play_footstep() -> void:
 			current_footstep_material = footstep_material
 
 	var footstep_sound: AudioStream = sound_for_material.get(
-		current_footstep_material,
-		_default_walk_sound
+		current_footstep_material, _default_walk_sound
 	)
 
 	walk_sound.stream = footstep_sound
