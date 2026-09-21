@@ -70,13 +70,12 @@ extends RigidBody2D
 @export var blink_animation_player: AnimationPlayer
 
 ## The time in seconds to show the disappear animation.
-@export_range(0.0, 10.0, 0.5) var blink_duration: float = 3.0
+@export_range(0.0, 10.0, 0.5) var dissapear_duration: float = 2.0
 
 ## The number of times the projectile blinks before disappearing.
 @export_range(1, 10, 1) var blink_times: int = 3
 
-var blink_effect_time: float
-var blink_timer: Timer
+var _dissapear_timer: Timer
 var _trail_particles: GPUParticles2D
 
 @onready var visible_things: Node2D = %VisibleThings
@@ -127,17 +126,17 @@ func _ready() -> void:
 	apply_impulse(impulse)
 
 	if blink_animation_player:
-		#If the blink duration is greater than the duration
-		#The minimun time the animation will spend is 3 seconds.
-		var time_to_dissapear: float = max(3.0, duration - blink_duration)
-		blink_timer = Timer.new()
-		blink_timer.wait_time = time_to_dissapear
-		blink_timer.one_shot = true
-		blink_timer.timeout.connect(_on_blink_timer_timeout)
-		add_child(blink_timer)
-		blink_timer.start()
-
-		blink_effect_time = (duration - time_to_dissapear) / blink_times
+		_dissapear_timer = Timer.new()
+		# If the dissapear duration is equal or greater than the duration, start blinking
+		# almost immediately.
+		if dissapear_duration >= duration:
+			_dissapear_timer.wait_time = 0.1
+		else:
+			_dissapear_timer.wait_time = dissapear_duration
+		_dissapear_timer.one_shot = true
+		_dissapear_timer.timeout.connect(_on_blink_timer_timeout)
+		add_child(_dissapear_timer)
+		_dissapear_timer.start()
 
 
 func _process(_delta: float) -> void:
@@ -214,8 +213,10 @@ func remove() -> void:
 
 
 func _on_blink_timer_timeout() -> void:
-	var animation_duration: float = blink_animation_player.get_animation(&"blink").length
-	blink_animation_player.play(&"blink", -1, animation_duration / blink_effect_time)
+	var animation_duration := blink_animation_player.get_animation(&"blink").length
+	var real_duration := duration - _dissapear_timer.wait_time
+	var blink_effect_time := (animation_duration / real_duration) * blink_times
+	blink_animation_player.play(&"blink", -1, blink_effect_time)
 
 
 func _on_projectile_hit() -> void:
@@ -225,9 +226,8 @@ func _on_projectile_hit() -> void:
 	duration_timer.start()
 
 	if blink_animation_player:
-		#If the projectile collides with another object or is repelled the animation and timer will reset
-		if blink_timer.is_stopped():
+		# If the projectile collides with another object or is repelled the animation and timer will
+		# reset.
+		if _dissapear_timer.is_stopped():
 			blink_animation_player.play("RESET")
-			blink_timer.start()
-		else:
-			blink_timer.start()
+		_dissapear_timer.start()
