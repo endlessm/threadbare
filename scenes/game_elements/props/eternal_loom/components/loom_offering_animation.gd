@@ -6,10 +6,6 @@ extends Node2D
 
 signal animation_finished
 
-const WORLD_IMAGINATION = preload("uid://6bf8rum68wq3")
-const WORLD_MEMORY = preload("uid://5wscjc8yqqts")
-const WORLD_SPIRIT = preload("uid://cepg1o3ihp055")
-
 ## The time in seconds it takes for the animation to finish, determines the speed of threads
 @export var animation_time: float = 5.0
 ## Number of threads in the animation for the in-editor preview

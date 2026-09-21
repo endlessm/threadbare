@@ -10,10 +10,32 @@
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="4_t2uo1"]
 [ext_resource type="PackedScene" uid="uid://dt6ivbb8cfxnk" path="res://scenes/game_elements/props/lever/lever.tscn" id="6_5oqc0"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="8_jsbj5"]
+[ext_resource type="PackedScene" uid="uid://d37mebu7atru7" path="res://scenes/game_elements/characters/enemies/guard/guard.tscn" id="11_67ghd"]
+[ext_resource type="SpriteFrames" uid="uid://d1k25io0tiiij" path="res://scenes/game_elements/characters/enemies/guard/components/storyvoretorch_frames_blue.tres" id="12_pd3h8"]
+[ext_resource type="AudioStream" uid="uid://dgpeb1dtmfqud" path="res://assets/third_party/sounds/characters/enemies/guard/AlertSound.ogg" id="13_2mlkh"]
+[ext_resource type="AudioStream" uid="uid://4ec6e2alns71" path="res://assets/third_party/sounds/characters/enemies/guard/GrassFoot.ogg" id="14_fndrl"]
+[ext_resource type="AudioStream" uid="uid://c7om8kdork2rx" path="res://assets/third_party/sounds/characters/enemies/guard/Torch.ogg" id="15_qusjm"]
+[ext_resource type="AudioStream" uid="uid://bwif2oo6ymiu2" path="res://assets/third_party/sounds/characters/enemies/guard/TorchHit.ogg" id="16_dn53i"]
+[ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="17_pd3h8"]
+
+[sub_resource type="Curve2D" id="Curve2D_fbuwy"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 320, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_67ghd"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -8, 288, 0, 0, 0, 0, 0, 0)
+}
+point_count = 2
 
 [node name="DoorsAndLevers" type="Node2D" unique_id=982103714 node_paths=PackedStringArray("combined_toggleables")]
 script = ExtResource("1_m8m4b")
 combined_toggleables = [NodePath("OnTheGround/CombinedGroup/HorizontalDoor3"), NodePath("OnTheGround/CombinedGroup/HorizontalDoor4")]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1609255622]
+color = Color(0.481789, 0.48179, 0.481789, 1)
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1193602832]
 
@@ -38,6 +60,7 @@ y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("3_5oqc0")]
 position = Vector2(-224, 88)
+player_name = "StoryWeaver"
 sprite_frames = ExtResource("4_t2uo1")
 
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1817610854]
@@ -124,3 +147,37 @@ text = "Doesn't work by itself!"
 [node name="Sign2" parent="OnTheGround/CombinedGroup" unique_id=2028770214 instance=ExtResource("8_jsbj5")]
 position = Vector2(704, 768)
 text = "Doesn't work by itself!"
+
+[node name="Guards" type="Node2D" parent="OnTheGround" unique_id=2080706488]
+y_sort_enabled = true
+
+[node name="GuardHorizontal" parent="OnTheGround/Guards" unique_id=689832587 node_paths=PackedStringArray("patrol_path") instance=ExtResource("11_67ghd")]
+position = Vector2(-352, 416)
+sprite_frames = ExtResource("12_pd3h8")
+alerted_sound_stream = ExtResource("13_2mlkh")
+footsteps_sound_stream = ExtResource("14_fndrl")
+idle_sound_stream = ExtResource("15_qusjm")
+alert_others_sound_stream = ExtResource("16_dn53i")
+patrol_path = NodePath("../HorizontalPath")
+move_speed = 200.0
+
+[node name="HorizontalPath" type="Path2D" parent="OnTheGround/Guards" unique_id=345135422]
+position = Vector2(-352, 416)
+curve = SubResource("Curve2D_fbuwy")
+
+[node name="GuardVertical" parent="OnTheGround/Guards" unique_id=1801542745 node_paths=PackedStringArray("patrol_path") instance=ExtResource("11_67ghd")]
+position = Vector2(664, 640)
+sprite_frames = ExtResource("12_pd3h8")
+alerted_sound_stream = ExtResource("13_2mlkh")
+footsteps_sound_stream = ExtResource("14_fndrl")
+idle_sound_stream = ExtResource("15_qusjm")
+alert_others_sound_stream = ExtResource("16_dn53i")
+patrol_path = NodePath("../GuardVerticalPath")
+move_speed = 200.0
+
+[node name="GuardVerticalPath" type="Path2D" parent="OnTheGround/Guards" unique_id=1473017074]
+position = Vector2(672, 352)
+curve = SubResource("Curve2D_67ghd")
+
+[node name="StealthGameLogic" type="Node" parent="." unique_id=629998859]
+script = ExtResource("17_pd3h8")
