@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
+class_name UpdateTranslatableFiles
 extends EditorScript
 ## Maintains the list to files to translate from [const SOURCES]
 ##
@@ -23,6 +24,11 @@ const SOURCES: PackedStringArray = [
 	"res://addons/storyquest_bootstrap",
 	"res://addons/storyquest_bootstrap/plugin.gd",
 	"res://scenes/dev",
+	"res://scenes/game_elements",
+	"res://scenes/game_elements/props/collectible_item/components/collectible_item.gd",
+	"res://scenes/game_elements/props/powerup/components/powerup.gd",
+	"res://scenes/game_logic",
+	"res://scenes/game_logic/talk_behavior.gd",
 	"res://scenes/globals/pause",
 	"res://scenes/menus/debug",
 	"res://scenes/menus/options",
@@ -30,6 +36,7 @@ const SOURCES: PackedStringArray = [
 	"res://scenes/menus/title/components/main_menu.tscn",
 	"res://scenes/menus/title/components/main_menu.gd",
 	"res://scenes/ui_elements/input_hints",
+	"res://scenes/quests/template_quests/",
 ]
 
 ## Files found in [const SOURCES] but must not be listed.
@@ -41,6 +48,11 @@ const EXCLUDED: PackedStringArray = [
 	# could set these TabContainers to have auto_translate_mode disabled, but then each child node
 	# would need to be changed from auto_translate_mode inherit to enabled:
 	"res://scenes/ui_elements/input_hints/input_hud.tscn",
+	# We are not translating the lore yet. Exclude lore elements inside game_elements:
+	"res://scenes/game_elements/characters/npcs/elder/lore_quest_elder.tscn",
+	"res://scenes/game_elements/characters/npcs/elder/components/lore_quest_starter.dialogue",
+	"res://scenes/game_elements/props/eternal_loom/eternal_loom.tscn",
+	"res://scenes/game_elements/props/eternal_loom/components/eternal_loom_interaction.dialogue",
 ]
 
 ## The Project Setting to update.
