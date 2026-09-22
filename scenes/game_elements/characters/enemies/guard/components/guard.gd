@@ -64,10 +64,7 @@ const DEFAULT_SPRITE_FRAMES = preload("uid://ovu5wqo15s5g")
 @export_range(0.1, 5, 0.1, "or_greater", "suffix:s") var time_to_detect_player: float = 1.0
 ## Scale factor for the detection area.
 @export_range(0.1, 5, 0.1, "or_greater", "or_less") var detection_area_scale: float = 1.0:
-	set(new_value):
-		detection_area_scale = new_value
-		_set_detection_area_scale()
-		_set_detection_light()
+	set = _set_detection_area_scale
 
 @export_category("Debug")
 ## Enables movement in the editor for debugging.
@@ -144,11 +141,9 @@ func _ready() -> void:
 
 	_set_sprite_frames(sprite_frames)
 	
-	_set_detection_area_scale()
-	_set_detection_light()
+	_set_sprite_frames(sprite_frames)
+	_set_detection_area_scale(detection_area_scale)
 
-	if detection_area:
-		detection_area.scale = Vector2.ONE * detection_area_scale
 
 	# When the level starts, the guard is placed at the beginning of the
 	# patrol path.
@@ -431,17 +426,15 @@ func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 		return
 	animated_sprite_2d.sprite_frames = sprite_frames
 	update_configuration_warnings()
-	
-func _set_detection_area_scale() -> void:
-	if not is_node_ready():
-		return
-	detection_area.scale = Vector2.ONE * detection_area_scale
 
-func _set_detection_light() -> void:
+
+func _set_detection_area_scale(new_detection_area_scale: float) -> void:
+	detection_area_scale = new_detection_area_scale
 	if not is_node_ready():
 		return
+	if detection_area:
+		detection_area.scale = Vector2.ONE * detection_area_scale
 	_light.visible = detection_area_scale > 0.1
-
 
 func _set_alerted_sound_stream(new_value: AudioStream) -> void:
 	alerted_sound_stream = new_value
