@@ -2,9 +2,4 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node2D
 
-@onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var collectible_item: CollectibleItem = %CollectibleItem
-
-
-func reveal() -> void:
-	animation_player.play("reveal")

@@ -7,6 +7,10 @@ extends Node
 ## signals like [signal PlayerState.abilities_changed].
 signal player_changed(old: PlayerState, new: PlayerState)
 
+## Emitted when [member quest] changes, due to a quest being started, completed,
+## or abandoned.
+signal quest_changed
+
 const SAVE_PATH := "user://saved_game.tres"
 
 ## The player abilities to have from the beginning
@@ -41,6 +45,7 @@ var quest: QuestState:
 		var old_player_state := player
 		_saved_game.quest = new_value
 		player_changed.emit(old_player_state, player)
+		quest_changed.emit()
 
 ## State concerning the current scene, or [code]null[/code] if there is no current scene
 var scene: PerSceneState:
@@ -137,6 +142,9 @@ func set_quest(new_quest: Quest) -> void:
 		quest_player_state = PlayerState.new()
 
 	quest = QuestState.new(new_quest, quest_player_state)
+	quest.inventory.items = global.inventory.items.filter(
+		func(i: TaggedItem) -> bool: return i.quest_path == new_quest.resource_path
+	)
 
 
 ## Guess which quest the given scene is part of, and set [member quest]
