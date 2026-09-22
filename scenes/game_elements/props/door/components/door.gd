@@ -44,7 +44,6 @@ func update_opened_state() -> void:
 
 func update_door_flip() -> void:
 	%DoorOpened.flip_h = flip_horizontal 
-	
 	if flip_horizontal:
 		%DoorOpened.position.x = -abs(%DoorOpened.position.x)
 	else:
