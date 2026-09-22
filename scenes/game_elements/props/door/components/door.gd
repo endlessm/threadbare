@@ -8,7 +8,6 @@ extends Toggleable
 	set(new_val):
 		opened = new_val
 		update_opened_state()
-		
 @export var flip_horizontal: bool = false:
 	set(new_val):
 		flip_horizontal = new_val
