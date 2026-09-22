@@ -117,6 +117,7 @@ var character_animation_player_behavior: CharacterAnimationPlayerBehavior = %Cha
 @onready var _torch_hit_sound: AudioStreamPlayer2D = %TorchHitSound
 @onready var _light: PointLight2D = %Light
 
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
 
@@ -140,10 +141,9 @@ func _ready() -> void:
 			player_awareness.value = 0.0
 
 	_set_sprite_frames(sprite_frames)
-	
+
 	_set_sprite_frames(sprite_frames)
 	_set_detection_area_scale(detection_area_scale)
-
 
 	# When the level starts, the guard is placed at the beginning of the
 	# patrol path.
@@ -435,6 +435,7 @@ func _set_detection_area_scale(new_detection_area_scale: float) -> void:
 	if detection_area:
 		detection_area.scale = Vector2.ONE * detection_area_scale
 	_light.visible = detection_area_scale > 0.1
+
 
 func _set_alerted_sound_stream(new_value: AudioStream) -> void:
 	alerted_sound_stream = new_value
