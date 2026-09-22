@@ -24,9 +24,18 @@ const HUD_TEXTURES: Dictionary[ItemType, Texture2D] = {
 }
 
 const WORLD_TEXTURES: Dictionary[ItemType, Texture2D] = {
-	ItemType.MEMORY: preload("uid://5wscjc8yqqts"),
-	ItemType.IMAGINATION: preload("uid://6bf8rum68wq3"),
-	ItemType.SPIRIT: preload("uid://cepg1o3ihp055")
+	ItemType.MEMORY: preload("uid://xm1p6x8oqteb"),
+	ItemType.IMAGINATION: preload("uid://dnjaa4bhfjdvr"),
+	ItemType.SPIRIT: preload("uid://chyvv5qjtwgga")
+}
+
+const TAILS_TEXTURES: Dictionary[ItemType, SpriteFrames] = {
+	ItemType.MEMORY: preload("uid://bpfr6xaq4t8xv") = {
+		play_animation(memory),
+	}
+	
+	ItemType.IMAGINATION: preload("uid://bpfr6xaq4t8xv"),
+	ItemType.SPIRIT: preload("uid://bpfr6xaq4t8xv")
 }
 
 @export var type: ItemType
@@ -38,6 +47,9 @@ func get_hud_texture() -> Texture2D:
 
 func get_world_texture() -> Texture2D:
 	return WORLD_TEXTURES[type]
+
+func get_tails_animation() -> SpriteFrames:
+	return get_tails_animation(type)
 
 
 static func with_type(a_type: ItemType) -> InventoryItem:
