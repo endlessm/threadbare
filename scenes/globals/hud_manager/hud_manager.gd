@@ -61,7 +61,18 @@ func _should_show_hud() -> bool:
 	if current_scene is FraysEnd:
 		return GameState.quest.inventory.items.size() >= threads_to_collect
 
-	return true
+	var scene_path := current_scene.scene_file_path
+	if scene_path.begins_with("res://scenes/world_map/"):
+		return false
+
+	return _scene_has_gameplay_avatar()
+
+
+func _scene_has_gameplay_avatar() -> bool:
+	return (
+		get_tree().get_first_node_in_group("player") != null
+		or get_tree().get_first_node_in_group("sokoban_ruleset") != null
+	)
 
 
 func refresh_input_hud() -> void:
