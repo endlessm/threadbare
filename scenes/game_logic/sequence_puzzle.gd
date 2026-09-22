@@ -58,7 +58,6 @@ func _ready() -> void:
 
 	for step: SequencePuzzleStep in steps:
 		if step.hint_sign:
-			step.is_solved = step.hint_sign.is_solved
 			step.hint_sign.demonstrate_sequence.connect(_on_demonstrate_sequence.bind(step))
 
 	_update_current_step()
@@ -81,7 +80,7 @@ func _find_objects() -> void:
 func _update_current_step() -> void:
 	var previous_step := _current_step
 	for i in range(_current_step, steps.size()):
-		# We find the next fire that is not solved, and that's the _current_step
+		# We find the next step that is not solved, and that's the _current_step
 		if steps[i].is_solved:
 			_current_step = i + 1
 			_position = 0
