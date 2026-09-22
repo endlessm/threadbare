@@ -19,6 +19,7 @@ extends Node2D
 ## Whether this step has been solved.
 var is_solved: bool = false
 
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
 	if sequence.is_empty():

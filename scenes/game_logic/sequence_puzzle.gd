@@ -127,7 +127,7 @@ func _on_kicked(object: SequencePuzzleObject) -> void:
 
 	_debug("Finished sequence")
 	step.is_solved = true
-	
+
 	if step.hint_sign:
 		step.hint_sign.set_solved()
 
@@ -165,6 +165,6 @@ func is_solved() -> bool:
 func _on_demonstrate_sequence(step: SequencePuzzleStep) -> void:
 	for object in step.sequence:
 		await object.play()
-		
+
 	if step.hint_sign:
 		step.hint_sign.demonstration_finished()
