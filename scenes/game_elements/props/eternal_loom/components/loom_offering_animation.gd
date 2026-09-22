@@ -24,11 +24,9 @@ func play_loom_animation() -> void:
 ## Only used for the in-editor preview
 func play_loom_animation_debug() -> void:
 	var debug_items: Array[InventoryItem]
-	# TODO: InventoryItem needs a utility function to obtain all types except NONE.
-	var item_types := InventoryItem.COLORS_PER_TYPE.keys()
+	var item_types := InventoryItem.ItemType.values()
 	for i in range(debug_thread_count):
-		var item := InventoryItem.new()
-		item.type = item_types.pick_random()
+		var item := InventoryItem.with_type(item_types.pick_random())
 		debug_items.append(item)
 	_loom_animation_play(debug_items)
 
@@ -51,7 +49,7 @@ func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
 		path_follow.rotates = false
 		var sprite := Sprite2D.new()
 
-		sprite.texture = thread.get_world_texture()
+		sprite.texture = thread.world_texture
 		path_follow.add_child(sprite)
 
 		animation_path.add_child(path_follow)
