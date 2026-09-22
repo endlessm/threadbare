@@ -7,7 +7,7 @@ const SCENES_WITHOUT_HUD: Array[String] = [
 	"uid://stdqc6ttomff",  # title_screen.tscn
 ]
 
-@onready var _hud: Hud = %HUD
+@onready var _hud: Hud = %Hud
 @onready var _input_hud: InputHud = %InputHud
 
 
