@@ -48,4 +48,4 @@ func update_door_flip() -> void:
 	if flip_horizontal:
 		%DoorOpened.position.x = -abs(%DoorOpened.position.x)
 	else:
-		$DoorOpened.position.x = abs(%DoorOpened.position.x)
+		%DoorOpened.position.x = abs(%DoorOpened.position.x)
