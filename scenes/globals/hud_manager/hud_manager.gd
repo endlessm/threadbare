@@ -7,19 +7,11 @@ const SCENES_WITHOUT_HUD: Array[String] = [
 	"uid://stdqc6ttomff",  # title_screen.tscn
 ]
 
-var _hud_scene: PackedScene = preload("uid://cfcgrfvtn04yp")
-var _input_hud_scene: PackedScene = preload("uid://dfu3rocpande8")
-
-var _hud: Hud
-var _input_hud: InputHud
+@onready var _hud: Hud = %HUD
+@onready var _input_hud: InputHud = %InputHud
 
 
 func _ready() -> void:
-	_hud = _hud_scene.instantiate()
-	_input_hud = _input_hud_scene.instantiate()
-	add_child(_hud)
-	add_child(_input_hud)
-
 	get_tree().scene_changed.connect(_on_scene_changed)
 	_on_scene_changed.call_deferred()
 
