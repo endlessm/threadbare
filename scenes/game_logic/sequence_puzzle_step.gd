@@ -10,6 +10,9 @@ extends Node2D
 		sequence = new_value
 		update_configuration_warnings()
 
+## Whether this step has been solved.
+@export var is_solved: bool = false
+
 ## An optional sign, showing a hint for this step and whether it has been solved.
 @export var hint_sign: SequencePuzzleHintSign:
 	set(new_value):
@@ -24,8 +27,5 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 	if sequence.find(null) != -1:
 		warnings.append("Sequence contains unset elements")
-
-	if not hint_sign:
-		warnings.append("Hint Sign not set")
 
 	return warnings
