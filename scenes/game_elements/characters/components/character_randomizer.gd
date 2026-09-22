@@ -3,26 +3,14 @@
 @tool
 class_name CharacterRandomizer
 extends CharacterBody2D
-## @experimental
-##
-## Provide a single button to randomize various aspects of a character.
-##
-## Using a seed to consistently apply the randomizations in game, to persist them without
-## the use of Editable Children, and to allow undo/redo.
-## [br][br]
-## [b]Note:[/b] Editable Children can still be used to customize a single aspect
-## of the randomization. For example if you are happy with the results of the "Randomize"
-## button, except for the skin color.
-## [br][br]
-## There is also logic to set the same random progress to all SpriteFrames animations.
-## Basically what [[RandomFrameSpriteBehavior]] does, but to an array.
-## [br][br]
-## Also can look at sides. Defaults to look at left, and scales everything by -1 to look
-## at right.
 
 ## The random seed of this character. Setting another character to the same seed
 ## will make them identical. Setting it to zero will reset the skin color.
 @export var character_seed: int
+
+## The character name. Like sprites and palette, this is picked randomly using the
+## [member character_seed].
+@export var character_name: String
 
 ## The recoloring behavior to use in all sprites.
 @export var cel_shading_recolor: CelShadingRecolor
@@ -53,7 +41,7 @@ var _previous_look_at_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
 @onready var head: AnimatedSprite2D = %AnimatedSprite2DHead
 
 
-## Randomize the skin color and textures of the character.
+## Randomize the skin color, textures, and name of the character.
 ## [br][br]
 ## Do it in a consistent way by first seeding the default random number generator
 ## with the [member character_seed].
@@ -66,6 +54,10 @@ func apply_character_randomizations() -> void:
 	for n in random_texture_nodes:
 		n.randomize_texture(_random_number_generator)
 
+	if not RandomName.TOWNIE_NAMES.is_empty():
+		var name_index := _random_number_generator.randi_range(0, RandomName.TOWNIE_NAMES.size() - 1)
+		character_name = RandomName.TOWNIE_NAMES[name_index]
+
 
 ## Set a random seed and randomize the character.
 ## [br][br]
@@ -76,6 +68,7 @@ func randomize_character() -> void:
 		_undoredo.create_action("Randomize character")
 		_undoredo.add_undo_property(self, "character_seed", character_seed)
 		_undoredo.add_do_property(self, "character_seed", new_character_seed)
+		_undoredo.add_undo_property(self, "character_name", character_name)
 		_undoredo.add_undo_method(self, "apply_character_randomizations")
 		_undoredo.add_do_method(self, "apply_character_randomizations")
 		_undoredo.commit_action()
@@ -88,8 +81,9 @@ func randomize_character() -> void:
 func _ready() -> void:
 	_setup_nodes()
 
-	for node in animated_sprites:
-		node.material = cel_shading_recolor.shader_material
+	if cel_shading_recolor:
+		for node in animated_sprites:
+			node.material = cel_shading_recolor.shader_material
 
 	if character_seed:
 		apply_character_randomizations()
