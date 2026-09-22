@@ -4,103 +4,24 @@
 class_name RandomName
 extends Node
 
-## Names available for Townies.
-## Names are not separated by gender.
-const TOWNIE_NAMES: Array[String] = [
-	"Felicity Fastneedle",
-	"Cedric Chiffon",
-	"Avery Threadwell",
-	"Rowan Woolstitch",
-	"Morgan Patchwork",
-	"Jamie Cottonweave",
-	"Taylor Threadneedle",
-	"Riley Softspool",
-	"Casey Silkstitch",
-	"Jordan Loomwright",
-	"Quinn Velvet",
-	"Harper Hemline",
-	"Robin Ribbon",
-	"Ellis Embroider",
-	"Darcy Darning",
-	"Finley Flannel",
-	"Remy Ravel",
-	"Jules Jacquard",
-	"Sage Spindle",
-	"Blair Bobbin",
-	"Devon Damask",
-	"Skyler Stitchwell",
-	"Emery Yarnspinner",
-	"Cameron Clothbound",
-	"Reese Ripsaw",
-	"Marlowe Muslin",
-	"Hollis Herringbone",
-	"Arden Artcloth",
-	"Kit Knitwell",
-	"Lennox Linen",
-	"Rory Ruffle",
-	"Parker Pincushion",
-	"Shiloh Shuttle",
-	"Drew Drapewell",
-	"Casey Calico",
-	"Alex Appliqué",
-	"River Rosette",
-	"Ashen Aran",
-	"Rowan Ribstitch",
-	"Morgan Mercer",
-	"Avery Alpaca",
-	"Taylor Tapestry",
-	"Riley Rayon",
-	"Jordan Jersey",
-	"Quinn Quilter",
-	"Harper Haberdash",
-	"Ellis Eyelet",
-	"Finley Felt",
-	"Remy Raglan",
-	"Jules Jute",
-	"Sage Selvage",
-	"Blair Brocade",
-	"Devon Dobby",
-	"Emery Elastic",
-	"Cameron Cashmere",
-	"Reese Reticule",
-	"Marlowe Mohair",
-	"Hollis Homespun",
-	"Arden Angora",
-	"Kit Kersey",
-	"Lennox Lattice",
-	"Rory Rosette",
-	"Parker Poplin",
-	"Shiloh Shirring",
-	"Drew Duckcloth",
-	"Alex Ajour",
-	"River Roving",
-	"Jamie Jacquard",
-	"Darcy Damask",
-	"Robin Ribbing",
-	"Skyler Spunthread",
-	"Marlowe Macramé",
-	"Hollis Handloom",
-	"Avery Weft",
-	"Morgan Warp",
-	"Quinn Warpwood",
-	"Riley Bobbin",
-	"Taylor Thimble",
-	"Casey Spool",
-	"Jordan Needlework",
-	"Harper Stitcher",
-	"Ellis Loom",
-	"Finley Shuttle",
-	"Remy Threader",
-	"Jules Weaverton",
-	"Sage Stitchford",
-	"Blair Clothier",
-	"Devon Weaver",
-	"Emery Needlebend",
-	"Cameron Spoolwright",
-	"Reese Threadsong",
-	"Rowan Loomsong",
-	"Felicity Threadwhistle",
-	"Cedric Softstitch",
+## Available first names for Townies.
+const FIRST_NAMES: Array[String] = [
+	"Felicity", "Cedric", "Avery", "Rowan", "Morgan", "Jamie", "Taylor",
+	"Riley", "Casey", "Jordan", "Quinn", "Harper", "Robin", "Ellis",
+	"Darcy", "Finley", "Remy", "Jules", "Sage", "Blair", "Devon",
+	"Skyler", "Emery", "Cameron", "Reese", "Marlowe", "Hollis", "Arden",
+	"Kit", "Lennox", "Rory", "Parker", "Shiloh", "Drew", "Alex", "River"
+]
+
+## Available last names for Townies.
+const LAST_NAMES: Array[String] = [
+	"Fastneedle", "Chiffon", "Threadwell", "Woolstitch", "Patchwork",
+	"Cottonweave", "Threadneedle", "Softspool", "Silkstitch", "Loomwright",
+	"Velvet", "Hemline", "Ribbon", "Embroider", "Darning", "Flannel",
+	"Ravel", "Jacquard", "Spindle", "Bobbin", "Damask", "Stitchwell",
+	"Yarnspinner", "Clothbound", "Ripsaw", "Muslin", "Herringbone", "Artcloth",
+	"Knitwell", "Linen", "Ruffle", "Pincushion", "Shuttle", "Drapewell",
+	"Calico", "Appliqué", "Rosette", "Aran", "Ribstitch", "Mercer"
 ]
 
 ## The name assigned to this Townie.
@@ -114,16 +35,23 @@ func _ready() -> void:
 ## Assign one random name to this Townie.
 ## The name is stored so it does not change while this Townie exists.
 func _assign_random_name() -> void:
-	if TOWNIE_NAMES.is_empty():
+	if FIRST_NAMES.is_empty() or LAST_NAMES.is_empty():
 		push_warning("RandomName: No Townie names available.")
 		return
 
-	townie_name = TOWNIE_NAMES.pick_random()
-
-	print("Townie generated: ", townie_name)
+	townie_name = FIRST_NAMES.pick_random() + " " + LAST_NAMES.pick_random()
 
 
 ## Returns the name assigned to this Townie.
 func get_townie_name() -> String:
 	return townie_name
-	
+
+
+## Returns a full name combined randomly using the provided RandomNumberGenerator.
+## Useful for deterministic seed-based generation in @tool scripts.
+static func get_random_name_from_rng(rng: RandomNumberGenerator) -> String:
+	if FIRST_NAMES.is_empty() or LAST_NAMES.is_empty():
+		return ""
+	var first_idx := rng.randi_range(0, FIRST_NAMES.size() - 1)
+	var last_idx := rng.randi_range(0, LAST_NAMES.size() - 1)
+	return FIRST_NAMES[first_idx] + " " + LAST_NAMES[last_idx]

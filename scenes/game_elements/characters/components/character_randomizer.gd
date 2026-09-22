@@ -54,9 +54,8 @@ func apply_character_randomizations() -> void:
 	for n in random_texture_nodes:
 		n.randomize_texture(_random_number_generator)
 
-	if not RandomName.TOWNIE_NAMES.is_empty():
-		var name_index := _random_number_generator.randi_range(0, RandomName.TOWNIE_NAMES.size() - 1)
-		character_name = RandomName.TOWNIE_NAMES[name_index]
+	# Combina un Nombre y Apellido aleatorio usando la semilla actual
+	character_name = RandomName.get_random_name_from_rng(_random_number_generator)
 
 
 ## Set a random seed and randomize the character.
