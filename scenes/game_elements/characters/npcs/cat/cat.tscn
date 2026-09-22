@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://djeshbrs3vwnb" path="res://scenes/game_elements/characters/npcs/components/pet_interaction.gd" id="4_t04tf"]
 [ext_resource type="AudioStream" uid="uid://di2b2rgca1udv" path="res://scenes/game_elements/characters/npcs/cat/components/412017__skymary__cat-meow-short.wav" id="5_t04tf"]
 [ext_resource type="Script" uid="uid://dxvv340yej4py" path="res://scenes/game_logic/fact_counter/fact_counter.gd" id="6_0bwy3"]
-[ext_resource type="Script" uid="uid://b3hx1n2yl88qr" path="res://scenes/game_logic/character_animation_player_behavior.gd" id="7_fpcy1"]
 [ext_resource type="Script" uid="uid://cx0sk4uhvnii0" path="res://scenes/game_logic/walk_behaviors/erratic_walk_behavior.gd" id="9_gm6tl"]
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="10_i6tmh"]
 
@@ -22,96 +21,6 @@ random_pitch = 1.15
 streams_count = 1
 stream_0/stream = ExtResource("5_t04tf")
 
-[sub_resource type="Animation" id="Animation_fpcy1"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"idle"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
-
-[sub_resource type="Animation" id="Animation_uymb4"]
-resource_name = "idle"
-length = 0.9
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"idle"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-}
-
-[sub_resource type="Animation" id="Animation_my03d"]
-resource_name = "walk"
-length = 0.9
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"walk"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_ymecv"]
-_data = {
-&"RESET": SubResource("Animation_fpcy1"),
-&"idle": SubResource("Animation_uymb4"),
-&"walk": SubResource("Animation_my03d")
-}
-
 [sub_resource type="Resource" id="Resource_u5bk5"]
 script = ExtResource("10_i6tmh")
 walk_speed = 70.0
@@ -122,8 +31,8 @@ stuck_speed = 70.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
 
 [node name="Cat" type="CharacterBody2D" unique_id=1950923165]
-collision_layer = 34
-collision_mask = 563
+collision_layer = 2
+collision_mask = 531
 motion_mode = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=556665806]
@@ -132,7 +41,6 @@ position = Vector2(0, -30)
 sprite_frames = ExtResource("3_qosq0")
 animation = &"idle"
 autoplay = "idle"
-frame = 4
 
 [node name="RandomFrameSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=1044391226 node_paths=PackedStringArray("sprite")]
 position = Vector2(0, 30)
@@ -143,7 +51,6 @@ metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
 [node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=750356762 node_paths=PackedStringArray("character", "sprite")]
 script = ExtResource("3_ymecv")
 character = NodePath("../..")
-play_animations = false
 sprite = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=557938036]
@@ -177,15 +84,6 @@ fact_counter = NodePath("../FactCounter")
 [node name="FactCounter" type="Node" parent="." unique_id=539544383]
 script = ExtResource("6_0bwy3")
 prefix = "cats_petted"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1636558305]
-libraries/ = SubResource("AnimationLibrary_ymecv")
-
-[node name="CharacterAnimationPlayerBehavior" type="Node2D" parent="AnimationPlayer" unique_id=360462469 node_paths=PackedStringArray("character", "animation_player")]
-script = ExtResource("7_fpcy1")
-character = NodePath("../..")
-animation_player = NodePath("..")
-metadata/_custom_type_script = "uid://b3hx1n2yl88qr"
 
 [node name="ErraticWalkBehavior" type="Node2D" parent="." unique_id=453552834 node_paths=PackedStringArray("character")]
 unique_name_in_owner = true
