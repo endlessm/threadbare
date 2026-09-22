@@ -42,7 +42,9 @@ func _set_ability(new_ability: Enums.PlayerAbilities) -> void:
 	ability = new_ability
 	if not Engine.is_editor_hint() and is_node_ready():
 		_update_ability_name()
-		interact_area.action = "Collect " + ability_name if ability_name else "Collect"
+		interact_area.action_text = (
+			tr("Collect %s") % ability_name if ability_name else tr("Collect")
+		)
 
 
 func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
