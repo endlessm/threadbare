@@ -2,9 +2,10 @@
 
 [ext_resource type="Script" uid="uid://be7lr8ty24cix" path="res://scenes/game_elements/props/collectible_item/components/collectible_item.gd" id="1_7ff3m"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="2_1kegn"]
-[ext_resource type="Texture2D" uid="uid://cepg1o3ihp055" path="res://assets/first_party/collectibles/world_spirit.png" id="5_0m1fb"]
+[ext_resource type="SpriteFrames" uid="uid://cy1nj4pl81x8c" path="res://highlight_sprite_frames.tres" id="5_0m1fb"]
 [ext_resource type="AudioStream" uid="uid://bhgpds38q0j4r" path="res://assets/third_party/sounds/collectibles/MemoryCollectable.ogg" id="5_hhgm5"]
 [ext_resource type="AudioStream" uid="uid://38xwdjm46478" path="res://assets/third_party/sounds/collectibles/CollectibleAppear.ogg" id="5_oh62b"]
+[ext_resource type="Texture2D" uid="uid://c2hed11tvn0dp" path="res://assets/first_party/collectibles/shadow.png" id="5_owoci"]
 [ext_resource type="SpriteFrames" uid="uid://bpfr6xaq4t8xv" path="res://tail_sprite_frames.tres" id="6_oh62b"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ghwae"]
@@ -53,26 +54,14 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Sombra2:visible")
+tracks/3/path = NodePath("Sombra:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, true]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Sombra2:modulate")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 1.01, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(0, 0, 0, 0.32156864), Color(0, 0, 0, 0.32156864)]
+"values": [Vector2(0.65625006, 1.0966355), Vector2(0.7, 1.171), Vector2(0.65625006, 1.0966355)]
 }
 
 [sub_resource type="Animation" id="Animation_i0615"]
@@ -200,38 +189,14 @@ tracks/9/keys = {
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Sombra2:visible")
+tracks/10/path = NodePath("Sombra:scale")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/11/type = "value"
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/path = NodePath("Sombra2:modulate")
-tracks/11/interp = 1
-tracks/11/loop_wrap = true
-tracks/11/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(0, 0, 0, 0)]
-}
-tracks/12/type = "value"
-tracks/12/imported = false
-tracks/12/enabled = true
-tracks/12/path = NodePath("CharacterBody2D/AnimatedSprite2D:animation")
-tracks/12/interp = 1
-tracks/12/loop_wrap = true
-tracks/12/keys = {
-"times": PackedFloat32Array(),
-"transitions": PackedFloat32Array(),
-"update": 1,
-"values": []
+"values": [Vector2(0.65625006, 1.0966355)]
 }
 
 [sub_resource type="Animation" id="Animation_7ff3m"]
@@ -372,30 +337,6 @@ tracks/10/keys = {
 "update": 0,
 "values": [Color(0, 0, 0, 0.32156864), Color(0, 0, 0, 0.32156864), Color(0, 0, 0, 0)]
 }
-tracks/11/type = "value"
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/path = NodePath("Sombra2:visible")
-tracks/11/interp = 1
-tracks/11/loop_wrap = true
-tracks/11/keys = {
-"times": PackedFloat32Array(0, 0.56666666, 0.59575915),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [true, true, false]
-}
-tracks/12/type = "value"
-tracks/12/imported = false
-tracks/12/enabled = true
-tracks/12/path = NodePath("Sombra2:modulate")
-tracks/12/interp = 1
-tracks/12/loop_wrap = true
-tracks/12/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(0, 0, 0, 0.32156864), Color(0, 0, 0, 0.32156864), Color(0, 0, 0, 0)]
-}
 
 [sub_resource type="Animation" id="Animation_qy0vu"]
 resource_name = "reveal"
@@ -476,34 +417,10 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Sombra2:visible")
+tracks/6/path = NodePath("Sombra:modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0, 0.10018773, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [false, true, true]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("Sombra:modulate")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 0.32156864)]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("Sombra2:modulate")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
 "times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
@@ -521,10 +438,6 @@ _data = {
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hhgm5"]
 radius = 9.0
 height = 28.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5l03a"]
-radius = 12.422418
-height = 24.844835
 
 [node name="CollectibleItem" type="Node2D" unique_id=327991066]
 script = ExtResource("1_7ff3m")
@@ -551,9 +464,30 @@ movie_quit_on_finish = true
 next/reveal = &"Default"
 blend_times = [&"reveal", &"Default", 2.0]
 
+[node name="Sombra" type="Sprite2D" parent="." unique_id=733059184]
+visible = false
+modulate = Color(0, 0, 0, 0)
+show_behind_parent = true
+position = Vector2(-2.3841858e-07, 24)
+scale = Vector2(0.65625006, 1.0966355)
+texture = ExtResource("5_owoci")
+vframes = 3
+frame = 2
+
+[node name="Highlight" type="AnimatedSprite2D" parent="." unique_id=1920697038]
+modulate = Color(0.05000007, 1, 0, 1)
+sprite_frames = ExtResource("5_0m1fb")
+animation = &"imagination"
+frame_progress = 0.93596643
+
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1620327010]
 visible = false
 modulate = Color(1, 1, 1, 0)
+
+[node name="Tail" type="AnimatedSprite2D" parent="." unique_id=2039386539]
+sprite_frames = ExtResource("6_oh62b")
+animation = &"imagination"
+frame_progress = 0.73968613
 
 [node name="CollectedSound" type="AudioStreamPlayer" parent="." unique_id=420528907]
 unique_name_in_owner = true
@@ -573,38 +507,3 @@ position = Vector2(0, 14)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_hhgm5")
 debug_color = Color(0.976711, 0, 0.409753, 0.42)
-
-[node name="Sombra" type="Sprite2D" parent="." unique_id=733059184]
-visible = false
-modulate = Color(0, 0, 0, 0)
-show_behind_parent = true
-position = Vector2(-0.99999905, 24)
-scale = Vector2(1.09375, 1.0966355)
-texture = ExtResource("5_0m1fb")
-vframes = 3
-frame = 2
-
-[node name="Sombra2" type="Sprite2D" parent="." unique_id=1451406892]
-visible = false
-modulate = Color(0, 0, 0, 0)
-show_behind_parent = true
-position = Vector2(1.4210855e-14, 4)
-rotation = 3.1415927
-scale = Vector2(1.09375, 0.78547525)
-texture = ExtResource("5_0m1fb")
-vframes = 3
-frame = 2
-
-[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1355610363]
-show_behind_parent = true
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D" unique_id=726311964]
-show_behind_parent = true
-sprite_frames = ExtResource("6_oh62b")
-animation = &"Yellow"
-frame_progress = 0.22059692
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1384382138]
-position = Vector2(20, 19)
-skew = -0.3996804
-shape = SubResource("CapsuleShape2D_5l03a")
