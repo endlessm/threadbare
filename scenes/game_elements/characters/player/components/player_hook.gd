@@ -101,19 +101,19 @@ var hook_string: Line2D
 @onready var phantom_camera_2d: PhantomCamera2D = %PhantomCamera2D
 
 ## Plays a sound effect when the string is thrown.
-@onready var throw_audio_player: AudioStreamPlayer2D = $ThrowAudioPlayer
+@onready var throw_audio_player: AudioStreamPlayer2D = %ThrowAudioPlayer
 
 ## Plays a sound effect while the string is flying through the air.
-@onready var fly_audio_player: AudioStreamPlayer2D = $FlyAudioPlayer
+@onready var fly_audio_player: AudioStreamPlayer2D = %FlyAudioPlayer
 
 ## Plays a sound effect when the string hits a hookable area.
-@onready var hit_audio_player: AudioStreamPlayer2D = $HitAudioPlayer
+@onready var hit_audio_player: AudioStreamPlayer2D = %HitAudioPlayer
 
 ## Plays a sound effect when a throw fails to hook anything.
-@onready var fail_audio_player: AudioStreamPlayer2D = $FailAudioPlayer
+@onready var fail_audio_player: AudioStreamPlayer2D = %FailAudioPlayer
 
 ## Plays a sound effect when a collectible is picked up through the hook.
-@onready var collect_audio_player: AudioStreamPlayer2D = $CollectAudioPlayer
+@onready var collect_audio_player: AudioStreamPlayer2D = %CollectAudioPlayer
 
 
 func _enter_tree() -> void:
