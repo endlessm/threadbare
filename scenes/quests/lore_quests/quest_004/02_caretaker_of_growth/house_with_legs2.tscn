@@ -21,8 +21,6 @@
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="19_732i0"]
 [ext_resource type="Script" uid="uid://bd5rffphpm10d" path="res://scenes/quests/lore_quests/quest_004/02_caretaker_of_growth/gate_on_all_plates.gd" id="20_gesxm"]
 [ext_resource type="PackedScene" uid="uid://d14qar7pc2i08" path="res://scenes/quests/lore_quests/quest_004/menhir/menhir.tscn" id="21_svhck"]
-[ext_resource type="PackedScene" uid="uid://cwhx41hykg23b" path="res://scenes/quests/lore_quests/quest_004/menhir/hum_ability.tscn" id="22_81vw0"]
-[ext_resource type="PackedScene" uid="uid://tdvdp0jvbt2s" path="res://scenes/quests/lore_quests/quest_004/menhir/hum_hint.tscn" id="23_uejfv"]
 [ext_resource type="PackedScene" uid="uid://0ull24fvmhwk" path="res://scenes/game_elements/props/teleporter/teleporter.tscn" id="24_xas3x"]
 [ext_resource type="PackedScene" uid="uid://bqhlguj2qmwx4" path="res://scenes/game_elements/props/decoration/spool/spool.tscn" id="25_ffoll"]
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/door.tscn" id="26_pl710"]
@@ -516,6 +514,9 @@ position = Vector2(447, 818)
 player_name = "StoryWeaver"
 sprite_frames = ExtResource("18_gijhh")
 
+[node name="PlayerRepel" parent="OnTheGround/Player" index="6" unique_id=1324972992]
+hum_wave_radius = 400.0
+
 [node name="Camera2D" type="Camera2D" parent="OnTheGround/Player" unique_id=1507609286]
 limit_left = 323
 limit_top = 69
@@ -539,32 +540,35 @@ targets = [NodePath("../Door"), null]
 
 [node name="Menhir1" parent="." unique_id=1527961051 instance=ExtResource("21_svhck")]
 position = Vector2(419, 551)
+wake_radius = 250.0
 
 [node name="Menhir2" parent="." unique_id=1276484917 instance=ExtResource("21_svhck")]
 position = Vector2(1574, 898)
+wake_radius = 250.0
 
 [node name="Menhir4" parent="." unique_id=1348218990 instance=ExtResource("21_svhck")]
 position = Vector2(1954, 514)
+wake_radius = 250.0
 
 [node name="Menhir5" parent="." unique_id=1543584313 instance=ExtResource("21_svhck")]
 position = Vector2(2205, 1005)
+wake_radius = 250.0
 
 [node name="Menhir6" parent="." unique_id=1681743635 instance=ExtResource("21_svhck")]
 position = Vector2(2204, 1592)
+wake_radius = 250.0
 
 [node name="Menhir7" parent="." unique_id=1848917860 instance=ExtResource("21_svhck")]
 position = Vector2(1120, 1629)
+wake_radius = 250.0
 
 [node name="Menhir8" parent="." unique_id=1384215540 instance=ExtResource("21_svhck")]
 position = Vector2(615, 1682)
+wake_radius = 250.0
 
 [node name="Menhir3" parent="." unique_id=612964415 instance=ExtResource("21_svhck")]
 position = Vector2(1027, 638)
-
-[node name="HumAbility" parent="." unique_id=780002001 instance=ExtResource("22_81vw0")]
-radius = 400.0
-
-[node name="HumHint" parent="." unique_id=780002002 instance=ExtResource("23_uejfv")]
+wake_radius = 250.0
 
 [node name="ToSala3" parent="." unique_id=1779636661 instance=ExtResource("24_xas3x")]
 position = Vector2(1400, 350)
@@ -628,3 +632,5 @@ curve = SubResource("Curve2D_ogreo")
 [node name="PathFollow2D" type="PathFollow2D" parent="ButterflyPatrolPath" unique_id=321128990]
 position = Vector2(4.3333435, 5.6666565)
 rotation = 1.1620022
+
+[editable path="OnTheGround/Player"]

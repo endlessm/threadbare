@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-extends Node2D
+extends StaticBody2D
 
 const HOOKABLE_PIN := preload("res://scenes/game_elements/props/hookable_pin/hookable_pin.tscn")
 
@@ -10,15 +10,24 @@ const HOOKABLE_PIN := preload("res://scenes/game_elements/props/hookable_pin/hoo
 @export var asleep_color: Color = Color(0.35, 0.38, 0.55)
 @export var awake_color: Color = Color(1.0, 1.0, 1.0)
 
+## How far from the menhir the air stream of the repel can be to wake it up. The player has to be
+## this distance plus the reach of the repel (150) from the menhir.
+@export_range(0.0, 1000.0, 1.0, "or_greater") var wake_radius: float = 70.0:
+	set(new_value):
+		wake_radius = new_value
+		_update_wake_shape()
+
 var _active: bool = false
 var _pin: Node2D
 var _rest_y: float
 
 @onready var visual: AnimatedSprite2D = $Visual
 @onready var pin_marker: Marker2D = $PinMarker
+@onready var wake_shape: CollisionShape2D = $CollisionShape2D
 
 
 func _ready() -> void:
+	_update_wake_shape()
 	_rest_y = visual.position.y
 	visual.modulate = asleep_color
 	if visual.sprite_frames and visual.sprite_frames.has_animation(&"wake"):
@@ -27,8 +36,16 @@ func _ready() -> void:
 		visual.stop()
 
 
-func got_hummed() -> void:
+func _update_wake_shape() -> void:
+	if not is_node_ready():
+		return
+	(wake_shape.shape as CircleShape2D).radius = wake_radius
+
+
+func got_repelled(_direction: Vector2) -> void:
 	if _active:
+		return
+	if not GameState.player.has_ability(Enums.PlayerAbilities.ABILITY_A_MODIFIER_1):
 		return
 	_awaken()
 

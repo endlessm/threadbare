@@ -5,7 +5,7 @@ extends Node
 @export var grant_sword: bool = true
 @export var grant_hook: bool = true
 @export var grant_longer_hook: bool = true
-@export var grant_tarareo: bool = true
+@export var grant_hum: bool = true
 
 
 func _ready() -> void:
@@ -15,5 +15,5 @@ func _ready() -> void:
 		GameState.player.set_ability(Enums.PlayerAbilities.ABILITY_B, true)
 	if grant_longer_hook:
 		GameState.player.set_ability(Enums.PlayerAbilities.ABILITY_B_MODIFIER_1, true)
-	if grant_tarareo:
-		GameState.player.set_ability(Enums.PlayerAbilities.ABILITY_C, true)
+	if grant_hum:
+		GameState.player.set_ability(Enums.PlayerAbilities.ABILITY_A_MODIFIER_1, true)

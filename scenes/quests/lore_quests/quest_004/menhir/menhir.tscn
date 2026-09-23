@@ -14,8 +14,17 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Menhir" type="Node2D" unique_id=1527961051 groups=["menhir"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_menhir"]
+resource_local_to_scene = true
+radius = 70.0
+
+[node name="Menhir" type="StaticBody2D" unique_id=1527961051]
+collision_layer = 256
+collision_mask = 0
 script = ExtResource("1_mh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1620871554]
+shape = SubResource("CircleShape2D_menhir")
 
 [node name="Visual" type="AnimatedSprite2D" parent="." unique_id=1798701392]
 unique_name_in_owner = true

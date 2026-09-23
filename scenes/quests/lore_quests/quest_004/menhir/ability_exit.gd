@@ -3,7 +3,7 @@
 extends Area2D
 
 @export var next_scene: String = "uid://81omfchdh0ei"
-@export var required_ability: Enums.PlayerAbilities = Enums.PlayerAbilities.ABILITY_C
+@export var required_ability: Enums.PlayerAbilities = Enums.PlayerAbilities.ABILITY_A_MODIFIER_1
 
 
 func _ready() -> void:

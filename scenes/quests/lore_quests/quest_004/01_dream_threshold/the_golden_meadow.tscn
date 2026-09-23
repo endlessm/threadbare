@@ -29,8 +29,6 @@
 [ext_resource type="PackedScene" uid="uid://ccpgw7k4rlmea" path="res://scenes/game_elements/props/decoration/crops/barley.tscn" id="18_vn2jv"]
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="22_qg74m"]
 [ext_resource type="PackedScene" uid="uid://d14qar7pc2i08" path="res://scenes/quests/lore_quests/quest_004/menhir/menhir.tscn" id="22_vrjf1"]
-[ext_resource type="PackedScene" uid="uid://cwhx41hykg23b" path="res://scenes/quests/lore_quests/quest_004/menhir/hum_ability.tscn" id="23_hum"]
-[ext_resource type="PackedScene" uid="uid://tdvdp0jvbt2s" path="res://scenes/quests/lore_quests/quest_004/menhir/hum_hint.tscn" id="23_humhint"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="24_dkmco"]
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="29_b4iy5"]
 [ext_resource type="SpriteFrames" uid="uid://brspwu70qbdaf" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_blue.tres" id="33_5b7ch"]
@@ -313,11 +311,7 @@ show_debug_label = true
 
 [node name="Menhir" parent="." unique_id=1527961051 instance=ExtResource("22_vrjf1")]
 position = Vector2(2169, 401)
-
-[node name="HumAbility" parent="." unique_id=778555001 instance=ExtResource("23_hum")]
-radius = 300.0
-
-[node name="HumHint" parent="." unique_id=778555002 instance=ExtResource("23_humhint")]
+wake_radius = 150.0
 
 [node name="BackgroundMusic" type="Node" parent="." unique_id=1182853956]
 script = ExtResource("29_b4iy5")
@@ -1462,6 +1456,9 @@ position = Vector2(268, 890)
 player_name = "StoryWeaver"
 sprite_frames = ExtResource("9_30cd5")
 
+[node name="PlayerRepel" parent="Player" index="6" unique_id=1324972992]
+hum_wave_radius = 300.0
+
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1504332440]
 process_mode = 3
 limit_left = -463
@@ -1793,3 +1790,5 @@ position = Vector2(3000, 580)
 
 [node name="VFog" parent="." unique_id=830000001 instance=ExtResource("303_fog")]
 scroll_offset = Vector2(-61, -144)
+
+[editable path="Player"]
