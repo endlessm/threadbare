@@ -12,6 +12,9 @@ polygon = PackedVector2Array(33, -65, 26, -73, 18, -76, -18, -76, -27, -73, -33,
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t3aaa"]
 size = Vector2(57.5, 25)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mqtua"]
+size = Vector2(68, 81)
+
 [node name="VerticalDoor" type="Node2D" unique_id=1860367584]
 script = ExtResource("1_t3aaa")
 
@@ -37,6 +40,16 @@ collision_layer = 16
 [node name="ShapeWhenClosed" type="CollisionShape2D" parent="ColliderWhenClosed" unique_id=953885580]
 position = Vector2(0.25, -12.5)
 shape = SubResource("RectangleShape2D_t3aaa")
+
+[node name="SightOcclussion" type="StaticBody2D" parent="." unique_id=2115023129]
+unique_name_in_owner = true
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SightOcclussion" unique_id=1355802857]
+position = Vector2(0, -37.5)
+shape = SubResource("RectangleShape2D_mqtua")
+debug_color = Color(0.972549, 0, 0.44313726, 0)
 
 [node name="DoorOpenSound" type="AudioStreamPlayer2D" parent="." unique_id=1659028188]
 unique_name_in_owner = true
