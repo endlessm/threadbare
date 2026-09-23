@@ -8,7 +8,6 @@
 [ext_resource type="AudioStream" uid="uid://do2l7t3usqkos" path="res://assets/third_party/sounds/grapple/grapple_fly.wav" id="6_282du"]
 [ext_resource type="AudioStream" uid="uid://5265ydem2dka" path="res://assets/third_party/sounds/grapple/grapple_hit.wav" id="7_y2mwr"]
 [ext_resource type="AudioStream" uid="uid://b87ceihlec2h2" path="res://assets/third_party/sounds/grapple/grapple_fail.ogg" id="8_xdtmi"]
-[ext_resource type="AudioStream" uid="uid://dvctnwkgdbsew" path="res://assets/third_party/sounds/grapple/grapple_collect.wav" id="9_jel7r"]
 
 [sub_resource type="Resource" id="Resource_lv7pl"]
 script = ExtResource("4_muesi")
@@ -37,20 +36,26 @@ metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 [node name="ThrowAudioPlayer" type="AudioStreamPlayer2D" parent="." unique_id=557191266]
 unique_name_in_owner = true
 stream = ExtResource("5_4y42v")
-volume_db = -6.0
+volume_db = 8.0
+max_distance = 1200.0
 
-[node name="FlyAudioPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1205196393]
-unique_name_in_owner = true
-stream = ExtResource("6_282du")
-
-[node name="HitAudioPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1735421435]
+[node name="HookedAudioPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1735421435]
 unique_name_in_owner = true
 stream = ExtResource("7_y2mwr")
+volume_db = 6.0
+pitch_scale = 5.0
+max_distance = 1200.0
 
-[node name="FailAudioPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1335991406]
+[node name="HitAirAudioPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1205196393]
+unique_name_in_owner = true
+stream = ExtResource("6_282du")
+volume_db = -10.0
+pitch_scale = 1.3
+max_distance = 1200.0
+
+[node name="HitWallAudioPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1335991406]
 unique_name_in_owner = true
 stream = ExtResource("8_xdtmi")
-
-[node name="CollectAudioPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1144699779]
-unique_name_in_owner = true
-stream = ExtResource("9_jel7r")
+volume_db = -3.0
+pitch_scale = 5.0
+max_distance = 1200.0
