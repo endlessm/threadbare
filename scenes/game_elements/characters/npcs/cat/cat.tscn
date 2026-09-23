@@ -39,7 +39,7 @@ motion_mode = 1
 unique_name_in_owner = true
 position = Vector2(0, -30)
 sprite_frames = ExtResource("3_qosq0")
-animation = &"idle"
+animation = &"pet"
 autoplay = "idle"
 
 [node name="RandomFrameSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=1044391226 node_paths=PackedStringArray("sprite")]
@@ -75,11 +75,14 @@ debug_color = Color(0.6, 0.545, 0, 0.42)
 stream = SubResource("AudioStreamRandomizer_8kxh7")
 bus = &"SFX"
 
-[node name="PetInteraction" type="Node" parent="." unique_id=929067504 node_paths=PackedStringArray("interact_area", "sound_effect_player", "fact_counter")]
+[node name="PetInteraction" type="Node" parent="." unique_id=929067504 node_paths=PackedStringArray("interact_area", "sound_effect_player", "fact_counter", "pet_animation", "pet_sprite_behavior")]
 script = ExtResource("4_t04tf")
 interact_area = NodePath("../InteractArea")
 sound_effect_player = NodePath("../AudioStreamPlayer2D")
 fact_counter = NodePath("../FactCounter")
+pet_animation = NodePath("../AnimatedSprite2D")
+pet_sprite_behavior = NodePath("../AnimatedSprite2D/CharacterSpriteBehavior")
+interaction_animation = &"pet"
 
 [node name="FactCounter" type="Node" parent="." unique_id=539544383]
 script = ExtResource("6_0bwy3")

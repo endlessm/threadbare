@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="4_tsjbs"]
 [ext_resource type="AudioStream" uid="uid://dtf82j11434vb" path="res://scenes/game_elements/props/decoration/sheep/components/sheep_baa.wav" id="5_5wm27"]
 [ext_resource type="Script" uid="uid://dxvv340yej4py" path="res://scenes/game_logic/fact_counter/fact_counter.gd" id="7_1k1ft"]
+[ext_resource type="Script" uid="uid://beqwrk30lk8bc" path="res://scenes/game_elements/props/decoration/sheep/face_away_behavior.gd" id="9_3vki4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hj6il"]
 radius = 6.0
@@ -27,7 +28,7 @@ collision_layer = 2
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1456881412]
 unique_name_in_owner = true
 sprite_frames = ExtResource("1_hj6il")
-animation = &"idle"
+animation = &"annoy"
 autoplay = "idle"
 offset = Vector2(4, -14)
 
@@ -70,13 +71,20 @@ debug_color = Color(0.6, 0.545, 0, 0.42)
 stream = SubResource("AudioStreamRandomizer_3vki4")
 bus = &"SFX"
 
-[node name="PetInteraction" type="Node" parent="." unique_id=1162035923 node_paths=PackedStringArray("interact_area", "sound_effect_player", "shaker", "fact_counter")]
+[node name="PetInteraction" type="Node" parent="." unique_id=1162035923 node_paths=PackedStringArray("interact_area", "sound_effect_player", "shaker", "fact_counter", "pet_animation", "pet_sprite_behavior", "interaction_behavior")]
 script = ExtResource("4_pcfmk")
 interact_area = NodePath("../InteractArea")
 sound_effect_player = NodePath("../AudioStreamPlayer2D")
 shaker = NodePath("../AnimatedSprite2D/Shaker")
 fact_counter = NodePath("../FactCounter")
+pet_animation = NodePath("../AnimatedSprite2D")
+pet_sprite_behavior = NodePath("../AnimatedSprite2D/CharacterSpriteBehavior")
+interaction_behavior = NodePath("../FaceAwayBehavior")
+interaction_animation = &"annoy"
 
 [node name="FactCounter" type="Node" parent="." unique_id=2116673480]
 script = ExtResource("7_1k1ft")
 prefix = "sheeps_annoyed"
+
+[node name="FaceAwayBehavior" type="Node" parent="." unique_id=1519515067]
+script = ExtResource("9_3vki4")
