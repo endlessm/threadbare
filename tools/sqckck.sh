@@ -27,8 +27,22 @@ echo "::group::Adding Backstitch launcher"
 gh release download -R inkandswitch/backstitch-launcher --pattern 'backstitch-launcher-*.zip'
 unzip backstitch-launcher-*.zip
 rm backstitch-launcher-*.zip
-rm .gitignore.template
+
+# Threadbare's .gitignore contains rules for backstitch, but append any new ones
+# in case they have changed.
+comm -23 <(sort -u .gitignore.template) <(sort -u .gitignore) > .gitignore.add
+cat .gitignore.add >> .gitignore
+rm .gitignore.add .gitignore.template
+
 git add backstitch-launcher-*
+echo "::endgroup::"
+
+echo "::group::Preconfiguring Backstitch server"
+cat >backstitch.cfg <<EOF
+[backstitch]
+available_servers = "https://backstitch.endlessstudios.com/"
+server_url = "https://backstitch.endlessstudios.com/"
+EOF
 echo "::endgroup::"
 
 echo "::group::Committing pruned project"
@@ -41,7 +55,7 @@ echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
 echo "::endgroup::"
 
 echo "::group::Creating zip file"
-git archive --format=zip --prefix=threadbare-storyquest/ --output="threadbare-storyquest-kit.zip" @
+git archive --prefix=threadbare-storyquest/ --add-file=backstitch.cfg --format=zip --output="threadbare-storyquest-kit.zip" @
 echo "::endgroup::"
 
 echo "zip_file=threadbare-storyquest-kit.zip" >> "$GITHUB_OUTPUT"

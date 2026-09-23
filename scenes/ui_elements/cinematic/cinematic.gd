@@ -16,7 +16,8 @@ signal cinematic_finished
 @export var dialogue: DialogueResource = preload("uid://b7ad8nar1hmfs"):
 	set = set_dialogue
 
-## Title within [member dialogue] to play. If empty, start at the top of [member dialogue].
+# TODO: Rename to dialogue_cue
+## Cue within [member dialogue] to play. If empty, start at the top of [member dialogue].
 @export var dialogue_title: String = "":
 	set = set_dialogue_title
 
@@ -43,15 +44,15 @@ func _validate_property(property: Dictionary) -> void:
 		"dialogue_title":
 			if dialogue:
 				property.hint = PROPERTY_HINT_ENUM
-				property.hint_string = ",".join(dialogue.get_titles())
+				property.hint_string = ",".join(dialogue.get_cues())
 			else:
 				property.usage |= PROPERTY_USAGE_READ_ONLY
 
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings := super._get_configuration_warnings()
-	if dialogue and dialogue_title and dialogue_title not in dialogue.get_titles():
-		warnings.append("Dialogue Title '%s' does not exist" % dialogue_title)
+	if dialogue and dialogue_title and dialogue_title not in dialogue.get_cues():
+		warnings.append("Dialogue Cue '%s' does not exist" % dialogue_title)
 	return warnings
 
 
