@@ -41,7 +41,8 @@ const INDICATOR_SCENE := preload("uid://d252j2mhya0kq")
 		if _indicator:
 			_indicator.visible = not disabled
 
-@export var action: String = "Talk"
+## Text shown in the interact hint, describing what interacting does.
+@export var action_text: String = "Talk"
 
 ## Whether this area is being observed by one or more characters.
 ## That is, if a [CharacterSight] area is seeing this area for interaction.
