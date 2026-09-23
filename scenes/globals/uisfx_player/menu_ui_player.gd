@@ -13,6 +13,7 @@ extends Node
 @onready var button_sfx_player: AudioStreamPlayer = %ButtonSFXPlayer
 @onready var toggle_on_sfx_player: AudioStreamPlayer = %ToggleOnSFXPlayer
 @onready var toggle_off_sfx_player: AudioStreamPlayer = %ToggleOffSFXPlayer
+@onready var hover_sfx_player: AudioStreamPlayer = %HoverSFXPlayer
 
 
 func _enter_tree() -> void:
@@ -20,6 +21,10 @@ func _enter_tree() -> void:
 
 
 func _on_node_added(node: Node) -> void:
+	if node is BaseButton or node is Slider:
+		_connect_once(node.mouse_entered, _on_button_hovered)
+		_connect_once(node.focus_entered, _on_button_hovered)
+
 	if node is CheckButton:
 		_connect_once(node.toggled, _on_toggle_pressed)
 	elif node is Button:
@@ -35,11 +40,8 @@ func _connect_once(sig: Signal, callable: Callable) -> void:
 		sig.connect(callable)
 
 
-func _on_toggle_pressed(toggled_on: bool) -> void:
-	if toggled_on:
-		toggle_on_sfx_player.play()
-	else:
-		toggle_off_sfx_player.play()
+func _on_button_hovered() -> void:
+	hover_sfx_player.play()
 
 
 func _on_button_pressed() -> void:
@@ -52,3 +54,10 @@ func _on_slider_value_changed(_value: float) -> void:
 
 func _on_tab_clicked(_tab: int) -> void:
 	button_sfx_player.play()
+
+
+func _on_toggle_pressed(toggled_on: bool) -> void:
+	if toggled_on:
+		toggle_on_sfx_player.play()
+	else:
+		toggle_off_sfx_player.play()

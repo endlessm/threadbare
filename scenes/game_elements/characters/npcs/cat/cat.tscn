@@ -2,10 +2,13 @@
 
 [ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_logic/sprite_behaviors/random_frame_sprite_behavior.gd" id="2_t04tf"]
 [ext_resource type="SpriteFrames" uid="uid://caou2u7vffhei" path="res://scenes/game_elements/characters/npcs/cat/components/cat.tres" id="3_qosq0"]
+[ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="3_ymecv"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="4_8kxh7"]
 [ext_resource type="Script" uid="uid://djeshbrs3vwnb" path="res://scenes/game_elements/characters/npcs/components/pet_interaction.gd" id="4_t04tf"]
 [ext_resource type="AudioStream" uid="uid://di2b2rgca1udv" path="res://scenes/game_elements/characters/npcs/cat/components/412017__skymary__cat-meow-short.wav" id="5_t04tf"]
 [ext_resource type="Script" uid="uid://dxvv340yej4py" path="res://scenes/game_logic/fact_counter/fact_counter.gd" id="6_0bwy3"]
+[ext_resource type="Script" uid="uid://cx0sk4uhvnii0" path="res://scenes/game_logic/walk_behaviors/erratic_walk_behavior.gd" id="9_gm6tl"]
+[ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="10_i6tmh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vyb7"]
 height = 26.0
@@ -18,8 +21,18 @@ random_pitch = 1.15
 streams_count = 1
 stream_0/stream = ExtResource("5_t04tf")
 
+[sub_resource type="Resource" id="Resource_u5bk5"]
+script = ExtResource("10_i6tmh")
+walk_speed = 70.0
+run_speed = 70.0
+stopping_step = 200.0
+moving_step = 150.0
+stuck_speed = 70.0
+metadata/_custom_type_script = "uid://csev4hv57utxv"
+
 [node name="Cat" type="CharacterBody2D" unique_id=1950923165]
 collision_layer = 2
+collision_mask = 1555
 motion_mode = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=556665806]
@@ -35,15 +48,21 @@ script = ExtResource("2_t04tf")
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
 
+[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=750356762 node_paths=PackedStringArray("character", "sprite")]
+script = ExtResource("3_ymecv")
+character = NodePath("../..")
+sprite = NodePath("..")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=557938036]
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_3vyb7")
 
 [node name="InteractArea" type="Area2D" parent="." unique_id=1432241865]
+unique_name_in_owner = true
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("4_8kxh7")
-action = "Pet the cat"
+action_text = "Pet the cat"
 metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1720455095]
@@ -65,3 +84,27 @@ fact_counter = NodePath("../FactCounter")
 [node name="FactCounter" type="Node" parent="." unique_id=539544383]
 script = ExtResource("6_0bwy3")
 prefix = "cats_petted"
+
+[node name="ErraticWalkBehavior" type="Node2D" parent="." unique_id=453552834 node_paths=PackedStringArray("character")]
+unique_name_in_owner = true
+process_mode = 4
+script = ExtResource("9_gm6tl")
+speeds = SubResource("Resource_u5bk5")
+travel_distance = 350.0
+character = NodePath("..")
+metadata/_custom_type_script = "uid://cx0sk4uhvnii0"
+
+[node name="Timer" type="Timer" parent="." unique_id=352204476]
+unique_name_in_owner = true
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[connection signal="interaction_ended" from="InteractArea" to="Timer" method="start"]
+[connection signal="interaction_started" from="InteractArea" to="Timer" method="stop" unbinds=2]
+[connection signal="interaction_started" from="InteractArea" to="." method="set_velocity" unbinds=2 binds= [Vector2(0, 0)]]
+[connection signal="interaction_started" from="InteractArea" to="ErraticWalkBehavior" method="set_process_mode" unbinds=2 binds= [4]]
+[connection signal="direction_changed" from="ErraticWalkBehavior" to="Timer" method="start"]
+[connection signal="direction_changed" from="ErraticWalkBehavior" to="." method="set_velocity" binds= [Vector2(0, 0)]]
+[connection signal="direction_changed" from="ErraticWalkBehavior" to="ErraticWalkBehavior" method="set_process_mode" binds= [4]]
+[connection signal="timeout" from="Timer" to="ErraticWalkBehavior" method="set_process_mode" binds= [0]]
