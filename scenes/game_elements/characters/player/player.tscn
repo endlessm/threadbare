@@ -15,8 +15,12 @@
 [ext_resource type="PackedScene" uid="uid://cl06pid826dtg" path="res://scenes/game_elements/characters/player/components/player_repel.tscn" id="12_tnibl"]
 [ext_resource type="PackedScene" uid="uid://b3111eergq5yg" path="res://scenes/game_elements/characters/player/components/player_hook.tscn" id="13_ecbbk"]
 [ext_resource type="AudioStream" uid="uid://cbie64bvakm04" path="res://assets/third_party/sounds/grapple/grapple_throw.wav" id="14_tnibl"]
+[ext_resource type="AudioStream" uid="uid://do2l7t3usqkos" path="res://assets/third_party/sounds/grapple/grapple_fly.wav" id="15_ubfef"]
+[ext_resource type="AudioStream" uid="uid://5265ydem2dka" path="res://assets/third_party/sounds/grapple/grapple_hit.wav" id="16_2ge3f"]
 [ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="16_ecbbk"]
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="16_tnibl"]
+[ext_resource type="AudioStream" uid="uid://b87ceihlec2h2" path="res://assets/third_party/sounds/grapple/grapple_fail.ogg" id="17_gwwh8"]
+[ext_resource type="AudioStream" uid="uid://dvctnwkgdbsew" path="res://assets/third_party/sounds/grapple/grapple_collect.wav" id="18_m5klb"]
 
 [sub_resource type="Resource" id="Resource_cvb4d"]
 script = ExtResource("3_cvb4d")
@@ -447,6 +451,18 @@ character = NodePath("..")
 [node name="ThrowAudioPlayer" type="AudioStreamPlayer2D" parent="PlayerHook" unique_id=777622145]
 stream = ExtResource("14_tnibl")
 volume_db = -6.0
+
+[node name="FlyAudioPlayer" type="AudioStreamPlayer2D" parent="PlayerHook" unique_id=90856791]
+stream = ExtResource("15_ubfef")
+
+[node name="HitAudioPlayer" type="AudioStreamPlayer2D" parent="PlayerHook" unique_id=2144461127]
+stream = ExtResource("16_2ge3f")
+
+[node name="FailAudioPlayer" type="AudioStreamPlayer2D" parent="PlayerHook" unique_id=739492964]
+stream = ExtResource("17_gwwh8")
+
+[node name="CollectAudioPlayer" type="AudioStreamPlayer2D" parent="PlayerHook" unique_id=314969344]
+stream = ExtResource("18_m5klb")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=683750023]
 unique_name_in_owner = true

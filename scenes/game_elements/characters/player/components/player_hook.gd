@@ -103,6 +103,18 @@ var hook_string: Line2D
 ## Plays a sound effect when the string is thrown.
 @onready var throw_audio_player: AudioStreamPlayer2D = $ThrowAudioPlayer
 
+## Plays a sound effect while the string is flying through the air.
+@onready var fly_audio_player: AudioStreamPlayer2D = $FlyAudioPlayer
+
+## Plays a sound effect when the string hits a hookable area.
+@onready var hit_audio_player: AudioStreamPlayer2D = $HitAudioPlayer
+
+## Plays a sound effect when a throw fails to hook anything.
+@onready var fail_audio_player: AudioStreamPlayer2D = $FailAudioPlayer
+
+## Plays a sound effect when a collectible is picked up through the hook.
+@onready var collect_audio_player: AudioStreamPlayer2D = $CollectAudioPlayer
+
 
 func _enter_tree() -> void:
 	if not character and get_parent() is CharacterBody2D:
@@ -145,6 +157,7 @@ func _new_hook_string() -> Line2D:
 	new_hook_string.owner = character.owner
 	string_thrown.emit()
 	throw_audio_player.play()
+	fly_audio_player.play()
 	return new_hook_string
 
 
@@ -159,6 +172,7 @@ func hooked(_new_hooked_to: HookableArea, is_loop: bool) -> void:
 	CameraUtilities.copy_current_camera_limits(phantom_camera_2d)
 	phantom_camera_2d.priority = 20
 	hook_ending.global_position = p
+	hit_audio_player.play()
 	areas_hooked.append(_new_hooked_to)
 	if not _new_hooked_to.hook_control:
 		# The area hooked doesn't have a control to aim from it, so start pulling:
@@ -189,6 +203,7 @@ func hit_wall(wall_point: Vector2) -> void:
 		hook_string = _new_hook_string()
 	hook_string.add_point(wall_point, 0)
 	areas_hooked.append(null)
+	fail_audio_player.play()
 
 
 ## Called when a throw has hit the air.
@@ -199,6 +214,7 @@ func hit_air(air_point: Vector2) -> void:
 		hook_string = _new_hook_string()
 	hook_string.add_point(air_point, 0)
 	areas_hooked.append(null)
+	fail_audio_player.play()
 
 
 ## Remove the [member hook_string].
