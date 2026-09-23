@@ -24,6 +24,8 @@ func _on_visibility_changed() -> void:
 
 func _refresh() -> void:
 	if bus_name:
+		max_value = Settings.get_max_volume(bus_name)
+		step = max_value / 10.0
 		var new_value := Settings.get_volume(bus_name)
 		set_value_no_signal(new_value)
 

@@ -8,14 +8,17 @@ extends Toggleable
 	set(new_val):
 		opened = new_val
 		update_opened_state()
-@onready var ring_sound: AudioStreamPlayer = $RingSound
-@onready var door_sound: AudioStreamPlayer2D = $DoorSound
+
+@export var flip_horizontal: bool = false:
+	set(new_val):
+		flip_horizontal = new_val
+		update_door_flip()
+
+@onready var door_open_sound: AudioStreamPlayer2D = %DoorOpenSound
+@onready var victory_sound: AudioStreamPlayer = %VictorySound
 
 
 func open() -> void:
-	if play_victory_fanfare_on_open:
-		ring_sound.play()
-	door_sound.play()
 	set_toggled(true)
 
 
@@ -23,8 +26,12 @@ func close() -> void:
 	set_toggled(false)
 
 
-func set_toggled(value: bool) -> void:
+func set_toggled(value: bool, _immediate: bool = false) -> void:
 	opened = value
+	if opened:
+		door_open_sound.play()
+		if play_victory_fanfare_on_open:
+			victory_sound.play()
 
 
 func update_opened_state() -> void:
@@ -33,3 +40,11 @@ func update_opened_state() -> void:
 
 	%ColliderWhenClosed.set_collision_layer_value(Enums.CollisionLayers.WALLS, not opened)
 	%ColliderWhenClosed.set_collision_mask_value(Enums.CollisionLayers.PLAYERS, not opened)
+
+
+func update_door_flip() -> void:
+	%DoorOpened.flip_h = flip_horizontal
+	if flip_horizontal:
+		%DoorOpened.position.x = -abs(%DoorOpened.position.x)
+	else:
+		%DoorOpened.position.x = abs(%DoorOpened.position.x)

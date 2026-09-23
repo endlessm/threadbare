@@ -16,22 +16,12 @@ point_count = 3
 [sub_resource type="CurveTexture" id="CurveTexture_tnibl"]
 curve = SubResource("Curve_8jhju")
 
-[sub_resource type="Curve" id="Curve_vsnkt"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+[sub_resource type="Curve" id="Curve_3cx7i"]
+_data = [Vector2(0.6025641, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="Curve" id="Curve_yoiia"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="Curve" id="Curve_pulsv"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_8jhju"]
-curve_x = SubResource("Curve_vsnkt")
-curve_y = SubResource("Curve_yoiia")
-curve_z = SubResource("Curve_pulsv")
+[sub_resource type="CurveTexture" id="CurveTexture_yoiia"]
+curve = SubResource("Curve_3cx7i")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5lbww"]
 particle_flag_disable_z = true
@@ -40,13 +30,11 @@ emission_shape = 1
 emission_sphere_radius = 64.0
 direction = Vector3(0, -1, 0)
 spread = 160.0
-initial_velocity_min = 10.0
-initial_velocity_max = 30.0
-directional_velocity_min = 1.0
-directional_velocity_max = 1.0
-directional_velocity_curve = SubResource("CurveXYZTexture_8jhju")
+initial_velocity_min = 40.0
+initial_velocity_max = 80.0
 gravity = Vector3(0, 0, 0)
 scale_max = 1.5
+scale_curve = SubResource("CurveTexture_yoiia")
 alpha_curve = SubResource("CurveTexture_tnibl")
 anim_speed_min = 1.0
 anim_speed_max = 1.0
@@ -57,6 +45,7 @@ material = SubResource("CanvasItemMaterial_tnibl")
 emitting = false
 amount = 20
 texture = ExtResource("1_ver2c")
+lifetime = 0.4
 one_shot = true
 explosiveness = 0.7
 randomness = 0.38

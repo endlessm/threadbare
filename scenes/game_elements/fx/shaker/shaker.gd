@@ -18,6 +18,9 @@ signal finished
 @export var target: CanvasItem:
 	set = _set_target
 
+## Whether to rotate the node target.
+@export var rotate_target: bool = true
+
 ## Maximum possible value in which the position of the node might be offset.
 @export_range(1.0, 100.0, 1.0, "or_greater", "or_less") var shake_intensity: float = 30.0
 ## How much time (in seconds) the node will be shaken.
@@ -96,7 +99,8 @@ func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 			original_position = target.offset
 		else:
 			original_position = target.position
-		original_rotation = target.rotation
+		if rotate_target:
+			original_rotation = target.rotation
 	shake_tween = create_tween()
 	time_passed = 0.0
 	await shake_tween.tween_property(self, "current_intensity", 0.0, time).from(intensity).finished
@@ -107,7 +111,8 @@ func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 			target.offset = Vector2(original_position.x, original_position.y)
 		else:
 			target.position = Vector2(original_position.x, original_position.y)
-		target.rotation = original_rotation
+		if rotate_target:
+			target.rotation = original_rotation
 	finished.emit()
 
 
@@ -116,15 +121,15 @@ func _process(delta: float) -> void:
 		time_passed += delta * frequency
 		var offset_x: float = noise.get_noise_1d(time_passed) * current_intensity
 		var offset_y: float = noise.get_noise_1d(time_passed + 100) * current_intensity
-		var rotation_offset: float = (
-			noise.get_noise_1d(time_passed + 200) * current_intensity * 0.01
-		)
-
 		var new_position := Vector2(original_position.x + offset_x, original_position.y + offset_y)
-		var new_rotation := original_rotation + rotation_offset
+		if rotate_target:
+			var rotation_offset: float = (
+				noise.get_noise_1d(time_passed + 200) * current_intensity * 0.01
+			)
+			var new_rotation := original_rotation + rotation_offset
+			target.rotation = new_rotation
 
 		if target is Camera2D:
 			target.offset = new_position
 		else:
 			target.position = new_position
-		target.rotation = new_rotation

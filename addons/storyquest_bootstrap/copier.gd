@@ -7,6 +7,7 @@ const STORYQUESTS_PATH := "res://scenes/quests/story_quests/"
 const TEMPLATE_PREFIX := "NO_EDIT"
 const TEMPLATE_ROOT_NODE_PREFIX := "NoEdit"
 const TEMPLATE_PATH := "res://scenes/quests/template_quests/" + TEMPLATE_PREFIX + "/"
+const BASIC_SCENE_FILENAME := "NO_EDIT_basic_scene.tscn"
 const QUEST_FILENAME := "quest.tres"
 const TILES_PATH := "res://tiles/"
 
@@ -124,8 +125,15 @@ func copy_quest(quest: StoryQuest, copy_path: String) -> StoryQuest:
 	copied.title = _title
 	copied.description = _description
 
-	var first_scene := await copy_uid(quest.first_scene)
-	copied.first_scene = first_scene
+	# Copy the whole sequence of scenes so they can be used as references.
+	await copy_uid(quest.first_scene)
+
+	# But when playing the copied quest, only include a single basic scene.
+	var basic_scene_template: PackedScene = load(TEMPLATE_PATH.path_join(BASIC_SCENE_FILENAME))
+	var copied_basic_scene: PackedScene = await copy_resource(basic_scene_template)
+	copied.first_scene = ResourceUID.path_to_uid(copied_basic_scene.resource_path)
+	copied.threads_to_collect = 1
+
 	copied.resource_path = copy_path
 	var result := ResourceSaver.save(copied)
 	assert(result == OK, "Failed to save %s to %s" % [copied, copy_path])
@@ -263,5 +271,16 @@ func create_storyquest() -> void:
 	copy_tilesets()
 
 	var quest: StoryQuest = load(TEMPLATE_PATH.path_join(QUEST_FILENAME))
-	await copy_resource(quest)
+	var copied: StoryQuest = await copy_resource(quest)
 	EditorInterface.save_all_scenes()
+
+	# If the NO_EDIT template is configured as the opening quest, make this copy
+	# the opening quest instead.
+	var opening_quest := ThreadbareProjectSettings.get_setting(
+		ThreadbareProjectSettings.OPENING_QUEST
+	)
+	if ResourceUID.ensure_path(opening_quest) == ResourceUID.ensure_path(quest.resource_path):
+		ProjectSettings.set(
+			ThreadbareProjectSettings.OPENING_QUEST, ResourceUID.path_to_uid(copied.resource_path)
+		)
+		ProjectSettings.save()

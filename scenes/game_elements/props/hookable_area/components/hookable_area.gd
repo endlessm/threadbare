@@ -36,6 +36,7 @@ signal pull_released(cancelled: bool)
 signal observers_changed
 
 const HOOKABLE_INDICATOR = preload("uid://dyldoadlxd7po")
+const SHAPE_DEBUG_COLOR := Color(0.68, 0.28, 1.0, 0.42)
 
 ## The game entity that becomes hookable.
 ## [br][br]
@@ -85,6 +86,12 @@ var _observers: Array[HookControl] = []
 func _enter_tree() -> void:
 	if not controlled_entity and get_parent() is Node2D:
 		controlled_entity = get_parent()
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_CHILD_ORDER_CHANGED when Engine.is_editor_hint():
+			_recolor_shapes()
 
 
 func _ready() -> void:
@@ -157,3 +164,9 @@ func _set_hook_control(new_hook_control: HookControl) -> void:
 
 func _on_observers_changed() -> void:
 	_indicator.bouncing = is_being_observed
+
+
+func _recolor_shapes() -> void:
+	for child: Node in get_children():
+		if child is CollisionShape2D:
+			child.debug_color = SHAPE_DEBUG_COLOR

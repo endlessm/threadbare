@@ -27,6 +27,11 @@ const STORYBOOK_SCENE := preload("uid://bhm7fdjvppt8b")
 		abandon_point = new_value
 		update_configuration_warnings()
 
+## Optional dialogue passed to `TalkBehavior`. Used when
+## instantiating an elder in a scene that doesn't use the standard
+## eternal loom dialogue flow.
+@export var dialogue: Resource
+
 ## The quest chosen by the player from the storybook
 var chosen_quest: Quest
 
@@ -46,16 +51,19 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	if self not in eternal_loom.elders:
+	if eternal_loom and self not in eternal_loom.elders:
 		eternal_loom.elders.append(self)
+
+	if dialogue:
+		talk_behavior.dialogue = dialogue
 
 	interact_area.interaction_ended.connect(_on_interaction_ended)
 	animated_sprite_2d.connect("frame_changed", _on_frame_changed)
 
 	if GameState.quest:
-		GameState.quest.inventory.item_collected.connect(_update_dialogue_title)
-		GameState.quest.inventory.item_consumed.connect(_update_dialogue_title)
-	_update_dialogue_title()
+		GameState.quest.inventory.item_collected.connect(_update_dialogue_cue)
+		GameState.quest.inventory.item_consumed.connect(_update_dialogue_cue)
+	_update_dialogue_cue()
 
 
 func _set_quest_directory(new_value: String) -> void:
@@ -64,7 +72,7 @@ func _set_quest_directory(new_value: String) -> void:
 		return
 	_quests = Quest.enumerate(quest_directory)
 	if is_node_ready():
-		_update_dialogue_title()
+		_update_dialogue_cue()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -72,9 +80,6 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 	if not quest_directory:
 		warnings.append("Quest Directory property should be set")
-
-	if not eternal_loom:
-		warnings.append("Eternal Loom property must be set")
 
 	return warnings
 
@@ -100,7 +105,7 @@ func congratulate_player() -> void:
 	await DialogueManager.dialogue_ended
 
 
-func _update_dialogue_title(_item: InventoryItem = null) -> void:
+func _update_dialogue_cue(_item: InventoryItem = null) -> void:
 	if eternal_loom and eternal_loom.is_item_offering_possible():
 		talk_behavior.title = "go_to_loom"
 	elif not _quests:

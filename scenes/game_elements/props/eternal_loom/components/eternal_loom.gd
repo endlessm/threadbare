@@ -7,11 +7,18 @@ signal retelling_started
 signal retelling_finished
 signal give_retelling_upgrade(type: InventoryItem.ItemType)
 
+## Paths to world-rewoven cutscenes that will be shown.
+## They must switch back to Fray's End after playing an animation.
+@export var cutscene_paths: Array[String] = [
+	"res://scenes/game_elements/fx/world_rewoven/components/world_rewoven_cutscene_1.tscn",
+	"res://scenes/game_elements/fx/world_rewoven/components/world_rewoven_cutscene_2.tscn",
+]
+
 var elders: Array[Elder]
 
 @onready var interact_area: InteractArea = %InteractArea
 @onready var talk_behavior: TalkBehavior = %TalkBehavior
-@onready var loom_offering_animation_player: AnimationPlayer = %LoomOfferingAnimationPlayer
+@onready var loom_offering_animation: LoomOfferingAnimation = %LoomOfferingAnimation
 
 
 func _find_elder(quest: Quest) -> Elder:
@@ -19,7 +26,8 @@ func _find_elder(quest: Quest) -> Elder:
 		if quest.resource_path.begins_with(elder.quest_directory):
 			return elder
 
-	return null
+	# No matching elder. This was probably a quest launched from Dev Island.
+	return elders[-1]
 
 
 ## Called from the dialogue when retelling is possible.
@@ -74,15 +82,32 @@ func give_spirit_upgrade() -> void:
 
 
 func on_offering_succeeded() -> void:
-	loom_offering_animation_player.play(&"loom_offering")
-	await loom_offering_animation_player.animation_finished
+	var cutscene_path: String = cutscene_paths.pick_random()
+	var load_error: Error = ResourceLoader.load_threaded_request(cutscene_path)
+
+	GameState.global.facts.rewoven_cutscenes = [cutscene_path]
+
+	if load_error != OK:
+		push_error("Failed to start loading %s: %s" % [cutscene_path, error_string(load_error)])
+
+	loom_offering_animation.play_loom_animation()
+	await loom_offering_animation.animation_finished
 	GameState.quest.inventory.clear_inventory()
 
+	if load_error != OK:
+		on_rewoven_finished()
+		return
+
+	var cutscene_packed: PackedScene = ResourceLoader.load_threaded_get(cutscene_path)
+	SceneSwitcher.change_to_packed_with_transition(
+		cutscene_packed, "", Transitions.Effect.FADE, Transitions.Effect.FADE
+	)
+
+
+func on_rewoven_finished() -> void:
 	var elder: Elder = _find_elder(GameState.quest.quest)
 	if elder:
 		await elder.congratulate_player()
-	else:
-		push_warning("Could not find elder for %s" % [GameState.quest.quest.resource_path])
 
 	GameState.mark_quest_completed()
 	GameState.save()

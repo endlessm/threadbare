@@ -25,23 +25,33 @@ signal toggled(satisfied: bool)
 @export var required_quests: Array[Quest]:
 	set = _set_required_quests
 
+## Keys in [member GlobalState.facts] which must be present with a truthy value
+## to unlock [member targets].
+@export var required_facts: Array[String]:
+	set = _set_required_facts
+
 
 func _set_required_quests(new_value: Array[Quest]) -> void:
 	required_quests = new_value
 	update_configuration_warnings()
 
 
+func _set_required_facts(new_value: Array[String]) -> void:
+	required_facts = new_value
+	update_configuration_warnings()
+
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
-	if not required_quests:
-		warnings.append("At least one required quest should be set")
+	if not required_quests and not required_facts:
+		warnings.append("At least one required quest or fact should be set")
 	return warnings
 
 
 func _ready() -> void:
 	_connect_targets()
 
-	GameState.global.completed_quests_changed.connect(_on_completed_quests_changed)
+	GameState.global.completed_quests_changed.connect(refresh)
 
 	# To ensure the targets are ready, we do a "call_deferred"
 	_initialize_toggle_state.call_deferred()
@@ -57,7 +67,7 @@ func _initialize_toggle_state() -> void:
 	initialized.emit(is_satisfied())
 
 
-func _on_completed_quests_changed() -> void:
+func refresh() -> void:
 	toggled.emit(is_satisfied())
 
 
@@ -65,6 +75,10 @@ func _on_completed_quests_changed() -> void:
 func is_satisfied() -> bool:
 	for quest: Quest in required_quests:
 		if quest not in GameState.global.completed_quests:
+			return false
+
+	for fact: String in required_facts:
+		if not GameState.global.facts.get(fact):
 			return false
 
 	return true

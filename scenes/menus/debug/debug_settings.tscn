@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="2_back"]
 [ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="3_arrow"]
+[ext_resource type="Script" uid="uid://c4hqcgr7o8p36" path="res://scenes/menus/debug/components/open_in_editor_button.gd" id="3_rg3mx"]
 [ext_resource type="Shortcut" uid="uid://c5pwgp1w8p3y1" path="res://scenes/ui_elements/shortcuts/back_shortcut.tres" id="3_xtet4"]
 [ext_resource type="PackedScene" uid="uid://bdbgcqsts7sk2" path="res://scenes/menus/debug/components/debug_completed_quests.tscn" id="4_cq"]
 [ext_resource type="PackedScene" uid="uid://bdbgpa6vsm70w" path="res://scenes/menus/debug/components/debug_player_abilities.tscn" id="5_pa"]
@@ -62,6 +63,15 @@ size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Player Abilities"
 
+[node name="OpenInEditorButton" type="Button" parent="TabContainer/DebugMenu/VBoxContainer" unique_id=2103419214]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"FlatButton"
+shortcut = ExtResource("3_xtet4")
+text = "Open Current Scene In Editor"
+flat = true
+script = ExtResource("3_rg3mx")
+
 [node name="BackButton" type="Button" parent="TabContainer/DebugMenu/VBoxContainer" unique_id=1100040008]
 unique_name_in_owner = true
 layout_mode = 2
@@ -86,6 +96,7 @@ metadata/_tab_index = 2
 
 [connection signal="pressed" from="TabContainer/DebugMenu/VBoxContainer/CompletedQuestsButton" to="TabContainer/CompletedQuests" method="show"]
 [connection signal="pressed" from="TabContainer/DebugMenu/VBoxContainer/PlayerAbilitiesButton" to="TabContainer/PlayerAbilities" method="show"]
+[connection signal="pressed" from="TabContainer/DebugMenu/VBoxContainer/OpenInEditorButton" to="TabContainer/DebugMenu/VBoxContainer/OpenInEditorButton" method="_on_pressed"]
 [connection signal="back" from="TabContainer/CompletedQuests" to="TabContainer/DebugMenu" method="show"]
 [connection signal="back" from="TabContainer/CompletedQuests" to="TabContainer/DebugMenu/VBoxContainer/BackButton" method="grab_focus"]
 [connection signal="back" from="TabContainer/PlayerAbilities" to="TabContainer/DebugMenu" method="show"]

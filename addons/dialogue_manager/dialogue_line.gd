@@ -24,7 +24,7 @@ var text: String = ""
 var text_replacements: Array[Dictionary] = []
 
 ## The key to use for translating this line.
-var translation_key: String = ""
+var static_id: String = ""
 
 ## A map for speed changes when typing out the dialogue text.
 var speeds: Dictionary = {}
@@ -41,7 +41,7 @@ var concurrent_lines: Array[DialogueLine] = []
 ## A list of any extra game states to check when resolving variables and mutations.
 var extra_game_states: Array = []
 
-## How long to show this line before advancing to the next. Either a float (of seconds), [code]"auto"[/code], or [code]null[/code].
+## How long to show this line before advancing to the next. Either a float of seconds (as a string), [code]"auto"[/code], or empty string.
 var time: String = ""
 
 ## Any #tags that were included in the line
@@ -49,9 +49,6 @@ var tags: PackedStringArray = []
 
 ## The mutation details if this is a mutation line (where [code]type == TYPE_MUTATION[/code]).
 var mutation: Dictionary = {}
-
-## The conditions to check before including this line in the flow of dialogue. If failed the line will be skipped over.
-var conditions: Dictionary = {}
 
 
 func _init(data: Dictionary = {}) -> void:
@@ -67,7 +64,7 @@ func _init(data: Dictionary = {}) -> void:
 				character_replacements = data.get("character_replacements", [] as Array[Dictionary])
 				text = data.text
 				text_replacements = data.get("text_replacements", [] as Array[Dictionary])
-				translation_key = data.get("translation_key", data.text)
+				static_id = data.get("static_id", data.text)
 				speeds = data.get("speeds", {})
 				inline_mutations = data.get("inline_mutations", [] as Array[Array])
 				time = data.get("time", "")
@@ -76,6 +73,48 @@ func _init(data: Dictionary = {}) -> void:
 
 			DMConstants.TYPE_MUTATION:
 				mutation = data.mutation
+
+
+## Reload this line from it's resource.
+func refresh() -> void:
+	if not "@" in id:
+		push_warning(DMConstants.translate("Cannot refresh dialogue line because its ID is missing a resource UID."))
+		return
+
+	var resource: DialogueResource = load("uid://%s" % id.split("@")[0])
+	var next_dialogue_line: DialogueLine = await resource.get_next_dialogue_line(next_id, extra_game_states)
+	type = next_dialogue_line.type
+	next_id = next_dialogue_line.next_id
+	character = next_dialogue_line.character
+	character_replacements = next_dialogue_line.character_replacements
+	text = next_dialogue_line.text
+	text_replacements = next_dialogue_line.text_replacements
+	static_id = next_dialogue_line.static_id
+	speeds = next_dialogue_line.speeds
+	inline_mutations = next_dialogue_line.inline_mutations
+	responses = next_dialogue_line.responses
+	concurrent_lines = next_dialogue_line.concurrent_lines
+	extra_game_states = next_dialogue_line.extra_game_states
+	time = next_dialogue_line.time
+	tags = next_dialogue_line.tags
+	mutation = next_dialogue_line.mutation
+
+
+## Restore a [DialogueLine] from a [code]to_serialized[/code] string, providing any extra
+## game states that would have been used fetch the line in the first place.
+static func new_from_serialized(serialized_data: String, extra_game_states_: Array = []) -> DialogueLine:
+	var bits: PackedStringArray = serialized_data.split("=>")
+	var id_bits: PackedStringArray = bits[0].split("@")
+	var resource: DialogueResource = load("uid://%s" % id_bits[0])
+	var line: DialogueLine = await resource.get_next_dialogue_line(id_bits[1], extra_game_states_)
+	line.next_id = bits[1]
+	return line
+
+
+## Serialize this [DialogueLine] to a string. Restore with
+## [code]DialogueLine.new_from_serialized(...)[/code].
+func to_serialized() -> String:
+	return "=>".join([id, next_id])
 
 
 func _to_string() -> String:
@@ -89,17 +128,20 @@ func _to_string() -> String:
 
 ## Check if a dialogue line has a given tag.
 func has_tag(tag_name: String) -> bool:
-	var wrapped: String = "%s=" % tag_name
-	for t in tags:
-		if t.begins_with(wrapped):
-			return true
+	if tags.has(tag_name):
+		return true
+	else:
+		var wrapped: String = "%s=" % tag_name
+		for t: String in tags:
+			if t.begins_with(wrapped):
+				return true
 	return false
 
 
 ## Get the value of a tag if the tag is in the form of [code]tag=value[/code]
 func get_tag_value(tag_name: String) -> String:
 	var wrapped: String = "%s=" % tag_name
-	for t in tags:
+	for t: String in tags:
 		if t.begins_with(wrapped):
 			return t.replace(wrapped, "").strip_edges()
 	return ""

@@ -31,7 +31,12 @@ static func simplify(full_version: String) -> String:
 	var result := regex.search(full_version)
 	if not result:
 		return "0.0.0"
-	return ".".join(result.strings.slice(1))
+
+	var base := result.strings[result.names["base"]]
+	if "count" in result.names:
+		var count := result.strings[result.names["count"]]
+		return base + "." + count
+	return base
 
 
 ## Gets the full `git describe`-style version

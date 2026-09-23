@@ -16,12 +16,31 @@
 [ext_resource type="PackedScene" uid="uid://dmevaymmt6wco" path="res://scenes/game_elements/props/powerup/powerup.tscn" id="14_6xf5p"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="14_ttfgd"]
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="16_t2kes"]
-[ext_resource type="AudioStream" uid="uid://df7ldbesilfry" path="res://assets/first_party/music/Threadbare Loop_Main_Bridge_02.ogg" id="17_84odo"]
+[ext_resource type="AudioStream" uid="uid://dgwihwibc8ah6" path="res://assets/first_party/music/Threadbare_Combat.ogg" id="17_ku1na"]
+[ext_resource type="AudioStream" uid="uid://bbamdm6wtjjcn" path="res://assets/first_party/music/Threadbare_Bed.ogg" id="18_bxavx"]
+[ext_resource type="Script" uid="uid://c2lx7gvkonxaa" path="res://scenes/game_elements/props/background_music/components/clip_switcher.gd" id="18_ku1na"]
 
 [sub_resource type="Resource" id="Resource_a51xm"]
 script = ExtResource("11_4lmqk")
 type = 1
 metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="AudioStreamInteractive" id="AudioStreamInteractive_niajk"]
+clip_count = 2
+clip_0/name = &"combat"
+clip_0/stream = ExtResource("17_ku1na")
+clip_0/auto_advance = 0
+clip_1/name = &"cozy"
+clip_1/stream = ExtResource("18_bxavx")
+clip_1/auto_advance = 0
+_transitions = {
+Vector2i(0, 1): {
+"fade_beats": 2.0,
+"fade_mode": 2,
+"from_time": 1,
+"to_time": 1
+}
+}
 
 [node name="NoEditCombat" type="Node2D" unique_id=1610054737]
 
@@ -126,8 +145,14 @@ editor_draw_limits = true
 
 [node name="BackgroundMusic" type="Node" parent="." unique_id=596208504]
 script = ExtResource("16_t2kes")
-stream = ExtResource("17_84odo")
+stream = SubResource("AudioStreamInteractive_niajk")
 metadata/_custom_type_script = "uid://c8405c212rbn6"
+
+[node name="ClipSwitcher" type="Node" parent="BackgroundMusic" unique_id=2070894837]
+script = ExtResource("18_ku1na")
+clip = &"cozy"
+metadata/_custom_type_script = "uid://c2lx7gvkonxaa"
 
 [connection signal="cinematic_finished" from="Cinematic" to="FillGameLogic" method="start"]
 [connection signal="goal_reached" from="FillGameLogic" to="OnTheGround/CollectibleItem" method="reveal"]
+[connection signal="goal_reached" from="FillGameLogic" to="BackgroundMusic/ClipSwitcher" method="switch"]

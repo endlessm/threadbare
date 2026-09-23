@@ -44,7 +44,9 @@ func toggle_pause() -> void:
 			abandon_quest_button.hide()
 		else:
 			skip_tutorial_button.hide()
-			abandon_quest_button.show()
+			abandon_quest_button.visible = (
+				get_tree().current_scene.scene_file_path != ResourceUID.ensure_path(home_scene)
+			)
 		pause_menu.show()
 		back_button.grab_focus()
 
