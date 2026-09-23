@@ -17,6 +17,9 @@
 [ext_resource type="Script" uid="uid://bk52qjv58locq" path="res://scenes/game_logic/light2d_behaviors/artificial_light_behavior.gd" id="16_ecbbk"]
 [ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="16_tnibl"]
 [ext_resource type="Script" uid="uid://cvjpavggqssir" path="res://scenes/game_elements/characters/player/components/footstep_sound.gd" id="17_tnibl"]
+[ext_resource type="AudioStream" uid="uid://du1lye0u8onwt" path="res://assets/third_party/sounds/characters/player/FootStepsSounds/WoodSound.wav" id="18_cvb4d"]
+[ext_resource type="AudioStream" uid="uid://cfqrgsg0d2gt4" path="res://assets/third_party/sounds/characters/player/FootStepsSounds/StoneSound.wav" id="19_ubfef"]
+[ext_resource type="AudioStream" uid="uid://cc31tcrgfmhck" path="res://assets/third_party/sounds/characters/player/FootStepsSounds/SandSound.wav" id="20_2ge3f"]
 
 [sub_resource type="Resource" id="Resource_cvb4d"]
 script = ExtResource("3_cvb4d")
@@ -493,6 +496,11 @@ libraries/ = SubResource("AnimationLibrary_1n58k")
 
 [node name="FootstepSound" type="Node2D" parent="." unique_id=1578687431]
 script = ExtResource("17_tnibl")
+sound_for_material = Dictionary[String, AudioStream]({
+"sand": ExtResource("20_2ge3f"),
+"stone": ExtResource("19_ubfef"),
+"wood": ExtResource("18_cvb4d")
+})
 
 [connection signal="running_changed" from="InputWalkBehavior" to="PlayerDustParticles" method="set_emitting"]
 [connection signal="running_changed" from="InputWalkBehavior" to="AnimationPlayer" method="_on_input_walk_behavior_running_changed"]
