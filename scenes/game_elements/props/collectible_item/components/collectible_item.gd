@@ -33,6 +33,9 @@ extends SceneLink
 @onready var interact_area: InteractArea = $InteractArea
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var shadow: Sprite2D = $Shadow
+@onready var highlight: AnimatedSprite2D = $Highlight
+@onready var tail: AnimatedSprite2D = $Tail
 @onready var appear_sound: AudioStreamPlayer = %AppearSound
 @onready var physical_collider: CollisionShape2D = $StaticBody2D/CollisionShape2D
 
@@ -57,6 +60,22 @@ func _set_item(new_value: InventoryItem) -> void:
 
 	if sprite_2d:
 		sprite_2d.texture = item.get_world_texture() if item else null
+		
+	# The tail and the highlight share one sprite SpriteFrames each; the animation
+	# named after the item type selects the matching frames.
+	for animated_sprite: AnimatedSprite2D in [tail, highlight]:
+		if not animated_sprite:
+			continue
+		if item:
+			animated_sprite.play(item.animation_name())
+		else:
+			animated_sprite.stop()
+	
+	## The highlight frames are white so that they can be tintend to match the
+	## thread, self_modulate is used because modulate is animated by the reveal
+	## and collected animations.
+	if highlight and item:
+		highlight.self_modulate = item.get_color()
 
 	if interact_area:
 		interact_area.action = "Collect " + item.type_name() if item else "Collect"
@@ -122,8 +141,10 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 func _update_based_on_revealed() -> void:
 	if interact_area:
 		interact_area.disabled = not revealed
-	if sprite_2d:
-		sprite_2d.visible = revealed
-		sprite_2d.modulate = Color.WHITE if revealed else Color.TRANSPARENT
+	for node: CanvasItem in [sprite_2d, shadow, highlight, tail]:
+		if not node:
+			continue
+		node.visible = revealed
+		node.modulate = Color.WHITE if revealed else Color.TRANSPARENT
 	if physical_collider:
 		physical_collider.disabled = not revealed
