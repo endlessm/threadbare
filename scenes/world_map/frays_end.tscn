@@ -56,6 +56,7 @@
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="55_ojao8"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="56_ojao8"]
 [ext_resource type="Script" uid="uid://uaaaiviytliw" path="res://scenes/world_map/components/quest_progress_unlocker.gd" id="58_ojao8"]
+[ext_resource type="PackedScene" uid="uid://bjin4sdopq7rn" path="res://scenes/ui_elements/area_name/text_name_area.tscn" id="59_6fau3"]
 [ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="59_qgpx3"]
 [ext_resource type="Resource" uid="uid://t50glay2iqhg" path="res://scenes/quests/lore_quests/quest_002/quest.tres" id="60_6b07c"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="61_6b07c"]
@@ -1775,7 +1776,57 @@ position = Vector2(-955, -95)
 shape = SubResource("RectangleShape2D_7n6eg")
 debug_color = Color(0.9610079, 0, 0.5155429, 0.41960785)
 
+[node name="StartPath" parent="." unique_id=1388956016 instance=ExtResource("59_6fau3")]
+zone_name_text = "Fray's end"
+
+[node name="CollisionPolygon2D" parent="StartPath/detect" parent_id_path=PackedInt32Array(1388956016, 1821875710) index="0" unique_id=1009866314]
+position = Vector2(-1, 12)
+polygon = PackedVector2Array(953, 1344, 1033, 1345, 1033, 1374, 951, 1374)
+
+[node name="SongSanctuaryPath" parent="." unique_id=234964131 instance=ExtResource("59_6fau3")]
+zone_name_text = "Fray's end"
+
+[node name="CollisionPolygon2D" parent="SongSanctuaryPath/detect" parent_id_path=PackedInt32Array(234964131, 1821875710) index="0" unique_id=1009866314]
+position = Vector2(-53, 53)
+polygon = PackedVector2Array(2540, 256, 2623, 246, 2633, 150, 2548, 148)
+
+[node name="DevArchipelagoPath" parent="." unique_id=1511301874 instance=ExtResource("59_6fau3")]
+zone_name_text = "Fray's end"
+
+[node name="CollisionPolygon2D" parent="DevArchipelagoPath/detect" parent_id_path=PackedInt32Array(1511301874, 1821875710) index="0" unique_id=1009866314]
+position = Vector2(-1, 12)
+polygon = PackedVector2Array(2810, 1772, 2574, 1766, 2573, 1717, 2810, 1716)
+
+[node name="WestEndPath" parent="." unique_id=681218199 instance=ExtResource("59_6fau3")]
+zone_name_text = "Fray's end"
+
+[node name="CollisionPolygon2D" parent="WestEndPath/detect" parent_id_path=PackedInt32Array(681218199, 1821875710) index="0" unique_id=1009866314]
+position = Vector2(-9.601089, 12)
+scale = Vector2(2.0489132, 1)
+polygon = PackedVector2Array(68, 615, 67, 898, 22, 895, 23, 614)
+
+[node name="LineVillePath" parent="." unique_id=1184526213 instance=ExtResource("59_6fau3")]
+zone_name_text = "Fray's end"
+
+[node name="CollisionPolygon2D" parent="LineVillePath/detect" parent_id_path=PackedInt32Array(1184526213, 1821875710) index="0" unique_id=1009866314]
+position = Vector2(-53, -9)
+polygon = PackedVector2Array(2789, 838, 2795, 916, 2716, 925, 2721, 841)
+
+[node name="SpawnPath" parent="." unique_id=1624185206 instance=ExtResource("59_6fau3")]
+zone_name_text = "Fray's end"
+
+[node name="CollisionPolygon2D" parent="SpawnPath/detect" parent_id_path=PackedInt32Array(1624185206, 1821875710) index="0" unique_id=1009866314]
+position = Vector2(-1, -25)
+polygon = PackedVector2Array(930, 812, 1050, 810, 1051, 925, 938, 904)
+
 [connection signal="interaction_ended" from="OnTheGround/NPCs/Farmer/InteractArea" to="OnTheGround/NPCs/Farmer" method="_on_interact_area_interaction_ended"]
 [connection signal="interaction_started" from="OnTheGround/NPCs/Farmer/InteractArea" to="OnTheGround/NPCs/Farmer" method="_on_interact_area_interaction_started"]
 [connection signal="interaction_ended" from="OnTheGround/NPCs/GardenerA/InteractArea" to="OnTheGround/NPCs/GardenerA" method="_on_interact_area_interaction_ended"]
 [connection signal="interaction_started" from="OnTheGround/NPCs/GardenerA/InteractArea" to="OnTheGround/NPCs/GardenerA" method="_on_interact_area_interaction_started"]
+
+[editable path="StartPath"]
+[editable path="SongSanctuaryPath"]
+[editable path="DevArchipelagoPath"]
+[editable path="WestEndPath"]
+[editable path="LineVillePath"]
+[editable path="SpawnPath"]
