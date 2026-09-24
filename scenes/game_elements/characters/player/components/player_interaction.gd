@@ -30,7 +30,7 @@ func _set_character(new_character: CharacterBody2D) -> void:
 ## interact_action_changed] to monitor for changes.
 func get_interact_action() -> String:
 	if character_sight.interact_area != null:
-		var action := character_sight.interact_area.action
+		var action := character_sight.interact_area.action_text
 		return action if action else tr("Interact")
 	return ""
 

@@ -23,6 +23,7 @@ enum CollisionLayers {
 	ENEMIES_HITBOX = 8,
 	REPELLABLE = 9,
 	NON_WALKABLE_FLOOR = 10,
+	NPCS_LIMIT = 11,
 	HOOKABLE = 13,
 }
 
