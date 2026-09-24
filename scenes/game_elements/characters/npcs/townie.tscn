@@ -18,10 +18,21 @@
 [ext_resource type="SpriteFrames" uid="uid://dl7xeteu0n2ia" path="res://scenes/game_elements/characters/components/sprite_frames/townie-head_004.tres" id="17_syy7w"]
 [ext_resource type="SpriteFrames" uid="uid://myvflc68qwmu" path="res://scenes/game_elements/characters/components/sprite_frames/townie-head_005.tres" id="18_4rgc5"]
 [ext_resource type="SpriteFrames" uid="uid://x3oxp35ukm62" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_001.tres" id="20_syy7w"]
+[ext_resource type="SpriteFrames" uid="uid://ff6nss0th6qe" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hat_006.tres" id="21_hskxo"]
+[ext_resource type="SpriteFrames" uid="uid://bf1dhujlfijbk" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hat_001.tres" id="21_kccyr"]
+[ext_resource type="SpriteFrames" uid="uid://c233kldblsy0a" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hat_004.tres" id="21_umw6f"]
 [ext_resource type="SpriteFrames" uid="uid://dh1kr2fwfwlxq" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_003.tres" id="22_4rgc5"]
 [ext_resource type="SpriteFrames" uid="uid://crshpjwcenpa5" path="res://scenes/game_elements/characters/components/sprite_frames/townie-head_001.tres" id="22_8wbfo"]
+[ext_resource type="SpriteFrames" uid="uid://dfjmp8jlqgthc" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hat_002.tres" id="22_syy7w"]
 [ext_resource type="SpriteFrames" uid="uid://285s7e1vheno" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_004.tres" id="23_umw6f"]
+[ext_resource type="SpriteFrames" uid="uid://ctx51w0tsmkd5" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_006.tres" id="23_vw3e6"]
+[ext_resource type="SpriteFrames" uid="uid://t0iw50a5qhmo" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_007.tres" id="24_35r5d"]
 [ext_resource type="SpriteFrames" uid="uid://dnfyg3i87cp17" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_005.tres" id="24_hskxo"]
+[ext_resource type="SpriteFrames" uid="uid://bapx1cbek1b8v" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hat_003.tres" id="24_vw3e6"]
+[ext_resource type="SpriteFrames" uid="uid://xwacffg1bw5" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hat_005.tres" id="25_35r5d"]
+[ext_resource type="SpriteFrames" uid="uid://dtqxm7y5nbl7e" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_008.tres" id="25_r7ycj"]
+[ext_resource type="SpriteFrames" uid="uid://qricmx34ikyg" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_009.tres" id="26_hbfaq"]
+[ext_resource type="SpriteFrames" uid="uid://dufnfhtgsffko" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_010.tres" id="27_5y6le"]
 [ext_resource type="SpriteFrames" uid="uid://c43yaqne7a2kh" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_002.tres" id="33_m1eb2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qs15o"]
@@ -97,18 +108,37 @@ metadata/_custom_type_script = "uid://dy68p7gf07pi3"
 
 [node name="AnimatedSprite2DHair" type="AnimatedSprite2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=2123781958]
 material = ExtResource("1_nj51j")
-sprite_frames = ExtResource("33_m1eb2")
+sprite_frames = ExtResource("23_umw6f")
 animation = &"idle"
 autoplay = "idle"
 metadata/_edit_lock_ = true
 
 [node name="RandomTextureSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHair" unique_id=358939124 node_paths=PackedStringArray("sprite")]
 script = ExtResource("5_8nfuc")
-sprite_frames = Array[SpriteFrames]([ExtResource("20_syy7w"), ExtResource("33_m1eb2"), ExtResource("22_4rgc5"), ExtResource("23_umw6f"), ExtResource("24_hskxo")])
+sprite_frames = Array[SpriteFrames]([ExtResource("20_syy7w"), ExtResource("33_m1eb2"), ExtResource("22_4rgc5"), ExtResource("23_umw6f"), ExtResource("24_hskxo"), ExtResource("23_vw3e6"), ExtResource("24_35r5d"), ExtResource("25_r7ycj"), ExtResource("26_hbfaq"), ExtResource("27_5y6le")])
 sprite = NodePath("..")
 metadata/_custom_type_script = "uid://boyesrjdix688"
 
 [node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHair" unique_id=280440134 node_paths=PackedStringArray("character", "sprite")]
+script = ExtResource("10_syy7w")
+character = NodePath("../../../../..")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="AnimatedSprite2DHat" type="AnimatedSprite2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=1216997784]
+visible = false
+material = ExtResource("1_nj51j")
+sprite_frames = ExtResource("22_syy7w")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="RandomTextureSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHat" unique_id=1262138087 node_paths=PackedStringArray("sprite")]
+script = ExtResource("5_8nfuc")
+sprite_frames = Array[SpriteFrames]([ExtResource("21_kccyr"), ExtResource("22_syy7w"), ExtResource("24_vw3e6"), ExtResource("21_umw6f"), ExtResource("25_35r5d"), ExtResource("21_hskxo")])
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://boyesrjdix688"
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHat" unique_id=941253741 node_paths=PackedStringArray("character", "sprite")]
 script = ExtResource("10_syy7w")
 character = NodePath("../../../../..")
 sprite = NodePath("..")

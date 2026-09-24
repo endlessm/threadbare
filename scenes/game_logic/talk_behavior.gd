@@ -10,7 +10,7 @@ extends Node
 ## If [member title] is set, it will display the dialogue at that cue.[br][br]
 ## When the dialogue ends, it finishes the interaction by calling [method
 ## InteractArea.end_interaction].
-## If the parent is an NPC, it sets the [member InteractArea.action] to "Talk to NAME",
+## If the parent is an NPC, it sets the [member InteractArea.action_text] to "Talk to NAME",
 ## where NAME is the [member NPC.npc_name].[br][br]
 
 ## The dialogue to display.
@@ -64,7 +64,7 @@ func _ready() -> void:
 
 	var npc := get_parent() as NPC
 	if npc and npc.npc_name:
-		interact_area.action = "Talk to %s" % npc.npc_name
+		interact_area.action_text = tr("Talk to %s") % npc.npc_name
 
 
 func _on_interaction_started(player: Player, _from_right: bool) -> void:
