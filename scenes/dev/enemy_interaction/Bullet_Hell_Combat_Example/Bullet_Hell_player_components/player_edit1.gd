@@ -47,7 +47,7 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 ## [CharacterSpeeds] are used.
 @export var speeds: CharacterSpeeds:
 	set = _set_speeds
-	
+
 @export var health: int = 3
 
 ## The character speed when aiming with the grappling hook.
@@ -197,7 +197,6 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	
 func _on_hit_box_body_entered(body: Node2D) -> void:
 	health -= 1
-	## print(health)
 	if health <= 0:
 		defeat(false)
 		return

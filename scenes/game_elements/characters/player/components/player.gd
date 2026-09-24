@@ -63,6 +63,8 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 
 var _initial_speeds: CharacterSpeeds
 
+@export var health: int = 3
+
 var _system_controllers: Array[Node] = []
 
 @onready var input_walk_behavior: InputWalkBehavior = %InputWalkBehavior
@@ -192,6 +194,14 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	if not is_node_ready():
 		await ready
 	_walk_sound.stream = walk_sound_stream
+
+func _on_hit_box_body_entered(body: Node2D) -> void:
+	health -= 1
+	## print(health)
+	if health <= 0:
+		defeat(false)
+		return
+	return
 
 
 ## Sets the player's [member mode] to [constant DEFEATED], if it is

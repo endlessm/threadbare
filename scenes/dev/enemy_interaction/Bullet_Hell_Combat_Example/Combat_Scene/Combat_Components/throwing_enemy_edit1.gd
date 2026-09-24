@@ -36,6 +36,8 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 ## in the direction of the player.
 @export_range(0., 100., 1., "or_greater", "suffix:m") var distance: float = 20.0
 
+@export var variable_speed: bool = true
+
 ## The period of time between throwing projectiles.
 ## Note: Currently this is limited by the length of the AnimationPlayer animation "attack".
 @export_range(0.1, 10., 0.1, "or_greater", "suffix:s") var throwing_period: float = 5.0:
@@ -306,12 +308,13 @@ func shoot_projectile_at(target: Node2D) -> bool:
 		projectile.label = allowed_labels.pick_random()
 		if projectile.label in color_per_label:
 			projectile.color = color_per_label[projectile.label]
-		if !change_speed:
-			projectile_speed -= 45
-			change_speed = true
-		else:
-			projectile_speed += 45
-			change_speed = false
+		if variable_speed:
+			if !change_speed:
+				projectile_speed -= 45
+				change_speed = true
+			else:
+				projectile_speed += 45
+				change_speed = false
 		projectile.speed = projectile_speed
 		projectile.global_position = projectile_marker.global_position + projectile.direction * distance
 		projectile.duration = projectile_duration
