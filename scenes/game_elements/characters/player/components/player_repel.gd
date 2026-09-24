@@ -19,15 +19,10 @@ const HUM_WAVE_DURATION: float = 0.3
 ## If controlled by the player, which input action triggers the repel.
 @export var input_action: StringName = &"repel"
 
-## Current state of the repel.
 @export var repelling: bool = false:
 	set = _set_repelling
 
 @export_group("Hum")
-## If true, every repel also hums: a sound and a wave are played.
-## [br][br]
-## The player enables this when it has the
-## [constant Enums.PlayerAbilities.ABILITY_A_MODIFIER_1] ability.
 @export var hum_enabled: bool = false
 
 ## The sound to play when humming.
@@ -36,7 +31,7 @@ const HUM_WAVE_DURATION: float = 0.3
 )
 
 ## The radius the hum wave grows to.
-@export_range(0.0, 500.0, 1.0, "or_greater") var hum_wave_radius: float = 150.0
+@export_range(0.0, 1000.0, 1.0, "or_greater") var hum_wave_radius: float = 400.0
 
 @onready var air_stream: Area2D = %AirStream
 @onready var repel_animation: AnimationPlayer = %RepelAnimation
@@ -72,7 +67,6 @@ func _on_air_stream_body_entered(body: Node2D) -> void:
 
 
 ## Play the hum sound and wave, if [member hum_enabled].
-## [br][br]
 ## This is called by the repel animation, at the moment the air stream is released.
 func hum() -> void:
 	if not hum_enabled:
