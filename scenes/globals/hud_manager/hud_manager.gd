@@ -43,15 +43,11 @@ func _should_show_hud() -> bool:
 	if scene_uid in SCENES_WITHOUT_HUD:
 		return false
 
-	if not GameState.quest:
-		return false
-
-	var threads_to_collect := GameState.quest.quest.threads_to_collect
-	if threads_to_collect <= 0:
+	if not GameState.quest or GameState.quest.quest.threads_to_collect <= 0:
 		return false
 
 	if current_scene is FraysEnd:
-		return GameState.quest.inventory.items.size() >= threads_to_collect
+		return GameState.quest.inventory.items.size() >= GameState.quest.quest.threads_to_collect
 
 	var scene_path := current_scene.scene_file_path
 	if scene_path.begins_with("res://scenes/world_map/"):

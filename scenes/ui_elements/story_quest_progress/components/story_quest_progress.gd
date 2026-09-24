@@ -6,12 +6,12 @@ extends PanelContainer
 const ITEM_SLOT: PackedScene = preload("uid://1mjm4atk2j6e")
 const TOWNIE = preload("uid://dgrrudegturnw")
 
+var _helper_global: GlobalState
+
 @onready var items_container: HBoxContainer = %ItemsContainer
 @onready var helper_container: CenterContainer = %HelperContainer
 @onready var helper_marker: Marker2D = %HelperMarker
 @onready var helper_color: ColorRect = %HelperColor
-
-var _helper_global: GlobalState
 
 
 ## Rebuild slots from [member GameState.quest] when the scene changes.
