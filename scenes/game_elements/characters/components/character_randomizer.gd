@@ -3,6 +3,22 @@
 @tool
 class_name CharacterRandomizer
 extends CharacterBody2D
+## @experimental
+##
+## Provide a single button to randomize various aspects of a character.
+##
+## Using a seed to consistently apply the randomizations in game, to persist them without
+## the use of Editable Children, and to allow undo/redo.
+## [br][br]
+## [b]Note:[/b] Editable Children can still be used to customize a single aspect
+## of the randomization. For example if you are happy with the results of the "Randomize"
+## button, except for the skin color.
+## [br][br]
+## There is also logic to set the same random progress to all SpriteFrames animations.
+## Basically what [[RandomFrameSpriteBehavior]] does, but to an array.
+## [br][br]
+## Also can look at sides. Defaults to look at left, and scales everything by -1 to look
+## at right.
 
 ## The random seed of this character. Setting another character to the same seed
 ## will make them identical. Setting it to zero will reset the skin color.
@@ -41,7 +57,7 @@ var _previous_look_at_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
 @onready var head: AnimatedSprite2D = %AnimatedSprite2DHead
 
 
-## Randomize the skin color, textures, and name of the character.
+## Randomize the skin color and textures of the character.
 ## [br][br]
 ## Do it in a consistent way by first seeding the default random number generator
 ## with the [member character_seed].
@@ -54,7 +70,6 @@ func apply_character_randomizations() -> void:
 	for n in random_texture_nodes:
 		n.randomize_texture(_random_number_generator)
 
-	# Combina un Nombre y Apellido aleatorio usando la semilla actual
 	character_name = RandomName.get_random_name_from_rng(_random_number_generator)
 
 
@@ -80,9 +95,8 @@ func randomize_character() -> void:
 func _ready() -> void:
 	_setup_nodes()
 
-	if cel_shading_recolor:
-		for node in animated_sprites:
-			node.material = cel_shading_recolor.shader_material
+	for node in animated_sprites:
+		node.material = cel_shading_recolor.shader_material
 
 	if character_seed:
 		apply_character_randomizations()
