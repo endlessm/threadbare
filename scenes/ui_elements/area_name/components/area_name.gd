@@ -5,9 +5,9 @@ extends Node2D
 @export var zone_name_text: String
 
 @export_range(1, 3) var time: int = 2
+@export var collicion: CollisionShape2D
 
-
-func _on_detect_body_entered(body: Node2D) -> void:
+func _on_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("player"):
 		return
 

@@ -366,9 +366,15 @@ size = Vector2(20, 256)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7n6eg"]
 size = Vector2(20, 256)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jbkpe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v5vj4"]
+size = Vector2(57, 19)
+
 [node name="FraysEnd" type="Node2D" unique_id=1849947277]
 script = ExtResource("1_4gse6")
 metadata/_edit_lock_ = true
+metadata/_edit_horizontal_guides_ = [1381.0]
 
 [node name="BackgroundMusic" parent="." unique_id=1268657826 instance=ExtResource("1_ovkdi")]
 stream = ExtResource("2_epsnn")
@@ -1776,57 +1782,30 @@ position = Vector2(-955, -95)
 shape = SubResource("RectangleShape2D_7n6eg")
 debug_color = Color(0.9610079, 0, 0.5155429, 0.41960785)
 
-[node name="StartPath" parent="." unique_id=1388956016 instance=ExtResource("59_6fau3")]
+[node name="TextNameArea" parent="." unique_id=845383399 instance=ExtResource("59_6fau3")]
 zone_name_text = "Fray's end"
 
-[node name="CollisionPolygon2D" parent="StartPath/detect" parent_id_path=PackedInt32Array(1388956016, 1821875710) index="0" unique_id=1009866314]
-position = Vector2(-1, 12)
-polygon = PackedVector2Array(953, 1344, 1033, 1345, 1033, 1374, 951, 1374)
+[node name="LinenVillePath" type="CollisionShape2D" parent="TextNameArea" unique_id=1404720381]
+position = Vector2(2706, 865)
+shape = SubResource("RectangleShape2D_jbkpe")
 
-[node name="SongSanctuaryPath" parent="." unique_id=234964131 instance=ExtResource("59_6fau3")]
-zone_name_text = "Fray's end"
+[node name="SpawnPoint" type="CollisionShape2D" parent="TextNameArea" unique_id=1245649773]
+position = Vector2(989.5, 832.5)
+shape = SubResource("RectangleShape2D_v5vj4")
 
-[node name="CollisionPolygon2D" parent="SongSanctuaryPath/detect" parent_id_path=PackedInt32Array(234964131, 1821875710) index="0" unique_id=1009866314]
-position = Vector2(-53, 53)
-polygon = PackedVector2Array(2540, 256, 2623, 246, 2633, 150, 2548, 148)
+[node name="WestEndPath" type="CollisionShape2D" parent="TextNameArea" unique_id=1505875916]
+position = Vector2(57, 711)
+shape = SubResource("RectangleShape2D_v5vj4")
 
-[node name="DevArchipelagoPath" parent="." unique_id=1511301874 instance=ExtResource("59_6fau3")]
-zone_name_text = "Fray's end"
+[node name="SongSanctuaryPath" type="CollisionShape2D" parent="TextNameArea" unique_id=1018623538]
+position = Vector2(2528, 266)
+shape = SubResource("RectangleShape2D_v5vj4")
 
-[node name="CollisionPolygon2D" parent="DevArchipelagoPath/detect" parent_id_path=PackedInt32Array(1511301874, 1821875710) index="0" unique_id=1009866314]
-position = Vector2(-1, 12)
-polygon = PackedVector2Array(2810, 1772, 2574, 1766, 2573, 1717, 2810, 1716)
-
-[node name="WestEndPath" parent="." unique_id=681218199 instance=ExtResource("59_6fau3")]
-zone_name_text = "Fray's end"
-
-[node name="CollisionPolygon2D" parent="WestEndPath/detect" parent_id_path=PackedInt32Array(681218199, 1821875710) index="0" unique_id=1009866314]
-position = Vector2(-9.601089, 12)
-scale = Vector2(2.0489132, 1)
-polygon = PackedVector2Array(68, 615, 67, 898, 22, 895, 23, 614)
-
-[node name="LineVillePath" parent="." unique_id=1184526213 instance=ExtResource("59_6fau3")]
-zone_name_text = "Fray's end"
-
-[node name="CollisionPolygon2D" parent="LineVillePath/detect" parent_id_path=PackedInt32Array(1184526213, 1821875710) index="0" unique_id=1009866314]
-position = Vector2(-53, -9)
-polygon = PackedVector2Array(2789, 838, 2795, 916, 2716, 925, 2721, 841)
-
-[node name="SpawnPath" parent="." unique_id=1624185206 instance=ExtResource("59_6fau3")]
-zone_name_text = "Fray's end"
-
-[node name="CollisionPolygon2D" parent="SpawnPath/detect" parent_id_path=PackedInt32Array(1624185206, 1821875710) index="0" unique_id=1009866314]
-position = Vector2(-1, -25)
-polygon = PackedVector2Array(930, 812, 1050, 810, 1051, 925, 938, 904)
+[node name="StartPath" type="CollisionShape2D" parent="TextNameArea" unique_id=1696015662]
+position = Vector2(993, 1436)
+shape = SubResource("RectangleShape2D_v5vj4")
 
 [connection signal="interaction_ended" from="OnTheGround/NPCs/Farmer/InteractArea" to="OnTheGround/NPCs/Farmer" method="_on_interact_area_interaction_ended"]
 [connection signal="interaction_started" from="OnTheGround/NPCs/Farmer/InteractArea" to="OnTheGround/NPCs/Farmer" method="_on_interact_area_interaction_started"]
 [connection signal="interaction_ended" from="OnTheGround/NPCs/GardenerA/InteractArea" to="OnTheGround/NPCs/GardenerA" method="_on_interact_area_interaction_ended"]
 [connection signal="interaction_started" from="OnTheGround/NPCs/GardenerA/InteractArea" to="OnTheGround/NPCs/GardenerA" method="_on_interact_area_interaction_started"]
-
-[editable path="StartPath"]
-[editable path="SongSanctuaryPath"]
-[editable path="DevArchipelagoPath"]
-[editable path="WestEndPath"]
-[editable path="LineVillePath"]
-[editable path="SpawnPath"]
