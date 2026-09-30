@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://en37d2lad0px" path="res://scenes/quests/lore_quests/song_sanctuary_3/1_ink_drinker_levels/components/barrel_unlock_sequence.gd" id="3_ihx08"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="5_4co4a"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="5_bl3l0"]
+[ext_resource type="AudioStream" uid="uid://c3cl4rglkh5um" path="res://scenes/game_elements/props/filling_barrel/components/Vase_activate.wav" id="5_n0ti8"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="5_pbtyo"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="6_0oabu"]
 [ext_resource type="PackedScene" uid="uid://lgu7aeqa7o3r" path="res://scenes/game_elements/props/door/vertical_door.tscn" id="7_bl3l0"]
@@ -69,9 +70,14 @@ script = ExtResource("3_4co4a")
 clip = &"cozy"
 metadata/_custom_type_script = "uid://c2lx7gvkonxaa"
 
-[node name="BarrelUnlockSequence" type="Node" parent="." unique_id=961449658 node_paths=PackedStringArray("barrels")]
+[node name="BarrelUnlockSequence" type="Node" parent="." unique_id=961449658 node_paths=PackedStringArray("barrels", "unlock_sound")]
 script = ExtResource("3_ihx08")
 barrels = [NodePath("../OnTheGround/FillingBarrel"), NodePath("../OnTheGround/FillingBarrel2"), NodePath("../OnTheGround/FillingBarrel3")]
+unlock_sound = NodePath("AudioStreamPlayer2D")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="BarrelUnlockSequence" unique_id=1673907098]
+stream = ExtResource("5_n0ti8")
+bus = &"SFX"
 
 [node name="Cinematic" type="Node2D" parent="." unique_id=590207237]
 script = ExtResource("30_t7x86")
