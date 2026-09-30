@@ -11,7 +11,7 @@ var _default_walk_sound: AudioStream
 
 
 ## Stores the default footstep sound and caches TileMapLayers whose TileSets
-## define a "material" custom data layer.
+## define a "footstep_material" custom data layer.
 func _ready() -> void:
 	_default_walk_sound = walk_sound.stream
 
@@ -26,7 +26,7 @@ func _ready() -> void:
 		if not layer.tile_set:
 			continue
 
-		if not layer.tile_set.has_custom_data_layer_by_name("material"):
+		if not layer.tile_set.has_custom_data_layer_by_name("footstep_material"):
 			continue
 
 		_footstep_layers.append(layer)
@@ -48,7 +48,7 @@ func play_footstep() -> void:
 		if not tile_data:
 			continue
 
-		var footstep_material: Variant = tile_data.get_custom_data("material")
+		var footstep_material: Variant = tile_data.get_custom_data("footstep_material")
 		if footstep_material is String and not footstep_material.is_empty():
 			current_footstep_material = footstep_material
 
