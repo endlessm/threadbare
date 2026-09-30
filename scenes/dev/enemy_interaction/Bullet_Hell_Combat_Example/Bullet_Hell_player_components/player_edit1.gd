@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-class_name Player
+class_name Player_edit1
 extends CharacterBody2D
 
 signal mode_changed(mode: Mode)
@@ -48,6 +48,8 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 @export var speeds: CharacterSpeeds:
 	set = _set_speeds
 
+@export var health: int = 3
+
 ## The character speed when aiming with the grappling hook.
 @export_range(10, 100000, 10) var aiming_speed: float = 100.0
 
@@ -63,8 +65,6 @@ const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 
 var _initial_speeds: CharacterSpeeds
 
-@export var health: int = 3
-
 var _system_controllers: Array[Node] = []
 
 @onready var input_walk_behavior: InputWalkBehavior = %InputWalkBehavior
@@ -73,8 +73,6 @@ var _system_controllers: Array[Node] = []
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var player_dust_particles: GPUParticles2D = %PlayerDustParticles
-@onready var stuck_shaker: Shaker = %StuckShaker
-@onready var stuck_timer: Timer = %StuckTimer
 @onready var _walk_sound: AudioStreamPlayer2D = %WalkSound
 
 
@@ -155,9 +153,6 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	input_walk_behavior.stuck_changed.connect(_on_input_walk_behavior_stuck_changed)
-	stuck_timer.timeout.connect(defeat)
-
 	GameState.player.abilities_changed.connect(_on_abilities_changed)
 	GameState.player_changed.connect(_on_player_state_changed)
 
@@ -166,14 +161,6 @@ func _on_player_state_changed(old: PlayerState, new: PlayerState) -> void:
 	old.abilities_changed.disconnect(_on_abilities_changed)
 	new.abilities_changed.connect(_on_abilities_changed)
 	_on_abilities_changed()
-
-
-func _on_input_walk_behavior_stuck_changed(is_stuck: bool) -> void:
-	if is_stuck:
-		stuck_shaker.shake()
-		stuck_timer.start()
-	else:
-		stuck_timer.stop()
 
 
 func _set_speeds(new_speeds: CharacterSpeeds) -> void:
@@ -207,10 +194,9 @@ func _set_walk_sound_stream(new_value: AudioStream) -> void:
 	if not is_node_ready():
 		await ready
 	_walk_sound.stream = walk_sound_stream
-
+	
 func _on_hit_box_body_entered(body: Node2D) -> void:
 	health -= 1
-	## print(health)
 	if health <= 0:
 		defeat(false)
 		return
@@ -224,10 +210,10 @@ func _on_hit_box_body_entered(body: Node2D) -> void:
 ## are falling into the screen as they unravel.
 func defeat(falling: bool = false) -> void:
 	# Prevent multiple defeat calls
-	if mode == Player.Mode.DEFEATED:
+	if mode == Player_edit1.Mode.DEFEATED:
 		return
 
-	mode = Player.Mode.DEFEATED
+	mode = Player_edit1.Mode.DEFEATED
 
 	# Stop moving the player.
 	velocity = Vector2.ZERO
