@@ -24,9 +24,9 @@ const HUD_TEXTURES: Dictionary[ItemType, Texture2D] = {
 }
 
 const WORLD_TEXTURES: Dictionary[ItemType, Texture2D] = {
-	ItemType.MEMORY: preload("uid://5wscjc8yqqts"),
-	ItemType.IMAGINATION: preload("uid://6bf8rum68wq3"),
-	ItemType.SPIRIT: preload("uid://cepg1o3ihp055")
+	ItemType.MEMORY: preload("uid://xm1p6x8oqteb"),
+	ItemType.IMAGINATION: preload("uid://dnjaa4bhfjdvr"),
+	ItemType.SPIRIT: preload("uid://chyvv5qjtwgga")
 }
 
 @export var type: ItemType
@@ -38,6 +38,17 @@ func get_hud_texture() -> Texture2D:
 
 func get_world_texture() -> Texture2D:
 	return WORLD_TEXTURES[type]
+
+
+## Name of the animation, in the tail and highlight [SpriteFrames], that matches
+## this item type.
+func animation_name() -> StringName:
+	return StringName(type_name())
+
+
+## Colour of this item's type, used to tint the white highlight sprite.
+func get_color() -> Color:
+	return COLORS_PER_TYPE[type]
 
 
 static func with_type(a_type: ItemType) -> InventoryItem:
