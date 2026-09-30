@@ -56,6 +56,7 @@
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="55_ojao8"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="56_ojao8"]
 [ext_resource type="Script" uid="uid://uaaaiviytliw" path="res://scenes/world_map/components/quest_progress_unlocker.gd" id="58_ojao8"]
+[ext_resource type="PackedScene" uid="uid://bjin4sdopq7rn" path="res://scenes/ui_elements/area_name/text_name_area.tscn" id="59_6fau3"]
 [ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="59_qgpx3"]
 [ext_resource type="Resource" uid="uid://t50glay2iqhg" path="res://scenes/quests/lore_quests/quest_002/quest.tres" id="60_6b07c"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="61_6b07c"]
@@ -365,9 +366,15 @@ size = Vector2(20, 256)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7n6eg"]
 size = Vector2(20, 256)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jbkpe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v5vj4"]
+size = Vector2(57, 19)
+
 [node name="FraysEnd" type="Node2D" unique_id=1849947277]
 script = ExtResource("1_4gse6")
 metadata/_edit_lock_ = true
+metadata/_edit_horizontal_guides_ = [1381.0]
 
 [node name="BackgroundMusic" parent="." unique_id=1268657826 instance=ExtResource("1_ovkdi")]
 stream = ExtResource("2_epsnn")
@@ -1774,6 +1781,29 @@ debug_color = Color(0.9610079, 0, 0.5155429, 0.41960785)
 position = Vector2(-955, -95)
 shape = SubResource("RectangleShape2D_7n6eg")
 debug_color = Color(0.9610079, 0, 0.5155429, 0.41960785)
+
+[node name="TextNameArea" parent="." unique_id=845383399 instance=ExtResource("59_6fau3")]
+zone_name_text = "Fray's end"
+
+[node name="LinenVillePath" type="CollisionShape2D" parent="TextNameArea" unique_id=1404720381]
+position = Vector2(2706, 865)
+shape = SubResource("RectangleShape2D_jbkpe")
+
+[node name="SpawnPoint" type="CollisionShape2D" parent="TextNameArea" unique_id=1245649773]
+position = Vector2(989.5, 832.5)
+shape = SubResource("RectangleShape2D_v5vj4")
+
+[node name="WestEndPath" type="CollisionShape2D" parent="TextNameArea" unique_id=1505875916]
+position = Vector2(57, 711)
+shape = SubResource("RectangleShape2D_v5vj4")
+
+[node name="SongSanctuaryPath" type="CollisionShape2D" parent="TextNameArea" unique_id=1018623538]
+position = Vector2(2528, 266)
+shape = SubResource("RectangleShape2D_v5vj4")
+
+[node name="StartPath" type="CollisionShape2D" parent="TextNameArea" unique_id=1696015662]
+position = Vector2(993, 1436)
+shape = SubResource("RectangleShape2D_v5vj4")
 
 [connection signal="interaction_ended" from="OnTheGround/NPCs/Farmer/InteractArea" to="OnTheGround/NPCs/Farmer" method="_on_interact_area_interaction_ended"]
 [connection signal="interaction_started" from="OnTheGround/NPCs/Farmer/InteractArea" to="OnTheGround/NPCs/Farmer" method="_on_interact_area_interaction_started"]
