@@ -34,6 +34,10 @@ func toggle_pause() -> void:
 	get_tree().paused = new_state
 
 	Input.set_default_cursor_shape(Input.CURSOR_ARROW if new_state else Input.CURSOR_CROSS)
+	if new_state:
+		MouseManager.hold()
+	else:
+		MouseManager.release()
 
 	if new_state:
 		if not GameState.quest:

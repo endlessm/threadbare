@@ -9,6 +9,16 @@ var opening_quest: Quest
 @onready var credits: Control = %Credits
 
 
+func _enter_tree() -> void:
+	MouseManager.hold()
+	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+
+
+func _exit_tree() -> void:
+	MouseManager.release()
+	Input.set_default_cursor_shape(Input.CURSOR_CROSS)
+
+
 func _ready() -> void:
 	opening_quest = load(
 		ThreadbareProjectSettings.get_setting(ThreadbareProjectSettings.OPENING_QUEST)
