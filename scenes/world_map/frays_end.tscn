@@ -56,12 +56,18 @@
 [ext_resource type="PackedScene" uid="uid://daqd67aro1o1m" path="res://scenes/game_elements/fx/time_and_weather/time_and_weather.tscn" id="55_ojao8"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="56_ojao8"]
 [ext_resource type="Script" uid="uid://uaaaiviytliw" path="res://scenes/world_map/components/quest_progress_unlocker.gd" id="58_ojao8"]
-[ext_resource type="PackedScene" uid="uid://bjin4sdopq7rn" path="res://scenes/ui_elements/area_name/text_name_area.tscn" id="59_6fau3"]
 [ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="59_qgpx3"]
 [ext_resource type="Resource" uid="uid://t50glay2iqhg" path="res://scenes/quests/lore_quests/quest_002/quest.tres" id="60_6b07c"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="61_6b07c"]
 [ext_resource type="Script" uid="uid://cmika1t1573xe" path="res://scenes/world_map/components/frays_end_exit_blocker.gd" id="62_t7c6s"]
+[ext_resource type="Script" uid="uid://k6j0kcn8lb1d" path="res://scenes/ui_elements/zone_activation/zone_activation.gd" id="63_ulm71"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="64_uxfrp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v5vj4"]
+size = Vector2(120, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8dti7"]
+size = Vector2(24, 72)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_t7c6s"]
 seed = 5566801
@@ -366,11 +372,6 @@ size = Vector2(20, 256)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7n6eg"]
 size = Vector2(20, 256)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_jbkpe"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_v5vj4"]
-size = Vector2(57, 19)
-
 [node name="FraysEnd" type="Node2D" unique_id=1849947277]
 script = ExtResource("1_4gse6")
 metadata/_edit_lock_ = true
@@ -378,6 +379,40 @@ metadata/_edit_horizontal_guides_ = [1381.0]
 
 [node name="BackgroundMusic" parent="." unique_id=1268657826 instance=ExtResource("1_ovkdi")]
 stream = ExtResource("2_epsnn")
+
+[node name="ZoneActivation" type="Node" parent="." unique_id=300012081 node_paths=PackedStringArray("area", "spawn_points")]
+script = ExtResource("63_ulm71")
+zone_name_text = "Fray's end"
+area = NodePath("Area2D")
+spawn_points = [NodePath("../OnTheGround/NPCs/StoryQuestElder/SpawnPoint"), NodePath("../OnTheGround/NorthPath/SpawnPoint"), NodePath("../OnTheGround/EastPath/SpawnPoint"), NodePath("../OnTheGround/DevIslandPath/SpawnPoint"), NodePath("../OnTheGround/WestPath/SpawnPointWestPath")]
+metadata/_custom_type_script = "uid://k6j0kcn8lb1d"
+
+[node name="Area2D" type="Area2D" parent="ZoneActivation" unique_id=823861033]
+
+[node name="DefaultEntry" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=1245649773]
+position = Vector2(988, 796)
+shape = SubResource("RectangleShape2D_v5vj4")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
+
+[node name="DefaultEntry2" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=1797880224]
+position = Vector2(988, 892)
+shape = SubResource("RectangleShape2D_v5vj4")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
+
+[node name="DefaultEntry3" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=485207019]
+position = Vector2(940, 844)
+shape = SubResource("RectangleShape2D_8dti7")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
+
+[node name="DefaultEntry4" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=1936991601]
+position = Vector2(1036, 844)
+shape = SubResource("RectangleShape2D_8dti7")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
+
+[node name="BridgeEntry" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=1696015662]
+position = Vector2(992.5, 1416.75)
+shape = SubResource("RectangleShape2D_v5vj4")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1722660259]
 
@@ -1781,29 +1816,6 @@ debug_color = Color(0.9610079, 0, 0.5155429, 0.41960785)
 position = Vector2(-955, -95)
 shape = SubResource("RectangleShape2D_7n6eg")
 debug_color = Color(0.9610079, 0, 0.5155429, 0.41960785)
-
-[node name="TextNameArea" parent="." unique_id=845383399 instance=ExtResource("59_6fau3")]
-zone_name_text = "Fray's end"
-
-[node name="LinenVillePath" type="CollisionShape2D" parent="TextNameArea" unique_id=1404720381]
-position = Vector2(2706, 865)
-shape = SubResource("RectangleShape2D_jbkpe")
-
-[node name="SpawnPoint" type="CollisionShape2D" parent="TextNameArea" unique_id=1245649773]
-position = Vector2(989.5, 832.5)
-shape = SubResource("RectangleShape2D_v5vj4")
-
-[node name="WestEndPath" type="CollisionShape2D" parent="TextNameArea" unique_id=1505875916]
-position = Vector2(57, 711)
-shape = SubResource("RectangleShape2D_v5vj4")
-
-[node name="SongSanctuaryPath" type="CollisionShape2D" parent="TextNameArea" unique_id=1018623538]
-position = Vector2(2528, 266)
-shape = SubResource("RectangleShape2D_v5vj4")
-
-[node name="StartPath" type="CollisionShape2D" parent="TextNameArea" unique_id=1696015662]
-position = Vector2(993, 1436)
-shape = SubResource("RectangleShape2D_v5vj4")
 
 [connection signal="interaction_ended" from="OnTheGround/NPCs/Farmer/InteractArea" to="OnTheGround/NPCs/Farmer" method="_on_interact_area_interaction_ended"]
 [connection signal="interaction_started" from="OnTheGround/NPCs/Farmer/InteractArea" to="OnTheGround/NPCs/Farmer" method="_on_interact_area_interaction_started"]

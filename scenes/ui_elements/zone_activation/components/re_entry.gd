@@ -2,12 +2,12 @@
 # SPDX-License-Identifier: MPL-2.0
 extends PanelContainer
 
-@export var slide_offset_y: float = 150.0 # Amount of pixels for the slide offset[cite: 5]
-
-@onready var label: Label = $Label
+@export var slide_offset_y: float = 150.0  # Amount of pixels for the slide offset[cite: 5]
 
 var _base_target_y: float = 0.0
 var _is_target_saved: bool = false
+
+@onready var label: Label = $Label
 
 
 func _ready() -> void:
@@ -31,19 +31,29 @@ func animate_re_entry(zona_name: String, time: int) -> void:
 
 	# ENTRY
 	var tween_in := create_tween().set_parallel(true)
-	tween_in.tween_property(self, "position:y", target_y, 0.35)\
-		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tween_in.tween_property(self, "modulate:a", 1.0, 0.3)\
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	(
+		tween_in
+		. tween_property(self, "position:y", target_y, 0.35)
+		. set_trans(Tween.TRANS_BACK)
+		. set_ease(Tween.EASE_OUT)
+	)
+	tween_in.tween_property(self, "modulate:a", 1.0, 0.3).set_trans(Tween.TRANS_QUAD).set_ease(
+		Tween.EASE_OUT
+	)
 
 	await get_tree().create_timer(time).timeout
 
 	# EXIT
 	var tween_out := create_tween().set_parallel(true)
-	tween_out.tween_property(self, "position:y", start_y, 0.35)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	tween_out.tween_property(self, "modulate:a", 0.0, 0.3)\
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	(
+		tween_out
+		. tween_property(self, "position:y", start_y, 0.35)
+		. set_trans(Tween.TRANS_CUBIC)
+		. set_ease(Tween.EASE_IN)
+	)
+	tween_out.tween_property(self, "modulate:a", 0.0, 0.3).set_trans(Tween.TRANS_QUAD).set_ease(
+		Tween.EASE_IN
+	)
 
 	await tween_out.finished
 	position.y = target_y

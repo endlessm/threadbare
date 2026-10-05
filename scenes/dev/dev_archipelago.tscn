@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://db0hjoby7su6n" path="res://scenes/dev/components/dev_archipelago.gd" id="1_kt7u4"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="1_rqtu3"]
+[ext_resource type="Script" uid="uid://k6j0kcn8lb1d" path="res://scenes/ui_elements/zone_activation/zone_activation.gd" id="2_2kc8b"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="2_jo5uf"]
 [ext_resource type="TileSet" uid="uid://b778cuoftt88r" path="res://tiles/elevation_2.tres" id="3_tq71w"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="4_pr8dh"]
@@ -61,8 +62,10 @@
 [ext_resource type="Script" uid="uid://csev4hv57utxv" path="res://scenes/game_logic/walk_behaviors/character_speeds.gd" id="48_sqpij"]
 [ext_resource type="AudioStream" uid="uid://c1pdyoycgyb7t" path="res://scenes/dev/components/oi.wav" id="52_rs1iu"]
 [ext_resource type="Script" uid="uid://djeshbrs3vwnb" path="res://scenes/game_elements/characters/npcs/components/pet_interaction.gd" id="53_a3fwm"]
-[ext_resource type="PackedScene" uid="uid://bjin4sdopq7rn" path="res://scenes/ui_elements/area_name/text_name_area.tscn" id="62_rl8sd"]
 [ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="63_71pqi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_71pqi"]
+size = Vector2(64, 80)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pp1gq"]
 size = Vector2(64, 64)
@@ -96,6 +99,20 @@ stream_0/stream = ExtResource("52_rs1iu")
 
 [node name="DevArchipelago" type="Node2D" unique_id=213943313]
 script = ExtResource("1_kt7u4")
+
+[node name="ZoneActivation" type="Node" parent="." unique_id=1216835856 node_paths=PackedStringArray("area", "spawn_points")]
+script = ExtResource("2_2kc8b")
+zone_name_text = "Dev Archipelago"
+area = NodePath("Area2D")
+spawn_points = [NodePath("../OnTheGround/Elders/SQ/StoryQuestElder/SpawnPoint"), NodePath("../OnTheGround/Elders/TemplateElder/SpawnPoint"), NodePath("../OnTheGround/Elders/BasicsElder/SpawnPoint"), NodePath("../OnTheGround/Elders/RepElder/SpawnPoint"), NodePath("../OnTheGround/Elders/GrappleElder/SpawnPoint"), NodePath("../OnTheGround/Elders/EnemyInteractionElder/SpawnPoint"), NodePath("../OnTheGround/Elders/LevelDesignElder/SpawnPoint")]
+metadata/_custom_type_script = "uid://k6j0kcn8lb1d"
+
+[node name="Area2D" type="Area2D" parent="ZoneActivation" unique_id=1628185981]
+
+[node name="BridgeEntry" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=1263756559]
+position = Vector2(-32, 1312)
+shape = SubResource("RectangleShape2D_71pqi")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=503553272]
 
@@ -920,12 +937,6 @@ script = ExtResource("53_a3fwm")
 interact_area = NodePath("../InteractArea")
 sound_effect_player = NodePath("../AudioStreamPlayer2D")
 
-[node name="TextNameArea" parent="." unique_id=1184526213 instance=ExtResource("62_rl8sd")]
-zone_name_text = "Dev Archipelago"
-
-[node name="CollisionPolygon2D" parent="TextNameArea/detect" parent_id_path=PackedInt32Array(1184526213, 1821875710) index="0" unique_id=1009866314]
-polygon = PackedVector2Array(-828, 1210, -558, 1204, -556, 1079, -826, 1094)
-
 [node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("63_71pqi")]
 unique_name_in_owner = true
 
@@ -934,5 +945,3 @@ unique_name_in_owner = true
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Sheep2/PlayerRepel2/RepelTimer2" to="OnTheGround/Node2D/SheepVolleyball/Sheep2/PlayerRepel2" method="repel_once"]
 [connection signal="timeout" from="OnTheGround/Node2D/SheepVolleyball/Timer" to="OnTheGround/Node2D/SheepVolleyball/Sheep/PlayerRepel/RepelTimer" method="start"]
 [connection signal="timeout" from="OnTheGround/Node2D/SheepTugOfWar/TuggingSheep/Timer" to="OnTheGround/Node2D/SheepTugOfWar" method="_on_timer_timeout"]
-
-[editable path="TextNameArea"]

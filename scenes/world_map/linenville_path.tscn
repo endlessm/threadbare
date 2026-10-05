@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://47uo838wq1r2" path="res://scenes/world_map/components/linenville_path.gd" id="1_3ldjx"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="2_34mct"]
+[ext_resource type="Script" uid="uid://k6j0kcn8lb1d" path="res://scenes/ui_elements/zone_activation/zone_activation.gd" id="2_puq78"]
 [ext_resource type="Script" uid="uid://ctko5bdas16ah" path="res://scenes/game_logic/canvasitem_behaviors/modulate_as_sky_behavior.gd" id="3_2kltm"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="4_2w05u"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="4_34mct"]
@@ -42,7 +43,7 @@
 [ext_resource type="AudioStream" uid="uid://bbamdm6wtjjcn" path="res://assets/first_party/music/Threadbare_Bed.ogg" id="36_7iwyg"]
 [ext_resource type="Script" uid="uid://uaaaiviytliw" path="res://scenes/world_map/components/quest_progress_unlocker.gd" id="37_6k2xc"]
 [ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="38_2vyp4"]
-[ext_resource type="PackedScene" uid="uid://bjin4sdopq7rn" path="res://scenes/ui_elements/area_name/text_name_area.tscn" id="40_2kltm"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="44_a75xw"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_puq78"]
 seed = 5566423
@@ -81,10 +82,13 @@ size = Vector2(64, 192)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6r5d6"]
 size = Vector2(64, 64)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_i2ic8"]
-
 [node name="LinenVillePath" type="Node2D" unique_id=453581843]
 script = ExtResource("1_3ldjx")
+
+[node name="ZoneActivation" type="Node" parent="." unique_id=1099234821 node_paths=PackedStringArray("spawn_points")]
+script = ExtResource("2_puq78")
+zone_name_text = "Linenville Path"
+spawn_points = [NodePath("../Links/FraysEnd/SpawnPoint"), NodePath("../Links/VoidQuest/VoidQuestTeleporter/SpawnPoint")]
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1939557736]
 
@@ -823,8 +827,5 @@ targets = [NodePath("../TileMapLayers/CanvasGroup/LinenVilleBarrierVoid")]
 required_quests = Array[ExtResource("38_2vyp4")]([ExtResource("30_hq8vv")])
 metadata/_custom_type_script = "uid://uaaaiviytliw"
 
-[node name="TextNameArea" parent="." unique_id=1184526213 instance=ExtResource("40_2kltm")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TextNameArea" unique_id=216385332]
-position = Vector2(-734, 1249)
-shape = SubResource("RectangleShape2D_i2ic8")
+[node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("44_a75xw")]
+unique_name_in_owner = true

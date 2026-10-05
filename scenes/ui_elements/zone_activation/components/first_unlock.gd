@@ -14,10 +14,11 @@ func _is_player_at_bottom() -> bool:
 
 	return screen_pos.y > viewport_size.y * 3.0 / 4.0
 
+
 func animate_first_unlock(zona_name: String, time: int) -> void:
 	var label = $Label
 	label.text = zona_name
-	
+
 	# Ensure the panel is visible
 	show()
 	modulate.a = 0.0
@@ -39,14 +40,19 @@ func animate_first_unlock(zona_name: String, time: int) -> void:
 
 	# 2. Set the pivot at the center so it scales nicely
 	pivot_offset = size / 2.0
-	scale = Vector2(0.6, 0.6) # Starts slightly smaller to scale up when appearing
+	scale = Vector2(0.6, 0.6)  # Starts slightly smaller to scale up when appearing
 
 	# 3. FADE IN
 	var tween_in := create_tween().set_parallel(true)
-	tween_in.tween_property(self, "modulate:a", 1.0, 0.35)\
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween_in.tween_property(self, "scale", Vector2(1.0, 1.0), 0.35)\
-		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween_in.tween_property(self, "modulate:a", 1.0, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(
+		Tween.EASE_OUT
+	)
+	(
+		tween_in
+		. tween_property(self, "scale", Vector2(1.0, 1.0), 0.35)
+		. set_trans(Tween.TRANS_BACK)
+		. set_ease(Tween.EASE_OUT)
+	)
 
 	await tween_in.finished
 
@@ -55,10 +61,15 @@ func animate_first_unlock(zona_name: String, time: int) -> void:
 
 	# 5. FADE OUT
 	var tween_out := create_tween().set_parallel(true)
-	tween_out.tween_property(self, "modulate:a", 0.0, 0.3)\
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	tween_out.tween_property(self, "scale", Vector2(0.8, 0.8), 0.3)\
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween_out.tween_property(self, "modulate:a", 0.0, 0.3).set_trans(Tween.TRANS_QUAD).set_ease(
+		Tween.EASE_IN
+	)
+	(
+		tween_out
+		. tween_property(self, "scale", Vector2(0.8, 0.8), 0.3)
+		. set_trans(Tween.TRANS_QUAD)
+		. set_ease(Tween.EASE_IN)
+	)
 
 	await tween_out.finished
 	hide()
