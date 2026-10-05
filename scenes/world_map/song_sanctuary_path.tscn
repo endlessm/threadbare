@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dgthdej1xlbbr" path="res://scenes/world_map/components/song_sanctuary_path.gd" id="1_ftxxi"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="1_iopks"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="2_4pcl3"]
+[ext_resource type="Script" uid="uid://k6j0kcn8lb1d" path="res://scenes/ui_elements/zone_activation/zone_activation.gd" id="2_bmevf"]
 [ext_resource type="Script" uid="uid://ctko5bdas16ah" path="res://scenes/game_logic/canvasitem_behaviors/modulate_as_sky_behavior.gd" id="2_eufof"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="3_63tlh"]
 [ext_resource type="TileSet" uid="uid://do0ffypatd77h" path="res://tiles/bridges.tres" id="4_engfb"]
@@ -45,6 +46,10 @@
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="38_rk4u1"]
 [ext_resource type="Script" uid="uid://uaaaiviytliw" path="res://scenes/world_map/components/quest_progress_unlocker.gd" id="40_bt13d"]
 [ext_resource type="Script" uid="uid://dts1hwdy3phin" path="res://scenes/menus/storybook/components/quest.gd" id="41_nf521"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="44_b6uih"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i2ic8"]
+size = Vector2(61, 20)
 
 [sub_resource type="Gradient" id="Gradient_d6ijo"]
 
@@ -112,6 +117,19 @@ size = Vector2(320, 64)
 
 [node name="SongSanctuaryPath" type="Node2D" unique_id=1049570333]
 script = ExtResource("1_ftxxi")
+
+[node name="ZoneActivation" type="Node" parent="." unique_id=1132816604 node_paths=PackedStringArray("area", "spawn_points")]
+script = ExtResource("2_bmevf")
+zone_name_text = "Song Sanctuary Path"
+area = NodePath("Area2D")
+spawn_points = [NodePath("../Teleporters/MusicianQuestTeleporter/SpawnPoint"), NodePath("../Teleporters/GuardedStonesTeleporter/SpawnPoint"), NodePath("../Teleporters/OopsAllInkDrinkersTeleporter/SpawnPoint")]
+metadata/_custom_type_script = "uid://k6j0kcn8lb1d"
+
+[node name="Area2D" type="Area2D" parent="ZoneActivation" unique_id=1015283392]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=321850387]
+position = Vector2(608.5, 1243)
+shape = SubResource("RectangleShape2D_i2ic8")
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=307328956]
 
@@ -1290,3 +1308,6 @@ unique_name_in_owner = true
 script = ExtResource("40_bt13d")
 required_quests = Array[ExtResource("41_nf521")]([ExtResource("37_nf521")])
 metadata/_custom_type_script = "uid://uaaaiviytliw"
+
+[node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("44_b6uih")]
+unique_name_in_owner = true

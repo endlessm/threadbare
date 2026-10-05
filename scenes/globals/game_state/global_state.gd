@@ -10,6 +10,9 @@ signal completed_quests_changed
 ## Emitted when the [member helper] changes.
 signal helper_changed
 
+## Emitted when the player enters a zone in the world map.
+signal zone_changed(zone_name: String, first_visit: bool)
+
 ## [Quest]s which the player has previously completed. Modify this with
 ## [method set_quest_completed_state].
 @export var completed_quests: Array[Quest]
@@ -51,6 +54,9 @@ signal helper_changed
 ## can later pick up where they left off.
 @export var suspended_quests: Dictionary[String, SuspendedQuestState]
 
+## Zones of the world map that the player has already visited.
+@export var unlocked_zones: Array[String]
+
 
 func _validate_property(property: Dictionary) -> void:
 	match property.name:
@@ -88,3 +94,14 @@ func clear_help() -> void:
 	helper = null
 	helper_changed.emit()
 	emit_changed()
+
+
+## Create or unlock an area.
+func zone_entered(zone_name: String) -> void:
+	var first_visit := zone_name not in unlocked_zones
+
+	if first_visit:
+		unlocked_zones.append(zone_name)
+		emit_changed()
+
+	zone_changed.emit(zone_name, first_visit)
