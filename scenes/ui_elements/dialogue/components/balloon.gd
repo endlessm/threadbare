@@ -228,11 +228,7 @@ func _is_player_at_bottom() -> bool:
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	if not player:
 		return false
-
-	var viewport := player.get_viewport()
-	var screen_pos: Vector2 = viewport.get_canvas_transform() * player.global_position
-	var viewport_size: Vector2 = viewport.get_visible_rect().size
-	return screen_pos.y > viewport_size.y * 3 / 4.0
+	return CameraUtilities.is_node_at_bottom(player)
 
 
 ## Anchor container to top:
