@@ -1,9 +1,13 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
+class_name StoryQuestProgress
 extends PanelContainer
 
 const ITEM_SLOT: PackedScene = preload("uid://1mjm4atk2j6e")
 const TOWNIE = preload("uid://dgrrudegturnw")
+
+@export var player: CharacterBody2D
+@export var sokoban_ruleset: RuleEngine
 
 @onready var items_container: HBoxContainer = %ItemsContainer
 @onready var helper_container: CenterContainer = %HelperContainer
@@ -15,27 +19,37 @@ func _ready() -> void:
 	GameState.global.helper_changed.connect(_on_helper_state_changed)
 	_on_helper_state_changed()
 
-	var n := 0
-	if GameState.quest:
-		n = GameState.quest.quest.threads_to_collect
 
-	if n == 0:
-		visible = false
+func update_visibility() -> void:
+	var in_a_quest_with_threads_to_collect := (
+		GameState.quest and GameState.quest.quest.threads_to_collect
+	)
+	visible = (
+		(player or sokoban_ruleset)
+		and (in_a_quest_with_threads_to_collect or GameState.is_item_offering_possible())
+	)
+	if not visible:
 		return
 
-	# Add one slot for each item in the current quest
-	for _i: int in n:
+	var threads_to_collect := GameState.quest.quest.threads_to_collect
+
+	# Add one slot for each item in the current quest.
+	for i in items_container.get_children():
+		items_container.remove_child(i)
+		i.queue_free()
+	for _i: int in threads_to_collect:
 		items_container.add_child(ITEM_SLOT.instantiate())
 
-	# On ready, the HUD is populated with the items that were collected so
-	# far in the quest.
 	var items_collected := GameState.quest.inventory.items
-	for i: int in min(items_collected.size(), n):
-		items_container.get_child(i).start_as_filled(items_collected[i])
+	for i: int in min(items_collected.size(), threads_to_collect):
+		var item_slot: ItemSlot = items_container.get_child(i) as ItemSlot
+		item_slot.start_as_filled(items_collected[i])
 
-	# Then, when each new item is collected, it is added to the progress UI
-	GameState.quest.inventory.item_collected.connect(self._on_item_collected)
-	GameState.quest.inventory.item_consumed.connect(self._on_item_consumed)
+	# When each new item is collected, it is added to the progress UI.
+	if not GameState.quest.inventory.item_collected.is_connected(self._on_item_collected):
+		GameState.quest.inventory.item_collected.connect(self._on_item_collected)
+	if not GameState.quest.inventory.item_consumed.is_connected(self._on_item_consumed):
+		GameState.quest.inventory.item_consumed.connect(self._on_item_consumed)
 
 
 func _on_helper_state_changed() -> void:

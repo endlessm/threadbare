@@ -106,7 +106,7 @@ func congratulate_player() -> void:
 
 
 func _update_dialogue_cue(_item: InventoryItem = null) -> void:
-	if eternal_loom and eternal_loom.is_item_offering_possible():
+	if GameState.is_item_offering_possible():
 		talk_behavior.title = "go_to_loom"
 	elif not _quests:
 		talk_behavior.title = "no_quests"

@@ -201,6 +201,22 @@ func abandon_quest(suspend: bool = true) -> void:
 	quest = null
 
 
+## True if involved in a quest and the current quest has retelling.
+func has_retelling() -> bool:
+	return GameState.quest and GameState.quest.quest and GameState.quest.quest.retelling
+
+
+## True if involved in a quest with threads to collect and all of them were collected.
+func is_item_offering_possible() -> bool:
+	if not quest:
+		return false
+
+	if quest.quest.threads_to_collect <= 0:
+		return false
+
+	return quest.inventory.items.size() >= quest.quest.threads_to_collect
+
+
 ## Clear the persisted state.
 func clear() -> void:
 	_saved_game = SavedGame.new()
