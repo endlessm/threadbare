@@ -16,6 +16,11 @@ const TOWNIE = preload("uid://dgrrudegturnw")
 
 
 func _ready() -> void:
+	GameState.cleared.connect(_on_gamestate_cleared)
+	_on_gamestate_cleared()
+
+
+func _on_gamestate_cleared() -> void:
 	GameState.global.helper_changed.connect(_on_helper_state_changed)
 	_on_helper_state_changed()
 

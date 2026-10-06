@@ -10,7 +10,8 @@ extends CanvasLayer
 
 func _ready() -> void:
 	GameState.cleared.connect(_on_gamestate_cleared)
-	GameState.global.zone_changed.connect(_on_zone_changed)
+	_on_gamestate_cleared()
+
 	get_tree().scene_changed.connect(_on_scene_changed)
 
 	# When running a scene that contains a player directly, this node becomes
