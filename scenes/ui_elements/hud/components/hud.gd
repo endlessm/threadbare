@@ -9,6 +9,7 @@ extends CanvasLayer
 
 
 func _ready() -> void:
+	GameState.cleared.connect(_on_gamestate_cleared)
 	GameState.global.zone_changed.connect(_on_zone_changed)
 	get_tree().scene_changed.connect(_on_scene_changed)
 
@@ -19,6 +20,10 @@ func _ready() -> void:
 	# main scene does not have a player (or sokoban ruleset), but is harmless in
 	# that case.
 	_on_scene_changed.call_deferred()
+
+
+func _on_gamestate_cleared() -> void:
+	GameState.global.zone_changed.connect(_on_zone_changed)
 
 
 func _on_scene_changed() -> void:
@@ -48,5 +53,7 @@ func _on_zone_changed(zone_name: String, first_visit: bool) -> void:
 	GameState.scene.zone_name_displayed = zone_name
 	if first_visit:
 		zone_unlocked_display.animate(zone_name)
+		zone_name_display.stop_animation()
 	else:
 		zone_name_display.animate(zone_name)
+		zone_unlocked_display.stop_animation()
