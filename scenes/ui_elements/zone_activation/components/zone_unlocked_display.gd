@@ -36,7 +36,13 @@ func anchor_to_bottom() -> void:
 	margin_container.grow_vertical = Control.GROW_DIRECTION_BEGIN
 
 
+func stop_animation() -> void:
+	if animation_player.is_playing():
+		animation_player.stop()
+
+
 func animate(zone_name: String) -> void:
+	stop_animation()
 	# Assumes that the container is anchored to the bottom by default:
 	if _is_player_at_bottom():
 		anchor_to_top()

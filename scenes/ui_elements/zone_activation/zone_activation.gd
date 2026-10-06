@@ -31,6 +31,4 @@ func _on_body_entered(body: Node2D) -> void:
 
 
 func entered() -> void:
-	# TODO: The HUD might not be ready. Remove once the HUD becomes an autoload.
-	await get_tree().create_timer(0.1).timeout
 	GameState.global.zone_entered(zone_name_text)

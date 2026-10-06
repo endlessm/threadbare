@@ -111,17 +111,3 @@ func on_rewoven_finished() -> void:
 
 	GameState.mark_quest_completed()
 	GameState.save()
-
-
-func has_retelling() -> bool:
-	return GameState.quest and GameState.quest.quest and GameState.quest.quest.retelling
-
-
-func is_item_offering_possible() -> bool:
-	if not GameState.quest:
-		return false
-
-	if GameState.quest.quest.threads_to_collect <= 0:
-		return false
-
-	return GameState.quest.inventory.items.size() >= GameState.quest.quest.threads_to_collect
