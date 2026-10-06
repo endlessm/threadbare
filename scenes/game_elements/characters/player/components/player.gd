@@ -67,7 +67,7 @@ var _system_controllers: Array[Node] = []
 
 @onready var input_walk_behavior: InputWalkBehavior = %InputWalkBehavior
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
-@onready var player_repel: Node2D = %PlayerRepel
+@onready var player_repel: PlayerRepel = %PlayerRepel
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var player_dust_particles: GPUParticles2D = %PlayerDustParticles
@@ -257,6 +257,10 @@ func _toggle_abilities() -> void:
 	var can_grapple := GameState.player.has_ability(Enums.PlayerAbilities.ABILITY_B)
 	_toggle_player_behavior(player_repel, can_repel)
 	_toggle_player_behavior(player_hook, can_grapple)
+	if can_repel:
+		player_repel.hum_enabled = GameState.player.has_ability(
+			Enums.PlayerAbilities.ABILITY_A_MODIFIER_1
+		)
 	if can_grapple:
 		var has_longer_hook := GameState.player.has_ability(
 			Enums.PlayerAbilities.ABILITY_B_MODIFIER_1
