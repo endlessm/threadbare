@@ -12,6 +12,10 @@ extends Resource
 ## lights should turn on gradually.
 signal lights_changed(lights_on: bool, immediate: bool)
 
+## Emitted when the player activates a checkpoint.
+@warning_ignore("unused_signal")
+signal checkpoint_activated(checkpoint: Area2D)
+
 ## The path to the current scene.
 @export var path: String
 
