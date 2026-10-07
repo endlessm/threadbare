@@ -6,10 +6,10 @@ extends EditorScript
 ## Reports assets that nothing in the project references
 ##
 ## Edit [const ROOT_FOLDER] then run this in the editor. The report goes to the
-## Output panel, split into assets that nothing references, and [code].import[/code]
-## files whose source file is gone. Those are two different problems: the first
-## is an asset to delete, the second is a leftover to delete along with whatever
-## produced it.
+## Output panel, split into folders that are made up entirely of unreferenced assets,
+## unreferenced assets outside of those folders, and [code].import[/code] files whose
+## source file is gone. The first two are assets to delete (grouped by folder when a
+## whole one can go), the third is a leftover to delete along with whatever produced it.
 ## [br][br]
 ## References come from [method ResourceLoader.get_dependencies], so an asset
 ## that is only ever referenced by its UID still counts as used. Scripts are
@@ -19,6 +19,12 @@ extends EditorScript
 
 ## Where to look for assets. Everything under it is checked.
 const ROOT_FOLDER := "res://scenes/quests/story_quests/stella"
+
+## Folders to skip when looking for references. This is useful when checking for assets that can be
+## stripped from the StoryQuest kit.
+const SKIP_FOLDERS: PackedStringArray = [
+#"res://scenes/quests/story_quests"
+]
 
 ## Extensions considered assets, lowercase and without the dot.
 const ASSET_EXTENSIONS: PackedStringArray = [
@@ -34,7 +40,7 @@ const IMPORT_SUFFIX := ".import"
 func _run() -> void:
 	var referenced := _collect_referenced()
 
-	var orphans: Array[String] = []
+	var orphans: Dictionary[String, bool] = {}
 	var stale: Array[String] = []
 	for path: String in _all_files(ROOT_FOLDER):
 		if path.ends_with(IMPORT_SUFFIX):
@@ -43,13 +49,30 @@ func _run() -> void:
 				stale.append(path)
 		elif path.get_extension().to_lower() in ASSET_EXTENSIONS:
 			if not referenced.has(path) and not referenced.has(ResourceUID.path_to_uid(path)):
-				orphans.append(path)
+				orphans[path] = true
 
-	orphans.sort()
+	var fully_orphaned: Dictionary[String, bool] = {}
+	_mark_fully_orphaned(ROOT_FOLDER, orphans, fully_orphaned)
+
+	var orphan_folders: Array[String] = []
+	var orphan_files: Array[String] = []
+	_collect_orphans(ROOT_FOLDER, orphans, fully_orphaned, orphan_folders, orphan_files)
+
+	orphan_folders.sort()
+	orphan_files.sort()
 	stale.sort()
 
-	print("Assets under %s that nothing references: %d" % [ROOT_FOLDER, orphans.size()])
-	for path: String in orphans:
+	prints(
+		"Folders under",
+		ROOT_FOLDER,
+		"made up entirely of unreferenced assets:",
+		orphan_folders.size()
+	)
+	for folder: String in orphan_folders:
+		print("  ", folder)
+
+	print("\nOther assets that nothing references: %d" % orphan_files.size())
+	for path: String in orphan_files:
 		# The UID is printed because scenes usually reference assets by UID, so
 		# it is what you need to search for to double check a result.
 		print("  %s  %s" % [path, ResourceUID.path_to_uid(path)])
@@ -96,6 +119,9 @@ func _all_files(folder: String) -> PackedStringArray:
 		var current := pending[-1]
 		pending.remove_at(pending.size() - 1)
 
+		if current in SKIP_FOLDERS:
+			continue
+
 		for directory: String in DirAccess.get_directories_at(current):
 			# Godot's own cache holds copies of everything and would count as
 			# references to assets that are otherwise unused.
@@ -106,3 +132,63 @@ func _all_files(folder: String) -> PackedStringArray:
 			files.append(current.path_join(file))
 
 	return files
+
+
+## Computes, for [param folder] and every folder recursively inside it, whether every
+## asset file it (recursively) contains is in [param orphans], storing the result for
+## each folder in [param fully_orphaned] as a set. A folder with no asset files anywhere
+## inside it does not count, since there would be nothing to report.
+## [br][br]
+## Returns [code][has_asset, all_orphan][/code] for [param folder] itself, which is all
+## the caller needs to fold [param folder] into its own parent's result.
+func _mark_fully_orphaned(
+	folder: String, orphans: Dictionary[String, bool], fully_orphaned: Dictionary[String, bool]
+) -> Array[bool]:
+	var has_asset := false
+	var all_orphan := true
+
+	for file: String in DirAccess.get_files_at(folder):
+		var path := folder.path_join(file)
+		if path.get_extension().to_lower() in ASSET_EXTENSIONS:
+			has_asset = true
+			if not orphans.has(path):
+				all_orphan = false
+
+	for directory: String in DirAccess.get_directories_at(folder):
+		if directory != ".godot":
+			var result := _mark_fully_orphaned(folder.path_join(directory), orphans, fully_orphaned)
+			if result[0]:
+				has_asset = true
+				if not result[1]:
+					all_orphan = false
+
+	fully_orphaned[folder] = has_asset and all_orphan
+	return [has_asset, all_orphan]
+
+
+## Walks [param folder], recursively, using [param fully_orphaned] (as computed by
+## [method _mark_fully_orphaned]) to split [param orphans] in two: the topmost folders
+## that are made up entirely of unreferenced assets go into [param orphan_folders], and
+## whatever is left - unreferenced assets that share a folder with a referenced one - goes
+## into [param orphan_files].
+func _collect_orphans(
+	folder: String,
+	orphans: Dictionary[String, bool],
+	fully_orphaned: Dictionary[String, bool],
+	orphan_folders: Array[String],
+	orphan_files: Array[String]
+) -> void:
+	if fully_orphaned.get(folder, false):
+		orphan_folders.append(folder)
+		return
+
+	for file: String in DirAccess.get_files_at(folder):
+		var path := folder.path_join(file)
+		if orphans.has(path):
+			orphan_files.append(path)
+
+	for directory: String in DirAccess.get_directories_at(folder):
+		if directory != ".godot":
+			_collect_orphans(
+				folder.path_join(directory), orphans, fully_orphaned, orphan_folders, orphan_files
+			)
