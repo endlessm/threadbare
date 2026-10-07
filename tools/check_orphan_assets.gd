@@ -17,6 +17,8 @@ extends EditorScript
 ## [code]load()[/code] calls are not recorded as dependencies. A path assembled
 ## at run time cannot be detected either way.
 
+const Util = preload("./util.gd")
+
 ## Where to look for assets. Everything under it is checked.
 const ROOT_FOLDER := "res://scenes/quests/story_quests/stella"
 
@@ -42,7 +44,7 @@ func _run() -> void:
 
 	var orphans: Dictionary[String, bool] = {}
 	var stale: Array[String] = []
-	for path: String in _all_files(ROOT_FOLDER):
+	for path: String in Util.all_files(ROOT_FOLDER, SKIP_FOLDERS):
 		if path.ends_with(IMPORT_SUFFIX):
 			# A .import without its source is a leftover, not an unused asset.
 			if not FileAccess.file_exists(path.trim_suffix(IMPORT_SUFFIX)):
@@ -91,7 +93,7 @@ func _collect_referenced() -> Dictionary[String, bool]:
 
 	var uid_or_path := RegEx.create_from_string("(?:uid|res)://[^\"')\\s]+")
 
-	for path: String in _all_files("res://"):
+	for path: String in Util.all_files("res://", SKIP_FOLDERS):
 		var extension := path.get_extension().to_lower()
 
 		if extension in RESOURCE_EXTENSIONS:
@@ -108,30 +110,6 @@ func _collect_referenced() -> Dictionary[String, bool]:
 				referenced[found.get_string()] = true
 
 	return referenced
-
-
-## Returns every file under [param folder], recursively.
-func _all_files(folder: String) -> PackedStringArray:
-	var files := PackedStringArray()
-	var pending := PackedStringArray([folder])
-
-	while not pending.is_empty():
-		var current := pending[-1]
-		pending.remove_at(pending.size() - 1)
-
-		if current in SKIP_FOLDERS:
-			continue
-
-		for directory: String in DirAccess.get_directories_at(current):
-			# Godot's own cache holds copies of everything and would count as
-			# references to assets that are otherwise unused.
-			if directory != ".godot":
-				pending.append(current.path_join(directory))
-
-		for file: String in DirAccess.get_files_at(current):
-			files.append(current.path_join(file))
-
-	return files
 
 
 ## Computes, for [param folder] and every folder recursively inside it, whether every

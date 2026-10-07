@@ -3,8 +3,6 @@
 @tool
 extends Object
 
-const DEBUG := true
-
 
 ## Return a list of all scenes in the project that match the filter.
 ## filter accepts one argument, the path to a scene, and returns a boolean,
@@ -49,3 +47,29 @@ static func find_scenes(
 		dir.list_dir_end()
 
 	return packed_scenes
+
+
+## Return every file under [param folder], recursively. The folders in
+## [param skip_folders], and everything under them, are left out. So is Godot's
+## own .godot cache, which holds a copy of everything.
+static func all_files(
+	folder: String, skip_folders: PackedStringArray = PackedStringArray()
+) -> PackedStringArray:
+	var files := PackedStringArray()
+	var pending := PackedStringArray([folder])
+
+	while not pending.is_empty():
+		var current := pending[-1]
+		pending.remove_at(pending.size() - 1)
+
+		if current in skip_folders:
+			continue
+
+		for directory: String in DirAccess.get_directories_at(current):
+			if directory != ".godot":
+				pending.append(current.path_join(directory))
+
+		for file: String in DirAccess.get_files_at(current):
+			files.append(current.path_join(file))
+
+	return files
