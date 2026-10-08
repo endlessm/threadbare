@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://bjpbpn8vy73c1"]
+
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="1_4150e"]
+[ext_resource type="Script" uid="uid://cbpwad3e0l1tc" path="res://scenes/game_elements/props/collectible_item/components/collectible_item_test.gd" id="1_fdx8g"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="2_bmfww"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="3_bmfww"]
+[ext_resource type="SpriteFrames" uid="uid://cxjwwgm86d6it" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_red.tres" id="5_xa2ih"]
+
+[sub_resource type="Resource" id="Resource_kig3j"]
+script = ExtResource("2_bmfww")
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="Resource" id="Resource_xa2ih"]
+script = ExtResource("2_bmfww")
+type = 1
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="Resource" id="Resource_qfadu"]
+script = ExtResource("2_bmfww")
+type = 2
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="Resource" id="Resource_fdx8g"]
+script = ExtResource("2_bmfww")
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="Resource" id="Resource_bmfww"]
+script = ExtResource("2_bmfww")
+type = 1
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="Resource" id="Resource_3p18x"]
+script = ExtResource("2_bmfww")
+type = 2
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[node name="CollectibleItemTest" type="Node2D" unique_id=394070177]
+script = ExtResource("1_fdx8g")
+
+[node name="OnTheGround" type="Node2D" parent="." unique_id=726634965]
+y_sort_enabled = true
+
+[node name="CollectibleItem" parent="OnTheGround" unique_id=327991066 instance=ExtResource("1_4150e")]
+position = Vector2(488, 320)
+item = SubResource("Resource_kig3j")
+
+[node name="CollectibleItem2" parent="OnTheGround" unique_id=1434036424 instance=ExtResource("1_4150e")]
+position = Vector2(556, 336)
+item = SubResource("Resource_xa2ih")
+
+[node name="CollectibleItem3" parent="OnTheGround" unique_id=1308002417 instance=ExtResource("1_4150e")]
+position = Vector2(619, 318)
+item = SubResource("Resource_qfadu")
+
+[node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("3_bmfww")]
+position = Vector2(632, 413)
+sprite_frames = ExtResource("5_xa2ih")
+
+[node name="MemoryUnrevealed" parent="OnTheGround" unique_id=1303878678 instance=ExtResource("1_4150e")]
+unique_name_in_owner = true
+position = Vector2(686, 334)
+revealed = false
+item = SubResource("Resource_fdx8g")
+
+[node name="ImaginationUnrevealed" parent="OnTheGround" unique_id=971916377 instance=ExtResource("1_4150e")]
+unique_name_in_owner = true
+position = Vector2(754, 316)
+revealed = false
+item = SubResource("Resource_bmfww")
+
+[node name="SpiritUnrevealed" parent="OnTheGround" unique_id=669196187 instance=ExtResource("1_4150e")]
+unique_name_in_owner = true
+position = Vector2(815, 336)
+revealed = false
+item = SubResource("Resource_3p18x")
