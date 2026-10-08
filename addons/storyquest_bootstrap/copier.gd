@@ -283,4 +283,7 @@ func create_storyquest() -> void:
 		ProjectSettings.set(
 			ThreadbareProjectSettings.OPENING_QUEST, ResourceUID.path_to_uid(copied.resource_path)
 		)
+		ProjectSettings.set_setting(
+			"application/config/name", "Threadbare StoryQuest: " + copied.title
+		)
 		ProjectSettings.save()
