@@ -12,6 +12,10 @@ extends Resource
 ## lights should turn on gradually.
 signal lights_changed(lights_on: bool, immediate: bool)
 
+## Emitted when the player activates a checkpoint.
+@warning_ignore("unused_signal")
+signal checkpoint_activated(checkpoint: Area2D)
+
 ## The path to the current scene.
 @export var path: String
 
@@ -23,6 +27,9 @@ signal lights_changed(lights_on: bool, immediate: bool)
 
 ## Set when any introductory dialogue has been played for the current scene.
 @export var intro_dialogue_shown: bool
+
+## Dictionary to store arbitrary persistent scene facts, such as enemy states and consumed tiles.
+@export var facts: Dictionary = {}
 
 ## Current state of artificial lights. Set with [member set_lights_on]. This is
 ## not saved to disk since the lights are controlled programmatically.

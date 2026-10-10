@@ -131,6 +131,12 @@ func _ready() -> void:
 	idle_patrol_path = idle_patrol_path
 	state = state
 	_last_position = position
+	if (
+		GameState.scene != null
+		and not GameState.scene.checkpoint_activated.is_connected(_on_checkpoint_activated)
+	):
+		GameState.scene.checkpoint_activated.connect(_on_checkpoint_activated)
+	_load_state()
 
 	if Engine.is_editor_hint():
 		set_process(false)
@@ -203,3 +209,38 @@ func _on_player_capture_area_body_entered(body: Node2D) -> void:
 
 	var player := body as Player
 	player.defeat(true)
+
+
+## Responds to the checkpoint's activated signal and records position and path progress.
+func _on_checkpoint_activated(checkpoint: Checkpoint) -> void:
+	if not checkpoint.get("save_void_and_enemies"):
+		return
+
+	if GameState.scene == null or not "facts" in GameState.scene:
+		return
+
+	var save_key := str(get_path())
+	var data := {"position": global_position, "last_position": _last_position, "state": state}
+
+	if path_walk_behavior:
+		data["path_direction"] = path_walk_behavior.direction
+
+	GameState.scene.facts[save_key] = data
+
+
+## Reconstructs the enemy's exact position and path progress on scene load.
+## Prevents massive particle bursts caused by teleportation.
+func _load_state() -> void:
+	if GameState.scene == null or not "facts" in GameState.scene:
+		return
+
+	var save_key := str(get_path())
+	if GameState.scene.facts.has(save_key):
+		var data: Dictionary = GameState.scene.facts[save_key]
+
+		global_position = data["position"]
+		_last_position = data["last_position"]
+		state = data["state"]
+
+		if path_walk_behavior and data.has("path_direction"):
+			path_walk_behavior.direction = data["path_direction"]
