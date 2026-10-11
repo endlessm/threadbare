@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/scripts/bloque_deslizante.gd" id="1_bloque"]
+[ext_resource type="Texture2D" uid="uid://cont08r8f2lwe" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/environment/Grass_And_Sand_Tiles.png" id="2_bloque"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bloque"]
+size = Vector2(64, 64)
+
+[node name="BloqueDeslizante" type="Area2D"]
+z_index = 1
+collision_layer = 0
+collision_mask = 256
+script = ExtResource("1_bloque")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_bloque")
+hframes = 3
+frame = 2
+region_enabled = true
+region_rect = Rect2(640, 0, 192, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_bloque")
