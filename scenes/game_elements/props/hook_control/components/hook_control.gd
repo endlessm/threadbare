@@ -94,6 +94,10 @@ var _pointing_at_area: HookableArea
 
 func _unhandled_input(_event: InputEvent) -> void:
 	if _event is InputEventMouseMotion:
+		# Ignore the mouse motion that Godot emulates from touch, for example
+		# when dragging the virtual joystick.
+		if _event.device == InputEvent.DEVICE_ID_EMULATION:
+			return
 		mouse_aiming_timer.start()
 		var axis := get_global_mouse_position() - global_position
 		if not axis.is_zero_approx():
