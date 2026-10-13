@@ -86,6 +86,8 @@ func _on_detector_dialogo_body_entered(body: Node2D) -> void:
 
 
 func _comenzar_secuencia() -> void:
+	# La conversación con Lázaro empieza al perder el control: el HUD se desvanece hasta el final.
+	ReglaHilosHud.ocultar_en_animacion(true)
 	if jugador.has_method("take_control"):
 		jugador.take_control(self)
 
@@ -108,6 +110,7 @@ func _comenzar_secuencia() -> void:
 
 	if jugador.has_method("return_control"):
 		jugador.return_control(self)
+	ReglaHilosHud.ocultar_en_animacion(false)
 
 
 func _llevar_a_lino_al_punto_de_parada() -> void:

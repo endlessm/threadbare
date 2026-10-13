@@ -554,5 +554,8 @@ func _on_trigger_central_body_entered(body: Node2D) -> void:
 		return
 	acercamiento_elian_visto = true
 	golpes.protegido = true
+	# En la animación de ver a Elián el HUD se desvanece.
+	ReglaHilosHud.ocultar_en_animacion(true)
 	await efectos.acercamiento_a_elian(jugador, elian, _reir, _decir_como_archivero)
+	ReglaHilosHud.ocultar_en_animacion(false)
 	golpes.protegido = false

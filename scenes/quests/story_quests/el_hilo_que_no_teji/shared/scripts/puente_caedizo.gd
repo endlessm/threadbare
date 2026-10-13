@@ -35,6 +35,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if not visible or not jugador or lino_cayendo:
 		return
+	# Si el vacío ya lo atrapó, el juego lo reinicia solo: una segunda muerte repetiría la recarga.
+	if jugador.mode == Player.Mode.DEFEATED:
+		return
 	if _esta_en_pausa_por_cinematica(delta):
 		return
 	_vigilar_los_pies_de_lino()
@@ -97,6 +100,9 @@ func _matar_a_lino() -> void:
 		jugador.set_deferred("collision_layer", 0)
 
 	await _hundir_a_lino()
+	# Si el vacío atrapó a Lino mientras caía, esa muerte ya se encarga de recargar el nivel.
+	if jugador.mode == Player.Mode.DEFEATED:
+		return
 	_perder_una_vida()
 
 

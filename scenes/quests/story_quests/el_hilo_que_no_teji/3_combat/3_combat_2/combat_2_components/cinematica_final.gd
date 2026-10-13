@@ -69,6 +69,8 @@ func reproducir() -> void:
 	if is_instance_valid(elian):
 		await _desvanecer_a_elian()
 
+	# Desde aquí, hasta el final del nivel, el HUD global tampoco debe verse.
+	ReglaHilosHud.ocultar_en_animacion(true)
 	for capa in interfaz:
 		capa.visible = false
 	efectos.mostrar_puerta()

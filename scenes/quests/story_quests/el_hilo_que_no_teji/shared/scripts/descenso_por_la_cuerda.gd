@@ -77,6 +77,8 @@ func _process(_delta: float) -> void:
 
 func _bajar() -> void:
 	camara_suelta = 0.0
+	# Durante la bajada no se ve el HUD: reaparece cuando Lino ya puede moverse.
+	ReglaHilosHud.ocultar_en_animacion(true)
 	jugador.take_control(self)
 	jugador.velocity = Vector2.ZERO
 	var color_original := jugador.modulate
@@ -100,6 +102,7 @@ func _bajar() -> void:
 	if camara:
 		camara.position_smoothing_enabled = suavizado
 	jugador.return_control(self)
+	ReglaHilosHud.ocultar_en_animacion(false)
 	oscuridad.queue_free()
 	create_tween().tween_property(self, "camara_suelta", 1.0, DURACION_SOLTAR_CAMARA)
 	bajada_terminada.emit()
