@@ -6,9 +6,13 @@ extends CanvasLayer
 @onready var zone_name_display: PanelContainer = %ZoneNameDisplay
 @onready var zone_unlocked_display: CanvasLayer = %ZoneUnlockedDisplay
 @onready var input_hud: InputHud = %InputHud
+@onready var touch_controls: Control = %TouchControls
 
 
 func _ready() -> void:
+	DialogueManager.dialogue_started.connect(_on_dialogue_started)
+	DialogueManager.dialogue_ended.connect(_on_dialogue_ended)
+
 	GameState.cleared.connect(_on_gamestate_cleared)
 	_on_gamestate_cleared()
 
@@ -36,6 +40,23 @@ func _on_scene_changed() -> void:
 	story_quest_progress.player = player
 	story_quest_progress.sokoban_ruleset = sokoban_ruleset
 	story_quest_progress.update_visibility()
+	touch_controls.player = player
+	touch_controls.sokoban_ruleset = sokoban_ruleset
+	touch_controls.update_visibility()
+
+
+func _on_dialogue_started(_resource: DialogueResource) -> void:
+	input_hud.displaying_dialogue = true
+	input_hud.update_visibility()
+	touch_controls.displaying_dialogue = true
+	touch_controls.update_visibility()
+
+
+func _on_dialogue_ended(_resource: DialogueResource) -> void:
+	input_hud.displaying_dialogue = false
+	input_hud.update_visibility()
+	touch_controls.displaying_dialogue = false
+	touch_controls.update_visibility()
 
 
 ## Force a refresh of the StoryQuest progress.
