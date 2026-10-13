@@ -110,7 +110,11 @@ func set_volume(bus: String, volume_linear: float) -> void:
 
 
 func is_fullscreen() -> bool:
-	return DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
+	# On the web, Godot reports the non-exclusive fullscreen mode instead.
+	return (
+		DisplayServer.window_get_mode()
+		in [DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN, DisplayServer.WINDOW_MODE_FULLSCREEN]
+	)
 
 
 func set_fullscreen(toggled_on: bool) -> void:

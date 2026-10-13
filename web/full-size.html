@@ -174,7 +174,10 @@ const engine = new Engine(GODOT_CONFIG);
 		if (!document.fullscreenEnabled) {
 			return;
 		}
-		document.documentElement.requestFullscreen().then(() => {
+		// Make the canvas fullscreen, not the whole page, because Godot only
+		// tracks fullscreen changes of its own canvas. Otherwise the game
+		// wouldn't know it's fullscreen.
+		document.getElementById('canvas').requestFullscreen().then(() => {
 			// Browsers only allow locking the orientation in fullscreen. Safari
 			// and desktop browsers don't support it at all.
 			return screen.orientation?.lock?.('landscape').catch((err) => {

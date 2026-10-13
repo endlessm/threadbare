@@ -33,6 +33,9 @@ func _ready() -> void:
 	# another in the pause overlay. At most one is displayed at a time, so we can keep them in
 	# synch by reading the setting each time each toggle is displayed.
 	visibility_changed.connect(_refresh)
+	# Fullscreen can also change outside the game, for example when the player
+	# presses Esc in a browser. The window is resized when that happens.
+	get_window().size_changed.connect(_refresh)
 	_refresh()
 
 	toggled.connect(_on_toggled)
