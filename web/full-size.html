@@ -174,7 +174,13 @@ const engine = new Engine(GODOT_CONFIG);
 		if (!document.fullscreenEnabled) {
 			return;
 		}
-		document.documentElement.requestFullscreen().catch((err) => {
+		document.documentElement.requestFullscreen().then(() => {
+			// Browsers only allow locking the orientation in fullscreen. Safari
+			// and desktop browsers don't support it at all.
+			return screen.orientation?.lock?.('landscape').catch((err) => {
+				console.warn('Could not lock the orientation:', err);
+			});
+		}, (err) => {
 			console.warn('Could not enter fullscreen:', err);
 		});
 	}
