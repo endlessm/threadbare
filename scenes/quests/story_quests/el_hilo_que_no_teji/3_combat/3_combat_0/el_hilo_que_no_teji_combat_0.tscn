@@ -26,7 +26,6 @@
 [ext_resource type="SpriteFrames" uid="uid://crrr8ncum86vx" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/luto/luto.tres" id="21_1cww5"]
 [ext_resource type="Resource" uid="uid://1l7axwonsjxu" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/3_combat/3_combat_0/combat_0_components/el_hilo_que_no_teji_combat_lazaro.dialogue" id="21_vcrue"]
 [ext_resource type="Script" uid="uid://0gr6vi3gxhcp" path="res://scenes/game_elements/props/teleporter/teleporter_logic.gd" id="22_52rtq"]
-[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="22_fhvab"]
 [ext_resource type="SpriteFrames" uid="uid://dpxa0mr7ducgn" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/lazaro/elder.tres" id="22_wgx5w"]
 [ext_resource type="SpriteFrames" uid="uid://bykhtlt1hqrlk" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/tiles/el_hilo_que_no_teji_arbol_small.tres" id="25_0wq77"]
 [ext_resource type="SpriteFrames" uid="uid://c3wt75pg8da26" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/tiles/el_hilo_que_no_teji_arbol_rocas.tres" id="25_1abjp"]
@@ -35,7 +34,7 @@
 [ext_resource type="Shader" uid="uid://dn6w5kifgeusk" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/shaders/el_hilo_que_no_teji_sequence_puzzle.gdshader" id="29_12744"]
 [ext_resource type="Material" uid="uid://cht88adq0hk3f" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/materials/mat_mundo.tres" id="30_0wq77"]
 [ext_resource type="Material" uid="uid://bi6a51mic57oq" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/materials/mat_lino.tres" id="31_1abjp"]
-[ext_resource type="Script" uid="uid://d234e6xbur7bt" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/scripts/hud_stealth_progress.gd" id="99_hudsp"]
+[ext_resource type="Script" uid="uid://d234e6xbur7bt" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/scripts/regla_hilos_hud.gd" id="99_hudsp"]
 
 [sub_resource type="Animation" id="Animation_nlryc"]
 resource_name = "goal_completed"
@@ -777,14 +776,10 @@ dialogue = ExtResource("21_vcrue")
 autostart = false
 metadata/_custom_type_script = "uid://x1mxt6bmei2o"
 
-[node name="HUD" parent="." unique_id=1801379255 instance=ExtResource("22_fhvab")]
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1801379255]
 
-[node name="StoryQuestProgress" parent="HUD/HBoxContainer" parent_id_path=PackedInt32Array(1801379255, 1000774734) index="1" unique_id=373983898]
+[node name="ReglaHilosHud" type="Node" parent="HUD" unique_id=880102]
 script = ExtResource("99_hudsp")
-ocultar = false
-
-[node name="HelperContainer" parent="HUD/HBoxContainer/StoryQuestProgress/HBoxContainer" parent_id_path=PackedInt32Array(1801379255, 373983898, 2124538819) index="0" unique_id=1334612586]
-visible = false
 
 [node name="SaturacionManager" type="Node" parent="." unique_id=961721989 groups=["ignorar_shader"]]
 script = ExtResource("29_2ry4a")
@@ -843,5 +838,3 @@ offset_bottom = 588.0
 [editable path="OnTheGround/ArbolesDerecha/ArbolRocasI2"]
 [editable path="OnTheGround/ArbolesDerecha/ArbolI"]
 [editable path="OnTheGround/ArbolesDerecha/ArbolRocasI"]
-[editable path="HUD"]
-[editable path="HUD/HBoxContainer/StoryQuestProgress"]

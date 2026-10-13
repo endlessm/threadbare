@@ -37,9 +37,8 @@
 [ext_resource type="SpriteFrames" uid="uid://b3c54mgad0o45" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/shadow_04/el_hilo_que_no_teji_shadow04_enemy.tres" id="26_w06gk"]
 [ext_resource type="SpriteFrames" uid="uid://crrr8ncum86vx" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/entities/luto/luto.tres" id="27_4t4cg"]
 [ext_resource type="Shader" uid="uid://dn6w5kifgeusk" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/shaders/el_hilo_que_no_teji_sequence_puzzle.gdshader" id="32_n2hsx"]
-[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="32_ulphp"]
 [ext_resource type="FontFile" uid="uid://c3bb7lmvdqc5e" path="res://assets/third_party/fonts/jersey/Jersey20-Regular.ttf" id="33_dqnqs"]
-[ext_resource type="Script" uid="uid://d234e6xbur7bt" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/scripts/hud_stealth_progress.gd" id="33_eenpu"]
+[ext_resource type="Script" uid="uid://d234e6xbur7bt" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/scripts/regla_hilos_hud.gd" id="33_eenpu"]
 [ext_resource type="PackedScene" uid="uid://cahsamhamvuqc" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/components/el_hilo_que_no_teji_sign.tscn" id="33_rtdyd"]
 [ext_resource type="Script" uid="uid://f56505k8qm17" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/scripts/saturacion_manager.gd" id="33_wv1mv"]
 [ext_resource type="Script" uid="uid://2ipchillwtnj" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/scripts/contador_hilos_label.gd" id="34_eenpu"]
@@ -934,17 +933,21 @@ offset_top = -5603.0
 offset_right = 2912.0
 offset_bottom = 2755.0
 
-[node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("32_ulphp")]
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1426591993]
 
-[node name="StoryQuestProgress" parent="HUD/HBoxContainer" parent_id_path=PackedInt32Array(1426591993, 1000774734) index="1" unique_id=373983898]
+[node name="ReglaHilosHud" type="Node" parent="HUD" unique_id=880100]
 script = ExtResource("33_eenpu")
 
 [node name="Label" type="Label" parent="HUD" unique_id=1524888008]
 unique_name_in_owner = true
-offset_left = 1046.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -234.0
 offset_top = 70.0
-offset_right = 1086.0
+offset_right = -194.0
 offset_bottom = 93.0
+grow_horizontal = 0
 label_settings = SubResource("LabelSettings_cxfm2")
 horizontal_alignment = 1
 script = ExtResource("34_eenpu")
@@ -1000,4 +1003,3 @@ text = "“Pasa antes de que vuelvan.”"
 [editable path="CollectibleItem"]
 [editable path="CollectibleItem2"]
 [editable path="CollectibleItem3"]
-[editable path="HUD"]

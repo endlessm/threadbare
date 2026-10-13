@@ -29,7 +29,6 @@
 [ext_resource type="PackedScene" uid="uid://ymcjwxrqt4e4" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/musical_rock.tscn" id="20_ksd2f"]
 [ext_resource type="AudioStream" uid="uid://byi3b8aywp6py" path="res://assets/third_party/nepalese_hand_bells/handBells-a3.ogg" id="21_hejod"]
 [ext_resource type="AudioStream" uid="uid://shckj7dsimyt" path="res://assets/third_party/nepalese_hand_bells/handBells-g#4.ogg" id="24_2n7s7"]
-[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="24_p5ybv"]
 [ext_resource type="SpriteFrames" uid="uid://blhuke03t517u" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign_blank.tres" id="26_urbuv"]
 [ext_resource type="Script" uid="uid://b1evjpog13fgf" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/2_sequence_puzzle/sequence_puzzle_components/hint_sign_pausa.gd" id="27_5sbkm"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="28_roplb"]
@@ -54,7 +53,7 @@
 [ext_resource type="PackedScene" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/components/el_hilo_que_no_teji_sign_firma.tscn" id="91_cartel_firma"]
 [ext_resource type="Texture2D" uid="uid://lw852yagnv86" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/assets/images/environment/fragmento_hilo_amarillo.png" id="97_icono_hilo"]
 [ext_resource type="Script" uid="uid://h34gnkayqtmj" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/2_sequence_puzzle/sequence_puzzle_components/cinematica_llegada_del_vacio.gd" id="98_llegada_vacio"]
-[ext_resource type="Script" uid="uid://d234e6xbur7bt" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/scripts/hud_stealth_progress.gd" id="99_hudsp"]
+[ext_resource type="Script" uid="uid://d234e6xbur7bt" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/scripts/regla_hilos_hud.gd" id="99_hudsp"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_05yrb"]
 vertices = PackedVector2Array(3182.4297, 2989.211, 1670.1328, 5143.5313, -1245.6875, 4885.7813, -1511.2266, 1522.2734, 1665.1016, 1301.4609, 3337.7422, 1906.0703, 2578.7188, -154.53125, 1991.0391, -130.67188, 2259.8438, -371.32813)
@@ -851,21 +850,21 @@ offset_top = -1706.0
 offset_right = 4518.0
 offset_bottom = 6652.0
 
-[node name="HUD" parent="." unique_id=1953354605 instance=ExtResource("24_p5ybv")]
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1953354605]
 
-[node name="StoryQuestProgress" parent="HUD/HBoxContainer" parent_id_path=PackedInt32Array(1953354605, 1000774734) index="1" unique_id=373983898]
+[node name="ReglaHilosHud" type="Node" parent="HUD" unique_id=880101]
 script = ExtResource("99_hudsp")
-ocultar = false
-
-[node name="HelperContainer" parent="HUD/HBoxContainer/StoryQuestProgress/HBoxContainer" parent_id_path=PackedInt32Array(1953354605, 373983898, 2124538819) index="0" unique_id=1334612586]
-visible = false
 
 [node name="Label" type="Label" parent="HUD" unique_id=1190354533]
 unique_name_in_owner = true
-offset_left = 1050.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -230.0
 offset_top = 71.0
-offset_right = 1082.0
+offset_right = -198.0
 offset_bottom = 94.0
+grow_horizontal = 0
 label_settings = SubResource("LabelSettings_fnr3q")
 horizontal_alignment = 1
 script = ExtResource("36_x4yb7")
@@ -920,5 +919,3 @@ shape = SubResource("RectangleShape2D_llegada_vacio")
 [editable path="OnTheGround/GuardiaI3_01"]
 [editable path="OnTheGround/GuardiaI3_02"]
 [editable path="OnTheGround/GuardiaI3_03"]
-[editable path="HUD"]
-[editable path="HUD/HBoxContainer/StoryQuestProgress"]
