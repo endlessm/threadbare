@@ -17,7 +17,7 @@ var _input_axis: float
 var _is_auto_scrolling: bool = false
 var _current_scroll_pos: float = 0.0
 
-@onready var back_button: Button = %BackButton
+#@onready var back_button: Button = %BackButton
 @onready var background_anim_player: AnimationPlayer = %AnimationPlayer
 @onready var scroll_container: ScrollContainer = %ScrollContainer
 @onready var scroll_content: VBoxContainer = %ScrollContent
@@ -53,6 +53,9 @@ func _process(delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"ui_cancel"):
+		back.emit()
+
 	if event is InputEventMouseButton:
 		if event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 			_is_auto_scrolling = false
@@ -88,14 +91,10 @@ func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
 func _on_visibility_changed() -> void:
 	set_process_input(visible)
 	if visible:
-		back_button.grab_focus()
+		#back_button.grab_focus()
 		start_credits_sequence()
 	else:
 		_stop_credits_sequence()
-
-
-func _on_back_button_pressed() -> void:
-	back.emit()
 
 
 func _stop_credits_sequence() -> void:
