@@ -170,6 +170,15 @@ const engine = new Engine(GODOT_CONFIG);
 		});
 	}
 
+	function requestFullscreen() {
+		if (!document.fullscreenEnabled) {
+			return;
+		}
+		document.documentElement.requestFullscreen().catch((err) => {
+			console.warn('Could not enter fullscreen:', err);
+		});
+	}
+
 	function displayFailureNotice(err) {
 		console.error(err);
 		if (err instanceof Error) {
@@ -240,8 +249,14 @@ const engine = new Engine(GODOT_CONFIG);
 		]).then(() => {
 			return new Promise((resolve) => {
 				setStatusMode('ready');
-				// Wait for a click anywhere on the page, then resolve the promise.
-				statusOverlay.addEventListener('click', resolve, {once: true});
+				// Wait for a click anywhere on the page, then resolve the
+				// promise. A tap on a touchscreen fires a click too. Browsers
+				// only allow sound and fullscreen after one, so this is also
+				// when fullscreen is requested.
+				statusOverlay.addEventListener('click', () => {
+					requestFullscreen();
+					resolve();
+				}, {once: true});
 			});
 		}).then(() => {
 			return engine.start();
