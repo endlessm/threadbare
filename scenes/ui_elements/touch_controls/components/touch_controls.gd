@@ -17,6 +17,12 @@ var player_hook: PlayerHook
 
 func _ready() -> void:
 	visibility_changed.connect(_on_visibility_changed)
+	# TouchScreenButton doesn't mark its touches as handled, so the game would
+	# also get them. For example, tapping the interact button would throw the
+	# grappling hook too.
+	for button: TouchScreenButton in [interact_button, repel_button]:
+		button.pressed.connect(get_viewport().set_input_as_handled)
+		button.released.connect(get_viewport().set_input_as_handled)
 	Transitions.started.connect(update_visibility)
 	Transitions.finished.connect(update_visibility)
 

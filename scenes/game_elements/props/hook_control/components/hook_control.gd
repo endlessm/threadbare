@@ -15,6 +15,9 @@ extends Node2D
 ## Additionally, the mouse movement can also be used for aiming,
 ## but the mouse not considered the primary input.
 ## [br][br]
+## On touchscreens, touching the screen aims towards the touch position and
+## throws, like clicking with the mouse.
+## [br][br]
 ## Aiming is effectively rotating the [member ray_cast_2d].
 ## [br][br]
 ## Visually it displays the [member sprite_2d] texture pointing in the
@@ -77,6 +80,9 @@ var _hook_angle: float
 
 var _pointing_at_area: HookableArea
 
+## The index of the finger touching the screen to aim and throw, or -1.
+var _touch_index: int = -1
+
 ## The visual representation of the [member ray_cast_2d] direction.
 ## It also indicates if the ray is hitting a [HookableArea] by displaying
 ## the sprite solid, or semitransparent if not.
@@ -93,16 +99,16 @@ var _pointing_at_area: HookableArea
 
 
 func _unhandled_input(_event: InputEvent) -> void:
+	if _event is InputEventScreenTouch or _event is InputEventScreenDrag:
+		_handle_touch(_event)
+		return
+
 	if _event is InputEventMouseMotion:
 		# Ignore the mouse motion that Godot emulates from touch, for example
 		# when dragging the virtual joystick.
 		if _event.device == InputEvent.DEVICE_ID_EMULATION:
 			return
-		mouse_aiming_timer.start()
-		var axis := get_global_mouse_position() - global_position
-		if not axis.is_zero_approx():
-			_hook_angle = axis.angle()
-			_hook_angle_set = true
+		_aim_at(get_global_mouse_position())
 		return
 
 	# When aiming with keyboard, do not change the hook angle immediately if one of these actions
@@ -134,6 +140,37 @@ func _unhandled_input(_event: InputEvent) -> void:
 		pressing_throw_action = false
 		throw_failed_while_pressing = false
 		return
+
+
+## Touching the screen aims towards the touch position and throws, like
+## clicking with the mouse. Dragging the finger keeps aiming. Only one finger
+## is followed at a time.
+func _handle_touch(event: InputEvent) -> void:
+	if event is InputEventScreenDrag:
+		if event.index == _touch_index:
+			_aim_at(_screen_to_global(event.position))
+	elif event.pressed:
+		if _touch_index != -1:
+			return
+		_touch_index = event.index
+		_aim_at(_screen_to_global(event.position))
+		pressing_throw_action = true
+	elif event.index == _touch_index:
+		_touch_index = -1
+		pressing_throw_action = false
+		throw_failed_while_pressing = false
+
+
+func _screen_to_global(screen_position: Vector2) -> Vector2:
+	return get_canvas_transform().affine_inverse() * screen_position
+
+
+func _aim_at(target: Vector2) -> void:
+	mouse_aiming_timer.start()
+	var axis := target - global_position
+	if not axis.is_zero_approx():
+		_hook_angle = axis.angle()
+		_hook_angle_set = true
 
 
 func _update_hook_angle() -> void:
@@ -222,6 +259,8 @@ func _set_state(new_state: State) -> void:
 			rotation = 0
 			pressing_throw_action = false
 			throw_failed_while_pressing = false
+			# A disabled control doesn't get the touch release.
+			_touch_index = -1
 			clear_pointing_at_area()
 		State.AIMING_PAUSED:
 			clear_pointing_at_area()
