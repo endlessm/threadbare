@@ -6,6 +6,13 @@ extends Control
 @export var sokoban_ruleset: RuleEngine
 @export var displaying_dialogue: bool
 
+var player_interaction: PlayerInteraction
+var player_repel: PlayerRepel
+var player_hook: PlayerHook
+
+@onready var interact_button: TouchScreenButton = %InteractButton
+@onready var repel_button: TouchScreenButton = %RepelButton
+
 
 func _ready() -> void:
 	Transitions.started.connect(update_visibility)
@@ -26,3 +33,34 @@ func update_visibility() -> void:
 		and not displaying_dialogue
 		and (player or sokoban_ruleset)
 	)
+
+	if player:
+		player_interaction = player.get("player_interaction") as PlayerInteraction
+		if (
+			player_interaction
+			and not player_interaction.interact_action_changed.is_connected(_update_player_state)
+		):
+			player_interaction.interact_action_changed.connect(_update_player_state)
+
+		player_repel = player.get("player_repel") as PlayerRepel
+		if player_repel and not player_repel.visibility_changed.is_connected(_update_player_state):
+			player_repel.visibility_changed.connect(_update_player_state)
+
+		player_hook = player.get("player_hook") as PlayerHook
+		if player_hook and not player_hook.visibility_changed.is_connected(_update_player_state):
+			player_hook.visibility_changed.connect(_update_player_state)
+
+		_update_player_state()
+
+
+func _update_player_state() -> void:
+	if player_interaction:
+		var action := player_interaction.get_interact_action()
+		interact_button.visible = not action.is_empty()
+	else:
+		interact_button.visible = false
+
+	repel_button.visible = player_repel and player_repel.visible
+
+	# throw_input_hint.visible = player_hook and player_hook.visible
+	# aim_input_hint.visible = player_hook and player_hook.visible

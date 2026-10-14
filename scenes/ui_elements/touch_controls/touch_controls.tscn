@@ -1,8 +1,12 @@
 [gd_scene format=3 uid="uid://ba3fvp0yravi4"]
 
-[ext_resource type="Texture2D" uid="uid://ijhmisl4foqa" path="res://assets/first_party/user_interface/touch-button.png" id="1_1t1pq"]
 [ext_resource type="Script" uid="uid://dyyshnmovujje" path="res://scenes/ui_elements/touch_controls/components/touch_controls.gd" id="1_mjavl"]
-[ext_resource type="Texture2D" uid="uid://dm8jbpjptaw00" path="res://assets/first_party/user_interface/touch-button_pressed.png" id="2_mjavl"]
+[ext_resource type="Texture2D" uid="uid://djsqefyd16tyg" path="res://assets/first_party/user_interface/pause-touch-button.png" id="2_pt1mb"]
+[ext_resource type="Texture2D" uid="uid://dv5gfkbecnvas" path="res://assets/first_party/user_interface/pause-touch-button_pressed.png" id="3_qk0o5"]
+[ext_resource type="Texture2D" uid="uid://byra1c7yc54mg" path="res://assets/first_party/user_interface/repel-touch-button.png" id="4_pk8s8"]
+[ext_resource type="Texture2D" uid="uid://cttum8v2mb62v" path="res://assets/first_party/user_interface/repel-touch-button_pressed.png" id="5_dtb3f"]
+[ext_resource type="Texture2D" uid="uid://ns6755757cje" path="res://assets/first_party/user_interface/interact-touch-button.png" id="6_pt1mb"]
+[ext_resource type="Texture2D" uid="uid://iwooycswl1bb" path="res://assets/first_party/user_interface/interact-touch-button_pressed.png" id="7_qk0o5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fhnvg"]
 size = Vector2(128, 128)
@@ -15,6 +19,34 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_mjavl")
+metadata/_edit_horizontal_guides_ = [545.0]
+
+[node name="Control" type="Control" parent="." unique_id=2006198045]
+custom_minimum_size = Vector2(148, 148)
+layout_mode = 1
+anchors_preset = 0
+offset_right = 156.0
+offset_bottom = 148.0
+size_flags_horizontal = 8
+size_flags_vertical = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="Control" unique_id=83058655]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="Control/CenterContainer" unique_id=1553460435]
+layout_mode = 2
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Control/CenterContainer/Control" unique_id=1825489206]
+position = Vector2(-64, -64)
+texture_normal = ExtResource("2_pt1mb")
+texture_pressed = ExtResource("3_qk0o5")
+shape = SubResource("RectangleShape2D_fhnvg")
+action = "pause"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1944684301]
 layout_mode = 1
@@ -24,9 +56,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VirtualJoystick" type="VirtualJoystick" parent="HBoxContainer" unique_id=1528042620]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=621688913]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.6
+
+[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=1054363867]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VirtualJoystick" type="VirtualJoystick" parent="HBoxContainer/VBoxContainer" unique_id=1528042620]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+joystick_mode = 1
 joystick_size = 192.0
 tip_size = 64.0
 action_left = &"move_left"
@@ -39,83 +82,46 @@ custom_minimum_size = Vector2(148, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Control" unique_id=123091378]
+[node name="Control" type="Control" parent="HBoxContainer/Control" unique_id=1744849055]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
+offset_left = -216.0
+offset_top = -175.0
+offset_right = -216.0
+offset_bottom = -175.0
+grow_horizontal = 0
+grow_vertical = 0
 
-[node name="Control" type="Control" parent="HBoxContainer/Control/VBoxContainer" unique_id=2006198045]
-custom_minimum_size = Vector2(148, 0)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 3
-
-[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer/Control/VBoxContainer/Control" unique_id=83058655]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Control" type="Control" parent="HBoxContainer/Control/VBoxContainer/Control/CenterContainer" unique_id=1553460435]
-layout_mode = 2
-
-[node name="TouchScreenButton" type="TouchScreenButton" parent="HBoxContainer/Control/VBoxContainer/Control/CenterContainer/Control" unique_id=1825489206]
+[node name="RepelButton" type="TouchScreenButton" parent="HBoxContainer/Control/Control" unique_id=675930575]
+unique_name_in_owner = true
 position = Vector2(-64, -64)
-texture_normal = ExtResource("1_1t1pq")
-texture_pressed = ExtResource("2_mjavl")
-shape = SubResource("RectangleShape2D_fhnvg")
-action = "pause"
-
-[node name="Control2" type="Control" parent="HBoxContainer/Control/VBoxContainer" unique_id=212784272]
-custom_minimum_size = Vector2(148, 0)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 3
-
-[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer/Control/VBoxContainer/Control2" unique_id=1274423800]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Control" type="Control" parent="HBoxContainer/Control/VBoxContainer/Control2/CenterContainer" unique_id=1744849055]
-layout_mode = 2
-
-[node name="TouchScreenButton" type="TouchScreenButton" parent="HBoxContainer/Control/VBoxContainer/Control2/CenterContainer/Control" unique_id=675930575]
-position = Vector2(-64, -64)
-texture_normal = ExtResource("1_1t1pq")
-texture_pressed = ExtResource("2_mjavl")
+texture_normal = ExtResource("4_pk8s8")
+texture_pressed = ExtResource("5_dtb3f")
 shape = SubResource("RectangleShape2D_fhnvg")
 action = "repel"
 
-[node name="Control3" type="Control" parent="HBoxContainer/Control/VBoxContainer" unique_id=911935960]
-custom_minimum_size = Vector2(148, 0)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 3
-
-[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer/Control/VBoxContainer/Control3" unique_id=677807753]
+[node name="Control2" type="Control" parent="HBoxContainer/Control" unique_id=645350051]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -143.0
+offset_top = -343.0
+offset_right = -143.0
+offset_bottom = -343.0
+grow_horizontal = 0
+grow_vertical = 0
 
-[node name="Control" type="Control" parent="HBoxContainer/Control/VBoxContainer/Control3/CenterContainer" unique_id=645350051]
-layout_mode = 2
-
-[node name="TouchScreenButton" type="TouchScreenButton" parent="HBoxContainer/Control/VBoxContainer/Control3/CenterContainer/Control" unique_id=1674418296]
+[node name="InteractButton" type="TouchScreenButton" parent="HBoxContainer/Control/Control2" unique_id=1674418296]
+unique_name_in_owner = true
 position = Vector2(-64, -64)
-texture_normal = ExtResource("1_1t1pq")
-texture_pressed = ExtResource("2_mjavl")
+texture_normal = ExtResource("6_pt1mb")
+texture_pressed = ExtResource("7_qk0o5")
 shape = SubResource("RectangleShape2D_fhnvg")
 action = "interact"
