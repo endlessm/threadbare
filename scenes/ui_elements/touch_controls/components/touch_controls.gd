@@ -85,7 +85,4 @@ func _update_player_state() -> void:
 	else:
 		interact_button.visible = false
 
-	repel_button.visible = player_repel and player_repel.visible
-
-	# throw_input_hint.visible = player_hook and player_hook.visible
-	# aim_input_hint.visible = player_hook and player_hook.visible
+	repel_button.visible = player_repel and player_repel.visible and not interact_button.visible
