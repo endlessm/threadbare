@@ -25,7 +25,7 @@ const float LAYERS_GAIN = 1.6;
 const float FOG_START = 0.55;
 const float FOG_FULL = 0.75;
 
-varying vec2 world_position;
+varying highp vec2 world_position;
 
 void vertex() {
 	world_position = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
@@ -33,13 +33,13 @@ void vertex() {
 
 void fragment() {
 	vec2 stretch = vec2(stretch_factor, 1.0);
-	vec2 base_uv = (world_position * WORLD_TO_NOISE * density) / stretch;
+	highp vec2 base_uv = (world_position * WORLD_TO_NOISE * density) / stretch;
 
-	vec2 wind_1 = wind_direction * (TIME * speed);
-	vec2 wind_2 = wind_direction * (TIME * speed * SECOND_LAYER_SPEED) + SECOND_LAYER_OFFSET;
+	highp vec2 wind_1 = wind_direction * (TIME * speed);
+	highp vec2 wind_2 = wind_direction * (TIME * speed * SECOND_LAYER_SPEED) + SECOND_LAYER_OFFSET;
 
-	float layer1 = fbm(base_uv + wind_1);
-	float layer2 = fbm(base_uv * SECOND_LAYER_SCALE + wind_2);
+	highp float layer1 = fbm(base_uv + wind_1);
+	highp float layer2 = fbm(base_uv * SECOND_LAYER_SCALE + wind_2);
 
 	// El contraste alto deja pasillos transparentes entre las rocas.
 	float final_shredded_fog = smoothstep(FOG_START, FOG_FULL, layer1 * layer2 * LAYERS_GAIN);

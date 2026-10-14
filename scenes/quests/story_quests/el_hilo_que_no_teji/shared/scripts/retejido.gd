@@ -11,10 +11,10 @@ const TRAMA_DE_TELA: Texture2D = preload("uid://drlsbgxh5e6vv")
 const DURACION: float = 3.0
 const DURACION_BREVE: float = 0.5
 const META_TINTE: StringName = &"retejido_tinte_original"
-const RAIZ_DEL_QUEST: String = "res://scenes/quests/story_quests/el_hilo_que_no_teji/"
-const CARPETA_SONIDOS: String = RAIZ_DEL_QUEST + "shared/assets/sounds/enviroment/"
-const RUTA_SONIDO_TABLON: String = CARPETA_SONIDOS + "puente_tablon.wav"
-const RUTA_SONIDO_CAIDA: String = CARPETA_SONIDOS + "puente_cae.wav"
+## puente_tablon.wav
+const SONIDO_TABLON: AudioStream = preload("uid://dlqcif7isw0kv")
+## puente_cae.wav
+const SONIDO_CAIDA: AudioStream = preload("uid://btid3mejxbt67")
 const VOLUMEN_TABLON_DB: float = -7.0
 const TONO_TABLON := Vector2(0.92, 1.08)
 const DISTANCIA_MAXIMA_DEL_SONIDO: float = 4000.0
@@ -190,7 +190,7 @@ static func _restaurar_celdas(capa: TileMapLayer, celdas: Dictionary) -> void:
 static func _sonar_tablon(capa: TileMapLayer, franja: Array) -> void:
 	if franja.is_empty():
 		return
-	var sonido := _crear_sonido(capa, RUTA_SONIDO_TABLON)
+	var sonido := _crear_sonido(capa, SONIDO_TABLON)
 	if not sonido:
 		return
 	sonido.pitch_scale = randf_range(TONO_TABLON.x, TONO_TABLON.y)
@@ -202,18 +202,16 @@ static func _sonar_tablon(capa: TileMapLayer, franja: Array) -> void:
 static func sonar_caida(capa: TileMapLayer) -> void:
 	if not is_instance_valid(capa):
 		return
-	var sonido := _crear_sonido(capa, RUTA_SONIDO_CAIDA)
+	var sonido := _crear_sonido(capa, SONIDO_CAIDA)
 	if not sonido:
 		return
 	sonido.global_position = TileMapMaskBounds.get_world_bounds(capa).get_center()
 	sonido.play()
 
 
-static func _crear_sonido(capa: TileMapLayer, ruta: String) -> AudioStreamPlayer2D:
-	if not ResourceLoader.exists(ruta):
-		return null
+static func _crear_sonido(capa: TileMapLayer, stream: AudioStream) -> AudioStreamPlayer2D:
 	var sonido := AudioStreamPlayer2D.new()
-	sonido.stream = load(ruta)
+	sonido.stream = stream
 	sonido.bus = &"SFX"
 	sonido.max_distance = DISTANCIA_MAXIMA_DEL_SONIDO
 	capa.get_tree().current_scene.add_child(sonido)

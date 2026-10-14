@@ -41,13 +41,19 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if material_mundo:
 		var saturacion := minf(ElHiloQueNoTejiState.world_saturation / 100.0, tope_saturacion_mundo)
-		material_mundo.set_shader_parameter("saturation", saturacion)
-		material_mundo.set_shader_parameter("darkness_factor", BRILLO_DEL_MUNDO)
+		_poner(material_mundo, "saturation", saturacion)
+		_poner(material_mundo, "darkness_factor", BRILLO_DEL_MUNDO)
 
 	if material_jugador:
 		var saturacion_lino := ElHiloQueNoTejiState.player_saturation / 100.0
-		material_jugador.set_shader_parameter("saturation", saturacion_lino)
-		material_jugador.set_shader_parameter("darkness_factor", BRILLO_DE_LINO)
+		_poner(material_jugador, "saturation", saturacion_lino)
+		_poner(material_jugador, "darkness_factor", BRILLO_DE_LINO)
+
+
+## Cambiar un parámetro de un material compartido cuesta aunque el valor sea el mismo.
+func _poner(material: ShaderMaterial, parametro: StringName, valor: float) -> void:
+	if material.get_shader_parameter(parametro) != valor:
+		material.set_shader_parameter(parametro, valor)
 
 
 func onda_de_hilo(origen: Vector2, color: Color = Color.WHITE) -> void:

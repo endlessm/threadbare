@@ -4,6 +4,7 @@ extends Node2D
 ## Lógica del nivel 2: puentes, puzzles y Luto.
 
 const AyudasDeEscena = preload("../../shared/scripts/ayudas_de_escena.gd")
+const LuzDeRoca = preload("../../shared/scripts/luz_de_roca.gd")
 const CinematicaVacio = preload("cinematica_llegada_del_vacio.gd")
 const IslaDevorada = preload("cinematica_isla_devorada.gd")
 const ROCAS_APAGADAS: Shader = preload(
@@ -72,6 +73,7 @@ func _ready() -> void:
 
 	_preparar_puentes()
 	_barajar_puzzles()
+	_encender_rocas_al_sonar()
 	_marcar_fogatas()
 	add_child(IslaDevorada.new())
 	_pintar_haces_de_luz()
@@ -219,6 +221,16 @@ func _barajar_puzzles() -> void:
 			var clave := String(paso.get_path())
 			paso.sequence = _orden_al_azar(rocas, paso.sequence.size(), ultimo_orden.get(clave, []))
 			ultimo_orden[clave] = _nombres_de(paso.sequence)
+
+
+func _encender_rocas_al_sonar() -> void:
+	for numero in range(1, CANTIDAD_PUENTES + 1):
+		var puzzle := get_node_or_null(RUTA_PUZZLE % numero) as SequencePuzzle
+		if not puzzle:
+			continue
+		var luz := LuzDeRoca.new()
+		add_child(luz)
+		luz.vigilar(puzzle)
 
 
 func _orden_al_azar(

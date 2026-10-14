@@ -20,4 +20,6 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	var fragmentos_en_este_nivel := ElHiloQueNoTejiState.hilos_recogidos - base_hilos_nivel
 	var mostrados := clampi(fragmentos_en_este_nivel, 0, HILOS_POR_NIVEL)
-	text = "%d/%d" % [mostrados, HILOS_POR_NIVEL]
+	var nuevo_texto := "%d/%d" % [mostrados, HILOS_POR_NIVEL]
+	if text != nuevo_texto:
+		text = nuevo_texto

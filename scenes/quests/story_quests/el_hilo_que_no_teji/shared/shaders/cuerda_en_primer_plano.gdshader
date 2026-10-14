@@ -10,20 +10,20 @@ shader_type canvas_item;
 // un patrón), y también lo que tapa el centro, donde está Lino.
 // Se usa sobre un ColorRect a pantalla completa.
 
-// Dónde toca el suelo, en píxeles de pantalla, y el tamaño de la pantalla.
-uniform vec2 ancla = vec2(640.0, 360.0);
+// El tamaño de la pantalla, en píxeles.
 uniform vec2 pantalla = vec2(1280.0, 720.0);
-// El punto de la pantalla que queda justo debajo de la cámara (su centro,
-// salvo durante la bajada, en que la cámara va pegada a la cuerda).
-uniform vec2 bajo_la_camara = vec2(640.0, 360.0);
+// Los puntos de la cuerda en pantalla, de abajo hacia arriba. Los calcula el script
+// (descenso_por_la_cuerda.gd) una vez por cuadro, en vez de repetir el cálculo en cada
+// píxel. El tamaño es TRAMOS + 1.
+uniform vec2 puntos[29];
+// Rectángulo de pantalla (mínimo x, mínimo y, máximo x, máximo y) donde puede haber
+// cuerda. Fuera de él no se calcula nada.
+uniform vec4 caja = vec4(-1000000.0, -1000000.0, 1000000.0, 1000000.0);
 // Zoom de la cámara (píxeles de pantalla por píxel del mundo).
 uniform float zoom = 1.0;
 // Hasta qué altura se ve la cuerda, como parte de la altura de la cámara
 // (cuanto más cerca de 1, más enorme llega a verse antes de salir de cuadro).
 uniform float altura_maxima : hint_range(0.1, 0.97) = 0.93;
-// La cuerda no cuelga del todo recta: arriba está corrida hacia el norte
-// (en píxeles del mundo). Así nunca apunta justo a la cámara.
-uniform float inclinacion = 45.0;
 // Medio ancho de la cuerda en el suelo, en píxeles del mundo.
 uniform float grosor = 6.0;
 // Hace correr las hebras (para la bajada).
@@ -41,10 +41,6 @@ uniform vec4 color_contorno : source_color = vec4(0.1, 0.09, 0.1, 1.0);
 
 const int TRAMOS = 28;
 const float VUELTAS_DE_HEBRA = 26.0;
-// La cuerda se mece: velocidad, desfase por altura y amplitud (píxeles del mundo).
-const float MECIDO_VELOCIDAD = 1.1;
-const float MECIDO_DESFASE = 4.0;
-const float MECIDO_AMPLITUD = 5.0;
 // Hebras: cuánto se tuercen con el costado, y dónde empieza la sombra (en la hebra y
 // a lo ancho, de -1 a 1) y el contorno.
 const float TORSION_DE_HEBRA = 0.55;
@@ -82,27 +78,22 @@ float aumento(float u) {
 	return 1.0 / (1.0 - altura_maxima * u);
 }
 
-// Dónde cae en la pantalla el punto de la cuerda que está a la altura u.
-vec2 en_pantalla(float u) {
-	vec2 centro = bajo_la_camara;
-	float mecido = sin(TIME * MECIDO_VELOCIDAD + u * MECIDO_DESFASE) * MECIDO_AMPLITUD * u;
-	vec2 suelo = ancla + vec2(mecido, -inclinacion * u) * zoom;
-	return centro + (suelo - centro) * aumento(u);
-}
-
 void fragment() {
 	vec2 punto = UV * pantalla;
+	if (punto.x < caja.x || punto.y < caja.y || punto.x > caja.z || punto.y > caja.w) {
+		discard;
+	}
 	// Se busca qué tramo de la cuerda pasa por este píxel. Si pasan varios,
 	// gana el más alto, que es el que está más cerca de la cámara.
 	float altura = -1.0;
 	float lado = 0.0;
-	vec2 desde = en_pantalla(0.0);
+	vec2 desde = puntos[0];
 	float u_desde = 0.0;
 	for (int i = 1; i <= TRAMOS; i++) {
 		// Más tramos arriba, donde la cuerda crece más rápido.
 		float t = float(i) / float(TRAMOS);
 		float u_hasta = 1.0 - (1.0 - t) * (1.0 - t);
-		vec2 hasta = en_pantalla(u_hasta);
+		vec2 hasta = puntos[i];
 		vec2 tramo = hasta - desde;
 		float largo2 = max(dot(tramo, tramo), 0.0001);
 		float f = clamp(dot(punto - desde, tramo) / largo2, 0.0, 1.0);

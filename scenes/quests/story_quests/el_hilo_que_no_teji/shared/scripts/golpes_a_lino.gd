@@ -4,6 +4,11 @@ class_name GolpesALino
 extends Node
 ## Lo que le pasa a Lino cuando lo golpea un proyectil en los niveles 3.1 y 3.2.
 
+## Emitida cuando un proyectil marcado como inofensivo toca a Lino.
+signal golpe_inofensivo
+## Emitida cuando un proyectil le hace daño a Lino.
+signal golpe_con_dano
+
 const FILTRO_GRIS: Shader = preload("uid://gg8y00eu162d")
 const FRASE_PRIMER_GOLPE: String = (
 	"Si sigo cargando con culpa ajena…\n" + "creo que no podré recuperarte, Manchitas..."
@@ -11,6 +16,8 @@ const FRASE_PRIMER_GOLPE: String = (
 const DANO_PROYECTIL: float = 0.25
 const DANO_ORBE_ELIAN: float = 1.0 / 3.0
 const ORBE_ELIAN: String = "boss_projectile.tscn"
+## Un proyectil con esta marca desaparece al tocar a Lino, pero no le hace daño.
+const META_SIN_DANO: StringName = &"sin_dano"
 const TIEMPO_INVULNERABLE: float = 2.0
 const BRILLO_INVULNERABLE := Color(1.5, 1.5, 1.5, 1.0)
 const TENUE_INVULNERABLE := Color(1.0, 1.0, 1.0, 0.4)
@@ -22,6 +29,8 @@ const PULSO_DE_ELIAN: float = 0.4
 const MARGEN_DE_GRIS: float = 0.001
 const ANIMACION_DERROTA: StringName = &"defeated"
 
+## Lo que piensa Lino en su primer golpe. Cada nivel puede poner el suyo; vacío = no dice nada.
+var frase_primer_golpe: String = FRASE_PRIMER_GOLPE
 var gris: float = 0.0
 var protegido: bool = false
 
@@ -68,6 +77,9 @@ func _al_recibir_proyectil(cuerpo: Node2D) -> void:
 		return
 	# diferido: no se libera un cuerpo dentro de su propia señal de física
 	cuerpo.call_deferred("queue_free")
+	if cuerpo.has_meta(META_SIN_DANO):
+		golpe_inofensivo.emit()
+		return
 	if _invulnerable or protegido:
 		return
 
@@ -76,9 +88,11 @@ func _al_recibir_proyectil(cuerpo: Node2D) -> void:
 	gris += DANO_ORBE_ELIAN if es_orbe_elian else DANO_PROYECTIL
 	poner_gris(gris_visible())
 
+	golpe_con_dano.emit()
 	if not _primer_golpe_recibido and is_instance_valid(_panel_pensamiento):
 		_primer_golpe_recibido = true
-		_panel_pensamiento.mostrar_pensamiento(FRASE_PRIMER_GOLPE)
+		if frase_primer_golpe != "":
+			_panel_pensamiento.mostrar_pensamiento(frase_primer_golpe)
 
 	var se_deshila := gris >= 1.0 - MARGEN_DE_GRIS if es_orbe_elian else gris > 1.0 + MARGEN_DE_GRIS
 	if se_deshila:

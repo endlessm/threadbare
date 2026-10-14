@@ -28,6 +28,9 @@ const TAMANO_DE_LETRA: int = 24
 const GROSOR_DEL_CONTORNO: int = 5
 const CAPA_DE_LA_BURBUJA: int = 10
 
+## Si el nivel la pone y devuelve true, esta reaparición no dice su frase.
+var omitir_frase: Callable = Callable()
+
 
 func _ready() -> void:
 	var escena := get_tree().current_scene.scene_file_path
@@ -42,7 +45,8 @@ func _ready() -> void:
 func _reaparecer(jugador: Player, posicion: Variant) -> void:
 	jugador.take_control(self)
 	jugador.velocity = Vector2.ZERO
-	_decir_frase_al_revivir()
+	if omitir_frase.is_null() or not omitir_frase.call():
+		_decir_frase_al_revivir()
 
 	var sprite: AnimatedSprite2D = jugador.get_node("%PlayerSprite")
 	var animaciones: AnimationPlayer = jugador.get_node("AnimationPlayer")

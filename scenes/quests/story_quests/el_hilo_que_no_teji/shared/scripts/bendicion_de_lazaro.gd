@@ -1,7 +1,8 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 extends Node
-## La bendición de Lázaro: ayuda a Lino si pasa mucho tiempo sin llenar un jarrón.
+## La bendición de Lázaro: ayuda a Lino si pasa mucho tiempo sin llenar un jarrón. Una vez
+## concedida vale hasta el final de la partida, en cualquier nivel.
 
 const AyudasDeEscena = preload("ayudas_de_escena.gd")
 
@@ -30,9 +31,10 @@ const VELOCIDAD_MAXIMA_DE_LAS_MOTAS: float = 70.0
 const TAMANO_MINIMO_DE_LAS_MOTAS: float = 3.0
 const TAMANO_MAXIMO_DE_LAS_MOTAS: float = 6.0
 
-# static: una vez dada, no se repite al recargar el nivel. Se guarda por nivel (el nombre
-# que se pone en "nivel"), para que lo concedido en un nivel no cuente en el otro.
-static var _concedida_en: Dictionary = {}
+# static: una vez dada, no se repite al recargar el nivel, y vale para todos los niveles de
+# combate de la partida (se concede en el 3.1 y se mantiene en el 3.2). Guarda el número de
+# partida en que se concedió: al empezar otra partida deja de valer sola.
+static var _partida_concedida: int = -1
 ## Segundos sin llenar un jarrón, por nivel. Se sigue contando aunque Lino se deshile.
 static var _tiempo_en: Dictionary = {}
 
@@ -41,18 +43,24 @@ var jugador: Node2D
 var nivel: String
 var flecha: Node
 var elian: Node2D
+## Si es false, el nivel lleva su propia cuenta y llama a conceder() cuando toca.
+var cuenta_propia: bool = true
 
 var _en_dialogo: bool = false
 
 
-## Borra lo guardado de un nivel, para cuando empieza una partida nueva.
+## Borra el conteo de un nivel, para cuando empieza una partida nueva. Lo concedido no se
+## borra aquí: caduca solo cuando cambia el número de partida.
 static func olvidar(nivel_a_olvidar: String) -> void:
-	_concedida_en.erase(nivel_a_olvidar)
 	_tiempo_en.erase(nivel_a_olvidar)
 
 
+static func _fue_concedida() -> bool:
+	return _partida_concedida == ElHiloQueNoTejiState.numero_partida
+
+
 func _ready() -> void:
-	if _concedida_en.get(nivel, false):
+	if _fue_concedida():
 		_activar_ayudas()
 	if DialogueManager.has_signal("dialogue_started"):
 		DialogueManager.dialogue_started.connect(
@@ -66,12 +74,21 @@ func reiniciar_cuenta() -> void:
 
 
 func _process(delta: float) -> void:
-	if _concedida_en.get(nivel, false) or not is_instance_valid(jugador):
+	if _fue_concedida() or not cuenta_propia or not is_instance_valid(jugador):
 		return
 	_tiempo_en[nivel] = _tiempo_en.get(nivel, 0.0) + delta
 	if _tiempo_en[nivel] < TIEMPO_SIN_LLENAR and not _cruzo_el_puente():
 		return
 	if _en_dialogo or jugador.mode != jugador.Mode.USER_CONTROLLED:
+		return
+	_conceder()
+
+
+## Concede la bendición ahora, si Lino puede recibirla (con control y sin diálogo abierto).
+func conceder() -> void:
+	if _fue_concedida() or _en_dialogo or not is_instance_valid(jugador):
+		return
+	if jugador.mode != jugador.Mode.USER_CONTROLLED:
 		return
 	_conceder()
 
@@ -84,7 +101,7 @@ func _cruzo_el_puente() -> bool:
 
 
 func _conceder() -> void:
-	_concedida_en[nivel] = true
+	_partida_concedida = ElHiloQueNoTejiState.numero_partida
 	_decir_desde_lejos()
 	_envolver_en_luz()
 	await get_tree().create_timer(DURACION_LUZ * PARTE_DE_LA_LUZ_ANTES_DE_AYUDAR).timeout

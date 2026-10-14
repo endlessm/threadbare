@@ -9,6 +9,10 @@ const AyudasDeEscena = preload("ayudas_de_escena.gd")
 const SHADER: Shader = preload("../shaders/pesadilla.gdshader")
 const GRUPO_SOMBRAS: StringName = &"guard_enemy"
 const ESTADOS_EN_LA_MIRA: Array[int] = [Guard.State.DETECTING, Guard.State.ALERTED]
+## La amenaza se mide así de seguido: la oscuridad tarda más que esto en cambiar de todos modos.
+const SEGUNDOS_ENTRE_MEDIDAS: float = 0.1
+## Por debajo de esto el velo no se ve, así que no se dibuja (el shader es caro).
+const INTENSIDAD_VISIBLE: float = 0.002
 
 var grupos: Array[StringName] = [GRUPO_SOMBRAS]
 var amenazas: Array[Node2D] = []
@@ -25,15 +29,20 @@ var velocidad_salida_en_pausa: float = 3.0
 var intensidad: float = 0.0
 var material: ShaderMaterial
 
+var _velo: ColorRect
+var _segundos_para_medir: float = 0.0
+var _amenaza_medida: float = 0.0
+
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 1
 	material = ShaderMaterial.new()
 	material.shader = SHADER
-	var velo := AyudasDeEscena.rect_de_pantalla_completa()
-	velo.material = material
-	add_child(velo)
+	_velo = AyudasDeEscena.rect_de_pantalla_completa()
+	_velo.material = material
+	_velo.visible = false
+	add_child(_velo)
 	_ir_debajo_de_la_interfaz.call_deferred()
 
 
@@ -50,13 +59,22 @@ func _ir_debajo_de_la_interfaz() -> void:
 
 
 func _process(delta: float) -> void:
-	var objetivo := intensidad_fija if intensidad_fija >= 0.0 else _medir_amenaza()
+	var objetivo := intensidad_fija
+	if intensidad_fija < 0.0:
+		_segundos_para_medir -= delta
+		if _segundos_para_medir <= 0.0:
+			_segundos_para_medir = SEGUNDOS_ENTRE_MEDIDAS
+			_amenaza_medida = _medir_amenaza()
+		objetivo = _amenaza_medida
 	var velocidad := velocidad_entrada if objetivo > intensidad else velocidad_salida
 	if get_tree().paused:
 		objetivo = 0.0
 		velocidad = velocidad_salida_en_pausa
+	var anterior := intensidad
 	intensidad = move_toward(intensidad, objetivo, velocidad * delta)
-	material.set_shader_parameter("intensidad", intensidad)
+	_velo.visible = intensidad > INTENSIDAD_VISIBLE
+	if intensidad != anterior:
+		material.set_shader_parameter("intensidad", intensidad)
 
 
 func _medir_amenaza() -> float:
