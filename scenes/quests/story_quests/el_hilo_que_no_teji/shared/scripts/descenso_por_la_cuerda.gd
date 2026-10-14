@@ -21,6 +21,22 @@ const DURACION_SOLTAR_CAMARA: float = 0.8
 const HEBRAS_AL_BAJAR: float = 14.0
 const SPRITE_DEL_JUGADOR: String = "%PlayerSprite"
 
+# La forma de la cuerda se calcula aquí, una vez por cuadro, y el shader solo la dibuja.
+# El shader dibuja la cuerda en TRAMOS tramos (y espera TRAMOS + 1 puntos).
+const TRAMOS: int = 28
+## Hasta qué altura se ve la cuerda, como parte de la altura de la cámara.
+const ALTURA_MAXIMA: float = 0.93
+## Arriba la cuerda está corrida hacia el norte (píxeles del mundo).
+const INCLINACION: float = 45.0
+## Medio ancho de la cuerda en el suelo (píxeles del mundo).
+const GROSOR: float = 6.0
+## La cuerda se mece: velocidad, desfase por altura y amplitud (píxeles del mundo).
+const MECIDO_VELOCIDAD: float = 1.1
+const MECIDO_DESFASE: float = 4.0
+const MECIDO_AMPLITUD: float = 5.0
+## Margen extra de la caja de la cuerda, por el tramado (píxeles de pantalla).
+const MARGEN_DE_LA_CAJA: float = 16.0
+
 # Es static porque cuando Lino muere y la escena se recarga, esta cuerda se vuelve a
 # crear y perdería el valor. Guarda el número de partida en que ya se hizo la bajada,
 # para que la cinemática salga una sola vez por partida y no en cada reintento
@@ -30,6 +46,9 @@ var jugador: Player
 var material_cuerda: ShaderMaterial
 var pie_de_la_cuerda: Vector2
 var camara_suelta: float = 1.0
+
+var _rect_cuerda: ColorRect
+var _tiempo: float = 0.0
 
 
 static func toca_verlo() -> bool:
@@ -56,23 +75,62 @@ func _crear_cuerda() -> void:
 	material_cuerda.shader = SHADER_CUERDA
 	material_cuerda.set_shader_parameter("corrimiento", 0.0)
 	material_cuerda.set_shader_parameter("desvanecer", 0.0)
-	var cuerda := AyudasDeEscena.rect_de_pantalla_completa()
-	cuerda.material = material_cuerda
-	add_child(cuerda)
+	material_cuerda.set_shader_parameter("altura_maxima", ALTURA_MAXIMA)
+	material_cuerda.set_shader_parameter("grosor", GROSOR)
+	_rect_cuerda = AyudasDeEscena.rect_de_pantalla_completa()
+	_rect_cuerda.material = material_cuerda
+	add_child(_rect_cuerda)
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	_tiempo += delta
 	var vista := get_viewport()
 	var tamano_pantalla := vista.get_visible_rect().size
 	material_cuerda.set_shader_parameter("pantalla", tamano_pantalla)
 	var ancla := vista.get_canvas_transform() * pie_de_la_cuerda
-	material_cuerda.set_shader_parameter("ancla", ancla)
-	material_cuerda.set_shader_parameter(
-		"bajo_la_camara", ancla.lerp(tamano_pantalla / 2.0, camara_suelta)
-	)
+	var bajo_la_camara := ancla.lerp(tamano_pantalla / 2.0, camara_suelta)
+	var zoom := 1.0
 	var camara_actual := vista.get_camera_2d()
 	if camara_actual:
-		material_cuerda.set_shader_parameter("zoom", camara_actual.zoom.x)
+		zoom = camara_actual.zoom.x
+		material_cuerda.set_shader_parameter("zoom", zoom)
+	_actualizar_trazo(ancla, bajo_la_camara, zoom, tamano_pantalla)
+
+
+# Cuánto agranda la perspectiva a la altura u (0 = suelo, 1 = lo más alto).
+func _aumento(u: float) -> float:
+	return 1.0 / (1.0 - ALTURA_MAXIMA * u)
+
+
+# Calcula dónde cae en pantalla cada punto de la cuerda y se lo pasa al shader. Si la cuerda
+# no puede verse en pantalla, no se dibuja: mientras Lino está lejos no cuesta nada.
+func _actualizar_trazo(
+	ancla: Vector2, bajo_la_camara: Vector2, zoom: float, tamano_pantalla: Vector2
+) -> void:
+	var puntos := PackedVector2Array()
+	puntos.resize(TRAMOS + 1)
+	var minimo := Vector2(INF, INF)
+	var maximo := Vector2(-INF, -INF)
+	for i in TRAMOS + 1:
+		var t := float(i) / TRAMOS
+		# Más tramos arriba, donde la cuerda crece más rápido.
+		var u := 1.0 - (1.0 - t) * (1.0 - t)
+		var mecido := sin(_tiempo * MECIDO_VELOCIDAD + u * MECIDO_DESFASE) * MECIDO_AMPLITUD * u
+		var suelo := ancla + Vector2(mecido, -INCLINACION * u) * zoom
+		var punto := bajo_la_camara + (suelo - bajo_la_camara) * _aumento(u)
+		puntos[i] = punto
+		minimo = minimo.min(punto)
+		maximo = maximo.max(punto)
+
+	var margen := GROSOR * zoom * _aumento(1.0) + MARGEN_DE_LA_CAJA
+	minimo -= Vector2(margen, margen)
+	maximo += Vector2(margen, margen)
+	var puede_verse := Rect2(minimo, maximo - minimo).intersects(Rect2(Vector2.ZERO, tamano_pantalla))
+	_rect_cuerda.visible = puede_verse
+	if not puede_verse:
+		return
+	material_cuerda.set_shader_parameter("puntos", puntos)
+	material_cuerda.set_shader_parameter("caja", Vector4(minimo.x, minimo.y, maximo.x, maximo.y))
 
 
 func _bajar() -> void:

@@ -23,6 +23,9 @@ const TIEMPO_CRECER: float = 0.8
 const PARTE_DEL_PUENTE_PARA_CALMARSE: float = 0.8
 const RADIO_DE_UNA_NUBE: float = 144.0
 const FURIA_POR_NUBE: float = 200.0
+## Cada cuánto se sueltan las nubes de la furia y cuántas puede haber vivas a la vez.
+const PAUSA_ENTRE_NUBES_DE_FURIA: float = 0.05
+const MAXIMO_DE_NUBES_VIVAS: int = 60
 const TIEMPO_MINIMO: float = 1.6
 const PARTE_DEL_RADIO_PARA_LA_VUELTA: float = 0.55
 const RADIO_AL_DEVORAR: float = 230.0
@@ -56,6 +59,7 @@ var velocidades_del_vacio: CharacterSpeeds
 var vacio_esperando: bool = false
 var furia: float = 0.0
 var proximo_polvo: float = 0.0
+var proxima_nube_de_furia: float = 0.0
 
 
 func _ready() -> void:
@@ -90,7 +94,7 @@ func _process(delta: float) -> void:
 	# Ya atrapado: que nada más lo capture mientras cae.
 	if jugador.get("mode") == Player.Mode.DEFEATED and jugador.collision_layer != 0:
 		jugador.set_deferred("collision_layer", 0)
-	_soltar_polvo_de_furia()
+	_soltar_polvo_de_furia(delta)
 	_soltar_polvo_si_esta_quieto(delta)
 	if ocupada or not is_instance_valid(vacio) or vacio.get("void_layer") == null:
 		return
@@ -324,12 +328,16 @@ func _dejar_como_estaba() -> void:
 		_poner_vacio_en_el_tramo(cruces[ultima].tramo_salida)
 
 
-func _soltar_polvo_de_furia() -> void:
+func _soltar_polvo_de_furia(delta: float) -> void:
 	if furia <= 0.0 or not is_instance_valid(vacio):
 		return
+	proxima_nube_de_furia -= delta
+	if proxima_nube_de_furia > 0.0:
+		return
+	proxima_nube_de_furia = PAUSA_ENTRE_NUBES_DE_FURIA
 	var nubes: PackedScene = vacio.get("void_particles")
 	var grupo: Node = vacio.get("particles_canvas_group")
-	if not nubes or not grupo:
+	if not nubes or not grupo or grupo.get_child_count() >= MAXIMO_DE_NUBES_VIVAS:
 		return
 	var alcance_del_polvo := maxf(furia - RADIO_DE_UNA_NUBE, 0.0)
 	for i in int(ceil(furia / FURIA_POR_NUBE)):

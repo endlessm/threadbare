@@ -12,7 +12,7 @@ const DISTANCIA_MAXIMA: float = 110.0
 const COLOR := Color(1.0, 0.92, 0.6)
 const TAMANO: float = 0.34
 const TAMANO_TEXTURA: int = 96
-const SEGUNDOS_ENTRE_BUSQUEDAS: float = 0.5
+const SEGUNDOS_ENTRE_BUSQUEDAS: float = 2.0
 const VELOCIDAD_DEL_BRILLO: float = 1.5
 const OPACIDAD_MAXIMA: float = 0.9
 const LATIDO_MINIMO: float = 0.75
@@ -28,6 +28,8 @@ var hilos: Array[Node2D] = []
 var proxima_busqueda: float = 0.0
 var tiempo: float = 0.0
 var fuerza: float = 0.0
+
+var _sprite_del_jugador: AnimatedSprite2D
 
 
 func _ready() -> void:
@@ -61,8 +63,9 @@ func _distancia_al_hilo() -> float:
 
 
 func _dibujar_halo() -> void:
-	var sprite := get_parent().get_node_or_null(SPRITE_DEL_JUGADOR) as AnimatedSprite2D
-	var lado := -1.0 if sprite and sprite.flip_h else 1.0
+	if not is_instance_valid(_sprite_del_jugador):
+		_sprite_del_jugador = get_parent().get_node_or_null(SPRITE_DEL_JUGADOR) as AnimatedSprite2D
+	var lado := -1.0 if _sprite_del_jugador and _sprite_del_jugador.flip_h else 1.0
 	halo.position = Vector2(POSICION_DE_LA_MANO.x * lado, POSICION_DE_LA_MANO.y)
 	var frecuencia := lerpf(FRECUENCIA_LATIDO_TENUE, FRECUENCIA_LATIDO_FUERTE, fuerza)
 	var latido := LATIDO_MINIMO + LATIDO_AMPLITUD * sin(tiempo * frecuencia)

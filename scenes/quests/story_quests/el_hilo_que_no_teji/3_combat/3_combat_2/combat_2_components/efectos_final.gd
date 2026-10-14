@@ -69,7 +69,7 @@ const TIEMPO_IDA_A_ELIAN: float = 1.2
 const TIEMPO_MIRANDO_A_ELIAN: float = 5.0
 const FRASE_DE_ELIAN_AL_LLEGAR: String = (
 	"Llegas tarde... como siempre...\n"
-	+ "Ahora los recuerdos que tienes de tu perro me pertenecen."
+	+ "Los recuerdos que tienes de tu perro me pertenecen."
 )
 const ZOOM_MIRANDO_AL_VACIO := Vector2(1.0, 1.0)
 const TIEMPO_IDA_AL_VACIO: float = 1.0
@@ -183,9 +183,9 @@ func _process(delta: float) -> void:
 
 func _copiar_a_la_puerta(parametros: Array[StringName]) -> void:
 	for parametro in parametros:
-		material_puerta.set_shader_parameter(
-			parametro, material_mundo.get_shader_parameter(parametro)
-		)
+		var valor: Variant = material_mundo.get_shader_parameter(parametro)
+		if material_puerta.get_shader_parameter(parametro) != valor:
+			material_puerta.set_shader_parameter(parametro, valor)
 
 
 func _temblar_camara(delta: float) -> void:

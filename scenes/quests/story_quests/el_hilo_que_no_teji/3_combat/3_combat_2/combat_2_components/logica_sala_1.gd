@@ -36,7 +36,7 @@ const LUZ_POR_HILOS: Array[Color] = [
 const FRASE_PUERTA_CERRADA: String = "El final de la búsqueda... ¿será aquí?"
 const FRASES_ARCHIVERO: Array[String] = [
 	"¿Crees que ese perro todavía te espera?",
-	"Suelta ese collar... Ese perro no va a volver...",
+	"Suelta ese collar, niño... Ese perro no va a volver...",
 	"Si me detienes... ¿quién la va a seguir recordando?",
 ]
 ## elian_laugh.wav
@@ -102,6 +102,7 @@ var sonido_risa: AudioStreamPlayer
 var golpes: GolpesALino
 var efectos: EfectosFinal
 var bendicion: BendicionDeLazaro
+var bendicion_de_luto: BendicionDeLuto
 var pesadilla: Pesadilla
 
 @onready var jugador: Player = $OnTheGround/Player
@@ -161,12 +162,16 @@ func _ready() -> void:
 	if hilos_recogidos < HILOS_PARA_ABRIR_LA_PUERTA and not frase_puerta_mostrada:
 		_crear_aviso_puerta_cerrada()
 
-	add_child(ReaparicionEnHilo.new())
+	var reaparicion := ReaparicionEnHilo.new()
+	reaparicion.omitir_frase = _aparece_luto_al_reaparecer
+	add_child(reaparicion)
 	if is_instance_valid(luto):
 		luto.add_child(EfectoFantasma.new())
 	pesadilla = Pesadilla.new()
 	pesadilla.grupos = [GRUPO_SOMBRAS]
 	pesadilla.intensidad_maxima = INTENSIDAD_PESADILLA
+	if boss_derrotado:
+		pesadilla.intensidad_fija = 0.0  # Se restauró antes de que existiera.
 	add_child(pesadilla)
 	_preparar_ayudas()
 
@@ -229,10 +234,18 @@ func _preparar_ayudas() -> void:
 	bendicion.flecha = flecha
 	bendicion.elian = elian
 	add_child(bendicion)
-	var bendicion_de_luto := BendicionDeLuto.new()
-	bendicion_de_luto.jugador = jugador
-	bendicion_de_luto.nivel = NIVEL
-	add_child(bendicion_de_luto)
+	# Luto solo ayuda hasta que se abre la puerta de Elián: ahí Lázaro lo llama.
+	if hilos_recogidos < HILOS_PARA_ABRIR_LA_PUERTA:
+		bendicion_de_luto = BendicionDeLuto.new()
+		bendicion_de_luto.jugador = jugador
+		bendicion_de_luto.nivel = NIVEL
+		add_child(bendicion_de_luto)
+
+
+## La primera vez que Luto aparece, su llegada ya acompaña a Lino: no se suma la frase de siempre.
+func _aparece_luto_al_reaparecer() -> bool:
+	var sin_abrir: bool = hilos_recogidos < HILOS_PARA_ABRIR_LA_PUERTA
+	return sin_abrir and BendicionDeLuto.aparece_al_reaparecer(NIVEL)
 
 
 func _restaurar_hilos_recogidos() -> void:
@@ -453,6 +466,9 @@ func _cinematica_apertura_puerta() -> void:
 
 	camara_de_lino.make_current()
 	camara.queue_free()
+	# Lino no se mueve hasta que Luto se haya ido, para no cruzarse con la entrada a la sala.
+	if is_instance_valid(bendicion_de_luto):
+		await bendicion_de_luto.despedirse()
 	jugador.return_control(self)
 
 
@@ -528,7 +544,8 @@ func _al_completar_jarron_boss(restaurando: bool) -> void:
 	boss_derrotado = true
 	get_tree().call_group(GRUPO_PROYECTILES, "remove")
 	$ScreenOverlay.visible = false
-	pesadilla.intensidad_fija = 0.0
+	if is_instance_valid(pesadilla):
+		pesadilla.intensidad_fija = 0.0
 	if is_instance_valid(elian):
 		AnimacionDeElian.quedarse_en_reposo(elian)
 	if not restaurando:

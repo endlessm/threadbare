@@ -279,7 +279,25 @@ func _esperar(segundos: float) -> void:
 	await get_tree().create_timer(segundos).timeout
 
 
+# Al volver al pueblo, el HUD base muestra los primeros 3 ítems del inventario. Con los 9
+# fragmentos serían 3 del mismo color; se deja uno de cada hilo (verde, amarillo y rojo).
+func _dejar_un_hilo_de_cada_color() -> void:
+	if not GameState.quest:
+		return
+	var hilos: Array[InventoryItem] = []
+	for tipo: InventoryItem.ItemType in [
+		InventoryItem.ItemType.MEMORY,
+		InventoryItem.ItemType.IMAGINATION,
+		InventoryItem.ItemType.SPIRIT,
+	]:
+		hilos.append(InventoryItem.with_type(tipo))
+	var inventario := GameState.quest.inventory
+	inventario.items = hilos
+	inventario.emit_changed()
+
+
 func _on_outro_finished() -> void:
+	_dejar_un_hilo_de_cada_color()
 	if ResourceLoader.exists(ESCENA_SIGUIENTE):
 		get_tree().change_scene_to_file(ESCENA_SIGUIENTE)
 	else:
