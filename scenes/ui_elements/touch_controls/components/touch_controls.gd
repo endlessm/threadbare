@@ -12,9 +12,11 @@ var player_hook: PlayerHook
 
 @onready var interact_button: TouchScreenButton = %InteractButton
 @onready var repel_button: TouchScreenButton = %RepelButton
+@onready var virtual_joystick: VirtualJoystick = %VirtualJoystick
 
 
 func _ready() -> void:
+	visibility_changed.connect(_on_visibility_changed)
 	Transitions.started.connect(update_visibility)
 	Transitions.finished.connect(update_visibility)
 
@@ -23,6 +25,23 @@ func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_PAUSED, NOTIFICATION_UNPAUSED:
 			update_visibility()
+
+
+func _on_visibility_changed() -> void:
+	if not is_visible_in_tree():
+		_reset_virtual_joystick()
+
+
+## Release the virtual joystick and the movement actions it keeps pressed.
+## [br][br]
+## A hidden [VirtualJoystick] doesn't receive the touch release, so if it's
+## hidden while touched, for example by a transition, the player would keep
+## walking. It has no public method to reset it, but changing its size resets
+## it, so change the size and put it back.
+func _reset_virtual_joystick() -> void:
+	var tip_size := virtual_joystick.tip_size
+	virtual_joystick.tip_size = tip_size + 1.0
+	virtual_joystick.tip_size = tip_size
 
 
 func update_visibility() -> void:
