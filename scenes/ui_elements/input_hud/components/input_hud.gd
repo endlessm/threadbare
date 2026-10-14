@@ -28,7 +28,8 @@ func _ready() -> void:
 
 func update_visibility() -> void:
 	visible = (
-		Settings.show_input_hud
+		not DisplayServer.is_touchscreen_available()
+		and Settings.show_input_hud
 		and not get_tree().paused
 		and not Transitions.is_running()
 		and not displaying_dialogue
