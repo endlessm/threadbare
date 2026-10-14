@@ -17,7 +17,6 @@ var _input_axis: float
 var _is_auto_scrolling: bool = false
 var _current_scroll_pos: float = 0.0
 
-#@onready var back_button: Button = %BackButton
 @onready var background_anim_player: AnimationPlayer = %AnimationPlayer
 @onready var scroll_container: ScrollContainer = %ScrollContainer
 @onready var scroll_content: VBoxContainer = %ScrollContent
@@ -91,7 +90,6 @@ func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
 func _on_visibility_changed() -> void:
 	set_process_input(visible)
 	if visible:
-		#back_button.grab_focus()
 		start_credits_sequence()
 	else:
 		_stop_credits_sequence()
