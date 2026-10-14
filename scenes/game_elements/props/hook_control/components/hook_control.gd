@@ -15,8 +15,8 @@ extends Node2D
 ## Additionally, the mouse movement can also be used for aiming,
 ## but the mouse not considered the primary input.
 ## [br][br]
-## On touchscreens, touching the screen aims towards the touch position and
-## throws, like clicking with the mouse.
+## On touchscreens, touching the screen aims towards the touch position, and
+## dragging the finger keeps aiming. Lifting the finger throws.
 ## [br][br]
 ## Aiming is effectively rotating the [member ray_cast_2d].
 ## [br][br]
@@ -83,6 +83,9 @@ var _pointing_at_area: HookableArea
 ## The index of the finger touching the screen to aim and throw, or -1.
 var _touch_index: int = -1
 
+## True if the finger was lifted, so the next frame should throw.
+var _touch_throw_requested: bool = false
+
 ## The visual representation of the [member ray_cast_2d] direction.
 ## It also indicates if the ray is hitting a [HookableArea] by displaying
 ## the sprite solid, or semitransparent if not.
@@ -142,9 +145,9 @@ func _unhandled_input(_event: InputEvent) -> void:
 		return
 
 
-## Touching the screen aims towards the touch position and throws, like
-## clicking with the mouse. Dragging the finger keeps aiming. Only one finger
-## is followed at a time.
+## Touching the screen aims towards the touch position, and dragging the
+## finger keeps aiming. Lifting the finger throws. Only one finger is followed
+## at a time.
 func _handle_touch(event: InputEvent) -> void:
 	if event is InputEventScreenDrag:
 		if event.index == _touch_index:
@@ -154,11 +157,10 @@ func _handle_touch(event: InputEvent) -> void:
 			return
 		_touch_index = event.index
 		_aim_at(_screen_to_global(event.position))
-		pressing_throw_action = true
 	elif event.index == _touch_index:
 		_touch_index = -1
-		pressing_throw_action = false
-		throw_failed_while_pressing = false
+		_aim_at(_screen_to_global(event.position))
+		_touch_throw_requested = true
 
 
 func _screen_to_global(screen_position: Vector2) -> Vector2:
@@ -261,6 +263,7 @@ func _set_state(new_state: State) -> void:
 			throw_failed_while_pressing = false
 			# A disabled control doesn't get the touch release.
 			_touch_index = -1
+			_touch_throw_requested = false
 			clear_pointing_at_area()
 		State.AIMING_PAUSED:
 			clear_pointing_at_area()
@@ -279,13 +282,25 @@ func _process(_delta: float) -> void:
 	if state == State.DISABLED:
 		return
 	rotation = _get_hook_angle()
+	var touch_throw := _touch_throw_requested
+	_touch_throw_requested = false
+	if touch_throw:
+		# The finger may have been lifted somewhere else than the last drag, so
+		# update the ray now instead of waiting for the next physics frame.
+		ray_cast_2d.force_raycast_update()
 	if state == State.AIMING:
 		_update_pointing_at_area()
 	sprite_2d.modulate = Color.WHITE if _pointing_at_area else Color(Color.WHITE, 0.5)
 	if hooked_to:
 		# Currently the control can be hooked to a single area.
 		return
-	if state != State.AIMING_PAUSED and pressing_throw_action and not throw_failed_while_pressing:
+	if state == State.AIMING_PAUSED:
+		return
+	if touch_throw:
+		_throw()
+		# Unlike holding the throw action, a touch throws only once.
+		throw_failed_while_pressing = false
+	elif pressing_throw_action and not throw_failed_while_pressing:
 		_throw()
 
 
