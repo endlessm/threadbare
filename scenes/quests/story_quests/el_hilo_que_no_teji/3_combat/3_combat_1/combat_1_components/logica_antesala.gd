@@ -124,7 +124,6 @@ var _segundos_desde_el_ultimo_pensamiento: float = INF
 ## Pensamientos esperando turno: clave → cuándo caducan
 var _pensamientos_en_espera: Dictionary = {}
 ## Texto de cada pensamiento, leído del .dialogue al empezar el nivel: clave → texto
-var _frases: Dictionary = {}
 ## Prioridad del pensamiento de este nivel que está en pantalla (0 si no hay ninguno nuestro).
 var _prioridad_en_pantalla: int = 0
 var _tiempo_en_nivel: float = 0.0
@@ -142,11 +141,11 @@ var _ultimo_disparo: Dictionary = {}
 
 
 func _ready() -> void:
-	_cargar_los_pensamientos()
+	ElHiloQueNoTejiIdiomas.registrar()
 	_golpes = GolpesALino.new(jugador, panel_pensamiento)
 	add_child(_golpes)
 	# en este nivel el primer golpe lo dice el tutorial, no la frase de la culpa ajena
-	_golpes.frase_primer_golpe = ""
+	_golpes.titulo_primer_golpe = ""
 	_golpes.golpe_inofensivo.connect(_al_golpe)
 	_golpes.golpe_con_dano.connect(_al_golpe)
 	var repeler := jugador.get_node_or_null("PlayerRepel")
@@ -252,16 +251,6 @@ func _mostrar_puentes_rotos() -> void:
 			reparado.enabled = false
 
 
-## Lee del .dialogue el texto de cada pensamiento, para no tenerlo escrito en el código.
-func _cargar_los_pensamientos() -> void:
-	for clave: String in TITULO_DEL_PENSAMIENTO:
-		var linea: DialogueLine = await DIALOGO.get_next_dialogue_line(
-			TITULO_DEL_PENSAMIENTO[clave]
-		)
-		if linea:
-			_frases[clave] = linea.text
-
-
 func _process(delta: float) -> void:
 	_segundos_desde_el_ultimo_pensamiento += delta
 	# el reloj de inactividad corre desde que sale el primer proyectil y solo se detiene
@@ -308,7 +297,7 @@ func _atender_pensamientos() -> void:
 	# el recordatorio no se guarda: si hay algo más importante o no hay hueco, vuelve a intentarlo
 	if elegido == "" and _segundos_sin_llenar >= _proxima_inactividad:
 		elegido = CLAVE_INACTIVO
-	if elegido == "" or not _frases.has(elegido):
+	if elegido == "":
 		return
 
 	if panel_pensamiento.visible:
@@ -335,7 +324,9 @@ func _atender_pensamientos() -> void:
 		_reiniciar_inactividad()
 	_prioridad_en_pantalla = PRIORIDAD_DEL_PENSAMIENTO[elegido]
 	_segundos_desde_el_ultimo_pensamiento = 0.0
-	panel_pensamiento.mostrar_pensamiento(_frases[elegido])
+	var frase := await ElHiloQueNoTejiIdiomas.texto_de(DIALOGO, TITULO_DEL_PENSAMIENTO[elegido])
+	if is_instance_valid(panel_pensamiento):
+		panel_pensamiento.mostrar_pensamiento(frase)
 
 
 func _reiniciar_inactividad() -> void:

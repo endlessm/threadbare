@@ -64,6 +64,7 @@ var temporizador_ladrido: Timer
 
 
 func _ready() -> void:
+	ElHiloQueNoTejiIdiomas.registrar()
 	if ElHiloQueNoTejiState.es_partida_nueva_para("stealth"):
 		hilos_totales = 0
 		hilos_tomados = [false, false, false]

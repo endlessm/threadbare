@@ -62,6 +62,7 @@ var niebla_sigue_a_lino: bool = false
 
 
 func _ready() -> void:
+	ElHiloQueNoTejiIdiomas.registrar()
 	ElHiloQueNoTejiState.resetear_saturacion()
 
 	add_child(BloqueoSaltoDialogo.new())
