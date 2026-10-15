@@ -19,6 +19,8 @@ extends EditorScript
 ## [br][br]
 ## Use [const EXCLUDED] for files that match but shouldn't be listed.
 
+const Util = preload("./util.gd")
+
 ## Folders to search or individual files to add.
 const SOURCES: PackedStringArray = [
 	"res://addons/storyquest_bootstrap",
@@ -114,22 +116,12 @@ func _translatable_files(source: String) -> PackedStringArray:
 		return PackedStringArray()
 
 	var files := PackedStringArray()
-	var pending := PackedStringArray([source])
-
-	while not pending.is_empty():
-		var current := pending[-1]
-		pending.remove_at(pending.size() - 1)
-
-		for directory: String in DirAccess.get_directories_at(current):
-			pending.append(current.path_join(directory))
-
-		for file: String in DirAccess.get_files_at(current):
-			var path := current.path_join(file)
-			var extension := path.get_extension().to_lower()
-			if extension in TRANSLATABLE_EXTENSIONS:
-				files.append(path)
-			elif extension == "tres" and _is_quest(path):
-				files.append(path)
+	for path: String in Util.all_files(source):
+		var extension := path.get_extension().to_lower()
+		if extension in TRANSLATABLE_EXTENSIONS:
+			files.append(path)
+		elif extension == "tres" and _is_quest(path):
+			files.append(path)
 
 	files.sort()
 	return files
