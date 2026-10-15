@@ -179,9 +179,13 @@ const engine = new Engine(GODOT_CONFIG);
 		// wouldn't know it's fullscreen.
 		document.getElementById('canvas').requestFullscreen().then(() => {
 			// Browsers only allow locking the orientation in fullscreen. Safari
-			// and desktop browsers don't support it at all.
+			// doesn't have it at all. Desktop browsers have it, but there is no
+			// way to tell that they don't support it other than calling it, so
+			// that error is expected and not reported.
 			return screen.orientation?.lock?.('landscape').catch((err) => {
-				console.warn('Could not lock the orientation:', err);
+				if (err.name !== 'NotSupportedError') {
+					console.warn('Could not lock the orientation:', err);
+				}
 			});
 		}, (err) => {
 			console.warn('Could not enter fullscreen:', err);
