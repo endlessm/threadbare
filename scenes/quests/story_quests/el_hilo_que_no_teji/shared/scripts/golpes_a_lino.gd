@@ -10,9 +10,8 @@ signal golpe_inofensivo
 signal golpe_con_dano
 
 const FILTRO_GRIS: Shader = preload("uid://gg8y00eu162d")
-const FRASE_PRIMER_GOLPE: String = (
-	"Si sigo cargando con culpa ajena…\n" + "creo que no podré recuperarte, Manchitas..."
-)
+## Título de la frase en dialogos_frases.dialogue.
+const TITULO_PRIMER_GOLPE: String = "primer_golpe"
 const DANO_PROYECTIL: float = 0.25
 const DANO_ORBE_ELIAN: float = 1.0 / 3.0
 const ORBE_ELIAN: String = "boss_projectile.tscn"
@@ -29,8 +28,9 @@ const PULSO_DE_ELIAN: float = 0.4
 const MARGEN_DE_GRIS: float = 0.001
 const ANIMACION_DERROTA: StringName = &"defeated"
 
-## Lo que piensa Lino en su primer golpe. Cada nivel puede poner el suyo; vacío = no dice nada.
-var frase_primer_golpe: String = FRASE_PRIMER_GOLPE
+## Título de lo que piensa Lino en su primer golpe. Cada nivel puede poner el suyo;
+## vacío = no dice nada.
+var titulo_primer_golpe: String = TITULO_PRIMER_GOLPE
 var gris: float = 0.0
 var protegido: bool = false
 
@@ -91,8 +91,8 @@ func _al_recibir_proyectil(cuerpo: Node2D) -> void:
 	golpe_con_dano.emit()
 	if not _primer_golpe_recibido and is_instance_valid(_panel_pensamiento):
 		_primer_golpe_recibido = true
-		if frase_primer_golpe != "":
-			_panel_pensamiento.mostrar_pensamiento(frase_primer_golpe)
+		if titulo_primer_golpe != "":
+			_decir_primer_golpe()
 
 	var se_deshila := gris >= 1.0 - MARGEN_DE_GRIS if es_orbe_elian else gris > 1.0 + MARGEN_DE_GRIS
 	if se_deshila:
@@ -101,6 +101,12 @@ func _al_recibir_proyectil(cuerpo: Node2D) -> void:
 		_jugador.defeat(false)
 	else:
 		_parpadear(gris_anterior, gris_visible(), es_orbe_elian)
+
+
+func _decir_primer_golpe() -> void:
+	var frase := await ElHiloQueNoTejiIdiomas.frase(titulo_primer_golpe)
+	if is_instance_valid(_panel_pensamiento):
+		_panel_pensamiento.mostrar_pensamiento(frase)
 
 
 func _parpadear(gris_anterior: float, gris_nuevo: float, es_orbe_elian: bool) -> void:

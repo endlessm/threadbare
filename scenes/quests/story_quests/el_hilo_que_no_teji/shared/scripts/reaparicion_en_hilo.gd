@@ -10,11 +10,8 @@ const ANIMACION_REVIVIR: StringName = &"revive"
 const ANIMACION_REPOSO: StringName = &"idle"
 const TIEMPO_MAXIMO: float = 4.0
 
-const FRASES_AL_REVIVIR: Array[String] = [
-	"Aún no te he olvidado, Manchitas...",
-	"No volveré a quedarme dormido...",
-	"Manchitas... ilumina mi camino...",
-]
+## Títulos de las frases en dialogos_frases.dialogue.
+const TITULOS_AL_REVIVIR: Array[String] = ["revivir_1", "revivir_2", "revivir_3"]
 ## texto_pensamiento.gd
 const SCRIPT_PENSAMIENTO: Script = preload("uid://d1wyim6fdlfsh")
 ## Jersey20-Regular.ttf
@@ -88,12 +85,15 @@ func _esperar_fin_de_revivir(sprite: AnimatedSprite2D) -> void:
 
 
 func _decir_frase_al_revivir() -> void:
+	var frase := await ElHiloQueNoTejiIdiomas.frase(TITULOS_AL_REVIVIR.pick_random())
+	if not is_inside_tree():
+		return
 	var burbuja := _crear_burbuja()
 	var capa := CanvasLayer.new()
 	capa.layer = CAPA_DE_LA_BURBUJA
 	capa.add_child(burbuja)
 	get_tree().current_scene.add_child(capa)
-	burbuja.mostrar_pensamiento(FRASES_AL_REVIVIR.pick_random())
+	burbuja.mostrar_pensamiento(frase)
 
 	get_tree().create_timer(SEGUNDOS_BURBUJA).timeout.connect(capa.queue_free)
 

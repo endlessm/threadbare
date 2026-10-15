@@ -65,6 +65,7 @@ var posicion_final_luto: Vector2
 
 
 func _ready() -> void:
+	ElHiloQueNoTejiIdiomas.registrar()
 	_cargar_progreso()
 
 	GameState.player.set_ability(Enums.PlayerAbilities.ABILITY_B, false)

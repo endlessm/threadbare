@@ -30,6 +30,7 @@ var luto_ya_ladro: bool = false
 
 
 func _ready() -> void:
+	ElHiloQueNoTejiIdiomas.registrar()
 	# la cinemática la lanza _comenzar_secuencia, no su autostart
 	cinematica.autostart = false
 

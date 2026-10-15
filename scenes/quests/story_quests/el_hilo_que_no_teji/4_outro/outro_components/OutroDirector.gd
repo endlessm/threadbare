@@ -72,6 +72,7 @@ var _encuadrar_a_los_dos: bool = false
 
 
 func _ready() -> void:
+	ElHiloQueNoTejiIdiomas.registrar()
 	outro_finished.connect(_on_outro_finished)
 	# si no se detiene, el AnimationPlayer de la escena mueve a Lino y Manchitas por su cuenta
 	if animaciones:

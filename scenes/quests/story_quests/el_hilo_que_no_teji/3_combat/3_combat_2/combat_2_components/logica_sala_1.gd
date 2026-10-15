@@ -33,12 +33,9 @@ const LUZ_POR_HILOS: Array[Color] = [
 	Color(0.4, 0.4, 0.4), Color(0.6, 0.6, 0.6), Color(0.8, 0.8, 0.8), Color(1.0, 1.0, 1.0)
 ]
 
-const FRASE_PUERTA_CERRADA: String = "El final de la búsqueda... ¿será aquí?"
-const FRASES_ARCHIVERO: Array[String] = [
-	"¿Crees que ese perro todavía te espera?",
-	"Suelta ese collar, niño... Ese perro no va a volver...",
-	"Si me detienes... ¿quién la va a seguir recordando?",
-]
+## Títulos de las frases en dialogos_frases.dialogue.
+const TITULO_FRASE_PUERTA_CERRADA: String = "puerta_cerrada"
+const TITULOS_ARCHIVERO: Array[String] = ["archivero_1", "archivero_2", "archivero_3"]
 ## elian_laugh.wav
 const RISA_ELIAN: AudioStream = preload("uid://b6ar0l4qv6p7k")
 const SONIDOS_JARRONES_ELIAN: Array[AudioStream] = [
@@ -134,6 +131,7 @@ var pesadilla: Pesadilla
 
 
 func _ready() -> void:
+	ElHiloQueNoTejiIdiomas.registrar()
 	if ElHiloQueNoTejiState.es_partida_nueva_para(NIVEL):
 		_olvidar_lo_guardado()
 
@@ -318,7 +316,8 @@ func _reir(tono: float = 1.0, sonido: AudioStream = RISA_ELIAN) -> void:
 	cola.tween_callback(sonido_risa.queue_free)
 
 
-func _decir_como_archivero(frase: String) -> void:
+func _decir_como_archivero(titulo: String) -> void:
+	var frase := await ElHiloQueNoTejiIdiomas.frase(titulo)
 	if is_instance_valid(panel_archivero):
 		panel_archivero.mostrar_pensamiento(frase)
 
@@ -345,8 +344,9 @@ func _al_llegar_a_puerta_cerrada(body: Node2D, zona: Area2D) -> void:
 	if frase_puerta_mostrada or hilos_recogidos >= HILOS_PARA_ABRIR_LA_PUERTA:
 		return
 	frase_puerta_mostrada = true
+	var frase := await ElHiloQueNoTejiIdiomas.frase(TITULO_FRASE_PUERTA_CERRADA)
 	if is_instance_valid(panel_pensamiento):
-		panel_pensamiento.mostrar_pensamiento(FRASE_PUERTA_CERRADA)
+		panel_pensamiento.mostrar_pensamiento(frase)
 
 
 func _actualizar_color_ambiente() -> void:
@@ -537,7 +537,7 @@ func _al_completar_jarron_boss(restaurando: bool) -> void:
 	jarrones_boss_completados += 1
 	if not restaurando:
 		_reir(1.0, SONIDOS_JARRONES_ELIAN[jarrones_boss_completados - 1])
-		_decir_como_archivero(FRASES_ARCHIVERO[jarrones_boss_completados - 1])
+		_decir_como_archivero(TITULOS_ARCHIVERO[jarrones_boss_completados - 1])
 	if jarrones_boss_completados < JARRONES_BOSS.size():
 		return
 

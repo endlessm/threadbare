@@ -67,10 +67,8 @@ const ORBE_DE_ELIAN: String = "boss_projectile.tscn"
 const ZOOM_ACERCAMIENTO_ELIAN := Vector2(1.6, 1.6)
 const TIEMPO_IDA_A_ELIAN: float = 1.2
 const TIEMPO_MIRANDO_A_ELIAN: float = 5.0
-const FRASE_DE_ELIAN_AL_LLEGAR: String = (
-	"Llegas tarde... como siempre...\n"
-	+ "Los recuerdos que tienes de tu perro me pertenecen."
-)
+## Título de la frase en dialogos_frases.dialogue.
+const TITULO_FRASE_DE_ELIAN_AL_LLEGAR: String = "llegada_de_elian"
 const ZOOM_MIRANDO_AL_VACIO := Vector2(1.0, 1.0)
 const TIEMPO_IDA_AL_VACIO: float = 1.0
 const TIEMPO_MIRANDO_AL_VACIO: float = 1.8
@@ -433,7 +431,7 @@ func acercamiento_a_elian(
 	await _mover_camara(camara, jefe.global_position, ZOOM_ACERCAMIENTO_ELIAN, TIEMPO_IDA_A_ELIAN)
 	reir.call()
 	if decir.is_valid():
-		decir.call(FRASE_DE_ELIAN_AL_LLEGAR)
+		decir.call(TITULO_FRASE_DE_ELIAN_AL_LLEGAR)
 	await get_tree().create_timer(TIEMPO_MIRANDO_A_ELIAN).timeout
 
 	invocar_vacio()
