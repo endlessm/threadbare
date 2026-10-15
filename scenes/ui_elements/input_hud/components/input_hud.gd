@@ -5,12 +5,11 @@ extends Control
 
 @export var player: CharacterBody2D
 @export var sokoban_ruleset: RuleEngine
+@export var displaying_dialogue: bool
 
 var player_interaction: PlayerInteraction
 var player_repel: PlayerRepel
 var player_hook: PlayerHook
-
-var displaying_dialogue: bool
 
 @onready var normal_controls := %NormalControls
 @onready var interact_input_hint: LabeledInputHint = %InteractInputHint
@@ -23,16 +22,14 @@ var displaying_dialogue: bool
 
 
 func _ready() -> void:
-	DialogueManager.dialogue_started.connect(_on_dialogue_started)
-	DialogueManager.dialogue_ended.connect(_on_dialogue_ended)
-
 	Transitions.started.connect(update_visibility)
 	Transitions.finished.connect(update_visibility)
 
 
 func update_visibility() -> void:
 	visible = (
-		Settings.show_input_hud
+		not DisplayServer.is_touchscreen_available()
+		and Settings.show_input_hud
 		and not get_tree().paused
 		and not Transitions.is_running()
 		and not displaying_dialogue
@@ -84,16 +81,6 @@ func _update_player_state() -> void:
 
 	throw_input_hint.visible = player_hook and player_hook.visible
 	aim_input_hint.visible = player_hook and player_hook.visible
-
-
-func _on_dialogue_started(_resource: DialogueResource) -> void:
-	displaying_dialogue = true
-	update_visibility()
-
-
-func _on_dialogue_ended(_resource: DialogueResource) -> void:
-	displaying_dialogue = false
-	update_visibility()
 
 
 func _display_skip() -> void:
