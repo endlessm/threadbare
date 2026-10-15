@@ -12,6 +12,7 @@ var player_hook: PlayerHook
 
 @onready var interact_button: TouchScreenButton = %InteractButton
 @onready var repel_button: TouchScreenButton = %RepelButton
+@onready var pause_button: TouchScreenButton = %PauseButton
 @onready var virtual_joystick: VirtualJoystick = %VirtualJoystick
 
 
@@ -20,7 +21,7 @@ func _ready() -> void:
 	# TouchScreenButton doesn't mark its touches as handled, so the game would
 	# also get them. For example, tapping the interact button would throw the
 	# grappling hook too.
-	for button: TouchScreenButton in [interact_button, repel_button]:
+	for button: TouchScreenButton in [interact_button, repel_button, pause_button]:
 		button.pressed.connect(get_viewport().set_input_as_handled)
 		button.released.connect(get_viewport().set_input_as_handled)
 	Transitions.started.connect(update_visibility)

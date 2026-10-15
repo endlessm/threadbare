@@ -54,9 +54,11 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var axis := Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	# On touchscreens, pushing the virtual joystick all the way runs. The length
+	# of the axis may fall slightly short of 1, so compare with a threshold.
 	var is_input_running := (
 		Input.is_action_pressed(&"running")
-		or (axis.length_squared() == 1.0 and DisplayServer.is_touchscreen_available())
+		or (axis.length_squared() > 0.99 and DisplayServer.is_touchscreen_available())
 	)
 	var speed := speeds.run_speed if is_input_running else speeds.walk_speed
 	input_vector = axis * speed
