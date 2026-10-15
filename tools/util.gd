@@ -73,3 +73,15 @@ static func all_files(
 			files.append(current.path_join(file))
 
 	return files
+
+
+## Return the properties that the scene sets on the node at [param idx] of
+## [param scene_state], by name. Properties left at their default value aren't
+## included, because they aren't saved in the scene.
+static func node_properties(scene_state: SceneState, idx: int) -> Dictionary[StringName, Variant]:
+	var properties: Dictionary[StringName, Variant] = {}
+	for prop_idx: int in scene_state.get_node_property_count(idx):
+		properties[scene_state.get_node_property_name(idx, prop_idx)] = (
+			scene_state.get_node_property_value(idx, prop_idx)
+		)
+	return properties

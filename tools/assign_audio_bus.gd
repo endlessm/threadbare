@@ -26,14 +26,8 @@ func _examine_node(scene_state: SceneState, idx: int) -> bool:
 	if node_type != &"AudioStreamPlayer" and node_type != &"AudioStreamPlayer2D":
 		return false
 
-	for prop_idx: int in scene_state.get_node_property_count(idx):
-		var prop_name := scene_state.get_node_property_name(idx, prop_idx)
-		if prop_name == "bus":
-			var prop_value: Variant = scene_state.get_node_property_value(idx, prop_idx)
-			if prop_value != &"Master":
-				return false
-
-	return true
+	# A node that doesn't set the bus plays to the default one, Master.
+	return Util.node_properties(scene_state, idx).get(&"bus", &"Master") == &"Master"
 
 
 func _examine(scene: PackedScene) -> bool:
