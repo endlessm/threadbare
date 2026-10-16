@@ -20,9 +20,14 @@ var _current_scroll_pos: float = 0.0
 @onready var background_anim_player: AnimationPlayer = %AnimationPlayer
 @onready var scroll_container: ScrollContainer = %ScrollContainer
 @onready var scroll_content: VBoxContainer = %ScrollContent
+@onready var hints_container: Control = %HintsContainer
 
 
 func _ready() -> void:
+	# On touchscreens, there is a touch button to go back.
+	if DisplayServer.is_touchscreen_available():
+		hints_container.hide()
+
 	if not visibility_changed.is_connected(_on_visibility_changed):
 		visibility_changed.connect(_on_visibility_changed)
 

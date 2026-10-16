@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="8_ywskk"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="9_fh64e"]
 [ext_resource type="Texture2D" uid="uid://dgfsrkr8a370h" path="res://assets/third_party/kenney_input_prompts/steam-deck_sheet_default.png" id="10_fh64e"]
+[ext_resource type="PackedScene" uid="uid://hs4x784e2st8" path="res://scenes/ui_elements/touch_controls/touch_back_button.tscn" id="13_n2h80"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1tcw0"]
 
@@ -131,10 +132,14 @@ theme_override_constants/margin_right = 8
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="PauseContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=300043409]
+[node name="HintsContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1399339993]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="PauseHint" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=1079672650]
+[node name="PauseContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HintsContainer" unique_id=300043409]
+layout_mode = 2
+
+[node name="PauseHint" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HintsContainer/PauseContainer" unique_id=1079672650]
 material = ExtResource("7_bwxj8")
 layout_mode = 2
 size_flags_horizontal = 8
@@ -143,16 +148,16 @@ texture = SubResource("AtlasTexture_ywskk")
 script = ExtResource("9_fh64e")
 action_name = &"pause"
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PauseContainer" unique_id=762214617]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HintsContainer/PauseContainer" unique_id=762214617]
 layout_mode = 2
 theme_type_variation = &"HintLabel"
 theme_override_font_sizes/font_size = 25
 text = "Resume"
 
-[node name="PreviousTabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=165681227]
+[node name="PreviousTabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HintsContainer" unique_id=165681227]
 layout_mode = 2
 
-[node name="PreviousTabHint" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PreviousTabContainer" unique_id=1994017251]
+[node name="PreviousTabHint" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HintsContainer/PreviousTabContainer" unique_id=1994017251]
 material = ExtResource("7_bwxj8")
 layout_mode = 2
 size_flags_horizontal = 8
@@ -161,16 +166,16 @@ texture = SubResource("AtlasTexture_fh64e")
 script = ExtResource("9_fh64e")
 action_name = &"previous_tab"
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/PreviousTabContainer" unique_id=703188421]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HintsContainer/PreviousTabContainer" unique_id=703188421]
 layout_mode = 2
 theme_type_variation = &"HintLabel"
 theme_override_font_sizes/font_size = 25
 text = "Previous"
 
-[node name="NextTabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=2863309]
+[node name="NextTabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HintsContainer" unique_id=2863309]
 layout_mode = 2
 
-[node name="NextTabHint" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=1788019381]
+[node name="NextTabHint" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HintsContainer/NextTabContainer" unique_id=1788019381]
 material = ExtResource("7_bwxj8")
 layout_mode = 2
 size_flags_horizontal = 8
@@ -179,7 +184,7 @@ texture = SubResource("AtlasTexture_mn3wt")
 script = ExtResource("9_fh64e")
 action_name = &"next_tab"
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=1814948712]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HintsContainer/NextTabContainer" unique_id=1814948712]
 layout_mode = 2
 theme_type_variation = &"HintLabel"
 theme_override_font_sizes/font_size = 25
@@ -196,6 +201,9 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "0123456789"
 script = ExtResource("3_m62bn")
+
+[node name="TouchBackButton" parent="." unique_id=1130237194 instance=ExtResource("13_n2h80")]
+action = &"pause"
 
 [connection signal="back" from="MarginContainer/VBoxContainer/TabContainer/Inventory" to="." method="_on_inventory_back"]
 [connection signal="back" from="MarginContainer/VBoxContainer/TabContainer/Options" to="." method="_on_options_back"]

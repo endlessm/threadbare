@@ -8,6 +8,7 @@
 [ext_resource type="Material" uid="uid://cruf3tlajs4jo" path="res://scenes/ui_elements/input_hints/components/drop_shadow_material.tres" id="9_xkl6m"]
 [ext_resource type="Texture2D" uid="uid://dgfsrkr8a370h" path="res://assets/third_party/kenney_input_prompts/steam-deck_sheet_default.png" id="10_p0vqm"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="11_nkrro"]
+[ext_resource type="PackedScene" uid="uid://hs4x784e2st8" path="res://scenes/ui_elements/touch_controls/touch_back_button.tscn" id="9_p0elk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mwfoq"]
 atlas = ExtResource("10_p0vqm")
@@ -138,14 +139,15 @@ theme_override_constants/margin_left = -5
 layout_mode = 2
 theme_override_constants/margin_right = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=59792364]
+[node name="HintsContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=59792364]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="BackContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1752840391]
+[node name="BackContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HintsContainer" unique_id=1752840391]
 layout_mode = 2
 
-[node name="BackHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HBoxContainer/BackContainer" unique_id=1694299884]
+[node name="BackHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HintsContainer/BackContainer" unique_id=1694299884]
 material = ExtResource("9_xkl6m")
 layout_mode = 2
 size_flags_horizontal = 8
@@ -154,16 +156,16 @@ texture = SubResource("AtlasTexture_mwfoq")
 script = ExtResource("11_nkrro")
 action_name = &"ui_cancel"
 
-[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/BackContainer" unique_id=1130735496]
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HintsContainer/BackContainer" unique_id=1130735496]
 layout_mode = 2
 theme_type_variation = &"HintLabel"
 theme_override_font_sizes/font_size = 25
 text = "Back"
 
-[node name="PreviousTabContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=2058995622]
+[node name="PreviousTabContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HintsContainer" unique_id=2058995622]
 layout_mode = 2
 
-[node name="PreviousTabHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HBoxContainer/PreviousTabContainer" unique_id=1517575812]
+[node name="PreviousTabHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HintsContainer/PreviousTabContainer" unique_id=1517575812]
 material = ExtResource("9_xkl6m")
 layout_mode = 2
 size_flags_horizontal = 8
@@ -172,16 +174,16 @@ texture = SubResource("AtlasTexture_f7prj")
 script = ExtResource("11_nkrro")
 action_name = &"previous_tab"
 
-[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/PreviousTabContainer" unique_id=421872458]
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HintsContainer/PreviousTabContainer" unique_id=421872458]
 layout_mode = 2
 theme_type_variation = &"HintLabel"
 theme_override_font_sizes/font_size = 25
 text = "Previous"
 
-[node name="NextTabContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1727455504]
+[node name="NextTabContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HintsContainer" unique_id=1727455504]
 layout_mode = 2
 
-[node name="NextTabHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=859735797]
+[node name="NextTabHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HintsContainer/NextTabContainer" unique_id=859735797]
 material = ExtResource("9_xkl6m")
 layout_mode = 2
 size_flags_horizontal = 8
@@ -190,13 +192,13 @@ texture = SubResource("AtlasTexture_m2ghf")
 script = ExtResource("11_nkrro")
 action_name = &"next_tab"
 
-[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/NextTabContainer" unique_id=1060314095]
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HintsContainer/NextTabContainer" unique_id=1060314095]
 layout_mode = 2
 theme_type_variation = &"HintLabel"
 theme_override_font_sizes/font_size = 25
 text = "Next"
 
-[node name="Spacer" type="Control" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1841759060]
+[node name="Spacer" type="Control" parent="VBoxContainer/MarginContainer/HintsContainer" unique_id=1841759060]
 editor_description = "This empty control expands to fill the center of the hbox, pushing any controls packed after it to the right margin."
 layout_mode = 2
 size_flags_horizontal = 3
@@ -221,5 +223,7 @@ text = "EN"
 unique_name_in_owner = true
 layout_mode = 2
 text = "ES"
+
+[node name="TouchBackButton" parent="." unique_id=676859704 instance=ExtResource("9_p0elk")]
 
 [connection signal="selected" from="VBoxContainer/CenterContainer/StoryBookContent/StorybookPage" to="." method="_on_storybook_page_selected"]
