@@ -12,6 +12,7 @@ const VOLUME_SECTION := "Volume"
 
 const DISPLAY_SECTION := "Display"
 const SHOW_HUD_KEY := "Show HUD"
+const LARGE_TEXT_KEY := "Large Text"
 
 const LANGUAGE_SECTION := "Language"
 const LOCALE_KEY := "Locale"
@@ -23,6 +24,10 @@ const MINIMUM_ASPECT_RATIO := 1.25
 ## An arbitrary wide ratio, lower than 21:9 ("ultrawide").
 const MAXIMUM_ASPECT_RATIO := 2.2
 
+## Screens whose shortest side is under this are considered small, like phones.
+## This is the threshold that Android uses to tell phones from tablets.
+const SMALL_SCREEN_SHORTEST_SIDE_DP := 600.0
+
 @export var fullscreen: bool:
 	get = is_fullscreen,
 	set = set_fullscreen
@@ -32,6 +37,15 @@ const MAXIMUM_ASPECT_RATIO := 2.2
 		return _settings.get_value(DISPLAY_SECTION, SHOW_HUD_KEY, true)
 	set(new_value):
 		_settings.set_value(DISPLAY_SECTION, SHOW_HUD_KEY, new_value)
+		_save()
+
+## Show the text of dialogues and signs with a bigger font. Unless the player
+## changes it, this is on for small screens like phones, and off otherwise.
+@export var large_text: bool:
+	get:
+		return _settings.get_value(DISPLAY_SECTION, LARGE_TEXT_KEY, is_small_screen())
+	set(new_value):
+		_settings.set_value(DISPLAY_SECTION, LARGE_TEXT_KEY, new_value)
 		_save()
 
 var _settings := ConfigFile.new()
@@ -122,6 +136,25 @@ func set_fullscreen(toggled_on: bool) -> void:
 		set_window_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 	else:
 		set_window_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
+
+## Return true on touchscreen devices with a small screen, like phones, and
+## false on tablets and desktops.
+func is_small_screen() -> bool:
+	if not DisplayServer.is_touchscreen_available():
+		return false
+	var screen_size := Vector2(DisplayServer.screen_get_size())
+	var shortest_side := minf(screen_size.x, screen_size.y)
+	var shortest_side_dp: float
+	if OS.has_feature("web"):
+		# On the web, the screen size divided by the scale is in CSS pixels,
+		# which are close to density-independent pixels. The DPI can't be used,
+		# because browsers derive it from the scale instead of the real screen.
+		shortest_side_dp = shortest_side / DisplayServer.screen_get_scale()
+	else:
+		# Density-independent pixels are 1/160 inch.
+		shortest_side_dp = shortest_side * 160.0 / DisplayServer.screen_get_dpi()
+	return shortest_side_dp < SMALL_SCREEN_SHORTEST_SIDE_DP
 
 
 func get_locale() -> String:

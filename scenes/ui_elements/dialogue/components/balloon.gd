@@ -7,6 +7,10 @@ extends CanvasLayer
 const PLAYER_RIBBON_TYPE_VARIATION := &"PlayerRibbon"
 const NPC_RIBBON_TYPE_VARIATION := &"NPCRibbon"
 
+## Theme with a bigger font, used when [member Settings.large_text] is
+## on. It uses Jersey 20 instead of Jersey 15, so it's still crisp.
+const LARGE_TEXT_THEME := preload("uid://nymvlhys46nm")
+
 ## The dialogue resource
 @export var dialogue_resource: DialogueResource
 
@@ -101,6 +105,8 @@ var _player_name: String = Player.DEFAULT_PLAYER_NAME
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+	if Settings.large_text:
+		balloon.theme = LARGE_TEXT_THEME
 	balloon.hide()
 	Engine.get_singleton("DialogueManager").mutated.connect(_on_mutated)
 
