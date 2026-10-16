@@ -24,7 +24,8 @@ var _current_scroll_pos: float = 0.0
 
 
 func _ready() -> void:
-	# On touchscreens, there is a touch button to go back.
+	# On touchscreens, there is a touch button to go back, and the credits
+	# scroll by dragging.
 	if DisplayServer.is_touchscreen_available():
 		hints_container.hide()
 
@@ -65,6 +66,15 @@ func _input(event: InputEvent) -> void:
 			_is_auto_scrolling = false
 			_current_scroll_pos = scroll_container.scroll_vertical
 			return
+
+	# Dragging a finger scrolls the credits along with it, and stops the
+	# auto-scroll like the mouse wheel does.
+	if event is InputEventScreenDrag:
+		_is_auto_scrolling = false
+		_current_scroll_pos = clampf(
+			_current_scroll_pos - event.relative.y, 0.0, scroll_content.size.y
+		)
+		return
 
 	_input_axis = Input.get_axis("move_up", "move_down")
 	if is_zero_approx(_input_axis):
