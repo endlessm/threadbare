@@ -101,6 +101,8 @@ func _ready() -> void:
 		return
 
 	for parent: Node in consumable_node_holders:
+		if parent == null:
+			continue
 		for child: Node in parent.get_children():
 			if child is Node2D:
 				var coord := coord_for(child)
@@ -110,6 +112,12 @@ func _ready() -> void:
 
 	for coord: Vector2i in get_used_cells():
 		consume(coord, true)
+	if (
+		GameState.scene != null
+		and not GameState.scene.checkpoint_activated.is_connected(_on_checkpoint_activated)
+	):
+		GameState.scene.checkpoint_activated.connect(_on_checkpoint_activated)
+	_load_state()
 
 
 ## Cover all [param cells] with [member terrain_name], hiding any nodes in those cells which are
@@ -176,5 +184,28 @@ func uncover_all(duration: float, animate_modulate: bool = false) -> void:
 
 	await tween.finished
 	clear()
-	if animate_modulate:
-		self.modulate.a = 1.0
+	self.modulate.a = 1.0
+
+
+## Responds to the checkpoint's activated signal and saves consumed tiles if permitted.
+func _on_checkpoint_activated(checkpoint: Checkpoint) -> void:
+	if not checkpoint.save_void_and_enemies:
+		return
+
+	if GameState.scene == null or not "facts" in GameState.scene:
+		return
+
+	var save_key := str(get_path())
+	GameState.scene.facts[save_key] = get_used_cells()
+
+
+## Reconstructs the holes in the TileMap immediately on scene load.
+## Executes without animation to prevent visual glitches upon respawn.
+func _load_state() -> void:
+	if GameState.scene == null or not "facts" in GameState.scene:
+		return
+
+	var save_key := str(get_path())
+	if GameState.scene.facts.has(save_key):
+		var saved_tiles: Array = GameState.scene.facts[save_key]
+		consume_cells(saved_tiles, true)
