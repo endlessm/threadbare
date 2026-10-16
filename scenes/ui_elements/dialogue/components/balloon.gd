@@ -31,10 +31,16 @@ const NPC_RIBBON_TYPE_VARIATION := &"NPCRibbon"
 ## Temporary game states
 var temporary_game_states: Array = []:
 	set(new_value):
+		var player := get_tree().get_first_node_in_group("player") as Node2D
+		if player:
+			if "player_name" in player:
+				_player_name = player.player_name
+			new_value.append(player)
+		else:
+			# This ensures that the player_name variable is available in any dialogue.
+			# With this the dialogue file template can have {{ player_name }}.
+			new_value.append({"player_name": _player_name})
 		temporary_game_states = new_value
-		for state: Variant in new_value:
-			if state is Player:
-				locals["player_name"] = (state as Player).player_name
 
 ## See if we are waiting for the player
 var is_waiting_for_input: bool = false
@@ -61,6 +67,7 @@ var dialogue_line: DialogueLine:
 var mutation_cooldown: Timer = Timer.new()
 
 var _locale: String = TranslationServer.get_locale()
+var _player_name: String = Player.DEFAULT_PLAYER_NAME
 
 ## A sound player for voice lines (if they exist).
 @onready var audio_stream_player: AudioStreamPlayer = %AudioStreamPlayer
@@ -163,7 +170,7 @@ func apply_dialogue_line() -> void:
 	character_panel.visible = not dialogue_line.character.is_empty()
 	character_panel.theme_type_variation = (
 		PLAYER_RIBBON_TYPE_VARIATION
-		if locals.get("player_name") == dialogue_line.character
+		if _player_name == dialogue_line.character
 		else NPC_RIBBON_TYPE_VARIATION
 	)
 	character_label.text = tr(dialogue_line.character, "dialogue")
