@@ -285,16 +285,20 @@ func _esperar(segundos: float) -> void:
 func _dejar_un_hilo_de_cada_color() -> void:
 	if not GameState.quest:
 		return
-	var hilos: Array[InventoryItem] = []
-	for tipo: InventoryItem.ItemType in [
-		InventoryItem.ItemType.MEMORY,
-		InventoryItem.ItemType.IMAGINATION,
-		InventoryItem.ItemType.SPIRIT,
-	]:
-		hilos.append(InventoryItem.with_type(tipo))
-	var inventario := GameState.quest.inventory
-	inventario.items = hilos
-	inventario.emit_changed()
+	var m: TaggedItem = null
+	var i: TaggedItem = null
+	var s: TaggedItem = null
+	for item in GameState.quest.inventory.items:
+		if not m and item.item.type == InventoryItem.ItemType.MEMORY:
+			m = item
+		if not i and item.item.type == InventoryItem.ItemType.IMAGINATION:
+			i = item
+		if not s and item.item.type == InventoryItem.ItemType.SPIRIT:
+			s = item
+		if m and i and s:
+			break
+	GameState.quest.inventory.items = [m, i, s]
+	GameState.quest.inventory.emit_changed()
 
 
 func _on_outro_finished() -> void:
