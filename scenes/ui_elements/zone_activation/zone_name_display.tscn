@@ -1,0 +1,124 @@
+[gd_scene format=3 uid="uid://cps4im7j5unff"]
+
+[ext_resource type="Script" uid="uid://qlfg2cvfb6ia" path="res://scenes/ui_elements/zone_activation/components/zone_name_display.gd" id="1_h1y2i"]
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="2_2qkau"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_isa5i"]
+content_margin_left = 64.0
+content_margin_top = 25.0
+content_margin_right = 64.0
+content_margin_bottom = 50.0
+texture_margin_left = 64.0
+texture_margin_top = 64.0
+texture_margin_right = 64.0
+texture_margin_bottom = 64.0
+expand_margin_left = 16.0
+expand_margin_top = 45.0
+expand_margin_right = 16.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="Animation" id="Animation_bcs05"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:offset_transform_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Label:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_mhudr"]
+resource_name = "default"
+length = 4.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:offset_transform_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(3, 4),
+"transitions": PackedFloat32Array(2, 2),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -50)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Label:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_52qlg"]
+_data = {
+&"RESET": SubResource("Animation_bcs05"),
+&"default": SubResource("Animation_mhudr")
+}
+
+[node name="ZoneNameDisplay" type="PanelContainer" unique_id=775249051]
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_isa5i")
+script = ExtResource("1_h1y2i")
+
+[node name="Label" type="Label" parent="." unique_id=653377466]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+offset_transform_enabled = true
+theme = ExtResource("2_2qkau")
+theme_type_variation = &"HintLabel"
+text = "Zone Name"
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1421832839]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_52qlg")

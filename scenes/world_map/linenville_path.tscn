@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://47uo838wq1r2" path="res://scenes/world_map/components/linenville_path.gd" id="1_3ldjx"]
 [ext_resource type="TileSet" uid="uid://oynx002hv8tl" path="res://tiles/water.tres" id="2_34mct"]
+[ext_resource type="Script" uid="uid://k6j0kcn8lb1d" path="res://scenes/ui_elements/zone_activation/zone_activation.gd" id="2_puq78"]
 [ext_resource type="Script" uid="uid://ctko5bdas16ah" path="res://scenes/game_logic/canvasitem_behaviors/modulate_as_sky_behavior.gd" id="3_2kltm"]
 [ext_resource type="TileSet" uid="uid://b8qnr0owsbhhn" path="res://tiles/exterior_floors.tres" id="4_2w05u"]
 [ext_resource type="TileSet" uid="uid://bjx3gvah0ycl1" path="res://tiles/foam_2.tres" id="4_34mct"]
@@ -82,6 +83,11 @@ size = Vector2(64, 64)
 
 [node name="LinenVillePath" type="Node2D" unique_id=453581843]
 script = ExtResource("1_3ldjx")
+
+[node name="ZoneActivation" type="Node" parent="." unique_id=1099234821 node_paths=PackedStringArray("spawn_points")]
+script = ExtResource("2_puq78")
+zone_name_text = "Linenville Path"
+spawn_points = [NodePath("../Links/FraysEnd/SpawnPoint"), NodePath("../Links/VoidQuest/VoidQuestTeleporter/SpawnPoint")]
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1939557736]
 
@@ -688,7 +694,7 @@ look_at_side = 1
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("19_8e2g1")
-action = "Talk to Yvonne"
+action_text = "Talk to Yvonne"
 metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Townie/InteractArea" unique_id=1759163352]

@@ -13,6 +13,8 @@ extends SceneLink
 @export var revealed: bool = true:
 	set(new_value):
 		revealed = new_value
+		if not is_node_ready():
+			return
 		_update_based_on_revealed()
 
 ## [InventoryItem] provided by this collectible when interacted with.
@@ -31,11 +33,17 @@ extends SceneLink
 ## The dialogue title from where [member collected_dialogue] will start.
 @export var dialogue_title: StringName = ""
 
-@onready var interact_area: InteractArea = $InteractArea
+@onready var interact_area: InteractArea = %InteractArea
+
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var sprite_2d: Sprite2D = $Sprite2D
+
+@onready var visuals: Node2D = %Visuals
+@onready var sprite_2d: Sprite2D = %Sprite2D
+@onready var highlight: AnimatedSprite2D = %Highlight
+@onready var tail: AnimatedSprite2D = %Tail
+
 @onready var appear_sound: AudioStreamPlayer = %AppearSound
-@onready var physical_collider: CollisionShape2D = $StaticBody2D/CollisionShape2D
+@onready var physical_collider: CollisionShape2D = %PhysicalCollider
 
 
 func _validate_property(property: Dictionary) -> void:
@@ -63,12 +71,16 @@ func _get_item() -> InventoryItem:
 
 func _set_item(new_value: InventoryItem) -> void:
 	item = new_value
+	if not is_node_ready():
+		return
+	if not item:
+		return
 
-	if sprite_2d:
-		sprite_2d.texture = item.world_texture if item else null
+	sprite_2d.texture = item.world_texture
+	tail.play(item.type_name())
+	highlight.play(&"Default")
 
-	if interact_area:
-		interact_area.action = "Collect " + item.type_name() if item else "Collect"
+	interact_area.action_text = (tr("Collect %s") % item.type_name() if item else tr("Collect"))
 
 	update_configuration_warnings()
 
@@ -97,7 +109,7 @@ func reveal() -> void:
 		return
 
 	appear_sound.play()
-	animation_player.play("reveal")
+	animation_player.play(&"reveal")
 	await animation_player.animation_finished
 
 	revealed = true
@@ -129,10 +141,6 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 
 
 func _update_based_on_revealed() -> void:
-	if interact_area:
-		interact_area.disabled = not revealed
-	if sprite_2d:
-		sprite_2d.visible = revealed
-		sprite_2d.modulate = Color.WHITE if revealed else Color.TRANSPARENT
-	if physical_collider:
-		physical_collider.disabled = not revealed
+	interact_area.disabled = not revealed
+	physical_collider.disabled = not revealed
+	visuals.visible = revealed

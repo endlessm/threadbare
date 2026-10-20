@@ -37,7 +37,6 @@
 [ext_resource type="PackedScene" uid="uid://v2uakefmp67y" path="res://scenes/game_elements/characters/npcs/elder/story_quest_elder.tscn" id="20_jqkod"]
 [ext_resource type="PackedScene" uid="uid://bytkm0r5fe5xb" path="res://scenes/game_elements/characters/npcs/elder/lore_quest_elder.tscn" id="20_xt3dw"]
 [ext_resource type="Resource" uid="uid://qva3nnhkgirm" path="res://scenes/world_map/components/frays_end.dialogue" id="25_6r0j2"]
-[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="27_aj6tp"]
 [ext_resource type="Texture2D" uid="uid://drfnq08l2wbgy" path="res://assets/third_party/tiny-swords/Deco/03.png" id="28_6r0j2"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="37_f3823"]
 [ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="37_thm8h"]
@@ -60,7 +59,14 @@
 [ext_resource type="Resource" uid="uid://t50glay2iqhg" path="res://scenes/quests/lore_quests/quest_002/quest.tres" id="60_6b07c"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="61_6b07c"]
 [ext_resource type="Script" uid="uid://cmika1t1573xe" path="res://scenes/world_map/components/frays_end_exit_blocker.gd" id="62_t7c6s"]
+[ext_resource type="Script" uid="uid://k6j0kcn8lb1d" path="res://scenes/ui_elements/zone_activation/zone_activation.gd" id="63_ulm71"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="64_uxfrp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v5vj4"]
+size = Vector2(120, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8dti7"]
+size = Vector2(24, 72)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_t7c6s"]
 seed = 5566801
@@ -326,6 +332,21 @@ _data = {
 }
 point_count = 4
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gm6tl"]
+size = Vector2(28, 320)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6fau3"]
+size = Vector2(33, 217)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bu3x1"]
+size = Vector2(341.5, 14.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u5bk5"]
+size = Vector2(65, 49)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ojao8"]
+size = Vector2(65, 49)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qgpx3"]
 size = Vector2(320, 64)
 
@@ -353,9 +374,44 @@ size = Vector2(20, 256)
 [node name="FraysEnd" type="Node2D" unique_id=1849947277]
 script = ExtResource("1_4gse6")
 metadata/_edit_lock_ = true
+metadata/_edit_horizontal_guides_ = [1381.0]
 
 [node name="BackgroundMusic" parent="." unique_id=1268657826 instance=ExtResource("1_ovkdi")]
 stream = ExtResource("2_epsnn")
+
+[node name="ZoneActivation" type="Node" parent="." unique_id=300012081 node_paths=PackedStringArray("area", "spawn_points")]
+script = ExtResource("63_ulm71")
+zone_name_text = "Fray's end"
+area = NodePath("Area2D")
+spawn_points = [NodePath("../OnTheGround/NPCs/StoryQuestElder/SpawnPoint"), NodePath("../OnTheGround/NorthPath/SpawnPoint"), NodePath("../OnTheGround/EastPath/SpawnPoint"), NodePath("../OnTheGround/DevIslandPath/SpawnPoint"), NodePath("../OnTheGround/WestPath/SpawnPointWestPath")]
+metadata/_custom_type_script = "uid://k6j0kcn8lb1d"
+
+[node name="Area2D" type="Area2D" parent="ZoneActivation" unique_id=823861033]
+
+[node name="DefaultEntry" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=1245649773]
+position = Vector2(988, 796)
+shape = SubResource("RectangleShape2D_v5vj4")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
+
+[node name="DefaultEntry2" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=1797880224]
+position = Vector2(988, 892)
+shape = SubResource("RectangleShape2D_v5vj4")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
+
+[node name="DefaultEntry3" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=485207019]
+position = Vector2(940, 844)
+shape = SubResource("RectangleShape2D_8dti7")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
+
+[node name="DefaultEntry4" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=1936991601]
+position = Vector2(1036, 844)
+shape = SubResource("RectangleShape2D_8dti7")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
+
+[node name="BridgeEntry" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=1696015662]
+position = Vector2(992.5, 1416.75)
+shape = SubResource("RectangleShape2D_v5vj4")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1722660259]
 
@@ -726,7 +782,7 @@ metadata/_custom_type_script = "uid://edcifob4jc4s"
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("37_f3823")
-action = "Talk to Marie"
+action_text = "Talk to Marie"
 metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/NPCs/GardenerA/InteractArea" unique_id=1159647598]
@@ -742,7 +798,7 @@ character_seed = 3363471871
 look_at_side = 1
 
 [node name="Cat" parent="OnTheGround/NPCs" unique_id=1091997689 instance=ExtResource("52_ppslc")]
-position = Vector2(267, 642)
+position = Vector2(1383, 687)
 
 [node name="BeachTownie" parent="OnTheGround/NPCs" unique_id=1268570065 instance=ExtResource("54_duxxr")]
 position = Vector2(2719, 1720)
@@ -1082,6 +1138,30 @@ scale = Vector2(1.002, 1.002)
 position = Vector2(969.4194, 2045.982)
 scale = Vector2(1.1060888, 1.0290669)
 polygon = PackedVector2Array(-877.343, -208.91, -817.673, -167.124, -758.004, -191.418, -697.43, -150.605, -638.664, -170.04, -579.899, -209.882, -460.559, -201.136, -390.04, -228.345, -324.042, -206.966, -255.332, -160.322, -168.539, -205.023, -99.8287, -193.362, -2.18738, -175.87, 55.6742, -183.644, 109.919, -223.486, 171.397, -226.401, 217.506, -200.164, 320.572, -186.559, 404.652, -186.559, 505.005, -189.475, 517.662, -237.091, 589.455, -238.273, 670.946, -241.251, 812.201, -217.423, 889.163, -140.978, 974.222, 0.017334, -874.675, -0.992798)
+
+[node name="CatLimit" type="StaticBody2D" parent="OnTheGround" unique_id=1094201463]
+collision_layer = 1024
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/CatLimit" unique_id=65509031]
+position = Vector2(52, 737)
+shape = SubResource("RectangleShape2D_gm6tl")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="OnTheGround/CatLimit" unique_id=252151575]
+position = Vector2(2959, 862.5)
+shape = SubResource("RectangleShape2D_6fau3")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="OnTheGround/CatLimit" unique_id=206951936]
+position = Vector2(2524, 7.75)
+shape = SubResource("RectangleShape2D_bu3x1")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="OnTheGround/CatLimit" unique_id=1006129908]
+position = Vector2(2658, 1977)
+shape = SubResource("RectangleShape2D_u5bk5")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="OnTheGround/CatLimit" unique_id=1596236520]
+position = Vector2(992, 1287)
+shape = SubResource("RectangleShape2D_ojao8")
 
 [node name="Trees" type="Node2D" parent="OnTheGround" unique_id=378434157]
 y_sort_enabled = true
@@ -1693,9 +1773,6 @@ position = Vector2(95, 656)
 text = "West End"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1752283368]
-
-[node name="HUD" parent="." unique_id=1876437396 instance=ExtResource("27_aj6tp")]
-unique_name_in_owner = true
 
 [node name="SpawnPointAfterIntro" parent="." unique_id=69976262 instance=ExtResource("37_thm8h")]
 position = Vector2(62, 1747)

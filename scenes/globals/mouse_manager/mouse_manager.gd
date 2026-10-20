@@ -20,7 +20,9 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
+	# Only show the cursor for a real mouse, not for the mouse motion that Godot
+	# emulates from touch.
+	if event is InputEventMouseMotion and event.device != InputEvent.DEVICE_ID_EMULATION:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		mode_changed.emit()
 		hide_timer.start()

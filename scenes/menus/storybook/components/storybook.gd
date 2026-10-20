@@ -40,6 +40,8 @@ var _show_language_bookmarks: bool
 @onready var en_bookmark_button: Button = %ENBookmark
 @onready var es_bookmark_button: Button = %ESBookmark
 
+@onready var hints_container: Control = %HintsContainer
+
 
 func _fade_out_ui() -> void:
 	var tween := create_tween()
@@ -55,6 +57,11 @@ func _fade_in_ui() -> void:
 
 
 func _ready() -> void:
+	# On touchscreens, the bookmarks can be tapped instead, and there is a
+	# touch button to go back.
+	if DisplayServer.is_touchscreen_available():
+		hints_container.hide()
+
 	animated_book.animation_finished.connect(_on_animation_finished)
 
 	_quests_per_language = {}
