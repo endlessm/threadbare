@@ -24,10 +24,10 @@ func _on_pressed() -> void:
 
 	var game_resolution := DisplayServer.window_get_size()
 	if game_resolution:
-		url += "&resolution=" + var_to_str(Vector2(game_resolution)).uri_encode()
+		url += "&resolution=" + var_to_str(game_resolution).uri_encode()
 
-	var player := get_tree().get_first_node_in_group("player")
+	var player := get_tree().get_first_node_in_group("player") as Node2D
 	if player:
-		url += "&location=" + var_to_str(Vector2(player.global_position)).uri_encode()
+		url += "&location=" + var_to_str(player.global_position).uri_encode()
 
 	OS.shell_open(url)
