@@ -307,7 +307,7 @@ func _textura_del_hilo() -> Texture2D:
 		return null
 	if es_hilo_del_perdon:
 		return _achicar(TEXTURA_PERDON, ESCALA_HILO_DEL_PERDON)
-	return _achicar(TEXTURA_POR_TIPO.get(item.type, item.get_world_texture()), ESCALA_HILO)
+	return _achicar(TEXTURA_POR_TIPO.get(item.type, item.world_texture), ESCALA_HILO)
 
 
 ## Se achica la imagen y no el sprite: las animaciones le cambian la escala.
