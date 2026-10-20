@@ -22,7 +22,7 @@ func _ready() -> void:
 		eternal_loom.on_rewoven_finished()
 
 
-func _update_story_quest_progress_visibility(_item: InventoryItem = null) -> void:
+func _update_story_quest_progress_visibility(_item: TaggedItem = null) -> void:
 	var end_of_quest := GameState.is_item_offering_possible()
 	HUD.refresh_story_quest_progress()
 	exit_blocker.set_deferred(&"monitoring", end_of_quest)

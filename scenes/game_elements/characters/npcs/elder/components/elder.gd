@@ -106,7 +106,7 @@ func congratulate_player() -> void:
 	await DialogueManager.dialogue_ended
 
 
-func _update_dialogue_cue(_item: InventoryItem = null) -> void:
+func _update_dialogue_cue(_item: TaggedItem = null) -> void:
 	if GameState.is_item_offering_possible():
 		talk_behavior.title = "go_to_loom"
 	elif not _quests:
