@@ -37,8 +37,9 @@ var _ghost := false:
 	set(new_value):
 		_ghost = new_value
 		# TODO: effect is ugly
-		var sm := sprite_2d.material as ShaderMaterial
-		sm.set_shader_parameter("intensity", 0.25 if _ghost else 0.0)
+		for n: Node2D in [sprite_2d, tail]:
+			var sm := n.material as ShaderMaterial
+			sm.set_shader_parameter("intensity", 0.25 if _ghost else 0.0)
 # Key in GameState.quest.facts which, if present, indicates that this item was
 # previously collected on the current run.
 var _fact_key: String
