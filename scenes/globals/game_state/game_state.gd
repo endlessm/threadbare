@@ -10,6 +10,10 @@ signal player_changed(old: PlayerState, new: PlayerState)
 ## Emitted when the state is cleared.
 signal cleared
 
+## Emitted when [member quest] changes, due to a quest being started, completed,
+## or abandoned.
+signal quest_changed
+
 const SAVE_PATH := "user://saved_game.tres"
 
 ## The player abilities to have from the beginning
@@ -44,6 +48,7 @@ var quest: QuestState:
 		var old_player_state := player
 		_saved_game.quest = new_value
 		player_changed.emit(old_player_state, player)
+		quest_changed.emit()
 
 ## State concerning the current scene, or [code]null[/code] if there is no current scene
 var scene: PerSceneState:
@@ -140,6 +145,9 @@ func set_quest(new_quest: Quest) -> void:
 		quest_player_state = PlayerState.new()
 
 	quest = QuestState.new(new_quest, quest_player_state)
+	quest.inventory.items = global.inventory.items.filter(
+		func(i: TaggedItem) -> bool: return i.quest_path == new_quest.resource_path
+	)
 
 
 ## Guess which quest the given scene is part of, and set [member quest]
@@ -209,15 +217,14 @@ func has_retelling() -> bool:
 	return GameState.quest and GameState.quest.quest and GameState.quest.quest.retelling
 
 
-## True if involved in a quest with threads to collect and all of them were collected.
+## True if involved in a quest.
 func is_item_offering_possible() -> bool:
 	if not quest:
 		return false
 
-	if quest.quest.threads_to_collect <= 0:
-		return false
-
-	return quest.inventory.items.size() >= quest.quest.threads_to_collect
+	# TODO: only if there are *new* threads collected. Problem is - what
+	# triggers the end-of-quest cutscene if there are no new threads?
+	return true
 
 
 ## Clear the persisted state.

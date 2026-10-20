@@ -209,7 +209,7 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 func _registrar_recogida(escena: Node) -> void:
 	var id_hilo := escena.scene_file_path + "::" + str(escena.get_path_to(self))
 	if not ElHiloQueNoTejiState.hilos_contados.has(id_hilo):
-		GameState.quest.inventory.add_collected_item(item)
+		GameState.quest.inventory.add_collected_item(item, self)
 	ElHiloQueNoTejiState.recolectar_hilo(id_hilo)
 	ElHiloQueNoTejiState.guardar_ultimo_hilo(escena.scene_file_path, global_position)
 

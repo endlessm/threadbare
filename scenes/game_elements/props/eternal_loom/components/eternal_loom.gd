@@ -43,8 +43,8 @@ func show_retelling_dialogue() -> void:
 
 
 func _has_magical_thread_of_type(type: InventoryItem.ItemType) -> bool:
-	for item: InventoryItem in GameState.quest.inventory.items:
-		if item.type == type:
+	for ci: TaggedItem in GameState.quest.inventory.items:
+		if ci.item.type == type:
 			return true
 	return false
 
@@ -92,7 +92,7 @@ func on_offering_succeeded() -> void:
 
 	loom_offering_animation.play_loom_animation()
 	await loom_offering_animation.animation_finished
-	GameState.quest.inventory.clear_inventory()
+	GameState.global.inventory.merge(GameState.quest.inventory)
 
 	if load_error != OK:
 		on_rewoven_finished()

@@ -33,6 +33,17 @@ extends SceneLink
 ## The dialogue title from where [member collected_dialogue] will start.
 @export var dialogue_title: StringName = ""
 
+var _ghost := false:
+	set(new_value):
+		_ghost = new_value
+		# TODO: effect is ugly
+		for n: Node2D in [sprite_2d, tail]:
+			var sm := n.material as ShaderMaterial
+			sm.set_shader_parameter("intensity", 0.25 if _ghost else 0.0)
+# Key in GameState.quest.facts which, if present, indicates that this item was
+# previously collected on the current run.
+var _fact_key: String
+
 @onready var interact_area: InteractArea = %InteractArea
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -94,6 +105,21 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
+	# Collected in current run through this quest?
+	# TODO: if TaggedItem was constructed here we could put a workaround for
+	# use_unique_path not working there.
+	_fact_key = "%s:%s:collected" % [owner.scene_file_path, owner.get_path_to(self, true)]
+	if GameState.quest.facts.get(_fact_key, false):
+		# We assume any side-effects from collecting it have also been saved.
+		queue_free()
+		return
+
+	# Collected in previous run? TODO: supposedly quest.inventory is populated
+	# from global.inventory when starting quest so only the latter check should
+	# be needed
+	if GameState.global.inventory.has(item, self) or GameState.quest.inventory.has(item, self):
+		_ghost = true
+
 	interact_area.interaction_started.connect(self._on_interacted)
 
 
@@ -123,13 +149,15 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	animation_player.play("collected")
 	await animation_player.animation_finished
 
-	GameState.quest.inventory.add_collected_item(item)
+	if not _ghost:
+		GameState.quest.inventory.add_collected_item(item, self)
 
 	if collected_dialogue:
 		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])
 		await DialogueManager.dialogue_ended
 
 	interact_area.end_interaction()
+	GameState.quest.facts[_fact_key] = true
 	queue_free()
 
 	if next_scene:
