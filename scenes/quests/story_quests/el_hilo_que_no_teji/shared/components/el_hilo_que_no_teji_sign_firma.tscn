@@ -1,0 +1,131 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/quests/story_quests/el_hilo_que_no_teji/shared/scripts/el_hilo_que_no_teji_sign_firma.gd" id="1_qdt8g"]
+[ext_resource type="Texture2D" uid="uid://c3l7lhhu5de88" path="res://assets/third_party/tiny-swords/Deco/16.png" id="2_ng0n8"]
+[ext_resource type="FontFile" uid="uid://b0tjcgrk504qg" path="res://assets/third_party/fonts/jersey/Jersey10-Regular.ttf" id="3_br1b7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fondo"]
+bg_color = Color(0, 0, 0, 0.4)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tecla"]
+content_margin_left = 8.0
+content_margin_top = 2.0
+content_margin_right = 8.0
+content_margin_bottom = 3.0
+bg_color = Color(0.3, 0.3, 0.32, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.78, 0.78, 0.8, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cb2ey"]
+radius = 12.0
+height = 50.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_85li6"]
+radius = 161.89503
+
+[node name="SignFirma" type="Node2D" unique_id=429313894]
+script = ExtResource("1_qdt8g")
+
+[node name="Appearance" type="Sprite2D" parent="." unique_id=634348559]
+texture = ExtResource("2_ng0n8")
+offset = Vector2(0, -30)
+
+[node name="Collider" type="StaticBody2D" parent="." unique_id=194197321]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collider" unique_id=891703773]
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_cb2ey")
+
+[node name="LabelContainer" type="MarginContainer" parent="." unique_id=1463697321]
+z_index = 1
+offset_left = -96.0
+offset_top = -201.0
+offset_right = 104.0
+offset_bottom = -101.0
+pivot_offset = Vector2(100, 50)
+
+[node name="PanelContainer" type="PanelContainer" parent="LabelContainer" unique_id=708458707]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_fondo")
+
+[node name="MarginContainer" type="MarginContainer" parent="LabelContainer/PanelContainer" unique_id=512135750]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LabelContainer/PanelContainer/MarginContainer" unique_id=842542923]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 2
+
+[node name="Label" type="Label" parent="LabelContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=441913064]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(170, 0)
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
+theme_override_constants/line_spacing = -8
+theme_override_fonts/font = ExtResource("3_br1b7")
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 0
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="FilaFirma" type="HBoxContainer" parent="LabelContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1203344551]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 5
+alignment = 2
+
+[node name="Firma" type="Label" parent="LabelContainer/PanelContainer/MarginContainer/VBoxContainer/FilaFirma" unique_id=831587773]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_constants/outline_size = 1
+theme_override_fonts/font = ExtResource("3_br1b7")
+theme_override_font_sizes/font_size = 20
+text = "-"
+
+[node name="CajaTecla" type="PanelContainer" parent="LabelContainer/PanelContainer/MarginContainer/VBoxContainer/FilaFirma" unique_id=1203344552]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_tecla")
+
+[node name="Tecla" type="Label" parent="LabelContainer/PanelContainer/MarginContainer/VBoxContainer/FilaFirma/CajaTecla" unique_id=1203344553]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("3_br1b7")
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="Area2D" type="Area2D" parent="." unique_id=776166609]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1714888448]
+shape = SubResource("CircleShape2D_85li6")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

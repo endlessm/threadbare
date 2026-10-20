@@ -19,7 +19,7 @@ var _ghost := false:
 
 
 ## Shows the collected [InventoryItem] in this item slot without animation.
-func start_as_filled(inventory_item: InventoryItem, ghost: bool) -> void:
+func start_as_filled(inventory_item: InventoryItem, ghost: bool = false) -> void:
 	if is_filled():
 		return
 
@@ -33,7 +33,7 @@ func is_filled() -> bool:
 
 
 ## Shows the collected [InventoryItem] in this item slot with a quick animation.
-func fill(inventory_item: InventoryItem, ghost: bool) -> void:
+func fill(inventory_item: InventoryItem, ghost: bool = false) -> void:
 	if is_filled():
 		return
 

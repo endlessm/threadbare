@@ -111,16 +111,3 @@ func on_rewoven_finished() -> void:
 
 	GameState.mark_quest_completed()
 	GameState.save()
-
-
-func has_retelling() -> bool:
-	return GameState.quest and GameState.quest.quest and GameState.quest.quest.retelling
-
-
-func is_item_offering_possible() -> bool:
-	if not GameState.quest:
-		return false
-
-	# TODO: only if there are *new* threads collected. Problem is - what
-	# triggers the end-of-quest cutscene if there are no new threads?
-	return true

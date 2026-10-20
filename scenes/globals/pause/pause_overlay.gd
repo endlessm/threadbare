@@ -15,11 +15,17 @@ var home_scene: String
 @onready var options: Control = %Options
 @onready var abandon_quest_button: Button = %AbandonQuestButton
 @onready var skip_tutorial_button: Button = %SkipTutorialButton
+@onready var hints_container: Control = %HintsContainer
 
 
 func _ready() -> void:
 	home_scene = ThreadbareProjectSettings.get_setting(ThreadbareProjectSettings.HOME_SCENE)
 	visible = false
+
+	# On touchscreens, the tabs can be tapped instead, and there is a touch
+	# button to go back.
+	if DisplayServer.is_touchscreen_available():
+		hints_container.hide()
 
 
 func _unhandled_input(event: InputEvent) -> void:

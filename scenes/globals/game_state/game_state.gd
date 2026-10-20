@@ -7,6 +7,9 @@ extends Node
 ## signals like [signal PlayerState.abilities_changed].
 signal player_changed(old: PlayerState, new: PlayerState)
 
+## Emitted when the state is cleared.
+signal cleared
+
 ## Emitted when [member quest] changes, due to a quest being started, completed,
 ## or abandoned.
 signal quest_changed
@@ -209,9 +212,25 @@ func abandon_quest(suspend: bool = true) -> void:
 	quest = null
 
 
+## True if involved in a quest and the current quest has retelling.
+func has_retelling() -> bool:
+	return GameState.quest and GameState.quest.quest and GameState.quest.quest.retelling
+
+
+## True if involved in a quest.
+func is_item_offering_possible() -> bool:
+	if not quest:
+		return false
+
+	# TODO: only if there are *new* threads collected. Problem is - what
+	# triggers the end-of-quest cutscene if there are no new threads?
+	return true
+
+
 ## Clear the persisted state.
 func clear() -> void:
 	_saved_game = SavedGame.new()
+	cleared.emit()
 
 
 ## Check if there is persisted state.

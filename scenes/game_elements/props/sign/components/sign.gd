@@ -3,6 +3,16 @@
 @tool
 extends Node2D
 
+enum Frame {
+	NON_DIRECTIONAL = 0,
+	LEFT_AND_RIGHT = 1,
+}
+
+## Font for the label when [member Settings.large_text] is on. It's
+## Jersey 15 instead of Jersey 10, at the size where it's crisp.
+const LARGE_TEXT_FONT := preload("uid://db8kp7xkv7gyn")
+const LARGE_TEXT_FONT_SIZE := 27
+
 @export var direction: Enums.LookAtSide = Enums.LookAtSide.LEFT:
 	set(a_direction):
 		direction = a_direction
@@ -23,11 +33,20 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
+	if Settings.large_text:
+		%Label.add_theme_font_override(&"font", LARGE_TEXT_FONT)
+		%Label.add_theme_font_size_override(&"font_size", LARGE_TEXT_FONT_SIZE)
+
 	update_label_visiblity()
 
 
 func update_appearance() -> void:
-	$Appearance.flip_h = direction == Enums.LookAtSide.RIGHT
+	if direction == Enums.LookAtSide.UNSPECIFIED:
+		%Appearance.frame = Frame.NON_DIRECTIONAL
+		%Appearance.flip_h = false
+	else:
+		%Appearance.frame = Frame.LEFT_AND_RIGHT
+		%Appearance.flip_h = direction == Enums.LookAtSide.RIGHT
 
 
 func _on_area_2d_body_entered(_body: Node2D) -> void:

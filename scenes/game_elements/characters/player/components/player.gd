@@ -34,10 +34,11 @@ const OPTIONAL_ANIMATION_FRAMES: Dictionary[StringName, int] = {
 }
 
 const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
+const DEFAULT_PLAYER_NAME := "Player Name"
 
 ## The character's name. This is used to highlight when the player's character
 ## is speaking during dialogue.
-@export var player_name: String = "Player Name"
+@export var player_name: String = DEFAULT_PLAYER_NAME
 
 ## The current player state.
 @export var mode: Mode = Mode.USER_CONTROLLED:

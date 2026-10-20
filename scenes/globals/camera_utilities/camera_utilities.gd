@@ -24,3 +24,12 @@ static func copy_current_camera_limits(camera: PhantomCamera2D) -> void:
 	var limit_target := _get_phantom_camera_limit_target()
 	if limit_target:
 		camera.limit_target = limit_target
+
+
+## Check if the node position is at the bottom of the viewport.
+## How far to the bottom will return true, is defined by max_ratio, which defaults to 3/4.
+static func is_node_at_bottom(node: Node2D, max_ratio: float = 3 / 4.0) -> bool:
+	var viewport := node.get_viewport()
+	var screen_pos: Vector2 = viewport.get_canvas_transform() * node.global_position
+	var viewport_size: Vector2 = viewport.get_visible_rect().size
+	return screen_pos.y > viewport_size.y * clampf(max_ratio, 0, 1)

@@ -6,6 +6,7 @@ extends Node
 @export var barrels: Array[FillingBarrel]
 @export var auto_start: bool = true
 @export var randomize_barrel_order: bool = false
+@export var unlock_sound: AudioStreamPlayer
 
 var current_target_index: int = 0
 
@@ -37,6 +38,8 @@ func unlock_next_barrel() -> void:
 	if current_target_index < barrels.size():
 		var target: FillingBarrel = barrels[current_target_index]
 		target.is_locked = false
+		if unlock_sound:
+			unlock_sound.play()
 
 
 func _on_barrel_completed() -> void:
