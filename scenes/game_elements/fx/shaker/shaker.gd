@@ -88,8 +88,7 @@ func shake(intensity: float = shake_intensity, time: float = duration) -> void:
 	started.emit()
 	if not Engine.is_editor_hint():
 		# Don't vibrate the joypad when using the Test button in the editor:
-		if InputHelper.device_index >= 0:
-			Input.start_joy_vibration(InputHelper.device_index, 0.5, 0.5, time)
+		JoypadVibration.start(InputHelper.device_index, 0.5, 0.5, time)
 
 	var shaking_already_in_progress: bool = shake_tween and shake_tween.is_valid()
 	if shaking_already_in_progress:
