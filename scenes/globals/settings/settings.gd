@@ -19,6 +19,7 @@ const LARGE_TEXT_KEY := "Large Text"
 
 const INPUT_SECTION := "Input"
 const KEYBOARD_ONLY_KEY := "Keyboard Only"
+const VIBRATION_STRENGTH_KEY := "Vibration Strength"
 
 const LANGUAGE_SECTION := "Language"
 const LOCALE_KEY := "Locale"
@@ -65,6 +66,16 @@ const SMALL_SCREEN_SHORTEST_SIDE_DP := 600.0
 		_settings.set_value(INPUT_SECTION, KEYBOARD_ONLY_KEY, new_value)
 		_save()
 		keyboard_only_changed.emit()
+
+## How strong the joypad vibrates, from 0.0 (off) to 1.0 (full strength).
+## Use [method JoypadVibration.start] to vibrate the joypad with this applied.
+@export_range(0.0, 1.0, 0.1) var vibration_strength: float = 1.0:
+	get:
+		var stored: float = _settings.get_value(INPUT_SECTION, VIBRATION_STRENGTH_KEY, 1.0)
+		return clampf(stored, 0.0, 1.0)
+	set(new_value):
+		_settings.set_value(INPUT_SECTION, VIBRATION_STRENGTH_KEY, clampf(new_value, 0.0, 1.0))
+		_save()
 
 var _settings := ConfigFile.new()
 

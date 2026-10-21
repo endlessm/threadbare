@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="1_back"]
 [ext_resource type="Script" uid="uid://c63sfg6wgj2uy" path="res://scenes/menus/options/components/settings_toggle.gd" id="4_toggle"]
+[ext_resource type="Script" uid="uid://ft234tyiqk1w" path="res://scenes/menus/options/components/vibration_slider.gd" id="5_vibration"]
 [ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="2_arrow"]
 [ext_resource type="Shortcut" uid="uid://c5pwgp1w8p3y1" path="res://scenes/ui_elements/shortcuts/back_shortcut.tres" id="3_shortcut"]
 
@@ -44,6 +45,27 @@ size_flags_horizontal = 3
 text = "Keyboard Only"
 script = ExtResource("4_toggle")
 setting = &"keyboard_only"
+
+[node name="VibrationRow" type="HBoxContainer" parent="VBoxContainer" unique_id=263082477]
+layout_mode = 2
+
+[node name="VibrationLabel" type="Label" parent="VBoxContainer/VibrationRow" unique_id=99090458]
+layout_mode = 2
+text = "Joypad Vibration"
+horizontal_alignment = 2
+
+[node name="VibrationSlider" type="HSlider" parent="VBoxContainer/VibrationRow" unique_id=654041362 node_paths=PackedStringArray("container")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.1
+value = 1.0
+tick_count = 11
+ticks_on_borders = true
+ticks_position = 3
+script = ExtResource("5_vibration")
+container = NodePath("..")
 
 [node name="BackButton" type="Button" parent="VBoxContainer" unique_id=1374851424]
 unique_name_in_owner = true
