@@ -26,6 +26,7 @@ var player_hook: PlayerHook
 func _ready() -> void:
 	Transitions.started.connect(update_visibility)
 	Transitions.finished.connect(update_visibility)
+	Settings.touch_controls_changed.connect(update_visibility)
 	Settings.keyboard_only_changed.connect(_update_player_state)
 	InputHelper.device_changed.connect(_on_input_device_changed)
 
@@ -36,7 +37,7 @@ func _on_input_device_changed(_device: String, _device_index: int) -> void:
 
 func update_visibility() -> void:
 	visible = (
-		not DisplayServer.is_touchscreen_available()
+		not Settings.touch_controls
 		and Settings.show_input_hud
 		and not get_tree().paused
 		and not Transitions.is_running()

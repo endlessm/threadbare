@@ -22,10 +22,14 @@ func _ready() -> void:
 	home_scene = ThreadbareProjectSettings.get_setting(ThreadbareProjectSettings.HOME_SCENE)
 	visible = false
 
-	# On touchscreens, the tabs can be tapped instead, and there is a touch
-	# button to go back.
-	if DisplayServer.is_touchscreen_available():
-		hints_container.hide()
+	Settings.touch_controls_changed.connect(_update_hints)
+	_update_hints()
+
+
+## In touch mode, the tabs can be tapped instead, and there is a touch button to
+## go back.
+func _update_hints() -> void:
+	hints_container.visible = not Settings.touch_controls
 
 
 func _unhandled_input(event: InputEvent) -> void:

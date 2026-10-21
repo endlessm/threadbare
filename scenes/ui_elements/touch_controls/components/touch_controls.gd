@@ -26,6 +26,7 @@ func _ready() -> void:
 		button.released.connect(get_viewport().set_input_as_handled)
 	Transitions.started.connect(update_visibility)
 	Transitions.finished.connect(update_visibility)
+	Settings.touch_controls_changed.connect(update_visibility)
 
 
 func _notification(what: int) -> void:
@@ -53,7 +54,7 @@ func _reset_virtual_joystick() -> void:
 
 func update_visibility() -> void:
 	visible = (
-		DisplayServer.is_touchscreen_available()
+		Settings.touch_controls
 		and not get_tree().paused
 		and not Transitions.is_running()
 		and not displaying_dialogue
