@@ -6,6 +6,11 @@ extends TextureRect
 	set = _set_action_prefix
 @export var devices: InputDeviceTextures = preload("uid://dptr7n813wvqd")
 
+## If true, when playing with keyboard + mouse, show mouse movement instead of
+## the direction keys, because the mouse is what does the job. For example,
+## aiming. See [member Settings.keyboard_only].
+@export var follows_mouse: bool = false
+
 var _unpressed_action: StringName
 var _up_action: StringName
 var _down_action: StringName
@@ -14,11 +19,15 @@ var _right_action: StringName
 
 var _textures: DirectionalInputTextures
 
+## The same mouse movement texture for every direction.
+var _mouse_textures: DirectionalInputTextures
+
 
 func _ready() -> void:
 	action_prefix = action_prefix
 
 	InputHelper.device_changed.connect(_on_input_device_changed)
+	Settings.keyboard_only_changed.connect(_refresh_textures)
 
 
 func _on_input_device_changed(_device: String, _device_index: int) -> void:
@@ -47,11 +56,27 @@ func _refresh_textures() -> void:
 
 
 func _set_keyboard() -> void:
+	if follows_mouse and not Settings.keyboard_only:
+		_textures = _get_mouse_textures()
+		return
+
 	var right_event := InputHelper.get_keyboard_input_for_action(action_prefix + "_right")
 	if right_event.physical_keycode != Key.KEY_RIGHT:
 		push_warning("Expected arrow keys as primary binding")
 	else:
 		_textures = devices.keyboard.arrow_keys
+
+
+func _get_mouse_textures() -> DirectionalInputTextures:
+	if not _mouse_textures:
+		var mouse_move := devices.keyboard.mouse_move
+		_mouse_textures = DirectionalInputTextures.new()
+		_mouse_textures.unpressed = mouse_move
+		_mouse_textures.up = mouse_move
+		_mouse_textures.down = mouse_move
+		_mouse_textures.left = mouse_move
+		_mouse_textures.right = mouse_move
+	return _mouse_textures
 
 
 func _set_joypad() -> void:

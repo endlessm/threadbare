@@ -2,6 +2,9 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Node
 
+## Emitted when [member keyboard_only] changes.
+signal keyboard_only_changed
+
 const SETTINGS_PATH := "user://settings.cfg"
 
 const META_SECTION := "Meta"
@@ -13,6 +16,9 @@ const VOLUME_SECTION := "Volume"
 const DISPLAY_SECTION := "Display"
 const SHOW_HUD_KEY := "Show HUD"
 const LARGE_TEXT_KEY := "Large Text"
+
+const INPUT_SECTION := "Input"
+const KEYBOARD_ONLY_KEY := "Keyboard Only"
 
 const LANGUAGE_SECTION := "Language"
 const LOCALE_KEY := "Locale"
@@ -47,6 +53,18 @@ const SMALL_SCREEN_SHORTEST_SIDE_DP := 600.0
 	set(new_value):
 		_settings.set_value(DISPLAY_SECTION, LARGE_TEXT_KEY, new_value)
 		_save()
+
+## Play with the keyboard only, instead of keyboard + mouse. This decides
+## whether the mouse or the aim keys aim the grappling hook, and whether the
+## input hints show the mouse buttons or the keys. It doesn't matter while
+## playing with a joypad.
+@export var keyboard_only: bool:
+	get:
+		return _settings.get_value(INPUT_SECTION, KEYBOARD_ONLY_KEY, false)
+	set(new_value):
+		_settings.set_value(INPUT_SECTION, KEYBOARD_ONLY_KEY, new_value)
+		_save()
+		keyboard_only_changed.emit()
 
 var _settings := ConfigFile.new()
 

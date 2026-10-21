@@ -13,3 +13,6 @@ extends Resource
 @export var arrow_keys: DirectionalInputTextures
 
 @export var mouse_buttons: Dictionary[MouseButton, Texture2D]
+
+## Moving the mouse, for actions like aiming that follow the mouse position.
+@export var mouse_move: Texture2D

@@ -12,8 +12,9 @@ extends Node2D
 ## The [b]throw[/b] action is used for throwing.
 ## [br][br]
 ## The [b]aim_up, aim_down, aim_left and aim_right[/b] actions are used for aiming.
-## Additionally, the mouse movement can also be used for aiming,
-## but the mouse not considered the primary input.
+## When playing with keyboard + mouse, the mouse movement aims instead, and the
+## aim keys are ignored. They are also the movement keys. See
+## [member Settings.keyboard_only]. Aiming with a joypad works in both cases.
 ## [br][br]
 ## On touchscreens, touching the screen aims towards the touch position, and
 ## dragging the finger keeps aiming. Lifting the finger throws.
@@ -98,8 +99,6 @@ var _touch_throw_requested: bool = false
 ## diagonal directions when releasing the input actions.
 @onready var d_pad_timer: Timer = %DPadTimer
 
-@onready var mouse_aiming_timer: Timer = %MouseAimingTimer
-
 
 func _unhandled_input(_event: InputEvent) -> void:
 	if _event is InputEventScreenTouch or _event is InputEventScreenDrag:
@@ -111,7 +110,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 		# when dragging the virtual joystick.
 		if _event.device == InputEvent.DEVICE_ID_EMULATION:
 			return
-		_aim_at(get_global_mouse_position())
+		if not Settings.keyboard_only:
+			_aim_at(get_global_mouse_position())
 		return
 
 	# When aiming with keyboard, do not change the hook angle immediately if one of these actions
@@ -120,7 +120,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 	# there is always one that is released first so the aim direction ends up being either left or
 	# down, not left AND down.
 	if (
-		mouse_aiming_timer.is_stopped()
+		_aims_with_actions()
 		and _event is InputEventKey
 		and (
 			_event.is_action_released(&"aim_left")
@@ -132,7 +132,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 		d_pad_timer.start()
 		return
 
-	if mouse_aiming_timer.is_stopped():
+	if _aims_with_actions():
 		_update_hook_angle()
 
 	if Input.is_action_just_pressed(&"throw"):
@@ -167,8 +167,14 @@ func _screen_to_global(screen_position: Vector2) -> Vector2:
 	return get_canvas_transform().affine_inverse() * screen_position
 
 
+## True if the aim actions should aim: when playing with a joypad, or with the
+## keyboard only. With keyboard + mouse the mouse aims, and the aim keys, which
+## are also the movement keys, must not.
+func _aims_with_actions() -> bool:
+	return Settings.keyboard_only or InputHelper.device != InputHelper.DEVICE_KEYBOARD
+
+
 func _aim_at(target: Vector2) -> void:
-	mouse_aiming_timer.start()
 	var axis := target - global_position
 	if not axis.is_zero_approx():
 		_hook_angle = axis.angle()
@@ -305,4 +311,5 @@ func _process(_delta: float) -> void:
 
 
 func _on_d_pad_timer_timeout() -> void:
-	_update_hook_angle()
+	if _aims_with_actions():
+		_update_hook_angle()
