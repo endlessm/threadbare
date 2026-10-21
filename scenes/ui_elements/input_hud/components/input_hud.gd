@@ -12,6 +12,8 @@ var player_repel: PlayerRepel
 var player_hook: PlayerHook
 
 @onready var normal_controls := %NormalControls
+@onready var move_label: Label = %MovementInputHint/Label
+@onready var move_aim_label: Label = %MovementInputHint/MoveAimLabel
 @onready var interact_input_hint: LabeledInputHint = %InteractInputHint
 @onready var aim_input_hint := %AimInputHint
 @onready var throw_input_hint := %ThrowInputHint
@@ -24,6 +26,12 @@ var player_hook: PlayerHook
 func _ready() -> void:
 	Transitions.started.connect(update_visibility)
 	Transitions.finished.connect(update_visibility)
+	Settings.keyboard_only_changed.connect(_update_player_state)
+	InputHelper.device_changed.connect(_on_input_device_changed)
+
+
+func _on_input_device_changed(_device: String, _device_index: int) -> void:
+	_update_player_state()
 
 
 func update_visibility() -> void:
@@ -79,8 +87,17 @@ func _update_player_state() -> void:
 
 	repel_input_hint.visible = player_repel and player_repel.visible
 
-	throw_input_hint.visible = player_hook and player_hook.visible
-	aim_input_hint.visible = player_hook and player_hook.visible
+	var has_hook: bool = player_hook and player_hook.visible
+	throw_input_hint.visible = has_hook
+
+	# With the keyboard only, the same keys move and aim, so a single hint
+	# labeled "Move / Aim" replaces the two identical ones.
+	var aims_with_move_keys := (
+		has_hook and Settings.keyboard_only and InputHelper.device == InputHelper.DEVICE_KEYBOARD
+	)
+	aim_input_hint.visible = has_hook and not aims_with_move_keys
+	move_label.visible = not aims_with_move_keys
+	move_aim_label.visible = aims_with_move_keys
 
 
 func _display_skip() -> void:

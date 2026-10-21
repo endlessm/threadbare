@@ -3,6 +3,9 @@
 extends TextureRect
 
 @export var action_name: StringName
+
+## If true, when playing with keyboard + mouse, show the mouse button bound to
+## [member action_name] instead of the key. See [member Settings.keyboard_only].
 @export var alternative: bool = false
 
 @export var devices: InputDeviceTextures = preload("uid://dptr7n813wvqd")
@@ -18,6 +21,7 @@ func _process(_delta: float) -> void:
 func _ready() -> void:
 	if devices:
 		InputHelper.device_changed.connect(_on_input_device_changed)
+		Settings.keyboard_only_changed.connect(_on_keyboard_only_changed)
 		_on_input_device_changed(InputHelper.device, InputHelper.device_index)
 	else:
 		push_warning("%s: Per-device textures not configured" % get_path())
@@ -25,14 +29,16 @@ func _ready() -> void:
 
 func _on_input_device_changed(device: String, _device_index: int) -> void:
 	if device == InputHelper.DEVICE_KEYBOARD:
-		if alternative:
+		if alternative and not Settings.keyboard_only:
 			_set_mouse_texture()
 		else:
 			_set_keyboard_texture()
 	else:
 		_set_joypad_texture(device)
 
-	visible = (device == InputHelper.DEVICE_KEYBOARD or not alternative)
+
+func _on_keyboard_only_changed() -> void:
+	_on_input_device_changed(InputHelper.device, InputHelper.device_index)
 
 
 func _set_joypad_texture(device: String) -> void:

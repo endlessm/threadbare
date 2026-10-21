@@ -196,6 +196,7 @@ func import_keyboard(
 	res.mouse_buttons[MouseButton.MOUSE_BUTTON_MIDDLE] = tex(
 		full_image, sprites["mouse_scroll_outline"]
 	)
+	res.mouse_move = tex(full_image, sprites["mouse_move"])
 
 	save_resource(target, res)
 
