@@ -56,6 +56,15 @@ func _fade_in_ui() -> void:
 	tween.tween_property(ui_container, "modulate:a", 1.0, fade_duration)
 
 
+# The bookmarks and quests can be clicked with the mouse.
+func _enter_tree() -> void:
+	MouseManager.hold()
+
+
+func _exit_tree() -> void:
+	MouseManager.release()
+
+
 func _ready() -> void:
 	Settings.touch_controls_changed.connect(_update_hints)
 	_update_hints()

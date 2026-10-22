@@ -12,6 +12,17 @@ extends Control
 @onready var auto_play_timer: Timer = %AutoPlayTimer
 
 
+# The buttons can be clicked with the mouse.
+func _enter_tree() -> void:
+	MouseManager.hold()
+	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+
+
+func _exit_tree() -> void:
+	MouseManager.release()
+	Input.set_default_cursor_shape(Input.CURSOR_CROSS)
+
+
 func _ready() -> void:
 	var quest := GameState.quest.quest
 

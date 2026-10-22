@@ -87,6 +87,10 @@ var _touch_index: int = -1
 ## True if the finger was lifted, so the next frame should throw.
 var _touch_throw_requested: bool = false
 
+## True while this control holds the [MouseManager], so that the crosshair cursor
+## shows when aiming with the mouse.
+var _holding_mouse: bool = false
+
 ## The visual representation of the [member ray_cast_2d] direction.
 ## It also indicates if the ray is hitting a [HookableArea] by displaying
 ## the sprite solid, or semitransparent if not.
@@ -278,10 +282,47 @@ func _set_state(new_state: State) -> void:
 	if ray_cast_2d:
 		ray_cast_2d.enabled = state != State.DISABLED
 	set_process_unhandled_input(state != State.DISABLED)
+	_update_mouse_hold()
 
 
 func _ready() -> void:
+	Settings.keyboard_only_changed.connect(_update_mouse_hold)
+	# The player's control stays aiming while the player lacks the grappling
+	# ability, but its parent PlayerHook is hidden then.
+	visibility_changed.connect(_update_mouse_hold)
 	_set_state(state)
+
+
+func _enter_tree() -> void:
+	if is_node_ready():
+		_update_mouse_hold()
+
+
+func _exit_tree() -> void:
+	# is_inside_tree() is still true here, so release explicitly.
+	if _holding_mouse:
+		_holding_mouse = false
+		MouseManager.release()
+
+
+## Hold the [MouseManager] while aiming with the mouse, which is when this
+## control is visible and not disabled, and [member Settings.keyboard_only] is
+## off. This way the crosshair cursor shows when moving the mouse to aim.
+func _update_mouse_hold() -> void:
+	# Keep holding during State.AIMING_PAUSED too, not only State.AIMING. After a
+	# throw, the player may want to move the mouse to the next target while the
+	# string is out. Releasing would hide the crosshair right away and keep it
+	# hidden until aiming resumes, so the player couldn't see where the mouse is.
+	var should_hold := (
+		is_visible_in_tree() and state != State.DISABLED and not Settings.keyboard_only
+	)
+	if should_hold == _holding_mouse:
+		return
+	_holding_mouse = should_hold
+	if should_hold:
+		MouseManager.hold()
+	else:
+		MouseManager.release()
 
 
 func _process(_delta: float) -> void:
