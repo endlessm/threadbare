@@ -8,10 +8,9 @@ enum Frame {
 	LEFT_AND_RIGHT = 1,
 }
 
-## Font for the label when [member Settings.large_text] is on. It's
-## Jersey 15 instead of Jersey 10, at the size where it's crisp.
-const LARGE_TEXT_FONT := preload("uid://db8kp7xkv7gyn")
-const LARGE_TEXT_FONT_SIZE := 27
+## Theme type variation of the label when [member Settings.large_text] is on.
+## It uses Jersey 15 instead of Jersey 10, at the size where it's crisp.
+const LARGE_TEXT_TYPE_VARIATION := &"LargeSignLabel"
 
 @export var direction: Enums.LookAtSide = Enums.LookAtSide.LEFT:
 	set(a_direction):
@@ -34,8 +33,7 @@ func _ready() -> void:
 		return
 
 	if Settings.large_text:
-		%Label.add_theme_font_override(&"font", LARGE_TEXT_FONT)
-		%Label.add_theme_font_size_override(&"font_size", LARGE_TEXT_FONT_SIZE)
+		%Label.theme_type_variation = LARGE_TEXT_TYPE_VARIATION
 
 	update_label_visiblity()
 
