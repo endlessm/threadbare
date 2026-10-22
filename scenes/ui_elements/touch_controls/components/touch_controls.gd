@@ -2,6 +2,21 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Control
 
+## Interact button textures for each [enum InteractArea.ActionType].
+const INTERACT_TEXTURES: Dictionary[InteractArea.ActionType, Texture2D] = {
+	InteractArea.ActionType.TALK: preload("uid://ns6755757cje"),
+	InteractArea.ActionType.USE: preload("uid://cjworl3bsj51d"),
+}
+const INTERACT_PRESSED_TEXTURES: Dictionary[InteractArea.ActionType, Texture2D] = {
+	InteractArea.ActionType.TALK: preload("uid://iwooycswl1bb"),
+	InteractArea.ActionType.USE: preload("uid://cmruhm7k3i3jm"),
+}
+
+## Theme type variations of the interact label, without and with
+## [member Settings.large_text].
+const HINT_LABEL_TYPE_VARIATION := &"HintLabel"
+const LARGE_HINT_LABEL_TYPE_VARIATION := &"LargeHintLabel"
+
 @export var player: CharacterBody2D
 @export var sokoban_ruleset: RuleEngine
 @export var displaying_dialogue: bool
@@ -11,6 +26,7 @@ var player_repel: PlayerRepel
 var player_hook: PlayerHook
 
 @onready var interact_button: TouchScreenButton = %InteractButton
+@onready var interact_label: Label = %InteractLabel
 @onready var repel_button: TouchScreenButton = %RepelButton
 @onready var pause_button: TouchScreenButton = %PauseButton
 @onready var virtual_joystick: VirtualJoystick = %VirtualJoystick
@@ -80,11 +96,26 @@ func update_visibility() -> void:
 		_update_player_state()
 
 
+## Apply [member Settings.large_text]. It's checked each time the label changes,
+## instead of once, because this node lives as long as the game, and the player
+## may change the setting meanwhile.
+func _update_interact_label_font() -> void:
+	interact_label.theme_type_variation = (
+		LARGE_HINT_LABEL_TYPE_VARIATION if Settings.large_text else HINT_LABEL_TYPE_VARIATION
+	)
+
+
 func _update_player_state() -> void:
 	if player_interaction:
 		var action := player_interaction.get_interact_action()
 		interact_button.visible = not action.is_empty()
+		interact_label.text = action
+		_update_interact_label_font()
+		var action_type := player_interaction.get_interact_action_type()
+		interact_button.texture_normal = INTERACT_TEXTURES[action_type]
+		interact_button.texture_pressed = INTERACT_PRESSED_TEXTURES[action_type]
 	else:
 		interact_button.visible = false
+	interact_label.visible = interact_button.visible
 
 	repel_button.visible = player_repel and player_repel.visible and not interact_button.visible
