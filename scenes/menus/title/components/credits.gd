@@ -24,10 +24,9 @@ var _current_scroll_pos: float = 0.0
 
 
 func _ready() -> void:
-	# On touchscreens, there is a touch button to go back, and the credits
-	# scroll by dragging.
-	if DisplayServer.is_touchscreen_available():
-		hints_container.hide()
+	if not Settings.touch_controls_changed.is_connected(_update_hints):
+		Settings.touch_controls_changed.connect(_update_hints)
+	_update_hints()
 
 	if not visibility_changed.is_connected(_on_visibility_changed):
 		visibility_changed.connect(_on_visibility_changed)
@@ -44,6 +43,12 @@ func _ready() -> void:
 
 	set_process(false)
 	_on_visibility_changed()
+
+
+## In touch mode, there is a touch button to go back, and the credits scroll by
+## dragging.
+func _update_hints() -> void:
+	hints_container.visible = not Settings.touch_controls
 
 
 func _process(delta: float) -> void:
