@@ -63,7 +63,7 @@ var _pointy_offsets: Array[float]
 func _set_walking_path(new_walking_path: Path2D) -> void:
 	walking_path = new_walking_path
 	update_configuration_warnings()
-	if not is_node_ready():
+	if not is_node_ready() or Engine.is_editor_hint():
 		return
 	if walking_path:
 		# Set initial position and put character in path:
