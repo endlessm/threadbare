@@ -62,8 +62,7 @@ static var texturas_achicadas: Dictionary = {}
 @export var es_hilo_del_perdon: bool = false:
 	set(new_value):
 		es_hilo_del_perdon = new_value
-		if sprite_2d:
-			sprite_2d.texture = _textura_del_hilo()
+		_actualizar_textura()
 
 @export_category("Dialogue")
 @export var pause_game_during_dialogue: bool = false
@@ -107,8 +106,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 func _set_item(new_value: InventoryItem) -> void:
 	item = new_value
 
-	if sprite_2d:
-		sprite_2d.texture = _textura_del_hilo()
+	_actualizar_textura()
 
 	if interact_area:
 		interact_area.action_text = "Collect " + item.type_name() if item else "Collect"
@@ -300,6 +298,15 @@ func _detener_brillo() -> void:
 	sprite_2d.offset.y = 0.0
 	if is_instance_valid(brillo):
 		brillo.hide()
+
+
+func _actualizar_textura() -> void:
+	# The texture is generated at runtime. Assigning it in the editor would
+	# store it in the scenes that have editable children, as a new embedded
+	# image on every save.
+	if Engine.is_editor_hint() or not sprite_2d:
+		return
+	sprite_2d.texture = _textura_del_hilo()
 
 
 func _textura_del_hilo() -> Texture2D:

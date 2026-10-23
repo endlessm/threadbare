@@ -123,6 +123,15 @@ func _ready() -> void:
 	interact_area.interaction_started.connect(self._on_interacted)
 
 
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_EDITOR_PRE_SAVE:
+			# Since this is a tool script that plays the animations in the
+			# editor, reset the frames and their progress before saving the scene.
+			tail.set_frame_and_progress(0, 0.0)
+			highlight.set_frame_and_progress(0, 0.0)
+
+
 ## Make the collectible appear with an animation, ultimately setting [member revealed].
 ##
 ## This does nothing if [member revealed] is [code]true[/code], or if the collectible is already
