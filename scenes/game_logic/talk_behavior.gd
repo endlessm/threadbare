@@ -32,8 +32,8 @@ extends Node
 ## Having multiple nodes in this list with the same name is not advised.
 @export var extra_context: Array[Node]
 
-#region Setters
 
+#region Setters
 
 func _set_title(new_value: String) -> void:
 	title = new_value
@@ -43,7 +43,6 @@ func _set_title(new_value: String) -> void:
 func _set_interact_area(new_interact_area: InteractArea) -> void:
 	interact_area = new_interact_area
 	update_configuration_warnings()
-
 
 #endregion
 

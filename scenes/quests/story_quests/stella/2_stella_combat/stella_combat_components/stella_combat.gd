@@ -8,7 +8,8 @@ extends Node2D
 
 func _ready() -> void:
 	fisherman.interact_area.interaction_ended.connect(
-		_on_fisherman_interaction_ended, CONNECT_ONE_SHOT
+		_on_fisherman_interaction_ended,
+		CONNECT_ONE_SHOT,
 	)
 
 

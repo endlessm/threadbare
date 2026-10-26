@@ -12,7 +12,12 @@ extends CanvasLayer
 ## [param quest] set to [code]null[/code].
 signal selected(quest: Quest, restart: bool)
 
-enum ContentTab { TOC, EN, ES, QUESTS }
+enum ContentTab {
+	TOC,
+	EN,
+	ES,
+	QUESTS,
+}
 
 ## Quests to show in the storybook.
 @export var quests: Array[Quest]
@@ -23,8 +28,8 @@ var _current_spread_index: int
 var _navigation_locked: bool = false
 var _previous_content_spread_index: int = 0
 
-var _quests_per_language: Dictionary[String, Array] = {}
-var _bookmark_indexes: Dictionary[ContentTab, int] = {}
+var _quests_per_language: Dictionary[String, Array] = { }
+var _bookmark_indexes: Dictionary[ContentTab, int] = { }
 var _show_language_bookmarks: bool
 
 @onready var left_quest_list: VBoxContainer = %LeftQuestList
@@ -71,7 +76,7 @@ func _ready() -> void:
 
 	animated_book.animation_finished.connect(_on_animation_finished)
 
-	_quests_per_language = {}
+	_quests_per_language = { }
 	for q in quests:
 		# If language is not defined, assume English:
 		var language: String = q.language if q.language else "en"
@@ -166,7 +171,9 @@ func _populate_quest_lists() -> void:
 
 ## Method to build individual buttons (StoryQuests) and manage the focus chains
 func _create_quest_button(
-	quest: Quest, parent_container: VBoxContainer, prev_btn: Button
+	quest: Quest,
+	parent_container: VBoxContainer,
+	prev_btn: Button,
 ) -> Button:
 	var button := Button.new()
 	button.text = quest.get_title()

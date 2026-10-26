@@ -27,12 +27,12 @@ const RESOURCE_EXTENSIONS: PackedStringArray = ["tscn", "tres"]
 func _run() -> void:
 	var files := Util.all_files(ROOT_FOLDER)
 
-	var to_remove: Dictionary[String, bool] = {}
+	var to_remove: Dictionary[String, bool] = { }
 	for path: String in files:
 		if path.get_extension() == CSHARP_EXTENSION:
 			to_remove[path] = true
 
-	var references: Dictionary[String, PackedStringArray] = {}
+	var references: Dictionary[String, PackedStringArray] = { }
 	for path: String in files:
 		if path.get_extension() in RESOURCE_EXTENSIONS:
 			references[path] = _external_references(path)
@@ -66,7 +66,8 @@ func _run() -> void:
 				push_error("Could not remove %s: %s" % [target, error_string(error)])
 
 	var csharp := paths.filter(
-		func(path: String) -> bool: return path.get_extension() == CSHARP_EXTENSION
+		func(path: String) -> bool:
+			return path.get_extension() == CSHARP_EXTENSION,
 	)
 	print(
 		(
@@ -101,7 +102,7 @@ func _external_references(path: String) -> PackedStringArray:
 ## Returns the set of ways [param paths] can be referred to, which is their paths
 ## and their UIDs.
 func _identifiers_of(paths: Array) -> Dictionary[String, bool]:
-	var identifiers: Dictionary[String, bool] = {}
+	var identifiers: Dictionary[String, bool] = { }
 
 	for path: String in paths:
 		identifiers[path] = true

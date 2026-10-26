@@ -11,7 +11,10 @@ var _tween: Tween
 
 
 func _ready() -> void:
-	optional_collectible_item.tree_exiting.connect(func() -> void: optional_collectible_item = null)
+	optional_collectible_item.tree_exiting.connect(
+		func() -> void:
+			optional_collectible_item = null,
+	)
 	cave_lighting.body_entered.connect(_on_cave_lighting_body_entered)
 	cave_lighting.body_exited.connect(_on_cave_lighting_body_exited)
 

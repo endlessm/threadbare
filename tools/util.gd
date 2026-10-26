@@ -9,7 +9,8 @@ extends Object
 ## true if the scene matches the filter.
 static func find_scenes(
 	root_folder: String = "res://",
-	filter: Callable = func(_scene_path: String) -> bool: return true,
+	filter: Callable = func(_scene_path: String) -> bool:
+		return true,
 ) -> Array[PackedScene]:
 	var packed_scenes: Array[PackedScene] = []
 	var err: Error
@@ -53,7 +54,8 @@ static func find_scenes(
 ## [param skip_folders], and everything under them, are left out. So is Godot's
 ## own .godot cache, which holds a copy of everything.
 static func all_files(
-	folder: String, skip_folders: PackedStringArray = PackedStringArray()
+	folder: String,
+	skip_folders: PackedStringArray = PackedStringArray(),
 ) -> PackedStringArray:
 	var files := PackedStringArray()
 	var pending := PackedStringArray([folder])
@@ -79,7 +81,7 @@ static func all_files(
 ## [param scene_state], by name. Properties left at their default value aren't
 ## included, because they aren't saved in the scene.
 static func node_properties(scene_state: SceneState, idx: int) -> Dictionary[StringName, Variant]:
-	var properties: Dictionary[StringName, Variant] = {}
+	var properties: Dictionary[StringName, Variant] = { }
 	for prop_idx: int in scene_state.get_node_property_count(idx):
 		properties[scene_state.get_node_property_name(idx, prop_idx)] = (
 			scene_state.get_node_property_value(idx, prop_idx)

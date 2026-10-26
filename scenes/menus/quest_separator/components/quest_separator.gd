@@ -73,7 +73,7 @@ func restore() -> void:
 		GameState.scene.path,
 		GameState.scene.spawn_point,
 		Transition.Effect.RADIAL,
-		Transition.Effect.FADE
+		Transition.Effect.FADE,
 	)
 
 
@@ -86,5 +86,8 @@ func play() -> void:
 	GameState.global.suspended_quests.erase(quest.resource_path)
 
 	SceneSwitcher.change_to_file_with_transition(
-		quest.first_scene, ^"", Transition.Effect.RADIAL, Transition.Effect.FADE
+		quest.first_scene,
+		^"",
+		Transition.Effect.RADIAL,
+		Transition.Effect.FADE,
 	)

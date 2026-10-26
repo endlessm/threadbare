@@ -75,14 +75,17 @@ func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
 		tween.tween_property(sprite, "scale", Vector2(1, 1), 0.5)
 		# Loop around
 		tween.parallel().tween_property(
-			path_follow, "progress_ratio", 2.0, loop_time - time_variation * counter
+			path_follow,
+			"progress_ratio",
+			2.0,
+			loop_time - time_variation * counter,
 		)
 
 		# Animation end
 		(
 			tween
-			. tween_property(sprite, "global_position", animation_path.global_position, 0.25)
-			. set_ease(Tween.EASE_OUT)
+			.tween_property(sprite, "global_position", animation_path.global_position, 0.25)
+			.set_ease(Tween.EASE_OUT)
 		)
 		tween.parallel().tween_property(sprite, "modulate", Color(0, 0, 0, 0), 0.5)
 		tween.parallel().tween_property(sprite, "scale", Vector2(3, 3), 0.5)

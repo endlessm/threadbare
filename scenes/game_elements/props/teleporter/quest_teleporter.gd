@@ -38,7 +38,6 @@ func _get_configuration_warnings() -> PackedStringArray:
 		warnings.append("Abandon Point not set")
 	return warnings
 
-
 #endregion
 
 
@@ -57,7 +56,6 @@ func set_enter_transition(new_value: Transition.Effect) -> void:
 	enter_transition = new_value
 	if scene_link:
 		scene_link.enter_transition = new_value
-
 
 #endregion
 

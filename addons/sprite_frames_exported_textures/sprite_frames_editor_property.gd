@@ -101,14 +101,24 @@ func on_resource_changed(new_texture: Texture2D) -> void:
 		return
 
 	editor_undo_redo_manager.create_action(
-		"Replace texture", UndoRedo.MergeMode.MERGE_DISABLE, sprite_frames
+		"Replace texture",
+		UndoRedo.MergeMode.MERGE_DISABLE,
+		sprite_frames,
 	)
 	editor_undo_redo_manager.add_do_method(
-		self, "replace_texture", texture, new_texture, sprite_frames
+		self,
+		"replace_texture",
+		texture,
+		new_texture,
+		sprite_frames,
 	)
 	editor_undo_redo_manager.add_do_property(self, "texture", new_texture)
 	editor_undo_redo_manager.add_undo_method(
-		self, "replace_texture", new_texture, texture, sprite_frames
+		self,
+		"replace_texture",
+		new_texture,
+		texture,
+		sprite_frames,
 	)
 	editor_undo_redo_manager.add_undo_property(self, "texture", texture)
 	editor_undo_redo_manager.commit_action()
@@ -130,9 +140,9 @@ func replace_texture(texture, new_texture, sprite_frames) -> void:
 func refresh_sprite_frames_editor() -> void:
 	var sprite_frames_editor = (
 		EditorInterface
-		. get_base_control()
-		. find_children("", "SpriteFramesEditor", true, false)
-		. front()
+		.get_base_control()
+		.find_children("", "SpriteFramesEditor", true, false)
+		.front()
 	)
 	if not sprite_frames_editor:
 		return

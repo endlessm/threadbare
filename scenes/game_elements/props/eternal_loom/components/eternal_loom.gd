@@ -100,7 +100,10 @@ func on_offering_succeeded() -> void:
 
 	var cutscene_packed: PackedScene = ResourceLoader.load_threaded_get(cutscene_path)
 	SceneSwitcher.change_to_packed_with_transition(
-		cutscene_packed, "", Transitions.Effect.FADE, Transitions.Effect.FADE
+		cutscene_packed,
+		"",
+		Transitions.Effect.FADE,
+		Transitions.Effect.FADE,
 	)
 
 

@@ -348,7 +348,8 @@ func _process_hook_string(delta: float) -> void:
 		# Not hooked, so a throw that hit air or wall.
 		# Progressively shorten the line.
 		hook_string.set_point_position(
-			0, hook_string.points[0].lerp(hook_string.points[1], 10.0 * delta)
+			0,
+			hook_string.points[0].lerp(hook_string.points[1], 10.0 * delta),
 		)
 		# Remove the string when the line is short enough.
 		if (

@@ -75,7 +75,6 @@ func set_dialogue_title(new_value: String) -> void:
 	dialogue_title = new_value
 	update_configuration_warnings()
 
-
 #endregion
 
 

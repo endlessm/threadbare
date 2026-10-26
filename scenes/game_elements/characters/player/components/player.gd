@@ -29,9 +29,7 @@ const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
 
 ## Optional animations which, if provided by [member sprite_frames], must have the corresponding
 ## number of frames.
-const OPTIONAL_ANIMATION_FRAMES: Dictionary[StringName, int] = {
-	&"run": 6,
-}
+const OPTIONAL_ANIMATION_FRAMES: Dictionary[StringName, int] = { &"run": 6 }
 
 const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
 const DEFAULT_PLAYER_NAME := "Player Name"
@@ -186,7 +184,7 @@ func _set_speeds(new_speeds: CharacterSpeeds) -> void:
 func teleport_to(
 	tele_position: Vector2,
 	smooth_camera: bool = false,
-	look_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
+	look_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED,
 ) -> void:
 	var camera: Camera2D = get_viewport().get_camera_2d()
 
@@ -289,7 +287,10 @@ func _handle_game_over() -> void:
 	else:
 		# Restart from the challenge start scene
 		SceneSwitcher.change_to_file_with_transition(
-			challenge_start_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+			challenge_start_scene,
+			^"",
+			Transition.Effect.FADE,
+			Transition.Effect.FADE,
 		)
 
 

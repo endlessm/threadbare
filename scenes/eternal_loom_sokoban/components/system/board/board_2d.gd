@@ -17,8 +17,8 @@ signal piece_removed(piece: Piece2D)
 @export var offset_tiles: bool = true
 
 var _pieces: Array[Piece2D] = []
-var _cells_by_position: Dictionary[Vector2i, Cell2D] = {}
-var _cells_by_piece: Dictionary[Piece2D, Cell2D] = {}
+var _cells_by_position: Dictionary[Vector2i, Cell2D] = { }
+var _cells_by_piece: Dictionary[Piece2D, Cell2D] = { }
 
 
 func position_to_grid_position(world_position: Vector2) -> Vector2i:
@@ -115,7 +115,6 @@ func count_pieces(query: Query = null) -> int:
 			piece_count += 1
 	return piece_count
 
-
 #endregion
 
 
@@ -163,7 +162,6 @@ func _get_or_create_cell(grid_position: Vector2i) -> Cell2D:
 		_cells_by_position[grid_position] = Cell2D.new(grid_position)
 	return _cells_by_position[grid_position]
 
-
 #endregion
 
 
@@ -171,8 +169,10 @@ class Cell2D:
 	var grid_position: Vector2i
 	var pieces: Array[Piece2D]
 
+
 	func _init(_grid_position: Vector2i) -> void:
 		grid_position = _grid_position
+
 
 	func is_empty() -> bool:
 		return pieces.size() == 0
@@ -190,11 +190,13 @@ class Query:
 
 	var next_query: Query = null
 
+
 	func add_piece(piece: Piece2D) -> Query:
 		id = piece.id
 		tags = piece.tags
 		layer = piece.layer
 		return self
+
 
 	func add_pattern_piece(piece: Pattern.PatternPiece, rule_engine: RuleEngine) -> Query:
 		add_id_or_tag(piece.id_or_tag, rule_engine)
@@ -202,17 +204,21 @@ class Query:
 
 		return self
 
+
 	func add_id(value: StringName) -> Query:
 		id = value
 		return self
+
 
 	func add_tag(value: StringName) -> Query:
 		tags.append(value)
 		return self
 
+
 	func add_tags(values: Array[StringName]) -> Query:
 		tags.append_array(values)
 		return self
+
 
 	func add_id_or_tag(value: StringName, rule_engine: RuleEngine) -> Query:
 		if value in rule_engine.tags_legend:
@@ -221,31 +227,38 @@ class Query:
 			id = value
 		return self
 
+
 	func add_layer(value: int) -> Query:
 		layer = value
 		#prints("VALUE", value, "SELF:", self.layer)
 		return self
 
+
 	func add_direction(value: Piece2D.DIRECTION) -> Query:
 		direction = value
 		return self
+
 
 	func set_include_inactive(value: bool) -> Query:
 		include_inactive = value
 		return self
 
+
 	func set_is_exclusive(value: bool) -> Query:
 		is_exclusive = value
 		return self
+
 
 	func set_is_tags_exhaustive(value: bool) -> Query:
 		is_tags_exhaustive = value
 		return self
 
+
 	## Used to chain additional queries to the current Query
 	func add_next_query() -> Query:
 		next_query = Query.new()
 		return next_query
+
 
 	func matches(piece: Piece2D) -> bool:
 		var found_fault := false

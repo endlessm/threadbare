@@ -55,7 +55,8 @@ func _apply_theming() -> void:
 	panel.add_theme_stylebox_override("panel", style)
 
 	errors_label.add_theme_color_override(
-		"default_color", get_theme_color("warning_color", "Editor")
+		"default_color",
+		get_theme_color("warning_color", "Editor"),
 	)
 
 

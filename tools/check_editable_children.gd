@@ -35,7 +35,7 @@ const TALLY_SIZE := 30
 
 
 func _run() -> void:
-	var tally: Dictionary[String, int] = {}
+	var tally: Dictionary[String, int] = { }
 	var scene_count := 0
 	var editable_count := 0
 	var unused_count := 0
@@ -74,7 +74,10 @@ func _run() -> void:
 	)
 
 	var keys := tally.keys()
-	keys.sort_custom(func(a: String, b: String) -> bool: return tally[a] > tally[b])
+	keys.sort_custom(
+		func(a: String, b: String) -> bool:
+			return tally[a] > tally[b],
+	)
 	print("\nMost changed child properties, by instanced scene:")
 	for key: String in keys.slice(0, TALLY_SIZE):
 		print("  %4d  %s" % [tally[key], key])
@@ -104,19 +107,19 @@ func _check_scene(scene: PackedScene, tally: Dictionary[String, int]) -> Diction
 
 	# Instances of other scenes, by node path. Instances nested inside these
 	# aren't listed, because they belong to the instanced scene.
-	var instances: Dictionary[String, int] = {}
+	var instances: Dictionary[String, int] = { }
 	for idx in range(1, state.get_node_count()):
 		if state.get_node_instance(idx):
 			instances[_node_path(state, idx)] = idx
 
-	var used: Dictionary[String, bool] = {}
+	var used: Dictionary[String, bool] = { }
 	var redundant := PackedStringArray()
 	var changed := 0
 	var added := 0
 
 	var holder := Node.new()
 	EditorInterface.get_base_control().add_child(holder)
-	var instantiated: Dictionary[String, Node] = {}
+	var instantiated: Dictionary[String, Node] = { }
 
 	for idx in range(1, state.get_node_count()):
 		var path := _node_path(state, idx)
@@ -181,7 +184,10 @@ func _instantiate_like(state: SceneState, idx: int, holder: Node) -> Node:
 
 func _has_node_path(value: Variant) -> bool:
 	if value is Array:
-		return value.any(func(item: Variant) -> bool: return item is NodePath)
+		return value.any(
+			func(item: Variant) -> bool:
+				return item is NodePath,
+		)
 	return value is NodePath
 
 
@@ -197,7 +203,10 @@ func _ancestors_in(candidates: Array, path: String) -> Array[String]:
 	for candidate: String in candidates:
 		if path.begins_with(candidate + "/"):
 			ancestors.append(candidate)
-	ancestors.sort_custom(func(a: String, b: String) -> bool: return a.length() < b.length())
+	ancestors.sort_custom(
+		func(a: String, b: String) -> bool:
+			return a.length() < b.length(),
+	)
 	return ancestors
 
 

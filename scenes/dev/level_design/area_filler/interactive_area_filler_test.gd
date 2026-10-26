@@ -14,9 +14,12 @@ func _on_interact_area_interaction_started(area: InteractArea) -> void:
 
 ## Update minimum distance between scenes in AreaFiller.
 func _on_interact_area_min_separation_interaction_started(
-	area: InteractArea, min_separation_change: float
+	area: InteractArea,
+	min_separation_change: float,
 ) -> void:
 	area_filler.minimum_separation = clampf(
-		area_filler.minimum_separation + min_separation_change, 32.0, 256.0
+		area_filler.minimum_separation + min_separation_change,
+		32.0,
+		256.0,
 	)
 	area.end_interaction()

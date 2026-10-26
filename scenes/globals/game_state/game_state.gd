@@ -18,15 +18,10 @@ const SAVE_PATH := "user://saved_game.tres"
 
 ## The player abilities to have from the beginning
 ## when not running the game from the main scene.
-const DEBUG_PLAYER_ABILITIES := [
-	Enums.PlayerAbilities.ABILITY_A,
-	Enums.PlayerAbilities.ABILITY_B,
-]
+const DEBUG_PLAYER_ABILITIES := [Enums.PlayerAbilities.ABILITY_A, Enums.PlayerAbilities.ABILITY_B]
 
 ## Scenes to skip from saving.
-const TRANSIENT_SCENES := [
-	"res://scenes/menus/title/title_screen.tscn",
-]
+const TRANSIENT_SCENES := ["res://scenes/menus/title/title_screen.tscn"]
 
 ## The progress is persisted only if the game is run normally from the main scene.
 ## Otherwise, it means we are playing a specific scene: the current scene from the editor or
@@ -146,7 +141,8 @@ func set_quest(new_quest: Quest) -> void:
 
 	quest = QuestState.new(new_quest, quest_player_state)
 	quest.inventory.items = global.inventory.items.filter(
-		func(i: TaggedItem) -> bool: return i.quest_path == new_quest.resource_path
+		func(i: TaggedItem) -> bool:
+			return i.quest_path == new_quest.resource_path,
 	)
 
 
