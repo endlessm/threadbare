@@ -32,8 +32,12 @@ const REQUIRED_ANIMATIONS: Array[StringName] = [&"default", &"struck"]
 ## player. This should typically be similar to the duration of [member audio_stream]. The player
 ## can interact with the object again even before this time has elapsed, but demonstrations of the
 ## sequence will wait for exactly this time before continuing to the next object.
+# fmt: off
+# gdscript-formatter joins the annotation with the variable, going over the
+# maximum line length.
 @export_range(0.5, 1.5, 1.0 / 60, "or_less", "or_greater", "suffix:s")
 var strike_duration: float = 1.0
+# fmt: on
 
 @onready var animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
 @onready var interact_area: InteractArea = %InteractArea

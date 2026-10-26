@@ -21,6 +21,10 @@ jobs:
     - uses: actions/checkout@v7
     - uses: ./.github/actions/lfs-cached-checkout
     - uses: j178/prek-action@af4d4fcb6922b8e6f65c0426947125fcc38794ce # v3.0.2
+      env:
+        # mise looks up the gdscript-formatter release through the GitHub API.
+        # Authenticate to avoid the rate limit for anonymous requests.
+        GITHUB_TOKEN: ${{ github.token }}
 
   reuse:
     name: Licensing information

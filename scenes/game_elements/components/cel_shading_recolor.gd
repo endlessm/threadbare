@@ -142,6 +142,9 @@ const TOWNIE_KEYS_PALETTE = preload("uid://bt0d8ui0rahnd")
 ## Click this button to pick random skin, hair and cloth colors.
 @export_tool_button("Randomize") var randomize_button: Callable = randomize
 
+# fmt: off
+# gdscript-formatter joins each annotation with its variable, going over the
+# maximum line length.
 ## Click this button to pick a random color from a list of known skin colors.
 @export_tool_button("Random Skin Color")
 var random_skin_color_button: Callable = set_random_skin_color
@@ -153,6 +156,7 @@ var random_hair_color_button: Callable = set_random_hair_color
 ## Click this button to pick a random color from a list of known cloth colors.
 @export_tool_button("Random Cloth Color")
 var random_cloth_color_button: Callable = set_random_cloth_color
+# fmt: on
 
 
 func _ready() -> void:

@@ -91,8 +91,12 @@ const WALK_TARGET_SKIP_RANGE: float = 0.25
 		update_configuration_warnings()
 
 ## The speed of the projectile initial impulse and the projectile bouncing impulse.
+# fmt: off
+# gdscript-formatter joins the annotation with the variable, going over the
+# maximum line length.
 @export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s")
 var projectile_speed: float = 30.0
+# fmt: on
 
 ## The life span of the projectile.
 @export_range(0., 10., 0.1, "or_greater", "suffix:s") var projectile_duration: float = 5.0

@@ -24,9 +24,12 @@ const ROOT_FOLDER := "res://scenes/quests/story_quests/stella"
 
 ## Folders to skip when looking for references. This is useful when checking for assets that can be
 ## stripped from the StoryQuest kit.
+# fmt: off
+# gdscript-formatter breaks an array that only holds a comment.
 const SKIP_FOLDERS: PackedStringArray = [
 #"res://scenes/quests/story_quests"
 ]
+# fmt: on
 
 ## Extensions considered assets, lowercase and without the dot.
 const ASSET_EXTENSIONS: PackedStringArray = [
