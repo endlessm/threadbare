@@ -33,7 +33,17 @@ const SKIP_FOLDERS: PackedStringArray = [
 
 ## Extensions considered assets, lowercase and without the dot.
 const ASSET_EXTENSIONS: PackedStringArray = [
-	"png", "jpg", "jpeg", "webp", "svg", "ogg", "wav", "mp3", "ttf", "otf", "ogv"
+	"png",
+	"jpg",
+	"jpeg",
+	"webp",
+	"svg",
+	"ogg",
+	"wav",
+	"mp3",
+	"ttf",
+	"otf",
+	"ogv",
 ]
 
 ## Extensions of files whose dependencies the engine tracks.
@@ -45,7 +55,7 @@ const IMPORT_SUFFIX := ".import"
 func _run() -> void:
 	var referenced := _collect_referenced()
 
-	var orphans: Dictionary[String, bool] = {}
+	var orphans: Dictionary[String, bool] = { }
 	var stale: Array[String] = []
 	for path: String in Util.all_files(ROOT_FOLDER, SKIP_FOLDERS):
 		if path.ends_with(IMPORT_SUFFIX):
@@ -56,7 +66,7 @@ func _run() -> void:
 			if not referenced.has(path) and not referenced.has(ResourceUID.path_to_uid(path)):
 				orphans[path] = true
 
-	var fully_orphaned: Dictionary[String, bool] = {}
+	var fully_orphaned: Dictionary[String, bool] = { }
 	_mark_fully_orphaned(ROOT_FOLDER, orphans, fully_orphaned)
 
 	var orphan_folders: Array[String] = []
@@ -71,7 +81,7 @@ func _run() -> void:
 		"Folders under",
 		ROOT_FOLDER,
 		"made up entirely of unreferenced assets:",
-		orphan_folders.size()
+		orphan_folders.size(),
 	)
 	for folder: String in orphan_folders:
 		print("  ", folder)
@@ -92,7 +102,7 @@ func _run() -> void:
 ## Returns the set of every resource path and UID referenced from anywhere in the
 ## project, as a [Dictionary] used as a set.
 func _collect_referenced() -> Dictionary[String, bool]:
-	var referenced: Dictionary[String, bool] = {}
+	var referenced: Dictionary[String, bool] = { }
 
 	var uid_or_path := RegEx.create_from_string("(?:uid|res)://[^\"')\\s]+")
 
@@ -123,7 +133,9 @@ func _collect_referenced() -> Dictionary[String, bool]:
 ## Returns [code][has_asset, all_orphan][/code] for [param folder] itself, which is all
 ## the caller needs to fold [param folder] into its own parent's result.
 func _mark_fully_orphaned(
-	folder: String, orphans: Dictionary[String, bool], fully_orphaned: Dictionary[String, bool]
+	folder: String,
+	orphans: Dictionary[String, bool],
+	fully_orphaned: Dictionary[String, bool],
 ) -> Array[bool]:
 	var has_asset := false
 	var all_orphan := true
@@ -157,7 +169,7 @@ func _collect_orphans(
 	orphans: Dictionary[String, bool],
 	fully_orphaned: Dictionary[String, bool],
 	orphan_folders: Array[String],
-	orphan_files: Array[String]
+	orphan_files: Array[String],
 ) -> void:
 	if fully_orphaned.get(folder, false):
 		orphan_folders.append(folder)
@@ -171,5 +183,9 @@ func _collect_orphans(
 	for directory: String in DirAccess.get_directories_at(folder):
 		if directory != ".godot":
 			_collect_orphans(
-				folder.path_join(directory), orphans, fully_orphaned, orphan_folders, orphan_files
+				folder.path_join(directory),
+				orphans,
+				fully_orphaned,
+				orphan_folders,
+				orphan_files,
 			)

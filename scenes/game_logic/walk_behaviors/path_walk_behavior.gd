@@ -192,7 +192,7 @@ func _setup_pointy_offsets() -> void:
 		not is_path_closed
 		or not _is_curve_smooth(
 			walking_path.curve.get_point_in(walking_path.curve.point_count - 1),
-			walking_path.curve.get_point_out(0)
+			walking_path.curve.get_point_out(0),
 		)
 	)
 

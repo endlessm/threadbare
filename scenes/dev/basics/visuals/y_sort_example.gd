@@ -32,14 +32,14 @@ func _draw() -> void:
 		ink_drinker.global_position + STARTING_OFFSET,
 		ink_drinker.global_position + ENDING_OFFSET,
 		COLOR_INK_DRINKER,
-		WIDTH
+		WIDTH,
 	)
 	draw_circle(ink_drinker.global_position, WIDTH, Color.WHITE)
 	draw_line(
 		story_vore.global_position + STARTING_OFFSET,
 		story_vore.global_position + ENDING_OFFSET,
 		COLOR_STORY_VORE,
-		WIDTH
+		WIDTH,
 	)
 	draw_circle(story_vore.global_position, WIDTH, Color.WHITE)
 

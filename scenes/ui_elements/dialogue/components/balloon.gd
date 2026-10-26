@@ -43,7 +43,7 @@ var temporary_game_states: Array = []:
 		else:
 			# This ensures that the player_name variable is available in any dialogue.
 			# With this the dialogue file template can have {{ player_name }}.
-			new_value.append({"player_name": _player_name})
+			new_value.append({ "player_name": _player_name })
 		temporary_game_states = new_value
 
 ## See if we are waiting for the player
@@ -53,7 +53,7 @@ var is_waiting_for_input: bool = false
 var will_hide_balloon: bool = false
 
 ## A dictionary to store any ephemeral variables
-var locals: Dictionary = {}
+var locals: Dictionary = { }
 
 ## The current line
 var dialogue_line: DialogueLine:
@@ -115,13 +115,17 @@ func _ready() -> void:
 		responses_menu.next_action = next_action
 
 	mutation_cooldown.timeout.connect(_on_mutation_cooldown_timeout)
-	progress_button.pressed.connect(func() -> void: next(dialogue_line.next_id))
+	progress_button.pressed.connect(
+		func() -> void:
+			next(dialogue_line.next_id),
+	)
 	add_child(mutation_cooldown)
 
 	if auto_start:
 		if not is_instance_valid(dialogue_resource):
 			assert(
-				false, DMConstants.get_error_message(DMConstants.ERR_MISSING_RESOURCE_FOR_AUTOSTART)
+				false,
+				DMConstants.get_error_message(DMConstants.ERR_MISSING_RESOURCE_FOR_AUTOSTART),
 			)
 		start()
 
@@ -136,8 +140,7 @@ func _notification(what: int) -> void:
 	## Detect a change of locale and update the current dialogue line to show the new language
 	if (
 		what == NOTIFICATION_TRANSLATION_CHANGED
-		and _locale != TranslationServer.get_locale()
-		and is_instance_valid(dialogue_label)
+		and _locale != TranslationServer.get_locale() and is_instance_valid(dialogue_label)
 	):
 		_locale = TranslationServer.get_locale()
 		var visible_ratio: float = dialogue_label.visible_ratio
@@ -150,7 +153,9 @@ func _notification(what: int) -> void:
 
 ## Start some dialogue
 func start(
-	with_dialogue_resource: DialogueResource = null, cue: String = "", extra_game_states: Array = []
+	with_dialogue_resource: DialogueResource = null,
+	cue: String = "",
+	extra_game_states: Array = [],
 ) -> void:
 	temporary_game_states = [self] + extra_game_states
 	is_waiting_for_input = false
@@ -159,7 +164,8 @@ func start(
 	if not cue.is_empty():
 		start_from_cue = cue
 	dialogue_line = await dialogue_resource.get_next_dialogue_line(
-		start_from_cue, temporary_game_states
+		start_from_cue,
+		temporary_game_states,
 	)
 	show()
 
@@ -269,7 +275,6 @@ func next(next_id: String) -> void:
 
 #region Signals
 
-
 func _on_mutation_cooldown_timeout() -> void:
 	if will_hide_balloon:
 		will_hide_balloon = false
@@ -288,8 +293,7 @@ func _on_balloon_gui_input(event: InputEvent) -> void:
 	if dialogue_label.is_typing:
 		var mouse_was_clicked: bool = (
 			event is InputEventMouseButton
-			and event.button_index == MOUSE_BUTTON_LEFT
-			and event.is_pressed()
+			and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed()
 		)
 		var skip_button_was_pressed: bool = event.is_action_pressed(skip_action)
 		if mouse_was_clicked or skip_button_was_pressed:
@@ -306,8 +310,7 @@ func _on_balloon_gui_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 	if (
-		event is InputEventMouseButton
-		and event.is_pressed()
+		event is InputEventMouseButton and event.is_pressed()
 		and event.button_index == MOUSE_BUTTON_LEFT
 	):
 		next(dialogue_line.next_id)
@@ -321,8 +324,7 @@ func _on_responses_menu_response_selected(response: DialogueResponse) -> void:
 
 func _on_dialogue_label_spoke(letter: String, _letter_index: int, _speed: float) -> void:
 	if (
-		dialogue_line.character
-		and not talk_sound_player.playing
+		dialogue_line.character and not talk_sound_player.playing
 		and letter not in dialogue_label.pause_at_characters
 	):
 		talk_sound_player.play()

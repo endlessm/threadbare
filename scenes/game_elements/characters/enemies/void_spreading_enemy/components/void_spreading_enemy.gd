@@ -111,7 +111,6 @@ func _set_state(new_state: State) -> void:
 			path_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 			follow_walk_behavior.process_mode = Node.PROCESS_MODE_DISABLED
 
-
 #endregion
 
 

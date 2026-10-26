@@ -68,10 +68,7 @@ func reimport(_path: String) -> void:
 	_debug(["Reimport finished"])
 
 
-func maybe_copy_properties(
-	node: Node,
-	path: String,
-) -> void:
+func maybe_copy_properties(node: Node, path: String) -> void:
 	for property: Dictionary in node.get_property_list():
 		var name: String = property["name"]
 		var value_copy: Variant = null
@@ -166,7 +163,6 @@ func copy_tile_set(tile_set: TileSet, copy_path: String) -> Resource:
 
 	# We don't bother copying the referenced textures. We don't expect anyone to
 	# accidentally edit them by mistake.
-
 	copied.resource_path = copy_path
 	var result := ResourceSaver.save(copied)
 	assert(result == OK, "Failed to save %s to %s" % [copied, copy_path])
@@ -178,7 +174,7 @@ func copy_as_file(resource: Resource, copy_path: String) -> Resource:
 	var result := DirAccess.copy_absolute(resource.resource_path, copy_path)
 	assert(
 		result == OK,
-		"Failed to copy %s to %s: %s" % [resource.resource_path, copy_path, error_string(result)]
+		"Failed to copy %s to %s: %s" % [resource.resource_path, copy_path, error_string(result)],
 	)
 	await reimport(copy_path)
 	return load(copy_path)
@@ -247,7 +243,8 @@ func copy_uid(uid: String) -> String:
 	var copied := await copy(uid, ResourceLoader.load(uid))
 	var copied_uid := ResourceUID.path_to_uid(copied.resource_path)
 	assert(
-		copied_uid.begins_with("uid://"), "%s %s %s" % [copied, copied.resource_path, copied_uid]
+		copied_uid.begins_with("uid://"),
+		"%s %s %s" % [copied, copied.resource_path, copied_uid],
 	)
 	return copied_uid
 
@@ -281,9 +278,11 @@ func create_storyquest() -> void:
 	)
 	if ResourceUID.ensure_path(opening_quest) == ResourceUID.ensure_path(quest.resource_path):
 		ProjectSettings.set(
-			ThreadbareProjectSettings.OPENING_QUEST, ResourceUID.path_to_uid(copied.resource_path)
+			ThreadbareProjectSettings.OPENING_QUEST,
+			ResourceUID.path_to_uid(copied.resource_path),
 		)
 		ProjectSettings.set_setting(
-			"application/config/name", "Threadbare StoryQuest: " + copied.title
+			"application/config/name",
+			"Threadbare StoryQuest: " + copied.title,
 		)
 		ProjectSettings.save()

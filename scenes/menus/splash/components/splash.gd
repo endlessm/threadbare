@@ -27,8 +27,7 @@ func _input(event: InputEvent) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if (
 		event.is_action_pressed(&"dialogue_next")
-		or event.is_action_pressed(&"dialogue_skip")
-		or event.is_action_pressed(&"pause")
+		or event.is_action_pressed(&"dialogue_skip") or event.is_action_pressed(&"pause")
 	):
 		get_viewport().set_input_as_handled()
 		switch_to_intro()

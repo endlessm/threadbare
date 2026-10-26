@@ -59,7 +59,9 @@ func _refresh_fill_logic() -> void:
 
 	var filling_barrels: Array = get_tree().get_nodes_in_group("filling_barrels")
 	fill_game_logic.barrels_to_win = clampi(
-		fill_game_logic.barrels_to_win, 0, filling_barrels.size()
+		fill_game_logic.barrels_to_win,
+		0,
+		filling_barrels.size(),
 	)
 	for barrel: FillingBarrel in filling_barrels:
 		if not barrel.is_connected("completed", fill_game_logic._on_barrel_completed):

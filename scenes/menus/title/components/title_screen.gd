@@ -38,8 +38,7 @@ func _input(event: InputEvent) -> void:
 
 func _on_main_menu_continue_pressed() -> void:
 	(
-		SceneSwitcher
-		. change_to_file_with_transition(
+		SceneSwitcher.change_to_file_with_transition(
 			GameState.scene.path,
 			GameState.scene.spawn_point,
 			Transition.Effect.FADE,
@@ -53,7 +52,10 @@ func _on_start_pressed() -> void:
 
 	GameState.set_quest(opening_quest)
 	SceneSwitcher.change_to_file_with_transition(
-		opening_quest.first_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		opening_quest.first_scene,
+		^"",
+		Transition.Effect.FADE,
+		Transition.Effect.FADE,
 	)
 
 

@@ -124,13 +124,10 @@ func _unhandled_input(_event: InputEvent) -> void:
 	# there is always one that is released first so the aim direction ends up being either left or
 	# down, not left AND down.
 	if (
-		_aims_with_actions()
-		and _event is InputEventKey
+		_aims_with_actions() and _event is InputEventKey
 		and (
-			_event.is_action_released(&"aim_left")
-			or _event.is_action_released(&"aim_right")
-			or _event.is_action_released(&"aim_up")
-			or _event.is_action_released(&"aim_down")
+			_event.is_action_released(&"aim_left") or _event.is_action_released(&"aim_right")
+			or _event.is_action_released(&"aim_up") or _event.is_action_released(&"aim_down")
 		)
 	):
 		d_pad_timer.start()

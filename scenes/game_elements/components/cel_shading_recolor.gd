@@ -205,7 +205,7 @@ func _change_colors(
 	in_colors: PackedColorArray,
 	colors_data: Dictionary[String, Color],
 	palette_index: int,
-	rng: RandomNumberGenerator = null
+	rng: RandomNumberGenerator = null,
 ) -> PackedColorArray:
 	var out_colors := in_colors.duplicate()
 	if out_colors.size() < palette_index + 4:
@@ -222,7 +222,7 @@ func _change_colors(
 	out_colors.set(palette_index + 2, low_color)
 
 	if low_color.v < 0.3:
-		out_colors.set(palette_index + 3, LINE_COLOR_LIGHT)  #medium_color.lightened(0.7))
+		out_colors.set(palette_index + 3, LINE_COLOR_LIGHT) #medium_color.lightened(0.7))
 	else:
 		out_colors.set(palette_index + 3, LINE_COLOR)
 
@@ -234,11 +234,17 @@ func randomize(rng: RandomNumberGenerator = null) -> void:
 	if not new_colors_palette:
 		new_colors_palette = ColorPalette.new()
 	var skin_colors := _change_colors(
-		new_colors_palette.colors, SKIN_COLORS, SKIN_PALETTE_INDEX, rng
+		new_colors_palette.colors,
+		SKIN_COLORS,
+		SKIN_PALETTE_INDEX,
+		rng,
 	)
 	var skin_hair_colors := _change_colors(skin_colors, HAIR_COLORS, HAIR_PALETTE_INDEX, rng)
 	var skin_hair_cloth_colors := _change_colors(
-		skin_hair_colors, CLOTH_COLORS, CLOTH_PALETTE_INDEX, rng
+		skin_hair_colors,
+		CLOTH_COLORS,
+		CLOTH_PALETTE_INDEX,
+		rng,
 	)
 	new_colors_palette.set_colors(skin_hair_cloth_colors)
 	colorize()
@@ -247,7 +253,10 @@ func randomize(rng: RandomNumberGenerator = null) -> void:
 ## Pick a random color from [constant SKIN_COLORS] and automatically set high/low shades from it.
 func set_random_skin_color(rng: RandomNumberGenerator = null) -> void:
 	var new_colors := _change_colors(
-		new_colors_palette.colors, SKIN_COLORS, SKIN_PALETTE_INDEX, rng
+		new_colors_palette.colors,
+		SKIN_COLORS,
+		SKIN_PALETTE_INDEX,
+		rng,
 	)
 	new_colors_palette.set_colors(new_colors)
 	colorize()
@@ -256,7 +265,10 @@ func set_random_skin_color(rng: RandomNumberGenerator = null) -> void:
 ## Pick a random color from [constant HAIR_COLORS] and automatically set high/low shades from it.
 func set_random_hair_color(rng: RandomNumberGenerator = null) -> void:
 	var new_colors := _change_colors(
-		new_colors_palette.colors, HAIR_COLORS, HAIR_PALETTE_INDEX, rng
+		new_colors_palette.colors,
+		HAIR_COLORS,
+		HAIR_PALETTE_INDEX,
+		rng,
 	)
 	new_colors_palette.set_colors(new_colors)
 	colorize()
@@ -265,7 +277,10 @@ func set_random_hair_color(rng: RandomNumberGenerator = null) -> void:
 ## Pick a random color from [constant CLOTH_COLORS] and automatically set high/low shades from it.
 func set_random_cloth_color(rng: RandomNumberGenerator = null) -> void:
 	var new_colors := _change_colors(
-		new_colors_palette.colors, CLOTH_COLORS, CLOTH_PALETTE_INDEX, rng
+		new_colors_palette.colors,
+		CLOTH_COLORS,
+		CLOTH_PALETTE_INDEX,
+		rng,
 	)
 	new_colors_palette.set_colors(new_colors)
 	colorize()

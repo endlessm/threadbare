@@ -73,10 +73,7 @@ func initialise(
 	# contains at most one sample. sin(45°) = sqrt(0.5)
 	_cell_size = _r * sqrt(0.5)
 	_grid_origin = _bbox.position
-	_grid_size = Vector2i(
-		ceili(_bbox.size.x / _cell_size),
-		ceili(_bbox.size.y / _cell_size),
-	)
+	_grid_size = Vector2i(ceili(_bbox.size.x / _cell_size), ceili(_bbox.size.y / _cell_size))
 	_grid.resize(_grid_size.x * _grid_size.y)
 	assert(_grid.size() < ((1 << 31) - 1), "Grid is too large for int32 indices")
 	_grid.fill(-1)
@@ -143,10 +140,7 @@ func finished() -> bool:
 
 func _to_grid_coords(point: Vector2) -> Vector2i:
 	var transformed := point - _grid_origin
-	return Vector2i(
-		floori(transformed.x / _cell_size),
-		floori(transformed.y / _cell_size),
-	)
+	return Vector2i(floori(transformed.x / _cell_size), floori(transformed.y / _cell_size))
 
 
 func add_sample(point: Vector2) -> void:
@@ -158,14 +152,7 @@ func add_sample(point: Vector2) -> void:
 	var existing_ix := _grid[grid_index]
 	assert(
 		existing_ix == -1,
-		(
-			"Existing point %s at grid coord %s when inserting %s"
-			% [
-				points[existing_ix],
-				gc,
-				point,
-			]
-		)
+		("Existing point %s at grid coord %s when inserting %s" % [points[existing_ix], gc, point]),
 	)
 	_grid[grid_index] = points.size() - 1
 

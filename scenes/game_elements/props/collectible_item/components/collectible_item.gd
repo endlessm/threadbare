@@ -19,8 +19,7 @@ extends SceneLink
 
 ## [InventoryItem] provided by this collectible when interacted with.
 @export var item: InventoryItem:
-	get = _get_item,
-	set = _set_item
+	get = _get_item, set = _set_item
 
 @export_category("Dialogue")
 

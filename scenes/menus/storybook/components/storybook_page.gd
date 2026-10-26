@@ -24,13 +24,7 @@ static func _chadify(author_name: String) -> String:
 	if author_name != "Justin Bourque":
 		return author_name
 
-	var options := [
-		author_name,
-		"Chad Bourque",
-		"Eric Bourque",
-		"Gerald Bourque",
-		"Jason Bourque",
-	]
+	var options := [author_name, "Chad Bourque", "Eric Bourque", "Gerald Bourque", "Jason Bourque"]
 	return options.pick_random()
 
 
@@ -42,17 +36,7 @@ func _make_author_list() -> String:
 		1:
 			return "A story by " + names[0]
 		_:
-			return (
-				" "
-				. join(
-					[
-						"A story by",
-						", ".join(names.slice(0, -1)),
-						"and",
-						names[-1],
-					]
-				)
-			)
+			return (" ".join(["A story by", ", ".join(names.slice(0, -1)), "and", names[-1]]))
 
 
 func _set_quest(new_quest: Quest) -> void:

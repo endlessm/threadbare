@@ -30,5 +30,7 @@ func _process(delta: float) -> void:
 
 	var target_hint_node_alpha: float = 1.0 if has_overlapping_bodies() else 0.0
 	hint_node.modulate.a = move_toward(
-		hint_node.modulate.a, target_hint_node_alpha, delta * HINT_FADE_SPEED
+		hint_node.modulate.a,
+		target_hint_node_alpha,
+		delta * HINT_FADE_SPEED,
 	)

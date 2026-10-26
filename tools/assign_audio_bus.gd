@@ -15,9 +15,7 @@ extends EditorScript
 const Util = preload("./util.gd")
 
 ## Ignore scenes in these folders
-const EXCLUDE_FOLDERS: Array[String] = [
-	"res://scenes/quests/story_quests/",
-]
+const EXCLUDE_FOLDERS: Array[String] = ["res://scenes/quests/story_quests/"]
 
 
 func _examine_node(scene_state: SceneState, idx: int) -> bool:
@@ -37,7 +35,9 @@ func _examine(scene: PackedScene) -> bool:
 	for idx: int in scene_state.get_node_count():
 		if _examine_node(scene_state, idx):
 			prints(
-				scene.resource_path, scene_state.get_node_path(idx), "should be assigned to a bus"
+				scene.resource_path,
+				scene_state.get_node_path(idx),
+				"should be assigned to a bus",
 			)
 			needs_fix = true
 

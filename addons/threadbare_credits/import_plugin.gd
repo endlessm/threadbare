@@ -48,7 +48,7 @@ func _import(
 	save_path: String,
 	_options: Dictionary,
 	_platform_variants: Array[String],
-	_gen_files: Array[String]
+	_gen_files: Array[String],
 ) -> Error:
 	var file = FileAccess.open(source_file, FileAccess.READ)
 	if file == null:

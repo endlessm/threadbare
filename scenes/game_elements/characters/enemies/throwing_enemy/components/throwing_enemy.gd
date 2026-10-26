@@ -16,11 +16,20 @@ extends CharacterBody2D
 ## If you want to throw different scenes depending on the target label, use
 ## [member projectile_scene_for_label].
 
-enum State { IDLE, WALKING, ATTACKING, DEFEATED }
+enum State {
+	IDLE,
+	WALKING,
+	ATTACKING,
+	DEFEATED,
+}
 
 ## Animations that [member sprite_frames] is expected to have.
 const REQUIRED_ANIMATIONS: Array[StringName] = [
-	&"idle", &"walk", &"attack", &"attack anticipation", &"defeated"
+	&"idle",
+	&"walk",
+	&"attack",
+	&"attack anticipation",
+	&"defeated",
 ]
 
 const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://deosvk5k4su5f")
@@ -194,7 +203,7 @@ func _draw() -> void:
 		draw_circle(
 			_initial_position - position,
 			walking_range * WALK_TARGET_SKIP_RANGE,
-			Color(0.0, 0.0, 0.0, 0.3)
+			Color(0.0, 0.0, 0.0, 0.3),
 		)
 		if get_tree().is_debugging_collisions_hint():
 			## Only when playing with collision shapes visible, draw a dot for the target position:
@@ -259,8 +268,7 @@ func _set_target_position() -> void:
 		_initial_position
 		+ (
 			Vector2.LEFT.rotated(randf_range(start_angle, end_angle))
-			* walking_range
-			* randf_range(WALK_TARGET_SKIP_RANGE, 1.0)
+			* walking_range * randf_range(WALK_TARGET_SKIP_RANGE, 1.0)
 		)
 	)
 

@@ -70,7 +70,7 @@ func _run() -> void:
 	)
 
 	var wanted := PackedStringArray()
-	var is_wanted: Dictionary[String, bool] = {}
+	var is_wanted: Dictionary[String, bool] = { }
 	for source: String in SOURCES:
 		for path: String in _translatable_files(source):
 			if is_wanted.has(path) or EXCLUDED.has(path):

@@ -36,8 +36,8 @@ func _ready() -> void:
 	for child: RichTextLabel in find_children(
 		"*",
 		"RichTextLabel",
-		true,  # recursive
-		false,  # include unowned children - necessary because the labels are added dynamically
+		true, # recursive
+		false, # include unowned children - necessary because the labels are added dynamically
 	):
 		child.meta_clicked.connect(_on_rich_text_label_meta_clicked)
 
@@ -77,7 +77,9 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventScreenDrag:
 		_is_auto_scrolling = false
 		_current_scroll_pos = clampf(
-			_current_scroll_pos - event.relative.y, 0.0, scroll_content.size.y
+			_current_scroll_pos - event.relative.y,
+			0.0,
+			scroll_content.size.y,
 		)
 		return
 

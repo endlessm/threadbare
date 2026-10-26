@@ -44,8 +44,7 @@ const MAXIMUM_ASPECT_RATIO := 2.2
 const SMALL_SCREEN_SHORTEST_SIDE_DP := 600.0
 
 @export var fullscreen: bool:
-	get = is_fullscreen,
-	set = set_fullscreen
+	get = is_fullscreen, set = set_fullscreen
 
 @export var show_input_hud := true:
 	get:
@@ -195,7 +194,7 @@ func _load_project_settings_overrides() -> void:
 func _set_minimum_window_size() -> void:
 	var minimum_window_size := Vector2i(
 		ProjectSettings.get_setting("display/window/size/viewport_width"),
-		ProjectSettings.get_setting("display/window/size/viewport_height")
+		ProjectSettings.get_setting("display/window/size/viewport_height"),
 	)
 	get_window().min_size = minimum_window_size
 

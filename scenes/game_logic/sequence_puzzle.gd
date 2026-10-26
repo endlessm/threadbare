@@ -34,7 +34,7 @@ signal step_solved(step_index: int)
 ## If enabled, show messages in the console describing the player's progress (or not) in the puzzle
 @export var debug: bool = false
 
-var hint_levels: Dictionary = {}
+var hint_levels: Dictionary = { }
 
 var _objects: Array[SequencePuzzleObject]
 

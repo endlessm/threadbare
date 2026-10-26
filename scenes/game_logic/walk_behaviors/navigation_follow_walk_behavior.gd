@@ -137,7 +137,8 @@ func _physics_process(delta: float) -> void:
 
 	if agent.is_navigation_finished():
 		character.velocity = character.velocity.move_toward(
-			Vector2.ZERO, speeds.stopping_step * delta
+			Vector2.ZERO,
+			speeds.stopping_step * delta,
 		)
 		# Retarget if the target has moved more than some threshold
 		# TODO: should this be a separate threshold?
@@ -150,7 +151,8 @@ func _physics_process(delta: float) -> void:
 		is_running = agent.distance_to_target() > running_distance
 		var speed := speeds.run_speed if is_running else speeds.walk_speed
 		character.velocity = character.velocity.move_toward(
-			direction * speed, speeds.moving_step * delta
+			direction * speed,
+			speeds.moving_step * delta,
 		)
 
 	character.move_and_slide()

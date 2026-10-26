@@ -29,7 +29,6 @@ static func make(an_item: InventoryItem, quest: Quest, a_source_node: Node = nul
 
 func matches(that: TaggedItem) -> bool:
 	return (
-		self.item == that.item
-		and self.source_scene == that.source_scene
+		self.item == that.item and self.source_scene == that.source_scene
 		and self.source_node == that.source_node
 	)

@@ -24,11 +24,6 @@ func _body_entered_cb(body: Node2D) -> void:
 	DialogueManager.show_dialogue_balloon(dialogue, title, [player])
 	await DialogueManager.dialogue_ended
 
-	await (
-		Transitions
-		. do_transition(
-			spawn_point.move_player_to_self_position,
-		)
-	)
+	await (Transitions.do_transition(spawn_point.move_player_to_self_position))
 
 	player.return_control(self)

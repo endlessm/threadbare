@@ -14,26 +14,17 @@ var english_titles := [
 	"The Little HushRoom",
 ]
 
-var spanish_titles := [
-	"El tejido oscuro",
-	"El Señor de las Agujas",
-]
+var spanish_titles := ["El tejido oscuro", "El Señor de las Agujas"]
 
-var french_titles := [
-	"Le Seigneur des Aiguilles",
-]
+var french_titles := ["Le Seigneur des Aiguilles"]
 
 var titles := english_titles + spanish_titles + french_titles
 
 
 func _ready() -> void:
 	var quests: Array[Quest] = []
-	var titles_count: Dictionary[String, int] = {}
-	var debug_info := {
-		"en": 0,
-		"es": 0,
-		"fr": 0,
-	}
+	var titles_count: Dictionary[String, int] = { }
+	var debug_info := { "en": 0, "es": 0, "fr": 0 }
 	for t: String in titles:
 		titles_count[t] = 0
 

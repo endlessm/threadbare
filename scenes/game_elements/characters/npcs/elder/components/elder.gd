@@ -135,11 +135,14 @@ func _on_interaction_ended() -> void:
 				GameState.scene.path,
 				GameState.scene.spawn_point,
 				Transition.Effect.FADE,
-				Transition.Effect.FADE
+				Transition.Effect.FADE,
 			)
 		else:
 			SceneSwitcher.change_to_file_with_transition(
-				chosen_quest.first_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+				chosen_quest.first_scene,
+				^"",
+				Transition.Effect.FADE,
+				Transition.Effect.FADE,
 			)
 		chosen_quest = null
 

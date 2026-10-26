@@ -37,12 +37,8 @@ func _on_input_device_changed(_device: String, _device_index: int) -> void:
 
 func update_visibility() -> void:
 	visible = (
-		not Settings.touch_controls
-		and Settings.show_input_hud
-		and not get_tree().paused
-		and not Transitions.is_running()
-		and not displaying_dialogue
-		and (player or sokoban_ruleset)
+		not Settings.touch_controls and Settings.show_input_hud and not get_tree().paused
+		and not Transitions.is_running() and not displaying_dialogue and (player or sokoban_ruleset)
 	)
 	if not visible:
 		return

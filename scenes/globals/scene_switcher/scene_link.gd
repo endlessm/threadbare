@@ -30,7 +30,6 @@ enum Target {
 			return ThreadbareProjectSettings.get_setting(ThreadbareProjectSettings.HOME_SCENE)
 
 		return next_scene
-
 	set(new_value):
 		next_scene = new_value
 		_update_available_spawn_points()
@@ -78,7 +77,10 @@ func switch() -> void:
 	if next_scene_path and next_scene_path != get_tree().current_scene.scene_file_path:
 		if use_transition:
 			await SceneSwitcher.change_to_file_with_transition(
-				next_scene, spawn_point_path, enter_transition, exit_transition
+				next_scene,
+				spawn_point_path,
+				enter_transition,
+				exit_transition,
 			)
 		else:
 			SceneSwitcher.change_to_file(next_scene, spawn_point_path)
@@ -90,7 +92,7 @@ func switch() -> void:
 				await Transitions.do_transition(
 					self._teleport_to_spawn_point.bind(spawn_point),
 					enter_transition,
-					exit_transition
+					exit_transition,
 				)
 			else:
 				self._teleport_to_spawn_point(spawn_point)
@@ -108,8 +110,7 @@ func _open_next_scene() -> void:
 	var editor_interface := Engine.get_singleton("EditorInterface")
 	var next_scene_path: String = _get_next_scene_path()
 	if (
-		editor_interface
-		and next_scene_path
+		editor_interface and next_scene_path
 		and next_scene_path != get_tree().edited_scene_root.scene_file_path
 	):
 		editor_interface.open_scene_from_path.call_deferred(next_scene_path)

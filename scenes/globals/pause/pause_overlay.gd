@@ -85,7 +85,10 @@ func abandon_quest(suspend: bool = true) -> void:
 
 	GameState.abandon_quest(suspend)
 	SceneSwitcher.change_to_file_with_transition(
-		abandon_scene, abandon_spawn_point, Transition.Effect.FADE, Transition.Effect.FADE
+		abandon_scene,
+		abandon_spawn_point,
+		Transition.Effect.FADE,
+		Transition.Effect.FADE,
 	)
 	await Transitions.finished
 
@@ -102,7 +105,10 @@ func _on_skip_tutorial_pressed() -> void:
 		GameState.player.set_ability(ability, true)
 	GameState.mark_quest_completed()
 	SceneSwitcher.change_to_file_with_transition(
-		home_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		home_scene,
+		^"",
+		Transition.Effect.FADE,
+		Transition.Effect.FADE,
 	)
 
 
@@ -118,7 +124,10 @@ func _on_title_screen_button_pressed() -> void:
 	GameState.save()
 	toggle_pause()
 	SceneSwitcher.change_to_file_with_transition(
-		title_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		title_scene,
+		^"",
+		Transition.Effect.FADE,
+		Transition.Effect.FADE,
 	)
 
 

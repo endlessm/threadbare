@@ -23,5 +23,6 @@ func _update_visibility() -> void:
 	# Check the own visibility of each control, not is_visible_in_tree(), which
 	# is also false while the whole page is hidden.
 	visible = settings.all(
-		func(setting_control: Control) -> bool: return not setting_control.visible
+		func(setting_control: Control) -> bool:
+			return not setting_control.visible,
 	)

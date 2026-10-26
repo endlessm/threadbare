@@ -70,7 +70,8 @@ func _on_interact_area_interaction_started(_player: Player, _from_right: bool) -
 		sound_effect_player.play()
 	if animated_sprite:
 		animated_sprite.animation_finished.connect(
-			_on_animated_sprite_animation_finished, CONNECT_ONE_SHOT
+			_on_animated_sprite_animation_finished,
+			CONNECT_ONE_SHOT,
 		)
 		animated_sprite.play(&"pet")
 	if shaker:
