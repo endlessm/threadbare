@@ -10,12 +10,12 @@ extends CharacterRandomizer
 		if talk_behavior:
 			talk_behavior.dialogue = new_value
 
-## Title of [member dialogue] to play when the player interacts with this NPC.
-@export var dialogue_title: StringName = &"start":
+## Cue of [member dialogue] to play when the player interacts with this NPC.
+@export var dialogue_cue: StringName = &"start":
 	set(new_value):
-		dialogue_title = new_value
+		dialogue_cue = new_value
 		if talk_behavior:
-			talk_behavior.title = dialogue_title
+			talk_behavior.cue = dialogue_cue
 
 ## The path to follow when calling [method walk_path].
 @export var path: Path2D:
@@ -31,7 +31,7 @@ extends CharacterRandomizer
 
 func _ready() -> void:
 	dialogue = dialogue
-	dialogue_title = dialogue_title
+	dialogue_cue = dialogue_cue
 	path = path
 
 

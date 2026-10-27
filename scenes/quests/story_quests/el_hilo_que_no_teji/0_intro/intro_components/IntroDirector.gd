@@ -274,7 +274,7 @@ func _mostrar_dialogo(cue: String) -> void:
 	if cinematic == null:
 		push_error("No se encontró el nodo Cinematic.")
 		return
-	cinematic.dialogue_title = cue
+	cinematic.dialogue_cue = cue
 
 	# Cinematic se salta el diálogo si la marca ya es true, y la deja así al terminar
 	GameState.scene.intro_dialogue_shown = false
