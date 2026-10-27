@@ -29,8 +29,8 @@ extends SceneLink
 		collected_dialogue = new_value
 		notify_property_list_changed()
 
-## The dialogue title from where [member collected_dialogue] will start.
-@export var dialogue_title: StringName = ""
+## The dialogue cue from where [member collected_dialogue] will start.
+@export var dialogue_cue: StringName = ""
 
 var _ghost := false:
 	set(new_value):
@@ -59,9 +59,19 @@ var _fact_key: String
 func _validate_property(property: Dictionary) -> void:
 	super._validate_property(property)
 	match property.name:
-		"dialogue_title":
+		"dialogue_cue":
 			if not collected_dialogue:
 				property.usage |= PROPERTY_USAGE_READ_ONLY
+
+
+func _set(property: StringName, value: Variant) -> bool:
+	# Scenes saved before the rename store the cue as dialogue_title. Map it to
+	# dialogue_cue, which is the name the editor saves from now on.
+	# Can be removed when we don't expect to have to rewrite any new quests being merged.
+	if property == &"dialogue_title":
+		dialogue_cue = value
+		return true
+	return false
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -161,7 +171,7 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 		GameState.quest.inventory.add_collected_item(item, self)
 
 	if collected_dialogue:
-		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])
+		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_cue, [self, player])
 		await DialogueManager.dialogue_ended
 
 	interact_area.end_interaction()
