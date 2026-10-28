@@ -60,6 +60,7 @@ func _ready() -> void:
 	interact_area.interaction_ended.connect(_on_interaction_ended)
 	animated_sprite_2d.connect("frame_changed", _on_frame_changed)
 
+	GameState.quest_changed.connect(_update_dialogue_cue)
 	if GameState.quest:
 		GameState.quest.inventory.item_collected.connect(_update_dialogue_cue)
 		GameState.quest.inventory.item_consumed.connect(_update_dialogue_cue)
@@ -105,13 +106,13 @@ func congratulate_player() -> void:
 	await DialogueManager.dialogue_ended
 
 
-func _update_dialogue_cue(_item: InventoryItem = null) -> void:
-	if eternal_loom and eternal_loom.is_item_offering_possible():
-		talk_behavior.title = "go_to_loom"
+func _update_dialogue_cue(_item: TaggedItem = null) -> void:
+	if GameState.is_item_offering_possible():
+		talk_behavior.cue = "go_to_loom"
 	elif not _quests:
-		talk_behavior.title = "no_quests"
+		talk_behavior.cue = "no_quests"
 	else:
-		talk_behavior.title = ""
+		talk_behavior.cue = ""
 
 
 func _on_interaction_ended() -> void:
@@ -134,11 +135,14 @@ func _on_interaction_ended() -> void:
 				GameState.scene.path,
 				GameState.scene.spawn_point,
 				Transition.Effect.FADE,
-				Transition.Effect.FADE
+				Transition.Effect.FADE,
 			)
 		else:
 			SceneSwitcher.change_to_file_with_transition(
-				chosen_quest.first_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+				chosen_quest.first_scene,
+				^"",
+				Transition.Effect.FADE,
+				Transition.Effect.FADE,
 			)
 		chosen_quest = null
 

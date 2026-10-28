@@ -19,6 +19,7 @@ func _parse_begin(object: Object) -> void:
 		var sprite_frames: SpriteFrames = object
 		for base_texture: Texture2D in SpriteFramesHelper.base_textures_used(sprite_frames):
 			var sprite_frames_editor_property = SpriteFramesEditorProperty.new(
-				base_texture, sprite_frames
+				base_texture,
+				sprite_frames,
 			)
 			add_property_editor(base_texture.resource_path, sprite_frames_editor_property, true)

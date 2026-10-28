@@ -13,11 +13,13 @@ extends SceneLink
 @export var revealed: bool = true:
 	set(new_value):
 		revealed = new_value
+		if not is_node_ready():
+			return
 		_update_based_on_revealed()
 
 ## [InventoryItem] provided by this collectible when interacted with.
 @export var item: InventoryItem:
-	set = _set_item
+	get = _get_item, set = _set_item
 
 @export_category("Dialogue")
 
@@ -27,22 +29,49 @@ extends SceneLink
 		collected_dialogue = new_value
 		notify_property_list_changed()
 
-## The dialogue title from where [member collected_dialogue] will start.
-@export var dialogue_title: StringName = ""
+## The dialogue cue from where [member collected_dialogue] will start.
+@export var dialogue_cue: StringName = ""
 
-@onready var interact_area: InteractArea = $InteractArea
+var _ghost := false:
+	set(new_value):
+		_ghost = new_value
+		# TODO: effect is ugly
+		for n: Node2D in [sprite_2d, tail]:
+			var sm := n.material as ShaderMaterial
+			sm.set_shader_parameter("intensity", 0.25 if _ghost else 0.0)
+# Key in GameState.quest.facts which, if present, indicates that this item was
+# previously collected on the current run.
+var _fact_key: String
+
+@onready var interact_area: InteractArea = %InteractArea
+
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var sprite_2d: Sprite2D = $Sprite2D
+
+@onready var visuals: Node2D = %Visuals
+@onready var sprite_2d: Sprite2D = %Sprite2D
+@onready var highlight: AnimatedSprite2D = %Highlight
+@onready var tail: AnimatedSprite2D = %Tail
+
 @onready var appear_sound: AudioStreamPlayer = %AppearSound
-@onready var physical_collider: CollisionShape2D = $StaticBody2D/CollisionShape2D
+@onready var physical_collider: CollisionShape2D = %PhysicalCollider
 
 
 func _validate_property(property: Dictionary) -> void:
 	super._validate_property(property)
 	match property.name:
-		"dialogue_title":
+		"dialogue_cue":
 			if not collected_dialogue:
 				property.usage |= PROPERTY_USAGE_READ_ONLY
+
+
+func _set(property: StringName, value: Variant) -> bool:
+	# Scenes saved before the rename store the cue as dialogue_title. Map it to
+	# dialogue_cue, which is the name the editor saves from now on.
+	# Can be removed when we don't expect to have to rewrite any new quests being merged.
+	if property == &"dialogue_title":
+		dialogue_cue = value
+		return true
+	return false
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -52,14 +81,26 @@ func _get_configuration_warnings() -> PackedStringArray:
 	return warnings
 
 
+func _get_item() -> InventoryItem:
+	# Replace anonymous resource stored in scene file with separately-stored resource.
+	# Can be removed when we don't expect to have to rewrite any new quests being merged.
+	if item and item.is_built_in():
+		item = InventoryItem.with_type(item.type)
+	return item
+
+
 func _set_item(new_value: InventoryItem) -> void:
 	item = new_value
+	if not is_node_ready():
+		return
+	if not item:
+		return
 
-	if sprite_2d:
-		sprite_2d.texture = item.get_world_texture() if item else null
+	sprite_2d.texture = item.world_texture
+	tail.play(item.type_name())
+	highlight.play(&"Default")
 
-	if interact_area:
-		interact_area.action = "Collect " + item.type_name() if item else "Collect"
+	interact_area.action_text = (tr("Collect %s") % item.type_name() if item else tr("Collect"))
 
 	update_configuration_warnings()
 
@@ -73,7 +114,31 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
+	# Collected in current run through this quest?
+	# TODO: if TaggedItem was constructed here we could put a workaround for
+	# use_unique_path not working there.
+	_fact_key = "%s:%s:collected" % [owner.scene_file_path, owner.get_path_to(self, true)]
+	if GameState.quest.facts.get(_fact_key, false):
+		# We assume any side-effects from collecting it have also been saved.
+		queue_free()
+		return
+
+	# Collected in previous run? TODO: supposedly quest.inventory is populated
+	# from global.inventory when starting quest so only the latter check should
+	# be needed
+	if GameState.global.inventory.has(item, self) or GameState.quest.inventory.has(item, self):
+		_ghost = true
+
 	interact_area.interaction_started.connect(self._on_interacted)
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_EDITOR_PRE_SAVE:
+			# Since this is a tool script that plays the animations in the
+			# editor, reset the frames and their progress before saving the scene.
+			tail.set_frame_and_progress(0, 0.0)
+			highlight.set_frame_and_progress(0, 0.0)
 
 
 ## Make the collectible appear with an animation, ultimately setting [member revealed].
@@ -88,7 +153,7 @@ func reveal() -> void:
 		return
 
 	appear_sound.play()
-	animation_player.play("reveal")
+	animation_player.play(&"reveal")
 	await animation_player.animation_finished
 
 	revealed = true
@@ -102,13 +167,15 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 	animation_player.play("collected")
 	await animation_player.animation_finished
 
-	GameState.quest.inventory.add_collected_item(item)
+	if not _ghost:
+		GameState.quest.inventory.add_collected_item(item, self)
 
 	if collected_dialogue:
-		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_title, [self, player])
+		DialogueManager.show_dialogue_balloon(collected_dialogue, dialogue_cue, [self, player])
 		await DialogueManager.dialogue_ended
 
 	interact_area.end_interaction()
+	GameState.quest.facts[_fact_key] = true
 	queue_free()
 
 	if next_scene:
@@ -120,10 +187,6 @@ func _on_interacted(player: Player, _from_right: bool) -> void:
 
 
 func _update_based_on_revealed() -> void:
-	if interact_area:
-		interact_area.disabled = not revealed
-	if sprite_2d:
-		sprite_2d.visible = revealed
-		sprite_2d.modulate = Color.WHITE if revealed else Color.TRANSPARENT
-	if physical_collider:
-		physical_collider.disabled = not revealed
+	interact_area.disabled = not revealed
+	physical_collider.disabled = not revealed
+	visuals.visible = revealed

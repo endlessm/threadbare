@@ -143,7 +143,10 @@ func tex(full_image: Texture2D, sprite: Dictionary) -> Texture2D:
 
 	texture.atlas = full_image
 	texture.region = Rect2(
-		sprite.x, full_image.get_height() - (sprite.y + sprite.height), sprite.width, sprite.height
+		sprite.x,
+		full_image.get_height() - (sprite.y + sprite.height),
+		sprite.width,
+		sprite.height,
 	)
 	return texture
 
@@ -188,14 +191,18 @@ func import_keyboard(
 	res.arrow_keys.right = tex(full_image, sprites["keyboard_arrows_right_outline"])
 
 	res.mouse_buttons[MouseButton.MOUSE_BUTTON_LEFT] = tex(
-		full_image, sprites["mouse_left_outline"]
+		full_image,
+		sprites["mouse_left_outline"],
 	)
 	res.mouse_buttons[MouseButton.MOUSE_BUTTON_RIGHT] = tex(
-		full_image, sprites["mouse_right_outline"]
+		full_image,
+		sprites["mouse_right_outline"],
 	)
 	res.mouse_buttons[MouseButton.MOUSE_BUTTON_MIDDLE] = tex(
-		full_image, sprites["mouse_scroll_outline"]
+		full_image,
+		sprites["mouse_scroll_outline"],
 	)
+	res.mouse_move = tex(full_image, sprites["mouse_move"])
 
 	save_resource(target, res)
 
@@ -294,7 +301,7 @@ func read_kenney_sprite_sheet(source_file: String) -> Dictionary:
 							parser.get_named_attribute_value("imagePath")
 						)
 					"SubTexture":
-						var sprite := {}
+						var sprite := { }
 						sprite["name"] = parser.get_named_attribute_value("name")
 						sprite["x"] = float(parser.get_named_attribute_value("x"))
 						sprite["y"] = float(parser.get_named_attribute_value("y"))
@@ -309,16 +316,22 @@ func _run() -> void:
 	print_rich("[b]Reticulating splines…[/b]")
 	import_keyboard()
 	import_controller(
-		"steam-deck_sheet_default.xml", "steamdeck", STEAM_DECK_BUTTONS, STEAM_DECK_TRIGGERS
+		"steam-deck_sheet_default.xml",
+		"steamdeck",
+		STEAM_DECK_BUTTONS,
+		STEAM_DECK_TRIGGERS,
 	)
 	import_controller(
 		"playstation-series_sheet_default.xml",
 		"playstation",
 		PLAYSTATION_BUTTONS,
-		PLAYSTATION_TRIGGERS
+		PLAYSTATION_TRIGGERS,
 	)
 	import_controller("xbox-series_sheet_default.xml", "xbox", XBOX_BUTTONS, XBOX_TRIGGERS)
 	import_controller(
-		"nintendo-switch_sheet_default.xml", "switch", SWITCH_BUTTONS, SWITCH_TRIGGERS
+		"nintendo-switch_sheet_default.xml",
+		"switch",
+		SWITCH_BUTTONS,
+		SWITCH_TRIGGERS,
 	)
 	print_rich("[b]Done![/b]")

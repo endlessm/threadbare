@@ -7,19 +7,21 @@ extends Node
 ## signals like [signal PlayerState.abilities_changed].
 signal player_changed(old: PlayerState, new: PlayerState)
 
+## Emitted when the state is cleared.
+signal cleared
+
+## Emitted when [member quest] changes, due to a quest being started, completed,
+## or abandoned.
+signal quest_changed
+
 const SAVE_PATH := "user://saved_game.tres"
 
 ## The player abilities to have from the beginning
 ## when not running the game from the main scene.
-const DEBUG_PLAYER_ABILITIES := [
-	Enums.PlayerAbilities.ABILITY_A,
-	Enums.PlayerAbilities.ABILITY_B,
-]
+const DEBUG_PLAYER_ABILITIES := [Enums.PlayerAbilities.ABILITY_A, Enums.PlayerAbilities.ABILITY_B]
 
 ## Scenes to skip from saving.
-const TRANSIENT_SCENES := [
-	"res://scenes/menus/title/title_screen.tscn",
-]
+const TRANSIENT_SCENES := ["res://scenes/menus/title/title_screen.tscn"]
 
 ## The progress is persisted only if the game is run normally from the main scene.
 ## Otherwise, it means we are playing a specific scene: the current scene from the editor or
@@ -41,6 +43,7 @@ var quest: QuestState:
 		var old_player_state := player
 		_saved_game.quest = new_value
 		player_changed.emit(old_player_state, player)
+		quest_changed.emit()
 
 ## State concerning the current scene, or [code]null[/code] if there is no current scene
 var scene: PerSceneState:
@@ -137,6 +140,10 @@ func set_quest(new_quest: Quest) -> void:
 		quest_player_state = PlayerState.new()
 
 	quest = QuestState.new(new_quest, quest_player_state)
+	quest.inventory.items = global.inventory.items.filter(
+		func(i: TaggedItem) -> bool:
+			return i.quest_path == new_quest.resource_path,
+	)
 
 
 ## Guess which quest the given scene is part of, and set [member quest]
@@ -201,9 +208,25 @@ func abandon_quest(suspend: bool = true) -> void:
 	quest = null
 
 
+## True if involved in a quest and the current quest has retelling.
+func has_retelling() -> bool:
+	return GameState.quest and GameState.quest.quest and GameState.quest.quest.retelling
+
+
+## True if involved in a quest.
+func is_item_offering_possible() -> bool:
+	if not quest:
+		return false
+
+	# TODO: only if there are *new* threads collected. Problem is - what
+	# triggers the end-of-quest cutscene if there are no new threads?
+	return true
+
+
 ## Clear the persisted state.
 func clear() -> void:
 	_saved_game = SavedGame.new()
+	cleared.emit()
 
 
 ## Check if there is persisted state.

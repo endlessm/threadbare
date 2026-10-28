@@ -15,11 +15,21 @@ var home_scene: String
 @onready var options: Control = %Options
 @onready var abandon_quest_button: Button = %AbandonQuestButton
 @onready var skip_tutorial_button: Button = %SkipTutorialButton
+@onready var hints_container: Control = %HintsContainer
 
 
 func _ready() -> void:
 	home_scene = ThreadbareProjectSettings.get_setting(ThreadbareProjectSettings.HOME_SCENE)
 	visible = false
+
+	Settings.touch_controls_changed.connect(_update_hints)
+	_update_hints()
+
+
+## In touch mode, the tabs can be tapped instead, and there is a touch button to
+## go back.
+func _update_hints() -> void:
+	hints_container.visible = not Settings.touch_controls
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -34,6 +44,10 @@ func toggle_pause() -> void:
 	get_tree().paused = new_state
 
 	Input.set_default_cursor_shape(Input.CURSOR_ARROW if new_state else Input.CURSOR_CROSS)
+	if new_state:
+		MouseManager.hold()
+	else:
+		MouseManager.release()
 
 	if new_state:
 		if not GameState.quest:
@@ -71,7 +85,10 @@ func abandon_quest(suspend: bool = true) -> void:
 
 	GameState.abandon_quest(suspend)
 	SceneSwitcher.change_to_file_with_transition(
-		abandon_scene, abandon_spawn_point, Transition.Effect.FADE, Transition.Effect.FADE
+		abandon_scene,
+		abandon_spawn_point,
+		Transition.Effect.FADE,
+		Transition.Effect.FADE,
 	)
 	await Transitions.finished
 
@@ -88,7 +105,10 @@ func _on_skip_tutorial_pressed() -> void:
 		GameState.player.set_ability(ability, true)
 	GameState.mark_quest_completed()
 	SceneSwitcher.change_to_file_with_transition(
-		home_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		home_scene,
+		^"",
+		Transition.Effect.FADE,
+		Transition.Effect.FADE,
 	)
 
 
@@ -104,7 +124,10 @@ func _on_title_screen_button_pressed() -> void:
 	GameState.save()
 	toggle_pause()
 	SceneSwitcher.change_to_file_with_transition(
-		title_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+		title_scene,
+		^"",
+		Transition.Effect.FADE,
+		Transition.Effect.FADE,
 	)
 
 

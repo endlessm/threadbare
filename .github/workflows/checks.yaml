@@ -20,7 +20,11 @@ jobs:
     steps:
     - uses: actions/checkout@v7
     - uses: ./.github/actions/lfs-cached-checkout
-    - uses: tox-dev/action-pre-commit-uv@v1
+    - uses: j178/prek-action@af4d4fcb6922b8e6f65c0426947125fcc38794ce # v3.0.2
+      env:
+        # mise looks up the gdscript-formatter release through the GitHub API.
+        # Authenticate to avoid the rate limit for anonymous requests.
+        GITHUB_TOKEN: ${{ github.token }}
 
   reuse:
     name: Licensing information
@@ -29,7 +33,7 @@ jobs:
     steps:
     - uses: actions/checkout@v7
     - name: Install the latest version of uv
-      uses: astral-sh/setup-uv@v10.1.0
+      uses: astral-sh/setup-uv@v10.3.0
       with:
         cache-dependency-glob: ".github/workflows/checks.yaml"
     - name: Check REUSE compliance

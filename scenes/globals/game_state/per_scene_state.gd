@@ -35,6 +35,10 @@ signal checkpoint_activated(checkpoint: Area2D)
 ## not saved to disk since the lights are controlled programmatically.
 var lights_on: bool
 
+## Set when the zone name has been displayed for the current world map level scene. So it is
+## displayed only once.
+var zone_name_displayed: String
+
 
 func _init(scene_path: String = "") -> void:
 	path = scene_path

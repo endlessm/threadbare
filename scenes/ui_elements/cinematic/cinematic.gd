@@ -16,10 +16,9 @@ signal cinematic_finished
 @export var dialogue: DialogueResource = preload("uid://b7ad8nar1hmfs"):
 	set = set_dialogue
 
-# TODO: Rename to dialogue_cue
 ## Cue within [member dialogue] to play. If empty, start at the top of [member dialogue].
-@export var dialogue_title: String = "":
-	set = set_dialogue_title
+@export var dialogue_cue: String = "":
+	set = set_dialogue_cue
 
 ## Optional animation player, to be used from [member dialogue] (if needed).
 @export var animation_player: AnimationPlayer
@@ -41,7 +40,7 @@ func _ready() -> void:
 func _validate_property(property: Dictionary) -> void:
 	super._validate_property(property)
 	match property.name:
-		"dialogue_title":
+		"dialogue_cue":
 			if dialogue:
 				property.hint = PROPERTY_HINT_ENUM
 				property.hint_string = ",".join(dialogue.get_cues())
@@ -51,9 +50,19 @@ func _validate_property(property: Dictionary) -> void:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings := super._get_configuration_warnings()
-	if dialogue and dialogue_title and dialogue_title not in dialogue.get_cues():
-		warnings.append("Dialogue Cue '%s' does not exist" % dialogue_title)
+	if dialogue and dialogue_cue and dialogue_cue not in dialogue.get_cues():
+		warnings.append("Dialogue Cue '%s' does not exist" % dialogue_cue)
 	return warnings
+
+
+func _set(property: StringName, value: Variant) -> bool:
+	# Scenes saved before the rename store the cue as dialogue_title. Map it to
+	# dialogue_cue, which is the name the editor saves from now on.
+	# Can be removed when we don't expect to have to rewrite any new quests being merged.
+	if property == &"dialogue_title":
+		dialogue_cue = value
+		return true
+	return false
 
 
 func _dialogue_changed_cb() -> void:
@@ -71,17 +80,16 @@ func set_dialogue(new_value: DialogueResource) -> void:
 	_dialogue_changed_cb()
 
 
-func set_dialogue_title(new_value: String) -> void:
-	dialogue_title = new_value
+func set_dialogue_cue(new_value: String) -> void:
+	dialogue_cue = new_value
 	update_configuration_warnings()
-
 
 #endregion
 
 
 func start() -> void:
 	if not GameState.scene.intro_dialogue_shown:
-		DialogueManager.show_dialogue_balloon(dialogue, dialogue_title, [self])
+		DialogueManager.show_dialogue_balloon(dialogue, dialogue_cue, [self])
 		await DialogueManager.dialogue_ended
 		GameState.scene.intro_dialogue_shown = true
 

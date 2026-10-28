@@ -69,7 +69,10 @@ func _ready() -> void:
 
 	talk_behavior.dialogue = dialogue
 	sprite.visible = false
-	body_entered.connect(func(_body: Node2D) -> void: self.activate())
+	body_entered.connect(
+		func(_body: Node2D) -> void:
+			self.activate(),
+	)
 	interact_area.interaction_started.connect(_on_interaction_started)
 	interact_area.interaction_ended.connect(_on_interaction_ended)
 

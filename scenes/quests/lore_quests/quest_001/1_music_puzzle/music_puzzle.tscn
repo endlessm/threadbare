@@ -17,10 +17,8 @@
 [ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/game_elements/props/sequence_puzzle_hint_sign/sequence_puzzle_hint_sign.tscn" id="9_evicy"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="13_inhg4"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="14_src2c"]
-[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="15_rxyid"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="15_s3slv"]
 [ext_resource type="SpriteFrames" uid="uid://djwymcffy83" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_red.tres" id="16_8nm0x"]
-[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="16_ytxvq"]
 [ext_resource type="PackedScene" uid="uid://ccpgw7k4rlmea" path="res://scenes/game_elements/props/decoration/crops/barley.tscn" id="17_6y4lh"]
 [ext_resource type="PackedScene" uid="uid://crqjcicx0vdu" path="res://scenes/game_elements/props/decoration/bush/bush.tscn" id="17_wasqo"]
 [ext_resource type="PackedScene" uid="uid://c78fj5em5tpm5" path="res://scenes/game_elements/props/decoration/crops/carrot.tscn" id="18_jaqfj"]
@@ -45,6 +43,7 @@
 [ext_resource type="AudioStream" uid="uid://c7om8kdork2rx" path="res://assets/third_party/sounds/characters/enemies/guard/Torch.ogg" id="31_ink4c"]
 [ext_resource type="SpriteFrames" uid="uid://cefk7kf0bpm3q" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/bonfire_sign/bonfire_sign_backward.tres" id="32_0wfv2"]
 [ext_resource type="AudioStream" uid="uid://xuqj6b5qqs3w" path="res://assets/third_party/sounds/ambient/459405__pfannkuchn__small-river-1-fast-semi-close.ogg" id="35_l8fgn"]
+[ext_resource type="Resource" uid="uid://ck0wbckgm5un8" path="res://scenes/globals/game_state/inventory/memory.tres" id="41_icnj0"]
 [ext_resource type="PackedScene" uid="uid://dgrrudegturnw" path="res://scenes/game_elements/characters/npcs/townie.tscn" id="42_ps6xw"]
 [ext_resource type="Script" uid="uid://edcifob4jc4s" path="res://scenes/game_logic/talk_behavior.gd" id="43_icnj0"]
 [ext_resource type="Resource" uid="uid://jf1tng8jxd3o" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/dialogues/music_lore_helper.dialogue" id="44_pgedt"]
@@ -52,10 +51,6 @@
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="45_ps6xw"]
 [ext_resource type="Script" uid="uid://diskln3jup064" path="res://scenes/game_elements/characters/npcs/components/helper_character.gd" id="46_jaqfj"]
 [ext_resource type="AudioStream" uid="uid://wkn0u0npcijf" path="res://scenes/quests/lore_quests/quest_001/1_music_puzzle/components/song_sanctuary_music.tres" id="47_orlow"]
-
-[sub_resource type="Resource" id="Resource_dp3eg"]
-script = ExtResource("15_rxyid")
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vigmf"]
 size = Vector2(52, 61)
@@ -1388,8 +1383,7 @@ script = ExtResource("7_nonj7")
 [node name="Sign" parent="OnTheGround/SequencePuzzle" unique_id=632493667 instance=ExtResource("8_evicy")]
 position = Vector2(-1211, -44)
 direction = 1
-text = "The Magical Melody
-"
+text = "The Magical Melody"
 
 [node name="Rocks" type="Node2D" parent="OnTheGround/SequencePuzzle" unique_id=1026544154]
 y_sort_enabled = true
@@ -1477,9 +1471,9 @@ hint_sign = NodePath("../../Bonfires/BonfireSign4")
 unique_name_in_owner = true
 position = Vector2(-726, 43)
 revealed = false
-item = SubResource("Resource_dp3eg")
+item = ExtResource("41_icnj0")
 collected_dialogue = ExtResource("6_l4i5r")
-dialogue_title = &"well_done"
+dialogue_cue = &"well_done"
 next_scene = "uid://cgemeabsewy1f"
 
 [node name="Helper" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("42_ps6xw")]
@@ -1499,7 +1493,7 @@ collision_layer = 32
 collision_mask = 0
 script = ExtResource("45_6y4lh")
 marker = NodePath("../Marker")
-action = "Want a story?"
+action_text = "Want a story?"
 metadata/_custom_type_script = "uid://du8wfijr35r35"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/Helper/InteractArea" unique_id=317299534]
@@ -1514,8 +1508,6 @@ script = ExtResource("46_jaqfj")
 position = Vector2(0, -72)
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1333274951]
-
-[node name="HUD" parent="." unique_id=1648131045 instance=ExtResource("16_ytxvq")]
 
 [node name="ForestCollider" type="StaticBody2D" parent="." unique_id=1521413242]
 collision_layer = 16

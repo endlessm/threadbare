@@ -3,7 +3,7 @@
 extends Area2D
 
 @export var dialogue: DialogueResource
-@export var title: String
+@export var cue: String
 @export var spawn_point: SpawnPoint
 
 
@@ -21,14 +21,9 @@ func _body_entered_cb(body: Node2D) -> void:
 	player.velocity = Vector2.ZERO
 	player.take_control(self)
 
-	DialogueManager.show_dialogue_balloon(dialogue, title, [player])
+	DialogueManager.show_dialogue_balloon(dialogue, cue, [player])
 	await DialogueManager.dialogue_ended
 
-	await (
-		Transitions
-		. do_transition(
-			spawn_point.move_player_to_self_position,
-		)
-	)
+	await (Transitions.do_transition(spawn_point.move_player_to_self_position))
 
 	player.return_control(self)

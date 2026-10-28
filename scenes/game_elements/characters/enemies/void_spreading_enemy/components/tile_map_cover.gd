@@ -24,8 +24,8 @@ const _DURATION: float = 0.25
 ## Nodes whose direct children (but not grandchildren) can be consumed.
 @export var consumable_node_holders: Array[Node]
 
-var _unconsumed_nodes: Dictionary[Vector2i, Array] = {}
-var _consumed_nodes: Dictionary[Vector2i, Array] = {}
+var _unconsumed_nodes: Dictionary[Vector2i, Array] = { }
+var _consumed_nodes: Dictionary[Vector2i, Array] = { }
 
 var _terrain_id: int = -1
 
@@ -155,7 +155,8 @@ func consume(coord: Vector2i, immediate: bool = false) -> void:
 	else:
 		var tween := create_tween().set_parallel(true)
 		for node: Node2D in nodes.filter(
-			func(node: Node2D) -> bool: return is_instance_valid(node)
+			func(node: Node2D) -> bool:
+				return is_instance_valid(node),
 		):
 			tween.tween_property(node, "modulate:a", 0.0, _DURATION).set_ease(Tween.EASE_OUT)
 		await tween.finished

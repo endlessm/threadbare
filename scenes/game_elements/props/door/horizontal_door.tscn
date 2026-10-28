@@ -6,11 +6,21 @@
 [ext_resource type="AudioStream" uid="uid://wyrvtep877iy" path="res://assets/third_party/sounds/characters/enemies/throwing_enemy/Door.ogg" id="4_0hwet"]
 [ext_resource type="AudioStream" uid="uid://erxulumcdtuu" path="res://assets/third_party/sounds/characters/enemies/throwing_enemy/Ring.ogg" id="5_qouav"]
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ty0te"]
+polygon = PackedVector2Array(7, 9, 7, -138, -6, -138, -6, 9)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t3aaa"]
 size = Vector2(13, 76.25)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qda76"]
+size = Vector2(19, 133.375)
+
 [node name="HorizontalDoor" type="Node2D" unique_id=1860367584]
 script = ExtResource("1_apinb")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=1053118773]
+unique_name_in_owner = true
+occluder = SubResource("OccluderPolygon2D_ty0te")
 
 [node name="DoorClosed" type="Sprite2D" parent="." unique_id=47488445]
 unique_name_in_owner = true
@@ -30,6 +40,16 @@ collision_layer = 16
 [node name="ShapeWhenClosed" type="CollisionShape2D" parent="ColliderWhenClosed" unique_id=953885580]
 position = Vector2(0.5, -37.125)
 shape = SubResource("RectangleShape2D_t3aaa")
+
+[node name="SightOcclussion" type="StaticBody2D" parent="." unique_id=729311558]
+unique_name_in_owner = true
+collision_layer = 8
+collision_mask = 0
+
+[node name="ShapeWhenClosed" type="CollisionShape2D" parent="SightOcclussion" unique_id=1123213291]
+position = Vector2(0.5, -63.3125)
+shape = SubResource("RectangleShape2D_qda76")
+debug_color = Color(0.972549, 0, 0.44313726, 0)
 
 [node name="DoorOpenSound" type="AudioStreamPlayer2D" parent="." unique_id=1659028188]
 unique_name_in_owner = true

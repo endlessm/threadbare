@@ -20,6 +20,15 @@ signal interaction_ended
 ## Emitted when characters start or stop seeing this area for interaction.
 signal observers_changed
 
+## The kind of interaction, used to choose the icon of the interact touch button.
+enum ActionType {
+	## Talking to a character, like an NPC.
+	TALK,
+	## Using an object, like a lever or a sign. Or collecting an object through
+	## interaction, like a magical thread.
+	USE,
+}
+
 const SHAPE_DEBUG_COLOR := Color(0.6, 0.545, 0.0, 0.42)
 const INDICATOR_SCENE := preload("uid://d252j2mhya0kq")
 
@@ -41,7 +50,11 @@ const INDICATOR_SCENE := preload("uid://d252j2mhya0kq")
 		if _indicator:
 			_indicator.visible = not disabled
 
-@export var action: String = "Talk"
+## Text shown in the interact hint, describing what interacting does.
+@export var action_text: String = "Talk"
+
+## The kind of interaction. The default matches the default [member action_text].
+@export var action_type: ActionType = ActionType.TALK
 
 ## Whether this area is being observed by one or more characters.
 ## That is, if a [CharacterSight] area is seeing this area for interaction.

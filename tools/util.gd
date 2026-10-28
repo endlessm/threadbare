@@ -3,15 +3,14 @@
 @tool
 extends Object
 
-const DEBUG := true
-
 
 ## Return a list of all scenes in the project that match the filter.
 ## filter accepts one argument, the path to a scene, and returns a boolean,
 ## true if the scene matches the filter.
 static func find_scenes(
 	root_folder: String = "res://",
-	filter: Callable = func(_scene_path: String) -> bool: return true,
+	filter: Callable = func(_scene_path: String) -> bool:
+		return true,
 ) -> Array[PackedScene]:
 	var packed_scenes: Array[PackedScene] = []
 	var err: Error
@@ -49,3 +48,42 @@ static func find_scenes(
 		dir.list_dir_end()
 
 	return packed_scenes
+
+
+## Return every file under [param folder], recursively. The folders in
+## [param skip_folders], and everything under them, are left out. So is Godot's
+## own .godot cache, which holds a copy of everything.
+static func all_files(
+	folder: String,
+	skip_folders: PackedStringArray = PackedStringArray(),
+) -> PackedStringArray:
+	var files := PackedStringArray()
+	var pending := PackedStringArray([folder])
+
+	while not pending.is_empty():
+		var current := pending[-1]
+		pending.remove_at(pending.size() - 1)
+
+		if current in skip_folders:
+			continue
+
+		for directory: String in DirAccess.get_directories_at(current):
+			if directory != ".godot":
+				pending.append(current.path_join(directory))
+
+		for file: String in DirAccess.get_files_at(current):
+			files.append(current.path_join(file))
+
+	return files
+
+
+## Return the properties that the scene sets on the node at [param idx] of
+## [param scene_state], by name. Properties left at their default value aren't
+## included, because they aren't saved in the scene.
+static func node_properties(scene_state: SceneState, idx: int) -> Dictionary[StringName, Variant]:
+	var properties: Dictionary[StringName, Variant] = { }
+	for prop_idx: int in scene_state.get_node_property_count(idx):
+		properties[scene_state.get_node_property_name(idx, prop_idx)] = (
+			scene_state.get_node_property_value(idx, prop_idx)
+		)
+	return properties

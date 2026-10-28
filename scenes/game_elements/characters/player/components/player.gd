@@ -29,15 +29,14 @@ const REQUIRED_ANIMATION_FRAMES: Dictionary[StringName, int] = {
 
 ## Optional animations which, if provided by [member sprite_frames], must have the corresponding
 ## number of frames.
-const OPTIONAL_ANIMATION_FRAMES: Dictionary[StringName, int] = {
-	&"run": 6,
-}
+const OPTIONAL_ANIMATION_FRAMES: Dictionary[StringName, int] = { &"run": 6 }
 
 const DEFAULT_SPRITE_FRAME: SpriteFrames = preload("uid://vwf8e1v8brdp")
+const DEFAULT_PLAYER_NAME := "Player Name"
 
 ## The character's name. This is used to highlight when the player's character
 ## is speaking during dialogue.
-@export var player_name: String = "Player Name"
+@export var player_name: String = DEFAULT_PLAYER_NAME
 
 ## The current player state.
 @export var mode: Mode = Mode.USER_CONTROLLED:
@@ -185,7 +184,7 @@ func _set_speeds(new_speeds: CharacterSpeeds) -> void:
 func teleport_to(
 	tele_position: Vector2,
 	smooth_camera: bool = false,
-	look_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED
+	look_side: Enums.LookAtSide = Enums.LookAtSide.UNSPECIFIED,
 ) -> void:
 	var camera: Camera2D = get_viewport().get_camera_2d()
 
@@ -288,7 +287,10 @@ func _handle_game_over() -> void:
 	else:
 		# Restart from the challenge start scene
 		SceneSwitcher.change_to_file_with_transition(
-			challenge_start_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+			challenge_start_scene,
+			^"",
+			Transition.Effect.FADE,
+			Transition.Effect.FADE,
 		)
 
 

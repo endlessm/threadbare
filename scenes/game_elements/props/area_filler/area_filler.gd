@@ -53,7 +53,7 @@ extends Node
 @export_tool_button("Update") var _update_button: Callable = update
 
 var _area: CollisionObject2D
-var _undoredo: Object  # EditorUndoRedoManager
+var _undoredo: Object # EditorUndoRedoManager
 
 
 func _enter_tree() -> void:
@@ -103,12 +103,7 @@ func _shape_to_polygon(o: CollisionShape2D) -> PackedVector2Array:
 	if shape is RectangleShape2D:
 		var h := (shape as RectangleShape2D).size / 2.0
 		local_polygon = PackedVector2Array(
-			[
-				Vector2(-h.x, -h.y),
-				Vector2(h.x, -h.y),
-				Vector2(h.x, h.y),
-				Vector2(-h.x, h.y),
-			]
+			[Vector2(-h.x, -h.y), Vector2(h.x, -h.y), Vector2(h.x, h.y), Vector2(-h.x, h.y)]
 		)
 	elif shape is CircleShape2D:
 		var r := (shape as CircleShape2D).radius
@@ -120,7 +115,7 @@ func _shape_to_polygon(o: CollisionShape2D) -> PackedVector2Array:
 	elif shape is CapsuleShape2D:
 		var r := (shape as CapsuleShape2D).radius
 		var half_straight := (shape as CapsuleShape2D).height / 2.0 - r
-		var n := 16  # vertices per semicircle
+		var n := 16 # vertices per semicircle
 		# Top semicircle: center at (0, -half_straight).
 		# Sweep from PI to 2*PI so the arc bulges upward (toward -Y in screen space).
 		for i in range(n + 1):
@@ -148,7 +143,8 @@ func _shape_to_polygon(o: CollisionShape2D) -> PackedVector2Array:
 #
 # TODO: Holes in merged results (rare for convex inputs) are not handled.
 func _merge_into(
-	polygon: PackedVector2Array, merged: Array[PackedVector2Array]
+	polygon: PackedVector2Array,
+	merged: Array[PackedVector2Array],
 ) -> Array[PackedVector2Array]:
 	var current := polygon
 	var result: Array[PackedVector2Array] = []
@@ -256,7 +252,7 @@ func update() -> void:
 	for child: Node in _find_existing_children():
 		if polygons.any(
 			func(polygon: PackedVector2Array) -> bool:
-				return Geometry2D.is_point_in_polygon(child.position, polygon)
+				return Geometry2D.is_point_in_polygon(child.position, polygon),
 		):
 			current_points.append(child.position)
 		else:

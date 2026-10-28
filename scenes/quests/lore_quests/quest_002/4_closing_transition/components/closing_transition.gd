@@ -3,6 +3,7 @@
 extends Node2D
 
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
+@onready var collectible_item: CollectibleItem = %CollectibleItem
 
 
 func reveal() -> void:

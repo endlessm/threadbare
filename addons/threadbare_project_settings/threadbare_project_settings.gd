@@ -19,30 +19,20 @@ const DEBUG_ASPECT_RATIO = "threadbare/debugging/debug_aspect_ratio"
 const SKIP_SPLASH = "threadbare/debugging/skip_splash"
 
 static var settings_configuration = {
-	HOME_SCENE:
-	{
+	HOME_SCENE: {
 		value = "uid://cufkthb25mpxy",
 		type = TYPE_STRING,
 		hint = PROPERTY_HINT_FILE,
 		hint_string = "*.tscn",
 	},
-	OPENING_QUEST:
-	{
+	OPENING_QUEST: {
 		value = "uid://0dcffjdxn6g2",
 		type = TYPE_STRING,
 		hint = PROPERTY_HINT_FILE,
 		hint_string = "*.tres,*.res",
 	},
-	DEBUG_ASPECT_RATIO:
-	{
-		value = false,
-		type = TYPE_BOOL,
-	},
-	SKIP_SPLASH:
-	{
-		value = false,
-		type = TYPE_BOOL,
-	},
+	DEBUG_ASPECT_RATIO: { value = false, type = TYPE_BOOL },
+	SKIP_SPLASH: { value = false, type = TYPE_BOOL },
 }
 
 
@@ -59,7 +49,7 @@ static func setup_threadbare_settings() -> void:
 				"name": setting_name,
 				"type": setting_config.type,
 				"hint": setting_config.get("hint", PROPERTY_HINT_NONE),
-				"hint_string": setting_config.get("hint_string", "")
+				"hint_string": setting_config.get("hint_string", ""),
 			}
 		)
 		ProjectSettings.set_as_basic(setting_name, not setting_config.get("is_advanced", false))

@@ -15,9 +15,7 @@ extends EditorScript
 const Util = preload("./util.gd")
 
 ## Ignore scenes in these folders
-const EXCLUDE_FOLDERS: Array[String] = [
-	"res://scenes/quests/story_quests/",
-]
+const EXCLUDE_FOLDERS: Array[String] = ["res://scenes/quests/story_quests/"]
 
 
 func _examine_node(scene_state: SceneState, idx: int) -> bool:
@@ -26,14 +24,8 @@ func _examine_node(scene_state: SceneState, idx: int) -> bool:
 	if node_type != &"AudioStreamPlayer" and node_type != &"AudioStreamPlayer2D":
 		return false
 
-	for prop_idx: int in scene_state.get_node_property_count(idx):
-		var prop_name := scene_state.get_node_property_name(idx, prop_idx)
-		if prop_name == "bus":
-			var prop_value: Variant = scene_state.get_node_property_value(idx, prop_idx)
-			if prop_value != &"Master":
-				return false
-
-	return true
+	# A node that doesn't set the bus plays to the default one, Master.
+	return Util.node_properties(scene_state, idx).get(&"bus", &"Master") == &"Master"
 
 
 func _examine(scene: PackedScene) -> bool:
@@ -43,7 +35,9 @@ func _examine(scene: PackedScene) -> bool:
 	for idx: int in scene_state.get_node_count():
 		if _examine_node(scene_state, idx):
 			prints(
-				scene.resource_path, scene_state.get_node_path(idx), "should be assigned to a bus"
+				scene.resource_path,
+				scene_state.get_node_path(idx),
+				"should be assigned to a bus",
 			)
 			needs_fix = true
 

@@ -30,9 +30,18 @@ func _set_character(new_character: CharacterBody2D) -> void:
 ## interact_action_changed] to monitor for changes.
 func get_interact_action() -> String:
 	if character_sight.interact_area != null:
-		var action := character_sight.interact_area.action
+		var action := character_sight.interact_area.action_text
 		return action if action else tr("Interact")
 	return ""
+
+
+## Returns the kind of [member character]'s current interact action, for example
+## to choose an icon. Only meaningful while [method get_interact_action] is not
+## empty. Use [signal interact_action_changed] to monitor for changes.
+func get_interact_action_type() -> InteractArea.ActionType:
+	if character_sight.interact_area != null:
+		return character_sight.interact_area.action_type
+	return InteractArea.ActionType.TALK
 
 
 func _is_interacting() -> bool:

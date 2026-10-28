@@ -10,10 +10,9 @@
 [ext_resource type="SpriteFrames" uid="uid://dbe6l18tss360" path="res://scenes/quests/story_quests/after_the_tremor/charlie_components/after_the_tremor_charlie.tres" id="7_321x3"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="8_ukjsk"]
 [ext_resource type="SpriteFrames" uid="uid://dkcv15as5d6gw" path="res://scenes/quests/story_quests/after_the_tremor/bryan_components/after_the_tremor_bryan.tres" id="9_cbqvq"]
-[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="10_8cyi3"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="11_gek8f"]
-[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="12_321x3"]
 [ext_resource type="Resource" uid="uid://dtqascp25vdgx" path="res://scenes/quests/story_quests/after_the_tremor/2_sequence_puzzle/2_tallerjuego/dialogofinal.dialogue" id="13_ea4l7"]
+[ext_resource type="Resource" uid="uid://ck0wbckgm5un8" path="res://scenes/globals/game_state/inventory/memory.tres" id="13_fikee"]
 [ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="14_0n12u"]
 [ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/game_elements/props/sequence_puzzle_object/sequence_puzzle_object.tscn" id="15_ea4l7"]
 [ext_resource type="SpriteFrames" uid="uid://bosdk18pjhyo0" path="res://scenes/quests/story_quests/after_the_tremor/2_sequence_puzzle/botonfuente.tres" id="16_8drhf"]
@@ -22,7 +21,6 @@
 [ext_resource type="SpriteFrames" uid="uid://c72utxw4qh4ui" path="res://scenes/quests/story_quests/after_the_tremor/2_sequence_puzzle/botonarboll.tres" id="19_fikee"]
 [ext_resource type="SpriteFrames" uid="uid://do6ssglnwn60i" path="res://scenes/quests/story_quests/after_the_tremor/2_sequence_puzzle/botoncalabaza.tres" id="20_g31nb"]
 [ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="21_up7bl"]
-[ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/game_elements/props/sequence_puzzle_hint_sign/sequence_puzzle_hint_sign.tscn" id="22_0n12u"]
 [ext_resource type="Script" uid="uid://cs3mackqqsjmr" path="res://scenes/quests/story_quests/after_the_tremor/2_sequence_puzzle/2_tallerjuego/reveal_tilemap.gd" id="23_ea4l7"]
 [ext_resource type="AudioStream" uid="uid://buxupti22mp4y" path="res://scenes/quests/story_quests/after_the_tremor/music/minijuego2.ogg" id="24_8drhf"]
 [ext_resource type="Script" uid="uid://d31cxd03praji" path="res://scenes/quests/story_quests/after_the_tremor/3_combat/scripts/MusicFix.gd" id="25_ls33p"]
@@ -45,10 +43,6 @@ size = Vector2(80, 162.66667)
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p26tb"]
 radius = 21.333328
 height = 74.666626
-
-[sub_resource type="Resource" id="Resource_cbqvq"]
-script = ExtResource("12_321x3")
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [node name="Minijuego2" type="Node2D" unique_id=1172299557]
 y_sort_enabled = true
@@ -124,13 +118,11 @@ shape = SubResource("CapsuleShape2D_p26tb")
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1029527750]
 
-[node name="HUD" parent="." unique_id=1954513484 instance=ExtResource("10_8cyi3")]
-
 [node name="CollectibleItem" parent="." unique_id=1474014550 instance=ExtResource("11_gek8f")]
 modulate = Color(1, 1, 1, 0)
 position = Vector2(452, -41)
 revealed = false
-item = SubResource("Resource_cbqvq")
+item = ExtResource("13_fikee")
 collected_dialogue = ExtResource("13_ea4l7")
 next_scene = "uid://iywmch2pilxk"
 
@@ -164,16 +156,9 @@ audio_stream = ExtResource("17_2yj5h")
 
 [node name="Steps" type="Node2D" parent="SequencePuzzle" unique_id=1475626406]
 
-[node name="SequencePuzzleStep1" type="Node2D" parent="SequencePuzzle/Steps" unique_id=334204405 node_paths=PackedStringArray("sequence", "hint_sign")]
+[node name="SequencePuzzleStep1" type="Node2D" parent="SequencePuzzle/Steps" unique_id=334204405 node_paths=PackedStringArray("sequence")]
 script = ExtResource("21_up7bl")
 sequence = [NodePath("../../Objects/Yellow"), NodePath("../../Objects/Blue"), NodePath("../../Objects/Pink"), NodePath("../../Objects/Green")]
-hint_sign = NodePath("../../Signs/HintSign1")
-
-[node name="Signs" type="Node2D" parent="SequencePuzzle" unique_id=1977189161]
-y_sort_enabled = true
-
-[node name="HintSign1" parent="SequencePuzzle/Signs" unique_id=586915907 instance=ExtResource("22_0n12u")]
-position = Vector2(2856, -1392)
 
 [node name="RevealTilemap" type="Node" parent="." unique_id=1751913566 node_paths=PackedStringArray("puzzle", "tilemap_layer")]
 script = ExtResource("23_ea4l7")
