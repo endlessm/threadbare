@@ -114,6 +114,12 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
+	if not GameState.quest:
+		push_error(
+			"CollectibleItem can't be instantiated outside quests. ",
+			"Make sure that your scene file is inside a quest folder.",
+		)
+
 	# Collected in current run through this quest?
 	# TODO: if TaggedItem was constructed here we could put a workaround for
 	# use_unique_path not working there.
