@@ -29,7 +29,7 @@ signal checkpoint_activated(checkpoint: Area2D)
 @export var intro_dialogue_shown: bool
 
 ## Dictionary to store arbitrary persistent scene facts, such as enemy states and consumed tiles.
-@export var facts: Dictionary = {}
+@export var facts: Dictionary = { }
 
 ## Current state of artificial lights. Set with [member set_lights_on]. This is
 ## not saved to disk since the lights are controlled programmatically.

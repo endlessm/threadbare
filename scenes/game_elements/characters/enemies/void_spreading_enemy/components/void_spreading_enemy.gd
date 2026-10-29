@@ -214,12 +214,12 @@ func _on_player_capture_area_body_entered(body: Node2D) -> void:
 func _on_checkpoint_activated(checkpoint: Checkpoint) -> void:
 	if not checkpoint.get("save_void_and_enemies"):
 		return
-	
+
 	if GameState.scene == null or not "facts" in GameState.scene:
 		return
 
 	var save_key := str(get_path())
-	var data := {"position": global_position, "last_position": _last_position}
+	var data := { "position": global_position, "last_position": _last_position }
 
 	if path_walk_behavior:
 		data["path_direction"] = path_walk_behavior.direction
