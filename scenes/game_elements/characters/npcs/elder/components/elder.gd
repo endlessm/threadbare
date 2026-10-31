@@ -108,11 +108,11 @@ func congratulate_player() -> void:
 
 func _update_dialogue_cue(_item: TaggedItem = null) -> void:
 	if GameState.is_item_offering_possible():
-		talk_behavior.cue = "go_to_loom"
+		talk_behavior.dialogue_cue = "go_to_loom"
 	elif not _quests:
-		talk_behavior.cue = "no_quests"
+		talk_behavior.dialogue_cue = "no_quests"
 	else:
-		talk_behavior.cue = ""
+		talk_behavior.dialogue_cue = ""
 
 
 func _on_interaction_ended() -> void:
