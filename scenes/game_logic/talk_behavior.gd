@@ -7,7 +7,7 @@ extends Node
 ##
 ## It displays the [member dialogue] passing the parent node and the player as the extra game
 ## state.
-## If [member cue] is set, it will display the dialogue at that cue.[br][br]
+## If [member dialogue_cue] is set, it will display the dialogue at that cue.[br][br]
 ## When the dialogue ends, it finishes the interaction by calling [method
 ## InteractArea.end_interaction].
 ## If the parent is an NPC, it sets the [member InteractArea.action_text] to "Talk to NAME",
@@ -17,8 +17,8 @@ extends Node
 @export var dialogue: DialogueResource = preload("uid://cc3paugq4mma4")
 
 ## Cue within [member dialogue] to play. If empty, start at the top of [member dialogue].
-@export var cue: String = "":
-	set = _set_cue
+@export var dialogue_cue: String = "":
+	set = _set_dialogue_cue
 
 ## The area that the player-character should interact to display the dialogue.
 ## The interaction will last until the dialogue ends.
@@ -34,8 +34,8 @@ extends Node
 
 #region Setters
 
-func _set_cue(new_value: String) -> void:
-	cue = new_value
+func _set_dialogue_cue(new_value: String) -> void:
+	dialogue_cue = new_value
 	update_configuration_warnings()
 
 
@@ -50,17 +50,17 @@ func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
 	if not interact_area:
 		warnings.append("Interact Area property must be set.")
-	if dialogue and cue and cue not in dialogue.get_cues():
-		warnings.append("Dialogue Cue '%s' does not exist" % cue)
+	if dialogue and dialogue_cue and dialogue_cue not in dialogue.get_cues():
+		warnings.append("Dialogue Cue '%s' does not exist" % dialogue_cue)
 	return warnings
 
 
 func _set(property: StringName, value: Variant) -> bool:
-	# Scenes saved before the rename store the cue as title. Map it to cue, which
-	# is the name the editor saves from now on.
+	# Scenes saved before the renames store the cue as title or cue. Map them to
+	# dialogue_cue, which is the name the editor saves from now on.
 	# Can be removed when we don't expect to have to rewrite any new quests being merged.
-	if property == &"title":
-		cue = value
+	if property in [&"title", &"cue"]:
+		dialogue_cue = value
 		return true
 	return false
 
@@ -79,6 +79,6 @@ func _on_interaction_started(player: Player, _from_right: bool) -> void:
 	var extra: Dictionary[String, Node]
 	for node: Node in extra_context:
 		extra[node.name] = node
-	DialogueManager.show_dialogue_balloon(dialogue, cue, [get_parent(), player, extra])
+	DialogueManager.show_dialogue_balloon(dialogue, dialogue_cue, [get_parent(), player, extra])
 	await DialogueManager.dialogue_ended
 	interact_area.end_interaction()

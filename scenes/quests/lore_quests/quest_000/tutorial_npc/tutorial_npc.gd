@@ -15,7 +15,7 @@ extends CharacterRandomizer
 	set(new_value):
 		dialogue_cue = new_value
 		if talk_behavior:
-			talk_behavior.cue = dialogue_cue
+			talk_behavior.dialogue_cue = dialogue_cue
 
 ## The path to follow when calling [method walk_path].
 @export var path: Path2D:

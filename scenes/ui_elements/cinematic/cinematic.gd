@@ -41,10 +41,9 @@ func _validate_property(property: Dictionary) -> void:
 	super._validate_property(property)
 	match property.name:
 		"dialogue_cue":
-			if dialogue:
-				property.hint = PROPERTY_HINT_ENUM
-				property.hint_string = ",".join(dialogue.get_cues())
-			else:
+			# Dialogue Manager's inspector plugin edits this property, listing the
+			# cues of the dialogue.
+			if not dialogue:
 				property.usage |= PROPERTY_USAGE_READ_ONLY
 
 
