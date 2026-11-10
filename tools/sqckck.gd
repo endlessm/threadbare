@@ -27,4 +27,4 @@ func _process(_delta: float) -> bool:
 	if ProjectSettings.save() != OK:
 		push_error("Failed to save project settings")
 
-	return true  # End the main loop
+	return true # End the main loop

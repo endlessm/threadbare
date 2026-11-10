@@ -22,4 +22,12 @@ func _on_pressed() -> void:
 	if current_scene:
 		url += "&scene=" + current_scene.scene_file_path.uri_encode()
 
+	var game_resolution := DisplayServer.window_get_size()
+	if game_resolution:
+		url += "&resolution=" + var_to_str(game_resolution).uri_encode()
+
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+	if player:
+		url += "&location=" + var_to_str(player.global_position).uri_encode()
+
 	OS.shell_open(url)

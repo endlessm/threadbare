@@ -60,7 +60,7 @@ func _do_tween(
 	transition_effect: Effect,
 	duration: float,
 	easing: Tween.EaseType,
-	transition_type: Tween.TransitionType
+	transition_type: Tween.TransitionType,
 ) -> void:
 	match transition_effect:
 		Effect.FADE:
@@ -81,9 +81,9 @@ func _do_tween(
 	_current_tween = create_tween()
 	(
 		_current_tween
-		. tween_property($TransitionMask.material, "shader_parameter/cutoff", final_val, duration)
-		. set_ease(easing)
-		. set_trans(transition_type)
+		.tween_property($TransitionMask.material, "shader_parameter/cutoff", final_val, duration)
+		.set_ease(easing)
+		.set_trans(transition_type)
 	)
 
 	await _current_tween.finished
@@ -93,7 +93,7 @@ func _leave_scene(
 	transition_effect: Effect = Effect.FADE,
 	duration: float = 1.0,
 	easing: Tween.EaseType = Tween.EaseType.EASE_OUT,
-	transition_type: Tween.TransitionType = Tween.TransitionType.TRANS_QUAD
+	transition_type: Tween.TransitionType = Tween.TransitionType.TRANS_QUAD,
 ) -> void:
 	await _do_tween(0.0, _invert(transition_effect), duration, easing, transition_type)
 
@@ -102,7 +102,7 @@ func _introduce_scene(
 	transition_effect: Effect = Effect.FADE,
 	duration: float = 1.0,
 	easing: Tween.EaseType = Tween.EaseType.EASE_IN,
-	transition_type: Tween.TransitionType = Tween.TransitionType.TRANS_QUAD
+	transition_type: Tween.TransitionType = Tween.TransitionType.TRANS_QUAD,
 ) -> void:
 	await _do_tween(1.0, transition_effect, duration, easing, transition_type)
 
@@ -126,9 +126,7 @@ func do_transition(
 ## This is only intended to fade out when quitting the game. Unlike [method do_transition], this
 ## does not emit [signal started] or [signal finished]; use [code]await[/code] to wait for the
 ## fade-out to finish.
-func do_out_transition(
-	out_transition: Transition.Effect = Transition.Effect.FADE,
-) -> void:
+func do_out_transition(out_transition: Transition.Effect = Transition.Effect.FADE) -> void:
 	visible = true
 	await _leave_scene(out_transition)
 

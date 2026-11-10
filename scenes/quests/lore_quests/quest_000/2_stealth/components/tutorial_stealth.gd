@@ -10,7 +10,6 @@ var _tween: Tween
 
 # Used by dialogue
 @onready var memory_thread: CollectibleItem = %MemoryThread
-@onready var hud: CanvasLayer = %HUD
 
 
 func _adjust_modulation(target: Color) -> void:

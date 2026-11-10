@@ -4,10 +4,7 @@ extends Node
 
 ## Prefixes to try adding to non-absolute path in URL hash, which may have been stripped to make it
 ## more human-readable.
-const _SCENE_PREFIXES = [
-	"res://",
-	"res://scenes/",
-]
+const _SCENE_PREFIXES = ["res://", "res://scenes/"]
 
 ## Suffix stripped from path to make it more human-readable
 const _SCENE_SUFFIX = ".tscn"
@@ -52,7 +49,6 @@ func _restore_from_hash() -> void:
 					path = prefix + path
 					break
 		# otherwise, this is an absolute uid:// or res:// path
-
 		if ResourceLoader.exists(path, "PackedScene"):
 			if GameState.scene and GameState.scene.path == path:
 				# The path matches the saved scene. This would happen
@@ -107,7 +103,7 @@ func change_to_file_with_transition(
 	scene_path: String,
 	spawn_point: NodePath = ^"",
 	enter_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE,
-	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
+	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE,
 ) -> void:
 	assert(scene_path != "")
 
@@ -117,9 +113,10 @@ func change_to_file_with_transition(
 		return
 
 	await Transitions.do_transition(
-		func() -> void: change_to_packed(ResourceLoader.load_threaded_get(scene_path), spawn_point),
+		func() -> void:
+			change_to_packed(ResourceLoader.load_threaded_get(scene_path), spawn_point),
 		enter_transition,
-		exit_transition
+		exit_transition,
 	)
 
 
@@ -129,12 +126,14 @@ func change_to_packed_with_transition(
 	scene: PackedScene,
 	spawn_point: NodePath = ^"",
 	enter_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE,
-	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
+	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE,
 ) -> void:
 	assert(scene != null)
 
 	Transitions.do_transition(
-		change_to_packed.bind(scene, spawn_point), enter_transition, exit_transition
+		change_to_packed.bind(scene, spawn_point),
+		enter_transition,
+		exit_transition,
 	)
 
 

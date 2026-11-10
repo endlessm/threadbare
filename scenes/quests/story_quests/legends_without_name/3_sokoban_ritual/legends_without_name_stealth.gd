@@ -207,7 +207,7 @@ func check_win() -> void:
 		await get_tree().create_timer(2).timeout
 		
 		# 2. Cambiamos a la escena del siguiente nivel
-		get_tree().change_scene_to_file("res://scenes/quests/story_quests/legends_without_name/4_outro/legends_without_name_outro.tscn")
+		SceneSwitcher.change_to_file_with_transition("res://scenes/quests/story_quests/legends_without_name/4_outro/legends_without_name_outro.tscn", ^"", Transition.Effect.FADE, Transition.Effect.FADE)
 
 func actualizar_posiciones_visuales(animar: bool = false) -> void:
 	var player_target_pixel: Vector2 = Vector2(player_pos * tile_size)

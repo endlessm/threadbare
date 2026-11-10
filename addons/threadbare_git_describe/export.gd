@@ -16,7 +16,10 @@ static func set_versions() -> void:
 
 
 func _export_begin(
-	_features: PackedStringArray, _is_debug: bool, _path: String, _flags: int
+	_features: PackedStringArray,
+	_is_debug: bool,
+	_path: String,
+	_flags: int,
 ) -> void:
 	set_versions()
 	var err := ProjectSettings.save()

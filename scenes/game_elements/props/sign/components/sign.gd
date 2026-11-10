@@ -3,6 +3,15 @@
 @tool
 extends Node2D
 
+enum Frame {
+	NON_DIRECTIONAL = 0,
+	LEFT_AND_RIGHT = 1,
+}
+
+## Theme type variation of the label when [member Settings.large_text] is on.
+## It uses Jersey 15 instead of Jersey 10, at the size where it's crisp.
+const LARGE_TEXT_TYPE_VARIATION := &"LargeSignLabel"
+
 @export var direction: Enums.LookAtSide = Enums.LookAtSide.LEFT:
 	set(a_direction):
 		direction = a_direction
@@ -23,11 +32,19 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
+	if Settings.large_text:
+		%Label.theme_type_variation = LARGE_TEXT_TYPE_VARIATION
+
 	update_label_visiblity()
 
 
 func update_appearance() -> void:
-	$Appearance.flip_h = direction == Enums.LookAtSide.RIGHT
+	if direction == Enums.LookAtSide.UNSPECIFIED:
+		%Appearance.frame = Frame.NON_DIRECTIONAL
+		%Appearance.flip_h = false
+	else:
+		%Appearance.frame = Frame.LEFT_AND_RIGHT
+		%Appearance.flip_h = direction == Enums.LookAtSide.RIGHT
 
 
 func _on_area_2d_body_entered(_body: Node2D) -> void:

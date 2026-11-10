@@ -9,6 +9,17 @@ pushd "$(readlink -f "$(dirname "$0")/..")"
 VERSION=$(git describe --tags)
 declare -a PRUNE_FOLDERS=(
 	"assets/third_party/tiny-swords-non-cc0"
+	"assets/third_party/tiny-swords/Effects"
+	"assets/third_party/tiny-swords/Factions/Goblins"
+	"assets/third_party/tiny-swords/Factions/Knights/Buildings"
+	"assets/third_party/tiny-swords/Factions/Knights/Troops/Archer"
+	"assets/third_party/tiny-swords/Factions/Knights/Troops/Dead"
+	"assets/third_party/tiny-swords/Factions/Knights/Troops/Warrior"
+	"assets/third_party/tiny-swords/Resources/Gold Mine"
+	"assets/third_party/tiny-swords/Resources/Sheep"
+	"assets/third_party/tiny-swords/Resources/Trees"
+	"assets/third_party/tiny-swords/Terrain/Bridge"
+	"assets/third_party/tiny-swords/UI/Icons"
 	"scenes/quests/story_quests"
 	"scenes/world_map"
 )

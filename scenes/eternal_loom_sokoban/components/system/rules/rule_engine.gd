@@ -160,7 +160,6 @@ func _take_turn(direction_2d: Vector2i) -> bool:
 	# run late rules here
 
 	# commands are run here
-
 	if not undo_state.is_empty():
 		undo_steps.append(undo_state)
 		return true
@@ -190,7 +189,8 @@ func piece_can_move(piece: Piece2D, checked_pieces: Array[Piece2D]) -> bool:
 
 	# get all colliding tiles
 	var collision_pieces := board.get_pieces_at(
-		piece.get_new_grid_position(), Board2D.Query.new().add_layer(piece.layer)
+		piece.get_new_grid_position(),
+		Board2D.Query.new().add_layer(piece.layer),
 	)
 
 	# check if colliding with moving tiles

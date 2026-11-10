@@ -151,7 +151,9 @@ func _process_movement(delta: float) -> void:
 
 				if _current_chase_speed > chase_speed:
 					_current_chase_speed = move_toward(
-						_current_chase_speed, chase_speed, burst_deceleration * delta
+						_current_chase_speed,
+						chase_speed,
+						burst_deceleration * delta,
 					)
 
 				velocity = direction_to_player * _current_chase_speed
@@ -211,11 +213,8 @@ func _update_detection(delta: float) -> void:
 	if _awareness >= time_to_detect_player:
 		state = State.ALERTED
 	elif (
-		_awareness == 0.0
-		and state != State.IDLE
-		and state != State.WANDERING
-		and state != State.RETURNING
-		and state != State.ATTACKING
+		_awareness == 0.0 and state != State.IDLE and state != State.WANDERING
+		and state != State.RETURNING and state != State.ATTACKING
 	):
 		state = State.WANDERING
 

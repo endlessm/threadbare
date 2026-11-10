@@ -5,8 +5,7 @@ extends Control
 
 ## The text shown to the user for this hint.
 var text: String:
-	get = get_text,
-	set = set_text
+	get = get_text, set = set_text
 
 @onready var label: Label = %Label
 

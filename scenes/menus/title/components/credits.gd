@@ -17,13 +17,17 @@ var _input_axis: float
 var _is_auto_scrolling: bool = false
 var _current_scroll_pos: float = 0.0
 
-@onready var back_button: Button = %BackButton
 @onready var background_anim_player: AnimationPlayer = %AnimationPlayer
 @onready var scroll_container: ScrollContainer = %ScrollContainer
 @onready var scroll_content: VBoxContainer = %ScrollContent
+@onready var hints_container: Control = %HintsContainer
 
 
 func _ready() -> void:
+	if not Settings.touch_controls_changed.is_connected(_update_hints):
+		Settings.touch_controls_changed.connect(_update_hints)
+	_update_hints()
+
 	if not visibility_changed.is_connected(_on_visibility_changed):
 		visibility_changed.connect(_on_visibility_changed)
 
@@ -32,13 +36,19 @@ func _ready() -> void:
 	for child: RichTextLabel in find_children(
 		"*",
 		"RichTextLabel",
-		true,  # recursive
-		false,  # include unowned children - necessary because the labels are added dynamically
+		true, # recursive
+		false, # include unowned children - necessary because the labels are added dynamically
 	):
 		child.meta_clicked.connect(_on_rich_text_label_meta_clicked)
 
 	set_process(false)
 	_on_visibility_changed()
+
+
+## In touch mode, there is a touch button to go back, and the credits scroll by
+## dragging.
+func _update_hints() -> void:
+	hints_container.visible = not Settings.touch_controls
 
 
 func _process(delta: float) -> void:
@@ -53,11 +63,25 @@ func _process(delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"ui_cancel"):
+		back.emit()
+
 	if event is InputEventMouseButton:
 		if event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 			_is_auto_scrolling = false
 			_current_scroll_pos = scroll_container.scroll_vertical
 			return
+
+	# Dragging a finger scrolls the credits along with it, and stops the
+	# auto-scroll like the mouse wheel does.
+	if event is InputEventScreenDrag:
+		_is_auto_scrolling = false
+		_current_scroll_pos = clampf(
+			_current_scroll_pos - event.relative.y,
+			0.0,
+			scroll_content.size.y,
+		)
+		return
 
 	_input_axis = Input.get_axis("move_up", "move_down")
 	if is_zero_approx(_input_axis):
@@ -88,14 +112,9 @@ func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
 func _on_visibility_changed() -> void:
 	set_process_input(visible)
 	if visible:
-		back_button.grab_focus()
 		start_credits_sequence()
 	else:
 		_stop_credits_sequence()
-
-
-func _on_back_button_pressed() -> void:
-	back.emit()
 
 
 func _stop_credits_sequence() -> void:

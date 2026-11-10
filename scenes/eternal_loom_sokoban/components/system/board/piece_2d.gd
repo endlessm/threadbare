@@ -51,8 +51,7 @@ var direction: DIRECTION = DIRECTION.NONE:
 var active: bool = true
 
 var grid_position: Vector2i:
-	get = _get_grid_position,
-	set = _set_grid_position
+	get = _get_grid_position, set = _set_grid_position
 var _board: Board2D:
 	set = _set_board
 
@@ -76,8 +75,7 @@ func on_same_layer(target_layer: int) -> bool:
 
 func same_direction(target_direction: DIRECTION) -> bool:
 	return (
-		direction == target_direction
-		or direction == DIRECTION.ANY
+		direction == target_direction or direction == DIRECTION.ANY
 		or target_direction == DIRECTION.ANY
 	)
 

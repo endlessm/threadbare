@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+name: Credit issue assignees
+
+# pull_request_target runs in the context of the base branch, so the
+# token can edit pull requests opened from forks. It must never check
+# out or run code from the pull request.
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  credit:
+    name: Credit issue assignees
+    if: ${{ !github.event.repository.fork }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        sparse-checkout: tools/credit-issue-assignees.py
+        sparse-checkout-cone-mode: false
+    - name: Add Co-authored-by for uncredited assignees
+      env:
+        GH_TOKEN: ${{ github.token }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+      run: python3 tools/credit-issue-assignees.py "$PR_NUMBER"

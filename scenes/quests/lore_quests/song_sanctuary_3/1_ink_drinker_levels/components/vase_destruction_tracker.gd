@@ -14,7 +14,7 @@ extends Node2D
 
 var total_targets: int = 0
 var destroyed_count: int = 0
-var required_fills_to_win: int = 1  # Default value, updated from fill_game_logic
+var required_fills_to_win: int = 1 # Default value, updated from fill_game_logic
 
 var _player: Player
 

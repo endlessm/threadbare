@@ -125,8 +125,10 @@ class Cell:
 	var relative_position: Vector2i
 	var pattern_pieces: Array[PatternPiece]
 
+
 	func _init(i_relative_position: Vector2i = Vector2i.ZERO) -> void:
 		relative_position = i_relative_position
+
 
 	# only adds unique pieces
 	func add_pattern_piece(added_piece: PatternPiece) -> Cell:
@@ -139,8 +141,10 @@ class Cell:
 		pattern_pieces.append(added_piece)
 		return self
 
+
 	func size() -> int:
 		return pattern_pieces.size()
+
 
 	func get_difference(other_cell: Cell) -> Cell:
 		var cell := Cell.new(relative_position)
@@ -171,11 +175,13 @@ class Cell:
 
 		return cell
 
+
 	func includes_pattern_piece(other_piece: PatternPiece) -> bool:
 		for pattern_piece in pattern_pieces:
 			if pattern_piece.id_or_tag == other_piece.id_or_tag:
 				return true
 		return false
+
 
 	func _to_string() -> String:
 		var pattern_piece_strs: PackedStringArray
@@ -195,12 +201,16 @@ class PatternPiece:
 	var direction: Piece2D.DIRECTION = Piece2D.DIRECTION.ANY
 	var state: STATE = STATE.NEUTRAL
 
+
 	func _init(
-		i_id_or_tag: StringName = "", i_direction := Piece2D.DIRECTION.ANY, i_state := STATE.NEUTRAL
+		i_id_or_tag: StringName = "",
+		i_direction := Piece2D.DIRECTION.ANY,
+		i_state := STATE.NEUTRAL,
 	) -> void:
 		id_or_tag = i_id_or_tag
 		direction = i_direction
 		state = i_state
+
 
 	func matches_pattern_piece(piece: PatternPiece) -> bool:
 		if id_or_tag != piece.id_or_tag:
@@ -211,16 +221,14 @@ class PatternPiece:
 			return false
 		return true
 
+
 	func duplicate() -> PatternPiece:
 		return PatternPiece.new(id_or_tag, direction, state)
+
 
 	func _to_string() -> String:
 		var dir_text := Piece2D.DIRECTION_TO_KEY[direction]
 		if dir_text != "":
 			dir_text += " "
-		var state_text: String = {
-			STATE.NEUTRAL: "",
-			STATE.ADDED: "+",
-			STATE.REMOVED: "-",
-		}[state]
+		var state_text: String = { STATE.NEUTRAL: "", STATE.ADDED: "+", STATE.REMOVED: "-" }[state]
 		return dir_text + state_text + str(id_or_tag)

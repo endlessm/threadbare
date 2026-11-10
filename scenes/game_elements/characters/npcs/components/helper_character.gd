@@ -24,8 +24,7 @@ func _ready() -> void:
 
 func _on_helper_state_changed() -> void:
 	var is_enabled := (
-		GameState.global.helper
-		and helper_type == GameState.global.helper.helper_type
+		GameState.global.helper and helper_type == GameState.global.helper.helper_type
 		and bool(GameState.global.helper.character_seed)
 	)
 	character.visible = is_enabled

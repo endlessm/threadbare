@@ -36,29 +36,35 @@ func setup() -> void:
 
 	match_pattern = (
 		Pattern
-		. new()
-		. add_cell(
-			Pattern.Cell.new().add_pattern_piece(
-				Pattern.PatternPiece.new(pusher, DIRECTION_TO_PIECE_DIRECTION[direction])
-			)
-		)
-		. add_cell(
-			Pattern.Cell.new(DIRECTION_TO_VECTOR[direction]).add_pattern_piece(
-				Pattern.PatternPiece.new(pushee, Piece2D.DIRECTION.NONE)
-			)
+		.new()
+		.add_cell(Pattern
+		.Cell
+		.new()
+		.add_pattern_piece(
+			Pattern.PatternPiece.new(pusher, DIRECTION_TO_PIECE_DIRECTION[direction])
+		))
+		.add_cell(
+			Pattern
+			.Cell
+			.new(DIRECTION_TO_VECTOR[direction])
+			.add_pattern_piece(Pattern.PatternPiece.new(pushee, Piece2D.DIRECTION.NONE))
 		)
 	)
 
 	replace_pattern = (
 		Pattern
-		. new()
-		. add_cell(
-			Pattern.Cell.new().add_pattern_piece(
-				Pattern.PatternPiece.new(pusher, DIRECTION_TO_PIECE_DIRECTION[direction])
-			)
-		)
-		. add_cell(
-			Pattern.Cell.new(DIRECTION_TO_VECTOR[direction]).add_pattern_piece(
+		.new()
+		.add_cell(Pattern
+		.Cell
+		.new()
+		.add_pattern_piece(
+			Pattern.PatternPiece.new(pusher, DIRECTION_TO_PIECE_DIRECTION[direction])
+		))
+		.add_cell(
+			Pattern
+			.Cell
+			.new(DIRECTION_TO_VECTOR[direction])
+			.add_pattern_piece(
 				Pattern.PatternPiece.new(pushee, DIRECTION_TO_PIECE_DIRECTION[direction])
 			)
 		)

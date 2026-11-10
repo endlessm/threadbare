@@ -18,17 +18,18 @@ signal animation_finished
 
 
 func play_loom_animation() -> void:
-	_loom_animation_play(GameState.quest.inventory.items)
+	var items: Array[InventoryItem]
+	for ti: TaggedItem in GameState.quest.inventory.items:
+		items.append(ti.item)
+	_loom_animation_play(items)
 
 
 ## Only used for the in-editor preview
 func play_loom_animation_debug() -> void:
 	var debug_items: Array[InventoryItem]
-	# TODO: InventoryItem needs a utility function to obtain all types except NONE.
-	var item_types := InventoryItem.COLORS_PER_TYPE.keys()
+	var item_types := InventoryItem.ItemType.values()
 	for i in range(debug_thread_count):
-		var item := InventoryItem.new()
-		item.type = item_types.pick_random()
+		var item := InventoryItem.with_type(item_types.pick_random())
 		debug_items.append(item)
 	_loom_animation_play(debug_items)
 
@@ -51,7 +52,7 @@ func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
 		path_follow.rotates = false
 		var sprite := Sprite2D.new()
 
-		sprite.texture = thread.get_world_texture()
+		sprite.texture = thread.world_texture
 		path_follow.add_child(sprite)
 
 		animation_path.add_child(path_follow)
@@ -74,14 +75,17 @@ func _loom_animation_play(thread_list: Array[InventoryItem]) -> void:
 		tween.tween_property(sprite, "scale", Vector2(1, 1), 0.5)
 		# Loop around
 		tween.parallel().tween_property(
-			path_follow, "progress_ratio", 2.0, loop_time - time_variation * counter
+			path_follow,
+			"progress_ratio",
+			2.0,
+			loop_time - time_variation * counter,
 		)
 
 		# Animation end
 		(
 			tween
-			. tween_property(sprite, "global_position", animation_path.global_position, 0.25)
-			. set_ease(Tween.EASE_OUT)
+			.tween_property(sprite, "global_position", animation_path.global_position, 0.25)
+			.set_ease(Tween.EASE_OUT)
 		)
 		tween.parallel().tween_property(sprite, "modulate", Color(0, 0, 0, 0), 0.5)
 		tween.parallel().tween_property(sprite, "scale", Vector2(3, 3), 0.5)

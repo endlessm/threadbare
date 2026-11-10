@@ -35,3 +35,7 @@ func _notification(what: int) -> void:
 			var y_scale := randf_range(0.8, 1.2)
 			var x_scale := y_scale * randf_range(0.9, 1.1)
 			scale = Vector2(x_scale, y_scale)
+		NOTIFICATION_EDITOR_PRE_SAVE:
+			# Since this is a tool script that plays the animation in the
+			# editor, reset the frame and its progress before saving the scene.
+			animated_sprite_2d.set_frame_and_progress(0, 0.0)

@@ -1,6 +1,5 @@
 [gd_scene format=4 uid="uid://ce7nk8qmi64d2"]
 
-[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="1_5a8rg"]
 [ext_resource type="PackedScene" uid="uid://2rbpl811wlv1" path="res://scenes/game_elements/props/background_music/background_music.tscn" id="1_grfk2"]
 [ext_resource type="Material" uid="uid://64aeyjitacv3" path="res://scenes/game_elements/props/void/void_chromakey_material.tres" id="1_kijyv"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="1_lmfic"]
@@ -650,8 +649,9 @@ position = Vector2(712, 154)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidSpreadingEnemyPatrolPath")
 
-[node name="PathWalkBehavior" parent="OnTheGround/VoidPatrolling" index="3" unique_id=1511224206]
+[node name="PathWalkBehavior" parent="OnTheGround/VoidPatrolling" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
 speeds = SubResource("Resource_wgn4u")
+walking_path = NodePath("../../VoidSpreadingEnemyPatrolPath")
 
 [node name="VoidSpreadingEnemyPatrolPath" type="Path2D" parent="OnTheGround" unique_id=752027124]
 position = Vector2(612, 114)
@@ -666,8 +666,9 @@ idle_patrol_path = NodePath("../VoidSpreadingEnemyPatrolPath2")
 [node name="CollisionShape2D" parent="OnTheGround/VoidChasing/PlayerCaptureArea" parent_id_path=PackedInt32Array(517203678, 671456187) index="0" unique_id=1513769273]
 shape = SubResource("CircleShape2D_wgn4u")
 
-[node name="PathWalkBehavior" parent="OnTheGround/VoidChasing" index="3" unique_id=1511224206]
+[node name="PathWalkBehavior" parent="OnTheGround/VoidChasing" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
 speeds = SubResource("Resource_c2723")
+walking_path = NodePath("../../VoidSpreadingEnemyPatrolPath2")
 
 [node name="NavigationFollowWalkBehavior" parent="OnTheGround/VoidChasing" index="4" unique_id=804245903]
 speeds = SubResource("Resource_s33ip")
@@ -680,9 +681,6 @@ curve = SubResource("Curve2D_c2723")
 metadata/_edit_group_ = true
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=2090104208]
-
-[node name="HUD" parent="." unique_id=170547106 instance=ExtResource("1_5a8rg")]
-visible = false
 
 [node name="EnemyNavigationRegion" type="NavigationRegion2D" parent="." unique_id=828422257]
 visible = false

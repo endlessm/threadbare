@@ -43,7 +43,7 @@ var animated_sprites: Array[AnimatedSprite2D] = []
 ## The inner nodes that randomize sprites textures.
 var random_texture_nodes: Array[RandomTextureSpriteBehavior] = []
 
-var _undoredo: Object  # EditorUndoRedoManager
+var _undoredo: Object # EditorUndoRedoManager
 
 var _random_number_generator := RandomNumberGenerator.new()
 

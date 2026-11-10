@@ -23,3 +23,11 @@ func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 
 func _ready() -> void:
 	_set_sprite_frames(sprite_frames)
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_EDITOR_PRE_SAVE:
+			# Since this is a tool script that plays the animation in the
+			# editor, reset the frame and its progress before saving the scene.
+			animated_sprite_2d.set_frame_and_progress(0, 0.0)

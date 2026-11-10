@@ -147,7 +147,10 @@ func set_toggled(value: bool, immediate: bool = false) -> void:
 	_transition_tween.tween_property(_transition_material, PROGRESS_PROPERTY, 0.5, first_half)
 	_transition_tween.tween_callback(_set_interactions_enabled.bind(enabled))
 	_transition_tween.tween_property(_transition_material, PROGRESS_PROPERTY, progress, second_half)
-	_transition_tween.tween_callback(func() -> void: target.enabled = enabled)
+	_transition_tween.tween_callback(
+		func() -> void:
+			target.enabled = enabled,
+	)
 
 
 ## Enables or disables everything in [member target] that is not about rendering,

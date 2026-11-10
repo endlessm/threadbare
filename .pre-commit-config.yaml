@@ -1,8 +1,9 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: CC0-1.0
 
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
+# The gdscript-formatter hook uses language: mise, added in prek 0.4.13.
+minimum_prek_version: "0.4.13"
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -48,14 +49,43 @@ repos:
         additional_dependencies: [Pillow]
         types_or: [png, jpeg, webp]
 
-  - repo: https://github.com/Scony/godot-gdscript-toolkit
-    rev: 4.5.0
-    hooks:
-      - id: gdformat
+      # The upstream hook builds the formatter from source, which needs a Rust
+      # and C toolchain. Download the release binary through mise instead.
+      - id: gdscript-formatter
+        name: gdscript-formatter
+        language: mise
+        additional_dependencies:
+          - github:GDQuest/GDScript-formatter[bin=gdscript-formatter]@0.27.0
+        # --verify-structure leaves a file untouched if formatting would change
+        # the meaning of the code.
+        entry: gdscript-formatter --verify-structure
+        types: [gdscript]
         exclude: |
           (?x)^(
             scenes/quests/story_quests/(?!stella/)
           )
+
+      # Only runs when asked for, to fix the class-definitions-order errors
+      # from gdlint:
+      #   prek run --hook-stage manual gdscript-reorder --files <file>
+      # --verify-structure can't be used here, because moving definitions
+      # changes the structure.
+      - id: gdscript-reorder
+        name: gdscript-formatter --reorder-code
+        language: mise
+        additional_dependencies:
+          - github:GDQuest/GDScript-formatter[bin=gdscript-formatter]@0.27.0
+        entry: gdscript-formatter --reorder-code
+        types: [gdscript]
+        stages: [manual]
+        exclude: |
+          (?x)^(
+            scenes/quests/story_quests/(?!stella/)
+          )
+
+  - repo: https://github.com/Scony/godot-gdscript-toolkit
+    rev: 4.5.0
+    hooks:
       - id: gdlint
         exclude: |
           (?x)^(

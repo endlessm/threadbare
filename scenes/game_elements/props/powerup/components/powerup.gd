@@ -104,7 +104,9 @@ func _on_abilities_changed() -> void:
 
 
 func _on_interact_area_interaction_started(
-	_player: Player, _from_right: bool, source: InteractArea
+	_player: Player,
+	_from_right: bool,
+	source: InteractArea,
 ) -> void:
 	if _tween:
 		_tween.kill()

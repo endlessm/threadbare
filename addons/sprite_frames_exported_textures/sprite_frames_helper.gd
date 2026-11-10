@@ -10,7 +10,8 @@ static func base_textures_used(sprite_frames: SpriteFrames) -> Array:
 
 		for sprite_frame_idx in sprite_frame_count:
 			var texture: Texture2D = sprite_frames.get_frame_texture(
-				animation_name, sprite_frame_idx
+				animation_name,
+				sprite_frame_idx,
 			)
 			var base_texture: Texture2D = _get_base_texture(texture)
 
@@ -31,19 +32,26 @@ static func _get_base_texture(texture: Texture2D) -> Texture2D:
 
 
 static func replace_texture(
-	old_base_texture: Texture2D, new_texture: Texture2D, sprite_frames: SpriteFrames
+	old_base_texture: Texture2D,
+	new_texture: Texture2D,
+	sprite_frames: SpriteFrames,
 ) -> void:
 	for animation_name in sprite_frames.get_animation_names():
 		var sprite_frame_count = sprite_frames.get_frame_count(animation_name)
 
 		for sprite_frame_idx in sprite_frame_count:
 			var texture: Texture2D = sprite_frames.get_frame_texture(
-				animation_name, sprite_frame_idx
+				animation_name,
+				sprite_frame_idx,
 			)
 			if old_base_texture and old_base_texture != _get_base_texture(texture):
 				continue
 			_replace_base_texture(
-				sprite_frames, animation_name, sprite_frame_idx, texture, new_texture
+				sprite_frames,
+				animation_name,
+				sprite_frame_idx,
+				texture,
+				new_texture,
 			)
 
 
@@ -52,7 +60,7 @@ static func _replace_base_texture(
 	anim_name: StringName,
 	sprite_frame_idx: int,
 	old_texture: Texture2D,
-	new_texture: Texture2D
+	new_texture: Texture2D,
 ) -> void:
 	var is_included_in_other_resource: bool = not FileAccess.file_exists(old_texture.resource_path)
 	var old_base_texture = _get_base_texture(old_texture)

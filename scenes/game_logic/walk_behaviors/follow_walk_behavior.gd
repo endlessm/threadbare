@@ -99,11 +99,13 @@ func _physics_process(delta: float) -> void:
 
 	if stop_when_reached and is_target_reached:
 		character.velocity = character.velocity.move_toward(
-			Vector2.ZERO, speeds.stopping_step * delta
+			Vector2.ZERO,
+			speeds.stopping_step * delta,
 		)
 	else:
 		character.velocity = character.velocity.lerp(
-			direction * speeds.walk_speed, direction_weight
+			direction * speeds.walk_speed,
+			direction_weight,
 		)
 
 	var collided := character.move_and_slide()

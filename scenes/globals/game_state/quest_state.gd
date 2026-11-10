@@ -26,8 +26,7 @@ extends Resource
 ## player returns to if they run out of lives. If not set, defaults to
 ## [member quest]'s [Quest.first_scene].
 @export var challenge_start_scene: String:
-	get = get_challenge_start_scene,
-	set = set_challenge_start_scene
+	get = get_challenge_start_scene, set = set_challenge_start_scene
 
 ## Player state within [member quest]. If the quest is a [LoreQuest],
 ## this will be initialised as a copy of [member

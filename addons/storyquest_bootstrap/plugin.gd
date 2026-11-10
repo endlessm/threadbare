@@ -31,7 +31,9 @@ func _enter_tree() -> void:
 	_tool_menu_label = tr("Create StoryQuest from template...")
 	add_tool_menu_item(_tool_menu_label, _open_new_storyquest_dialog)
 	EditorInterface.get_command_palette().add_command(
-		_tool_menu_label, COMMAND_PALETTE_KEY, _open_new_storyquest_dialog
+		_tool_menu_label,
+		COMMAND_PALETTE_KEY,
+		_open_new_storyquest_dialog,
 	)
 
 

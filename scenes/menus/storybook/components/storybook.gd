@@ -12,7 +12,12 @@ extends CanvasLayer
 ## [param quest] set to [code]null[/code].
 signal selected(quest: Quest, restart: bool)
 
-enum ContentTab { TOC, EN, ES, QUESTS }
+enum ContentTab {
+	TOC,
+	EN,
+	ES,
+	QUESTS,
+}
 
 ## Quests to show in the storybook.
 @export var quests: Array[Quest]
@@ -23,8 +28,8 @@ var _current_spread_index: int
 var _navigation_locked: bool = false
 var _previous_content_spread_index: int = 0
 
-var _quests_per_language: Dictionary[String, Array] = {}
-var _bookmark_indexes: Dictionary[ContentTab, int] = {}
+var _quests_per_language: Dictionary[String, Array] = { }
+var _bookmark_indexes: Dictionary[ContentTab, int] = { }
 var _show_language_bookmarks: bool
 
 @onready var left_quest_list: VBoxContainer = %LeftQuestList
@@ -40,6 +45,8 @@ var _show_language_bookmarks: bool
 @onready var en_bookmark_button: Button = %ENBookmark
 @onready var es_bookmark_button: Button = %ESBookmark
 
+@onready var hints_container: Control = %HintsContainer
+
 
 func _fade_out_ui() -> void:
 	var tween := create_tween()
@@ -54,10 +61,22 @@ func _fade_in_ui() -> void:
 	tween.tween_property(ui_container, "modulate:a", 1.0, fade_duration)
 
 
+# The bookmarks and quests can be clicked with the mouse.
+func _enter_tree() -> void:
+	MouseManager.hold()
+
+
+func _exit_tree() -> void:
+	MouseManager.release()
+
+
 func _ready() -> void:
+	Settings.touch_controls_changed.connect(_update_hints)
+	_update_hints()
+
 	animated_book.animation_finished.connect(_on_animation_finished)
 
-	_quests_per_language = {}
+	_quests_per_language = { }
 	for q in quests:
 		# If language is not defined, assume English:
 		var language: String = q.language if q.language else "en"
@@ -99,6 +118,12 @@ func _ready() -> void:
 	es_bookmark_button.visible = _show_language_bookmarks
 
 	_update_page_visibility()
+
+
+## In touch mode, the bookmarks can be tapped instead, and there is a touch
+## button to go back.
+func _update_hints() -> void:
+	hints_container.visible = not Settings.touch_controls
 
 
 func _clear_list(quest_list: Node) -> void:
@@ -146,7 +171,9 @@ func _populate_quest_lists() -> void:
 
 ## Method to build individual buttons (StoryQuests) and manage the focus chains
 func _create_quest_button(
-	quest: Quest, parent_container: VBoxContainer, prev_btn: Button
+	quest: Quest,
+	parent_container: VBoxContainer,
+	prev_btn: Button,
 ) -> Button:
 	var button := Button.new()
 	button.text = quest.get_title()

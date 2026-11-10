@@ -37,7 +37,6 @@
 [ext_resource type="PackedScene" uid="uid://v2uakefmp67y" path="res://scenes/game_elements/characters/npcs/elder/story_quest_elder.tscn" id="20_jqkod"]
 [ext_resource type="PackedScene" uid="uid://bytkm0r5fe5xb" path="res://scenes/game_elements/characters/npcs/elder/lore_quest_elder.tscn" id="20_xt3dw"]
 [ext_resource type="Resource" uid="uid://qva3nnhkgirm" path="res://scenes/world_map/components/frays_end.dialogue" id="25_6r0j2"]
-[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="27_aj6tp"]
 [ext_resource type="Texture2D" uid="uid://drfnq08l2wbgy" path="res://assets/third_party/tiny-swords/Deco/03.png" id="28_6r0j2"]
 [ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="37_f3823"]
 [ext_resource type="PackedScene" uid="uid://d0c4l7ev6ca3c" path="res://scenes/game_elements/props/spawn_point/spawn_point.tscn" id="37_thm8h"]
@@ -60,7 +59,14 @@
 [ext_resource type="Resource" uid="uid://t50glay2iqhg" path="res://scenes/quests/lore_quests/quest_002/quest.tres" id="60_6b07c"]
 [ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="61_6b07c"]
 [ext_resource type="Script" uid="uid://cmika1t1573xe" path="res://scenes/world_map/components/frays_end_exit_blocker.gd" id="62_t7c6s"]
+[ext_resource type="Script" uid="uid://k6j0kcn8lb1d" path="res://scenes/ui_elements/zone_activation/zone_activation.gd" id="63_ulm71"]
 [ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="64_uxfrp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v5vj4"]
+size = Vector2(120, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8dti7"]
+size = Vector2(24, 72)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_t7c6s"]
 seed = 5566801
@@ -368,9 +374,44 @@ size = Vector2(20, 256)
 [node name="FraysEnd" type="Node2D" unique_id=1849947277]
 script = ExtResource("1_4gse6")
 metadata/_edit_lock_ = true
+metadata/_edit_horizontal_guides_ = [1381.0]
 
 [node name="BackgroundMusic" parent="." unique_id=1268657826 instance=ExtResource("1_ovkdi")]
 stream = ExtResource("2_epsnn")
+
+[node name="ZoneActivation" type="Node" parent="." unique_id=300012081 node_paths=PackedStringArray("area", "spawn_points")]
+script = ExtResource("63_ulm71")
+zone_name_text = "Fray's end"
+area = NodePath("Area2D")
+spawn_points = [NodePath("../OnTheGround/NPCs/StoryQuestElder/SpawnPoint"), NodePath("../OnTheGround/NorthPath/SpawnPoint"), NodePath("../OnTheGround/EastPath/SpawnPoint"), NodePath("../OnTheGround/DevIslandPath/SpawnPoint"), NodePath("../OnTheGround/WestPath/SpawnPointWestPath")]
+metadata/_custom_type_script = "uid://k6j0kcn8lb1d"
+
+[node name="Area2D" type="Area2D" parent="ZoneActivation" unique_id=823861033]
+
+[node name="DefaultEntry" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=1245649773]
+position = Vector2(988, 796)
+shape = SubResource("RectangleShape2D_v5vj4")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
+
+[node name="DefaultEntry2" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=1797880224]
+position = Vector2(988, 892)
+shape = SubResource("RectangleShape2D_v5vj4")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
+
+[node name="DefaultEntry3" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=485207019]
+position = Vector2(940, 844)
+shape = SubResource("RectangleShape2D_8dti7")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
+
+[node name="DefaultEntry4" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=1936991601]
+position = Vector2(1036, 844)
+shape = SubResource("RectangleShape2D_8dti7")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
+
+[node name="BridgeEntry" type="CollisionShape2D" parent="ZoneActivation/Area2D" unique_id=1696015662]
+position = Vector2(992.5, 1416.75)
+shape = SubResource("RectangleShape2D_v5vj4")
+debug_color = Color(0.94607216, 8.567274e-06, 0.5989688, 0)
 
 [node name="TileMapLayers" type="Node2D" parent="." unique_id=1722660259]
 
@@ -704,7 +745,7 @@ look_at_side = 1
 [node name="TalkBehavior" type="Node" parent="OnTheGround/NPCs/Farmer" unique_id=732454003 node_paths=PackedStringArray("interact_area")]
 script = ExtResource("56_ojao8")
 dialogue = ExtResource("25_6r0j2")
-title = "farmer"
+dialogue_cue = "farmer"
 interact_area = NodePath("../InteractArea")
 metadata/_custom_type_script = "uid://edcifob4jc4s"
 
@@ -733,7 +774,7 @@ character_seed = 2422434786
 [node name="TalkBehavior" type="Node" parent="OnTheGround/NPCs/GardenerA" unique_id=1669484224 node_paths=PackedStringArray("interact_area")]
 script = ExtResource("56_ojao8")
 dialogue = ExtResource("25_6r0j2")
-title = "marie"
+dialogue_cue = "marie"
 interact_area = NodePath("../InteractArea")
 metadata/_custom_type_script = "uid://edcifob4jc4s"
 
@@ -768,7 +809,7 @@ look_at_side = 1
 [node name="TalkBehavior" type="Node" parent="OnTheGround/NPCs/BeachTownie" unique_id=1832795451 node_paths=PackedStringArray("interact_area")]
 script = ExtResource("56_ojao8")
 dialogue = ExtResource("25_6r0j2")
-title = "beach"
+dialogue_cue = "beach"
 interact_area = NodePath("../InteractArea")
 metadata/_custom_type_script = "uid://edcifob4jc4s"
 
@@ -1634,7 +1675,7 @@ position = Vector2(2936, 1782)
 position = Vector2(513, 1605)
 scale = Vector2(-1, 1)
 dialogue = ExtResource("25_6r0j2")
-dialogue_title = &"arun"
+dialogue_cue = &"arun"
 look_at_side = 1
 
 [node name="NorthPath" type="Node2D" parent="OnTheGround" unique_id=210901279]
@@ -1733,9 +1774,6 @@ text = "West End"
 
 [node name="ScreenOverlay" type="CanvasLayer" parent="." unique_id=1752283368]
 
-[node name="HUD" parent="." unique_id=1876437396 instance=ExtResource("27_aj6tp")]
-unique_name_in_owner = true
-
 [node name="SpawnPointAfterIntro" parent="." unique_id=69976262 instance=ExtResource("37_thm8h")]
 position = Vector2(62, 1747)
 
@@ -1749,7 +1787,7 @@ collision_layer = 0
 monitorable = false
 script = ExtResource("62_t7c6s")
 dialogue = ExtResource("25_6r0j2")
-title = "hotel_california"
+dialogue_cue = "hotel_california"
 spawn_point = NodePath("SpawnPoint")
 
 [node name="SpawnPoint" parent="ExitBlocker" unique_id=1896816746 instance=ExtResource("37_thm8h")]

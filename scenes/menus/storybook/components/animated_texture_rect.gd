@@ -78,8 +78,7 @@ func stop() -> void:
 
 func play() -> void:
 	if (
-		not sprite_frames
-		or not sprite_frames.has_animation(animation_name)
+		not sprite_frames or not sprite_frames.has_animation(animation_name)
 		or not sprite_frames.get_frame_count(animation_name)
 	):
 		stop()
@@ -100,7 +99,7 @@ func is_playing() -> bool:
 func _process(delta: float) -> void:
 	assert(
 		sprite_frames and sprite_frames.has_animation(animation_name),
-		"_process() should not have been called"
+		"_process() should not have been called",
 	)
 
 	# It is unlikely but possible that an animation frame's duration may be so

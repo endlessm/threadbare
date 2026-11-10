@@ -13,9 +13,7 @@ extends EditorScript
 ## ages.
 
 const Util = preload("./util.gd")
-const DEPENDENCIES := [
-	"res://scenes/game_elements/props/collectible_item/collectible_item.tscn",
-]
+const DEPENDENCIES := ["res://scenes/game_elements/props/collectible_item/collectible_item.tscn"]
 
 
 func _matches(scene_path: String) -> bool:

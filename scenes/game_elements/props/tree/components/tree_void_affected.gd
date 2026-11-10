@@ -3,7 +3,13 @@
 @tool
 extends Node2D
 
-enum TreetopVariant { GREEN, BLUE, PURPLE, RED, YELLOW }
+enum TreetopVariant {
+	GREEN,
+	BLUE,
+	PURPLE,
+	RED,
+	YELLOW,
+}
 
 const TREETOP_SPRITEFRAMES_PER_VARIANT: Dictionary[TreetopVariant, SpriteFrames] = {
 	TreetopVariant.GREEN: preload("uid://d2i5boaxe3n3g"),

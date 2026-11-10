@@ -76,6 +76,14 @@ func _ready() -> void:
 	update_solved_state()
 
 
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_EDITOR_PRE_SAVE:
+			# Since this is a tool script that plays the animation in the
+			# editor, reset the frame and its progress before saving the scene.
+			animated_sprite.set_frame_and_progress(0, 0.0)
+
+
 func update_solved_state() -> void:
 	var was_node_ready: bool = is_node_ready()
 	if not was_node_ready:

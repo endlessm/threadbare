@@ -12,8 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="9_41blb"]
 [ext_resource type="SpriteFrames" uid="uid://dtoylirwywk0j" path="res://scenes/game_elements/characters/components/sprite_frames/storyweaver_blue.tres" id="10_pxyem"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="11_wdt4i"]
-[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="12_rogtb"]
 [ext_resource type="PackedScene" uid="uid://cokul8w425pja" path="res://scenes/game_elements/characters/enemies/void_spreading_enemy/void_spreading_enemy.tscn" id="13_app83"]
+[ext_resource type="Resource" uid="uid://c44l6x4e7sfx3" path="res://scenes/globals/game_state/inventory/spirit.tres" id="13_tjonm"]
 [ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="14_2lxhj"]
 [ext_resource type="PackedScene" uid="uid://b2mj4jggli0ci" path="res://scenes/quests/lore_quests/quest_000/tutorial_npc/tutorial_npc.tscn" id="14_sdmwi"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="15_m0rx6"]
@@ -24,13 +24,7 @@
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="22_fs5pc"]
 [ext_resource type="AudioStream" uid="uid://bwgtbylflkup2" path="res://scenes/quests/lore_quests/quest_002/components/void_music.tres" id="23_xfbr2"]
 [ext_resource type="Script" uid="uid://c2lx7gvkonxaa" path="res://scenes/game_elements/props/background_music/components/clip_switcher.gd" id="24_tjonm"]
-[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="25_xfbr2"]
 [ext_resource type="PackedScene" uid="uid://dv4f232y8w8dv" path="res://scenes/game_elements/props/decoration/water_rock/water_rock.tscn" id="28_af6h4"]
-
-[sub_resource type="Resource" id="Resource_6rywr"]
-script = ExtResource("12_rogtb")
-type = 2
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fwbcl"]
 size = Vector2(337.5, 826)
@@ -130,7 +124,7 @@ editor_draw_limits = true
 unique_name_in_owner = true
 position = Vector2(2943, -135)
 revealed = false
-item = SubResource("Resource_6rywr")
+item = ExtResource("13_tjonm")
 next_scene = "uid://dmoxtp65y3r2w"
 
 [node name="VoidSpreadingEnemy" parent="OnTheGround" unique_id=1007896559 node_paths=PackedStringArray("void_layer", "idle_patrol_path") instance=ExtResource("13_app83")]
@@ -141,13 +135,13 @@ idle_patrol_path = NodePath("../../EnemyPatrolPath")
 [node name="TutorialNPC" parent="OnTheGround" unique_id=1098678013 instance=ExtResource("14_sdmwi")]
 position = Vector2(198, 1540)
 dialogue = ExtResource("17_u5x30")
-dialogue_title = &"interact"
+dialogue_cue = &"interact"
 
 [node name="TutorialNPC2" parent="OnTheGround" unique_id=183522457 instance=ExtResource("14_sdmwi")]
 position = Vector2(3197, -179)
 scale = Vector2(-1, 1)
 dialogue = ExtResource("17_u5x30")
-dialogue_title = &"well_done"
+dialogue_cue = &"well_done"
 look_at_side = 1
 
 [node name="ConsumableProps" type="Node2D" parent="OnTheGround" unique_id=349453195]
@@ -829,8 +823,6 @@ script = ExtResource("24_tjonm")
 clip = &"Still"
 trigger = NodePath("../../GoalReachedTrigger")
 metadata/_custom_type_script = "uid://c2lx7gvkonxaa"
-
-[node name="HUD" parent="." unique_id=1426591993 instance=ExtResource("25_xfbr2")]
 
 [connection signal="body_entered" from="EnemyTrigger" to="OnTheGround/VoidSpreadingEnemy" method="start" flags=6]
 [connection signal="body_entered" from="GoalReachedTrigger" to="OnTheGround/VoidSpreadingEnemy" method="defeat" flags=6 unbinds=1]

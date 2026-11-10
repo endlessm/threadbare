@@ -197,7 +197,9 @@ func _update_player_awareness(delta: float) -> void:
 	var player_in_sight := _player and not _is_sight_to_point_blocked(_player.global_position)
 
 	player_awareness.value = move_toward(
-		player_awareness.value, player_awareness.max_value if player_in_sight else 0.0, delta
+		player_awareness.value,
+		player_awareness.max_value if player_in_sight else 0.0,
+		delta,
 	)
 	player_awareness.visible = player_awareness.ratio > 0.0
 	player_awareness.modulate.a = clamp(player_awareness.ratio, 0.5, 1.0)
@@ -466,6 +468,8 @@ func _set_alert_other_sound_stream(new_value: AudioStream) -> void:
 
 
 func _on_instant_detection_area_body_entered(body: Node2D) -> void:
+	if _is_sight_to_point_blocked(body.global_position):
+		return
 	state = State.ALERTED
 	player_detected.emit(body)
 
