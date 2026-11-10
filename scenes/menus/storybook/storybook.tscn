@@ -9,10 +9,7 @@
 [ext_resource type="Material" uid="uid://cruf3tlajs4jo" path="res://scenes/ui_elements/input_hints/components/drop_shadow_material.tres" id="9_xkl6m"]
 [ext_resource type="Texture2D" uid="uid://dgfsrkr8a370h" path="res://assets/third_party/kenney_input_prompts/steam-deck_sheet_default.png" id="10_p0vqm"]
 [ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="11_nkrro"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mwfoq"]
-atlas = ExtResource("10_p0vqm")
-region = Rect2(320, 576, 64, 64)
+[ext_resource type="PackedScene" uid="uid://dhtgignddtxqd" path="res://scenes/ui_elements/input_hints/back_input_hint.tscn" id="back_input_hint"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f7prj"]
 atlas = ExtResource("10_p0vqm")
@@ -144,24 +141,15 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="BackContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HintsContainer" unique_id=1752840391]
+[node name="BackInputHint" parent="VBoxContainer/MarginContainer/HintsContainer" unique_id=1752840391 instance=ExtResource("back_input_hint")]
 layout_mode = 2
 
-[node name="BackHint" type="TextureRect" parent="VBoxContainer/MarginContainer/HintsContainer/BackContainer" unique_id=1694299884]
-material = ExtResource("9_xkl6m")
-layout_mode = 2
+[node name="BackHint" parent="VBoxContainer/MarginContainer/HintsContainer/BackInputHint" index="0" unique_id=701727596]
 size_flags_horizontal = 8
 size_flags_vertical = 8
-texture = SubResource("AtlasTexture_mwfoq")
-script = ExtResource("11_nkrro")
-action_name = &"ui_cancel"
 
-[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HintsContainer/BackContainer" unique_id=1130735496]
-layout_mode = 2
-translation_context = &"navigation"
-theme_type_variation = &"HintLabel"
+[node name="Label" parent="VBoxContainer/MarginContainer/HintsContainer/BackInputHint" index="1" unique_id=690421384]
 theme_override_font_sizes/font_size = 25
-text = "Back"
 
 [node name="PreviousTabContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/HintsContainer" unique_id=2058995622]
 layout_mode = 2
@@ -228,3 +216,5 @@ text = "ES"
 [node name="TouchBackButton" parent="." unique_id=676859704 instance=ExtResource("9_p0elk")]
 
 [connection signal="selected" from="VBoxContainer/CenterContainer/StoryBookContent/StorybookPage" to="." method="_on_storybook_page_selected"]
+
+[editable path="VBoxContainer/MarginContainer/HintsContainer/BackInputHint"]
