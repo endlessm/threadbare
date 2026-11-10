@@ -14,6 +14,9 @@ enum VisibleWhen {
 	## Visible when the player can choose between touch and keyboard. See
 	## [method Settings.can_choose_touch_controls].
 	TOUCH_CHOICE_AVAILABLE,
+	## Visible while using the touch controls, for settings that only apply to
+	## touch.
+	IN_TOUCH_MODE,
 }
 
 ## The name of a property of the [Settings] singleton.
@@ -64,6 +67,8 @@ func _update_visibility() -> void:
 	match visible_when:
 		VisibleWhen.NOT_IN_TOUCH_MODE:
 			visible = not Settings.touch_controls
+		VisibleWhen.IN_TOUCH_MODE:
+			visible = Settings.touch_controls
 		VisibleWhen.TOUCH_CHOICE_AVAILABLE:
 			visible = Settings.can_choose_touch_controls()
 
