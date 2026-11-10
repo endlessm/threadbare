@@ -3,18 +3,12 @@
 [ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="2_cw13b"]
 [ext_resource type="PackedScene" uid="uid://de6s2quemrmkf" path="res://scenes/menus/options/components/sound_settings.tscn" id="3_sound"]
 [ext_resource type="PackedScene" uid="uid://tahf2q1d3e74" path="res://scenes/menus/options/components/video_settings.tscn" id="4_video"]
-[ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="5_qdq3g"]
 [ext_resource type="PackedScene" uid="uid://w0uscqwgsi4w" path="res://scenes/menus/options/components/language_settings.tscn" id="6_lang"]
 [ext_resource type="PackedScene" uid="uid://56ja3m4283wa" path="res://scenes/menus/debug/debug_settings.tscn" id="7_s7dil"]
 [ext_resource type="PackedScene" uid="uid://4jrno4om6bkq" path="res://scenes/menus/options/components/input_settings.tscn" id="8_input"]
+[ext_resource type="PackedScene" uid="uid://coor8ggfmsyme" path="res://scenes/menus/options/components/back_button.tscn" id="back_button"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_panel"]
-
-[sub_resource type="InputEventAction" id="InputEventAction_s7dil"]
-action = &"ui_cancel"
-
-[sub_resource type="Shortcut" id="Shortcut_p4pyc"]
-events = [SubResource("InputEventAction_s7dil")]
 
 [node name="Options" type="CenterContainer" unique_id=810691496 node_paths=PackedStringArray("back_button", "default_page")]
 anchors_preset = 8
@@ -79,15 +73,9 @@ size_flags_horizontal = 4
 theme_type_variation = &"FlatButton"
 text = "Debug Settings"
 
-[node name="BackButton" type="Button" parent="TabContainer/OptionsMenu/VBoxContainer" unique_id=200110196]
+[node name="BackButton" parent="TabContainer/OptionsMenu/VBoxContainer" unique_id=200110196 instance=ExtResource("back_button")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &"FlatButton"
-shortcut = SubResource("Shortcut_p4pyc")
-text = "Back"
-icon = ExtResource("5_qdq3g")
-flat = true
 
 [node name="SoundSettings" parent="TabContainer" unique_id=1100000010 instance=ExtResource("3_sound")]
 auto_translate_mode = 1
