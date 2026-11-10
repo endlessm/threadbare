@@ -1,11 +1,10 @@
 [gd_scene format=3 uid="uid://4jrno4om6bkq"]
 
 [ext_resource type="Script" uid="uid://r7cjyiw5log4" path="res://scenes/menus/options/components/options.gd" id="1_back"]
-[ext_resource type="Texture2D" uid="uid://xe25gqovxxpe" path="res://assets/first_party/icons/left_arrow.png" id="2_arrow"]
-[ext_resource type="Shortcut" uid="uid://c5pwgp1w8p3y1" path="res://scenes/ui_elements/shortcuts/back_shortcut.tres" id="3_shortcut"]
 [ext_resource type="Script" uid="uid://c63sfg6wgj2uy" path="res://scenes/menus/options/components/settings_toggle.gd" id="4_toggle"]
 [ext_resource type="Script" uid="uid://ft234tyiqk1w" path="res://scenes/menus/options/components/vibration_slider.gd" id="5_vibration"]
 [ext_resource type="Script" uid="uid://ca7pqmrnb0leu" path="res://scenes/menus/options/components/nothing_to_see_label.gd" id="6_nothing"]
+[ext_resource type="PackedScene" uid="uid://coor8ggfmsyme" path="res://scenes/menus/options/components/back_button.tscn" id="back_button"]
 
 [node name="InputSettings" type="PanelContainer" unique_id=1179884395 node_paths=PackedStringArray("back_button")]
 custom_minimum_size = Vector2(640, 0)
@@ -86,12 +85,6 @@ autowrap_mode = 3
 script = ExtResource("6_nothing")
 settings = [NodePath("../GridContainer/TouchControlsButton"), NodePath("../GridContainer/KeyboardOnlyButton"), NodePath("../VibrationRow")]
 
-[node name="BackButton" type="Button" parent="VBoxContainer" unique_id=1374851424]
+[node name="BackButton" parent="VBoxContainer" unique_id=1374851424 instance=ExtResource("back_button")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &"FlatButton"
-shortcut = ExtResource("3_shortcut")
-text = "Back"
-icon = ExtResource("2_arrow")
-flat = true
