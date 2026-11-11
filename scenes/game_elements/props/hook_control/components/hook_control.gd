@@ -16,8 +16,9 @@ extends Node2D
 ## aim keys are ignored. They are also the movement keys. See
 ## [member Settings.keyboard_only]. Aiming with a joypad works in both cases.
 ## [br][br]
-## On touchscreens, touching the screen aims towards the touch position, and
-## dragging the finger keeps aiming. Lifting the finger throws.
+## On touchscreens, swiping aims in the swipe direction, and lifting the finger
+## throws. A swipe shorter than [constant SWIPE_MIN_DISTANCE], like a tap, doesn't
+## aim or throw.
 ## [br][br]
 ## Aiming is effectively rotating the [member ray_cast_2d].
 ## [br][br]
@@ -40,6 +41,10 @@ enum State {
 	## The control is temporarily paused from aiming. For example, while throwing.
 	AIMING_PAUSED,
 }
+
+## How far, in viewport pixels, a finger has to move from where it touched the
+## screen to count as a swipe.
+const SWIPE_MIN_DISTANCE: float = 40.0
 
 ## How far a throw from this control can reach.
 ## This is the length of the [member ray_cast_2d].
@@ -83,6 +88,10 @@ var _pointing_at_area: HookableArea
 
 ## The index of the finger touching the screen to aim and throw, or -1.
 var _touch_index: int = -1
+
+## Where the finger at [member _touch_index] touched the screen, in viewport
+## coordinates.
+var _touch_start_position: Vector2
 
 ## True if the finger was lifted, so the next frame should throw.
 var _touch_throw_requested: bool = false
@@ -146,26 +155,38 @@ func _unhandled_input(_event: InputEvent) -> void:
 		return
 
 
-## Touching the screen aims towards the touch position, and dragging the
-## finger keeps aiming. Lifting the finger throws. Only one finger is followed
-## at a time.
+## Swiping aims in the direction of the swipe, from where the finger touched
+## the screen to where it is now. Lifting the finger throws, unless it ends up
+## closer than [constant SWIPE_MIN_DISTANCE] to where it touched the screen.
+## That way a tap doesn't throw, and moving the finger back cancels the throw.
+## Only one finger is followed at a time.
 func _handle_touch(event: InputEvent) -> void:
 	if event is InputEventScreenDrag:
 		if event.index == _touch_index:
-			_aim_at(_screen_to_global(event.position))
+			_aim_with_swipe(event.position)
 	elif event.pressed:
 		if _touch_index != -1:
 			return
 		_touch_index = event.index
-		_aim_at(_screen_to_global(event.position))
+		_touch_start_position = event.position
 	elif event.index == _touch_index:
 		_touch_index = -1
-		_aim_at(_screen_to_global(event.position))
-		_touch_throw_requested = true
+		if _aim_with_swipe(event.position):
+			_touch_throw_requested = true
 
 
-func _screen_to_global(screen_position: Vector2) -> Vector2:
-	return get_canvas_transform().affine_inverse() * screen_position
+## Aim in the direction of the swipe that ends at [param swipe_end], in viewport
+## coordinates. Returns false without aiming if the swipe is too short.
+func _aim_with_swipe(swipe_end: Vector2) -> bool:
+	var swipe := swipe_end - _touch_start_position
+	if swipe.length() < SWIPE_MIN_DISTANCE:
+		return false
+	# Convert the direction from viewport to world space, in case the canvas is
+	# rotated or scaled unevenly.
+	var direction := get_canvas_transform().affine_inverse().basis_xform(swipe)
+	_hook_angle = direction.angle()
+	_hook_angle_set = true
+	return true
 
 
 ## True if the aim actions should aim: when playing with a joypad, or with the
@@ -329,8 +350,9 @@ func _process(_delta: float) -> void:
 	var touch_throw := _touch_throw_requested
 	_touch_throw_requested = false
 	if touch_throw:
-		# The finger may have been lifted somewhere else than the last drag, so
-		# update the ray now instead of waiting for the next physics frame.
+		# The finger may have been lifted somewhere else than the last drag, or
+		# the swipe may have been too fast for any drag, so update the ray now
+		# instead of waiting for the next physics frame.
 		ray_cast_2d.force_raycast_update()
 	if state == State.AIMING:
 		_update_pointing_at_area()

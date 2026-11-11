@@ -9,6 +9,9 @@ signal keyboard_only_changed
 ## [method can_choose_touch_controls] does.
 signal touch_controls_changed
 
+## Emitted when [member left_handed] changes.
+signal left_handed_changed
+
 const SETTINGS_PATH := "user://settings.cfg"
 
 const META_SECTION := "Meta"
@@ -25,6 +28,7 @@ const INPUT_SECTION := "Input"
 const KEYBOARD_ONLY_KEY := "Keyboard Only"
 const VIBRATION_STRENGTH_KEY := "Vibration Strength"
 const TOUCH_CONTROLS_KEY := "Touch Controls"
+const LEFT_HANDED_KEY := "Left Handed"
 const TOUCHSCREEN_DETECTED_KEY := "Touchscreen Detected"
 const KEYBOARD_DETECTED_KEY := "Keyboard Detected"
 const JOYPAD_DETECTED_KEY := "Joypad Detected"
@@ -100,6 +104,20 @@ const SMALL_SCREEN_SHORTEST_SIDE_DP := 600.0
 		_settings.set_value(INPUT_SECTION, TOUCH_CONTROLS_KEY, new_value)
 		_save()
 		touch_controls_changed.emit()
+
+## Mirror the touch controls horizontally, for left-handed players: the virtual
+## joystick goes to the bottom right, and the input hints to the bottom left.
+## The pause button stays at the top left, because the top right is for other
+## parts of the HUD.
+@export var left_handed: bool:
+	get:
+		return _settings.get_value(INPUT_SECTION, LEFT_HANDED_KEY, false)
+	set(new_value):
+		if new_value == left_handed:
+			return
+		_settings.set_value(INPUT_SECTION, LEFT_HANDED_KEY, new_value)
+		_save()
+		left_handed_changed.emit()
 
 ## True once the player has touched the screen, which confirms that the device
 ## has a touchscreen. Set from [signal InputHelper.touchscreen_detected].
