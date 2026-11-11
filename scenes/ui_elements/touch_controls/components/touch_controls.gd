@@ -17,17 +17,15 @@ const LEFT_HANDED_JOYSTICK_ANCHORS := Vector2(0.6, 1.0)
 @export var sokoban_ruleset: RuleEngine
 @export var displaying_dialogue: bool
 
-# fmt: off
-# gdscript-formatter joins each annotation with its variable, going over the
-# maximum line length.
 ## Preview the layout of [member Settings.left_handed] in the editor.
-@export_tool_button("Left-handed layout")
-var left_handed_editor_button: Callable = preview_left_handed_layout
+@export_tool_button(
+	"Left-handed layout"
+) var left_handed_editor_button: Callable = preview_left_handed_layout
 
 ## Preview the default layout in the editor.
-@export_tool_button("Right-handed layout")
-var right_handed_editor_button: Callable = preview_right_handed_layout
-# fmt: on
+@export_tool_button(
+	"Right-handed layout"
+) var right_handed_editor_button: Callable = preview_right_handed_layout
 
 var player_interaction: PlayerInteraction
 var player_repel: PlayerRepel
