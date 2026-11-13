@@ -13,8 +13,7 @@ extends Resource
 signal lights_changed(lights_on: bool, immediate: bool)
 
 ## Emitted when the player activates a checkpoint.
-@warning_ignore("unused_signal")
-signal checkpoint_activated(checkpoint: Area2D)
+signal checkpoint_activated
 
 ## The path to the current scene.
 @export var path: String
@@ -50,6 +49,10 @@ func set_lights_on(new_value: bool, immediate: bool = false) -> void:
 	# property setter.
 	lights_on = new_value
 	lights_changed.emit(new_value, immediate)
+
+
+func activate_checkpoint() -> void:
+	checkpoint_activated.emit()
 
 
 func set_spawn_point(new_value: NodePath) -> void:

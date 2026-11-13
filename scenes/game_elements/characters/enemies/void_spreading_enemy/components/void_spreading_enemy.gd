@@ -40,6 +40,9 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 ## area)
 @export var void_particles: PackedScene
 
+## Wether to save the enemy position and direction in this scene state.
+@export var save_state: bool
+
 var node_to_follow: Node2D:
 	set = _set_node_to_follow
 
@@ -130,16 +133,15 @@ func _ready() -> void:
 	idle_patrol_path = idle_patrol_path
 	state = state
 	_last_position = position
-	if (
-		GameState.scene != null
-		and not GameState.scene.checkpoint_activated.is_connected(_on_checkpoint_activated)
-	):
-		GameState.scene.checkpoint_activated.connect(_on_checkpoint_activated)
-	_load_state()
 
 	if Engine.is_editor_hint():
 		set_process(false)
 		set_physics_process(false)
+		return
+
+	if save_state:
+		GameState.scene.checkpoint_activated.connect(_on_checkpoint_activated)
+		_load_state()
 
 
 func start(detected_node: Node2D) -> void:
@@ -211,15 +213,9 @@ func _on_player_capture_area_body_entered(body: Node2D) -> void:
 
 
 ## Responds to the checkpoint's activated signal and records position and path progress.
-func _on_checkpoint_activated(checkpoint: Checkpoint) -> void:
-	if not checkpoint.get("save_void_and_enemies"):
-		return
-
-	if GameState.scene == null or not "facts" in GameState.scene:
-		return
-
+func _on_checkpoint_activated() -> void:
 	var save_key := str(get_path())
-	var data := { "position": global_position, "last_position": _last_position }
+	var data := { "global_position": global_position, "last_position": _last_position }
 
 	if path_walk_behavior:
 		data["path_direction"] = path_walk_behavior.direction
@@ -237,7 +233,7 @@ func _load_state() -> void:
 	if GameState.scene.facts.has(save_key):
 		var data: Dictionary = GameState.scene.facts[save_key]
 
-		global_position = data["position"]
+		global_position = data["global_position"]
 		_last_position = data["last_position"]
 
 		if path_walk_behavior and data.has("path_direction"):

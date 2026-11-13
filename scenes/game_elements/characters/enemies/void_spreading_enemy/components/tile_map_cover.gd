@@ -24,6 +24,9 @@ const _DURATION: float = 0.25
 ## Nodes whose direct children (but not grandchildren) can be consumed.
 @export var consumable_node_holders: Array[Node]
 
+## Wether to save the tilemap cover in this scene state.
+@export var save_state: bool
+
 var _unconsumed_nodes: Dictionary[Vector2i, Array] = { }
 var _consumed_nodes: Dictionary[Vector2i, Array] = { }
 
@@ -101,6 +104,7 @@ func _ready() -> void:
 		return
 
 	for parent: Node in consumable_node_holders:
+		# Filter unsassigned elements:
 		if parent == null:
 			continue
 		for child: Node in parent.get_children():
@@ -112,12 +116,9 @@ func _ready() -> void:
 
 	for coord: Vector2i in get_used_cells():
 		consume(coord, true)
-	if (
-		GameState.scene != null
-		and not GameState.scene.checkpoint_activated.is_connected(_on_checkpoint_activated)
-	):
+	if save_state:
 		GameState.scene.checkpoint_activated.connect(_on_checkpoint_activated)
-	_load_state()
+		_load_state()
 
 
 ## Cover all [param cells] with [member terrain_name], hiding any nodes in those cells which are
@@ -185,17 +186,12 @@ func uncover_all(duration: float, animate_modulate: bool = false) -> void:
 
 	await tween.finished
 	clear()
-	self.modulate.a = 1.0
+	if animate_modulate:
+		self.modulate.a = 1.0
 
 
-## Responds to the checkpoint's activated signal and saves consumed tiles if permitted.
-func _on_checkpoint_activated(checkpoint: Checkpoint) -> void:
-	if not checkpoint.save_void_and_enemies:
-		return
-
-	if GameState.scene == null or not "facts" in GameState.scene:
-		return
-
+## Responds to the checkpoint's activated signal and saves consumed tiles.
+func _on_checkpoint_activated() -> void:
 	var save_key := str(get_path())
 	GameState.scene.facts[save_key] = get_used_cells()
 
@@ -203,9 +199,6 @@ func _on_checkpoint_activated(checkpoint: Checkpoint) -> void:
 ## Reconstructs the holes in the TileMap immediately on scene load.
 ## Executes without animation to prevent visual glitches upon respawn.
 func _load_state() -> void:
-	if GameState.scene == null or not "facts" in GameState.scene:
-		return
-
 	var save_key := str(get_path())
 	if GameState.scene.facts.has(save_key):
 		var saved_tiles: Array = GameState.scene.facts[save_key]

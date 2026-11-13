@@ -79,8 +79,7 @@ func _ready() -> void:
 
 ## Makes this the active checkpoint.
 func activate() -> void:
-	if GameState.scene != null:
-		GameState.scene.checkpoint_activated.emit(self)
+	GameState.scene.activate_checkpoint()
 	GameState.scene.spawn_point = owner.get_path_to(spawn_point)
 	GameState.save()
 
