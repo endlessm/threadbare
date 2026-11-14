@@ -27,6 +27,13 @@ const STORYBOOK_SCENE := preload("uid://bhm7fdjvppt8b")
 		abandon_point = new_value
 		update_configuration_warnings()
 
+## Optional frames to pass to 'AnimatedSprite2D' to change else sprite_frames.
+@export var frames: SpriteFrames:
+	set(value):
+		frames = value
+		if is_node_ready():
+			%AnimatedSprite2D.sprite_frames = frames
+
 ## Optional dialogue passed to `TalkBehavior`. Used when
 ## instantiating an elder in a scene that doesn't use the standard
 ## eternal loom dialogue flow.
@@ -53,6 +60,9 @@ func _ready() -> void:
 
 	if eternal_loom and self not in eternal_loom.elders:
 		eternal_loom.elders.append(self)
+
+	if frames:
+		animated_sprite_2d.sprite_frames = frames
 
 	if dialogue:
 		talk_behavior.dialogue = dialogue
