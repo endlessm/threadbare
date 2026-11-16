@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022-present Nathan Hoad and Dialogue Manager contributors
+# SPDX-FileCopyrightText: 2022-present Nathan Hoad and Dialogue Manager contributors.
 # SPDX-License-Identifier: MIT
 extends CanvasLayer
 ## A basic dialogue balloon for use with Dialogue Manager.

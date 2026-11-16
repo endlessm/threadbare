@@ -4,7 +4,7 @@ A story-driven, collaborative game where players don’t just explore a world—
 
 **Threadbare is currently in pre-alpha** and being used in select learning programs as a scaffolded learning experience. Learners create non-canon StoryQuests that live alongside the canon narrative. In the future, contributors will be able to contribute canon LoreQuests to the core narrative of Threadbare.
 
-[Play the current pre-alpha release of Threadbare](https://endlessm.github.io/threadbare/), or [play development versions](https://endlessm.github.io/threadbare/branches/). New pre-alpha releases are published every 2–3 weeks.
+[Play the current pre-alpha release of Threadbare](https://play.threadbare.game/), or [play development versions](https://play.threadbare.game/branches/). New pre-alpha releases are published every 2–3 weeks.
 
 <a href="https://flathub.org/apps/org.endlessaccess.threadbare">
   <img width="240" alt="Get it on Flathub" src="https://flathub.org/api/badge?locale=en"/>

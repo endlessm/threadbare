@@ -54,10 +54,10 @@ func _restore_from_hash() -> void:
 		# otherwise, this is an absolute uid:// or res:// path
 
 		if ResourceLoader.exists(path, "PackedScene"):
-			if GameState.can_restore() and GameState.get_scene_to_restore() == path:
-				# Continue if the path matches the saved scene. This would happen
-				# if the player reloads the page while playing.
-				GameState.restore()
+			if GameState.scene and GameState.scene.path == path:
+				# The path matches the saved scene. This would happen
+				# if the player reloads the page while playing. Don't clear the state.
+				pass
 			else:
 				# Otherwise, treat it as the player is debugging a scene from the web.
 				# In that case, do not persist progress and clear the game state.
@@ -65,13 +65,17 @@ func _restore_from_hash() -> void:
 				# for testing or debugging.
 				GameState.persist_progress = false
 				GameState.clear()
+				GameState.guess_quest(path)
+				for ability: Enums.PlayerAbilities in GameState.DEBUG_PLAYER_ABILITIES:
+					GameState.player.set_ability(ability, true)
+				# TODO: this duplicates code in GameState._ready, find a way to consolidate.
 
 			# In theory, we might like to avoid switching scene if the specified
 			# scene is the default scene. In practice, that will not happen, and
 			# if it does, it's harmless enough.
 			change_to_file(path)
 		else:
-			print("Path ", path, " from URL hash ", url_hash, " is not a scene; ignoring")
+			prints("Path", path, "from URL hash", url_hash, "is not a scene; ignoring")
 
 
 ## On the web, update or clear the URL hash to indicate the current world.
@@ -96,12 +100,17 @@ func _on_hash_changed(args: Array) -> void:
 		_restore_from_hash()
 
 
+## Change to the scene at [param scene_path], placing the player at [param
+## spawn_point] if provided, with the given transition. The game is saved in the
+## process.
 func change_to_file_with_transition(
 	scene_path: String,
 	spawn_point: NodePath = ^"",
-	enter_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE,
+	enter_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE,
 	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
 ) -> void:
+	assert(scene_path != "")
+
 	var err := ResourceLoader.load_threaded_request(scene_path)
 	if err != OK:
 		push_error("Failed to start loading %s: %s" % [scene_path, error_string(err)])
@@ -114,31 +123,52 @@ func change_to_file_with_transition(
 	)
 
 
+## Change to [param scene], placing the player at [param spawn_point] if
+## provided, with the given transition. The game is saved in the process.
 func change_to_packed_with_transition(
 	scene: PackedScene,
 	spawn_point: NodePath = ^"",
-	enter_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE,
+	enter_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE,
 	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
 ) -> void:
+	assert(scene != null)
+
 	Transitions.do_transition(
 		change_to_packed.bind(scene, spawn_point), enter_transition, exit_transition
 	)
 
 
+## Reload the current scene, with a transition, and save the game.
 func reload_with_transition(
-	enter_transition: Transition.Effect = Transition.Effect.RIGHT_TO_LEFT_WIPE,
-	exit_transition: Transition.Effect = Transition.Effect.LEFT_TO_RIGHT_WIPE
+	enter_transition: Transition.Effect = Transition.Effect.FADE,
+	exit_transition: Transition.Effect = Transition.Effect.FADE,
 ) -> void:
-	Transitions.do_transition(get_tree().reload_current_scene, enter_transition, exit_transition)
+	Transitions.do_transition(_reload, enter_transition, exit_transition)
 
 
+func _reload() -> void:
+	get_tree().reload_current_scene()
+	GameState.save()
+
+
+## Change to the scene at [param scene_path], placing the player at [param
+## spawn_point] if provided, with no transition. The game is saved in the
+## process.
 func change_to_file(scene_path: String, spawn_point: NodePath = ^"") -> void:
+	assert(scene_path != "")
+
 	var scene: PackedScene = load(scene_path)
 	if scene:
 		change_to_packed(scene, spawn_point)
 
 
+## Change to [param scene], placing the player at [param spawn_point] if
+## provided, with no transition. The game is saved in the process.
 func change_to_packed(scene: PackedScene, spawn_point: NodePath = ^"") -> void:
+	assert(scene != null)
+
 	if get_tree().change_scene_to_packed(scene) == OK:
 		_set_hash(scene.resource_path)
+
+		# This saves the game.
 		GameState.set_scene(scene.resource_path, spawn_point)

@@ -1,0 +1,783 @@
+[gd_scene load_steps=68 format=4 uid="uid://dryinuip71yvm"]
+
+[ext_resource type="TileSet" uid="uid://07fq3rspk8ia" path="res://scenes/tileset.tres" id="1_c5656"]
+[ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="2_wm0bx"]
+[ext_resource type="SpriteFrames" uid="uid://jnmt5u3uyqdf" path="res://scenes/quests/story_quests/gazzart/player_components/gazzart_player.tres" id="3_7xmax"]
+[ext_resource type="Script" uid="uid://c68oh8dtr21ti" path="res://scenes/game_logic/sequence_puzzle.gd" id="4_7qsgx"]
+[ext_resource type="PackedScene" uid="uid://b8sok264erfoc" path="res://scenes/game_elements/props/sequence_puzzle_object/sequence_puzzle_object.tscn" id="5_4v8ro"]
+[ext_resource type="SpriteFrames" uid="uid://dk4pfgsqu5r7j" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/gazzart_object.tres" id="6_cmgae"]
+[ext_resource type="AudioStream" uid="uid://cg57q82pb243w" path="res://assets/third_party/nepalese_hand_bells/handBells-c4.ogg" id="7_2uj2h"]
+[ext_resource type="AudioStream" uid="uid://b83x8h0ob5mpq" path="res://assets/third_party/nepalese_hand_bells/handBells-d4.ogg" id="8_vtitg"]
+[ext_resource type="AudioStream" uid="uid://cmtiwg2cylmts" path="res://assets/third_party/nepalese_hand_bells/handBells-e4.ogg" id="9_h0ieo"]
+[ext_resource type="AudioStream" uid="uid://8k1hyi4gjae4" path="res://assets/third_party/nepalese_hand_bells/handBells-f4.ogg" id="10_q7u8c"]
+[ext_resource type="AudioStream" uid="uid://6oahn2ucxxjv" path="res://assets/third_party/nepalese_hand_bells/handBells-g4.ogg" id="11_2i5va"]
+[ext_resource type="AudioStream" uid="uid://bdboi4ndapqec" path="res://assets/third_party/nepalese_hand_bells/handBells-a4.ogg" id="12_qytao"]
+[ext_resource type="PackedScene" uid="uid://be4o3ythda4cu" path="res://scenes/game_elements/props/sequence_puzzle_hint_sign/sequence_puzzle_hint_sign.tscn" id="13_3ssai"]
+[ext_resource type="SpriteFrames" uid="uid://eexl30vv4uls" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/gazzart_sign.tres" id="14_uhivf"]
+[ext_resource type="SpriteFrames" uid="uid://cukei7tv4dpej" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/gazzart_sign_2.tres" id="15_1vd5v"]
+[ext_resource type="Script" uid="uid://ccc78coj2b1li" path="res://scenes/game_logic/sequence_puzzle_step.gd" id="16_in2xq"]
+[ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="17_3rrd2"]
+[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="18_7cqpc"]
+[ext_resource type="Resource" uid="uid://dtubaac2ws53c" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/gazzart_sequence_puzzle.dialogue" id="19_6gaxm"]
+[ext_resource type="PackedScene" uid="uid://covsdqqsd6rsy" path="res://scenes/game_elements/props/sign/sign.tscn" id="20_vttva"]
+[ext_resource type="PackedScene" uid="uid://cfcgrfvtn04yp" path="res://scenes/ui_elements/hud/hud.tscn" id="21_ca12e"]
+[ext_resource type="Texture2D" uid="uid://cf34tb5m4t6a1" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/box1.png" id="21_gg1sl"]
+[ext_resource type="Script" uid="uid://c83qdc8rpl4se" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/box_1.gd" id="21_x6l02"]
+[ext_resource type="Texture2D" uid="uid://cjvspnd1yufe2" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/puentes/bridge5.png" id="22_mn1ft"]
+[ext_resource type="Script" uid="uid://x1mxt6bmei2o" path="res://scenes/ui_elements/cinematic/cinematic.gd" id="22_tgado"]
+[ext_resource type="Texture2D" uid="uid://nqx5858wdd53" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/puentes/bridge6.png" id="23_iuy7r"]
+[ext_resource type="Script" uid="uid://bltpep3g48huc" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/box_2.gd" id="23_k8ms1"]
+[ext_resource type="Texture2D" uid="uid://dv487oiscabb6" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/puentes/bridge1.png" id="24_avfkk"]
+[ext_resource type="Texture2D" uid="uid://c2m3jeidfq6ai" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/box2.png" id="24_cf23d"]
+[ext_resource type="Texture2D" uid="uid://bdg1kleu2swm0" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/puentes/bridge2.png" id="25_1devu"]
+[ext_resource type="Texture2D" uid="uid://ccqvkh3nuycr7" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/puentes/bridge7.png" id="25_qx8cf"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/components/interact_area.gd" id="26_interact"]
+[ext_resource type="Texture2D" uid="uid://cubtn1v2dpyue" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/number1_sprite.png" id="26_qbn36"]
+[ext_resource type="Texture2D" uid="uid://cv5i6bxfxmo7y" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/puentes/bridge4.png" id="27_464pv"]
+[ext_resource type="Script" uid="uid://8xo5f21u6msr" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/number_1.gd" id="27_number1"]
+[ext_resource type="Script" uid="uid://c2lbftbqre78x" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/number_2.gd" id="28_d1r8i"]
+[ext_resource type="Texture2D" uid="uid://1judetxxx5cd" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/number2_sprite.png" id="29_8k25n"]
+[ext_resource type="Texture2D" uid="uid://dja6ow7lgngy7" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/puentes/bridge3.png" id="29_c4a2k"]
+[ext_resource type="Script" uid="uid://b7gql5ketshdk" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/number_3.gd" id="29_p0ape"]
+[ext_resource type="Script" uid="uid://mgl5d6o11dmm" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/number_4.gd" id="30_kmrtp"]
+[ext_resource type="Texture2D" uid="uid://cgq411tidsdjm" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/number3_sprite.png" id="31_1devu"]
+[ext_resource type="Texture2D" uid="uid://bn0tqynlmidc8" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/minijuego3/statue_down.png" id="32_cllw3"]
+[ext_resource type="Texture2D" uid="uid://dcxm45eg2ifui" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/minijuego3/statue_right.png" id="33_ddpwg"]
+[ext_resource type="Texture2D" uid="uid://cybuabtqleui7" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/number4_sprite.png" id="33_vto3y"]
+[ext_resource type="Texture2D" uid="uid://2035jimxvq6o" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/minijuego3/switch_statues.png" id="34_mn1ft"]
+[ext_resource type="Texture2D" uid="uid://c4hks1t7cv5us" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/target_boxes.png" id="36_vto3y"]
+[ext_resource type="Script" uid="uid://dxe8k6lp04uhi" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/puzzle_cajas_controller.gd" id="37_puzzle_cajas"]
+[ext_resource type="Script" uid="uid://ci48rupjewi20" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/puente.gd" id="38_puente"]
+[ext_resource type="Script" uid="uid://hwgr5n0p6c0y" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/switch_estatua.gd" id="39_switch"]
+[ext_resource type="Script" uid="uid://beou85h1nvp0j" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/estatua.gd" id="40_estatua"]
+[ext_resource type="Script" uid="uid://38b66a7x042c" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/switch_estatua_objetivo.gd" id="41_switch_obj"]
+[ext_resource type="Texture2D" uid="uid://tupgep8a0dg2" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/minijuego3/statue_left.png" id="42_statue_left"]
+[ext_resource type="Texture2D" uid="uid://2twdc2jq4krr" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/components/minijuego3/statue_up.png" id="43_statue_up"]
+[ext_resource type="Script" uid="uid://bcfa8287p0uv4" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/puzzle_sumas_controller.gd" id="44_puzzle_sumas"]
+[ext_resource type="Script" path="res://scenes/quests/story_quests/gazzart/puzzle_testing/puzzle_estatuas_controller.gd" id="45_puzzle_estatuas"]
+
+[sub_resource type="Resource" id="Resource_n8tm3"]
+script = ExtResource("18_7cqpc")
+type = 2
+metadata/_custom_type_script = "uid://bgmwplmj3bfls"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_puente"]
+size = Vector2(48, 48)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0krk3"]
+radius = 21.023796
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
+radius = 25.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cllw3"]
+radius = 24.020824
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ddpwg"]
+radius = 24.020824
+
+[sub_resource type="Resource" id="Resource_switch_obj_1"]
+resource_name = "SwitchEstatuaObjetivo"
+script = ExtResource("41_switch_obj")
+estatua_path = NodePath("../../Estatuas/Estatua1")
+direccion = "right"
+
+[sub_resource type="Resource" id="Resource_switch_obj_2"]
+resource_name = "SwitchEstatuaObjetivo"
+script = ExtResource("41_switch_obj")
+estatua_path = NodePath("../../Estatuas/Estatua2")
+direccion = "left"
+
+[sub_resource type="Resource" id="Resource_uulsv"]
+script = ExtResource("41_switch_obj")
+estatua_path = NodePath("../../Estatuas/Estatua3")
+metadata/_custom_type_script = "uid://38b66a7x042c"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_switch"]
+radius = 28.0
+
+[sub_resource type="Resource" id="Resource_y1tyt"]
+script = ExtResource("41_switch_obj")
+estatua_path = NodePath("../../Estatuas/Estatua3")
+direccion = "up"
+metadata/_custom_type_script = "uid://38b66a7x042c"
+
+[sub_resource type="Resource" id="Resource_xb4h1"]
+script = ExtResource("41_switch_obj")
+estatua_path = NodePath("../../Estatuas/Estatua4")
+metadata/_custom_type_script = "uid://38b66a7x042c"
+
+[sub_resource type="Resource" id="Resource_statue_goal_1"]
+script = ExtResource("41_switch_obj")
+estatua_path = NodePath("Estatuas/Estatua1")
+direccion = "right"
+
+[sub_resource type="Resource" id="Resource_statue_goal_2"]
+script = ExtResource("41_switch_obj")
+estatua_path = NodePath("Estatuas/Estatua2")
+direccion = "left"
+
+[sub_resource type="Resource" id="Resource_statue_goal_3"]
+script = ExtResource("41_switch_obj")
+estatua_path = NodePath("Estatuas/Estatua3")
+direccion = "up"
+
+[sub_resource type="Resource" id="Resource_statue_goal_4"]
+script = ExtResource("41_switch_obj")
+estatua_path = NodePath("Estatuas/Estatua4")
+direccion = "down"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x6l02"]
+size = Vector2(64, 64)
+
+[node name="SequencePuzzleTemplate" type="Node2D"]
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+
+[node name="Grass" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAANAAcAAQABAAEAAAANAAYAAQABAAEAAAANAAUAAQABAAEAAAANAAQAAQABAAEAAAANAAMAAQABAAEAAAANAAIAAQABAAEAAAANAAEAAQABAAEAAAAMAAcAAQABAAEAAAAMAAYAAQABAAEAAAAMAAUAAQABAAEAAAAMAAQAAQABAAEAAAAMAAMAAQABAAEAAAAMAAIAAQABAAEAAAAMAAEAAQABAAEAAAALAAcAAQABAAEAAAALAAYAAQABAAEAAAALAAUAAQABAAEAAAALAAQAAQABAAEAAAALAAMAAQABAAEAAAALAAIAAQABAAEAAAALAAEAAQABAAEAAAAKAAcAAQABAAEAAAAKAAYAAQABAAEAAAAKAAUAAQABAAEAAAAKAAQAAQABAAEAAAAKAAMAAQABAAEAAAAKAAIAAQABAAEAAAAJAAcAAQABAAEAAAAJAAYAAQABAAEAAAAJAAUAAQABAAEAAAAJAAQAAQABAAEAAAAIAAcAAQABAAEAAAAIAAYAAQABAAEAAAAIAAUAAQABAAEAAAAIAAQAAQABAAEAAAAHAAcAAQABAAEAAAAHAAYAAQABAAEAAAAHAAUAAQABAAEAAAAHAAQAAQABAAEAAAAGAAcAAQABAAEAAAAGAAYAAQABAAEAAAAGAAUAAQABAAEAAAAGAAQAAQABAAEAAAAGAAMAAQABAAEAAAAGAAIAAQABAAEAAAAFAAcAAQABAAEAAAAFAAYAAQABAAEAAAAFAAQAAQABAAEAAAAFAAMAAQABAAEAAAAFAAIAAQABAAEAAAAFAAEAAQABAAEAAAAEAAcAAQABAAEAAAAEAAYAAQABAAEAAAAEAAIAAQABAAEAAAAEAAEAAQABAAEAAAADAAIAAQABAAEAAAADAAEAAQABAAEAAAACAAMAAQABAAEAAAACAAIAAQABAAEAAAACAAEAAQABAAEAAAABAAMAAQABAAEAAAABAAIAAQABAAEAAAABAAEAAQABAAEAAAACAAQAAQABAAEAAAABAAQAAQABAAEAAAAAAAQAAQABAAEAAAAGAAAAAQABAAEAAAAHAAAAAQABAAEAAAAFAAAAAQABAAEAAAAIAAAAAQABAAEAAAAJAAAAAQABAAEAAAALAAAAAQABAAEAAAAMAAAAAQABAAEAAAAKAAAAAQABAAEAAAANAAAAAQABAAEAAAAEAAAAAQABAAEAAAADAAAAAQABAAEAAAACAAAAAQABAAEAAAABAAAAAQABAAEAAAAAAAAAAQABAAEAAAAAAAEAAQABAAEAAAAAAAIAAQABAAEAAAAAAAMAAQABAAEAAAAAAAgAAQABAAEAAAABAAgAAQABAAEAAAACAAgAAQABAAEAAAADAAgAAQABAAEAAAAEAAgAAQABAAEAAAAFAAgAAQABAAEAAAAGAAgAAQABAAEAAAAHAAgAAQABAAEAAAAIAAgAAQABAAEAAAAKAAgAAQABAAEAAAAMAAgAAQABAAEAAAALAAgAAQABAAEAAAANAAgAAQABAAEAAAAOAAgAAQABAAEAAAAOAAcAAQABAAEAAAAOAAYAAQABAAEAAAAOAAUAAQABAAEAAAAOAAQAAQABAAEAAAAOAAMAAQABAAEAAAAOAAIAAQABAAEAAAAOAAEAAQABAAEAAAAOAAAAAQABAAEAAAAAAAUAAQABAAEAAAABAAUAAQABAAEAAAACAAUAAQABAAEAAAADAAUAAQABAAEAAAAEAAUAAQABAAEAAAADAAYAAQABAAEAAAACAAYAAQABAAEAAAABAAYAAQABAAEAAAAAAAYAAQABAAEAAAAAAAcAAQABAAEAAAABAAcAAQABAAEAAAACAAcAAQABAAEAAAADAAcAAQABAAEAAAAGAAEAAQABAAEAAAAHAAEAAQABAAEAAAAIAAEAAQABAAEAAAAJAAEAAQABAAEAAAAKAAEAAQABAAEAAAAPAAkAAQACAAIAAAAPAAgAAQACAAEAAAAPAAcAAQACAAEAAAAPAAYAAQACAAEAAAAPAAUAAQACAAEAAAAPAAQAAQACAAEAAAAPAAMAAQACAAEAAAAPAAIAAQACAAEAAAAPAAEAAQACAAEAAAAPAAAAAQACAAEAAAAPAP//AQACAAAAAAAOAAkAAQABAAIAAAAOAP//AQABAAAAAAANAAkAAQABAAIAAAANAP//AQABAAAAAAAMAAkAAQABAAIAAAAMAP//AQABAAAAAAALAAkAAQABAAIAAAALAP//AQABAAAAAAAKAAkAAQABAAIAAAAKAP//AQABAAAAAAAJAP//AQABAAAAAAAIAAkAAQABAAIAAAAIAP//AQABAAAAAAAHAAkAAQABAAIAAAAHAP//AQABAAAAAAAGAAkAAQABAAIAAAAGAP//AQABAAAAAAAFAAkAAQABAAIAAAAFAP//AQABAAAAAAAEAAkAAQABAAIAAAAEAP//AQABAAAAAAADAAkAAQABAAIAAAADAP//AQABAAAAAAACAAkAAQABAAIAAAACAP//AQABAAAAAAABAAkAAQABAAIAAAABAP//AQABAAAAAAAAAAkAAQABAAIAAAAAAP//AQABAAAAAAD//wkAAQAAAAIAAAD//wgAAQAAAAEAAAD//wcAAQAAAAEAAAD//wYAAQAAAAEAAAD//wUAAQAAAAEAAAD//wQAAQAAAAEAAAD//wMAAQAAAAEAAAD//wIAAQAAAAEAAAD//wEAAQAAAAEAAAD//wAAAQAAAAEAAAD/////AQAAAAAAAAAJAAgAAQABAAEAAAAJAAkAAQABAAIAAAAHAAIAAQABAAEAAAAHAAMAAQABAAEAAAAIAAIAAQABAAEAAAAIAAMAAQABAAEAAAAJAAIAAQABAAEAAAAJAAMAAQABAAEAAAAFAAUAAQABAAEAAAADAAMAAQABAAEAAAAEAAMAAQABAAEAAAAEAAQAAQABAAEAAAADAAQAAQABAAEAAAA=")
+tile_set = ExtResource("1_c5656")
+
+[node name="Sand" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAD//wcAAQAFAAMAAAAAAAcAAQAGAAMAAAABAAcAAQAGAAMAAAACAAcAAQAGAAMAAAADAAcAAQAHAAIAAAADAAYAAQAIAAEAAAAEAAUAAQAGAAMAAAAFAAUAAQAGAAMAAAAGAAUAAQAGAAMAAAAHAAUAAQAGAAMAAAAIAAUAAQAGAAMAAAAJAAUAAQAGAAMAAAAKAAUAAQAGAAMAAAALAAUAAQAHAAIAAAALAAQAAQAFAAAAAAAMAAQAAQAGAAMAAAANAAQAAQAGAAMAAAAOAAQAAQAGAAMAAAAPAAQAAQAHAAMAAAADAAUAAQAFAAAAAAA=")
+tile_set = ExtResource("1_c5656")
+
+[node name="OnTheGround" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="OnTheGround" instance=ExtResource("2_wm0bx")]
+position = Vector2(521, 430)
+sprite_frames = ExtResource("3_7xmax")
+
+[node name="SequencePuzzle" type="Node2D" parent="OnTheGround"]
+y_sort_enabled = true
+position = Vector2(699, 50)
+script = ExtResource("4_7qsgx")
+metadata/_custom_type_script = "uid://c68oh8dtr21ti"
+
+[node name="Objects" type="Node2D" parent="OnTheGround/SequencePuzzle"]
+y_sort_enabled = true
+position = Vector2(356, 453)
+
+[node name="Blue" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("5_4v8ro")]
+modulate = Color(0, 0.4, 0.6, 1)
+position = Vector2(11, 58)
+sprite_frames = ExtResource("6_cmgae")
+audio_stream = ExtResource("7_2uj2h")
+
+[node name="Pink" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("5_4v8ro")]
+modulate = Color(0.89, 0.2937, 0.804817, 1)
+position = Vector2(164, 56)
+sprite_frames = ExtResource("6_cmgae")
+audio_stream = ExtResource("8_vtitg")
+
+[node name="Yellow" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("5_4v8ro")]
+modulate = Color(0.89, 0.804817, 0.2937, 1)
+position = Vector2(86, 61)
+sprite_frames = ExtResource("6_cmgae")
+audio_stream = ExtResource("9_h0ieo")
+
+[node name="Green" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("5_4v8ro")]
+modulate = Color(0.188235, 0.717647, 0, 1)
+position = Vector2(312, 54)
+sprite_frames = ExtResource("6_cmgae")
+audio_stream = ExtResource("10_q7u8c")
+
+[node name="Purple" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("5_4v8ro")]
+modulate = Color(0.464066, 0.2937, 0.89, 1)
+position = Vector2(244, 59)
+sprite_frames = ExtResource("6_cmgae")
+audio_stream = ExtResource("11_2i5va")
+
+[node name="Red" parent="OnTheGround/SequencePuzzle/Objects" instance=ExtResource("5_4v8ro")]
+modulate = Color(0.89, 0.2937, 0.2937, 1)
+position = Vector2(379, 52)
+sprite_frames = ExtResource("6_cmgae")
+audio_stream = ExtResource("12_qytao")
+
+[node name="Signs" type="Node2D" parent="OnTheGround/SequencePuzzle"]
+y_sort_enabled = true
+
+[node name="HintSign1" parent="OnTheGround/SequencePuzzle/Signs" instance=ExtResource("13_3ssai")]
+position = Vector2(495, 136)
+sprite_frames = ExtResource("14_uhivf")
+
+[node name="HintSign2" parent="OnTheGround/SequencePuzzle/Signs" instance=ExtResource("13_3ssai")]
+position = Vector2(593, 137)
+sprite_frames = ExtResource("15_1vd5v")
+
+[node name="Steps" type="Node2D" parent="OnTheGround/SequencePuzzle"]
+
+[node name="SequencePuzzleStep1" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("16_in2xq")
+sequence = [NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green"), NodePath("../../Objects/Blue")]
+hint_sign = NodePath("../../Signs/HintSign1")
+
+[node name="SequencePuzzleStep2" type="Node2D" parent="OnTheGround/SequencePuzzle/Steps" node_paths=PackedStringArray("sequence", "hint_sign")]
+script = ExtResource("16_in2xq")
+sequence = [NodePath("../../Objects/Blue"), NodePath("../../Objects/Green"), NodePath("../../Objects/Yellow"), NodePath("../../Objects/Green")]
+hint_sign = NodePath("../../Signs/HintSign2")
+
+[node name="CollectibleItem" parent="OnTheGround" instance=ExtResource("17_3rrd2")]
+position = Vector2(861, 282)
+revealed = false
+next_scene = "uid://dnk7fcc6cqjx8"
+item = SubResource("Resource_n8tm3")
+collected_dialogue = ExtResource("19_6gaxm")
+dialogue_title = &"well_done"
+
+[node name="Sign" parent="OnTheGround" instance=ExtResource("20_vttva")]
+position = Vector2(153, 567)
+direction = 1
+text = "First melody: yellow, green, blue."
+
+[node name="PuzzleSumas" type="Node2D" parent="OnTheGround"]
+position = Vector2(-297, 68)
+script = ExtResource("44_puzzle_sumas")
+botones_paths = [NodePath("Numeros/Number1"), NodePath("Numeros/Number2"), NodePath("Numeros/Number3"), NodePath("Numeros/Number4")]
+rondas_paths = [NodePath("Puentes/PuzzleSuma1"), NodePath("Puentes/PuzzleSuma2"), NodePath("Puentes/PuzzleSuma3"), NodePath("Puentes/PuzzleSuma4"), NodePath("Puentes/PuzzleSuma5")]
+
+[node name="Puentes" type="Node2D" parent="OnTheGround/PuzzleSumas"]
+position = Vector2(528, 108)
+
+[node name="PuzzleSuma1" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes"]
+position = Vector2(484, 150)
+
+[node name="Puente1_PS1" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma1"]
+script = ExtResource("38_puente")
+valor_objetivo = 2
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma1/Puente1_PS1"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma1/Puente1_PS1/StaticBody2D"]
+position = Vector2(7, 183)
+shape = SubResource("RectangleShape2D_puente")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma1/Puente1_PS1"]
+position = Vector2(7, 183)
+texture = ExtResource("25_1devu")
+
+[node name="Puente2_PS1" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma1"]
+position = Vector2(-48, -47)
+script = ExtResource("38_puente")
+valor_objetivo = 5
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma1/Puente2_PS1"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma1/Puente2_PS1/StaticBody2D"]
+position = Vector2(55, 183)
+shape = SubResource("RectangleShape2D_puente")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma1/Puente2_PS1"]
+position = Vector2(55, 183)
+texture = ExtResource("22_mn1ft")
+
+[node name="PuzzleSuma2" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes"]
+position = Vector2(484, 30)
+
+[node name="Puente1_PS2" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma2"]
+script = ExtResource("38_puente")
+valor_objetivo = 7
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma2/Puente1_PS2"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma2/Puente1_PS2/StaticBody2D"]
+position = Vector2(7, 183)
+shape = SubResource("RectangleShape2D_puente")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma2/Puente1_PS2"]
+position = Vector2(7, 183)
+texture = ExtResource("25_qx8cf")
+
+[node name="Puente2_PS2" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma2"]
+position = Vector2(0, -47)
+script = ExtResource("38_puente")
+valor_objetivo = 1
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma2/Puente2_PS2"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma2/Puente2_PS2/StaticBody2D"]
+position = Vector2(7, 183)
+shape = SubResource("RectangleShape2D_puente")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma2/Puente2_PS2"]
+position = Vector2(7, 183)
+texture = ExtResource("24_avfkk")
+
+[node name="Puente3_PS2" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma2"]
+position = Vector2(0, -94)
+script = ExtResource("38_puente")
+valor_objetivo = 2
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma2/Puente3_PS2"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma2/Puente3_PS2/StaticBody2D"]
+position = Vector2(7, 183)
+shape = SubResource("RectangleShape2D_puente")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma2/Puente3_PS2"]
+position = Vector2(7, 183)
+texture = ExtResource("25_1devu")
+
+[node name="PuzzleSuma3" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes"]
+position = Vector2(484, -91)
+
+[node name="Puente1_PS3" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma3"]
+position = Vector2(0, -47)
+script = ExtResource("38_puente")
+valor_objetivo = 2
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma3/Puente1_PS3"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma3/Puente1_PS3/StaticBody2D"]
+position = Vector2(7, 183)
+shape = SubResource("RectangleShape2D_puente")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma3/Puente1_PS3"]
+position = Vector2(7, 183)
+texture = ExtResource("25_1devu")
+
+[node name="Puente2_PS3" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma3"]
+position = Vector2(0, -94)
+script = ExtResource("38_puente")
+valor_objetivo = 4
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma3/Puente2_PS3"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma3/Puente2_PS3/StaticBody2D"]
+position = Vector2(7, 183)
+shape = SubResource("RectangleShape2D_puente")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma3/Puente2_PS3"]
+position = Vector2(7, 183)
+texture = ExtResource("27_464pv")
+
+[node name="Puente1_PS4" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma3"]
+position = Vector2(0, -141)
+script = ExtResource("38_puente")
+valor_objetivo = 1
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma3/Puente1_PS4"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma3/Puente1_PS4/StaticBody2D"]
+position = Vector2(7, 183)
+shape = SubResource("RectangleShape2D_puente")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma3/Puente1_PS4"]
+position = Vector2(7, 183)
+texture = ExtResource("24_avfkk")
+
+[node name="PuzzleSuma4" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes"]
+position = Vector2(470, -315)
+
+[node name="Puente1_PS4" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma4"]
+position = Vector2(21, 211)
+script = ExtResource("38_puente")
+valor_objetivo = 6
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma4/Puente1_PS4"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma4/Puente1_PS4/StaticBody2D"]
+shape = SubResource("RectangleShape2D_puente")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma4/Puente1_PS4"]
+texture = ExtResource("23_iuy7r")
+
+[node name="Puente2_PS4" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma4"]
+position = Vector2(-44, -42)
+script = ExtResource("38_puente")
+valor_objetivo = 1
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma4/Puente2_PS4"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma4/Puente2_PS4/StaticBody2D"]
+position = Vector2(65, 206)
+shape = SubResource("RectangleShape2D_puente")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma4/Puente2_PS4"]
+position = Vector2(65, 206)
+texture = ExtResource("24_avfkk")
+
+[node name="PuzzleSuma5" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes"]
+position = Vector2(558, 145)
+
+[node name="Puente1_PS5" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma5"]
+position = Vector2(0, -47)
+script = ExtResource("38_puente")
+valor_objetivo = 5
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma5/Puente1_PS5"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma5/Puente1_PS5/StaticBody2D"]
+position = Vector2(7, 183)
+shape = SubResource("RectangleShape2D_puente")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma5/Puente1_PS5"]
+position = Vector2(7, 183)
+texture = ExtResource("22_mn1ft")
+
+[node name="Puente2_PS5" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma5"]
+position = Vector2(0, -94)
+script = ExtResource("38_puente")
+valor_objetivo = 3
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma5/Puente2_PS5"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma5/Puente2_PS5/StaticBody2D"]
+position = Vector2(7, 183)
+shape = SubResource("RectangleShape2D_puente")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma5/Puente2_PS5"]
+position = Vector2(7, 183)
+texture = ExtResource("29_c4a2k")
+
+[node name="Puente3_PS5" type="Node2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma5"]
+position = Vector2(0, -141)
+script = ExtResource("38_puente")
+valor_objetivo = 2
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma5/Puente3_PS5"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma5/Puente3_PS5/StaticBody2D"]
+position = Vector2(7, 183)
+shape = SubResource("RectangleShape2D_puente")
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Puentes/PuzzleSuma5/Puente3_PS5"]
+position = Vector2(7, 183)
+texture = ExtResource("25_1devu")
+
+[node name="Numeros" type="Node2D" parent="OnTheGround/PuzzleSumas"]
+
+[node name="Number1" type="RigidBody2D" parent="OnTheGround/PuzzleSumas/Numeros"]
+position = Vector2(263, 197)
+gravity_scale = 0.0
+script = ExtResource("27_number1")
+
+[node name="ColllsionNumber1" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Numeros/Number1"]
+position = Vector2(86, 55)
+shape = SubResource("CircleShape2D_0krk3")
+
+[node name="SpriteNumber1" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Numeros/Number1/ColllsionNumber1"]
+position = Vector2(-1.2397766e-05, -2)
+scale = Vector2(0.7378472, 0.7395833)
+texture = ExtResource("26_qbn36")
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/PuzzleSumas/Numeros/Number1"]
+unique_name_in_owner = true
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("26_interact")
+interact_label_position = Vector2(85, -20)
+action = "Tap"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Numeros/Number1/InteractArea"]
+position = Vector2(86, 55)
+shape = SubResource("CircleShape2D_interact")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="Number2" type="RigidBody2D" parent="OnTheGround/PuzzleSumas/Numeros"]
+position = Vector2(363, 197)
+gravity_scale = 0.0
+script = ExtResource("28_d1r8i")
+
+[node name="ColllsionNumber2" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Numeros/Number2"]
+position = Vector2(86, 55)
+shape = SubResource("CircleShape2D_0krk3")
+
+[node name="SpriteNumber2" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Numeros/Number2/ColllsionNumber2"]
+position = Vector2(-1.2397766e-05, -2)
+scale = Vector2(0.7378472, 0.7395833)
+texture = ExtResource("29_8k25n")
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/PuzzleSumas/Numeros/Number2"]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("26_interact")
+interact_label_position = Vector2(85, -20)
+action = "Tap"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Numeros/Number2/InteractArea"]
+position = Vector2(86, 55)
+shape = SubResource("CircleShape2D_interact")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="Number3" type="RigidBody2D" parent="OnTheGround/PuzzleSumas/Numeros"]
+position = Vector2(268, 299)
+gravity_scale = 0.0
+script = ExtResource("29_p0ape")
+
+[node name="ColllsionNumber3" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Numeros/Number3"]
+position = Vector2(86, 55)
+shape = SubResource("CircleShape2D_0krk3")
+
+[node name="SpriteNumber3" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Numeros/Number3/ColllsionNumber3"]
+position = Vector2(-1.2397766e-05, -2)
+scale = Vector2(0.7378472, 0.7395833)
+texture = ExtResource("31_1devu")
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/PuzzleSumas/Numeros/Number3"]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("26_interact")
+interact_label_position = Vector2(85, -20)
+action = "Tap"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Numeros/Number3/InteractArea"]
+position = Vector2(86, 55)
+shape = SubResource("CircleShape2D_interact")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="Number4" type="RigidBody2D" parent="OnTheGround/PuzzleSumas/Numeros"]
+position = Vector2(365, 297)
+gravity_scale = 0.0
+script = ExtResource("30_kmrtp")
+
+[node name="ColllsionNumber4" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Numeros/Number4"]
+position = Vector2(86, 55)
+shape = SubResource("CircleShape2D_0krk3")
+
+[node name="SpriteNumber4" type="Sprite2D" parent="OnTheGround/PuzzleSumas/Numeros/Number4/ColllsionNumber4"]
+position = Vector2(-1.2397766e-05, -2)
+scale = Vector2(0.7378472, 0.7395833)
+texture = ExtResource("33_vto3y")
+
+[node name="InteractArea" type="Area2D" parent="OnTheGround/PuzzleSumas/Numeros/Number4"]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("26_interact")
+interact_label_position = Vector2(85, -20)
+action = "Tap"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleSumas/Numeros/Number4/InteractArea"]
+position = Vector2(86, 55)
+shape = SubResource("CircleShape2D_interact")
+debug_color = Color(0.600391, 0.54335, 0, 0.42)
+
+[node name="PuzzleEstatuas" type="Node2D" parent="OnTheGround"]
+position = Vector2(211, 223)
+
+[node name="PuzzleEstatuas1" type="Node2D" parent="OnTheGround/PuzzleEstatuas"]
+script = ExtResource("45_puzzle_estatuas")
+objetivos = [SubResource("Resource_statue_goal_1"), SubResource("Resource_statue_goal_2"), SubResource("Resource_statue_goal_3"), SubResource("Resource_statue_goal_4")]
+
+[node name="Estatuas" type="Node2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1"]
+position = Vector2(111, 0)
+
+[node name="Estatua1" type="RigidBody2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Estatuas"]
+position = Vector2(23, 98)
+gravity_scale = 0.0
+script = ExtResource("40_estatua")
+sprite_path = NodePath("Estatua1Collision/Estatua1Sprite")
+textura_arriba = ExtResource("43_statue_up")
+textura_derecha = ExtResource("33_ddpwg")
+textura_abajo = ExtResource("32_cllw3")
+textura_izquierda = ExtResource("42_statue_left")
+
+[node name="Estatua1Collision" type="CollisionShape2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Estatuas/Estatua1"]
+shape = SubResource("CircleShape2D_cllw3")
+
+[node name="Estatua1Sprite" type="Sprite2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Estatuas/Estatua1/Estatua1Collision"]
+texture = ExtResource("32_cllw3")
+
+[node name="Estatua2" type="RigidBody2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Estatuas"]
+position = Vector2(244, 97)
+gravity_scale = 0.0
+script = ExtResource("40_estatua")
+sprite_path = NodePath("Estatua2Collision/Estatua2Sprite")
+textura_arriba = ExtResource("43_statue_up")
+textura_derecha = ExtResource("33_ddpwg")
+textura_abajo = ExtResource("32_cllw3")
+textura_izquierda = ExtResource("42_statue_left")
+direccion_inicial = 1
+
+[node name="Estatua2Collision" type="CollisionShape2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Estatuas/Estatua2"]
+shape = SubResource("CircleShape2D_ddpwg")
+
+[node name="Estatua2Sprite" type="Sprite2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Estatuas/Estatua2/Estatua2Collision"]
+texture = ExtResource("33_ddpwg")
+
+[node name="Estatua3" type="RigidBody2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Estatuas"]
+position = Vector2(133, 0)
+gravity_scale = 0.0
+script = ExtResource("40_estatua")
+sprite_path = NodePath("Estatua3Collision/Estatua3Sprite")
+textura_arriba = ExtResource("43_statue_up")
+textura_derecha = ExtResource("33_ddpwg")
+textura_abajo = ExtResource("32_cllw3")
+textura_izquierda = ExtResource("42_statue_left")
+direccion_inicial = 0
+
+[node name="Estatua3Collision" type="CollisionShape2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Estatuas/Estatua3"]
+shape = SubResource("CircleShape2D_cllw3")
+
+[node name="Estatua3Sprite" type="Sprite2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Estatuas/Estatua3/Estatua3Collision"]
+texture = ExtResource("32_cllw3")
+
+[node name="Estatua4" type="RigidBody2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Estatuas"]
+position = Vector2(132, -189)
+gravity_scale = 0.0
+script = ExtResource("40_estatua")
+sprite_path = NodePath("Estatua3Collision/Estatua4Sprite")
+textura_arriba = ExtResource("43_statue_up")
+textura_derecha = ExtResource("33_ddpwg")
+textura_abajo = ExtResource("32_cllw3")
+textura_izquierda = ExtResource("42_statue_left")
+direccion_inicial = 0
+
+[node name="Estatua3Collision" type="CollisionShape2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Estatuas/Estatua4"]
+shape = SubResource("CircleShape2D_cllw3")
+
+[node name="Estatua4Sprite" type="Sprite2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Estatuas/Estatua4/Estatua3Collision"]
+texture = ExtResource("32_cllw3")
+
+[node name="Switches" type="Node2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1"]
+position = Vector2(106, -1)
+
+[node name="Switch1" type="Node2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Switches"]
+position = Vector2(-2, -6)
+script = ExtResource("39_switch")
+sprite_path = NodePath("Sprite2D")
+area_path = NodePath("Area2D")
+objetivos = Array[ExtResource("41_switch_obj")]([SubResource("Resource_switch_obj_1"), SubResource("Resource_switch_obj_2"), SubResource("Resource_uulsv")])
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Switches/Switch1"]
+position = Vector2(142, 100)
+scale = Vector2(0.86458325, 0.8749999)
+texture = ExtResource("34_mn1ft")
+
+[node name="Area2D" type="Area2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Switches/Switch1"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Switches/Switch1/Area2D"]
+position = Vector2(142, 100)
+shape = SubResource("CircleShape2D_switch")
+
+[node name="Switch2" type="Node2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Switches"]
+position = Vector2(-4, -194)
+script = ExtResource("39_switch")
+sprite_path = NodePath("Sprite2D")
+area_path = NodePath("Area2D")
+objetivos = Array[ExtResource("41_switch_obj")]([SubResource("Resource_y1tyt"), SubResource("Resource_xb4h1")])
+
+[node name="Sprite2D" type="Sprite2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Switches/Switch2"]
+position = Vector2(142, 100)
+scale = Vector2(0.86458325, 0.8749999)
+texture = ExtResource("34_mn1ft")
+
+[node name="Area2D" type="Area2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Switches/Switch2"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleEstatuas/PuzzleEstatuas1/Switches/Switch2/Area2D"]
+position = Vector2(142, 100)
+shape = SubResource("CircleShape2D_switch")
+
+[node name="PuzzleCajas" type="Node2D" parent="OnTheGround"]
+position = Vector2(67, -512)
+
+[node name="Tableros" type="Node2D" parent="OnTheGround/PuzzleCajas"]
+script = ExtResource("37_puzzle_cajas")
+
+[node name="Baldosas_Tablero" type="TileMapLayer" parent="OnTheGround/PuzzleCajas/Tableros"]
+tile_map_data = PackedByteArray("AAABAAUAEAAAAAAAAAABAAMAEAAAAAAAAAACAAQAEAAAAAAAAAADAAMAEAAAAAAAAAADAAUAEAAAAAAAAAAJAAUAEAAAAAAAAAAJAAMAEAAAAAAAAAALAAMAEAAAAAAAAAALAAUAEAAAAAAAAAACAAUAEQAAAAAAAAADAAQAEQAAAAAAAAAKAAMAEQAAAAAAAAAJAAQAEQAAAAAAAAALAAQAEQAAAAAAAAAKAAUAEQAAAAAAAAACAAMAEQAAAAAAAAA=")
+tile_set = ExtResource("1_c5656")
+
+[node name="Baldosas_Bloque" type="TileMapLayer" parent="OnTheGround/PuzzleCajas/Tableros"]
+tile_map_data = PackedByteArray("AAAKAAQADwAAAAAAAAABAAQADwAAAAAAAAA=")
+tile_set = ExtResource("1_c5656")
+
+[node name="Target1" type="Node2D" parent="OnTheGround/PuzzleCajas/Tableros"]
+
+[node name="Target1Sprite" type="Sprite2D" parent="OnTheGround/PuzzleCajas/Tableros/Target1"]
+position = Vector2(96, 224)
+texture = ExtResource("36_vto3y")
+
+[node name="Target2" type="Node2D" parent="OnTheGround/PuzzleCajas/Tableros"]
+
+[node name="Target2Sprite" type="Sprite2D" parent="OnTheGround/PuzzleCajas/Tableros/Target2"]
+position = Vector2(608, 224)
+texture = ExtResource("36_vto3y")
+
+[node name="Boxes" type="Node2D" parent="OnTheGround/PuzzleCajas/Tableros"]
+position = Vector2(-37, 0)
+
+[node name="Box1" type="RigidBody2D" parent="OnTheGround/PuzzleCajas/Tableros/Boxes"]
+position = Vector2(237, 266)
+mass = 2.0
+gravity_scale = 0.0
+lock_rotation = true
+freeze = true
+contact_monitor = true
+max_contacts_reported = 10
+linear_damp = 8.0
+script = ExtResource("21_x6l02")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleCajas/Tableros/Boxes/Box1"]
+position = Vector2(-40, 86)
+shape = SubResource("RectangleShape2D_x6l02")
+
+[node name="Box1_sprite" type="Sprite2D" parent="OnTheGround/PuzzleCajas/Tableros/Boxes/Box1"]
+position = Vector2(-40, 86)
+texture = ExtResource("21_gg1sl")
+
+[node name="Box2" type="RigidBody2D" parent="OnTheGround/PuzzleCajas/Tableros/Boxes"]
+position = Vector2(715, 268)
+mass = 2.0
+gravity_scale = 0.0
+lock_rotation = true
+freeze = true
+contact_monitor = true
+max_contacts_reported = 10
+linear_damp = 8.0
+script = ExtResource("23_k8ms1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OnTheGround/PuzzleCajas/Tableros/Boxes/Box2"]
+position = Vector2(58, 84)
+shape = SubResource("RectangleShape2D_x6l02")
+
+[node name="Box2_sprite" type="Sprite2D" parent="OnTheGround/PuzzleCajas/Tableros/Boxes/Box2"]
+position = Vector2(58, 83)
+texture = ExtResource("24_cf23d")
+
+[node name="JefeFinal" type="Node2D" parent="OnTheGround"]
+
+[node name="ScreenOverlay" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="." instance=ExtResource("21_ca12e")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(1.333, 1.333)
+position_smoothing_enabled = true
+
+[node name="Cinematic" type="Node2D" parent="."]
+script = ExtResource("22_tgado")
+dialogue = ExtResource("19_6gaxm")
+metadata/_custom_type_script = "uid://x1mxt6bmei2o"
+
+[connection signal="solved" from="OnTheGround/SequencePuzzle" to="OnTheGround/CollectibleItem" method="reveal"]

@@ -12,7 +12,8 @@ func _ready() -> void:
 		guard.player_detected.connect(self._on_player_detected)
 
 
-func _on_player_detected(player: Player) -> void:
-	player.mode = Player.Mode.DEFEATED
-	await get_tree().create_timer(2.0).timeout
-	SceneSwitcher.reload_with_transition(Transition.Effect.FADE, Transition.Effect.FADE)
+func _on_player_detected(player: Node2D) -> void:
+	if player.has_method("defeat"):
+		player.defeat()
+	else:
+		push_warning("Detected node does not have defeat() method", player)

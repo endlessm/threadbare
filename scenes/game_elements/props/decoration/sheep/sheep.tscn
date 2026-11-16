@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://c4vbokn408f2c"]
+
+[ext_resource type="SpriteFrames" uid="uid://b0ba41utstkyk" path="res://scenes/game_elements/characters/components/sprite_frames/sheep.tres" id="1_hj6il"]
+[ext_resource type="Script" uid="uid://cms2wqtbxjl1h" path="res://scenes/game_logic/sprite_behaviors/random_frame_sprite_behavior.gd" id="2_jsyxc"]
+[ext_resource type="Script" uid="uid://du8wfijr35r35" path="res://scenes/game_elements/props/interact_area/interact_area.gd" id="3_5wm27"]
+[ext_resource type="Script" uid="uid://dunsvrhq42214" path="res://scenes/game_elements/fx/shaker/shaker.gd" id="3_pcfmk"]
+[ext_resource type="Script" uid="uid://djeshbrs3vwnb" path="res://scenes/game_elements/characters/npcs/cat/components/pet_interaction.gd" id="4_pcfmk"]
+[ext_resource type="AudioStream" uid="uid://dtf82j11434vb" path="res://scenes/game_elements/props/decoration/sheep/components/sheep_baa.wav" id="5_5wm27"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hj6il"]
+radius = 6.0
+height = 37.999985
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tsjbs"]
+size = Vector2(52.5, 58)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_3vki4"]
+random_pitch = 1.15
+streams_count = 1
+stream_0/stream = ExtResource("5_5wm27")
+
+[node name="Sheep" type="CharacterBody2D" unique_id=2063148848]
+collision_layer = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1456881412]
+unique_name_in_owner = true
+sprite_frames = ExtResource("1_hj6il")
+animation = &"idle"
+autoplay = "idle"
+offset = Vector2(4, -14)
+
+[node name="RandomFrameSpriteBehavior" type="Node2D" parent="AnimatedSprite2D" unique_id=63344388 node_paths=PackedStringArray("sprite")]
+script = ExtResource("2_jsyxc")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://cms2wqtbxjl1h"
+
+[node name="Shaker" type="Node2D" parent="AnimatedSprite2D" unique_id=817185224 node_paths=PackedStringArray("target")]
+script = ExtResource("3_pcfmk")
+target = NodePath("..")
+shake_intensity = 5.0
+duration = 0.7
+metadata/_custom_type_script = "uid://dunsvrhq42214"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2118837157]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_hj6il")
+
+[node name="InteractArea" type="Area2D" parent="." unique_id=1191867788]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("3_5wm27")
+action = "Annoy the sheep"
+metadata/_custom_type_script = "uid://du8wfijr35r35"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1330536002]
+visible = false
+position = Vector2(5, -28)
+shape = SubResource("RectangleShape2D_tsjbs")
+debug_color = Color(0.6290859, 0.52632225, 0.15803415, 0.41960785)
+
+[node name="PetInteraction" type="Node" parent="." unique_id=1162035923 node_paths=PackedStringArray("interact_area", "miaow_player")]
+script = ExtResource("4_pcfmk")
+interact_area = NodePath("../InteractArea")
+miaow_player = NodePath("AudioStreamPlayer2D")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PetInteraction" unique_id=1930789457]
+stream = SubResource("AudioStreamRandomizer_3vki4")
+bus = &"SFX"
+
+[connection signal="interaction_started" from="InteractArea" to="AnimatedSprite2D/Shaker" method="shake" unbinds=2]

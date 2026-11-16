@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+name: Cached Git LFS checkout
+description: Use Actions cache to speed up LFS fetch and reduce LFS quota consumption
+runs:
+  using: composite
+  steps:
+    - name: Create Git LFS file list
+      shell: bash
+      run: git lfs ls-files -l |cut -d' ' -f1 |sort >.git/lfs-hashes.txt
+
+    - name: Restore Git LFS object cache
+      uses: actions/cache@v5
+      with:
+        path: .git/lfs
+        key: ${{ runner.os }}-lfsdata-v1-${{ hashFiles('.git/lfs-hashes.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-lfsdata-v1-
+          ${{ runner.os }}-lfsdata
+
+    - name: Fetch and check out LFS objects
+      shell: bash
+      run: |
+        # Fetch missing objects, prune extraneous ones
+        git lfs fetch --prune
+
+        # Check out content
+        git lfs checkout

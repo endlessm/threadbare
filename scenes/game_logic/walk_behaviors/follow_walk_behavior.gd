@@ -41,6 +41,10 @@ signal got_stuck
 ## [signal target_reached_changed] signal may not be ever emitted.
 @export_range(0, 400, 1, "or_greater", "suffix:m") var target_reached_distance: float = 200.0
 
+## If the character should stop walking when reaching the target,
+## besides emitting [signal target_reached_changed].
+@export var stop_when_reached: bool = true
+
 ## The current direction as a unit Vector2.
 var direction: Vector2
 
@@ -93,7 +97,15 @@ func _physics_process(delta: float) -> void:
 	if not direction:
 		_update_direction()
 
-	character.velocity = character.velocity.lerp(direction * speeds.walk_speed, direction_weight)
+	if stop_when_reached and is_target_reached:
+		character.velocity = character.velocity.move_toward(
+			Vector2.ZERO, speeds.stopping_step * delta
+		)
+	else:
+		character.velocity = character.velocity.lerp(
+			direction * speeds.walk_speed, direction_weight
+		)
+
 	var collided := character.move_and_slide()
 
 	if collided and character.is_on_wall():

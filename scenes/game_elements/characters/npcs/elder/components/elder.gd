@@ -33,6 +33,9 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
+	if self not in eternal_loom.elders:
+		eternal_loom.elders.append(self)
+
 	talk_behavior.before_dialogue = _before_dialogue
 	interact_area.interaction_ended.connect(_on_interaction_ended)
 	animated_sprite_2d.connect("frame_changed", _on_frame_changed)
@@ -54,6 +57,10 @@ func _get_configuration_warnings() -> PackedStringArray:
 	return warnings
 
 
+func has_quests() -> bool:
+	return _storybook and _storybook.has_quests()
+
+
 ## Show a storybook to the player, and wait for them to select a story or close the book.
 func show_storybook() -> void:
 	if not _storybook:
@@ -70,9 +77,18 @@ func show_storybook() -> void:
 	_storybook_layer.remove_child(_storybook)
 
 
+func congratulate_player() -> void:
+	DialogueManager.show_dialogue_balloon(talk_behavior.dialogue, "threads_incorporated", [self])
+	await DialogueManager.dialogue_ended
+
+
 func _before_dialogue() -> void:
 	if eternal_loom and eternal_loom.is_item_offering_possible():
 		talk_behavior.title = "go_to_loom"
+	elif not _storybook or not _storybook.has_quests():
+		talk_behavior.title = "no_quests"
+	else:
+		talk_behavior.title = ""
 
 
 func _on_interaction_ended() -> void:

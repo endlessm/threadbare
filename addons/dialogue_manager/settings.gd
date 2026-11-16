@@ -15,6 +15,8 @@ const NEW_FILE_TEMPLATE = "editor/new_file_template"
 const MISSING_TRANSLATIONS_ARE_ERRORS = "editor/translations/missing_translations_are_errors"
 ## Include character names in the list of translatable strings.
 const INCLUDE_CHARACTERS_IN_TRANSLATABLE_STRINGS_LIST = "editor/translations/include_characters_in_translatable_strings_list"
+## The default delimiter to use when exporting CSVs
+const DEFAULT_CSV_DELIMITER = "editor/translations/default_csv_delimiter"
 ## The default locale to use when exporting CSVs
 const DEFAULT_CSV_LOCALE = "editor/translations/default_csv_locale"
 ## Any extra CSV locales to append to the exported translation CSV
@@ -25,6 +27,9 @@ const INCLUDE_CHARACTER_IN_TRANSLATION_EXPORTS = "editor/translations/include_ch
 const INCLUDE_NOTES_IN_TRANSLATION_EXPORTS = "editor/translations/include_notes_in_translation_exports"
 ## Automatically update the project's list of translatable files when dialogue files are added or removed
 const UPDATE_POT_FILES_AUTOMATICALLY = "editor/translations/update_pot_files_automatically"
+
+## A processor handling special case compilation.
+const DIALOGUE_PROCESSOR_PATH = "editor/advanced/dialogue_processor_path"
 
 ## A custom test scene to use when testing dialogue.
 const CUSTOM_TEST_SCENE_PATH = "editor/advanced/custom_test_scene_path"
@@ -42,10 +47,7 @@ const WARN_ABOUT_METHOD_PROPERTY_OR_SIGNAL_NAME_CONFLICTS = "runtime/warn_about_
 const IGNORE_MISSING_STATE_VALUES = "runtime/advanced/ignore_missing_state_values"
 ## Whether or not the project is utilising dotnet.
 const USES_DOTNET = "runtime/advanced/uses_dotnet"
-## Maximum length of text prefix in auto-generated IDs
-const AUTO_GENERATED_ID_PREFIX_LENGTH = "editor/translations/auto_generated_id_prefix_length"
-## Use only UUID for auto-generated IDs without text prefix
-const USE_UUID_ONLY_FOR_IDS = "editor/translations/use_uuid_only_for_ids"
+
 
 static var SETTINGS_CONFIGURATION = {
 	WRAP_LONG_LINES: {
@@ -66,6 +68,12 @@ static var SETTINGS_CONFIGURATION = {
 	INCLUDE_CHARACTERS_IN_TRANSLATABLE_STRINGS_LIST: {
 		value = true,
 		type = TYPE_BOOL,
+	},
+	DEFAULT_CSV_DELIMITER: {
+		value = "Comma",
+		type = TYPE_STRING,
+		hint = PROPERTY_HINT_ENUM,
+		hint_string = "Comma,Semicolon,Tab"
 	},
 	DEFAULT_CSV_LOCALE: {
 		value = "en",
@@ -92,6 +100,14 @@ static var SETTINGS_CONFIGURATION = {
 	UPDATE_POT_FILES_AUTOMATICALLY: {
 		value = true,
 		type = TYPE_BOOL,
+		is_advanced = true
+	},
+
+	DIALOGUE_PROCESSOR_PATH: {
+		value = "",
+		type = TYPE_STRING,
+		hint = PROPERTY_HINT_FILE,
+		hint_string = "*.gd,*.cs",
 		is_advanced = true
 	},
 
@@ -135,19 +151,7 @@ static var SETTINGS_CONFIGURATION = {
 		value = false,
 		type = TYPE_BOOL,
 		is_hidden = true
-	},
-	AUTO_GENERATED_ID_PREFIX_LENGTH: {
-		value = 30,
-		type = TYPE_INT,
-		hint = PROPERTY_HINT_RANGE,
-		hint_string = "0,100,1",
-		is_advanced = true
-	},
-	USE_UUID_ONLY_FOR_IDS: {
-		value = false,
-		type = TYPE_BOOL,
-		is_advanced = true
-	},
+	}
 }
 
 

@@ -1,0 +1,232 @@
+[gd_scene format=3 uid="uid://daqd67aro1o1m"]
+
+[ext_resource type="Script" uid="uid://dc3bqwr0cvimn" path="res://scenes/game_elements/fx/time_and_weather/components/time_and_weather.gd" id="1_rr8fb"]
+[ext_resource type="PackedScene" uid="uid://c0374lgarm8gj" path="res://scenes/game_elements/fx/clouds_shadow/clouds_shadow.tscn" id="2_oruto"]
+[ext_resource type="PackedScene" uid="uid://dpbsi065gmh8a" path="res://scenes/game_elements/fx/fog/fog.tscn" id="3_uf36w"]
+[ext_resource type="Script" uid="uid://qrbdfx4ka2o8" path="res://scenes/game_elements/fx/time_and_weather/components/debug_label.gd" id="4_uf36w"]
+
+[sub_resource type="Gradient" id="Gradient_duxxr"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5j6h7"]
+gradient = SubResource("Gradient_duxxr")
+
+[sub_resource type="Environment" id="Environment_2vvub"]
+background_mode = 3
+ambient_light_source = 2
+adjustment_enabled = true
+adjustment_color_correction = SubResource("GradientTexture1D_5j6h7")
+
+[sub_resource type="Animation" id="Animation_r1ek1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasModulate:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WorldEnvironment:environment:adjustment_contrast")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WorldEnvironment:environment:adjustment_saturation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("WorldEnvironment:environment:adjustment_brightness")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("WorldEnvironment:environment:background_color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ns5r3"]
+resource_name = "day-night"
+length = 24.0
+loop_mode = 1
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasModulate:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4, 6, 7, 9.990001, 14, 17, 18, 20, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.28800002, 0.36479995, 0.48, 1), Color(0.28800002, 0.36479995, 0.48, 1), Color(0.68226564, 0.84817696, 0.92506266, 1), Color(0.88227075, 0.9292479, 0.8883446, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0.92, 0.83628, 0.6808, 1), Color(0.92, 0.7482667, 0.55200005, 1), Color(0.28800002, 0.36479995, 0.48, 1), Color(0.28800002, 0.36479995, 0.48, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WorldEnvironment:environment:adjustment_contrast")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4, 10, 14, 20, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.2, 1.2, 1.0, 1.0, 1.2, 1.2]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WorldEnvironment:environment:adjustment_saturation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 10, 12, 14, 18, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 0.9, 1.0, 1.2, 1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:night_lights_enabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 5, 19, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("WorldEnvironment:environment:adjustment_brightness")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 10, 12, 14, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 1.1, 1.0, 1.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("WorldEnvironment:environment:background_color")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 4, 6, 10, 14, 18, 20, 24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.09333344, 0, 0.4, 1), Color(0.48, 0.48, 0.48, 1), Color(0.9, 0.9, 0.9, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0.48, 0.48, 0.48, 1), Color(0.09333344, 0, 0.4, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ojao8"]
+_data = {
+&"RESET": SubResource("Animation_r1ek1"),
+&"day-night": SubResource("Animation_ns5r3")
+}
+
+[node name="TimeAndWeather" type="Node2D" unique_id=1446545037]
+editor_description = "The inner nodes here are good examples of visual effects to use in levels:
+- Add a WorldEnvironment for adjusting brightness, contrast, saturation. And much more!
+- Add a CanvasModulate to darken the scene. This is required for lights to shine.
+- Add visual effects as overlays (or use the existing ones!). Examples: fog, clouds shadow, god rays, rain, snow."
+script = ExtResource("1_rr8fb")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1459233892]
+unique_name_in_owner = true
+environment = SubResource("Environment_2vvub")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1899012002]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=206786471]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_ojao8")
+autoplay = &"day-night"
+speed_scale = 0.0
+
+[node name="LightsOnTimer" type="Timer" parent="." unique_id=1405965431]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="LightsOffTimer" type="Timer" parent="." unique_id=341599796]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="CloudsShadow" parent="." unique_id=1515275591 instance=ExtResource("2_oruto")]
+unique_name_in_owner = true
+visible = false
+metadata/_edit_lock_ = true
+
+[node name="CloudsShadowStartTimer" type="Timer" parent="CloudsShadow" unique_id=1199239038]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="CloudsShadowStopTimer" type="Timer" parent="CloudsShadow" unique_id=432974675]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="Fog" parent="." unique_id=953933321 instance=ExtResource("3_uf36w")]
+unique_name_in_owner = true
+visible = false
+
+[node name="FogStartTimer" type="Timer" parent="Fog" unique_id=1738175605]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="FogStopTimer" type="Timer" parent="Fog" unique_id=1930172162]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1435119273]
+
+[node name="DebugLabel" type="Label" parent="CanvasLayer" unique_id=1439776273]
+unique_name_in_owner = true
+offset_right = 119.0
+offset_bottom = 23.0
+text = "What time is it?"
+script = ExtResource("4_uf36w")
+
+[connection signal="timeout" from="LightsOnTimer" to="." method="_on_lights_on_timer_timeout"]
+[connection signal="timeout" from="LightsOffTimer" to="." method="_on_lights_off_timer_timeout"]
+[connection signal="timeout" from="CloudsShadow/CloudsShadowStartTimer" to="." method="_on_clouds_shadow_start_timer_timeout"]
+[connection signal="timeout" from="CloudsShadow/CloudsShadowStopTimer" to="." method="_on_clouds_shadow_stop_timer_timeout"]
+[connection signal="timeout" from="Fog/FogStartTimer" to="." method="_on_fog_start_timer_timeout"]
+[connection signal="timeout" from="Fog/FogStopTimer" to="." method="_on_fog_stop_timer_timeout"]
