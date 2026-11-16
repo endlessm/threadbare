@@ -2,8 +2,11 @@
 # SPDX-License-Identifier: MPL-2.0
 extends CanvasLayer
 
-@export
-var titles: PackedStringArray = ["The Last Petal", "The Weaver Wakes", "Before the Petal Falls"]
+@export var titles: PackedStringArray = [
+	"The Last Petal",
+	"The Weaver Wakes",
+	"Before the Petal Falls",
+]
 
 @export var pages: PackedStringArray = [
 	(
@@ -105,11 +108,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	var advance := (
-		event.is_action_pressed(&"ui_accept")
-		or event.is_action_pressed(&"interact")
+		event.is_action_pressed(&"ui_accept") or event.is_action_pressed(&"interact")
 		or (
-			event is InputEventMouseButton
-			and (event as InputEventMouseButton).pressed
+			event is InputEventMouseButton and (event as InputEventMouseButton).pressed
 			and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT
 		)
 	)

@@ -55,9 +55,9 @@ func bloom() -> void:
 		t.tween_interval(i * (bloom_time * 0.12))
 		(
 			t
-			. tween_property(petal, "scale", Vector2.ONE, bloom_time)
-			. set_trans(Tween.TRANS_ELASTIC)
-			. set_ease(Tween.EASE_OUT)
+			.tween_property(petal, "scale", Vector2.ONE, bloom_time)
+			.set_trans(Tween.TRANS_ELASTIC)
+			.set_ease(Tween.EASE_OUT)
 		)
 
 	create_tween().tween_property(petals, "modulate:a", 1.0, bloom_time * 0.5)

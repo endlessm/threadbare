@@ -30,8 +30,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	var player := get_tree().get_first_node_in_group(&"player") as Node2D
 	var chasing := (
-		player != null
-		and global_position.distance_to(player.global_position) <= chase_radius
+		player != null and global_position.distance_to(player.global_position) <= chase_radius
 		and _has_line_of_sight(player.global_position)
 	)
 

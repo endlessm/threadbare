@@ -26,14 +26,17 @@ func _on_dialogue_ended(resource: DialogueResource) -> void:
 		var t := create_tween().set_parallel(true)
 		(
 			t
-			. tween_property(player, "scale", Vector2.ZERO, fall_time)
-			. set_trans(Tween.TRANS_BACK)
-			. set_ease(Tween.EASE_IN)
+			.tween_property(player, "scale", Vector2.ZERO, fall_time)
+			.set_trans(Tween.TRANS_BACK)
+			.set_ease(Tween.EASE_IN)
 		)
 		t.tween_property(player, "modulate:a", 0.0, fall_time)
 		await t.finished
 
 	if not next_scene.is_empty():
 		SceneSwitcher.change_to_file_with_transition(
-			next_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+			next_scene,
+			^"",
+			Transition.Effect.FADE,
+			Transition.Effect.FADE,
 		)

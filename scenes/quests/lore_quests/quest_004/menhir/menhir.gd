@@ -60,9 +60,9 @@ func _awaken() -> void:
 		var tw := create_tween().set_parallel(true)
 		(
 			tw
-			. tween_property(visual, "position:y", _rest_y - rise_height, rise_time)
-			. set_trans(Tween.TRANS_BACK)
-			. set_ease(Tween.EASE_OUT)
+			.tween_property(visual, "position:y", _rest_y - rise_height, rise_time)
+			.set_trans(Tween.TRANS_BACK)
+			.set_ease(Tween.EASE_OUT)
 		)
 		tw.tween_property(visual, "modulate", awake_color, rise_time)
 		await tw.finished
@@ -94,9 +94,9 @@ func _sleep() -> void:
 		var tw := create_tween().set_parallel(true)
 		(
 			tw
-			. tween_property(visual, "position:y", _rest_y, rise_time)
-			. set_trans(Tween.TRANS_SINE)
-			. set_ease(Tween.EASE_IN)
+			.tween_property(visual, "position:y", _rest_y, rise_time)
+			.set_trans(Tween.TRANS_SINE)
+			.set_ease(Tween.EASE_IN)
 		)
 		tw.tween_property(visual, "modulate", asleep_color, rise_time)
 

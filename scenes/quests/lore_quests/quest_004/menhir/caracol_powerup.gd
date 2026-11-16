@@ -40,13 +40,13 @@ func _start_bob(sprite: Node2D) -> void:
 	var t := create_tween().set_loops()
 	(
 		t
-		. tween_property(sprite, "position:y", base_y - bob_amplitude, bob_period * 0.5)
-		. set_trans(Tween.TRANS_SINE)
-		. set_ease(Tween.EASE_IN_OUT)
+		.tween_property(sprite, "position:y", base_y - bob_amplitude, bob_period * 0.5)
+		.set_trans(Tween.TRANS_SINE)
+		.set_ease(Tween.EASE_IN_OUT)
 	)
 	(
 		t
-		. tween_property(sprite, "position:y", base_y, bob_period * 0.5)
-		. set_trans(Tween.TRANS_SINE)
-		. set_ease(Tween.EASE_IN_OUT)
+		.tween_property(sprite, "position:y", base_y, bob_period * 0.5)
+		.set_trans(Tween.TRANS_SINE)
+		.set_ease(Tween.EASE_IN_OUT)
 	)
