@@ -12,7 +12,7 @@ static func base_textures_used(sprite_frames: SpriteFrames) -> Array:
 			var texture: Texture2D = sprite_frames.get_frame_texture(
 				animation_name, sprite_frame_idx
 			)
-			var base_texture: Texture2D = _get_base_texture(texture)
+			var base_texture: Texture2D = _get_base_texture(sprite_frames, texture)
 
 			if base_texture and not base_texture in textures:
 				textures.push_back(base_texture)
@@ -20,12 +20,14 @@ static func base_textures_used(sprite_frames: SpriteFrames) -> Array:
 	return textures
 
 
-static func _get_base_texture(texture: Texture2D) -> Texture2D:
-	if FileAccess.file_exists(texture.resource_path):
+static func _get_base_texture(frames: SpriteFrames, texture: Texture2D) -> Texture2D:
+	var is_included_in_other_resource: bool = not FileAccess.file_exists(texture.resource_path)
+
+	if not is_included_in_other_resource:
 		return texture
 
 	if texture is AtlasTexture:
-		return _get_base_texture(texture.atlas)
+		return _get_base_texture(frames, texture.atlas)
 
 	return null
 
@@ -40,11 +42,10 @@ static func replace_texture(
 			var texture: Texture2D = sprite_frames.get_frame_texture(
 				animation_name, sprite_frame_idx
 			)
-			if old_base_texture and old_base_texture != _get_base_texture(texture):
-				continue
-			_replace_base_texture(
-				sprite_frames, animation_name, sprite_frame_idx, texture, new_texture
-			)
+			if old_base_texture == _get_base_texture(sprite_frames, texture):
+				_replace_base_texture(
+					sprite_frames, animation_name, sprite_frame_idx, texture, new_texture
+				)
 
 
 static func _replace_base_texture(
@@ -55,7 +56,7 @@ static func _replace_base_texture(
 	new_texture: Texture2D
 ) -> void:
 	var is_included_in_other_resource: bool = not FileAccess.file_exists(old_texture.resource_path)
-	var old_base_texture = _get_base_texture(old_texture)
+	var old_base_texture = _get_base_texture(frames, old_texture)
 
 	if not is_included_in_other_resource:
 		var frame_duration = frames.get_frame_duration(anim_name, sprite_frame_idx)

@@ -18,40 +18,6 @@ var quest: Quest = preload("uid://dwl8letaanhhi"):
 @onready var play_button: Button = %PlayButton
 
 
-# This is an in-joke/Easter egg for the Endless Access team
-static func _chadify(author_name: String) -> String:
-	if author_name != "Justin Bourque":
-		return author_name
-
-	var options := [
-		author_name,
-		"Chad Bourque",
-		"Eric Bourque",
-	]
-	return options.pick_random()
-
-
-func _make_author_list() -> String:
-	var names := quest.authors.map(_chadify)
-	match names.size():
-		0:
-			return ""
-		1:
-			return "A story by " + names[0]
-		_:
-			return (
-				" "
-				. join(
-					[
-						"A story by",
-						", ".join(names.slice(0, -1)),
-						"and",
-						names[-1],
-					]
-				)
-			)
-
-
 func _set_quest(new_quest: Quest) -> void:
 	quest = new_quest
 
@@ -60,7 +26,24 @@ func _set_quest(new_quest: Quest) -> void:
 
 	title.text = quest.title.strip_edges()
 	description.text = quest.description.strip_edges()
-	authors.text = _make_author_list()
+
+	match quest.authors.size():
+		0:
+			authors.text = ""
+		1:
+			authors.text = "A story by " + quest.authors[0]
+		_:
+			authors.text = (
+				" "
+				. join(
+					[
+						"A story by",
+						", ".join(quest.authors.slice(0, -1)),
+						"and",
+						quest.authors[-1],
+					]
+				)
+			)
 
 	if quest.affiliation:
 		authors.text += " of " + quest.affiliation
@@ -71,7 +54,6 @@ func _set_quest(new_quest: Quest) -> void:
 
 func _ready() -> void:
 	_set_quest(quest)
-	play_button.pressed.connect(_on_play_button_pressed)
 
 
 func _on_play_button_pressed() -> void:

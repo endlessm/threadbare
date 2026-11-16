@@ -2,19 +2,11 @@
 # SPDX-License-Identifier: MPL-2.0
 extends Control
 
-@export var tutorial_quest: Quest
+@export_file("*.tscn") var intro_scene: String
 
 @onready var main_menu: Control = %MainMenu
 @onready var options: Control = %Options
 @onready var credits: Control = %Credits
-
-
-func _ready() -> void:
-	if ProjectSettings.get_setting(ThreadbareProjectSettings.SKIP_SPLASH):
-		if GameState.can_restore():
-			_on_main_menu_continue_pressed()
-		else:
-			_on_start_pressed()
 
 
 func _input(event: InputEvent) -> void:
@@ -23,11 +15,12 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_main_menu_continue_pressed() -> void:
+	var saved_scene: Dictionary = GameState.restore()
 	(
 		SceneSwitcher
 		. change_to_file_with_transition(
-			GameState.scene.path,
-			GameState.scene.spawn_point,
+			saved_scene["scene_path"],
+			saved_scene["spawn_point"],
 			Transition.Effect.FADE,
 			Transition.Effect.FADE,
 		)
@@ -35,11 +28,16 @@ func _on_main_menu_continue_pressed() -> void:
 
 
 func _on_start_pressed() -> void:
-	GameState.clear()
-
-	GameState.start_quest(tutorial_quest)
-	SceneSwitcher.change_to_file_with_transition(
-		tutorial_quest.first_scene, ^"", Transition.Effect.FADE, Transition.Effect.FADE
+	if GameState.can_restore():
+		GameState.clear()
+	(
+		SceneSwitcher
+		. change_to_file_with_transition(
+			intro_scene,
+			^"",
+			Transition.Effect.FADE,
+			Transition.Effect.FADE,
+		)
 	)
 
 

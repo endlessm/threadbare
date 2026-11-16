@@ -15,9 +15,6 @@ enum Status {
 	BROKEN = 2,
 }
 
-## [Quest] resources must have this filename to be found by the game.
-const FILENAME := "quest.tres"
-
 ## The development status of this quest.
 @export var status: Status = Status.WORK_IN_PROGRESS
 
@@ -37,26 +34,6 @@ const FILENAME := "quest.tres"
 ## The path to the first scene of the quest.
 @export_file("*.tscn") var first_scene: String
 
-## The number of threads that the player collects in this quest - typically one
-## at the end of each mini-game/challenge. This should match the number of
-## [CollectibleItem]s in the quest.
-@export_range(0, 6, 1, "suffix:threads") var threads_to_collect: int = 3
-
-## Whether this is a lore quest (part of the main storyline).
-@export var is_lore_quest: bool = false:
-	set(new_value):
-		is_lore_quest = new_value
-		notify_property_list_changed()
-
-## Whether this quest is skippable (i.e. is the tutorial). Only supported for lore quests.
-@export var skippable: bool = false:
-	set(new_value):
-		skippable = new_value
-		notify_property_list_changed()
-
-## Which abilities to award if the quest is skipped
-@export var skip_abilities: Array[Enums.PlayerAbilities] = []
-
 @export_group("Animation")
 
 ## An optional sprite frame library to show in the storybook page for this quest.
@@ -70,23 +47,6 @@ const FILENAME := "quest.tres"
 @export var animation_name: StringName = &""
 
 
-## Lists all quests in [param quest_directory]; which is to say, all [Quest]
-## resources named [const FILENAME] which are in an immediate subdirectory of
-## [param quest_directory].
-## [br][br]
-## In Bash terms, this is: [code]$quest_directory/*/quest.tres[/code]
-static func enumerate(quest_directory: String) -> Array[Quest]:
-	var quests: Array[Quest] = []
-
-	for dir in ResourceLoader.list_directory(quest_directory):
-		var quest_path := quest_directory.path_join(dir).path_join(FILENAME)
-		if ResourceLoader.exists(quest_path):
-			var quest: Quest = ResourceLoader.load(quest_path)
-			quests.append(quest)
-
-	return quests
-
-
 func _validate_property(property: Dictionary) -> void:
 	match property["name"]:
 		"animation_name":
@@ -95,12 +55,6 @@ func _validate_property(property: Dictionary) -> void:
 				property.hint_string = ",".join(sprite_frames.get_animation_names())
 			else:
 				property.usage |= PROPERTY_USAGE_READ_ONLY
-		"skippable":
-			if not is_lore_quest:
-				property.usage = PROPERTY_USAGE_NONE
-		"skip_abilities":
-			if not (is_lore_quest and skippable):
-				property.usage = PROPERTY_USAGE_NONE
 
 
 func _to_string() -> String:

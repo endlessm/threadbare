@@ -72,9 +72,7 @@ func _ready() -> void:
 
 ## Makes this the active checkpoint.
 func activate() -> void:
-	GameState.scene.spawn_point = owner.get_path_to(spawn_point)
-	GameState.save()
-
+	GameState.set_current_spawn_point(owner.get_path_to(spawn_point))
 	if sprite.visible:
 		return
 
