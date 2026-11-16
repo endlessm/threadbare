@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: The Threadbare Authors
+# SPDX-License-Identifier: MPL-2.0
+extends Node
+
+const MOUSE_CURSOR_DEFAULT = preload("uid://cee2juvnxco6c")
+const MOUSE_CURSOR_CROSS = preload("uid://bx11wyx7unc4q")
+
+@onready var hide_timer: Timer = %HideTimer
+
+
+func _ready() -> void:
+	Input.set_custom_mouse_cursor(MOUSE_CURSOR_DEFAULT, Input.CURSOR_ARROW, Vector2(0, 0))
+	Input.set_custom_mouse_cursor(MOUSE_CURSOR_CROSS, Input.CURSOR_CROSS, Vector2(32, 32))
+	Input.set_default_cursor_shape(Input.CURSOR_CROSS)
+
+	DialogueManager.dialogue_started.connect(_on_dialogue_started)
+	DialogueManager.dialogue_ended.connect(_on_dialogue_ended)
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		hide_timer.start()
+
+
+func _on_hide_timer_timeout() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+
+
+func _on_dialogue_started(_resource: DialogueResource) -> void:
+	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+
+
+func _on_dialogue_ended(_resource: DialogueResource) -> void:
+	Input.set_default_cursor_shape(Input.CURSOR_CROSS)

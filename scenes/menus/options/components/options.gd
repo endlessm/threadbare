@@ -1,14 +1,17 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
-extends CenterContainer
+extends Control
 
 signal back
 
-@onready var back_button: Button = %BackButton
+@export var back_button: Button
 
 
 func _ready() -> void:
+	visibility_changed.connect(_on_visibility_changed)
 	_on_visibility_changed()
+
+	back_button.pressed.connect(_on_back_button_pressed)
 
 
 func _on_visibility_changed() -> void:

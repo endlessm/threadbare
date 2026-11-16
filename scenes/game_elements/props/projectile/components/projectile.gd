@@ -9,7 +9,7 @@ extends RigidBody2D
 ## This is a piece of the fill-matching mechanic.
 ## [br][br]
 ## The projectile has a [member label] and optionally a [member color]
-## to tint it.
+## to tint it. These are assigned by the [ThrowingEnemy] when it fires a projectile.
 ## When the projectile collides with a [FillingBarrel] and both labels match,
 ## it calls [member FillingBarrel.increment()] and is removed.
 ## [br][br]
@@ -24,14 +24,6 @@ extends RigidBody2D
 @export var color: Color:
 	set = _set_color
 
-## The projectile SpriteFrames. It should have a looping animation in autoplay.
-@export var sprite_frames: SpriteFrames = preload("uid://b00dcfe4dtvkh"):
-	set = _set_sprite_frames
-
-## Sound that plays when the projectile hits something.
-@export var hit_sound_stream: AudioStream:
-	set = _set_hit_sound_stream
-
 ## Whether this projectile hits the player.
 @export var can_hit_player: bool = true:
 	set = _set_can_hit_player
@@ -44,6 +36,9 @@ extends RigidBody2D
 
 ## The speed of the initial impulse and the bouncing impulse.
 @export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s") var speed: float = 30.0
+
+## The speed after the projectile gets hit.
+@export_range(10., 100., 5., "or_greater", "or_less", "suffix:m/s") var hit_speed: float = 100.0
 
 ## The initial direction.
 @export var direction: Vector2 = Vector2(0, -1):
@@ -88,21 +83,6 @@ func _set_color(new_color: Color) -> void:
 	modulate = color if color else Color.WHITE
 
 
-func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
-	sprite_frames = new_sprite_frames
-	if not is_node_ready():
-		return
-	animated_sprite_2d.sprite_frames = sprite_frames
-	animated_sprite_2d.play(animated_sprite_2d.animation)
-
-
-func _set_hit_sound_stream(new_hit_sound_stream: AudioStream) -> void:
-	hit_sound_stream = new_hit_sound_stream
-	if not is_node_ready():
-		await ready
-	hit_sound.stream = hit_sound_stream
-
-
 func _set_direction(new_direction: Vector2) -> void:
 	if not new_direction.is_normalized():
 		direction = new_direction.normalized()
@@ -126,7 +106,7 @@ func _ready() -> void:
 		trail_fx_marker.add_child(_trail_particles)
 
 	_set_color(color)
-	_set_sprite_frames(sprite_frames)
+
 	duration_timer.wait_time = duration
 	duration_timer.start()
 	var impulse: Vector2 = direction * speed
@@ -157,6 +137,15 @@ func add_small_fx() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	add_small_fx()
 	duration_timer.start()
+
+	# Logic for Fragile Barrel
+	# We must check for the specific subclass first because it inherits from FillingBarrel
+	if body.owner is FragileBarrel:
+		body.owner.hit_by_droplet(label)
+		queue_free()
+		return
+
+	# Standard Logic for FillingBarrel
 	if body.owner is FillingBarrel:
 		var filling_barrel: FillingBarrel = body.owner as FillingBarrel
 		if filling_barrel.label == label:
@@ -164,11 +153,12 @@ func _on_body_entered(body: Node2D) -> void:
 			queue_free()
 
 
-func got_hit(player: Player) -> void:
+## Called from the Repel component when this body
+## enters the repel area.
+func got_repelled(repel_direction: Vector2) -> void:
 	add_small_fx()
 	duration_timer.start()
-	var hit_speed := 100.0
-	var hit_vector: Vector2 = player.global_position.direction_to(global_position) * hit_speed
+	var hit_vector: Vector2 = repel_direction * hit_speed
 	hit_sound.play()
 	animated_sprite_2d.speed_scale = 2
 	if _trail_particles:

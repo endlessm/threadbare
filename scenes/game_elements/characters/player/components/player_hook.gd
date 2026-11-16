@@ -17,6 +17,12 @@ extends Node2D
 ## Emitted when the string is thrown from the primary control.
 signal string_thrown
 
+## Emitted when character using the grappling hook starts or stops aiming.
+## [br][br]
+## This could be used to reduce the character movement while aiming with the same input controls
+## (the case of keyboard).
+signal aiming_changed(is_aiming: bool)
+
 ## The character using the grapping hook tool.
 ## [br][br]
 ## [b]Note:[/b] If the parent node is a CharacterBody2D and character isn't set,
@@ -56,6 +62,10 @@ signal string_thrown
 ## Repeatable texture to dress the line. It should wrap horizontally.
 @export var hook_string_texture: Texture2D = preload("uid://q3c2qavtccvu")
 
+## Scene containing a particle effect to display along the line,
+## when the string is removed.
+@export var hook_string_fx: PackedScene = preload("uid://boh6na4fuj0mv")
+
 ## All the areas that have been hooked and through which anchor points
 ## the [member hook_string] passes.
 ## [br][br]
@@ -87,6 +97,9 @@ var hook_string: Line2D
 ## This can be used to pan or zoom the camera to frame the ending of the grappling hook.
 @onready var hook_ending: Marker2D = $HookEnding
 
+## A [PhantomCamera2D] at the tip of the string.
+@onready var phantom_camera_2d: PhantomCamera2D = %PhantomCamera2D
+
 
 func _enter_tree() -> void:
 	if not character and get_parent() is CharacterBody2D:
@@ -95,7 +108,15 @@ func _enter_tree() -> void:
 
 func _set_character(new_character: CharacterBody2D) -> void:
 	character = new_character
+	if character is Player:
+		(character as Player).mode_changed.connect(_on_player_mode_changed)
 	update_configuration_warnings()
+
+
+func _on_player_mode_changed(mode: Player.Mode) -> void:
+	if mode == Player.Mode.DEFEATED:
+		if hook_string:
+			shatter_string()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -123,6 +144,22 @@ func _new_hook_string() -> Line2D:
 	return new_hook_string
 
 
+## Return the absolute path to the limit target of the current active camera, if it has one.
+func _get_phantom_camera_limit_target() -> NodePath:
+	var phantom_camera_hosts := PhantomCameraManager.phantom_camera_hosts
+	if not phantom_camera_hosts:
+		return ""
+	var active_pcam := phantom_camera_hosts[0].get_active_pcam() as PhantomCamera2D
+	if not active_pcam:
+		return ""
+	if not active_pcam.limit_target:
+		return ""
+	if active_pcam.limit_target.is_absolute():
+		return active_pcam.limit_target
+	var absolute_target_path := active_pcam.get_node(active_pcam.limit_target).get_path()
+	return absolute_target_path
+
+
 ## Called when the area was hooked.
 ## [br][br]
 ## Part of group hook_listener.
@@ -131,11 +168,16 @@ func hooked(_new_hooked_to: HookableArea, is_loop: bool) -> void:
 	if not hook_string:
 		hook_string = _new_hook_string()
 	hook_string.add_point(p, 0)
+	var limit_target := _get_phantom_camera_limit_target()
+	if limit_target:
+		phantom_camera_2d.limit_target = limit_target
+	phantom_camera_2d.priority = 20
 	hook_ending.global_position = p
 	areas_hooked.append(_new_hooked_to)
 	if not _new_hooked_to.hook_control:
+		# The area hooked doesn't have a control to aim from it, so start pulling:
 		pull_string()
-	if is_loop:
+	elif is_loop:
 		# Play a blink animation and then remove the string:
 		var tween: Tween = create_tween()
 		tween.tween_property(hook_string, "modulate:a", 0.0, 0.1).set_trans(
@@ -148,6 +190,9 @@ func hooked(_new_hooked_to: HookableArea, is_loop: bool) -> void:
 		tween.play()
 		await tween.finished
 		remove_string()
+	else:
+		# Start aiming:
+		aiming_changed.emit(true)
 
 
 ## Called when a throw has hit a wall.
@@ -172,9 +217,6 @@ func hit_air(air_point: Vector2) -> void:
 
 ## Remove the [member hook_string].
 func remove_string() -> void:
-	if pulling:
-		return
-
 	if hook_string:
 		hook_string.queue_free()
 
@@ -188,6 +230,8 @@ func remove_string() -> void:
 			area.hook_control.state = HookControl.State.DISABLED
 	areas_hooked.clear()
 
+	aiming_changed.emit(false)
+
 	# Wait for the string to be freed before reenabling aiming:
 	if is_instance_valid(hook_string):
 		await hook_string.tree_exited
@@ -196,7 +240,32 @@ func remove_string() -> void:
 	hook_control.release()
 	hook_control.state = HookControl.State.AIMING
 
+	phantom_camera_2d.priority = 0
 	hook_ending.global_position = global_position
+
+
+## Return points distributed evenly along the string
+func tessellate_string(tolerance_length: int = 20) -> PackedVector2Array:
+	var curve: Curve2D = Curve2D.new()
+	for p in hook_string.points:
+		curve.add_point(p)
+	return curve.tessellate_even_length(5, tolerance_length)
+
+
+## Remove the string adding a shatter FX to it.
+func shatter_string() -> void:
+	var points: PackedVector2Array = tessellate_string(30)
+	# It is a bit odd to emit particles in several points.
+	# Ideally the particle system should provide a line shape emission.
+	# The closest is to use "Points" as emission shape, and provide a texture.
+	# But that seems more complex than tessellating the line.
+	for p in points:
+		var fx: GPUParticles2D = hook_string_fx.instantiate()
+		add_sibling(fx)
+		fx.global_position = p
+		fx.emitting = true
+		fx.finished.connect(fx.queue_free)
+	remove_string()
 
 
 ## Start pulling.
@@ -204,7 +273,26 @@ func remove_string() -> void:
 ## While pulling, the player is allowed to go through non-walkable floor.
 func pull_string() -> void:
 	pulling = true
+
+	# While pulling, this class takes control over the player movement.
+	if character.has_method("take_control"):
+		character.take_control(self)
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, false)
+	phantom_camera_2d.priority = 0
+
+	# If the entity has a got_pulled handler, call it and connect to the pull_released signal
+	# of the HookableArea. The entity is responsible to call it.
+	var ending_area := get_ending_area()
+	if ending_area.controlled_entity.has_method("got_pulled"):
+		ending_area.pull_released.connect(_on_pull_released, CONNECT_ONE_SHOT)
+		var direction := hook_string.points[0].direction_to(hook_string.points[1])
+		ending_area.controlled_entity.got_pulled(direction)
+
+
+func _on_pull_released(cancelled: bool) -> void:
+	if cancelled and hook_string:
+		shatter_string()
+	stop_pulling()
 
 
 ## Stop pulling and remove the [member hook_string].
@@ -214,22 +302,10 @@ func pull_string() -> void:
 func stop_pulling() -> void:
 	character.set_collision_mask_value(Enums.CollisionLayers.NON_WALKABLE_FLOOR, true)
 	pulling = false
+	# After pulling, return control to the user.
+	if character.has_method("return_control"):
+		character.return_control(self)
 	remove_string()
-
-
-## True if this hook's control is throwing or the hook control of the last area hooked is aiming.
-## [br][br]
-## Used to slow down the character movement for more precise control.
-func is_throwing_or_aiming() -> bool:
-	var ending_area := get_ending_area()
-	return (
-		hook_control.pressing_throw_action
-		or (
-			ending_area
-			and ending_area.hook_control
-			and ending_area.hook_control.state == HookControl.State.AIMING
-		)
-	)
 
 
 ## Helper function to return the last area hooked, or
@@ -240,7 +316,7 @@ func get_ending_area() -> HookableArea:
 	return areas_hooked[-1]
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not is_instance_valid(hook_string):
 		return
 	if pulling:
@@ -261,17 +337,19 @@ func _process_hook_string(delta: float) -> void:
 	# TODO: Only updates the endings. Connections are assumed static for now.
 
 	# Move last point to the player position.
-	hook_string.points[-1] = character.position + position
+	hook_string.set_point_position(hook_string.get_point_count() - 1, character.position + position)
 
 	var ending_area := get_ending_area()
 	if ending_area:
 		# Move first point to the hooked position.
-		hook_string.points[0] = ending_area.get_anchor_position()
+		hook_string.set_point_position(0, ending_area.get_anchor_position())
 
 	else:
 		# Not hooked, so a throw that hit air or wall.
 		# Progressively shorten the line.
-		hook_string.points[0] = hook_string.points[0].lerp(hook_string.points[1], 10.0 * delta)
+		hook_string.set_point_position(
+			0, hook_string.points[0].lerp(hook_string.points[1], 10.0 * delta)
+		)
 		# Remove the string when the line is short enough.
 		if (
 			(hook_string.points[1] - hook_string.points[0]).length_squared()
@@ -280,9 +358,10 @@ func _process_hook_string(delta: float) -> void:
 			remove_string()
 
 	if not pulling:
+		# Remove the string (shatter it) when the line exceeds the max length.
 		var v: Vector2 = hook_string.points[-1] - hook_string.points[-2]
 		if v.length_squared() > string_max_length * string_max_length:
-			remove_string()
+			shatter_string()
 
 
 func _process_pulling(_delta: float) -> void:
@@ -293,7 +372,7 @@ func _process_pulling(_delta: float) -> void:
 		return
 
 	var target := ending_area.controlled_entity
-	var weight := ending_area.weight if target is CharacterBody2D else 1.0
+	var weight := ending_area.weight
 
 	# Vector from player to first point:
 	var player_distance: Vector2 = hook_string.points[-2] - hook_string.points[-1]
@@ -327,11 +406,12 @@ func _process_pulling(_delta: float) -> void:
 			return
 
 	character.velocity = player_distance.normalized() * pull_velocity * weight
-	var player_collided := character.move_and_slide()
+	if weight != 0:
+		var player_collided := character.move_and_slide()
 
-	if player_collided:
-		if character.get_real_velocity().length_squared() <= stuck_speed * stuck_speed:
-			stop_pulling()
+		if player_collided:
+			if character.get_real_velocity().length_squared() <= stuck_speed * stuck_speed:
+				stop_pulling()
 
 	if target is CharacterBody2D:
 		target.velocity = target_distance.normalized() * pull_velocity * (1 - weight)

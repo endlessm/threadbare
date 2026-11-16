@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://dgrrudegturnw"]
+
+[ext_resource type="Material" uid="uid://b7kf0suo0sc7k" path="res://scenes/game_elements/components/cel_shading_recolor_material.tres" id="1_nj51j"]
+[ext_resource type="Script" uid="uid://c0a7xf5qx8p4y" path="res://scenes/game_elements/components/cel_shading_recolor.gd" id="2_nj51j"]
+[ext_resource type="Script" uid="uid://dl6rgfwdn3qp4" path="res://scenes/game_elements/characters/components/character_randomizer.gd" id="2_xf1o5"]
+[ext_resource type="SpriteFrames" uid="uid://do4waj3mgr6vw" path="res://scenes/game_elements/characters/components/sprite_frames/townie-legs_003.dy_-12.tres" id="3_4rgc5"]
+[ext_resource type="Script" uid="uid://boyesrjdix688" path="res://scenes/game_logic/sprite_behaviors/random_texture_sprite_behavior.gd" id="5_8nfuc"]
+[ext_resource type="SpriteFrames" uid="uid://bygxgwwtt1j6h" path="res://scenes/game_elements/characters/components/sprite_frames/townie-legs_001.tres" id="5_r7ycj"]
+[ext_resource type="SpriteFrames" uid="uid://ubitgryup0jx" path="res://scenes/game_elements/characters/components/sprite_frames/townie-legs_002.dy_-6.tres" id="6_hbfaq"]
+[ext_resource type="Script" uid="uid://dy68p7gf07pi3" path="res://scenes/game_logic/sprite_behaviors/character_sprite_behavior.gd" id="10_syy7w"]
+[ext_resource type="SpriteFrames" uid="uid://u85wwi2wot2r" path="res://scenes/game_elements/characters/components/sprite_frames/townie-body_002.tres" id="11_tidpj"]
+[ext_resource type="SpriteFrames" uid="uid://dll1wbldwfgbt" path="res://scenes/game_elements/characters/components/sprite_frames/townie-body_003.dx_-4.dy_-16.tres" id="12_hurny"]
+[ext_resource type="SpriteFrames" uid="uid://cyy8mv2nshtaq" path="res://scenes/game_elements/characters/components/sprite_frames/townie-head_002.tres" id="15_byt3c"]
+[ext_resource type="SpriteFrames" uid="uid://tc0nuhppfl8p" path="res://scenes/game_elements/characters/components/sprite_frames/townie-body_001.tres" id="16_5y6le"]
+[ext_resource type="SpriteFrames" uid="uid://c03umtasls62d" path="res://scenes/game_elements/characters/components/sprite_frames/townie-head_003.tres" id="16_kccyr"]
+[ext_resource type="SpriteFrames" uid="uid://dl7xeteu0n2ia" path="res://scenes/game_elements/characters/components/sprite_frames/townie-head_004.tres" id="17_syy7w"]
+[ext_resource type="SpriteFrames" uid="uid://myvflc68qwmu" path="res://scenes/game_elements/characters/components/sprite_frames/townie-head_005.tres" id="18_4rgc5"]
+[ext_resource type="SpriteFrames" uid="uid://x3oxp35ukm62" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_001.tres" id="20_syy7w"]
+[ext_resource type="SpriteFrames" uid="uid://dh1kr2fwfwlxq" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_003.tres" id="22_4rgc5"]
+[ext_resource type="SpriteFrames" uid="uid://crshpjwcenpa5" path="res://scenes/game_elements/characters/components/sprite_frames/townie-head_001.tres" id="22_8wbfo"]
+[ext_resource type="SpriteFrames" uid="uid://285s7e1vheno" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_004.tres" id="23_umw6f"]
+[ext_resource type="SpriteFrames" uid="uid://dnfyg3i87cp17" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_005.tres" id="24_hskxo"]
+[ext_resource type="SpriteFrames" uid="uid://c43yaqne7a2kh" path="res://scenes/game_elements/characters/components/sprite_frames/townie-hair_002.tres" id="33_m1eb2"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qs15o"]
+
+[sub_resource type="ColorPalette" id="ColorPalette_byt3c"]
+colors = PackedColorArray(0.9376, 0.824, 0.84959996, 1, 0.922, 0.78, 0.812, 1, 0.7376, 0.624, 0.64959997, 1, 0.08627451, 0.10980392, 0.18039216, 1, 0.7032, 0.5248, 0.33200002, 1, 0.629, 0.406, 0.165, 1, 0.5032, 0.32479998, 0.13200001, 1, 0.08627451, 0.10980392, 0.18039216, 1, 0.5496, 0.4232, 0.59360003, 1, 0.437, 0.279, 0.492, 1, 0.34960002, 0.22320001, 0.39360002, 1, 0.08627451, 0.10980392, 0.18039216, 1)
+
+[node name="Townie" type="CharacterBody2D" unique_id=1098678013 node_paths=PackedStringArray("cel_shading_recolor")]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("2_xf1o5")
+cel_shading_recolor = NodePath("CelShadingRecolor")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=128596675]
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_qs15o")
+
+[node name="AnimatedSprite2DLegs" type="AnimatedSprite2D" parent="." unique_id=385222684]
+material = ExtResource("1_nj51j")
+position = Vector2(-3, -31)
+sprite_frames = ExtResource("3_4rgc5")
+animation = &"idle"
+
+[node name="RandomTextureSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs" unique_id=471097323 node_paths=PackedStringArray("sprite")]
+script = ExtResource("5_8nfuc")
+sprite_frames = Array[SpriteFrames]([ExtResource("5_r7ycj"), ExtResource("6_hbfaq"), ExtResource("3_4rgc5")])
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://boyesrjdix688"
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs" unique_id=1671495161 node_paths=PackedStringArray("character", "sprite")]
+position = Vector2(3, 30)
+script = ExtResource("10_syy7w")
+character = NodePath("../..")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="AnimatedSprite2DBody" type="AnimatedSprite2D" parent="AnimatedSprite2DLegs" unique_id=2098127821]
+material = ExtResource("1_nj51j")
+position = Vector2(0, -12)
+sprite_frames = ExtResource("16_5y6le")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="RandomTextureSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=1733667753 node_paths=PackedStringArray("sprite")]
+script = ExtResource("5_8nfuc")
+sprite_frames = Array[SpriteFrames]([ExtResource("16_5y6le"), ExtResource("11_tidpj"), ExtResource("12_hurny")])
+sprite = NodePath("..")
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=273990310 node_paths=PackedStringArray("character", "sprite")]
+script = ExtResource("10_syy7w")
+character = NodePath("../../..")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="AnimatedSprite2DHead" type="AnimatedSprite2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody" unique_id=421503015]
+material = ExtResource("1_nj51j")
+sprite_frames = ExtResource("22_8wbfo")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="RandomTextureSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=592927150 node_paths=PackedStringArray("sprite")]
+script = ExtResource("5_8nfuc")
+sprite_frames = Array[SpriteFrames]([ExtResource("22_8wbfo"), ExtResource("15_byt3c"), ExtResource("16_kccyr"), ExtResource("17_syy7w"), ExtResource("18_4rgc5")])
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://boyesrjdix688"
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=1897959413 node_paths=PackedStringArray("character", "sprite")]
+script = ExtResource("10_syy7w")
+character = NodePath("../../../..")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="AnimatedSprite2DHair" type="AnimatedSprite2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead" unique_id=2123781958]
+material = ExtResource("1_nj51j")
+sprite_frames = ExtResource("33_m1eb2")
+animation = &"idle"
+autoplay = "idle"
+metadata/_edit_lock_ = true
+
+[node name="RandomTextureSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHair" unique_id=358939124 node_paths=PackedStringArray("sprite")]
+script = ExtResource("5_8nfuc")
+sprite_frames = Array[SpriteFrames]([ExtResource("20_syy7w"), ExtResource("33_m1eb2"), ExtResource("22_4rgc5"), ExtResource("23_umw6f"), ExtResource("24_hskxo")])
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://boyesrjdix688"
+
+[node name="CharacterSpriteBehavior" type="Node2D" parent="AnimatedSprite2DLegs/AnimatedSprite2DBody/AnimatedSprite2DHead/AnimatedSprite2DHair" unique_id=280440134 node_paths=PackedStringArray("character", "sprite")]
+script = ExtResource("10_syy7w")
+character = NodePath("../../../../..")
+sprite = NodePath("..")
+metadata/_custom_type_script = "uid://dy68p7gf07pi3"
+
+[node name="CelShadingRecolor" type="Node" parent="." unique_id=1327679537]
+script = ExtResource("2_nj51j")
+shader_material = ExtResource("1_nj51j")
+new_colors_palette = SubResource("ColorPalette_byt3c")
+metadata/_custom_type_script = "uid://c0a7xf5qx8p4y"

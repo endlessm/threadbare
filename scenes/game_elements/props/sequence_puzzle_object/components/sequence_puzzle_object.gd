@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 @tool
 class_name SequencePuzzleObject
-extends StaticBody2D
+extends Node2D
 
 ## Emitted when the object is kicked by the player.
 signal kicked
@@ -18,6 +18,12 @@ const REQUIRED_ANIMATIONS: Array[StringName] = [&"default", &"struck"]
 ## See [constant SequencePuzzleObject.REQUIRED_ANIMATIONS].
 @export var sprite_frames: SpriteFrames = DEFAULT_SPRITE_FRAMES:
 	set = _set_sprite_frames
+
+## Color to apply to the object's sprites. Use this rather than
+## [Node2D.modulate] to avoid tinting any other visible children of this node,
+## such as particles.
+@export var sprite_modulate: Color = Color.WHITE:
+	set = _set_sprite_modulate
 
 ## Sound to play when the player strikes this object.
 @export var audio_stream: AudioStream
@@ -44,6 +50,12 @@ func _set_sprite_frames(new_sprite_frames: SpriteFrames) -> void:
 	update_configuration_warnings()
 
 
+func _set_sprite_modulate(new_value: Color) -> void:
+	sprite_modulate = new_value
+	if animated_sprite:
+		animated_sprite.modulate = new_value
+
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: Array = []
 	for animation in REQUIRED_ANIMATIONS:
@@ -54,6 +66,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 func _ready() -> void:
 	_set_sprite_frames(sprite_frames)
+	_set_sprite_modulate(sprite_modulate)
 	audio_stream_player_2d.stream = audio_stream
 
 

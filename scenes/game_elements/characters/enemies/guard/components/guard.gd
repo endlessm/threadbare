@@ -5,7 +5,12 @@ class_name Guard extends CharacterBody2D
 ## Enemy type that patrols along a path and raises an alert if the player is detected.
 
 ## Emitted when the player is detected.
-signal player_detected(player: Player)
+## [br][br]
+## As the name suggests, this is typically a [Player], but may be some
+## other [PhysicsBody2D] (or even a [TileMapLayer]) that is in the
+## collision layer(s) detected by the guard's detection areas' [member
+## Area2D.collision_mask].
+signal player_detected(player: Node2D)
 
 enum State {
 	## Going along the path.
@@ -85,7 +90,7 @@ var state: State = State.PATROLLING:
 	set = _set_state
 
 # The player that's being detected.
-var _player: Player
+var _player: Node2D
 
 ## Area that represents the sight of the guard. If a player is in this area
 ## and there are no walls in between detected by [member sight_ray_cast], it
@@ -454,16 +459,12 @@ func _set_alert_other_sound_stream(new_value: AudioStream) -> void:
 
 
 func _on_instant_detection_area_body_entered(body: Node2D) -> void:
-	if not body is Player:
-		return
 	state = State.ALERTED
-	player_detected.emit(body as Player)
+	player_detected.emit(body)
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
-	if not body is Player:
-		return
-	_player = body as Player
+	_player = body
 	if _is_sight_to_point_blocked(body.global_position):
 		return
 	if player_instantly_detected_on_sight:
@@ -474,8 +475,6 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
-	if not body is Player:
-		return
 	_player = null
 	last_seen_position = body.global_position
 	if state == State.DETECTING:

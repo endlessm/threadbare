@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://b2r2pvcppbl4v"]
+
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_txh2t"]
+[ext_resource type="Script" uid="uid://ntkyy7hnkwh7" path="res://scenes/ui_elements/input_hints/components/labeled_input_hint.gd" id="2_y4ddx"]
+[ext_resource type="Material" uid="uid://cruf3tlajs4jo" path="res://scenes/ui_elements/input_hints/components/drop_shadow_material.tres" id="3_pwflt"]
+[ext_resource type="Texture2D" uid="uid://d2s8w7any6x45" path="res://assets/third_party/inputs/atlas_kenney_input_prompts_1.4/keyboard/keyboard_space.tres" id="3_vvpol"]
+[ext_resource type="Script" uid="uid://cbj0406q05dly" path="res://scenes/game_elements/props/hint/input_key/interact_input.gd" id="3_y4ddx"]
+[ext_resource type="Resource" uid="uid://c1beocky1qjxi" path="res://scenes/game_elements/props/hint/resources/devices.tres" id="5_gekfg"]
+
+[node name="InteractInputHint" type="HBoxContainer" unique_id=1438993105]
+theme = ExtResource("1_txh2t")
+script = ExtResource("2_y4ddx")
+
+[node name="RepelHint" type="TextureRect" parent="." unique_id=492172300]
+material = ExtResource("3_pwflt")
+layout_mode = 2
+size_flags_vertical = 8
+texture = ExtResource("3_vvpol")
+script = ExtResource("3_y4ddx")
+action_name = &"interact"
+devices = ExtResource("5_gekfg")
+
+[node name="Label" type="Label" parent="." unique_id=2095697003]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+theme_override_font_sizes/font_size = 25
+text = "Interact"

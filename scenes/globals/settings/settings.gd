@@ -4,17 +4,40 @@ extends Node
 
 const SETTINGS_PATH := "user://settings.cfg"
 
+const META_SECTION := "Meta"
+const VERSION_KEY := "Version"
+const VERSION := 1
+
 const VOLUME_SECTION := "Volume"
-const MIN_VOLUME := -30.0
+const MIN_VOLUME := 0.0
+const MAX_VOLUME := 1.0
 const DEFAULT_VOLUMES: Dictionary[String, float] = {
-	"Music": -15.0,
+	"Music": 0.5,
 }
+
+const DISPLAY_SECTION := "Display"
+const SHOW_HUD_KEY := "Show HUD"
+
+const LANGUAGE_SECTION := "Language"
+const LOCALE_KEY := "Locale"
+const DEFAULT_LOCALE := "en"
 
 ## 5:4 ratio of 1280×1024, 1024×768, and other pre-widescreen monitors.
 const MINIMUM_ASPECT_RATIO := 1.25
 
 ## An arbitrary wide ratio, lower than 21:9 ("ultrawide").
 const MAXIMUM_ASPECT_RATIO := 2.2
+
+@export var fullscreen: bool:
+	get = is_fullscreen,
+	set = set_fullscreen
+
+@export var show_input_hud := true:
+	get:
+		return _settings.get_value(DISPLAY_SECTION, SHOW_HUD_KEY, true)
+	set(new_value):
+		_settings.set_value(DISPLAY_SECTION, SHOW_HUD_KEY, new_value)
+		_save()
 
 var _settings := ConfigFile.new()
 
@@ -27,7 +50,13 @@ func _ready() -> void:
 	if err != OK and err != ERR_FILE_NOT_FOUND:
 		push_error("Failed to load %s: %s" % [SETTINGS_PATH, err])
 
+	var file_version: Variant = _settings.get_value(META_SECTION, VERSION_KEY, 0)
+	if file_version != VERSION:
+		_settings.clear()
+	_settings.set_value(META_SECTION, VERSION_KEY, VERSION)
+
 	_restore_volumes()
+	_restore_locale()
 	_load_project_settings_overrides()
 	_set_minimum_window_size()
 
@@ -35,10 +64,11 @@ func _ready() -> void:
 func _restore_volumes() -> void:
 	for bus_idx in AudioServer.bus_count:
 		var bus := AudioServer.get_bus_name(bus_idx)
-		var volume_db: float = _settings.get_value(
-			VOLUME_SECTION, bus, DEFAULT_VOLUMES.get(bus, 0.0)
+		var volume_linear: float = _settings.get_value(
+			VOLUME_SECTION, bus, DEFAULT_VOLUMES.get(bus, MAX_VOLUME)
 		)
-		_set_volume(bus_idx, volume_db)
+
+		_set_volume(bus_idx, volume_linear)
 
 
 func _load_project_settings_overrides() -> void:
@@ -68,14 +98,14 @@ func _set_minimum_window_size() -> void:
 func get_volume(bus: String) -> float:
 	var bus_idx := AudioServer.get_bus_index(bus)
 
-	return AudioServer.get_bus_volume_db(bus_idx)
+	return AudioServer.get_bus_volume_linear(bus_idx)
 
 
-func set_volume(bus: String, volume_db: float) -> void:
+func set_volume(bus: String, volume_linear: float) -> void:
 	var bus_idx := AudioServer.get_bus_index(bus)
-	_set_volume(bus_idx, volume_db)
+	_set_volume(bus_idx, volume_linear)
 
-	_settings.set_value(VOLUME_SECTION, bus, volume_db)
+	_settings.set_value(VOLUME_SECTION, bus, volume_linear)
 	_save()
 
 
@@ -83,11 +113,21 @@ func is_fullscreen() -> bool:
 	return DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 
 
-func toggle_fullscreen(toggled_on: bool) -> void:
+func set_fullscreen(toggled_on: bool) -> void:
 	if toggled_on:
 		set_window_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 	else:
 		set_window_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
+
+func get_locale() -> String:
+	return TranslationServer.get_locale()
+
+
+func set_locale(locale: String) -> void:
+	TranslationServer.set_locale(locale)
+	_settings.set_value(LANGUAGE_SECTION, LOCALE_KEY, locale)
+	_save()
 
 
 func set_window_mode(window_mode: int) -> void:
@@ -102,10 +142,13 @@ func set_window_mode(window_mode: int) -> void:
 			push_warning("Failed to save to", _overrides_path, ": ", error_string(ret))
 
 
-func _set_volume(bus_idx: int, volume_db: float) -> void:
-	AudioServer.set_bus_volume_db(bus_idx, volume_db)
-	var mute := volume_db <= MIN_VOLUME
-	AudioServer.set_bus_mute(bus_idx, mute)
+func _restore_locale() -> void:
+	var locale: String = _settings.get_value(LANGUAGE_SECTION, LOCALE_KEY, DEFAULT_LOCALE)
+	TranslationServer.set_locale(locale)
+
+
+func _set_volume(bus_idx: int, volume_linear: float) -> void:
+	AudioServer.set_bus_volume_linear(bus_idx, volume_linear)
 
 
 func _save() -> void:

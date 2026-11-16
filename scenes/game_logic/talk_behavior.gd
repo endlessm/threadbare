@@ -22,6 +22,12 @@ extends Node
 @export var interact_area: InteractArea:
 	set = _set_interact_area
 
+## Other nodes in the scene tree to make available in [member dialogue], in addition to
+## properties defined on the parent node and on the [Player] scene.
+## Each node in this list can be accessed by its [member Node.name].
+## Having multiple nodes in this list with the same name is not advised.
+@export var extra_context: Array[Node]
+
 var before_dialogue: Callable
 
 
@@ -50,6 +56,9 @@ func _ready() -> void:
 func _on_interaction_started(player: Player, _from_right: bool) -> void:
 	if before_dialogue:
 		await before_dialogue.call()
-	DialogueManager.show_dialogue_balloon(dialogue, title, [get_parent(), player])
+	var extra: Dictionary[String, Node]
+	for node: Node in extra_context:
+		extra[node.name] = node
+	DialogueManager.show_dialogue_balloon(dialogue, title, [get_parent(), player, extra])
 	await DialogueManager.dialogue_ended
 	interact_area.end_interaction()

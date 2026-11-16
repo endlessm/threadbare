@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dvj15pnuqr2ua"]
+[gd_scene format=3 uid="uid://dvj15pnuqr2ua"]
 
 [ext_resource type="Texture2D" uid="uid://b5bkbfgvghf7u" path="res://scenes/game_elements/props/button_item/components/button-purple.png" id="1_atpgr"]
 [ext_resource type="Script" uid="uid://18l0p87ifn3f" path="res://scenes/game_elements/props/hookable_button_item/components/hookable_button_item.gd" id="1_oue3d"]
@@ -48,36 +48,37 @@ height = 12.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_atpgr"]
 size = Vector2(60, 60)
 
-[node name="HookableButtonItem" type="CharacterBody2D"]
+[node name="HookableButtonItem" type="CharacterBody2D" unique_id=1693579738]
 collision_layer = 0
 collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_oue3d")
 
-[node name="ButtonItem" parent="." instance=ExtResource("1_vymxr")]
+[node name="ButtonItem" parent="." unique_id=1967107361 instance=ExtResource("1_vymxr")]
 unique_name_in_owner = true
 
-[node name="ButtonSprite" parent="ButtonItem" index="0"]
+[node name="ButtonSprite" parent="ButtonItem" index="0" unique_id=1194360136]
 sprite_frames = SubResource("SpriteFrames_6ba1g")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=125292775]
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_i5psm")
 disabled = true
 
-[node name="HookableArea" type="Area2D" parent="." node_paths=PackedStringArray("anchor_point")]
+[node name="HookableArea" type="Area2D" parent="." unique_id=1267513436 node_paths=PackedStringArray("controlled_entity", "anchor_point")]
 collision_layer = 4096
 collision_mask = 64
 script = ExtResource("3_qptlv")
+controlled_entity = NodePath("..")
 anchor_point = NodePath("Marker2D")
 weight = 0.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HookableArea" unique_id=1258628892]
 position = Vector2(0, -24)
 shape = SubResource("RectangleShape2D_atpgr")
 debug_color = Color(0.689707, 0.288376, 1, 0.42)
 
-[node name="Marker2D" type="Marker2D" parent="HookableArea"]
+[node name="Marker2D" type="Marker2D" parent="HookableArea" unique_id=646102193]
 position = Vector2(0, -24)
 
 [connection signal="collected" from="ButtonItem" to="." method="_on_button_item_collected"]

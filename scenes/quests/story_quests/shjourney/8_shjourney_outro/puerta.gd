@@ -42,11 +42,6 @@ func open() -> void:
 	door_sound.play()
 	set_toggled(true)
 
-	# ✅ Esto debe ir dentro de la función, indentado correctamente
-	var player = get_tree().get_first_node_in_group("player")
-	if player:
-		player.mode = Player.Mode.COZY
-
 
 func close() -> void:
 	set_toggled(false)

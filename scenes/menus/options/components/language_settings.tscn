@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://w0uscqwgsi4w"]
+
+[ext_resource type="Theme" uid="uid://cvitou84ni7qe" path="res://scenes/ui_elements/components/theme.tres" id="1_abc"]
+[ext_resource type="Script" uid="uid://dk2wa6nonu0jc" path="res://scenes/menus/options/components/language_option.gd" id="2_abc"]
+
+[node name="LanguageSettings" type="VBoxContainer" unique_id=85827291]
+offset_left = 96.0
+offset_top = 64.0
+offset_right = 544.0
+offset_bottom = 254.0
+theme = ExtResource("1_abc")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1311807474]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"PlayerRibbon"
+
+[node name="Label" type="Label" parent="PanelContainer" unique_id=1487597883]
+layout_mode = 2
+text = "Language Settings"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1302951996]
+layout_mode = 2
+script = ExtResource("2_abc")
+
+[node name="EnglishButton" type="Button" parent="HBoxContainer" unique_id=993974861]
+unique_name_in_owner = true
+auto_translate_mode = 2
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"FlatButton"
+toggle_mode = true
+text = "English"
+
+[node name="SpanishButton" type="Button" parent="HBoxContainer" unique_id=355814411]
+unique_name_in_owner = true
+auto_translate_mode = 2
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"FlatButton"
+toggle_mode = true
+text = "Español"
+
+[connection signal="pressed" from="HBoxContainer/EnglishButton" to="HBoxContainer" method="_on_button_pressed" binds= ["en"]]
+[connection signal="pressed" from="HBoxContainer/SpanishButton" to="HBoxContainer" method="_on_button_pressed" binds= ["es"]]

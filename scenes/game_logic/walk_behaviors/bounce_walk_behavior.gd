@@ -8,7 +8,7 @@ extends BaseCharacterBehavior
 ## Make the character move and bounce on walls.
 ##
 ## The character bounces when it is colliding with a wall and moving slower than
-## the [member CharacterSpeeds.bounce_speed] configured in [member speeds].
+## the [member CharacterSpeeds.walk_speed] configured in [member speeds].
 
 ## Emitted when [member direction] is updated.
 signal direction_changed

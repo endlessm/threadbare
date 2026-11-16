@@ -26,7 +26,7 @@ body {
 	outline: none;
 }
 
-#status, #status-splash, #status-progress {
+#status, #status-splash, #status-progress, #status-ready {
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -44,6 +44,10 @@ body {
 	justify-content: center;
 	align-items: center;
 	visibility: hidden;
+}
+
+#status.is-ready {
+	cursor: pointer;
 }
 
 #status-splash {
@@ -66,7 +70,7 @@ body {
 	image-rendering: pixelated;
 }
 
-#status-progress, #status-notice {
+#status-progress, #status-notice, #status-ready {
 	display: none;
 }
 
@@ -74,6 +78,18 @@ body {
 	bottom: 10%;
 	width: 50%;
 	margin: 0 auto;
+}
+
+#status-ready {
+	bottom: 10%;
+	width: 25%;
+	margin: 0 auto;
+	text-align: center;
+	font-family: "Jersey 25", sans-serif;
+	font-weight: 400;
+	font-style: normal;
+	font-size: 41px;
+	text-decoration: underline;
 }
 
 #status-notice {
@@ -91,6 +107,9 @@ body {
 }
 		</style>
 		$GODOT_HEAD_INCLUDE
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Jersey+25&display=swap" rel="stylesheet">
 	</head>
 	<body>
 		<canvas id="canvas">
@@ -105,6 +124,7 @@ body {
 			<img id="status-splash" class="$GODOT_SPLASH_CLASSES" src="$GODOT_SPLASH" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
+			<div id="status-ready">Play Threadbare</div>
 		</div>
 
 		<script src="$GODOT_URL"></script>
@@ -117,6 +137,7 @@ const engine = new Engine(GODOT_CONFIG);
 	const statusOverlay = document.getElementById('status');
 	const statusProgress = document.getElementById('status-progress');
 	const statusNotice = document.getElementById('status-notice');
+	const statusReady = document.getElementById('status-ready');
 
 	let initializing = true;
 	let statusMode = '';
@@ -133,6 +154,8 @@ const engine = new Engine(GODOT_CONFIG);
 		statusOverlay.style.visibility = 'visible';
 		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
 		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
+		statusReady.style.display = mode === 'ready' ? 'block' : 'none';
+		statusOverlay.classList.toggle('is-ready', mode === 'ready');
 		statusMode = mode;
 	}
 
@@ -197,7 +220,7 @@ const engine = new Engine(GODOT_CONFIG);
 		}
 	} else {
 		setStatusMode('progress');
-		engine.startGame({
+		engine.config.update({
 			'onProgress': function (current, total) {
 				if (current > 0 && total > 0) {
 					statusProgress.value = current;
@@ -207,6 +230,21 @@ const engine = new Engine(GODOT_CONFIG);
 					statusProgress.removeAttribute('max');
 				}
 			},
+		});
+		const exe = engine.config.executable;
+		const pack = engine.config.mainPack || `${exe}.pck`;
+		engine.config.args = ['--main-pack', pack].concat(engine.config.args);
+		Promise.all([
+			engine.init(exe),
+			engine.preloadFile(pack, pack),
+		]).then(() => {
+			return new Promise((resolve) => {
+				setStatusMode('ready');
+				// Wait for a click anywhere on the page, then resolve the promise.
+				statusOverlay.addEventListener('click', resolve, {once: true});
+			});
+		}).then(() => {
+			return engine.start();
 		}).then(() => {
 			setStatusMode('hidden');
 		}, displayFailureNotice);
