@@ -15,20 +15,14 @@ extends TextureRect
 	set(new_value):
 		sprite_frames = new_value
 		notify_property_list_changed()
-		update_configuration_warnings()
-		if is_node_ready():
-			_restart()
+		_update_animation()
 
 ## The animation from [member sprite_frames] to display. If this animation is
 ## not defined in [member sprite_frames], no texture is shown.
 @export var animation_name: StringName = &"idle":
 	set(new_value):
 		animation_name = new_value
-		update_configuration_warnings()
-		if is_node_ready():
-			_restart()
-
-@export_tool_button("Restart Animation") var restart_animation := _restart
+		_update_animation()
 
 var _frame: int = 0
 var _time_to_next_frame: float = 0.0
@@ -54,67 +48,45 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 func _ready() -> void:
-	_restart()
+	_update_animation()
+
+
+func _update_animation() -> void:
+	update_configuration_warnings()
+
+	if not sprite_frames or not sprite_frames.has_animation(animation_name):
+		texture = null
+		_frame = -1
+		return
+
+	_frame = 0
+	_update_texture()
 
 
 func _update_texture() -> void:
+	if _frame >= sprite_frames.get_frame_count(animation_name):
+		if sprite_frames.get_animation_loop(animation_name):
+			_frame = 0
+		else:
+			_frame = -1
+			return
+
 	texture = sprite_frames.get_frame_texture(animation_name, _frame)
-
-
-func _extend_next_frame_time() -> void:
-	_time_to_next_frame += (
+	_time_to_next_frame = (
 		sprite_frames.get_frame_duration(animation_name, _frame)
 		/ sprite_frames.get_animation_speed(animation_name)
 	)
 
 
-func _restart() -> void:
-	if (
-		not sprite_frames
-		or not sprite_frames.has_animation(animation_name)
-		or not sprite_frames.get_frame_count(animation_name)
-	):
-		texture = null
-		set_process(false)
-		return
-
-	_frame = 0
-	_time_to_next_frame = 0
-	_update_texture()
-	_extend_next_frame_time()
-	set_process(true)
-
-
 func _process(delta: float) -> void:
-	if not sprite_frames or not sprite_frames.has_animation(animation_name):
+	if Engine.is_editor_hint() or _frame < 0:
 		return
 
 	# It is unlikely but possible that an animation frame's duration may be so
 	# short that it should be skipped entirely.
+	while delta >= _time_to_next_frame:
+		delta -= _time_to_next_frame
+		_frame += 1
+		_update_texture()
+
 	_time_to_next_frame -= delta
-	while _time_to_next_frame < 0:
-		if _frame + 1 < sprite_frames.get_frame_count(animation_name):
-			_frame += 1
-		elif sprite_frames.get_animation_loop(animation_name):
-			_frame = 0
-		else:
-			# Animation finished
-			set_process(false)
-			break
-
-		_extend_next_frame_time()
-
-	# Only update texture once, potentially after skipping 1 or more frames
-	_update_texture()
-
-
-func _notification(what: int) -> void:
-	match what:
-		NOTIFICATION_EDITOR_PRE_SAVE:
-			# Don't persist whatever frame of the animation happens to be
-			# currently shown when saving the scene.
-			texture = null
-			set_process(false)
-
-		NOTIFICATION_EDITOR_POST_SAVE:
-			_restart()

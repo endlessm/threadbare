@@ -1,7 +1,8 @@
 # SPDX-FileCopyrightText: The Threadbare Authors
 # SPDX-License-Identifier: MPL-2.0
 @tool
-@abstract class_name BaseCharacterBehavior
+# TODO: Prepend "abstract" when switching to Godot 4.5:
+class_name BaseCharacterBehavior
 extends Node2D
 ## @experimental
 ##

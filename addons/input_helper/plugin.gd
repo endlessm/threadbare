@@ -12,11 +12,9 @@ var http_request: HTTPRequest = HTTPRequest.new()
 var next_version: String = ""
 
 
-func _enable_plugin():
+func _enter_tree():
 	add_autoload_singleton("InputHelper", "res://addons/input_helper/input_helper.gd")
 
-
-func _enter_tree():
 	# Configure settings
 	InputHelperSettings.prepare()
 
@@ -26,11 +24,9 @@ func _enter_tree():
 	http_request.request(REMOTE_RELEASES_URL)
 
 
-func _disable_plugin():
+func _exit_tree():
 	remove_autoload_singleton("InputHelper")
 
-
-func _exit_tree():
 	if next_version != "":
 		remove_tool_menu_item("Update Input Helper to v%s" % next_version)
 

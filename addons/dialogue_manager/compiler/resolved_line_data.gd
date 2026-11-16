@@ -3,6 +3,8 @@ class_name DMResolvedLineData extends RefCounted
 
 ## The line's text
 var text: String = ""
+## A map of pauses against where they are found in the text.
+var pauses: Dictionary = {}
 ## A map of speed changes against where they are found in the text.
 var speeds: Dictionary = {}
 ## A list of any mutations to run and where they are found in the text.
@@ -13,6 +15,7 @@ var time: String = ""
 
 func _init(line: String) -> void:
 	text = line
+	pauses = {}
 	speeds = {}
 	mutations = []
 	time = ""
@@ -36,7 +39,7 @@ func _init(line: String) -> void:
 	var accumulaive_length_offset = 0
 	for position in bbcode_positions:
 		# Ignore our own markers
-		if position.code in ["wait", "speed", "/speed", "$>", "$>>", "do", "do!", "set", "next", "if", "else", "/if"]:
+		if position.code in ["wait", "speed", "/speed", "do", "do!", "set", "next", "if", "else", "/if"]:
 			continue
 
 		bbcodes.append({
@@ -56,12 +59,14 @@ func _init(line: String) -> void:
 		limit += 1
 
 		var bbcode = next_bbcode_position[0]
+
 		var index = bbcode.start
 		var code = bbcode.code
 		var raw_args = bbcode.raw_args
 		var args = {}
-		if code in ["$>", "$>>", "do", "do!", "set"]:
-			args["value"] = DMCompiler.extract_mutation("%s %s" % [code, raw_args])
+		if code in ["do", "do!", "set"]:
+			var compilation: DMCompilation = DMCompilation.new()
+			args["value"] = compilation.extract_mutation("%s %s" % [code, raw_args])
 		else:
 			# Could be something like:
 			# 	"=1.0"
@@ -75,13 +80,15 @@ func _init(line: String) -> void:
 
 		match code:
 			"wait":
-				var wait: Dictionary = DMCompiler.extract_mutation("do wait(%s)" % [args.get("value", "null")])
-				mutations.append([index, wait])
+				if pauses.has(index):
+					pauses[index] += args.get("value").to_float()
+				else:
+					pauses[index] = args.get("value").to_float()
 			"speed":
 				speeds[index] = args.get("value").to_float()
 			"/speed":
 				speeds[index] = 1.0
-			"$>", "$>>", "do", "do!", "set":
+			"do", "do!", "set":
 				mutations.append([index, args.get("value")])
 			"next":
 				time = args.get("value") if args.has("value") else "0"
@@ -135,7 +142,7 @@ func find_bbcode_positions_in_string(string: String, find_all: bool = true, incl
 			open_brace_count += 1
 
 		else:
-			if not is_finished_code and (string[i].to_upper() != string[i] or ["/", "!", "$", ">"].has(string[i])):
+			if not is_finished_code and (string[i].to_upper() != string[i] or string[i] == "/" or string[i] == "!"):
 				code += string[i]
 			else:
 				is_finished_code = true

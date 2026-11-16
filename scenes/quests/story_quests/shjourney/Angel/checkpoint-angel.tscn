@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://ceghga7v5oexc"]
+
+[ext_resource type="Script" uid="uid://nk2711d2tse2" path="res://scenes/quests/story_quests/shjourney/Angel/components/checkpoint-angel.gd" id="1_do1yu"]
+[ext_resource type="SpriteFrames" uid="uid://bshou7t46r4nu" path="res://scenes/quests/story_quests/shjourney/Angel/components/angel.tres" id="2_0f17b"]
+[ext_resource type="Script" uid="uid://0enyu5v4ra34" path="res://scenes/game_elements/props/spawn_point/components/spawn_point.gd" id="4_ptf7d"]
+[ext_resource type="PackedScene" uid="uid://dutgnbiy7xalb" path="res://scenes/game_elements/props/interact_area/interact_area.tscn" id="6_k6fdi"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3xcwf"]
+radius = 48.0
+
+[node name="Checkpoint" type="Area2D"]
+collision_layer = 0
+script = ExtResource("1_do1yu")
+
+[node name="SpawnPoint" type="Marker2D" parent="." groups=["spawn_point"]]
+unique_name_in_owner = true
+script = ExtResource("4_ptf7d")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -40)
+scale = Vector2(1.34, 1.34)
+sprite_frames = ExtResource("2_0f17b")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="InteractArea" parent="." instance=ExtResource("6_k6fdi")]
+unique_name_in_owner = true
+collision_layer = 0
+interact_label_position = Vector2(0, -128)
+disabled = true
+action = "Admire"
+
+[node name="CollisionShape" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(1, -4)
+shape = SubResource("CircleShape2D_3xcwf")
+debug_color = Color(0, 0.606449, 0.661205, 0.42)
