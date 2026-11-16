@@ -19,6 +19,7 @@ const HUM_WAVE_DURATION: float = 0.3
 ## If controlled by the player, which input action triggers the repel.
 @export var input_action: StringName = &"repel"
 
+## Current state of the repel.
 @export var repelling: bool = false:
 	set = _set_repelling
 
