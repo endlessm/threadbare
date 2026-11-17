@@ -32,7 +32,7 @@ const HUM_WAVE_DURATION: float = 0.3
 )
 
 ## The radius the hum wave grows to.
-@export_range(0.0, 1000.0, 1.0, "or_greater") var hum_wave_radius: float = 400.0
+@export_range(0.0, 1000.0, 1.0, "or_greater") var hum_wave_radius: float = 650.0
 
 @onready var air_stream: Area2D = %AirStream
 @onready var repel_animation: AnimationPlayer = %RepelAnimation
