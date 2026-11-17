@@ -4,7 +4,7 @@ class_name HumWave
 extends Node2D
 ## An expanding ring with a burst of particles, displayed when the player hums.
 
-@export var color: Color = Color(0.95, 0.85, 0.45, 0.8)
+@export var color: Color = Color(0.502, 0.78, 1.0, 0.8)
 
 var _radius: float = 0.0:
 	set(value):
