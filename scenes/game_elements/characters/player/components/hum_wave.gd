@@ -23,4 +23,4 @@ func play(max_radius: float, grow_time: float) -> void:
 func _draw() -> void:
 	if _radius <= 0.0:
 		return
-	draw_arc(Vector2.ZERO, _radius, 0.0, TAU, 64, color, 3.0, true)
+	draw_circle(Vector2.ZERO, _radius, color, false, 3.0, true)
