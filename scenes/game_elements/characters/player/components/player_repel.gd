@@ -11,7 +11,7 @@ const REPEL_ANTICIPATION_TIME: float = 0.3
 const HUM_WAVE_SCENE: PackedScene = preload(
 	"res://scenes/game_elements/characters/player/components/hum_wave.tscn"
 )
-const HUM_WAVE_DURATION: float = 0.3
+const HUM_WAVE_DURATION: float = 2.0
 
 ## If false, [member repelling] should be changed by other means.
 @export var player_controlled: bool = true
