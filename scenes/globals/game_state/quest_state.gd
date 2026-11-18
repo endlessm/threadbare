@@ -3,6 +3,11 @@
 class_name QuestState
 extends Resource
 
+## The quest being played.
+## [br][br]
+## It's not saved to disk, see [method _validate_property]. The [member quest_path]
+## is saved instead, so that moving or deleting a quest.tres file in the
+## project doesn't break loading a saved game.
 @export var quest: Quest
 
 ## Generic game state facts about the current quest. Outside quests, use [member GlobalState.facts]
@@ -11,6 +16,9 @@ extends Resource
 
 ## Resource path of [member quest], which is what is actually saved to disk.
 ## Use [member quest] instead.
+## [br][br]
+## When the saved game is loaded, this setter loads [member quest] from the path.
+## This script is not a tool script, so the setter doesn't run in the editor.
 @export_storage var quest_path: String:
 	get():
 		return quest.resource_path if quest else ""
@@ -53,6 +61,9 @@ func _init(q: Quest = null, p: PlayerState = null) -> void:
 
 func _validate_property(property: Dictionary) -> void:
 	match property.name:
+		# Keep quest exported, so it shows in the inspector, but don't save it.
+		# Saving it would add an ext_resource for the quest.tres to the saved game.
+		# An alternative to this would be a complex @export_custom.
 		"quest":
 			property.usage &= ~PROPERTY_USAGE_STORAGE
 
