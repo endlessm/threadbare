@@ -22,7 +22,7 @@ Don't
 - Post anything sexual, violent, or disturbing, like self-harm, hate symbols, or shock content. That includes usernames, profile pictures, and links.
 - Share anyone's personal information, or ask for theirs.
 
-If something feels wrong, report it. Don't fight back. Email community@endlessaccess.org or message a moderator. If anyone asks you to keep a secret or to talk somewhere private, tell us. Every report is kept private and looked into.
+If something feels wrong, report it. Don't fight back. Email learning@endlessaccess.org or message a moderator. If anyone asks you to keep a secret or to talk somewhere private, tell us. Every report is kept private and looked into.
 
 The rest of this page explains each part in more detail.
 
@@ -74,7 +74,7 @@ Here, "young people" means anyone 21 or under. Older teens and young adults can 
 
 If something doesn't feel right, report it, whether it's happening to you or to someone else. Don't argue back or try to handle it alone.
 
-- Email community@endlessaccess.org
+- Email learning@endlessaccess.org
 - On GitHub, email us a link to the issue, pull request, or comment
 - On Discord, message a moderator or admin
 - At a program or event, tell the mentor or organizer running it
