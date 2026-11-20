@@ -7,7 +7,6 @@ var _is_player_running: bool
 @onready var player: Player = owner
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var player_repel: PlayerRepel = %PlayerRepel
-@onready var player_hum: PlayerHum = %PlayerHum
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var original_speed_scale: float = speed_scale
 
@@ -15,7 +14,6 @@ var _is_player_running: bool
 func _ready() -> void:
 	animation_finished.connect(_on_animation_finished)
 	player.mode_changed.connect(_on_player_mode_changed)
-	player_hum.hum_started.connect(_on_player_hum_hum_started)
 	player_repel.repelling_changed.connect(_on_player_repel_repelling_changed)
 	player_hook.string_thrown.connect(_on_player_hook_string_thrown)
 
@@ -60,13 +58,6 @@ func _on_player_repel_repelling_changed(repelling: bool) -> void:
 
 	# Repel animation is being played for the first time. So skip the anticipation and go
 	# directly to the action.
-	speed_scale = original_speed_scale
-	play(&"repel")
-	seek(player_repel.REPEL_ANTICIPATION_TIME, false, false)
-
-
-func _on_player_hum_hum_started() -> void:
-	# Skip the anticipation and go directly to the action.
 	speed_scale = original_speed_scale
 	play(&"repel")
 	seek(player_repel.REPEL_ANTICIPATION_TIME, false, false)
