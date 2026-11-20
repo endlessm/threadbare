@@ -66,7 +66,8 @@ var _system_controllers: Array[Node] = []
 
 @onready var input_walk_behavior: InputWalkBehavior = %InputWalkBehavior
 @onready var player_interaction: PlayerInteraction = %PlayerInteraction
-@onready var player_repel: Node2D = %PlayerRepel
+@onready var player_repel: PlayerRepel = %PlayerRepel
+@onready var player_hum: PlayerHum = %PlayerHum
 @onready var player_hook: PlayerHook = %PlayerHook
 @onready var player_sprite: AnimatedSprite2D = %PlayerSprite
 @onready var player_dust_particles: GPUParticles2D = %PlayerDustParticles
@@ -93,6 +94,7 @@ func _set_mode(new_mode: Mode) -> void:
 			_toggle_player_behavior(input_walk_behavior, false)
 			_toggle_player_behavior(player_interaction, false)
 			_toggle_player_behavior(player_repel, false)
+			_toggle_player_behavior(player_hum, false)
 			_toggle_player_behavior(player_hook, false)
 
 	if mode != previous_mode:
@@ -253,8 +255,12 @@ func return_control(controlled_by: Node) -> void:
 
 func _toggle_abilities() -> void:
 	var can_repel := GameState.player.has_ability(Enums.PlayerAbilities.ABILITY_A)
+	var can_hum := can_repel and GameState.player.has_ability(
+			Enums.PlayerAbilities.ABILITY_A_MODIFIER_1
+		)
 	var can_grapple := GameState.player.has_ability(Enums.PlayerAbilities.ABILITY_B)
-	_toggle_player_behavior(player_repel, can_repel)
+	_toggle_player_behavior(player_repel, can_repel and not can_hum)
+	_toggle_player_behavior(player_hum, can_hum)
 	_toggle_player_behavior(player_hook, can_grapple)
 	if can_grapple:
 		var has_longer_hook := GameState.player.has_ability(

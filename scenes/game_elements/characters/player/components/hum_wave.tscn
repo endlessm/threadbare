@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://bqpo5rvmvgyt8"]
+
+[ext_resource type="Script" uid="uid://bfaats0xr2r5w" path="res://scenes/game_elements/characters/player/components/hum_wave.gd" id="1_hw"]
+[ext_resource type="Texture2D" uid="uid://b5ooaiyxdrp6a" path="res://scenes/game_elements/components/light_texture_256x256.tres" id="2_hw"]
+[ext_resource type="AudioStream" uid="uid://bsdwhfbfx8k8p" path="res://scenes/game_elements/characters/player/components/humEffect.wav" id="3_2fvup"]
+
+[sub_resource type="CanvasItemMaterial" id="CIM_add"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Grad_hw"]
+offsets = PackedFloat32Array(0, 0.3, 1)
+colors = PackedColorArray(0.65, 0.88, 1, 1, 0.45, 0.72, 1, 0.85, 0.4, 0.65, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradTex_hw"]
+gradient = SubResource("Grad_hw")
+
+[sub_resource type="ParticleProcessMaterial" id="PPM_hw"]
+emission_shape = 1
+emission_sphere_radius = 8.0
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 35.0
+initial_velocity_max = 90.0
+gravity = Vector3(0, 0, 0)
+damping_min = 25.0
+damping_max = 45.0
+scale_min = 0.04
+scale_max = 0.11
+color_ramp = SubResource("GradTex_hw")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7ilqu"]
+resource_local_to_scene = true
+radius = 20.0
+
+[node name="HumWave" type="Node2D" unique_id=1806902150]
+script = ExtResource("1_hw")
+
+[node name="Burst" type="GPUParticles2D" parent="." unique_id=1276377685]
+unique_name_in_owner = true
+material = SubResource("CIM_add")
+emitting = false
+amount = 28
+texture = ExtResource("2_hw")
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.95
+process_material = SubResource("PPM_hw")
+
+[node name="AirStream" type="Area2D" parent="." unique_id=2030027173]
+collision_layer = 0
+collision_mask = 256
+
+[node name="AirStreamCollision" type="CollisionShape2D" parent="AirStream" unique_id=1631070449]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_7ilqu")
+disabled = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=2026890035]
+unique_name_in_owner = true
+stream = ExtResource("3_2fvup")
+max_distance = 1200.0
+attenuation = 0.25
+panning_strength = 0.5
+bus = &"SFX"
+
+[connection signal="body_entered" from="AirStream" to="." method="_on_air_stream_body_entered"]
