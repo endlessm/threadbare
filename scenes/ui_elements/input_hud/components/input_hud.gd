@@ -9,6 +9,7 @@ extends Control
 
 var player_interaction: PlayerInteraction
 var player_repel: PlayerRepel
+var player_hum: PlayerHum
 var player_hook: PlayerHook
 
 @onready var normal_controls := %NormalControls
@@ -57,6 +58,10 @@ func update_visibility() -> void:
 		if player_repel and not player_repel.visibility_changed.is_connected(_update_player_state):
 			player_repel.visibility_changed.connect(_update_player_state)
 
+		player_hum = player.get("player_repel") as PlayerHum
+		if player_hum and not player_hum.visibility_changed.is_connected(_update_player_state):
+			player_hum.visibility_changed.connect(_update_player_state)
+
 		player_hook = player.get("player_hook") as PlayerHook
 		if player_hook and not player_hook.visibility_changed.is_connected(_update_player_state):
 			player_hook.visibility_changed.connect(_update_player_state)
@@ -82,7 +87,10 @@ func _update_player_state() -> void:
 	else:
 		interact_input_hint.visible = false
 
-	repel_input_hint.visible = player_repel and player_repel.visible
+	# TODO: The input hint should be the same for both. But maybe the text in the label should
+	# change to "repel" or "hum".
+	var repel_or_hum := player_repel or player_hum
+	repel_input_hint.visible = repel_or_hum
 
 	var has_hook: bool = player_hook and player_hook.visible
 	throw_input_hint.visible = has_hook
