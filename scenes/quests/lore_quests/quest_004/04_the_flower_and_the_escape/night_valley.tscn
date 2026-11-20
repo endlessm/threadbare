@@ -6,12 +6,11 @@
 [ext_resource type="TileSet" uid="uid://c887b4jo4xa6l" path="res://scenes/quests/lore_quests/quest_004/tiles/meadow_cliffs.tres" id="7_1ebax"]
 [ext_resource type="PackedScene" uid="uid://7873qa54birk" path="res://scenes/game_elements/props/tree/tree.tscn" id="8_1ebax"]
 [ext_resource type="Texture2D" uid="uid://4vdjsb5alniu" path="res://scenes/game_elements/props/tree/components/Tree_Purple.png" id="9_4crn2"]
-[ext_resource type="PackedScene" uid="uid://dy8ohrl7j24qy" path="res://scenes/game_elements/characters/enemies/mothsache/Mothsache.tscn" id="10_jr3ea"]
 [ext_resource type="PackedScene" uid="uid://ipvcfv2g0oi1" path="res://scenes/game_elements/characters/npcs/talker/talker.tscn" id="14_l7ict"]
+[ext_resource type="Resource" uid="uid://c44l6x4e7sfx3" path="res://scenes/globals/game_state/inventory/spirit.tres" id="15_u0r08"]
 [ext_resource type="PackedScene" uid="uid://c0104ickpm3ru" path="res://scenes/game_elements/props/decoration/flower/flower.tscn" id="15_u4wbv"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="17_hdtk1"]
 [ext_resource type="PackedScene" uid="uid://d14qar7pc2i08" path="res://scenes/quests/lore_quests/quest_004/menhir/menhir.tscn" id="18_hdtk1"]
-[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="18_w6wg6"]
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="21_8185o"]
 [ext_resource type="AudioStream" uid="uid://m1bbwocr2phc" path="res://assets/first_party/music/The_Void_Bloom.ogg" id="22_viaq1"]
 [ext_resource type="PackedScene" uid="uid://iu2q66clupc6" path="res://scenes/game_elements/characters/player/player.tscn" id="25_uncj2"]
@@ -99,11 +98,6 @@ size = Vector2(3.6538172, 4.1255856)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8185o"]
 
-[sub_resource type="Resource" id="Resource_jbfg2"]
-script = ExtResource("18_w6wg6")
-type = 2
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
-
 [sub_resource type="CanvasItemMaterial" id="CIM_mystic"]
 blend_mode = 1
 
@@ -143,6 +137,7 @@ point_count = 10
 [sub_resource type="Resource" id="Speeds_chase_fast"]
 script = ExtResource("29_fbyeg")
 walk_speed = 120.0
+run_speed = 120.0
 stopping_step = 500.0
 metadata/_custom_type_script = "uid://csev4hv57utxv"
 
@@ -253,12 +248,6 @@ position = Vector2(2792, 1527)
 scale = Vector2(1.2351161, 1.1818894)
 sprite_frames = SubResource("SpriteFrames_w6wg6")
 
-[node name="Mothsache" parent="." unique_id=1647526252 instance=ExtResource("10_jr3ea")]
-position = Vector2(450, 1752)
-
-[node name="DetectionArea" parent="Mothsache" index="7" unique_id=1613936682]
-scale = Vector2(0.725, 0.725)
-
 [node name="PLANTA GIGANTE" parent="." unique_id=1086241914 instance=ExtResource("14_l7ict")]
 texture_filter = 1
 position = Vector2(2345, 1338)
@@ -293,7 +282,7 @@ position = Vector2(1773, 2246)
 
 [node name="PORTAL DE ARCOIRIS" parent="." unique_id=327991066 instance=ExtResource("17_hdtk1")]
 position = Vector2(8907, 1896)
-item = SubResource("Resource_jbfg2")
+item = ExtResource("15_u0r08")
 next_scene = "uid://cufkthb25mpxy"
 
 [node name="Menhir1" parent="." unique_id=1527961051 instance=ExtResource("18_hdtk1")]
@@ -806,8 +795,9 @@ position = Vector2(847, 89)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidPatrolPath")
 
-[node name="PathWalkBehavior" parent="OnTheGroundVoid/VoidPatrolling" index="3" unique_id=1511224206]
+[node name="PathWalkBehavior" parent="OnTheGroundVoid/VoidPatrolling" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
 speeds = SubResource("Resource_o1kib")
+walking_path = NodePath("../../VoidPatrolPath")
 
 [node name="VoidPatrolPath" type="Path2D" parent="OnTheGroundVoid" unique_id=820000003]
 position = Vector2(-1314, -1735)
@@ -818,11 +808,14 @@ position = Vector2(3104, 176)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidChasePath")
 
+[node name="PathWalkBehavior" parent="OnTheGroundVoid/VoidChasing" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
+walking_path = NodePath("../../VoidChasePath")
+
 [node name="NavigationFollowWalkBehavior" parent="OnTheGroundVoid/VoidChasing" index="4" unique_id=804245903]
 speeds = SubResource("Speeds_chase_fast")
 
 [node name="VoidChasePath" type="Path2D" parent="OnTheGroundVoid" unique_id=820000021]
-position = Vector2(-46, -2572)
+position = Vector2(-46, -2628)
 curve = SubResource("Curve2D_voidchase")
 
 [node name="OnTheGroundVoid2" type="Node2D" parent="." unique_id=221434107]
@@ -834,8 +827,9 @@ position = Vector2(847, 89)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidPatrolPath")
 
-[node name="PathWalkBehavior" parent="OnTheGroundVoid2/VoidPatrolling" index="3" unique_id=1511224206]
+[node name="PathWalkBehavior" parent="OnTheGroundVoid2/VoidPatrolling" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
 speeds = SubResource("Resource_o1kib")
+walking_path = NodePath("../../VoidPatrolPath")
 
 [node name="VoidPatrolPath" type="Path2D" parent="OnTheGroundVoid2" unique_id=2118048697]
 position = Vector2(-2450.3914, -1752)
@@ -846,6 +840,9 @@ curve = SubResource("Curve2D_fbyeg")
 position = Vector2(1205.0002, -54)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidChasePath")
+
+[node name="PathWalkBehavior" parent="OnTheGroundVoid2/VoidChasing" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
+walking_path = NodePath("../../VoidChasePath")
 
 [node name="NavigationFollowWalkBehavior" parent="OnTheGroundVoid2/VoidChasing" index="4" unique_id=804245903]
 speeds = SubResource("Speeds_chase_fast")
@@ -927,7 +924,6 @@ shape = SubResource("RectangleShape2D_g4v7s")
 [connection signal="body_entered" from="EnemyChaseTrigger" to="OnTheGroundVoid/VoidChasing" method="start"]
 [connection signal="body_entered" from="EnemyDefeatTrigger" to="OnTheGroundVoid/VoidChasing" method="defeat" unbinds=1]
 
-[editable path="Mothsache"]
 [editable path="OnTheGroundVoid/VoidPatrolling"]
 [editable path="OnTheGroundVoid/VoidChasing"]
 [editable path="OnTheGroundVoid2/VoidPatrolling"]
