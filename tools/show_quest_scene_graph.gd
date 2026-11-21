@@ -11,9 +11,13 @@ extends EditorScript
 ## lists:
 ## [br][br]
 ## - The links of each scene that is reached.[br]
-## - Exits: links to scenes outside the quest folder, like Fray's End.[br]
+## - Ends: scenes that return the player to the Home Scene, with
+##   [member SceneLink.target] set to [constant SceneLink.Target.HOME_SCENE].
+##   This is how a quest is expected to end.[br]
 ## - Broken links: values that don't point to an existing scene.[br]
-## - Dead ends: reached scenes without links.[br]
+## - Dead ends: reached scenes that link neither to another scene of the quest
+##   nor to the Home Scene. This includes links hardcoded to a scene outside the
+##   quest, like Fray's End, which should use the Home Scene target instead.[br]
 ## - Unreachable scenes: scenes of the quest folder that are never reached and
 ##   that nothing else uses, so they are not components. A scene is used if a
 ##   scene or resource of the project depends on it, or if a script mentions
@@ -32,6 +36,14 @@ const QUEST_PATH := ""
 
 const QUEST_FILE_NAME := "quest.tres"
 const LINK_PROPERTY := &"next_scene"
+const TARGET_PROPERTY := &"target"
+## Value of [constant SceneLink.Target.HOME_SCENE]. Not referenced directly, so
+## this script doesn't need SceneLink and its autoloads to compile, and can also
+## run headless.
+const HOME_SCENE_TARGET := 1
+
+## Target of the links that return to the Home Scene.
+const HOME := "home"
 
 
 func _run() -> void:
@@ -94,7 +106,7 @@ static func report(quest_path: String) -> PackedStringArray:
 			if inside and target not in reached and target not in pending:
 				pending.append(target)
 
-	var exits := PackedStringArray()
+	var ends := PackedStringArray()
 	var broken := PackedStringArray()
 	var dead_ends := PackedStringArray()
 	for scene_path in reached:
@@ -105,23 +117,42 @@ static func report(quest_path: String) -> PackedStringArray:
 		)
 		if scene_links.is_empty():
 			lines.append("  (no links)")
-			dead_ends.append(_short(scene_path, quest_folder))
+		var continues := false
+		var outside := PackedStringArray()
 		for link: Dictionary in scene_links:
 			var node_label: String = link.node + (" (script default)" if link.default else "")
 			var target: String = link.target
-			if target.is_empty():
+			if target == HOME:
+				lines.append("  %s -> Home Scene" % node_label)
+				continues = true
+			elif target.is_empty():
 				lines.append("  %s -> BROKEN '%s'" % [node_label, link.value])
 				broken.append(
 					"%s %s: '%s'" % [_short(scene_path, quest_folder), link.node, link.value]
 				)
 			elif not target.begins_with(quest_folder):
-				lines.append("  %s -> %s (exit)" % [node_label, target])
-				exits.append(target)
+				lines.append("  %s -> %s (outside the quest)" % [node_label, target])
+				outside.append(target)
 			else:
 				lines.append("  %s -> %s" % [node_label, _short(target, quest_folder)])
+				continues = true
+		if scene_links.any(
+			func(link: Dictionary) -> bool:
+				return link.target == HOME,
+		):
+			ends.append(_short(scene_path, quest_folder))
+		if not continues:
+			var note := ""
+			if not outside.is_empty():
+				note = " (links to %s instead of the Home Scene)" % ", ".join(outside)
+			dead_ends.append(_short(scene_path, quest_folder) + note)
 	lines.append("")
 
-	lines.append_array(_section("Exits", exits))
+	if ends.is_empty():
+		lines.append("Ends: none, the quest never returns to the Home Scene")
+		lines.append("")
+	else:
+		lines.append_array(_section("Ends", ends))
 	lines.append_array(_section("Broken links", broken))
 	lines.append_array(_section("Dead ends", dead_ends))
 	var unreachable := PackedStringArray()
@@ -150,8 +181,9 @@ static func report(quest_path: String) -> PackedStringArray:
 
 
 ## Returns the links of the scene at [param scene_path], as dictionaries with
-## the keys from, node, value, target (empty if broken) and default (true if
-## the value is the default of the node's script).
+## the keys from, node, value, target (empty if broken, [const HOME] for the
+## Home Scene) and default (true if the value is the default of the node's
+## script).
 static func _find_links(scene_path: String) -> Array[Dictionary]:
 	var found: Array[Dictionary] = []
 	var scene := ResourceLoader.load(scene_path) as PackedScene
@@ -159,26 +191,49 @@ static func _find_links(scene_path: String) -> Array[Dictionary]:
 		return found
 	var state := scene.get_state()
 	for index in state.get_node_count():
+		var node_path := str(state.get_node_path(index)).trim_prefix("./")
+		var node_name := str(state.get_node_name(0)) if node_path == "." else node_path
+		var node_script := _get_saved_property(state, index, &"script") as Script
+
+		if _is_scene_link(node_script):
+			var link_target: Variant = _get_saved_property(state, index, TARGET_PROPERTY)
+			if link_target == HOME_SCENE_TARGET:
+				found.append(
+					{
+						"from": scene_path,
+						"node": node_name,
+						"value": "Home Scene",
+						"target": HOME,
+						"default": false,
+					}
+				)
+				continue
+
 		var value: Variant = _get_saved_property(state, index, LINK_PROPERTY)
 		var is_default := false
-		if value == null:
-			var node_script := _get_saved_property(state, index, &"script") as Script
-			if node_script:
-				value = node_script.get_property_default_value(LINK_PROPERTY)
-				is_default = true
+		if value == null and node_script:
+			value = node_script.get_property_default_value(LINK_PROPERTY)
+			is_default = true
 		if not value is String or (value as String).is_empty():
 			continue
-		var node_path := str(state.get_node_path(index)).trim_prefix("./")
 		found.append(
 			{
 				"from": scene_path,
-				"node": str(state.get_node_name(0)) if node_path == "." else node_path,
+				"node": node_name,
 				"value": value,
 				"target": _resolve(value),
 				"default": is_default,
 			}
 		)
 	return found
+
+
+static func _is_scene_link(node_script: Script) -> bool:
+	while node_script:
+		if node_script.get_global_name() == &"SceneLink":
+			return true
+		node_script = node_script.get_base_script()
+	return false
 
 
 ## Returns the value of [param property] saved for the node at [param index],
@@ -286,7 +341,9 @@ static func _mermaid(
 	for link in links:
 		var target: String = link.target
 		var target_id: String
-		if target.is_empty():
+		if target == HOME:
+			target_id = get_id.call(HOME, "Home Scene")
+		elif target.is_empty():
 			target_id = get_id.call("broken " + link.value, "Broken: " + link.value)
 		else:
 			target_id = get_id.call(target, target.get_file().get_basename())
