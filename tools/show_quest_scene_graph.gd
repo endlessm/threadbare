@@ -4,8 +4,9 @@
 extends EditorScript
 ## Shows how the level scenes of a quest are linked to each other
 ##
-## Open a scene of the quest and run this in the editor, or set
-## [const QUEST_PATH]. The report goes to the Output panel. Starting from the
+## Edit [const QUEST_DIRECTORY] then run this in the editor. The report goes to
+## the Output panel, one for each quest in the directory, as found by
+## [method Quest.enumerate]. Starting from the
 ## [member Quest.first_scene], it follows the [code]next_scene[/code] property
 ## of every node, like [SceneLink], [Cinematic] and [CollectibleItem], and
 ## lists:
@@ -31,10 +32,9 @@ extends EditorScript
 ## only set in code is not found. Links inside instanced scenes are not
 ## followed either, only the ones set on the instance itself.
 
-## Quest to show. If empty, the quest of the scene open in the editor.
-const QUEST_PATH := ""
+## Where to look for quests: each of its subdirectories with a quest.tres.
+const QUEST_DIRECTORY := "res://scenes/quests/story_quests"
 
-const QUEST_FILE_NAME := "quest.tres"
 const LINK_PROPERTY := &"next_scene"
 const TARGET_PROPERTY := &"target"
 ## Value of [constant SceneLink.Target.HOME_SCENE]. Not referenced directly, so
@@ -47,39 +47,20 @@ const HOME := "home"
 
 
 func _run() -> void:
-	var quest_path := QUEST_PATH
-	if quest_path.is_empty():
-		var scene_root := get_scene()
-		if scene_root:
-			quest_path = find_quest_path(scene_root.scene_file_path)
-	if quest_path.is_empty():
-		push_error("Open a scene of a quest first, or set QUEST_PATH.")
+	var quests := Quest.enumerate(QUEST_DIRECTORY)
+	if quests.is_empty():
+		push_error("No quests found in %s" % QUEST_DIRECTORY)
 		return
-	print("\n".join(report(quest_path)))
+	for quest in quests:
+		print("\n".join(report(quest)))
+		print()
 
 
-## Returns the path of the quest.tres in the folder of [param scene_path] or
-## in one of its parent folders, or an empty string.
-static func find_quest_path(scene_path: String) -> String:
-	var folder := scene_path.get_base_dir()
-	while folder != "res://" and not folder.is_empty():
-		var candidate := folder.path_join(QUEST_FILE_NAME)
-		if ResourceLoader.exists(candidate):
-			return candidate
-		folder = folder.get_base_dir()
-	return ""
-
-
-## Returns the report lines for the quest at [param quest_path].
-static func report(quest_path: String) -> PackedStringArray:
+## Returns the report lines for [param quest].
+static func report(quest: Quest) -> PackedStringArray:
 	var lines := PackedStringArray()
-	var quest := ResourceLoader.load(quest_path) as Quest
-	if not quest:
-		lines.append("%s is not a Quest." % quest_path)
-		return lines
-
-	var quest_folder := quest_path.get_base_dir() + "/"
-	lines.append("Scene graph of %s" % quest_path)
+	var quest_folder := quest.resource_path.get_base_dir() + "/"
+	lines.append("Scene graph of %s" % quest.resource_path)
 	lines.append("(Paths in the quest are relative to %s)" % quest_folder)
 	lines.append("")
 
@@ -228,6 +209,13 @@ static func _find_links(scene_path: String) -> Array[Dictionary]:
 	return found
 
 
+## Returns true if [param node_script] is [SceneLink] or extends it, like
+## [Cinematic] and [CollectibleItem] do.
+## [br][br]
+## The scenes are not instantiated: the saved values are read from their
+## [SceneState], so there is no node to test with [code]is SceneLink[/code].
+## The class is matched by name, so this script doesn't depend on SceneLink
+## and its autoloads, see [constant HOME_SCENE_TARGET].
 static func _is_scene_link(node_script: Script) -> bool:
 	while node_script:
 		if node_script.get_global_name() == &"SceneLink":
