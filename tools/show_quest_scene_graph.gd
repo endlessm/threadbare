@@ -7,9 +7,9 @@ extends EditorScript
 ## Edit [const QUEST_DIRECTORY] then run this in the editor. The report goes to
 ## the Output panel, one for each quest in the directory, as found by
 ## [method Quest.enumerate]. Starting from the
-## [member Quest.first_scene], it follows the [code]next_scene[/code] property
-## of every node, like [SceneLink], [Cinematic] and [CollectibleItem], and
-## lists:
+## [member Quest.first_scene], it follows the [member SceneLink.next_scene] of
+## every [SceneLink] node, including subclasses like [Cinematic] and
+## [CollectibleItem], and lists:
 ## [br][br]
 ## - The links of each scene that is reached.[br]
 ## - Ends: scenes that return the player to the Home Scene, with
@@ -101,21 +101,20 @@ static func report(quest: Quest) -> PackedStringArray:
 		var continues := false
 		var outside := PackedStringArray()
 		for link: Dictionary in scene_links:
-			var node_label: String = link.node + (" (script default)" if link.default else "")
 			var target: String = link.target
 			if target == HOME:
-				lines.append("  %s -> Home Scene" % node_label)
+				lines.append("  %s -> Home Scene" % link.node)
 				continues = true
 			elif target.is_empty():
-				lines.append("  %s -> BROKEN '%s'" % [node_label, link.value])
+				lines.append("  %s -> BROKEN '%s'" % [link.node, link.value])
 				broken.append(
 					"%s %s: '%s'" % [_short(scene_path, quest_folder), link.node, link.value]
 				)
 			elif not target.begins_with(quest_folder):
-				lines.append("  %s -> %s (outside the quest)" % [node_label, target])
+				lines.append("  %s -> %s (outside the quest)" % [link.node, target])
 				outside.append(target)
 			else:
-				lines.append("  %s -> %s" % [node_label, _short(target, quest_folder)])
+				lines.append("  %s -> %s" % [link.node, _short(target, quest_folder)])
 				continues = true
 		if scene_links.any(
 			func(link: Dictionary) -> bool:
@@ -163,8 +162,7 @@ static func report(quest: Quest) -> PackedStringArray:
 
 ## Returns the links of the scene at [param scene_path], as dictionaries with
 ## the keys from, node, value, target (empty if broken, [const HOME] for the
-## Home Scene) and default (true if the value is the default of the node's
-## script).
+## Home Scene). Only [SceneLink] nodes are considered.
 static func _find_links(scene_path: String) -> Array[Dictionary]:
 	var found: Array[Dictionary] = []
 	var scene := ResourceLoader.load(scene_path) as PackedScene
@@ -175,36 +173,20 @@ static func _find_links(scene_path: String) -> Array[Dictionary]:
 		var node_path := str(state.get_node_path(index)).trim_prefix("./")
 		var node_name := str(state.get_node_name(0)) if node_path == "." else node_path
 		var node_script := _get_saved_property(state, index, &"script") as Script
+		if not _is_scene_link(node_script):
+			continue
 
-		if _is_scene_link(node_script):
-			var link_target: Variant = _get_saved_property(state, index, TARGET_PROPERTY)
-			if link_target == HOME_SCENE_TARGET:
-				found.append(
-					{
-						"from": scene_path,
-						"node": node_name,
-						"value": "Home Scene",
-						"target": HOME,
-						"default": false,
-					}
-				)
-				continue
+		if _get_saved_property(state, index, TARGET_PROPERTY) == HOME_SCENE_TARGET:
+			found.append(
+				{ "from": scene_path, "node": node_name, "value": "Home Scene", "target": HOME }
+			)
+			continue
 
 		var value: Variant = _get_saved_property(state, index, LINK_PROPERTY)
-		var is_default := false
-		if value == null and node_script:
-			value = node_script.get_property_default_value(LINK_PROPERTY)
-			is_default = true
 		if not value is String or (value as String).is_empty():
 			continue
 		found.append(
-			{
-				"from": scene_path,
-				"node": node_name,
-				"value": value,
-				"target": _resolve(value),
-				"default": is_default,
-			}
+			{ "from": scene_path, "node": node_name, "value": value, "target": _resolve(value) }
 		)
 	return found
 
