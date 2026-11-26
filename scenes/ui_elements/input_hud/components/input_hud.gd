@@ -8,9 +8,6 @@ extends Control
 @export var displaying_dialogue: bool
 
 var player_interaction: PlayerInteraction
-var player_repel: PlayerRepel
-var player_hum: PlayerHum
-var player_hook: PlayerHook
 
 @onready var normal_controls := %NormalControls
 @onready var move_label: Label = %MovementInputHint/Label
@@ -30,16 +27,38 @@ func _ready() -> void:
 	Settings.touch_controls_changed.connect(update_visibility)
 	Settings.keyboard_only_changed.connect(_update_player_state)
 	InputHelper.device_changed.connect(_on_input_device_changed)
+	GameState.player.abilities_changed.connect(_update_player_state)
+	GameState.player_changed.connect(_on_player_state_changed)
 
 
 func _on_input_device_changed(_device: String, _device_index: int) -> void:
 	_update_player_state()
 
 
+func _on_player_state_changed(old_state: PlayerState, new_state: PlayerState) -> void:
+	old_state.abilities_changed.disconnect(_update_player_state)
+	new_state.abilities_changed.connect(_update_player_state)
+	_update_player_state()
+
+
+func _on_player_mode_changed(_mode: Player.Mode) -> void:
+	update_visibility()
+
+
 func update_visibility() -> void:
+	var player_node := player as Player
+	if player_node and not player_node.mode_changed.is_connected(_on_player_mode_changed):
+		player_node.mode_changed.connect(_on_player_mode_changed)
+
+	# The controls don't apply while the player is defeated. While controlled by
+	# other means, like when pulled by the hook, the player can still repel, so
+	# keep the hints.
+	var is_defeated := player_node and player_node.mode == Player.Mode.DEFEATED
+
 	visible = (
-		not Settings.touch_controls and Settings.show_input_hud and not get_tree().paused
-		and not Transitions.is_running() and not displaying_dialogue and (player or sokoban_ruleset)
+		not Settings.touch_controls and Settings.show_input_hud
+		and not get_tree().paused and not Transitions.is_running()
+		and not displaying_dialogue and (player or sokoban_ruleset) and not is_defeated
 	)
 	if not visible:
 		return
@@ -53,18 +72,6 @@ func update_visibility() -> void:
 			and not player_interaction.interact_action_changed.is_connected(_update_player_state)
 		):
 			player_interaction.interact_action_changed.connect(_update_player_state)
-
-		player_repel = player.get("player_repel") as PlayerRepel
-		if player_repel and not player_repel.visibility_changed.is_connected(_update_player_state):
-			player_repel.visibility_changed.connect(_update_player_state)
-
-		player_hum = player.get("player_repel") as PlayerHum
-		if player_hum and not player_hum.visibility_changed.is_connected(_update_player_state):
-			player_hum.visibility_changed.connect(_update_player_state)
-
-		player_hook = player.get("player_hook") as PlayerHook
-		if player_hook and not player_hook.visibility_changed.is_connected(_update_player_state):
-			player_hook.visibility_changed.connect(_update_player_state)
 
 		_update_player_state()
 	elif sokoban_ruleset:
@@ -87,12 +94,11 @@ func _update_player_state() -> void:
 	else:
 		interact_input_hint.visible = false
 
-	# TODO: The input hint should be the same for both. But maybe the text in the label should
-	# change to "repel" or "hum".
-	var repel_or_hum := player_repel or player_hum
-	repel_input_hint.visible = repel_or_hum
+	# Hum is a modifier of Repel, so both use the Repel input hint.
+	# TODO: Maybe the text in the label should change to "repel" or "hum".
+	repel_input_hint.visible = GameState.player.has_ability(Enums.PlayerAbilities.ABILITY_A)
 
-	var has_hook: bool = player_hook and player_hook.visible
+	var has_hook := GameState.player.has_ability(Enums.PlayerAbilities.ABILITY_B)
 	throw_input_hint.visible = has_hook
 
 	# With the keyboard only, the same keys move and aim, so a single hint
