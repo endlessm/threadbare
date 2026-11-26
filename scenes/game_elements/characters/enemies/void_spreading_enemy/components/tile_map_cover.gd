@@ -11,6 +11,20 @@ extends TileMapLayer
 ## hidden. Any props on tiles that are initially placed are also hidden at the start of the scene.
 ## [method uncover_all] can be used to remove all cells and reveal the props that were hidden.
 
+## Where to save the covered cells. See [member save_state].
+enum SaveState {
+	## Don't save the covered cells. The layer starts as in the scene every time.
+	DONT_SAVE,
+	## Save the covered cells in the state of this scene. They are restored when
+	## the scene is reloaded, for example when the player is defeated, but not
+	## when the player comes back to the scene later.
+	SAVE_IN_SCENE,
+	## Save the covered cells in the state of the current quest. They are restored
+	## every time the scene is loaded during the quest, including when the player
+	## comes back to the scene later.
+	SAVE_IN_QUEST,
+}
+
 const _DURATION: float = 0.25
 
 ## The terrain set that contains the terrain that covers the world.
@@ -24,8 +38,13 @@ const _DURATION: float = 0.25
 ## Nodes whose direct children (but not grandchildren) can be consumed.
 @export var consumable_node_holders: Array[Node]
 
-## Wether to save the tilemap cover in this scene state.
-@export var save_state: bool
+## Where to save the covered cells, to restore them when the scene is loaded
+## again. See [enum SaveState].
+## [br][br]
+## The cells are saved when a [Checkpoint] is activated, and when [method save]
+## is called. For example, a scene can call [method save] after a cinematic in
+## which the Void covers part of the level.
+@export var save_state: SaveState = SaveState.DONT_SAVE
 
 var _unconsumed_nodes: Dictionary[Vector2i, Array] = { }
 var _consumed_nodes: Dictionary[Vector2i, Array] = { }
@@ -116,7 +135,7 @@ func _ready() -> void:
 
 	for coord: Vector2i in get_used_cells():
 		consume(coord, true)
-	if save_state:
+	if save_state != SaveState.DONT_SAVE:
 		GameState.scene.checkpoint_activated.connect(_on_checkpoint_activated)
 		_load_state()
 
@@ -190,16 +209,47 @@ func uncover_all(duration: float, animate_modulate: bool = false) -> void:
 		self.modulate.a = 1.0
 
 
-## Responds to the checkpoint's activated signal and saves consumed tiles.
+## The facts where [member save_state] says to save the covered cells. Empty
+## when saving in the quest but there is no quest.
+func _get_saved_facts() -> Dictionary:
+	if save_state == SaveState.SAVE_IN_QUEST:
+		if not GameState.quest:
+			push_warning("%s: can't save in the quest state, there is no quest" % get_path())
+			return { }
+		return GameState.quest.facts
+	return GameState.scene.facts
+
+
+## The key of the covered cells in [method _get_saved_facts]. The quest facts
+## are shared by all the scenes of the quest, so the key includes the scene.
+func _get_save_key() -> String:
+	if save_state == SaveState.SAVE_IN_QUEST:
+		return "%s:%s" % [get_tree().current_scene.scene_file_path, get_path()]
+	return str(get_path())
+
+
 func _on_checkpoint_activated() -> void:
-	var save_key := str(get_path())
-	GameState.scene.facts[save_key] = get_used_cells()
+	save()
+
+
+## Save the covered cells where [member save_state] says. Does nothing if it's
+## [constant DONT_SAVE].
+## [br][br]
+## Activating a [Checkpoint] already calls it. Call it from code to save at
+## other moments, for example in a quest that has no checkpoint before the
+## player leaves the scene.
+func save() -> void:
+	if save_state == SaveState.DONT_SAVE:
+		return
+	_get_saved_facts()[_get_save_key()] = get_used_cells()
 
 
 ## Reconstructs the holes in the TileMap immediately on scene load.
 ## Executes without animation to prevent visual glitches upon respawn.
 func _load_state() -> void:
-	var save_key := str(get_path())
-	if GameState.scene.facts.has(save_key):
-		var saved_tiles: Array = GameState.scene.facts[save_key]
+	var facts := _get_saved_facts()
+	var save_key := _get_save_key()
+	if facts.has(save_key):
+		var saved_tiles: Array[Vector2i]
+		saved_tiles.assign(facts[save_key])
 		consume_cells(saved_tiles, true)

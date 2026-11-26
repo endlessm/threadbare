@@ -29,10 +29,6 @@ const REQUIRED_ANIMATIONS := [&"idle", &"appear"]
 ## be able to interact with the checkpoint.
 @export var dialogue: DialogueResource = preload("uid://bug2aqd47jgyu")
 
-## Determines if the enemies and the void layer should save their state when
-## the player activates this checkpoint.
-@export var save_void_and_enemies: bool = false
-
 ## The point where the player will spawn.
 @onready var spawn_point: SpawnPoint = %SpawnPoint
 
