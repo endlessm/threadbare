@@ -3,8 +3,9 @@
 extends Node
 
 ## Emitted when [member player] changes to a new [PlayerState] object, due to a
-## quest starting or ending. This is used by the [Player] scene to rebind to
-## signals like [signal PlayerState.abilities_changed].
+## quest starting or ending, or the state being cleared. This is used by the
+## [Player] scene and the [InputHud] to rebind to signals like
+## [signal PlayerState.abilities_changed].
 signal player_changed(old: PlayerState, new: PlayerState)
 
 ## Emitted when the state is cleared.
@@ -225,7 +226,9 @@ func is_item_offering_possible() -> bool:
 
 ## Clear the persisted state.
 func clear() -> void:
+	var old_player_state := player
 	_saved_game = SavedGame.new()
+	player_changed.emit(old_player_state, player)
 	cleared.emit()
 
 
