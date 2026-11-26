@@ -21,7 +21,12 @@ const LARGE_TEXT_THEME := preload("uid://nymvlhys46nm")
 @export var auto_start: bool = false
 
 ## If all other input is blocked as long as dialogue is shown.
-@export var will_block_other_input: bool = true
+## [br][br]
+## While it is, the balloon also takes control of the [Player]. Marking the
+## input events as handled isn't enough to stop the player from walking, because
+## [InputWalkBehavior] reads the state of the movement actions.
+@export var will_block_other_input: bool = true:
+	set = _set_will_block_other_input
 
 ## The action to use for advancing the dialogue
 @export var next_action: StringName = &"ui_accept"
@@ -73,6 +78,10 @@ var mutation_cooldown: Timer = Timer.new()
 var _locale: String = TranslationServer.get_locale()
 var _player_name: String = Player.DEFAULT_PLAYER_NAME
 
+## The player whose control this balloon took. See
+## [member will_block_other_input].
+var _controlled_player: Player
+
 ## A sound player for voice lines (if they exist).
 @onready var audio_stream_player: AudioStreamPlayer = %AudioStreamPlayer
 
@@ -100,6 +109,44 @@ var _player_name: String = Player.DEFAULT_PLAYER_NAME
 @onready var talk_sound_player: AudioStreamPlayer = $TalkSoundPlayer
 
 @onready var writing_sound_player: AudioStreamPlayer = $WritingSoundPlayer
+
+
+func _set_will_block_other_input(new_value: bool) -> void:
+	will_block_other_input = new_value
+	if is_inside_tree():
+		_update_player_control()
+
+
+func _enter_tree() -> void:
+	_update_player_control()
+
+
+func _exit_tree() -> void:
+	_return_player_control()
+
+
+func _update_player_control() -> void:
+	if Engine.is_editor_hint():
+		return
+	if will_block_other_input:
+		_take_player_control()
+	else:
+		_return_player_control()
+
+
+func _take_player_control() -> void:
+	if _controlled_player:
+		return
+	_controlled_player = get_tree().get_first_node_in_group(&"player") as Player
+	if _controlled_player:
+		_controlled_player.take_control(self)
+		_controlled_player.velocity = Vector2.ZERO
+
+
+func _return_player_control() -> void:
+	if is_instance_valid(_controlled_player):
+		_controlled_player.return_control(self)
+	_controlled_player = null
 
 
 func _ready() -> void:
