@@ -22,6 +22,5 @@ func _on_spawn_point_from_powerup_player_teleported() -> void:
 	_play_cinematic = false
 	if not is_node_ready():
 		await ready
-	non_hookable_buttons.queue_free()
 	void_patrolling.visible = false
 	animation_player.play(&"eat_floor")
