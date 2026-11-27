@@ -55,6 +55,12 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 @export var chase_speeds: CharacterSpeeds:
 	set = _set_chase_speeds
 
+## While chasing, the enemy runs when it's farther than this from the player,
+## and walks when it's closer. See
+## [member NavigationFollowWalkBehavior.running_distance].
+@export_range(0, 640, 32, "or_greater", "suffix:px") var chase_running_distance: float = 256.0:
+	set = _set_chase_running_distance
+
 var node_to_follow: Node2D:
 	set = _set_node_to_follow
 
@@ -98,9 +104,14 @@ func _set_chase_speeds(new_speeds: CharacterSpeeds) -> void:
 	_apply_speeds()
 
 
-## Pass [member patrol_speeds] and [member chase_speeds] to the walk behaviors.
-## Not in the editor: with editable children on, the editor would save a copy
-## of them in the walk behaviors too.
+func _set_chase_running_distance(new_distance: float) -> void:
+	chase_running_distance = new_distance
+	_apply_speeds()
+
+
+## Pass the properties of the Speeds group to the walk behaviors. Not in the
+## editor: with editable children on, the editor would save a copy of them in
+## the walk behaviors too.
 func _apply_speeds() -> void:
 	if Engine.is_editor_hint() or not is_node_ready():
 		return
@@ -108,6 +119,7 @@ func _apply_speeds() -> void:
 		path_walk_behavior.speeds = patrol_speeds
 	if chase_speeds:
 		follow_walk_behavior.speeds = chase_speeds
+	follow_walk_behavior.running_distance = chase_running_distance
 
 
 func _set_node_to_follow(new_node_to_follow: Node2D) -> void:
