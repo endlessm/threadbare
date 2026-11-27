@@ -59,6 +59,14 @@ signal aiming_changed(is_aiming: bool)
 ## While returning, the string will be removed when this length is reached.
 @export_range(0.0, 500.0, 1.0, "or_greater") var string_air_min_length: float = 10.0
 
+## How much faster than the character the string comes back, at least, when thrown
+## to the air or to a wall.
+## [br][br]
+## The string comes back quickly at first, and slows down as it gets shorter. This
+## keeps it from slowing down below the speed of the character, so it reaches
+## [member string_air_min_length] even while the character walks or runs away.
+@export_range(0, 1000, 10, "or_greater", "suffix:px/s") var string_return_min_speed: float = 300.0
+
 ## Repeatable texture to dress the line. It should wrap horizontally.
 @export var hook_string_texture: Texture2D = preload("uid://q3c2qavtccvu")
 
@@ -346,10 +354,16 @@ func _process_hook_string(delta: float) -> void:
 
 	else:
 		# Not hooked, so a throw that hit air or wall.
-		# Progressively shorten the line.
+		# Progressively shorten the line: quickly at first, and never slower than
+		# the character moves plus string_return_min_speed.
+		var tip := hook_string.points[0]
+		var return_speed := maxf(
+			10.0 * tip.distance_to(hook_string.points[1]),
+			character.velocity.length() + string_return_min_speed,
+		)
 		hook_string.set_point_position(
 			0,
-			hook_string.points[0].lerp(hook_string.points[1], 10.0 * delta),
+			tip.move_toward(hook_string.points[1], return_speed * delta),
 		)
 		# Remove the string when the line is short enough.
 		if (
