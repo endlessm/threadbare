@@ -5,32 +5,17 @@ extends Node2D
 const MIN_DELAY: float = 0.5
 const MAX_DELAY: float = 3
 
-var hook_control_1: Node2D
-var hook_control_2: Node2D
-
 @onready var player_hook: PlayerHook = $TuggingSheep/Sheep/PlayerHook
 @onready var player_hook_2: PlayerHook = $TuggingSheep/Sheep2/PlayerHook2
 @onready var hookable_box: AnimatableBody2D = $HookableBox
+@onready var hookable_area: HookableArea = hookable_box.find_child("HookableArea")
 
 
 func _ready() -> void:
-	# HookControl is interactive and all instances will respond
-	# to user input (aiming and throwing). Disable them so the sheep
-	# don't throw when the player does.
-	hook_control_1 = player_hook.find_child("HookControl")
-	hook_control_2 = player_hook_2.find_child("HookControl")
-	hook_control_1.state = HookControl.State.DISABLED
-	hook_control_2.state = HookControl.State.DISABLED
-
-
-func _process(_delta: float) -> void:
-	# If HookControl is AIMING, cursor movement and keyboard
-	# input will change the player's aim and also the sheep.
-	# Disable so it only reflects on the player's aim.
-	if hook_control_1.state == HookControl.State.AIMING:
-		hook_control_1.state = HookControl.State.DISABLED
-	if hook_control_2.state == HookControl.State.AIMING:
-		hook_control_2.state = HookControl.State.DISABLED
+	# The sheep grappling hooks have player_controlled off, so they ignore the
+	# input. Point them at the box while they wait to throw.
+	player_hook.aim_at(hookable_area.get_anchor_position())
+	player_hook_2.aim_at(hookable_area.get_anchor_position())
 
 
 func _on_timer_timeout() -> void:
@@ -39,8 +24,13 @@ func _on_timer_timeout() -> void:
 	var first_sheep: PlayerHook = sheep_options.pop_front()
 	var second_sheep: PlayerHook = sheep_options.pop_front()
 
-	first_sheep.hooked(hookable_box.find_child("HookableArea"), true)
+	_throw_at_box(first_sheep)
 
 	await get_tree().create_timer(randf_range(MIN_DELAY, MAX_DELAY)).timeout
 
-	second_sheep.hooked(hookable_box.find_child("HookableArea"), true)
+	_throw_at_box(second_sheep)
+
+
+func _throw_at_box(sheep_hook: PlayerHook) -> void:
+	sheep_hook.aim_at(hookable_area.get_anchor_position())
+	sheep_hook.throw_once()

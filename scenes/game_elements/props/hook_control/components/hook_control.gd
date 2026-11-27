@@ -20,6 +20,9 @@ extends Node2D
 ## throws. A swipe shorter than [constant SWIPE_MIN_DISTANCE], like a tap, doesn't
 ## aim or throw.
 ## [br][br]
+## If [member player_controlled] is false, the input is ignored. Call
+## [method aim_at] and [method throw_once] instead.
+## [br][br]
 ## Aiming is effectively rotating the [member ray_cast_2d].
 ## [br][br]
 ## Visually it displays the [member sprite_2d] texture pointing in the
@@ -85,6 +88,12 @@ const SWIPE_MIN_DISTANCE: float = 40.0
 ## The are currently hooked by this control.
 var hooked_to: HookableArea
 
+## If false, this control ignores the input, and it's controlled by calling
+## [method aim_at] and [method throw_once]. [PlayerHook] sets it on its own
+## control, and on the control of each connection that its string goes through.
+var player_controlled: bool = true:
+	set = _set_player_controlled
+
 ## True if the throw action is currently pressed.
 var pressing_throw_action: bool = false
 
@@ -137,7 +146,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 		if _event.device == InputEvent.DEVICE_ID_EMULATION:
 			return
 		if not Settings.keyboard_only:
-			_aim_at(get_global_mouse_position())
+			aim_at(get_global_mouse_position())
 		return
 
 	# When aiming with keyboard, do not change the hook angle immediately if one of these actions
@@ -209,7 +218,8 @@ func _aims_with_actions() -> bool:
 	return Settings.keyboard_only or InputHelper.device != InputHelper.DEVICE_KEYBOARD
 
 
-func _aim_at(target: Vector2) -> void:
+## Aim towards [param target], in global coordinates.
+func aim_at(target: Vector2) -> void:
 	var axis := target - global_position
 	if not axis.is_zero_approx():
 		_hook_angle = axis.angle()
@@ -262,6 +272,21 @@ func _throw() -> void:
 		state = State.AIMING_PAUSED
 
 
+## Throw once in the direction aimed, as if the throw action was pressed and
+## released. Returns false without throwing if this control isn't aiming, or
+## already hooked an area.
+func throw_once() -> bool:
+	if state != State.AIMING or hooked_to:
+		return false
+	# The aim may have changed this frame, so update the ray now.
+	global_rotation = _get_hook_angle()
+	ray_cast_2d.force_raycast_update()
+	_update_pointing_at_area()
+	_throw()
+	throw_failed_while_pressing = false
+	return true
+
+
 ## If an area is hooked, disconnect it.
 func release() -> void:
 	if hooked_to:
@@ -312,8 +337,25 @@ func _set_state(new_state: State) -> void:
 		sprite_2d.visible = state != State.DISABLED
 	if ray_cast_2d:
 		ray_cast_2d.enabled = state != State.DISABLED
-	set_process_unhandled_input(state != State.DISABLED)
+	_update_input_processing()
 	_update_mouse_hold()
+
+
+func _set_player_controlled(new_value: bool) -> void:
+	player_controlled = new_value
+	if not player_controlled:
+		pressing_throw_action = false
+		throw_failed_while_pressing = false
+		_touch_index = -1
+		_touch_throw_requested = false
+	if not is_node_ready():
+		return
+	_update_input_processing()
+	_update_mouse_hold()
+
+
+func _update_input_processing() -> void:
+	set_process_unhandled_input(state != State.DISABLED and player_controlled)
 
 
 func _ready() -> void:
@@ -337,15 +379,17 @@ func _exit_tree() -> void:
 
 
 ## Hold the [MouseManager] while aiming with the mouse, which is when this
-## control is visible and not disabled, and [member Settings.keyboard_only] is
-## off. This way the crosshair cursor shows when moving the mouse to aim.
+## control is visible, not disabled and [member player_controlled], and
+## [member Settings.keyboard_only] is off. This way the crosshair cursor shows
+## when moving the mouse to aim.
 func _update_mouse_hold() -> void:
 	# Keep holding during State.AIMING_PAUSED too, not only State.AIMING. After a
 	# throw, the player may want to move the mouse to the next target while the
 	# string is out. Releasing would hide the crosshair right away and keep it
 	# hidden until aiming resumes, so the player couldn't see where the mouse is.
 	var should_hold := (
-		is_visible_in_tree() and state != State.DISABLED and not Settings.keyboard_only
+		is_visible_in_tree() and state != State.DISABLED
+		and player_controlled and not Settings.keyboard_only
 	)
 	if should_hold == _holding_mouse:
 		return
@@ -359,7 +403,9 @@ func _update_mouse_hold() -> void:
 func _process(_delta: float) -> void:
 	if state == State.DISABLED:
 		return
-	rotation = _get_hook_angle()
+	# The angle is global, so set the global rotation. Otherwise it would point
+	# the other way in a mirrored parent, like a character with a negative scale.
+	global_rotation = _get_hook_angle()
 	var touch_throw := _touch_throw_requested
 	_touch_throw_requested = false
 	if touch_throw:
@@ -384,5 +430,5 @@ func _process(_delta: float) -> void:
 
 
 func _on_d_pad_timer_timeout() -> void:
-	if _aims_with_actions():
+	if player_controlled and _aims_with_actions():
 		_update_hook_angle()
