@@ -50,9 +50,6 @@ _data = {
 }
 point_count = 4
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_wgn4u"]
-radius = 64.0
-
 [sub_resource type="Resource" id="Resource_c2723"]
 script = ExtResource("8_c2723")
 walk_speed = 500.0
@@ -648,10 +645,7 @@ position = Vector2(2676, -291)
 position = Vector2(712, 154)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidSpreadingEnemyPatrolPath")
-
-[node name="PathWalkBehavior" parent="OnTheGround/VoidPatrolling" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
-speeds = SubResource("Resource_wgn4u")
-walking_path = NodePath("../../VoidSpreadingEnemyPatrolPath")
+patrol_speeds = SubResource("Resource_wgn4u")
 
 [node name="VoidSpreadingEnemyPatrolPath" type="Path2D" parent="OnTheGround" unique_id=752027124]
 position = Vector2(612, 114)
@@ -662,17 +656,10 @@ metadata/_edit_group_ = true
 position = Vector2(1391, 444)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidSpreadingEnemyPatrolPath2")
-
-[node name="CollisionShape2D" parent="OnTheGround/VoidChasing/PlayerCaptureArea" parent_id_path=PackedInt32Array(517203678, 671456187) index="0" unique_id=1513769273]
-shape = SubResource("CircleShape2D_wgn4u")
-
-[node name="PathWalkBehavior" parent="OnTheGround/VoidChasing" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
-speeds = SubResource("Resource_c2723")
-walking_path = NodePath("../../VoidSpreadingEnemyPatrolPath2")
-
-[node name="NavigationFollowWalkBehavior" parent="OnTheGround/VoidChasing" index="4" unique_id=804245903]
-speeds = SubResource("Resource_s33ip")
-running_distance = 384.0
+capture_radius = 64.0
+patrol_speeds = SubResource("Resource_c2723")
+chase_speeds = SubResource("Resource_s33ip")
+chase_running_distance = 384.0
 
 [node name="VoidSpreadingEnemyPatrolPath2" type="Path2D" parent="OnTheGround" unique_id=573088846]
 position = Vector2(1009.94226, 305.94217)
@@ -701,6 +688,3 @@ shape = SubResource("RectangleShape2D_rk3po")
 
 [connection signal="body_entered" from="EnemyChaseTrigger" to="OnTheGround/VoidChasing" method="start"]
 [connection signal="body_entered" from="EnemyDefeatTrigger" to="OnTheGround/VoidChasing" method="defeat" unbinds=1]
-
-[editable path="OnTheGround/VoidPatrolling"]
-[editable path="OnTheGround/VoidChasing"]

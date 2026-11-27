@@ -35,6 +35,12 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 @export var idle_patrol_path: Path2D:
 	set = _set_idle_patrol_path
 
+## Radius of the Void around the enemy. The player is caught when they touch it.
+## Void enemies patrolling in circle may need a smaller radious, to avoid catching the player
+## when standing next to the eaten floor.
+@export_range(16, 256, 1, "or_greater", "suffix:px") var capture_radius: float = 96.0:
+	set = _set_capture_radius
+
 ## [GPUParticles2D] scene to spawn when tiles are consumed, or after travelling some distance
 ## without consuming anything (so that the enemy remains visible when patrolling an already-covered
 ## area)
@@ -42,6 +48,26 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 
 ## Wether to save the enemy position and direction in this scene state.
 @export var save_state: bool
+
+@export_group("Speeds")
+
+## Speeds of the enemy while it patrols [member idle_patrol_path]. If unset, it
+## keeps the speeds set in this scene.
+@export var patrol_speeds: CharacterSpeeds:
+	set = _set_patrol_speeds
+
+## Speeds of the enemy while it chases the player. If unset, it keeps the speeds
+## set in this scene.
+@export var chase_speeds: CharacterSpeeds:
+	set = _set_chase_speeds
+
+## While chasing, the enemy runs when it's farther than this from the player,
+## and walks when it's closer. See
+## [member NavigationFollowWalkBehavior.running_distance].
+## This together with the chase speeds can really adjust the difficulty and give more time to the
+## player to do other things while being chased, like grappling.
+@export_range(0, 640, 32, "or_greater", "suffix:px") var chase_running_distance: float = 256.0:
+	set = _set_chase_running_distance
 
 var node_to_follow: Node2D:
 	set = _set_node_to_follow
@@ -55,6 +81,7 @@ var _live_particles: int = 0
 
 @onready var path_walk_behavior: PathWalkBehavior = %PathWalkBehavior
 @onready var follow_walk_behavior: NavigationFollowWalkBehavior = %NavigationFollowWalkBehavior
+@onready var capture_shape: CollisionShape2D = $PlayerCaptureArea/CollisionShape2D
 @onready var alert_animation: AnimationPlayer = %AlertAnimation
 @onready var particles_canvas_group: CanvasGroup = %ParticlesCanvasGroup
 @onready var idle_sfx: AudioStreamPlayer2D = %IdleSFX
@@ -74,6 +101,56 @@ func _set_idle_patrol_path(new_path: Path2D) -> void:
 	if path_walk_behavior:
 		path_walk_behavior.walking_path = idle_patrol_path
 	update_configuration_warnings()
+
+
+func _set_capture_radius(new_radius: float) -> void:
+	capture_radius = new_radius
+	_apply_capture_radius()
+
+
+## Give the capture area a circle of [member capture_radius]. All the enemies
+## share the circle of this scene, so use a new circle instead of changing it.
+## [br][br]
+## This also runs in the editor, to preview the area. A new circle is only made
+## if the radius is different, so an instance at the default radius with
+## editable children on doesn't save a copy of the circle.
+func _apply_capture_radius() -> void:
+	if not is_node_ready():
+		return
+	var circle := capture_shape.shape as CircleShape2D
+	if circle and is_equal_approx(circle.radius, capture_radius):
+		return
+	circle = CircleShape2D.new()
+	circle.radius = capture_radius
+	capture_shape.shape = circle
+
+
+func _set_patrol_speeds(new_speeds: CharacterSpeeds) -> void:
+	patrol_speeds = new_speeds
+	_apply_speeds()
+
+
+func _set_chase_speeds(new_speeds: CharacterSpeeds) -> void:
+	chase_speeds = new_speeds
+	_apply_speeds()
+
+
+func _set_chase_running_distance(new_distance: float) -> void:
+	chase_running_distance = new_distance
+	_apply_speeds()
+
+
+## Pass the properties of the Speeds group to the walk behaviors. Not in the
+## editor: with editable children on, the editor would save a copy of them in
+## the walk behaviors too.
+func _apply_speeds() -> void:
+	if Engine.is_editor_hint() or not is_node_ready():
+		return
+	if patrol_speeds:
+		path_walk_behavior.speeds = patrol_speeds
+	if chase_speeds:
+		follow_walk_behavior.speeds = chase_speeds
+	follow_walk_behavior.running_distance = chase_running_distance
 
 
 func _set_node_to_follow(new_node_to_follow: Node2D) -> void:
@@ -131,6 +208,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 func _ready() -> void:
 	idle_patrol_path = idle_patrol_path
+	_apply_capture_radius()
 	state = state
 	_last_position = position
 
@@ -138,6 +216,8 @@ func _ready() -> void:
 		set_process(false)
 		set_physics_process(false)
 		return
+
+	_apply_speeds()
 
 	if save_state:
 		GameState.scene.checkpoint_activated.connect(_on_checkpoint_activated)

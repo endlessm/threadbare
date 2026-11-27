@@ -788,10 +788,7 @@ y_sort_enabled = true
 position = Vector2(847, 89)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidPatrolPath")
-
-[node name="PathWalkBehavior" parent="OnTheGroundVoid/VoidPatrolling" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
-speeds = SubResource("Resource_o1kib")
-walking_path = NodePath("../../VoidPatrolPath")
+patrol_speeds = SubResource("Resource_o1kib")
 
 [node name="VoidPatrolPath" type="Path2D" parent="OnTheGroundVoid" unique_id=820000003]
 position = Vector2(-1314, -1735)
@@ -801,12 +798,7 @@ curve = SubResource("Curve2D_voidpatrol")
 position = Vector2(3104, 176)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidChasePath")
-
-[node name="PathWalkBehavior" parent="OnTheGroundVoid/VoidChasing" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
-walking_path = NodePath("../../VoidChasePath")
-
-[node name="NavigationFollowWalkBehavior" parent="OnTheGroundVoid/VoidChasing" index="4" unique_id=804245903]
-speeds = SubResource("Speeds_chase_fast")
+chase_speeds = SubResource("Speeds_chase_fast")
 
 [node name="VoidChasePath" type="Path2D" parent="OnTheGroundVoid" unique_id=820000021]
 position = Vector2(-46, -2628)
@@ -820,10 +812,7 @@ position = Vector2(181, 1326)
 position = Vector2(847, 89)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidPatrolPath")
-
-[node name="PathWalkBehavior" parent="OnTheGroundVoid2/VoidPatrolling" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
-speeds = SubResource("Resource_o1kib")
-walking_path = NodePath("../../VoidPatrolPath")
+patrol_speeds = SubResource("Resource_o1kib")
 
 [node name="VoidPatrolPath" type="Path2D" parent="OnTheGroundVoid2" unique_id=2118048697]
 position = Vector2(-2450.3914, -1752)
@@ -834,12 +823,7 @@ curve = SubResource("Curve2D_fbyeg")
 position = Vector2(1205.0002, -54)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidChasePath")
-
-[node name="PathWalkBehavior" parent="OnTheGroundVoid2/VoidChasing" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
-walking_path = NodePath("../../VoidChasePath")
-
-[node name="NavigationFollowWalkBehavior" parent="OnTheGroundVoid2/VoidChasing" index="4" unique_id=804245903]
-speeds = SubResource("Speeds_chase_fast")
+chase_speeds = SubResource("Speeds_chase_fast")
 
 [node name="VoidChasePath" type="Path2D" parent="OnTheGroundVoid2" unique_id=813646403]
 curve = SubResource("Curve2D_voidchase")
@@ -917,8 +901,3 @@ shape = SubResource("RectangleShape2D_g4v7s")
 
 [connection signal="body_entered" from="EnemyChaseTrigger" to="OnTheGroundVoid/VoidChasing" method="start"]
 [connection signal="body_entered" from="EnemyDefeatTrigger" to="OnTheGroundVoid/VoidChasing" method="defeat" unbinds=1]
-
-[editable path="OnTheGroundVoid/VoidPatrolling"]
-[editable path="OnTheGroundVoid/VoidChasing"]
-[editable path="OnTheGroundVoid2/VoidPatrolling"]
-[editable path="OnTheGroundVoid2/VoidChasing"]

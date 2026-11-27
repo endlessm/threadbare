@@ -39,9 +39,6 @@ size = Vector2(246, 549)
 [sub_resource type="Resource" id="Resource_7xn87"]
 script = ExtResource("14_lg1kl")
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_wgn4u"]
-radius = 101.0
-
 [sub_resource type="Resource" id="Resource_c2723"]
 script = ExtResource("24_6afks")
 walk_speed = 500.0
@@ -58,9 +55,6 @@ _data = {
 "points": PackedVector2Array(0, 0, 30, -30, -20.273438, -36.94271, -30, -30, 30, 30, 95.05994, -8.109375, 30, -30, -30, 30, 116.68494, 96.41148, 30, 30, -30, -30, 8.559906, 78.39064, -30, 30, 0, 0, -20.273438, -36.94271)
 }
 point_count = 5
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_johb0"]
-radius = 64.0
 
 [sub_resource type="Resource" id="Resource_vbdam"]
 script = ExtResource("24_6afks")
@@ -199,17 +193,9 @@ metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 position = Vector2(960, 256)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidPatrollingPatrolPath")
-
-[node name="CollisionShape2D" parent="OnTheGround/VoidPatrolling/PlayerCaptureArea" parent_id_path=PackedInt32Array(1622889110, 671456187) index="0" unique_id=1513769273]
-shape = SubResource("CircleShape2D_wgn4u")
-
-[node name="PathWalkBehavior" parent="OnTheGround/VoidPatrolling" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
-speeds = SubResource("Resource_c2723")
-walking_path = NodePath("../../VoidPatrollingPatrolPath")
-
-[node name="NavigationFollowWalkBehavior" parent="OnTheGround/VoidPatrolling" index="4" unique_id=804245903]
-speeds = SubResource("Resource_s33ip")
-running_distance = 384.0
+patrol_speeds = SubResource("Resource_c2723")
+chase_speeds = SubResource("Resource_s33ip")
+chase_running_distance = 384.0
 
 [node name="VoidPatrollingPatrolPath" type="Path2D" parent="OnTheGround" unique_id=968628102]
 position = Vector2(1005, 338)
@@ -222,17 +208,10 @@ unique_name_in_owner = true
 position = Vector2(1911, 773)
 void_layer = NodePath("../../TileMapLayers/Void")
 idle_patrol_path = NodePath("../VoidChasingPatrolPath")
-
-[node name="CollisionShape2D" parent="OnTheGround/VoidChasing/PlayerCaptureArea" parent_id_path=PackedInt32Array(1860354403, 671456187) index="0" unique_id=1513769273]
-shape = SubResource("CircleShape2D_johb0")
-
-[node name="PathWalkBehavior" parent="OnTheGround/VoidChasing" index="3" unique_id=1511224206 node_paths=PackedStringArray("walking_path")]
-speeds = SubResource("Resource_vbdam")
-walking_path = NodePath("../../VoidChasingPatrolPath")
-
-[node name="NavigationFollowWalkBehavior" parent="OnTheGround/VoidChasing" index="4" unique_id=804245903]
-speeds = SubResource("Resource_q1v2m")
-running_distance = 384.0
+capture_radius = 64.0
+patrol_speeds = SubResource("Resource_vbdam")
+chase_speeds = SubResource("Resource_q1v2m")
+chase_running_distance = 384.0
 
 [node name="VoidChasingPatrolPath" type="Path2D" parent="OnTheGround" unique_id=682274347]
 position = Vector2(2288, 752)
@@ -687,6 +666,3 @@ shape = SubResource("RectangleShape2D_rk3po")
 
 [connection signal="body_entered" from="EnemyDefeatTrigger" to="OnTheGround/VoidChasing" method="defeat" unbinds=1]
 [connection signal="collected" from="OnTheGround/LongerThreadPowerup" to="." method="_on_longer_thread_powerup_collected"]
-
-[editable path="OnTheGround/VoidPatrolling"]
-[editable path="OnTheGround/VoidChasing"]
