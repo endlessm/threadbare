@@ -43,6 +43,18 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 ## Wether to save the enemy position and direction in this scene state.
 @export var save_state: bool
 
+@export_group("Speeds")
+
+## Speeds of the enemy while it patrols [member idle_patrol_path]. If unset, it
+## keeps the speeds set in this scene.
+@export var patrol_speeds: CharacterSpeeds:
+	set = _set_patrol_speeds
+
+## Speeds of the enemy while it chases the player. If unset, it keeps the speeds
+## set in this scene.
+@export var chase_speeds: CharacterSpeeds:
+	set = _set_chase_speeds
+
 var node_to_follow: Node2D:
 	set = _set_node_to_follow
 
@@ -74,6 +86,28 @@ func _set_idle_patrol_path(new_path: Path2D) -> void:
 	if path_walk_behavior:
 		path_walk_behavior.walking_path = idle_patrol_path
 	update_configuration_warnings()
+
+
+func _set_patrol_speeds(new_speeds: CharacterSpeeds) -> void:
+	patrol_speeds = new_speeds
+	_apply_speeds()
+
+
+func _set_chase_speeds(new_speeds: CharacterSpeeds) -> void:
+	chase_speeds = new_speeds
+	_apply_speeds()
+
+
+## Pass [member patrol_speeds] and [member chase_speeds] to the walk behaviors.
+## Not in the editor: with editable children on, the editor would save a copy
+## of them in the walk behaviors too.
+func _apply_speeds() -> void:
+	if Engine.is_editor_hint() or not is_node_ready():
+		return
+	if patrol_speeds:
+		path_walk_behavior.speeds = patrol_speeds
+	if chase_speeds:
+		follow_walk_behavior.speeds = chase_speeds
 
 
 func _set_node_to_follow(new_node_to_follow: Node2D) -> void:
@@ -138,6 +172,8 @@ func _ready() -> void:
 		set_process(false)
 		set_physics_process(false)
 		return
+
+	_apply_speeds()
 
 	if save_state:
 		GameState.scene.checkpoint_activated.connect(_on_checkpoint_activated)
