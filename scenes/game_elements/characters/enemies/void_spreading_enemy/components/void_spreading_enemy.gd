@@ -43,6 +43,10 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 ## Wether to save the enemy position and direction in this scene state.
 @export var save_state: bool
 
+## Radius of the Void around the enemy. The player is caught when they touch it.
+@export_range(16, 256, 1, "or_greater", "suffix:px") var capture_radius: float = 96.0:
+	set = _set_capture_radius
+
 @export_group("Speeds")
 
 ## Speeds of the enemy while it patrols [member idle_patrol_path]. If unset, it
@@ -73,6 +77,7 @@ var _live_particles: int = 0
 
 @onready var path_walk_behavior: PathWalkBehavior = %PathWalkBehavior
 @onready var follow_walk_behavior: NavigationFollowWalkBehavior = %NavigationFollowWalkBehavior
+@onready var capture_shape: CollisionShape2D = $PlayerCaptureArea/CollisionShape2D
 @onready var alert_animation: AnimationPlayer = %AlertAnimation
 @onready var particles_canvas_group: CanvasGroup = %ParticlesCanvasGroup
 @onready var idle_sfx: AudioStreamPlayer2D = %IdleSFX
@@ -92,6 +97,28 @@ func _set_idle_patrol_path(new_path: Path2D) -> void:
 	if path_walk_behavior:
 		path_walk_behavior.walking_path = idle_patrol_path
 	update_configuration_warnings()
+
+
+func _set_capture_radius(new_radius: float) -> void:
+	capture_radius = new_radius
+	_apply_capture_radius()
+
+
+## Give the capture area a circle of [member capture_radius]. All the enemies
+## share the circle of this scene, so use a new circle instead of changing it.
+## [br][br]
+## This also runs in the editor, to preview the area. A new circle is only made
+## if the radius is different, so an instance at the default radius with
+## editable children on doesn't save a copy of the circle.
+func _apply_capture_radius() -> void:
+	if not is_node_ready():
+		return
+	var circle := capture_shape.shape as CircleShape2D
+	if circle and is_equal_approx(circle.radius, capture_radius):
+		return
+	circle = CircleShape2D.new()
+	circle.radius = capture_radius
+	capture_shape.shape = circle
 
 
 func _set_patrol_speeds(new_speeds: CharacterSpeeds) -> void:
@@ -177,6 +204,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 func _ready() -> void:
 	idle_patrol_path = idle_patrol_path
+	_apply_capture_radius()
 	state = state
 	_last_position = position
 
