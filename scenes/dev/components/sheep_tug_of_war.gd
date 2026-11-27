@@ -15,10 +15,8 @@ var hook_control_2: Node2D
 
 func _ready() -> void:
 	# HookControl is interactive and all instances will respond
-	# to user input (aiming and throwing). Remove from `hook_listener`
-	# group so they don't react to user inputs.
-	player_hook.remove_from_group("hook_listener")
-	player_hook_2.remove_from_group("hook_listener")
+	# to user input (aiming and throwing). Disable them so the sheep
+	# don't throw when the player does.
 	hook_control_1 = player_hook.find_child("HookControl")
 	hook_control_2 = player_hook_2.find_child("HookControl")
 	hook_control_1.state = HookControl.State.DISABLED

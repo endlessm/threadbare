@@ -26,11 +26,24 @@ extends Node2D
 ## ray's direction.
 ## The arrow is semitransparent when the ray doesn't hit anything.
 ## [br][br]
-## The [b]hook_listener[/b] group is notified by this control when throwing
-## about the outcome of the throw: if an area was hooked, if it hit a wall
-## or if it hit the air (hit nothing).
-## The [b]hook_listener[/b] group is also notified when the control releases an
-## area previously hooked.
+## The outcome of a throw is emitted as a signal: [signal hooked] if an area was
+## hooked, [signal hit_wall] if it hit a wall, or [signal hit_air] if it hit
+## nothing. [signal released] is emitted when the control releases an area
+## previously hooked.
+
+## Emitted when a throw hooks [param area]. [param is_loop] is true if the area
+## is a connection that already has a string going out from it.
+signal hooked(area: HookableArea, is_loop: bool)
+
+## Emitted when a throw hits a wall at [param wall_point].
+signal hit_wall(wall_point: Vector2)
+
+## Emitted when a throw hits nothing. [param air_point] is where the string
+## ends.
+signal hit_air(air_point: Vector2)
+
+## Emitted when the control releases [param area], which it had hooked.
+signal released(area: HookableArea)
 
 ## The control state.
 enum State {
@@ -234,17 +247,17 @@ func _throw() -> void:
 				state = State.DISABLED
 			else:
 				state = State.AIMING_PAUSED
-			get_tree().call_group(&"hook_listener", &"hooked", hooked_to, is_loop)
+			hooked.emit(hooked_to, is_loop)
 		else:
 			release()
 			var wall_point := ray_cast_2d.get_collision_point()
-			get_tree().call_group(&"hook_listener", &"hit_wall", wall_point)
+			hit_wall.emit(wall_point)
 			throw_failed_while_pressing = true
 			state = State.AIMING_PAUSED
 	else:
 		release()
 		var air_point := global_position + Vector2(string_length, 0).rotated(_get_hook_angle())
-		get_tree().call_group(&"hook_listener", &"hit_air", air_point)
+		hit_air.emit(air_point)
 		throw_failed_while_pressing = true
 		state = State.AIMING_PAUSED
 
@@ -254,7 +267,7 @@ func release() -> void:
 	if hooked_to:
 		if hooked_to.hook_control:
 			hooked_to.hook_control.exclude_areas.erase(hook_area)
-		get_tree().call_group(&"hook_listener", &"released", hooked_to)
+		released.emit(hooked_to)
 		hooked_to = null
 
 
