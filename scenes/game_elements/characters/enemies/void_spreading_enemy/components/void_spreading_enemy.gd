@@ -35,6 +35,12 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 @export var idle_patrol_path: Path2D:
 	set = _set_idle_patrol_path
 
+## Radius of the Void around the enemy. The player is caught when they touch it.
+## Void enemies patrolling in circle may need a smaller radious, to avoid catching the player
+## when standing next to the eaten floor.
+@export_range(16, 256, 1, "or_greater", "suffix:px") var capture_radius: float = 96.0:
+	set = _set_capture_radius
+
 ## [GPUParticles2D] scene to spawn when tiles are consumed, or after travelling some distance
 ## without consuming anything (so that the enemy remains visible when patrolling an already-covered
 ## area)
@@ -42,10 +48,6 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 
 ## Wether to save the enemy position and direction in this scene state.
 @export var save_state: bool
-
-## Radius of the Void around the enemy. The player is caught when they touch it.
-@export_range(16, 256, 1, "or_greater", "suffix:px") var capture_radius: float = 96.0:
-	set = _set_capture_radius
 
 @export_group("Speeds")
 
@@ -62,6 +64,8 @@ const IDLE_EMIT_DISTANCE := sqrt(2 * (64.0 ** 2))
 ## While chasing, the enemy runs when it's farther than this from the player,
 ## and walks when it's closer. See
 ## [member NavigationFollowWalkBehavior.running_distance].
+## This together with the chase speeds can really adjust the difficulty and give more time to the
+## player to do other things while being chased, like grappling.
 @export_range(0, 640, 32, "or_greater", "suffix:px") var chase_running_distance: float = 256.0:
 	set = _set_chase_running_distance
 
