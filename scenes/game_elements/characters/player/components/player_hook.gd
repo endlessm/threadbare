@@ -14,6 +14,10 @@ extends Node2D
 ## It listens to the signals of its [member hook_control], and of the control of
 ## each connection that the string goes through, so [method hooked],
 ## [method hit_wall] and [method hit_air] are called.
+## [br][br]
+## It can also be used non-interactively, like [PlayerRepel]: set
+## [member player_controlled] to false, then call [method aim_at] and
+## [method throw_once].
 
 ## Emitted when the string is thrown from the primary control.
 signal string_thrown
@@ -31,11 +35,17 @@ signal aiming_changed(is_aiming: bool)
 @export var character: CharacterBody2D:
 	set = _set_character
 
+## If false, the grappling hook ignores the input, and it's controlled by calling
+## [method aim_at] and [method throw_once].
+@export var player_controlled: bool = true:
+	set = _set_player_controlled
+
 ## How far can the initial throw reach.
 @export_range(0.0, 500.0, 1.0, "or_greater") var string_throw_length: float = 200.0:
 	set(new_val):
 		string_throw_length = new_val
-		hook_control.string_length = string_throw_length
+		if is_node_ready():
+			hook_control.string_length = string_throw_length
 
 ## The velocity of both the character and the thing being pulled, while pulling.
 @export_range(0.0, 5000.0, 1.0, "or_greater", "or_less") var pull_velocity: float = 1000.0
@@ -134,6 +144,17 @@ func _set_character(new_character: CharacterBody2D) -> void:
 	update_configuration_warnings()
 
 
+func _set_player_controlled(new_value: bool) -> void:
+	player_controlled = new_value
+	if not is_node_ready():
+		return
+	hook_control.player_controlled = player_controlled
+	for area: HookableArea in areas_hooked:
+		if is_instance_valid(area) and area.hook_control:
+			if area.hook_control.hooked.is_connected(hooked):
+				area.hook_control.player_controlled = player_controlled
+
+
 func _on_player_mode_changed(mode: Player.Mode) -> void:
 	if mode == Player.Mode.DEFEATED:
 		if hook_string:
@@ -157,6 +178,7 @@ func _ready() -> void:
 func _listen_to(control: HookControl) -> void:
 	if control.hooked.is_connected(hooked):
 		return
+	control.player_controlled = player_controlled
 	control.hooked.connect(hooked)
 	control.hit_wall.connect(hit_wall)
 	control.hit_air.connect(hit_air)
@@ -170,6 +192,33 @@ func _stop_listening_to(control: HookControl) -> void:
 	control.hooked.disconnect(hooked)
 	control.hit_wall.disconnect(hit_wall)
 	control.hit_air.disconnect(hit_air)
+	# The connection may be used later by another grappling hook, which sets it
+	# again. Leave it as a control is by default.
+	control.player_controlled = true
+
+
+## The control that aims the next throw: the control of the last connection that
+## the string goes through, if it's aiming, or [member hook_control].
+func get_aiming_control() -> HookControl:
+	for i in range(areas_hooked.size() - 1, -1, -1):
+		var area := areas_hooked[i]
+		if is_instance_valid(area) and area.hook_control:
+			if area.hook_control.state == HookControl.State.AIMING:
+				return area.hook_control
+	return hook_control
+
+
+## Aim the next throw towards [param target], in global coordinates. See
+## [method get_aiming_control].
+func aim_at(target: Vector2) -> void:
+	get_aiming_control().aim_at(target)
+
+
+## Throw once in the direction aimed, from the control returned by
+## [method get_aiming_control]. Returns false without throwing if it isn't
+## aiming, for example because a string thrown from it is still out.
+func throw_once() -> bool:
+	return get_aiming_control().throw_once()
 
 
 func _new_hook_string() -> Line2D:
