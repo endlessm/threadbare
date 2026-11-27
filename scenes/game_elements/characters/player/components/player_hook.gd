@@ -11,7 +11,8 @@ extends Node2D
 ## [br][br]
 ## This is a piece of the grappling hook mechanic.
 ## [br][br]
-## It should be in group [b]hook_listener[/b] so functions [method hooked],
+## It listens to the signals of its [member hook_control], and of the control of
+## each connection that the string goes through, so [method hooked],
 ## [method hit_wall] and [method hit_air] are called.
 
 ## Emitted when the string is thrown from the primary control.
@@ -148,6 +149,27 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 func _ready() -> void:
 	hook_control.string_length = string_throw_length
+	_listen_to(hook_control)
+
+
+## Handle the throws from [param control]: the control of this node, or the
+## control of a connection that the string goes through.
+func _listen_to(control: HookControl) -> void:
+	if control.hooked.is_connected(hooked):
+		return
+	control.hooked.connect(hooked)
+	control.hit_wall.connect(hit_wall)
+	control.hit_air.connect(hit_air)
+
+
+## Stop handling the throws from the control of a connection, once the string
+## is removed.
+func _stop_listening_to(control: HookControl) -> void:
+	if control == hook_control or not control.hooked.is_connected(hooked):
+		return
+	control.hooked.disconnect(hooked)
+	control.hit_wall.disconnect(hit_wall)
+	control.hit_air.disconnect(hit_air)
 
 
 func _new_hook_string() -> Line2D:
@@ -164,9 +186,7 @@ func _new_hook_string() -> Line2D:
 	return new_hook_string
 
 
-## Called when the area was hooked.
-## [br][br]
-## Part of group hook_listener.
+## Called when the area was hooked. See [signal HookControl.hooked].
 func hooked(_new_hooked_to: HookableArea, is_loop: bool) -> void:
 	var p: Vector2 = _new_hooked_to.get_anchor_position()
 	if not hook_string:
@@ -195,13 +215,12 @@ func hooked(_new_hooked_to: HookableArea, is_loop: bool) -> void:
 		await tween.finished
 		remove_string()
 	else:
-		# Start aiming:
+		# Start aiming from the connection, so handle its throws too:
+		_listen_to(_new_hooked_to.hook_control)
 		aiming_changed.emit(true)
 
 
-## Called when a throw has hit a wall.
-## [br][br]
-## Part of group hook_listener.
+## Called when a throw has hit a wall. See [signal HookControl.hit_wall].
 func hit_wall(wall_point: Vector2) -> void:
 	if not hook_string:
 		hook_string = _new_hook_string()
@@ -211,9 +230,7 @@ func hit_wall(wall_point: Vector2) -> void:
 	hit_wall_audio_player.play()
 
 
-## Called when a throw has hit the air.
-## [br][br]
-## Part of group hook_listener.
+## Called when a throw has hit the air. See [signal HookControl.hit_air].
 func hit_air(air_point: Vector2) -> void:
 	if not hook_string:
 		hook_string = _new_hook_string()
@@ -236,6 +253,7 @@ func remove_string() -> void:
 		if area.hook_control:
 			area.hook_control.release()
 			area.hook_control.state = HookControl.State.DISABLED
+			_stop_listening_to(area.hook_control)
 	areas_hooked.clear()
 
 	aiming_changed.emit(false)
