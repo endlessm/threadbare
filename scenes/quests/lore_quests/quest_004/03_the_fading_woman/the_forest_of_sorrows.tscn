@@ -24,8 +24,8 @@
 [ext_resource type="Script" uid="uid://c8405c212rbn6" path="res://scenes/game_elements/props/background_music/components/background_music.gd" id="32_2i17y"]
 [ext_resource type="AudioStream" uid="uid://qnqpd21qyfnc" path="res://assets/first_party/music/Threadbare_Stealth.ogg" id="33_32y0v"]
 [ext_resource type="Script" uid="uid://dnp0tjloec2d7" path="res://scenes/game_logic/stealth_game_logic.gd" id="34_32y0v"]
+[ext_resource type="Resource" uid="uid://cchnv5pn6fa8e" path="res://scenes/globals/game_state/inventory/imagination.tres" id="37_juxrx"]
 [ext_resource type="PackedScene" uid="uid://fuhl3l6gxq5k" path="res://scenes/game_elements/props/collectible_item/collectible_item.tscn" id="43_p3yg5"]
-[ext_resource type="Script" uid="uid://bgmwplmj3bfls" path="res://scenes/globals/game_state/inventory/inventory_item.gd" id="44_imo81"]
 [ext_resource type="Script" uid="uid://bdhjixygupit1" path="res://scenes/game_elements/props/area_filler/area_filler.gd" id="46_bxatv"]
 [ext_resource type="SpriteFrames" uid="uid://d36eq8tqdaxdy" path="res://scenes/game_elements/props/tree/components/tree_spriteframes_green.tres" id="47_fpydf"]
 [ext_resource type="SpriteFrames" uid="uid://cthoo4vcj8la3" path="res://scenes/game_elements/props/tree/components/treetop_spriteframes_blue.tres" id="48_7x3a5"]
@@ -106,11 +106,6 @@ size = Vector2(6140, 120)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boundsV"]
 size = Vector2(120, 2300)
 
-[sub_resource type="Resource" id="Resource_617as"]
-script = ExtResource("44_imo81")
-type = 1
-metadata/_custom_type_script = "uid://bgmwplmj3bfls"
-
 [node name="ElBosqueDeTristezas" type="Node2D" unique_id=373144082]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=437756767]
@@ -138,7 +133,6 @@ y_sort_enabled = true
 
 [node name="Player" parent="OnTheGround" unique_id=296354958 instance=ExtResource("8_1hhk5")]
 position = Vector2(395, 1274)
-collision_layer = 2
 player_name = "StoryWeaver"
 sprite_frames = ExtResource("9_g3l2p")
 
@@ -507,24 +501,6 @@ alert_others_sound_stream = ExtResource("19_6pltm")
 patrol_path = NodePath("../Guard1-PatrolPath")
 move_speed = 200.0
 
-[node name="DetectionArea" parent="EnemyGuards/Guard1-GoingBackAndForth" index="3" unique_id=885694991]
-collision_mask = 2
-
-[node name="AnimatedSprite2D" parent="EnemyGuards/Guard1-GoingBackAndForth" index="4" unique_id=616054452]
-sprite_frames = ExtResource("15_wfat3")
-
-[node name="AlertSound" parent="EnemyGuards/Guard1-GoingBackAndForth/Sounds" parent_id_path=PackedInt32Array(689832587, 787899072) index="0" unique_id=1366827513]
-stream = ExtResource("16_src3s")
-
-[node name="FootSound" parent="EnemyGuards/Guard1-GoingBackAndForth/Sounds" parent_id_path=PackedInt32Array(689832587, 787899072) index="1" unique_id=1825167375]
-stream = ExtResource("17_08tup")
-
-[node name="FireSound" parent="EnemyGuards/Guard1-GoingBackAndForth/Sounds" parent_id_path=PackedInt32Array(689832587, 787899072) index="2" unique_id=946121497]
-stream = ExtResource("18_vgl3i")
-
-[node name="TorchHitSound" parent="EnemyGuards/Guard1-GoingBackAndForth/Sounds" parent_id_path=PackedInt32Array(689832587, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("19_6pltm")
-
 [node name="Guard1-PatrolPath" type="Path2D" parent="EnemyGuards" unique_id=490334062]
 top_level = true
 position = Vector2(794.72943, -167.00043)
@@ -542,27 +518,6 @@ patrol_path = NodePath("../Guard2-GoingBackAndForth-PatrolPath")
 move_speed = 250.0
 time_to_detect_player = 0.7
 
-[node name="DetectionArea" parent="EnemyGuards/Guard2-GoingBackAndForth" index="3" unique_id=885694991]
-collision_mask = 2
-
-[node name="AnimatedSprite2D" parent="EnemyGuards/Guard2-GoingBackAndForth" index="4" unique_id=616054452]
-sprite_frames = ExtResource("21_vgl3i")
-
-[node name="AlertSound" parent="EnemyGuards/Guard2-GoingBackAndForth/Sounds" parent_id_path=PackedInt32Array(1636530178, 787899072) index="0" unique_id=1366827513]
-stream = ExtResource("16_src3s")
-
-[node name="FootSound" parent="EnemyGuards/Guard2-GoingBackAndForth/Sounds" parent_id_path=PackedInt32Array(1636530178, 787899072) index="1" unique_id=1825167375]
-stream = ExtResource("17_08tup")
-
-[node name="FireSound" parent="EnemyGuards/Guard2-GoingBackAndForth/Sounds" parent_id_path=PackedInt32Array(1636530178, 787899072) index="2" unique_id=946121497]
-stream = ExtResource("18_vgl3i")
-
-[node name="TorchHitSound" parent="EnemyGuards/Guard2-GoingBackAndForth/Sounds" parent_id_path=PackedInt32Array(1636530178, 787899072) index="3" unique_id=1573897868]
-stream = ExtResource("19_6pltm")
-
-[node name="FireFly8" parent="EnemyGuards/Guard2-GoingBackAndForth" unique_id=578569438 instance=ExtResource("30_jeg3p")]
-position = Vector2(7, -21)
-
 [node name="Guard2-GoingBackAndForth-PatrolPath" type="Path2D" parent="EnemyGuards" unique_id=1337976490]
 position = Vector2(4045, 1393)
 curve = SubResource("Curve2D_jeg3p")
@@ -571,15 +526,6 @@ curve = SubResource("Curve2D_jeg3p")
 position = Vector2(4525.9995, 1423)
 sprite_frames = ExtResource("23_laeab")
 patrol_path = NodePath("../Path2D")
-
-[node name="DetectionArea" parent="EnemyGuards/Guard" index="3" unique_id=885694991]
-collision_mask = 2
-
-[node name="AnimatedSprite2D" parent="EnemyGuards/Guard" index="4" unique_id=616054452]
-sprite_frames = ExtResource("23_laeab")
-
-[node name="FireFly9" parent="EnemyGuards/Guard" unique_id=1266081842 instance=ExtResource("30_jeg3p")]
-position = Vector2(0.00048828125, -13)
 
 [node name="Path2D" type="Path2D" parent="EnemyGuards" unique_id=843363060]
 position = Vector2(-417.99997, 38)
@@ -719,12 +665,14 @@ scale = Vector2(3, 3)
 
 [node name="CollectibleItem" parent="." unique_id=327991066 instance=ExtResource("43_p3yg5")]
 position = Vector2(5489, 1946)
-item = SubResource("Resource_617as")
+item = ExtResource("37_juxrx")
 collected_dialogue = ExtResource("101_w2")
 next_scene = "uid://db0lm2eqb4wtk"
 
 [node name="forest" type="StaticBody2D" parent="." unique_id=672081284]
 position = Vector2(6, 41)
+collision_layer = 16
+collision_mask = 0
 
 [node name="AreaFiller" type="Node" parent="forest" unique_id=1238114829]
 script = ExtResource("46_bxatv")
@@ -2308,6 +2256,8 @@ scale = Vector2(0.8266034, 0.9097319)
 
 [node name="forest2" type="StaticBody2D" parent="." unique_id=1061687500]
 position = Vector2(6, 41)
+collision_layer = 16
+collision_mask = 0
 
 [node name="AreaFiller" type="Node" parent="forest2" unique_id=5297830]
 script = ExtResource("46_bxatv")
@@ -2821,6 +2771,8 @@ sprite_frames = ExtResource("48_7x3a5")
 
 [node name="forest3" type="StaticBody2D" parent="." unique_id=1273997195]
 position = Vector2(6, 41)
+collision_layer = 16
+collision_mask = 0
 
 [node name="AreaFiller" type="Node" parent="forest3" unique_id=435937387]
 script = ExtResource("46_bxatv")
@@ -7427,7 +7379,4 @@ sprite_frames = ExtResource("48_7x3a5")
 position = Vector2(1666.1359, 753.5198)
 scale = Vector2(1.2365884, 1.1679384)
 
-[editable path="EnemyGuards/Guard1-GoingBackAndForth"]
-[editable path="EnemyGuards/Guard2-GoingBackAndForth"]
-[editable path="EnemyGuards/Guard"]
 [editable path="Rain"]
