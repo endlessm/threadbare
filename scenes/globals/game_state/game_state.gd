@@ -71,6 +71,8 @@ func _ready() -> void:
 
 	if ResourceLoader.exists(SAVE_PATH):
 		_saved_game = ResourceLoader.load(SAVE_PATH, "", ResourceLoader.CACHE_MODE_REPLACE_DEEP)
+		if _saved_game:
+			_clear_quest_state_paths()
 
 	if not _saved_game:
 		_saved_game = SavedGame.new()
@@ -91,6 +93,29 @@ func _ready() -> void:
 		for ability: Enums.PlayerAbilities in DEBUG_PLAYER_ABILITIES:
 			player.set_ability(ability, true)
 		return
+
+
+## Clear the resource paths that the [QuestState] sub-resources get when loaded
+## from [constant SAVE_PATH], like [code]user://saved_game.tres::Resource_xxx[/code].
+## This is so the Remote inspector shows them as they are while playing.
+## [br][br]
+## For a resource with a path, the debugger sends the path instead of the object,
+## and the editor loads its own copy from disk. So the Remote inspector shows the
+## last saved state, not the live one. In that copy, [member QuestState.quest] is
+## also empty, see [member QuestState.quest_path].
+## [br][br]
+## This is a workaround for the following Godot bug:
+## [url=https://github.com/godotengine/godot/issues/47237]godot#47237[/url].
+func _clear_quest_state_paths() -> void:
+	var quest_states: Array[QuestState] = []
+	if _saved_game.quest:
+		quest_states.append(_saved_game.quest)
+	if _saved_game.global:
+		for suspended_quest: SuspendedQuestState in _saved_game.global.suspended_quests.values():
+			if suspended_quest and suspended_quest.quest:
+				quest_states.append(suspended_quest.quest)
+	for quest_state in quest_states:
+		quest_state.resource_path = ""
 
 
 ## Restores [member quest] and [member scene] from the point where the quest was
